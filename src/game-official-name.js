@@ -4,8 +4,7 @@
   const map = {en:'en','zh-tw':'zh-Hant','zh-hant':'zh-Hant','zh-cn':'zh-Hans','zh-hans':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
   const id=location.pathname.match(/\/games\/([^/]+)/)?.[1];
   const routeLocale=map[location.pathname.split('/').filter(Boolean)[0]?.toLowerCase()];
-  const queryLocale=map[(new URLSearchParams(location.search).get('lang')||'').toLowerCase()];
-  let locale=queryLocale||routeLocale||map[document.documentElement.lang.toLowerCase()]||'en';
+  let locale=routeLocale||map[document.documentElement.lang.toLowerCase()]||'en';
   const title=()=>window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale]||'';
   window.WeightPlayOfficialName={title};
   let observer,labels=[];
@@ -13,7 +12,7 @@
     // A select change requests another locale; navigation may not have
     // committed yet. Keep every title writer on the effective locale so an
     // old document cannot oscillate between old/new names and starve navigation.
-    locale=window.WonderI18n?.actualLocale?.()||queryLocale||routeLocale
+    locale=window.WonderI18n?.actualLocale?.()||routeLocale
       ||map[document.documentElement.lang.toLowerCase()]||locale;
     const name=title();if(!name)return;
     const normalized=map[document.documentElement.lang.toLowerCase()];

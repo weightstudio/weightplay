@@ -56,13 +56,13 @@ export function unpack(level,record){
  Object.assign(state,{moves:record.moves,mode:record.mode,parity:record.parity,delivered:[...record.delivered]});return state;
 }
 /* Macro search uses only the public action rules; no teleport, recolor or hidden queue. */
-export function solve(level,initial=createState(level),{budget=3000,maxMs=Infinity}={}){
+export function solve(level,initial=createState(level),{budget=3000,maxMs=Infinity,parkingAll=false}={}){
  let visited=0;const dead=new Set(),deadline=performance.now()+maxMs;
  function search(state){if(complete(state))return[];if(++visited>budget||performance.now()>deadline)return null;const hash=stateKey(state);if(dead.has(hash))return null;dead.add(hash);const candidates=[];
   for(const piece of state.pieces){if(piece.removed)continue;const queue=[{cells:piece.cells,path:[]}],seen=new Set([poseKey(piece.cells)]),parking=[];const docked=PORTS.some(port=>piece.cells.some(([c,r])=>c===port.c&&r===port.r));
    for(let qi=0;qi<queue.length;qi++){if(performance.now()>deadline)return null;const node=queue[qi],virtual={...state,pieces:state.pieces.map(p=>p.id===piece.id?{...p,cells:node.cells}:p)};
     if(node.path.length&&PORTS.some(port=>node.cells.some(([c,r])=>c===port.c&&r===port.r))){let current=state,absorbed=0,valid=true;for(const a of node.path){const result=act(level,current,a);if(!result.ok){valid=false;break;}current=result.state;absorbed+=result.absorbed;}if(valid&&absorbed)candidates.push({state:current,path:node.path,score:absorbed*3+current.delivered.length*50-node.path.length});}
-    if((docked||piece.cells.some(([c,r])=>c>=2&&c<=3&&r>=3&&r<=4))&&node.path.length&&node.path.length<=2&&!PORTS.some(port=>node.cells.some(([c,r])=>c===port.c&&r===port.r))){let current=state,valid=true;for(const action of node.path){const r=act(level,current,action);if(!r.ok){valid=false;break;}current=r.state;}if(valid)parking.push({state:current,path:node.path,score:-50-node.path.length-node.cells.filter(([c,r])=>r>=2&&r<=5&&c>=1&&c<=4).length});}
+    if((parkingAll||docked||piece.cells.some(([c,r])=>c>=2&&c<=3&&r>=3&&r<=4))&&node.path.length&&node.path.length<=2&&!PORTS.some(port=>node.cells.some(([c,r])=>c===port.c&&r===port.r))){let current=state,valid=true;for(const action of node.path){const r=act(level,current,action);if(!r.ok){valid=false;break;}current=r.state;}if(valid)parking.push({state:current,path:node.path,score:-50-node.path.length-node.cells.filter(([c,r])=>r>=2&&r<=5&&c>=1&&c<=4).length});}
     for(const action of legalActions(level,virtual,piece.id)){const cells=action.type==='rotate'?rotateCells(node.cells):node.cells.map(([c,r])=>[c+action.dx,r+action.dy]),hash=poseKey(cells);if(!seen.has(hash)){seen.add(hash);queue.push({cells,path:[...node.path,action]});}}
    }parking.sort((a,b)=>b.score-a.score);candidates.push(...parking.slice(0,5));
   }

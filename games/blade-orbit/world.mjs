@@ -1,8 +1,13 @@
 import * as T from '../purrch-grove/vendor/three/three.module.min.js';
-import {ARCS} from './stages.mjs?v=5';
-import {LIMITS} from './model.mjs?v=5';
+import {ARCS} from './stages.mjs?v=6';
+import {LIMITS} from './model.mjs?v=6';
 const PALETTE={ember:0xffac52,frost:0x82e7ff,storm:0xb9a3ff,iron:0xc6e8ec};
 const ENEMY_COLORS={guard:0x667e91,charger:0xd85b85,ranger:0x9b6bd1,healer:0x4fc1aa,splitter:0x9877ed,small:0x9e7ac4,chaser:0x6852a1,stalker:0x32a9bc,bomber:0xd77c35,summoner:0x72993f};
+export function aimWarningStyle(enemy,player,angle,length){
+ const dx=player.x-enemy.x,dz=player.z-enemy.z,along=dx*Math.cos(angle)+dz*Math.sin(angle),across=Math.abs(-dx*Math.sin(angle)+dz*Math.cos(angle));
+ const crosses=along>=-.6&&along<=length+1&&across<1.8,near=crosses||Math.hypot(dx,dz)<4;
+ return crosses&&enemy.wind<=.32?{width:.08,border:.18,brightness:1,head:.55}:near?{width:.06,border:.14,brightness:.88,head:.45}:{width:.04,border:.10,brightness:.70,head:.34};
+}
 export class World {
  constructor(host,onLoss=()=>{}){
   this.host=host;this.abort=new AbortController();this.time=0;this.fx=[];this.remains=[];this.shake=0;this.peakEffects=0;this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -17,11 +22,12 @@ export class World {
   this.batch('slash',40,this.geo(new T.RingGeometry(.68,1,24,1,0,Math.PI*.9)),false,true);
   this.batch('trail',48,this.geo(new T.RingGeometry(.95,1.025,20,1,0,.48)),true,true);
   this.batch('pulse',80,this.ring,true,true);this.batch('telegraph',220,this.box,true,true);
-  // Only thin danger boundaries render above actors; their footprint remains the simulation radius.
+  // Ring boundaries stay visible; aim lanes remain on the ground behind actor silhouettes.
   this.batch('dangerBorder',200,this.geo(new T.TorusGeometry(1,.085,4,48)),true,true);
   this.batch('dangerRing',200,this.geo(new T.TorusGeometry(1,.04,4,48)),true,true);
   this.batch('dangerLaneBorder',400,this.box,true,true);this.batch('dangerLane',400,this.box,true,true);
-  for(const name of ['dangerBorder','dangerRing','dangerLaneBorder','dangerLane']){const mesh=this.batches[name].mesh;mesh.material.depthTest=false;mesh.material.depthWrite=false;mesh.material.opacity=name.endsWith('Border')||name==='dangerBorder'?.85:.95;mesh.renderOrder=name.endsWith('Border')||name==='dangerBorder'?8:9;}
+  for(const name of ['dangerBorder','dangerRing','dangerLaneBorder','dangerLane']){const mesh=this.batches[name].mesh;mesh.material.depthTest=name.startsWith('dangerLane');mesh.material.depthWrite=false;mesh.material.opacity=name.endsWith('Border')||name==='dangerBorder'?.85:.95;mesh.renderOrder=name.endsWith('Border')||name==='dangerBorder'?8:9;}
+  this.warningTint=new T.Color();
   this.batches.trail.mesh.material.opacity=.22;this.batches.slash.mesh.material.transparent=true;this.batches.slash.mesh.material.opacity=.72;this.batches.slash.mesh.material.depthWrite=false;
   this.hero=this.makeHero();this.scene.add(this.hero);this.arc=-1;this.layout='';
   this.renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();onLoss();},{signal:this.abort.signal});
@@ -34,10 +40,11 @@ export class World {
  part(name,x,y,z,sx,sy,sz,color,rx=0,ry=0,rz=0){const b=this.batches[name];if(b.n>=b.max)return;this.pos.set(x,y,z);this.scale.set(sx,sy,sz);this.euler.set(rx,ry,rz);this.quat.setFromEuler(this.euler);this.matrix.compose(this.pos,this.quat,this.scale);b.mesh.setMatrixAt(b.n,this.matrix);b.mesh.setColorAt(b.n,this.color.set(color));b.n++;}
  finish(name){const b=this.batches[name];b.mesh.count=b.n;b.mesh.instanceMatrix.needsUpdate=true;if(b.mesh.instanceColor)b.mesh.instanceColor.needsUpdate=true;}
  dangerRing(x,z,r,color){this.part('dangerBorder',x,.055,z,r,r,1,0x12212d,-Math.PI/2);this.part('dangerRing',x,.06,z,r,r,1,color,-Math.PI/2);}
- dangerLane(x,z,a,length,color){
-  const segment=(cx,cz,angle,size)=>{this.part('dangerLaneBorder',cx,.05,cz,size,.025,.24,0x12212d,0,-angle);this.part('dangerLane',cx,.06,cz,size,.025,.085,color,0,-angle);};
+ dangerLane(x,z,a,length,color,style){
+  const tint=this.warningTint.setHex(color).multiplyScalar(style.brightness).getHex();
+  const segment=(cx,cz,angle,size)=>{this.part('dangerLaneBorder',cx,.05,cz,size,.025,style.border,0x12212d,0,-angle);this.part('dangerLane',cx,.06,cz,size,.025,style.width,tint,0,-angle);};
   segment(x+Math.cos(a)*length/2,z+Math.sin(a)*length/2,a,length);
-  for(const side of [-1,1]){const angle=a+side*.62,endX=x+Math.cos(a)*length*.86,endZ=z+Math.sin(a)*length*.86;segment(endX-Math.cos(angle)*.3,endZ-Math.sin(angle)*.3,angle,.6);}
+  for(const side of [-1,1]){const angle=a+side*.62,endX=x+Math.cos(a)*length*.86,endZ=z+Math.sin(a)*length*.86;segment(endX-Math.cos(angle)*style.head/2,endZ-Math.sin(angle)*style.head/2,angle,style.head);}
  }
  makeHero(){
   const root=new T.Group(),body=new T.Group();root.add(body);root.userData.body=body;
@@ -89,7 +96,7 @@ export class World {
   if(e.slow>0){this.part('pulse',e.x,.06,e.z,.58*s,.58*s,1,0x8be7ff,-Math.PI/2);for(const side of [-1,1])this.part('gem',e.x+side*.38*s,.2,e.z+.25,.16,.4,.16,0x9ff1ff,0,0,side*.3);}
   if(e.hp>0&&e.hp<e.maxHp&&!boss){this.part('enemy',e.x,y*s+.94*s,e.z,.8*s,.065,.05,0x233749);this.part('fx',e.x-(1-e.hp/e.maxHp)*.4*s,y*s+.94*s,e.z+.01,.8*s*e.hp/e.maxHp,.065,.055,e.elite?0xffd26d:0xa6efd2);}
   this.part('shadow',e.x,.012,e.z,.55*s,.42*s,1,0x071f28,-Math.PI/2);
-  if(e.mode==='windup'||e.mode==='volley'){const a=Math.atan2(e.dz,e.dx),color=e.kind==='stalker'?0x80f4ee:e.mode==='volley'?0xec98ff:0xff977d,length=e.kind==='stalker'?3.8:5.8,fan=e.mode==='volley'&&boss?3:0;for(let i=-fan;i<=fan;i++)this.dangerLane(e.x,e.z,a+i*.26,length,color);this.dangerRing(e.x,e.z,.7*s,color);}
+  if(e.mode==='windup'||e.mode==='volley'){const a=Math.atan2(e.dz,e.dx),color=e.kind==='stalker'?0x80f4ee:e.mode==='volley'?0xec98ff:0xff977d,length=e.kind==='stalker'?3.8:5.8,fan=e.mode==='volley'&&boss?3:0;for(let i=-fan;i<=fan;i++){const angle=a+i*.26;this.dangerLane(e.x,e.z,angle,length,color,aimWarningStyle(e,this.warningPlayer,angle,length));}this.dangerRing(e.x,e.z,.7*s,color);}
   if(e.mode==='detonate'){this.dangerRing(e.x,e.z,2.05,0xffb05c);const progress=1-Math.max(0,e.wind)/.95;this.part('pulse',e.x,.06,e.z,.25+1.8*progress,.25+1.8*progress,1,0xffd280,-Math.PI/2);}
   if(e.mode==='summon'||e.mode==='mend'){const radius=e.mode==='summon'?1.15:1.5;this.part('hazard',e.x,.06,e.z,radius,radius,1,0xb0fa83,-Math.PI/2);this.part('pulse',e.x,.6,e.z,.55,.55,1,0xcaff9c,-Math.PI/2,0,this.reduced?0:this.time);}
  }
@@ -111,7 +118,7 @@ export class World {
  }
  render(run,dt=0){
   this.time+=dt;this.terrain(run);for(const name of Object.keys(this.batches))if(!['floor','scenery'].includes(name))this.batches[name].n=0;
-  const p=run.player;this.hero.position.set(p.x,0,p.z);this.hero.rotation.y=p.face;
+  const p=run.player;this.warningPlayer=p;this.hero.position.set(p.x,0,p.z);this.hero.rotation.y=p.face;
   const hurtGlow=p.inv>0&&(!this.reduced||p.inv>.8)?0x6d2828:0;
   if(this.hurtGlow!==hurtGlow){this.hurtGlow=hurtGlow;this.hero.traverse(node=>{if(node.isMesh)node.material.emissive.setHex(hurtGlow);});}
   const walk=Math.min(1,Math.hypot(p.vx,p.vz)/3.2)*(this.reduced?.3:1);this.hero.userData.rightLeg.rotation.x=Math.sin(this.time*14)*.5*walk;this.hero.userData.leftLeg.rotation.x=-Math.sin(this.time*14)*.5*walk;this.hero.userData.body.position.y=Math.abs(Math.sin(this.time*14))*.05*walk;this.hero.userData.scarf.rotation.x=this.reduced?0:Math.sin(this.time*7)*.16;
@@ -126,7 +133,8 @@ export class World {
   for(const item of run.pickups){const y=.24+Math.sin(this.time*3+item.id)*.07;if(item.kind==='sword')this.sword(item.x,y,item.z,this.time*.8,0xffe39b,0,.48);
    else if(item.kind==='xp')this.part('gem',item.x,y,item.z,.25,.42,.25,0x66ffd9,0,this.time);
    else if(item.kind==='heal'){this.part('loot',item.x,y,item.z,.42,.11,.15,0xff869b);this.part('loot',item.x,y,item.z,.15,.11,.42,0xff869b);}
-   else {this.part('loot',item.x,.35,item.z,.85,.6,.6,0xd9a047);this.part('loot',item.x,.68,item.z,.9,.1,.65,0xffd66b);this.part('loot',item.x,.4,item.z+.32,.15,.22,.06,0x70fbe9);}}
+   else {const grow=this.reduced?1:Math.min(1,Math.max(.05,(run.time-item.born)/.18));this.part('loot',item.x,.35*grow,item.z,.85*grow,.6*grow,.6*grow,0xd9a047);this.part('loot',item.x,.68*grow,item.z,.9*grow,.1*grow,.65*grow,0xffd66b);this.part('loot',item.x,.4*grow,item.z+.32*grow,.15*grow,.22*grow,.06*grow,0x70fbe9);if(this.reduced&&run.time-item.born<.18)this.part('pulse',item.x,.06,item.z,.9,.9,1,0xffdf8b,-Math.PI/2);}}
+  const nextCache=run.nextCache;if(nextCache&&nextCache.at-run.time<=4)this.part('pulse',nextCache.x,.06,nextCache.z,.9,.9,1,0xffdf8b,-Math.PI/2);
   for(const h of run.hazards){this.dangerRing(h.x,h.z,h.r,h.delay>0?0xffc178:0xff607b);if(h.delay>0){const progress=Math.max(.12,1-h.delay/1.25);this.part('pulse',h.x,.06,h.z,h.r*progress,h.r*progress,1,0xffd599,-Math.PI/2);}else {this.part('pulse',h.x,.1,h.z,h.r,h.r,1,0xff9c52,-Math.PI/2);if(h.kind==='storm')this.part('fx',h.x,1.3,h.z,.12,2.6,.12,0xe3d2ff,0,0,.2);}}
   for(const b of run.projectiles){this.part('projectile',b.x,.56,b.z,.26,.26,.26,0xff7cdd,this.time,0,this.time);if(!this.reduced)this.part('telegraph',b.x-b.vx*.06,.55,b.z-b.vz*.06,.55,.065,.1,0xffa8e6,0,-Math.atan2(b.vz,b.vx));}
   for(const g of run.goals){if(g.done)continue;if(g.kind==='beacons'){this.part('hazard',g.x,.05,g.z,1.5,1.5,1,0x69dfe2,-Math.PI/2);this.part('goal',g.x,.25,g.z,.8,.5,.8,0x3f8898);this.part('gem',g.x,1+g.progress*.25,g.z,.5,.8,.5,0x9cffe8,0,this.time);}else{this.part('goal',g.x,.5,g.z,1.2,1,1.2,0x704c86);for(let i=0;i<3;i++)this.part('goal',g.x+(i-1)*.35,1.15,g.z,.2,.5,.3,0xcf7cc8,0,0,(i-1)*.3);}}

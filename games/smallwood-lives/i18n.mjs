@@ -39,14 +39,15 @@ export function renderGuide(locale='en'){
  <article class="game-info-section"><h3>${escape(c.collection)}</h3><p>${escape(g.collection)}</p></article>
  <article class="game-info-section"><h3>${escape(c.stages)}</h3><ol>${[0,5,10,15,20,25].map(i=>`<li>${escape(c.arcs[i/5])} — ${escape(c.wishes[i])}</li>`).join('')}</ol></article>
  <article class="game-info-section"><h3>${escape(c.help)}</h3><dl>${g.faq.map(([q,a])=>`<dt>${escape(q)}</dt><dd>${escape(a)}</dd>`).join('')}</dl></article></div>
- <div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(g.related)}</h3><div class="game-info-related-grid">${['kindred-habitats','animal-zoo-idle'].map(id=>`<a class="game-info-related-card" href="/${route}/games/${id}/" data-game-id="${id}"><span class="game-info-related-poster"><img loading="lazy" src="/games/${id}/assets/cover.webp" alt=""></span><strong>${id}</strong></a>`).join('')}</div></div></section>`;
+ <div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(g.related)}</h3><div class="game-info-related-grid">${['animal-peach-oath','animal-carnival-claw'].map(id=>`<a class="game-info-related-card" href="/${route}/games/${id}/" data-game-id="${id}"><span class="game-info-related-poster"><img loading="lazy" src="/games/${id}/assets/cover.webp" alt=""></span><strong>${id}</strong></a>`).join('')}</div></div></section>`;
 }
 // Scoped finalization after the canonical route generator: only game-owned
 // copy markers are changed; shared controls and related-card records retain
 // their canonical generator ownership. No browser/runtime is imported here.
 export function localizeShell(html,locale='en'){
  const l=normalizeLocale(locale),c=CATALOGS[l];
- let out=html.replace(/(<([a-z][\w-]*)\b[^>]*\bdata-copy="([^"]+)"[^>]*>)[^<]*(<\/\2>)/gi,(_,open,tag,key,close)=>{if(typeof c[key]!=='string')throw Error('Missing shell copy '+key);return open+escape(c[key])+close;});
+ let out=html.replace(/<body\b([^>]*)>/,(_,attrs)=>`<body${attrs.replace(/\sdata-audience="[^"]*"|\sdata-wp-game-age-tags="[^"]*"/g,'')} data-audience="general" data-wp-game-age-tags="13,family">`);
+ out=out.replace(/(<([a-z][\w-]*)\b[^>]*\bdata-copy="([^"]+)"[^>]*>)[^<]*(<\/\2>)/gi,(_,open,tag,key,close)=>{if(typeof c[key]!=='string')throw Error('Missing shell copy '+key);return open+escape(c[key])+close;});
  out=out.replace(/<[^>]+\bdata-copy-aria="[^"]+"[^>]*>/g,tag=>{const key=tag.match(/data-copy-aria="([^"]+)"/)[1];if(typeof c[key]!=='string')throw Error('Missing aria '+key);return tag.replace(/\saria-label="[^"]*"/g,'').replace(/>$/,` aria-label="${escape(c[key])}">`);});
  out=out.replace(/(<img\b[^>]*\bid="mainPoster"[^>]*\balt=")[^"]*(")/,`$1${escape(c.title)}$2`);
  out=out.replace(/<script\b[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>\n?/g,'');

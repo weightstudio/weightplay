@@ -20,9 +20,8 @@
   const GAME_ID = "garden-tiles";
   const UNLOCK_KEY = "gardenTilesUnlocked";
   const STARS_KEY = "gardenTilesStars";
-  const CARD_ATLAS = "../../assets/garden-tiles-card-faces.webp?v=20260723-art1";
-  const CARD_BACK = "../../assets/garden-tiles-card-back.webp?v=20260723-art1";
-  document.querySelector(".garden-game")?.setAttribute("data-wp-canvas-max-width", "920");
+  const CARD_ATLAS = "/assets/garden-tiles-card-faces.webp?v=20260723-art1";
+  const CARD_BACK = "/assets/garden-tiles-card-back.webp?v=20260723-art1";
   if (!document.querySelector("#leaveConfirmPanel")) {
     const panel = document.createElement("section");
     panel.id = "leaveConfirmPanel";
@@ -33,7 +32,7 @@
     panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
     panel.setAttribute("aria-describedby", "leaveConfirmText");
     panel.innerHTML = `<div class="leave-confirm-card"><h2 id="leaveConfirmTitle"></h2><p id="leaveConfirmText"></p><div class="leave-confirm-actions"><button id="keepPlayingBtn" type="button"></button><button id="leaveLevelBtn" type="button"></button></div></div>`;
-    document.querySelector(".garden-game")?.append(panel);
+    document.querySelector("#boardPanel")?.append(panel);
   }
   const titleText = document.querySelector("#titleText");
   const languageLabel = document.querySelector("#languageLabel");
@@ -53,9 +52,15 @@
   const levelSelect = document.querySelector("#levelSelect");
   const levelSelectTitle = document.querySelector("#levelSelectTitle");
   const levelBackBtn = document.querySelector("#levelBackBtn");
-  const levelMessage = document.querySelector("#levelMessage");
   const levelGrid = document.querySelector("#levelGrid");
   const boardPanel = document.querySelector("#boardPanel");
+  const battleContent = document.querySelector("#battleContent");
+  const gameRoot = document.querySelector("#gardenGame");
+  const mainHeader = document.querySelector("#mainHeader");
+  const mainContent = document.querySelector("#mainContent");
+  const stageHeader = document.querySelector("#stageHeader");
+  const stageContent = document.querySelector("#stageContent");
+  const battleHeader = document.querySelector("#battleHeader");
   const board = document.querySelector("#board");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const message = document.querySelector("#message");
@@ -81,7 +86,11 @@
   const keepPlayingBtn = document.querySelector("#keepPlayingBtn");
   const leaveLevelBtn = document.querySelector("#leaveLevelBtn");
 
-  statusbar?.prepend(battleBackBtn);
+  let screenFrame = null;
+  let stageUI = null;
+  let stageSelection = 0;
+  const stageProgress = document.createElement("div");
+  stageProgress.className = "garden-stage-progress";
 
   const dictionary = {
     en: {
@@ -532,6 +541,7 @@
   const loadedProgress = loadProgress();
   let unlocked = loadedProgress.unlocked;
   let starMap = loadedProgress.starMap;
+  stageSelection = Math.min(unlocked, levels.length) - 1;
   let currentLevelIndex = 0;
   let selectedTile = null;
   let tiles = [];
@@ -599,7 +609,8 @@
   }
 
   function setBattleCovered(covered) {
-    for (const node of [statusbar, boardPanel]) {
+    for (const node of [battleContent, screenFrame?.battleTopUI?.element]) {
+      if (!node) continue;
       node.inert = covered;
       if (covered) node.setAttribute("aria-hidden", "true");
       else node.removeAttribute("aria-hidden");
@@ -665,7 +676,8 @@
     leaveConfirmText.textContent = t("leaveText");
     keepPlayingBtn.textContent = t("keepPlaying");
     leaveLevelBtn.textContent = t("leaveLevel");
-    renderLevelGrid();
+    updateStageProgress();
+    stageUI?.setConfig(stageConfiguration(), stageSelection);
     if (tiles.length) renderBoard();
     updateHud();
     if (!resultPanel.classList.contains("hidden") && resultStarCount > 0) renderResult(resultStarCount, resultPreviousBest);
@@ -674,17 +686,6 @@
   function exitSharedPlayViewport() {
     window.WeightPlayGame?.exitMobileGameMode?.();
     document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
-    document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
-    const rootStyle = document.documentElement.style;
-    [
-      "--garden-frame-scale",
-      "--garden-frame-width",
-      "--garden-frame-height",
-      "--garden-logical-width",
-      "--garden-logical-height",
-      "--garden-frame-left",
-      "--garden-frame-top",
-    ].forEach((property) => rootStyle.removeProperty(property));
     if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
@@ -698,6 +699,9 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
+
+    screenFrame?.activate(scene === "result" ? "battle" : scene);
+    if (scene === "stage") stageUI?.refresh(stageSelection);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
       if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -714,156 +718,80 @@
     leaveConfirmOpen = false;
     setBattleCovered(false);
     mainPanel.classList.remove("hidden");
-    statusbar.classList.add("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.add("hidden");
-    const shell = document.querySelector(".garden-game");
-    for (const property of [
-      "position",
-      "inset",
-      "left",
-      "top",
-      "width",
-      "min-width",
-      "max-width",
-      "height",
-      "min-height",
-      "max-height",
-      "margin",
-      "transform",
-      "transform-origin",
-      "--wp-main-flow-min-height",
-    ]) shell?.style.removeProperty(property);
-    if (shell) {
-      delete shell.dataset.wpCommonScale;
-      delete shell.dataset.wpLogicalWidth;
-      delete shell.dataset.wpLogicalHeight;
-      delete shell.dataset.wpLogicalBattleCanvas;
-    }
     exitSharedPlayViewport();
     syncSharedScene("main");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
-  function updateGardenFrame() {
-    if (!document.body.classList.contains("garden-playing") && !document.body.classList.contains("garden-stage")) return;
-    const viewport = window.visualViewport;
-    const safeWidth = viewport?.width || innerWidth;
-    const viewportHeight = viewport?.height || innerHeight;
-    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
-    const shell = document.querySelector(".garden-game");
-    const publishRenderedMetrics = () => {
-      if (!shell?.getClientRects().length) return;
-      const rect = shell.getBoundingClientRect();
-      const style = getComputedStyle(shell);
-      const logicalWidth = parseFloat(style.width) || shell.offsetWidth;
-      const logicalHeight = parseFloat(style.height) || shell.offsetHeight;
-      const scale = Math.min(rect.width / logicalWidth, rect.height / logicalHeight);
-      shell.dataset.wpCommonScale = String(scale);
-      shell.dataset.wpLogicalWidth = String(logicalWidth);
-      shell.dataset.wpLogicalHeight = String(logicalHeight);
-      shell.dataset.wpLogicalBattleCanvas = `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`;
+  function stageConfiguration() {
+    return {
+      count: levels.length,
+      poster: "/assets/garden-tiles-cover.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
+      stage(index) {
+        const level = levels[index];
+        const number = index + 1;
+        const starsEarned = starMap[number] || 0;
+        const locked = number > unlocked;
+        const chapter = chapterNames[locale()]?.[level.chapter - 1] || chapterNames.en[level.chapter - 1];
+        const rules = level.rules.map(ruleLabel).join(" · ");
+        return {
+          id: number,
+          kicker: t("chapter", { chapter: level.chapter, name: chapter }),
+          title: `${t("level")} ${number}`,
+          subtitle: t("pairCount", { count: level.pairs }),
+          status: locked ? t("locked") : starsEarned ? `${"★".repeat(starsEarned)}${"☆".repeat(3 - starsEarned)}` : t("starGoal", { moves: level.starMoves[0] }),
+          poster: "/assets/garden-tiles-cover.webp",
+          posterPosition: "center",
+          locked,
+          cleared: starsEarned > 0,
+          summary: [rules, level.checkpoint ? t("checkpoint") : ""].filter(Boolean).join(" · "),
+          details: [rules, level.checkpoint ? t("checkpoint") : "", locked ? t("locked") : t("starGoal", { moves: level.starMoves[0] })],
+        };
+      },
     };
-    if (document.body.classList.contains("garden-playing")
-      && document.querySelector('script[src*="battle-canvas-standard.js"]')) {
-      requestAnimationFrame(() => requestAnimationFrame(publishRenderedMetrics));
-      return;
+  }
+
+  function updateStageProgress() {
+    const progress = `${Math.min(unlocked, levels.length)} / ${levels.length}`;
+    stageProgress.textContent = progress;
+    stageProgress.setAttribute("aria-label", `${t("level")} ${progress}`);
+  }
+
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) {
+      throw new Error("GARDEN_TILES_I9_SHARED_RUNTIME_MISSING");
     }
-    shell?.classList.remove("weightplay-active-viewport");
-    const useLandscapeEnvelope = viewportWidth / viewportHeight >= 1.5;
-    const minimumLogicalWidth = useLandscapeEnvelope ? 760 : 390;
-    const minimumLogicalHeight = useLandscapeEnvelope ? 350 : 788;
-    const scale = Math.max(0.1, Math.min(
-      viewportWidth / minimumLogicalWidth,
-      viewportHeight / minimumLogicalHeight
-    ));
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    const root = document.documentElement.style;
-    root.setProperty("--garden-frame-scale", String(scale));
-    root.setProperty("--garden-frame-width", `${viewportWidth}px`);
-    root.setProperty("--garden-frame-height", `${viewportHeight}px`);
-    root.setProperty("--garden-logical-width", `${logicalWidth}px`);
-    root.setProperty("--garden-logical-height", `${logicalHeight}px`);
-    root.setProperty("--garden-frame-left", `${(viewport?.offsetLeft || 0) + Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
-    root.setProperty("--garden-frame-top", `${viewport?.offsetTop || 0}px`);
-    shell?.style.setProperty("position", "fixed", "important");
-    shell?.style.setProperty("inset", "auto", "important");
-    shell?.style.setProperty("left", "var(--garden-frame-left)", "important");
-    shell?.style.setProperty("top", "var(--garden-frame-top)", "important");
-    shell?.style.setProperty("width", "var(--garden-logical-width)", "important");
-    shell?.style.setProperty("height", "var(--garden-logical-height)", "important");
-    shell?.style.setProperty("min-height", "var(--garden-logical-height)", "important");
-    shell?.style.setProperty("max-height", "none", "important");
-    shell?.style.setProperty("transform", "scale(var(--garden-frame-scale))", "important");
-    shell?.style.setProperty("transform-origin", "top left", "important");
-    publishRenderedMetrics();
-  }
-
-  addEventListener("resize", updateGardenFrame, { passive: true });
-  addEventListener("orientationchange", updateGardenFrame, { passive: true });
-  visualViewport?.addEventListener("resize", updateGardenFrame, { passive: true });
-  visualViewport?.addEventListener("scroll", updateGardenFrame, { passive: true });
-
-  let levelCenterFrame = 0;
-  function updateCenteredLevelCard() {
-    levelCenterFrame = 0;
-    const cards = [...levelGrid.querySelectorAll("[data-level]")];
-    if (!cards.length || !document.body.classList.contains("garden-stage")) return;
-    const railRect = levelGrid.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
-    let centeredCard = cards[0];
-    let centeredDistance = Infinity;
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      if (distance < centeredDistance) {
-        centeredCard = card;
-        centeredDistance = distance;
-      }
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: gameRoot,
+      localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: mainPanel, header: mainHeader, content: mainContent },
+        stage: { root: levelSelect, header: stageHeader, content: stageContent },
+        battle: { root: boardPanel, header: battleHeader, content: battleContent },
+      },
     });
-    cards.forEach((card) => {
-      const isCentered = card === centeredCard;
-      card.classList.toggle("is-centered", isCentered);
-      if (isCentered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
+    screenFrame.stageTopUI.add(stageProgress);
+    const battleStats = window.WeightPlayScreenFrame.createGroup();
+    [...statusbar.children].forEach((node) => battleStats.add(node));
+    battleStats.element.setAttribute("role", "group");
+    screenFrame.battleTopUI.add(battleStats);
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: stageContent,
+      rail: levelGrid,
+      config: stageConfiguration(),
+      selected: stageSelection,
+      onSelect(index, { locked } = {}) {
+        stageSelection = index;
+        if (!locked) stageProgress.textContent = `${Math.min(unlocked, levels.length)} / ${levels.length}`;
+      },
+      onStart(index) { startLevel(index); },
+      isActive: () => screenFrame.active === "stage" && !levelSelect.hidden,
     });
-  }
-
-  function scheduleCenteredLevelCard() {
-    if (levelCenterFrame) return;
-    levelCenterFrame = requestAnimationFrame(updateCenteredLevelCard);
-  }
-
-  levelGrid.addEventListener("scroll", scheduleCenteredLevelCard, { passive: true });
-  addEventListener("resize", scheduleCenteredLevelCard, { passive: true });
-  visualViewport?.addEventListener("resize", scheduleCenteredLevelCard, { passive: true });
-
-  function renderLevelGrid() {
-    levelGrid.innerHTML = "";
-    levels.forEach((level, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.dataset.level = String(index);
-      const stars = starMap[index + 1] || 0;
-      const isLocked = index + 1 > unlocked;
-      button.innerHTML = `
-        <em>${t("chapter", { chapter: level.chapter, name: chapterNames[locale()]?.[level.chapter - 1] || chapterNames.en[level.chapter - 1] })}</em>
-        <strong>${index + 1}</strong>
-        <span>${t("pairCount", { count: level.pairs })}</span>
-        <span class="level-rules">${level.rules.map(ruleLabel).join(" + ")}</span>
-        ${level.checkpoint ? `<b>${t("checkpoint")}</b>` : ""}
-        <small${isLocked ? ' class="level-lock"' : ""}>${isLocked ? t("locked") : t("starGoal", { moves: level.starMoves[0] })}</small>
-      `;
-      if (isLocked) button.classList.add("locked");
-      if (stars > 0) button.classList.add("completed");
-      if (index + 1 === unlocked) button.classList.add("challenge");
-      button.setAttribute("aria-disabled", String(isLocked));
-      const ariaSeparator = locale() === "ar" ? "، " : ", ";
-      button.setAttribute("aria-label", `${t("level")} ${index + 1}${isLocked ? `${ariaSeparator}${t("locked")}` : ""}`);
-      levelGrid.append(button);
-    });
-    scheduleCenteredLevelCard();
+    screenFrame.activate("main");
   }
 
   function showLevelSelect() {
@@ -876,21 +804,12 @@
     leaveConfirmOpen = false;
     setBattleCovered(false);
     mainPanel.classList.add("hidden");
-    statusbar.classList.add("hidden");
     boardPanel.classList.add("hidden");
     levelSelect.classList.remove("hidden");
     message.textContent = "";
-    levelMessage.textContent = "";
-    renderLevelGrid();
-    updateHud();
     syncSharedScene("stage");
-    updateGardenFrame();
     requestAnimationFrame(() => {
-      if (window.matchMedia("(max-width: 520px)").matches) {
-        levelGrid.querySelector("button.challenge")?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
-      }
-      (levelGrid.querySelector("button.challenge") || levelGrid.querySelector("button:not(.locked)"))?.focus({ preventScroll: true });
-      requestAnimationFrame(updateCenteredLevelCard);
+      levelGrid.querySelector('[aria-current="true"]')?.focus({ preventScroll: true });
     });
   }
 
@@ -902,6 +821,7 @@
     }
     invalidateRoundTasks();
     currentLevelIndex = index;
+    stageSelection = index;
     const level = levels[index];
     selectedTile = null;
     moves = 0;
@@ -920,8 +840,6 @@
     window.WeightPlayGame?.exitMobileGameMode?.();
     if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
-    document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
-    statusbar.classList.remove("hidden");
     levelSelect.classList.add("hidden");
     boardPanel.classList.remove("hidden");
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
@@ -930,13 +848,10 @@
     renderBoard();
     showMessage(previewing ? ruleLabel("preview") : t("selectFirst"));
     updateHud();
-    updateGardenFrame();
     requestAnimationFrame(() => {
       window.WeightPlayGame?.exitMobileGameMode?.();
       if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
       if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
-      document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
-      updateGardenFrame();
       board.querySelector(".tile:not(:disabled)")?.focus({ preventScroll: true });
     });
     if (previewing) {
@@ -1147,7 +1062,10 @@
     const previousBest = starMap[levelNumber] || 0;
     starMap[levelNumber] = Math.max(starMap[levelNumber] || 0, starCount);
     unlocked = Math.max(unlocked, Math.min(levels.length, levelNumber + 1));
+    stageSelection = Math.min(unlocked, levels.length) - 1;
     saveProgress();
+    updateStageProgress();
+    stageUI?.setConfig(stageConfiguration(), stageSelection);
     resultStarCount = starCount;
     resultPreviousBest = previousBest;
     resultActionCommitted = false;
@@ -1205,7 +1123,6 @@
 
   function showMessage(text) {
     message.textContent = text;
-    levelMessage.textContent = text;
   }
 
   function focusCurrentTile() {
@@ -1269,18 +1186,6 @@
     selectTile(Number(button.dataset.index));
   });
 
-  levelGrid.addEventListener("click", (event) => {
-    const directHit = event.target.closest?.("[data-level]");
-    const coordinateHit = [...levelGrid.querySelectorAll("[data-level]")].find((card) => {
-      const rect = card.getBoundingClientRect();
-      return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-    });
-    const button = directHit || coordinateHit;
-    if (!button) return;
-    button.focus({ preventScroll: true });
-    startLevel(Number(button.dataset.level));
-  });
-
   function commitResultAction(action) {
     if (resultActionCommitted) return;
     resultActionCommitted = true;
@@ -1327,7 +1232,10 @@
   homeLink.addEventListener("click", (event) => {
     if (document.body.classList.contains("garden-main")) return;
     event.preventDefault();
-    if (document.body.classList.contains("garden-playing")) showLevelSelect();
+    if (document.body.classList.contains("garden-playing")) {
+      stageSelection = currentLevelIndex;
+      showLevelSelect();
+    }
     else showMain();
   });
   localeSelect.addEventListener("change", () => {
@@ -1363,6 +1271,7 @@
   }
   localeSelect.value = locale();
   applyText();
+  mountSharedInterface();
   showMain();
   Promise.all([CARD_ATLAS, CARD_BACK].map((source) => new Promise((resolve) => {
     const image = new Image();

@@ -24,7 +24,7 @@ export class FieldRenderer{
     this.groundMat=new T.MeshStandardMaterial({color:PALETTES[0].grass,roughness:1});this.groundGeo=new T.BoxGeometry(110,.8,110);this.ground=new T.Mesh(this.groundGeo,this.groundMat);this.ground.position.set(0,-.45,-20);this.ground.receiveShadow=true;this.scene.add(this.ground);
     this.lineGeo=new T.BufferGeometry();this.linePositions=new Float32Array(3600);this.lineColors=new Float32Array(3600);this.lineGeo.setAttribute('position',new T.BufferAttribute(this.linePositions,3).setUsage(T.DynamicDrawUsage));this.lineGeo.setAttribute('color',new T.BufferAttribute(this.lineColors,3).setUsage(T.DynamicDrawUsage));
     this.lineMat=new T.LineBasicMaterial({vertexColors:true,transparent:true,opacity:.9});this.lines=new T.LineSegments(this.lineGeo,this.lineMat);this.lines.frustumCulled=false;this.scene.add(this.lines);
-    this.ringGeo=new T.TorusGeometry(.8,.045,4,24);this.ringMat=new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.85});this.rings=new T.InstancedMesh(this.ringGeo,this.ringMat,24);this.rings.frustumCulled=false;this.scene.add(this.rings);
+    this.ringGeo=new T.TorusGeometry(.8,.075,4,24);this.ringMat=new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.95});this.rings=new T.InstancedMesh(this.ringGeo,this.ringMat,24);this.rings.frustumCulled=false;this.scene.add(this.rings);
     this.ballGeo=new T.SphereGeometry(1,14,8);this.ballMat=new T.MeshStandardMaterial({color:0x8e4a27,roughness:.7});this.ball=new T.Mesh(this.ballGeo,this.ballMat);this.ball.castShadow=true;this.scene.add(this.ball);
     this.dummy=new T.Object3D();this.matrix=new T.Matrix4();this.parent=new T.Matrix4();this.color=new T.Color();this.effects=[];this.seenEvent=0;this.animations=new Map();this.palette=-1;this.kit='classic';this.stands='classic';this.elapsed=0;this.closed=false;this.lastCenter=18;
     this.reduced=matchMedia('(prefers-reduced-motion: reduce)');this.contextLost=e=>{e.preventDefault();this.lost=true;onLost();};canvas.addEventListener('webglcontextlost',this.contextLost);
@@ -132,17 +132,20 @@ export class FieldRenderer{
     this.dynamicN=0;this.lineN=0;this.ringN=0;this.syncEvents(m,time);
     const center=clamp(m.phase==='run'||m.phase==='result'?m.runner?.y+5||m.s+8:m.s+8,7,33);
     this.lastCenter+= (center-this.lastCenter)*.14;
-    const aspect=Math.max(.3,this.width/this.height),h=Math.max(24,23/aspect),w=h*aspect;
-    this.camera.left=-w/2;this.camera.right=w/2;this.camera.top=h/2;this.camera.bottom=-h/2;this.camera.position.set(0,40,17-this.lastCenter);this.camera.lookAt(0,0,-this.lastCenter);this.camera.updateProjectionMatrix();
+    const aspect=Math.max(.3,this.width/this.height),wide=aspect>1.5,h=Math.max(wide?20:24,23/aspect),w=h*aspect;
+    // A lower viewing angle fits the same decision depth in short landscape,
+    // preserving world coordinates and giving the block silhouettes more pixels.
+    this.camera.left=-w/2;this.camera.right=w/2;this.camera.top=h/2;this.camera.bottom=-h/2;this.camera.position.set(0,wide?26:40,(wide?32:17)-this.lastCenter);this.camera.lookAt(0,0,-this.lastCenter);this.camera.updateProjectionMatrix();
     this.sun.target.position.set(0,0,-this.lastCenter);this.sun.position.set(-17,34,12-this.lastCenter);
     this.character(m.qb,'leo',false,m,time);for(const p of m.receivers)this.character(p,p.id,false,m,time);for(const p of m.defenders)this.character(p,`defender-${p.id}`,true,m,time);
     const b=(...a)=>this.box(this.dynamic,this.dynamicN++,...a);
+    const ribbon=(a,z,color,width=.2,lift=.16)=>{const dx=z.x-a.x,dy=z.y-a.y,length=Math.hypot(dx,dy);if(length<.015)return;b((a.x+z.x)/2,lift,-(a.y+z.y)/2,width,.04,length,color,0,Math.atan2(dx,-dy));};
     b(0,.12,-m.s,20,.045,.13,0x3b98dd);b(0,.12,-m.firstDown,20,.045,.18,colors.gold);
-    if(m.stage.special==='gate'){b(-m.gate*5,.15,-40,9.7,.07,.4,colors.red);b(m.gate*5,.16,-40,9.7,.07,.4,colors.gold);}
+    if(m.stage.special==='gate'){b(-m.gate*5,.15,-40,9.7,.07,.4,colors.red);b(m.gate*5,.16,-40,9.7,.07,.8,colors.gold);for(let x=1;x<=9;x+=2)b(m.gate*x,.18,-41.5,.25,.06,2.6,colors.gold);}
     if(m.phase==='ready'||m.phase==='live'){
       for(let i=0;i<3;i++){
         let prev=receiverAt(m.book,i,m.s,0);
-        for(let t=.12;t<=6;t+=.12){const next=receiverAt(m.book,i,m.s,t);if(Math.floor(t*10)%2===0)this.segment([prev.x,.13,-prev.y],[next.x,.13,-next.y],[0xffd46b,0xb6eeef,0xf2b7da][i]);prev=next;}
+        for(let t=.16;t<=6;t+=.16){const next=receiverAt(m.book,i,m.s,t);if(Math.floor(t*6)%3!==0){ribbon(prev,next,0x24433e,.36);ribbon(prev,next,[0xffdb65,0xa9ffff,0xffafd7][i],.19,.21);}prev=next;}
         this.ring(m.receivers[i].x,m.receivers[i].y,.75,[colors.gold,0xc9f6ee,0xf7bad6][i]);
       }
       if(m.phase==='live'){
@@ -153,13 +156,22 @@ export class FieldRenderer{
       }
     }
     for(const d of m.defenders){
-      if(d.kind==='zone'&&(m.phase==='ready'||m.phase==='live')){this.ring(d.home.x,d.home.y,4.5,0xed9e7a);}
+      this.ring(d.x,d.y,1.05,0xff624f);
+      // A red diamond distinguishes defense even where jersey colors are small.
+      b(d.x,.12,-d.y,1.25,.05,1.25,0x7b263c,0,Math.PI/4);
+      b(d.x,.15,-d.y,.68,.05,.68,0xff9872,0,Math.PI/4);
+      if(d.kind==='zone'&&(m.phase==='ready'||m.phase==='live')){for(let i=0;i<48;i+=2){const a=i/48*Math.PI*2,z=(i+1)/48*Math.PI*2;ribbon({x:d.home.x+Math.cos(a)*4.5,y:d.home.y+Math.sin(a)*4.5},{x:d.home.x+Math.cos(z)*4.5,y:d.home.y+Math.sin(z)*4.5},0xf5a27e,.14);}}
       const switching=d.switchTarget!==undefined&&d.switchTarget!==null&&m.elapsed>=.7;
       const feint=m.feintAt&&!m.feintDone;
       if((switching||feint)&&m.phase==='live'){
         const idx=switching?d.switchTarget:d.target===0?2:0,p=m.receivers[idx];if(p)this.segment([d.x,.25,-d.y],[p.x,.25,-p.y],colors.red);
       }
       if(d.kind==='blitz'&&m.elapsed<.8){this.ring(d.x,d.y,1,Math.sin(time*14)>0?colors.gold:colors.red);this.segment([d.x,.18,-d.y],[m.qb.x,.18,-m.qb.y],colors.red);}
+    }
+    if(m.lastMiss&&['ready','dead','result'].includes(m.phase)){
+      const {ball,player}=m.lastMiss;
+      this.ring(player.x,player.y,1,colors.white);ribbon(ball,player,0xffe8ba,.12);
+      for(const angle of [-Math.PI/4,Math.PI/4])b(ball.x,.22,-ball.y,.18,.08,1.5,0xe64749,0,angle);
     }
     if(m.phase==='run'){
       this.ring(m.runner.x,m.runner.y,.9,colors.gold);

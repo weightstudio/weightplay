@@ -10,16 +10,17 @@ export const PLAYBOOKS = [
   { id: 'P6', unlock: 25, paths: [[[-8,0],[-8,16]],[[0,5],[4,5]],[[6,10],[2,13]]], delay: [0,0,0] }
 ];
 const rows = [
-  [12,7,100,'M2'],[22,7,110,'M2'],[24,6.5,110,'M3'],[26,6.5,115,'M2 ZC'],[24,6.5,120,'M2',0,'pair'],
-  [20,6,110,'ZL ZR'],[26,6,115,'ZC ZL'],[28,6,115,'ZC ZR'],[30,6,120,'ZL ZR ZC'],[30,6,125,'ZL ZR',0,'gate'],
-  [24,5.5,110,'M2 BR'],[28,5,115,'ZC BL'],[30,5,115,'ZL BR MR'],[32,5,120,'ZL ZR BL'],[32,5,125,'M2 BR',0,'change'],
-  [24,6,110,'M2',2],[28,6,115,'ZL ZR',2],[30,5.5,120,'ZC BR',2],[34,5.5,125,'M2 ZC',3],[32,6,125,'ZL ZR',3,'gust'],
+  [12,7,100,'M2'],[22,7,110,'M2 ZD'],[24,6.5,110,'M3'],[26,6.5,115,'M2 ZC'],[24,6.5,120,'M2',0,'pair'],
+  [20,6,110,'M2 ZD'],[26,6,115,'ZC ZL'],[28,6,115,'ZC ZR'],[30,6,120,'ZL ZR ZC'],[30,6,125,'ZL ZR',0,'gate'],
+  [24,5.5,110,'M2 BR'],[28,5,115,'ZC BL'],[30,5,115,'ZL BR MR'],[32,5,120,'ZL ZR BL'],[32,5,125,'M2 BR ZD',0,'change'],
+  [24,6,110,'M2',2],[28,6,115,'ZL ZR',2],[30,5.5,120,'ZC BR',2],[34,5.5,125,'M2 ZC',3],[32,6,125,'ZL ZC',3,'gust'],
   [28,6,115,'S'],[32,6,120,'S ZC'],[32,5.5,120,'S BR'],[36,5.5,125,'S ZC',2],[34,6,125,'M2 ZC',0,'feint'],
   [34,5.5,125,'ZL ZR BR'],[36,5,130,'M2 ZC BL'],[36,5.5,130,'S BR',3],[40,5.5,135,'M2 ZC BL',2],[24,6,170,'ZL ZR BR',0,'relay']
 ];
 export const STAGES = rows.map(([distance,throwTime,time,defense,wind=0,special=''],i) => Object.freeze({
   id: `meadow-${String(i+1).padStart(2,'0')}`, number:i+1, arc:Math.floor(i/5), distance, throwTime, time, defense, wind, special,
-  maxBook:Math.min(6,1+Math.floor(i/5)), checkpoint:(i+1)%5===0, seed:1001+i
+  maxBook:Math.min(6,1+Math.floor(i/5)), checkpoint:(i+1)%5===0, seed:1001+i,
+  manCushion:[6,15,25].includes(i+1)?2.4:0
 }));
 export const COSMETICS = [
   {id:'aurora-kit',sku:'meadow-touchdown:aurora-kit',cost:18},

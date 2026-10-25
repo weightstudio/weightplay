@@ -1,5 +1,6 @@
 import * as THREE from './vendor/three.module.min.js';
 import {seededRandom} from './content.mjs';
+import {weather} from './model.mjs';
 
 // Original editable Block Animals mesh library. Every visible coloured part is
 // actual world geometry; batches retain per-face lighting and contact shadows.
@@ -133,7 +134,7 @@ export class SmallwoodScene {
  }
  resize(){const {width,height}=this.container.getBoundingClientRect();if(width<1||height<1)return;this.renderer.setSize(width,height,false);const ratio=width/height,h=Math.max(8.4,12.5/ratio);this.camera.left=-h*ratio/2;this.camera.right=h*ratio/2;this.camera.top=h/2;this.camera.bottom=-h/2;this.camera.updateProjectionMatrix();this.draw();}
  update(run,save){
-  const signature=JSON.stringify([run.location,Math.floor((run.season-1)/3),run.species,run.flags,run.index,save.cosmetics,save.displays,run.legacyWork]);
+  const sky=weather(run),signature=JSON.stringify([run.location,Math.floor((run.season-1)/3),run.species,run.flags,run.index,save.cosmetics,save.displays,run.legacyWork,run.legacy,sky]);
   if(signature!==this.signature){
    this.signature=signature;if(this.world){this.scene.remove(this.world);disposeGroup(this.world);}this.world=scenery(run.location,run.flags,save.cosmetics);this.scene.add(this.world);
    this.actor=animal(run.species,Math.floor((run.season-1)/3),0x658252);this.actor.position.set(-.55,.1,1);this.actor.userData.baseScale=this.actor.scale.y;this.world.add(this.actor);
@@ -141,6 +142,11 @@ export class SmallwoodScene {
    const owl=orla();owl.position.set(-1.15,.1,-1.2);owl.scale.setScalar(.75);this.world.add(owl);
    const prop=memoryModel(run.index,!!(run.flags.built||run.flags.repaired||run.flags.madeTogether||run.legacyWork===2));prop.position.set(.8,.11,1.8);prop.scale.setScalar(.8);this.world.add(prop);this.prop=prop;
    if(run.flags.mentor){const apprentice=animal(1,0,0x6e8aab);apprentice.position.set(.5,.1,-1.15);apprentice.scale.multiplyScalar(.8);this.world.add(apprentice);}
+   if(sky!=='sun'){const drops=new Blocks(),rng=seededRandom(180+run.index);for(let i=0;i<32;i++)drops.box((rng()-.5)*10,1.8+rng()*2.7,(rng()-.5)*6,.055,sky==='snow'?.075:.28,.055,sky==='snow'?0xf9ffff:0x7faebf,0,0,sky==='rain'?.15:0);this.world.add(drops.build());}
+   if(run.legacy&&run.legacyWork>0){const monument=new Blocks(),progress=run.legacyWork;
+    if(run.legacy==='workshop'){monument.box(0,.6,0,1.4,1.2,1.1,wood).box(0,1.3,0,1.7,.2,1.4,0x63857a);if(progress===2)monument.box(0,.7,.57,.4,.65,.05,ivory).box(.5,.85,.57,.3,.35,.05,gold);}
+    if(run.legacy==='garden')for(let i=0;i<progress*3;i++){const x=-.6+i%3*.6,z=Math.floor(i/3)*.6;monument.box(x,.13,z,.5,.26,.5,wood).box(x,.55,z,.08,.65,.08,leaf).box(x,.87,z,.3,.3,.3,[0xe2ba6b,0xd392a0,0x98b6d2][i%3]);}
+    if(run.legacy==='trail')for(let i=0;i<progress*3;i++)monument.box(-.7+i*.3,.06,i*.12,.27,.12,.55,0xb9ab89);const mark=monument.build();mark.position.set(2.1,.12,1.6);this.world.add(mark);}
    if(save.cosmetics.includes('moon-cabinet')){const cabinet=memoryModel(31);cabinet.position.set(2.1,.1,-1.4);cabinet.scale.setScalar(1.1);this.world.add(cabinet);}
    if(save.cosmetics.includes('starlit-garden')){for(const x of [-3,3]){const lamp=memoryModel(32);lamp.position.set(x,.1,2.4);lamp.scale.setScalar(.7);this.world.add(lamp);}}
    for(let slot=0;slot<5;slot++){const id=save.displays?.[Math.floor(run.index/5)*5+slot];if(id){const item=memoryModel(Number(id.slice(1))-1,!!save.album[id]?.wish);item.position.set(-2.4+slot*1.2,.13,2.7);item.scale.setScalar(.48);this.world.add(item);}}

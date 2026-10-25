@@ -181,8 +181,11 @@ export function setCosmetic(input,id,on,owns){
  const save=clone(input);save.cosmetics=save.cosmetics.filter(x=>x!==id);if(on)save.cosmetics.push(id);save.revision++;return save;
 }
 export function validateSave(s){
- if(!s||s.schema!==1||!Number.isSafeInteger(s.revision)||!Array.isArray(s.cleared)||!s.album||!Array.isArray(s.displays)||s.displays.length!==30||!Array.isArray(s.cosmetics))throw Error('saveCorrupt');
+ if(!s||s.schema!==1||!Number.isSafeInteger(s.revision)||s.revision<0||!Array.isArray(s.cleared)||s.cleared.length>30||!s.album||Array.isArray(s.album)||typeof s.album!=='object'||!Array.isArray(s.displays)||s.displays.length!==30||!Array.isArray(s.cosmetics)||!Number.isInteger(s.selected)||s.selected<0||s.selected>29||typeof s.tutorial!=='boolean')throw Error('saveCorrupt');
  if(new Set(s.cleared).size!==s.cleared.length||s.cleared.some((id,i)=>id!==chapter(i).id))throw Error('saveCorrupt');
+ if(Object.keys(s.album).length!==s.cleared.length||s.cosmetics.some(id=>!COSMETICS.some(item=>item.id===id))||new Set(s.cosmetics).size!==s.cosmetics.length)throw Error('saveCorrupt');
+ for(const id of s.cleared){const p=s.album[id];if(!p||!Array.isArray(p.runs)||p.runs.length<1||p.runs.length>3||!Array.isArray(p.seen)||p.seen.some(x=>typeof x!=='string'||!x.startsWith(id+'-E'))||typeof p.wish!=='boolean')throw Error('saveCorrupt');for(const r of p.runs)if(typeof r.key!=='string'||typeof r.name!=='string'||!Number.isSafeInteger(r.seed)||!Array.isArray(r.echoes)||!Array.isArray(r.promises)||!r.flags||typeof r.wish!=='boolean')throw Error('saveCorrupt');}
+ if(s.displays.some((id,i)=>id!==null&&(!s.album[id]||i>=roomsUnlocked(s)*5))||new Set(s.displays.filter(Boolean)).size!==s.displays.filter(Boolean).length)throw Error('saveCorrupt');
  if(s.run){const r=s.run;chapter(r.index);for(const [k,max] of Object.entries(LIMITS))if(!Number.isInteger(r[k])||r[k]<0||r[k]>max)throw Error('saveCorrupt');if(!Number.isInteger(r.season)||r.season<1||r.season>12||!Array.isArray(r.memories)||!Array.isArray(r.promises)||!Array.isArray(r.daily)||!Array.isArray(r.usedDaily)||!Array.isArray(r.actions)||!Array.isArray(r.echoes)||!Array.isArray(r.names)||r.names.length!==4||!Array.isArray(r.remote)||!r.flags||!['actions','event','result'].includes(r.phase))throw Error('saveCorrupt');}
  return s;
 }

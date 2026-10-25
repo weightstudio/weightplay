@@ -1,4 +1,4 @@
-import {STAGES} from './stages.mjs?v=5';
+import {STAGES} from './stages.mjs?v=6';
 export const STORE='weightplay:blade-orbit:v1';
 export const LIMITS={swords:24,enemies:100,pickups:220,effects:120,hazards:48,projectiles:100};
 export const ENEMIES={
@@ -33,19 +33,20 @@ export class Run {
  constructor(stageId,save,{seed=Date.now(),practice=false}={}){
   this.stage=STAGES[clamp(stageId-1,0,29)];this.save=save;this.practice=practice;this.seed=seed>>>0||1;
   this.time=0;this.state='running';this.id=0;this.events=[];this.enemies=[];this.pickups=[];this.projectiles=[];this.hazards=[];this.effects=[];
-  this.level=1;this.xp=0;this.nextXP=7;this.kills=0;this.runCoins=0;this.objectives=0;this.swords=3;this.rotation=0;this.lastDamage=null;
+  this.level=1;this.xp=0;this.nextXP=7;this.upgradeReadyAt=0;this.draftMisses={power:0,speed:0,blade:0};this.kills=0;this.runCoins=0;this.objectives=0;this.swords=3;this.rotation=0;this.lastDamage=null;
   this.up={speed:0,power:0,reach:0,magnet:0,haste:0,heal:0,blade:0,evolve:0};this.path='';this.chosenPath=false;this.options=[];
   this.player={x:0,z:0,vx:0,vz:0,health:100+save.training.vitality*12,maxHealth:100+save.training.vitality*12,inv:0,dash:0,dashCD:0,face:0};
   this.spawnClock=1;this.lootClock=7;this.hazardClock=4;this.wave=0;this.eliteClock=19;this.introduced=new Set();this.bossSpawned=false;this.bossDefeated=false;this.settled=false;this.combo=0;this.comboTimer=0;this.bestCombo=0;
   this.pillars=['pillars','crown'].includes(this.stage.layout)?[[-4,-3],[4,-3],[-4,4],[4,4]].map(([x,z])=>({x,z,r:.8})):[];
-  this.goals=[];
+  this.goals=[];this.cacheDrops=[];this.cacheFinishAt=null;
   for(let i=0;i<3;i++)this.drop('sword',Math.cos(i*2.1)*2.1,Math.sin(i*2.1)*2.1);
   const positions=[[-5,-5],[5,-5],[5,5],[-5,5],[0,-7]];
   for(let i=0;i<this.stage.goal;i++){
    const [x,z]=positions[i];
-   if(this.stage.rule==='caches')this.drop('cache',x,z);
+   if(this.stage.rule==='caches')this.cacheDrops.push({x,z,at:i*this.stage.duration*.65/Math.max(1,this.stage.goal-1),released:false});
    else this.goals.push({id:++this.id,x,z,kind:this.stage.rule,hp:50+this.stage.id*2,progress:0,done:false});
   }
+  this.releaseCaches(false);
  }
  random(){this.seed=(Math.imul(1664525,this.seed)+1013904223)>>>0;return this.seed/4294967296;}
  emit(type,data={}){this.events.push({type,...data});}
@@ -54,8 +55,14 @@ export class Run {
  get damage(){return (14+this.save.training.edge*2)*(1+.3*this.up.power)*(this.up.evolve?2:1);}
  get tier(){return this.up.evolve?3:Math.min(2,Math.floor(this.up.power/2));}
  get pendingEvolution(){return !this.up.evolve&&this.path&&this.up.power>=3&&this.up.speed>=2&&this.swords>=8;}
+ get endTime(){return this.cacheFinishAt??this.stage.duration;}
+ get nextCache(){return this.cacheDrops.find(c=>!c.released);}
+ upgradeRanks(key){if(!Object.hasOwn(this.up,key))return 0;return Math.min(UPGRADES[key].cap-this.up[key],this.level>=4&&!['heal','evolve'].includes(key)?2:1);}
+ upgradePercent(key){const step={speed:20,power:30,reach:12,magnet:35,haste:12}[key];if(!step)return null;const current=1+step*this.up[key]/100+(key==='magnet'?this.save.training.magnet*.12:0);return Math.round(step*this.upgradeRanks(key)/current*10)/10;}
+ get upgradeHealing(){return Math.min(this.player.maxHealth-this.player.health,this.level>=4?60:40);}
+ releaseCaches(notify=true){for(const cache of this.cacheDrops){if(cache.released||this.time<cache.at)continue;if(!this.drop('cache',cache.x,cache.z))continue;cache.released=true;if(notify)this.emit('cacheArrival',{x:cache.x,z:cache.z});}}
  bladePositions(){return Array.from({length:this.swords},(_,i)=>{const outer=i>=12,count=outer?this.swords-12:Math.min(12,this.swords),index=outer?i-12:i,r=this.radius+(outer?.6:0),a=this.rotation*(outer?-.8:1)+index*Math.PI*2/count;return {x:this.player.x+Math.cos(a)*r,z:this.player.z+Math.sin(a)*r,a,r};});}
- drop(kind,x,z,value=1){if(this.pickups.length>=LIMITS.pickups){const same=this.pickups.find(p=>p.kind===kind&&kind==='xp');if(same)same.value+=value;return;}this.pickups.push({id:++this.id,kind,x,z,value,born:this.time});}
+ drop(kind,x,z,value=1){if(this.pickups.length>=LIMITS.pickups){const same=this.pickups.find(p=>p.kind===kind&&kind==='xp');if(same)same.value+=value;return;}const item={id:++this.id,kind,x,z,value,born:this.time};this.pickups.push(item);return item;}
  spawn(kind,boss=0,x,z,elite=false){
   if(this.enemies.length>=LIMITS.enemies)return;
   if(x===undefined){const a=this.random()*Math.PI*2;x=Math.cos(a)*8;z=Math.sin(a)*9.3;}
@@ -75,6 +82,7 @@ export class Run {
  tick(dt,input={x:0,y:0}){if(this.state!=='running')return;let left=clamp(dt,0,.1);while(left>0&&this.state==='running'){const step=Math.min(left,1/60);this.step(step,input);left-=step;}}
  step(dt,input){
   const p=this.player;this.time+=dt;p.inv=Math.max(0,p.inv-dt);p.dashCD=Math.max(0,p.dashCD-dt);p.dash=Math.max(0,p.dash-dt);
+  this.releaseCaches();
   const x=num(input.x),z=num(input.y),n=Math.max(1,Math.hypot(x,z)),speed=3.2*(1+.12*this.up.haste);
   if(!p.dash){const blend=this.stage.layout==='ice'?Math.min(1,dt*4):1;p.vx+=(x/n*speed-p.vx)*blend;p.vz+=(z/n*speed-p.vz)*blend;}
   p.x=clamp(p.x+p.vx*dt,-7.5,7.5);p.z=clamp(p.z+p.vz*dt,-8.5,8.5);if(Math.hypot(p.vx,p.vz)>.2)p.face=Math.atan2(p.vx,p.vz);
@@ -126,8 +134,8 @@ export class Run {
   if(this.comboTimer>0)this.comboTimer-=dt;else this.combo=0;
   if(p.health<=0){this.state='lost';this.emit('result',{won:false});return;}
   const goalReady=this.objectives>=this.stage.goal;
-  if((this.stage.boss?this.bossDefeated:this.time>=this.stage.duration&&goalReady)){this.state='won';this.emit('result',{won:true});return;}
-  if(this.xp>=this.nextXP)this.levelUp();
+  if((this.stage.boss?this.bossDefeated:this.time>=this.endTime&&goalReady)){this.state='won';this.emit('result',{won:true});return;}
+  if(this.xp>=this.nextXP&&this.time>=this.upgradeReadyAt)this.levelUp();
  }
  finishCast(e){
   if(e.hp<=0)return;
@@ -194,20 +202,23 @@ export class Run {
   if(item.kind==='xp')this.xp+=item.value;
   else if(item.kind==='sword'){if(this.swords<LIMITS.swords)this.swords++;else this.xp+=2;}
   else if(item.kind==='heal')this.player.health=Math.min(this.player.maxHealth,this.player.health+25);
-  else if(item.kind==='cache'){this.swords=Math.min(LIMITS.swords,this.swords+3);this.xp+=4;this.runCoins+=5;if(this.stage.rule==='caches')this.objectives++;}
+  else if(item.kind==='cache'){this.swords=Math.min(LIMITS.swords,this.swords+3);this.xp+=4;this.runCoins+=5;if(this.stage.rule==='caches'){this.objectives++;if(this.objectives===this.stage.goal&&this.cacheFinishAt===null){this.cacheFinishAt=this.time+8;for(let i=0;i<Math.min(6,2+this.stage.arc);i++)this.spawn(this.stage.enemies[i%this.stage.enemies.length]);this.emit('cacheFinale',{seconds:8});}}}
   this.emit('pickup',{kind:item.kind,x:item.x,z:item.z,swordsAdded:this.swords-swords,xpAdded:this.xp-xp,healthAdded:this.player.health-health});
  }
- levelUp(){this.xp-=this.nextXP;this.level++;this.nextXP=Math.floor(6+this.level*2.2);this.player.health=Math.min(this.player.maxHealth,this.player.health+5);this.state='upgrade';
+ levelUp(){this.xp-=this.nextXP;this.level++;this.nextXP=Math.floor(6+this.level*2.2)*(this.level>=3?2:1);this.player.health=Math.min(this.player.maxHealth,this.player.health+(this.level>=4?10:5));this.state='upgrade';
   if(this.level>=3&&!this.chosenPath)this.options=['ember','frost','storm'];
   else {const pool=Object.keys(this.up).filter(k=>this.up[k]<UPGRADES[k].cap&&k!=='evolve'&&(k!=='blade'||this.swords<24)&&(k!=='heal'||this.player.health<this.player.maxHealth-10));this.options=[];
    if(this.pendingEvolution)this.options.push('evolve');
-   while(this.options.length<3&&pool.length){const at=Math.floor(this.random()*pool.length);this.options.push(pool.splice(at,1)[0]);}if(!this.options.length)this.options=['heal'];}
+   const needed=this.chosenPath&&!this.up.evolve?[...(this.up.power<3?['power']:[]),...(this.up.speed<2?['speed']:[]),...(this.swords<8?['blade']:[])]:[];
+   for(const key of needed.filter(k=>this.draftMisses[k]>=1)){const at=pool.indexOf(key);if(at>=0&&this.options.length<3){this.options.push(key);pool.splice(at,1);}}
+   while(this.options.length<3&&pool.length){const at=Math.floor(this.random()*pool.length);this.options.push(pool.splice(at,1)[0]);}if(!this.options.length)this.options=['heal'];
+   for(const key of Object.keys(this.draftMisses))this.draftMisses[key]=needed.includes(key)&&!this.options.includes(key)?this.draftMisses[key]+1:0;}
   this.emit('upgrade');
  }
  choose(key){if(this.state!=='upgrade'||!this.options.includes(key))return false;
   if(['ember','frost','storm'].includes(key)){this.path=key;this.chosenPath=true;}
-  else {this.up[key]++;if(key==='blade')this.swords=Math.min(24,this.swords+2);if(key==='heal')this.player.health=Math.min(this.player.maxHealth,this.player.health+40);}
-  this.options=[];this.state='running';this.emit(key==='evolve'?'evolve':'choice',{key,x:this.player.x,z:this.player.z});return true;
+  else {const ranks=this.upgradeRanks(key);this.up[key]+=ranks;if(key==='blade')this.swords=Math.min(24,this.swords+2*ranks);if(key==='heal')this.player.health+=this.upgradeHealing;}
+  this.options=[];this.state='running';this.upgradeReadyAt=this.time+4;this.emit(key==='evolve'?'evolve':'choice',{key,x:this.player.x,z:this.player.z});return true;
  }
  settle(){if(this.settled||!['won','lost'].includes(this.state))return null;this.settled=true;const won=this.state==='won',first=!this.save.stars[this.stage.id-1];const stars=won?1+(this.player.health/this.player.maxHealth>=.4?1:0)+(this.player.health/this.player.maxHealth>=.75?1:0):0;
   const gold=this.runCoins+(won?(first?this.stage.reward:Math.floor(this.stage.reward/4)):0);

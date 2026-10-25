@@ -45,18 +45,25 @@ export function sweptContact(a,b,p,q,r,height=Infinity){
   const t=Math.max(lo,entry,0);
   return t<=Math.min(hi,exit,1)+1e-9?t:null;
 }
-function makeDefenders(code,s,stageNumber){
+function makeDefenders(code,s,stage){
   const defs=[];
-  const man=i=>defs.push({kind:'man',target:i,x:[-6,0,6][i]+(stageNumber===3&&i===0?2:0),y:s+4});
+  const man=i=>defs.push({kind:'man',target:i,cushion:stage.manCushion,x:[-6,0,6][i]+(stage.number===3&&i===0?2:0),y:s+(stage.number===3&&i===1?10:4)});
   const zone=(x,y,switchTarget=null)=>defs.push({kind:'zone',x,y:s+y,home:point(x,s+y),zoneTarget:null,switchTarget});
   for(const tag of code.split(' ')){
     if(tag==='M2'){man(0);man(2);}else if(tag==='M3'){man(0);man(1);man(2);}
     else if(tag==='ML')man(0);else if(tag==='MR')man(2);
-    else if(tag==='ZL')zone(-4,9);else if(tag==='ZR')zone(4,9);else if(tag==='ZC')zone(0,12);
+    else if(tag==='ZL')zone(-4,9);else if(tag==='ZR')zone(4,9);else if(tag==='ZC')zone(0,12);else if(tag==='ZD')zone(0,15);
     else if(tag==='S'){zone(-4,9,0);zone(4,9,2);}
     else if(tag==='BL'||tag==='BR')defs.push({kind:'blitz',x:tag==='BL'?-5:5,y:s+2});
   }
   return defs.map((d,i)=>({...d,id:i,heading:Math.PI,decision:0,destination:point(d.x,d.y)}));
+}
+// Describe observed landing geometry, never an assumed intended receiver.
+export function diagnoseMiss(ball,receivers){
+  const nearest=receivers.reduce((a,b)=>distance(ball,a)<distance(ball,b)?a:b);
+  const dx=ball.x-nearest.x,dy=ball.y-nearest.y;
+  const kind=Math.hypot(dx,dy)<1.5?'near':Math.abs(dy)>=Math.abs(dx)?dy<0?'short':'long':dx<0?'left':'right';
+  return {kind,receiver:nearest.id,ball:point(ball.x,ball.y),player:point(nearest.x,nearest.y)};
 }
 export class Match {
   constructor(stageNumber=1,book='P1'){
@@ -64,7 +71,7 @@ export class Match {
     this.totalTime=0;this.leg=1;this.down=1;this.snapCount=0;this.s=40-this.stage.distance;
     this.firstDown=Math.min(40,this.s+10);this.caught=new Set();this.medals={clean:true,early:true};
     this.events=[];this.eventSeq=0;this.result=null;this.blockedBook=null;this.pendingBlock=null;
-    this.relayed=false;this.relayUsed=false;this.setup();
+    this.relayed=false;this.relayUsed=false;this.lastMiss=null;this.interception=null;this.setup();
   }
   event(type,data={}){const e={id:++this.eventSeq,type,...data};this.events.push(e);if(this.events.length>16)this.events.shift();return e;}
   setup(){
@@ -72,7 +79,7 @@ export class Match {
     this.qb={id:'leo',x:0,y:this.s-3,heading:0};
     this.receivers=CAST.map((id,i)=>({id,index:i,x:[-6,0,6][i],y:this.s,heading:0}));
     const code=this.stage.special==='relay'&&this.leg===2?'S ZC':this.stage.defense;
-    this.defenders=makeDefenders(code,this.s,this.stage.number);
+    this.defenders=makeDefenders(code,this.s,this.stage);
     this.aim=point(0,Math.min(42,this.s+8));this.aimSide=0;this.feintAt=null;this.feintDone=false;
     this.wind=(this.stage.special==='relay'&&this.leg===2?2:this.stage.wind)*(this.snapCount%2?-1:1);
     this.gate=this.snapCount%2?-1:1;this.lane=2;this.shift=null;
@@ -83,7 +90,7 @@ export class Match {
   snap(){
     if(this.phase!=='ready'||this.result)return false;
     if(this.clock<=0){this.finish(false,'time');return false;}
-    this.phase='live';this.snapCount++;if(this.down===4)this.medals.early=false;
+    this.phase='live';this.lastMiss=null;this.snapCount++;if(this.down===4)this.medals.early=false;
     this.event('snap');return true;
   }
   setAim(x,y){
@@ -157,7 +164,9 @@ export class Match {
       if(d.decision<=0){
         d.decision=.25;
         if(this.phase==='run')d.destination=point(this.runner.x,this.runner.y);
-        else if(d.kind==='man')d.destination=point(this.receivers[d.target].x,this.receivers[d.target].y);
+        // Authored cushion coverage tracks the receiver's visible position,
+        // never the uncommitted aim. Crosses/feints can pull it out of a lane.
+        else if(d.kind==='man')d.destination=point(this.receivers[d.target].x,Math.min(41,this.receivers[d.target].y+(d.cushion||0)));
         else if(d.kind==='zone'){
           let target=d.zoneTarget===null?null:this.receivers[d.zoneTarget];
           if(!target||distance(target,d.home)>4.5){
@@ -207,7 +216,12 @@ export class Match {
       contacts.sort((a,b)=>Math.abs(a.t-b.t)<1e-9?Number(b.attack)-Number(a.attack):a.t-b.t);
       const hit=contacts[0];
       if(hit){
-        if(!hit.attack){this.event('intercept',{x:hit.p.x,y:hit.p.y});this.finish(false,'intercept');return;}
+        if(!hit.attack){
+          const contactTime=ball.time-dt+dt*hit.t;
+          const contact={x:previous.x+(current.x-previous.x)*hit.t,y:previous.y+(current.y-previous.y)*hit.t,z:previous.z+(current.z-previous.z)*hit.t};
+          this.interception={defender:hit.p.id,side:contact.x<-2?'Left':contact.x>2?'Right':'Centre',point:contact,time:Math.max(0,contactTime),flight:{...ball,from:{...ball.from},to:{...ball.to}}};
+          this.event('intercept',{...contact,defender:hit.p.id});this.finish(false,'intercept');return;
+        }
         this.runner=hit.p;this.lane=LANES.reduce((best,x,i)=>Math.abs(x-hit.p.x)<Math.abs(LANES[best]-hit.p.x)?i:best,0);
         // Preserve the exact catch position until the player explicitly changes lane.
         this.shift=null;this.phase='run';this.caught.add(hit.p.id);
@@ -215,7 +229,7 @@ export class Match {
         if(this.stage.special==='change')this.pendingBlock=this.book;
         this.event(ball.lateral?'relayCatch':'catch',{receiver:hit.p.id,x:hit.p.x,y:hit.p.y});
         if(this.runner.y>=40)this.score();
-      }else if(ball.time>=ball.duration){this.event('drop',{x:current.x,y:current.y});this.endDown(this.s,'incomplete');}
+      }else if(ball.time>=ball.duration){this.lastMiss=diagnoseMiss(current,this.receivers);this.event('drop',{x:current.x,y:current.y});this.endDown(this.s,'incomplete');}
     }else if(this.phase==='run'){
       // Flag pulls use swept relative motion, so a fast lane change is never invulnerable.
       let first=null;

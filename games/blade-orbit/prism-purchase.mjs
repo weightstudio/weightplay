@@ -1,4 +1,4 @@
-import {STORE} from './model.mjs?v=5';
+import {STORE} from './model.mjs?v=6';
 export const PRISM_SKU='blade-orbit:starcrystal-inlay-v1';
 export const PRISM_COST=5;
 function deliver(state,storage){

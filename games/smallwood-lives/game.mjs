@@ -10,10 +10,11 @@ let store,save,practiceSave=emptySave(),practicing=false,busy=false,fatal=false,
 const state=()=>practicing?practiceSave:save,run=()=>state()?.run;
 const text=(key,args)=>format(c[key]||c.unavailable,args);
 const person=(key,r=run()||currentResult)=>r?.names?.[{A:1,B:2,C:3}[key]]||'';
-const label=(option,r=run()||currentResult)=>format(c.action[option.id]||c.unavailable,{name:person(option.target,r)});
+const label=(option,r=run()||currentResult)=>{const name=person(option.target,r),value=format(c.action[option.id]||c.unavailable,{name});return ['mentorCraft','mentorNature'].includes(option.id)&&name?`${value} · ${name}`:value;};
 const sound=id=>{try{window.WeightPlayAudio?.play(id);}catch{}};
 const button=(name,fn,attrs={})=>{const b=document.createElement('button');b.type='button';b.textContent=name;for(const[k,v]of Object.entries(attrs))b.setAttribute(k,v);b.addEventListener('click',fn);return b;};
 const para=value=>{const p=document.createElement('p');p.textContent=value;return p;};
+const hud=(id,label,value)=>{const node=$(id),caption=document.createElement('span'),number=document.createElement('strong');caption.textContent=label;number.textContent=value;number.dir='ltr';node.replaceChildren(caption,number);node.removeAttribute('data-wp-frame-stat-text');node.setAttribute('aria-label',`${label} ${value}`);};
 const freshSeed=()=>crypto.getRandomValues(new Uint32Array(1))[0];
 const settingsOpen=()=>!!document.querySelector('[data-wp-frame-scene="battle"] [data-wp-settings][aria-expanded="true"]');
 function copyStatic(){
@@ -100,7 +101,7 @@ function renderOptions(options){
 function renderBattle(){
  const r=run();if(!r)return;scene.update(r,state());const metrics=scene.metrics();$('world').dataset.drawCalls=metrics.calls;$('world').dataset.triangles=metrics.triangles;
  $('battleScreen').dataset.stage=STAGES[r.index].id;$('battleScreen').dataset.season=String(r.season);
- $('seasonHud').textContent=text('season',{n:r.season});$('energyHud').textContent=`${c.stats[1]} ${r.E}/6`;$('materialHud').textContent=`${c.stats[2]} ${r.M}/9`;
+ hud('seasonHud',c.seasonName,`${r.season}/12`);hud('energyHud',c.stats[1],`${r.E}/6`);hud('materialHud',c.stats[2],`${r.M}/9`);
  $('lifeName').textContent=`${r.names[0]} · ${c.species[r.species]} · ${c.ages[Math.floor((r.season-1)/3)]}`;
  $('world').setAttribute('aria-label',`${c.arcs[r.location]} · ${$('lifeName').textContent} · ${c.items[r.index]}`);
  $('actionsLeft').textContent=text('remaining',{n:r.T});$('resources').replaceChildren(...['W','N'].map(k=>{const span=document.createElement('span');span.textContent=`${statLabel(k,r)} ${r[k]}/3`;return span;}));
@@ -143,7 +144,7 @@ async function saveResult(replace=null){
 }
 function showDetails(){
  const r=run();if(!r)return;const body=document.createDocumentFragment();body.append(para(c.wishes[r.index]),para(c.optional),para(`${c.stats[3]} ${r.W}/3 · ${c.stats[4]} ${r.N}/3`));
- body.append(para(`${c.forecast}: ${c.weather[{sun:0,rain:1,snow:2}[weather(r)]]}${r.index===24&&r.season<7?' · 50% / 50%':''}`));
+ const forecast=r.index===24&&r.season<7?`${text('season',{n:7})}–${text('season',{n:8})}: ${c.weather[0]} 50% · ${c.weather[2]} 50%`:c.weather[{sun:0,rain:1,snow:2}[weather(r)]];body.append(para(`${c.forecast}: ${forecast}`));
  for(const p of ['A','B','C'])body.append(para(`${p} · ${person(p,r)} · ${r[p]}/3 · ${c[r.remote.includes(p)?'remote':'local']}`));
  for(const p of r.promises)body.append(para(`${c.promise} · ${person(p.target,r)} · ${text('due',{n:p.due})} · ${p.state==='open'?c.promise:c[p.state]}`));
  if(r.legacy)body.append(para(`${c.action[r.legacy]} · ${text('legacyProgress',{n:r.legacyWork})}`));
@@ -168,7 +169,7 @@ function renderCollection(){
    const locked=s.cleared.length<item.unlock,have=owned(item.id);if(locked)card.append(para(text('needClear',{n:item.unlock})));card.append(button(have?(s.cosmetics.includes(item.id)?c.off:c.on):c.buy,()=>purchase(item,i),{...(locked||practicing?{disabled:''}:{})}));grid.append(card);});body.append(grid);
  }
 }
-function albumPage(index){const p=save.album[STAGES[index].id],body=document.createDocumentFragment();p.runs.forEach((r,i)=>{body.append(para(`${i+1}. ${r.name} · ${text('seed',{n:r.seed})} · ${r.wish?c.wishDone:c.ordinary}`));r.echoes.forEach(e=>body.append(echoNode(e,{...r,names:r.names||[r.name,'A','B','C']})));body.append(button(c.retry,()=>{closeDialog();return startChapter(index,{seed:r.seed,force:true});}));});dialog(c.items[index],body);}
+function albumPage(index){const p=save.album[STAGES[index].id],body=document.createDocumentFragment();body.append(para(`${c.memories} · ${p.seen.length}`));p.runs.forEach((r,i)=>{body.append(para(`${i+1}. ${r.name} · ${text('seed',{n:r.seed})} · ${r.wish?c.wishDone:c.ordinary}`));r.echoes.forEach(e=>body.append(echoNode(e,{...r,names:r.names||[r.name,'A','B','C']})));body.append(button(c.retry,()=>{closeDialog();return startChapter(index,{seed:r.seed,force:true});}));});dialog(c.items[index],body);}
 function placeItem(id){if(!roomsUnlocked(save)){dialog(c.collection,c.needRoom);return;}const body=document.createDocumentFragment();body.append(para(c.chooseSlot));for(let slot=0;slot<roomsUnlocked(save)*5;slot++)body.append(button(`${text('room',{n:Math.floor(slot/5)+1})} · ${slot%5+1}`,async()=>{const ok=await transact(s=>setDisplay(s,slot,id));if(ok){closeDialog();collectionMode='room';renderCollection();sound('reward.collect');}}));dialog(c.place,body);}
 function chooseDisplay(slot){const body=document.createDocumentFragment();for(const id of save.cleared){const i=STAGES.findIndex(s=>s.id===id);body.append(button(c.items[i],async()=>{if(await transact(s=>setDisplay(s,slot,id))){closeDialog();renderCollection();sound('reward.collect');}}));}if(save.displays[slot])body.append(button(c.remove,async()=>{if(await transact(s=>setDisplay(s,slot,null))){closeDialog();renderCollection();}}));dialog(c.place,body);}
 async function purchase(item,index){

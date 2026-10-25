@@ -18,6 +18,9 @@
   __wpNotifyMeasurement();
 
   const GAME_ID = "fruit-merge";
+  let screenFrame = null;
+  let stageUI = null;
+  let battleStatsGroup = null;
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
   const storageFallback = new Map();
@@ -76,7 +79,7 @@
           <button id="leaveGameBtn" class="secondary-action" type="button"></button>
         </div>
       </div>`;
-    document.querySelector("#playPanel .fixed-game-shell")?.append(panel);
+    document.querySelector("#playPanel")?.append(panel);
   }
   if (!document.querySelector("#pauseBtn")) {
     const button = document.createElement("button");
@@ -84,7 +87,7 @@
     button.className = "play-pause";
     button.type = "button";
     button.textContent = "\u23f8";
-    document.querySelector("#playPanel .fixed-game-shell")?.append(button);
+    document.querySelector("#playPanel .controls")?.append(button);
   }
   const canvas = document.querySelector("#gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -115,43 +118,14 @@
   const stageTitle = document.querySelector("#stageTitle");
   const stageHelp = document.querySelector("#stageHelp");
   const stageRail = document.querySelector("#stageRail");
-  const stageDots = document.querySelector("#stageDots");
-  let stageHeading = document.querySelector(".merge-stage-heading");
-  if (stageHeading?.tagName !== "HEADER") {
-    const ownedStageHeading = document.createElement("header");
-    ownedStageHeading.className = `${stageHeading.className} stage-heading`;
-    while (stageHeading.firstChild) ownedStageHeading.append(stageHeading.firstChild);
-    stageHeading.replaceWith(ownedStageHeading);
-    stageHeading = ownedStageHeading;
-  } else {
-    stageHeading.classList.add("stage-heading");
-  }
-  if (stageHeading && stageTitle?.parentElement !== stageHeading) {
-    const legacyStageCopy = stageTitle.parentElement;
-    stageHeading.append(stageTitle);
-    if (stageHelp) stageHeading.append(stageHelp);
-    if (legacyStageCopy && legacyStageCopy !== stageHeading && !legacyStageCopy.children.length) {
-      legacyStageCopy.remove();
-    }
-  }
-  stageHelp?.classList.add("stage-help-copy");
-  const generatedStageHeader = document.querySelector(".wp-generated-stage-header");
-  if (generatedStageHeader?.contains(stageBackBtn)) {
-    stageHeading.prepend(stageBackBtn);
-    generatedStageHeader.remove();
-  }
+  const stageProgress = document.querySelector("#stageProgress");
   const menuPanel = document.querySelector("#menuPanel");
   const playPanel = document.querySelector("#playPanel");
-  const battleShell = playPanel.querySelector(".fixed-game-shell");
+  const battleHudSource = document.querySelector("#battleHudSource");
+  const battleShell = playPanel.matches(".fixed-game-shell") ? playPanel : playPanel.querySelector(".fixed-game-shell");
+  const battleHeader = document.querySelector("#battleHeader");
+  const battleContent = document.querySelector("#battleContent");
   battleShell.setAttribute("data-wp-logical-battle-canvas", "");
-  const existingBattleHeader = backToMenuBtn.closest("header");
-  if (!existingBattleHeader || existingBattleHeader.classList.contains("wp-generated-battle-header")) {
-    const battleReturnHeader = document.createElement("header");
-    battleReturnHeader.className = "battle-return-header";
-    battleShell.prepend(battleReturnHeader);
-    battleReturnHeader.append(backToMenuBtn);
-    existingBattleHeader?.remove();
-  }
   const leaveConfirmPanel = document.querySelector("#leaveConfirmPanel");
   const leaveConfirmTitle = document.querySelector("#leaveConfirmTitle");
   const leaveConfirmText = document.querySelector("#leaveConfirmText");
@@ -161,13 +135,12 @@
   const menuDesc = document.querySelector("#menuDesc");
   const chainPreview = document.querySelector("#chainPreview");
   const resultPanel = document.querySelector("#resultPanel");
-  battleShell.append(resultPanel);
+  if (!battleShell.contains(resultPanel)) battleShell.append(resultPanel);
   const setBattleContentInert = (inert) => {
-    [...battleShell.children].forEach((child) => {
-      if (child === resultPanel || child === leaveConfirmPanel) return;
-      child.inert = inert;
-      child.toggleAttribute("aria-hidden", inert);
-    });
+    battleContent.inert = inert;
+    battleContent.toggleAttribute("aria-hidden", inert);
+    battleHeader.inert = inert;
+    battleHeader.toggleAttribute("aria-hidden", inert);
   };
   const resultTitle = document.querySelector("#resultTitle");
   const resultText = document.querySelector("#resultText");
@@ -764,7 +737,7 @@
     document.querySelector(".fixed-game-shell")?.setAttribute("aria-label", t("ariaBattle"));
     backToMenuBtn.setAttribute("aria-label", t("ariaBattleBack"));
     (__wpNotifyMeasurement(), pauseBtn.setAttribute("aria-label", t("ariaPause")));
-    document.querySelector(".scorebar")?.setAttribute("aria-label", t("ariaScore"));
+    battleStatsGroup?.element.setAttribute("aria-label", t("ariaScore"));
     document.querySelector(".merge-goal")?.setAttribute("aria-label", t("ariaProgress"));
     canvas.setAttribute("aria-label", t("ariaBoard"));
     canvas.setAttribute("aria-description", t("ariaBoardControls"));
@@ -832,6 +805,15 @@
   }
 
   function syncSharedScene(scene) {
+    const sceneRoots = { main: menuPanel, stage: stagePanel, battle: playPanel };
+    for (const [name, root] of Object.entries(sceneRoots)) {
+      const active = name === scene;
+      root.hidden = !active;
+      root.classList.toggle("hidden", !active);
+      root.inert = !active;
+      root.toggleAttribute("aria-hidden", !active);
+    }
+    screenFrame?.activate(scene);
     if (scene === "battle") {
       window.dispatchEvent(new Event("weightplay:stage-sync"));
       window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -864,7 +846,6 @@
     document.body.classList.add("fruit-stage");
     syncSharedScene("stage");
     renderChallengeRail(true);
-    updateFruitBattleScale();
   }
 
   function startChallenge(id) {
@@ -898,7 +879,6 @@
     menuPanel.classList.toggle("hidden", !showMenu);
     startBtn.disabled = !showMenu;
     syncSharedScene(showMenu ? "main" : "battle");
-    updateFruitBattleScale();
 
     initPhysicsWorld();
     fruitsOnBoard = [];
@@ -940,37 +920,6 @@
 
     if (!showMenu) { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
-
-  function updateFruitBattleScale() {
-    if (!document.body.classList.contains("fruit-playing") && !document.body.classList.contains("fruit-stage")) return;
-    const isStage = document.body.classList.contains("fruit-stage");
-    const safeWidth = visualViewport?.width || innerWidth;
-    const viewportHeight = visualViewport?.height || innerHeight;
-    const shortLandscape = viewportHeight <= 430 && safeWidth > viewportHeight;
-    const minimumLogicalWidth = shortLandscape ? 760 : isStage ? 390 : 382;
-    const minimumLogicalHeight = shortLandscape ? (isStage ? 360 : 350) : isStage ? 788 : 780;
-    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
-    const scale = Math.max(0.1, Math.min(viewportWidth / minimumLogicalWidth, viewportHeight / minimumLogicalHeight));
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    const root = document.documentElement.style;
-    document.body.classList.remove("fruit-expanded-canvas");
-    root.setProperty("--fruit-battle-scale", String(scale));
-    root.setProperty("--fruit-logical-width", `${logicalWidth}px`);
-    root.setProperty("--fruit-logical-height", `${logicalHeight}px`);
-    root.setProperty("--fruit-battle-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
-    root.setProperty("--fruit-battle-top", "0px");
-    document.querySelectorAll(".fruit-game, .fixed-game-shell, #stagePanel, #resultPanel").forEach((element) => {
-      element.dataset.wpCommonScale = String(scale);
-      element.dataset.wpLogicalWidth = String(logicalWidth);
-      element.dataset.wpLogicalHeight = String(logicalHeight);
-    });
-  }
-
-  addEventListener("resize", updateFruitBattleScale, { passive: true });
-  addEventListener("orientationchange", updateFruitBattleScale, { passive: true });
-  visualViewport?.addEventListener("resize", updateFruitBattleScale, { passive: true });
-  visualViewport?.addEventListener("scroll", updateFruitBattleScale, { passive: true });
 
   function updateHud() {
     scoreText.textContent = score;
@@ -1043,125 +992,106 @@
     return currentLocale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
-  function renderChallengeRail(centerLatest = true) {
-    if (!stageRail || !stageDots) return;
-    const progress = readChallengeProgress();
-    const selected = Math.min(progress.unlocked, progress.selected || progress.unlocked);
-    stageRail.innerHTML = "";
-    stageDots.innerHTML = "";
-    challenges.forEach((challenge) => {
-      const unlocked = challenge.id <= progress.unlocked;
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = `merge-stage-card${challenge.checkpoint ? " is-checkpoint" : ""}${unlocked ? "" : " is-locked"}${challenge.id === selected ? " is-selected" : ""}`;
-      card.dataset.stage = String(challenge.id);
-      card.dataset.index = String(challenge.id - 1);
-      card.setAttribute("aria-disabled", String(!unlocked));
-      card.innerHTML = `
-        <b>${t("stageLabel", { stage: challenge.id })}</b>
-        <strong>${localizedChallengeName(challenge)}</strong>
-        <span>${challengeGoalLabel(challenge)}</span>
-        <small>${challenge.rules.map(ruleLabel).join(" · ")} · ${t("dropsRule", { count: challenge.drops })}</small>
-        <em>${unlocked ? t("stageBest", { score: Number(progress.best[challenge.id]) || 0 }) : t("stageLocked")}</em>
-      `;
-      card.addEventListener("click", () => {
-        if (!unlocked || stageRail.dataset.dragged === "true") return;
-        startChallenge(challenge.id);
-      });
-      stageRail.append(card);
-      const dot = document.createElement("i");
-      dot.className = challenge.id === selected ? "active" : "";
-      stageDots.append(dot);
-    });
-    if (centerLatest) requestAnimationFrame(() => {
-      centerChallengeCard(selected, "auto");
-      stageRail.querySelector(`[data-stage="${selected}"]`)?.focus({ preventScroll: true });
-    });
-  }
-
-  function centerChallengeCard(id, behavior = "smooth") {
-    const card = stageRail.querySelector(`[data-stage="${id}"]`);
-    if (!card) return;
-    const left = Math.max(0, Math.min(card.offsetLeft + card.offsetWidth / 2 - stageRail.clientWidth / 2, stageRail.scrollWidth - stageRail.clientWidth));
-    stageRail.scrollTo({ left, behavior });
-    markCenteredChallengeCard(card);
-  }
-
-  function markCenteredChallengeCard(card) {
-    const id = Number(card?.dataset.stage || 0);
-    if (!id) return;
-    stageRail.querySelectorAll(".merge-stage-card").forEach((item) => {
-      const centered = item === card;
-      item.classList.toggle("is-selected", centered);
-      item.toggleAttribute("aria-current", centered);
-    });
-    [...stageDots.children].forEach((dot, index) => dot.classList.toggle("active", index === id - 1));
-  }
-
-  function installChallengeRail() {
-    let pointerId = null;
-    let startX = 0;
-    let startScroll = 0;
-    let moved = false;
-    stageRail.addEventListener("wonder:stage-snap", (event) => {
-      const requestedIndex = Number(event.detail?.index);
-      const railCenter = stageRail.getBoundingClientRect().left + stageRail.getBoundingClientRect().width / 2;
-      const nearest = [...stageRail.children].reduce((best, card) => {
-        const rect = card.getBoundingClientRect();
-        const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-        return !best || distance < best.distance ? { card, distance } : best;
-      }, null)?.card;
-      const card = Number.isInteger(requestedIndex) && requestedIndex >= 0
-        ? stageRail.children[requestedIndex]
-        : nearest;
-      markCenteredChallengeCard(card);
-    });
-    stageRail.addEventListener("pointerdown", (event) => {
-      if (stageRail.dataset.wpStageRail === "true") return;
-      const wrongMouseButton = event.pointerType === "mouse" && event.button !== 0;
-      if (pointerId !== null || event.isPrimary === false || wrongMouseButton) return;
-      pointerId = event.pointerId;
-      startX = event.clientX;
-      startScroll = stageRail.scrollLeft;
-      moved = false;
-      try { stageRail.setPointerCapture?.(event.pointerId); } catch { /* Synthetic or interrupted pointers may not be capturable. */ }
-    });
-    stageRail.addEventListener("pointermove", (event) => {
-      if (stageRail.dataset.wpStageRail === "true") return;
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - startX;
-      if (Math.abs(delta) > 6) moved = true;
-      if (moved) stageRail.scrollLeft = startScroll - delta;
-    });
-    const finish = (event, cancelled = false) => {
-      if (stageRail.dataset.wpStageRail === "true") return;
-      if (event.pointerId !== pointerId) return;
-      const ownedPointerId = pointerId;
-      pointerId = null;
-      try { if (stageRail.hasPointerCapture?.(ownedPointerId)) stageRail.releasePointerCapture(ownedPointerId); } catch { /* Capture may already be released. */ }
-      if (cancelled) {
-        stageRail.scrollLeft = startScroll;
-        moved = false;
-        delete stageRail.dataset.dragged;
-        return;
-      }
-      if (!moved) return;
-      stageRail.dataset.dragged = "true";
-      const center = stageRail.scrollLeft + stageRail.clientWidth / 2;
-      const cards = [...stageRail.querySelectorAll(".merge-stage-card")];
-      const nearest = cards.reduce((best, card) => {
-        const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-        return !best || distance < best.distance ? { card, distance } : best;
-      }, null)?.card;
-      centerChallengeCard(Number(nearest?.dataset.stage || 1));
-      setTimeout(() => delete stageRail.dataset.dragged, 140);
+  function stageConfiguration() {
+    return {
+      gameId: GAME_ID,
+      count: challenges.length,
+      background: "/assets/fruit-merge-cover.webp",
+      poster: "/assets/fruit-merge-cover.webp",
+      stage(index) {
+        const challenge = challenges[index];
+        const progress = readChallengeProgress();
+        const unlocked = challenge.id <= progress.unlocked;
+        const completed = progress.completed.includes(challenge.id);
+        const best = Number(progress.best[challenge.id]) || 0;
+        const tier = Math.min(10, Math.floor(index * 11 / challenges.length));
+        const poster = tier === 7
+          ? "/assets/animal-merge-token-7-boom-lion.png"
+          : tier === 10
+            ? "/assets/animal-merge-token-10-boom-lion.png"
+            : "/assets/animal-merge-token-" + tier + ".png";
+        const chapter = challenge.chapter?.[localeSlot()] || challenge.chapter?.[0] || t("stageTitle");
+        const rules = challenge.rules.map(ruleLabel).join(" · ");
+        const goal = challengeGoalLabel(challenge);
+        return {
+          id: challenge.id,
+          locked: !unlocked,
+          cleared: completed,
+          kicker: chapter,
+          title: localizedChallengeName(challenge),
+          subtitle: goal,
+          status: unlocked ? t("stageBest", { score: best }) : t("stageLocked"),
+          poster,
+          posterPosition: "center",
+          summary: [goal, rules].filter(Boolean).join(" · "),
+          details: [
+            t("stageLabel", { stage: challenge.id }),
+            rules,
+            t("dropsRule", { count: challenge.drops }),
+            unlocked ? t("stageBest", { score: best }) : t("stageLocked"),
+          ],
+        };
+      },
     };
-    stageRail.addEventListener("pointerup", finish);
-    stageRail.addEventListener("pointercancel", (event) => finish(event, true));
-    stageRail.addEventListener("lostpointercapture", (event) => finish(event, true));
-    window.addEventListener("blur", () => { if (pointerId !== null) finish({ pointerId }, true); });
-    window.addEventListener("pagehide", () => { if (pointerId !== null) finish({ pointerId }, true); });
-    document.addEventListener("visibilitychange", () => { if (document.hidden && pointerId !== null) finish({ pointerId }, true); });
+  }
+
+  function updateStageProgress(progress = readChallengeProgress()) {
+    stageProgress.textContent = progress.unlocked + " / " + challenges.length;
+    stageProgress.setAttribute("aria-label", t("ariaStage"));
+  }
+
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) {
+      throw new Error("FRUIT_MERGE_I9_SHARED_RUNTIME_MISSING");
+    }
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: gameRoot,
+      localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: menuPanel, header: document.querySelector("#mainHeader"), content: document.querySelector("#mainContent") },
+        stage: { root: stagePanel, header: document.querySelector("#stageHeader"), content: document.querySelector("#stageContent") },
+        battle: { root: playPanel, header: battleHeader, content: battleContent },
+      },
+    });
+
+    screenFrame.stageTopUI.add(stageProgress);
+    const battleStats = window.WeightPlayScreenFrame.createGroup();
+    [...battleHudSource.children].forEach((node) => battleStats.add(node));
+    battleStats.element.setAttribute("role", "group");
+    battleStatsGroup = battleStats;
+    screenFrame.battleTopUI.add(battleStats);
+    screenFrame.commonDownButton.add(freePlayBtn);
+    const progress = readChallengeProgress();
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: document.querySelector("#stageContent"),
+      rail: stageRail,
+      config: stageConfiguration(),
+      selected: Math.min(progress.unlocked, progress.selected || 1) - 1,
+      onSelect(index, { locked } = {}) {
+        const nextProgress = readChallengeProgress();
+        if (!locked) {
+          nextProgress.selected = challenges[index].id;
+          saveChallengeProgress(nextProgress);
+        }
+        updateStageProgress(nextProgress);
+      },
+      onStart(index) {
+        startChallenge(challenges[index].id);
+      },
+      isActive: () => screenFrame.active === "stage" && !stagePanel.hidden,
+    });
+    updateStageProgress();
+    screenFrame.activate("main");
+  }
+
+  function renderChallengeRail(centerLatest = true) {
+    if (!stageUI) return;
+    const progress = readChallengeProgress();
+    const selected = Math.min(progress.unlocked, progress.selected || progress.unlocked) - 1;
+    updateStageProgress(progress);
+    stageUI.refresh(selected);
+    if (centerLatest) stageRail.querySelector("[aria-current=\"true\"]")?.focus({ preventScroll: true });
   }
 
   function updateAimAccessibility() {
@@ -2036,7 +1966,7 @@
     }
   });
 
-  if (new URLSearchParams(location.search).has("smoke")) {
+  {
     window.__fruitMergeSmoke = {
       finishRunForTest: endGame,
       challengeCatalog: () => challenges.map((challenge) => ({ ...challenge, rules: [...challenge.rules] })),
@@ -2096,8 +2026,8 @@
     applyText();
   });
 
+  mountSharedInterface();
   applyText();
-  installChallengeRail();
   if (!Matter) {
     showToast("Physics loading failed");
     loadingPanel.classList.add("hidden");

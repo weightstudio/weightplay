@@ -1,8 +1,8 @@
-import {Run,STORE,normalizeSave,UPGRADES,train} from './model.mjs?v=5';
-import {STAGES,ARCS,RULES,HINTS,ENEMY_HINTS} from './stages.mjs?v=5';
-import {World} from './world.mjs?v=5';
-import {LOCALES,ROUTES,LANGUAGE_LABELS,normalizeLocale,text,dataLabel,pairText,guideSections} from './locales.mjs?v=5';
-import {buyPrismInlay,recoverPrismInlay,PRISM_COST} from './prism-purchase.mjs?v=5';
+import {Run,STORE,normalizeSave,UPGRADES,train} from './model.mjs?v=6';
+import {STAGES,ARCS,RULES,HINTS,ENEMY_HINTS} from './stages.mjs?v=6';
+import {World} from './world.mjs?v=6';
+import {LOCALES,ROUTES,LANGUAGE_LABELS,normalizeLocale,text,dataLabel,pairText,guideSections} from './locales.mjs?v=6';
+import {buyPrismInlay,recoverPrismInlay,PRISM_COST} from './prism-purchase.mjs?v=6';
 import {LocalPractice} from '/src/game-local-practice.mjs';
 const $=id=>document.getElementById(id),make=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const read=k=>{try{return localStorage.getItem(k);}catch{return null;}};
@@ -102,6 +102,8 @@ function processEvents(){for(const e of run.events.splice(0)){
  else if(e.type==='volley')sound('projectile.launch');
  else if(e.type==='healCast')sound('magic.heal');
  else if(e.type==='objective'){sound('reward.unlock');cue(t(run.stage.rule==='beacons'?'lit':'nest'));}
+ else if(e.type==='cacheArrival')cue(t('cacheArrival'));
+ else if(e.type==='cacheFinale'){sound('reward.unlock');cue(format('cacheFinale',{seconds:e.seconds}),2);}
  else if(e.type==='result')showResult();
  }update();}
 function setPanel(kind,title,summary){panel=kind;clearInput();audio?.stop();joystick?.setEnabled(false);$('overlay').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});$('overlayTitle').textContent=title;$('overlaySummary').textContent=summary;$('overlayBody').replaceChildren();$('overlayActions').replaceChildren();enter($('overlay').firstElementChild);}
@@ -111,15 +113,17 @@ function openPause(help=false){if(screen!=='battle'||result||run.state==='upgrad
  if(help){for(const text of [t('helpSwords'),t('helpCrystals'),t('helpAwakening'),t('helpDash'),pair(HINTS[run.stage.layout])])$('overlayBody').append(make('p',text));}
  if(help)for(const kind of Object.keys(ENEMY_HINTS))if(run.stage.enemies.includes(kind))$('overlayBody').append(make('p',pair(ENEMY_HINTS[kind])));
  const safe=action(t('continue'),closePanel);if(!help)action(t('leave'),()=>show('stage'));safe.focus({preventScroll:true});}
-function openUpgrades(){setPanel('upgrade',t(run.options.includes('ember')?'element':'upgrade'),`${t('level')} ${run.level} · ${t('upgradePaused')} ${t('upgradeInput')}`);
+function openUpgrades(){setPanel('upgrade',t(run.options.includes('ember')?'element':'upgrade'),`${t('level')} ${run.level} · ${t('upgradePaused')} ${run.level>=4?t('upgradeBatch')+' ':''}${t('upgradeInput')}`);
  modalHeldKeys.clear();for(const key of heldKeys)modalHeldKeys.add(key);
  const progress=make('section',undefined,'forge-progress');progress.setAttribute('aria-label',t('forgeProgress'));
  progress.append(make('strong',t(run.up.evolve?'forgeComplete':run.pendingEvolution?'forgeReady':'forgeProgress')));
  const requirements=make('div',undefined,'forge-requirements');
  for(const [icon,name,current,goal]of [[run.path||'evolve',run.path?label(UPGRADES[run.path]):t('element'),run.chosenPath?1:0,1],['sword',t('blades'),run.swords,8],['power',label(UPGRADES.power),run.up.power,3],['speed',label(UPGRADES.speed),run.up.speed,2]]){const chip=make('span',undefined,'forge-requirement');chip.dataset.ready=String(current>=goal);chip.append(image(icon,24),make('span',`${name} ${Math.min(current,goal)}/${goal}${current>=goal?' ✓':''}`));requirements.append(chip);}
  progress.append(requirements);$('overlayBody').append(progress);
- for(const key of run.options){const item=UPGRADES[key],b=make('button',undefined,'upgrade-choice'),gain=Math.min(2,24-run.swords);b.dataset.upgrade=key;b.append(image(item.icon),make('strong',key==='blade'?`${t('blades')} +${gain}`:label(item)),make('small',key==='blade'?format('bladeGainDesc',{amount:gain}):pair(item.desc)));
-  if(Object.hasOwn(run.up,key)&&!['heal','blade','evolve'].includes(key))b.append(make('span',`${t('level')} ${run.up[key]} → ${run.up[key]+1}`,'upgrade-rank'));
+ for(const key of run.options){const item=UPGRADES[key],b=make('button',undefined,'upgrade-choice'),ranks=run.upgradeRanks(key),gain=Math.min(2*ranks,24-run.swords),percent=run.upgradePercent(key);
+  const description=key==='blade'?format('bladeGainDesc',{amount:gain}):key==='heal'?format('upgradeDesc.heal',{amount:run.upgradeHealing}):percent!==null?format('upgradeDesc.'+key,{amount:new Intl.NumberFormat(locale,{maximumFractionDigits:1}).format(percent)}):pair(item.desc);
+  b.dataset.upgrade=key;b.append(image(item.icon),make('strong',key==='blade'?`${t('blades')} +${gain}`:label(item)),make('small',description));
+  if(Object.hasOwn(run.up,key)&&!['heal','blade','evolve'].includes(key))b.append(make('span',`${t('level')} ${run.up[key]} → ${run.up[key]+ranks}`,'upgrade-rank'));
   b.addEventListener('click',()=>{if(run.choose(key)){closePanel();processEvents();}});$('overlayBody').append(b);}
  $('overlayTitle').tabIndex=-1;$('overlayTitle').focus({preventScroll:true});}
 function showResult(settled=run.settle(),refresh=false){if(!settled)return;result=settled;panel='';clearInput();joystick?.setEnabled(false);$('overlay').hidden=true;$('resultPanel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});if(!refresh){persist();modalHeldKeys.clear();for(const key of heldKeys)modalHeldKeys.add(key);}
@@ -130,9 +134,10 @@ function showResult(settled=run.settle(),refresh=false){if(!settled)return;resul
  $('resultGold').replaceChildren(make('span',practiceMode?t('practice'):t('coins')+' +'),gold(practiceMode?0:settled.gold));$('resultTip').textContent=t(settled.won?'elementTip':'recovery.'+cause);$('resultNext').disabled=!settled.won||run.stage.id>=30;enter($('resultPanel').firstElementChild);if(!refresh){sound(settled.won?'result.win':'result.lose');$('resultTitle').tabIndex=-1;$('resultTitle').focus({preventScroll:true});}}
 function update(){
  $('mainProgress').textContent=`${t('stage')} ${save.unlocked} / ${STAGES.length}`;if($('coinValue'))$('coinValue').textContent=String(save.coins);
- if(!run||screen!=='battle')return;const p=run.player;$('bladeValue').textContent=String(run.swords);$('speedValue').textContent=(run.speed/(Math.PI*2)).toFixed(1)+'/s';$('levelValue').textContent=String(run.level);const remaining=Math.max(0,Math.ceil(run.stage.duration-run.time));$('timeValue').textContent=`${Math.floor(remaining/60)}:${String(remaining%60).padStart(2,'0')}`;
+ if(!run||screen!=='battle')return;const p=run.player;$('bladeValue').textContent=String(run.swords);$('speedValue').textContent=(run.speed/(Math.PI*2)).toFixed(1)+'/s';$('levelValue').textContent=String(run.level);const remaining=Math.max(0,Math.ceil(run.endTime-run.time));$('timeValue').textContent=`${Math.floor(remaining/60)}:${String(remaining%60).padStart(2,'0')}`;
  $('healthText').textContent=`${Math.ceil(p.health)} / ${p.maxHealth}`;$('healthFill').style.transform=`scaleX(${p.health/p.maxHealth})`;$('xpFill').style.transform=`scaleX(${Math.min(1,run.xp/run.nextXP)})`;
  $('objective').textContent=`${t('stage')} ${run.stage.id} · ${pair(RULES[run.stage.rule])}${run.stage.goal?' '+run.objectives+'/'+run.stage.goal:''}`;
+ if(run.stage.rule==='caches')$('objective').textContent=`${t('stage')} ${run.stage.id} · ${run.objectives}/${run.stage.goal} · ${run.cacheFinishAt!==null?format('cacheFinale',{seconds:remaining}):run.nextCache?format('cacheNext',{seconds:Math.max(0,Math.ceil(run.nextCache.at-run.time))}):pair(RULES.caches)}`;
  $('dashBtn').disabled=p.dashCD>0||blocked();$('dashTime').textContent=p.dashCD>0?p.dashCD.toFixed(1)+'s':'SPACE';
  const boss=run.enemies.find(e=>e.boss);$('bossHud').hidden=!boss;if(boss){$('bossName').textContent=label(run.stage);$('bossFill').style.transform=`scaleX(${Math.max(0,boss.hp/boss.maxHp)})`;}
 }
@@ -166,6 +171,6 @@ async function boot(){
  const isPreview=new URLSearchParams(location.search).get('preview')==='1';$('startBtn').disabled=!isPreview;$('startBtn').textContent=t(isPreview?'start':'coming');
  window.WeightPlayGameEntryLoader?.ready();
  LocalPractice.register({gameId:'blade-orbit',stageIds:STAGES.map(s=>s.id),enable:enabled=>{if(enabled){practiceMode=true;$('startBtn').disabled=false;$('startBtn').textContent=t('start');}selector.refresh(selected);},startStage:id=>start(Number(id))});
- window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v5',interface:'9',target:9}),renderStats:()=>world?.stats()||null});
+ window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v6',interface:'9',target:9}),renderStats:()=>world?.stats()||null});
 }
 boot();
