@@ -178,10 +178,9 @@
     els.battleScreen.hidden=next!=="battle";
     const guide=document.querySelector(".game-page-info");
     if(guide)guide.hidden=next!=="main";
-    els.stageScreen.toggleAttribute("data-wp-logical-stage-canvas",next==="stage");
-    els.battleScreen.toggleAttribute("data-wp-logical-battle-canvas",next==="battle");
     if(next!=="battle"){cancelAnimationFrame(raf);release3D()}
     screenFrame?.activate(next);
+    window.WeightPlayBattleCanvas.sync();
     if(next==="stage"){renderStages();renderForge()}
     if(next==="battle")startLoop();
     { const __wpNextScreen=({main:"main",stage:"stage",battle:"battle"})[next]??null;

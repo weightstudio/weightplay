@@ -903,6 +903,7 @@
           event.preventDefault();
           return;
         }
+        if (itemPointerDrag) return;
         chooseItem(meta.id, button);
       });
       button.addEventListener("pointerdown", (event) => {
@@ -921,6 +922,8 @@
       });
       const finishPointerDrag = (event) => {
         if (!itemPointerDrag || itemPointerDrag.id !== event.pointerId || itemPointerDrag.button !== button) return;
+        // Touch may hand implicit capture from the icon to its owning button.
+        if (event.type === "lostpointercapture" && event.target !== button && button.hasPointerCapture?.(event.pointerId)) return;
         const moved = itemPointerDrag.moved;
         itemPointerDrag = null;
         button.classList.remove("dragging");
