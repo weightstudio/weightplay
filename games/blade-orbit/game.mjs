@@ -14,7 +14,7 @@ const copy={
 };
 let locale=new URLSearchParams(location.search).get('lang')||read('weightPlayLocale')||'zh-Hant';let zh=locale.startsWith('zh');const t=k=>copy[k]?.[zh?0:1]||k;const label=o=>o[zh?'zh':'en'];
 const abort=new AbortController(),listen=(node,event,fn)=>node.addEventListener(event,fn,{signal:abort.signal});
-let frame,selector,world=null,joystick=null,run=null,screen='main',tab='stages',panel='',result=null,last=0,raf=0,uiClock=0,cueUntil=0,selected=save.unlocked-1,practiceMode=false,lostGraphics=false;
+let frame,selector,world=null,joystick=null,arenaObserver=null,run=null,screen='main',tab='stages',panel='',result=null,last=0,raf=0,uiClock=0,cueUntil=0,selected=save.unlocked-1,practiceMode=false,lostGraphics=false;
 const keys=new Set(),icons={},animations=new Set();const audio=window.WeightPlayAudio?.createScope();const sound=id=>audio?.play(id);
 function persist(){if(practiceMode)return;try{localStorage.setItem(STORE,JSON.stringify(save));$('saveWarning').hidden=true;}catch{$('saveWarning').hidden=false;$('saveWarning').textContent=t('saveError');}}
 function animate(node,frames,duration=180){if(!node?.animate)return;const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;const a=node.animate(reduced?[{opacity:.3},{opacity:1}]:frames,{duration:reduced?70:duration,easing:'cubic-bezier(.2,.7,.2,1)'});animations.add(a);a.finished.catch(()=>{}).finally(()=>animations.delete(a));return a;}
@@ -25,7 +25,7 @@ function cue(text){$('worldFeedback').textContent=text;cueUntil=performance.now(
 function clearInput(){keys.clear();joystick?.reset();}
 function settingsOpen(){return Boolean($('gameFrame').querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'));}
 function blocked(){return screen!=='battle'||panel||result||lostGraphics||document.hidden||settingsOpen()||run?.state!=='running';}
-function stopWorld(){cancelAnimationFrame(raf);raf=0;joystick?.destroy();joystick=null;world?.dispose();world=null;audio?.stop();clearInput();$('floaters').replaceChildren();}
+function stopWorld(){cancelAnimationFrame(raf);raf=0;arenaObserver?.disconnect();arenaObserver=null;joystick?.destroy();joystick=null;world?.dispose();world=null;audio?.stop();clearInput();$('floaters').replaceChildren();}
 function show(next){
  if(screen==='battle'&&next!=='battle')stopWorld();for(const a of animations)a.cancel();animations.clear();
  panel='';result=null;$('overlay').hidden=true;$('resultPanel').hidden=true;$('battleLive').inert=false;
@@ -48,7 +48,7 @@ async function start(id){
  if(practiceMode||LocalPractice.enabled){if(!await LocalPractice.validate()){cue(t('practice'));return;}practiceMode=true;}
  if(!practiceMode&&id>save.unlocked)return;
  stopWorld();run=new Run(id,save,{practice:practiceMode});selected=id-1;lostGraphics=false;show('battle');$('graphicsError').hidden=true;
- try{world=new World($('arena'),()=>{lostGraphics=true;clearInput();$('graphicsError').hidden=false;});world.render(run,0);joystick=window.WeightPlayJoystick.create({surface:world.renderer.domElement,container:$('arena'),mode:'floating',anchor:{left:70,bottom:70},enabled:true,isEnabled:()=>!blocked()});world.renderer.domElement.focus({preventScroll:true});}
+ try{world=new World($('arena'),()=>{lostGraphics=true;clearInput();$('graphicsError').hidden=false;});world.render(run,0);joystick=window.WeightPlayJoystick.create({surface:world.renderer.domElement,container:$('arena'),mode:'floating',anchor:{left:70,bottom:70},enabled:true,isEnabled:()=>!blocked()});arenaObserver=new ResizeObserver(()=>joystick?.refresh());arenaObserver.observe($('arena'));world.renderer.domElement.focus({preventScroll:true});}
  catch(e){console.error('BLADE_ORBIT_3D',e);lostGraphics=true;$('graphicsError').hidden=false;}
  $('controlHint').textContent=zh?'拖曳 / WASD 移動':'Drag / WASD to move';last=performance.now();uiClock=0;raf=requestAnimationFrame(loop);sound('game.start');cue(HINTS[run.stage.layout][zh?0:1]);update();
 }

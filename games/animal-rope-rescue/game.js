@@ -199,6 +199,21 @@
     stageProgress: "해금됨",
     locked: "잠긴 스테이지",
   });
+  const mainProgressCopy = {
+    en: "{unlocked} / {total} stages unlocked",
+    "zh-Hant": "已解鎖關卡：{unlocked} / {total}",
+    "zh-Hans": "已解锁关卡：{unlocked} / {total}",
+    ja: "解放済みステージ：{unlocked} / {total}",
+    ko: "잠금 해제한 스테이지: {unlocked} / {total}",
+    es: "Niveles desbloqueados: {unlocked} / {total}",
+    "pt-BR": "Fases desbloqueadas: {unlocked} / {total}",
+    fr: "Niveaux débloqués : {unlocked} / {total}",
+    de: "Freigeschaltete Level: {unlocked} / {total}",
+    it: "Livelli sbloccati: {unlocked} / {total}",
+    ru: "Открыто уровней: {unlocked} / {total}",
+    hi: "अनलॉक किए गए स्तर: {unlocked} / {total}",
+    ar: "المراحل المفتوحة: {unlocked} / {total}",
+  };
   const assets = {
     cover: "../../assets/animal-vine-rescue-cover.png",
     background: "../../assets/animal-vine-rescue-game-bg.webp",
@@ -347,11 +362,12 @@
     panel.setAttribute("aria-modal", "true");
     panel.setAttribute("aria-labelledby", "leaveTitle");
     panel.innerHTML = '<div class="result-card leave-card"><strong id="leaveTitle" data-ui="leaveTitle"></strong><span data-ui="leaveText"></span><button id="continueRescueBtn" type="button" data-ui="continueRescue"></button><button id="leaveStageBtn" type="button" data-ui="leaveStage"></button></div>';
-    $("battleWorkspace")?.append(panel);
+    $("gameFrame")?.append(panel);
   }
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
+    mainProgress: $("mainProgress"),
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     startBtn: $("startBtn"),
@@ -595,7 +611,7 @@
       gameId: GAME_ID,
       count: stages.length,
       poster: "/assets/animal-vine-rescue-cover.png",
-      background: "/assets/animal-vine-rescue-game-bg.webp",
+      background: "/assets/lobby-block-atmosphere.svg",
       stage(index) {
         const stage = stages[index];
         const stageNo = index + 1;
@@ -608,7 +624,7 @@
           kicker: t("stageLabel", { n: stageNo }),
           title: stageTitle(stage),
           subtitle: routeLabel,
-          status: locked ? t("locked") : stars ? `${stars} ★` : t("start"),
+          status: locked ? t("locked") : stars ? `${stars} ★` : t("stageProgress"),
           summary: stageRule(stage),
           details: [
             routeLabel,
@@ -733,6 +749,25 @@
     storageWrite(saveKey, JSON.stringify(save));
   }
 
+  function syncMainProgress() {
+    if (!nodes.mainProgress) return;
+    const selectedLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+    const template = mainProgressCopy[selectedLocale] || mainProgressCopy[locale] || mainProgressCopy.en;
+    const unlocked = Math.min(stages.length, Math.max(1, Number(save.unlocked) || 1));
+    const nextCopy = template
+      .replaceAll("{unlocked}", String(unlocked))
+      .replaceAll("{total}", String(stages.length));
+    if (nodes.mainProgress.textContent === nextCopy) return;
+    nodes.mainProgress.textContent = nextCopy;
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    nodes.mainProgress.animate?.(
+      reducedMotion
+        ? [{ opacity: 0.72 }, { opacity: 1 }]
+        : [{ opacity: 0.72, transform: "translateY(3px)" }, { opacity: 1, transform: "translateY(0)" }],
+      { duration: reducedMotion ? 110 : 180, easing: "ease-out" },
+    );
+  }
+
   function setLocale(next) {
     const current = window.WonderI18n?.actualLocale?.();
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
@@ -759,6 +794,7 @@
     nodes.leafPaddle.setAttribute("aria-label", t("leafControl"));
     nodes.localeSelect.value = requested;
     localizeSharedControls();
+    syncMainProgress();
     updatePaddleAccessibility();
     renderStages();
     if (!nodes.gamePanel.classList.contains("hidden")) setupStage(currentStage, false);
@@ -771,6 +807,7 @@
       physicsFrame = 0;
       clearDeliverySchedule();
     }
+    if (panel === nodes.menuPanel) syncMainProgress();
     setPlayingState(panel === nodes.gamePanel);
     setStageState(panel === nodes.stagePanel);
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel].forEach((node) => node.classList.add("hidden"));

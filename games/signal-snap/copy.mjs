@@ -28,7 +28,12 @@ const SHORT_STYLE={en:'Styles','zh-Hant':'造型','zh-Hans':'造型',ja:'スタ�
 const BACK={en:['Back to lobby','Back to main','Back to stages'],'zh-Hant':['返回大廳','返回主畫面','返回關卡'],'zh-Hans':['返回大厅','返回主画面','返回关卡'],ja:['ロビーへ戻る','メインへ戻る','ステージへ戻る'],ko:['로비로 돌아가기','메인으로 돌아가기','스테이지로 돌아가기'],es:['Volver al vestíbulo','Volver al inicio','Volver a niveles'],'pt-BR':['Voltar ao início','Voltar ao menu','Voltar às fases'],fr:['Retour au hall','Retour à l’accueil','Retour aux niveaux'],de:['Zur Lobby','Zum Hauptmenü','Zur Stufenauswahl'],it:['Torna alla lobby','Torna al menu','Torna ai livelli'],ru:['В лобби','В главное меню','К этапам'],hi:['लॉबी पर लौटें','मुख्य पृष्ठ पर लौटें','चरणों पर लौटें'],ar:['العودة إلى الردهة','العودة إلى الرئيسية','العودة إلى المراحل']};
 for(const language of Object.keys(COPY))Object.assign(COPY[language],{styleTab:SHORT_STYLE[language],back:BACK[language]});
 
-export function renderSignalGuide(language='en'){
+function renderSignalGuideBody(language='en'){
  const c=COPY[language]||COPY.en,esc=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
  return '<section class="game-page-info game-page-info-static" data-wp-preserve-static-guide data-wp-guide-renderer="copy.mjs#renderSignalGuide"><div class="game-info-hero"><h2 data-wp-game-title>'+esc(c.title)+'</h2></div><div class="game-info-sections"><section class="game-info-section"><h3>'+esc(c.help)+'</h3><p data-wp-intro-faq-source>'+esc(c.guide)+'</p></section><section class="game-info-section"><h3>◆ / ◇ / ⊠</h3><p>'+esc(c.tap)+' · '+esc(c.hold)+'</p><p>'+esc(c.chargeGuide)+'</p><p>30 × 8–13 · 640–2200 ms · ← →</p><details><summary>'+esc(c.help)+'</summary><p>'+esc(c.guide)+'</p></details></section><section class="game-info-section"><h3>'+esc(c.outfit)+'</h3><p>'+esc(c.outfitHelp)+'</p><p>'+esc(c.earned)+' · <img src="/assets/weightplay-diamond.svg" width="20" height="20" alt=""> '+esc(c.buy)+'</p><details><summary>'+esc(c.outfit)+'</summary><p>'+esc(c.outfitHelp)+' '+esc(c.earned)+'. '+esc(c.buy)+'.</p></details></section></div></section>';
+}
+export function renderSignalGuide(language='en'){
+ const c=COPY[language]||COPY.en,html=renderSignalGuideBody(language),end=html.lastIndexOf('</section>');
+ const data={'@context':'https://schema.org','@type':'FAQPage',mainEntity:[{ '@type':'Question',name:c.help,acceptedAnswer:{'@type':'Answer',text:c.guide}},{'@type':'Question',name:c.outfit,acceptedAnswer:{'@type':'Answer',text:c.outfitHelp+' '+c.earned+'. '+c.buy+'.'}}]};
+ return html.slice(0,end)+'<script type="application/ld+json">'+JSON.stringify(data).replaceAll('<','\\u003c')+'</script>'+html.slice(end);
 }

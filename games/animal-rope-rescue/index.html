@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20261025-interface-i9-1" />
+    <link rel="stylesheet" href="style.css?v=20261025-interface-i9-3" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Vine Rescue","url":"https://weightplay.com/games/animal-rope-rescue/","image":"https://weightplay.com/assets/animal-vine-rescue-cover.png","description":"Guide fruit through 30 vine-rescue physics puzzles with moving baskets, layered winds, double bounces, and friendly Panko checkpoints.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":["en","zh-Hant","zh-Hans"],"isAccessibleForFree":true,"genre":["Vine-cut physics","Leaf trampoline bounce","Fruit basket rescue"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6},"learningResourceType":"Skill practice through play","educationalUse":"Practice timing, focus, hand-eye coordination, and problem solving through family-friendly gameplay."}</script>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261025-i9-canvas-map-v1" />
     <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" />
@@ -72,12 +72,13 @@
           <div class="menu-copy" data-wp-frame-copy>
             <strong data-ui="menuTitle">Rescue fruit for hungry animals.</strong>
             <span data-ui="menuHint" data-wp-frame-summary>Cut the vine, drag the leaf, and bounce fruit into the animal basket.</span>
+            <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress role="status" aria-live="polite">1 / 30</p>
             <button id="startBtn" type="button" data-ui="start" data-wp-frame-action="primary" data-wp-primary-action>Choose Stage</button>
           </div>
         </section>
       </section>
 
-      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages" data-wp-canvas-max-width="920">
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages" data-wp-standard-stage-screen data-wp-canvas-max-width="920">
         <header id="stageHeader" class="stage-shell-head">
           <button id="stageMainBackBtn" type="button" data-wp-return="stage" aria-label="Back to Main"><span aria-hidden="true">&larr;</span></button>
           <h2 data-wp-frame-title>Stages</h2>
@@ -87,7 +88,7 @@
         </div>
       </section>
 
-      <section id="gamePanel" class="game-panel hidden" data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="game-panel hidden" data-wp-canvas-max-width="920" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
         <header id="battleHeader" class="hud-row">
           <button id="stageBackBtn" type="button" data-wp-return="battle" aria-label="Back to stages"><span aria-hidden="true">&larr;</span></button>
           <h2 data-wp-frame-title>Battle</h2>
@@ -198,7 +199,7 @@
     <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
     <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
     <script src="../../src/game-screen-frame.js?v=20261025-i9-canvas-map-v1"></script>
-    <script src="game.js?v=20261025-interface-i9-1&wp-audio=1.0.0"></script>
+    <script src="game.js?v=20261025-interface-i9-3&wp-audio=1.0.0"></script>
     <script>
       window.addEventListener(
         "load",

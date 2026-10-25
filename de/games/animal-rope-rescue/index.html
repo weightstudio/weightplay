@@ -4,11 +4,8 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-rope-rescue/" />
-
-    <script src="../../../src/weightplay-audio.js?v=1.0.0"></script>
-
-    <script src="../../../src/game-layout-config.js?v=20260919-banner1"></script>
-
+    <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="kids" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -46,60 +43,60 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" data-wp-stage-standard />
+    <link rel="stylesheet" href="style.css?v=20261025-interface-i9-3" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rettung von Tierreben","url":"https://weightplay.com/de/games/animal-rope-rescue/","image":"https://weightplay.com/assets/animal-vine-rescue-cover.png","description":"Rettung von Tierreben ist ein 30-stufiges Tierphysik-Puzzle, bei dem es darum geht, eine hängende Frucht freizuschneiden, ein Blatttrampolin zu steuern und...","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"de","isAccessibleForFree":true,"genre":["Lianen-Schnittphysik","Sprung auf dem Blatttrampolin","Früchte in Körbe retten"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6},"learningResourceType":"Skill practice through play","educationalUse":"Practice timing, focus, hand-eye coordination, and problem solving through family-friendly gameplay.","alternateName":"Vine Rescue"}</script>
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><meta name="twitter:title" content="Rettung von Tierreben | WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" />
+    <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-shared-play1">
+  <meta name="twitter:title" content="Rettung von Tierreben | WeightPlay" />
     <meta name="twitter:description" content="Rettung von Tierreben ist ein 30-stufiges Tierphysik-Puzzle, bei dem es darum geht, eine hängende Frucht freizuschneiden, ein Blatttrampolin zu steuern und..." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rope-rescue.webp" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rope-rescue.webp" />
+  <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body>
-    <main class="vine-app" data-no-mobile-immersive="true">
-      <header class="topbar">
-        <a class="icon-btn home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <div>
-          <p>WeightPlay</p>
-          <h1 data-ui="title" data-wp-game-title data-runtime-localize="off">Rettung von Tierreben</h1>
-        </div>
-        <label class="language-picker">
-          <span data-ui="language">Language</span>
-          <select id="localeSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
-          </select>
-        </label>
-      </header>
-
-      <section id="menuPanel" class="menu-panel">
-        <img class="cover" src="../../assets/animal-vine-rescue-cover.png" alt="Spielgrafik zu Rettung von Tierreben" />
-        <div class="menu-copy">
-          <strong data-ui="menuTitle">Rescue fruit for hungry animals.</strong>
-          <span data-ui="menuHint">Cut the vine, drag the leaf, and bounce fruit into the animal basket.</span>
-          <button id="startBtn" type="button" data-ui="start">Choose Stage</button>
-        </div>
-      </section>
-
-      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages" data-wp-canvas-max-width="920">
-        <div class="stage-shell-head">
-          <button id="stageMainBackBtn" type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="Back to Main">&larr;</button>
-          <div>
-            <strong id="stagePanelTitle">Stages</strong>
-            <span id="stagePanelHint">Choose a stage.</span>
+  <body data-wp-combined-sound="true" data-wp-game-id="animal-rope-rescue" data-wp-game-version="7" data-wp-interface-version="9" data-wp-play-ui="1">
+    <main id="gameFrame" class="vine-app" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off">
+      <section id="menuPanel" class="menu-panel" data-no-mobile-immersive="true">
+        <header id="mainHeader" class="topbar">
+          <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+          <h1 data-ui="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Rettung von Tierreben</h1>
+          <label class="language-picker">
+            <span data-ui="language">Language</span>
+            <select id="localeSelect" aria-label="Language">
+              <option value="en">English</option>
+              <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+              <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            </select>
+          </label>
+        </header>
+        <section id="mainContent" class="main-composition">
+          <img class="cover" data-wp-frame-poster src="../../assets/animal-vine-rescue-cover.png" alt="" />
+          <div class="menu-copy" data-wp-frame-copy>
+            <strong data-ui="menuTitle">Rescue fruit for hungry animals.</strong>
+            <span data-ui="menuHint" data-wp-frame-summary>Cut the vine, drag the leaf, and bounce fruit into the animal basket.</span>
+            <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress role="status" aria-live="polite">1 / 30</p>
+            <button id="startBtn" type="button" data-ui="start" data-wp-frame-action="primary" data-wp-primary-action>Choose Stage</button>
           </div>
-        </div>
-        <div id="stageRail" class="stage-rail" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+        </section>
       </section>
 
-      <section id="gamePanel" class="game-panel hidden" data-wp-canvas-max-width="920">
-        <div class="hud-row">
-          <button id="stageBackBtn" type="button" class="soft-btn" data-wp-return="battle" aria-label="Back to stages">&larr;</button>
-          <div class="hud-pill"><span data-ui="stage">Stage</span><b id="stageText">1</b></div>
-          <div class="hud-pill"><span data-ui="score">Delivery</span><b id="scoreText">1/1</b></div>
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages" data-wp-standard-stage-screen data-wp-canvas-max-width="920">
+        <header id="stageHeader" class="stage-shell-head">
+          <button id="stageMainBackBtn" type="button" data-wp-return="stage" aria-label="Back to Main"><span aria-hidden="true">&larr;</span></button>
+          <h2 data-wp-frame-title>Stages</h2>
+        </header>
+        <div id="stageWorkspace" class="stage-workspace" data-wp-frame-content="stage">
+          <div id="stageRail" class="stage-rail"></div>
         </div>
-        <div id="playfield" class="playfield play-area" aria-label="Animal vine rescue playfield">
+      </section>
+
+      <section id="gamePanel" class="game-panel hidden" data-wp-canvas-max-width="920" data-wp-logical-battle-canvas data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+        <header id="battleHeader" class="hud-row">
+          <button id="stageBackBtn" type="button" data-wp-return="battle" aria-label="Back to stages"><span aria-hidden="true">&larr;</span></button>
+          <h2 data-wp-frame-title>Battle</h2>
+        </header>
+        <div id="battleWorkspace" class="battle-workspace" data-wp-frame-content="battle">
+          <div id="playfield" class="playfield play-area" aria-label="Animal vine rescue playfield">
           <div id="targetGuide" class="target-guide" aria-hidden="true"></div>
           <div id="fallGuide" class="fall-guide" aria-hidden="true"></div>
           <div id="aimGuide" class="aim-guide" aria-hidden="true"></div>
@@ -114,17 +111,18 @@
           <img id="fruit" class="fruit" alt="" draggable="false" />
           <img id="leafPaddle" class="leaf-paddle" src="../../assets/animal-vine-leaf-paddle.png" alt="" draggable="false" tabindex="0" role="slider" aria-valuemin="16" aria-valuemax="84" aria-valuenow="50" />
           <div id="floatText" class="float-text hidden"></div>
-        </div>
-        <button id="cutNowBtn" class="cut-now-btn" type="button" data-ui="cut">Cut</button>
-        <p id="hintText" class="hint-text" data-ui="hint">Drag the leaf. Cut the vine when you are ready.</p>
-        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
-          <div class="result-card">
-            <strong id="resultTitle">Fruit rescued!</strong>
-            <div id="starText" class="stars">&#9733;&#9733;&#9733;</div>
-            <span id="resultText"></span>
-            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
-            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
-            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+          </div>
+          <button id="cutNowBtn" class="cut-now-btn" type="button" data-ui="cut" data-wp-frame-action="primary">Cut</button>
+          <p id="hintText" class="hint-text" data-ui="hint">Drag the leaf. Cut the vine when you are ready.</p>
+          <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+            <div class="result-card">
+              <strong id="resultTitle">Fruit rescued!</strong>
+              <div id="starText" class="stars">&#9733;&#9733;&#9733;</div>
+              <span id="resultText"></span>
+              <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+              <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+              <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            </div>
           </div>
         </div>
       </section>
@@ -143,12 +141,13 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rope-rescue" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/de.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script data-wp-stage-standard data-wp-native-stage>/* This Kids route owns its zero-reserve Stage Canvas; the shared selector owns Stage pointer drag and settle. */</script>
-    <script src="battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="game.js?v=20260729-interface-v4-1&wp-audio=1.0.0"></script>
+    <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
+    <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+    <script src="game.js?v=20261025-interface-i9-3&wp-audio=1.0.0"></script>
     <script>
       window.addEventListener(
         "load",
@@ -176,7 +175,6 @@
         { once: true },
       );
     </script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Informationen zu Rettung von Tierreben">
 
     <div class="game-info-hero">
@@ -204,9 +202,8 @@
       <div class="game-info-section"><h3>Designnotiz</h3><p>Das Spiel verwendet eine Schnittaktion und eine kontinuierliche Blattsteuerung, sodass der Spieler nach dem Loslassen der Frucht weiterhin verantwortlich bleibt. Die 30-Stufen-Struktur verändert die Informationen, die ein Spieler lesen muss – Zielbewegung, höhenbasierter Wind, Anzahl der Abpraller, Blattkraft, Fangweite und Abgabereihenfolge – anstatt sich nur auf die schnellere Schwerkraft zu verlassen. Das Porträt-Spielfeld gibt einer fallenden Frucht genügend Laufzeit für eine sichtbare Korrektur auf Telefonen, während sich die gleiche logische Leinwand auf Tablets und Bildschirmen im Querformat gleichmäßig skaliert. Panko-Kontrollpunkte schaffen unvergessliche, kinderfreundliche Meilensteine, ohne dass aus einem Obstlieferungsrätsel ein Kampf wird.</p></div>
       <div class="game-info-section game-info-parent"><h3>Hinweis für Eltern</h3><p>Animal Vine Rescue kann Timing, visuelle Vorhersage, Hand-Auge-Koordination, Konzentration und einfache Problemlösung unterstützen. Erwachsene können fragen, wohin sich der Korb bewegen wird oder warum der zweite Sprung eine andere Blattposition erfordert. Es gibt keinen Timer, keine Werbung, keine Kontoanforderungen, keinen Ranglistendruck und keinen feindlichen Kampf. Sterne und gespeicherte Fortschritte sind spielerisches lokales Feedback, kein formeller Fähigkeitstest, keine Diagnose oder Schulbewertung.</p></div>
       <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie viele Phasen gibt es bei Animal Vine Rescue?</dt><dd>Es gibt 30 benannte Stufen in sechs Lektionen mit fünf Stufen, mit freundlichen Panko Checks in jeder fünften Stufe.</dd></div><div><dt>Kann ich das Blatt nach dem Schneiden der Rebe bewegen?</dt><dd>Ja. Kontinuierliches Lenken während des Sturzes und nach jedem Aufprall ist die Hauptaktion des Spielers.</dd></div><div><dt>Warum ist die Frucht am Korb vorbeigegangen?</dt><dd>Für jede Lieferung ist mindestens ein Blattabpraller erforderlich, und markierte Routen erfordern möglicherweise zwei Abpraller oder verwenden eine schmalere Öffnung.</dd></div><div><dt>Wie funktioniert das Bewegen von Körben und Windschichten?</dt><dd>Bewegliche Körbe ändern nach dem Schneiden ihre horizontale Position. Windlagenrouten üben im oberen und unteren Teil der Lichtung unterschiedliche Kräfte aus.</dd></div><div><dt>Was passiert bei einer Picknick-Lieferung?</dt><dd>Zwei oder drei Obstrouten führen innerhalb derselben Schlacht weiter. Das Ergebnis wartet, bis jede Lieferung abgeschlossen ist.</dd></div><div><dt>Was passiert, wenn eine Frucht fehlt?</dt><dd>Ein unterstützendes Ergebnis bietet „Erneut versuchen“ oder „Stufen“, ohne den freigeschalteten Fortschritt zu löschen.</dd></div><div><dt>Erfordert das Spiel eine Anmeldung oder zeigt es Werbung an?</dt><dd>Nein. Dieses Kinderspiel ist werbefrei und speichert grundlegende Fortschritte lokal, ohne dass ein Konto erforderlich ist.</dd></div><div><dt>Sind Sterne eine formelle Fähigkeitsbewertung?</dt><dd>Nein. Sterne sind lediglich Feedback zum Spielfortschritt und keine Diagnose oder Bewertung.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><p>Hand-Auge-Koordination auf eine andere Art üben.</p><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Color Link Garden</strong><span>„Color Link Garden“ ist ein originelles 30-stufiges Vollbrett-Routenrätsel mit einem Roten Panda-Gartenpfleger in der Hauptrolle.</span></span></a><a class="game-info-related-card" href="/de/games/animal-tangram/"><img src="/assets/animal-tangram/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Panko&#39;s Tangram Trail</strong><span>Pankos Tangram Trail ist ein räumliches Puzzle mit dreißig Formen.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><p>Hand-Auge-Koordination auf eine andere Art üben.</p><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-color-link/"><img src="/assets/animal-color-link/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Farbverbindungs-Garten</strong><span>„Color Link Garden“ ist ein originelles 30-stufiges Vollbrett-Routenrätsel mit einem Roten Panda-Gartenpfleger in der Hauptrolle.</span></span></a><a class="game-info-related-card" href="/de/games/animal-tangram/"><img src="/assets/animal-tangram/cover-block-v1.png" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Panko&#39;s Tangram Trail</strong><span>Pankos Tangram Trail ist ein räumliches Puzzle mit dreißig Formen.</span></span></a></div></div>
     </div>
   </section>
-
 </body>
 </html>

@@ -11795,6 +11795,17 @@
   }
 
   function syncStageArtwork() {
+    // I9 Play UI owns the Stage scene background. Its adapter supplies the
+    // shared Block Arcade background; the legacy poster writer must not
+    // replace that common scene with a game-specific cover.
+    if (document.body.dataset.wpPlayUi === "1") {
+      document.querySelectorAll(".wp-stage-art-shell").forEach((shell) => {
+        shell.classList.remove("wp-stage-art-shell");
+        shell.removeAttribute("data-wp-stage-art");
+        shell.style.removeProperty("--wp-stage-art");
+      });
+      return;
+    }
     const rails = document.querySelectorAll(
       ".stage-grid, .stage-rail, .safari-stage-rail, .mission-grid, .mission-rail, .region-rail, .route-rail, .level-grid"
     );

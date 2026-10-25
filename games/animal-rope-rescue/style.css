@@ -224,7 +224,7 @@ body.is-vine-stage-select .wp-stage-shell-header > .wp-shell-settings[data-wp-po
   max-height: 100%;
   margin: 0 auto;
   align-self: center;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 3 / 5;
   overflow: hidden;
   border-radius: 28px;
   background-image: linear-gradient(rgba(8, 28, 32, .28), rgba(8, 28, 32, .62)), url("../../assets/animal-rope-rescue-forest-voxel-v1.png");
@@ -491,6 +491,13 @@ body.is-vine-stage-select .wp-stage-shell-header > .wp-shell-settings[data-wp-po
   height: 100%;
 }
 
+.leave-panel {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000 !important;
+  pointer-events: auto !important;
+}
+
 body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
   max-height: 100% !important;
   overflow: hidden !important;
@@ -504,6 +511,10 @@ body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
 .loading-card {
   width: min(100%, 360px);
   text-align: center;
+}
+
+.result-card :is(strong, span, p) {
+  color: #34200f !important;
 }
 
 #gamePanel.leave-open > :not(#leavePanel) {
@@ -595,332 +606,33 @@ body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
   50% { opacity: .96; }
 }
 
-@media (max-width: 560px) {
-  .vine-app {
-    width: 100%;
-    padding-inline: 8px;
-  }
 
-  body.is-vine-playing .topbar {
-    display:none;
-  }
-
-  body.is-vine-playing .language-picker,
-  body.is-vine-playing .topbar p {
-    display: none;
-  }
-
-  body.is-vine-playing .topbar h1 {
-    font-size: clamp(1.05rem, 6vw, 1.45rem);
-  }
-
-  .game-panel {
-    width: calc(100vw - 16px);
-    max-width: calc(100vw - 16px);
-    justify-self: center;
-    height: calc(100svh - 76px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    max-height: calc(100svh - 76px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    gap: 6px;
-    overflow: hidden;
-  }
-
-  body.is-vine-playing main.vine-app #gamePanel.game-panel {
-    width: calc(100vw - 16px) !important;
-    max-width: calc(100vw - 16px) !important;
-    height: 100% !important;
-    max-height: 100% !important;
-    justify-self: center !important;
-  }
-  body.is-vine-playing main.vine-app #playfield.playfield.play-area {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .topbar {
-    grid-template-columns: 44px 1fr;
-  }
-
-  .language-picker {
-    grid-column: 1 / -1;
-  }
-
-  .stage-panel {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .hud-row {
-    min-width: 0;
-    grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr);
-    gap: 6px;
-  }
-
-  .hud-row .soft-btn {
-    grid-column: auto;
-    min-height: 44px;
-  }
-
-  .hud-pill {
-    min-width: 0;
-    min-height: 34px;
-    padding: 5px 7px;
-    gap: 5px;
-    border-radius: 12px;
-    font-size: 0.78rem;
-  }
-
-  .playfield {
-    width: 100%;
-    border-radius: 18px;
-  }
-
-  .cut-now-btn {
-    width: 100%;
-    min-height: 42px;
-    border-radius: 16px;
-    font-size: 0.94rem;
-  }
-
-  .hint-text {
-    min-height: 0;
-    overflow: hidden;
-    font-size: 0.76rem;
-    line-height: 1.15;
-  }
-}
-
-/* Battle uses one logical Canvas capped at the platform desktop width. */
-body.is-vine-playing {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden !important;
-  overscroll-behavior: none;
-  touch-action: none;
-}
-
-body.is-vine-playing .vine-app {
-  position: fixed;
-  inset: 0;
-  display: block;
-  width: 100vw;
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  padding: 0;
-  overflow: hidden;
-}
-
-body.is-vine-playing .topbar,
-body.is-vine-playing .game-page-info,
-body.is-vine-playing .wp-tutorial-button {
-  display: none !important;
-}
-
-body.is-vine-stage-select .topbar,
-body.is-vine-stage-select .game-page-info,
-body.is-vine-stage-select .wp-tutorial-button {
-  display: none !important;
-}
-
-body.is-vine-playing main.vine-app #gamePanel.game-panel {
-  display: grid;
-  grid-template-rows: 58px minmax(0, 1fr) 48px 42px;
-  gap: 6px;
-  width: var(--wp-battle-logical-width, 382px) !important;
-  max-width: none !important;
-  height: var(--wp-battle-logical-height, 780px) !important;
-  max-height: none !important;
-  min-height: 0;
-  margin: 0 !important;
-  padding: 6px;
-  overflow: hidden;
-}
-
-body.is-vine-playing main.vine-app #playfield.playfield.play-area {
-  width: min(100%, calc((var(--wp-battle-logical-height, 780px) - 178px) * 0.6)) !important;
-  height: auto;
-  max-width: 100% !important;
-  max-height: 100%;
-  aspect-ratio: 3 / 5;
-  align-self: center;
-  justify-self: center;
-}
-
-body.is-vine-playing .weightplay-version-badge,
-body.is-vine-playing .sound-toggle,
-body.is-vine-playing .wp-tutorial-button {
-  display: none !important;
-}
-
-/* Canonical Main entrance geometry. */
-body:not(.is-vine-playing):not(.is-vine-stage-select) .vine-app {
-  width: min(100%, 920px);
-  max-width: 920px;
-  min-height: 0;
-}
-body:not(.is-vine-playing):not(.is-vine-stage-select) .menu-panel {
-  grid-template-columns: 420px minmax(0, 1fr);
-  align-items: stretch;
-}
-body:not(.is-vine-playing):not(.is-vine-stage-select) .menu-panel > .cover {
-  width: 420px;
-  height: 420px;
-  aspect-ratio: 1;
-}
-body:not(.is-vine-playing):not(.is-vine-stage-select) #startBtn {
-  width: 100%;
-  height: 52px;
-  min-height: 52px;
-}
-@media (max-width: 699px) {
-  body:not(.is-vine-playing):not(.is-vine-stage-select) .menu-panel {
-    grid-template-columns: 1fr;
-  }
-  body:not(.is-vine-playing):not(.is-vine-stage-select) .menu-panel > .cover {
-    width: 100%;
-    height: auto;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 430px) {
-  body.is-vine-stage-select .stage-panel {
-    grid-template-rows: 56px minmax(0, 1fr);
-    gap: 10px;
-    padding: 10px;
-  }
-
-  body.is-vine-stage-select .stage-shell-head {
-    grid-template-columns: 52px minmax(0, 1fr);
-  }
-
-  body.is-vine-stage-select .stage-return {
-    width: 52px;
-    height: 52px;
-    font-size: 1.6rem;
-  }
-
-  body.is-vine-stage-select .stage-shell-head strong { font-size: 1.3rem; }
-  body.is-vine-stage-select .stage-shell-head span { font-size: .9rem; }
-
-  body.is-vine-stage-select .stage-rail {
-    padding-inline: 190px;
-    align-items: center;
-  }
-
-  body.is-vine-stage-select .stage-card {
-    flex-basis: 320px;
-    min-height: 180px;
-    padding: 18px;
-    gap: 1px;
-  }
-
-  body.is-vine-stage-select .stage-card > strong { font-size: 1.15rem; }
-  body.is-vine-stage-select .stage-card small { font-size: .86rem; }
-
-  body.is-vine-playing main.vine-app #gamePanel.game-panel {
-    position: relative;
-    grid-template-columns: minmax(0, 1fr) 430px;
-    grid-template-rows: 88px minmax(0, 1fr) 92px 70px;
-    column-gap: 18px;
-    row-gap: 10px;
-    padding: 10px;
-  }
-
-  body.is-vine-playing .hud-row {
-    grid-column: 2;
-    grid-row: 1;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  body.is-vine-playing .hud-row .soft-btn {
-    position: absolute;
-    z-index: 12;
-    top: 10px;
-    left: 10px;
-    width: 48px;
-    min-width: 48px;
-    height: 48px;
-    min-height: 48px;
-    border-radius: 8px;
-    font-size: 1.5rem;
-  }
-
-  body.is-vine-playing .hud-pill {
-    min-height: 72px;
-    padding: 12px;
-    border-radius: 20px;
-    font-size: 1.05rem;
-  }
-
-  body.is-vine-playing main.vine-app #playfield.playfield.play-area {
-    grid-column: 1;
-    grid-row: 1 / -1;
-    width: min(100%, calc((var(--wp-battle-logical-height, 360px) - 20px) * .6)) !important;
-    height: 100%;
-    max-height: 100%;
-  }
-
-  body.is-vine-playing .cut-now-btn {
-    grid-column: 2;
-    grid-row: 3;
-    width: 100%;
-    min-height: 82px;
-    border-radius: 24px;
-    font-size: 1.35rem;
-  }
-
-  body.is-vine-playing .hint-text {
-    grid-column: 2;
-    grid-row: 4;
-    min-height: 58px;
-    display: grid;
-    place-items: center;
-    font-size: 1rem;
-    line-height: 1.25;
-  }
-
-  body.is-vine-playing .result-panel { padding: 12px; }
-
-  body.is-vine-playing .result-card {
-    width: min(100%, 640px);
-    padding: 18px;
-    gap: 10px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    font-size: 1rem;
-  }
-
-  body.is-vine-playing .result-card > strong,
-  body.is-vine-playing .result-card > .stars,
-  body.is-vine-playing .result-card > span { grid-column: 1 / -1; }
-  body.is-vine-playing .result-card > strong { font-size: 1.55rem; }
-  body.is-vine-playing .result-card button,
-  body.is-vine-playing .result-card a { min-height: 52px; font-size: 1rem; }
-  body.is-vine-playing .stars { font-size: 2rem; }
-}
-
-/* Keep game-owned copy legible over the shared Interface 9 shell. */
-body.is-vine-playing .hud-pill,
-body.is-vine-playing .hud-pill :is(span, b, strong) {
-  color: #2d2417 !important;
-}
-
-body.is-vine-playing .result-card,
-body.is-vine-playing .result-card > :is(strong, span, p) {
-  color: #2d2417 !important;
-}
-
-/* The Cut shadow needs its own breathing room above the live hint. */
-body.is-vine-playing .game-panel {
-  row-gap: 26px;
-}
-
+/* Keep game-owned Battle instructions readable inside the shared canvas. */
 body.is-vine-playing .hint-text {
-  min-height: 38px;
-  padding: 10px 8px 2px;
+  min-height: calc(44px * var(--wp-battle-canvas-inverse-scale, 1));
+  padding: calc(10px * var(--wp-battle-canvas-inverse-scale, 1))
+    calc(8px * var(--wp-battle-canvas-inverse-scale, 1))
+    calc(2px * var(--wp-battle-canvas-inverse-scale, 1));
   line-height: 1.3;
+  font-size: calc(14px * var(--wp-battle-canvas-inverse-scale, 1));
   color: #eef7f6 !important;
+}
+
+body.is-vine-playing #battleWorkspace {
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) auto auto !important;
+  align-content: stretch;
+  align-items: center;
+  gap: 6px !important;
+  min-height: 0;
+}
+
+body.is-vine-playing #playfield {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  aspect-ratio: 3 / 5;
+  justify-self: center;
+  margin: 0 auto;
 }

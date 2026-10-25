@@ -1,0 +1,314 @@
+{
+  "tuple": {
+    "gameVersion": "v3",
+    "interfaceVersion": "9"
+  },
+  "decision": "APPROVED",
+  "assetFiles": [
+    "games/signal-snap/poster.png",
+    "games/signal-snap/poster.webp",
+    "games/signal-snap/night-sky.webp",
+    "games/signal-snap/scene.mjs"
+  ],
+  "surfaces": [
+    "Lobby",
+    "Main",
+    "Stage",
+    "Battle",
+    "Styles"
+  ],
+  "notApplicableSurfaces": [
+    {
+      "surface": "Result",
+      "reason": "Settlement intentionally hides the selected live scene and shows a text/action card; no selected production image is rendered."
+    },
+    {
+      "surface": "Guide",
+      "reason": "The Guide uses localized text and the existing shared Diamond icon; no additional game production image is embedded."
+    }
+  ],
+  "renderedChecks": [
+    {
+      "surface": "Lobby",
+      "state": "Filtered actual Signal Snap card",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "phone",
+      "width": 390,
+      "height": 844,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-surfaces-01a17113-VaUkc4/lobby-390.png",
+      "sha256": "0f8c22209b968311613f76b12c191390ae663f9ca08275b8bd8bc90ce13b9cf8",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Square WebP thumbnail keeps fox, large gauntlets and cyan cue legible.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Lobby",
+      "state": "Filtered actual Signal Snap card",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "short-landscape",
+      "width": 844,
+      "height": 390,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-surfaces-01a17113-VaUkc4/lobby-844.png",
+      "sha256": "25161d59552c28763417cf3858d61708b582d8440cf666a588f5d9a7de4c28d9",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Square WebP thumbnail keeps fox, large gauntlets and cyan cue legible.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Lobby",
+      "state": "Filtered actual Signal Snap card",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 720,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-surfaces-01a17113-VaUkc4/lobby-1280.png",
+      "sha256": "386393de5f7faddb91549f1dbafc7a1b8dfaeb64aee8827fa73bc11279d767f5",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Square WebP thumbnail keeps fox, large gauntlets and cyan cue legible.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Main",
+      "state": "Normal localized Main",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "phone",
+      "width": 390,
+      "height": 844,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/main-390.png",
+      "sha256": "35427be81f435661ea07ad9d41bf95c7f929c16661b5003d9766bd5afdff6b33",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Full square hero fits its shared poster track; text and Start remain separate. Short landscape scrolls normally.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Main",
+      "state": "Normal localized Main",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "short-landscape",
+      "width": 844,
+      "height": 390,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/main-844.png",
+      "sha256": "d8f00b39ffcaa0e7b93c09ec2e8e506a6d72d77bbd4e57e6b975c374f67c0941",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Full square hero fits its shared poster track; text and Start remain separate. Short landscape scrolls normally.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Main",
+      "state": "Normal localized Main",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 720,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/main-1280.png",
+      "sha256": "c83520d1d0be8d0478a54b5707182300cda6d3e390e9f82c2b05f15db888bd7d",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Full square hero fits its shared poster track; text and Start remain separate. Short landscape scrolls normally.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Stage",
+      "state": "Shared rail after layout settlement",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "phone",
+      "width": 390,
+      "height": 844,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-surfaces-01a17113-VaUkc4/stage-390.png",
+      "sha256": "0d4471b58ff31a107c4f033805a5321521157db047caabc1b56a76c13a442500",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Shared card cover preserves the fox face/gauntlet and bottom text contrast; cached WebP is reused.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Stage",
+      "state": "Shared rail after layout settlement",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "short-landscape",
+      "width": 844,
+      "height": 390,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-surfaces-01a17113-VaUkc4/stage-844.png",
+      "sha256": "ad6d9974501754a1bc3659ac8e3e296491a1d6ccc717a85f24a231ad655bab96",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Shared card cover preserves the fox face/gauntlet and bottom text contrast; cached WebP is reused.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Stage",
+      "state": "Shared rail after layout settlement",
+      "asset": "games/signal-snap/poster.webp",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 720,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-surfaces-01a17113-VaUkc4/stage-1280.png",
+      "sha256": "b6dcf4bc4f5c5ac8346508f710496499e72033a7f7e4911bff74b466eed47005",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Shared card cover preserves the fox face/gauntlet and bottom text contrast; cached WebP is reused.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Battle",
+      "state": "Real playable fox and signal platform",
+      "asset": "games/signal-snap/scene.mjs",
+      "viewport": "phone",
+      "width": 390,
+      "height": 844,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/battle-390.png",
+      "sha256": "b303f3aadb09564f490a357b6ee27c5a70237ab762a21bf1ba93e4222388a0c2",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Orthographic live fox/beacons remain inside the arena, distinct from distant sky; fixed input targets stay clear.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Battle",
+      "state": "Real playable fox and signal platform",
+      "asset": "games/signal-snap/scene.mjs",
+      "viewport": "short-landscape",
+      "width": 844,
+      "height": 390,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/battle-844.png",
+      "sha256": "1b2198ff904483dca0630b0f86557a7eeeb090f9bbaade0e5fb184ec52fd364a",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Orthographic live fox/beacons remain inside the arena, distinct from distant sky; fixed input targets stay clear.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Battle",
+      "state": "Real playable fox and signal platform",
+      "asset": "games/signal-snap/scene.mjs",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 720,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/battle-1280.png",
+      "sha256": "0e452547f2d8a148186889c437a040d2e856153f499f9f8c7621d9da7f83618d",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Orthographic live fox/beacons remain inside the arena, distinct from distant sky; fixed input targets stay clear.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Styles",
+      "state": "Live3D preview; lower controls use internal scroll on short landscape",
+      "asset": "games/signal-snap/scene.mjs",
+      "viewport": "phone",
+      "width": 390,
+      "height": 844,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/styles-390.png",
+      "sha256": "5f50a47a5288b278eb855d5f0ca6bd43c170e359cc47a692dfde1f755ba21da0",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Actual3D preview matches Battle materials; selected style and effect/price controls remain reachable without the shared rail leaking.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Styles",
+      "state": "Live3D preview; lower controls use internal scroll on short landscape",
+      "asset": "games/signal-snap/scene.mjs",
+      "viewport": "short-landscape",
+      "width": 844,
+      "height": 390,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/styles-844.png",
+      "sha256": "dffd0e049e6378b3f80b0060b1d4a220038fab83f2bedc714ba926600635456f",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Actual3D preview matches Battle materials; selected style and effect/price controls remain reachable without the shared rail leaking.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    },
+    {
+      "surface": "Styles",
+      "state": "Live3D preview; lower controls use internal scroll on short landscape",
+      "asset": "games/signal-snap/scene.mjs",
+      "viewport": "desktop",
+      "width": 1280,
+      "height": 720,
+      "evidencePath": "/private/var/folders/xm/ckxd_1h96tg07f6b8db64shw0000gn/T/signal-snap-v3-VAvIVc/styles-1280.png",
+      "sha256": "4aaf8b08e89373c90edb1cd136c364b0522a45136a2cdabe112daad1db0284c7",
+      "check": "Hero/symbol readability, coherent lighting/material, crop safety and native shared composition",
+      "result": "PASS",
+      "reason": "Actual3D preview matches Battle materials; selected style and effect/price controls remain reachable without the shared rail leaking.",
+      "requiredCorrection": "None identified in the reviewed surface"
+    }
+  ],
+  "scores": {
+    "shape": {
+      "score": 9.1,
+      "rationale": "Square fox head, stepped ears/tail, lightning brow, articulated gauntlet paws and cuboid beacon plinths are readable and follow the official Spark Paw Fia reference."
+    },
+    "lighting": {
+      "score": 9.2,
+      "rationale": "Warm gold key and cool cyan rim separate the orange fox and real cue lights from violet clouds; no cue is identified by colour alone."
+    },
+    "material": {
+      "score": 9.0,
+      "rationale": "Bevelled shared geometry, coherent rough gold/stone materials and restrained real shadows give depth without noisy surface detail or disconnected styles."
+    },
+    "composition": {
+      "score": 9.0,
+      "rationale": "Square action poster retains face and cue in real lobby/Main/rail crops. Portrait and short-landscape arena fits keep both beacon targets unobstructed."
+    },
+    "commercialQuality": {
+      "score": 9.0,
+      "rationale": "Purpose-made illustration replaces the sparse test capture; polished block-citadel sky, consistent hero palette and shared UI produce a finished presentation at real thumbnail size."
+    },
+    "overall": {
+      "score": 9.1,
+      "rationale": "Separate rendered review covers actual phone, short-landscape and desktop surfaces, with no known remaining art correction; functional and independent QA remain separate."
+    }
+  },
+  "assetScores": [
+    {
+      "asset": "games/signal-snap/poster.png",
+      "score": 9.3,
+      "rationale": "Source image has readable fox anatomy, one clear signal action and safe square composition."
+    },
+    {
+      "asset": "games/signal-snap/poster.webp",
+      "score": 9.3,
+      "rationale": "Optimized1254px WebP retains the source composition and readable cyan/gold silhouette at actual lobby thumbnail scale."
+    },
+    {
+      "asset": "games/signal-snap/night-sky.webp",
+      "score": 9.0,
+      "rationale": "Distant block citadels and clouds frame the real foreground without baking in false targets or a second hero."
+    },
+    {
+      "asset": "games/signal-snap/scene.mjs",
+      "score": 9.0,
+      "rationale": "One instanced bevelled geometry supports the articulated fox, platform and beacons with stable resource cost and coherent materials."
+    }
+  ],
+  "qualityChecks": {
+    "styleConsistency": {
+      "result": "PASS",
+      "rationale": "Spark Paw Fia cuboids and cyan/gold/violet night palette agree across poster, live3D foreground and sky."
+    },
+    "sharedUiUx": {
+      "result": "PASS",
+      "rationale": "Main and Stage remain in shared owners; Styles hides the whole rail/briefing and uses the shared bottom slots. Result controls were separately rechecked."
+    },
+    "cropScale": {
+      "result": "PASS",
+      "rationale": "1254px square delivery remains square in the lobby/Main and uses the native shared Stage cover; real3D camera fits the changing arena."
+    },
+    "feedbackEffects": {
+      "result": "PASS",
+      "rationale": "Visible native-input play shows finite cue lights, paw poses and streak emphasis. Reduced-motion settlement has no active-control bleed-through."
+    },
+    "responsiveness": {
+      "result": "PASS",
+      "rationale": "Five-size producer journeys pass; all applicable art surfaces have phone/short-landscape/desktop images. Short Styles uses its own scroll workspace."
+    }
+  },
+  "unresolvedArtChanges": false,
+  "reviewerCapability": "Art Director (embedded Planner capability; separate rendered-surface inspection)"
+}

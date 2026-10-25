@@ -12,7 +12,8 @@ const later=(fn,ms)=>{const id=setTimeout(()=>{ownedTimers.delete(id);fn();},ms)
 const scenes={};for(const name of ['main','stage','battle']){const root=$(name+'Scene');scenes[name]={root,header:root.querySelector('header'),content:$(name+'Content')};}
 scenes.main.content=$('mainContent').querySelector('.wp-standard-main-composition');
 const mainCopy=scenes.main.content.querySelector('.wp-standard-main-copy');mainCopy.setAttribute('data-wp-frame-copy','');
-mainCopy.querySelector('p').setAttribute('data-wp-frame-summary','');
+mainCopy.querySelector('p').setAttribute('data-wp-frame-summary','');mainCopy.querySelector('p').textContent=c.tap+' · '+c.hold;
+$('start').textContent=c.start;for(const s of Object.values(scenes))s.header.querySelector('[data-wp-frame-title]').textContent=c.title;
 const progress=document.createElement('p');progress.dataset.wpFrameProgress='';mainCopy.insertBefore(progress,$('start'));
 const frame=window.WeightPlayScreenFrame.mount({root:$('app'),scenes,localeSelect:$('localeSource'),playUI:true});
 for(const [index,name]of ['main','stage','battle'].entries())scenes[name].header.querySelector('[data-wp-return]').setAttribute('aria-label',c.back[index]);
@@ -29,7 +30,7 @@ const routes={en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es
 listen($('localeSource'),'change',e=>location.assign('/'+routes[e.target.value]+'/games/signal-snap/'+location.search));
 const stageName=s=>language==='zh-Hant'?s.zh:language==='en'?s.name:c.arcs[s.chapter]+' '+s.id;
 function ruleText(s){return s.rule.includes('charge')||s.rule==='mixed'||s.rule==='finale'?c.chargeGuide:s.chapter>=3?c.tap+' · '+c.hold:s.chapter>=1?c.hold:c.tap;}
-const config={gameId:'signal-snap',poster:'/games/signal-snap/poster.png?v=signal-v3',background:'/assets/lobby-block-atmosphere.svg',count:STAGES.length,stage(index){const s=STAGES[index];return {id:s.id,kicker:c.arcs[s.chapter],title:s.id+' · '+stageName(s),subtitle:(s.checkpoint?'◆ ':'')+s.count+' · '+s.window+' ms',summary:ruleText(s),details:[c.tap,c.hold,c.chargeGuide],status:!practice&&index>=save.unlocked?c.locked:(save.best[index]?'★'.repeat(save.best[index]):'◆'),locked:!practice&&index>=save.unlocked,cleared:save.best[index]>0};}};
+const config={gameId:'signal-snap',poster:'/games/signal-snap/poster.webp?v=signal-v3',background:'/assets/lobby-block-atmosphere.svg',count:STAGES.length,stage(index){const s=STAGES[index];return {id:s.id,kicker:c.arcs[s.chapter],title:s.id+' · '+stageName(s),subtitle:(s.checkpoint?'◆ ':'')+s.count+' · '+s.window+' ms',summary:ruleText(s),details:[c.tap,c.hold,c.chargeGuide],status:!practice&&index>=save.unlocked?c.locked:(save.best[index]?'★'.repeat(save.best[index]):'◆'),locked:!practice&&index>=save.unlocked,cleared:save.best[index]>0};}};
 const picker=document.createElement('div'),stagePage=document.createElement('div');picker.id='signalStagePicker';picker.append(stagePage);stagePage.append($('rail'));$('stageContent').append(picker);
 const stageUI=window.WeightPlayPlayUI.mountStage({page:stagePage,rail:$('rail'),config,selected:0,onSelect(index){selected=index;},onStart(index){void start(index);},isActive:()=>active==='stage'&&tab==='stages'});
 const emptyTrack=document.createElement('span');emptyTrack.setAttribute('aria-hidden','true');
@@ -78,7 +79,7 @@ function show(name){if(name!=='stage')stopPreview();active=name;for(const [key,s
 function disposeScene(){for(const id of ownedTimers)clearTimeout(id);ownedTimers.clear();for(const id of ['signalStatus','hudErrors','hudChain','comboFeedback'])$(id).getAnimations().forEach(a=>a.cancel());audioScope?.stop();scene?.dispose();scene=null;}
 function hideResult(){resultLayer.hidden=true;delete $('battleContent').dataset.resultOpen;for(const child of $('battleContent').children)child.inert=false;}
 let modalOwned=[];
-function closeModal(){for(const node of modalOwned)node.inert=false;modalOwned=[];const d=$('overlay');if(d.open)d.close();pauseLayer.hidden=true;pauseLayer.append(d);wardrobe.querySelector('#wardrobeModal')?.remove();if(active==='battle')frame.activate('battle');}
+function closeModal(){for(const node of modalOwned)node.inert=false;modalOwned=[];const d=$('overlay');if(d.open)d.close();pauseLayer.hidden=true;pauseLayer.append(d);$('wardrobeModal')?.remove();if(active==='battle')frame.activate('battle');}
 function leave(){++startGeneration;cancelAnimationFrame(raf);hideResult();closeModal();disposeScene();run=null;settingsPaused=false;show('stage');}
 function resultStages(){selected=Math.max(0,save.unlocked-1);leave();}
 listen($('resultStages'),'click',resultStages);listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)void start(selected+1);});listen($('resultReplay'),'click',()=>void start(selected));
@@ -87,7 +88,7 @@ listen(resultLayer,'keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopP
 let modalCancel=null;
 function modal(title,text,actions,owner='battle'){
  const d=$('overlay');if(d.open)d.close();
- if(owner==='stage'){let holder=$('wardrobeModal');if(!holder){holder=document.createElement('div');holder.id='wardrobeModal';holder.className='signal-modal-layer';wardrobe.append(holder);}holder.append(d);modalOwned=[...wardrobe.children].filter(n=>n!==holder).concat(nav,scenes.stage.header);}else{pauseLayer.append(d);pauseLayer.hidden=false;frame.activate('battle',{covered:true});modalOwned=[...$('battleContent').children].filter(n=>n!==pauseLayer);}
+ if(owner==='stage'){let holder=$('wardrobeModal');if(!holder){holder=document.createElement('div');holder.id='wardrobeModal';holder.className='signal-modal-layer';$('stageContent').append(holder);}holder.append(d);modalOwned=[wardrobe,nav,scenes.stage.header];}else{pauseLayer.append(d);pauseLayer.hidden=false;frame.activate('battle',{covered:true});modalOwned=[...$('battleContent').children].filter(n=>n!==pauseLayer);}
  for(const node of modalOwned)node.inert=true;d.setAttribute('aria-modal','true');
  $('overlayTitle').textContent=title;$('overlayText').textContent=text;$('overlayActions').replaceChildren();
  modalCancel=actions[0][1];
@@ -171,5 +172,5 @@ listen($('arena'),'signal-renderer-lost',()=>{if(run){pause(run,performance.now(
 listen(window,'pagehide',()=>{++startGeneration;cancelEntryWait?.();cancelAnimationFrame(raf);clearTimeout(storageTimer);closeModal();disposeScene();stopPreview();stageUI.destroy();settingsObserver.disconnect();frame.destroy();audioScope?.dispose();abort.abort();});
 show('main');if(!storageOkay)notify(c.storage);
 void LocalPractice.register({gameId:'signal-snap',stageIds:STAGES.map(s=>s.id),enable(value){practice=value;if(!value&&run){leave();notify(c.locked);}stageUI.refresh(selected);},startStage(id){return start(Number(id)-1);}});
-window.WeightPlayAudio?.preload(['game.start','ui.tick','feedback.success','feedback.error','result.win','result.lose','reward.unlock','shop.purchase']);
+window.WeightPlayAudio?.preload(['ui.click','game.start','ui.tick','feedback.success','feedback.error','result.win','result.lose','shop.purchase']);
 export function renderStats(){return scene?.stats()??previewScene?.stats()??null;}
