@@ -2229,7 +2229,10 @@ body.zoo-playing .animal-shop-card small {
     min-height: 0 !important;
     height: 100% !important;
     max-height: 100% !important;
-    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
     border-radius: 0 !important;
     box-shadow: none !important;
   }
@@ -2553,7 +2556,10 @@ body.zoo-playing #resultPanel #closeReportBtn {
 body.zoo-playing #habitatGrid.habitat-grid {
   min-height: 0;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 body.zoo-playing .zoo-stage-card {
@@ -2702,13 +2708,20 @@ body.zoo-playing #habitatGrid.habitat-grid {
   width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
 }
 
 body.zoo-playing .care-panel {
   width: min(100%, 374px) !important;
   height: 100% !important;
   max-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
   justify-self: center;
 }
 

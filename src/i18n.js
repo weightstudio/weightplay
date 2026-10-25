@@ -1873,6 +1873,15 @@
     dictionaries[locale]["filter.all_genres"] = all;
     gameplayGenreKeys.forEach((key, index) => { dictionaries[locale][`category.${key}`] = labels[index]; });
   });
+  const gameplaySearchCopy = {
+    en: "Search games or genres…", "zh-Hant": "搜尋遊戲或類型……", "zh-Hans": "搜索游戏或类型……",
+    ja: "ゲーム名やジャンルで検索…", ko: "게임 또는 장르 검색…", es: "Busca juegos o géneros…",
+    "pt-BR": "Buscar jogos ou gêneros…", fr: "Rechercher un jeu ou un genre…", de: "Spiele oder Genres suchen…",
+    it: "Cerca giochi o generi…", ru: "Поиск игр или жанров…", hi: "गेम या शैलियाँ खोजें…", ar: "ابحث عن لعبة أو نوع…",
+  };
+  Object.entries(gameplaySearchCopy).forEach(([locale, label]) => {
+    dictionaries[locale]["search.games_or_genres"] = label;
+  });
 
   const vehicleGameLabels = {
     en: "Vehicle Games", "zh-Hant": "載具遊戲", "zh-Hans": "载具游戏",

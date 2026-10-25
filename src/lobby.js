@@ -57,7 +57,14 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   gameHallSwitch.append(topicsButton);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
-if (!isKidsLobby) document.querySelector("#advancedFilters")?.remove();
+if (!isKidsLobby) {
+  document.querySelector("#advancedFilters")?.remove();
+  document.querySelectorAll(".desktop-filter-rail h3, #vibeTitle").forEach((heading) => {
+    heading.dataset.i18n = "filter.all_genres";
+  });
+  const searchInput = document.querySelector("#gameSearch");
+  if (searchInput) searchInput.dataset.i18nPlaceholder = "search.games_or_genres";
+}
 {
   document.querySelectorAll(isKidsLobby ? '.topic-filter' : '.topic-filter, .vibe-options').forEach(group => {
     group.replaceChildren();
