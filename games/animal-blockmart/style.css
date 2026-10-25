@@ -41,7 +41,6 @@
 .main-summary{max-width:620px;margin:0 auto;color:#526c79;font-size:15px;line-height:1.5;text-align:center}
 #mainStart{width:100%;min-height:52px;font-weight:800}
 #mainContent .main-copy{justify-content:center;align-self:stretch}
-#gameGuide{max-width:920px;margin:0 auto 28px;padding:0 8px}
 body.wp-frame-battle-active #gameGuide{display:none}
 .battle-screen{height:100dvh;max-width:1440px;margin:0 auto;grid-template-columns:minmax(0,1fr);grid-template-rows:52px minmax(0,1fr);gap:8px;padding:0 8px 8px}
 .battle-screen[hidden]{display:none!important}
@@ -60,9 +59,6 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #mainHeader .back{display:grid;place-items:center}
 #mainHeader .back span{font-size:0}
 #mainHeader .back span:before{content:'←';font-size:23px}
-#gameGuide .game-info-hero{border-radius:18px;background:#fff;border:1px solid var(--line);padding:18px}
-#gameGuide .game-info-sections{border-radius:18px;background:#fff;border:1px solid var(--line);padding:14px;margin-top:8px}
-#gameGuide :is(h2,h3,p,ol){margin-top:0}
 .scene-wrap>.money{position:absolute;z-index:3;right:12px;top:12px;min-width:82px;padding:6px 10px;pointer-events:none}
 
 /* Art pass: give products and equipment distinct silhouettes, and keep every
@@ -553,10 +549,6 @@ body.wp-frame-battle-active #gameGuide{display:none}
 #app #toast.show{transform:translateY(0)}
 .scene-wrap:has(#packageArtRetry) .scene-status>#toast{align-self:flex-start;max-width:52%;text-align:start}
 @media(prefers-reduced-motion:reduce){#app #toast{transition:opacity .08s ease-out;transform:none}}
-@layer wp-frame-contract {
-  html body #gameGuide .game-info-hero,
-  html body #gameGuide .game-info-hero *{color:#213f4b!important}
-}
 /* Animate the final visible frame while hidden immediately stops input/logic. */
 #gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice){opacity:1;transition:opacity .18s ease-out,display .18s allow-discrete}
 #gameFrameRoot :is(#mainScreen,#app,#leaveConfirm,#placementControls,.wp-frame-popover,.wp-shell-settings-popover,.achievement-notice)[hidden]{opacity:0;pointer-events:none}

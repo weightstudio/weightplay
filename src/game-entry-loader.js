@@ -8,18 +8,47 @@
   let selectedGameId = GAME_ID;
   let selectedAnchor = null;
   let selectedTitle = "";
+  let entryStyleReady;
 
   if (document.documentElement.dataset.wpGameEntryLoaderInstalled === "true") return;
   document.documentElement.dataset.wpGameEntryLoaderInstalled = "true";
 
   const ensureStyle = () => {
-    if (document.querySelector('link[data-wp-game-entry-loader-style="true"]')) return;
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = new URL(STYLE_URL, window.location.origin).href;
-    link.dataset.wpGameEntryLoaderStyle = "true";
-    document.head.append(link);
+    if (entryStyleReady) return entryStyleReady;
+    const existing = document.querySelector('link[data-wp-game-entry-loader-style="true"]');
+    const link = existing || document.createElement("link");
+    entryStyleReady = new Promise(resolve => {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        link.dataset.wpGameEntryLoaderStyleReady = "true";
+        resolve();
+      };
+      const sheetReady = () => {
+        try { return Boolean(link.sheet?.cssRules.length); }
+        catch { return false; }
+      };
+      if (link.dataset.wpGameEntryLoaderStyleReady === "true" || sheetReady()) {
+        finish();
+        return;
+      }
+      link.addEventListener("load", finish, { once: true });
+      // Keep the recovery UI available if the stylesheet itself is unavailable.
+      link.addEventListener("error", finish, { once: true });
+      if (!existing) {
+        link.rel = "stylesheet";
+        link.href = new URL(STYLE_URL, window.location.origin).href;
+        link.dataset.wpGameEntryLoaderStyle = "true";
+        document.head.append(link);
+      }
+      if (sheetReady()) finish();
+    });
+    return entryStyleReady;
   };
+  // Start loading early so a user-triggered Lobby transition can show its
+  // shared skin immediately. Overlays still wait for this exact stylesheet.
+  void ensureStyle();
 
   const copy = () => {
     const locale = (document.documentElement.lang || "en").toLowerCase();
@@ -47,7 +76,6 @@
   };
 
   function makeOverlay({ titleText, messageText, mode = "loading", showBack = false, retry, cancel } = {}) {
-    ensureStyle();
     document.documentElement.dataset.wpGameEntryLoaderActive = "true";
     const overlay = document.createElement("section");
     overlay.className = ROOT_CLASS;
@@ -100,16 +128,23 @@
       button(backText, goBack);
     }
     const appendController = new AbortController();
+    let resolveShown;
+    const shown = new Promise(resolve => { resolveShown = resolve; });
+    appendController.signal.addEventListener("abort", () => resolveShown(false), { once: true });
     const append = () => {
-      if (appendController.signal.aborted) return;
-      appendController.abort();
+      if (appendController.signal.aborted) { resolveShown(false); return; }
       if (document.body && overlay.dataset.state !== "ready") {
         document.body.append(overlay);
       }
+      resolveShown(overlay.isConnected);
+      appendController.abort();
     };
-    if (document.body) append();
-    else document.addEventListener("DOMContentLoaded", append, { once: true, signal: appendController.signal });
-    return { overlay, title, status, setStatus, track, actions, button, appendController };
+    ensureStyle().then(() => {
+      if (appendController.signal.aborted) { resolveShown(false); return; }
+      if (document.body) append();
+      else document.addEventListener("DOMContentLoaded", append, { once: true, signal: appendController.signal });
+    });
+    return { overlay, title, status, setStatus, track, actions, button, appendController, shown };
   }
 
   const goBack = () => {
@@ -311,6 +346,7 @@
     window.clearTimeout(navTimer);
     document.removeEventListener("keydown", onLobbyKeydown, true);
     navTimer = 0;
+    overlayState?.appendController?.abort();
     overlayState?.overlay.remove();
     overlayState = null;
     document.documentElement.removeAttribute("data-wp-game-entry-loader-active");
@@ -322,6 +358,7 @@
     navTimer = 0;
     navigationProbe?.abort();
     navigationProbe = null;
+    overlayState.appendController?.abort();
     overlayState.overlay.remove();
     const [loadingText, errorTitle, errorCopy, retryText, backText] = copy();
     overlayState = makeOverlay({ mode: "error", titleText: errorTitle, messageText: errorCopy, retry: () => navigate(), cancel: () => reset({ restoreFocus: true }) });
@@ -340,27 +377,31 @@
     } else {
       overlayState = makeOverlay({ titleText: copy()[6], cancel: () => reset({ restoreFocus: true }) });
     }
-    window.clearTimeout(navTimer);
-    navigationProbe?.abort();
-    navigationProbe = new AbortController();
-    const currentProbe = navigationProbe;
-    navTimer = window.setTimeout(failNavigation, 20000);
-    document.addEventListener("keydown", onLobbyKeydown, true);
-    // Probe only the same-origin response headers. A GET here would download
-    // the full document and then make navigation download it again.
-    fetch(targetUrl, { method: "HEAD", cache: "no-store", credentials: "same-origin", signal: currentProbe.signal })
-      .then((response) => {
-        if (!active || navigationProbe !== currentProbe) return;
-        if (!response.ok) { failNavigation(); return; }
-        window.clearTimeout(navTimer);
-        navTimer = 0;
-        navigationProbe = null;
-        window.location.assign(targetUrl);
-      })
-      .catch((error) => {
-        if (!active || navigationProbe !== currentProbe || error?.name === "AbortError") return;
-        failNavigation();
-      });
+    const currentOverlay = overlayState;
+    currentOverlay.shown.then(isVisible => {
+      if (!isVisible || !active || overlayState !== currentOverlay) return;
+      window.clearTimeout(navTimer);
+      navigationProbe?.abort();
+      navigationProbe = new AbortController();
+      const currentProbe = navigationProbe;
+      navTimer = window.setTimeout(failNavigation, 20000);
+      document.addEventListener("keydown", onLobbyKeydown, true);
+      // Probe only the same-origin response headers. A GET here would download
+      // the full document and then make navigation download it again.
+      fetch(targetUrl, { method: "HEAD", cache: "no-store", credentials: "same-origin", signal: currentProbe.signal })
+        .then((response) => {
+          if (!active || navigationProbe !== currentProbe) return;
+          if (!response.ok) { failNavigation(); return; }
+          window.clearTimeout(navTimer);
+          navTimer = 0;
+          navigationProbe = null;
+          window.location.assign(targetUrl);
+        })
+        .catch((error) => {
+          if (!active || navigationProbe !== currentProbe || error?.name === "AbortError") return;
+          failNavigation();
+        });
+    });
   };
   const startLobbyNavigation = ({ url, gameId, title, anchor } = {}) => {
     if (active) return false;
@@ -401,7 +442,10 @@
     navigationProbe?.abort();
     navigationProbe = null;
     document.removeEventListener("keydown", onLobbyKeydown, true);
-    if (overlayState) overlayState.overlay.remove();
+    if (overlayState) {
+      overlayState.appendController?.abort();
+      overlayState.overlay.remove();
+    }
     overlayState = null;
     active = false;
     document.documentElement.removeAttribute("data-wp-game-entry-loader-active");

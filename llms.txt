@@ -59,6 +59,11 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Canopy Compass Logic: https://weightplay.com/en/games/animal-canopy-compass/
+- Cushion Stack: https://weightplay.com/en/games/animal-cushion-stack/
+- Signal Snap: https://weightplay.com/en/games/signal-snap/
+- Railguard Express: https://weightplay.com/en/games/railguard-express/
+
 - Wildborn: https://weightplay.com/en/games/wildborn/
 - Kindred Habitats: https://weightplay.com/en/games/kindred-habitats/
 - Postcard Crop: https://weightplay.com/en/games/animal-postcard-crop/

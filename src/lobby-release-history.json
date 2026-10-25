@@ -57,6 +57,10 @@
       "date": "2026-07-11T16:23:08+08:00",
       "evidence": "git:d276c8a622bf3ffe31d9d02b8701cc6ae2bfb081"
     },
+    "animal-canopy-compass": {
+      "date": "2026-10-25T00:08:06.888Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-canopy-cut": {
       "date": "2026-08-16T16:15:05+08:00",
       "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
@@ -104,6 +108,10 @@
     "animal-crystal-survivor": {
       "date": "2026-07-06T08:33:55+08:00",
       "evidence": "git:52046a360aaa1726c6e54bf488c2ac4f6e488bab"
+    },
+    "animal-cushion-stack": {
+      "date": "2026-10-25T00:08:06.888Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-dawn-shutters": {
       "date": "2026-09-13T05:59:04.844Z",
@@ -617,6 +625,10 @@
       "date": "2026-08-11T12:08:54+08:00",
       "evidence": "git:150ba8bdcf566c3dd6a323e0a4bdf9286dbdb012"
     },
+    "railguard-express": {
+      "date": "2026-10-25T00:08:06.888Z",
+      "evidence": "canonical-public-catalog"
+    },
     "reversi": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
@@ -632,6 +644,10 @@
     "shape-train": {
       "date": "2026-06-30T15:10:16+08:00",
       "evidence": "git:31482792320158cb21f169911efcc8038df03968"
+    },
+    "signal-snap": {
+      "date": "2026-10-25T00:08:06.888Z",
+      "evidence": "canonical-public-catalog"
     },
     "signal-veil": {
       "date": "2026-07-28T18:08:11+08:00",

@@ -3381,7 +3381,7 @@ renderLobby();
 loadGameStats();
 if (!isKidsLobby && !document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261021-lobby-card-entry1";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }
