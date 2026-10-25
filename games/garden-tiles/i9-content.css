@@ -99,6 +99,7 @@ html body[data-wp-interface-version="9"] #message {
 
 html body[data-wp-interface-version="9"] #resultPanel {
   z-index: 60;
+  padding: calc(var(--wp-frame-header-height, 56px) + 8px) 12px 8px;
 }
 
 @media (max-height: 470px) and (orientation: landscape) {

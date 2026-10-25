@@ -152,10 +152,12 @@
       try { return new URL(document.referrer); } catch { return null; }
     })();
     const localizedLobby = path.match(/^\/([a-z]{2}(?:-[a-z]{2})?)\/games\//i)?.[1];
+    const kids = document.body?.dataset.audience === "kids"
+      || document.querySelector('meta[name="weightplay-audience"]')?.content === "kids";
     const target = referrer?.origin === window.location.origin
       && !/\/games\//.test(referrer.pathname)
       ? `${referrer.pathname}${referrer.search}${referrer.hash}`
-      : `/${localizedLobby || "en"}/`;
+      : `/${localizedLobby || "en"}/${kids ? "kids/" : ""}`;
     window.location.assign(target);
   };
 
