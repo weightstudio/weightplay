@@ -55,7 +55,7 @@
   <meta name="twitter:description" content="Serve pictured food orders across 30 cafe days, follow recipe order and guest priorities, and spend coins on three local upgrades." />
     <meta name="twitter:title" content="Cafe Rush | WeightPlay" />
 </head>
-  <body data-tutorial-auto-show="false" data-wp-game-id="animal-cafe-rush" data-wp-game-version="v4" data-wp-interface-version="6" data-wp-interface-candidate="9">
+  <body data-tutorial-auto-show="false" data-wp-game-id="animal-cafe-rush" data-wp-game-version="v5" data-wp-interface-version="9">
     <main class="cafe-app" data-wp-frame-root data-no-mobile-immersive="true">
       
       <header class="topbar">
@@ -63,7 +63,7 @@
         <div class="brand"><span>WeightPlay</span><h1 data-ui="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Cafe Rush</h1></div>
         <label class="locale"><span data-ui="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
       </header>
-      <section id="menuPanel" class="menu-panel">
+      <section id="menuPanel" class="menu-panel" data-screen="main">
         <div class="main-content">
           <img class="cover" data-wp-frame-poster src="../../assets/animal-cafe-rush-cover.webp" alt="Cafe Rush" />
         <div class="menu-copy" data-wp-frame-copy>
@@ -76,7 +76,7 @@
         </div>
         </div>
       </section>
-      <section id="stagePanel" class="stage-panel is-hidden" data-wp-logical-stage-canvas>
+      <section id="stagePanel" class="stage-panel is-hidden" data-wp-logical-stage-canvas data-wp-standard-stage-screen>
         <header class="stage-head"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-wp-frame-title data-ui="chooseDay">Choose a Day</strong></header>
         <div class="stage-workspace">
           <div id="stageHeaderInfo">
