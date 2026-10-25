@@ -7665,6 +7665,19 @@ const grovePublicCampaignCopy20261024 = {"en":{"description":"30 route puzzles �
   }
 }
 
+// Blade Orbit: owner-requested production, available through Coming Soon preview.
+window.WONDER_LOBBY.games.push({
+  id: "blade-orbit", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "index.html?preview=1", href: "games/blade-orbit/",
+  title: { en: "Blade Orbit", "zh-Hant": "劍陣無雙", "zh-Hans": "剑阵无双" },
+  type: { en: "Sword Survivor", "zh-Hant": "飛劍割草", "zh-Hans": "飞剑割草" },
+  description: { en: "Gather blades, accelerate your orbit and forge elemental swords through 30 wild encounters.", "zh-Hant": "撿起飛劍、加速劍陣、進化元素神劍，挑戰 30 個戰區與六大守關首領。", "zh-Hans": "捡起飞剑、加速剑阵、进化元素神剑，挑战 30 个战区与六大守关首领。" },
+  categories: ["Action", "Survival", "Animal Games"], skills: ["Reaction", "Focus", "Hand-eye Coordination"], ages: ["9", "family"],
+  meta: { en: ["30 encounters", "3 sword paths", "6 bosses"], "zh-Hant": ["30 個戰區", "3 種劍系", "6 大首領"] },
+  art: { kind: "image", background: "games/blade-orbit/assets/poster.webp", hideHero: true }
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("blade-orbit");
+
 // Owner-approved Coming Soon batch, task 01a16e15-5b5d-7b63-ac90-1b9541f6ceef.
 const ownerApprovedComingSoonGames = ["wildborn", "kindred-habitats", "animal-postcard-crop", "animal-hollow-fit", "animal-cozy-camp", "animal-orbit-orchard", "animal-habitat-counts", "animal-tideglass", "animal-burrow-builder", "animal-tangle-rescue", "animal-meadow-difference", "animal-footprint-folio", "animal-magnet-meadow", "animal-glyph-garden", "animal-ring-garden", "animal-cloudhook-courier", "animal-twin-switchyard", "animal-moon-market", "animal-kite-keeper", "animal-habitat-blueprint", "animal-river-gates", "animal-acorn-auction", "animal-patchwork-paws", "animal-firefly-folio", "animal-silhouette-scout", "animal-orchard-steward", "animal-grove-dominoes", "animal-canopy-compass", "animal-cushion-stack", "signal-snap", "railguard-express"];
 for (const id of ownerApprovedComingSoonGames) {

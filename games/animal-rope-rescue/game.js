@@ -75,6 +75,7 @@
       failText: "Keep moving the leaf while the fruit falls and bounce it toward the basket.",
       completeText: "Amazing rescue route! You cleared every vine stage.",
       stageLabel: "Stage {n}",
+      stageProgress: "Unlocked",
       deliveryProgress: "Delivery {current}/{total}",
       bounceProgress: "Bounce {current}/{total}",
       nextDelivery: "Great catch! Get ready for delivery {current}/{total}.",
@@ -86,11 +87,11 @@
       apple: "Apple",
       banana: "Banana",
       berry: "Berry",
-      lion: "assets/lion-voxel-v1.png",
-      rabbit: "assets/rabbit-voxel-v1.png",
-      panda: "assets/panda-voxel-v1.png",
-      fox: "assets/fox-voxel-v1.png",
-      koala: "assets/koala-voxel-v1.png",
+      lion: "Lion",
+      rabbit: "Rabbit",
+      panda: "Panda",
+      fox: "Fox",
+      koala: "Koala",
     },
     "zh-Hant": {
       title: "動物藤蔓救援",
@@ -123,6 +124,7 @@
       failText: "水果下落時繼續移動葉子，把它彈向籃子。",
       completeText: "太棒了！你完成了所有藤蔓救援關卡。",
       stageLabel: "第 {n} 關",
+      stageProgress: "已解鎖",
       deliveryProgress: "配送 {current}/{total}",
       bounceProgress: "彈跳 {current}/{total}",
       nextDelivery: "接得好！準備配送第 {current}/{total} 份水果。",
@@ -171,6 +173,7 @@
       failText: "Sigue moviendo la hoja mientras cae la fruta y hazla rebotar hacia la cesta.",
       completeText: "¡Rescate increíble! Has completado todos los niveles de lianas.",
       stageLabel: "Nivel {n}",
+      stageProgress: "Desbloqueados",
       deliveryProgress: "Entrega {current}/{total}",
       bounceProgress: "Rebote {current}/{total}",
       nextDelivery: "¡Buena recepción! Prepárate para la entrega {current}/{total}.",
@@ -193,6 +196,7 @@
     stage: "스테이지",
     stages: "스테이지",
     stageLabel: "스테이지 {n}",
+    stageProgress: "해금됨",
     locked: "잠긴 스테이지",
   });
   const assets = {
@@ -343,7 +347,7 @@
     panel.setAttribute("aria-modal", "true");
     panel.setAttribute("aria-labelledby", "leaveTitle");
     panel.innerHTML = '<div class="result-card leave-card"><strong id="leaveTitle" data-ui="leaveTitle"></strong><span data-ui="leaveText"></span><button id="continueRescueBtn" type="button" data-ui="continueRescue"></button><button id="leaveStageBtn" type="button" data-ui="leaveStage"></button></div>';
-    $("gamePanel")?.append(panel);
+    $("battleWorkspace")?.append(panel);
   }
   const nodes = {
     localeSelect: $("localeSelect"),
@@ -351,9 +355,10 @@
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     startBtn: $("startBtn"),
+    stageMainBackBtn: $("stageMainBackBtn"),
     stageBackBtn: $("stageBackBtn"),
-    stageText: $("stageText"),
-    scoreText: $("scoreText"),
+    stageText: null,
+    scoreText: null,
     playfield: $("playfield"),
     targetZone: $("targetZone"),
     targetAnimal: $("targetAnimal"),
@@ -381,6 +386,10 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  let screenFrame = null;
+  let stageUI = null;
+  let stageHeaderCurrent = null;
+  let stageHeaderProgress = null;
   (__wpNotifyMeasurement(), nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove());
 
   function setNodeText(node, value) {
@@ -555,17 +564,13 @@
     document.documentElement.classList.toggle("is-vine-playing", isPlaying);
     document.body.classList.toggle("is-vine-playing", isPlaying);
     window.WEIGHTPLAY_VINE_RESCUE_ACTIVE = isPlaying;
-    window.WeightPlayGame?.updateVisualViewportVars?.();
     window.dispatchEvent(new CustomEvent("animal-vine-rescue:play-state", { detail: { playing: isPlaying } }));
-    requestAnimationFrame(updateBattleScale);
   }
 
   function setStageState(isStage) {
     document.documentElement.classList.toggle("is-vine-stage-select", isStage);
     document.body.classList.toggle("is-vine-stage-select", isStage);
     window.WeightPlayAudio?.setGameActive?.(isStage);
-    window.WeightPlayGame?.updateVisualViewportVars?.();
-    requestAnimationFrame(updateStageScale);
   }
 
   function t(key, data = {}) {
@@ -583,6 +588,112 @@
     if (locale === "zh-Hant") return stage.ruleZh;
     if (locale === "es") return stage.ruleEs;
     return stage.ruleEn;
+  }
+
+  function stageConfig() {
+    return {
+      gameId: GAME_ID,
+      count: stages.length,
+      poster: "/assets/animal-vine-rescue-cover.png",
+      background: "/assets/animal-vine-rescue-game-bg.webp",
+      stage(index) {
+        const stage = stages[index];
+        const stageNo = index + 1;
+        const firstRoute = routeFor(stage, 0);
+        const locked = stageNo > save.unlocked;
+        const stars = save.stars[stageNo] || 0;
+        const routeLabel = `${t(firstRoute.fruit)} → ${t(firstRoute.animal)}`;
+        return {
+          id: stageNo,
+          kicker: t("stageLabel", { n: stageNo }),
+          title: stageTitle(stage),
+          subtitle: routeLabel,
+          status: locked ? t("locked") : stars ? `${stars} ★` : t("start"),
+          summary: stageRule(stage),
+          details: [
+            routeLabel,
+            stageRule(stage),
+            stage.checkpoint ? t("checkpoint") : "",
+            stageRoutes(stage).length > 1 ? `${stageRoutes(stage).length}×` : "",
+          ],
+          poster: `/games/${GAME_ID}/${assets[firstRoute.animal]}`,
+          locked,
+          cleared: stars > 0,
+        };
+      },
+    };
+  }
+
+  function syncStageHeader(index = stageUI?.selected ?? Math.max(0, save.unlocked - 1)) {
+    const stageNo = Math.max(1, Math.min(stages.length, index + 1));
+    if (stageHeaderCurrent) stageHeaderCurrent.textContent = t("stageLabel", { n: stageNo });
+    if (stageHeaderProgress) stageHeaderProgress.textContent = `${save.unlocked}/${stages.length}`;
+  }
+
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) {
+      throw new Error("ANIMAL_VINE_RESCUE_I9_SHARED_RUNTIME_MISSING");
+    }
+    const mainPanel = $("menuPanel");
+    const mainHeader = $("mainHeader");
+    const mainContent = $("mainContent");
+    const stageHeader = $("stageHeader");
+    const stageWorkspace = $("stageWorkspace");
+    const stageRail = $("stageRail");
+    const battleHeader = $("battleHeader");
+    const battleWorkspace = $("battleWorkspace");
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: $("gameFrame"),
+      localeSelect: nodes.localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: mainPanel, header: mainHeader, content: mainContent },
+        stage: { root: nodes.stagePanel, header: stageHeader, content: stageWorkspace },
+        battle: { root: nodes.gamePanel, header: battleHeader, content: battleWorkspace },
+      },
+    });
+
+    const makeStat = (labelKey, valueId) => {
+      const stat = document.createElement("div");
+      stat.className = "hud-pill";
+      const label = document.createElement("span");
+      label.dataset.ui = labelKey;
+      label.textContent = t(labelKey);
+      const value = document.createElement("strong");
+      value.id = valueId;
+      stat.append(label, value);
+      return { stat, value };
+    };
+    const stageNumber = makeStat("stage", "stageHeaderCurrent");
+    const stageProgress = makeStat("stageProgress", "stageHeaderProgress");
+    stageHeaderCurrent = stageNumber.value;
+    stageHeaderProgress = stageProgress.value;
+    screenFrame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageNumber.stat).add(stageProgress.stat));
+
+    const battleStage = makeStat("stage", "stageText");
+    const battleDelivery = makeStat("score", "scoreText");
+    nodes.stageText = battleStage.value;
+    nodes.scoreText = battleDelivery.value;
+    screenFrame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(battleStage.stat).add(battleDelivery.stat));
+
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: stageWorkspace,
+      rail: stageRail,
+      config: stageConfig(),
+      selected: Math.max(0, save.unlocked - 1),
+      onSelect(index, { locked, source } = {}) {
+        syncStageHeader(index);
+        if (locked && source === "activation") showToast(t("locked"));
+      },
+      onStart(index) {
+        setupStage(index + 1);
+        show(nodes.gamePanel);
+        requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
+      },
+      isActive: () => screenFrame.active === "stage" && !nodes.stagePanel.classList.contains("hidden"),
+    });
+    syncStageHeader();
+    screenFrame.activate("main");
   }
 
   function stageRoutes(stage) {
@@ -641,6 +752,7 @@
     document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", t("backToLobby"));
     nodes.stagePanel.setAttribute("aria-label", t("stages"));
     nodes.localeSelect.setAttribute("aria-label", t("language"));
+    nodes.stageMainBackBtn.setAttribute("aria-label", t("backToMain"));
     nodes.stageBackBtn.setAttribute("aria-label", t("backToStages"));
     nodes.playfield.setAttribute("aria-label", t("playfield"));
     nodes.vineButton.setAttribute("aria-label", t("cutVine"));
@@ -663,6 +775,10 @@
     setStageState(panel === nodes.stagePanel);
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
+    const scene = panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : "battle";
+    screenFrame?.activate(scene, {
+      covered: scene === "battle" && (!nodes.resultPanel.classList.contains("hidden") || leaveOpen),
+    });
     if (panel === nodes.gamePanel) {
       window.dispatchEvent(new Event("weightplay:stage-sync"));
       window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -671,7 +787,7 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-    window.scrollTo({ top: 0, left: 0, behavior: panel === nodes.gamePanel ? "auto" : "smooth" });
+    if (scene === "stage") stageUI?.refresh();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : panel === nodes.gamePanel ? "battle" : null] ?? null;
       if (["result"].includes(panel === nodes.menuPanel ? "main" : panel === nodes.stagePanel ? "stage" : panel === nodes.gamePanel ? "battle" : null) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -680,57 +796,16 @@
 }
 
   function renderStages() {
-    const stageReturn = nodes.stagePanel.querySelector("[data-stage-main]");
-    const stageTitleNode = nodes.stagePanel.querySelector("#stagePanelTitle");
-    const stageHint = nodes.stagePanel.querySelector("#stagePanelHint");
-    const rail = nodes.stagePanel.querySelector("#stageRail");
-    if (!stageReturn || !stageTitleNode || !stageHint || !rail) return;
-    stageReturn.setAttribute("aria-label", t("backToMain"));
-    stageTitleNode.textContent = t("stages");
-    stageHint.textContent = t("menuHint");
-    rail.innerHTML = stages
-      .map((stage, index) => {
-        const stageNo = index + 1;
-        const locked = stageNo > save.unlocked;
-        const got = save.stars[stageNo] || 0;
-        return `
-          <button class="stage-card ${locked ? "locked" : ""}" type="button" data-stage="${stageNo}" aria-disabled="${locked ? "true" : "false"}">
-            ${stage.checkpoint ? `<img class="stage-checkpoint" src="${assets.panko}" alt="" aria-hidden="true" />` : ""}
-            <strong>${t("stageLabel", { n: stageNo })} · ${stageTitle(stage)}</strong>
-            <span class="stage-card-route" aria-hidden="true">
-              <img src="${assets[routeFor(stage, 0).fruit]}" alt="" />
-              <b>→</b>
-              <img src="${assets[routeFor(stage, 0).animal]}" alt="" />
-            </span>
-            <small>${stageRule(stage)}</small>
-            <small>${t(routeFor(stage, 0).fruit)} → ${t(routeFor(stage, 0).animal)}${stageRoutes(stage).length > 1 ? ` · ${stageRoutes(stage).length}×` : ""}</small>
-            ${stage.checkpoint ? `<small class="stage-card-check">${t("checkpoint")}</small>` : ""}
-            ${locked ? `<small class="stage-card-lock">${t("locked")}</small>` : ""}
-            <span>${"★".repeat(got)}${"☆".repeat(3 - got)}</span>
-          </button>
-        `;
-      })
-      .join("");
-  }
-
-  function focusStage(stageNo = save.unlocked) {
-    requestAnimationFrame(() => {
-      const rail = nodes.stagePanel.querySelector(".stage-rail");
-      const card = rail?.querySelector(`[data-stage="${Math.max(1, Math.min(stages.length, stageNo))}"]`);
-      if (!rail || !card || nodes.stagePanel.classList.contains("hidden")) return;
-      rail.scrollTo({
-        left: Math.max(0, card.offsetLeft + card.offsetWidth / 2 - rail.clientWidth / 2),
-        behavior: "instant",
-      });
-      card.focus({ preventScroll: true });
-    });
+    if (!stageUI) return;
+    stageUI.setConfig(stageConfig(), stageUI.selected);
+    syncStageHeader();
   }
 
   function showStages(stageNo = save.unlocked) {
     resetPlayPointer();
     renderStages();
     show(nodes.stagePanel);
-    focusStage(stageNo);
+    stageUI?.select(Math.max(0, Math.min(stages.length - 1, stageNo - 1)), { center: true, focus: true });
   }
 
   function setupStage(stageNo, measurementNewRound = true) {
@@ -922,6 +997,7 @@
   const liveBattleRegions = () => [nodes.gamePanel.querySelector(".hud-row"), nodes.playfield, nodes.cutNowBtn, nodes.hintText].filter(Boolean);
 
   function setLiveBattleCovered(covered) {
+    screenFrame?.activate("battle", { covered });
     liveBattleRegions().forEach((region) => {
       region.inert = covered;
       if (covered) region.setAttribute("aria-hidden", "true");
@@ -1021,6 +1097,7 @@
       action.classList.toggle("result-secondary", action !== primaryAction);
     });
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("hidden"));
+    screenFrame?.activate("battle", { covered: true });
     primaryAction.focus({ preventScroll: true });
     window.WeightPlayAudio?.play?.(success ? "result.win" : "result.lose");
 
@@ -1093,23 +1170,8 @@
   nodes.startBtn.addEventListener("click", () => {
     showStages(save.unlocked);
   });
+  nodes.stageMainBackBtn.addEventListener("click", () => show(nodes.menuPanel));
   nodes.stageBackBtn.addEventListener("click", openLeaveDecision);
-  nodes.stagePanel.addEventListener("click", (event) => {
-    if (event.target.closest("[data-stage-main]")) {
-      show(nodes.menuPanel);
-      return;
-    }
-    const button = event.target.closest("[data-stage]");
-    if (!button) return;
-    const stageNo = Number(button.dataset.stage);
-    if (stageNo > save.unlocked) {
-      showToast(t("locked"));
-      return;
-    }
-    setupStage(stageNo);
-    show(nodes.gamePanel);
-    requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
-  });
   nodes.vineButton.addEventListener("pointerdown", (event) => {
     if (!claimPlayPointer(event)) return;
     event.preventDefault();
@@ -1161,11 +1223,13 @@
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    screenFrame?.activate("battle");
     setupStage(currentStage + 1);
     requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
   });
   nodes.retryBtn.addEventListener("click", () => {
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("hidden"));
+    screenFrame?.activate("battle");
     __wpReplayStart(() => setupStage(currentStage));
     requestAnimationFrame(() => nodes.leafPaddle.focus({ preventScroll: true }));
   });
@@ -1196,81 +1260,10 @@
   });
 
   nodes.localeSelect.value = window.WonderI18n?.actualLocale?.() || locale;
+  mountSharedInterface();
   setLocale(locale);
 
-  function updateStageScale() {
-    if (!document.body.classList.contains("is-vine-stage-select")) return;
-    const viewport = window.visualViewport;
-    const layoutWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
-    const viewportWidth = Math.min(layoutWidth, 920);
-    const viewportHeight = document.documentElement.clientHeight || window.innerHeight || viewport?.height;
-    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
-    const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 430;
-    const minimumWidth = shortLandscape ? 760 : 390;
-    const minimumHeight = shortLandscape ? 360 : 788;
-    const scale = Math.max(0.01, Math.min(viewportWidth / minimumWidth, viewportHeight / minimumHeight));
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    document.documentElement.style.setProperty("--vine-stage-scale", String(scale));
-    document.documentElement.style.setProperty("--vine-stage-inverse-scale", String(1 / scale));
-    document.documentElement.style.setProperty("--vine-stage-logical-width", `${logicalWidth}px`);
-    document.documentElement.style.setProperty("--vine-stage-logical-height", `${logicalHeight}px`);
-    document.documentElement.style.setProperty("--vine-stage-left", `${frameLeft}px`);
-    document.documentElement.style.setProperty("--vine-stage-top", "0px");
-    nodes.stagePanel.dataset.commonScale = scale.toFixed(6);
-    nodes.stagePanel.dataset.logicalWidth = logicalWidth.toFixed(4);
-    nodes.stagePanel.dataset.logicalHeight = logicalHeight.toFixed(4);
-  }
-
-  function updateBattleScale() {
-    if (!document.body.classList.contains("is-vine-playing")) return;
-    const viewport = window.visualViewport;
-    const layoutWidth = document.documentElement.clientWidth || window.innerWidth || viewport?.width;
-    const viewportWidth = Math.min(layoutWidth, 920);
-    const viewportHeight = document.documentElement.clientHeight || window.innerHeight || viewport?.height;
-    const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
-    const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 430;
-    const minimumWidth = shortLandscape ? 760 : 382;
-    const minimumHeight = shortLandscape ? 360 : 780;
-    const scale = Math.max(0.01, Math.min(viewportWidth / minimumWidth, viewportHeight / minimumHeight));
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    const root = document.documentElement;
-    root.style.setProperty("--wp-battle-logical-width", `${logicalWidth}px`);
-    root.style.setProperty("--wp-battle-logical-height", `${logicalHeight}px`);
-    root.style.setProperty("--wp-battle-canvas-scale", String(scale));
-    root.style.setProperty("--vine-battle-scale", String(scale));
-    nodes.gamePanel.dataset.commonScale = scale.toFixed(6);
-    nodes.gamePanel.dataset.logicalWidth = logicalWidth.toFixed(4);
-    nodes.gamePanel.dataset.logicalHeight = logicalHeight.toFixed(4);
-    nodes.gamePanel.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
-    Object.entries({
-      position: "fixed",
-      inset: "auto",
-      top: "0px",
-      left: `${frameLeft}px`,
-      width: `${logicalWidth}px`,
-      minWidth: `${logicalWidth}px`,
-      maxWidth: `${logicalWidth}px`,
-      height: `${logicalHeight}px`,
-      minHeight: `${logicalHeight}px`,
-      maxHeight: `${logicalHeight}px`,
-      margin: "0px",
-      transform: `scale(${scale})`,
-      transformOrigin: "top left",
-      overflow: "hidden",
-    }).forEach(([property, value]) => nodes.gamePanel.style.setProperty(property.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`), value, "important"));
-  }
-
-  window.addEventListener("resize", updateStageScale);
-  window.addEventListener("orientationchange", updateStageScale);
-  window.visualViewport?.addEventListener("resize", updateStageScale);
-  window.visualViewport?.addEventListener("scroll", updateStageScale);
-  window.addEventListener("resize", updateBattleScale);
-  window.addEventListener("orientationchange", updateBattleScale);
-  window.visualViewport?.addEventListener("resize", updateBattleScale);
-
-  const testMode = ["127.0.0.1", "localhost"].includes(location.hostname) || new URLSearchParams(location.search).has("wp_test");
+  const testMode = ["127.0.0.1", "localhost"].includes(location.hostname);
   if (testMode) {
     const snapshot = () => {
       const stage = stages[currentStage - 1];

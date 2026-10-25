@@ -42,52 +42,6 @@ select {
   overflow-x: clip;
 }
 
-html.is-vine-playing,
-body.is-vine-playing {
-  width: 100% !important;
-  height: 100svh !important;
-  max-height: 100svh !important;
-  overflow: hidden !important;
-  overscroll-behavior: none !important;
-  touch-action: none !important;
-}
-
-body.is-vine-playing {
-  position: fixed !important;
-  inset: 0 !important;
-}
-
-html.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode),
-html:not(.wp-mobile-game-mode):has(body.has-game-page-info.is-vine-playing),
-body.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode) {
-  width: 100% !important;
-  height: 100svh !important;
-  min-height: 100svh !important;
-  max-height: 100svh !important;
-  overflow: hidden !important;
-  overscroll-behavior: none !important;
-  touch-action: none !important;
-}
-
-body.has-game-page-info.is-vine-playing:not(.wp-mobile-game-mode) {
-  position: fixed !important;
-  inset: 0 !important;
-}
-
-body.is-vine-playing .vine-app {
-  min-height: 100svh;
-  height: 100svh;
-  grid-template-rows: minmax(0, 1fr);
-  align-content: start;
-  gap: 0;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  overflow: hidden;
-}
-
-body.is-vine-playing .game-page-info {
-  display: none !important;
-}
-
 .topbar {
   position: relative;
   z-index: 4;
@@ -115,10 +69,7 @@ body.is-vine-playing .game-page-info {
   line-height: 1;
 }
 
-.icon-btn,
-.soft-btn,
 .menu-copy button,
-.stage-card,
 .result-card button,
 .result-card a {
   min-height: 44px;
@@ -173,14 +124,6 @@ body.is-vine-stage-select .wp-stage-shell-header > .wp-shell-settings[data-wp-po
   color: #3b2815;
   font-size: 1.35rem;
   font-weight: 950;
-}
-
-.stage-rail {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  overflow-y: auto;
 }
 
 .language-picker {
@@ -261,88 +204,6 @@ body.is-vine-stage-select .wp-stage-shell-header > .wp-shell-settings[data-wp-po
   box-shadow: inset 0 0 0 2px #d4a74d, 0 5px 0 #815024, 0 10px 18px rgba(55, 34, 12, .16);
 }
 
-.stage-panel {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.stage-card {
-  position: relative;
-  min-height: 88px;
-  padding: 10px;
-  align-content: center;
-  gap: 4px;
-}
-
-.stage-card-route {
-  width: 100%;
-  min-height: 46px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 5px;
-  align-items: center;
-  justify-items: center;
-}
-
-.stage-card-route img {
-  width: min(42px, 100%);
-  height: 42px;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 7px rgba(55, 34, 12, .18));
-  pointer-events: none;
-}
-
-.stage-card-route b {
-  color: #6b431b;
-  font-size: 1.05rem;
-  line-height: 1;
-}
-
-.stage-card small {
-  color: rgba(58, 40, 21, .72);
-  font-size: .72rem;
-  font-weight: 950;
-}
-
-.stage-card.locked {
-  filter: grayscale(1);
-  opacity: .62;
-}
-
-.stage-card > strong {
-  max-width: calc(100% - 42px);
-  line-height: 1.12;
-}
-
-.stage-checkpoint {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 5px rgba(55, 34, 12, .22));
-}
-
-.stage-card .stage-card-check {
-  color: #704312;
-  font-weight: 1000;
-}
-
-.stage-card .stage-card-lock {
-  color: #6f2f1f;
-  font-size: .78rem;
-  font-weight: 1000;
-}
-
-.hud-row {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
-  gap: 8px;
-  align-items: center;
-}
-
 .hud-pill {
   min-height: 44px;
   border-radius: 16px;
@@ -354,19 +215,6 @@ body.is-vine-stage-select .wp-stage-shell-header > .wp-shell-settings[data-wp-po
   background: rgba(255,255,255,.92);
   box-shadow: 0 8px 16px rgba(54, 39, 19, .16);
   font-weight: 950;
-}
-
-.game-panel {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
-  gap: 10px;
-  width: min(100%, 640px);
-  max-width: 100%;
-  height: min(760px, calc(100svh - 94px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
-  min-height: 0;
-  max-height: min(760px, calc(100svh - 94px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
-  margin: 0 auto;
-  overflow: hidden;
 }
 
 .playfield {
@@ -747,74 +595,6 @@ body.is-vine-playing #gamePanel .result-panel:not(.hidden):not(.is-hidden) {
   50% { opacity: .96; }
 }
 
-html:has(body.is-vine-stage-select),
-body.is-vine-stage-select {
-  width: 100%;
-  height: 100dvh;
-  overflow: hidden !important;
-}
-
-body.is-vine-stage-select {
-  position: fixed;
-  inset: 0;
-}
-
-body.is-vine-stage-select .topbar,
-body.is-vine-stage-select .game-page-info,
-body.is-vine-stage-select .wp-tutorial-button,
-body.is-vine-stage-select .weightplay-version-badge,
-body.is-vine-stage-select .sound-toggle {
-  display: none !important;
-}
-
-body.is-vine-stage-select .vine-app {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100dvh;
-  min-height: 100dvh;
-  padding: 0;
-  overflow: hidden;
-}
-
-body.is-vine-stage-select .stage-panel {
-  position: fixed;
-  top: var(--vine-stage-top, 4px);
-  left: var(--vine-stage-left, 0px);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 48px minmax(0, 1fr);
-  width: var(--vine-stage-logical-width, 390px);
-  min-width: var(--vine-stage-logical-width, 390px);
-  max-width: var(--vine-stage-logical-width, 390px);
-  height: var(--vine-stage-logical-height, 788px);
-  min-height: var(--vine-stage-logical-height, 788px);
-  max-height: var(--vine-stage-logical-height, 788px);
-  gap: 8px;
-  padding: 8px;
-  overflow: hidden;
-  transform: scale(var(--vine-stage-scale, 1));
-  transform-origin: top left;
-}
-
-body.is-vine-stage-select .stage-rail {
-  display: flex;
-  grid-template-columns: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-inline: 55px;
-  scroll-snap-type: x mandatory;
-  touch-action: pan-x;
-  scrollbar-width: none;
-}
-
-body.is-vine-stage-select .stage-card {
-  flex: 0 0 264px;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  touch-action: pan-x;
-}
-
 @media (max-width: 560px) {
   .vine-app {
     width: 100%;
@@ -1142,5 +922,5 @@ body.is-vine-playing .hint-text {
   min-height: 38px;
   padding: 10px 8px 2px;
   line-height: 1.3;
-  color: #315528 !important;
+  color: #eef7f6 !important;
 }

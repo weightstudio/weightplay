@@ -1,4 +1,10 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "blade-orbit": {
+    "en": "Blade Orbit", "zh-Hant": "劍陣無雙", "zh-Hans": "剑阵无双",
+    "ja": "ブレードオービット", "ko": "블레이드 오비트", "es": "Órbita de espadas",
+    "pt-BR": "Órbita de lâminas", "fr": "Orbite des lames", "de": "Klingenorbit",
+    "it": "Orbita di lame", "ru": "Орбита клинков", "hi": "तलवारों की कक्षा", "ar": "مدار السيوف"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

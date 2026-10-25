@@ -1,6 +1,7 @@
 // Canonical poster delivery. Pending redraws retain original artwork.
 // Only individually generated and inspected images replace originals.
 window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
+  "signal-snap": "/games/signal-snap/poster.webp",
   "fusekeep": "/assets/fusekeep/poster.webp",
   "alien-defender": "/assets/interface7-redrawn/alien-defender.webp",
   "animal-2048": "/assets/interface7-redrawn/animal-2048.webp",
@@ -189,6 +190,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "puppy-haven": "/games/puppy-haven/assets/cover-block-v1.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
+  "/games/signal-snap/poster.webp": "/games/signal-snap/poster.webp",
   "/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp": "/assets/lobby-thumbs/w480/assets__animal-sketchwheel-rally__animal-sketchwheel-rally-cover-v18.webp",
   "/assets/fusekeep/poster.webp": "/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp",
   "/assets/castle-cascade-poster.webp": "/assets/lobby-thumbs/w480/assets__castle-cascade-poster.webp",
