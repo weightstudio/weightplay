@@ -43,7 +43,7 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
 .wp-tutorial-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 200;
   display: grid;
   place-items: center;
   padding: calc(18px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
@@ -53,7 +53,9 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
 }
 
 .wp-tutorial-card {
-  width: min(94vw, 430px);
+  box-sizing: border-box;
+  width: min(430px, 100%);
+  max-width: 100%;
   max-height: min(86svh, 620px);
   overflow: auto;
   border-radius: 22px;
@@ -132,7 +134,7 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
 /* Golf teaches the rule with a picture first. The three diagrams carry the
    sequence, exposed-card, and Stock concepts so the copy can stay short. */
 .wp-tutorial-card.golf-tutorial {
-  width: min(94vw, 470px);
+  width: min(470px, 100%);
 }
 
 .golf-tutorial .wp-tutorial-steps { gap: 8px; }
@@ -164,6 +166,85 @@ body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-t
   color: #182133;
   font: 900 1rem/1 system-ui, sans-serif;
   box-shadow: inset 0 -5px rgba(0, 0, 0, 0.08);
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .wp-tutorial-backdrop {
+    align-items: center;
+    padding: calc(82px + env(safe-area-inset-top)) 10px 8px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .wp-tutorial-card {
+    width: min(760px, 100%);
+    max-height: calc(100svh - 98px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+  }
+
+  .wp-tutorial-head {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wp-tutorial-head strong {
+    font-size: clamp(1rem, 4svh, 1.4rem);
+  }
+
+  .wp-tutorial-close {
+    width: 34px;
+    height: 34px;
+  }
+
+  .wp-tutorial-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .wp-tutorial-step {
+    min-height: 0;
+    padding: 7px;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .wp-tutorial-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    font-size: 1rem;
+  }
+
+  .wp-tutorial-copy b {
+    font-size: .84rem;
+  }
+
+  .wp-tutorial-copy span {
+    font-size: .72rem;
+    line-height: 1.15;
+  }
+
+  .wp-tutorial-action {
+    min-height: 38px;
+  }
+
+  .wp-tutorial-card.golf-tutorial {
+    width: min(760px, 100%);
+  }
+
+  .golf-tutorial .wp-tutorial-step {
+    min-height: 0;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .golf-tutorial .wp-tutorial-visual {
+    width: 72px;
+    height: 42px;
+  }
 }
 
 @keyframes wp-tutorial-fade {

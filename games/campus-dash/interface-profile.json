@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "gameId": "campus-dash",
+  "interfaceVersion": "9",
+  "audience": "kids",
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": { "enabled": true },
+  "battle": { "enabled": true },
+  "components": { "main": 1, "stage": 1, "battle": 1, "result": 1, "accessibility": 1 },
+  "result": "BATTLE_SUBSTATE",
+  "reserve": "NONE_BANNER_ADS_DISABLED"
+}

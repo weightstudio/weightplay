@@ -8015,3 +8015,15 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "/games/meadow-touchdown/assets/cover.webp", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("meadow-touchdown");
+
+// Owner-requested original life story game; playable candidate remains Coming Soon.
+window.WONDER_LOBBY.games.push({
+  id: "smallwood-lives", audience: "general", status: "planned", internalOnly: true,
+  internalTrial: "index.html?preview=1", href: "games/smallwood-lives/",
+  title: { en: "Smallwood Lives", "zh-Hant": "林間一生", "zh-Hans": "林间一生", ja: "小さな森の一生", ko: "작은 숲의 일생", es: "Vidas del bosque", "pt-BR": "Vidas na floresta", fr: "Vies du petit bois", de: "Waldleben", it: "Vite nel bosco", ru: "Жизни в лесу", hi: "नन्हे वन का जीवन", ar: "حياة الغابة الصغيرة" },
+  type: { en: "Life simulation", "zh-Hant": "人生模擬", "zh-Hans": "人生模拟", ja: "人生シミュレーション", ko: "인생 시뮬레이션", es: "Simulación de vida", "pt-BR": "Simulação de vida", fr: "Simulation de vie", de: "Lebenssimulation", it: "Simulazione di vita", ru: "Симулятор жизни", hi: "जीवन सिमुलेशन", ar: "محاكاة الحياة" },
+  description: { en: "Live twelve seasons, keep promises, and collect memories across thirty woodland lives.", "zh-Hant": "走過十二季，選擇陪伴、手藝與探索，在三十段林間人生收藏自己的回憶。", "zh-Hans": "走过十二季，选择陪伴、手艺与探索，在三十段林间人生收藏自己的回忆。", ja: "十二の季節を過ごし、約束を守り、三十の森の人生から思い出を集めよう。", ko: "열두 계절을 보내고 약속을 지키며 서른 번의 숲속 삶에서 추억을 모으세요.", es: "Vive doce estaciones, cumple promesas y reúne recuerdos de treinta vidas del bosque.", "pt-BR": "Viva doze estações, cumpra promessas e guarde lembranças de trinta vidas na floresta.", fr: "Traversez douze saisons, tenez vos promesses et recueillez les souvenirs de trente vies en forêt.", de: "Erlebe zwölf Jahreszeiten, halte Versprechen und sammle Erinnerungen aus dreißig Waldleben.", it: "Vivi dodici stagioni, mantieni le promesse e raccogli ricordi di trenta vite nel bosco.", ru: "Проживите двенадцать сезонов, сдержите обещания и соберите воспоминания тридцати лесных жизней.", hi: "बारह ऋतुएँ जिएँ, वादे निभाएँ और जंगल के तीस जीवनों की यादें सँजोएँ।", ar: "عش اثني عشر موسمًا، وأوفِ بوعودك، واجمع ذكريات ثلاثين حياة في الغابة." },
+  categories: ["Simulation", "Strategy", "Animal Games"], skills: ["Planning", "Creativity", "Focus"], ages: ["13", "family"],
+  art: { kind: "image", background: "/games/smallwood-lives/assets/cover.webp", hideHero: true }
+});
+window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");

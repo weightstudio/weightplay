@@ -1,4 +1,4 @@
-import {STAGES} from './stages.mjs?v=4';
+import {STAGES} from './stages.mjs?v=5';
 export const STORE='weightplay:blade-orbit:v1';
 export const LIMITS={swords:24,enemies:100,pickups:220,effects:120,hazards:48,projectiles:100};
 export const ENEMIES={
@@ -33,7 +33,7 @@ export class Run {
  constructor(stageId,save,{seed=Date.now(),practice=false}={}){
   this.stage=STAGES[clamp(stageId-1,0,29)];this.save=save;this.practice=practice;this.seed=seed>>>0||1;
   this.time=0;this.state='running';this.id=0;this.events=[];this.enemies=[];this.pickups=[];this.projectiles=[];this.hazards=[];this.effects=[];
-  this.level=1;this.xp=0;this.nextXP=7;this.kills=0;this.runCoins=0;this.objectives=0;this.swords=3;this.rotation=0;
+  this.level=1;this.xp=0;this.nextXP=7;this.kills=0;this.runCoins=0;this.objectives=0;this.swords=3;this.rotation=0;this.lastDamage=null;
   this.up={speed:0,power:0,reach:0,magnet:0,haste:0,heal:0,blade:0,evolve:0};this.path='';this.chosenPath=false;this.options=[];
   this.player={x:0,z:0,vx:0,vz:0,health:100+save.training.vitality*12,maxHealth:100+save.training.vitality*12,inv:0,dash:0,dashCD:0,face:0};
   this.spawnClock=1;this.lootClock=7;this.hazardClock=4;this.wave=0;this.eliteClock=19;this.introduced=new Set();this.bossSpawned=false;this.bossDefeated=false;this.settled=false;this.combo=0;this.comboTimer=0;this.bestCombo=0;
@@ -164,18 +164,20 @@ export class Run {
    if(!e.boss&&e.kind!=='nests'&&d>.01){e.x+=dx/d*.16;e.z+=dz/d*.16;}
    if(this.path==='ember')e.burn=this.up.evolve?3:1.8;
    if(this.path==='frost')e.slow=this.up.evolve?3:1.5;
-   if(this.path==='storm'){let links=0;for(const other of this.enemies){if(other!==e&&other.hp>0&&d2(e,other)<(this.up.evolve?16:7)&&links<(this.up.evolve?3:1)){const chainDamage=Math.min(other.hp,amount*.45);other.hp-=chainDamage;other.flash=.13;this.emit('chain',{x:e.x,z:e.z,toX:other.x,toZ:other.z,amount:Math.round(chainDamage)});links++;if(other.hp<=0)this.defeat(other);}}}
-   this.emit('hit',{x:e.x,z:e.z,amount:Math.round(applied),critical,element:this.path,angle:a});
+   if(this.path==='storm'){let links=0;for(const other of this.enemies){if(other!==e&&other.hp>0&&d2(e,other)<(this.up.evolve?16:7)&&links<(this.up.evolve?3:1)){const chainDamage=Math.min(other.hp,amount*.45);other.hp-=chainDamage;other.flash=.13;this.emit('chain',{targetId:other.id,x:e.x,z:e.z,toX:other.x,toZ:other.z,amount:Math.round(chainDamage)});links++;if(other.hp<=0)this.defeat(other);}}}
+   this.emit('hit',{targetId:e.id,x:e.x,z:e.z,amount:Math.round(applied),critical,element:this.path,angle:a});
    if(e.hp<=0&&e.kind!=='nests')this.defeat(e);return;
   }
  }
- hurt(amount,source){const p=this.player;if(p.inv>0||this.state!=='running')return;p.health=Math.max(0,p.health-amount);p.inv=1;this.emit('hurt',{amount,x:p.x,z:p.z});}
+ hurt(amount,source={}){const p=this.player;if(p.inv>0||this.state!=='running'||amount<=0)return;
+  const kind=source.kind==='blast'?'blast':source.mode==='charge'?'charge':source.kind==='projectile'?'projectile':['lava','storm','curse','crown','ring'].includes(source.kind)?'ground':'contact';
+  const applied=Math.min(p.health,amount);this.lastDamage={kind,amount:applied};p.health=Math.max(0,p.health-amount);p.inv=1;this.emit('hurt',{amount:applied,kind,x:p.x,z:p.z});}
  defeat(e){if(e.defeated)return;e.defeated=true;e.hp=0;this.kills++;this.combo++;this.comboTimer=2;this.bestCombo=Math.max(this.bestCombo,this.combo);this.runCoins+=e.boss?30:1;
   this.drop('xp',e.x,e.z,e.boss?12:1);if(this.kills%4===0)this.drop('sword',e.x+.25,e.z);if(this.kills%19===0)this.drop('heal',e.x,e.z);
   if(e.kind==='splitter'){this.spawn('small',0,e.x-.4,e.z);this.spawn('small',0,e.x+.4,e.z);}
   if(e.boss)this.bossDefeated=true;this.emit('defeat',{x:e.x,z:e.z,boss:e.boss,elite:e.elite,kind:e.kind});
  }
- shoot(e,dx,dz){if(this.projectiles.length<LIMITS.projectiles)this.projectiles.push({id:++this.id,x:e.x,z:e.z,vx:dx*4.2,vz:dz*4.2,life:6});}
+ shoot(e,dx,dz){if(this.projectiles.length<LIMITS.projectiles)this.projectiles.push({id:++this.id,kind:'projectile',x:e.x,z:e.z,vx:dx*4.2,vz:dz*4.2,life:6});}
  bossAction(e,dx,dz,dist){
   if(e.attack>0)return;e.phase++;
   const type=e.boss===6?1+e.phase%3:e.boss;
@@ -188,11 +190,12 @@ export class Run {
   this.emit('bossAttack',{boss:e.boss,pattern:type});
  }
  collect(item){
+  const swords=this.swords,xp=this.xp,health=this.player.health;
   if(item.kind==='xp')this.xp+=item.value;
   else if(item.kind==='sword'){if(this.swords<LIMITS.swords)this.swords++;else this.xp+=2;}
   else if(item.kind==='heal')this.player.health=Math.min(this.player.maxHealth,this.player.health+25);
   else if(item.kind==='cache'){this.swords=Math.min(LIMITS.swords,this.swords+3);this.xp+=4;this.runCoins+=5;if(this.stage.rule==='caches')this.objectives++;}
-  this.emit('pickup',{kind:item.kind,x:item.x,z:item.z});
+  this.emit('pickup',{kind:item.kind,x:item.x,z:item.z,swordsAdded:this.swords-swords,xpAdded:this.xp-xp,healthAdded:this.player.health-health});
  }
  levelUp(){this.xp-=this.nextXP;this.level++;this.nextXP=Math.floor(6+this.level*2.2);this.player.health=Math.min(this.player.maxHealth,this.player.health+5);this.state='upgrade';
   if(this.level>=3&&!this.chosenPath)this.options=['ember','frost','storm'];
@@ -209,7 +212,7 @@ export class Run {
  settle(){if(this.settled||!['won','lost'].includes(this.state))return null;this.settled=true;const won=this.state==='won',first=!this.save.stars[this.stage.id-1];const stars=won?1+(this.player.health/this.player.maxHealth>=.4?1:0)+(this.player.health/this.player.maxHealth>=.75?1:0):0;
   const gold=this.runCoins+(won?(first?this.stage.reward:Math.floor(this.stage.reward/4)):0);
   if(!this.practice){this.save.coins=Math.min(999999,this.save.coins+gold);this.save.stars[this.stage.id-1]=Math.max(stars,this.save.stars[this.stage.id-1]);if(won)this.save.unlocked=Math.max(this.save.unlocked,Math.min(30,this.stage.id+1));this.save.tutorial=true;}
-  return {won,stars,gold,first,kills:this.kills,swords:this.swords,level:this.level,time:this.time,combo:this.bestCombo,practice:this.practice};
+  return {won,stars,gold,first,kills:this.kills,swords:this.swords,level:this.level,time:this.time,combo:this.bestCombo,practice:this.practice,lastDamage:this.lastDamage?{...this.lastDamage}:null,objectives:this.objectives};
  }
 }
 export function train(save,key){if(!Object.hasOwn(save.training,key))return false;const level=save.training[key],cost=50+level*45;if(level>=5||save.coins<cost)return false;save.coins-=cost;save.training[key]++;return true;}

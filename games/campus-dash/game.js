@@ -68,6 +68,7 @@
   const homeLink = document.querySelector("#homeLink");
   const startTitle = document.querySelector("#startTitle");
   const startText = document.querySelector("#startText");
+  const mainProgress = document.querySelector("#mainProgress");
   const controlChips = document.querySelector("#controlChips");
   const startBtn = document.querySelector("#startBtn");
   const stagePanel = document.querySelector("#stagePanel");
@@ -444,21 +445,21 @@
   }
 
   function setLeaveOpen(open, restoreFocus = true) {
-    if (open === leaveOpen) return;
+    const changed = open !== leaveOpen;
     (__wpNotifyMeasurement(), leaveOpen = open);
-    clearPointerInput();
+    if (changed) clearPointerInput();
     (__wpNotifyMeasurement(), leavePanel.classList.toggle("hidden", !open));
     battleContent.inert = open;
     battleHeader.inert = open;
     if (open) {
       battleContent.setAttribute("aria-hidden", "true");
       battleHeader.setAttribute("aria-hidden", "true");
-      keepRunningBtn.focus({ preventScroll: true });
+      if (changed) keepRunningBtn.focus({ preventScroll: true });
     } else {
       battleContent.removeAttribute("aria-hidden");
       battleHeader.removeAttribute("aria-hidden");
-      lastTime = performance.now();
-      if (restoreFocus) battleBackBtn.focus({ preventScroll: true });
+      if (changed) lastTime = performance.now();
+      if (changed && restoreFocus) battleBackBtn.focus({ preventScroll: true });
     }
   }
 
@@ -531,6 +532,7 @@
     comboLabel.textContent = t("combo");
     startTitle.textContent = t("startTitle");
     startText.textContent = t("startText");
+    mainProgress.textContent = t("stageProgress", { unlocked: progress.unlocked });
     controlChips.innerHTML = [t("controlTap"), t("controlSwipe"), t("controlKeyboard")].map((item) => `<span>${item}</span>`).join("");
     startBtn.textContent = t("start");
     stageBackBtn.setAttribute("aria-label", t("backToMenu"));
@@ -709,6 +711,7 @@
     lastTime = performance.now();
     window.WeightPlayAudio?.play("ui.click");
     syncSharedScene("battle");
+    setLeaveOpen(false, false);
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale: locale() });
     requestAnimationFrame(loop);
     requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
@@ -874,6 +877,7 @@
       saveProgress();
     }
     stageProgress.textContent = t("stageProgress", { unlocked: progress.unlocked });
+    mainProgress.textContent = t("stageProgress", { unlocked: progress.unlocked });
     stageUI?.setConfig(stageConfig(), selectedStageIndex);
     resultTitle.textContent = cleared ? t("routeClear", { stage: state.stage }) : t("routeFailed");
     const routeUpdate = cleared
@@ -966,6 +970,7 @@
         };
         selectedStageIndex = progress.selected - 1;
         saveProgress();
+        mainProgress.textContent = t("stageProgress", { unlocked: progress.unlocked });
         stageUI?.setConfig(stageConfig(), selectedStageIndex);
         return { ...progress, completed: [...progress.completed] };
       },

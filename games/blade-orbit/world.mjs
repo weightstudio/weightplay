@@ -1,6 +1,6 @@
 import * as T from '../purrch-grove/vendor/three/three.module.min.js';
-import {ARCS} from './stages.mjs?v=4';
-import {LIMITS} from './model.mjs?v=4';
+import {ARCS} from './stages.mjs?v=5';
+import {LIMITS} from './model.mjs?v=5';
 const PALETTE={ember:0xffac52,frost:0x82e7ff,storm:0xb9a3ff,iron:0xc6e8ec};
 const ENEMY_COLORS={guard:0x667e91,charger:0xd85b85,ranger:0x9b6bd1,healer:0x4fc1aa,splitter:0x9877ed,small:0x9e7ac4,chaser:0x6852a1,stalker:0x32a9bc,bomber:0xd77c35,summoner:0x72993f};
 export class World {
@@ -12,11 +12,17 @@ export class World {
   this.scene=new T.Scene();this.scene.background=new T.Color(0x10313d);this.scene.fog=new T.Fog(0x10313d,40,80);
   this.scene.add(new T.HemisphereLight(0xd1efff,0x263631,2.3));const sun=new T.DirectionalLight(0xffdb9a,3.3);sun.position.set(-6,14,8);this.scene.add(sun);const rim=new T.DirectionalLight(0x72d5ff,2);rim.position.set(8,8,-9);this.scene.add(rim);
   this.camera=new T.OrthographicCamera(-10,10,12,-12,.1,100);this.camera.position.set(0,27,20);this.camera.lookAt(0,0,0);
-  this.matrix=new T.Matrix4();this.euler=new T.Euler();this.quat=new T.Quaternion();this.pos=new T.Vector3();this.scale=new T.Vector3();this.color=new T.Color();
+  this.matrix=new T.Matrix4();this.euler=new T.Euler();this.quat=new T.Quaternion();this.pos=new T.Vector3();this.scale=new T.Vector3();this.color=new T.Color();this.hitTint=new T.Color();this.hitLight=new T.Color(0xffefcc);
   this.batches={};this.batch('floor',900);this.batch('scenery',600);this.batch('enemy',2400);this.batch('sword',200);this.batch('swordTip',60,this.tip);this.batch('loot',600);this.batch('gem',350,this.gem);this.batch('fx',300,this.box,false,true);this.batch('hazard',200,this.ring,false,true);this.batch('projectile',110,this.gem,false,true);this.batch('goal',40);this.batch('shadow',130,this.geo(new T.CircleGeometry(1,16)),true);
   this.batch('slash',40,this.geo(new T.RingGeometry(.68,1,24,1,0,Math.PI*.9)),false,true);
   this.batch('trail',48,this.geo(new T.RingGeometry(.95,1.025,20,1,0,.48)),true,true);
   this.batch('pulse',80,this.ring,true,true);this.batch('telegraph',220,this.box,true,true);
+  // Only thin danger boundaries render above actors; their footprint remains the simulation radius.
+  this.batch('dangerBorder',200,this.geo(new T.TorusGeometry(1,.085,4,48)),true,true);
+  this.batch('dangerRing',200,this.geo(new T.TorusGeometry(1,.04,4,48)),true,true);
+  this.batch('dangerLaneBorder',400,this.box,true,true);this.batch('dangerLane',400,this.box,true,true);
+  for(const name of ['dangerBorder','dangerRing','dangerLaneBorder','dangerLane']){const mesh=this.batches[name].mesh;mesh.material.depthTest=false;mesh.material.depthWrite=false;mesh.material.opacity=name.endsWith('Border')||name==='dangerBorder'?.85:.95;mesh.renderOrder=name.endsWith('Border')||name==='dangerBorder'?8:9;}
+  this.batches.trail.mesh.material.opacity=.22;this.batches.slash.mesh.material.transparent=true;this.batches.slash.mesh.material.opacity=.72;this.batches.slash.mesh.material.depthWrite=false;
   this.hero=this.makeHero();this.scene.add(this.hero);this.arc=-1;this.layout='';
   this.renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();onLoss();},{signal:this.abort.signal});
   this.resizeObserver=new ResizeObserver(()=>this.fit());this.resizeObserver.observe(host);this.fit();
@@ -27,6 +33,12 @@ export class World {
  batch(name,max,geometry=this.box,flat=false,glow=false){const mat=flat||glow?new T.MeshBasicMaterial({color:0xffffff,transparent:flat,opacity:flat?(glow?.48:.19):1,depthWrite:!flat,side:T.DoubleSide}):new T.MeshStandardMaterial({color:0xffffff,roughness:.65,metalness:.1});const mesh=new T.InstancedMesh(geometry,mat,max);mesh.instanceMatrix.setUsage(T.DynamicDrawUsage);mesh.frustumCulled=false;mesh.count=0;this.scene.add(mesh);this.batches[name]={mesh,max,n:0};}
  part(name,x,y,z,sx,sy,sz,color,rx=0,ry=0,rz=0){const b=this.batches[name];if(b.n>=b.max)return;this.pos.set(x,y,z);this.scale.set(sx,sy,sz);this.euler.set(rx,ry,rz);this.quat.setFromEuler(this.euler);this.matrix.compose(this.pos,this.quat,this.scale);b.mesh.setMatrixAt(b.n,this.matrix);b.mesh.setColorAt(b.n,this.color.set(color));b.n++;}
  finish(name){const b=this.batches[name];b.mesh.count=b.n;b.mesh.instanceMatrix.needsUpdate=true;if(b.mesh.instanceColor)b.mesh.instanceColor.needsUpdate=true;}
+ dangerRing(x,z,r,color){this.part('dangerBorder',x,.055,z,r,r,1,0x12212d,-Math.PI/2);this.part('dangerRing',x,.06,z,r,r,1,color,-Math.PI/2);}
+ dangerLane(x,z,a,length,color){
+  const segment=(cx,cz,angle,size)=>{this.part('dangerLaneBorder',cx,.05,cz,size,.025,.24,0x12212d,0,-angle);this.part('dangerLane',cx,.06,cz,size,.025,.085,color,0,-angle);};
+  segment(x+Math.cos(a)*length/2,z+Math.sin(a)*length/2,a,length);
+  for(const side of [-1,1]){const angle=a+side*.62,endX=x+Math.cos(a)*length*.86,endZ=z+Math.sin(a)*length*.86;segment(endX-Math.cos(angle)*.3,endZ-Math.sin(angle)*.3,angle,.6);}
+ }
  makeHero(){
   const root=new T.Group(),body=new T.Group();root.add(body);root.userData.body=body;
   this.cube(body,0xe77b24,[.64,.65,.44],[0,.72,0]);this.cube(body,0xffe6af,[.36,.48,.07],[0,.74,.26]);
@@ -58,7 +70,7 @@ export class World {
  fit(){const rect=this.host.getBoundingClientRect();if(rect.width<1||rect.height<1)return;this.width=rect.width;this.height=rect.height;this.renderer.setSize(rect.width,rect.height,false);const aspect=rect.width/rect.height;const halfH=Math.max(5.4,6/aspect);this.camera.left=-halfH*aspect;this.camera.right=halfH*aspect;this.camera.top=halfH;this.camera.bottom=-halfH;this.camera.updateProjectionMatrix();}
  sword(x,y,z,a,color,tier=0,scale=1,guardColor=0xe6b85a){const s=scale,c=Math.cos(a),q=Math.sin(a);this.part('sword',x,y,z,1.05*s,.12*s,(.14+tier*.025)*s,color,0,-a);this.part('swordTip',x+c*.65*s,y,z+q*.65*s,.22*s,.35*s,.17*s,color,0,-a,-Math.PI/2);this.part('sword',x-c*.38*s,y,z-q*.38*s,.13*s,.17*s,.45*s,guardColor,0,-a);this.part('sword',x-c*.58*s,y,z-q*.58*s,.27*s,.13*s,.13*s,0x805236,0,-a);}
  enemy(e,fade=1){const boss=e.boss,s=(boss?1.7:e.kind==='small'?.55:e.elite?1.2:1)*fade,reaction=this.reduced?0:(e.recoil||0)/.18;
-  const y=.42+(this.reduced?0:Math.sin((this.time-e.born)*8)*.045),base=boss?[0,0x6554b8,0x94704f,0x6ea3bf,0x8068bc,0x975391,0xb78857][boss]:ENEMY_COLORS[e.kind],color=e.flash>0?0xfff1d6:base||0x8b6eae;
+  const y=.42+(this.reduced?0:Math.sin((this.time-e.born)*8)*.045),base=(boss?[0,0x6554b8,0x94704f,0x6ea3bf,0x8068bc,0x975391,0xb78857][boss]:ENEMY_COLORS[e.kind])||0x8b6eae,color=e.flash>0?this.hitTint.set(base).lerp(this.hitLight,.32*Math.min(1,e.flash/.13)):base;
   const slim=e.kind==='stalker'?.7:e.kind==='bomber'?1.2:1;
   this.part('enemy',e.x,y*s,e.z,.78*s*slim*(1+reaction*.15),.72*s*(1-reaction*.2),.7*s,color,(e.impactZ||0)*reaction*.22,0,(e.impactX||0)*-reaction*.22);
   this.part('enemy',e.x,y*s-.22*s,e.z+.12*s,.55*s,.28*s,.5*s,color);
@@ -77,8 +89,8 @@ export class World {
   if(e.slow>0){this.part('pulse',e.x,.06,e.z,.58*s,.58*s,1,0x8be7ff,-Math.PI/2);for(const side of [-1,1])this.part('gem',e.x+side*.38*s,.2,e.z+.25,.16,.4,.16,0x9ff1ff,0,0,side*.3);}
   if(e.hp>0&&e.hp<e.maxHp&&!boss){this.part('enemy',e.x,y*s+.94*s,e.z,.8*s,.065,.05,0x233749);this.part('fx',e.x-(1-e.hp/e.maxHp)*.4*s,y*s+.94*s,e.z+.01,.8*s*e.hp/e.maxHp,.065,.055,e.elite?0xffd26d:0xa6efd2);}
   this.part('shadow',e.x,.012,e.z,.55*s,.42*s,1,0x071f28,-Math.PI/2);
-  if(e.mode==='windup'||e.mode==='volley'){const a=Math.atan2(e.dz,e.dx),color=e.kind==='stalker'?0x80f4ee:e.mode==='volley'?0xec98ff:0xff977d,length=e.kind==='stalker'?3.8:5.8,fan=e.mode==='volley'&&boss?3:0;for(let i=-fan;i<=fan;i++){const aim=a+i*.26;this.part('telegraph',e.x+Math.cos(aim)*length/2,.045,e.z+Math.sin(aim)*length/2,length,.025,.16,color,0,-aim);}this.part('hazard',e.x,.07,e.z,.7*s,.7*s,1,color,-Math.PI/2);}
-  if(e.mode==='detonate'){this.part('hazard',e.x,.055,e.z,2.05,2.05,1,0xff9751,-Math.PI/2);const progress=1-Math.max(0,e.wind)/.95;this.part('pulse',e.x,.06,e.z,.25+1.8*progress,.25+1.8*progress,1,0xffd280,-Math.PI/2);}
+  if(e.mode==='windup'||e.mode==='volley'){const a=Math.atan2(e.dz,e.dx),color=e.kind==='stalker'?0x80f4ee:e.mode==='volley'?0xec98ff:0xff977d,length=e.kind==='stalker'?3.8:5.8,fan=e.mode==='volley'&&boss?3:0;for(let i=-fan;i<=fan;i++)this.dangerLane(e.x,e.z,a+i*.26,length,color);this.dangerRing(e.x,e.z,.7*s,color);}
+  if(e.mode==='detonate'){this.dangerRing(e.x,e.z,2.05,0xffb05c);const progress=1-Math.max(0,e.wind)/.95;this.part('pulse',e.x,.06,e.z,.25+1.8*progress,.25+1.8*progress,1,0xffd280,-Math.PI/2);}
   if(e.mode==='summon'||e.mode==='mend'){const radius=e.mode==='summon'?1.15:1.5;this.part('hazard',e.x,.06,e.z,radius,radius,1,0xb0fa83,-Math.PI/2);this.part('pulse',e.x,.6,e.z,.55,.55,1,0xcaff9c,-Math.PI/2,0,this.reduced?0:this.time);}
  }
  addFx(effect,priority=false){if(this.fx.length>=LIMITS.effects){if(!priority)return;this.fx.shift();}this.fx.push(effect);this.peakEffects=Math.max(this.peakEffects,this.fx.length);}
@@ -91,7 +103,7 @@ export class World {
   if(type==='hit'||type==='break'||type==='block')this.addFx({type:'slash',x,z,y:.75,angle:event.angle||0,life:this.reduced?.1:.22,max:.22,size:event.critical?1.05:.7,color:type==='hit'?0xfff6df:color},strong);
   if(['defeat','hurt','evolve','pickup','objective','break','detonate','summon','mend','enrage','eruption'].includes(type))this.addFx({type:'pulse',x,z,y:.12,life:this.reduced?.16:.42,max:.42,size:type==='detonate'?2.05:type==='evolve'||event.boss?3:type==='eruption'?event.r||1.4:type==='pickup'?.6:1.15,color},strong);
   if(['hit','defeat','hurt','evolve','break','block','detonate','eruption'].includes(type)){
-   const count=this.reduced?2:type==='defeat'?event.boss?20:9:strong?12:5;
+   const count=this.reduced?2:type==='defeat'?event.boss?20:6:strong?12:3;
    for(let i=0;i<count;i++){const a=i/count*Math.PI*2+(event.angle||0),speed=strong?3.2:2;this.addFx({type:'shard',x,z,y:.65,vx:Math.cos(a)*speed,vz:Math.sin(a)*speed,vy:1.8+i%3*.7,life:this.reduced?.12:.28+i%3*.09,max:.46,color:i%3===0?0xfff2cf:color,size:strong?.16:.095},strong&&i<3);}
   }
   if(type==='chain')for(let i=0;i<3;i++){const x1=x+(event.toX-x)*i/3,z1=z+(event.toZ-z)*i/3+(i===1?.18:0),x2=x+(event.toX-x)*(i+1)/3,z2=z+(event.toZ-z)*(i+1)/3+(i===0?.18:0);this.addFx({type:'line',x:(x1+x2)/2,z:(z1+z2)/2,y:.8,life:.18,max:.18,color,length:Math.hypot(x2-x1,z2-z1),angle:Math.atan2(z2-z1,x2-x1)});}
@@ -115,7 +127,7 @@ export class World {
    else if(item.kind==='xp')this.part('gem',item.x,y,item.z,.25,.42,.25,0x66ffd9,0,this.time);
    else if(item.kind==='heal'){this.part('loot',item.x,y,item.z,.42,.11,.15,0xff869b);this.part('loot',item.x,y,item.z,.15,.11,.42,0xff869b);}
    else {this.part('loot',item.x,.35,item.z,.85,.6,.6,0xd9a047);this.part('loot',item.x,.68,item.z,.9,.1,.65,0xffd66b);this.part('loot',item.x,.4,item.z+.32,.15,.22,.06,0x70fbe9);}}
-  for(const h of run.hazards){this.part('hazard',h.x,.05,h.z,h.r,h.r,1,h.delay>0?0xffb46a:0xff5269,-Math.PI/2);if(h.delay>0){const progress=Math.max(.12,1-h.delay/1.25);this.part('pulse',h.x,.06,h.z,h.r*progress,h.r*progress,1,0xffd599,-Math.PI/2);}else {this.part('pulse',h.x,.1,h.z,h.r,h.r,1,0xff9c52,-Math.PI/2);if(h.kind==='storm')this.part('fx',h.x,1.3,h.z,.12,2.6,.12,0xe3d2ff,0,0,.2);}}
+  for(const h of run.hazards){this.dangerRing(h.x,h.z,h.r,h.delay>0?0xffc178:0xff607b);if(h.delay>0){const progress=Math.max(.12,1-h.delay/1.25);this.part('pulse',h.x,.06,h.z,h.r*progress,h.r*progress,1,0xffd599,-Math.PI/2);}else {this.part('pulse',h.x,.1,h.z,h.r,h.r,1,0xff9c52,-Math.PI/2);if(h.kind==='storm')this.part('fx',h.x,1.3,h.z,.12,2.6,.12,0xe3d2ff,0,0,.2);}}
   for(const b of run.projectiles){this.part('projectile',b.x,.56,b.z,.26,.26,.26,0xff7cdd,this.time,0,this.time);if(!this.reduced)this.part('telegraph',b.x-b.vx*.06,.55,b.z-b.vz*.06,.55,.065,.1,0xffa8e6,0,-Math.atan2(b.vz,b.vx));}
   for(const g of run.goals){if(g.done)continue;if(g.kind==='beacons'){this.part('hazard',g.x,.05,g.z,1.5,1.5,1,0x69dfe2,-Math.PI/2);this.part('goal',g.x,.25,g.z,.8,.5,.8,0x3f8898);this.part('gem',g.x,1+g.progress*.25,g.z,.5,.8,.5,0x9cffe8,0,this.time);}else{this.part('goal',g.x,.5,g.z,1.2,1,1.2,0x704c86);for(let i=0;i<3;i++)this.part('goal',g.x+(i-1)*.35,1.15,g.z,.2,.5,.3,0xcf7cc8,0,0,(i-1)*.3);}}
   for(const f of this.fx){f.life-=dt;if(f.life<=0)continue;const remain=Math.max(0,f.life/f.max);
