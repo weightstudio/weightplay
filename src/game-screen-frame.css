@@ -1742,3 +1742,9 @@ html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:wp-
   html[data-wp-shared-interface="7"] body :is([data-wp-get-icon],[data-wp-result-get-icon]) {transition:none!important}
   html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:none!important}
 }
+
+/* Native modal dialogs render in the top layer, outside the logical Canvas transform. */
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) dialog:modal {
+  --wp-battle-canvas-inverse-scale:1;
+  --wp-frame-control-size-physical:48px;
+}

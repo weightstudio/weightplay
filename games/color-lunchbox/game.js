@@ -23,17 +23,24 @@
   const mainPanel = document.querySelector("#mainPanel");
   const mainTitle = document.querySelector("#mainTitle");
   const mainIntro = document.querySelector("#mainIntro");
+  const mainProgress = document.querySelector("#mainProgress");
   const startBtn = document.querySelector("#startBtn");
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageBackBtn = document.querySelector("#stageBackBtn");
-  const stageHelpBtn = document.querySelector("#helpBtn");
-  const stageTabBtn = document.querySelector("#stageTabBtn");
+  const stageProgress = document.querySelector("#stageProgress");
+  const stageHelpBtn = document.createElement("button");
+  stageHelpBtn.id = "helpBtn";
+  stageHelpBtn.className = "stage-help-button";
+  stageHelpBtn.type = "button";
+  stageHelpBtn.textContent = "?";
+  stageHelpBtn.setAttribute("aria-label", "How to play");
   const stageGrid = document.querySelector("#stageGrid");
   const stageStatus = document.querySelector("#stageStatus");
   const gameHud = document.querySelector("#gameHud");
   const levelIndicator = document.querySelector("#levelIndicator");
   const progressFill = document.querySelector("#progressFill");
+  const progressTrack = progressFill?.closest('[role="progressbar"]');
   const scoreText = document.querySelector("#scoreText");
   const roundText = document.querySelector("#roundText");
   const gamePlayContent = document.querySelector("#gamePlayContent");
@@ -66,11 +73,12 @@
   const homeLink = document.querySelector("#homeLink");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const battleHelpBtn = document.querySelector("#battleHelpBtn");
-  const loadingPanel = document.querySelector("#loadingPanel");
-  const loadingText = document.querySelector("#loadingText");
-  const loadingFill = document.querySelector("#loadingFill");
+  const battlePanel = document.querySelector("#battlePanel");
+  const mainPoster = document.querySelector("#mainPoster");
   const lunchGame = document.querySelector(".lunch-game");
-  lunchGame?.setAttribute("data-wp-canvas-max-width", "920");
+  let screenFrame = null;
+  let stageUI = null;
+  let selectedStageIndex = 0;
   if ((window.WonderI18n?.actualLocale?.() || document.documentElement.lang) === "pt-BR") {
     // This game owns its Portuguese Battle and Stage copy. Keep the shared
     // runtime catalog from reinterpreting already-localized color vocabulary
@@ -779,6 +787,37 @@
     return stage.descEn;
   }
 
+  function stageConfiguration() {
+    const routeAsset = (path) => new URL(path, location.href).pathname;
+    return {
+      poster: routeAsset("../../assets/lunchbox-cover.webp"),
+      background: "/assets/lobby-block-atmosphere.svg",
+      count: stages.length,
+      stage(index) {
+        const entry = stages[index];
+        const unlocked = entry.id <= state.unlockedStage;
+        const firstFood = foodsDB[entry.foods[0]];
+        const image = entry.guardian ? guardians[entry.guardian].image : firstFood.image;
+        return {
+          id: entry.id,
+          kicker: `${t("levelLabel")} ${entry.id} / ${stages.length}`,
+          title: stageName(entry),
+          subtitle: stageDescription(entry),
+          status: unlocked ? t("stageMeta", { foods: entry.rounds, colors: entry.colors.length }) : t("locked"),
+          summary: stageDescription(entry),
+          details: [
+            t("stageMeta", { foods: entry.rounds, colors: entry.colors.length }),
+            `${t("colorRecognition")}: ${entry.colors.map((color) => t(colorDB[color].labelKey)).join(" · ")}`,
+          ],
+          locked: !unlocked,
+          cleared: entry.id < state.unlockedStage,
+          poster: routeAsset(image),
+          posterPosition: "center 42%",
+        };
+      },
+    };
+  }
+
   function loadUnlockedStage() {
     try {
       const saved = Number(storageRead(UNLOCK_KEY));
@@ -790,11 +829,17 @@
 
   function saveUnlockedStage(value) {
     state.unlockedStage = Math.max(state.unlockedStage, Math.min(value, stages.length));
+    updateProgressLabels();
     try {
       storageWrite(UNLOCK_KEY, String(state.unlockedStage));
     } catch {
       // Local progress is optional.
     }
+  }
+
+  function updateProgressLabels() {
+    mainProgress.textContent = `${t("levelLabel")} ${state.unlockedStage} / ${stages.length}`;
+    stageProgress.textContent = `${state.unlockedStage} / ${stages.length} ${t("chooseLevel")}`;
   }
 
   function translateStaticUI() {
@@ -813,10 +858,9 @@
           : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
     startBtn.textContent = t("startGame");
     stageSelectTitle.textContent = t("title");
-    stageTabBtn.textContent = t("levels");
+    updateProgressLabels();
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
     document.querySelector("#roundLabel").textContent = t("roundLabel");
-    document.querySelector("#loadingTitle").textContent = t("loading");
     nextStageBtn.textContent = t("nextStage");
     againBtn.textContent = t("again");
     stageSelectBtn.textContent = t("levels");
@@ -828,6 +872,7 @@
     leaveKidsLobbyBtn.setAttribute("aria-label", t("kidsLobby"));
     leaveLevelBtn.textContent = t("leaveLevel");
     stageHelpBtn.setAttribute("aria-label", t("helpAria"));
+    stageHelpBtn.textContent = t("helpAria");
     battleHelpBtn.setAttribute("aria-label", t("helpAria"));
     gameHelpTitle.textContent = t("helpTitle");
     gameHelpLook.textContent = t("helpLook");
@@ -836,7 +881,9 @@
     gameHelpCloseBtn.textContent = t("helpClose");
     feedbackText.textContent = state.deck.length ? feedbackText.textContent : t("ready");
 
-    if (!stageSelectPanel.classList.contains("hidden")) renderStageCards();
+    if (stageUI && !stageSelectPanel.classList.contains("hidden")) {
+      stageUI.setConfig(stageConfiguration(), selectedStageIndex);
+    }
     if (!gameHud.classList.contains("hidden")) updateHUD();
     if (state.deck.length > 0 && state.index < state.deck.length) {
       const stage = stages[state.stageIndex];
@@ -846,44 +893,99 @@
     }
   }
 
-  function simulateLoading() {
-    const assets = [...Object.values(foodsDB).map((food) => food.image), ...Object.values(guardians).map((guardian) => guardian.image)];
-    let loaded = 0;
-    function step() {
-      loaded += 1;
-      const percent = Math.min(100, Math.round((loaded / Math.max(assets.length, 1)) * 100));
-      loadingText.textContent = `${percent}%`;
-      loadingFill.style.width = `${percent}%`;
-      if (loaded >= assets.length) {
+  function mountSharedInterface() {
+    if (!window.WeightPlayScreenFrame || !window.WeightPlayPlayUI || !window.WeightPlayStageRailI9) {
+      throw new Error("COLOR_LUNCHBOX_I9_SHARED_RUNTIME_MISSING");
+    }
+    screenFrame = window.WeightPlayScreenFrame.mount({
+      root: lunchGame,
+      localeSelect,
+      playUI: true,
+      scenes: {
+        main: { root: mainPanel, header: document.querySelector("#mainHeader"), content: document.querySelector("#mainContent") },
+        stage: { root: stageSelectPanel, header: document.querySelector("#stageHeader"), content: document.querySelector("#stageContent"), headerInfo: document.querySelector("#stageInfo") },
+        battle: { root: battlePanel, header: document.querySelector("#battleHeader"), content: document.querySelector("#battleContent"), headerInfo: gameHud },
+      },
+    });
+
+    screenFrame.stageTopUI.add(stageProgress);
+    const battleStats = window.WeightPlayScreenFrame.createGroup()
+      .add(levelIndicator.parentElement)
+      .add(document.querySelector("#scoreLabel").parentElement)
+      .add(document.querySelector("#roundLabel").parentElement);
+    screenFrame.battleTopUI.add(battleStats);
+    screenFrame.commonDownButton.add(stageHelpBtn);
+    stageUI = window.WeightPlayPlayUI.mountStage({
+      page: document.querySelector("#stageContent"),
+      rail: stageGrid,
+      config: stageConfiguration(),
+      selected: selectedStageIndex,
+      onSelect(index, { locked } = {}) {
+        selectedStageIndex = index;
+        stageStatus.textContent = locked
+          ? t("lockedFeedback", { stage: stageName(stages[index]), required: index })
+          : "";
+      },
+      onStart(index) {
+        startStage(index);
+      },
+      isActive: () => screenFrame.active === "stage" && !stageSelectPanel.classList.contains("hidden"),
+    });
+    screenFrame.activate("main");
+  }
+
+  function waitForSharedEntryLoader() {
+    const current = window.WeightPlayGameEntryLoader;
+    if (typeof current?.begin === "function") return Promise.resolve(current);
+    const script = document.querySelector('script[data-wp-game-entry-loader-bootstrap="true"]');
+    if (!script) return Promise.reject(new Error("COLOR_LUNCHBOX_SHARED_ENTRY_LOADER_MISSING"));
+    return new Promise((resolve, reject) => {
+      script.addEventListener("load", () => {
+        const loader = window.WeightPlayGameEntryLoader;
+        if (typeof loader?.begin === "function") resolve(loader);
+        else reject(new Error("COLOR_LUNCHBOX_SHARED_ENTRY_LOADER_UNAVAILABLE"));
+      }, { once: true });
+      script.addEventListener("error", () => reject(new Error("COLOR_LUNCHBOX_SHARED_ENTRY_LOADER_FAILED")), { once: true });
+    });
+  }
+
+  function loadEntryAssets() {
+    const assets = [...new Set([
+      ...Object.values(foodsDB).map((food) => food.image),
+      ...Object.values(guardians).map((guardian) => guardian.image),
+      mainPoster?.getAttribute("src"),
+    ].filter(Boolean))];
+    waitForSharedEntryLoader().then((loader) => {
+      loader.begin(assets.length || null);
+      let loaded = 0;
+      const settled = () => {
+        loaded += 1;
+        loader.assetProgress(loaded, assets.length);
+        if (loaded !== assets.length) return;
         state.ready = true;
         loadUnlockedStage();
-        loadingPanel.classList.add("hidden");
-        window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+        updateProgressLabels();
+        selectedStageIndex = Math.min(Math.max(0, state.unlockedStage - 1), stages.length - 1);
+        stageUI.setConfig(stageConfiguration(), selectedStageIndex);
         showMain();
+        window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID });
+        requestAnimationFrame(() => loader.ready());
+      };
+      if (!assets.length) {
+        state.ready = true;
+        loadUnlockedStage();
+        updateProgressLabels();
+        showMain();
+        requestAnimationFrame(() => loader.ready());
+        return;
       }
-    }
-    assets.forEach((src) => {
-      const image = new Image();
-      image.onload = step;
-      image.onerror = step;
-      image.src = src;
-    });
-  }
-
-  function updateLunchFrame() {
-    if (!document.body.classList.contains("lunch-stage") && !document.body.classList.contains("lunch-playing")) return;
-    [battleBackBtn, battleHelpBtn].forEach((button) => {
-      ["width", "min-width", "max-width", "height", "min-height", "max-height"].forEach((property) => {
-        button.style.setProperty(property, "48px", "important");
+      assets.forEach((src) => {
+        const image = new Image();
+        image.onload = settled;
+        image.onerror = () => loader.fail();
+        image.src = src;
       });
-    });
-  }
-
-  function exitSharedPlayViewport() {
-    window.WeightPlayGame?.exitMobileGameMode?.();
-    document.body.classList.remove("weightplay-active-viewport");
-    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
-    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+    }).catch((error) => console.error("Color Lunchbox entry loader unavailable", error));
   }
 
   function setBattleCovered(covered) {
@@ -891,25 +993,8 @@
       region.inert = covered;
       region.setAttribute("aria-hidden", covered ? "true" : "false");
     });
+    if (screenFrame?.active === "battle") screenFrame.activate("battle", { covered });
   }
-
-  function restoreNativeBattleHeader() {
-    if (battleBackBtn.parentElement !== gameHud) gameHud.prepend(battleBackBtn);
-    document.querySelectorAll(".wp-generated-battle-header, .wp-generated-stage-header").forEach((header) => header.remove());
-  }
-
-  let nativeHeaderRepairFrame = 0;
-  const nativeHeaderObserver = new MutationObserver(() => {
-    if (!document.body.matches(".lunch-playing, .lunch-stage")) return;
-    const polluted = battleBackBtn.parentElement !== gameHud
-      || document.querySelector(".wp-generated-battle-header, .wp-generated-stage-header");
-    if (!polluted || nativeHeaderRepairFrame) return;
-    nativeHeaderRepairFrame = requestAnimationFrame(() => {
-      nativeHeaderRepairFrame = 0;
-      restoreNativeBattleHeader();
-    });
-  });
-  nativeHeaderObserver.observe(lunchGame, { childList: true, subtree: true });
 
   function setLeaveConfirmOpen(open, restoreFocus = true) {
     if (open === leaveConfirmOpen) return;
@@ -935,6 +1020,11 @@
     } else if (document.body.classList.contains("lunch-stage")) {
       stageSelectPanel.inert = open;
       stageSelectPanel.setAttribute("aria-hidden", open ? "true" : "false");
+      if (screenFrame?.active === "stage") {
+        screenFrame.activate("stage", { covered: open });
+        stageSelectPanel.inert = open;
+        stageSelectPanel.setAttribute("aria-hidden", open ? "true" : "false");
+      }
     }
 
     if (open) {
@@ -986,11 +1076,6 @@
     requestAnimationFrame(tick);
   }
 
-  window.addEventListener("resize", updateLunchFrame);
-  window.addEventListener("orientationchange", updateLunchFrame);
-  visualViewport?.addEventListener("resize", updateLunchFrame, { passive: true });
-  visualViewport?.addEventListener("scroll", updateLunchFrame, { passive: true });
-
   function syncSharedScene(scene) {
     if (scene === "battle") {
       window.dispatchEvent(new Event("weightplay:stage-sync"));
@@ -1000,6 +1085,7 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
+    screenFrame?.activate(scene);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
       if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -1011,153 +1097,40 @@
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
-    restoreNativeBattleHeader();
     document.body.classList.remove("lunch-stage", "lunch-playing");
     document.body.classList.add("lunch-main");
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     mainPanel.classList.remove("hidden");
     stageSelectPanel.classList.add("hidden");
+    battlePanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     setBattleCovered(false);
     syncSharedScene("main");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    if (restoreStartFocus) requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
+    if (restoreStartFocus) startBtn.focus({ preventScroll: true });
   }
 
   function showStageSelect(focusCurrent = false) {
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
-    restoreNativeBattleHeader();
     document.body.classList.remove("lunch-main");
     document.body.classList.remove("lunch-playing");
     document.body.classList.add("lunch-stage");
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     mainPanel.classList.add("hidden");
+    battlePanel.classList.add("hidden");
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     setBattleCovered(false);
     stageSelectPanel.classList.remove("hidden");
-    exitSharedPlayViewport();
-    renderStageCards();
-    if (focusCurrent) requestAnimationFrame(() => requestAnimationFrame(() => {
-      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")];
-      unlocked[Math.min(state.stageIndex, unlocked.length - 1)]?.focus({ preventScroll: true });
-    }));
-    updateLunchFrame();
-    syncSharedScene("stage");
-    requestAnimationFrame(updateLunchFrame);
-  }
-
-  let centeredStageFrame = 0;
-  function updateCenteredStageCard() {
-    centeredStageFrame = 0;
-    if (stageGrid.dataset.wpStageVirtualizationInstalled === "true") return;
-    const cards = [...stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length || !document.body.classList.contains("lunch-stage")) return;
-    const railRect = stageGrid.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
-    let centeredCard = cards[0];
-    let centeredDistance = Infinity;
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-      if (distance < centeredDistance) {
-        centeredCard = card;
-        centeredDistance = distance;
-      }
-    });
-    cards.forEach((card) => {
-      const isCentered = card === centeredCard;
-      card.classList.toggle("is-centered", isCentered);
-      if (isCentered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
-  }
-
-  function scheduleCenteredStageCard() {
-    if (centeredStageFrame) return;
-    centeredStageFrame = requestAnimationFrame(updateCenteredStageCard);
-  }
-
-  stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-  window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
-  visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
-
-  function renderStageCards() {
     stageStatus.textContent = "";
-    stageGrid.replaceChildren(
-      ...stages.map((stage, index) => {
-        const isUnlocked = stage.id <= state.unlockedStage;
-        const button = document.createElement("button");
-        button.type = "button";
-        button.dataset.stageIndex = String(index);
-        button.className = `stage-card ${isUnlocked ? "unlocked" : "locked"}`;
-        button.setAttribute("aria-disabled", String(!isUnlocked));
-        button.innerHTML = `
-          <span>${isUnlocked ? t("play") : t("locked")}</span>
-          ${stage.guardian ? `<img class="stage-guardian" src="${guardians[stage.guardian].image}" alt="" />` : ""}
-          <strong>${stageName(stage)}</strong>
-          <small>${stageDescription(stage)}</small>
-          <em>${t("stageMeta", { foods: stage.rounds, colors: stage.colors.length })}</em>
-          <div class="stage-card-colors" aria-hidden="true">
-            ${stage.colors.map((color) => `<i class="${colorDB[color].className}"></i>`).join("")}
-          </div>
-        `;
-        button.addEventListener("click", () => {
-          if (isUnlocked) startStage(index);
-          else rejectLockedStage(button, index);
-        });
-        return button;
-      }),
-    );
-    requestAnimationFrame(() => {
-      const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
-      stageGrid.scrollTop = 0;
-      if (unlocked && !stageGrid.hasAttribute("data-wp-stage-rail")) {
-        stageGrid.scrollLeft = Math.max(
-          0,
-          unlocked.offsetLeft - (stageGrid.clientWidth - unlocked.offsetWidth) / 2,
-        );
-      }
-      requestAnimationFrame(updateCenteredStageCard);
-    });
+    syncSharedScene("stage");
+    stageUI.setConfig(stageConfiguration(), selectedStageIndex);
+    stageUI.refresh(selectedStageIndex);
+    if (focusCurrent) requestAnimationFrame(() => stageGrid.querySelector('[aria-current="true"]')?.focus({ preventScroll: true }));
   }
-
-  let lockedStagePointer = null;
-
-  function rejectLockedStage(button, index) {
-    stageStatus.textContent = t("lockedFeedback", { stage: stageName(stages[index]), required: index });
-    requestAnimationFrame(() => button.focus({ preventScroll: true }));
-  }
-
-  function lockedStageAtPoint(x, y) {
-    return [...stageGrid.querySelectorAll(".stage-card.locked")].find((card) => {
-      const rect = card.getBoundingClientRect();
-      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-    });
-  }
-
-  stageGrid.addEventListener("pointerdown", (event) => {
-    if (event.isPrimary === false || event.button !== 0) return;
-    const button = lockedStageAtPoint(event.clientX, event.clientY);
-    lockedStagePointer = button ? { button, id: event.pointerId, x: event.clientX, y: event.clientY, moved: false } : null;
-  }, true);
-  document.addEventListener("pointermove", (event) => {
-    if (!lockedStagePointer || event.pointerId !== lockedStagePointer.id) return;
-    lockedStagePointer.moved ||= Math.hypot(event.clientX - lockedStagePointer.x, event.clientY - lockedStagePointer.y) > 6;
-  }, true);
-  const finishLockedStagePointer = (event) => {
-    if (!lockedStagePointer || event.pointerId !== lockedStagePointer.id) return;
-    const activation = lockedStagePointer;
-    lockedStagePointer = null;
-    if (event.type === "pointercancel" || activation.moved) return;
-    if (event.cancelable) event.preventDefault();
-    rejectLockedStage(activation.button, Number(activation.button.dataset.stageIndex));
-  };
-  document.addEventListener("pointerup", finishLockedStagePointer, true);
-  document.addEventListener("pointercancel", finishLockedStagePointer, true);
 
   function getStageBoxes(stage) {
     return stage.colors.map((color) => ({ color, ...colorDB[color] }));
@@ -1371,7 +1344,8 @@
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
-    restoreNativeBattleHeader();
+    selectedStageIndex = stageIndex;
+    stageUI.select(stageIndex, { center: false, notify: false });
     document.body.classList.remove("lunch-stage");
     document.body.classList.add("lunch-playing");
     const stage = stages[stageIndex];
@@ -1383,12 +1357,12 @@
     state.deck = buildStageDeck(stage);
 
     stageSelectPanel.classList.add("hidden");
+    mainPanel.classList.add("hidden");
+    battlePanel.classList.remove("hidden");
     (__wpNotifyMeasurement(), resultPanel.classList.add("hidden"));
     setBattleCovered(false);
     gameHud.classList.remove("hidden");
     gamePlayContent.classList.remove("hidden");
-    exitSharedPlayViewport();
-    updateLunchFrame();
     syncSharedScene("battle");
     feedbackText.textContent = t("ready");
     foodCard.style.pointerEvents = "";
@@ -1398,7 +1372,7 @@
     updateHUD();
     loadFood();
     if (focusChoice) dropZone.querySelector(".lunchbox")?.focus({ preventScroll: true });
-    requestAnimationFrame(updateLunchFrame);
+    if (focusChoice) requestAnimationFrame(() => dropZone.querySelector(".lunchbox")?.focus({ preventScroll: true }));
     window.WeightPlayAudio?.play("ui.click");
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, stage: stage.id, locale: locale() });
 
@@ -1408,7 +1382,9 @@
   function updateHUD() {
     const stage = stages[state.stageIndex];
     levelIndicator.textContent = `${t("levelLabel")} ${stage.id} / ${stages.length}`;
-    progressFill.style.width = `${(state.index / state.deck.length) * 100}%`;
+    const progress = Math.round((state.index / state.deck.length) * 100);
+    progressFill.style.width = `${progress}%`;
+    progressTrack?.setAttribute("aria-valuenow", String(progress));
     scoreText.textContent = String(state.score);
     roundText.textContent = `${Math.min(state.index + 1, state.deck.length)} / ${state.deck.length}`;
   }
@@ -1498,8 +1474,8 @@
   function finishStage() {
     setHelpOpen(false, null, false);
     invalidateRoundTransition();
-    restoreNativeBattleHeader();
     progressFill.style.width = "100%";
+    progressTrack?.setAttribute("aria-valuenow", "100");
     const stage = stages[state.stageIndex];
     saveUnlockedStage(stage.id + 1);
     const isFinalStage = stage.id >= stages.length;
@@ -1627,9 +1603,6 @@
   startBtn.addEventListener("keydown", rejectRepeatedActivation);
   stageHelpBtn.addEventListener("keydown", rejectRepeatedActivation);
   battleHelpBtn.addEventListener("keydown", rejectRepeatedActivation);
-  stageGrid.addEventListener("keydown", (event) => {
-    if (event.target.closest(".stage-card")) rejectRepeatedActivation(event);
-  });
   startBtn.addEventListener("click", () => {
     window.WeightPlayAudio?.play("ui.click");
     showStageSelect(true);
@@ -1699,10 +1672,11 @@
     showMain(true);
   });
 
+  mountSharedInterface();
   translateStaticUI();
   window.addEventListener("load", () => {
     requestAnimationFrame(() => requestAnimationFrame(translateStaticUI));
     setTimeout(translateStaticUI, 500);
   }, { once: true });
-  simulateLoading();
+  loadEntryAssets();
 })();

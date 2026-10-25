@@ -3086,5 +3086,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Тачдаун на лугу",
     "hi": "मैदान का टचडाउन",
     "ar": "فريق المرج للتاتشداون"
+  },
+  "smallwood-lives": {
+    "__localizedExact": true,
+    "en": "Smallwood Lives",
+    "zh-Hant": "林間一生",
+    "zh-Hans": "林间一生",
+    "ja": "小さな森の一生",
+    "ko": "작은 숲의 일생",
+    "es": "Vidas del bosque",
+    "pt-BR": "Vidas na floresta",
+    "fr": "Vies du petit bois",
+    "de": "Waldleben",
+    "it": "Vite nel bosco",
+    "ru": "Жизни в лесу",
+    "hi": "नन्हे वन का जीवन",
+    "ar": "حياة الغابة الصغيرة"
   }
 };

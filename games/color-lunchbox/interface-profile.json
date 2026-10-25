@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "gameId": "color-lunchbox",
+  "interfaceVersion": "9",
+  "audience": "kids",
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": { "enabled": true },
+  "battle": { "enabled": true },
+  "result": "BATTLE_SUBSTATE",
+  "reserve": "NONE_BANNER_ADS_DISABLED"
+}

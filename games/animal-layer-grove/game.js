@@ -354,6 +354,7 @@
     }
     async function openStage() {
       if (entering) return; entering = true; const ticket = generation; $('startBtn').disabled = true;
+      selectedStage = frontier();
       try {
         const controller = await getStageController(); if (ticket !== generation || abort.signal.aborted) return;
         show('stage'); controller.refresh(selectedStage);

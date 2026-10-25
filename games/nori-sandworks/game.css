@@ -8,3 +8,12 @@
 .result-actions:has(button:only-child){grid-template-columns:1fr;max-width:260px;margin-inline:auto}
 #battleCanvas{--nori-hit:max(44px,calc(44px / var(--wp-battle-canvas-scale,1)))}.battle-workspace{grid-template-rows:minmax(0,1fr) calc(var(--nori-hit) + 8px) 28px}.action-track button{min-width:var(--nori-hit);min-height:var(--nori-hit)}.action-track #helpBtn{flex-basis:var(--nori-hit)}#pieceLabels .piece-label{width:var(--nori-hit);min-width:var(--nori-hit);height:var(--nori-hit);min-height:var(--nori-hit);max-height:var(--nori-hit)}.result-actions button{min-height:max(48px,var(--nori-hit))}
 @media (orientation:landscape) and (max-height:500px){.battle-workspace{grid-template-rows:minmax(0,1fr) calc(var(--nori-hit) + 4px)}}
+
+/* Compact Result content into two columns so all actions fit short landscape. */
+@media (orientation:landscape) and (max-height:500px){
+ .result-card h2{margin:0 0 8px}
+ .result-copy{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 12px;align-items:center}
+ .result-copy>.result-art{grid-row:1 / span 3;width:96px;height:96px}
+ .result-copy>p{margin:0;line-height:1.35}
+ .result-actions button{min-height:44px;padding:6px 4px}
+}

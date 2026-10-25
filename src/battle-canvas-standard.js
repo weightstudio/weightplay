@@ -148,7 +148,7 @@
     "beast-tactician": ["#gamePanel", 382, 780],
     "bubble-bakery": ["#playPanel", 382, 780, 760, 360],
     "campus-dash": [".dash-game", 382, 780, 844, 390],
-    "color-lunchbox": [".lunch-game", 382, 780, 760, 350],
+    "color-lunchbox": ["#battlePanel", 382, 780, 760, 350],
     "fruit-merge": [".fixed-game-shell", 382, 780, 760, 350],
     "garden-tiles": [".garden-game", 382, 780, 760, 350],
     "shadow-wolf": [".game-layout", 390, 788],
