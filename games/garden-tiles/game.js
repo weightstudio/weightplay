@@ -58,6 +58,7 @@
   const gameRoot = document.querySelector("#gardenGame");
   const mainHeader = document.querySelector("#mainHeader");
   const mainContent = document.querySelector("#mainContent");
+  const mainProgress = document.querySelector("#mainProgress");
   const stageHeader = document.querySelector("#stageHeader");
   const stageContent = document.querySelector("#stageContent");
   const battleHeader = document.querySelector("#battleHeader");
@@ -691,6 +692,10 @@
   }
 
   function syncSharedScene(scene) {
+    screenFrame?.activate(scene === "result" ? "battle" : scene);
+    window.WeightPlayBattleCanvas?.sync?.();
+    if (scene === "stage") stageUI?.refresh(stageSelection);
+
     if (scene === "battle") {
       window.dispatchEvent(new Event("weightplay:stage-sync"));
       window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -699,9 +704,6 @@
       window.dispatchEvent(new Event("weightplay:stage-sync"));
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
-
-    screenFrame?.activate(scene === "result" ? "battle" : scene);
-    if (scene === "stage") stageUI?.refresh(stageSelection);
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[scene] ?? null;
       if (["result"].includes(scene) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -758,6 +760,7 @@
     const progress = `${Math.min(unlocked, levels.length)} / ${levels.length}`;
     stageProgress.textContent = progress;
     stageProgress.setAttribute("aria-label", `${t("level")} ${progress}`);
+    mainProgress.textContent = `${t("level")} ${progress}`;
   }
 
   function mountSharedInterface() {
@@ -872,6 +875,7 @@
 
   function chooseBattleColumns(totalCards) {
     const shortLandscape = matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
+    if (!shortLandscape && totalCards === 8) return 2;
     const availableWidth = shortLandscape ? 678 : 366;
     const availableHeight = shortLandscape ? 230 : 650;
     const maximumColumns = shortLandscape ? Math.min(8, totalCards) : 6;
@@ -1273,19 +1277,20 @@
   applyText();
   mountSharedInterface();
   showMain();
-  Promise.all([CARD_ATLAS, CARD_BACK].map((source) => new Promise((resolve) => {
+  Promise.all([CARD_ATLAS, CARD_BACK, document.querySelector("#mainPoster").src].map((source) => new Promise((resolve, reject) => {
     const image = new Image();
-    image.onload = image.onerror = resolve;
+    image.onload = () => image.decode().then(resolve, reject);
+    image.onerror = reject;
     image.src = source;
-  }))).finally(() => {
-    loadingPanel.classList.add("hidden");
-    window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
-    window.WeightPlayGameReady = true;
+  }))).then(() => {
+    requestAnimationFrame(() => {
+      loadingPanel.classList.add("hidden");
+      loadingPanel.setAttribute("aria-busy", "false");
+      window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
+      window.WeightPlayGameReady = true;
+    });
+  }).catch(() => {
+    // The shared readiness bridge owns the localized retry/back presentation.
+    loadingPanel.classList.add("has-error");
   });
 })();
-
-window.setTimeout(() => {
-  if (window.WeightPlayGameReady) return;
-  document.querySelector("#loadingPanel")?.classList.add("hidden");
-  window.WeightPlayGameReady = true;
-}, 2200);

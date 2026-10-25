@@ -51,7 +51,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "__localizedExact": true,
     "en": "Deep Drill",
     "zh-Hant": "地心鑽探",
-    "zh-Hans": "Deep Drill",
+    "zh-Hans": "地心钻探",
     "ja": "Deep Drill",
     "ko": "Deep Drill",
     "es": "Deep Drill",
@@ -99,7 +99,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "__localizedExact": true,
     "en": "Axe & Ally",
     "zh-Hant": "斧刃夥伴",
-    "zh-Hans": "Axe & Ally",
+    "zh-Hans": "斧刃伙伴",
     "ja": "Axe & Ally",
     "ko": "Axe & Ally",
     "es": "Axe & Ally",
@@ -2307,7 +2307,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "__localizedExact": true,
     "en": "Canopy Cut",
     "zh-Hant": "樹冠快採",
-    "zh-Hans": "Canopy Cut",
+    "zh-Hans": "树冠快采",
     "ja": "Canopy Cut",
     "ko": "Canopy Cut",
     "es": "Canopy Cut",
@@ -2466,8 +2466,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "animal-cloudhook-courier": {
     "__localizedExact": true,
     "en": "Cloudhook Courier",
-    "zh-Hant": "Cloudhook Courier",
-    "zh-Hans": "Cloudhook Courier",
+    "zh-Hant": "雲鉤快遞",
+    "zh-Hans": "云钩快递",
     "ja": "Cloudhook Courier",
     "ko": "Cloudhook Courier",
     "es": "Cloudhook Courier",
@@ -3102,5 +3102,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Жизнь в мгновениях",
     "hi": "पलों में एक जीवन",
     "ar": "حياة في لحظات"
-}
+  }
 };

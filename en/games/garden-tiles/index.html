@@ -49,18 +49,18 @@
     <meta name="twitter:description" content="Garden Tiles is an animal picture-memory game with 30 saved challenges. Flip tiles to find matching pairs; six chapters add rule changes, with no level timer." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/garden-tiles.webp" />
 
-  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-game-version" content="v4" />
   <meta name="weightplay-interface-version" content="9" />
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261025-play-ui-i9-v1">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261025-play-ui-i9-v1">
   <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261021-stage-rail-i9">
   <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261025-play-ui-i9-v1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261025-play-ui-i9-v1">
-  <link rel="stylesheet" href="/games/garden-tiles/i9-content.css?v=20261025-garden-tiles-i9-v1">
+  <link rel="stylesheet" href="/games/garden-tiles/i9-content.css?v=20261026-garden-i9-bd0d1875">
 </head>
-  <body class="garden-main" data-audience="kids" data-wp-game-id="garden-tiles" data-wp-game-version="v3" data-wp-interface-version="9" data-wp-play-ui="1">
+  <body class="garden-main" data-audience="kids" data-wp-game-id="garden-tiles" data-wp-game-version="v4" data-wp-interface-version="9" data-wp-play-ui="1">
     <main id="gardenGame" class="garden-game" data-wp-frame-root data-wp-canvas-max-width="920">
-      <section id="mainPanel" data-wp-frame-scene="main">
+      <section id="mainPanel" data-wp-frame-scene="main" data-wp-main-validation-root>
         <header id="mainHeader">
           <a id="homeLink" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&#8592;</span></a>
           <h1 id="titleText" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Pet Garden Tiles</h1>
@@ -70,6 +70,7 @@
           <div class="main-copy" data-wp-frame-copy>
             <h2 id="mainTitle">Pet Garden Tiles</h2>
             <p id="mainIntro" data-wp-frame-summary>Remember the garden pictures and clear 30 calm challenges across six garden chapters.</p>
+            <p id="mainProgress" data-wp-frame-progress data-wp-main-progress>Level 1 / 30</p>
             <button id="startBtn" data-wp-main-start data-wp-frame-action="primary" type="button">Choose Level</button>
           </div>
         </div>
@@ -114,7 +115,7 @@
           <div class="battle-stat"><span id="pairsLabel">Pairs</span><strong id="pairsText">0 / 0</strong></div>
         </div>
         <div id="battleContent" data-wp-frame-content="battle">
-          <div id="board" class="tile-board" aria-label="Garden tile board"></div>
+          <div class="garden-board-track"><div id="board" class="tile-board" aria-label="Garden tile board"></div></div>
           <div id="message" class="message" aria-live="polite"></div>
         </div>
         <section id="resultPanel" class="result-panel hidden" data-wp-result-screen data-wp-scene-part="battle" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
@@ -140,12 +141,8 @@
         </section>
       </section>
 
-      <section id="loadingPanel" class="loading-panel" data-wp-scene-part="global">
-        <div class="loading-card">
-          <strong id="loadingTitle">Loading</strong>
-          <span>100%</span>
-          <div><i></i></div>
-        </div>
+      <section id="loadingPanel" class="loading-panel" data-wp-scene-part="global" aria-busy="true">
+        <strong id="loadingTitle" hidden>Loading</strong>
       </section>
     </main>
     <section class="game-page-info game-page-info-static" aria-label="Pet Garden Tiles game information" data-wp-preserve-static-guide="true">
@@ -190,7 +187,7 @@
     <script src="/src/game-screen-frame.js?v=20261025-play-ui-i9-v1"></script>
     <script src="/src/game-play-ui.js?v=20261025-play-ui-i9-v1"></script>
     <script src="/src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
-    <script src="/games/garden-tiles/game.js?v=20261025-garden-tiles-i9-v1"></script>
+    <script src="/games/garden-tiles/game.js?v=20261026-garden-i9-615c84df"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

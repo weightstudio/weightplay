@@ -150,7 +150,7 @@
     "campus-dash": [".dash-game", 382, 780, 844, 390],
     "color-lunchbox": ["#battlePanel", 382, 780, 760, 350],
     "fruit-merge": [".fixed-game-shell", 382, 780, 760, 350],
-    "garden-tiles": [".garden-game", 382, 780, 760, 350],
+    "garden-tiles": ["#boardPanel", 390, 788, 760, 350],
     "shadow-wolf": [".game-layout", 390, 788],
     // Space Rocks has a native 960x540 playfield. Its inner frame-owned
     // envelope is the responsive root; target it directly to avoid scaling

@@ -168,7 +168,7 @@ async function boot(){
  if(document.readyState!=='complete')await new Promise(resolve=>window.addEventListener('load',resolve,{once:true,signal:abort.signal}));
  try{await document.querySelector('.main-poster').decode();}catch{window.WeightPlayGameEntryLoader?.fail();return;}
  await new Promise(resolve=>requestAnimationFrame(resolve));
- const isPreview=new URLSearchParams(location.search).get('preview')==='1';$('startBtn').disabled=!isPreview;$('startBtn').textContent=t(isPreview?'start':'coming');
+ $('startBtn').disabled=false;$('startBtn').textContent=t('start');
  window.WeightPlayGameEntryLoader?.ready();
  LocalPractice.register({gameId:'blade-orbit',stageIds:STAGES.map(s=>s.id),enable:enabled=>{if(enabled){practiceMode=true;$('startBtn').disabled=false;$('startBtn').textContent=t('start');}selector.refresh(selected);},startStage:id=>start(Number(id))});
  window.BladeOrbit=Object.freeze({identity:()=>({game:'blade-orbit',version:'v6',interface:'9',target:9}),renderStats:()=>world?.stats()||null});

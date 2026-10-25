@@ -11,6 +11,11 @@ export function renderBladeOrbitRoute(locale,source=fs.readFileSync(new URL('./i
   .replace(/\s*<link rel="(?:canonical|alternate)"[^>]*>/g,'')
   .replace(/\s*<meta\b[^>]*data-blade-meta[^>]*>/g,'')
   .replace(/\s*<script id="blade-schema"[^>]*>[\s\S]*?<\/script>/g,'');
+ // The native runtime owns and rebuilds these Guide containers. Declare that
+ // ownership so its authored details/summary FAQ remains the static contract.
+ html=html.replace(/<body\b([^>]*)>/,(_,attrs)=>`<body${attrs.includes('data-wp-game-owned-guide')?attrs:attrs+' data-wp-game-owned-guide'}>`);
+ html=html.replace(/\s*<script data-blade-locale-ja[^>]*>[\s\S]*?<\/script>/g,'');
+ if(locale==='ja')html=html.replace('</head>','<script data-blade-locale-ja src="/src/i18n-ja.js?v=20260719-ja1"></script>\n</head>');
  html=html.replace(/(<([a-z0-9-]+)\b[^>]*data-copy="([^"]+)"[^>]*>)[\s\S]*?(<\/\2>)/g,(_,open,tag,key,close)=>{if(!c[key])throw Error('Missing '+key);return open+esc(c[key])+close;});
  for(const [id,key]of [['mainReturn','backLobby'],['stageBackBtn','backMain'],['battleBackBtn','pause'],['helpBtn','help']])html=html.replace(new RegExp('(<(?:a|button) id="'+id+'"[^>]*aria-label=")[^"]*'),(_,open)=>open+esc(c[key]));
  html=html.replace(/(<img class="main-poster[^>]*alt=")[^"]*/,(_,open)=>open+esc(c.posterAlt));

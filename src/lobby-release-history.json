@@ -481,6 +481,10 @@
       "date": "2026-07-06T21:50:28+08:00",
       "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
     },
+    "blade-orbit": {
+      "date": "2026-10-25T17:14:14.033Z",
+      "evidence": "canonical-public-catalog"
+    },
     "block-apex": {
       "date": "2026-10-21T16:15:31.180Z",
       "evidence": "canonical-public-catalog"
