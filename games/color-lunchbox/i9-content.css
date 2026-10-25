@@ -278,4 +278,77 @@ body[data-wp-game-id="color-lunchbox"] .leave-confirm-card #keepSortingBtn {
     min-width: 150px;
     min-height: 150px;
   }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel[data-wp-result-screen] {
+    place-items: center;
+    padding: 8px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: min(100%, 560px);
+    max-height: 100%;
+    padding: 8px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-card h2 {
+    font-size: 20px;
+    line-height: 1.1;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .reward-parade {
+    min-height: 28px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .reward-parade img {
+    width: 28px;
+    height: 28px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-report {
+    gap: 3px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-summary {
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-stats {
+    gap: 4px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-stats span {
+    min-height: 28px;
+    padding: 2px;
+    font-size: 10px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .skill-report {
+    gap: 1px;
+    padding: 4px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .skill-report > strong,
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .skill-report-row,
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .skill-report-row b {
+    font-size: 10px;
+    line-height: 1.1;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .progress-message {
+    font-size: 11px;
+    line-height: 1.15;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-report small {
+    font-size: 8px;
+  }
+
+  body[data-wp-game-id="color-lunchbox"] #resultPanel .result-actions :is(button, a) {
+    min-height: 36px;
+    font-size: 11px;
+  }
 }
