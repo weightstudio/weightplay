@@ -197,9 +197,12 @@ export class RapidsRenderer{
         root.userData.collected=false;root.userData.collectProgress=0;
         const lane=sculpture([part([this.featureWidth(f.s,f.width||.82),.035,.24],[0,.025,0],color)],this.currentMat);lane.userData.lateralScale=true;root.add(lane);
       }else if(k==='gate'){
-        const w=this.featureWidth(f.s,f.width||1.1);
-        parts.push(part([.2,2.1,.3],[-w/2,.9,0],C.wood),part([.2,2.1,.3],[w/2,.9,0],C.wood),part([w+.5,.23,.4],[0,2,0],C.gold));
-        const barrier=sculpture([part([w,.55,.26],[0,.9,0],0xd59045),part([w,.1,.3],[0,1.18,0],C.cream)],this.material);root.add(barrier);root.userData.barrier=barrier;
+        const w=this.featureWidth(f.s,f.width||1.1),height=f.height||1.2,bandHeight=Math.min(.07,height*.15);
+        // Side posts identify the sluice without an overhead beam intersecting
+        // the standing character or the legal jump arc. The cross-water piece
+        // alone carries the same board-clearance height as the simulation.
+        for(const side of [-1,1])parts.push(part([.16,2.35,.24],[side*(w/2+.13),1.175,0],C.wood),part([.4,.14,.42],[side*(w/2+.13),2.42,0],C.gold));
+        const barrier=sculpture([part([w,height,.26],[0,height/2,0],0xd59045),part([w,bandHeight,.3],[0,height-bandHeight/2,0],C.cream)],this.material);root.add(barrier);root.userData.barrier=barrier;root.userData.barrierHeight=height;
       }else if(['anchor','mooring','bay'].includes(k)){
         parts.push(part([.8,.2,1.1],[0,.02,0],C.wood),part([.24,.8,.24],[0,.5,0],0xb07849),part([.4,.23,.4],[0,.96,0],0xe68166));
       }else if(k==='bridge'){
@@ -223,8 +226,9 @@ export class RapidsRenderer{
         const length=f.length||50,segments=Math.ceil(length/5);
         for(let i=0;i<segments;i++){const d=(i+.5)*length/segments,w=this.featureWidth(f.s+d,f.width||.2),x=this.featureOffset(f,d);parts.push(part([w,.45,length/segments+.05],[x,.12,-d],0x997342),part([w*.75,.14,length/segments],[x,.42,-d],0xc4a363));}
       }else if(k==='gap'){
-        const w=this.featureWidth(f.s,f.width||1),length=f.length||2;
-        parts.push(part([w,.045,length],[0,.035,-length/2],0x123f55),part([w,.065,.14],[0,.08,0],0xf1c36b),part([w,.065,.14],[0,.08,-length],0xf1c36b));
+        const length=f.length||2,segments=Math.max(2,Math.ceil(length/.5));
+        for(let i=0;i<segments;i++){const d=(i+.5)*length/segments,w=this.featureWidth(f.s+d,f.width||1);parts.push(part([w,.045,length/segments+.02],[this.featureOffset(f,d),.035,-d],0x123f55));}
+        for(const d of [0,length])parts.push(part([this.featureWidth(f.s+d,f.width||1),.065,.14],[this.featureOffset(f,d),.08,-d],0xf1c36b));
       }
       if(parts.length)root.add(sculpture(parts,this.material));
       this.featureRoot.add(root);this.featureNodes.push(root);
@@ -245,8 +249,8 @@ export class RapidsRenderer{
   }
   burst(s,x=0,strength=1){if(this.reduce)return;for(let i=0;i<Math.round(10*strength);i++){if(this.particleData.length>=64)this.particleData.shift();this.particleData.push({x:this.worldX(s,x),y:.3,z:-s,vx:(hash(i+s)-.5)*4,vy:2+hash(i*3+s)*3,vz:(hash(i*5+s)-.5)*4,life:.45+hash(i+s)*.3});}}
   render(race,dt=0){
-    this.lastRace=race;
-    if(this.disposed||!race?.stage)return;if(this.stage!==race.stage)this.setStage(race.stage);
+    if(this.disposed||!race?.stage)return;
+    this.lastRace=race;if(this.stage!==race.stage)this.setStage(race.stage);
     const p=race.player,s=p.s,clock=race.activeTime||0;
     this.ground.position.set(this.worldX(s+20),-.62,-s-40);
     for(let i=0;i<48;i++){
@@ -297,7 +301,7 @@ export class RapidsRenderer{
         }
       }
       if(!node.visible)continue;
-      if(node.userData.barrier){node.userData.barrier.position.y=gateIsOpen(f,clock)?1.5:0;}
+      if(node.userData.barrier){node.userData.barrier.position.y=gateIsOpen(f,clock)?-node.userData.barrierHeight-.12:0;}
       if(node.userData.bridgeDeck)node.userData.bridgeDeck.position.y=2.5+(f.tidal&&tideLabel(clock)==='early'?f.lowClearance:f.clearance);
       if(node.userData.rotor)node.userData.rotor.rotation.z=clock*Math.PI*2/(f.period||4.2);
       if(node.userData.directionRoot){let direction=f.direction||0;if(f.tidal&&tideLabel(clock+(f.phase||0))==='late')direction*=-1;for(const arrow of node.userData.directionRoot.children)arrow.rotation.y=direction>0?-Math.PI/2:direction<0?Math.PI/2:0;}

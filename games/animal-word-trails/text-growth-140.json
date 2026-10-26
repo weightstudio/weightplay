@@ -1,17 +1,24 @@
 {
   "locales": {
     "en": {
-      "intro": "Follow animal clues across ten trails. Find four target words on each board by connecting neighboring letters; diagonals are allowed, but a tile cannot be reused in one word.",
+      "intro": "Explore 60 trails by connecting neighboring letters or characters to find words.",
       "systems": [
-        "Tap tiles in order or drag a continuous path, then choose Check Word. Hint reveals the first letter of the next unfound word; Undo removes the last tile, and Clear removes the current path.",
-        "The ten source boards are 4×4 and each contains four target words. Later trails add blocked tiles or a one-way leaf entry. There is no timer; clears, stars, and clue cards save in this browser."
+        "Tap tiles one by one, then check the word. A drag that adds at least two tiles submits when released. Undo removes the last tile; Clear removes the path.",
+        "Diagonals count as neighbors; do not reuse a tile in one word.",
+        "Place the leaf bridge across one chosen gap at a time.",
+        "Follow the group order, or choose the first group when offered; finish it before the next.",
+        "A reusable wild leaf stands for one whole character of the selected word. Use at most one per word.",
+        "Hints can lower the stars you earn.",
+        "On trail 5, choose the word you want to find before connecting tiles.",
+        "On trail 10, find the habitat words in the order shown."
       ],
       "progression": [
-        "All ten source trails have four words. Later boards add blocked tiles or a one-way leaf entry. There is no timer; clears, stars, and clue cards save in this browser."
+        "Find four words to clear each trail and unlock the next. Trail 60 is the last.",
+        "There is no timer. Clears, stars and clue cards stay in this browser."
       ],
-      "designNote": "The original word packs are English and Traditional Chinese. The game can generate localized boards from the English pack for supported game languages; that is generated localization, not a separately authored pack for every public route.",
-      "parent": "This Kids reading puzzle is ad-free and needs no account. Progress and records stay in this browser and may be lost if site data is cleared. It is for practice and entertainment, not a formal reading assessment.",
-      "metaDescription": "Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused.",
+      "designNote": "Each trail has four words. Later trails introduce bridges, group order and wild leaves.",
+      "parent": "This Kids reading puzzle is ad-free and needs no account. Progress and records stay in this browser and may be lost if site data is cleared. It is for practice and entertainment, not a formal reading assessment. If browser storage is unavailable, you can keep playing now, but progress may not last after you leave.",
+      "metaDescription": "Explore 60 word trails with leaf bridges, animal and nature groups, and reusable wild leaves.",
       "text140Tags": [
         "Word-path puzzle",
         "Animal clues",
@@ -24,35 +31,35 @@
         "Animal"
       ],
       "story": [
-        "Leo’s field album is missing animal and habitat entries. Find each word to return a clue card; finding all four completes the trail and opens the next available one."
+        "Help Leo restore animal and habitat clues to the album, one trail at a time."
       ],
       "how": [
-        "Choose an unlocked trail.",
-        "Read its animal or habitat clue and target words.",
-        "Trace adjacent tiles; diagonals are allowed, but do not reuse a tile.",
-        "Submit each word and find all four to clear the trail."
+        "Choose an unlocked trail and find its four words.",
+        "Connect neighboring tiles, including diagonals; do not reuse a tile in one word.",
+        "When a leaf bridge is available, move it to the gap you want to cross.",
+        "Follow the group order and choose a target before using a wild leaf."
       ],
       "strategyTips": [
-        "Scan the full target list before choosing a start.",
-        "Use a diagonal only when the next target letter is adjacent.",
-        "Enter a one-way leaf tile from its marked direction."
+        "Look at the targets before tracing.",
+        "Move the bridge when another gap is needed.",
+        "Choose the target first and use at most one wild leaf in its path."
       ],
       "faq": [
         [
           "How many trails are there?",
-          "Ten trails, with four target words on each."
+          "There are 60, with four target words in each."
         ],
         [
-          "Can I move diagonally?",
-          "Yes. Diagonal neighbors count as adjacent; a tile cannot be reused in one word."
+          "How does the leaf bridge work?",
+          "It crosses one selected gap at a time and can be moved."
         ],
         [
-          "What do Hint, Undo, and Clear do?",
-          "Hint reveals the first letter of the next unfound word; Undo removes the last tile, and Clear removes the current path."
+          "How does the wild leaf work?",
+          "It replaces one whole character in the selected word. You can use it again for another word."
         ],
         [
-          "Does the game use a timer?",
-          "No. Progress and clue-card records stay in this browser."
+          "Are there ads, and where is progress saved?",
+          "There are no ads. Progress and clue cards are saved in this browser."
         ]
       ],
       "difficulty": "Easy to Moderate",
@@ -64,17 +71,24 @@
       ]
     },
     "zh-Hant": {
-      "intro": "跟著動物線索，在十條字詞小徑中找出動物或棲地詞語；每條有四個目標詞。可連接斜向相鄰字格，但同一個詞不能重複使用字格。",
+      "intro": "探索 60 條小徑，連接相鄰的字或字母來找出詞語。",
       "systems": [
-        "逐格點選或連續拖曳路徑，再按「確認字詞」。提示會顯示下一個尚未找到詞語的第一個字；復原移除最後一格，清除則移除目前路徑。",
-        "十條來源棋盤皆為 4×4，每盤有四個目標詞。後段加入封鎖格或單向葉片入口。沒有倒數；通關、星數與圖鑑卡片只保存在此瀏覽器。"
+        "逐格點選後按確認；拖曳新增至少兩格並放開會自動送出。復原移除最後一格，清除移除目前路徑。",
+        "可以斜向連接，但同一個詞不能重用字格。",
+        "葉橋一次只能跨越選中的一個缺口。",
+        "依照提示的順序找詞；可以選擇時，先完成選好的那一組。",
+        "可重複使用的萬用葉，能代替目前選中詞語的一個完整的字或字母。每個詞最多用一片。",
+        "使用提示可能會減少獲得的星星。",
+        "第 5 關先選擇想找的詞，再連接字格。",
+        "第 10 關按照顯示順序找出棲地詞語。"
       ],
       "progression": [
-        "十條來源小徑各有四個目標詞。後段加入封鎖格或單向葉片入口。沒有倒數；通關、星數與圖鑑卡片只保存在此瀏覽器。"
+        "每條小徑找齊四個詞即可通關並解鎖下一條；第 60 條是最後一條。",
+        "沒有倒數；通關、星星和線索卡保存在此瀏覽器。"
       ],
-      "designNote": "原始詞語題庫以英文與繁體中文編寫。支援的遊戲語言可從英文題庫生成在地化棋盤；這是程式生成內容，不表示每個公開語系都有獨立人工編寫的題庫。",
-      "parent": "這款 Kids 閱讀益智遊戲沒有廣告，也不需要帳號。進度與紀錄保存在目前瀏覽器，清除網站資料可能會移除。內容供練習與娛樂，不是正式閱讀能力評量。",
-      "metaDescription": "在十條小徑中找出動物或棲地詞語，每條四個。可走斜向，但不能重複使用字格。",
+      "designNote": "每條小徑有四個詞，後續逐步加入葉橋、分類順序與萬用葉。",
+      "parent": "這款 Kids 閱讀益智遊戲沒有廣告，也不需要帳號。進度與紀錄保存在目前瀏覽器，清除網站資料可能會移除。內容供練習與娛樂，不是正式閱讀能力評量。 若瀏覽器儲存功能無法使用，這次仍可繼續遊玩，但離開後的進度可能無法保留。",
+      "metaDescription": "探索 60 條字詞小徑，運用葉橋、動物與自然分類，以及可重複使用的萬用葉。",
       "text140Tags": [
         "字詞路徑益智",
         "動物線索",
@@ -87,35 +101,35 @@
         "動物"
       ],
       "story": [
-        "獅子嚮導的野外圖鑑少了動物與棲地詞條。每找到一個詞語就補回一張線索卡；找齊四個詞語即可完成小徑並開放下一條路線。"
+        "陪獅子嚮導逐條探索，將動物與棲地線索收進圖鑑。"
       ],
       "how": [
-        "選擇已解鎖的小徑。",
-        "閱讀動物或棲地線索與目標詞。",
-        "沿相鄰字格連線；可走斜向，但不能重用字格。",
-        "送出每個詞語，找齊四個即可完成小徑。"
+        "選擇已解鎖的小徑，找出四個詞。",
+        "連接相鄰字格，可走斜向，同一個詞不能重用字格。",
+        "有葉橋時，將它移到想跨越的缺口。",
+        "依分類順序找詞，使用萬用葉前先選好目標詞。"
       ],
       "strategyTips": [
-        "先看完整份目標詞，再決定起點。",
-        "只有下一個目標字相鄰時才走斜向。",
-        "遇到單向葉片入口時，從標示允許的方向進入。"
+        "連線前先看看目標詞。",
+        "需要跨越另一個缺口時，移動葉橋。",
+        "先選目標詞，一個詞的路徑最多用一片萬用葉。"
       ],
       "faq": [
         [
           "共有幾條小徑？",
-          "共有十條，每條有四個目標詞。"
+          "共有 60 條，每條有四個目標詞。"
         ],
         [
-          "可以斜向移動嗎？",
-          "可以；斜向相鄰也算相鄰，但同一詞語不能重用字格。"
+          "葉橋怎麼用？",
+          "它一次跨越選中的一個缺口，可以移到別處。"
         ],
         [
-          "提示、復原與清除有什麼作用？",
-          "提示會顯示下一個尚未找到詞語的第一個字；復原移除最後一格，清除則移除目前路徑。"
+          "萬用葉怎麼用？",
+          "它代替選中詞語的一個完整字或字母，找其他詞時可再次使用。"
         ],
         [
-          "遊戲有倒數嗎？",
-          "沒有。進度與線索卡紀錄只保存在此瀏覽器。"
+          "有廣告嗎？進度存在哪裡？",
+          "沒有廣告。進度與線索卡保存在這個瀏覽器。"
         ]
       ],
       "difficulty": "簡單至中等",
@@ -127,17 +141,24 @@
       ]
     },
     "zh-Hans": {
-      "intro": "跟随动物线索，在十条字词小径中找出动物或栖地词语；每条有四个目标词。可以连接斜向相邻字格，但同一个词不能重复使用字格。",
+      "intro": "探索 60 条小径，连接相邻的字或字母来找出词语。",
       "systems": [
-        "逐格点击或连续拖动路径，再按“确认词语”。提示会显示下一个尚未找到词语的第一个字；撤销移除最后一格，清除则移除当前路径。",
-        "十条来源棋盘均为 4×4，每盘有四个目标词。后段加入封锁格或单向叶片入口。没有倒计时；通关、星数与图鉴卡片只保存在此浏览器。"
+        "逐格点选后按确认；拖动新增至少两格并松开会自动提交。撤销移除最后一格，清除移除当前路径。",
+        "可以斜向连接，但同一个词不能重复使用字格。",
+        "叶桥一次只能跨越选中的一个缺口。",
+        "按照提示的顺序找词；可以选择时，先完成选好的那一组。",
+        "可重复使用的万能叶，能代替当前选中词语的一个完整的字或字母。每个词最多用一片。",
+        "使用提示可能会减少获得的星星。",
+        "第 5 关先选择想找的词，再连接字格。",
+        "第 10 关按照显示顺序找出栖地词语。"
       ],
       "progression": [
-        "十条来源小径各有四个目标词。后段加入封锁格或单向叶片入口。没有倒计时；通关、星数与图鉴卡片只保存在此浏览器。"
+        "每条小径找齐四个词即可通关并解锁下一条；第 60 条是最后一条。",
+        "没有倒计时；通关、星星和线索卡保存在此浏览器。"
       ],
-      "designNote": "原始词语题库以英文与繁体中文编写。支持的游戏语言可从英文题库生成本地化棋盘；这是程序生成内容，不表示每个公开语种都有独立人工编写的题库。",
-      "parent": "这款 Kids 阅读益智游戏没有广告，也不需要账号。进度与记录保存在当前浏览器，清除网站数据可能会移除。内容用于练习与娱乐，不是正式阅读能力评估。",
-      "metaDescription": "在十条小径中寻找动物或栖地词语，每条四个。可以斜向移动，但不能重复使用字格。",
+      "designNote": "每条小径有四个词，后续逐步加入叶桥、分类顺序与万能叶。",
+      "parent": "这款 Kids 阅读益智游戏没有广告，也不需要账号。进度与记录保存在当前浏览器，清除网站数据可能会移除。内容用于练习与娱乐，不是正式阅读能力评估。 如果浏览器存储功能不可用，这次仍可继续游玩，但离开后进度可能无法保留。",
+      "metaDescription": "探索 60 条字词小径，使用叶桥、动物与自然分类，以及可重复使用的万能叶。",
       "text140Tags": [
         "字词路径益智",
         "动物线索",
@@ -150,35 +171,35 @@
         "动物"
       ],
       "story": [
-        "狮子向导的野外图鉴缺少动物与栖地词条。每找到一个词语就补回一张线索卡；找齐四个词语即可完成小径并开放下一条路线。"
+        "陪狮子向导逐条探索，把动物和栖地线索收进图鉴。"
       ],
       "how": [
-        "选择已解锁的小径。",
-        "阅读动物或栖地线索与目标词。",
-        "沿相邻字格连线；可以斜向，但不能重复使用字格。",
-        "提交每个词语，找齐四个即可完成小径。"
+        "选择已解锁的小径，找出四个词。",
+        "连接相邻字格，可以走斜向，同一个词不能重复使用字格。",
+        "有叶桥时，把它移到想跨越的缺口。",
+        "按分类顺序找词，使用万能叶前先选好目标词。"
       ],
       "strategyTips": [
-        "先看完整份目标词，再决定起点。",
-        "只有下一个目标字相邻时才走斜向。",
-        "遇到单向叶片入口时，从标示允许的方向进入。"
+        "连线前先看看目标词。",
+        "需要跨越另一个缺口时，移动叶桥。",
+        "先选目标词，一个词的路径最多用一片万能叶。"
       ],
       "faq": [
         [
-          "共有几条小径？",
-          "共有十条，每条有四个目标词。"
+          "共有多少条小径？",
+          "共有 60 条，每条有四个目标词。"
         ],
         [
-          "可以斜向移动吗？",
-          "可以；斜向相邻也算相邻，但同一个词不能重复使用字格。"
+          "叶桥怎么用？",
+          "它一次跨越选中的一个缺口，可以移到别处。"
         ],
         [
-          "提示、撤销与清除有什么作用？",
-          "提示会显示下一个尚未找到词语的第一个字；撤销移除最后一格，清除则移除当前路径。"
+          "万能叶怎么用？",
+          "它代替选中词语的一个完整字或字母，找其他词时可以再次使用。"
         ],
         [
-          "游戏有倒计时吗？",
-          "没有。进度与线索卡记录只保存在此浏览器。"
+          "有广告吗？进度存在哪里？",
+          "没有广告。进度和线索卡保存在这个浏览器。"
         ]
       ],
       "difficulty": "简单至中等",
@@ -190,17 +211,24 @@
       ]
     },
     "ja": {
-      "intro": "動物の手掛かりから全10本のコースで言葉を探します。各盤面に目標語が4つ。斜めを含む隣接マスをつなげますが、同じ語でマスを再利用できません。",
+      "intro": "60の小道で、となり合う文字をつなげて言葉を見つけよう。",
       "systems": [
-        "順にタップするか連続してドラッグし、「単語を確認」を選びます。ヒントは次に見つける単語の最初の文字を示します。戻す操作は最後のマスを外し、経路を消去する操作は現在の経路を消します。",
-        "10個の元盤面はすべて4×4で、各盤面に目標語が4つあります。後半には通行不可マスや一方向の葉の入口が加わります。時間制限はなく、クリア、星、カードはこのブラウザーに保存されます。"
+        "マスを一つずつ押したら言葉を確認しよう。なぞって二つ以上のマスを新しく加えて離すと、自動で送られるよ。「もどす」は最後のマスを、「クリア」は今の道を消すよ。",
+        "斜めにもつなげるよ。同じ言葉で同じマスは使えないよ。",
+        "葉っぱの橋は、選んだすき間に一つずつかけよう。",
+        "グループの順番に探そう。選べるときは、選んだグループを先に終えよう。",
+        "何度も使えるおたすけの葉は、選んだ言葉の文字ひとまとまりの代わりになるよ。一つの言葉には一枚まで使えるよ。",
+        "ヒントを使うと、もらえる星が減ることがあるよ。",
+        "5本目では、探したい言葉を選んでからマスをつなごう。",
+        "10本目では、すみかの言葉を表示された順番に探そう。"
       ],
       "progression": [
-        "全10コースに4語ずつあります。後半に通行不可マスや一方向の葉の入口が加わります。時間制限はなく、クリア、星、カードはこのブラウザーに保存されます。"
+        "それぞれの小道で四つの言葉を見つけると、次の小道が開くよ。60本目が最後だよ。",
+        "制限時間はないよ。クリア記録、星、カードはこのブラウザーに保存されるよ。"
       ],
-      "designNote": "元の単語パックは英語と繁体字中国語です。対応するゲーム言語では英語パックから盤面を生成できます。これは自動生成のローカライズで、全公開ページに個別制作の単語パックがあるという意味ではありません。",
-      "parent": "このKids向け読解パズルは広告もアカウント登録も不要です。進行と記録はこのブラウザーに保存され、サイトデータを消すと失われる場合があります。練習と娯楽のための内容で、正式な読解評価ではありません。",
-      "metaDescription": "全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。",
+      "designNote": "小道ごとに言葉が四つ。途中から橋、グループの順番、おたすけの葉が登場するよ。",
+      "parent": "このKids向け読解パズルは広告もアカウント登録も不要です。進行と記録はこのブラウザーに保存され、サイトデータを消すと失われる場合があります。練習と娯楽のための内容で、正式な読解評価ではありません。 ブラウザーに保存できないときも今は遊べるけれど、離れた後は記録が残らないことがあるよ。",
+      "metaDescription": "60の小道で言葉探し。葉っぱの橋やグループ分け、おたすけの葉を使おう。",
       "text140Tags": [
         "ワードパスパズル",
         "動物の手掛かり",
@@ -213,35 +241,35 @@
         "動物"
       ],
       "story": [
-        "ライオン案内役の野外図鑑には動物と生息地の項目が欠けています。語を見つけると手掛かりカードが戻り、4語すべてでコースをクリアして次が開きます。"
+        "ライオンの案内役と小道を進み、動物やすみかの手掛かりを図鑑に集めよう。"
       ],
       "how": [
-        "解放済みコースを選びます。",
-        "動物や生息地の手掛かりと目標語を読みます。",
-        "隣接マスをつなぎます。斜めは可能ですが同じマスは再利用できません。",
-        "各語を送信し、4語すべて見つけます。"
+        "開いている小道を選び、四つの言葉を探そう。",
+        "となり合うマスをつなげよう。斜めもよいけれど、同じ言葉でマスを二度使えないよ。",
+        "葉っぱの橋があるときは、渡りたいすき間に動かそう。",
+        "グループの順番に探し、葉を使う前に言葉を選ぼう。"
       ],
       "strategyTips": [
-        "開始位置を決める前に目標語をすべて確認します。",
-        "次の文字が隣接するときに斜めを使います。",
-        "一方向の葉の入口には指定方向から入ります。"
+        "道をなぞる前に目標の言葉を見よう。",
+        "別のすき間を渡りたいときは橋を動かそう。",
+        "先に言葉を選び、一つの言葉に葉は一枚まで使おう。"
       ],
       "faq": [
         [
-          "コースはいくつありますか？",
-          "全10コースで、各コースに4語あります。"
+          "小道はいくつあるの？",
+          "60本あり、それぞれに四つの言葉があるよ。"
         ],
         [
-          "斜めに移動できますか？",
-          "できます。同じ語の中でマスを再利用することはできません。"
+          "葉っぱの橋はどう使うの？",
+          "選んだすき間を一つずつ渡るよ。橋は動かせるよ。"
         ],
         [
-          "ヒント・戻す・経路を消去する操作では何ができますか？",
-          "ヒントは次に見つける単語の最初の文字を示します。戻す操作は最後のマスを外し、経路を消去する操作は現在の経路を消します。"
+          "おたすけの葉はどう使うの？",
+          "選んだ言葉の文字ひとまとまりの代わりになるよ。ほかの言葉でもまた使えるよ。"
         ],
         [
-          "制限時間はありますか？",
-          "ありません。進行とカードはこのブラウザーに保存されます。"
+          "広告はある？記録はどこに残るの？",
+          "広告はないよ。記録とカードはこのブラウザーに保存されるよ。"
         ]
       ],
       "difficulty": "やさしい〜中級",
@@ -253,17 +281,24 @@
       ]
     },
     "ko": {
-      "intro": "동물 단서로 열 개의 길에서 단어를 찾으세요. 각 판에 목표 단어 네 개가 있습니다. 대각선 이웃 칸도 연결할 수 있지만 한 단어에서 같은 칸을 다시 쓸 수 없습니다.",
+      "intro": "60개의 길에서 이웃한 글자를 이어 낱말을 찾아요.",
       "systems": [
-        "칸을 순서대로 누르거나 연속으로 드래그한 뒤 ‘단어 확인’을 누르세요. 힌트는 다음 미발견 단어의 첫 글자를 보여 줍니다. 되돌리기는 마지막 칸을 빼고, 지우기는 현재 경로를 없앱니다.",
-        "열 개 원본 보드는 모두 4×4이며 각 판에 목표 단어 네 개가 있습니다. 후반에는 막힌 칸이나 한 방향 잎 입구가 추가됩니다. 시간 제한은 없고 완료, 별, 카드는 이 브라우저에 저장됩니다."
+        "칸을 하나씩 누른 뒤 낱말을 확인해요. 드래그로 새 칸을 두 개 이상 더하고 놓으면 자동으로 제출돼요. 되돌리기는 마지막 칸을, 지우기는 현재 경로를 없애요.",
+        "대각선으로도 이을 수 있어요. 한 낱말에서 같은 칸을 다시 쓸 수 없어요.",
+        "나뭇잎 다리는 한 번에 고른 틈 하나에만 놓을 수 있어요.",
+        "안내된 순서대로 모둠을 찾아요. 고를 수 있으면 먼저 고른 모둠을 마쳐요.",
+        "다시 쓸 수 있는 마법 나뭇잎은 고른 낱말의 글자 한 덩어리를 대신해요.낱말마다 한 장만 쓸 수 있어요.",
+        "힌트를 쓰면 받는 별이 줄어들 수 있어요.",
+        "5번째 길에서는 찾고 싶은 낱말을 고른 뒤 칸을 이어요.",
+        "10번째 길에서는 서식지 낱말을 표시된 순서대로 찾아요."
       ],
       "progression": [
-        "열 개 길마다 네 단어가 있습니다. 후반에는 막힌 칸이나 한 방향 잎 입구가 추가됩니다. 시간 제한은 없으며 완료, 별, 단서 카드는 이 브라우저에 저장됩니다."
+        "각 길에서 낱말 네 개를 찾으면 다음 길이 열려요. 60번째 길이 마지막이에요.",
+        "시간제한은 없어요. 완료 기록, 별과 단서 카드는 이 브라우저에 저장돼요."
       ],
-      "designNote": "원본 단어 팩은 영어와 번체 중국어입니다. 지원 게임 언어에서는 영어 팩으로 현지화 보드를 생성합니다. 이는 생성된 현지화이며 모든 공개 페이지에 별도 집필 팩이 있다는 뜻은 아닙니다.",
-      "parent": "이 Kids 읽기 퍼즐은 광고와 계정 가입이 필요 없습니다. 진행과 기록은 이 브라우저에 저장되며 사이트 데이터를 지우면 사라질 수 있습니다. 연습과 오락을 위한 활동이지 공식 읽기 평가는 아닙니다.",
-      "metaDescription": "열 개 길에서 동물이나 서식지 단어를 찾으세요. 각 네 단어이며 대각선 이동은 가능하지만 칸 재사용은 안 됩니다.",
+      "designNote": "길마다 낱말이 네 개 있어요. 뒤로 갈수록 다리, 모둠 순서와 마법 잎이 나와요.",
+      "parent": "이 Kids 읽기 퍼즐은 광고와 계정 가입이 필요 없습니다. 진행과 기록은 이 브라우저에 저장되며 사이트 데이터를 지우면 사라질 수 있습니다. 연습과 오락을 위한 활동이지 공식 읽기 평가는 아닙니다. 브라우저에 저장할 수 없어도 지금은 계속 놀 수 있지만, 나간 뒤에는 기록이 남지 않을 수 있어요.",
+      "metaDescription": "60개의 길에서 낱말을 찾아요. 나뭇잎 다리, 동물과 자연 모둠, 마법 잎을 만나 보세요.",
       "text140Tags": [
         "단어 경로 퍼즐",
         "동물 단서",
@@ -276,35 +311,35 @@
         "동물"
       ],
       "story": [
-        "사자 안내자의 야외 앨범에는 동물과 서식지 항목이 빠져 있습니다. 단어를 찾으면 단서 카드가 돌아오고, 네 단어를 모두 찾으면 길을 완료해 다음 길을 엽니다."
+        "사자 안내자와 길을 탐험하며 동물과 서식지 단서를 도감에 모아요."
       ],
       "how": [
-        "잠금 해제된 길을 선택하세요.",
-        "동물 또는 서식지 단서와 목표 단어를 읽으세요.",
-        "인접 칸을 연결하세요. 대각선은 가능하지만 칸을 다시 쓸 수 없습니다.",
-        "단어를 제출하고 네 개를 모두 찾으세요."
+        "열린 길을 골라 낱말 네 개를 찾아요.",
+        "이웃한 칸을 이어요. 대각선도 되지만 한 낱말에서 같은 칸을 다시 쓸 수 없어요.",
+        "나뭇잎 다리가 있으면 건너고 싶은 틈으로 옮겨요.",
+        "모둠 순서를 따르고 마법 잎을 쓰기 전에 낱말을 골라요."
       ],
       "strategyTips": [
-        "시작 칸을 고르기 전에 목표 목록 전체를 읽으세요.",
-        "다음 글자가 이웃할 때 대각선으로 연결하세요.",
-        "한 방향 잎 입구는 표시된 방향으로 들어가세요."
+        "길을 잇기 전에 낱말을 살펴봐요.",
+        "다른 틈을 건너야 하면 다리를 옮겨요.",
+        "먼저 낱말을 고르고 한 낱말에 마법 잎은 하나만 써요."
       ],
       "faq": [
         [
-          "길은 몇 개인가요?",
-          "열 개의 길이 있으며 각 길에 목표 단어 네 개가 있습니다."
+          "길은 몇 개예요?",
+          "60개이고 각 길에 낱말 네 개가 있어요."
         ],
         [
-          "대각선으로 이동할 수 있나요?",
-          "가능합니다. 한 단어에서 같은 칸을 다시 쓸 수는 없습니다."
+          "나뭇잎 다리는 어떻게 써요?",
+          "고른 틈 하나를 건너며, 다른 틈으로 옮길 수 있어요."
         ],
         [
-          "힌트, 되돌리기, 지우기는 어떤 기능인가요?",
-          "힌트는 다음 미발견 단어의 첫 글자를 보여 줍니다. 되돌리기는 마지막 칸을 빼고, 지우기는 현재 경로를 없앱니다."
+          "마법 잎은 어떻게 써요?",
+          "고른 낱말의 글자 한 덩어리를 대신해요. 다른 낱말에서도 다시 쓸 수 있어요."
         ],
         [
-          "시간 제한이 있나요?",
-          "없습니다. 진행과 카드는 이 브라우저에 저장됩니다."
+          "광고가 있나요? 기록은 어디에 저장되나요?",
+          "광고는 없어요. 진행 기록과 단서 카드는 이 브라우저에 저장돼요."
         ]
       ],
       "difficulty": "쉬움부터 보통",
@@ -316,17 +351,24 @@
       ]
     },
     "es": {
-      "intro": "Sigue pistas de animales en diez senderos y encuentra cuatro palabras objetivo en cada uno. Puedes conectar letras vecinas en diagonal, pero no repetir una casilla dentro de una palabra.",
+      "intro": "Explora 60 senderos y une letras o caracteres vecinos para encontrar palabras.",
       "systems": [
-        "Toca las casillas en orden o arrastra una ruta continua y pulsa Comprobar palabra. Pista revela la primera letra de la siguiente palabra pendiente; Deshacer quita la última casilla y Limpiar borra la ruta actual.",
-        "Los diez tableros fuente son 4×4 y cada uno contiene cuatro palabras objetivo. Los últimos añaden casillas bloqueadas o una entrada de hoja unidireccional. No hay temporizador; los avances, estrellas y tarjetas se guardan en este navegador."
+        "Toca las casillas una a una y comprueba la palabra. Si al arrastrar añades al menos dos casillas, se envía automáticamente al soltar. Deshacer quita la última casilla; Borrar limpia el camino.",
+        "También puedes unir casillas en diagonal, sin repetir una casilla en la misma palabra.",
+        "Coloca el puente de hojas en un solo hueco elegido cada vez.",
+        "Sigue el orden de los grupos o elige el primero cuando puedas; termínalo antes de pasar al siguiente.",
+        "La hoja comodín se puede reutilizar y representa un carácter completo de la palabra elegida. Usa como máximo una por palabra.",
+        "Usar pistas puede reducir las estrellas que ganas.",
+        "En el sendero 5, elige la palabra que quieres buscar antes de conectar las casillas.",
+        "En el sendero 10, encuentra las palabras de hábitats en el orden mostrado."
       ],
       "progression": [
-        "Los diez senderos fuente tienen cuatro palabras cada uno. Los últimos añaden casillas bloqueadas o una entrada de hoja unidireccional. No hay temporizador; avances, estrellas y tarjetas se guardan en este navegador."
+        "Encuentra cuatro palabras para completar cada sendero y abrir el siguiente. El sendero 60 es el último.",
+        "No hay límite de tiempo. Los avances, las estrellas y las tarjetas se guardan en este navegador."
       ],
-      "designNote": "Los paquetes originales están escritos en inglés y chino tradicional. El juego puede generar tableros localizados desde el paquete inglés para los idiomas compatibles; no significa que cada ruta pública tenga un paquete escrito individualmente.",
-      "parent": "Este puzle de lectura Kids no tiene anuncios ni requiere cuenta. El progreso y los registros se guardan en este navegador y pueden perderse al borrar los datos del sitio. Es una actividad de práctica y entretenimiento, no una evaluación formal.",
-      "metaDescription": "Encuentra cuatro palabras de animales o hábitats en cada uno de diez senderos. Se permite diagonal, sin repetir casillas.",
+      "designNote": "Cada sendero tiene cuatro palabras. Más adelante aparecen puentes, orden de grupos y hojas comodín.",
+      "parent": "Este puzle de lectura Kids no tiene anuncios ni requiere cuenta. El progreso y los registros se guardan en este navegador y pueden perderse al borrar los datos del sitio. Es una actividad de práctica y entretenimiento, no una evaluación formal. Si el navegador no puede guardar datos, puedes seguir jugando ahora, pero el progreso podría perderse al salir.",
+      "metaDescription": "Explora 60 senderos de palabras con puentes de hojas, grupos de animales y naturaleza y hojas comodín.",
       "text140Tags": [
         "Puzle de rutas de palabras",
         "Pistas de animales",
@@ -339,35 +381,35 @@
         "Animales"
       ],
       "story": [
-        "Al álbum del león guía le faltan entradas de animales y hábitats. Cada palabra devuelve una tarjeta; encontrar las cuatro completa el sendero y abre el siguiente disponible."
+        "Acompaña al león guía y reúne pistas de animales y hábitats para el álbum."
       ],
       "how": [
-        "Elige un sendero desbloqueado.",
-        "Lee la pista y las palabras objetivo.",
-        "Une casillas vecinas; se permite diagonal, sin reutilizar casillas.",
-        "Envía las palabras y encuentra las cuatro."
+        "Elige un sendero desbloqueado y busca sus cuatro palabras.",
+        "Une casillas vecinas, también en diagonal, sin repetir una en la misma palabra.",
+        "Cuando haya un puente de hojas, muévelo al hueco que quieras cruzar.",
+        "Sigue el orden de los grupos y elige una palabra antes de usar una hoja comodín."
       ],
       "strategyTips": [
-        "Lee toda la lista antes de elegir la casilla inicial.",
-        "Usa la diagonal si la siguiente letra está al lado.",
-        "Entra en la hoja unidireccional desde el sentido indicado."
+        "Mira los objetivos antes de trazar.",
+        "Mueve el puente si necesitas cruzar otro hueco.",
+        "Elige la palabra y usa como máximo una hoja comodín en su camino."
       ],
       "faq": [
         [
           "¿Cuántos senderos hay?",
-          "Hay diez, con cuatro palabras objetivo cada uno."
+          "Hay 60, con cuatro palabras objetivo en cada uno."
         ],
         [
-          "¿Puedo avanzar en diagonal?",
-          "Sí. Las diagonales cuentan como vecinas, pero no se repiten casillas en una palabra."
+          "¿Cómo funciona el puente de hojas?",
+          "Cruza un hueco elegido a la vez y se puede mover."
         ],
         [
-          "¿Qué hacen Pista, Deshacer y Limpiar?",
-          "Pista revela la primera letra de la siguiente palabra pendiente; Deshacer quita la última casilla y Limpiar borra la ruta actual."
+          "¿Cómo funciona la hoja comodín?",
+          "Sustituye un carácter completo de la palabra elegida y puede volver a usarse en otra palabra."
         ],
         [
-          "¿Hay temporizador?",
-          "No. El progreso y las tarjetas se guardan en este navegador."
+          "¿Hay anuncios y dónde se guarda el progreso?",
+          "No hay anuncios. El progreso y las tarjetas se guardan en este navegador."
         ]
       ],
       "difficulty": "Fácil a moderada",
@@ -379,17 +421,24 @@
       ]
     },
     "pt-BR": {
-      "intro": "Siga pistas de animais em dez trilhas e encontre quatro palavras-alvo em cada uma. Você pode conectar letras vizinhas na diagonal, mas não repetir uma casa na mesma palavra.",
+      "intro": "Explore 60 trilhas e ligue letras ou caracteres vizinhos para encontrar palavras.",
       "systems": [
-        "Toque nas casas em sequência ou arraste um caminho contínuo e escolha Conferir palavra. Dica revela a primeira letra da próxima palavra não encontrada; Desfazer remove a última casa e Limpar apaga o caminho atual.",
-        "Os dez tabuleiros de origem são 4×4 e cada um tem quatro palavras-alvo. Os últimos acrescentam casas bloqueadas ou uma entrada de folha em sentido único. Não há cronômetro; progresso, estrelas e cartões ficam neste navegador."
+        "Toque nas casas uma a uma e confira a palavra. Se arrastar e acrescentar pelo menos duas casas, ela é enviada automaticamente ao soltar. Desfazer tira a última casa; Limpar apaga o caminho.",
+        "Você também pode ligar casas na diagonal, sem repetir uma casa na mesma palavra.",
+        "A ponte de folhas atravessa uma lacuna escolhida por vez.",
+        "Siga a ordem dos grupos ou escolha o primeiro quando puder; termine-o antes de passar ao próximo.",
+        "A folha coringa pode ser reutilizada e representa um caractere inteiro da palavra escolhida. Use no máximo uma por palavra.",
+        "Usar dicas pode diminuir as estrelas que você ganha.",
+        "Na trilha 5, escolha a palavra que quer encontrar antes de ligar as casas.",
+        "Na trilha 10, encontre as palavras de habitats na ordem mostrada."
       ],
       "progression": [
-        "As dez trilhas de origem têm quatro palavras cada. As últimas acrescentam casas bloqueadas ou entrada de folha em sentido único. Não há cronômetro; progresso, estrelas e cartões ficam neste navegador."
+        "Encontre quatro palavras para concluir cada trilha e abrir a próxima. A trilha 60 é a última.",
+        "Não há tempo limite. Conquistas, estrelas e cartões ficam salvos neste navegador."
       ],
-      "designNote": "Os pacotes originais foram escritos em inglês e chinês tradicional. O jogo pode gerar tabuleiros localizados do pacote em inglês para idiomas compatíveis; isso não significa que cada rota pública tenha um pacote escrito separadamente.",
-      "parent": "Este quebra-cabeça de leitura Kids não exibe anúncios nem exige conta. O progresso e os registros ficam neste navegador e podem ser apagados ao limpar os dados do site. É uma atividade de prática e diversão, não uma avaliação formal.",
-      "metaDescription": "Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas.",
+      "designNote": "Cada trilha tem quatro palavras. Depois aparecem pontes, ordem de grupos e folhas coringa.",
+      "parent": "Este quebra-cabeça de leitura Kids não exibe anúncios nem exige conta. O progresso e os registros ficam neste navegador e podem ser apagados ao limpar os dados do site. É uma atividade de prática e diversão, não uma avaliação formal. Se o navegador não puder salvar dados, você ainda pode jogar agora, mas o progresso pode não continuar salvo depois que sair.",
+      "metaDescription": "Explore 60 trilhas de palavras com pontes de folhas, grupos de animais e natureza e folhas coringa.",
       "text140Tags": [
         "Trilha de palavras",
         "Pistas de animais",
@@ -402,35 +451,35 @@
         "Animais"
       ],
       "story": [
-        "O álbum de campo do leão-guia está sem registros de animais e habitats. Cada palavra encontrada recupera um cartão; as quatro palavras concluem a trilha e liberam a próxima."
+        "Acompanhe o leão guia e reúna pistas de animais e habitats para o álbum."
       ],
       "how": [
-        "Escolha uma trilha desbloqueada.",
-        "Leia a pista e as palavras-alvo.",
-        "Conecte casas vizinhas; diagonais valem, sem repetir casas.",
-        "Envie as palavras e encontre as quatro."
+        "Escolha uma trilha liberada e encontre suas quatro palavras.",
+        "Ligue casas vizinhas, inclusive na diagonal, sem repetir uma casa na mesma palavra.",
+        "Quando houver uma ponte de folhas, mova-a até a lacuna que quer atravessar.",
+        "Siga a ordem dos grupos e escolha uma palavra antes de usar a folha coringa."
       ],
       "strategyTips": [
-        "Leia a lista inteira antes de escolher a casa inicial.",
-        "Use a diagonal quando a próxima letra estiver ao lado.",
-        "Entre na folha de sentido único pela direção indicada."
+        "Veja as palavras antes de traçar.",
+        "Mova a ponte se precisar atravessar outra lacuna.",
+        "Escolha a palavra e use no máximo uma folha coringa no caminho dela."
       ],
       "faq": [
         [
           "Quantas trilhas existem?",
-          "São dez trilhas, cada uma com quatro palavras-alvo."
+          "São 60, cada uma com quatro palavras."
         ],
         [
-          "Posso seguir na diagonal?",
-          "Sim. Diagonais são vizinhas, mas a mesma casa não pode se repetir na palavra."
+          "Como funciona a ponte de folhas?",
+          "Ela atravessa uma lacuna escolhida por vez e pode ser movida."
         ],
         [
-          "O que fazem Dica, Desfazer e Limpar?",
-          "Dica revela a primeira letra da próxima palavra não encontrada; Desfazer remove a última casa e Limpar apaga o caminho atual."
+          "Como funciona a folha coringa?",
+          "Ela substitui um caractere inteiro da palavra escolhida e pode ser usada de novo em outra palavra."
         ],
         [
-          "Há cronômetro?",
-          "Não. O progresso e os cartões ficam salvos neste navegador."
+          "Há anúncios? Onde o progresso é salvo?",
+          "Não há anúncios. O progresso e os cartões ficam salvos neste navegador."
         ]
       ],
       "difficulty": "Fácil a moderado",
@@ -442,17 +491,24 @@
       ]
     },
     "fr": {
-      "intro": "Suivez les indices animaliers sur dix parcours et trouvez quatre mots cibles par plateau. Les lettres voisines peuvent être reliées en diagonale, sans réutiliser une case dans un mot.",
+      "intro": "Explore 60 sentiers en reliant des lettres ou caractères voisins pour trouver des mots.",
       "systems": [
-        "Touchez les cases dans l’ordre ou tracez un chemin continu, puis choisissez Vérifier le mot. Indice révèle la première lettre du prochain mot non trouvé ; Annuler retire la dernière case et Effacer supprime le chemin actuel.",
-        "Les dix plateaux source sont en 4×4 et contiennent chacun quatre mots cibles. Les derniers ajoutent des cases bloquées ou une entrée de feuille à sens unique. Sans chronomètre, progression, étoiles et cartes restent dans ce navigateur."
+        "Touche les cases une par une, puis vérifie le mot. Si tu ajoutes au moins deux cases en glissant, le mot est envoyé quand tu relâches. Annuler retire la dernière case ; Effacer vide le chemin.",
+        "Tu peux aussi relier les cases en diagonale, sans réutiliser une case dans le même mot.",
+        "Place le pont de feuilles sur une seule ouverture choisie à la fois.",
+        "Suis l’ordre des groupes ou choisis le premier quand tu peux ; termine-le avant le suivant.",
+        "La feuille joker est réutilisable et remplace un caractère entier du mot choisi. Utilise-en une au maximum par mot.",
+        "Utiliser des indices peut réduire le nombre d’étoiles gagnées.",
+        "Sur le sentier 5, choisis le mot à trouver avant de relier les cases.",
+        "Sur le sentier 10, trouve les mots des habitats dans l’ordre affiché."
       ],
       "progression": [
-        "Les dix parcours source comptent quatre mots chacun. Les derniers ajoutent des cases bloquées ou une entrée de feuille à sens unique. Sans chronomètre, progression, étoiles et cartes restent dans ce navigateur."
+        "Trouve quatre mots pour finir chaque sentier et ouvrir le suivant. Le sentier 60 est le dernier.",
+        "Il n’y a pas de chronomètre. Les parcours terminés, les étoiles et les cartes restent dans ce navigateur."
       ],
-      "designNote": "Les packs d’origine sont rédigés en anglais et en chinois traditionnel. Le jeu peut générer des grilles localisées depuis le pack anglais pour les langues prises en charge; chaque page publique n’a pas pour autant son propre pack rédigé.",
-      "parent": "Ce puzzle de lecture Kids est sans publicité et ne demande aucun compte. Progression et résultats restent dans ce navigateur et peuvent disparaître si les données du site sont effacées. C’est un jeu d’entraînement et de loisir, pas une évaluation officielle.",
-      "metaDescription": "Trouvez quatre mots d’animaux ou d’habitats sur chacun des dix parcours. Diagonales permises, sans réutiliser de case.",
+      "designNote": "Chaque sentier a quatre mots. Plus loin, découvre les ponts, l’ordre des groupes et les feuilles jokers.",
+      "parent": "Ce puzzle de lecture Kids est sans publicité et ne demande aucun compte. Progression et résultats restent dans ce navigateur et peuvent disparaître si les données du site sont effacées. C’est un jeu d’entraînement et de loisir, pas une évaluation officielle. Si le navigateur ne peut pas enregistrer les données, tu peux continuer à jouer maintenant, mais ta progression risque de disparaître en quittant.",
+      "metaDescription": "Explore 60 sentiers de mots avec des ponts de feuilles, des groupes et des feuilles jokers réutilisables.",
       "text140Tags": [
         "Puzzle de chemins de mots",
         "Indices animaliers",
@@ -465,35 +521,35 @@
         "Animaux"
       ],
       "story": [
-        "L’album du lion guide a perdu ses entrées sur les animaux et les habitats. Chaque mot trouvé rend une carte; les quatre mots terminent le parcours et ouvrent le suivant."
+        "Accompagne le lion guide et rassemble des indices sur les animaux et leurs habitats dans l’album."
       ],
       "how": [
-        "Choisissez un parcours débloqué.",
-        "Lisez l’indice et les mots cibles.",
-        "Reliez les cases voisines; diagonales permises, sans réutiliser de case.",
-        "Validez les mots et trouvez les quatre."
+        "Choisis un sentier débloqué et trouve ses quatre mots.",
+        "Relie les cases voisines, même en diagonale, sans réutiliser une case dans le même mot.",
+        "Quand il y a un pont de feuilles, déplace-le vers l’ouverture à traverser.",
+        "Suis l’ordre des groupes et choisis un mot avant d’utiliser une feuille joker."
       ],
       "strategyTips": [
-        "Lisez la liste entière avant de choisir la case de départ.",
-        "Utilisez la diagonale si la lettre suivante est voisine.",
-        "Entrez dans la feuille à sens unique depuis le côté indiqué."
+        "Regarde les mots avant de tracer.",
+        "Déplace le pont pour franchir une autre ouverture.",
+        "Choisis le mot et utilise au plus une feuille joker sur son chemin."
       ],
       "faq": [
         [
-          "Combien y a-t-il de parcours ?",
-          "Dix parcours, avec quatre mots cibles chacun."
+          "Combien y a-t-il de sentiers ?",
+          "Il y en a 60, avec quatre mots dans chacun."
         ],
         [
-          "Peut-on avancer en diagonale ?",
-          "Oui. La diagonale compte comme voisine, mais une case ne se répète pas dans un mot."
+          "Comment fonctionne le pont de feuilles ?",
+          "Il traverse une ouverture choisie à la fois et peut être déplacé."
         ],
         [
-          "Que font Indice, Annuler et Effacer ?",
-          "Indice révèle la première lettre du prochain mot non trouvé ; Annuler retire la dernière case et Effacer supprime le chemin actuel."
+          "Comment fonctionne la feuille joker ?",
+          "Elle remplace un caractère entier du mot choisi et peut servir à nouveau pour un autre mot."
         ],
         [
-          "Y a-t-il un chronomètre ?",
-          "Non. Progression et cartes restent dans ce navigateur."
+          "Y a-t-il des publicités et où la progression est-elle gardée ?",
+          "Il n’y a pas de publicité. La progression et les cartes restent dans ce navigateur."
         ]
       ],
       "difficulty": "Facile à modéré",
@@ -505,17 +561,24 @@
       ]
     },
     "de": {
-      "intro": "Folge Tierhinweisen auf zehn Wortpfaden und finde je vier Zielwörter. Benachbarte Buchstaben dürfen diagonal verbunden werden; ein Feld darf innerhalb eines Wortes nicht wiederverwendet werden.",
+      "intro": "Erkunde 60 Pfade und verbinde benachbarte Buchstaben oder Zeichen zu Wörtern.",
       "systems": [
-        "Tippe die Felder der Reihe nach an oder ziehe einen zusammenhängenden Pfad und wähle dann „Wort prüfen“. Der Hinweis zeigt den ersten Buchstaben des nächsten noch nicht gefundenen Wortes; Rückgängig entfernt das letzte Feld und Löschen entfernt den aktuellen Pfad.",
-        "Alle zehn Quellfelder sind 4×4 groß und enthalten je vier Zielwörter. Später kommen Sperrfelder oder ein Einweg-Blatteingang hinzu. Ohne Timer bleiben Fortschritt, Sterne und Karten in diesem Browser."
+        "Tippe die Felder einzeln an und prüfe dann das Wort. Fügst du beim Ziehen mindestens zwei Felder hinzu, wird es beim Loslassen automatisch abgesendet. Zurück nimmt das letzte Feld weg; Löschen leert den Pfad.",
+        "Du kannst auch diagonal verbinden. Verwende ein Feld nicht zweimal im selben Wort.",
+        "Die Blätterbrücke überquert immer nur eine ausgewählte Lücke.",
+        "Folge der Gruppenreihenfolge oder wähle die erste Gruppe, wenn du kannst. Beende sie vor der nächsten.",
+        "Das wiederverwendbare Jokerblatt ersetzt ein ganzes Zeichen des gewählten Wortes. Verwende höchstens eines pro Wort.",
+        "Hinweise können die Zahl deiner Sterne verringern.",
+        "Wähle auf Pfad 5 zuerst das Wort, das du finden möchtest, und verbinde dann die Felder.",
+        "Finde auf Pfad 10 die Wörter zu Lebensräumen in der angezeigten Reihenfolge."
       ],
       "progression": [
-        "Alle zehn Quellenpfade haben vier Wörter. Später kommen Sperrfelder oder ein Einweg-Blatteingang hinzu. Ohne Timer bleiben Fortschritt, Sterne und Karten lokal in diesem Browser."
+        "Finde vier Wörter, um einen Pfad zu beenden und den nächsten zu öffnen. Pfad 60 ist der letzte.",
+        "Es gibt kein Zeitlimit. Abschlüsse, Sterne und Karten bleiben in diesem Browser gespeichert."
       ],
-      "designNote": "Die ursprünglichen Wortpakete sind auf Englisch und traditionellem Chinesisch verfasst. Für unterstützte Spielsprachen kann das Spiel lokalisierte Felder aus dem englischen Paket erzeugen; nicht jede öffentliche Route hat deshalb ein eigenes handgeschriebenes Paket.",
-      "parent": "Dieses Kids-Leserätsel ist werbefrei und benötigt kein Konto. Fortschritt und Ergebnisse bleiben in diesem Browser und können beim Löschen der Websitedaten verloren gehen. Es dient Übung und Unterhaltung, nicht einer formalen Lesebewertung.",
-      "metaDescription": "Finde auf zehn Wortpfaden je vier Tier- oder Lebensraumwörter. Diagonalen sind erlaubt, Feldwiederholung nicht.",
+      "designNote": "Jeder Pfad hat vier Wörter. Später kommen Brücken, Gruppenreihenfolge und Jokerblätter hinzu.",
+      "parent": "Dieses Kids-Leserätsel ist werbefrei und benötigt kein Konto. Fortschritt und Ergebnisse bleiben in diesem Browser und können beim Löschen der Websitedaten verloren gehen. Es dient Übung und Unterhaltung, nicht einer formalen Lesebewertung. Wenn der Browser nichts speichern kann, kannst du jetzt weiterspielen, aber dein Fortschritt bleibt nach dem Verlassen möglicherweise nicht erhalten.",
+      "metaDescription": "Entdecke 60 Wortpfade mit Blätterbrücken, Tier- und Naturgruppen und wiederverwendbaren Jokerblättern.",
       "text140Tags": [
         "Wortpfad-Rätsel",
         "Tierhinweise",
@@ -528,35 +591,35 @@
         "Tiere"
       ],
       "story": [
-        "Im Feldalbum des Löwenführers fehlen Einträge zu Tieren und Lebensräumen. Jedes gefundene Wort bringt eine Karte zurück; vier Wörter schließen den Pfad ab und öffnen den nächsten."
+        "Begleite den Löwen und sammle Hinweise zu Tieren und Lebensräumen für das Album."
       ],
       "how": [
-        "Wähle einen freigeschalteten Pfad.",
-        "Lies Hinweis und Zielwörter.",
-        "Verbinde Nachbarfelder; diagonal ist erlaubt, Wiederverwendung nicht.",
-        "Gib die Wörter ab und finde alle vier."
+        "Wähle einen offenen Pfad und finde seine vier Wörter.",
+        "Verbinde benachbarte Felder, auch diagonal, und nutze keines zweimal im selben Wort.",
+        "Wenn eine Blätterbrücke da ist, verschiebe sie zur gewünschten Lücke.",
+        "Folge der Gruppenreihenfolge und wähle vor dem Jokerblatt ein Wort."
       ],
       "strategyTips": [
-        "Lies die ganze Liste vor der Startfeldwahl.",
-        "Nutze die Diagonale, wenn der nächste Buchstabe dort angrenzt.",
-        "Betritt den Einweg-Blatteingang aus der markierten Richtung."
+        "Schau dir die Zielwörter vor dem Verbinden an.",
+        "Versetze die Brücke, wenn du eine andere Lücke überqueren möchtest.",
+        "Wähle das Wort und nutze höchstens ein Jokerblatt auf seinem Pfad."
       ],
       "faq": [
         [
           "Wie viele Pfade gibt es?",
-          "Zehn Pfade mit je vier Zielwörtern."
+          "Es gibt 60 Pfade mit jeweils vier Zielwörtern."
         ],
         [
-          "Sind diagonale Züge möglich?",
-          "Ja. Diagonalen zählen als Nachbarfelder; ein Feld darf im Wort nicht wiederholt werden."
+          "Wie funktioniert die Blätterbrücke?",
+          "Sie überquert eine ausgewählte Lücke und lässt sich versetzen."
         ],
         [
-          "Was bewirken Hinweis, Rückgängig und Löschen?",
-          "Der Hinweis zeigt den ersten Buchstaben des nächsten noch nicht gefundenen Wortes; Rückgängig entfernt das letzte Feld und Löschen entfernt den aktuellen Pfad."
+          "Wie funktioniert das Jokerblatt?",
+          "Es ersetzt ein ganzes Zeichen des gewählten Wortes und kann für ein anderes Wort erneut genutzt werden."
         ],
         [
-          "Gibt es einen Timer?",
-          "Nein. Fortschritt und Karten bleiben in diesem Browser."
+          "Gibt es Werbung und wo wird der Fortschritt gespeichert?",
+          "Es gibt keine Werbung. Fortschritt und Karten bleiben in diesem Browser gespeichert."
         ]
       ],
       "difficulty": "Leicht bis mittel",
@@ -568,17 +631,24 @@
       ]
     },
     "it": {
-      "intro": "Segui gli indizi sugli animali in dieci percorsi e trova quattro parole-obiettivo per griglia. Puoi collegare lettere vicine in diagonale, senza riutilizzare una casella nella stessa parola.",
+      "intro": "Esplora 60 sentieri e collega lettere o caratteri vicini per trovare le parole.",
       "systems": [
-        "Tocca le caselle in ordine o trascina un percorso continuo, poi scegli Verifica parola. Suggerimento rivela la prima lettera della prossima parola non ancora trovata; Annulla rimuove l’ultima casella e Cancella elimina il percorso attuale.",
-        "Le dieci griglie sorgente sono 4×4 e contengono quattro parole-obiettivo ciascuna. Le successive aggiungono caselle bloccate o un ingresso a foglia a senso unico. Nessun timer; progressi, stelle e carte restano in questo browser."
+        "Tocca le caselle una alla volta e controlla la parola. Se trascinando aggiungi almeno due caselle, la parola viene inviata quando rilasci. Annulla toglie l’ultima casella; Cancella svuota il percorso.",
+        "Puoi collegare le caselle anche in diagonale, senza usare due volte la stessa casella nella parola.",
+        "Il ponte di foglie attraversa una sola apertura scelta alla volta.",
+        "Segui l’ordine dei gruppi o scegli il primo quando puoi; completalo prima del successivo.",
+        "La foglia jolly si può riusare e sostituisce un carattere intero della parola scelta. Usane al massimo una per parola.",
+        "Usare i suggerimenti può ridurre le stelle ottenute.",
+        "Nel sentiero 5, scegli la parola da trovare prima di collegare le caselle.",
+        "Nel sentiero 10, trova le parole degli habitat nell’ordine mostrato."
       ],
       "progression": [
-        "I dieci percorsi sorgente hanno quattro parole ciascuno. I successivi aggiungono caselle bloccate o un ingresso a foglia a senso unico. Nessun timer; progressi, stelle e carte restano in questo browser."
+        "Trova quattro parole per completare ogni sentiero e aprire il successivo. Il sentiero 60 è l’ultimo.",
+        "Non c’è un limite di tempo. Percorsi completati, stelle e carte restano in questo browser."
       ],
-      "designNote": "I pacchetti originali sono stati scritti in inglese e cinese tradizionale. Il gioco può generare griglie localizzate dal pacchetto inglese per le lingue supportate; non significa che ogni pagina pubblica abbia un pacchetto scritto a mano.",
-      "parent": "Questo puzzle di lettura Kids non ha pubblicità e non richiede un account. Progressi e risultati restano in questo browser e possono sparire cancellando i dati del sito. È un’attività di esercizio e svago, non una valutazione formale.",
-      "metaDescription": "Trova quattro parole di animali o habitat in ciascuno dei dieci percorsi. Diagonali consentite, senza riutilizzare caselle.",
+      "designNote": "Ogni sentiero ha quattro parole. Più avanti arrivano ponti, ordine dei gruppi e foglie jolly.",
+      "parent": "Questo puzzle di lettura Kids non ha pubblicità e non richiede un account. Progressi e risultati restano in questo browser e possono sparire cancellando i dati del sito. È un’attività di esercizio e svago, non una valutazione formale. Se il browser non può salvare i dati, puoi continuare a giocare ora, ma i progressi potrebbero andare persi quando esci.",
+      "metaDescription": "Esplora 60 sentieri di parole con ponti di foglie, gruppi di animali e natura e foglie jolly.",
       "text140Tags": [
         "Puzzle di percorsi di parole",
         "Indizi sugli animali",
@@ -591,35 +661,35 @@
         "Animali"
       ],
       "story": [
-        "Nell’album della guida leone mancano le schede di animali e habitat. Ogni parola trovata restituisce una carta; le quattro parole completano il percorso e aprono il successivo."
+        "Accompagna il leone guida e raccogli nell’album indizi su animali e habitat."
       ],
       "how": [
-        "Scegli un percorso sbloccato.",
-        "Leggi l’indizio e le parole-obiettivo.",
-        "Collega caselle vicine; la diagonale è permessa, senza riuso.",
-        "Invia le parole e trovane quattro."
+        "Scegli un sentiero sbloccato e trova le sue quattro parole.",
+        "Collega le caselle vicine, anche in diagonale, senza ripeterne una nella stessa parola.",
+        "Quando c’è un ponte di foglie, spostalo sull’apertura che vuoi attraversare.",
+        "Segui l’ordine dei gruppi e scegli una parola prima di usare una foglia jolly."
       ],
       "strategyTips": [
-        "Leggi l’elenco prima di scegliere la casella iniziale.",
-        "Usa la diagonale se la lettera successiva è vicina.",
-        "Entra nella foglia a senso unico dalla direzione indicata."
+        "Guarda le parole prima di tracciare.",
+        "Sposta il ponte se devi attraversare un’altra apertura.",
+        "Scegli la parola e usa al massimo una foglia jolly nel suo percorso."
       ],
       "faq": [
         [
-          "Quanti percorsi ci sono?",
-          "Dieci percorsi, ciascuno con quattro parole-obiettivo."
+          "Quanti sentieri ci sono?",
+          "Sono 60, ciascuno con quattro parole."
         ],
         [
-          "Posso muovermi in diagonale?",
-          "Sì. Le diagonali sono vicine, ma non puoi riusare una casella nella parola."
+          "Come funziona il ponte di foglie?",
+          "Attraversa un’apertura scelta alla volta e si può spostare."
         ],
         [
-          "Cosa fanno Suggerimento, Annulla e Cancella?",
-          "Suggerimento rivela la prima lettera della prossima parola non ancora trovata; Annulla rimuove l’ultima casella e Cancella elimina il percorso attuale."
+          "Come funziona la foglia jolly?",
+          "Sostituisce un carattere intero della parola scelta e si può riusare per un’altra parola."
         ],
         [
-          "C’è un timer?",
-          "No. Progressi e carte restano in questo browser."
+          "Ci sono pubblicità? Dove si salva il progresso?",
+          "Non ci sono pubblicità. Progressi e carte restano in questo browser."
         ]
       ],
       "difficulty": "Da facile a moderato",
@@ -631,17 +701,24 @@
       ]
     },
     "ru": {
-      "intro": "Следуйте подсказкам о животных на десяти тропах и находите по четыре слова на каждой. Соседние буквы можно соединять по диагонали, но нельзя повторять клетку в одном слове.",
+      "intro": "Исследуй 60 тропинок и соединяй соседние буквы или знаки, чтобы находить слова.",
       "systems": [
-        "Нажимайте на клетки по порядку или проведите непрерывный путь, затем выберите «Проверить слово». Подсказка показывает первую букву следующего ещё не найденного слова; отмена удаляет последнюю клетку, а очистка — текущий путь.",
-        "Все десять исходных полей имеют размер 4×4 и содержат по четыре целевых слова. Позднее добавляются закрытые клетки или односторонний вход-лист. Таймера нет; прогресс, звёзды и карточки остаются в этом браузере."
+        "Нажимай на клетки по одной, затем проверь слово. Если провести по пути и добавить хотя бы две клетки, слово отправится автоматически, когда отпустишь. Отмена убирает последнюю клетку, а Очистить — весь путь.",
+        "Можно соединять клетки по диагонали, но нельзя использовать одну клетку дважды в одном слове.",
+        "Мостик из листьев перекрывает только один выбранный разрыв за раз.",
+        "Следуй порядку групп или выбери первую, когда можно. Закончи её перед следующей.",
+        "Волшебный листочек можно использовать снова: он заменяет один целый знак выбранного слова. В одном слове можно использовать не больше одного листочка.",
+        "Подсказки могут уменьшить число полученных звёзд.",
+        "На тропинке 5 сначала выбери слово, которое хочешь найти, а затем соедини клетки.",
+        "На тропинке 10 находи слова о местах обитания в указанном порядке."
       ],
       "progression": [
-        "Во всех десяти исходных тропах по четыре слова. Позднее добавляются закрытые клетки или односторонний вход-лист. Таймера нет; прогресс, звёзды и карточки сохраняются в этом браузере."
+        "Найди четыре слова, чтобы пройти тропинку и открыть следующую. Тропинка 60 — последняя.",
+        "Ограничения по времени нет. Пройденные тропинки, звёзды и карточки сохраняются в этом браузере."
       ],
-      "designNote": "Исходные наборы слов написаны на английском и традиционном китайском. Для поддерживаемых языков игра может создавать локализованные поля из английского набора; это не означает, что у каждой публичной страницы есть отдельный авторский набор.",
-      "parent": "В этой детской игре на чтение нет рекламы и не требуется аккаунт. Прогресс и записи хранятся в браузере и могут исчезнуть при очистке данных сайта. Это упражнение и развлечение, а не формальная проверка навыков чтения.",
-      "metaDescription": "На каждой из десяти троп найдите четыре слова о животных или среде. Диагонали разрешены, клетки нельзя повторять.",
+      "designNote": "На каждой тропинке четыре слова. Позже появляются мостики, порядок групп и волшебные листочки.",
+      "parent": "В этой детской игре на чтение нет рекламы и не требуется аккаунт. Прогресс и записи хранятся в браузере и могут исчезнуть при очистке данных сайта. Это упражнение и развлечение, а не формальная проверка навыков чтения. Если браузер не может сохранять данные, сейчас можно продолжать игру, но после выхода прогресс может пропасть.",
+      "metaDescription": "Исследуй 60 словесных тропинок с мостиками из листьев, группами слов и волшебными листочками.",
       "text140Tags": [
         "Словесная головоломка",
         "Подсказки о животных",
@@ -654,35 +731,35 @@
         "Животные"
       ],
       "story": [
-        "В полевом альбоме льва-проводника не хватает карточек о животных и среде обитания. Найденное слово возвращает карточку; четыре слова завершают тропу и открывают следующую."
+        "Помоги льву собрать в альбом подсказки о животных и местах их обитания."
       ],
       "how": [
-        "Выберите открытую тропу.",
-        "Прочитайте подсказку и целевые слова.",
-        "Соединяйте соседние клетки; диагонали разрешены, повторы — нет.",
-        "Отправьте слова и найдите все четыре."
+        "Выбери открытую тропинку и найди четыре слова.",
+        "Соединяй соседние клетки, в том числе по диагонали, не повторяя клетку в одном слове.",
+        "Когда есть мостик из листьев, перемести его к разрыву, который хочешь перейти.",
+        "Соблюдай порядок групп и выбери слово перед использованием волшебного листочка."
       ],
       "strategyTips": [
-        "Изучите список до выбора начальной клетки.",
-        "Используйте диагональ, если следующая буква находится рядом.",
-        "Входите в односторонний лист только с указанной стороны."
+        "Посмотри на слова перед тем, как вести путь.",
+        "Перемести мостик, если нужно перейти другой разрыв.",
+        "Сначала выбери слово и используй на его пути не больше одного волшебного листочка."
       ],
       "faq": [
         [
-          "Сколько всего троп?",
-          "Десять троп, по четыре целевых слова в каждой."
+          "Сколько здесь тропинок?",
+          "Их 60, на каждой по четыре слова."
         ],
         [
-          "Можно идти по диагонали?",
-          "Да. Диагональные клетки считаются соседними; повторять клетку в слове нельзя."
+          "Как работает мостик из листьев?",
+          "Он перекрывает один выбранный разрыв за раз; его можно перемещать."
         ],
         [
-          "Что делают подсказка, отмена и очистка?",
-          "Подсказка показывает первую букву следующего ещё не найденного слова; отмена удаляет последнюю клетку, а очистка — текущий путь."
+          "Как работает волшебный листочек?",
+          "Он заменяет один целый знак выбранного слова и может снова помочь с другим словом."
         ],
         [
-          "Есть ли таймер?",
-          "Нет. Прогресс и карточки сохраняются только в этом браузере."
+          "Есть ли реклама и где сохраняется прогресс?",
+          "Рекламы нет. Прогресс и карточки сохраняются в этом браузере."
         ]
       ],
       "difficulty": "От простого до среднего",
@@ -694,17 +771,24 @@
       ]
     },
     "hi": {
-      "intro": "जानवरों के संकेतों का अनुसरण करते हुए दस रास्तों में हर बोर्ड के चार लक्ष्य शब्द खोजें। पड़ोसी अक्षरों को तिरछे जोड़ सकते हैं, पर एक शब्द में किसी खाने का दोबारा उपयोग नहीं होता।",
+      "intro": "60 पगडंडियों पर साथ लगे अक्षरों को जोड़कर शब्द खोजें।",
       "systems": [
-        "खानों को क्रम से टैप करें या लगातार रास्ता खींचें, फिर शब्द जाँचें। संकेत अगले अनमिले शब्द का पहला अक्षर दिखाता है। पिछली चाल वापस लेने की सुविधा आखिरी खाना हटाती है और रास्ता मिटाने की सुविधा मौजूदा रास्ता साफ करती है।",
-        "सभी दस मूल बोर्ड 4×4 हैं और हर एक में चार लक्ष्य शब्द हैं। बाद के रास्तों में बंद खाने या एक-दिशा पत्ती प्रवेश जुड़ते हैं। समय सीमा नहीं; प्रगति, सितारे और कार्ड इसी ब्राउज़र में रहते हैं।"
+        "खानों को एक-एक करके छुएँ, फिर शब्द जाँचें। उँगली खींचकर कम से कम दो नए खाने जोड़ने और छोड़ने पर शब्द अपने आप जमा होगा। वापस से आखिरी खाना हटेगा और साफ़ से पूरा रास्ता।",
+        "तिरछे पास वाले खाने भी जोड़ सकते हैं, पर एक शब्द में कोई खाना दो बार न लें।",
+        "पत्तों का पुल एक बार में चुनी हुई एक ही खाली जगह पार करता है।",
+        "समूहों का दिया क्रम अपनाएँ। जहाँ चुन सकें, पहले चुना समूह पूरा करें।",
+        "जादुई पत्ता फिर से इस्तेमाल हो सकता है। यह चुने शब्द के एक पूरे अक्षर की जगह लेता है। एक शब्द में एक ही जादुई पत्ता लगाएँ।",
+        "संकेत लेने से मिलने वाले सितारे कम हो सकते हैं।",
+        "पगडंडी 5 पर खाने जोड़ने से पहले वह शब्द चुनें जिसे खोजना है।",
+        "पगडंडी 10 पर रहने की जगहों के शब्द दिखाए गए क्रम में खोजें।"
       ],
       "progression": [
-        "दसों स्रोत रास्तों में चार-चार शब्द हैं। बाद के बोर्ड में बंद खाने या एक-दिशा पत्ती प्रवेश जुड़ते हैं। समय सीमा नहीं; प्रगति, सितारे और कार्ड इसी ब्राउज़र में रहते हैं।"
+        "हर पगडंडी पर चार शब्द खोजकर अगली पगडंडी खोलें। 60वीं पगडंडी आखिरी है।",
+        "समय की सीमा नहीं है। पूरी पगडंडियाँ, सितारे और सुराग कार्ड इसी ब्राउज़र में रहते हैं।"
       ],
-      "designNote": "मूल शब्द-पैक अंग्रेज़ी और पारंपरिक चीनी में लिखे हैं। समर्थित गेम भाषाओं में अंग्रेज़ी पैक से स्थानीयकृत बोर्ड बनाए जा सकते हैं; हर सार्वजनिक पृष्ठ के लिए अलग हाथ से लिखा पैक नहीं है।",
-      "parent": "यह Kids पठन पहेली विज्ञापन-मुक्त है और खाते की जरूरत नहीं। प्रगति और रिकॉर्ड इसी ब्राउज़र में रहते हैं और साइट डेटा मिटाने पर हट सकते हैं। यह अभ्यास और मनोरंजन है, औपचारिक पठन-मूल्यांकन नहीं।",
-      "metaDescription": "दस रास्तों में हर एक के चार पशु या आवास शब्द खोजें। तिरछा चलना मान्य है; खाना दोहराना नहीं।",
+      "designNote": "हर पगडंडी पर चार शब्द हैं। आगे पुल, समूहों का क्रम और जादुई पत्ते आते हैं।",
+      "parent": "यह Kids पठन पहेली विज्ञापन-मुक्त है और खाते की जरूरत नहीं। प्रगति और रिकॉर्ड इसी ब्राउज़र में रहते हैं और साइट डेटा मिटाने पर हट सकते हैं। यह अभ्यास और मनोरंजन है, औपचारिक पठन-मूल्यांकन नहीं। यदि ब्राउज़र में सेव करना संभव न हो, तो अभी खेल सकते हैं, लेकिन बाहर जाने के बाद प्रगति शायद न बचे।",
+      "metaDescription": "60 शब्द पगडंडियों पर पत्तों का पुल, जानवर और प्रकृति समूह, और दोबारा काम आने वाला जादुई पत्ता पाएँ।",
       "text140Tags": [
         "शब्द-पथ पहेली",
         "जानवरों के संकेत",
@@ -717,35 +801,35 @@
         "जानवर"
       ],
       "story": [
-        "शेर मार्गदर्शक की प्रकृति-पुस्तिका में पशु और आवास प्रविष्टियाँ गायब हैं। हर मिला शब्द संकेत कार्ड लौटाता है; चारों शब्द खोजने पर रास्ता पूरा होता है और अगला खुलता है।"
+        "शेर के साथ रास्ते खोजें और जानवरों व उनके घरों के सुराग एल्बम में जोड़ें।"
       ],
       "how": [
-        "खुला हुआ रास्ता चुनें।",
-        "पशु या आवास का संकेत और लक्ष्य शब्द पढ़ें।",
-        "पड़ोसी खाने जोड़ें; तिरछा चलना मान्य है, खाना दोहराना नहीं।",
-        "शब्द जमा करें और चारों खोजें।"
+        "खुली पगडंडी चुनें और उसके चार शब्द खोजें।",
+        "पास के खाने जोड़ें; तिरछे भी जा सकते हैं, पर एक शब्द में खाना दोहराएँ नहीं।",
+        "पत्तों का पुल हो तो उसे उस खाली जगह पर ले जाएँ जिसे पार करना है।",
+        "समूह का क्रम अपनाएँ और जादुई पत्ते से पहले एक शब्द चुनें।"
       ],
       "strategyTips": [
-        "शुरुआती खाना चुनने से पहले पूरी सूची पढ़ें।",
-        "अगला अक्षर पड़ोसी हो तभी तिरछा जाएँ।",
-        "एक-दिशा पत्ती में चिह्नित दिशा से प्रवेश करें।"
+        "रास्ता बनाने से पहले शब्द देखें।",
+        "दूसरी खाली जगह पार करनी हो तो पुल की जगह बदलें।",
+        "पहले शब्द चुनें और उसके रास्ते में एक ही जादुई पत्ता लगाएँ।"
       ],
       "faq": [
         [
-          "कितने रास्ते हैं?",
-          "दस रास्ते हैं और हर एक में चार लक्ष्य शब्द हैं।"
+          "कितनी पगडंडियाँ हैं?",
+          "60 पगडंडियाँ हैं और हर एक में चार शब्द हैं।"
         ],
         [
-          "क्या तिरछा चल सकते हैं?",
-          "हाँ। तिरछे खाने पड़ोसी हैं; एक शब्द में खाना दोहराया नहीं जा सकता।"
+          "पत्तों का पुल कैसे काम करता है?",
+          "वह एक बार में चुनी हुई एक खाली जगह पार करता है और उसे दूसरी जगह ले जा सकते हैं।"
         ],
         [
-          "अगले शब्द का पहला अक्षर दिखाने, पिछली चाल वापस लेने और रास्ता मिटाने वाली सुविधाएँ क्या करती हैं?",
-          "संकेत अगले अनमिले शब्द का पहला अक्षर दिखाता है। पिछली चाल वापस लेने की सुविधा आखिरी खाना हटाती है और रास्ता मिटाने की सुविधा मौजूदा रास्ता साफ करती है।"
+          "जादुई पत्ता कैसे काम करता है?",
+          "यह चुने शब्द के एक पूरे अक्षर की जगह लेता है और दूसरे शब्द के लिए फिर इस्तेमाल हो सकता है।"
         ],
         [
-          "क्या समय सीमा है?",
-          "नहीं। प्रगति और कार्ड इसी ब्राउज़र में रहते हैं।"
+          "क्या विज्ञापन हैं और प्रगति कहाँ रहती है?",
+          "विज्ञापन नहीं हैं। प्रगति और सुराग कार्ड इसी ब्राउज़र में सुरक्षित रहते हैं।"
         ]
       ],
       "difficulty": "आसान से मध्यम",
@@ -757,17 +841,24 @@
       ]
     },
     "ar": {
-      "intro": "اتبع قرائن الحيوانات في عشرة مسارات واعثر على أربع كلمات مستهدفة في كل لوحة. يمكن وصل الحروف المتجاورة قطريًا، لكن لا يجوز تكرار الخانة في الكلمة الواحدة.",
+      "intro": "استكشف ٦٠ مسارًا، وصِل الحروف المتجاورة لتجد الكلمات.",
       "systems": [
-        "اضغط الخانات بالترتيب أو اسحب مسارًا متصلًا، ثم اختر التحقق من الكلمة. يكشف التلميح الحرف الأول من الكلمة التالية التي لم تُعثر بعد؛ يزيل التراجع آخر خانة، ويمسح زر المسح المسار الحالي.",
-        "جميع اللوحات المصدرية العشر بحجم 4×4 وتضم أربع كلمات مستهدفة لكل لوحة. وتضيف المسارات اللاحقة خانات محجوبة أو مدخل ورقة باتجاه واحد. لا مؤقت؛ يبقى التقدم والنجوم والبطاقات في هذا المتصفح."
+        "المس الخانات واحدةً واحدة، ثم تحقّق من الكلمة. إذا أضفت خانتين على الأقل بالسحب، تُرسل الكلمة تلقائيًا عند الإفلات. يزيل التراجع آخر خانة، ويمسح التنظيف المسار الحالي.",
+        "يمكن وصل الخانات المتجاورة قطريًا، لكن لا تكرر خانة في الكلمة نفسها.",
+        "يعبر جسر الأوراق فجوة واحدة تختارها في كل مرة.",
+        "اتبع ترتيب المجموعات، أو اختر المجموعة الأولى عندما يُسمح لك؛ أكملها قبل التالية.",
+        "يمكن إعادة استخدام الورقة البديلة؛ فهي تحل محل حرف كامل من الكلمة المختارة. استخدم ورقة واحدة على الأكثر في كل كلمة.",
+        "قد يقل عدد النجوم عند استخدام التلميحات.",
+        "في المسار ٥، اختر الكلمة التي تريد إيجادها قبل وصل الخانات.",
+        "في المسار ١٠، اعثر على كلمات الموائل بالترتيب الظاهر."
       ],
       "progression": [
-        "تضم المسارات المصدرية العشرة أربع كلمات لكل منها. وتضيف المراحل اللاحقة خانات محجوبة أو مدخل ورقة باتجاه واحد. لا مؤقت؛ يُحفظ التقدم والنجوم والبطاقات في هذا المتصفح."
+        "اعثر على أربع كلمات لإكمال كل مسار وفتح التالي. المسار ٦٠ هو الأخير.",
+        "لا يوجد مؤقت. تُحفظ المسارات المكتملة والنجوم وبطاقات القرائن في هذا المتصفح."
       ],
-      "designNote": "كُتبت حزم الكلمات الأصلية بالإنجليزية والصينية التقليدية. يمكن للعبة إنشاء لوحات موطّنة من الحزمة الإنجليزية للغات المدعومة؛ ولا يعني ذلك وجود حزمة منفصلة مكتوبة يدويًا لكل صفحة عامة.",
-      "parent": "أحجية القراءة هذه للأطفال بلا إعلانات ولا تتطلب حسابًا. يبقى التقدم والسجل في هذا المتصفح وقد يُحذفان عند مسح بيانات الموقع. النشاط للتدريب والترفيه وليس تقييمًا رسميًا للقراءة.",
-      "metaDescription": "اعثر على أربع كلمات عن الحيوانات أو المواطن في كل مسار من المسارات العشرة. الحركة القطرية مسموحة ولا تكرر الخانة.",
+      "designNote": "في كل مسار أربع كلمات. تظهر لاحقًا الجسور وترتيب المجموعات والأوراق البديلة.",
+      "parent": "أحجية القراءة هذه للأطفال بلا إعلانات ولا تتطلب حسابًا. يبقى التقدم والسجل في هذا المتصفح وقد يُحذفان عند مسح بيانات الموقع. النشاط للتدريب والترفيه وليس تقييمًا رسميًا للقراءة. إذا تعذّر الحفظ في المتصفح، يمكنك مواصلة اللعب الآن، لكن قد لا يبقى التقدم بعد مغادرة الصفحة.",
+      "metaDescription": "استكشف ٦٠ مسارًا للكلمات مع جسور الأوراق ومجموعات الحيوانات والطبيعة والأوراق البديلة.",
       "text140Tags": [
         "أحجية مسارات الكلمات",
         "قرائن الحيوانات",
@@ -780,35 +871,35 @@
         "حيوانات"
       ],
       "story": [
-        "يفتقد سجل الأسد المرشد بطاقات الحيوانات والمواطن. تعيد كل كلمة مكتشفة بطاقة قرينة؛ والعثور على الكلمات الأربع يكمل المسار ويفتح التالي المتاح."
+        "رافق الأسد واجمع قرائن الحيوانات وموائلها في الألبوم."
       ],
       "how": [
-        "اختر مسارًا مفتوحًا.",
-        "اقرأ القرينة والكلمات المستهدفة.",
-        "صل الخانات المتجاورة؛ الحركة القطرية مسموحة ولا تكرر الخانة.",
-        "أرسل الكلمات واعثر على الأربع."
+        "اختر مسارًا مفتوحًا واعثر على كلماته الأربع.",
+        "صِل الخانات المتجاورة، حتى قطريًا، دون تكرار خانة في الكلمة نفسها.",
+        "عندما يظهر جسر الأوراق، انقله إلى الفجوة التي تريد عبورها.",
+        "اتبع ترتيب المجموعات واختر كلمة قبل استخدام الورقة البديلة."
       ],
       "strategyTips": [
-        "اقرأ القائمة كاملة قبل اختيار خانة البداية.",
-        "استخدم القطر إذا كان الحرف التالي مجاورًا.",
-        "ادخل ورقة الاتجاه الواحد من الجهة المحددة."
+        "انظر إلى الكلمات قبل رسم المسار.",
+        "انقل الجسر إذا أردت عبور فجوة أخرى.",
+        "اختر الكلمة أولًا، واستخدم ورقة بديلة واحدة على الأكثر في مسارها."
       ],
       "faq": [
         [
           "كم عدد المسارات؟",
-          "هناك عشرة مسارات ولكل منها أربع كلمات مستهدفة."
+          "هناك ٦٠ مسارًا، وفي كل مسار أربع كلمات."
         ],
         [
-          "هل يمكن التحرك قطريًا؟",
-          "نعم. الخانات القطرية متجاورة، لكن لا تكرر الخانة في الكلمة."
+          "كيف يعمل جسر الأوراق؟",
+          "يعبر فجوة واحدة تختارها في كل مرة، ويمكن نقله."
         ],
         [
-          "ما وظيفة التلميح والتراجع ومسح المسار؟",
-          "يكشف التلميح الحرف الأول من الكلمة التالية التي لم تُعثر بعد؛ يزيل التراجع آخر خانة، ويمسح زر المسح المسار الحالي."
+          "كيف تعمل الورقة البديلة؟",
+          "تحل محل حرف كامل من الكلمة المختارة، ويمكن استخدامها مجددًا لكلمة أخرى."
         ],
         [
-          "هل يوجد مؤقت؟",
-          "لا. يُحفظ التقدم والبطاقات في هذا المتصفح."
+          "هل توجد إعلانات وأين يُحفظ التقدم؟",
+          "لا توجد إعلانات. يُحفظ التقدم وبطاقات القرائن في هذا المتصفح."
         ]
       ],
       "difficulty": "من السهل إلى المتوسط",
@@ -888,18 +979,18 @@
     ]
   },
   "metaDescriptions": {
-    "en": "Find four animal or habitat words on each of ten trails. Diagonal moves are allowed; tiles cannot be reused.",
-    "zh-Hant": "在十條小徑中找出動物或棲地詞語，每條四個。可走斜向，但不能重複使用字格。",
-    "zh-Hans": "在十条小径中寻找动物或栖地词语，每条四个。可以斜向移动，但不能重复使用字格。",
-    "ja": "全10本のコースで動物や生息地の語を探します。各4語で、斜め移動可、マスの再利用不可です。",
-    "ko": "열 개 길에서 동물이나 서식지 단어를 찾으세요. 각 네 단어이며 대각선 이동은 가능하지만 칸 재사용은 안 됩니다.",
-    "es": "Encuentra cuatro palabras de animales o hábitats en cada uno de diez senderos. Se permite diagonal, sin repetir casillas.",
-    "pt-BR": "Encontre quatro palavras de animais ou habitats em cada uma das dez trilhas. A diagonal é permitida, sem repetir casas.",
-    "fr": "Trouvez quatre mots d’animaux ou d’habitats sur chacun des dix parcours. Diagonales permises, sans réutiliser de case.",
-    "de": "Finde auf zehn Wortpfaden je vier Tier- oder Lebensraumwörter. Diagonalen sind erlaubt, Feldwiederholung nicht.",
-    "it": "Trova quattro parole di animali o habitat in ciascuno dei dieci percorsi. Diagonali consentite, senza riutilizzare caselle.",
-    "ru": "На каждой из десяти троп найдите четыре слова о животных или среде. Диагонали разрешены, клетки нельзя повторять.",
-    "hi": "दस रास्तों में हर एक के चार पशु या आवास शब्द खोजें। तिरछा चलना मान्य है; खाना दोहराना नहीं।",
-    "ar": "اعثر على أربع كلمات عن الحيوانات أو المواطن في كل مسار من المسارات العشرة. الحركة القطرية مسموحة ولا تكرر الخانة."
+    "en": "Explore 60 word trails with leaf bridges, animal and nature groups, and reusable wild leaves.",
+    "zh-Hant": "探索 60 條字詞小徑，運用葉橋、動物與自然分類，以及可重複使用的萬用葉。",
+    "zh-Hans": "探索 60 条字词小径，使用叶桥、动物与自然分类，以及可重复使用的万能叶。",
+    "ja": "60の小道で言葉探し。葉っぱの橋やグループ分け、おたすけの葉を使おう。",
+    "ko": "60개의 길에서 낱말을 찾아요. 나뭇잎 다리, 동물과 자연 모둠, 마법 잎을 만나 보세요.",
+    "es": "Explora 60 senderos de palabras con puentes de hojas, grupos de animales y naturaleza y hojas comodín.",
+    "pt-BR": "Explore 60 trilhas de palavras com pontes de folhas, grupos de animais e natureza e folhas coringa.",
+    "fr": "Explore 60 sentiers de mots avec des ponts de feuilles, des groupes et des feuilles jokers réutilisables.",
+    "de": "Entdecke 60 Wortpfade mit Blätterbrücken, Tier- und Naturgruppen und wiederverwendbaren Jokerblättern.",
+    "it": "Esplora 60 sentieri di parole con ponti di foglie, gruppi di animali e natura e foglie jolly.",
+    "ru": "Исследуй 60 словесных тропинок с мостиками из листьев, группами слов и волшебными листочками.",
+    "hi": "60 शब्द पगडंडियों पर पत्तों का पुल, जानवर और प्रकृति समूह, और दोबारा काम आने वाला जादुई पत्ता पाएँ।",
+    "ar": "استكشف ٦٠ مسارًا للكلمات مع جسور الأوراق ومجموعات الحيوانات والطبيعة والأوراق البديلة."
   }
 }

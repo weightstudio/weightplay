@@ -1,0 +1,163 @@
+/* Additional chapter objects; old trail layout and art remain unchanged. */
+#battleLive, .stage-workspace, .result-card, .leave-confirm-card, #albumDialog[open] {
+  animation: word-trails-appear 180ms ease-out both;
+}
+@keyframes word-trails-appear {
+  from { opacity: .65; }
+  to { opacity: 1; }
+}
+.tile, .target, .word60-bridge-button, .actions button {
+  transition: box-shadow 120ms ease, filter 120ms ease, opacity 120ms ease;
+}
+.tile.selected { box-shadow: inset 0 0 0 3px #ffeb8f; }
+.tile:active, .word60-target:active, .word60-bridge-button:active, .actions button:active {
+  filter: brightness(1.12);
+}
+.clue-reveal {
+  inset: auto 8px 3px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.clue-reveal i { width: 28px; height: 28px; flex: none; }
+.clue-reveal strong {
+  min-width: 0;
+  overflow: hidden;
+  padding: 2px 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board[data-word60], .board[data-legacy-localized] { direction: ltr; }
+.board[data-word60] .tile, .board[data-legacy-localized] .tile { unicode-bidi: plaintext; }
+.board[data-word60] .tile:not(.selected):not(.correct):not(.blocked),
+.board[data-legacy-localized] .tile:not(.selected):not(.correct):not(.blocked) {
+  color: #153329;
+  text-shadow: 0 1px 0 #fff4d1;
+}
+.play-scene:has(.word60-bridge-controls) {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.word60-target {
+  min-height: 44px;
+  cursor: pointer;
+}
+.word60-target[aria-pressed="true"] {
+  outline: 3px solid #ffe07d;
+  outline-offset: -3px;
+}
+.word60-target[aria-disabled="true"] { opacity: .62; }
+.word60-target:focus-visible, .word60-bridge-button:focus-visible {
+  outline: 3px solid #fff0a1;
+  outline-offset: 2px;
+}
+
+.word60-bridge-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.word60-bridge-button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 2px solid #87a98e;
+  border-radius: 10px;
+  color: #fff;
+  background: #173a34;
+  font: inherit;
+  cursor: pointer;
+}
+.word60-bridge-button::before,
+.word60-bridge-cell::after,
+.word60-wild-cell::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 16px;
+  flex: none;
+  background: url('assets/leaf-tools-v6.png') 0 0 / 200% 200% no-repeat;
+  pointer-events: none;
+}
+.word60-bridge-button[aria-pressed="true"] {
+  border-color: #ffe07d;
+  box-shadow: 0 0 0 2px #ffe07d80;
+}
+.word60-bridge-cell::after, .word60-wild-cell::after {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  z-index: 1;
+}
+.word60-bridge-cell::after {
+  content: attr(data-bridge-label);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  text-shadow: 0 1px 3px #091d17;
+  transition: filter 120ms ease;
+}
+.word60-wild-cell::after { background-position: 100% 0; }
+.word60-bridge-cell:not(.is-open)::after { filter: grayscale(.8) brightness(.7); }
+
+.word60-oneway-cell::before {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  z-index: 2;
+  color: #fff6b4;
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: 0 1px 2px #102922;
+  pointer-events: none;
+}
+.word60-oneway-cell[data-oneway-dx="1"][data-oneway-dy="0"]::before { content: '→'; }
+.word60-oneway-cell[data-oneway-dx="-1"][data-oneway-dy="0"]::before { content: '←'; }
+.word60-oneway-cell[data-oneway-dx="0"][data-oneway-dy="1"]::before { content: '↓'; }
+.word60-oneway-cell[data-oneway-dx="0"][data-oneway-dy="-1"]::before { content: '↑'; }
+.word60-oneway-cell[data-oneway-dx="1"][data-oneway-dy="1"]::before { content: '↘'; }
+.word60-oneway-cell[data-oneway-dx="1"][data-oneway-dy="-1"]::before { content: '↗'; }
+.word60-oneway-cell[data-oneway-dx="-1"][data-oneway-dy="1"]::before { content: '↙'; }
+.word60-oneway-cell[data-oneway-dx="-1"][data-oneway-dy="-1"]::before { content: '↖'; }
+
+#albumList .card.word60-generic-card,
+#albumList .word60-memento {
+  align-items: center;
+  gap: 8px;
+  background-image: none;
+}
+#albumList .card:not(.word60-generic-card) {
+  aspect-ratio: 3 / 4;
+  min-height: 0;
+}
+#albumList .card.word60-generic-card::before,
+#albumList .word60-memento::before {
+  content: '';
+  display: block;
+  width: 54px;
+  height: 44px;
+  flex: none;
+  background: url('/assets/animal-word-trails-ui-icons.webp') 0 100% / 300% 200% no-repeat;
+}
+#albumList .word60-memento::before {
+  width: 48px;
+  height: 32px;
+  background: url('assets/leaf-tools-v6.png') 0 100% / 200% 200% no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #battleLive, .stage-workspace, .result-card, .leave-confirm-card, #albumDialog[open] { animation-duration: .01ms; }
+  .clue-reveal i { animation: none; }
+  .tile, .target, .word60-bridge-button, .word60-bridge-cell::after, .actions button { transition-duration: .01ms; }
+}

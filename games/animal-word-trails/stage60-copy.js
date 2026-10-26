@@ -1,0 +1,200 @@
+/* Localized copy for the additional Word Trails stages, 11–60. */
+(() => {
+  'use strict';
+
+  // Each theme describes the corresponding trail in the expansion design.
+  const themes = [
+    'forest','pond','forest','birds','bridge','grassland','shore','birds','forest','bridge',
+    'garden','night','winter','grassland','bridge','pond','cave','birds','forest','bridge',
+    'forest','forest','pond','forest','birds','shore','ocean','shore','forest','mountain',
+    'pond','forest','grassland','grassland','winter','night','forest','pond','pond','shore',
+    'pond','forest','ocean','forest','winter','birds','ocean','cave','forest','gathering'
+  ];
+
+  const copy = {
+    en: {
+      bridge:'Leaf bridge', moveBridge:'Move the bridge', bridgeChosen:'Bridge in place', bridgeBlocked:'Place the bridge to cross.', wildLeaf:'Wild leaf', selectTarget:'Choose a word first.', lockedCategory:'Finish this group first.', animalCategory:'Animals', natureCategory:'Nature', chooseCategory:'Choose a group.', firstCategory:'First group', secondCategory:'Next group', wrongDirection:'Enter from the arrow.', oneWildPerPath:'Use one wild leaf per word.', checkpoint:'Checkpoint', trail:'Trail',
+      themes:{forest:'Forest',pond:'Pond',birds:'Bird paths',bridge:'Bridge crossing',grassland:'Grassland',shore:'Shore',garden:'Garden',night:'Night',winter:'Winter',cave:'Cave',ocean:'Ocean',mountain:'Mountain',gathering:'Keepers’ gathering'}
+    },
+    'zh-Hant': {
+      bridge:'葉橋', moveBridge:'移動葉橋', bridgeChosen:'葉橋已放好', bridgeBlocked:'先放好葉橋才能通過。', wildLeaf:'萬用葉', selectTarget:'先選一個詞。', lockedCategory:'先完成這一組。', animalCategory:'動物', natureCategory:'自然', chooseCategory:'選擇一組。', firstCategory:'第一組', secondCategory:'下一組', wrongDirection:'請從箭頭方向進入。', oneWildPerPath:'每個詞只能用一片萬用葉。', checkpoint:'小小檢查站', trail:'小徑',
+      themes:{forest:'森林',pond:'池塘',birds:'鳥兒小徑',bridge:'葉橋',grassland:'草原',shore:'海岸',garden:'花園',night:'夜晚',winter:'冬天',cave:'山洞',ocean:'海洋',mountain:'山巒',gathering:'守護者的聚會'}
+    },
+    'zh-Hans': {
+      bridge:'叶桥', moveBridge:'移动叶桥', bridgeChosen:'叶桥已放好', bridgeBlocked:'先放好叶桥才能通过。', wildLeaf:'万能叶', selectTarget:'先选一个词。', lockedCategory:'先完成这一组。', animalCategory:'动物', natureCategory:'自然', chooseCategory:'选择一组。', firstCategory:'第一组', secondCategory:'下一组', wrongDirection:'请从箭头方向进入。', oneWildPerPath:'每个词只能用一片万能叶。', checkpoint:'小小检查站', trail:'小径',
+      themes:{forest:'森林',pond:'池塘',birds:'鸟儿小径',bridge:'叶桥',grassland:'草原',shore:'海岸',garden:'花园',night:'夜晚',winter:'冬天',cave:'山洞',ocean:'海洋',mountain:'山峦',gathering:'守护者的聚会'}
+    },
+    ja: {
+      bridge:'葉っぱの橋', moveBridge:'橋を動かす', bridgeChosen:'橋をかけたよ', bridgeBlocked:'橋をかけて渡ろう。', wildLeaf:'おたすけの葉', selectTarget:'先に言葉を選ぼう。', lockedCategory:'先にこのグループを終えよう。', animalCategory:'動物', natureCategory:'自然', chooseCategory:'グループを選ぼう。', firstCategory:'はじめのグループ', secondCategory:'次のグループ', wrongDirection:'矢印の向きから入ろう。', oneWildPerPath:'一つの言葉に葉は一枚まで。', checkpoint:'チェックポイント', trail:'小道',
+      themes:{forest:'森',pond:'池',birds:'鳥の小道',bridge:'葉っぱの橋',grassland:'草原',shore:'海辺',garden:'庭',night:'夜',winter:'冬',cave:'洞窟',ocean:'海',mountain:'山',gathering:'守り手の集い'}
+    },
+    ko: {
+      bridge:'나뭇잎 다리', moveBridge:'다리 옮기기', bridgeChosen:'다리를 놓았어요', bridgeBlocked:'다리를 놓고 건너요.', wildLeaf:'마법 나뭇잎', selectTarget:'먼저 낱말을 골라요.', lockedCategory:'이 모둠부터 마쳐요.', animalCategory:'동물', natureCategory:'자연', chooseCategory:'모둠을 골라요.', firstCategory:'첫 번째 모둠', secondCategory:'다음 모둠', wrongDirection:'화살표 방향으로 들어가요.', oneWildPerPath:'낱말마다 마법 잎은 하나만 써요.', checkpoint:'확인 지점', trail:'길',
+      themes:{forest:'숲',pond:'연못',birds:'새들의 길',bridge:'나뭇잎 다리',grassland:'초원',shore:'해안',garden:'정원',night:'밤',winter:'겨울',cave:'동굴',ocean:'바다',mountain:'산',gathering:'지킴이들의 모임'}
+    },
+    es: {
+      bridge:'Puente de hojas', moveBridge:'Mover el puente', bridgeChosen:'Puente colocado', bridgeBlocked:'Coloca el puente para cruzar.', wildLeaf:'Hoja comodín', selectTarget:'Elige primero una palabra.', lockedCategory:'Termina primero este grupo.', animalCategory:'Animales', natureCategory:'Naturaleza', chooseCategory:'Elige un grupo.', firstCategory:'Primer grupo', secondCategory:'Siguiente grupo', wrongDirection:'Entra siguiendo la flecha.', oneWildPerPath:'Usa una hoja comodín por palabra.', checkpoint:'Punto de control', trail:'Sendero',
+      themes:{forest:'Bosque',pond:'Estanque',birds:'Senderos de aves',bridge:'Puente de hojas',grassland:'Pradera',shore:'Costa',garden:'Jardín',night:'Noche',winter:'Invierno',cave:'Cueva',ocean:'Océano',mountain:'Montaña',gathering:'Reunión de guardianes'}
+    },
+    'pt-BR': {
+      bridge:'Ponte de folhas', moveBridge:'Mover a ponte', bridgeChosen:'Ponte colocada', bridgeBlocked:'Coloque a ponte para atravessar.', wildLeaf:'Folha coringa', selectTarget:'Escolha uma palavra primeiro.', lockedCategory:'Termine este grupo primeiro.', animalCategory:'Animais', natureCategory:'Natureza', chooseCategory:'Escolha um grupo.', firstCategory:'Primeiro grupo', secondCategory:'Próximo grupo', wrongDirection:'Entre pela direção da seta.', oneWildPerPath:'Use uma folha coringa por palavra.', checkpoint:'Ponto de controle', trail:'Trilha',
+      themes:{forest:'Floresta',pond:'Lagoa',birds:'Trilhas das aves',bridge:'Ponte de folhas',grassland:'Campo',shore:'Litoral',garden:'Jardim',night:'Noite',winter:'Inverno',cave:'Caverna',ocean:'Oceano',mountain:'Montanha',gathering:'Encontro dos guardiões'}
+    },
+    fr: {
+      bridge:'Pont de feuilles', moveBridge:'Déplacer le pont', bridgeChosen:'Pont en place', bridgeBlocked:'Place le pont pour traverser.', wildLeaf:'Feuille joker', selectTarget:'Choisis d’abord un mot.', lockedCategory:'Finis d’abord ce groupe.', animalCategory:'Animaux', natureCategory:'Nature', chooseCategory:'Choisis un groupe.', firstCategory:'Premier groupe', secondCategory:'Groupe suivant', wrongDirection:'Entre dans le sens de la flèche.', oneWildPerPath:'Une feuille joker par mot.', checkpoint:'Étape de contrôle', trail:'Sentier',
+      themes:{forest:'Forêt',pond:'Étang',birds:'Sentiers des oiseaux',bridge:'Pont de feuilles',grassland:'Prairie',shore:'Rivage',garden:'Jardin',night:'Nuit',winter:'Hiver',cave:'Grotte',ocean:'Océan',mountain:'Montagne',gathering:'Rencontre des gardiens'}
+    },
+    de: {
+      bridge:'Blätterbrücke', moveBridge:'Brücke versetzen', bridgeChosen:'Brücke liegt bereit', bridgeBlocked:'Lege die Brücke, um hinüberzugehen.', wildLeaf:'Jokerblatt', selectTarget:'Wähle zuerst ein Wort.', lockedCategory:'Beende zuerst diese Gruppe.', animalCategory:'Tiere', natureCategory:'Natur', chooseCategory:'Wähle eine Gruppe.', firstCategory:'Erste Gruppe', secondCategory:'Nächste Gruppe', wrongDirection:'Folge beim Betreten dem Pfeil.', oneWildPerPath:'Ein Jokerblatt pro Wort.', checkpoint:'Kontrollpunkt', trail:'Pfad',
+      themes:{forest:'Wald',pond:'Teich',birds:'Vogelpfade',bridge:'Blätterbrücke',grassland:'Grasland',shore:'Küste',garden:'Garten',night:'Nacht',winter:'Winter',cave:'Höhle',ocean:'Ozean',mountain:'Berg',gathering:'Treffen der Hüter'}
+    },
+    it: {
+      bridge:'Ponte di foglie', moveBridge:'Sposta il ponte', bridgeChosen:'Ponte posizionato', bridgeBlocked:'Metti il ponte per attraversare.', wildLeaf:'Foglia jolly', selectTarget:'Scegli prima una parola.', lockedCategory:'Completa prima questo gruppo.', animalCategory:'Animali', natureCategory:'Natura', chooseCategory:'Scegli un gruppo.', firstCategory:'Primo gruppo', secondCategory:'Prossimo gruppo', wrongDirection:'Entra seguendo la freccia.', oneWildPerPath:'Una foglia jolly per parola.', checkpoint:'Punto di controllo', trail:'Sentiero',
+      themes:{forest:'Foresta',pond:'Stagno',birds:'Sentieri degli uccelli',bridge:'Ponte di foglie',grassland:'Prateria',shore:'Riva',garden:'Giardino',night:'Notte',winter:'Inverno',cave:'Grotta',ocean:'Oceano',mountain:'Montagna',gathering:'Raduno dei guardiani'}
+    },
+    ru: {
+      bridge:'Мостик из листьев', moveBridge:'Переместить мостик', bridgeChosen:'Мостик на месте', bridgeBlocked:'Положи мостик, чтобы пройти.', wildLeaf:'Волшебный листочек', selectTarget:'Сначала выбери слово.', lockedCategory:'Сначала закончи эту группу.', animalCategory:'Животные', natureCategory:'Природа', chooseCategory:'Выбери группу.', firstCategory:'Первая группа', secondCategory:'Следующая группа', wrongDirection:'Войди по стрелке.', oneWildPerPath:'Один волшебный листочек на слово.', checkpoint:'Проверка пути', trail:'Тропинка',
+      themes:{forest:'Лес',pond:'Пруд',birds:'Птичьи тропинки',bridge:'Мостик из листьев',grassland:'Луг',shore:'Берег',garden:'Сад',night:'Ночь',winter:'Зима',cave:'Пещера',ocean:'Океан',mountain:'Горы',gathering:'Встреча хранителей'}
+    },
+    hi: {
+      bridge:'पत्तों का पुल', moveBridge:'पुल की जगह बदलें', bridgeChosen:'पुल लग गया', bridgeBlocked:'पार जाने के लिए पुल लगाएँ।', wildLeaf:'जादुई पत्ता', selectTarget:'पहले एक शब्द चुनें।', lockedCategory:'पहले यह समूह पूरा करें।', animalCategory:'जानवर', natureCategory:'प्रकृति', chooseCategory:'एक समूह चुनें।', firstCategory:'पहला समूह', secondCategory:'अगला समूह', wrongDirection:'तीर की दिशा से आएँ।', oneWildPerPath:'हर शब्द में एक ही जादुई पत्ता लगाएँ।', checkpoint:'जाँच पड़ाव', trail:'पगडंडी',
+      themes:{forest:'जंगल',pond:'तालाब',birds:'पक्षियों की राह',bridge:'पत्तों का पुल',grassland:'घास का मैदान',shore:'समुद्र तट',garden:'बगीचा',night:'रात',winter:'सर्दी',cave:'गुफा',ocean:'महासागर',mountain:'पहाड़',gathering:'रक्षकों की सभा'}
+    },
+    ar: {
+      bridge:'جسر الأوراق', moveBridge:'انقل الجسر', bridgeChosen:'الجسر في مكانه', bridgeBlocked:'ضع الجسر لتَعبر.', wildLeaf:'ورقة بديلة', selectTarget:'اختر كلمة أولًا.', lockedCategory:'أكمل هذه المجموعة أولًا.', animalCategory:'الحيوانات', natureCategory:'الطبيعة', chooseCategory:'اختر مجموعة.', firstCategory:'المجموعة الأولى', secondCategory:'المجموعة التالية', wrongDirection:'ادخل في اتجاه السهم.', oneWildPerPath:'استخدم ورقة بديلة واحدة لكل كلمة.', checkpoint:'نقطة مراجعة', trail:'المسار',
+      themes:{forest:'الغابة',pond:'البركة',birds:'مسارات الطيور',bridge:'جسر الأوراق',grassland:'السهول العشبية',shore:'الشاطئ',garden:'الحديقة',night:'الليل',winter:'الشتاء',cave:'الكهف',ocean:'المحيط',mountain:'الجبل',gathering:'لقاء الحراس'}
+    }
+  };
+
+  // These strings belong to the game UI. Official game titles still come
+  // from the shared title registry at the point where the title is shown.
+  const uiKeys = [
+    'title','intro','start','guideTitle','guideBody','chooseStage','playStage','hint','clear','check',
+    'complete','next','trails','replay','skill','found','try','great','language','album',
+    'albumTitle','undo','loading','backLobby','backMain','backStage','closeAlbum','stages','board','lockedStage',
+    'leaveTitle','leaveMessage','keepReading','leaveTrail','seoTitle','seoDescription','words','cards','objective','connect',
+    'newPath','oneWay','clueFound','progress','trail','trailNumber','stageSummary','locked','completed','available','stars'
+  ];
+  const uiValues = {
+    en: [
+      'Word Trails','Follow animal clues and connect a word path.','Start Game','A calm reading puzzle','Find animal and habitat words. Your progress stays on this device.','Choose a trail','Begin trail','Hint','Clear','Check word',
+      'Trail complete','Next trail','Trail menu','Replay','Reading · Focus · Logic · Animal knowledge','found','Try another path.','Great reading!','Language','Album',
+      'Animal clues','Undo','Loading trail','Back to WeightPlay','Back to main','Back to trails','Close album','Trails','Word board','Finish the previous trail to unlock this one.',
+      'Leave this trail?','Found words, the current path, and star progress in this run will reset.','Keep reading','Leave trail','Word Trails - WeightPlay','Connect animal and habitat words in a calm reading puzzle.','words','Cards','Find the animal words','Connect adjacent tiles.',
+      'New path started here.','Follow the leaf direction.','Clue found:','Trails completed','Trail','Trail {n}','Find {n} words to complete this trail.','Finish the previous trail to unlock this one.','Completed','Ready','Stars'
+    ],
+    'zh-Hant': [
+      '文字小徑','跟著動物線索，連出字詞路徑。','開始遊戲','輕鬆的閱讀益智遊戲','找出動物與棲地詞語，進度保存在這台裝置。','選擇小徑','開始挑戰','提示','清除','確認字詞',
+      '小徑完成','下一條小徑','小徑選單','再玩一次','閱讀 · 專注 · 邏輯 · 動物知識','已找到','換一條路徑試試看。','閱讀真棒！','語言','圖鑑',
+      '動物線索卡','復原','正在準備小徑','返回 WeightPlay 大廳','返回首頁','返回小徑選單','關閉圖鑑','小徑選單','字詞棋盤','完成前一條小徑即可解鎖。',
+      '要離開這條小徑嗎？','這一局找到的詞、目前路徑和星星進度將會重設。','繼續找字','離開小徑','文字小徑 - WeightPlay','連線找出動物與棲地詞語的輕鬆閱讀遊戲。','個詞','線索卡','找出動物詞語','連接相鄰的字格。',
+      '已從這一格重新開始。','請順著葉片方向進入。','找到線索：','已完成小徑','小徑','第 {n} 條小徑','找出 {n} 個詞，完成這條小徑。','完成前一條小徑即可解鎖。','已完成','可挑戰','星星'
+    ],
+    'zh-Hans': [
+      '文字小径','跟着动物线索，连出词语路径。','开始游戏','轻松的阅读益智游戏','找出动物与栖地词语，进度保存在这台设备。','选择小径','开始挑战','提示','清除','确认词语',
+      '小径完成','下一条小径','小径菜单','再玩一次','阅读 · 专注 · 逻辑 · 动物知识','已找到','换一条路径试试看。','读得真棒！','语言','图鉴',
+      '动物线索卡','撤销','正在准备小径','返回 WeightPlay 大厅','返回首页','返回小径菜单','关闭图鉴','小径菜单','词语棋盘','完成前一条小径即可解锁。',
+      '要离开这条小径吗？','本局找到的词、当前路径和星星进度将会重置。','继续找字','离开小径','文字小径 - WeightPlay','连接字格，找出动物与栖地词语。','个词','线索卡','找出动物词语','连接相邻的字格。',
+      '已从这一格重新开始。','请顺着叶片方向进入。','找到线索：','已完成小径','小径','第 {n} 条小径','找出 {n} 个词，完成这条小径。','完成前一条小径即可解锁。','已完成','可挑战','星星'
+    ],
+    ja: [
+      '言葉の足跡','動物の手掛かりをたどって、言葉をつなげよう。','ゲーム開始','ゆったり言葉探し','動物やすみかの言葉を探そう。記録はこの端末に残るよ。','小道を選ぶ','小道を始める','ヒント','クリア','言葉を確認',
+      '小道クリア','次の小道','小道メニュー','もう一度','読む力 · 集中 · 考える力 · 動物の知識','見つけた','別の道を試そう。','よく見つけたね！','言語','図鑑',
+      '動物の手掛かり','もどす','小道を準備中','WeightPlay に戻る','はじめに戻る','小道一覧に戻る','図鑑を閉じる','小道','言葉の盤面','前の小道をクリアすると開くよ。',
+      'この小道をやめる？','今回見つけた言葉、今の道、星の進み具合はリセットされるよ。','続ける','小道をやめる','言葉の足跡 - WeightPlay','動物やすみかの言葉をつなぐ、ゆったりしたゲーム。','言葉','カード','動物の言葉を探そう','となりのマスをつなげよう。',
+      'ここから新しく始めたよ。','葉っぱの向きから入ろう。','手掛かり発見：','クリアした小道','小道','小道 {n}','言葉を {n} 個見つけて小道をクリアしよう。','前の小道をクリアすると開くよ。','クリア','挑戦できるよ','星'
+    ],
+    ko: [
+      '단어 트레일','동물 단서를 따라 낱말을 이어 보세요.','게임 시작','편안한 낱말 찾기','동물과 서식지 낱말을 찾아요. 기록은 이 기기에 저장돼요.','길 고르기','길 시작','힌트','지우기','낱말 확인',
+      '길 완료','다음 길','길 메뉴','다시 하기','읽기 · 집중 · 논리 · 동물 지식','찾음','다른 길을 찾아봐요.','잘 찾았어요!','언어','도감',
+      '동물 단서','되돌리기','길을 준비하는 중','WeightPlay로 돌아가기','처음으로 돌아가기','길 목록으로 돌아가기','도감 닫기','길 목록','낱말판','이전 길을 완료하면 열려요.',
+      '이 길에서 나갈까요?','이번에 찾은 낱말과 현재 경로, 별 진행이 초기화돼요.','계속 찾기','길 나가기','단어 트레일 - WeightPlay','동물과 서식지 낱말을 잇는 편안한 읽기 놀이예요.','낱말','카드','동물 낱말 찾기','이웃한 칸을 이어요.',
+      '여기에서 새 경로를 시작해요.','나뭇잎 방향으로 들어가요.','단서 발견:','완료한 길','길','길 {n}','낱말 {n}개를 찾아 이 길을 완료해요.','이전 길을 완료하면 열려요.','완료','시작 가능','별'
+    ],
+    es: [
+      'Senderos de palabras','Sigue las pistas de animales y une las palabras.','Empezar','Un tranquilo juego de lectura','Encuentra palabras de animales y hábitats. El progreso queda en este dispositivo.','Elige un sendero','Iniciar sendero','Pista','Borrar','Comprobar palabra',
+      'Sendero completado','Siguiente sendero','Menú de senderos','Volver a jugar','Lectura · Atención · Lógica · Animales','encontradas','Prueba otro camino.','¡Muy bien!','Idioma','Álbum',
+      'Pistas de animales','Deshacer','Preparando el sendero','Volver a WeightPlay','Volver al inicio','Volver a los senderos','Cerrar álbum','Senderos','Tablero de palabras','Completa el sendero anterior para desbloquear este.',
+      '¿Salir de este sendero?','Se reiniciarán las palabras encontradas, el camino actual y las estrellas de esta partida.','Seguir buscando','Salir del sendero','Senderos de palabras - WeightPlay','Une palabras de animales y hábitats en un tranquilo juego de lectura.','palabras','Tarjetas','Encuentra las palabras de animales','Une casillas vecinas.',
+      'Nuevo camino iniciado aquí.','Sigue la dirección de la hoja.','Pista encontrada:','Senderos completados','Sendero','Sendero {n}','Encuentra {n} palabras para completar este sendero.','Completa el sendero anterior para desbloquear este.','Completado','Disponible','Estrellas'
+    ],
+    'pt-BR': [
+      'Trilhas de palavras','Siga as pistas dos animais e conecte as palavras.','Começar','Um tranquilo jogo de leitura','Encontre palavras de animais e habitats. O progresso fica neste dispositivo.','Escolha uma trilha','Iniciar trilha','Dica','Limpar','Conferir palavra',
+      'Trilha concluída','Próxima trilha','Menu de trilhas','Jogar novamente','Leitura · Atenção · Lógica · Animais','encontradas','Tente outro caminho.','Muito bem!','Idioma','Álbum',
+      'Pistas de animais','Desfazer','Preparando a trilha','Voltar ao WeightPlay','Voltar ao início','Voltar às trilhas','Fechar álbum','Trilhas','Tabuleiro de palavras','Conclua a trilha anterior para liberar esta.',
+      'Sair desta trilha?','As palavras encontradas, o caminho atual e as estrelas desta rodada serão reiniciados.','Continuar buscando','Sair da trilha','Trilhas de palavras - WeightPlay','Ligue palavras de animais e habitats em um tranquilo jogo de leitura.','palavras','Cartões','Encontre as palavras de animais','Ligue casas vizinhas.',
+      'Novo caminho iniciado aqui.','Siga a direção da folha.','Pista encontrada:','Trilhas concluídas','Trilha','Trilha {n}','Encontre {n} palavras para concluir esta trilha.','Conclua a trilha anterior para liberar esta.','Concluída','Disponível','Estrelas'
+    ],
+    fr: [
+      'Sentiers de mots sur les','Suis les indices des animaux et relie les mots.','Commencer','Un jeu de lecture tout doux','Trouve des mots sur les animaux et leurs habitats. Ta progression reste sur cet appareil.','Choisis un sentier','Commencer le sentier','Indice','Effacer','Vérifier le mot',
+      'Sentier terminé','Sentier suivant','Menu des sentiers','Rejouer','Lecture · Attention · Logique · Animaux','trouvés','Essaie un autre chemin.','Bien joué !','Langue','Album',
+      'Indices d’animaux','Annuler','Préparation du sentier','Retour à WeightPlay','Retour à l’accueil','Retour aux sentiers','Fermer l’album','Sentiers','Grille de mots','Termine le sentier précédent pour débloquer celui-ci.',
+      'Quitter ce sentier ?','Les mots trouvés, le chemin actuel et les étoiles de cette partie seront remis à zéro.','Continuer','Quitter le sentier','Sentiers de mots sur les - WeightPlay','Relie des mots sur les animaux et leurs habitats dans un jeu de lecture calme.','mots','Cartes','Trouve les mots des animaux','Relie les cases voisines.',
+      'Un nouveau chemin commence ici.','Entre dans le sens de la feuille.','Indice trouvé :','Sentiers terminés','Sentier','Sentier {n}','Trouve {n} mots pour terminer ce sentier.','Termine le sentier précédent pour débloquer celui-ci.','Terminé','Disponible','Étoiles'
+    ],
+    de: [
+      'Wortspuren','Folge den Tierhinweisen und verbinde Wörter.','Spiel starten','Ein ruhiges Lesespiel','Finde Wörter über Tiere und Lebensräume. Dein Fortschritt bleibt auf diesem Gerät.','Wähle einen Pfad','Pfad starten','Hinweis','Löschen','Wort prüfen',
+      'Pfad geschafft','Nächster Pfad','Pfadmenü','Noch einmal','Lesen · Konzentration · Logik · Tierwissen','gefunden','Versuche einen anderen Weg.','Gut gefunden!','Sprache','Album',
+      'Tierhinweise','Zurück','Pfad wird vorbereitet','Zurück zu WeightPlay','Zurück zum Start','Zurück zu den Pfaden','Album schließen','Pfade','Wortfeld','Schließe den vorherigen Pfad ab, um diesen zu öffnen.',
+      'Diesen Pfad verlassen?','Gefundene Wörter, der aktuelle Weg und die Sterne dieser Runde werden zurückgesetzt.','Weitersuchen','Pfad verlassen','Wortspuren - WeightPlay','Verbinde Tier- und Lebensraumwörter in einem ruhigen Lesespiel.','Wörter','Karten','Finde die Tierwörter','Verbinde benachbarte Felder.',
+      'Hier beginnt ein neuer Weg.','Folge der Richtung des Blattes.','Hinweis gefunden:','Abgeschlossene Pfade','Pfad','Pfad {n}','Finde {n} Wörter, um diesen Pfad abzuschließen.','Schließe den vorherigen Pfad ab, um diesen zu öffnen.','Abgeschlossen','Verfügbar','Sterne'
+    ],
+    it: [
+      'Sentieri di parole sugli','Segui gli indizi sugli animali e collega le parole.','Inizia','Un tranquillo gioco di lettura','Trova parole su animali e habitat. I progressi restano su questo dispositivo.','Scegli un sentiero','Inizia il sentiero','Suggerimento','Cancella','Controlla parola',
+      'Sentiero completato','Sentiero successivo','Menu dei sentieri','Gioca ancora','Lettura · Attenzione · Logica · Animali','trovate','Prova un altro percorso.','Ben fatto!','Lingua','Album',
+      'Indizi sugli animali','Annulla','Preparazione del sentiero','Torna a WeightPlay','Torna all’inizio','Torna ai sentieri','Chiudi album','Sentieri','Griglia di parole','Completa il sentiero precedente per sbloccare questo.',
+      'Vuoi lasciare il sentiero?','Le parole trovate, il percorso attuale e le stelle di questa partita verranno azzerati.','Continua a cercare','Lascia il sentiero','Sentieri di parole sugli - WeightPlay','Collega parole su animali e habitat in un tranquillo gioco di lettura.','parole','Carte','Trova le parole degli animali','Collega le caselle vicine.',
+      'Un nuovo percorso inizia qui.','Segui la direzione della foglia.','Indizio trovato:','Sentieri completati','Sentiero','Sentiero {n}','Trova {n} parole per completare questo sentiero.','Completa il sentiero precedente per sbloccare questo.','Completato','Disponibile','Stelle'
+    ],
+    ru: [
+      'Тропы слов о животных','Следуй подсказкам о животных и соединяй слова.','Начать игру','Спокойная игра на чтение','Находи слова о животных и местах их обитания. Прогресс останется на этом устройстве.','Выбери тропинку','Начать тропинку','Подсказка','Очистить','Проверить слово',
+      'Тропинка пройдена','Следующая тропинка','Меню тропинок','Играть снова','Чтение · Внимание · Логика · Животные','найдено','Попробуй другой путь.','Отлично найдено!','Язык','Альбом',
+      'Подсказки о животных','Отменить','Подготовка тропинки','Вернуться в WeightPlay','Вернуться в начало','Вернуться к тропинкам','Закрыть альбом','Тропинки','Поле слов','Пройди предыдущую тропинку, чтобы открыть эту.',
+      'Покинуть тропинку?','Найденные слова, текущий путь и звёзды этой попытки будут сброшены.','Продолжить поиск','Покинуть тропинку','Тропы слов о животных - WeightPlay','Соединяй слова о животных и местах их обитания в спокойной игре на чтение.','слов','Карточки','Найди слова о животных','Соединяй соседние клетки.',
+      'Здесь начался новый путь.','Войди по направлению листочка.','Найдена подсказка:','Пройдено тропинок','Тропинка','Тропинка {n}','Найди {n} слов, чтобы пройти эту тропинку.','Пройди предыдущую тропинку, чтобы открыть эту.','Пройдена','Доступна','Звёзды'
+    ],
+    hi: [
+      'शब्द ट्रेल्स','जानवरों के सुराग से शब्दों का रास्ता जोड़ें।','खेल शुरू करें','शांत पठन खेल','जानवरों और उनके घरों के शब्द खोजें। प्रगति इसी डिवाइस पर रहेगी।','पगडंडी चुनें','पगडंडी शुरू करें','संकेत','साफ़ करें','शब्द जाँचें',
+      'पगडंडी पूरी हुई','अगली पगडंडी','पगडंडी सूची','फिर खेलें','पढ़ना · ध्यान · तर्क · जानवरों का ज्ञान','मिले','दूसरा रास्ता आज़माएँ।','बहुत अच्छे!','भाषा','एल्बम',
+      'जानवरों के सुराग','वापस लें','पगडंडी तैयार हो रही है','WeightPlay पर लौटें','मुख्य पृष्ठ पर लौटें','पगडंडियों पर लौटें','एल्बम बंद करें','पगडंडियाँ','शब्द बोर्ड','इसे खोलने के लिए पिछली पगडंडी पूरी करें।',
+      'क्या पगडंडी छोड़नी है?','इस बार मिले शब्द, मौजूदा रास्ता और सितारों की प्रगति रीसेट हो जाएगी।','खोज जारी रखें','पगडंडी छोड़ें','शब्द ट्रेल्स - WeightPlay','शांत पठन खेल में जानवरों और उनके घरों के शब्द जोड़ें।','शब्द','कार्ड','जानवरों के शब्द खोजें','पास वाले खाने जोड़ें।',
+      'यहाँ से नया रास्ता शुरू हुआ।','पत्ते की दिशा से आएँ।','सुराग मिला:','पूरी पगडंडियाँ','पगडंडी','पगडंडी {n}','इस पगडंडी को पूरा करने के लिए {n} शब्द खोजें।','इसे खोलने के लिए पिछली पगडंडी पूरी करें।','पूरा हुआ','खेल सकते हैं','सितारे'
+    ],
+    ar: [
+      'مسارات كلمة الحيوان','اتبع قرائن الحيوانات وصِل مسار الكلمات.','ابدأ اللعب','لعبة قراءة هادئة','اعثر على كلمات الحيوانات وموائلها. يبقى تقدمك على هذا الجهاز.','اختر مسارًا','ابدأ المسار','تلميح','امسح','تحقّق من الكلمة',
+      'اكتمل المسار','المسار التالي','قائمة المسارات','العب مجددًا','القراءة · التركيز · المنطق · معرفة الحيوانات','وُجدت','جرّب مسارًا آخر.','أحسنت القراءة!','اللغة','الألبوم',
+      'قرائن الحيوانات','تراجع','جارٍ إعداد المسار','العودة إلى WeightPlay','العودة إلى البداية','العودة إلى المسارات','أغلق الألبوم','المسارات','لوحة الكلمات','أكمل المسار السابق لفتح هذا المسار.',
+      'هل تغادر هذا المسار؟','ستُصفّر الكلمات المكتشفة والمسار الحالي والنجوم في هذه الجولة.','تابع البحث','غادر المسار','مسارات كلمة الحيوان - WeightPlay','صِل كلمات الحيوانات وموائلها في لعبة قراءة هادئة.','كلمات','بطاقات','اعثر على كلمات الحيوانات','صِل الخانات المتجاورة.',
+      'بدأ مسار جديد من هنا.','ادخل في اتجاه الورقة.','عُثر على قرينة:','المسارات المكتملة','مسار','المسار {n}','اعثر على {n} كلمات لإكمال هذا المسار.','أكمل المسار السابق لفتح هذا المسار.','مكتمل','متاح','النجوم'
+    ]
+  };
+
+  const checkpointUi = {
+    en:{checkpointChoose:'Choose a word, then connect the tiles.',checkpointOrder:'Find the words in the order shown.',checkpointWrong:'Try the next word in the list first.'},
+    'zh-Hant':{checkpointChoose:'先選一個詞，再連接字格。',checkpointOrder:'請按照顯示順序找詞。',checkpointWrong:'先找清單中的下一個詞喔。'},
+    'zh-Hans':{checkpointChoose:'先选一个词，再连接字格。',checkpointOrder:'请按照显示顺序找词。',checkpointWrong:'先找清单中的下一个词吧。'},
+    ja:{checkpointChoose:'言葉を選んでからマスをつなごう。',checkpointOrder:'表示された順番に言葉を探そう。',checkpointWrong:'まず一覧の次の言葉を探そう。'},
+    ko:{checkpointChoose:'낱말을 고른 뒤 칸을 이어요.',checkpointOrder:'표시된 순서대로 낱말을 찾아요.',checkpointWrong:'목록의 다음 낱말부터 찾아봐요.'},
+    es:{checkpointChoose:'Elige una palabra y conecta las casillas.',checkpointOrder:'Busca las palabras en el orden mostrado.',checkpointWrong:'Busca primero la siguiente palabra de la lista.'},
+    'pt-BR':{checkpointChoose:'Escolha uma palavra e ligue as casas.',checkpointOrder:'Encontre as palavras na ordem mostrada.',checkpointWrong:'Procure primeiro a próxima palavra da lista.'},
+    fr:{checkpointChoose:'Choisis un mot, puis relie les cases.',checkpointOrder:'Trouve les mots dans l’ordre affiché.',checkpointWrong:'Cherche d’abord le mot suivant de la liste.'},
+    de:{checkpointChoose:'Wähle ein Wort und verbinde dann die Felder.',checkpointOrder:'Finde die Wörter in der angezeigten Reihenfolge.',checkpointWrong:'Suche zuerst das nächste Wort in der Liste.'},
+    it:{checkpointChoose:'Scegli una parola e collega le caselle.',checkpointOrder:'Trova le parole nell’ordine mostrato.',checkpointWrong:'Cerca prima la prossima parola della lista.'},
+    ru:{checkpointChoose:'Выбери слово, затем соедини клетки.',checkpointOrder:'Находи слова в указанном порядке.',checkpointWrong:'Сначала найди следующее слово в списке.'},
+    hi:{checkpointChoose:'पहले शब्द चुनें, फिर खाने जोड़ें।',checkpointOrder:'शब्दों को दिखाए गए क्रम में खोजें।',checkpointWrong:'पहले सूची का अगला शब्द खोजें।'},
+    ar:{checkpointChoose:'اختر كلمة، ثم صِل الخانات.',checkpointOrder:'اعثر على الكلمات بالترتيب الظاهر.',checkpointWrong:'ابحث أولًا عن الكلمة التالية في القائمة.'}
+  };
+
+  for (const [locale, entry] of Object.entries(copy)) {
+    const values=uiValues[locale];
+    if(!values||values.length!==uiKeys.length||values.some(value=>typeof value!=='string'||!value.trim()))throw new Error(`WORD_TRAILS_UI_INCOMPLETE:${locale}`);
+    const checkpoint=checkpointUi[locale];
+    if(!checkpoint||['checkpointChoose','checkpointOrder','checkpointWrong'].some(key=>typeof checkpoint[key]!=='string'||!checkpoint[key].trim()))throw new Error(`WORD_TRAILS_CHECKPOINT_UI_INCOMPLETE:${locale}`);
+    entry.ui={...Object.fromEntries(uiKeys.map((key,index)=>[key,values[index]])),...checkpoint};
+    const numbers = new Intl.NumberFormat(locale, { useGrouping: false });
+    entry.stageNames = themes.map((theme, index) => `${entry.themes[theme]} · ${entry.trail} ${numbers.format(index + 11)}`);
+    delete entry.themes;
+    delete entry.trail;
+  }
+  globalThis.WordTrailsStage60Copy = copy;
+})();

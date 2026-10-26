@@ -338,11 +338,12 @@
     } else {
       const key={start:'initial',arrive:'arrive',depart:'depart',crab:'crab',mystery:'mystery',final:'final'}[step.kind];
       const signed=step.amount===null?'?':((step.kind==='arrive'?'+':['depart','crab'].includes(step.kind)?'−':'')+step.amount);
-      $('tideEvent').textContent=text(key)+'  '+signed;
       // On observation steps show the change as a real group of shells. The
       // question phase keeps only known clues, not the computed answer pile.
       const amount = watching ? step.amount : run.note.mode==='missing'?run.note.final:run.note.start;
-      pools.append(pool(amount,watching?text(key):text(run.note.mode==='missing'?'final':'initial'),amount===null));
+      const shownKey = watching ? key : run.note.mode==='missing'?'final':'initial';
+      $('tideEvent').textContent=text(shownKey)+'  '+(watching?signed:amount);
+      pools.append(pool(amount,text(shownKey),amount===null));
     }
     busy=!motion.reduced;
     const token=visualToken;

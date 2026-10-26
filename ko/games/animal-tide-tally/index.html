@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v11" />
+  <meta name="weightplay-game-version" content="v12" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="theme-color" content="#176a73" />
   <title>밀물 조개 세기 | WeightPlay</title>
@@ -52,7 +52,7 @@
 <script type="application/ld+json" data-tide-faq>{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"ko","mainEntity":[{"@type":"Question","name":"왜 바로 답할 수 없나요?","acceptedAnswer":{"@type":"Answer","text":"먼저 자신의 속도로 파도의 단서를 차례로 본 뒤 답하기로 넘어갑니다. 짧은 등장 효과 중 여러 번 눌러도 여러 단서를 한꺼번에 건너뛰지 않습니다."}},{"@type":"Question","name":"다시 보면 오답 횟수가 지워지나요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 같은 도전의 단서와 선택지, 오답 횟수를 유지합니다. 첫 정답은 별 세 개, 오답 한 번 후 정답은 두 개, 두 번 후 정답은 한 개입니다."}},{"@type":"Question","name":"물음표는 무엇을 가리나요?","acceptedAnswer":{"@type":"Answer","text":"한 번의 파도가 가져온 조개 수입니다. 처음, 떠난 수, 마지막 수는 알려져 있습니다. 숨겨진 조개 수나 접근성 이름으로 정답이 드러나지 않습니다."}},{"@type":"Question","name":"노트를 떠나면 무엇이 사라지나요?","acceptedAnswer":{"@type":"Answer","text":"플레이 화면의 뒤로 버튼은 확인을 엽니다. 계속하기는 같은 도전으로 돌아가고, 나가기는 미완료 도전만 버립니다. 저장된 완료 기록과 최고 별 수는 남습니다."}},{"@type":"Question","name":"항상 가운데 크기의 수가 정답은 아닌가요?","acceptedAnswer":{"@type":"Answer","text":"서로 다른 대안 두 개를 만든 뒤 위치를 섞습니다. 정답은 가장 작거나 중간이거나 가장 클 수 있으므로 위치 요령이 아닌 단서로 계산해야 합니다."}}]}</script>
 <style data-tide-poster-contract>@layer wp-frame-contract { html body[data-wp-game-id="animal-tide-tally"] [data-wp-frame="2"] [data-wp-frame-poster] { object-fit:cover!important; } }</style>
 </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tide-tally" data-wp-game-version="v11" data-wp-interface-version="9" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tide-tally" data-wp-game-version="v12" data-wp-interface-version="9" data-screen="main">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">≈</div><p data-i18n="loading">밀물의 수를 세는 중…</p></div>
   <div id="app" hidden data-wp-play-ui="1" data-wp-frame-root>
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
@@ -79,7 +79,7 @@
     <section id="battleScreen" class="screen" data-screen="battle" hidden><div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas><header class="panel-head battle-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" aria-label="뒤로">←</button><h2 id="battleHeading" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">밀물 조개 세기</h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" aria-label="소리">♫</button></header><div class="battle-body"><div class="battle-head"><div><p class="eyebrow" data-i18n="round">조수 노트</p><h3 id="noteTitle">Tide note 1</h3></div><span id="progressPill" class="pill">1 / 30</span></div><p id="prompt" class="prompt"></p><div class="tide-card"><span class="tide-symbol" aria-hidden="true">◌</span><span class="shell-art shell-art-incoming" aria-hidden="true"></span><p id="story" class="story"></p><p id="equation" class="equation" aria-live="polite"></p></div><div id="answerGrid" class="answer-grid" role="group" aria-label="스테이지"></div><p id="status" class="status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="resetBtn" class="secondary" type="button" data-wp-primary-action data-i18n="reset">노트 초기화</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div></section>
     <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="result-guide" src="assets/animal-tide-tally-guide.png" alt="" width="1024" height="1536" aria-hidden="true" /><p class="eyebrow" data-i18n="finished">조수가 잔잔해졌어요</p><h2 id="resultTitle" data-i18n="resultTitle">모든 만을 세었어요!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">다음 조수 노트</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">조수 노트 선택</button></div></section>
   </div>
-  <script src="locales.js?v=20261023-tide-i9"></script><script src="game.js?v=20261023-tide-i9"></script>
+  <script src="locales.js?v=20261023-tide-i9"></script><script src="game.js?v=20261027-tide-answer-clue"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
