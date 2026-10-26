@@ -111,7 +111,7 @@ export function createProgressStore(options = {}) {
   try { storage = own(options, 'storage') ? options.storage : globalThis.localStorage; } catch { storage = null; }
   let locks;
   try { locks = own(options, 'lockManager') ? options.lockManager : globalThis.navigator?.locks; } catch { locks = null; }
-  let progress = normalizeProgress(null), queue = Promise.resolve(), dirty = false;
+  let progress = normalizeProgress(null), persistedProgress = normalizeProgress(null), queue = Promise.resolve(), dirty = false;
   let lastError = null, lastSaved = false, corrupted = false, loaded = false;
   const pending = new Map(), subscribers = new Set();
   // Only this session's verified wallet receipt can select the paid appearance.
@@ -142,6 +142,7 @@ export function createProgressStore(options = {}) {
   function load() {
     const stored = readStored();
     if (stored.ok) {
+      persistedProgress = copy(stored.progress);
       progress = mergeProgress(progress, stored.progress);
       corrupted = false;
       lastError = locks?.request ? null : 'locking-unavailable';
@@ -203,6 +204,7 @@ export function createProgressStore(options = {}) {
         // A throwing/partial storage implementation cannot masquerade as saved.
         if (storage.getItem(SAVE_KEY) !== serialized) throw new Error('SAVE_READBACK_MISMATCH');
         progress = merged;
+        persistedProgress = copy(merged);
         const persistedStageIds = [...pending.keys()];
         pending.clear();
         pendingBoard = pendingCosmetic = null;
@@ -235,6 +237,9 @@ export function createProgressStore(options = {}) {
     load,
     verifyCosmeticEntitlement(owned) { coralNightVerified = owned === true; },
     get snapshot() { if (!loaded) load(); return copy(progress); },
+    // Pending/session progress never grants a durable unlock. A failed read keeps
+    // the last confirmed copy; a fresh unreadable save exposes only the free start.
+    get persistedSnapshot() { if (!loaded) load(); return copy(persistedProgress); },
     get saved() { return lastSaved; },
     get error() { return lastError; },
     get sessionOnly() { return !locks?.request || !storage; },

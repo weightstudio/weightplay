@@ -42,7 +42,7 @@ export function createHintClient({createWorker, documentTarget = globalThis.docu
     let worker;
     try {
       if (createWorker) worker = createWorker();
-      else if (typeof globalThis.Worker === 'function') worker = new globalThis.Worker(new URL('./stage60-hint-worker.mjs?v=20261027-dewline-v19',import.meta.url), {type:'module'});
+      else if (typeof globalThis.Worker === 'function') worker = new globalThis.Worker(new URL('./stage60-hint-worker.mjs?v=20261027-dewline-v19-finale60-1',import.meta.url), {type:'module'});
       else return Promise.resolve(error('unsupported'));
       if (!worker || typeof worker.postMessage !== 'function' || typeof worker.addEventListener !== 'function' || typeof worker.terminate !== 'function') {
         try { worker?.terminate?.(); } catch (_) {}

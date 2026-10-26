@@ -1,4 +1,4 @@
-// Draft for the proposed campaign. NOT INTEGRATED; human language review pending.
+// Campaign copy; human language review remains pending.
 // Templates are plain text. Render as textContent, not HTML.
 // Arabic dynamic values are isolated in format() to preserve bidirectional order.
 (() => {
@@ -190,13 +190,48 @@
     hi: ['संकेत अभी उपलब्ध नहीं है। कृपया थोड़ी देर बाद फिर कोशिश करें।', 'संकेत खोजा जा रहा है…'],
     ar: ['التلميح غير متاح مؤقتاً. يرجى المحاولة لاحقاً.', 'جارٍ البحث عن تلميح…']
   };
+  const captureSensorGate = {
+    en:'First bring bed {bed} to {value} to trigger the sensor; then capture.',
+    'zh-Hant':'先讓花圃 {bed} 達到 {value} 觸發感測器，再進行儲存。',
+    'zh-Hans':'先让花圃 {bed} 达到 {value} 触发感应器，再进行储存。',
+    ja:'先に花壇 {bed} を {value} にしてセンサーを作動させてから、保存してください。',
+    ko:'먼저 화단 {bed}를 {value}로 맞춰 센서를 작동한 뒤 저장하세요.',
+    es:'Primero lleva el cantero {bed} a {value} para activar el sensor; después captura.',
+    'pt-BR':'Primeiro leve o canteiro {bed} a {value} para ativar o sensor; depois capture.',
+    fr:'Amenez d’abord le parterre {bed} à {value} pour activer le capteur, puis capturez.',
+    de:'Bringe zuerst Beet {bed} auf {value}, um den Sensor auszulösen; speichere danach.',
+    it:'Porta prima l’aiuola {bed} a {value} per attivare il sensore, poi acquisisci.',
+    ru:'Сначала доведите клумбу {bed} до {value}, чтобы сработал датчик, затем сохраните значение.',
+    hi:'पहले क्यारी {bed} को {value} तक पहुँचाकर सेंसर चालू करें, फिर मान सँभालें।',
+    ar:'أولاً أوصل الحوض {bed} إلى {value} لتفعيل المستشعر، ثم احفظ القيمة.'
+  };
+  const sensorExtraKeys = ['sensorClipRequired','sensorNoClip','sensorAfterCapture','sensorBetweenCaptures','captureValveRequirement'];
+  const sensorExtras = {
+    en:['This sensor only works while pipe {pipe} is clipped.','This sensor only works when no clip is placed.','After capture, bring bed {bed} to {value}.','After the first capture and before the second, bring bed {bed} to {value}.','When capturing, valve {valve} must be at {value}.'],
+    'zh-Hant':['此感測只在夾住水管 {pipe} 時生效。','此感測只在未放置夾子時生效。','儲存後，讓花圃 {bed} 達到 {value}。','第一次儲存後、第二次儲存前，讓花圃 {bed} 達到 {value}。','儲存時，閥門 {valve} 必須為 {value}。'],
+    'zh-Hans':['此感应只在夹住水管 {pipe} 时生效。','此感应只在未放置夹子时生效。','储存后，让花圃 {bed} 达到 {value}。','第一次储存后、第二次储存前，让花圃 {bed} 达到 {value}。','储存时，阀门 {valve} 必须为 {value}。'],
+    ja:['このセンサーは水管 {pipe} をクリップで止めている間だけ作動します。','このセンサーはクリップを置いていない時だけ作動します。','保存後、花壇 {bed} を {value} にしてください。','1回目の保存後、2回目の保存前に花壇 {bed} を {value} にしてください。','保存時、バルブ {valve} は {value} でなければなりません。'],
+    ko:['이 센서는 물관 {pipe}에 클립을 끼운 동안에만 작동해요.','이 센서는 클립이 없을 때만 작동해요.','저장한 뒤 화단 {bed}를 {value}로 맞추세요.','첫 번째 저장 후, 두 번째 저장 전에 화단 {bed}를 {value}로 맞추세요.','저장할 때 밸브 {valve}는 {value}여야 해요.'],
+    es:['Este sensor solo funciona mientras el tubo {pipe} está sujeto con la pinza.','Este sensor solo funciona cuando no hay ninguna pinza colocada.','Después de capturar, lleva el cantero {bed} a {value}.','Después de la primera captura y antes de la segunda, lleva el cantero {bed} a {value}.','Al capturar, la válvula {valve} debe estar en {value}.'],
+    'pt-BR':['Este sensor só funciona enquanto o cano {pipe} estiver preso com a presilha.','Este sensor só funciona quando não há presilha colocada.','Após capturar, leve o canteiro {bed} a {value}.','Após a primeira captura e antes da segunda, leve o canteiro {bed} a {value}.','Ao capturar, a válvula {valve} deve estar em {value}.'],
+    fr:['Ce capteur ne fonctionne que lorsque le tuyau {pipe} est pincé.','Ce capteur ne fonctionne que si aucune pince n’est placée.','Après la capture, amenez le parterre {bed} à {value}.','Après la première capture et avant la seconde, amenez le parterre {bed} à {value}.','Lors de la capture, la vanne {valve} doit être à {value}.'],
+    de:['Dieser Sensor funktioniert nur, wenn Rohr {pipe} abgeklemmt ist.','Dieser Sensor funktioniert nur, wenn keine Klammer gesetzt ist.','Bringe nach dem Speichern Beet {bed} auf {value}.','Bringe nach dem ersten und vor dem zweiten Speichern Beet {bed} auf {value}.','Beim Speichern muss Ventil {valve} auf {value} stehen.'],
+    it:['Questo sensore funziona solo quando il tubo {pipe} è bloccato dalla pinza.','Questo sensore funziona solo quando non è stata posizionata alcuna pinza.','Dopo l’acquisizione, porta l’aiuola {bed} a {value}.','Dopo la prima acquisizione e prima della seconda, porta l’aiuola {bed} a {value}.','Durante l’acquisizione, la valvola {valve} deve essere a {value}.'],
+    ru:['Этот датчик работает только тогда, когда труба {pipe} перекрыта зажимом.','Этот датчик работает только без установленного зажима.','После сохранения доведите клумбу {bed} до {value}.','После первого и до второго сохранения доведите клумбу {bed} до {value}.','При сохранении значение клапана {valve} должно быть {value}.'],
+    hi:['यह सेंसर तभी काम करता है जब पाइप {pipe} पर क्लिप लगी हो।','यह सेंसर तभी काम करता है जब कोई क्लिप न लगी हो।','मान सँभालने के बाद क्यारी {bed} को {value} तक पहुँचाएँ।','पहला मान सँभालने के बाद और दूसरा सँभालने से पहले क्यारी {bed} को {value} तक पहुँचाएँ।','मान सँभालते समय वाल्व {valve} का मान {value} होना चाहिए।'],
+    ar:['يعمل هذا المستشعر فقط عند وضع المشبك على الأنبوب {pipe}.','يعمل هذا المستشعر فقط عند عدم وضع أي مشبك.','بعد الحفظ، أوصل الحوض {bed} إلى {value}.','بعد الحفظ الأول وقبل الحفظ الثاني، أوصل الحوض {bed} إلى {value}.','عند الحفظ، يجب أن تكون قيمة الصمام {valve} هي {value}.']
+  };
   const copy = Object.fromEntries(Object.entries(rows).map(([locale, values]) => {
     if (values.length !== keys.length) throw new Error(`BAD_STAGE60_COPY_LENGTH:${locale}`);
     if (extras[locale]?.length !== extraKeys.length) throw new Error(`BAD_STAGE60_EXTRA_LENGTH:${locale}`);
     if (hintMessages[locale]?.length !== 2) throw new Error(`BAD_STAGE60_HINT_LENGTH:${locale}`);
+    if (typeof captureSensorGate[locale] !== 'string' || !captureSensorGate[locale].trim()) throw new Error(`MISSING_CAPTURE_SENSOR_GATE:${locale}`);
+    if (sensorExtras[locale]?.length !== sensorExtraKeys.length) throw new Error(`BAD_SENSOR_EXTRA_LENGTH:${locale}`);
     return [locale, Object.freeze(Object.fromEntries([...keys.map((key, index) => [key, values[index]]),
       ...extraKeys.map((key, index) => [key, extras[locale][index]]),
-      ['hintError', hintMessages[locale][0]], ['hintPending', hintMessages[locale][1]]]))];
+      ['hintError', hintMessages[locale][0]], ['hintPending', hintMessages[locale][1]],
+      ['captureSensorGate', captureSensorGate[locale]],
+      ...sensorExtraKeys.map((key, index) => [key, sensorExtras[locale][index]])]))];
   }));
   function format(locale, key, vars = {}) {
     const template = copy[locale]?.[key];

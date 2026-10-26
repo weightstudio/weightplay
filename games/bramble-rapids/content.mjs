@@ -42,7 +42,7 @@ const route = (id, en, zh, length, timeLimit, aiCount, lessonKey, features, clea
 });
 
 const authored = [
-  route(1, 'First Splash', '初次下水', 260, 65, 0, 'steer', [flag(65, -0.35), flag(175, 0.35), flow(105, 35, 0)]),
+  route(1, 'First Splash', '初次下水', 260, 65, 0, 'steer', [flag(65, -0.5, { width: 0.58 }), flag(175, 0.5, { width: 0.58 }), flow(105, 35, 0)]),
   route(2, 'Outside Current', '內彎水線', 300, 65, 0, 'currentChoice', [flow(40, 70, 0.55), flag(135, 0), flow(175, 70, -0.55), flag(270, 0)], { minCurrentZones: 1 }),
   route(3, 'Under the Timber Bridge', '木橋下', 320, 65, 1, 'alternatingPillars', [flag(70, 0.2), wood(120, -0.48), wood(190, 0.48), bridge(225), flag(280, -0.2)]),
   route(4, 'Two Banks', '兩岸分流', 350, 70, 1, 'forkChoice', [fork(100, 115), flag(65, 0), bonus(155, -0.65), bonus(180, 0.66), flag(270, 0)], {}, null, { curves: [0, -3, -5, 1, 5, 0] }),

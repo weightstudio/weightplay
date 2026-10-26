@@ -1,4 +1,4 @@
-import {COST, DIAMOND_ASSET, locales, format, createGardenThemeController} from './garden-theme.mjs';
+import {COST, DIAMOND_ASSET, locales, format, createGardenThemeController} from './garden-theme.mjs?v=20261027-dewline-v19';
 
 // host is the game's Stage action container; board is the live Battle puzzle.
 // Mounting never spends currency. The modal's second, explicit confirmation is

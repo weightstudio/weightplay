@@ -1,5 +1,5 @@
 // PROTOTYPE_NOT_IN_GAME. The worker sends codes; presentation localizes them.
-import {STAGES, hint} from './stage60-model.mjs?v=20261027-dewline-v19';
+import {STAGES, hint} from './stage60-model.mjs?v=20261027-dewline-v19-finale60-1';
 
 function validState(stage, state) {
   if (!state || typeof state !== 'object' || !Array.isArray(state.values) || state.values.length !== 3 ||
@@ -15,6 +15,7 @@ function validState(stage, state) {
       !state.capturedOrder.every(bed => stage.captureBeds.includes(bed) && state.captures[bed - 1] !== null) ||
       state.captures.some((value,index) => value !== null && !state.capturedOrder.includes(index + 1)) ||
       (stage.captureOrder && state.capturedOrder.some((bed,index) => bed !== stage.captureOrder[index])) ||
+      (stage.captureSensorGate && state.capturedOrder.length > (stage.captureSensorAfterFirst ? 1 : 0) && state.sensor < stage.sensors.length) ||
       typeof state.lockedAfterCapture !== 'boolean' ||
       state.lockedAfterCapture !== (stage.lockAfterCapture !== null && state.capturedOrder.length > 0)) return false;
   if (stage.moveClipAfterCapture && state.capturedOrder.length > 0) return stage.allowedClips.includes(state.captureClip);

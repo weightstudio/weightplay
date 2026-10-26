@@ -7,7 +7,8 @@ import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {makeStageConfig} from './stage-config.mjs';
 const $=id=>document.getElementById(id), W=window, SKU='bramble-rapids:coral-night';
 const store=createProgressStore();store.load();
-let locale=resolveLocale(),screen='main',tab='stages',selected=store.snapshot.unlocked,frame,rail,joystick,renderer,race,modal=null,previousFocus=null,practice=false,practiceRun=false,raf=0,lastFrame=0,round=0,resultSaved=false,saving=false,busy=false,feedbackUntil=0;
+let locale=resolveLocale(),screen='main',tab='stages',selected=store.persistedSnapshot.unlocked,frame,rail,joystick,renderer,race,modal=null,previousFocus=null,practice=false,practiceRun=false,raf=0,lastFrame=0,round=0,resultSaved=false,busy=false,feedbackUntil=0,shopFeedbackKey=null;
+const savingRuns=new WeakSet(),stageSaveNotice=document.createElement('span');stageSaveNotice.setAttribute('role','status');
 let jumpQueued=false,anchorHeld=false;const keys=new Set(),abort=new AbortController();
 const listen=(node,event,fn,opts={})=>node.addEventListener(event,fn,{...opts,signal:abort.signal});
 const tr=(key,vars)=>t(locale,key,vars),text=(id,key,vars)=>{$(id).textContent=tr(key,vars);};
@@ -57,12 +58,13 @@ function selectTab(name,focus=false){
   if(focus)$(name+'Tab').focus({preventScroll:true});notify();
 }
 function stagePresentation(index){
-  const s=STAGES[index],p=store.snapshot,r=p.records[s.id],locked=!practice&&s.id>p.unlocked;
-  return {id:s.id,kicker:`${tr('chapter')} ${s.chapter}`,title:stageName(s.id,locale),subtitle:`${tr('stage')} ${s.id}`,locked,cleared:!!r?.cleared,status:locked?tr('locked'):r?.cleared?`${tr('stars')} ${r.stars}/3`:tr('ready'),rewardState:r?.cleared?'collected':'not-collected',summary:stageLesson(s,locale),details:stageDetails(s),poster:'/games/bramble-rapids/assets/scenes.webp',posterPosition:s.chapter===1?'center top':'center bottom'};
+  const s=STAGES[index],p=store.snapshot,durable=store.persistedSnapshot,r=durable.records[s.id],pending=!r?.cleared&&p.records[s.id]?.cleared,locked=!practice&&s.id>durable.unlocked;
+  return {id:s.id,kicker:`${tr('chapter')} ${s.chapter}`,title:stageName(s.id,locale),subtitle:`${tr('stage')} ${s.id}`,locked,cleared:!!r?.cleared,status:locked?tr('locked'):pending?tr('notSaved'):r?.cleared?`${tr('stars')} ${r.stars}/3`:tr('ready'),rewardState:r?.cleared?'collected':'not-collected',summary:stageLesson(s,locale),details:stageDetails(s),poster:'/games/bramble-rapids/assets/scenes.webp',posterPosition:s.chapter===1?'center top':'center bottom'};
 }
 function stageDetails(s){
   const c=s.clearConditions,details=[`${tr('flags')}: ${requiredFlags(s).length}`,`${tr('time')}: ${clock(s.timeLimit)}`];
   if(c.minLandings)details.push(`${tr('landing')}: ≥ ${c.minLandings}`);
+  if(c.maxLandings!==undefined)details.push(`${tr('landing')}: ≤ ${c.maxLandings}`);
   if(c.maxRank)details.push(`${tr('rank')}: ≤ ${c.maxRank}`);
   if(c.minStability)details.push(`${tr('stability')}: ≥ ${c.minStability}`);
   if(c.maxFalls!==undefined)details.push(`${tr('falls')}: ≤ ${c.maxFalls}`);
@@ -75,9 +77,14 @@ function stageDetails(s){
 function makeKit(index){const d=document.createElement('div');d.className='kit-art';d.style.setProperty('--kit-x',`${(index%3)*50}%`);d.style.setProperty('--kit-y',`${Math.floor(index/3)*50}%`);return d;}
 function renderManagement(){
   store.verifyCosmeticEntitlement(W.WeightPlayWallet?.owns(SKU)===true);
-  const p=store.snapshot; text('mainProgress','stageProgress',{current:p.unlocked,total:60});
+  const p=store.snapshot,durable=store.persistedSnapshot,dirty=store.getPending().dirty||!!store.error;
+  text('mainProgress','stageProgress',{current:durable.unlocked,total:60});
+  $('mainSaveNotice').hidden=!dirty;$('mainSaveNotice').textContent=dirty?tr('saveFailed'):'';
+  if(dirty){stageSaveNotice.textContent=tr('notSaved');frame?.stageTopUI.add(stageSaveNotice);}else frame?.stageTopUI.clear();
+  $('retryManagementSave').hidden=!dirty;$('retryManagementSave').disabled=busy||practice;
+  $('shopFeedback').textContent=[shopFeedbackKey?tr(shopFeedbackKey):'',dirty&&shopFeedbackKey!=='saveFailed'?tr('saveFailed'):''].filter(Boolean).join(' ');
   $('boardCards').replaceChildren();
-  BOARDS.forEach((board,index)=>{const owned=p.ownedBoards.includes(board.id),card=document.createElement('article');card.className='owned-card';card.append(makeKit(index));const h=document.createElement('h2');h.textContent=tr(board.id);const effect=document.createElement('p');effect.textContent=tr(board.id+'Effect');const button=document.createElement('button');button.type='button';button.dataset.board=board.id;button.textContent=p.equippedBoard===board.id?tr('equipped'):owned?tr('equip'):tr(board.unlockStage===5?'freeUnlock5':'freeUnlock15');button.disabled=!owned||p.equippedBoard===board.id||practice;card.append(h,effect,button);$('boardCards').append(card);});
+  BOARDS.forEach((board,index)=>{const owned=durable.ownedBoards.includes(board.id),card=document.createElement('article');card.className='owned-card';card.append(makeKit(index));const h=document.createElement('h2');h.textContent=tr(board.id);const effect=document.createElement('p');effect.textContent=tr(board.id+'Effect');const button=document.createElement('button');button.type='button';button.setAttribute('data-wp-frame-action','secondary');button.dataset.board=board.id;button.textContent=p.equippedBoard===board.id?tr('equipped'):owned?tr('equip'):tr(board.unlockStage===5?'freeUnlock5':'freeUnlock15');button.disabled=!owned||p.equippedBoard===board.id||practice;card.append(h,effect,button);$('boardCards').append(card);});
   text('anchorUnlock',p.anchorUnlocked?'anchorUnlocked':'freeUnlock30');
   $('walletBalance').textContent=String(W.WeightPlayWallet?.read().diamonds??0);
   const owned=W.WeightPlayWallet?.owns(SKU)===true;
@@ -97,6 +104,7 @@ function localize(){
   for(const el of document.querySelectorAll('[data-t]'))el.textContent=tr(el.dataset.t,{cost:el.dataset.cost||5});
   for(const el of document.querySelectorAll('[data-t-aria]'))el.setAttribute('aria-label',tr(el.dataset.tAria));
   $('riverArena').setAttribute('aria-label',tr('summary'));$('stageTabs').setAttribute('aria-label',tr('stages'));
+  frame?.commonDownButton.element.setAttribute('aria-label',tr('stages'));
   $('mainBack').setAttribute('aria-label',tr('backLobby'));$('poster').alt=tr('posterAlt');
   renderGuide();renderManagement();rail?.setConfig(makeStageConfig(stagePresentation),selected-1);if(race)updateHUD();if(modal==='helpDialog')showHelp(false);if(modal==='resultPanel')renderResult();
 }
@@ -153,12 +161,14 @@ function tick(now){
   const dt=lastFrame?Math.min(.066,(now-lastFrame)/1000):0;lastFrame=now;
   const keyboard=(keys.has('ArrowRight')||keys.has('KeyD')?1:0)-(keys.has('ArrowLeft')||keys.has('KeyA')?1:0);
   const steer=keyboard||joystick.getVector().x;
-  stepRace(race,dt,{steer,jump:jumpQueued,anchor:anchorHeld||keys.has('KeyX')});jumpQueued=false;
+  const beforeStep=race.activeTime;
+  stepRace(race,dt,{steer,jump:jumpQueued,anchor:anchorHeld||keys.has('KeyX')});
+  if(race.activeTime>beforeStep||race.status!=='running')jumpQueued=false;
   renderer?.render(race,dt);updateHUD();processEvents();schedule();
 }
 async function startStage(id,{practice:asPractice=practice,restart=false}={}){
   if(busy)return;id=Number(id);if(!getStage(id))return;
-  if(asPractice){if(!await LocalPractice.validate())return;}else if(id>store.snapshot.unlocked)return;
+  if(asPractice){if(!await LocalPractice.validate())return;}else if(id>store.persistedSnapshot.unlocked)return;
   if(restart)W.WonderAnalytics?.game?.markRestart();
   selected=id;practiceRun=asPractice;resultSaved=false;renderer?.dispose();renderer=null;activate('battle');
   race=createRace(id,{boardId:store.snapshot.equippedBoard});round++;startRace(race);
@@ -169,39 +179,45 @@ async function startStage(id,{practice:asPractice=practice,restart=false}={}){
 }
 function showHelp(open=true){if(!race)return;$('helpStage').textContent=`${tr('stage')} ${race.stage.id} · ${stageName(race.stage.id,locale)}`;$('helpLesson').textContent=`${stageLesson(race.stage,locale)} ${stageDetails(race.stage).join(' · ')}`;$('helpBasics').textContent=`${tr('keyControls')} ${tr('touchControls')} ${tr('tutorialJump')} ${race.stage.chapter===2?tr('tutorialAnchor'):''}`;if(open)openModal('helpDialog');}
 function renderResult(){
-  if(!race?.result)return;const r=race.result;
+  if(!race?.result)return;const r=race.result,saving=savingRuns.has(race);
   $('resultStage').textContent=`${tr('stage')} ${r.stageId} · ${stageName(r.stageId,locale)}`;text('resultTitle',r.won?'won':'lost');
   $('resultArt').style.setProperty('--kit-x',`${(r.won?Math.max(0,r.stars-1):0)*50}%`);
   $('resultDetails').textContent=`${tr('rank')} ${r.rank}/${race.rivals.length+1} · ${tr('time')} ${clock(r.time)} · ${tr('stars')} ${r.stars}/3 · ${tr('landing')} ${r.landings}`;
   const reason={timeout:'timeoutReason',stability:'stabilityReason',flags:'flagsReason',landings:'landingReason',rank:'rankReason',tide:'tideReason'};
-  $('resultReason').textContent=r.won?(r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'finishReason')} ${stageDetails(race.stage).join(' · ')}`;
+  $('resultReason').textContent=r.won?(!practiceRun&&!resultSaved?tr('notSaved'):r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'finishReason')} ${stageDetails(race.stage).join(' · ')}`;
   $('resultSaved').textContent=practiceRun?'LOCAL PRACTICE':r.won?tr(resultSaved?'progressSaved':saving?'recordPending':'saveFailed'):'';
   $('retrySave').hidden=!r.won||resultSaved||practiceRun||saving;
   $('resultNext').disabled=!r.won||r.stageId===60||(!practiceRun&&!resultSaved);
 }
 async function persistResult(retry=false){
-  if(saving||practiceRun||!race?.result?.won)return;saving=true;renderResult();const current=race;
-  const receipt=retry?await store.retryPersist():await store.recordResult(current.result);
-  if(current!==race)return;saving=false;resultSaved=receipt.saved===true;
-  if(resultSaved)for(const id of receipt.persistedStageIds||[])W.WonderAnalytics?.completeStage?.(id);
+  if(practiceRun||!race?.result?.won||savingRuns.has(race))return;
+  const current=race;savingRuns.add(current);renderResult();let receipt;
+  try{receipt=retry?await store.retryPersist():await store.recordResult(current.result);}
+  catch(error){console.error('Bramble Rapids save',error);receipt={saved:false};}
+  finally{savingRuns.delete(current);}
+  publishPersisted(receipt);
+  if(current!==race){renderManagement();notify();return;}
+  resultSaved=receipt.saved===true;
   renderResult();notify();
 }
+function publishPersisted(receipt){if(receipt.saved===true)for(const id of receipt.persistedStageIds||[])W.WonderAnalytics?.completeStage?.(id);}
 async function finish(){clearFrame();clearInput();openModal('resultPanel');renderResult();if(race.result.won&&!practiceRun)await persistResult();}
-function toStages(){selected=Math.min(60,store.snapshot.unlocked);activate('stage');selectTab('stages');}
+function toStages(){selected=Math.min(60,store.persistedSnapshot.unlocked);activate('stage');selectTab('stages');}
 async function purchase(){
   if(busy||practice)return;busy=true;$('confirmBuy').disabled=true;
   const result=await W.WeightPlayWallet.purchasePermanent(SKU,5);
-  if(result.ok){await store.setCosmetic('coral-night',true);text('shopFeedback','purchaseDone');audio('shop.purchase');}
-  else{text('shopFeedback',result.reason==='insufficient'?'insufficient':'purchaseFailed');audio('feedback.error');}
+  if(result.ok){await store.setCosmetic('coral-night',true);shopFeedbackKey='purchaseDone';audio('shop.purchase');}
+  else{shopFeedbackKey=result.reason==='insufficient'?'insufficient':'purchaseFailed';audio('feedback.error');}
   busy=false;$('confirmBuy').disabled=false;closeModal();renderManagement();
 }
 function bind(){
-  listen($('startBtn'),'click',()=>{selected=store.snapshot.unlocked;activate('stage');selectTab('stages');});listen($('stageBack'),'click',()=>activate('main'));listen($('battleBack'),'click',()=>race?.result?toStages():openModal('leaveDialog'));
+  listen($('startBtn'),'click',()=>{selected=store.persistedSnapshot.unlocked;activate('stage');selectTab('stages');});listen($('stageBack'),'click',()=>activate('main'));listen($('battleBack'),'click',()=>race?.result?toStages():openModal('leaveDialog'));
   for(const id of ['boards','stages','collection'])listen($(id+'Tab'),'click',()=>selectTab(id));
   for(const id of ['boardsTab','stagesTab','collectionTab'])listen($(id),'keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const ids=['boards','stages','collection'],dir=locale==='ar'?-1:1;selectTab(ids[e.key==='Home'?0:e.key==='End'?2:(ids.indexOf(tab)+(e.key==='ArrowRight'?dir:-dir)+3)%3],true);});
   listen($('boardCards'),'click',async e=>{const button=e.target.closest('[data-board]');if(!button||practice)return;await store.setBoard(button.dataset.board);renderManagement();});
   listen($('cosmeticBtn'),'click',async()=>{if(practice)return;if(W.WeightPlayWallet.owns(SKU)){await store.setCosmetic('coral-night',true);renderManagement();}else openModal('buyDialog');});
   listen($('defaultStyle'),'click',async()=>{if(!practice){await store.setCosmetic('default');renderManagement();}});listen($('confirmBuy'),'click',()=>void purchase());listen($('cancelBuy'),'click',()=>closeModal());
+  listen($('retryManagementSave'),'click',async()=>{if(busy||practice)return;busy=true;renderManagement();try{const receipt=await store.retryPersist();publishPersisted(receipt);shopFeedbackKey=receipt.saved?'progressSaved':'saveFailed';}finally{busy=false;renderManagement();rail.refresh(selected-1);notify();}});
   listen($('helpBtn'),'click',()=>showHelp());listen($('helpClose'),'click',async()=>{closeModal();if(!practiceRun&&!store.snapshot.tutorialComplete)await store.markTutorialComplete();});listen($('continueBtn'),'click',()=>closeModal());listen($('leaveBtn'),'click',toStages);
   listen($('resultStages'),'click',toStages);listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)void startStage(selected+1,{practice:practiceRun});});listen($('resultReplay'),'click',()=>void startStage(selected,{practice:practiceRun,restart:true}));listen($('retrySave'),'click',()=>void persistResult(true));listen($('graphicsBack'),'click',toStages);listen($('graphicsRetry'),'click',()=>void startStage(selected,{practice:practiceRun,restart:true}));
   for(const [id,type]of [['jumpBtn','jump'],['anchorBtn','anchor']]){
@@ -212,7 +228,7 @@ function bind(){
   listen(document,'keydown',e=>{
     if(modal){if(e.key==='Tab'){const nodes=[...$(modal).querySelectorAll('button:not([disabled]),[tabindex="0"]')].filter(n=>!n.hidden);if(!nodes.length)return;const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
       if(e.key==='Escape'&&['helpDialog','leaveDialog','buyDialog'].includes(modal)){e.preventDefault();closeModal();}return;}
-    if(screen!=='battle'||e.target.closest('select,input,textarea,[role="dialog"]'))return;
+    if(e.defaultPrevented||settingsOpen()||screen!=='battle'||e.target.closest('select,input,textarea,[role="dialog"]'))return;
     if(e.key==='Escape'){e.preventDefault();openModal('leaveDialog');return;}
     if(['ArrowLeft','ArrowRight','KeyA','KeyD','Space','KeyX'].includes(e.code)){e.preventDefault();if(!runnable())return;if(e.code==='Space'&&!e.repeat)jumpQueued=true;keys.add(e.code);}
   });
@@ -224,11 +240,14 @@ function bind(){
 }
 async function boot(){
   if(!W.WeightPlayScreenFrame||!W.WeightPlayPlayUI||!W.WeightPlayJoystick)throw Error('SHARED_RUNTIME_MISSING');
+  const mainNotice=document.createElement('p');mainNotice.id='mainSaveNotice';mainNotice.className='reserved-feedback';mainNotice.setAttribute('role','status');mainNotice.hidden=true;$('mainProgress').after(mainNotice);
+  const managementRetry=document.createElement('button');managementRetry.id='retryManagementSave';managementRetry.type='button';managementRetry.dataset.t='retry';managementRetry.textContent=tr('retry');managementRetry.hidden=true;$('shopFeedback').after(managementRetry);
+  for(const node of document.querySelectorAll('.owned-card button'))node.setAttribute('data-wp-frame-action','secondary');
   W.WeightPlayGameEntryLoader?.begin(3);
   const scene=name=>({root:$(name+'Screen'),header:$(name+'Screen').querySelector('header'),content:$(name+'Content')});
   frame=W.WeightPlayScreenFrame.mount({root:$('gameFrame'),playUI:true,scenes:{main:scene('main'),stage:scene('stage'),battle:{...scene('battle'),headerInfo:$('battleInfo')}}});
   const info=W.WeightPlayScreenFrame.createGroup();for(const node of [...$('battleInfo').children])info.add(node);frame.battleTopUI.add(info);
-  const tabs=W.WeightPlayScreenFrame.createGroup();for(const node of [...$('stageTabs').children])tabs.add(node);frame.commonDownButton.clear().add(tabs);
+  const tabs=W.WeightPlayScreenFrame.createGroup();for(const node of [...$('stageTabs').children])tabs.add(node);frame.commonDownButton.clear().add(tabs);frame.commonDownButton.element.setAttribute('role','tablist');$('stageTabs').hidden=true;
   rail=W.WeightPlayPlayUI.mountStage({page:$('stagesPanel'),rail:$('stageRail'),config:makeStageConfig(stagePresentation),selected:selected-1,onSelect:index=>{selected=index+1;},onStart:index=>void startStage(index+1),isActive:()=>screen==='stage'&&tab==='stages'&&!modal});
   joystick=W.WeightPlayJoystick.create({surface:$('riverArena'),container:$('riverArena'),mode:'floating',anchor:{left:76,bottom:76},enabled:false,isEnabled:runnable});
   bind();localize();activate('main');selectTab('stages');
@@ -247,5 +266,5 @@ async function boot(){
   W.WonderAnalytics?.game?.observeState(()=>({screen,roundKey:practiceRun?null:race?`bramble-${round}`:null,stageId:race?.stage.id,started:!practiceRun&&!!race,ended:!practiceRun&&!!race?.result&&(!race.result.won||resultSaved),outcome:race?.result?.won?'win':'lose',paused:!runnable(),locale,activityMode:'state',keyboardKeys:['ArrowLeft','ArrowRight','KeyA','KeyD','Space','KeyX']}));
 }
 // Observation only: no unlock, input injection, save mutation or simulation controls.
-W.brambleRapidsSnapshot=()=>Object.freeze({screen,tab,modal,practice,practiceRun,selected,resultSaved,progress:store.snapshot,race:race?{status:race.status,stage:race.stage.id,activeTime:race.activeTime,penaltyTime:race.penaltyTime,rank:race.rank,player:{s:race.player.s,x:race.player.x,y:race.player.y,flags:[...race.player.flags],stability:race.player.stability,landings:race.player.landings,falls:race.player.falls},result:race.result}:null,render:renderer?.measure()||null,rafActive:!!raf});
+W.brambleRapidsSnapshot=()=>Object.freeze({screen,tab,modal,practice,practiceRun,selected,resultSaved,progress:store.snapshot,persistedProgress:store.persistedSnapshot,savePending:store.getPending().dirty,race:race?{status:race.status,stage:race.stage.id,boardId:race.boardId,activeTime:race.activeTime,penaltyTime:race.penaltyTime,rank:race.rank,player:{s:race.player.s,x:race.player.x,y:race.player.y,flags:[...race.player.flags],stability:race.player.stability,landings:race.player.landings,falls:race.player.falls,anchorUsed:race.player.anchorUsed,anchored:race.player.anchored},result:race.result?{...race.result,flags:[...race.result.flags]}:null}:null,render:renderer?.measure()||null,rafActive:!!raf});
 await boot();

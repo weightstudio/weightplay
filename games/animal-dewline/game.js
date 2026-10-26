@@ -3,14 +3,14 @@
   // Only the verified expansion data may increase the shared Stage count.
   // The original twelve remain available when any expansion dependency fails.
   let extension = null;
-  const extensionMinimums = [4,6,7,6,7,8,6,8,6,6,8,10,10,3,5,7,11,12,17,16,16,18,18,19,21,23,24,30,16,17,19,19,22,17,22,18,23,25,17,19,20,20,24,20,20,20,22,26];
+  const extensionMinimums = [4,6,9,6,7,8,6,8,6,8,8,10,10,3,7,7,11,12,17,16,16,18,22,19,21,23,24,30,16,17,19,20,25,17,22,18,24,27,19,20,20,24,25,20,26,22,22,32];
   let loadTimer;
   try {
     const dependencies = Promise.all([
-      import('/games/animal-dewline/stage60-model.mjs?v=20261027-dewline-v19'),
-      import('/games/animal-dewline/stage60-hint-client.mjs?v=20261027-dewline-v19'),
-      import('/games/animal-dewline/stage60-copy.js?v=20261027-dewline-v19'),
-      import('/games/animal-dewline/stage60-guide.js?v=20261027-dewline-v19'),
+      import('/games/animal-dewline/stage60-model.mjs?v=20261027-dewline-v19-finale60-1'),
+      import('/games/animal-dewline/stage60-hint-client.mjs?v=20261027-dewline-v19-finale60-1'),
+      import('/games/animal-dewline/stage60-copy.js?v=20261027-dewline-v19-finale60-1'),
+      import('/games/animal-dewline/stage60-guide.js?v=20261027-dewline-v19-finale60-1'),
     ]);
     const loaded = await Promise.race([dependencies, new Promise(resolve => { loadTimer = setTimeout(() => resolve(null),3000); })]);
     if (!loaded) throw new Error('DEWLINE_EXPANSION_TIMEOUT');
@@ -18,7 +18,7 @@
     const text = globalThis.AnimalDewlineStage60Copy;
     const guide = globalThis.AnimalDewlineStage60Guide;
     const locales = ['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
-    const requiredText = ['clip','clipPipe','removeClip','invalidPipe','diverter','divertTo','diverterAt','diverterSensorLocked','transfer','transferAction','transferBlocked','valveLocked','sensorGoal','sensorProgress','sensorLatched','bottle','capture','captureValue','slots','captureOrder','captureUnavailable','captureCondition','moveClipAfterCapture','valveLocksAfterCapture','undoMove','hintAction','noPath','goalCondition','bloomNotReady','stageLocked','storageFailed','clipEffect','captureEffect','captureSlotFull','sensorOnePerMove','toolMoveCost','hintPending','hintError'];
+    const requiredText = ['clip','clipPipe','removeClip','invalidPipe','diverter','divertTo','diverterAt','diverterSensorLocked','transfer','transferAction','transferBlocked','valveLocked','sensorGoal','sensorProgress','sensorLatched','bottle','capture','captureValue','slots','captureOrder','captureUnavailable','captureCondition','captureSensorGate','sensorClipRequired','sensorNoClip','sensorAfterCapture','sensorBetweenCaptures','captureValveRequirement','moveClipAfterCapture','valveLocksAfterCapture','undoMove','hintAction','noPath','goalCondition','bloomNotReady','stageLocked','storageFailed','clipEffect','captureEffect','captureSlotFull','sensorOnePerMove','toolMoveCost','hintPending','hintError'];
     const requiredGuide = ['chapterOne','chapterOneDescription','chapterTwo','chapterTwoDescription','guideIntro','guideGoal','guideValves','guideClip','guideDiverter','guideTransfer','guideSensors','guideBottle','guideLate','guideUndoHint','guideStars','guideProgress','guideStorage','faqCountQuestion','faqValvesQuestion','faqWrongQuestion','faqSelectionQuestion','faqProgressQuestion','faqTotalExampleQuestion','faqCheckCountQuestion','faqCountAnswer','faqValvesAnswer','faqWrongAnswer','faqSelectionAnswer','faqProgressAnswer','faqTotalExampleAnswer','faqCheckCountAnswer'];
     if (!Array.isArray(rules.STAGES) || rules.STAGES.length !== 48 || extensionMinimums.length !== 48 ||
         !rules.STAGES.every((stage,index) => stage.number === index + 13 && stage.targets.length === 3) ||
@@ -90,45 +90,35 @@
     return { titleKey: `gardenStage${chapter}`, chapter, network,
       targets: network.map((row) => row.reduce((sum, weight, valve) => sum + weight * solution[valve], 0)) };
   });
-  // Optional checkpoint decisions do not change legacy goals, stars or rewards.
-  // Order: stage-5 name/goal, stage-10 name/goal, pending, earned, missed.
+  // Required pipe-reading checkpoints never change water, moves, stars or rewards.
+  // Order: stage-5 name/goal, stage-10 name/goal, pending, correct, retry.
   const checkpointCopy = {
-    en:['Branch Order','Optional: bring valve B to 3 before increasing A.','Two-Bed Relay','Optional: bring bed 2 to 4 before bed 1 reaches 5.','Challenge in progress.','Checkpoint challenge complete!','Challenge missed; the stage still counts. Undo or reset to try again.'],
-    'zh-Hant':['分支順序','可選挑戰：增加 A 之前，先讓閥門 B 達到 3。','雙花圃接力','可選挑戰：花圃 1 達到 5 之前，先讓花圃 2 達到 4。','挑戰進行中。','檢查點挑戰完成！','挑戰未達成，關卡仍可通關。可復原或重設再試。'],
-    'zh-Hans':['分支顺序','可选挑战：增加 A 之前，先让阀门 B 达到 3。','双花圃接力','可选挑战：花圃 1 达到 5 之前，先让花圃 2 达到 4。','挑战进行中。','检查点挑战完成！','挑战未达成，关卡仍可通关。可撤销或重设再试。'],
-    ja:['枝分かれの順番','任意の挑戦：A を増やす前にバルブ B を 3 にしよう。','花だんリレー','任意の挑戦：花だん 1 が 5 になる前に花だん 2 を 4 にしよう。','挑戦中。','チェックポイントの挑戦を達成！','挑戦は未達成ですが、ステージはクリアできます。戻すかリセットして再挑戦できます。'],
-    ko:['갈림길 순서','선택 도전: A를 올리기 전에 밸브 B를 3으로 만드세요.','두 화단 이어주기','선택 도전: 화단 1이 5가 되기 전에 화단 2를 4로 만드세요.','도전 진행 중.','체크포인트 도전 완료!','도전을 놓쳐도 스테이지는 완료할 수 있어요. 되돌리거나 초기화해 다시 도전하세요.'],
-    es:['Orden de ramas','Reto opcional: lleva la válvula B a 3 antes de subir A.','Relevo de parterres','Reto opcional: lleva el parterre 2 a 4 antes de que el 1 llegue a 5.','Reto en curso.','¡Reto del punto de control completado!','Reto no logrado; puedes completar la fase. Deshaz o reinicia para intentarlo de nuevo.'],
-    'pt-BR':['Ordem dos ramos','Desafio opcional: leve a válvula B a 3 antes de aumentar A.','Revezamento dos canteiros','Desafio opcional: leve o canteiro 2 a 4 antes de o 1 chegar a 5.','Desafio em andamento.','Desafio do ponto de controle concluído!','Desafio não concluído; a fase ainda pode ser concluída. Desfaça ou reinicie para tentar de novo.'],
-    fr:['Ordre des branches','Défi facultatif : monte la vanne B à 3 avant d’augmenter A.','Relais des parterres','Défi facultatif : mène le parterre 2 à 4 avant que le 1 atteigne 5.','Défi en cours.','Défi du point de contrôle réussi !','Défi manqué ; le niveau reste réalisable. Annule ou recommence pour réessayer.'],
-    de:['Reihenfolge der Zweige','Freiwillige Aufgabe: Stelle Ventil B auf 3, bevor du A erhöhst.','Beet-Staffel','Freiwillige Aufgabe: Bringe Beet 2 auf 4, bevor Beet 1 die 5 erreicht.','Aufgabe läuft.','Kontrollpunkt-Aufgabe geschafft!','Aufgabe verpasst; das Level bleibt lösbar. Mache Schritte rückgängig oder starte neu.'],
-    it:['Ordine dei rami','Sfida facoltativa: porta la valvola B a 3 prima di aumentare A.','Staffetta delle aiuole','Sfida facoltativa: porta l’aiuola 2 a 4 prima che la 1 arrivi a 5.','Sfida in corso.','Sfida del punto di controllo completata!','Sfida mancata; puoi comunque completare il livello. Annulla o ricomincia per riprovare.'],
-    ru:['Порядок ветвей','Необязательное задание: доведи клапан B до 3, прежде чем повышать A.','Эстафета клумб','Необязательное задание: доведи клумбу 2 до 4 раньше, чем клумба 1 достигнет 5.','Задание выполняется.','Задание контрольной точки выполнено!','Задание не выполнено, но уровень можно пройти. Отмени ход или начни заново.'],
-    hi:['शाखाओं का क्रम','वैकल्पिक चुनौती: A बढ़ाने से पहले वाल्व B को 3 तक पहुँचाएँ।','दो क्यारियों की बारी','वैकल्पिक चुनौती: क्यारी 1 के 5 तक पहुँचने से पहले क्यारी 2 को 4 तक पहुँचाएँ।','चुनौती जारी है।','जाँच-बिंदु की चुनौती पूरी हुई!','चुनौती छूटी, फिर भी स्तर पूरा कर सकते हैं। चाल हटाएँ या फिर शुरू करें।'],
-    ar:['ترتيب الفروع','تحدٍّ اختياري: أوصل الصمام ⁨B⁩ إلى ⁨3⁩ قبل زيادة ⁨A⁩.','تتابع الحوضين','تحدٍّ اختياري: أوصل الحوض ⁨2⁩ إلى ⁨4⁩ قبل أن يصل الحوض ⁨1⁩ إلى ⁨5⁩.','التحدي جارٍ.','اكتمل تحدي نقطة التفتيش!','لم يكتمل التحدي، لكن يمكنك إنهاء المرحلة. تراجع أو أعد المحاولة.'],
-  };
-  const checkpointAdvance = (stage, status, values) => {
-    if (status !== 'pending') return status;
-    if (stage === 5) return values[0] > 0 ? 'missed' : values[1] === 3 ? 'complete' : 'pending';
-    if (stage === 10) return values[0] + values[1] === 5 ? 'missed' : values[1] + values[2] === 4 ? 'complete' : 'pending';
-    return status;
+    en:['Branch Detective','Which valve supplies both beds 1 and 2?','Flow Forecast','When A is above 0 and decreases by 1, which two beds decrease?','Answer the checkpoint before blooming.','Correct! Checkpoint complete.','Not yet. Follow the pipes and try again.'],
+    'zh-Hant':['水線偵探','哪個閥門同時供水給花圃 1 和 2？','水流預報','當 A 大於 0 並減少 1 時，哪兩片花圃的水量會下降？','先完成管線判讀，再讓花圃綻放。','判讀正確，檢查點完成！','還不對，沿著水管再試一次。'],
+    'zh-Hans':['水线侦探','哪个阀门同时供水给花圃 1 和 2？','水流预报','当 A 大于 0 并减少 1 时，哪两片花圃的水量会下降？','先完成管线判断，再让花圃绽放。','判断正确，检查点完成！','还不对，沿着水管再试一次。'],
+    ja:['水路の探偵','花だん 1 と 2 の両方に水を送るバルブはどれ？','水の流れ予報','A が 0 より大きいとき、A を 1 減らすと水が減る花だんはどの 2 つ？','花を咲かせる前に水路の問題に答えよう。','正解！チェックポイント達成。','もう一度水路をたどって考えてみよう。'],
+    ko:['물길 탐정','화단 1과 2에 모두 물을 보내는 밸브는 무엇일까요?','물 흐름 예측','A가 0보다 클 때 A를 1 줄이면 어느 두 화단의 물이 줄어들까요?','꽃을 피우기 전에 물길 문제에 답하세요.','정답! 체크포인트를 완료했어요.','아직 아니에요. 물길을 따라 다시 살펴보세요.'],
+    es:['Detective de tuberías','¿Qué válvula lleva agua a los parterres 1 y 2?','Pronóstico del agua','Si A es mayor que 0 y baja 1, ¿qué dos parterres reciben menos agua?','Responde al punto de control antes de florecer.','¡Correcto! Punto de control completado.','Aún no. Sigue las tuberías y vuelve a intentarlo.'],
+    'pt-BR':['Detetive dos canos','Qual válvula leva água aos canteiros 1 e 2?','Previsão da água','Se A for maior que 0 e diminuir 1, quais dois canteiros receberão menos água?','Responda ao ponto de controle antes de florescer.','Correto! Ponto de controle concluído.','Ainda não. Siga os canos e tente novamente.'],
+    fr:['Détective des tuyaux','Quelle vanne alimente les parterres 1 et 2 ?','Prévision du débit','Si A est supérieur à 0 et baisse de 1, quels deux parterres reçoivent moins d’eau ?','Réponds au point de contrôle avant de faire fleurir.','Bonne réponse ! Point de contrôle terminé.','Pas encore. Suis les tuyaux et réessaie.'],
+    de:['Rohrdetektiv','Welches Ventil versorgt Beet 1 und Beet 2?','Wasservorhersage','Wenn A größer als 0 ist und um 1 sinkt: In welchen zwei Beeten sinkt das Wasser?','Beantworte den Kontrollpunkt vor dem Aufblühen.','Richtig! Kontrollpunkt geschafft.','Noch nicht. Verfolge die Rohre und versuche es erneut.'],
+    it:['Detective dei tubi','Quale valvola porta acqua alle aiuole 1 e 2?','Previsione del flusso','Se A è maggiore di 0 e diminuisce di 1, quali due aiuole ricevono meno acqua?','Rispondi al punto di controllo prima della fioritura.','Corretto! Punto di controllo completato.','Non ancora. Segui i tubi e riprova.'],
+    ru:['Детектив труб','Какой клапан подаёт воду и к клумбе 1, и к клумбе 2?','Прогноз потока','Если A больше 0 и уменьшить его на 1, в каких двух клумбах станет меньше воды?','Ответь на вопрос контрольной точки до цветения.','Верно! Контрольная точка пройдена.','Пока нет. Проследи трубы и попробуй ещё раз.'],
+    hi:['पानी की राह का जासूस','कौन सा वाल्व क्यारी 1 और 2 दोनों को पानी देता है?','पानी के बहाव का अनुमान','जब A, 0 से बड़ा हो और उसे 1 घटाएँ, तो किन दो क्यारियों में पानी घटेगा?','फूल खिलाने से पहले जाँच-बिंदु का उत्तर दें।','सही! जाँच-बिंदु पूरा हुआ।','अभी सही नहीं। पाइप की राह देखकर फिर कोशिश करें।'],
+    ar:['محقق الأنابيب','أي صمام يزوّد الحوضين ⁨1⁩ و⁨2⁩ معاً بالماء؟','توقع تدفق الماء','عندما يكون ⁨A⁩ أكبر من ⁨0⁩ وينقص بمقدار ⁨1⁩، في أي حوضين يقل الماء؟','أجب عن نقطة التفتيش قبل الإزهار.','صحيح! اكتملت نقطة التفتيش.','ليس بعد. تتبّع الأنابيب وحاول مجدداً.'],
   };
   const checkpointStage = stage => stage === 5 || stage === 10;
-  const checkpointMissedResult = {
-    en:'Stage complete; checkpoint challenge missed.', 'zh-Hant':'關卡已完成；檢查點挑戰未達成。', 'zh-Hans':'关卡已完成；检查点挑战未达成。',
-    ja:'ステージクリア。チェックポイントの挑戦は未達成です。', ko:'스테이지 완료. 체크포인트 도전은 달성하지 못했어요.',
-    es:'Fase completada; reto del punto de control no logrado.', 'pt-BR':'Fase concluída; desafio do ponto de controle não concluído.',
-    fr:'Niveau terminé ; défi du point de contrôle manqué.', de:'Level geschafft; Kontrollpunkt-Aufgabe verpasst.',
-    it:'Livello completato; sfida del punto di controllo mancata.', ru:'Уровень пройден; задание контрольной точки не выполнено.',
-    hi:'स्तर पूरा हुआ; जाँच-बिंदु की चुनौती पूरी नहीं हुई।', ar:'اكتملت المرحلة؛ لم يكتمل تحدي نقطة التفتيش.'
+  const checkpointChoose = (stage, answer) => {
+    if (!checkpointStage(stage) || !Number.isInteger(answer) || answer < 0 || answer > 2) return null;
+    return answer === (stage === 5 ? 0 : 1) ? 'complete' : 'wrong';
   };
   const checkpointWords = (locale, stage) => {
     if (!checkpointStage(stage)) return null;
     const row = checkpointCopy[locale] || checkpointCopy.en, offset = stage === 5 ? 0 : 2;
-    return {name:row[offset], goal:row[offset+1], pending:row[4], complete:row[5], missed:row[6], missedResult:checkpointMissedResult[locale] || checkpointMissedResult.en};
+    return {name:row[offset], goal:row[offset+1], pending:row[4], complete:row[5], wrong:row[6]};
   };
   const flowFor = (values, meadow = meadows[state.meadow]) => meadow.network.map((row) => row.reduce((sum, weight, index) => sum + weight * values[index], 0));
-  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sessionTries12:0, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], checkpointStatus:null, checkpointHistory:[], hintUsed: false, hintedValve: -1, sessionCleared: new Set(), stage60Attempt:null, hintRevision:0, saveFailed:false };
+  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sessionTries12:0, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], checkpointStatus:null, checkpointChoice:null, hintUsed: false, hintedValve: -1, sessionCleared: new Set(), stage60Attempt:null, hintRevision:0, saveFailed:false };
   if (extension) extension.rules.STAGES.forEach((stage) => meadows.push({
     titleKey:'gardenStage3', chapter:stage.number <= 30 ? 4 : 5,
     targets:stage.targets, stage60:stage,
@@ -225,7 +215,7 @@
     if (result) result.hidden = !state.resultOpen;
     if (content) content.inert = state.resultOpen || state.leaveOpen;
     if (header) header.inert = state.resultOpen || state.leaveOpen;
-    if (state.resultOpen) requestAnimationFrame(() => $('resultMapBtn')?.focus({ preventScroll: true }));
+    if (state.resultOpen) requestAnimationFrame(() => { if (state.screen === 'battle' && state.resultOpen) $('resultMapBtn')?.focus({ preventScroll: true }); });
   };
 
   const show = (screen) => {
@@ -304,6 +294,15 @@
     if (action.type === 'capture') return extText('capture',{bed:action.bed});
     return '';
   };
+  const submitCheckpoint = answer => {
+    const stage = state.meadow + 1;
+    if (state.screen !== 'battle' || state.resultOpen || state.leaveOpen || !checkpointStage(stage) || state.checkpointStatus === 'complete') return;
+    const outcome = checkpointChoose(stage,answer);
+    if (!outcome) return;
+    state.checkpointChoice = answer; state.checkpointStatus = outcome;
+    renderBattle();
+    sound(outcome === 'complete' ? 'ui.tick' : 'feedback.error');
+  };
   const updateStage60 = (action) => {
     const stage = meadows[state.meadow]?.stage60;
     if (!stage || state.screen !== 'battle' || state.resultOpen || state.leaveOpen) return;
@@ -312,6 +311,8 @@
     if (!changed) {
       if (action.type === 'route' && action.value === previous.route) { $('battleStatus').textContent = extText('diverterAt',{bed:previous.route}); return; }
       if (action.type === 'valve' && (stage.lockedValve === action.index || (previous.lockedAfterCapture && stage.lockAfterCapture === action.index))) { $('battleStatus').textContent = extText('valveLocked',{valve:'ABC'[action.index]}); return; }
+      if (action.type === 'capture' && stage.captureSensorGate && (!stage.captureSensorAfterFirst || previous.capturedOrder.length > 0) && previous.sensor < stage.sensors.length) { const sensor = stage.sensors[previous.sensor]; $('battleStatus').textContent = extText(stage.captureSensorAfterFirst ? 'sensorBetweenCaptures' : 'captureSensorGate',{bed:sensor.bed,value:sensor.value}); sound('feedback.error'); return; }
+      if (action.type === 'capture' && stage.captureValveRequirement && previous.values[stage.captureValveRequirement.valve] !== stage.captureValveRequirement.value) { const required = stage.captureValveRequirement; $('battleStatus').textContent = extText('captureValveRequirement',{valve:'ABC'[required.valve],value:required.value}); sound('feedback.error'); return; }
       const key = action.type === 'route' ? 'diverterSensorLocked' : action.type === 'transfer' ? 'transferBlocked' : action.type === 'capture' ? 'captureUnavailable' : action.type === 'clip' ? 'invalidPipe' : null;
       $('battleStatus').textContent = key ? extText(key) : t('gardenTip');
       sound('feedback.error'); return;
@@ -339,6 +340,7 @@
     $('sessionTries').textContent = String(state.sessionTries);
     $('gardenMoves').textContent = `${t('gardenMoves')} ${attempt.moves}`;
     $('checkBtn').textContent = won ? t('gardenCheck') : t('gardenInspect');
+    $('checkBtn').removeAttribute('aria-describedby');
     $('checkBtn').classList.toggle('is-ready',won);
     $('undoBtn').textContent = extText('undoMove'); $('undoBtn').disabled = false;
     $('undoBtn').setAttribute('aria-disabled',String(!attempt.history.length));
@@ -353,12 +355,20 @@
     if (stage.lockedValve !== null) details.push(extText('valveLocked',{valve:'ABC'[stage.lockedValve]}));
     if (stage.sensors.length) {
       details.push(extText('sensorProgress',{done:puzzle.sensor,total:stage.sensors.length}));
-      stage.sensors.forEach(sensor => details.push(extText('sensorGoal',{bed:sensor.bed,value:sensor.value})));
+      stage.sensors.forEach((sensor,index) => {
+        const key = sensor.phase === 'afterCapture' ? (stage.captureSensorAfterFirst ? 'sensorBetweenCaptures' : 'sensorAfterCapture') : stage.captureSensorGate ? 'captureSensorGate' : 'sensorGoal';
+        const number = state.locale === 'ar' ? `\u2068${index + 1}\u2069` : String(index + 1);
+        details.push(`${stage.sensors.length > 1 ? number + '. ' : ''}${extText(key,{bed:sensor.bed,value:sensor.value})}`);
+        if (sensor.clip) details.push(extText('sensorClipRequired',{pipe:sensor.clip}));
+        if (sensor.noClip) details.push(extText('sensorNoClip'));
+      });
     }
     if (stage.captureSlots) {
       details.push(extText('slots',{used:puzzle.capturedOrder.length,total:stage.captureSlots}));
       if (stage.captureOrder) details.push(puzzle.capturedOrder.length < stage.captureSlots ? extText('captureOrder',{bed:stage.captureOrder[puzzle.capturedOrder.length]}) : extText('captureSlotFull'));
       if (stage.captureRequirement) stage.captureBeds.forEach(bed => details.push(extText('captureCondition',{bed,requiredBed:stage.captureRequirement.bed,value:stage.captureRequirement.value})));
+      if (stage.captureExtraRequirement) stage.captureBeds.forEach(bed => details.push(extText('captureCondition',{bed,requiredBed:stage.captureExtraRequirement.bed,value:stage.captureExtraRequirement.value})));
+      if (stage.captureValveRequirement) details.push(extText('captureValveRequirement',{valve:'ABC'[stage.captureValveRequirement.valve],value:stage.captureValveRequirement.value}));
       if (stage.moveClipAfterCapture) details.push(extText('moveClipAfterCapture',{bed:stage.captureRequirement.bed}));
       if (stage.lockAfterCapture !== null) details.push(extText('valveLocksAfterCapture',{valve:'ABC'[stage.lockAfterCapture]}));
     }
@@ -399,6 +409,7 @@
         button.hidden = type === 'clip' && action.value !== null ? !stage.allowedClips.includes(action.value) : type === 'transfer' ? !stage.transferPair?.includes(action.from) || !stage.transferPair?.includes(action.to) : type === 'capture' ? !stage.captureBeds.includes(action.bed) : false;
         button.textContent = actionDescription(action);
         button.setAttribute('aria-disabled',String(!available(action)));
+        if (type === 'capture') button.setAttribute('aria-describedby','dew60Detail'); else button.removeAttribute('aria-describedby');
         if (type === 'clip' && action.value !== null) button.setAttribute('aria-pressed',String(action.value === puzzle.clip));
         if (type === 'route') button.setAttribute('aria-pressed',String(action.value === puzzle.route));
       });
@@ -407,17 +418,31 @@
 
   const renderBattle = () => {
     const meadow = meadows[state.meadow];
-    $('dewCheckpoint').hidden = true;
+    const checkpoint = checkpointWords(state.locale,state.meadow + 1);
+    $('dewCheckpoint').hidden = !checkpoint;
     if (meadow.stage60) { renderStage60(meadow); return; }
     $('dewStage60Tools').hidden = true;
     $('undoBtn').removeAttribute('aria-disabled');
     const flows = flowFor(state.values), ready = flows.filter((value, index) => value === meadow.targets[index]).length;
-    const checkpoint = checkpointWords(state.locale,state.meadow + 1);
     if (checkpoint) {
-      $('dewCheckpoint').hidden = false;
       $('dewCheckpointName').textContent = checkpoint.name;
       $('dewCheckpointGoal').textContent = checkpoint.goal;
-      $('dewCheckpointStatus').textContent = checkpoint[state.checkpointStatus] || checkpoint.pending;
+      const status = checkpoint[state.checkpointStatus] || checkpoint.pending;
+      if ($('dewCheckpointStatus').textContent !== status) $('dewCheckpointStatus').textContent = status;
+      const isolate = value => state.locale === 'ar' ? `\u2068${value}\u2069` : String(value);
+      const pairs = [[1,2],[1,3],[2,3]];
+      $('dewCheckpoint').querySelectorAll('[data-dew-checkpoint-answer]').forEach(button => {
+        const index = Number(button.dataset.dewCheckpointAnswer);
+        if (state.meadow + 1 === 5) {
+          const valve = isolate('ABC'[index]); button.textContent = valve; button.setAttribute('aria-label',t('valve',{n:valve}));
+        } else {
+          const [first,second] = pairs[index].map(isolate);
+          button.textContent = `${first} + ${second}`;
+          button.setAttribute('aria-label',`${t('gardenBed')} ${first} + ${t('gardenBed')} ${second}`);
+        }
+        button.setAttribute('aria-pressed',String(state.checkpointChoice === index));
+        button.setAttribute('aria-disabled',String(state.checkpointStatus === 'complete'));
+      });
     }
     $("battleHeading").textContent = checkpoint?.name || t(meadow.titleKey);
     $("roundLabel").textContent = `${state.meadow + 1} / ${meadows.length}`;
@@ -426,8 +451,11 @@
     $("targetValues").textContent = t('gardenProgress', { n: ready });
     $("sessionTries").textContent = String(state.sessionTries);
     $('gardenMoves').textContent = `${t('gardenMoves')} ${state.moves}`;
-    $('checkBtn').textContent = ready === 3 ? t('gardenCheck') : t('gardenInspect');
-    $('checkBtn').classList.toggle('is-ready', ready === 3);
+    const canBloom = ready === 3 && (!checkpoint || state.checkpointStatus === 'complete');
+    $('checkBtn').textContent = canBloom ? t('gardenCheck') : t('gardenInspect');
+    $('checkBtn').classList.toggle('is-ready', canBloom);
+    if (checkpoint && state.checkpointStatus !== 'complete') $('checkBtn').setAttribute('aria-describedby','dewCheckpointGoal');
+    else $('checkBtn').removeAttribute('aria-describedby');
     $('undoBtn').textContent = t('gardenUndo'); $('undoBtn').disabled = !state.history.length;
     $('hintBtn').textContent = t('gardenHint'); $('resetBtn').textContent = t('reset');
     flows.forEach((value, index) => {
@@ -450,7 +478,7 @@
       card.dataset.hint = String(state.hintedValve === index);
     });
     $('gardenPipes').innerHTML = meadow.network.flatMap((row, flower) => row.flatMap((weight, valve) => weight ? [`<path class="pipe-shadow" d="M${50+valve*100} 100 C${50+valve*100} 52 ${50+flower*100} 48 ${50+flower*100} 0"/><path class="pipe-water ${state.values[valve] ? 'flowing' : ''}" data-valve="${valve}" d="M${50+valve*100} 100 C${50+valve*100} 52 ${50+flower*100} 48 ${50+flower*100} 0"/>`] : [])).join('');
-    if (state.hintedValve < 0) $('battleStatus').textContent = ready === 3 ? t('gardenAllReady') : t('gardenTip');
+    if (state.hintedValve < 0) $('battleStatus').textContent = ready === 3 && checkpoint && state.checkpointStatus !== 'complete' ? checkpoint.pending : ready === 3 ? t('gardenAllReady') : t('gardenTip');
   };
 
   const renderResult = () => {
@@ -458,7 +486,7 @@
     $("resultHeading").textContent = complete ? t("finishTitle") : t("correct");
     const failureCopy = copy[state.locale]?.storageFailure ? t('storageFailure') : globalThis.AnimalDewlineStage60Copy?.locales?.[state.locale]?.storageFailed || '⚠';
     const checkpoint = checkpointWords(state.locale,state.meadow + 1);
-    const checkpointResult = checkpoint ? ` ${state.checkpointStatus === 'complete' ? checkpoint.complete : checkpoint.missedResult}` : '';
+    const checkpointResult = checkpoint ? ` ${checkpoint.complete}` : '';
     $("resultText").textContent = `${'★'.repeat(state.earnedStars || 1)}${'☆'.repeat(3-(state.earnedStars || 1))} · ${t('gardenMoves')} ${state.moves}. ${state.saveFailed ? failureCopy : t('gardenSave')}${checkpointResult}`;
     $("resultMapBtn").hidden = false; $("resultMapBtn").textContent = t('stages'); $("resultMapBtn").onclick = () => { show('stage'); renderStages(); };
     $("resultPrimaryBtn").hidden = false; $("resultPrimaryBtn").textContent = t("next"); $("resultPrimaryBtn").disabled = complete; $("resultPrimaryBtn").onclick = complete ? () => {} : () => startMeadow(state.meadow + 1);
@@ -471,7 +499,7 @@
     if (!Number.isInteger(index) || !isUnlocked(index)) return;
     cancelHint();
     closeLeaveDialog(false); setResultOpen(false);
-    state.meadow = index; state.values = [0, 0, 0]; state.tries = 0; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(index + 1) ? 'pending' : null; state.checkpointHistory = []; state.hintUsed = false; state.hintedValve = -1; state.saveFailed = false;
+    state.meadow = index; state.values = [0, 0, 0]; state.tries = 0; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(index + 1) ? 'pending' : null; state.checkpointChoice = null; state.hintUsed = false; state.hintedValve = -1; state.saveFailed = false;
     state.stage60Attempt = meadows[index].stage60 ? extension.rules.initialAttempt(meadows[index].stage60) : null;
     $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 });
     __wpMeasurement.roundKey = {}; __wpMeasurement.stageId = index >= 12 ? index + 1 : null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -480,12 +508,12 @@
     if (state.screen !== 'battle' || state.resultOpen || state.leaveOpen || !Number.isInteger(index) || index < 0 || index > 2 || ![-1,1].includes(delta)) return;
     if (state.stage60Attempt) { updateStage60({type:'valve',index,delta}); return; }
     const next = Math.max(0, Math.min(6, state.values[index] + delta)); if (next === state.values[index]) return;
-    state.history.push([...state.values]); if (state.checkpointStatus !== null) state.checkpointHistory.push(state.checkpointStatus); if (state.history.length > 200) { state.history.shift(); if (state.checkpointStatus !== null) state.checkpointHistory.shift(); }
-    state.values[index] = next; if (state.checkpointStatus !== null) state.checkpointStatus = checkpointAdvance(state.meadow + 1,state.checkpointStatus,state.values); state.moves++; state.hintedValve = -1; renderBattle(); sound('ui.tick');
+    state.history.push([...state.values]); if (state.history.length > 200) state.history.shift();
+    state.values[index] = next; state.moves++; state.hintedValve = -1; renderBattle(); sound('ui.tick');
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) $(`valve${index}`).animate?.([{filter:'brightness(1.3)'},{filter:'brightness(1)'}], {duration:180});
     track("valve_adjust", { meadow: state.meadow + 1, valve: index + 1, value: state.values[index] });
   };
-  const undoValve = () => { if (state.stage60Attempt) { updateStage60({type:'undo'}); return; } if (state.resultOpen || state.leaveOpen || !state.history.length) return; state.values = state.history.pop(); if (state.checkpointStatus !== null) state.checkpointStatus = state.checkpointHistory.pop(); state.moves++; state.hintedValve = -1; renderBattle(); sound('board.undo'); };
+  const undoValve = () => { if (state.stage60Attempt) { updateStage60({type:'undo'}); return; } if (state.resultOpen || state.leaveOpen || !state.history.length) return; state.values = state.history.pop(); state.moves++; state.hintedValve = -1; renderBattle(); sound('board.undo'); };
   const hintValve = async () => {
     if (state.resultOpen || state.leaveOpen) return;
     if (state.stage60Attempt) {
@@ -510,17 +538,20 @@
       const cost = values.reduce((sum,value,index) => sum+Math.abs(value-state.values[index]),0);
       if (cost < distance) { distance = cost; nearest = values; }
     }
-    if (!nearest || distance === 0) { $('battleStatus').textContent = t('gardenAllReady'); return; }
+    if (!nearest || distance === 0) { const checkpoint = checkpointWords(state.locale,state.meadow + 1); $('battleStatus').textContent = checkpoint && state.checkpointStatus !== 'complete' ? checkpoint.pending : t('gardenAllReady'); return; }
     state.hintUsed = true; state.hintedValve = nearest.findIndex((value,index) => value !== state.values[index]);
     renderBattle(); $('battleStatus').textContent = t('gardenHintMove', { valve:'ABC'[state.hintedValve], sign:nearest[state.hintedValve] > state.values[state.hintedValve] ? '+' : '−' }); sound('feedback.hint');
   };
-  const resetValves = () => { if (state.resultOpen || state.leaveOpen) return; cancelHint(); state.values = [0, 0, 0]; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(state.meadow + 1) ? 'pending' : null; state.checkpointHistory = []; state.hintUsed = false; state.hintedValve = -1; if (state.stage60Attempt) state.stage60Attempt = extension.rules.initialAttempt(meadows[state.meadow].stage60); renderBattle(); if (state.stage60Attempt) $('battleStatus').textContent = t('gardenTip'); track("reset", { meadow: state.meadow + 1 });
+  const resetValves = () => { if (state.resultOpen || state.leaveOpen) return; cancelHint(); state.values = [0, 0, 0]; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(state.meadow + 1) ? 'pending' : null; state.checkpointChoice = null; state.hintUsed = false; state.hintedValve = -1; if (state.stage60Attempt) state.stage60Attempt = extension.rules.initialAttempt(meadows[state.meadow].stage60); renderBattle(); if (state.stage60Attempt) $('battleStatus').textContent = t('gardenTip'); track("reset", { meadow: state.meadow + 1 });
     if (state.screen === "battle") { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
   };
   const checkFlow = () => {
     if (state.resultOpen || state.leaveOpen) return;
-    const meadow = meadows[state.meadow]; state.tries += 1; state.sessionTries += 1; if (state.meadow < 12) state.sessionTries12++;
+    const meadow = meadows[state.meadow];
     const firstMismatch = meadow.stage60 ? (extension.rules.isGoal(meadow.stage60,state.stage60Attempt.state) ? -1 : 0) : meadow.targets.findIndex((target, index) => target !== flowFor(state.values)[index]);
+    const checkpoint = checkpointWords(state.locale,state.meadow + 1);
+    if (firstMismatch < 0 && checkpoint && state.checkpointStatus !== 'complete') { $('battleStatus').textContent = checkpoint.pending; sound('feedback.error'); return; }
+    state.tries += 1; state.sessionTries += 1; if (state.meadow < 12) state.sessionTries12++;
     track("check", { meadow: state.meadow + 1, tries: state.sessionTries, correct: firstMismatch < 0 });
     if (firstMismatch >= 0) { state.hintedValve = -1; renderBattle(); $('battleStatus').textContent = meadow.stage60 ? extText('bloomNotReady') : t('gardenInspectBed', { n: firstMismatch + 1 }); sound('feedback.error'); return; }
     cancelHint();
@@ -546,7 +577,7 @@
     const modal = $('dewlineLeaveModal'), content = $('battleScreen')?.querySelector('.battle-content'), header = $('battleScreen')?.querySelector('[data-wp-frame-header="battle"]');
     if (content) content.inert = true; if (header) header.inert = true;
     if (modal) modal.hidden = false;
-    __wpNotifyMeasurement(); requestAnimationFrame(() => $('dewlineLeaveContinue')?.focus({ preventScroll: true }));
+    __wpNotifyMeasurement(); requestAnimationFrame(() => { if (state.screen === 'battle' && state.leaveOpen) $('dewlineLeaveContinue')?.focus({ preventScroll: true }); });
   }
   function closeLeaveDialog(restoreFocus = true) {
     const modal = $('dewlineLeaveModal'), content = $('battleScreen')?.querySelector('.battle-content'), header = $('battleScreen')?.querySelector('[data-wp-frame-header="battle"]');
@@ -555,12 +586,12 @@
     __wpNotifyMeasurement(); if (restoreFocus && state.screen === 'battle' && !state.resultOpen) $('battleBackBtn')?.focus({ preventScroll: true });
   }
   function continueBattle() { closeLeaveDialog(true); }
-  function confirmBattleLeave() { closeLeaveDialog(false); state.values = [0, 0, 0]; state.tries = 0; show('stage'); renderStages(); }
+  function confirmBattleLeave() { state.values = [0, 0, 0]; state.tries = 0; show('stage'); renderStages(); }
 
   // One stable play surface: value updates never replace focused controls.
   const garden = $('battleScreen').querySelector('.battle-content');
   garden.classList.add('dewline-garden');
-  garden.innerHTML = `<div class="garden-mission"><span id="gardenRound"></span><strong id="targetValues"></strong><p id="battleHint"></p><section id="dewCheckpoint" hidden><strong id="dewCheckpointName"></strong><p id="dewCheckpointGoal"></p><p id="dewCheckpointStatus" role="status" aria-live="polite"></p></section></div>
+  garden.innerHTML = `<div class="garden-mission"><span id="gardenRound"></span><strong id="targetValues"></strong><p id="battleHint"></p><section id="dewCheckpoint" hidden><strong id="dewCheckpointName"></strong><p id="dewCheckpointGoal"></p><div class="dew-checkpoint-options" role="group" aria-labelledby="dewCheckpointGoal">${[0,1,2].map(index => `<button type="button" data-dew-checkpoint-answer="${index}"></button>`).join('')}</div><p id="dewCheckpointStatus" role="status" aria-live="polite"></p></section></div>
     <div id="flowerGrid" class="garden-flowers">${[0,1,2].map((index) => `<article id="flower${index}" class="garden-flower"><strong class="flower-title"></strong><span class="flower-art" aria-hidden="true"></span><span class="flower-formula"></span><strong class="flower-value"></strong><div class="flower-meter" aria-hidden="true"><i class="flower-fill"></i></div><span class="flower-state"></span></article>`).join('')}</div>
     <svg id="gardenPipes" class="garden-pipes" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true"></svg>
     <div id="valveGrid" class="garden-valves">${[0,1,2].map((index) => `<article id="valve${index}" class="garden-valve"><strong class="garden-valve-label"></strong><div class="garden-dial" aria-hidden="true">${'ABC'[index]}</div><output>0</output><div class="garden-controls"><button type="button" data-index="${index}" data-delta="-1">−</button><button type="button" data-index="${index}" data-delta="1">+</button></div></article>`).join('')}</div>
@@ -578,6 +609,7 @@
     const parent = $(`dewStage60Tools`).querySelector(`[data-dew-tool="${type}"] .dew60-buttons`);
     items.forEach(action => { const button = document.createElement('button'); button.type = 'button'; button.dataset.dewAction = type; if ('value' in action) button.dataset.dewValue = String(action.value ?? ''); if ('bed' in action) button.dataset.dewBed = String(action.bed); if ('from' in action) button.dataset.dewFrom = String(action.from); if ('to' in action) button.dataset.dewTo = String(action.to); button.dewAction = action; button.addEventListener('click',() => updateStage60(action)); parent.append(button); });
   });
+  garden.querySelectorAll('[data-dew-checkpoint-answer]').forEach(button => button.addEventListener('click',() => submitCheckpoint(+button.dataset.dewCheckpointAnswer)));
   garden.querySelectorAll('[data-delta]').forEach((button) => button.addEventListener('click', () => changeValve(+button.dataset.index, +button.dataset.delta)));
   $('undoBtn').addEventListener('click', undoValve); $('hintBtn').addEventListener('click', hintValve);
   $("startBtn").addEventListener("click", startSession);
@@ -632,6 +664,32 @@
     isActive:()=>state.screen==='stage',
   });
   if(!stageController)throw new Error('DEWLINE_SHARED_STAGE_REQUIRED');
+  // The optional appearance loads independently: a missing shop must never
+  // delay or disable the free puzzle. Ownership is held by the shared wallet.
+  const themeStyle = document.createElement('link');
+  themeStyle.rel = 'stylesheet';
+  themeStyle.href = '/games/animal-dewline/garden-theme.css?v=20261027-dewline-v19';
+  const themeStyleReady = new Promise((resolve, reject) => {
+    themeStyle.onload = resolve;
+    themeStyle.onerror = reject;
+  });
+  document.head.append(themeStyle);
+  Promise.all([
+    import('/games/animal-dewline/garden-theme-ui.mjs?v=20261027-dewline-v19'),
+    window.WeightPlayWallet ? Promise.resolve() : import('/src/wallet.js?v=20261027-dewline-v19'),
+    themeStyleReady,
+  ]).then(([theme]) => {
+    const appearance = theme.mountGardenTheme({board:garden,getLocale:() => state.locale});
+    frame.commonDownButton.add(appearance.entry);
+    $('localeSelect').addEventListener('change',appearance.refresh);
+    window.addEventListener('wonder:locale-change',appearance.refresh);
+    const disposeAppearance = event => {
+      if (event.persisted) return;
+      appearance.destroy();
+      window.removeEventListener('pagehide',disposeAppearance);
+    };
+    window.addEventListener('pagehide',disposeAppearance);
+  }).catch(() => { themeStyle.remove(); });
   frame.activate('main');
   window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
   window.__ANIMAL_DEWLINE_TEST__ = { meadows, flowFor, startSession, startMeadow, changeValve, checkFlow, getState: () => ({ ...state, values: [...state.values], stage60Attempt: state.stage60Attempt ? JSON.parse(JSON.stringify(state.stage60Attempt)) : null }) };

@@ -183,7 +183,7 @@ body[data-wp-game-id="animal-dewline"] #resultScreen:not([hidden]) .result-card 
   .flower-art { width: min(84px, 22vw); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .garden-pipes .flowing, .dewline-garden, .dewline-garden * { animation: none !important; transition: none !important; }
+  .garden-pipes .flowing, .dewline-garden, .dewline-garden *, #resultScreen .result-card { animation: none !important; transition: none !important; }
 }
 
 /* v19 expansion only: keep all controls in the shared, ad-safe Battle canvas.
@@ -255,9 +255,9 @@ body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewSta
 /* The text remains the accessible name; the atlas is decorative. */
 .dew60-label::before {
   content: "";
-  flex: 0 0 36px;
-  width: 36px;
-  height: 36px;
+  flex: 0 0 max(52px, calc(52px * var(--wp-battle-canvas-inverse-scale, 1)));
+  width: max(52px, calc(52px * var(--wp-battle-canvas-inverse-scale, 1)));
+  height: max(52px, calc(52px * var(--wp-battle-canvas-inverse-scale, 1)));
   background-image: url("assets/stage60-water-tools-v19-gutter.png?v=20261027-dewline-v19");
   background-size: 200% 200%;
   background-repeat: no-repeat;
@@ -300,3 +300,50 @@ body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewSta
 @media (prefers-reduced-motion: reduce) {
   .dew60-tools, .dew60-tools * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Legacy checkpoints add a required question without shrinking the play area.
+   Their puzzle surface scrolls on short screens; the other old stages retain
+   the established fixed layout. */
+body[data-wp-game-id="animal-dewline"] #battleScreen .battle-content.dewline-garden:has(#dewCheckpoint:not([hidden])) {
+  --dew-checkpoint-hit: max(44px, calc(44.5px * var(--wp-battle-canvas-inverse-scale, 1)));
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto 48px auto auto auto auto !important;
+  align-content: start !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scroll-padding-block: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewCheckpoint:not([hidden])) > :is(.garden-mission, .garden-flowers, .garden-pipes, .garden-valves, .garden-feedback, .garden-tools, .garden-check) {
+  grid-column: 1 !important;
+  grid-row: auto !important;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewCheckpoint:not([hidden])) .garden-pipes { height: 48px; align-self: stretch; }
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewCheckpoint:not([hidden])) :is(.garden-controls button, .garden-tools button, .garden-check) {
+  min-width: var(--dew-checkpoint-hit);
+  min-height: var(--dew-checkpoint-hit) !important;
+  height: auto;
+  touch-action: manipulation;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewCheckpoint:not([hidden])) .garden-tools button { overflow-wrap: anywhere; line-height: 1.25; }
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewCheckpoint:not([hidden])) .garden-check { height: auto; padding: 10px; }
+#dewCheckpoint:not([hidden]) { grid-column: 1 / -1; display: grid; gap: 5px; min-width: 0; }
+#dewCheckpointGoal, #dewCheckpointStatus { margin: 0; overflow-wrap: anywhere; }
+.dew-checkpoint-options { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.dew-checkpoint-options button {
+  flex: 1 1 var(--dew-checkpoint-hit, 44px);
+  min-width: var(--dew-checkpoint-hit, 44px);
+  min-height: var(--dew-checkpoint-hit, 44px);
+  padding: 6px 10px;
+  border: 1px solid #91ada4;
+  border-radius: 10px;
+  background: #e5eee4;
+  color: #153a38;
+  font-weight: 700;
+  touch-action: manipulation;
+}
+.dew-checkpoint-options button[aria-pressed="true"] { border-color: #ffcc54; box-shadow: inset 0 0 0 2px #ffcc54; }
+.dew-checkpoint-options button[aria-disabled="true"] { color: #40584f; background: #c3d0c8; }
+.dew-checkpoint-options button:focus-visible { outline: 3px solid #ffcc54; outline-offset: 2px; }

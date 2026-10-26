@@ -69,6 +69,7 @@ const rows = [
  ['won','Course Clear','航程完成','航程完成','コースクリア','코스 완료','Recorrido completado','Percurso concluído','Parcours réussi','Strecke geschafft','Percorso completato','Маршрут пройден','मार्ग पूरा','اكتمل المسار'],
  ['lost','Try Another Line','再試一條水線','再试一条水线','別のラインに挑戦','다른 물길에 도전','Prueba otra ruta','Tente outra rota','Essayez une autre ligne','Versuche eine andere Linie','Prova un’altra traiettoria','Попробуйте другой путь','दूसरा जलमार्ग आज़माएँ','جرّب مسارًا آخر'],
  ['progressSaved','Progress saved in this browser','進度已儲存在此瀏覽器','进度已保存在此浏览器','このブラウザーに保存しました','이 브라우저에 저장했습니다','Progreso guardado en este navegador','Progresso salvo neste navegador','Progression sauvegardée dans ce navigateur','Fortschritt in diesem Browser gespeichert','Progressi salvati in questo browser','Прогресс сохранён в этом браузере','प्रगति इस ब्राउज़र में सहेजी गई','حُفظ التقدم في هذا المتصفح'],
+ ['notSaved','Not saved yet','尚未儲存','尚未保存','未保存','아직 저장 안 됨','Aún no guardado','Ainda não salvo','Pas encore sauvegardé','Noch nicht gespeichert','Non ancora salvato','Пока не сохранено','अभी नहीं सहेजा','لم يُحفظ بعد'],
  ['saveFailed','Not saved yet. Keep this page open and retry.','尚未儲存。請保留此頁並重試。','尚未保存。请保留此页并重试。','まだ保存されていません。このページを開いたまま再試行してください。','아직 저장되지 않았습니다. 이 페이지를 열어 두고 재시도하세요.','Aún no se guardó. Mantén esta página abierta y reintenta.','Ainda não foi salvo. Mantenha esta página aberta e tente novamente.','Pas encore sauvegardé. Gardez cette page ouverte et réessayez.','Noch nicht gespeichert. Seite offen lassen und erneut versuchen.','Non ancora salvato. Lascia aperta questa pagina e riprova.','Пока не сохранено. Оставьте страницу открытой и повторите.','अभी सहेजा नहीं गया। पेज खुला रखें और फिर प्रयास करें।','لم يُحفظ بعد. أبقِ الصفحة مفتوحة وأعد المحاولة.'],
  ['winUnlock','Next stage unlocked','已解鎖下一關','已解锁下一关','次のステージが解放されました','다음 스테이지가 열렸습니다','Siguiente etapa desbloqueada','Próxima fase desbloqueada','Étape suivante débloquée','Nächste Etappe freigeschaltet','Tappa seguente sbloccata','Следующий этап открыт','अगला चरण खुला','فُتحت المرحلة التالية'],
  ['final','Both chapters complete. Replay any course.','兩章完成，可重玩任何航線。','两章完成，可重玩任何航线。','両章クリア。好きなコースに再挑戦できます。','두 장을 완료했습니다. 원하는 코스를 다시 즐기세요.','Dos capítulos completos. Repite cualquier recorrido.','Dois capítulos concluídos. Repita qualquer percurso.','Deux chapitres terminés. Rejouez le parcours de votre choix.','Beide Kapitel geschafft. Spiele jede Strecke erneut.','Entrambi i capitoli completati. Rigioca qualsiasi percorso.','Обе главы пройдены. Повторите любой маршрут.','दोनों अध्याय पूरे। कोई भी मार्ग फिर खेलें।','اكتمل الفصلان. أعد أي مسار.'],
@@ -106,6 +107,11 @@ const rows = [
  ['objectiveRace','Pass the buoys and meet the required place.','通過指定浮標，達成本關名次。','通过指定浮标，达成本关名次。','ブイを通り、指定順位を目指そう。','부표를 지나 목표 순위를 달성하세요.','Pasa las boyas y alcanza el puesto exigido.','Passe pelas boias e alcance a posição exigida.','Passez les bouées et atteignez la place requise.','Passiere die Bojen und schaffe den geforderten Platz.','Supera le boe e raggiungi la posizione richiesta.','Пройдите буйки и займите нужное место.','बॉय पार करें और ज़रूरी स्थान पाएँ।','اجتز العوامات وحقق المركز المطلوب.'],
  ['objectiveFlags','Follow the marked buoy order.','依指定順序通過浮標。','依指定顺序通过浮标。','ブイを指定順に通ろう。','표시된 순서대로 부표를 지나세요.','Sigue el orden de las boyas marcadas.','Siga a ordem das boias marcadas.','Suivez l’ordre des bouées marquées.','Folge der markierten Bojenreihenfolge.','Segui l’ordine delle boe segnate.','Следуйте отмеченному порядку буйков.','चिह्नित बॉय का क्रम मानें।','اتبع ترتيب العوامات المحدد.'],
  ['objectiveLand','Complete the marked ramp landings.','完成指定跳台的合法落點。','完成指定跳台的合法落点。','印のあるランプから正しく着水しよう。','표시된 경사로에서 올바르게 착수하세요.','Completa los aterrizajes marcados.','Conclua os pousos marcados.','Réussissez les réceptions marquées.','Schaffe die markierten Rampenlandungen.','Completa gli atterraggi segnati.','Выполните отмеченные посадки.','चिह्नित रैंप से सही उतरें।','أكمل الهبوط في المناطق المحددة.'],
+ ['objectiveCurrent','Pass through the required current zones.','穿過規定數量的順流區。','穿过规定数量的顺流区。','必要な数の流れエリアを通ろう。','목표 수만큼 물살 구역을 통과하세요.','Cruza las zonas de corriente necesarias.','Passe pelas zonas de corrente exigidas.','Traversez le nombre requis de zones de courant.','Durchfahre die geforderten Strömungszonen.','Attraversa le zone di corrente richieste.','Пройдите нужное число зон течения.','धारा के ज़रूरी क्षेत्रों से गुज़रें।','اعبر العدد المطلوب من مناطق التيار.'],
+ ['objectiveBonus','Collect the required bonus buoys.','收集規定數量的額外浮標。','收集规定数量的额外浮标。','必要な数のボーナスブイを集めよう。','목표 수만큼 추가 부표를 모으세요.','Recoge las boyas extra necesarias.','Recolha as boias extras exigidas.','Récupérez le nombre requis de bouées bonus.','Sammle die geforderten Bonusbojen.','Raccogli le boe bonus richieste.','Соберите нужное число бонусных буйков.','ज़रूरी अतिरिक्त बॉय इकट्ठे करें।','اجمع العدد المطلوب من العوامات الإضافية.'],
+ ['objectiveNoFalls','Finish without falling into the water.','全程不落水並抵達終點。','全程不落水并抵达终点。','落水せずにゴールしよう。','물에 빠지지 않고 완주하세요.','Llega a la meta sin caer al agua.','Chegue ao fim sem cair na água.','Terminez sans tomber à l’eau.','Erreiche das Ziel, ohne ins Wasser zu fallen.','Arriva al traguardo senza cadere in acqua.','Финишируйте, не упав в воду.','पानी में गिरे बिना अंत तक पहुँचें।','بلغ النهاية دون السقوط في الماء.'],
+ ['objectiveNoBridge','Finish without hitting a bridge.','全程不撞橋並抵達終點。','全程不撞桥并抵达终点。','橋にぶつからずにゴールしよう。','다리에 부딪히지 않고 완주하세요.','Llega a la meta sin chocar con un puente.','Chegue ao fim sem bater em pontes.','Terminez sans heurter de pont.','Erreiche das Ziel, ohne eine Brücke zu treffen.','Arriva al traguardo senza urtare i ponti.','Финишируйте без ударов о мосты.','पुल से टकराए बिना अंत तक पहुँचें।','بلغ النهاية دون الاصطدام بالجسور.'],
+ ['objectiveExactLandings','Finish with the exact valid landing count: {count}.','合法落地次數必須恰好為 {count} 次。','合法落地次数必须恰好为 {count} 次。','正しい着水回数をちょうど{count}回にしてゴールしよう。','올바른 착수를 정확히 {count}회 하고 완주하세요.','Termina con este número exacto de aterrizajes válidos: {count}.','Termine com este total exato de pousos válidos: {count}.','Terminez avec ce nombre exact de réceptions réussies : {count}.','Gültige Landungen bis ins Ziel: genau {count}.','Termina con questo numero esatto di atterraggi validi: {count}.','Финишируйте с числом успешных посадок ровно {count}.','ठीक {count} बार सही उतरकर अंत तक पहुँचें।','بلغ النهاية بعد عدد من عمليات الهبوط الصحيح يساوي {count} بالضبط.'],
  ['objectiveSafe','Protect the required stability.','保留本關要求的穩定度。','保留本关要求的稳定度。','必要な安定度を残そう。','목표 안정도를 지키세요.','Conserva la estabilidad requerida.','Mantenha a estabilidade exigida.','Gardez la stabilité requise.','Bewahre die erforderliche Stabilität.','Mantieni la stabilità richiesta.','Сохраните нужную устойчивость.','ज़रूरी स्थिरता बचाएँ।','حافظ على الثبات المطلوب.'],
  ['objectiveTide','Read the tide and choose a gate window.','讀取潮位，選好通閘時機。','读取潮位，选好通闸时机。','潮を読み、水門を通る機会を選ぼう。','조수를 읽고 수문 통과 시점을 고르세요.','Lee la marea y elige cuándo cruzar.','Leia a maré e escolha quando passar.','Lisez la marée et choisissez votre passage.','Lies die Gezeit und wähle dein Torfenster.','Leggi la marea e scegli quando passare.','Следите за приливом и выбирайте окно шлюза.','ज्वार देखकर फाटक पार करने का समय चुनें।','راقب المد واختر وقت عبور البوابة.'],
  ['falls','Falls','落水次數','落水次数','落水回数','이탈 횟수','Caídas','Quedas','Chutes','Stürze','Cadute','Падения','गिरावट','السقوط'],
@@ -181,14 +187,22 @@ export function stageLesson(stage, locale) {
   const kinds = new Set((stage.features || []).map(feature => typeof feature === 'string' ? feature : feature.kind));
   const goal = stage.clearConditions || stage.goal || {};
   const text = typeof goal === 'string' ? goal : String(goal.type || '');
+  const minLandings = Number(goal.minLandings), maxLandings = Number(goal.maxLandings);
+  const exactLandings = goal.minLandings !== undefined && goal.maxLandings !== undefined
+    && Number.isInteger(minLandings) && minLandings >= 0 && minLandings === maxLandings;
   const keys = [];
-  if (goal.minLandings || goal.landings || /jump|land/i.test(text) || /jump|land/i.test(String(stage.lessonKey))) keys.push('objectiveLand');
-  if (goal.maxRank || goal.rank || /race|rank|place/i.test(text)) keys.push('objectiveRace');
+  if (exactLandings) keys.push('objectiveExactLandings');
+  if (goal.minBonus > 0) keys.push('objectiveBonus');
+  if (goal.minCurrentZones > 0) keys.push('objectiveCurrent');
+  if (goal.maxFalls === 0) keys.push('objectiveNoFalls');
+  if (goal.maxBridgeHits === 0) keys.push('objectiveNoBridge');
   if (goal.minStability || goal.stability || /safe|clean|stability/i.test(text)) keys.push('objectiveSafe');
+  if (goal.maxRank || goal.rank || /race|rank|place/i.test(text)) keys.push('objectiveRace');
+  if (!exactLandings && (goal.minLandings || goal.landings || /jump|land/i.test(text) || /jump|land/i.test(String(stage.lessonKey)))) keys.push('objectiveLand');
   if (goal.ordered || goal.flags || goal.requiredFlags || /order|flag|rescue/i.test(text)) keys.push('objectiveFlags');
   if (goal.tide || goal.phase || kinds.has('gate') || kinds.has('tide') || Number(stage.chapter) > 1) keys.push('objectiveTide');
   if (!keys.length) keys.push('objectiveFinish');
-  return [...new Set(keys)].slice(0, 2).map(key => t(locale, key)).join(' ');
+  return [...new Set(keys)].slice(0, 2).map(key => t(locale, key, { count: minLandings })).join(' ');
 }
 
 const guideRows = [
@@ -302,7 +316,7 @@ export function renderLocalizedRoute(sourceHtml, locale, titles) {
   html = html.replace(/<body\b[^>]*>/i, opening => setRouteAttribute(opening, 'data-audience', 'general'));
   html = html.replace(/(<([a-z][\w-]*)\b[^>]*\bdata-t=["']([^"']+)["'][^>]*>)[\s\S]*?(<\/\2\s*>)/gi, (_all, open, _tag, key, close) => `${open}${htmlText(t(selected, key, { cost: routeAttribute(open, 'data-cost') || 5 }))}${close}`);
   html = html.replace(/<[a-z][\w-]*\b[^>]*\bdata-t-aria=["'][^"']+["'][^>]*>/gi, opening => setRouteAttribute(opening, 'aria-label', t(selected, routeAttribute(opening, 'data-t-aria'))));
-  html = html.replace(/(<([a-z][\w-]*)\b[^>]*\bdata-wp-game-title\b[^>]*>)[\s\S]*?(<\/\2\s*>)/gi, (_all, open, _tag, close) => `${open}${htmlText(title)}${close}`);
+  html = html.replace(/(<([a-z][\w-]*)\b[^>]*\bdata-wp-game-title(?=[\s=>])[^>]*>)[\s\S]*?(<\/\2\s*>)/gi, (_all, open, _tag, close) => `${open}${htmlText(title)}${close}`);
   html = replaceRouteElement(html, 'mainProgress', `<p id="mainProgress" data-wp-main-progress data-wp-frame-progress>${htmlText(t(selected, 'stage'))} 1 / 60</p>`);
   html = html.replace(/<a\b(?=[^>]*\bid=["']mainBack["'])[^>]*>/i, opening => setRouteAttribute(setRouteAttribute(opening, 'href', `/${segment}/`), 'aria-label', t(selected, 'backLobby')));
   html = html.replace(/<img\b(?=[^>]*\bid=["']poster["'])[^>]*>/i, opening => setRouteAttribute(opening, 'alt', t(selected, 'posterAlt')));

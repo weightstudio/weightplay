@@ -249,17 +249,57 @@
       'كم عدد المراحل؟','كيف تعمل الصمامات؟','ماذا أفعل إن لم يطابق الحوض هدفه؟','كيف تُفتح المراحل؟','أين يُحفظ التقدم؟','هل يكفي تطابق المجموع؟','كيف أحصل على النجوم؟'
     ]
   };
+  const checkpointGuide = {
+    en:'In stage 5, identify the valve feeding both beds; in stage 10, identify the two beds affected by valve A. Answer correctly before Bloom. A wrong answer can be retried.',
+    'zh-Hant':'第 5 關要找出同時供水給兩片花圃的閥門；第 10 關要找出受閥門 A 影響的兩片花圃。答對後才能綻放，答錯可以再試。',
+    'zh-Hans':'第 5 关要找出同时供水给两片花圃的阀门；第 10 关要找出受阀门 A 影响的两片花圃。答对后才能绽放，答错可以再试。',
+    ja:'ステージ5では2つの花壇に水を送るバルブを、10ではバルブAの影響を受ける2つの花壇を選びます。正解してから花を咲かせます。間違えても再挑戦できます。',
+    ko:'5단계에서는 두 화단에 물을 보내는 밸브를, 10단계에서는 밸브 A의 영향을 받는 두 화단을 고르세요. 정답을 맞혀야 꽃을 피울 수 있으며 틀려도 다시 답할 수 있어요.',
+    es:'En el nivel 5 identifica la válvula que alimenta dos canteros; en el 10, los dos canteros afectados por la válvula A. Responde correctamente antes de hacer florecer; puedes volver a intentarlo.',
+    'pt-BR':'Na fase 5, identifique a válvula que abastece dois canteiros; na 10, os dois canteiros afetados pela válvula A. Acerte antes de florescer. Se errar, tente novamente.',
+    fr:'Au niveau 5, trouvez la vanne qui alimente deux parterres ; au niveau 10, les deux parterres touchés par la vanne A. Répondez correctement avant de faire fleurir. Une erreur peut être corrigée.',
+    de:'Finde in Level 5 das Ventil für beide Beete und in Level 10 die zwei Beete, die Ventil A beeinflusst. Antworte richtig, bevor du blühen lässt; bei einer falschen Antwort kannst du es erneut versuchen.',
+    it:'Nel livello 5 individua la valvola che alimenta due aiuole; nel 10, le due aiuole influenzate dalla valvola A. Rispondi correttamente prima di far fiorire; se sbagli puoi riprovare.',
+    ru:'На уровне 5 найдите клапан, питающий две клумбы, а на уровне 10 — две клумбы, на которые влияет клапан A. До цветения нужен правильный ответ; при ошибке можно попробовать снова.',
+    hi:'स्तर 5 में दोनों क्यारियों को पानी देने वाला वाल्व और स्तर 10 में वाल्व A से प्रभावित दोनों क्यारियाँ पहचानें। फूल खिलाने से पहले सही उत्तर दें; गलत होने पर फिर कोशिश कर सकते हैं।',
+    ar:'في المرحلة 5 حدّد الصمام الذي يغذي الحوضين، وفي المرحلة 10 حدّد الحوضين المتأثرين بالصمام A. أجب إجابة صحيحة قبل الإزهار؛ يمكنك المحاولة مجدداً إذا أخطأت.'
+  };
+  const sensorFinale = {
+    en:'Sensor Finale','zh-Hant':'感測終章','zh-Hans':'感应终章',ja:'センサーの最終章',ko:'센서 피날레',
+    es:'Final del sensor','pt-BR':'Final do sensor',fr:'Final du capteur',de:'Sensor-Finale',
+    it:'Finale del sensore',ru:'Финал датчика',hi:'सेंसर का अंतिम चरण',ar:'ختام المستشعر'
+  };
+  const lateGuide = {
+    en:'Some captures require another bed at a specified value, sensors in a given order before or after capture, a specified clip position, or a valve at a specified value. In stages 51–60 move the clip after capture; in 56–60 a listed valve also locks after capture. In stage 60, with no clip placed, first bring bed 2 to 10 to trigger the sensor, then capture.',
+    'zh-Hant':'有些儲存要求另一花圃達到指定數值，或依指定順序在儲存前後完成感測、將夾子放在指定位置，或將閥門調至指定數值。第 51–60 關儲存後要移動夾子；第 56–60 關儲存後指定閥門也會鎖定。第 60 關先在未放夾子時讓花圃 2 達到 10 觸發感測器，再進行儲存。',
+    'zh-Hans':'有些储存要求另一花圃达到指定数值，或按指定顺序在储存前后完成感应、将夹子放在指定位置，或将阀门调至指定数值。第 51–60 关储存后要移动夹子；第 56–60 关储存后指定阀门也会锁定。第 60 关先在未放夹子时让花圃 2 达到 10 触发感应器，再进行储存。',
+    ja:'保存には別の花壇を指定値にするほか、保存の前後に指定順でセンサーを作動させたり、クリップを指定位置に置いたり、バルブを指定値にする必要がある場合があります。51〜60面では保存後にクリップを移し、56〜60面では指定バルブもロックされます。60面ではクリップを置かずに先に花壇 2 を 10 にしてセンサーを作動させてから保存します。',
+    ko:'일부 저장에는 다른 화단을 지정된 값으로 맞추거나, 저장 전후에 센서를 정해진 순서로 작동하거나, 클립을 지정된 위치에 놓거나, 밸브를 지정된 값으로 맞춰야 해요. 51–60단계에서는 저장 후 클립을 옮기고, 56–60단계에서는 지정된 밸브도 잠겨요. 60단계에서는 클립을 놓지 않은 상태에서 먼저 화단 2를 10으로 맞춰 센서를 작동한 뒤 저장하세요.',
+    es:'Algunas capturas requieren otro cantero con un valor indicado, activar sensores en el orden indicado antes o después de capturar, colocar la pinza en un lugar concreto o ajustar una válvula a un valor indicado. En los niveles 51–60 mueve la pinza después de capturar; en los niveles 56–60 también se bloquea una válvula indicada. En el nivel 60, sin colocar ninguna pinza, lleva primero el cantero 2 a 10 para activar el sensor y después captura.',
+    'pt-BR':'Algumas capturas exigem outro canteiro em um valor indicado, ativar sensores na ordem indicada antes ou depois da captura, colocar a presilha em uma posição específica ou ajustar uma válvula a um valor indicado. Nas fases 51–60 mova a presilha após capturar; nas fases 56–60 uma válvula indicada também é bloqueada. Na fase 60, sem colocar presilha, primeiro leve o canteiro 2 a 10 para ativar o sensor e depois capture.',
+    fr:'Certaines captures exigent une valeur indiquée dans un autre parterre, des capteurs activés dans l’ordre avant ou après la capture, une pince à un emplacement précis ou une vanne à une valeur indiquée. Aux niveaux 51–60, déplacez la pince après la capture ; aux niveaux 56–60, une vanne indiquée se verrouille aussi. Au niveau 60, sans placer de pince, amenez d’abord le parterre 2 à 10 pour activer le capteur, puis capturez.',
+    de:'Manche Speicherungen verlangen einen bestimmten Wert in einem anderen Beet, Sensoren in vorgegebener Reihenfolge vor oder nach dem Speichern, eine bestimmte Klammerposition oder einen bestimmten Ventilwert. In Level 51–60 verschiebst du danach die Klammer; in Level 56–60 wird auch ein angegebenes Ventil gesperrt. Bringe in Level 60 zuerst ohne gesetzte Klammer Beet 2 auf 10, um den Sensor auszulösen, und speichere erst danach.',
+    it:'Alcune acquisizioni richiedono un valore indicato in un’altra aiuola, sensori attivati nell’ordine indicato prima o dopo l’acquisizione, una posizione precisa della pinza o un valore indicato per una valvola. Nei livelli 51–60 sposta la pinza dopo l’acquisizione; nei livelli 56–60 si blocca anche una valvola indicata. Nel livello 60, senza posizionare la pinza, porta prima l’aiuola 2 a 10 per attivare il sensore, poi acquisisci.',
+    ru:'Для некоторых сохранений требуется указанное значение другой клумбы, срабатывание датчиков в заданном порядке до или после сохранения, определённое положение зажима или указанное значение клапана. На уровнях 51–60 после сохранения переместите зажим; на уровнях 56–60 указанный клапан также блокируется. На уровне 60 сначала без зажима доведите клумбу 2 до 10, чтобы сработал датчик, и только затем сохраните значение.',
+    hi:'कुछ मान सँभालने के लिए दूसरी क्यारी का दिया गया मान, सँभालने से पहले या बाद में तय क्रम से सेंसर चालू करना, क्लिप को तय जगह पर रखना या वाल्व को दिए गए मान पर रखना ज़रूरी होता है। स्तर 51–60 में मान सँभालने के बाद क्लिप खिसकाएँ; स्तर 56–60 में बताया गया वाल्व भी लॉक हो जाता है। स्तर 60 में बिना क्लिप लगाए पहले क्यारी 2 को 10 तक पहुँचाकर सेंसर चालू करें, फिर मान सँभालें।',
+    ar:'تتطلب بعض عمليات الحفظ قيمة محددة في حوض آخر، أو تفعيل المستشعرات بالترتيب المطلوب قبل الحفظ أو بعده، أو وضع المشبك في موضع محدد، أو ضبط صمام على قيمة محددة. في المراحل 51–60 انقل المشبك بعد الحفظ؛ وفي المراحل 56–60 يُقفل أيضاً صمام محدد بعد الحفظ. في المرحلة 60، دون وضع أي مشبك، أوصل الحوض 2 أولاً إلى 10 لتفعيل المستشعر، ثم احفظ القيمة.'
+  };
   const makeNames = (locale, names) => Object.fromEntries(kinds.map((kind, index) => {
     const stage = String(index + 13);
     const isolated = locale === 'ar' ? `\u2068${stage}\u2069` : stage;
-    return [stage, `${names[nameKeys.indexOf(kind)]} · ${isolated}`];
+    const title = stage === '60' ? sensorFinale[locale] : names[nameKeys.indexOf(kind)];
+    return [stage, `${title} · ${isolated}`];
   }));
   const locales = Object.fromEntries(Object.entries(rows).map(([locale, row]) => {
     if (row.length !== nameKeys.length + fields.length) throw new Error(`BAD_STAGE60_GUIDE_LENGTH:${locale}`);
     const guide = Object.fromEntries(fields.map((key, i) => [key, row[nameKeys.length+i]]));
     // The existing static generator uses these exact FAQ answer keys. Its
     // obsolete long sections and titles still require an explicit integration.
+    if (typeof checkpointGuide[locale] !== 'string' || !checkpointGuide[locale].trim()) throw new Error(`MISSING_CHECKPOINT_GUIDE:${locale}`);
+    if (typeof sensorFinale[locale] !== 'string' || !sensorFinale[locale].trim() || typeof lateGuide[locale] !== 'string' || !lateGuide[locale].trim()) throw new Error(`MISSING_SENSOR_FINALE:${locale}`);
     Object.assign(guide, {
+      guideLate: lateGuide[locale],
+      guideCheckpoint: checkpointGuide[locale],
       faqCountAnswer: guide.guideIntro,
       faqValvesAnswer: guide.guideValves,
       faqWrongAnswer: guide.guideGoal,

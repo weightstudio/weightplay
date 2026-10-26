@@ -324,6 +324,6 @@ export class RapidsRenderer{
     this.camera.position.set(cx+3*this.xSpread,cameraHeight,-s+16);this.camera.lookAt(cx,.3,-s-13);
     this.renderer.render(this.scene,this.camera);
   }
-  measure(){return {revision:THREE.REVISION,calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,pixelRatio:this.renderer.getPixelRatio()};}
+  measure(){return {revision:THREE.REVISION,calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,pixelRatio:this.renderer.getPixelRatio(),activeBoard:this.appearance.boardId,cosmetic:this.appearance.cosmetic};}
   dispose(){if(this.disposed)return;this.disposed=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);const geometries=new Set(),materials=new Set([this.material,this.waterMat,this.woodMat,this.rockMat,this.leafMat,this.foamMat,this.currentMat,this.targetMat]);this.scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));});for(const g of geometries)g.dispose();for(const m of materials)m.dispose();this.renderer.dispose();this.canvas.remove();this.particleData.length=0;this.boardVariants.clear();this.featureNodes.length=0;this.lastRace=null;}
 }
