@@ -18,7 +18,7 @@
   __wpNotifyMeasurement();
 
   const $ = (s) => document.querySelector(s);
-  const GAME_VERSION = 28, INTERFACE_VERSION = 6;
+  const GAME_VERSION = 30, INTERFACE_VERSION = 9;
   const viewportBucket = () => {
     const width = window.innerWidth || 0, height = window.innerHeight || 0;
     return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
@@ -35,13 +35,6 @@
       });
     } catch {}
   };
-  // General Stage and Battle/Result fill the complete safe physical width.
-  // Apply the game-local request before the directly loaded shared owners run.
-  const stageCanvas = $("#stageScreen") || $(".stage-canvas");
-  stageCanvas?.setAttribute("data-wp-canvas-max-width", "920");
-  stageCanvas?.setAttribute("data-wp-stage-landscape-width", "760");
-  stageCanvas?.setAttribute("data-wp-stage-landscape-height", "334");
-  $(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
   const KEY = "weightplay_moonlight_heist_v1";
   const localeKey = "weightPlayLocale", legacyLocaleKey = "weightplayLocale";
   const readOptionalStorage = key => { try { return localStorage.getItem(key); } catch { return null; } };
@@ -341,9 +334,8 @@
   [[guardianCatalog.spotlight,"Фонарный ревизор"],[guardianCatalog.bell,"Колокольный страж"],[guardianCatalog.mirror,"Хранитель зеркал"],[guardianCatalog.clock,"Часовой маршал"],[guardianCatalog.seals,"Хранитель печатей"],[guardianCatalog.eclipse,"Хранитель затмения"]].forEach(([guardian,name])=>{guardian.name[3]=name});
   [[guardianCatalog.spotlight,"提灯审查官"],[guardianCatalog.bell,"月钟守卫"],[guardianCatalog.mirror,"星镜看守"],[guardianCatalog.clock,"发条巡察长"],[guardianCatalog.seals,"宝库封印官"],[guardianCatalog.eclipse,"日蚀馆长"]].forEach(([guardian,name])=>{guardian.name[4]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
-  const STAGE_CARD_POOL_SIZE=9;
   let state=load(),locale=normalizeLocale(document.documentElement.lang||window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,firstMoveTracked=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
-  let stageWindowStart=0,stageCardPool=[],stageBrowseLogical=centeredMission,stageSettleFrame=0,stageFocusGeneration=0,cancelStagePointer=()=>{};
+  let selector=null,stageFocusGeneration=0,gadgetPanel=false,assetsReady=false;
   const gameLocales=new Set(["en","zh-Hant","zh-Hans","es","ru"]);
   const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:locale==="zh-Hans"?4:0;
   const runtimeLocaleSegments={"zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -397,6 +389,8 @@
   let leaveWasPaused=false;
   function createLeaveModal(){const modal=document.createElement("div");modal.id="battleLeaveModal";modal.className="modal";(__wpNotifyMeasurement(), modal.hidden=true);(__wpNotifyMeasurement(), modal.setAttribute("role","dialog"));(__wpNotifyMeasurement(), modal.setAttribute("aria-modal","true"));(__wpNotifyMeasurement(), modal.setAttribute("aria-labelledby","battleLeaveTitle"));(__wpNotifyMeasurement(), modal.setAttribute("aria-describedby","battleLeaveText"));modal.innerHTML='<section class="modal-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="modal-actions leave-actions"><button id="battleContinueBtn" class="primary" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></section>';nodes.modal.after(modal);nodes.leaveModal=modal}
   createLeaveModal();
+  $("#battleContinueBtn").dataset.wpFrameAction='primary';
+  $("#battleLeaveBtn").dataset.wpFrameAction='secondary';
   function progressInteger(value,fallback,minimum,maximum){
     const parsed=Number(value);
     return Number.isFinite(parsed)?Math.max(minimum,Math.min(maximum,Math.floor(parsed))):fallback;
@@ -491,21 +485,25 @@
     if(!spendDiamonds(5)){renderEconomy();economyMessage(t("notEnough"));return}
     insuranceActive=true;state.insuranceReady=true;save();economyMessage(t("insuranceReady"));renderEconomy();playSound("reward.upgrade");
   }
-  function t(key,vars={}){const owned=copy[locale]?.[key];let value=owned||copy.en[key]||key;value=owned?String(value):sharedText(value);Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
-  function applyOwnedLocaleSurface(){const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n],[data-game-i18n]").forEach(n=>{const key=n.dataset.gameI18n||n.dataset.i18n;n.dataset.gameI18n=key;n.dataset.runtimeLocalize="off";delete n.dataset.i18n;n.textContent=t(key)});const ownedNodes=[$("#localeSelect"),$(".main-poster"),$(".planner > img"),nodes.rail,nodes.fia,$("#stageBackBtn"),$("#battleBackBtn")].filter(Boolean);ownedNodes.forEach(node=>node.dataset.runtimeLocalize="off");$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"))}
-  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";applyOwnedLocaleSurface();renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();updateExtractionCue();syncSoundToggle();setTimeout(applyOwnedLocaleSurface,0);requestAnimationFrame(()=>requestAnimationFrame(applyOwnedLocaleSurface))}
+  function t(key,vars={}){const ui=window.WeightPlayMoonlightStageConfig.labels(locale);if(["missions","next","retry"].includes(key)&&ui[key])return ui[key];if(key==="title")return window.WEIGHTPLAY_GAME_TITLES?.["animal-moonlight-heist"]?.[locale]||copy[locale]?.title||copy.en.title;const owned=copy[locale]?.[key];let value=owned||copy.en[key]||key;value=owned?String(value):sharedText(value);Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
+  function applyOwnedLocaleSurface(){
+    document.title=`${t("title")} - WeightPlay`;
+    document.querySelectorAll("[data-i18n],[data-game-i18n]").forEach(node=>{const key=node.dataset.gameI18n||node.dataset.i18n;node.dataset.gameI18n=key;node.dataset.runtimeLocalize="off";delete node.dataset.i18n;node.textContent=t(key)});
+    $(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");
+    $("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));
+    $("#missionsTab").textContent=window.WeightPlayMoonlightStageConfig.labels(locale).stages;
+    $("#gadgetsTab").textContent=window.WeightPlayMoonlightStageConfig.labels(locale).gadgets;
+  }
+  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";applyOwnedLocaleSurface();renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();updateExtractionCue()}
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
   function show(name){
-    if(name!=="stage")cancelStageMotion();
+    if(name!=="stage")selector?.cancel();
     nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";
     document.body.dataset.screen=name;
-    for(const candidate of ["main","stage","battle"]){document.body.classList.toggle(`wp-shell-${candidate}-active`,candidate===name)}
-    document.body.classList.toggle("wp-stage-select-active",name==="stage");document.documentElement.classList.toggle("wp-stage-select-active",name==="stage");
-    window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));
-    window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:name}}));
-    window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:name}}));
-    if(name==="battle")window.dispatchEvent(new CustomEvent("weightplay:battle-open",{detail:{screen:name}}));
+    document.querySelector('[data-wp-game-guide]').hidden=name!=="main";
+    frame.activate(name);window.WeightPlayBattleCanvas.sync();
+    if(name==="stage")selectStageTab(false);
     if(name!=="battle"){playing=false;(__wpNotifyMeasurement(), paused=false);stopBattleLoop();cancelPendingMovement();updatePauseControl()}
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
@@ -521,98 +519,43 @@
     const detail=medals===3?t("perfectMedals"):`${t("bestMedals",{medals})} · ${t("bonusMedal")}`;
     return{visible:`${stars} · ${detail}`,accessible:detail};
   }
-  const stageWindowLimit=()=>Math.max(0,campaign.length-STAGE_CARD_POOL_SIZE);
-  const desiredStageWindow=index=>Math.max(0,Math.min(stageWindowLimit(),Math.round(index)-Math.floor(STAGE_CARD_POOL_SIZE/2)));
-  function createMissionCard(poolIndex){const card=document.createElement("button");card.type="button";card.dataset.wpStagePoolNode=String(poolIndex+1);return card}
-  function bindMissionCard(card,index){
-    const mission=campaign[index];if(!mission)return;
-    const missionName=`${t("mission",{n:index+1})}: ${campaignText(mission.name)}`;
-    const locked=index+1>state.unlocked,progress=medalProgress(index),guardian=mission.guardian,tradeoff=t(mission.order==="treasure-first"?"treasureSealPlan":"treasureTradeoff");
-    const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
-    const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${campaignText(guardian.name)}</span>`:"";
-    card.className=`mission-card${locked?" locked":""}${guardian?" checkpoint":""}`;
-    card.dataset.index=String(index);card.dataset.stage=String(index+1);card.dataset.stageIndex=String(index);
-    card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize",String(campaign.length));card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End Enter Space");
-    card.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${campaignText(mission.rule)}</span><span class="mission-tradeoff">${tradeoff}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
-    card.setAttribute("aria-label",`${missionName}. ${campaignText(mission.rule)}. ${tradeoff}. ${locked?t("locked"):progress.accessible}`);
+  function selectStageTab(gadgets=false){
+    gadgetPanel=gadgets;$("#stageContent").hidden=gadgets;$("#stageContent").classList.toggle('hidden',gadgets);$("#stageContent").inert=gadgets;$("#gadgetPanel").hidden=!gadgets;
+    for(const [id,active] of [["missionsTab",!gadgets],["gadgetsTab",gadgets]]){const button=$("#"+id);button.setAttribute("aria-pressed",String(active));if(active)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current")}
+    if(gadgets){selector?.cancel();renderGadgets();renderEconomy()}else renderStage();
   }
-  function buildStagePool(){
-    stageWindowStart=desiredStageWindow(centeredMission);stageCardPool=Array.from({length:Math.min(STAGE_CARD_POOL_SIZE,campaign.length)},(_,index)=>createMissionCard(index));
-    nodes.rail.replaceChildren(...stageCardPool);stageCardPool.forEach((card,index)=>bindMissionCard(card,stageWindowStart+index));
-    Object.assign(nodes.rail.dataset,{wpStageVirtualized:"bounded-recycle",wpStagePoolSize:String(stageCardPool.length),wpStageTotal:String(campaign.length),wpStageWindowStart:String(stageWindowStart),wpStageWindowEnd:String(stageWindowStart+stageCardPool.length-1),wpStageRecycleCount:"0",wpStageCenterObserver:"manual",wpStageVirtualDrag:"true"});
-  }
-  function moveStageWindow(targetStart){
-    const target=Math.max(0,Math.min(stageWindowLimit(),targetStart));let recycled=0;
-    while(stageWindowStart<target){const card=nodes.rail.firstElementChild;stageWindowStart+=1;nodes.rail.append(card);bindMissionCard(card,stageWindowStart+stageCardPool.length-1);recycled+=1}
-    while(stageWindowStart>target){const card=nodes.rail.lastElementChild;stageWindowStart-=1;nodes.rail.prepend(card);bindMissionCard(card,stageWindowStart);recycled+=1}
-    stageCardPool=[...nodes.rail.children];nodes.rail.dataset.wpStageWindowStart=String(stageWindowStart);nodes.rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);if(recycled)nodes.rail.dataset.wpStageRecycleCount=String(Number(nodes.rail.dataset.wpStageRecycleCount||0)+recycled);
-  }
-  function ensureStageWindow(index){if(!stageCardPool.length||stageCardPool.some(card=>!card.isConnected))buildStagePool();moveStageWindow(desiredStageWindow(index));stageCardPool.forEach(card=>bindMissionCard(card,Number(card.dataset.index)));markCenteredMission(Math.round(stageBrowseLogical))}
-  function stageRailGeometry(){const cards=[...nodes.rail.children],railRect=nodes.rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0,fallback=(first?.width||154)+(parseFloat(getComputedStyle(nodes.rail).columnGap)||12);return{center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1}}
-  function stageRailPitch(){return stageRailGeometry().pitch}
-  function positionStageRail(logical){const value=Math.max(0,Math.min(campaign.length-1,logical)),anchor=Math.round(value);moveStageWindow(desiredStageWindow(anchor));const rail=nodes.rail,card=rail.querySelector(`[data-index="${anchor}"]`);if(!card)return value;const baseBehavior=rail.style.getPropertyValue("scroll-behavior"),baseBehaviorPriority=rail.style.getPropertyPriority("scroll-behavior"),baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseSnapPriority=rail.style.getPropertyPriority("scroll-snap-type");rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.scrollLeft=card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2;const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),scale=railRect.width?rail.clientWidth/railRect.width:1,correction=((cardRect.left+cardRect.width/2)-(railRect.left+railRect.width/2))*scale;if(Math.abs(correction)>.01)rail.scrollLeft+=correction;const geometry=stageRailGeometry(),fraction=value-anchor;if(Math.abs(fraction)>.0001)rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior,baseBehaviorPriority);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap,baseSnapPriority);else rail.style.removeProperty("scroll-snap-type");rail.dataset.wpStageDragLogical=value.toFixed(4);return value}
-  function centerMission(index){ensureStageWindow(index);positionStageRail(index);markCenteredMission(index)}
-  function cancelStageMotion(){if(stageSettleFrame)cancelAnimationFrame(stageSettleFrame);stageSettleFrame=0;cancelStagePointer();nodes.rail?.style.removeProperty("scroll-behavior");nodes.rail?.style.removeProperty("scroll-snap-type");nodes.rail?.classList.remove("wp-stage-dragging");if(nodes.rail)delete nodes.rail.dataset.wpStageSettling}
   function renderStage(){
-    if(!nodes.rail)return;
-    $("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;const target=centeredMission;stageBrowseLogical=target;
-    if(!stageCardPool.length||stageCardPool.some(card=>!card.isConnected))buildStagePool();ensureStageWindow(target);centerMission(target);
+    $("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;
+    if(nodes.stage.hidden||gadgetPanel)return;
+    if(!selector)selector=window.WeightPlayPlayUI.mountStage({page:$("#stageContent"),rail:nodes.rail,config:stageConfig,selected:centeredMission,
+      onSelect:index=>{centeredMission=index},onStart:index=>{track("stage_select",{mission:index+1,input_type:"shared-card",unlocked:state.unlocked});startMission(index)},
+      isActive:()=>document.body.dataset.screen==="stage"&&!gadgetPanel});
+    else selector.refresh(centeredMission);
   }
-  function markCenteredMission(index=centeredMission){
-    centeredMission=Math.max(0,Math.min(campaign.length-1,Number(index)||0));
-    nodes.rail.querySelectorAll(".mission-card").forEach(card=>{
-      const centered=Number(card.dataset.index)===centeredMission;
-      card.classList.toggle("centered",centered);
-      card.setAttribute("aria-current",centered?"true":"false");
-      if(centered&&!card.classList.contains("locked"))card.dataset.wpStageRecommended="true";
-      else delete card.dataset.wpStageRecommended;
-    });
-  }
-  function markGeometricMission(){
-    const railBox=nodes.rail.getBoundingClientRect();
-    if(!railBox.width)return;
-    const midpoint=railBox.left+railBox.width/2;
-    const nearest=[...nodes.rail.querySelectorAll(".mission-card")].reduce((best,card)=>{
-      const box=card.getBoundingClientRect(),distance=Math.abs(box.left+box.width/2-midpoint);
-      return!best||distance<best.distance?{card,distance}:best;
-    },null)?.card;
-    if(nearest)markCenteredMission(nearest.dataset.index);
-  }
-  function focusMission(index=Math.max(0,Math.min(campaign.length-1,state.unlocked-1)),force=false){
-    const target=Math.max(0,Math.min(campaign.length-1,index)),generation=++stageFocusGeneration;
-    centeredMission=target;stageBrowseLogical=target;
-    requestAnimationFrame(()=>{
-      if(generation!==stageFocusGeneration||document.body.dataset.screen!=="stage")return;
-      const active=document.activeElement;
-      if(!force&&active&&nodes.stage.contains(active)&&!nodes.rail.contains(active))return;
-      ensureStageWindow(target);
-      const card=nodes.rail.querySelector(`[data-index="${target}"]`);
-      centerMission(target);
-      card?.focus({preventScroll:true});
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        if(generation!==stageFocusGeneration||document.body.dataset.screen!=="stage")return;
-        stageBrowseLogical=target;centerMission(target);
-      }));
-    });
+  function focusMission(index=centeredMission,force=false){
+    const generation=++stageFocusGeneration;centeredMission=Math.max(0,Math.min(campaign.length-1,index));selector?.refresh(centeredMission);
+    requestAnimationFrame(()=>{if(generation!==stageFocusGeneration||nodes.stage.hidden||gadgetPanel)return;const active=document.activeElement;if(!force&&nodes.stage.contains(active)&&!nodes.rail.contains(active))return;nodes.rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true})});
   }
   function focusMain(){requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startBtn")?.focus({preventScroll:true})))}
-  function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button"),levelLabel=levelText(level);b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-name">${t(id)}</span><span class="gadget-level">${levelLabel}</span>`;b.type="button";b.title=`${t(id)} · ${levelLabel}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
-  function updateGadget(){if(!$("#gadgetIcon"))return;const passive=gadget==="dash",name=t(gadget),effect=gadgetEffect(gadget,selectedOffer().level),button=$("#gadgetBtn");$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=passive?`${name} · ${t("passive")}`:name;button.disabled=passive;button.setAttribute("aria-label",t(passive?"passiveGadgetLabel":"activeGadgetLabel",{name,effect}));button.title=button.getAttribute("aria-label");nodes.field.setAttribute("aria-label",t(passive?"playFieldPassiveLabel":"playFieldActiveLabel",{name,effect}))}
+  function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button"),levelLabel=levelText(level);b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="/assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-name">${t(id)}</span><span class="gadget-level">${levelLabel}</span>`;b.type="button";b.title=`${t(id)} · ${levelLabel}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
+  function updateGadget(){if(!$("#gadgetIcon"))return;const passive=gadget==="dash",name=t(gadget),effect=gadgetEffect(gadget,selectedOffer().level),button=$("#gadgetBtn");$("#gadgetIcon").src=`/assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=passive?`${name} · ${t("passive")}`:name;button.disabled=passive;button.setAttribute("aria-label",t(passive?"passiveGadgetLabel":"activeGadgetLabel",{name,effect}));button.title=button.getAttribute("aria-label");nodes.field.setAttribute("aria-label",t(passive?"playFieldPassiveLabel":"playFieldActiveLabel",{name,effect}))}
   function startMission(index,inputType="stage-card"){
+    if(!assetsReady||index>=state.unlocked)return;
     stopBattleLoop();
+    centeredMission=index;
     selectedMission=Math.max(0,Math.min(campaign.length-1,index));
     objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;firstMoveTracked=false;alert=0;(__wpNotifyMeasurement(), paused=false);freezeUntil=0;smokeUntil=0;pickupCoverUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
     const m=campaign[selectedMission];
     track("mission_start",{mission:selectedMission+1,input_type:inputType,unlocked:state.unlocked});
-    $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${campaignText(m.name)}`;
+    $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})} / ${campaign.length}`;
     $("#objectiveLabel").textContent=campaignText(m.rule);
-    nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[selectedMission%missionObjects.length]}.webp`;
+    nodes.objective.src=`/assets/animal-moonlight-heist-object-${missionObjects[selectedMission%missionObjects.length]}.webp`;
     place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);updateExtractionCue();
     nodes.objective.hidden=false;nodes.treasure.hidden=treasureFound;nodes.exit.style.opacity=.5;place(nodes.fia,[50,88]);nodes.patrolLayer.innerHTML="";
     (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
-    patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
-    if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=campaignText(m.guardian.name);patrols.push(guardian)}
-    nodes.feedback.textContent=t("holdRoute");updateAlertMeter();$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("game.start");startBattleLoop();
+    patrols=m.patrols.map((path,i)=>createPatrol(path,`/assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
+    if(m.guardian){const guardian=createPatrol(m.guardian.path,`/assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=campaignText(m.guardian.name);patrols.push(guardian)}
+    nodes.feedback.textContent=t("holdRoute");updateAlertMeter();$("#coinBattle").textContent=String(state.coins);show("battle");playing=true;missionStartedAt=performance.now();playSound("game.start");startBattleLoop();
     requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -685,11 +628,12 @@
     }
     if(objectFound&&distance(p,point(nodes.exit))<13)win();
   }
-  function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
+  function showFx(type){nodes.fx.src=`/assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
   function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;updateAlertMeter();smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("magic.cast")}
   function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();track("alert",{mission:selectedMission+1,outcome:"capture",alert_level:100});showFx("warning");nodes.fia.classList.add("caught");playSound("feedback.error");openResult(false)}
   function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();track("extraction",{mission:selectedMission+1,treasure_collected:treasureFound,medals,reward});playSound("result.win");openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){
+    nodes.modal.dataset.outcome=ok?'win':'lose';
     $("#resultTitle").textContent=t(ok?"victory":"captured");
     $("#resultText").textContent=ok
       ? `+${reward} ${t("coins")} · ${t("resultMedals",{medals})}${medals<3?` · ${t("bonusMedal")}`:` · ${t("treasure")}`}`
@@ -709,6 +653,8 @@
     retryBtn.classList.remove("primary");
     stagesBtn.classList.toggle("primary",!canContinue);
     nextBtn.classList.toggle("primary",canContinue);
+    stagesBtn.dataset.wpFrameAction=canContinue?'secondary':'primary';
+    nextBtn.dataset.wpFrameAction=canContinue?'primary':'secondary';
     [...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=true;node.setAttribute("aria-hidden","true")});
     (__wpNotifyMeasurement(), nodes.modal.hidden=false);
     (canContinue?nextBtn:stagesBtn).focus({preventScroll:true});
@@ -733,24 +679,15 @@
   function openBattleLeave(){if(!playing||!nodes.modal.hidden||!nodes.leaveModal.hidden)return;leaveWasPaused=paused;if(!paused)setPaused(true);const source=leaveCopy[locale]||leaveCopy.en,words=Object.fromEntries(Object.entries(source).map(([key,value])=>[key,runtimeText(value)]));$("#battleLeaveTitle").textContent=words.title;$("#battleLeaveText").textContent=words.text;$("#battleContinueBtn").textContent=words.continue;$("#battleLeaveBtn").textContent=words.leave;setBattleModalInert(nodes.leaveModal,true);(__wpNotifyMeasurement(), nodes.leaveModal.hidden=false);$("#battleContinueBtn").focus({preventScroll:true})}
   function closeBattleLeave(resume=true){if(nodes.leaveModal.hidden)return;(__wpNotifyMeasurement(), nodes.leaveModal.hidden=true);setBattleModalInert(nodes.leaveModal,false);if(resume&&!leaveWasPaused)setPaused(false);if(resume)$("#battleBackBtn").focus({preventScroll:true})}
   function trapBattleLeaveFocus(event){if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}if(event.key==="Escape"){event.preventDefault();closeBattleLeave();return}if(event.key!=="Tab"||nodes.leaveModal.hidden)return;const actions=[...nodes.leaveModal.querySelectorAll("button:not(:disabled)")],first=actions[0],last=actions.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}
-  $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){
-    $("#localeSelect").value=locale;
     const preserveStageControlFocus=event=>{
       if(document.body.dataset.screen==="stage"&&!nodes.rail.contains(event.target))stageFocusGeneration+=1;
     };
     nodes.stage.addEventListener("focusin",preserveStageControlFocus);
     nodes.stage.addEventListener("pointerdown",preserveStageControlFocus,true);
-    const soundToggle=$("#soundToggle");
-    if(soundToggle){
-      soundToggle.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
-      soundToggle.addEventListener("click",()=>{window.WeightPlayAudio?.unlock?.();window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio?.isMuted?.());syncSoundToggle()});
-    }
-    const handleLocaleSelect=async event=>{if(event.target?.id!=="localeSelect")return;const requested=normalizeLocale(event.target.value);if(requested===locale)return;try{await ensureRuntimeCatalog(requested)}catch(error){console.error(error);event.target.value=locale;return}locale=requested;window.WonderI18n?.setLocale?.(requested);writeOptionalStorage(localeKey,requested);localize()};
-    document.addEventListener("input",handleLocaleSelect,true);
-    document.addEventListener("change",handleLocaleSelect,true);
-  window.addEventListener("wonder:locale-change",async event=>{if(!event.detail?.locale)return;const requested=normalizeLocale(event.detail.locale);if(requested===locale)return;try{await ensureRuntimeCatalog(requested)}catch(error){console.error(error);return}locale=requested;writeOptionalStorage(localeKey,requested);localize()});
-    $("#startBtn").addEventListener("click",()=>{track("stage_open",{source:"main"});const target=Math.max(0,Math.min(campaign.length-1,state.unlocked-1));centeredMission=target;stageBrowseLogical=target;show("stage");renderStage();focusMission(target,true)});
+    $("#startBtn").addEventListener("click",()=>{track("stage_open",{source:"main"});const target=Math.max(0,Math.min(campaign.length-1,state.unlocked-1));centeredMission=target;show("stage");renderStage();focusMission(target,true)});
+    $("#missionsTab").addEventListener("click",()=>selectStageTab(false));
+    $("#gadgetsTab").addEventListener("click",()=>selectStageTab(true));
     $("#stageBackBtn").addEventListener("click",()=>{track("map_return",{source:"stage_header"});show("main");focusMain()});
     $("#battleBackBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     $("#battleBackBtn").addEventListener("click",openBattleLeave);
@@ -768,30 +705,10 @@
     nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
     nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});$("#gadgetBtn").addEventListener("click",useGadget);
     $("#battleContinueBtn").addEventListener("click",()=>closeBattleLeave());
-    $("#battleLeaveBtn").addEventListener("click",()=>{track("map_return",{source:"battle_leave",mission:selectedMission+1});closeBattleLeave(false);centeredMission=selectedMission;stageBrowseLogical=selectedMission;show("stage");renderStage();focusMission(selectedMission,true)});
+    $("#battleLeaveBtn").addEventListener("click",()=>{track("map_return",{source:"battle_leave",mission:selectedMission+1});closeBattleLeave(false);centeredMission=selectedMission;show("stage");renderStage();focusMission(selectedMission,true)});
     $("#retryBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("retry",{mission:selectedMission+1});closeResult();__wpReplayStart(() => startMission(selectedMission,"retry"))});
-    $("#stagesBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("map_return",{source:"result",mission:selectedMission+1});closeResult();centeredMission=selectedMission;stageBrowseLogical=selectedMission;show("stage");renderStage();focusMission(selectedMission,true)});
+    $("#stagesBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("map_return",{source:"result",mission:selectedMission+1});closeResult();centeredMission=selectedMission;show("stage");renderStage();focusMission(selectedMission,true)});
     $("#nextBtn").addEventListener("click",()=>{if(!claimResultAction())return;const nextMission=Math.min(campaign.length-1,selectedMission+1);track("next_mission",{from_mission:selectedMission+1,to_mission:nextMission+1});closeResult();startMission(nextMission,"next")});
-  }
-  function bindMissionRailDrag(){
-    const rail=nodes.rail;
-    rail.addEventListener("click",event=>{const card=event.target.closest(".mission-card");if(!card)return;const index=Number(card.dataset.index);if(index>=0&&index<state.unlocked){const inputType=event.detail===0?"keyboard":"pointer";track("stage_select",{mission:index+1,input_type:inputType,unlocked:state.unlocked});startMission(index,inputType)}});
-    rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}const card=event.target.closest(".mission-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;const rtl=getComputedStyle(rail).direction==="rtl",index=Number(card.dataset.index);let next=index;if(event.key==="Home")next=0;else if(event.key==="End")next=campaign.length-1;else if(event.key==="ArrowLeft")next=Math.max(0,Math.min(campaign.length-1,index+(rtl?1:-1)));else next=Math.max(0,Math.min(campaign.length-1,index+(rtl?-1:1)));event.preventDefault();const baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior");rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");stageBrowseLogical=next;ensureStageWindow(next);const target=rail.querySelector(`[data-index="${next}"]`);markCenteredMission(next);target?.focus({preventScroll:true});positionStageRail(next);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
-    rail.addEventListener("wonder:stage-snap",event=>{
-      if(rail.dataset.wpStageVirtualized==="bounded-recycle"){markGeometricMission();return}
-      const index=Number(event.detail?.index);
-      if(Number.isInteger(index)&&index>=0)markCenteredMission(index);
-      else markGeometricMission();
-    });
-  }
-  function installVirtualStageDrag(){
-    const rail=nodes.rail;let pointerId=null,startX=0,lastX=0,logical=0,moved=false,suppressClick=false;
-    const restore=()=>{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type");rail.classList.remove("wp-stage-dragging");delete rail.dataset.wpStageSettling};
-    cancelStagePointer=()=>{pointerId=null;moved=false;restore()};
-    rail.addEventListener("pointerdown",event=>{if(document.body.dataset.screen!=="stage"||event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;if(stageSettleFrame)cancelAnimationFrame(stageSettleFrame);stageSettleFrame=0;pointerId=event.pointerId;startX=lastX=event.clientX;logical=stageBrowseLogical;moved=false;rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");event.stopImmediatePropagation()},true);
-    document.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}if(moved){if(event.cancelable)event.preventDefault();logical=positionStageRail(logical-delta/stageRailPitch());stageBrowseLogical=logical;stageCardPool.forEach(card=>bindMissionCard(card,Number(card.dataset.index)));markCenteredMission(Math.round(logical))}event.stopImmediatePropagation()},true);
-    const finish=event=>{if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;pointerId=null;if(!moved){restore();return}if(event.cancelable)event.preventDefault();suppressClick=true;setTimeout(()=>{suppressClick=false},0);const from=logical,target=Math.max(0,Math.min(campaign.length-1,Math.round(from))),started=performance.now();rail.dataset.wpStageSettling="true";const settle=now=>{const progress=Math.min(1,(now-started)/340),eased=progress*progress*(3-2*progress);stageBrowseLogical=positionStageRail(from+(target-from)*eased);if(progress<1)stageSettleFrame=requestAnimationFrame(settle);else{stageSettleFrame=0;ensureStageWindow(target);centerMission(target);restore()}};stageSettleFrame=requestAnimationFrame(settle);moved=false;event.stopImmediatePropagation()};
-    document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation()},true);
   }
   window.addEventListener("keydown",event=>{
     if(!playing||paused||event.target.matches("button,select,input,textarea"))return;
@@ -847,20 +764,38 @@
   Object.entries(openingReadabilityCopy).forEach(([code,values])=>Object.assign(copy[code]||(copy[code]={}),values));
   const checkpointStages=campaign.map((mission,index)=>mission.guardian?index+1:null).filter(Boolean);
   if(campaign.length!==30||new Set(campaign.map(mission=>mission.name[0])).size!==30||checkpointStages.join(",")!=="5,10,15,20,25,30")throw new Error("Moonlight Heist campaign depth contract failed.");
-  if(location.hostname==="localhost"||location.hostname==="127.0.0.1"||new URLSearchParams(location.search).has("wp_test")){
-    window.__ANIMAL_MOONLIGHT_HEIST_TEST__={
-      campaign:()=>campaign.map((mission,index)=>({stage:index+1,name:[...mission.name],rule:[...mission.rule],patrols:mission.patrols.length,safeZones:mission.safeZones?.length||0,order:mission.order||"any",mirror:Boolean(mission.mirrorInterval),clock:Boolean(mission.clockCycle),bell:Boolean(mission.bellPulse||mission.guardian?.behavior==="bell"||mission.guardian?.behavior==="eclipse"),spotlight:Boolean(mission.spotlight||mission.guardian?.behavior==="spotlight"||mission.guardian?.behavior==="eclipse"),guardian:mission.guardian?{id:mission.guardian.id,name:[...mission.guardian.name],behavior:mission.guardian.behavior}:null})),
-      unlockAll:()=>{state.unlocked=campaign.length;save();renderStage();return state.unlocked},
-       openMission:index=>{startMission(Math.max(0,Math.min(campaign.length-1,Number(index)||0)),"test-hook");return selectedMission+1},
-      placeFia:position=>{place(nodes.fia,position);resolveArrival();return{objectFound,treasureFound,exit:point(nodes.exit)}},
-      tickRules:seconds=>{missionStartedAt=performance.now()-Number(seconds)*1000;const factor=updateMissionRules(performance.now());return{factor,alert,object:point(nodes.objective),treasure:point(nodes.treasure),warning:Boolean(guardianPatrol()?.img.classList.contains("is-warning"))}},
-      translate:(code,key)=>{const previous=locale;locale=normalizeLocale(code);const value=t(key);locale=previous;return value},
-      showResult:(ok,medals=0,reward=0)=>{openResult(Boolean(ok),Number(medals)||0,Number(reward)||0);const __wpReturn = ({preview:document.querySelector("#nextMissionPreview")?.textContent||"",hidden:document.querySelector("#nextMissionPreview")?.hidden===true});
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
-return __wpReturn;},
-      snapshot:()=>({stage:selectedMission+1,unlocked:state.unlocked,screen:document.body.dataset.screen,objectFound,treasureFound,guardianPhase,patrols:patrols.length,guardian:guardianPatrol()?.guardian?.id||null,safeZones:document.querySelectorAll(".safe-zone").length,resultOpen:!nodes.modal.hidden,freezeRemaining:Math.max(0,freezeUntil-performance.now())})
-    };
-  }
+  // Read-only observation. Ordinary routes expose no model, save, time or outcome setters.
+  window.__moonlightHeistObservation=Object.freeze({snapshot:()=>({stage:selectedMission+1,selected:centeredMission+1,unlocked:state.unlocked,screen:document.body.dataset.screen,objectFound,treasureFound,playing,paused,alert,gadget,resultOpen:!nodes.modal.hidden,ready:assetsReady})});
   $("#battleBackBtn")?.setAttribute("data-wp-return","battle");
-  renderGadgets();bind();bindMissionRailDrag();installVirtualStageDrag();localize();$("#localeSelect option[value='zh-Hant']").textContent=decodeZh("\\u7e41\\u9ad4\\u4e2d\\u6587");show("main");
+  const frame=window.WeightPlayScreenFrame.mount({root:$("#moonlightHeistApp"),playUI:true,scenes:{
+    main:{root:nodes.main,header:nodes.main.querySelector("header"),content:$("#mainContent")},
+    stage:{root:nodes.stage,header:nodes.stage.querySelector("header"),content:$("#stageWorkspace")},
+    battle:{root:nodes.battle,header:nodes.battle.querySelector("header"),content:$("#battleWorkspace")}
+  }});
+  frame.stageTopUI.add($("#coinLabel"));
+  const battleGroup=window.WeightPlayScreenFrame.createGroup();
+  for(const node of [...$("#battleInfo").children])battleGroup.add(node);
+  $("#battleInfo").remove();frame.battleTopUI.add(battleGroup);
+  for(const node of [...$("#stageNavItems").children])frame.commonDownButton.add(node);
+  $("#stageNavItems").remove();
+  const stageConfig=window.WeightPlayMoonlightStageConfig.create({campaign,getState:()=>state,t,campaignText,medalProgress});
+  renderGadgets();bind();localize();show("main");
+  const loader=window.WeightPlayGameEntryLoader;
+  const required=[...new Set(["/assets/interface7-redrawn/animal-moonlight-heist.webp","/assets/animal-moonlight-heist-archive-background.png",
+    ...["fia","orla","gadget-lightning-dash","gadget-star-decoy","gadget-smoke-leaf","marker-treasure","marker-extraction","fx-extraction","fx-pickup","fx-warning","fx-shadow",...missionObjects.map(id=>`object-${id}`),...patrolArt.map(id=>`patrol-${id}`),...Object.keys(guardianCatalog).map(id=>`guardian-${guardianCatalog[id].id}`)].map(name=>`/assets/animal-moonlight-heist-${name}.webp`)])];
+  let loaded=0,loadFailed=false;loader.begin(required.length);$("#startBtn").disabled=true;
+  const timeout=setTimeout(()=>failLoad(new Error("Required image timeout")),20000);
+  function failLoad(error){if(loadFailed||assetsReady)return;loadFailed=true;clearTimeout(timeout);console.error("Moonlight Heist required image failed",error.message);loader.fail(undefined,()=>location.reload())}
+  Promise.all(required.map(src=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{if(!image.naturalWidth){reject(new Error(src));return}if(!loadFailed)loader.assetProgress(++loaded,required.length);resolve()};image.onerror=()=>reject(new Error(src));image.src=src}))).then(()=>{if(loadFailed)return;clearTimeout(timeout);assetsReady=true;$("#startBtn").disabled=false;loader.ready()}).catch(failLoad);
+  let settingsOpen=false,settingsWasPaused=false;
+  let tutorialWasPaused=false;
+  window.addEventListener('weightplay:tutorial-open',()=>{tutorialWasPaused=paused;if(playing&&!paused)setPaused(true)});
+  window.addEventListener('weightplay:tutorial-close',()=>{if(playing&&!tutorialWasPaused&&nodes.modal.hidden&&nodes.leaveModal.hidden)setPaused(false)});
+  window.addEventListener("weightplay:interaction-state",()=>{
+    const open=Boolean(document.querySelector('.wp-frame-popover:not([hidden])'));
+    if(open&&!settingsOpen){settingsOpen=true;settingsWasPaused=paused;if(playing&&!paused)setPaused(true)}
+    else if(!open&&settingsOpen){settingsOpen=false;if(playing&&!settingsWasPaused&&nodes.modal.hidden&&nodes.leaveModal.hidden)setPaused(false)}
+  });
+  window.addEventListener("pagehide",event=>{clearTimeout(timeout);selector?.cancel();if(!event.persisted){selector?.destroy();frame.destroy();stopBattleLoop()}});
+
 })();
