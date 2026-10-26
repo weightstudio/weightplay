@@ -7995,10 +7995,11 @@ window.WONDER_LOBBY.games.push({
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("nori-sandworks");
 
-// Meadow Touchdown: scoped new-game intake; internal Coming Soon production.
+// Meadow Touchdown: owner-approved v5 public release.
 window.WONDER_LOBBY.games.push({
-  id: "meadow-touchdown", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "index.html?preview=1", href: "games/meadow-touchdown/",
+  id: "meadow-touchdown", audience: "general", status: "playable",
+  href: "games/meadow-touchdown/",
+  previewVideo: "assets/previews/meadow-touchdown-battle.webm",
   title: { __localizedExact: true,
     en: "Meadow Touchdown", "zh-Hant": "草原達陣隊", "zh-Hans": "草原达阵队",
     ja: "草原タッチダウン", ko: "초원 터치다운", es: "Touchdown en la pradera",
