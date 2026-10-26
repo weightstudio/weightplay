@@ -1,4 +1,9 @@
 /* Flip Foundry: visible aim, deterministic ballistic contact, four landings per chapter. */
+import {COURSES,TOTAL_STAGES} from './campaign-data.mjs';
+import {launchState,stepFlight,simulate,invert,canInvert,targetAt,suggestedPulseWindows} from './model.mjs';
+import {readProgress,completeStage,persistProgress} from './progress.mjs';
+import {campaignCopy,ruleLabels} from './campaign-copy.mjs';
+import {FoundryScene} from './scene.mjs';
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -43,33 +48,38 @@
     hi: { preparing: "कार्यशाला तैयार हो रही है…", stageTitle: "कार्यशाला अध्याय", chapter: "अध्याय", platforms: "4 प्लेटफ़ॉर्म", wideStarts: "खुली शुरुआत", precisionFinish: "सटीक अंत", newSpacing: "नई दूरी", backMain: "मुख्य पृष्ठ पर लौटें", backStages: "अध्यायों पर लौटें", stageSections: "अध्याय अनुभाग", stages: "अध्याय", surface: "अध्याय {chapter} · प्लेटफ़ॉर्म {platform} / 4", ready: "कंटेनर पर ऊपर की ओर स्वाइप करें।", rotation: "घुमाव देखें…", miss: "बहुत हल्का या दिशा बहुत भटकी हुई…", perfect: "बेहतरीन लैंडिंग — अगला प्लेटफ़ॉर्म तैयार है।", canvas: "फ्लिप कार्यशाला का खेल क्षेत्र", hint: "ऊपर स्वाइप करें। छोटे स्वाइप नीचे रखते हैं; लंबे स्वाइप दूर ले जाते हैं।", bestStreak: "सर्वश्रेष्ठ सिलसिला", streak: "सिलसिला", best: "सर्वश्रेष्ठ", routeClear: "कार्यशाला मार्ग पूरा", chapterClear: "अध्याय पूरा", failed: "लैंडिंग विफल", resultCopy: "अध्याय {chapter} · प्लेटफ़ॉर्म {platform} · सिलसिला {streak} · सर्वश्रेष्ठ {best}", stagesAction: "अध्याय", nextSurface: "अगला प्लेटफ़ॉर्म", retry: "फिर कोशिश करें", nextChapter: "अगला अध्याय", replayFoundry: "फ्लिप कार्यशाला फिर खेलें", retryPlatform: "प्लेटफ़ॉर्म फिर आज़माएँ" },
     ar: { preparing: "جارٍ تجهيز الورشة…", stageTitle: "فصول الورشة", chapter: "الفصل", platforms: "4 منصات", wideStarts: "بداية واسعة", precisionFinish: "نهاية دقيقة", newSpacing: "تباعد جديد", backMain: "العودة إلى الرئيسية", backStages: "العودة إلى الفصول", stageSections: "أقسام الفصول", stages: "الفصول", surface: "الفصل {chapter} · المنصة {platform} / 4", ready: "مرّر إلى الأعلى على الحاوية البلورية.", rotation: "راقب الدوران…", miss: "القوة ضعيفة أو المسار منحرف جداً…", perfect: "هبوط مثالي — المنصة التالية جاهزة.", canvas: "منطقة لعب ورشة القلب", hint: "مرّر إلى الأعلى. التمريرات القصيرة تبقي الحاوية منخفضة؛ والطويلة تجعلها تصعد أبعد.", bestStreak: "أفضل تتابع", streak: "التتابع", best: "الأفضل", routeClear: "اكتمل مسار الورشة", chapterClear: "اكتمل الفصل", failed: "فشل الهبوط", resultCopy: "الفصل {chapter} · المنصة {platform} · التتابع {streak} · الأفضل {best}", stagesAction: "الفصول", nextSurface: "المنصة التالية", retry: "إعادة المحاولة", nextChapter: "الفصل التالي", replayFoundry: "إعادة لعب ورشة القلب", retryPlatform: "إعادة محاولة المنصة" },
   };
-  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: 0, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(localStorage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "" };
+  const storage=(()=>{try{return localStorage;}catch{return {getItem:()=>null,setItem:()=>{}};}})();
+  let progress=readProgress(storage,TOTAL_STAGES),world=null;
+  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: Math.min(TOTAL_STAGES,progress.unlocked)-1, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(storage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "", nozzle:'direct',clock:0,attempts:0,graphicsLost:false };
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
+  const expansion = () => campaignCopy(currentLocale(),TOTAL_STAGES);
+  const stageTitle = id => `${expansion().stage} ${id} / ${TOTAL_STAGES}`;
   const fill = (value, values) => value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
   const label = (key, values = {}) => fill(copy()[key] || localeCopy.en[key] || key, values);
   const chapterPoster = "/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png";
   const chapterConfig = Object.freeze({
     gameId: "animal-flip-foundry",
-    count: 6,
+    count: TOTAL_STAGES,
     poster: chapterPoster,
     background: "/assets/lobby-block-atmosphere.svg",
     stage(index) {
-      if (!Number.isInteger(index) || index < 0 || index >= 6) throw new RangeError(`FLIP_CHAPTER_INDEX:${index}`);
+      if (!Number.isInteger(index) || index < 0 || index >= TOTAL_STAGES) throw new RangeError(`FLIP_CHAPTER_INDEX:${index}`);
       const id = index + 1;
       const c = copy();
-      const title = `${c.chapter} ${id}`;
-      const focus = id === 1 ? c.wideStarts : id === 6 ? c.precisionFinish : c.newSpacing;
+      const title = stageTitle(id),e=expansion();
+      const rules=[...new Set(COURSES[index].encounters.flatMap(encounter=>ruleLabels(encounter,e)))];
+      const focus = id<=6?(id === 1 ? c.wideStarts : id === 6 ? c.precisionFinish : c.newSpacing):rules.join(' · ');
       return {
         id,
         kicker: title,
         title,
-        subtitle: c.platforms,
-        status: c.platforms,
+        subtitle: `${id<=30?e.gearworks:e.observatory} · ${c.platforms}`,
+        status: id>progress.unlocked?e.locked:progress.cleared[id]?e.cleared:c.platforms,
         summary: focus,
         details: [focus, label("surface", {chapter:id, platform:1})],
-        locked: false,
-        cleared: false,
+        locked: id>progress.unlocked,
+        cleared: Boolean(progress.cleared[id]),
         poster: chapterPoster,
       };
     },
@@ -99,16 +109,12 @@
     const width = Math.max(1, arenaFrame.clientWidth);
     const height = Math.max(1, arenaFrame.clientHeight);
     const previousHeight = canvas.height;
-    const scale = Math.min(width / 960, height / 400);
+    const scale = Math.min(width / 960, height / 520);
     canvas.width = Math.max(960, Math.round(width / scale));
-    canvas.height = Math.max(400, Math.round(height / scale));
-    if (state.flight && canvas.height !== previousHeight) {
-      const shift = canvas.height - previousHeight;
-      state.flight.y += shift;
-      state.flight.trail.forEach(point => { point.y += shift; });
-    }
+    canvas.height = Math.max(520, Math.round(height / scale));
     canvas.style.width = `${Math.max(1, Math.floor(canvas.width * scale))}px`;
     canvas.style.height = `${Math.max(1, Math.floor(canvas.height * scale))}px`;
+    world?.resize(canvas.width,canvas.height,Math.floor(canvas.width*scale),Math.floor(canvas.height*scale));
     drawScene();
   };
   const scheduleArenaFit = () => requestAnimationFrame(() => requestAnimationFrame(fitArena));
@@ -122,6 +128,9 @@
     state.lastFrame = 0;
     audio?.stop();
     state.screen = name;
+    if(name!=='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-flip-foundry');
+    canvas.inert=name!=='battle';
+    document.getElementById('foundry-tools')?.toggleAttribute('inert',name!=='battle');
     document.body.dataset.screen = name === "result" ? "battle" : name;
     cancelAnimationFrame(state.raf);
     const result = $("result-screen");
@@ -164,16 +173,37 @@
   const audio = window.WeightPlayAudio?.createScope();
   window.WeightPlayAudio?.preload(['projectile.launch','movement.land','result.lose','result.win'])?.catch(()=>{});
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const courses = [
-    {gap:[300,340,320,370],rise:[0,25,0,35],width:190,wind:0,color:'#7cebc5'},
-    {gap:[350,390,330,420],rise:[30,60,15,55],width:166,wind:0,color:'#ffcb78'},
-    {gap:[400,350,440,390],rise:[65,90,45,100],width:148,wind:0,color:'#9bc8ff'},
-    {gap:[380,440,400,460],rise:[30,55,80,40],width:140,wind:.018,color:'#c7b0ff'},
-    {gap:[420,360,450,400],rise:[75,35,90,55],width:112,wind:0,color:'#ffb0b9'},
-    {gap:[440,400,480,450],rise:[65,110,45,95],width:120,wind:-.018,color:'#ffe18f'}
-  ];
-  // Source fence limits this owner task to game-owned files; formal spec/version
-  // assembly and independent acceptance follow the terminal maintenance receipt.
+  const tools=document.createElement('div');tools.id='foundry-tools';
+  tools.innerHTML='<div class="foundry-nozzle"><button id="foundry-direct" type="button"></button><button id="foundry-loft" type="button"></button></div><button id="foundry-invert" type="button"></button><output id="foundry-charge"></output>';
+  document.querySelector('.touch-hint').before(tools);
+  const recovery=document.createElement('div');recovery.className='foundry-recovery';recovery.hidden=true;
+  recovery.innerHTML='<p></p><button type="button"></button>';arenaFrame.append(recovery);
+  function createWorld(){
+    try{world?.dispose();world=new FoundryScene(arenaFrame,()=>{state.graphicsLost=true;state.drag=null;state.charge=null;recovery.hidden=false;},()=>{state.graphicsLost=false;recovery.hidden=true;state.lastFrame=0;state.accumulator=0;fitArena();});state.graphicsLost=false;recovery.hidden=true;fitArena();}
+    catch(error){state.graphicsLost=true;recovery.hidden=false;console.warn('FOUNDRY_WEBGL_UNAVAILABLE',error.message);}
+  }
+  recovery.querySelector('button').addEventListener('click',()=>{if(world?.contextLost)world.renderer.forceContextRestore();else createWorld();});
+  function chooseNozzle(value){if(state.screen!=='battle'||state.flight||state.settle||state.chapter<7)return;state.nozzle=value;updateTools();drawScene();canvas.focus({preventScroll:true});}
+  $('foundry-direct').addEventListener('click',()=>chooseNozzle('direct'));
+  $('foundry-loft').addEventListener('click',()=>chooseNozzle('loft'));
+  $('foundry-invert').addEventListener('click',pulse);
+  function pulse(){
+    if(state.screen!=='battle'||document.hidden||state.graphicsLost||!state.flight)return;
+    const next=invert(state.flight,config()),e=expansion();
+    if(next){state.flight=next;audio?.play('mechanism.unlock');updateTools();}
+    else setStatus(state.flight.cells?e.blocked:e.spent);
+  }
+  function updateTools(){
+    const c=config(),e=expansion();tools.hidden=state.chapter<7;
+    $('foundry-direct').textContent=e.direct;$('foundry-loft').textContent=e.loft;
+    tools.querySelector('.foundry-nozzle').setAttribute('aria-label',e.nozzle);
+    for(const name of ['direct','loft']){$('foundry-'+name).disabled=!!state.flight||!!state.settle;$('foundry-'+name).setAttribute('aria-pressed',String(state.nozzle===name));}
+    $('foundry-invert').hidden=!c.polarity;$('foundry-invert').textContent=e.invert;
+    $('foundry-invert').disabled=!canInvert(state.flight,c);
+    $('foundry-charge').hidden=!c.polarity;
+    $('foundry-charge').textContent=`${(state.flight?.sign??c.polarity)>0?'+':'−'} · ${e.cell} ${state.flight?.cells??1} / 1`;
+    recovery.querySelector('p').textContent=e.webgl;recovery.querySelector('button').textContent=e.recover;
+  }
   const clarity = {
     en:['FLIP • LAND • BUILD','Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.','START','LAND HERE','Drag up to aim','Release to flip','Too short — drag farther up.','Too far — use a shorter drag.','On target — release!','Four landings complete the chapter.','Hold Space, release to flip.','Clean landing!','Route progress','Drag farther to reach the platform.','Ease back: your arc passes the platform.'],
     'zh-Hant':['翻轉 · 落地 · 完工','按住畫面向上拖，讓虛線落在發光平台，再放手翻轉。','起點','落在這裡','向上拖曳，預覽落點','放手翻轉','差一點！下次向上拖長一些。','飛過頭了！下次縮短拖曳。','落點正確，現在放手！','落穩 4 次，完成這一章。','按住空白鍵蓄力，放開翻轉。','漂亮落地！','工坊進度','再向上拖長一些，就能到達平台。','稍微往回收，落點已超過平台。'],
@@ -191,44 +221,26 @@
   };
   const tip = n => (clarity[currentLocale()] || clarity.en)[n] || (clarity[currentLocale()] || clarity.en)[n === 13 ? 6 : n === 14 ? 7 : n];
   function updateGuide() {
-    const guide = document.querySelector('.game-page-info-static');
+    const guide = document.querySelector('.game-page-info');
     if (!guide) return;
-    const replace = (selector, value) => { const node=guide.querySelector(selector); if(node && node.textContent!==value)node.textContent=value; };
-    replace('.game-info-title > p',tip(1));
-    replace('.game-info-story p:nth-of-type(2)',tip(9));
-    replace('.game-info-systems li:first-child',tip(1));
-    replace('ol li:nth-child(2)',tip(4));
-    replace('ol li:nth-child(3)',tip(1));
-    replace('.game-info-strategy li:nth-child(1)',tip(1));
-    replace('.game-info-strategy li:nth-child(2)',tip(13));
-    replace('.game-info-strategy li:nth-child(3)',tip(14));
-    replace('dl > div:nth-child(1) dd',tip(1));
-    replace('dl > div:nth-child(2) dd',tip(1));
-    replace('dl > div:nth-child(6) dd',tip(13)+' '+tip(14));
+    const e=expansion(),intro=guide.querySelector('.game-info-title > p');if(intro)intro.textContent=e.intro;
+    const host=guide.querySelector('.game-info-sections');if(!host)return;
+    const related=host.querySelector('.game-info-related-section');
+    const sections=[[e.gearworks,tip(1)+' '+e.aimGuide],[e.observatory,e.magnetGuide],[`${e.stage} 1–${TOTAL_STAGES}`,e.saveGuide]];
+    host.replaceChildren(...sections.map(([heading,copy])=>{const section=document.createElement('div');section.className='game-info-section';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=heading;p.textContent=copy;section.append(h,p);return section;}),...(related?[related]:[]));
   }
   const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
   const save = (key,value) => { try { localStorage.setItem(key,String(value)); } catch {} };
   function config() {
-    const course=courses[state.chapter-1], i=state.platform-1;
-    return {...course, x:190, y:canvas.height-135, targetX:190+course.gap[i], targetY:canvas.height-135-course.rise[i]};
+    return COURSES[state.chapter-1].encounters[state.platform-1];
   }
-  function shot(force) { return {vx:2.7+force*.026,vy:-3.8-force*.024}; }
   function trajectory(force) {
-    const c=config(), v=shot(force), points=[];
-    let x=c.x,y=c.y-36,vx=v.vx,vy=v.vy;
-    for(let t=0;t<180;t++){
-      const oldY=y, oldX=x; x+=vx; y+=vy; vx+=c.wind; vy+=.24;
-      if(t%4===0) points.push({x,y});
-      if(vy>0 && oldY<=c.targetY-36 && y>=c.targetY-36){
-        const ratio=(c.targetY-36-oldY)/(y-oldY), landingX=oldX+(x-oldX)*ratio;
-        return {points,x:landingX,y:c.targetY-36,t:t+ratio,hit:Math.abs(landingX-c.targetX)<=c.width/2-22};
-      }
-    }
-    return {points,x,y,t:180,hit:false};
+    const c=config(),result=simulate(c,force,state.nozzle,state.clock,suggestedPulseWindows(c)||[]);
+    return {...result.flight,points:result.path.filter((_,i)=>i%4===0),t:result.flight.age,hit:result.hit};
   }
   function setStatus(text){ const el=$('battle-status'); if(el.textContent!==text) el.textContent=text; }
   function forceNow(){ return state.charge!==null && state.charge!==undefined ? clamp((performance.now()-state.charge)*.16,0,300) : state.drag?.force || 0; }
-  function renderResult() { if (state.resultWin === null) return; const c = copy(); const nextAvailable = state.resultWin && state.chapter < 6; $("result-title").textContent = state.resultWin ? (state.chapter === 6 ? c.routeClear : c.chapterClear) : c.failed; $("result-copy").textContent = (state.resultWin ? tip(9) : state.missReason || tip(6)) + " · " + label("resultCopy", { chapter: state.chapter, platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = c.stagesAction; $("retry").textContent = c.retry; $("next").textContent = c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
+  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = c.stagesAction; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
   function renderLocalized() {
     const c = copy();
     const mainTitle = document.querySelector(".main-title")?.textContent || "Flip Foundry";
@@ -248,53 +260,51 @@
     $("reset-surface").title = c.retry;
     $("reset-surface").setAttribute("aria-label", c.retry);
     $("arena").setAttribute("aria-label", c.canvas);
-    $("main-progress").textContent = `${c.bestStreak}: ${state.best}`;
-    $("surface-label").textContent = label("surface", {chapter:state.chapter, platform:state.platform});
-    $("chapter-stat-label").textContent = c.chapter;
+    $("main-progress").textContent = `${expansion().cleared}: ${Object.keys(progress.cleared).length} / ${TOTAL_STAGES} · ${c.bestStreak}: ${state.best}`;
+    $("surface-label").textContent = `${stageTitle(state.chapter)} · ${state.platform} / 4`;
+    $("chapter-stat-label").textContent = state.chapter<=30?expansion().gearworks:expansion().observatory;
     $("streak-stat-label").textContent = c.streak;
     $("best-stat-label").textContent = c.best;
     $("streak-label").textContent = String(state.streak);
     $("best-streak-label").textContent = String(state.best);
     $("battle-status").textContent = state.status === "ready" ? tip(4) : state.status === "perfect" ? tip(11) : label(state.status);
-    document.querySelector(".touch-hint").textContent = tip(1);
-    document.querySelector(".main-summary").textContent = tip(1);
+    document.querySelector(".touch-hint").textContent = state.chapter<=6?tip(1):ruleLabels(config(),expansion()).join(' · ');
+    document.querySelector(".main-summary").textContent = expansion().intro;
     canvas.setAttribute("aria-label", `${c.canvas}. ${tip(10)}`);
     if (state.cardsLocale !== currentLocale()) cards();
     renderResult();
+    updateTools();
     drawScene();
   }
-  function start(chapter = 1, platform = 1) { state.chapter = chapter; state.platform = platform; state.selectedChapterIndex = chapter - 1; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.status = "ready"; state.resultWin = null; show("battle"); renderLocalized();
+  function start(chapter = 1, platform = 1) { if(!Number.isInteger(chapter)||chapter<1||chapter>TOTAL_STAGES||chapter>progress.unlocked||!Number.isInteger(platform)||platform<1||platform>4)return; if(platform===1||chapter!==state.chapter)state.attempts=0;state.chapter = chapter; state.platform = platform; state.selectedChapterIndex = chapter - 1; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.clock=0;state.nozzle='direct';state.status = "ready"; state.resultWin = null; show("battle"); renderLocalized();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function launch(force) {
-    if(state.flight || state.settle || state.screen!=='battle') return;
+    if(state.flight || state.settle || state.screen!=='battle'||state.graphicsLost||document.hidden) return;
     if(force<16){setStatus(tip(4));return;}
-    const c=config(), v=shot(force), prediction=trajectory(force);
-    state.flight={x:c.x,y:c.y-36,vx:v.vx,vy:v.vy,age:0,duration:prediction.t,angle:0,trail:[]};
+    const c=config(),prediction=trajectory(force);state.attempts++;
+    state.flight={...launchState(c,force,state.nozzle,state.clock),duration:prediction.t,angle:0,trail:[]};
     state.lastFrame=0;state.status='rotation';state.missReason='';
     setStatus(copy().rotation); audio?.play('projectile.launch');
   }
   function tick(){
+    state.clock++;
     if(state.settle){
       state.settle.t--;
-      if(state.settle.t<=0){const win=state.settle.win;state.settle=null;state.flight=null;if(win && state.platform<4){state.platform++;state.status='perfect';renderLocalized();}else finish(win);}
+      if(state.settle.t<=0){const win=state.settle.win;state.settle=null;state.flight=null;if(win && state.platform<4){state.platform++;state.clock=0;state.status='perfect';renderLocalized();}else finish(win);}
       return;
     }
-    const f=state.flight;if(!f)return;
-    const c=config(), oldY=f.y, oldX=f.x;
-    f.x+=f.vx;f.y+=f.vy;f.vx+=c.wind;f.vy+=.24;f.age++;
+    if(!state.flight)return;
+    const c=config(),f=stepFlight(state.flight,c);state.flight=f;
     f.angle=Math.min(1,f.age/f.duration)*Math.PI*2;
     f.trail.push({x:f.x,y:f.y}); if(f.trail.length>14)f.trail.shift();
-    if(f.vy>0 && oldY<=c.targetY-36 && f.y>=c.targetY-36){
-      const ratio=(c.targetY-36-oldY)/(f.y-oldY), x=oldX+(f.x-oldX)*ratio;
-      if(Math.abs(x-c.targetX)<=c.width/2-22){f.x=x;f.y=c.targetY-36;f.angle=0;resolveLanding(true);return;}
-      state.missReason=x<c.targetX?tip(6):tip(7);
-    }
-    if(f.y>canvas.height+60 || f.x>1100) resolveLanding(false);
+    updateTools();
+    if(f.status==='landed'){f.angle=0;resolveLanding(true);return;}
+    if(f.status==='miss'){const e=expansion();state.missReason=({ring:e.ringMiss,roof:e.roofMiss,polarity:e.signMiss,short:tip(6),long:tip(7)})[f.reason];resolveLanding(false);}
   }
   function frame(now){
     if(state.screen!=='battle')return;
-    if(!document.hidden){
+    if(!document.hidden&&!state.graphicsLost){
       const elapsed=state.lastFrame?Math.min(50,now-state.lastFrame):16.667;
       state.accumulator=(state.accumulator||0)+elapsed;
       while(state.accumulator>=16.667){tick();state.accumulator-=16.667;}
