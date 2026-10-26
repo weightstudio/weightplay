@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v62">
+  <meta name="weightplay-game-version" content="v63">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="description" content="Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso." />
@@ -34,8 +34,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/alien-defender/" />
     <title>Difensore Alieno | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261017-interface9-guide-theme1">
-  <link rel="stylesheet" href="style.css?v=20261023-alien-defender-v62">
-  <link rel="stylesheet" href="art.css?v=20261023-alien-defender-v62">
+  <link rel="stylesheet" href="style.css?v=20261023-alien-defender-v63-stage60">
+  <link rel="stylesheet" href="art.css?v=20261023-alien-defender-v63-stage60">
   <script src="../../src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style>
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
@@ -81,7 +81,7 @@
 }
     </script>
   </head>
-<body data-game-id="alien-defender" data-wp-game-id="alien-defender" data-wp-game-version="v62" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-screen="main">
+<body data-game-id="alien-defender" data-wp-game-id="alien-defender" data-wp-game-version="v63" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-screen="main">
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Difensore Alieno</h1>
@@ -94,8 +94,8 @@
         <section class="hero-card">
           <img class="main-poster" src="/assets/interface7-redrawn/alien-defender.webp" width="1254" height="1254" fetchpriority="high" alt="" aria-hidden="true">
           <div class="main-copy">
-            <p class="lead main-summary" data-copy="guideIntro">Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso.</p>
-          <p id="mainProgress" class="main-progress">1 / 30 unlocked</p>
+            <p class="lead main-summary" data-copy="guideIntro">Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora.</p>
+          <p id="mainProgress" class="main-progress">1 / 60 sbloccati</p>
             <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start" data-runtime-localize="off">Inizia la difesa</button>
           </div>
         </section>
@@ -109,7 +109,7 @@
           <strong data-wp-frame-title data-copy="title">Difensore Alieno</strong>
         </header>
         <div id="stageInfo" hidden>
-          <strong id="stageProgressText" data-copy="stageProgress">{unlocked} / 30 sbloccati</strong>
+          <strong id="stageProgressText" data-copy="stageProgress">1 / 60 sbloccati</strong>
           <span class="stage-credits"><span data-copy="credits">Energia</span> <strong id="creditValue">0</strong></span>
         </div>
         <div id="stageWorkspace" class="stage-workspace">
@@ -144,7 +144,7 @@
           <strong data-wp-frame-title data-copy="title">Difensore Alieno</strong>
         </header>
         <div id="battleStats" class="hud-stats" hidden>
-          <div class="hud-stat"><span class="hud-label" data-copy="stage">Livello</span><strong id="waveValue">1 / 30</strong></div>
+          <div class="hud-stat"><span class="hud-label" data-copy="stage">Livello</span><strong id="waveValue">1 / 60</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="score">Punteggio</span><strong id="scoreValue">0</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="shields">Scudo</span><strong id="shieldValue">1</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="lives">Vite</span><strong id="livesValue">5</strong></div>
@@ -162,7 +162,7 @@
     </section>
 
     <section id="resultScreen" class="screen result-screen" data-screen="result" hidden>
-      <div class="result-card"><p class="result-kicker" data-copy="resultKicker">Rapporto di difesa</p><h2 id="resultTitle">Stazione al sicuro</h2><p id="resultCopy"></p><p id="resultGoal" class="result-goal" aria-live="polite"></p><div class="result-stats"><span><b data-copy="score">Punteggio</b><strong id="resultScore">0</strong></span><span><b data-copy="best">Record</b><strong id="resultBest">0</strong></span><span><b data-copy="stageReached">Livello raggiunto</b><strong id="resultWave">1 / 30</strong></span><span><b data-copy="credits">Energia</b><strong id="resultCredits">0</strong></span></div><div class="result-actions"><button id="resultStages" class="secondary-action" type="button" data-copy="stages">Livelli</button><button id="nextStageBtn" class="primary-action" type="button" data-copy="nextStage">Livello successivo</button><button id="retryBtn" class="secondary-action" type="button" data-copy="replay">Rigioca</button></div></div>
+      <div class="result-card"><p class="result-kicker" data-copy="resultKicker">Rapporto di difesa</p><h2 id="resultTitle">Stazione al sicuro</h2><p id="resultCopy"></p><p id="resultGoal" class="result-goal" aria-live="polite"></p><div class="result-stats"><span><b data-copy="score">Punteggio</b><strong id="resultScore">0</strong></span><span><b data-copy="best">Record</b><strong id="resultBest">0</strong></span><span><b data-copy="stageReached">Livello raggiunto</b><strong id="resultWave">1 / 60</strong></span><span><b data-copy="credits">Energia</b><strong id="resultCredits">0</strong></span></div><div class="result-actions"><button id="resultStages" class="secondary-action" type="button" data-copy="stages">Livelli</button><button id="nextStageBtn" class="primary-action" type="button" data-copy="nextStage">Livello successivo</button><button id="retryBtn" class="secondary-action" type="button" data-copy="replay">Rigioca</button></div></div>
     </section>
   </div>
 
@@ -173,9 +173,9 @@
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
   <script src="../../src/wallet.js?v=20261023"></script>
-  <script src="stage-config.js?v=20261023-alien-defender-v62"></script>
-  <script src="frame.js?v=20261023-alien-defender-v62"></script>
-  <script type="module" src="game.js?v=20261014-guide-i9-v62&wp-audio=1.0.0"></script>
+  <script src="stage-config.js?v=20261023-alien-defender-v63-stage60"></script>
+  <script src="frame.js?v=20261023-alien-defender-v63-stage60"></script>
+  <script type="module" src="game.js?v=20261014-guide-i9-v63-stage60&wp-audio=1.0.0"></script>
   <section class="game-page-info game-page-info-static" aria-label="Informazioni su Difensore Alieno">
 
     <div class="game-info-hero">

@@ -36,19 +36,26 @@ export class Table{
  shoot(angle,power){if(this.moving||this.outcome||!this.cue.active||!Number.isFinite(angle)||!Number.isFinite(power))return false;this.turn++;this.moving=true;this.elapsed=0;this.accumulator=0;for(const b of this.balls)b.bank=false;const v=5+clamp(power,.05,1)*16;this.cue.vx=Math.sin(angle)*v;this.cue.vz=-Math.cos(angle)*v;this.emit('shot',{x:this.cue.x,z:this.cue.z});return true;}
  update(dt){if(!this.moving||this.outcome)return;this.accumulator+=clamp(finite(dt),0,.06);let steps=0;while(this.accumulator>=1/240&&steps++<16){this.step(1/240);this.accumulator-=1/240;if(!this.moving)break;}}
  step(dt){
-  this.elapsed+=dt;const active=this.balls.filter(b=>b.active),r=FIELD.r;
-  for(const b of active){b.x+=b.vx*dt;b.z+=b.vz*dt;const decay=Math.exp(-1.05*dt);b.vx*=decay;b.vz*=decay;
-   let pocket=-1;for(const i of this.open){const p=POCKETS[i];if(Math.hypot(b.x-p[0],b.z-p[1])<FIELD.pocket){pocket=i;break;}}
-   if(pocket>=0){this.pot(b,pocket);continue;}
-   let bank=false;if(Math.abs(b.x)>FIELD.x-r){b.x=Math.sign(b.x)*(FIELD.x-r);b.vx=-b.vx*.88;bank=true;}
-   if(Math.abs(b.z)>FIELD.z-r){b.z=Math.sign(b.z)*(FIELD.z-r);b.vz=-b.vz*.88;bank=true;}
-   if(bank){b.bank=true;this.emit('bank',{id:b.id,x:b.x,z:b.z,speed:Math.hypot(b.vx,b.vz)});}
+  this.elapsed+=dt;const r=FIELD.r;let remaining=dt;
+  const advance=t=>{const decay=Math.exp(-1.05*t);for(const b of this.balls)if(b.active){b.x+=b.vx*t;b.z+=b.vz*t;b.vx*=decay;b.vz*=decay;}};
+  // Resolve first contact at its time of impact. End-of-step overlap normals
+  // made a fast thin cut leave at a different angle from the aim ray.
+  const circleTime=(dx,dz,vx,vz,radius)=>{const q=dx*dx+dz*dz-radius*radius,dot=dx*vx+dz*vz,v=vx*vx+vz*vz;if(q<=1e-9)return dot<-1e-9?0:null;if(v<1e-12||dot>=0)return null;const disc=dot*dot-v*q;return disc>=0?(-dot-Math.sqrt(disc))/v:null;};
+  for(let n=0;remaining>1e-9&&n<24;n++){
+   let event=null,first=remaining;const offer=(time,type,data)=>{if(time!==null&&time>=-1e-9&&time<=first){first=Math.max(0,time);event={type,...data};}};
+   const active=this.balls.filter(b=>b.active);
+   for(let i=0;i<active.length;i++)for(let j=i+1;j<active.length;j++){const a=active[i],b=active[j];offer(circleTime(b.x-a.x,b.z-a.z,b.vx-a.vx,b.vz-a.vz,2*r),'contact',{a,b});}
+   for(const b of active){
+    for(const axis of ['x','z'])if(Math.abs(b['v'+axis])>1e-10){const bound=(FIELD[axis]-r)*Math.sign(b['v'+axis]);offer((bound-b[axis])/b['v'+axis],'bank',{b,axis,bound});}
+    for(const pocket of this.open){const p=POCKETS[pocket];offer(circleTime(b.x-p[0],b.z-p[1],b.vx,b.vz,FIELD.pocket),'pot',{b,pocket});}
+   }
+   advance(first);remaining-=first;if(!event)break;
+   if(event.type==='pot'){this.pot(event.b,event.pocket);continue;}
+   if(event.type==='bank'){const {b,axis,bound}=event;b[axis]=bound;b['v'+axis]*=-.88;b.bank=true;this.emit('bank',{id:b.id,x:b.x,z:b.z,speed:Math.hypot(b.vx,b.vz)});continue;}
+   const {a,b}=event;let dx=b.x-a.x,dz=b.z-a.z,d=Math.hypot(dx,dz);if(d<1e-9){dx=1;dz=0;d=1;}const nx=dx/d,nz=dz/d,overlap=Math.max(0,(2*r-d)/2);a.x-=nx*overlap;a.z-=nz*overlap;b.x+=nx*overlap;b.z+=nz*overlap;
+   const relative=(a.vx-b.vx)*nx+(a.vz-b.vz)*nz;if(relative>0){const impulse=relative*.985;a.vx-=impulse*nx;a.vz-=impulse*nz;b.vx+=impulse*nx;b.vz+=impulse*nz;this.emit('contact',{x:(a.x+b.x)/2,z:(a.z+b.z)/2,speed:relative});}
   }
-  for(let i=0;i<active.length;i++)for(let j=i+1;j<active.length;j++){
-   const a=active[i],b=active[j];if(!a.active||!b.active)continue;let dx=b.x-a.x,dz=b.z-a.z,d=Math.hypot(dx,dz);if(d>=2*r)continue;if(d<1e-6){dx=1;dz=0;d=1;}
-   const nx=dx/d,nz=dz/d,overlap=(2*r-d)/2;a.x-=nx*overlap;a.z-=nz*overlap;b.x+=nx*overlap;b.z+=nz*overlap;
-   const relative=(a.vx-b.vx)*nx+(a.vz-b.vz)*nz;if(relative<=0)continue;const impulse=relative*.985;a.vx-=impulse*nx;a.vz-=impulse*nz;b.vx+=impulse*nx;b.vz+=impulse*nz;this.emit('contact',{x:(a.x+b.x)/2,z:(a.z+b.z)/2,speed:relative});
-  }
+  if(remaining>1e-9)advance(remaining);
   for(const b of this.balls)if(Math.hypot(b.vx,b.vz)<.12){b.vx=0;b.vz=0;}
   if(this.elapsed>=8||!this.balls.some(b=>b.active&&(b.vx||b.vz))){for(const b of this.balls){b.vx=0;b.vz=0;}this.settle();}
  }

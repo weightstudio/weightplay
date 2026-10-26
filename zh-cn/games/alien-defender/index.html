@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v62">
+  <meta name="weightplay-game-version" content="v63">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="description" content="驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。" />
@@ -34,8 +34,8 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/alien-defender/" />
     <title>星际守卫 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261017-interface9-guide-theme1">
-  <link rel="stylesheet" href="style.css?v=20261023-alien-defender-v62">
-  <link rel="stylesheet" href="art.css?v=20261023-alien-defender-v62">
+  <link rel="stylesheet" href="style.css?v=20261023-alien-defender-v63-stage60">
+  <link rel="stylesheet" href="art.css?v=20261023-alien-defender-v63-stage60">
   <script src="../../src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style>
   <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261017-shared-play-spacing1">
@@ -81,7 +81,7 @@
 }
     </script>
   </head>
-<body data-game-id="alien-defender" data-wp-game-id="alien-defender" data-wp-game-version="v62" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-screen="main">
+<body data-game-id="alien-defender" data-wp-game-id="alien-defender" data-wp-game-version="v63" data-wp-interface-version="9" data-wp-combined-sound="true" data-runtime-localize="off" data-screen="main">
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">星际守卫</h1>
@@ -94,8 +94,8 @@
         <section class="hero-card">
           <img class="main-poster" src="/assets/interface7-redrawn/alien-defender.webp" width="1254" height="1254" fetchpriority="high" alt="" aria-hidden="true">
           <div class="main-copy">
-            <p class="lead main-summary" data-copy="guideIntro">驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。</p>
-          <p id="mainProgress" class="main-progress">1 / 30 unlocked</p>
+            <p class="lead main-summary" data-copy="guideIntro">驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。</p>
+          <p id="mainProgress" class="main-progress">已解锁 1 / 60</p>
             <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start" data-runtime-localize="off">开始防守</button>
           </div>
         </section>
@@ -109,7 +109,7 @@
           <strong data-wp-frame-title data-copy="title">星际守卫</strong>
         </header>
         <div id="stageInfo" hidden>
-          <strong id="stageProgressText" data-copy="stageProgress">已解锁 {unlocked} / 30</strong>
+          <strong id="stageProgressText" data-copy="stageProgress">已解锁 1 / 60</strong>
           <span class="stage-credits"><span data-copy="credits">能源点</span> <strong id="creditValue">0</strong></span>
         </div>
         <div id="stageWorkspace" class="stage-workspace">
@@ -144,7 +144,7 @@
           <strong data-wp-frame-title data-copy="title">星际守卫</strong>
         </header>
         <div id="battleStats" class="hud-stats" hidden>
-          <div class="hud-stat"><span class="hud-label" data-copy="stage">关卡</span><strong id="waveValue">1 / 30</strong></div>
+          <div class="hud-stat"><span class="hud-label" data-copy="stage">关卡</span><strong id="waveValue">1 / 60</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="score">分数</span><strong id="scoreValue">0</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="shields">护盾</span><strong id="shieldValue">1</strong></div>
           <div class="hud-stat"><span class="hud-label" data-copy="lives">生命</span><strong id="livesValue">5</strong></div>
@@ -162,7 +162,7 @@
     </section>
 
     <section id="resultScreen" class="screen result-screen" data-screen="result" hidden>
-      <div class="result-card"><p class="result-kicker" data-copy="resultKicker">防守报告</p><h2 id="resultTitle">信号站守住了</h2><p id="resultCopy"></p><p id="resultGoal" class="result-goal" aria-live="polite"></p><div class="result-stats"><span><b data-copy="score">分数</b><strong id="resultScore">0</strong></span><span><b data-copy="best">最高</b><strong id="resultBest">0</strong></span><span><b data-copy="stageReached">到达关卡</b><strong id="resultWave">1 / 30</strong></span><span><b data-copy="credits">能源点</b><strong id="resultCredits">0</strong></span></div><div class="result-actions"><button id="resultStages" class="secondary-action" type="button" data-copy="stages">关卡</button><button id="nextStageBtn" class="primary-action" type="button" data-copy="nextStage">下一关</button><button id="retryBtn" class="secondary-action" type="button" data-copy="replay">重玩</button></div></div>
+      <div class="result-card"><p class="result-kicker" data-copy="resultKicker">防守报告</p><h2 id="resultTitle">信号站守住了</h2><p id="resultCopy"></p><p id="resultGoal" class="result-goal" aria-live="polite"></p><div class="result-stats"><span><b data-copy="score">分数</b><strong id="resultScore">0</strong></span><span><b data-copy="best">最高</b><strong id="resultBest">0</strong></span><span><b data-copy="stageReached">到达关卡</b><strong id="resultWave">1 / 60</strong></span><span><b data-copy="credits">能源点</b><strong id="resultCredits">0</strong></span></div><div class="result-actions"><button id="resultStages" class="secondary-action" type="button" data-copy="stages">关卡</button><button id="nextStageBtn" class="primary-action" type="button" data-copy="nextStage">下一关</button><button id="retryBtn" class="secondary-action" type="button" data-copy="replay">重玩</button></div></div>
     </section>
   </div>
 
@@ -173,9 +173,9 @@
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
   <script src="../../src/wallet.js?v=20261023"></script>
-  <script src="stage-config.js?v=20261023-alien-defender-v62"></script>
-  <script src="frame.js?v=20261023-alien-defender-v62"></script>
-  <script type="module" src="game.js?v=20261014-guide-i9-v62&wp-audio=1.0.0"></script>
+  <script src="stage-config.js?v=20261023-alien-defender-v63-stage60"></script>
+  <script src="frame.js?v=20261023-alien-defender-v63-stage60"></script>
+  <script type="module" src="game.js?v=20261014-guide-i9-v63-stage60&wp-audio=1.0.0"></script>
   <section class="game-page-info game-page-info-static" aria-label="星际守卫 游戏信息">
 
     <div class="game-info-hero">

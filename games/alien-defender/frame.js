@@ -2,7 +2,7 @@
 (() => {
   'use strict';
 
-  window.mountAlienDefenderFrame = function mountAlienDefenderFrame({ t, stageConfig, getSelected, getUnlocked, getFirepower, setSelected, start }) {
+  window.mountAlienDefenderFrame = function mountAlienDefenderFrame({ t, stageConfig, stageCount, isCleared, getSelected, getUnlocked, getFirepower, setSelected, start }) {
     const root = document.getElementById('gameFrame');
     const main = document.getElementById('mainScreen');
     const stage = document.querySelector('#stageScreen .stage-canvas');
@@ -58,6 +58,8 @@
       config: window.AlienDefenderStageConfig({
         t,
         stageConfig,
+        count: stageCount,
+        cleared: isCleared,
         unlocked: getUnlocked,
         firepower: getFirepower,
       }),

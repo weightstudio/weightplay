@@ -31,6 +31,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   width:calc(20 * var(--wp-play-unit,1px))!important;height:calc(20 * var(--wp-play-unit,1px))!important;
 }
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-stat] {
+  box-sizing:border-box!important;
   color:var(--wp-ui-text)!important;font:600 calc(13 * var(--wp-play-unit,1px))/1.2 system-ui!important;
   text-transform:none!important;letter-spacing:normal!important;white-space:nowrap!important;
   overflow:hidden!important;text-overflow:ellipsis!important;
