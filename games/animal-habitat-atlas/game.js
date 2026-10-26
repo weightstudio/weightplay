@@ -727,7 +727,7 @@
         entry && habitats.some((h) => h.id === pick) && entry.answer === pick,
       ),
   });
-  // Original rescue strategy: six existing expedition IDs; no chapter expansion.
+  // Rescue strategy: original six IDs retained; explicit authored expansion follows.
   const rescuePlans = [
     {
       animals: [1, 5, 7],
@@ -784,8 +784,65 @@
       storm: 6,
     },
   ];
+  // Individually authored in the current 60-stage expansion contract.
+  rescuePlans.push(
+    {"animals":[1,5,7],"caches":[9,11],"rough":[],"wet":[2],"gaps":[6],"required":[5],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":4,"turns":16,"storm":0,"bridgeKits":1,"intent":"Build the C2 bridge, then divide the first three rescues; a single free bridge kit teaches crossing.","id":7},
+    {"animals":[0,4,8],"caches":[11,2],"rough":[0],"wet":[3],"gaps":[9],"required":[4],"links":[9],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":4,"turns":17,"storm":0,"bridgeKits":1,"intent":"Bridge B3 westward; reach the near animal before climbing to the far cache.","id":8},
+    {"animals":[0,1,3],"caches":[9,11],"rough":[],"wet":[2],"gaps":[4,5,6,7],"required":[1],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":4,"turns":18,"storm":0,"bridgeKits":1,"intent":"A complete river row closes every land bypass; the central bridge opens two upper branches.","id":9},
+    {"animals":[0,2,3],"caches":[8,11],"rough":[0],"wet":[1],"gaps":[4,5,6,7],"required":[0,3],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":19,"storm":0,"bridgeKits":1,"intent":"Bridge inspection: the western crossing and both upper endpoints must be restored.","id":10},
+    {"animals":[0,4,7],"caches":[9,3],"rough":[0,4],"wet":[1,5],"gaps":[6],"required":[4],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":19,"storm":5,"bridgeKits":1,"intent":"Protect the exposed west bank before committing supplies to the bridge; storms enter the extension.","id":11},
+    {"animals":[1,3,8],"caches":[11,2],"rough":[1,8],"wet":[4,9],"gaps":[6],"required":[8],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":20,"storm":5,"bridgeKits":1,"intent":"The lower animal competes with the upper pair; a water-first approach reduces rough-land cost.","id":12},
+    {"animals":[0,3,5],"caches":[9,2],"rough":[0,3],"wet":[1],"gaps":[6,7],"required":[5],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":19,"storm":4,"bridgeKits":1,"intent":"The second broken crossing is optional; reserve the single kit for the central route.","id":13},
+    {"animals":[0,2,8],"caches":[11,1],"rough":[0,8],"wet":[4],"gaps":[5,6],"required":[0],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":21,"storm":5,"bridgeKits":1,"intent":"Two gap mouths lead to different caches; the western required link rewards a deliberate detour.","id":14},
+    {"animals":[0,1,3,8],"caches":[9,11],"rough":[0,3],"wet":[2],"gaps":[4,5,6,7],"required":[0,3],"links":[5,7],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":23,"storm":6,"bridgeKits":2,"intent":"Storm crossing checkpoint: build both marked links while rescuing the lower stranded animal.","id":15},
+    {"animals":[0,4,7],"caches":[9,3],"rough":[0,4,7],"wet":[1,5],"gaps":[6],"required":[1],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":20,"storm":6,"bridgeKits":1,"intent":"Restore the water spine before rough banks; bridge supply competes with emergency rescue.","id":16},
+    {"animals":[1,3,8],"caches":[11,2],"rough":[1,3,8],"wet":[4,9],"gaps":[6],"required":[9],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":20,"storm":6,"bridgeKits":1,"intent":"The lower wet cache approach saves supplies but delays the eastern wildlife pair.","id":17},
+    {"animals":[0,2,7],"caches":[9,1],"rough":[0,2,7],"wet":[3],"gaps":[5,6],"required":[3],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":21,"storm":5,"bridgeKits":1,"intent":"Dry central gaps force a choice between the wet eastern edge and refill at camp.","id":18},
+    {"animals":[0,3,4],"caches":[11,2],"rough":[0,3,4],"wet":[1,9],"gaps":[5,7],"required":[1],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":22,"storm":6,"bridgeKits":1,"intent":"A western bridge meets a northern water corridor; the east gap remains unusable with one kit.","id":19},
+    {"animals":[0,2,3,8],"caches":[9,11],"rough":[0,2,8],"wet":[1],"gaps":[4,5,6,7],"required":[0,2],"links":[4,7],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":24,"storm":6,"bridgeKits":2,"intent":"Watershed checkpoint: distant bridges and a water discount make supply ordering decisive.","id":20},
+    {"animals":[0,3,7],"caches":[9,2],"rough":[0],"wet":[1],"gaps":[5,6],"required":[0,7],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":21,"storm":6,"bridgeKits":1,"intent":"Restore two marked ends as well as rescue quota; the apparent short route is incomplete.","id":21},
+    {"animals":[1,4,8],"caches":[11,2],"rough":[4,8],"wet":[0,9],"gaps":[5],"required":[0,8],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":21,"storm":6,"bridgeKits":1,"intent":"The marked north-west reserve requires restoring land beyond the wildlife route.","id":22},
+    {"animals":[0,2,7],"caches":[9,1],"rough":[0,7],"wet":[3],"gaps":[6],"required":[0,3],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":22,"storm":5,"bridgeKits":1,"intent":"The remote wet endpoint discounts a rough animal tile; link and reserve goals share a route.","id":23},
+    {"animals":[1,3,4],"caches":[11,0],"rough":[3,4],"wet":[2,8],"gaps":[5,9],"required":[2,8],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":23,"storm":6,"bridgeKits":1,"intent":"The second gap cuts the lower bypass; shelter can buy time while restoring the upper reserve.","id":24},
+    {"animals":[0,2,3,8],"caches":[9,11],"rough":[0,3],"wet":[1],"gaps":[4,5,6,7],"required":[1,8],"links":[5,6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":24,"storm":6,"bridgeKits":2,"intent":"Reserve network checkpoint: two central bridge connections and a lower reserve must both survive.","id":25},
+    {"animals":[0,1,7],"caches":[9,3],"rough":[0,7],"wet":[2],"gaps":[5,6],"required":[0,2],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":22,"storm":5,"bridgeKits":1,"intent":"A central rescue sits behind the crossing while the optional gap tempts a wasted kit.","id":26},
+    {"animals":[0,3,4],"caches":[11,2],"rough":[0,4],"wet":[1,8],"gaps":[5,7],"required":[1,8],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":23,"storm":5,"bridgeKits":1,"intent":"A rough western pair and eastern cache divide the route; use water before spending on repairs.","id":27},
+    {"animals":[1,2,8],"caches":[11,0],"rough":[1,8],"wet":[3,4],"gaps":[5,9],"required":[0,4],"links":[5],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":23,"storm":6,"bridgeKits":1,"intent":"Bridge the middle because the lower gap lacks a kit; rescue the isolated lower pocket via dry land.","id":28},
+    {"animals":[0,3,7,8],"caches":[9,2],"rough":[0,3,8],"wet":[1],"gaps":[5,6],"required":[0,2],"links":[6],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":6,"turns":25,"storm":6,"bridgeKits":1,"intent":"Four-species preparation: connect both reserve ends and protect the west while crossing centrally.","id":29},
+    {"animals":[0,1,3,8],"caches":[9,11],"rough":[0,3,8],"wet":[2],"gaps":[4,5,6,7],"required":[0,2,8],"links":[4,7],"pumps":[],"flooded":[],"lowSpan":0,"dryCost":false,"goal":5,"turns":26,"storm":6,"bridgeKits":2,"intent":"Connected Valleys finale: two outer bridges, three reserve tiles, water-first economy and four rescues.","id":30},
+    {"animals":[1,5,7],"caches":[9,11],"rough":[],"wet":[2],"gaps":[],"required":[5],"links":[],"pumps":[10],"flooded":[5,6],"lowSpan":3,"dryCost":false,"goal":4,"turns":18,"storm":0,"bridgeKits":0,"intent":"Pump at camp, then restore the flooded C2 approach and B2 wildlife before water returns.","id":31},
+    {"animals":[0,4,8],"caches":[11,2],"rough":[0],"wet":[1],"gaps":[],"required":[4],"links":[],"pumps":[10],"flooded":[8,9],"lowSpan":2,"dryCost":false,"goal":4,"turns":19,"storm":0,"bridgeKits":0,"intent":"A two-action low-water window reaches the western flooded pair; restore raised ground before rescuing.","id":32},
+    {"animals":[1,3,7],"caches":[9,2],"rough":[3],"wet":[1],"gaps":[],"required":[7],"links":[],"pumps":[10],"flooded":[6,7,11],"lowSpan":3,"dryCost":false,"goal":5,"turns":20,"storm":5,"bridgeKits":0,"intent":"The eastern flooded branch competes with a safe northern cache and the first returning storm.","id":33},
+    {"animals":[0,2,8],"caches":[11,1],"rough":[0],"wet":[4],"gaps":[],"required":[8],"links":[],"pumps":[10],"flooded":[5,8,9],"lowSpan":2,"dryCost":false,"goal":5,"turns":21,"storm":5,"bridgeKits":0,"intent":"Two short pump windows may be needed; shelter the exposed north bank between them.","id":34},
+    {"animals":[0,3,5,8],"caches":[11,2],"rough":[0,3],"wet":[1],"gaps":[],"required":[0,8],"links":[],"pumps":[10],"flooded":[4,5,6,8,9],"lowSpan":3,"dryCost":false,"goal":6,"turns":24,"storm":6,"bridgeKits":0,"intent":"Tide checkpoint: split wet branches require deciding which tiles become permanent raised routes first.","id":35},
+    {"animals":[1,3,7],"caches":[9,2],"rough":[3],"wet":[1],"gaps":[],"required":[7],"links":[],"pumps":[11],"flooded":[6,7],"lowSpan":3,"dryCost":false,"goal":5,"turns":21,"storm":5,"bridgeKits":0,"intent":"Restore the eastern pump station before draining the middle; pumping is now a spatial action.","id":36},
+    {"animals":[0,4,8],"caches":[11,2],"rough":[0],"wet":[1],"gaps":[],"required":[4],"links":[],"pumps":[9],"flooded":[4,5,8],"lowSpan":2,"dryCost":false,"goal":5,"turns":22,"storm":5,"bridgeKits":0,"intent":"Reach the western station first and choose which flooded frontier to raise in its short window.","id":37},
+    {"animals":[0,2,7],"caches":[9,1],"rough":[0,7],"wet":[3],"gaps":[],"required":[0,7],"links":[],"pumps":[6],"flooded":[0,4,7,11],"lowSpan":3,"dryCost":false,"goal":6,"turns":23,"storm":6,"bridgeKits":0,"intent":"The central station serves two shores; the near dry cache funds a second pump if required.","id":38},
+    {"animals":[1,3,8],"caches":[11,2],"rough":[1,8],"wet":[4],"gaps":[],"required":[1,8],"links":[],"pumps":[5],"flooded":[0,1,8,9],"lowSpan":3,"dryCost":false,"goal":6,"turns":24,"storm":6,"bridgeKits":0,"intent":"A remote station lies beyond a dry corridor, so protect the lower wildlife before climbing.","id":39},
+    {"animals":[0,3,4,7],"caches":[9,2],"rough":[0,4],"wet":[1],"gaps":[],"required":[0,3],"links":[],"pumps":[6,11],"flooded":[0,4,5,7],"lowSpan":2,"dryCost":false,"goal":6,"turns":25,"storm":6,"bridgeKits":0,"intent":"Station checkpoint: either restored pump can control water, but the two-action window demands route preparation.","id":40},
+    {"animals":[0,2,7],"caches":[9,1],"rough":[0],"wet":[3],"gaps":[6],"required":[0],"links":[6],"pumps":[10],"flooded":[0,4,7],"lowSpan":3,"dryCost":false,"goal":5,"turns":23,"storm":6,"bridgeKits":1,"intent":"Reintroduce bridge kits: build the central link before spending the drained window on animal banks.","id":41},
+    {"animals":[1,3,8],"caches":[11,2],"rough":[1,8],"wet":[4],"gaps":[5],"required":[8],"links":[5],"pumps":[10],"flooded":[0,1,8,9],"lowSpan":3,"dryCost":false,"goal":5,"turns":24,"storm":6,"bridgeKits":1,"intent":"The west bridge reaches a drowned lower pocket; the northern cache stays dry.","id":42},
+    {"animals":[0,3,7],"caches":[9,2],"rough":[0,3],"wet":[1],"gaps":[5,6],"required":[3],"links":[6],"pumps":[11],"flooded":[0,4,7],"lowSpan":2,"dryCost":false,"goal":5,"turns":24,"storm":5,"bridgeKits":1,"intent":"Restore the east pump, then bridge centrally; a short low phase rewards frontier preparation.","id":43},
+    {"animals":[1,4,8],"caches":[11,0],"rough":[4,8],"wet":[2],"gaps":[5,9],"required":[0],"links":[5],"pumps":[6],"flooded":[0,4,8],"lowSpan":3,"dryCost":false,"goal":5,"turns":25,"storm":6,"bridgeKits":1,"intent":"A central station and western link share the supply budget while the lower gap remains closed.","id":44},
+    {"animals":[0,1,3,8],"caches":[9,11],"rough":[0,3],"wet":[2],"gaps":[4,5,6,7],"required":[0,8],"links":[5,7],"pumps":[10],"flooded":[0,1,3,8],"lowSpan":3,"dryCost":false,"goal":5,"turns":27,"storm":6,"bridgeKits":2,"intent":"Bridge-pump checkpoint: two elevated crossings and two low-water phases connect four flooded rescues.","id":45},
+    {"animals":[0,4,7],"caches":[9,3],"rough":[0,4,7],"wet":[1,5],"gaps":[6],"required":[4],"links":[6],"pumps":[10],"flooded":[0,7],"lowSpan":3,"dryCost":true,"goal":5,"turns":24,"storm":6,"bridgeKits":1,"intent":"Drainage dries irrigation: repair rough west-bank land while water is high, then pump for flooded animals.","id":46},
+    {"animals":[1,3,8],"caches":[11,2],"rough":[1,3,8],"wet":[4,9],"gaps":[],"required":[9],"links":[],"pumps":[10],"flooded":[1,3],"lowSpan":2,"dryCost":true,"goal":6,"turns":23,"storm":5,"bridgeKits":0,"intent":"Wet neighbours discount rough repairs only at high water; choose economy before the two-turn window.","id":47},
+    {"animals":[0,2,7],"caches":[9,1],"rough":[0,2,7],"wet":[3],"gaps":[6],"required":[3],"links":[6],"pumps":[11],"flooded":[0,2],"lowSpan":3,"dryCost":true,"goal":5,"turns":25,"storm":6,"bridgeKits":1,"intent":"A remote pump dries the eastern discount, so a cache or refill must finance the upper flood repairs.","id":48},
+    {"animals":[0,3,4],"caches":[11,2],"rough":[0,3,4],"wet":[1,9],"gaps":[5],"required":[1],"links":[5],"pumps":[6],"flooded":[0,3],"lowSpan":2,"dryCost":true,"goal":6,"turns":26,"storm":6,"bridgeKits":1,"intent":"Central pumping and a western bridge compete with water-first restoration; plan supplies before activation.","id":49},
+    {"animals":[0,2,3,8],"caches":[9,11],"rough":[0,2,8],"wet":[1],"gaps":[4,5,6,7],"required":[0,2],"links":[4,7],"pumps":[10],"flooded":[0,2,3],"lowSpan":3,"dryCost":true,"goal":5,"turns":28,"storm":6,"bridgeKits":2,"intent":"Irrigation checkpoint: two bridges, high-water discounts and short flooded repairs must form one economy.","id":50},
+    {"animals":[0,3,7],"caches":[9,2],"rough":[0],"wet":[1],"gaps":[6],"required":[0,7],"links":[6],"pumps":[10],"flooded":[0,2,7],"lowSpan":2,"dryCost":false,"goal":6,"turns":24,"storm":6,"bridgeKits":1,"intent":"The upper cache is flooded; raising its tile inside the window funds the second rescue branch.","id":51},
+    {"animals":[1,4,8],"caches":[11,2],"rough":[4,8],"wet":[0,9],"gaps":[5],"required":[0,8],"links":[5],"pumps":[6],"flooded":[2,4,8],"lowSpan":3,"dryCost":false,"goal":6,"turns":25,"storm":5,"bridgeKits":1,"intent":"A flooded cache lies opposite the required lower reserve; bridge placement commits the route.","id":52},
+    {"animals":[0,2,7],"caches":[9,1],"rough":[0,7],"wet":[3],"gaps":[],"required":[0,3],"links":[],"pumps":[11],"flooded":[0,1,4,7],"lowSpan":2,"dryCost":true,"goal":6,"turns":24,"storm":6,"bridgeKits":0,"intent":"The northern cache must be drained before collection, but high water makes the rough south approach cheaper.","id":53},
+    {"animals":[1,3,4],"caches":[11,0],"rough":[3,4],"wet":[2,8],"gaps":[5,9],"required":[2,8],"links":[5],"pumps":[6],"flooded":[0,1,4],"lowSpan":3,"dryCost":true,"goal":6,"turns":27,"storm":6,"bridgeKits":1,"intent":"Pump station, flooded cache and closed lower bypass force an upper-loop rescue with a marked reserve detour.","id":54},
+    {"animals":[0,2,3,8],"caches":[9,11],"rough":[0,3],"wet":[1],"gaps":[4,5,6,7],"required":[1,8],"links":[5,6],"pumps":[10],"flooded":[0,2,3,8,9],"lowSpan":2,"dryCost":false,"goal":5,"turns":28,"storm":6,"bridgeKits":2,"intent":"Flood-cache checkpoint: fund repeated short windows without spending the two required bridge kits elsewhere.","id":55},
+    {"animals":[0,1,7],"caches":[9,3],"rough":[0,7],"wet":[2],"gaps":[5,6],"required":[0,2],"links":[6],"pumps":[11],"flooded":[0,1,3,7],"lowSpan":3,"dryCost":true,"goal":6,"turns":26,"storm":6,"bridgeKits":1,"intent":"Use high-water irrigation first, then the dry eastern pump to access the final flooded cache.","id":56},
+    {"animals":[0,3,4],"caches":[11,2],"rough":[0,4],"wet":[1,8],"gaps":[5,7],"required":[1,8],"links":[5],"pumps":[6],"flooded":[0,2,3],"lowSpan":2,"dryCost":true,"goal":6,"turns":27,"storm":5,"bridgeKits":1,"intent":"The remote station offers short windows; a sheltered west-bank animal permits the upper supply detour.","id":57},
+    {"animals":[1,2,8],"caches":[11,0],"rough":[1,8],"wet":[3,4],"gaps":[5,9],"required":[0,4],"links":[5],"pumps":[6,11],"flooded":[0,1,2,8],"lowSpan":2,"dryCost":false,"goal":6,"turns":27,"storm":6,"bridgeKits":1,"intent":"Two stations support different approaches to the flooded north and isolated southern pocket.","id":58},
+    {"animals":[0,3,7,8],"caches":[9,2],"rough":[0,3,8],"wet":[1],"gaps":[5,6],"required":[0,2],"links":[6],"pumps":[11],"flooded":[0,2,7,8],"lowSpan":3,"dryCost":true,"goal":6,"turns":28,"storm":6,"bridgeKits":1,"intent":"Four-species prelude: pump timing, irrigation and the required central link combine across both reserve ends.","id":59},
+    {"animals":[0,1,3,8],"caches":[9,11],"rough":[0,3,8],"wet":[2],"gaps":[4,5,6,7],"required":[0,2,8],"links":[4,7],"pumps":[10],"flooded":[0,1,3,8,9],"lowSpan":2,"dryCost":true,"goal":5,"turns":30,"storm":6,"bridgeKits":2,"intent":"Waterkeepers finale: two outer bridges, flooded supplies, two-action drainage and three reserves; all wildlife must return safely.","id":60}
+  );
   function rescueCreate(stage) {
-    if (!Number.isInteger(stage) || stage < 1 || stage > 6)
+    if (!Number.isInteger(stage) || stage < 1 || stage > rescuePlans.length)
       throw new RangeError("expedition");
     const p = rescuePlans[stage - 1];
     return {
@@ -794,6 +851,8 @@
       kits: 3,
       saved: 0,
       welfare: 0,
+      bridges: p.bridgeKits || 0,
+      low: 0,
       ended: false,
       cells: Array.from({ length: 12 }, (_, id) => ({
         id,
@@ -805,6 +864,12 @@
         cache: p.caches.includes(id),
         rough: p.rough.includes(id),
         wet: p.wet.includes(id),
+        gap: p.gaps?.includes(id) || false,
+        bridge: false,
+        pump: p.pumps?.includes(id) || false,
+        flood: p.flooded?.includes(id) || false,
+        required: p.required?.includes(id) || false,
+        link: p.links?.includes(id) || false,
       })),
     };
   }
@@ -820,10 +885,13 @@
     (id === 10 ||
       s.cells[id].restored ||
       neighbours(id).some((i) => s.cells[i].restored));
-  const eco = (s) => s.cells.filter((c) => c.id !== 10 && c.restored).length;
+  const eco = (s) => s.cells.filter((c) => c.id !== 10 && c.restored && !c.gap).length;
+  const goals = (s) => s.cells.every(c => (!c.required || c.restored) && (!c.link || c.bridge));
+  const flooded = (s, id) => !!s.cells[id]?.flood && !s.cells[id].restored && s.low === 0;
   const rescueCost = (s, id) =>
     s.cells[id]?.rough &&
-    !neighbours(id).some((i) => s.cells[i].restored && s.cells[i].wet)
+    !neighbours(id).some((i) => s.cells[i].restored && s.cells[i].wet &&
+      !(rescuePlans[s.stage - 1].dryCost && s.low > 0))
       ? 2
       : 1;
   function rescueAction(s, action, id) {
@@ -835,19 +903,31 @@
     if (action === "supply") {
       if (s.kits >= 9) error = "full";
     } else if (!c || !accessible(s, id)) error = "needRoute";
+    else if (action === "bridge") {
+      cost = 2;
+      if (!c.gap || c.bridge) error = "done";
+      else if (s.bridges < 1) error = "noBridge";
+    } else if (action === "pump") {
+      cost = 1;
+      if (!c.pump || !c.restored) error = "needPump";
+      else if (s.low > 0) error = "alreadyLow";
+    }
     else if (action === "restore") {
       cost = rescueCost(s, id);
       if (c.restored) error = "done";
+      else if (c.gap) error = "needBridge";
+      else if (flooded(s, id)) error = "flood";
     } else if (action === "rescue") {
       cost = c.restored ? 1 : 2;
       if (!c.animal || c.rescued) error = "done";
+      else if (flooded(s, id)) error = "flood";
     } else if (action === "shelter") {
       cost = 1;
       if (!c.animal || c.rescued || c.shelter || c.restored) error = "done";
     } else error = "invalid";
     if (!error && s.kits < cost) error = "noKits";
     if (error) return { state: s, error };
-    const n = JSON.parse(JSON.stringify(s)),
+    const n = { ...s, cells: s.cells.map(cell => ({ ...cell })) },
       tile = n.cells[id];
     n.kits -= cost;
     n.turn++;
@@ -865,24 +945,54 @@
       n.welfare += Number(tile.restored && tile.health > 0);
     }
     if (action === "shelter") tile.shelter = true;
+    if (action === "bridge") { tile.bridge = true; tile.restored = true; n.bridges--; }
+    n.low = action === "pump" ? p.lowSpan : Math.max(0, s.low - 1);
     const storm = Boolean(p.storm && n.turn % p.storm === 0);
     if (storm)
       n.cells.forEach((c) => {
         if (c.animal && !c.rescued && !c.restored && !c.shelter)
           c.health = Math.max(0, c.health - 1);
       });
-    const win = n.saved === p.animals.length && eco(n) >= p.goal;
+    const win = n.saved === p.animals.length && eco(n) >= p.goal && goals(n);
     n.ended = win || n.turn >= p.turns;
     return { state: n, error: null, storm, win, action };
   }
   const rescueStars = (s) =>
     s.saved === rescuePlans[s.stage - 1].animals.length &&
     eco(s) >= rescuePlans[s.stage - 1].goal
+      && goals(s)
       ? 2 +
         Number(
           s.welfare === s.saved && rescuePlans[s.stage - 1].turns - s.turn >= 2,
         )
       : 0;
+  const completedStage = value => {
+    const n=Number(value);
+    return Number.isFinite(n) ? Math.max(0,Math.min(rescuePlans.length,Math.floor(n))) : 0;
+  };
+  function normalizeProgress(value={}) {
+    const journal={};
+    if(value.journal && typeof value.journal==='object' && !Array.isArray(value.journal))
+      for(const [key,stars] of Object.entries(value.journal))
+        if(String(completedStage(key))===key && Number(key)>0 && Number.isInteger(stars) && stars>=1 && stars<=3)journal[key]=stars;
+    return {best:completedStage(value.best),journal,storageOK:value.storageOK!==false};
+  }
+  function mergeProgress(a,b) {
+    a=normalizeProgress(a);b=normalizeProgress(b);const journal={...a.journal};
+    for(const [key,stars]of Object.entries(b.journal))journal[key]=Math.max(journal[key]||0,stars);
+    return {best:Math.max(a.best,b.best),journal,storageOK:a.storageOK&&b.storageOK};
+  }
+  function readProgress(storage) {
+    let best=0,journal={},storageOK=true;
+    try{best=storage.getItem('weightplay-habitat-atlas-best-stage');}catch{storageOK=false;}
+    try{journal=JSON.parse(storage.getItem('weightplay-habitat-atlas-rescue-v1')||'{}');}catch{storageOK=false;}
+    return normalizeProgress({best,journal,storageOK});
+  }
+  function writeProgress(storage,value) {
+    const merged=mergeProgress(value,readProgress(storage));
+    try{storage.setItem('weightplay-habitat-atlas-best-stage',String(merged.best));storage.setItem('weightplay-habitat-atlas-rescue-v1',JSON.stringify(merged.journal));}catch{merged.storageOK=false;}
+    return merged;
+  }
   globalThis.HabitatRescueRules = Object.freeze({
     plans: rescuePlans,
     create: rescueCreate,
@@ -890,7 +1000,10 @@
     accessible,
     cost: rescueCost,
     eco,
+    goals,
+    flooded,
     stars: rescueStars,
+    normalizeProgress,mergeProgress,readProgress,writeProgress,
   });
   const rescueLabels = {
       en: "Restore|Rescue|Shelter|Supplies|Undo|Evacuate|Actions|Saved|Restored|Storm in|Base|Exposed|Protected|Connect a restored neighbour first.|Not enough supplies.|Completed|Otter,Fox,Turtle,Owl|Restore C2 to collect supplies and open rescue routes.|Habitat restored. New route open.|Wildlife is safe.|Supplies +3.|Shelter built.|Storm: exposed wildlife loses 1 health.|Rescue incomplete|The valley lives again|Choose a tile, then an action.|Calm weather",
@@ -965,7 +1078,7 @@
     const labels = rescueLabels[segment].split("|");
     const [guideLabel, save, supplyQuestion, stormQuestion] = rescueGuideLabels[segment];
     return [locale, { guideLabel, tag0: labels[0], tag1: labels[1], tag2: labels[3],
-      actionsTitle: labels[25], rules: rescueGuide[segment], recovery: rescueGuideRecovery[segment], saveTitle: copy[segment].saved, save,
+      actionsTitle: labels[25], rules: [rescueGuide[segment],globalThis.HabitatExpansionCopy?.[segment]?.bridgeGuide,globalThis.HabitatExpansionCopy?.[segment]?.pumpGuide,globalThis.HabitatExpansionCopy?.[segment]?.dryGuide].filter(Boolean).join(' '), recovery: [rescueGuideRecovery[segment],globalThis.HabitatExpansionCopy?.[segment]?.goalGuide].filter(Boolean).join(' '), saveTitle: copy[segment].saved, save,
       faqTitle: "FAQ", supplyQuestion, supplyAnswer: labels[20], stormQuestion, stormAnswer: labels[22] }];
   }));
   if (typeof document === "undefined") return;
@@ -973,7 +1086,7 @@
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
   stylesheet.href = new URL(
-    "interface-9-game.css?v=20261021-habitat-v12-i9",
+    "interface-9-game.css?v=20261026-habitat-stage60-v13",
     assetBase,
   ).href;
   document.head.append(stylesheet);
@@ -1002,7 +1115,8 @@
     const labels = rescueLabels;
     const tx = (i) => (labels[lang()] || labels.en).split("|")[i];
     const guide = rescueGuide;
-    const chapter = (i) => chapterRows[i][Math.max(0, locales.indexOf(lang()))];
+    const xp = () => globalThis.HabitatExpansionCopy[lang()] || globalThis.HabitatExpansionCopy.en;
+    const chapter = (i) => i < 6 ? chapterRows[i][Math.max(0, locales.indexOf(lang()))] : `${i < 30 ? xp().chapter1 : xp().chapter2} · ${i + 1}`;
     const common = (i) =>
       window.wpMarketCommon?.(i) ||
       [
@@ -1019,16 +1133,7 @@
       ][i];
     const store = "weightplay-habitat-atlas-best-stage",
       journalKey = "weightplay-habitat-atlas-rescue-v1";
-    let storageOK = true,
-      best = 0,
-      journal = {};
-    try {
-      best = Math.max(0, Math.min(6, Number(localStorage.getItem(store)) || 0));
-      journal = JSON.parse(localStorage.getItem(journalKey) || "{}") || {};
-    } catch {
-      storageOK = false;
-    }
-    if (typeof journal !== "object" || Array.isArray(journal)) journal = {};
+    let {storageOK,best,journal}=R.readProgress(localStorage);
     let screen = "main",
       game = null,
       selected = 6,
@@ -1083,11 +1188,8 @@
     const lede = $("main-screen").querySelector(".m5-lede");
     lede.removeAttribute("data-m5-lede");
     function mainCopy() {
-      lede.textContent = (guide[lang()] || guide.en)
-        .split(/(?<=[。.!])\s*/)
-        .slice(0, 2)
-        .join(" ");
-      $("main-progress").textContent = `${common(8)}: ${best} / 6`;
+      lede.textContent = xp().intro;
+      $("main-progress").textContent = `${common(8)}: ${best} / ${rescuePlans.length}`;
       const canonicalLocale = ({ "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" })[lang()] || lang();
       const guideCopy = globalThis.HabitatRescueGuideCopy[canonicalLocale] || globalThis.HabitatRescueGuideCopy.en;
       const guideSection = document.querySelector(".m5-guide");
@@ -1144,12 +1246,12 @@
       const objective = `${tx(7)} ${plan.animals.length} · ${tx(8)} ${plan.goal} · ${tx(6)} ${plan.turns}`;
       return {
         id: index + 1,
-        kicker: `${common(9)} ${index + 1}`,
-        title: chapter(index),
+        kicker: index < 30 ? xp().chapter1 : xp().chapter2,
+        title: index < 6 ? chapter(index) : `${common(9)} ${index+1}`,
         subtitle: `${tx(7)} ${plan.animals.length} · ${tx(8)} ${plan.goal}`,
         status: stars ? `★ ${stars}` : unlocked ? "" : "🔒",
         summary: objective,
-        details: [guide[lang()] || guide.en],
+        details: [guide[lang()] || guide.en, index >= 6 ? xp().bridgeGuide : '', index >= 30 ? xp().pumpGuide : '', index >= 45 ? xp().dryGuide : ''].filter(Boolean),
         poster: stagePoster,
         locked: !unlocked,
         cleared: stars > 0,
@@ -1204,7 +1306,7 @@
       });
     }
     function start(stage, restart = false) {
-      if (stage < 1 || stage > Math.min(6, best + 1)) return;
+      if (stage < 1 || stage > Math.min(rescuePlans.length, best + 1)) return;
       game = R.create(stage);
       selected = 6;
       history = [];
@@ -1227,7 +1329,7 @@
         Math.max(0, rescuePlans[game.stage - 1].animals.indexOf(c.id))
       ];
     function sprite(name, className) {
-      const url = new URL("assets/rescue-v11/" + name + ".png", assetBase).href;
+      const url = new URL("assets/" + (['bridge','pump'].includes(name) ? 'stage60-v13/' : 'rescue-v11/') + name + ".png", assetBase).href;
       return (
         '<img class="' +
         className +
@@ -1249,9 +1351,9 @@
     function terrain(c) {
       const biome = c.wet
         ? "wetland"
-        : ["forest", "arctic", "desert", "forest", "wetland", "forest"][
-            game.stage - 1
-          ];
+        : game.stage <= 6
+          ? ["forest", "arctic", "desert", "forest", "wetland", "forest"][game.stage - 1]
+          : game.stage <= 30 ? "forest" : "wetland";
       return sprite(
         biome + (c.restored ? "-restored" : "-damaged"),
         "rescue-land",
@@ -1268,32 +1370,42 @@
       if (!game) return;
       const p = rescuePlans[game.stage - 1],
         c = game.cells[selected];
-      $("stage-label").textContent = `${common(9)} ${game.stage}/6`;
+      $("stage-label").textContent = `${game.stage} / ${rescuePlans.length}`;
       $("score-label").textContent = `${tx(6)} ${p.turns - game.turn}`;
       $("battle-status").textContent =
-        `${(copy[lang()] || copy.en).target}: ${tx(7)} ${p.animals.length} · ${tx(8)} ${p.goal}`;
+        `${tx(7)} ${game.saved}/${p.animals.length} · ${tx(8)} ${R.eco(game)}/${p.goal}${p.links?.length ? ` · ${xp().links} ${game.cells.filter(c=>c.link&&c.bridge).length}/${p.links.length}` : ''}${p.required?.length ? ` · ◎ ${game.cells.filter(c=>c.required&&c.restored).length}/${p.required.length}` : ''}`;
       $("rescue-meters").innerHTML =
-        `<span>${tx(3)} <b>${game.kits}</b></span><span>${tx(7)} <b>${game.saved}/${p.animals.length}</b></span><span>${tx(8)} <b>${R.eco(game)}/${p.goal}</b></span>`;
+        `<span>${sprite('crate','rescue-meter-art')}${tx(3)} <b>${game.kits}</b></span><span>${tx(7)} <b>${game.saved}/${p.animals.length}</b></span><span>${tx(8)} <b>${R.eco(game)}/${p.goal}</b></span><span>${sprite('bridge','rescue-meter-art')}${xp().kits} <b>${game.bridges}</b></span>`;
       $("rescue-weather").textContent = p.storm
         ? `${tx(9)} ${p.storm - (game.turn % p.storm)} · ${tx(11)} ${game.cells.filter((c) => c.animal && !c.rescued && !c.restored && !c.shelter).length}`
         : tx(26);
+      if(p.pumps?.length)$('rescue-weather').insertAdjacentHTML('beforeend',` · ${sprite('pump','rescue-weather-art')}${game.low?xp().low+' '+game.low:xp().high}${p.dryCost?' · '+(game.low?'−':'＋')+' ◆':''}`);
       $("rescue-map").setAttribute("aria-label", tx(25));
       game.cells.forEach((tile) => {
         const b = $("rescue-map").children[tile.id],
           safe = tile.restored || tile.shelter,
           has = tile.animal && !tile.rescued;
-        b.className = `rescue-tile ${tile.restored ? "is-restored" : ""} ${R.accessible(game, tile.id) ? "is-reachable" : ""} ${selected === tile.id ? "is-selected" : ""}`;
+        b.className = `rescue-tile ${tile.restored ? "is-restored" : ""} ${tile.gap ? 'is-gap' : ''} ${R.flooded(game,tile.id) ? 'is-flooded' : ''} ${tile.required||tile.link ? 'is-objective' : ''} ${R.accessible(game, tile.id) ? "is-reachable" : ""} ${selected === tile.id ? "is-selected" : ""}`;
         b.setAttribute("aria-pressed", String(selected === tile.id));
         b.setAttribute(
           "aria-label",
-          `${coord(tile.id)} · ${tile.id === 10 ? tx(10) : has ? animalName(tile) : tile.cache ? tx(3) : tx(0)} · ${safe ? tx(12) : tx(11)}`,
+          `${coord(tile.id)} · ${tile.gap ? xp().gap : tile.pump ? xp().pump : tile.id === 10 ? tx(10) : has ? animalName(tile) : tile.cache ? tx(3) : tx(0)} · ${safe ? tx(12) : tx(11)}${tile.required?' · '+xp().reserve:''}${tile.link?' · '+xp().links:''}${R.flooded(game,tile.id)?' · '+xp().high:''}`,
         );
         b.innerHTML = `${terrain(tile)}<small class="rescue-coordinate">${coord(tile.id)}</small>${tile.id === 10 ? sprite("camp", "rescue-prop") : has ? art(tile) : tile.cache ? sprite("crate", "rescue-prop") : tile.rescued ? '<span class="rescue-saved-mark">✓</span>' : ""}<span class="rescue-tile-label">${tile.id === 10 ? tx(10) : has ? animalName(tile) : tile.cache ? `${tx(3)} +3` : tile.restored ? tx(15) : tile.rough ? "◆ 2" : "◆ 1"}</span>${has ? `<span class="rescue-health">${safe ? "⌂" : ""}${"♥".repeat(tile.health)}${"♡".repeat(2 - tile.health)}</span>` : ""}`;
       });
+      game.cells.forEach(tile=>{
+        const b=$('rescue-map').children[tile.id];
+        if(tile.gap){b.querySelector('.rescue-land')?.remove();b.querySelector('.rescue-tile-label').textContent=tile.bridge?xp().bridge:xp().gap;if(tile.bridge)b.insertAdjacentHTML('beforeend',sprite('bridge','rescue-prop rescue-infrastructure'));}
+        if(tile.pump){b.querySelector('.rescue-prop')?.remove();b.insertAdjacentHTML('beforeend',sprite('pump','rescue-prop rescue-infrastructure'));}
+        if(tile.required||tile.link)b.insertAdjacentHTML('beforeend','<span class="rescue-objective" aria-hidden="true">◎</span>');
+      });
       $("rescue-tile-title").textContent =
-        `${coord(selected)} · ${c.id === 10 ? tx(10) : c.animal ? (c.rescued ? tx(7) : animalName(c)) : c.cache ? `${tx(3)} +3` : tx(8)}`;
+        `${coord(selected)} · ${c.gap ? (c.bridge ? xp().bridge : xp().gap) : c.pump ? xp().pump : c.id === 10 ? tx(10) : c.animal ? (c.rescued ? tx(7) : animalName(c)) : c.cache ? `${tx(3)} +3` : tx(8)}`;
       $("rescue-tile-copy").textContent = !R.accessible(game, selected)
         ? tx(13)
+        : c.gap ? (c.bridge ? xp().bridgeDone : xp().needBridge)
+        : R.flooded(game,selected) ? xp().flood
+        : c.pump ? `${xp().pump} · ${p.lowSpan} ${tx(6)}`
         : c.animal && !c.rescued
           ? `${c.restored || c.shelter ? tx(12) : tx(11)} · ${tx(1)} ◆${c.restored ? 1 : 2}`
           : tx(25);
@@ -1318,12 +1430,17 @@
           ? tx({ needRoute: 13, noKits: 14, done: 15 }[check.error] || 15)
           : tx(index);
       }
+      for(const action of ['bridge','pump']){
+        const b=$('rescue-'+action),check=R.act(game,action,selected);
+        b.innerHTML=sprite(action,'rescue-tool')+'<span>'+xp()[action]+' ◆'+(action==='bridge'?2:1)+'</span>';
+        b.disabled=!!check.error;b.title=xp()[check.error]||tx(check.error==='noKits'?14:13);
+      }
       $("rescue-feed").classList.toggle(
         "first-steps",
         game.stage === 1 && game.turn === 0,
       );
       $("rescue-feed").textContent = message;
-      $("rescue-supply").textContent = `${tx(3)} +3`;
+      $("rescue-supply").innerHTML = sprite('crate','rescue-tool')+`<span>${tx(3)} +3</span>`;
       $("rescue-supply").disabled = game.kits >= 9;
       $("rescue-undo").textContent = tx(4);
       $("rescue-undo").disabled = !history.length;
@@ -1345,6 +1462,8 @@
       ["restore", 0],
       ["rescue", 1],
       ["shelter", 2],
+      ["bridge", -1],
+      ["pump", -1],
     ]) {
       const b = document.createElement("button");
       b.id = "rescue-" + action;
@@ -1356,7 +1475,7 @@
       if (blocked()) return;
       const out = R.act(game, action, selected);
       if (out.error) {
-        message = tx(out.error === "noKits" ? 14 : 13);
+        message = xp()[out.error] || tx(out.error === "noKits" ? 14 : 13);
         render();
         window.WeightPlayAudio?.play("feedback.error");
         return;
@@ -1365,7 +1484,7 @@
       if (history.length > 30) history.shift();
       game = out.state;
       message =
-        tx({ restore: 18, rescue: 19, supply: 20, shelter: 21 }[action]) +
+        (action === 'bridge' ? xp().bridgeDone : action === 'pump' ? xp().pumpDone : tx({ restore: 18, rescue: 19, supply: 20, shelter: 21 }[action])) +
         (out.storm ? " " + tx(22) : "");
       render();
       transfer(action);
@@ -1382,7 +1501,7 @@
           ? "feedback.success"
           : action === "supply"
             ? "reward.collect"
-            : "board.move",
+            : action === "pump" ? "mechanism.unlock" : "board.move",
       );
       if (game.ended) finish();
     }
@@ -1393,7 +1512,7 @@
         $("rescue-meters").querySelectorAll("b")[
           action === "rescue" ? 1 : action === "restore" ? 2 : 0
         ];
-      if (action === "shelter" || !source || !destination) return;
+      if (['shelter','bridge','pump'].includes(action) || !source || !destination) return;
       const origin = board.getBoundingClientRect(),
         a = source.getBoundingClientRect(),
         b = destination.getBoundingClientRect(),
@@ -1425,27 +1544,7 @@
       );
     }
     function persist() {
-      try {
-        best = Math.max(
-          best,
-          Math.min(6, Number(localStorage.getItem(store)) || 0),
-        );
-        localStorage.setItem(store, String(best));
-        let other = JSON.parse(localStorage.getItem(journalKey) || "{}");
-        if (!other || typeof other !== "object" || Array.isArray(other))
-          other = {};
-        Object.keys(journal).forEach(
-          (k) =>
-            (other[k] = Math.max(
-              Number(other[k]) || 0,
-              Number(journal[k]) || 0,
-            )),
-        );
-        journal = other;
-        localStorage.setItem(journalKey, JSON.stringify(journal));
-      } catch {
-        storageOK = false;
-      }
+      ({best,journal,storageOK}=R.writeProgress(localStorage,{best,journal,storageOK}));
     }
     function finish() {
       if (!result.hidden) return;
@@ -1470,7 +1569,7 @@
       $("result-title").textContent = tx(resultWin ? 24 : 23);
       $("result-copy").textContent =
         `${stars ? "★".repeat(stars) : "☆☆☆"} · ${tx(7)} ${game.saved}/${rescuePlans[game.stage - 1].animals.length} · ${tx(8)} ${R.eco(game)}/${rescuePlans[game.stage - 1].goal}${!storageOK ? " · " + (copy[lang()] || copy.en).unsaved : ""}`;
-      $("next").disabled = !resultWin || game.stage === 6;
+      $("next").disabled = !resultWin || game.stage === rescuePlans.length;
       $("next").setAttribute("aria-disabled", String($("next").disabled));
       result.hidden = false;
       board.inert = true;
@@ -1508,7 +1607,7 @@
     $("battle-back").addEventListener("click", toStages);
     $("retry").addEventListener("click", () => start(game.stage, true));
     $("next").addEventListener("click", () => {
-      if (resultWin && game.stage < 6) start(game.stage + 1);
+      if (resultWin && game.stage < rescuePlans.length) start(game.stage + 1);
     });
     $("battle-utility")?.addEventListener("click", () =>
       $("rescue-supply").focus({ preventScroll: true }),
@@ -1519,13 +1618,14 @@
       if (screen === "battle" && result.hidden) render();
     });
     window.addEventListener("storage", (e) => {
-      if (e.key === store) {
-        best = Math.max(best, Math.min(6, Number(e.newValue) || 0));
+      if (e.key === store || e.key === journalKey) {
+        ({best,journal,storageOK}=R.mergeProgress({best,journal,storageOK},R.readProgress(localStorage)));
         mainCopy();
         if (screen === "stage") stages();
       }
     });
     mountSharedFrame();
+    window.HabitatAtlasDiagnostics=Object.freeze({snapshot:()=>JSON.parse(JSON.stringify({screen,game,selected,best,journal,total:rescuePlans.length,resultWin,history:history.length,storageOK}))});
     stages();
     mainCopy();
     show("main");

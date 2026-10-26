@@ -959,7 +959,61 @@ body[data-wp-market-game="animal-habitat-atlas"] #battle-screen > .m5-result {
 body[data-wp-market-game="animal-habitat-atlas"] #battle-screen > .m5-result[hidden] {
   display: none !important;
 }
+
+/* Chapter tools occupy fixed slots; water and bridge feedback never shift hits. */
+body[data-wp-market-game="animal-habitat-atlas"] #battle-screen {
+  --habitat-hit: max(46px, calc(44px * var(--wp-battle-canvas-inverse-scale, 1)));
+  --habitat-tools: calc(var(--habitat-hit) + var(--habitat-hit) + 6px);
+}
+body[data-wp-market-game="animal-habitat-atlas"] #atlas-fieldwork.rescue-field {
+  grid-template-rows: 68px minmax(180px, 1fr) calc(70px + var(--habitat-tools)) 42px;
+}
+body[data-wp-market-game="animal-habitat-atlas"] .rescue-inspector {
+  grid-template-rows: 48px var(--habitat-tools);
+}
+body[data-wp-market-game="animal-habitat-atlas"] #rescue-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, var(--habitat-hit));
+  gap: 6px;
+}
+body[data-wp-market-game="animal-habitat-atlas"] #rescue-actions button {
+  height: var(--habitat-hit);
+  min-height: var(--habitat-hit);
+  font-size: max(12px, calc(12px * var(--wp-battle-canvas-inverse-scale, 1)));
+}
+body[data-wp-market-game="animal-habitat-atlas"] #battle-controls:has(#rescue-supply) button {
+  height: max(48px, calc(44px * var(--wp-battle-canvas-inverse-scale, 1)));
+  min-height: max(48px, calc(44px * var(--wp-battle-canvas-inverse-scale, 1)));
+}
+@media (min-width: 700px) {
+  body[data-wp-market-game="animal-habitat-atlas"] #battle-screen {
+    --habitat-tools: calc(var(--habitat-hit) + var(--habitat-hit) + var(--habitat-hit) + 12px);
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] #atlas-fieldwork.rescue-field {
+    grid-template-rows: 68px minmax(0, 1fr) 42px;
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] #rescue-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, var(--habitat-hit));
+  }
+}
+.rescue-meter-art { width: 23px; height: 23px; object-fit: contain; position: absolute; inset: 0 auto auto 0; }
+#rescue-meters > span { position: relative; min-width: 0; padding-inline-start: 25px; font-size: 10px; }
+#rescue-meters > span:nth-child(2), #rescue-meters > span:nth-child(3) { padding-inline-start: 0; }
+#rescue-meters b { font-size: 20px; }
+.rescue-weather-art { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; }
+body[data-wp-market-game="animal-habitat-atlas"] .rescue-tile.is-gap { background: #21657c; border-color: #65b6c4; }
+.rescue-tile::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; background: linear-gradient(165deg,#65c7df33,#118fa6cc); transition: opacity 320ms ease-out; }
+.rescue-tile.is-flooded::after { opacity: .75; }
+.rescue-infrastructure { z-index: 2; pointer-events: none; }
+.rescue-objective { position: absolute; z-index: 5; inset: 3px 3px auto auto; color: #ffe2a3; font: 700 18px/1 sans-serif; text-shadow: 0 1px 3px #132d30; pointer-events: none; }
+#battle-controls .rescue-tool { width: 24px; height: 24px; object-fit: contain; }
+@media (prefers-reduced-motion: reduce) { .rescue-tile::after { transition-duration: 100ms; } }
 @media (min-width: 700px) and (max-height: 520px) {
+  body[data-wp-market-game="animal-habitat-atlas"] #battle-screen {
+    --habitat-tools: calc(var(--habitat-hit) + var(--habitat-hit) + 6px);
+  }
   body[data-wp-market-game="animal-habitat-atlas"] #battle-content {
     grid-template-rows: 24px minmax(0, 1fr) 48px;
     gap: 4px;
@@ -970,5 +1024,16 @@ body[data-wp-market-game="animal-habitat-atlas"] #battle-screen > .m5-result[hid
   }
   body[data-wp-market-game="animal-habitat-atlas"] #battle-controls {
     grid-row: 3;
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] #atlas-fieldwork.rescue-field {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-rows: 42px minmax(0,1fr) 28px;
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] .rescue-inspector {
+    grid-template-rows: 42px var(--habitat-tools);
+  }
+  body[data-wp-market-game="animal-habitat-atlas"] #rescue-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, var(--habitat-hit));
   }
 }

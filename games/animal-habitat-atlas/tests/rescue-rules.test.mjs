@@ -77,7 +77,7 @@ assert.equal(
 assert.equal(R.act(storm, "shelter", 7).error, "done");
 assert.equal(R.stars(storm), 0, "Restoration alone cannot replace rescue");
 assert.throws(() => R.create(0));
-assert.throws(() => R.create(7));
+assert.throws(() => R.create(R.plans.length + 1));
 assert.equal(R.act(R.create(1), "restore", -1).error, "needRoute");
 assert.equal(R.act(R.create(1), "not-an-action", 6).error, "invalid");
 
