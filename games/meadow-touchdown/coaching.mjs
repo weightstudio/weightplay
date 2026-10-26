@@ -1,3 +1,4 @@
+import {TACTICS} from './tactics-copy.mjs';
 // Game-owned, contextual copy. Every supported locale is complete; no fallback.
 const lessonKeys='aim|run|firstDown|space|pair|zone|gate|blitz|change|wind|gust|switch|feint|relay|relayNow'.split('|');
 const labelKeys='missShort|missLong|missLeft|missRight|missNear|pairGoal|relayGoal|openLeft|openRight|newPlay|tryNext|champion|medalClear|medalEarly|medalClean|received|pending'.split('|');
@@ -89,7 +90,7 @@ const tacticalCopy={
 };
 export const COACH={};
 for(const [locale,groups] of Object.entries(raw)){
-  const copy={};[lessonKeys,labelKeys,interceptionKeys,tacticalKeys].forEach((keys,i)=>{const values=(i===3?tacticalCopy[locale]:i===2?interceptionCopy[locale]:groups[i]).split('|');if(values.length!==keys.length)throw Error(`Coaching copy mismatch: ${locale}/${i}`);keys.forEach((key,j)=>copy[key]=values[j]);});COACH[locale]=Object.freeze(copy);
+  const copy={};[lessonKeys,labelKeys,interceptionKeys,tacticalKeys].forEach((keys,i)=>{const values=(i===3?tacticalCopy[locale]:i===2?interceptionCopy[locale]:groups[i]).split('|');if(values.length!==keys.length)throw Error(`Coaching copy mismatch: ${locale}/${i}`);keys.forEach((key,j)=>copy[key]=values[j]);});COACH[locale]=Object.freeze({...copy,...TACTICS[locale]});
 }
 export function coachText(locale,key,values={}){const text=COACH[locale]?.[key];if(typeof text!=='string')throw Error(`Missing coaching copy: ${locale}/${key}`);return text.replace(/\{(\w+)\}/g,(_,name)=>String(values[name]??''));}
 export const stageLesson={1:'aim',2:'firstDown',3:'space',5:'pair',6:'crossing',7:'contain',10:'gate',11:'blitz',15:'change',16:'wind',20:'gust',21:'switch',25:'feint',30:'relay'};

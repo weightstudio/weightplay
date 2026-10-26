@@ -68,7 +68,7 @@ export function diagnoseMiss(ball,receivers){
 export class Match {
   constructor(stageNumber=1,book='P1'){
     this.stage=STAGES[clamp(Number.isFinite(stageNumber)?Math.floor(stageNumber)-1:0,0,29)];this.book=book;this.clock=this.stage.time;
-    this.totalTime=0;this.leg=1;this.down=1;this.snapCount=0;this.s=40-this.stage.distance;
+    this.totalTime=0;this.leg=1;this.down=1;this.snapCount=0;this.forwardPasses=0;this.s=40-this.stage.distance;
     this.firstDown=Math.min(40,this.s+10);this.caught=new Set();this.medals={clean:true,early:true};
     this.events=[];this.eventSeq=0;this.result=null;this.blockedBook=null;this.pendingBlock=null;
     this.relayed=false;this.relayUsed=false;this.lastMiss=null;this.interception=null;this.setup();
@@ -105,7 +105,7 @@ export class Match {
   }
   preview(){return {from:point(this.qb.x,this.qb.y),to:{...this.aim},wind:this.wind,flip:this.stage.special==='gust',
     duration:.38+.025*distance(this.qb,this.aim),time:0,lateral:false};}
-  pass(){if(this.phase!=='live')return false;this.ball=this.preview();this.phase='flight';this.event('throw');return true;}
+  pass(){if(this.phase!=='live')return false;this.forwardPasses++;this.ball=this.preview();this.phase='flight';this.event('throw');return true;}
   changeLane(direction){
     if(this.phase!=='run'||!this.runner)return false;
     const next=clamp(this.lane+Math.sign(direction),0,4);
@@ -125,7 +125,7 @@ export class Match {
   }
   finish(won,reason){
     if(this.result)return;
-    this.phase='result';this.result={won,reason,medals:won?[true,this.medals.early,this.medals.clean]:[false,false,false],activeMs:Math.round(this.totalTime*1000)};
+    this.phase='result';this.result={won,reason,medals:won?[true,this.medals.early,this.medals.clean]:[false,false,false],activeMs:Math.round(this.totalTime*1000),forwardPasses:this.forwardPasses,receiversCaught:this.caught.size};
     this.event(won?'win':'lose',{reason});
   }
   score(){
@@ -221,7 +221,10 @@ export class Match {
           const contactTime=previousTime+(ball.time-previousTime)*hit.t;
           const contact={x:previous.x+(current.x-previous.x)*hit.t,y:previous.y+(current.y-previous.y)*hit.t,z:previous.z+(current.z-previous.z)*hit.t};
           const origin=beforeDefense[hit.p.id],defenderPoint={x:origin.x+(hit.p.x-origin.x)*hit.t,y:origin.y+(hit.p.y-origin.y)*hit.t};
-          this.interception={defender:hit.p.id,defenderPoint,side:defenderPoint.x<-2?'Left':defenderPoint.x>2?'Right':'Centre',point:contact,time:Math.max(0,contactTime),flight:{...ball,from:{...ball.from},to:{...ball.to}}};
+          const receivers=this.receivers.map((p,i)=>({id:p.id,x:beforePlayers[i].x+(p.x-beforePlayers[i].x)*hit.t,y:beforePlayers[i].y+(p.y-beforePlayers[i].y)*hit.t}));
+          const book=PLAYBOOKS.find(b=>b.id===this.book)||PLAYBOOKS[0];
+          const routes=ball.lateral?[]:book.paths.map((route,i)=>({id:CAST[i],points:[point([-6,0,6][i],this.s),...route.map(([x,y])=>point(x,Math.min(41,this.s+y)))]}));
+          this.interception={defender:hit.p.id,defenderPoint,side:defenderPoint.x<-2?'Left':defenderPoint.x>2?'Right':'Centre',point:contact,time:Math.max(0,contactTime),flight:{...ball,from:{...ball.from},to:{...ball.to}},receivers,routes};
           this.event('intercept',{...contact,defender:hit.p.id});this.finish(false,'intercept');return;
         }
         this.runner=hit.p;this.lane=LANES.reduce((best,x,i)=>Math.abs(x-hit.p.x)<Math.abs(LANES[best]-hit.p.x)?i:best,0);
@@ -249,10 +252,15 @@ export class Match {
 export function normalizeSave(raw={}){
   if(!raw||typeof raw!=='object')raw={};
   const ids=new Set(STAGES.map(s=>s.id)),completed=[...new Set(Array.isArray(raw.completedStageIds)?raw.completedStageIds:[])].filter(id=>ids.has(id));
-  const medals={},times={};
-  for(const id of completed){medals[id]=[true,...[1,2].map(i=>raw.bestMedalsByStage?.[id]?.[i]===true)];const t=raw.bestActiveMsByStage?.[id];if(Number.isSafeInteger(t)&&t>=0&&t<=3600000)times[id]=t;}
+  const medals={},times={},passes={},receivers={};
+  for(const id of completed){
+    medals[id]=[true,...[1,2].map(i=>raw.bestMedalsByStage?.[id]?.[i]===true)];const t=raw.bestActiveMsByStage?.[id];if(Number.isSafeInteger(t)&&t>=0&&t<=3600000)times[id]=t;
+    const p=raw.bestForwardPassesByStage?.[id],r=raw.bestReceiversByStage?.[id];
+    if(Number.isSafeInteger(p)&&p>=1&&p<=512)passes[id]=p;
+    if(Number.isSafeInteger(r)&&r>=1&&r<=3)receivers[id]=r;
+  }
   const unlocked=PLAYBOOKS.filter(b=>b.unlock===0||completed.includes(STAGES[b.unlock-1].id)).map(b=>b.id);
-  return {schemaVersion:1,completedStageIds:completed,bestMedalsByStage:medals,bestActiveMsByStage:times,
+  return {schemaVersion:1,completedStageIds:completed,bestMedalsByStage:medals,bestActiveMsByStage:times,bestForwardPassesByStage:passes,bestReceiversByStage:receivers,
     unlockedPlaybooks:unlocked,ownedPennants:STAGES.filter(s=>s.checkpoint&&completed.includes(s.id)).map(s=>s.arc),
     selectedPlaybook:unlocked.includes(raw.selectedPlaybook)?raw.selectedPlaybook:'P1',
     selectedStageId:ids.has(raw.selectedStageId)?raw.selectedStageId:'meadow-01',
@@ -266,5 +274,7 @@ export function saveWin(save,stage,result){
   if(!next.completedStageIds.includes(stage.id))next.completedStageIds.push(stage.id);
   next.bestMedalsByStage[stage.id]=result.medals.map((v,i)=>v||next.bestMedalsByStage[stage.id]?.[i]===true);
   next.bestActiveMsByStage[stage.id]=Math.min(result.activeMs,next.bestActiveMsByStage[stage.id]??Infinity);
+  if(Number.isSafeInteger(result.forwardPasses)&&result.forwardPasses>=1&&result.forwardPasses<=512)next.bestForwardPassesByStage[stage.id]=Math.min(result.forwardPasses,next.bestForwardPassesByStage[stage.id]??Infinity);
+  if(Number.isSafeInteger(result.receiversCaught)&&result.receiversCaught>=1&&result.receiversCaught<=3)next.bestReceiversByStage[stage.id]=Math.max(result.receiversCaught,next.bestReceiversByStage[stage.id]??0);
   next.pendingStageCompletions.push(stage.id);return normalizeSave(next);
 }

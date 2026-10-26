@@ -4,6 +4,8 @@ import {FieldRenderer} from './render.mjs';
 import {COPY,tr,localeSegments} from './i18n.mjs';
 import {coachText,stageLesson} from './coaching.mjs';
 import {drawInterceptionDiagram} from './interception-diagram.mjs';
+import {tacticalChallenge} from './mastery.mjs';
+import {createPlaybookChoices} from './playbook-choices.mjs';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 const $=id=>document.getElementById(id),abort=new AbortController();
 const listen=(node,event,fn,options={})=>node.addEventListener(event,fn,{...options,signal:abort.signal});
@@ -24,7 +26,7 @@ const seconds=value=>new Intl.NumberFormat(locale,{style:'unit',unit:'second',un
 let save,saveReadable=true;
 function readSave(){const raw=localStorage.getItem(SAVE_KEY);return normalizeSave(raw===null?{}:JSON.parse(raw));}
 try{save=readSave();}catch{save=normalizeSave();saveReadable=false;}
-let screen='main',tab='stages',selection=unlockedStage(save)-1,match=null,renderer=null,frame=null,rail=null,modal=null,modalFocus=null;
+let screen='main',tab='stages',selection=unlockedStage(save)-1,match=null,renderer=null,frame=null,rail=null,playChoices=null,modal=null,modalFocus=null;
 let raf=0,lastFrame=0,accumulator=0,visualTime=0,eventId=0,resultPending=false,resultSaved=false,resultReward=false,practiceMode=false,practiceRun=false,busyStart=false;
 let feedbackUntil=0,drag=null,purchase=null,purchaseBusy=false,disposed=false,roundSerial=0,celebrationTime=0;
 let lesson=null,lessonValues={},booksBefore=[],trialBook=null,reviewRemaining=0;
@@ -53,7 +55,10 @@ function owns(id){return window.WeightPlayWallet?.owns?.(`${GAME_ID}:${id}`)===t
 function cosmetics(){return {kit:owns(save.equippedKit)?save.equippedKit:'classic',stands:owns(save.equippedStands)?save.equippedStands:'classic'};}
 function rewardState(stage){try{const raw=JSON.parse(localStorage.getItem('weightplayCastleV1')||'null');return raw?.completions?.[`${GAME_ID}:${stage.id}`]?'collected':raw===null||raw?.version===2?'not-collected':'unknown';}catch{return 'unknown';}}
 function stageConfig(){return {count:STAGES.length,gameId:GAME_ID,poster:'/games/meadow-touchdown/assets/cover.webp',background:'/assets/lobby-block-atmosphere.svg',stage:i=>{
-  const s=STAGES[i],cleared=save.completedStageIds.includes(s.id);return {id:s.id,kicker:t('stage',{n:s.number}),title:copy().stageNames[i],subtitle:copy().arcs[s.arc],status:t(cleared?'completed':s.number<=unlockedStage(save)||practiceMode?'unlocked':'locked'),locked:!practiceMode&&s.number>unlockedStage(save),cleared,rewardState:rewardState(s),poster:`/games/meadow-touchdown/assets/arc-${s.arc+1}.webp`,summary:s.special==='pair'?t('pairMissing'):s.special==='gate'?t('wrongGate'):s.special==='relay'?t('relayMissing'):copy().rules[0],details:[copy().rules[3],s.checkpoint?copy().rules[s.number===30?6:5]:copy().rules[4]]};}};}
+  const s=STAGES[i],cleared=save.completedStageIds.includes(s.id),challenge=tacticalChallenge(s.number,null,save);
+  const goal=s.special==='pair'?t('pairMissing'):s.special==='gate'?t('wrongGate'):s.special==='relay'?t('relayMissing'):copy().rules[0];
+  const challengeDetails=challenge?[`${c('challengeTitle')}: ${c(challenge.goal)}`,challenge.best===null?c('noRecord'):c(challenge.bestKey,{n:challenge.best}),challenge.completed?c('challengeDone'):c('challengeOptional')]:[];
+  return {id:s.id,kicker:t('stage',{n:s.number}),title:copy().stageNames[i],subtitle:copy().arcs[s.arc],status:t(cleared?'completed':s.number<=unlockedStage(save)||practiceMode?'unlocked':'locked'),locked:!practiceMode&&s.number>unlockedStage(save),cleared,rewardState:rewardState(s),poster:`/games/meadow-touchdown/assets/arc-${s.arc+1}.webp`,summary:challenge?`${c('challengeTitle')}: ${c(challenge.goal)} ${challenge.best===null?c('noRecord'):c(challenge.bestKey,{n:challenge.best})}`:goal,details:[goal,...challengeDetails,copy().rules[3],s.checkpoint?copy().rules[s.number===30?6:5]:copy().rules[4]]};}};}
 function collectionStatus(node,id,owned){window.WeightPlayScreenFrame.setItemCollectionStatus(node,{itemId:id,state:owned?'collected':'not-collected',labels:{collected:t('unlocked'),'not-collected':t('locked'),unknown:'?'}});}
 function statusSlot(node){const s=make('span');s.dataset.wpItemCollectionStatus='';for(const type of ['icon','label']){const el=make('span');el.setAttribute(`data-wp-item-collection-${type}`,'');s.append(el);}node.append(s);}
 function buildCollections(){
@@ -119,11 +124,25 @@ function openModal(id){
 }
 function closeModal(restore=true){
   if(!modal)return;$(modal).hidden=true;modal=null;clearInput();$('battleLive').inert=false;$('stageContent').inert=false;$('stageScreen').querySelector('nav').inert=false;$('stageScreen').querySelector('header').inert=false;
-  if(frame)frame.activate(screen);if(restore){const target=modalFocus?.isConnected&&modalFocus.matches('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href],[tabindex]:not([tabindex="-1"])')&&modalFocus.getClientRects().length&&!modalFocus.closest('[hidden],[inert]')?modalFocus:screen==='battle'?$(match?.bookChoiceRequired?'playSelect':'actionBtn'):null;target?.focus({preventScroll:true});}lastFrame=performance.now();announce();
+  if(frame)frame.activate(screen);if(restore){const target=modalFocus?.isConnected&&modalFocus.matches('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href],[tabindex]:not([tabindex="-1"])')&&modalFocus.getClientRects().length&&!modalFocus.closest('[hidden],[inert]')?modalFocus:screen==='battle'?match?.bookChoiceRequired?playChoices?.focusTarget():$('actionBtn'):null;target?.focus({preventScroll:true});}lastFrame=performance.now();announce();
 }
 function renderHelp(){
-  const content=lesson?[c(lesson,lessonValues)]:[c(match?.phase==='run'?'run':stageLesson[match?.stage.number]||'aim'),copy().rules[1],copy().rules[2]];
+  const m=match,stageKey=stageLesson[m?.stage.number],special=!!m?.stage.special;
+  const content=lesson?[c(lesson,lessonValues)]:[c(special&&stageKey?stageKey:m?.phase==='run'?'run':stageKey||'aim')];
+  if(!lesson&&m?.phase==='run'){
+    if(m.stage.special==='relay'){
+      content.push(c('relayGoal',{n:m.leg-1+(m.relayed?1:0)}));
+      content.push(m.relayed?c('relayDriveDone',{n:m.leg}):m.relayTarget()?c('relayNow',{name:castName(m.relayTarget().id)}):c('relayFindSupport'));
+    }else if(special)content.push(c('run'));
+  }
+  if(!lesson&&m?.stage.special==='gate')content.push(c(m.gate<0?'openLeft':'openRight'));
+  if(!lesson&&m?.stage.special==='pair')content.push(c('pairGoal',{n:m.caught.size}));
+  if(!lesson&&m?.bookChoiceRequired)content.push(c('chooseBook'));
+  const challenge=tacticalChallenge(m?.stage.number);
+  if(challenge)content.push(`${c('challengeTitle')}: ${c(challenge.goal)} ${c('challengeOptional')}`);
   $('helpCopy').replaceChildren(...content.map(value=>make('p','',value)));
+  $('helpBasics').hidden=!!lesson;$('helpBasics').open=false;text($('helpBasicsTitle'),c('basicControls'));
+  $('helpBasicsCopy').replaceChildren(...[copy().rules[1],copy().rules[2]].map(value=>make('p','',value)));
   $('helpDialog').querySelector('.coach-portrait').src=lesson==='relayNow'&&match?.relayTarget()?PORTRAITS[match.relayTarget().id]:PORTRAITS.orla;
   $('helpDialog').classList.toggle('focused-lesson',!!lesson);
 }
@@ -150,11 +169,14 @@ async function startStage(index,{practice=practiceMode,book=null}={}){
   }catch(error){console.error(error);openModal('graphicsDialog');}finally{busyStart=false;}
 }
 function renderPlayChoices(){
-  if(!match)return;const selected=match.book;
+  if(!match||!playChoices)return;
   const allowed=match.availableBooks().filter(id=>save.unlockedPlaybooks.includes(id));
   if(!allowed.includes(match.book)||match.book===match.blockedBook)match.book=allowed.find(id=>id!==match.blockedBook)||'P1';
-  const placeholder=match.bookChoiceRequired?new Option(c('chooseBook'),''):null;if(placeholder)placeholder.disabled=true;
-  $('playSelect').replaceChildren(...(placeholder?[placeholder]:[]),...allowed.map(id=>{const i=PLAYBOOKS.findIndex(b=>b.id===id),option=new Option(copy().bookNames[i],id);option.disabled=id===match.blockedBook;return option;}));$('playSelect').value=match.bookChoiceRequired?'':match.book;
+  playChoices.render({allowed,blocked:match.blockedBook,required:match.bookChoiceRequired,selected:match.book,ready:match.phase==='ready',names:copy().bookNames,hints:copy().bookHints,resting:name=>c('bookResting',{name})});
+}
+function chooseBook(id){
+  if(!match||paused()||!match.selectBook(id))return;
+  clearInput();renderPlayChoices();feedbackUntil=match.totalTime+1.35;text($('feedback'),copy().bookHints[PLAYBOOKS.findIndex(b=>b.id===id)]);renderHud();$('actionBtn').focus({preventScroll:true});announce();
 }
 function renderHud(){
   if(!match)return;const m=match;
@@ -166,7 +188,7 @@ function renderHud(){
     condition.setAttribute('aria-label',c('pairGoal',{n:Math.min(2,m.caught.size)}));
     for(const token of condition.children){const caught=m.caught.has(token.dataset.receiver);token.dataset.caught=String(caught);text(token.querySelector('b'),caught?'✓':'○');token.title=`${castName(token.dataset.receiver)} · ${c(caught?'received':'pending')}`;token.setAttribute('aria-label',token.title);}
   }else{text(condition,[m.wind?`${m.wind>0?'→':'←'} ${Math.abs(m.wind)}${m.stage.special==='gust'?' ↔':''}`:'',m.stage.special==='gate'?c(m.gate<0?'openLeft':'openRight'):'',m.stage.special==='relay'?c('relayGoal',{n:m.leg-1+(m.relayed?1:0)}):''].filter(Boolean).join(' · '));}
-  $('playChoice').hidden=m.phase!=='ready';$('playSelect').disabled=m.phase!=='ready';
+  $('playChoice').hidden=m.phase!=='ready';playChoices?.setReady(m.phase==='ready');
   $('actionBtn').disabled=m.bookChoiceRequired||!reviewRemaining&&!['ready','live','run'].includes(m.phase);text($('actionBtn'),reviewRemaining?c('viewResult'):m.bookChoiceRequired?c('chooseBook'):t(m.phase==='ready'?'snap':m.phase==='live'?'drag':m.phase==='run'?'stop':'throw'));
   $('leftBtn').disabled=m.phase!=='run'||m.lane===0;$('rightBtn').disabled=m.phase!=='run'||m.lane===4;$('relayBtn').disabled=!m.relayTarget();$('relayBtn').style.visibility=m.stage.special==='relay'?'visible':'hidden';
   if(m.bookChoiceRequired)text($('feedback'),c('chooseBook'));
@@ -186,10 +208,23 @@ async function commitResult(){
 }
 function renderResult(){
   if(!match?.result)return;const r=match.result;text($('resultStage'),`${t('stage',{n:match.stage.number})} · ${copy().stageNames[match.stage.number-1]}`);text($('resultTitle'),t(r.won?'win':'lose'));text($('resultReason'),match.interception?interceptionText():t(r.reason));
-  $('interceptionReview').hidden=!match.interception;text($('interceptionLegend'),c('interceptDiagram'));drawInterceptionDiagram($('interceptionDiagram'),match.interception);
+  $('interceptionReview').hidden=!match.interception;text($('interceptionLegend'),`${c('interceptDiagram')} ${c(match.interception?.flight.lateral?'interceptPositions':'interceptRoutes')}`);drawInterceptionDiagram($('interceptionDiagram'),match.interception);
   text($('resultMedals'),r.won?`${t('medals')} ${r.medals.filter(Boolean).length} / 3 · ${seconds(Math.round(r.activeMs/1000))}`:'');
   $('medalDetails').hidden=!r.won;
   for(const [i,key] of ['medalClear','medalEarly','medalClean'].entries())text($('medalDetails').children[i],`${r.medals[i]?'✓':'○'} ${c(key)}`);
+  const challenge=tacticalChallenge(match.stage.number,r,save);$('tacticalChallenge').hidden=!r.won||!challenge;
+  if(r.won&&challenge){
+    text($('challengeTitle'),c('challengeTitle'));text($('challengeGoal'),c(challenge.goal));
+    text($('challengeRun'),challenge.current===null?'':c(challenge.currentKey,{n:challenge.current}));
+    text($('challengeBest'),challenge.best===null?c('noRecord'):c(challenge.bestKey,{n:challenge.best}));
+    text($('challengeStatus'),practiceRun?`${c(challenge.reached?'challengeReached':'challengeOpen')} ${c('practiceRecords')}`:c(challenge.completed?'challengeDone':challenge.reached?'challengeReached':'challengeOpen'));
+    $('tacticalChallenge').dataset.completed=String(practiceRun?challenge.reached:challenge.completed);
+    if($('challengeArt').dataset.stage!==String(match.stage.number)){
+      $('challengeArt').dataset.stage=String(match.stage.number);
+      if(match.stage.number===6)$('challengeArt').replaceChildren(atlas('icons',1));
+      else $('challengeArt').replaceChildren(...CAST.map(id=>{const image=new Image();image.src=PORTRAITS[id];image.alt=castName(id);return image;}));
+    }
+  }
   const unlocked=PLAYBOOKS.find(b=>b.unlock===match.stage.number&&resultSaved&&!booksBefore.includes(b.id));
   trialBook=unlocked?.id||null;
   const champion=r.won&&match.stage.number===30,checkpoint=r.won&&match.stage.checkpoint;
