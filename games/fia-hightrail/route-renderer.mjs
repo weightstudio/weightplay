@@ -9,6 +9,7 @@ export function renderHightrailRoute(locale){
  const canonical=`https://weightplay.com/${SEGMENTS[locale]}/games/fia-hightrail/`,image='https://weightplay.com/games/fia-hightrail/assets/og.webp';
  let html=source.replace(/\s*<script\b[^>]*data-wp-locale-route[^>]*>[\s\S]*?<\/script>/g,'').replace(/<html\b[^>]*>/,`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}" data-wp-interface-version="${interfaceVersion}"${interfaceVersion==='9'?'':' data-wp-interface-candidate="9"'}>`)
  .replace(/\s*<base\b[^>]*>/g,'').replace('<head>','<head>\n <base href="/games/fia-hightrail/">')
+ .replace(/<script src="\.\.\/\.\.\/src\/i18n\.js"><\/script>/,script=>locale==='ja'?'<script src="/src/i18n-ja.js?v=20260719-ja1"></script>'+script:script)
  .replace(/<title>[\s\S]*?<\/title>/,`<title>${escape(c.title)} | WeightPlay</title>`)
  .replace(/\s*<meta\b[^>]*(?:name="(?:description|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/g,'')
  .replace(/\s*<link rel="(?:canonical|alternate)"[^>]*>/g,'')
@@ -23,6 +24,8 @@ export function renderHightrailRoute(locale){
  .replace(/(<div id="holds"[^>]*aria-label=")[^"]*/g,`$1${escape(c.holds)}`)
  .replace(/(<button id="(helpBtn|pinBtn|anchorBtn)"[^>]*>)[\s\S]*?<\/button>/g,(_,open,id)=>open+escape(t[{helpBtn:'help',pinBtn:'pin',anchorBtn:'anchor'}[id]])+'</button>')
  .replace(/<!-- FIA GUIDE START -->[\s\S]*?<!-- FIA GUIDE END -->/,`<!-- FIA GUIDE START -->\n${renderStaticGuide(locale)}\n<!-- FIA GUIDE END -->`);
+ html=html.replace(/<script\b[^>]*src="[^"]*i18n-ja\.js[^"]*"[^>]*><\/script>/gi,'');
+ if(locale==='ja')html=html.replace(/(<script\b[^>]*src="[^"]*\/i18n\.js"[^>]*>)/i,'<script src="/src/i18n-ja.js?v=20260719-ja1"></script>$1');
  const tags=[['name','description',t.summary],['property','og:site_name','WeightPlay'],['property','og:type','website'],['property','og:title',c.title],['property','og:description',t.summary],['property','og:url',canonical],['property','og:image',image],['name','twitter:card','summary_large_image'],['name','twitter:title',c.title],['name','twitter:description',t.summary],['name','twitter:image',image]].map(([attr,key,value])=>`<meta ${attr}="${key}" content="${escape(value)}">`).join('\n');
  const alternates=Object.entries(SEGMENTS).map(([lang,segment])=>`<link rel="alternate" hreflang="${lang}" href="https://weightplay.com/${segment}/games/fia-hightrail/">`).join('\n');
  const schema={'@context':'https://schema.org','@graph':[{'@type':'VideoGame',name:c.title,description:t.summary,url:canonical,image,inLanguage:locale,applicationCategory:'Game',genre:c.type,keywords:c.tags.join(', '),operatingSystem:'Web browser',isAccessibleForFree:true,softwareVersion:gameVersion,publisher:{'@type':'Organization',name:'WeightPlay'}},{'@type':'FAQPage',inLanguage:locale,mainEntity:faqFor(locale).map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))}]};

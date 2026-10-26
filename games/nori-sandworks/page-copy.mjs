@@ -8,6 +8,9 @@ export function schema(locale='en',gameVersion='v1'){const t=TEXT[locale];return
 export function renderEntry(source,locale){const t=TEXT[locale],e=escape;if(!t)throw Error('PAGE_LOCALE_REQUIRED');
  const gameVersion=source.match(/name="weightplay-game-version" content="([^"]+)"/)[1];
  let s=source.replace(/<html\b[^>]*>/i,`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}" data-wp-interface-version="9">`);
+ s=s.replace(/<body\b[^>]*>/i,tag=>tag.replace(/\sdata-wp-game-owned-guide(?:="[^"]*")?/g,'').replace(/>$/,' data-wp-game-owned-guide="true">'));
+ s=s.replace(/<script\b[^>]*src="[^"]*i18n-ja\.js[^\"]*"[^>]*><\/script>/gi,'');
+ if(locale==='ja')s=s.replace(/(<script\b[^>]*src="[^"]*\/i18n\.js"[^>]*>)/i,'<script src="/src/i18n-ja.js?v=20260719-ja1"></script>$1');
  s=s.replace(/<title>[^<]*<\/title>/i,`<title>${e(t.title)} | WeightPlay</title>`);
  s=s.replace(/(<(?:strong|h1)\b[^>]*\bdata-wp-game-title[^>]*>)[^<]*/gi,'$1'+e(t.title));
  for(const [id,value]of Object.entries({summary:t.summary,startBtn:t.start,undoBtn:t.undo,rotateBtn:t.rotate,switchBtn:t.gates}))s=s.replace(new RegExp(`(<[a-z]+\\b[^>]*\\bid="${id}"[^>]*>)[^<]*`),'$1'+e(value));

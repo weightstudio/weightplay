@@ -25,8 +25,22 @@
   let stageProgress = null;
   let selectedStage = 0;
   let battlePaused = false;
-  function pauseBattleClock() { battlePaused = true; }
-  function resumeBattleClock() { battlePaused = false; }
+  const uiPauseReasons = new Set();
+  function pauseBattleClock(reason='leave') { uiPauseReasons.add(reason); battlePaused = true; }
+  function resumeBattleClock(reason='leave') { uiPauseReasons.delete(reason); battlePaused = uiPauseReasons.size>0; }
+  let resultRewardObtained = false;
+  const rewardGameId = 'animal-chameleon-blend';
+  const refreshResultReward = () => {
+    if (resultScreen.hidden) return;
+    window.ShowResultGet?.(rewardGameId,resultRewardObtained);
+    if (resultRewardObtained) window.WeightPlayCastle?.dismissRewardNotice?.(rewardGameId);
+  };
+  window.addEventListener('weightplay:castle-reward',event=>{
+    const reward=event.detail;
+    if(reward?.gameId!==rewardGameId||state.screen!=='battle'||state.phase!=='result')return;
+    resultRewardObtained=true;
+    queueMicrotask(refreshResultReward);
+  });
   const leaveCopy = {
     en: ["Leave this stage?", "Leaving {stage} discards this run. Cleared stages stay saved.", "Continue playing", "Return to Stages"],
     "zh-Hant": ["離開此關卡？", "離開 {stage} 會放棄本次進度；已通關的進度仍會保留。", "繼續遊戲", "返回關卡"],
@@ -64,7 +78,7 @@
     battleScreen.append(dialog);
     const continueButton = dialog.querySelector("#wp-chameleon-continue");
     const leaveButton = dialog.querySelector("#wp-chameleon-leave");
-    const covered = [...battleScreen.children].filter((node) => node !== dialog);
+    const covered = [...battleScreen.children].filter((node) => node !== dialog && !node.matches('header'));
     const inertSnapshot = new Map();
 
     const updateCopy = () => {
@@ -91,6 +105,7 @@
       dialog.hidden = true;
       setCoveredInert(false);
       document.body.classList.remove("wp-chameleon-leave-open");
+      if(frame?.active==='battle')frame.activate('battle',{covered:false});
       if (resume) resumeBattleClock();
       if (focusBack) battleBack.focus({ preventScroll: true });
     };
@@ -102,6 +117,7 @@
       setCoveredInert(true);
       dialog.hidden = false;
       document.body.classList.add("wp-chameleon-leave-open");
+      frame?.activate('battle',{covered:true});
       continueButton.focus({ preventScroll: true });
     };
 
@@ -154,7 +170,6 @@
   if (resultScreen && battleScreen) {
     let wasResultActive = false;
     const resultCovered = [
-      battleScreen.querySelector(".m5-battle-header"),
       battleScreen.querySelector(".m5-status"),
       battleScreen.querySelector("#arena"),
       battleScreen.querySelector(".m5-controls"),
@@ -164,6 +179,8 @@
       const active = !resultScreen.hidden;
       document.body.classList.toggle("wp-chameleon-result-active", active);
       resultCovered.forEach((node) => node.toggleAttribute("inert", active));
+      if(frame?.active==='battle')frame.activate('battle',{covered:active});
+      if(active)refreshResultReward();
       if (active && !wasResultActive) {
         ($( 'next' ).disabled ? $('retry') : $('next')).focus({preventScroll:true});
       } else if (!active && wasResultActive && frame?.active === 'battle') {
@@ -366,11 +383,14 @@
     $('main-progress').textContent=`${common(8)}: ${best} / 30`;
     if(stageProgress)stageProgress.textContent=`${common(8)}: ${best} / 30`;
     document.querySelector('[data-m5-lede]').textContent=t(0)+' · '+t(16);
+    const nextLabel=window.ChameleonStageConfig.nextLabel(localeKey());
+    if(nextLabel)$('next').textContent=nextLabel;
   }
   function stageCards(){
     stageUI?.refresh(selectedStage);
   }
   function show(screen){
+    if(screen==='battle')resultRewardObtained=false;
     if(screen!=="battle"&&state.screen==="battle"&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome="abandon";}
     if(screen!=="stage")stageUI?.cancel();
     cancelAnimationFrame(frameId);state.screen=screen;document.body.dataset.screen=screen;
@@ -390,7 +410,7 @@
     selectedStage=stage-1;stageCards();
     state={screen:'battle',stage,round:1,wins:0,phase:'ready',color:-1,pattern:-1,entry:0,preview:0,timer:0,correct:false};
     Object.assign(measurement,{roundKey:{},started:true,ended:false,restart:false,outcome:'complete'});
-    battlePaused=false;resultScreen.hidden=true;show('battle');render();sound('game.start');
+    uiPauseReasons.clear();battlePaused=false;resultScreen.hidden=true;show('battle');render();sound('game.start');
   }
   function begin(){state.phase='preview';state.preview=0;state.entry=0;state.color=-1;state.pattern=-1;state.timer=profiles[state.stage-1].preview;render();}
   function nextRound(){const p=profiles[state.stage-1];if(state.round>=p.rounds){finish();return;}state.round++;begin();}
@@ -458,11 +478,15 @@
   }
   $('start-game').addEventListener('click',()=>{stageCards();show('stage');});
   $('stage-back').addEventListener('click',()=>show('main'));
-  $('to-stages').addEventListener('click',()=>{board.inert=false;stageCards();show('stage');});
+  $('to-stages').addEventListener('click',()=>{if(!resultScreen.hidden)selectedStage=Math.min(29,best);board.inert=false;stageCards();show('stage');});
   $('retry').addEventListener('click',()=>{board.inert=false;start(state.stage);});
   $('next').addEventListener('click',()=>{if(!$('next').disabled){board.inert=false;start(state.stage+1);}});
   window.addEventListener('keydown',e=>{if(state.screen!=='battle'||!resultScreen.hidden||battlePaused||e.repeat||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;const actions={'1':'color-0','2':'color-1','3':'color-2','4':'pattern-0','5':'pattern-1','6':'pattern-2'};if(actions[e.key]){e.preventDefault();act(actions[e.key]);}});
   window.addEventListener('weightplay:market-locale-change',()=>{updateProgress();stageCards();frame?.refresh();if(state.screen==='battle')render();});
+  window.addEventListener('weightplay:interaction-state',()=>{
+    if(state.screen==='battle'&&battleScreen.querySelector('[data-wp-settings][aria-expanded="true"]'))pauseBattleClock('settings');
+    else resumeBattleClock('settings');
+  });
   document.addEventListener('visibilitychange',()=>{lastTime=performance.now();});
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(frameId);audio?.stop();});
   window.addEventListener('pageshow',e=>{if(e.persisted&&state.screen==='battle'){lastTime=performance.now();frameId=requestAnimationFrame(tick);}});

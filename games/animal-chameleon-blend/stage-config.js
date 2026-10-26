@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   window.ChameleonStageConfig=Object.freeze({
+    nextLabel(locale) { return {it:'Avanti',ru:'Далее'}[locale] || ''; },
     create({profiles,getBest,gameText,t,common}) {
       return {gameId:'animal-chameleon-blend',count:profiles.length,
         poster:'/assets/interface7-redrawn/animal-chameleon-blend.webp',

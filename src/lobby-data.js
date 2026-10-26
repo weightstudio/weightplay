@@ -7681,14 +7681,13 @@ window.WONDER_LOBBY.games.push({
 window.WONDER_LOBBY.audiences.generalGameIds.push("blade-orbit");
 window.WONDER_LOBBY.officialTitleOverrides["blade-orbit"] = window.WONDER_LOBBY.games.find(game => game.id === "blade-orbit").title;
 
-// Fia's Hightrail: scoped new-game intake; Coming Soon preview only.
+// Fia's Hightrail: owner-approved v4 / I9 public release.
 window.WONDER_LOBBY.games.push({
   "id": "fia-hightrail",
   "audience": "general",
-  "status": "planned",
-  "internalOnly": true,
-  "internalTrial": "index.html?preview=1",
+  "status": "playable",
   "href": "games/fia-hightrail/",
+  "previewVideo": "assets/previews/fia-hightrail-battle.webm",
   "title": {
     "en": "Fia’s Hightrail",
     "zh-Hant": "菲亞攀峰記",
@@ -7839,13 +7838,12 @@ for (const id of ownerApprovedComingSoonGames) {
   delete game.previewOnly;
 }
 
-// Nori's Sandworks: scoped new-game intake; internal Coming Soon production.
+// Nori's Sandworks: owner-approved v5 / I9 public release.
 window.WONDER_LOBBY.games.push({
   "id": "nori-sandworks",
   "audience": "general",
-  "status": "planned",
-  "internalOnly": true,
-  "internalTrial": "index.html?preview=1",
+  "status": "playable",
+  "previewVideo": "assets/previews/nori-sandworks-battle.webm",
   "href": "games/nori-sandworks/",
   "title": {
     "__localizedExact": true,
