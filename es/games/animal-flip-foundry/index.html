@@ -21,19 +21,19 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-game-version" content="v18" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Lanza un recipiente de cristal con un deslizamiento y ajusta la fuerza para aterrizar en 24 plataformas de seis capítulos." />
+    <meta name="description" content="Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase." />
     <title>Taller de giros | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
-    <meta property="og:description" content="Lanza un recipiente de cristal con un deslizamiento y ajusta la fuerza para aterrizar en 24 plataformas de seis capítulos." />
-    <meta name="twitter:description" content="Lanza un recipiente de cristal con un deslizamiento y ajusta la fuerza para aterrizar en 24 plataformas de seis capítulos." />
+    <script type="module" src="game.js?v=20261026-flip-stage60-v18"></script>
+    <meta property="og:description" content="Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase." />
+    <meta name="twitter:description" content="Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase." />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,7 +52,7 @@
   "alternateName": "Flip Foundry",
   "url": "https://weightplay.com/es/games/animal-flip-foundry/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "Lanza un recipiente de cristal con un deslizamiento y ajusta la fuerza para aterrizar en 24 plataformas de seis capítulos.",
+  "description": "Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Taller de giros</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
@@ -98,22 +98,21 @@
   <section class="game-page-info game-page-info-static" aria-label="Información de Taller de giros">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Taller de giros</h2><p>Lanza un recipiente de cristal con un deslizamiento y ajusta la fuerza para aterrizar en 24 plataformas de seis capítulos.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Taller de giros</h2><p>Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Lanzamiento con deslizamiento</span><span>Ajuste de fuerza</span><span>Arcade de física</span><span>Aterrizaje de precisión</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Arcade de lanzamiento y aterrizaje</strong></div><div class="game-info-fact"><span>Género</span><strong>Lanzamiento con deslizamiento · Ajuste de fuerza · Arcade de física · Aterrizaje de precisión</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>De fácil a desafiante</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>1–3 minutos por capítulo</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>Cada capítulo tiene cuatro plataformas del taller. Un aterrizaje correcto lleva el recipiente a la siguiente y prolonga la racha.</p>
-<p>El reto consiste en ajustar la fuerza del gesto al rango permitido por cada plataforma. Si fallas, puedes ajustar y repetir esa plataforma.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Pulsa el recipiente y arrastra hacia arriba en un solo gesto continuo. La longitud cambia la fuerza y el vuelo; al soltar, el juego comprueba si la fuerza está dentro del rango permitido por la plataforma actual.</p>
-<p>Un aterrizaje correcto lleva a la siguiente plataforma y prolonga la racha. Si fallas, puedes reintentar esa plataforma o volver al mapa de capítulos.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un capítulo en el mapa del taller y espera la señal de listo.</li><li>Pulsa el recipiente y arrastra hacia arriba en un gesto fluido. La longitud cambia la fuerza del lanzamiento.</li><li>Suelta para lanzar. El éxito depende de que la fuerza al soltar esté dentro del rango permitido por la plataforma actual.</li><li>Si fallas, elige Reintentar y ajusta la fuerza. Aterriza correctamente en cuatro plataformas para terminar el capítulo.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Empieza con un deslizamiento ascendente controlado y usa el resultado para conocer el rango de fuerza de la plataforma.</li><li>Si fallas, cambia un poco la longitud del gesto y compara el resultado; la distancia no determina el éxito.</li><li>Mantén el gesto casi vertical y ajusta la fuerza según la respuesta de la plataforma.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>El taller tiene seis capítulos con cuatro plataformas cada uno. Cada aterrizaje correcto lleva a la siguiente plataforma y prolonga la racha; si fallas, puedes repetir esa plataforma o volver al mapa de capítulos.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>En Rally de Ruedas Dibujadas, la rueda que trazas cambia cómo se recorre el terreno; Taller de giros se centra en ajustar un deslizamiento ascendente para que la fuerza al soltar quede dentro del rango de la plataforma actual. El gesto funciona igual con pantalla táctil o ratón, y el resultado permite ajustar el siguiente intento en esa misma plataforma.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Taller de giros es un juego de navegador breve para público general; no requiere cuenta ni compras. Solo se guarda en este navegador la mejor racha de aterrizajes. La racha actual termina con la partida y podrías perder el récord al borrar los datos del sitio. WeightPlay puede usar analíticas de páginas y partidas según se explica en su Política de privacidad.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cómo lanzo el recipiente?</dt><dd>Pulsa el recipiente y arrastra hacia arriba; la longitud cambia la fuerza del lanzamiento.</dd></div><div><dt>¿Qué determina un aterrizaje correcto?</dt><dd>Al soltar, la fuerza debe estar dentro del rango permitido por la plataforma actual. El giro es una señal visual, no una comprobación de ángulo.</dd></div><div><dt>¿Puedo usar un ratón?</dt><dd>Sí. Arrastrar con el ratón y deslizar con el tacto usan el mismo gesto.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>En este navegador solo se guarda la mejor racha. La racha actual dura únicamente durante la partida.</dd></div><div><dt>¿Cuántas plataformas tiene cada capítulo?</dt><dd>Cada uno de los seis capítulos tiene cuatro plataformas. Un aterrizaje correcto te lleva a la siguiente; si fallas, puedes intentarlo de nuevo.</dd></div><div><dt>¿Qué debo ajustar si fallo?</dt><dd>Cambia un poco la longitud del gesto para ajustar la fuerza al soltar y compara el resultado en esa misma plataforma.</dd></div><div><dt>¿Puedo repetir la misma plataforma?</dt><dd>Sí. Tras fallar, elige Reintentar para jugar esa plataforma otra vez o Etapas para volver al mapa de capítulos.</dd></div><div><dt>¿Qué cuenta la racha?</dt><dd>Cuenta los aterrizajes verticales consecutivos que consigues en la partida actual. La mejor racha se guarda en este navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.</p></div>
+      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Desde la fase 7 elige Directo o Arco alto antes de lanzar. Cruza todos los anillos, evita techos y considera el viento y los receptores móviles. El arco punteado predice el aterrizaje.</p>
+<p>Desde la fase 31 pulsa E o Invertir entre anillos con signos. Una batería permite una inversión; los relevos la recargan. Las zonas oscuras la bloquean. Iguala el signo del receptor. El arco supone inversiones en las marcas; debes pulsar tú.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Arrastra arriba. Apunta el arco a la plataforma iluminada y suelta.</li><li>Mantén Espacio y suelta.</li><li>Desde la fase 7 elige Directo o Arco alto antes de lanzar. Cruza todos los anillos, evita techos y considera el viento y los receptores móviles. El arco punteado predice el aterrizaje.</li><li>Desde la fase 31 pulsa E o Invertir entre anillos con signos. Una batería permite una inversión; los relevos la recargan. Las zonas oscuras la bloquean. Iguala el signo del receptor. El arco supone inversiones en las marcas; debes pulsar tú.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Pasa por todos los anillos.</li><li>Choque con el techo. Prueba Directo.</li><li>Polaridad incorrecta. Mira los signos + / −.</li></ul></div>
+      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>Boquilla</dt><dd>Arrastra arriba. Apunta el arco a la plataforma iluminada y suelta. Desde la fase 7 elige Directo o Arco alto antes de lanzar. Cruza todos los anillos, evita techos y considera el viento y los receptores móviles. El arco punteado predice el aterrizaje.</dd></div><div><dt>Polaridad</dt><dd>Desde la fase 31 pulsa E o Invertir entre anillos con signos. Una batería permite una inversión; los relevos la recargan. Las zonas oscuras la bloquean. Iguala el signo del receptor. El arco supone inversiones en las marcas; debes pulsar tú.</dd></div><div><dt>Completada</dt><dd>Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rally de Ruedas Dibujadas</strong><span>Dibuja una rueda para el siguiente terreno, observa cómo sus medidas cambian la carrera y vuelve a dibujar cuando cambie la ruta.</span></span></a><a class="game-info-related-card" href="/es/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Duelo de rebotes</strong><span>Calcula tus rebotes, elige herramientas de espuma y desequilibra al rival en una arena de física juguetona.</span></span></a></div></div>
     </div>
   </section>

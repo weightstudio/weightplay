@@ -21,19 +21,19 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-game-version" content="v18" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="أطلق الحاوية البلورية بسحبة واحدة واضبط القوة للهبوط على 24 منصة في ستة فصول قصيرة." />
+    <meta name="description" content="سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة." />
     <title>ورشة القلب | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
-    <meta property="og:description" content="أطلق الحاوية البلورية بسحبة واحدة واضبط القوة للهبوط على 24 منصة في ستة فصول قصيرة." />
-    <meta name="twitter:description" content="أطلق الحاوية البلورية بسحبة واحدة واضبط القوة للهبوط على 24 منصة في ستة فصول قصيرة." />
+    <script type="module" src="game.js?v=20261026-flip-stage60-v18"></script>
+    <meta property="og:description" content="سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة." />
+    <meta name="twitter:description" content="سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة." />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,7 +52,7 @@
   "alternateName": "Flip Foundry",
   "url": "https://weightplay.com/ar/games/animal-flip-foundry/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "أطلق الحاوية البلورية بسحبة واحدة واضبط القوة للهبوط على 24 منصة في ستة فصول قصيرة.",
+  "description": "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>ورشة القلب</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
@@ -98,22 +98,21 @@
   <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة ورشة القلب">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>ورشة القلب</h2><p>أطلق الحاوية البلورية بسحبة واحدة واضبط القوة للهبوط على 24 منصة في ستة فصول قصيرة.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>ورشة القلب</h2><p>سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>إطلاق بالسحب</span><span>معايرة القوة</span><span>أركيد فيزيائي</span><span>هبوط دقيق</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>أركيد الإطلاق والهبوط بالسحب</strong></div><div class="game-info-fact"><span>النوع</span><strong>إطلاق بالسحب · معايرة القوة · أركيد فيزيائي · هبوط دقيق</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهلة البداية وتزداد تحدياً</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>من دقيقة إلى 3 دقائق لكل فصل</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يضم كل فصل أربع منصات للورشة. ينقل الهبوط الناجح الحاوية إلى المنصة التالية ويطيل سلسلة نجاحك.</p>
-<p>يكمن التحدي في ضبط قوة السحبة ضمن النطاق الذي تسمح به المنصة. بعد الإخفاق، عدّل السحبة وأعد تجربة المنصة نفسها.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اضغط على الحاوية واسحب إلى الأعلى بحركة متصلة. يغيّر طول السحبة القوة ومسار الطيران؛ وعند الإفلات تُفحص مطابقة القوة للنطاق الذي تسمح به المنصة الحالية.</p>
-<p>ينقلك الهبوط الناجح إلى المنصة التالية ويطيل سلسلة النجاح. بعد الإخفاق، أعد المنصة نفسها أو ارجع إلى خريطة الفصول.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اختر فصلاً من خريطة الورشة وانتظر إشارة الاستعداد.</li><li>اضغط على الحاوية واسحب إلى الأعلى بحركة واحدة سلسة. يغيّر طول السحبة قوة الإطلاق.</li><li>أفلت لإطلاق الحاوية. يعتمد النجاح على وقوع القوة عند الإفلات ضمن النطاق المسموح للمنصة الحالية.</li><li>بعد الإخفاق، اختر إعادة المحاولة واضبط القوة. أتمّ الهبوط بنجاح على أربع منصات لإنهاء الفصل.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>ابدأ بسحبة مستقرة إلى الأعلى، واستخدم نتيجة الهبوط لمعرفة نطاق القوة المناسب للمنصة الحالية.</li><li>بعد الإخفاق، غيّر طول السحبة قليلاً وقارن النتيجة؛ المسافة لا تحدد النجاح.</li><li>حافظ على حركة شبه عمودية واضبط القوة وفق استجابة المنصة.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تضم الورشة ستة فصول، في كل فصل أربع منصات. ينقلك الهبوط الناجح إلى المنصة التالية ويطيل سلسلة نجاحك؛ وبعد الإخفاق يمكنك إعادة المنصة نفسها أو العودة إلى خريطة الفصول.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>في رالي رسم العجلات الحيوانية، تغيّر العجلة التي ترسمها طريقة سير المركبة فوق التضاريس. أما ورشة القلب فتركّز على ضبط سحبة واحدة إلى الأعلى لتقع القوة عند الإفلات ضمن نطاق المنصة الحالية. تعمل الحركة نفسها باللمس والماوس، وتساعد نتيجة الهبوط على تعديل المحاولة التالية على المنصة ذاتها.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>ورشة القلب لعبة متصفح قصيرة موجهة للجمهور العام؛ لا تحتاج إلى حساب أو شراء. يُحفظ أفضل تتابع للهبوط في هذا المتصفح فقط. ينتهي التتابع الحالي بانتهاء الجولة، وقد يؤدي مسح بيانات الموقع إلى حذف أفضل نتيجة. قد يستخدم WeightPlay تحليلات الصفحات واللعب كما هو موضح في سياسة الخصوصية.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف أطلق الحاوية؟</dt><dd>اضغط على الحاوية واسحب إلى الأعلى؛ يغيّر طول السحبة قوة الإطلاق.</dd></div><div><dt>ما الذي يحدد نجاح الهبوط؟</dt><dd>يجب أن تقع القوة عند الإفلات ضمن النطاق الذي تسمح به المنصة الحالية. الدوران إشارة مرئية وليس فحصاً مستقلاً للزاوية.</dd></div><div><dt>هل يمكنني اللعب بالماوس؟</dt><dd>نعم. يستخدم السحب بالماوس والتمرير باللمس الحركة نفسها.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>يُحفظ أفضل تتابع فقط في هذا المتصفح. يستمر التتابع الحالي خلال الجولة النشطة فحسب.</dd></div><div><dt>كم منصة في كل فصل؟</dt><dd>يضم كل فصل من الفصول الستة أربع منصات للورشة. ينقلك الهبوط الناجح إلى التالية، ويمكنك إعادة المحاولة بعد الإخفاق.</dd></div><div><dt>ما الذي أعدّله بعد الإخفاق؟</dt><dd>غيّر طول السحبة قليلاً لضبط القوة عند الإفلات، ثم قارن النتيجة على المنصة نفسها.</dd></div><div><dt>هل يمكنني إعادة المنصة نفسها؟</dt><dd>نعم. بعد الإخفاق اختر «إعادة المحاولة» للعب المنصة نفسها، أو «المراحل» للعودة إلى خريطة الفصول.</dd></div><div><dt>ماذا تحسب سلسلة الهبوط؟</dt><dd>تحسب مرات الهبوط المنتصب الناجحة المتتالية في المحاولة الحالية. يُحفظ أفضل رقم في هذا المتصفح.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>من المرحلة 7 اختر المباشر أو القوس العالي قبل الإطلاق. اعبر كل الحلقات وتجنب السقوف وراعِ الرياح والمستقبِلات المتحركة. يتنبأ القوس المنقّط بمكان الهبوط.</p>
+<p>من المرحلة 31 اضغط E أو عكس القطب بين الحلقات المعلّمة. خلية واحدة تكفي لعكس واحد، وحلقات الشحن تعيدها. المناطق الداكنة تمنع العكس. طابق علامة المستقبِل أيضاً. يفترض القوس العكس عند العلامات؛ عليك الضغط بنفسك أثناء الطيران.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اسحب للأعلى. وجّه القوس إلى المنصة المضيئة ثم أفلت.</li><li>اضغط المسافة ثم أفلت.</li><li>من المرحلة 7 اختر المباشر أو القوس العالي قبل الإطلاق. اعبر كل الحلقات وتجنب السقوف وراعِ الرياح والمستقبِلات المتحركة. يتنبأ القوس المنقّط بمكان الهبوط.</li><li>من المرحلة 31 اضغط E أو عكس القطب بين الحلقات المعلّمة. خلية واحدة تكفي لعكس واحد، وحلقات الشحن تعيدها. المناطق الداكنة تمنع العكس. طابق علامة المستقبِل أيضاً. يفترض القوس العكس عند العلامات؛ عليك الضغط بنفسك أثناء الطيران.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>اعبر جميع الحلقات.</li><li>اصطدم البلور بالسقف. جرّب الإطلاق المباشر.</li><li>القطبية غير صحيحة. اقرأ علامتي + / −.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تبقى المراحل الست الأصلية مفتوحة. أكمل 6 لفتح 7 ثم تقدّم بالترتيب. تُحفظ الانتصارات والأرقام محلياً، وتبقى السلسلة السابقة والمكعبات المجموعة. تعيد المحاولة الهبوط الحالي.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.</p></div>
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>تبقى المراحل الست الأصلية مفتوحة. أكمل 6 لفتح 7 ثم تقدّم بالترتيب. تُحفظ الانتصارات والأرقام محلياً، وتبقى السلسلة السابقة والمكعبات المجموعة. تعيد المحاولة الهبوط الحالي.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>الفوهة</dt><dd>اسحب للأعلى. وجّه القوس إلى المنصة المضيئة ثم أفلت. من المرحلة 7 اختر المباشر أو القوس العالي قبل الإطلاق. اعبر كل الحلقات وتجنب السقوف وراعِ الرياح والمستقبِلات المتحركة. يتنبأ القوس المنقّط بمكان الهبوط.</dd></div><div><dt>القطبية</dt><dd>من المرحلة 31 اضغط E أو عكس القطب بين الحلقات المعلّمة. خلية واحدة تكفي لعكس واحد، وحلقات الشحن تعيدها. المناطق الداكنة تمنع العكس. طابق علامة المستقبِل أيضاً. يفترض القوس العكس عند العلامات؛ عليك الضغط بنفسك أثناء الطيران.</dd></div><div><dt>مكتملة</dt><dd>تبقى المراحل الست الأصلية مفتوحة. أكمل 6 لفتح 7 ثم تقدّم بالترتيب. تُحفظ الانتصارات والأرقام محلياً، وتبقى السلسلة السابقة والمكعبات المجموعة. تعيد المحاولة الهبوط الحالي.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>رالي رسم العجلات الحيوانية</strong><span>ارسم عجلة للتضاريس التالية، وراقب كيف تغيّر قياساتها السباق، ثم أعد رسمها عند تغيّر المسار.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>نزال الارتداد</strong><span>اضبط توقيت ارتداداتك، واختر أدوات الرغوة، وأخل بتوازن المنافس في ساحة فيزياء مرحة.</span></span></a></div></div>
     </div>
   </section>

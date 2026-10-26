@@ -19,17 +19,26 @@ export class FoundryScene {
     this.boxes=new THREE.InstancedMesh(this.geometry,this.material,512);this.boxes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.boxes.frustumCulled=false;
     this.scene.add(this.boxes);this.transform=new THREE.Object3D();this.color=new THREE.Color();
     this.canisterTransform=new THREE.Object3D();this.partTransform=new THREE.Object3D();this.partMatrix=new THREE.Matrix4();
+    this.background=new THREE.TextureLoader().load(new URL('./assets/animal-flip-foundry-background.png',import.meta.url).href,texture=>{
+      if(this.disposed){texture.dispose();return;}texture.colorSpace=THREE.SRGBColorSpace;this.scene.background=texture;this.scene.backgroundIntensity=.24;this.fitBackground();
+    },undefined,()=>{this.backgroundFailed=true;});
     this.lost=event=>{event.preventDefault();this.contextLost=true;onLost();};
     this.restored=()=>{this.contextLost=false;onRestored();};
     this.renderer.domElement.addEventListener('webglcontextlost',this.lost);
     this.renderer.domElement.addEventListener('webglcontextrestored',this.restored);
   }
   resize(width,height,cssWidth,cssHeight){
+    this.aspect=width/height;this.fitBackground();
     const extra=(width-960)/200;this.camera.left=-extra;this.camera.right=9.6+extra;
     this.camera.top=(height-135)/100;this.camera.bottom=-1.35;this.camera.updateProjectionMatrix();
     const resolution=Math.min(1,1600/Math.max(width,height));
     this.renderer.setSize(width*resolution,height*resolution,false);
     Object.assign(this.renderer.domElement.style,{width:cssWidth+'px',height:cssHeight+'px'});
+  }
+  fitBackground(){
+    const texture=this.background;if(!texture?.image||!this.aspect)return;
+    const imageAspect=texture.image.width/texture.image.height,ratio=this.aspect/imageAspect;
+    texture.repeat.set(Math.min(1,ratio),Math.min(1,1/ratio));texture.offset.set((1-texture.repeat.x)/2,(1-texture.repeat.y)/2);
   }
   box(x,y,w,h,d,color,z=0,angle=0){
     const i=this.count++;if(i>=512)throw Error('FOUNDRY_GEOMETRY_BUDGET');
@@ -40,12 +49,7 @@ export class FoundryScene {
   draw(c,{height,clock=0,flight=null,angle=0,nozzle='direct',reduced=false,stage=1,settle=null}){
     if(this.contextLost)return;this.count=0;
     const box=this.box.bind(this),target=targetAt(c,clock);
-    box(480,-170,1280,900,22,0x0d2637,-140);
-    for(let i=0;i<8;i++){
-      box(i*150-35,-190,16,780,40,0x16394b,-110);
-      box(i*150+25,-230,82,180,12,0x1d4352,-90);
-      box(i*150+25,-230,66,156,6,stage>30?0x263b57:0x264957,-81);
-    }
+    for(let i=0;i<8;i++)box(i*150-35,-130,7,420,25,stage>30?0x273954:0x16394b,-110);
     box(480,97,1280,76,100,0x183c49,-20);box(480,59,1280,5,115,0x47717a,0);
     // Copper foundation, stepped feet, pale collision surface and inset circuit.
     const platform=(x,y,width,color)=>{
@@ -92,6 +96,6 @@ export class FoundryScene {
     this.boxes.count=this.count;this.boxes.instanceMatrix.needsUpdate=true;this.boxes.instanceColor.needsUpdate=true;
     this.renderer.render(this.scene,this.camera);
   }
-  stats(){const i=this.renderer.info;return {revision:THREE.REVISION,calls:i.render.calls,triangles:i.render.triangles,geometries:i.memory.geometries,textures:i.memory.textures,instances:this.count||0,contextLost:!!this.contextLost};}
-  dispose(){this.renderer.domElement.removeEventListener('webglcontextlost',this.lost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.restored);this.geometry.dispose();this.material.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  stats(){const i=this.renderer.info;return {revision:THREE.REVISION,calls:i.render.calls,triangles:i.render.triangles,geometries:i.memory.geometries,textures:i.memory.textures,instances:this.count||0,contextLost:!!this.contextLost,backgroundFailed:!!this.backgroundFailed};}
+  dispose(){this.disposed=true;this.renderer.domElement.removeEventListener('webglcontextlost',this.lost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.restored);this.geometry.dispose();this.material.dispose();this.background?.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
 }

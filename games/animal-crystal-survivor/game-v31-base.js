@@ -26,7 +26,7 @@
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(state?.paused || state?.suspended), node: nodes.gamePanel,
+    paused: Boolean(state?.paused || state?.suspended || sharedSettingsPaused || state?.mode === "paused"), node: nodes.gamePanel,
     activityMode: "input", idleSeconds: 300
   });
   function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
@@ -1149,16 +1149,25 @@
   let charmConfirmTimer = 0;
   let lastFrame = 0;
   let battlePanelMetrics = null;
+  let sharedSettingsPaused = false;
   const joystick = window.WeightPlayJoystick.create({
     surface: canvas,
     container: canvas.parentElement,
     mode: "fixed",
     anchor: { left: 76, bottom: 76 },
     enabled: false,
-    isEnabled: () => state.mode === "running",
+    isEnabled: () => state.mode === "running" && !sharedSettingsPaused,
   });
   let runToken = 0;
   let battleSuspended = false;
+  const syncSharedSettingsPause = () => {
+    const paused = screenFrame.active === "battle" && Boolean(nodes.gamePanel.querySelector(".wp-frame-popover:not([hidden])"));
+    if (paused === sharedSettingsPaused) return;
+    sharedSettingsPaused = paused;
+    clearInput(); resetFrameClock();
+    joystick.setEnabled(!paused && state.mode === "running");
+  };
+  window.addEventListener("weightplay:interaction-state", syncSharedSettingsPause);
   let resultActionClaimed = false;
   let resultStageCleared = false;
   let runBlockRewardCredited = false;
@@ -2062,7 +2071,7 @@
     const elapsedDt = Math.max(0, (now - lastFrame) / 1000 || 0);
     const physicsDt = Math.min(0.033, elapsedDt);
     lastFrame = now;
-    if (!battleSuspended) {
+    if (!battleSuspended && !sharedSettingsPaused) {
       if (state.mode === "running") update(physicsDt, elapsedDt);
       else if (state.presentation) {
         state.presentation.elapsed += physicsDt;
@@ -3237,7 +3246,7 @@
   }
 
   function renderHud(force = false) {
-    joystick.setEnabled(state.mode === "running");
+    joystick.setEnabled(state.mode === "running" && !sharedSettingsPaused);
     const hpRatio = Math.max(0, state.player.hp / state.player.maxHp);
     const hpMeter = document.getElementById("healthMeter");
     if (hpMeter && hpMeter.dataset.value !== `${locale}|${state.player.hp}|${state.player.maxHp}`) {

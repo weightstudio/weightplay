@@ -21,19 +21,19 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-game-version" content="v18" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。" />
+    <meta name="description" content="把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。" />
     <title>翻转工坊 | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
-    <meta property="og:description" content="用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。" />
-    <meta name="twitter:description" content="用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。" />
+    <script type="module" src="game.js?v=20261026-flip-stage60-v18"></script>
+    <meta property="og:description" content="把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。" />
+    <meta name="twitter:description" content="把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。" />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,7 +52,7 @@
   "alternateName": "Flip Foundry",
   "url": "https://weightplay.com/zh-cn/games/animal-flip-foundry/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。",
+  "description": "把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>翻转工坊</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
@@ -98,22 +98,21 @@
   <section class="game-page-info game-page-info-static" aria-label="翻转工坊 游戏信息">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>翻转工坊</h2><p>用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>翻转工坊</h2><p>把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>滑动发射</span><span>力度校准</span><span>物理街机</span><span>精准落地</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>滑动翻转街机</strong></div><div class="game-info-fact"><span>类型</span><strong>滑动发射 · 力度校准 · 物理街机 · 精准落地</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每章约 1–3 分钟</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>每个章节都有四个工坊平台。成功落地会让水晶罐前进，并延续连胜。</p>
-<p>挑战在于让松开时的滑动力度落在平台允许的范围内。失误后会回到该平台，让你调整后再试。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>按住水晶罐并连续向上拖动。滑动长度会改变发射力度和飞行；松开时会根据当前平台允许的力度范围判断是否成功。</p>
-<p>成功落地会前进到下一平台并延续连胜。失误后可选“重试”再玩该平台，或选“章节”返回地图。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从工坊地图选择章节，等待准备提示。</li><li>按住水晶罐，以一个连续手势向上拖动；滑动长度会改变发射力度。</li><li>松开发射。是否成功取决于松开时的力度是否落在当前平台允许的范围内。</li><li>失误后选择“重试”并调整力度。成功落地四个平台即可完成章节。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先用稳定的向上滑动开始，并从落地结果了解当前平台的力度范围。</li><li>失误后稍微调整滑动长度，再比较结果；平台距离不会决定成功与否。</li><li>手势尽量保持垂直，再根据平台反馈微调力度。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>工坊共有六个章节，每章四个平台。成功落地会前进到下一平台并延续连胜；失误后可重试同一平台或返回章节地图。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>绘轮竞速让玩家绘制会影响赛道表现的车轮；翻转工坊则专注于调整一次向上滑动，使松开时的发射力度落在当前平台的范围内。触屏和鼠标使用相同手势，落地结果会立即反馈，方便玩家在同一平台调整下一次尝试。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>翻转工坊是一款短篇一般受众浏览器游戏，无需账号或购买。只有最佳落地连胜会保存在此浏览器；当前连胜只在本次游玩期间存在，清除网站数据可能会删除最佳记录。WeightPlay 可能依照隐私政策使用页面与游戏分析数据。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>如何发射水晶罐？</dt><dd>按住水晶罐并向上拖动；滑动长度会改变发射力度。</dd></div><div><dt>落地成功如何判定？</dt><dd>松开时的力度必须落在当前平台允许的范围内。旋转是视觉反馈，不会另外检查角度。</dd></div><div><dt>可以使用鼠标吗？</dt><dd>可以。鼠标拖动和触控滑动使用相同手势。</dd></div><div><dt>进度会保存吗？</dt><dd>只有最佳落地连胜会保存在此浏览器；当前连胜仅限本次游玩。</dd></div><div><dt>每章有几个平台？</dt><dd>六个章节各有四个工坊平台。成功落地会前进到下一个平台；失误后可以重试。</dd></div><div><dt>失误后该调整什么？</dt><dd>稍微改变滑动长度来调整松开时的力度，再在同一平台比较结果。</dd></div><div><dt>可以重试同一个平台吗？</dt><dd>可以。失误后选择“重试”可再玩该平台，或选择“章节”返回章节地图。</dd></div><div><dt>连胜数会计算什么？</dt><dd>它会计算本次游玩中连续成功直立落地的次数。最佳连胜会保存在此浏览器。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界与任务</h3><p>把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>第 7 关起，发射前可选直射或高抛。穿过所有水晶环、避开顶棚，并考虑风区与移动平台。虚线会预测落点。</p>
+<p>第 31 关起，在不同磁极环之间按 E 或反转按钮。一颗电池能反转一次，充电环可补回；深色区域内无法反转。接收台若有磁极也必须相符。虚线假设你在标记处反转，实际飞行仍须亲自按按钮。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>按住画面向上拖，让虚线落在发光平台，再松手翻转。</li><li>按住空格键蓄力，松开翻转。</li><li>第 7 关起，发射前可选直射或高抛。穿过所有水晶环、避开顶棚，并考虑风区与移动平台。虚线会预测落点。</li><li>第 31 关起，在不同磁极环之间按 E 或反转按钮。一颗电池能反转一次，充电环可补回；深色区域内无法反转。接收台若有磁极也必须相符。虚线假设你在标记处反转，实际飞行仍须亲自按按钮。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>请穿过每一个水晶环。</li><li>水晶撞到顶棚了，试试直射。</li><li>磁极不符，请看清楚 +／− 标记。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳记录保存在本设备，原本连胜及已收藏方块会保留。重试从本次落地段开始。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳记录保存在本设备，原本连胜及已收藏方块会保留。重试从本次落地段开始。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>发射嘴</dt><dd>按住画面向上拖，让虚线落在发光平台，再松手翻转。 第 7 关起，发射前可选直射或高抛。穿过所有水晶环、避开顶棚，并考虑风区与移动平台。虚线会预测落点。</dd></div><div><dt>磁极</dt><dd>第 31 关起，在不同磁极环之间按 E 或反转按钮。一颗电池能反转一次，充电环可补回；深色区域内无法反转。接收台若有磁极也必须相符。虚线假设你在标记处反转，实际飞行仍须亲自按按钮。</dd></div><div><dt>已通过</dt><dd>原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳记录保存在本设备，原本连胜及已收藏方块会保留。重试从本次落地段开始。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>绘轮竞速</strong><span>为前方地形画出车轮，观察形状测量值如何影响竞速，并在路线改变时重新绘制。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>弹跳斗场</strong><span>掌握弹跳时机，选择泡棉工具，在欢乐的物理竞技场中让对手失去平衡。</span></span></a></div></div>
     </div>
   </section>

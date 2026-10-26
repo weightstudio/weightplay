@@ -21,19 +21,19 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-game-version" content="v18" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Lancia un contenitore di cristallo con un gesto e regola la forza per atterrare su 24 piattaforme in sei capitoli." />
+    <meta name="description" content="Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello." />
     <title>Officina del flip | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
-    <meta property="og:description" content="Lancia un contenitore di cristallo con un gesto e regola la forza per atterrare su 24 piattaforme in sei capitoli." />
-    <meta name="twitter:description" content="Lancia un contenitore di cristallo con un gesto e regola la forza per atterrare su 24 piattaforme in sei capitoli." />
+    <script type="module" src="game.js?v=20261026-flip-stage60-v18"></script>
+    <meta property="og:description" content="Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello." />
+    <meta name="twitter:description" content="Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello." />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,7 +52,7 @@
   "alternateName": "Flip Foundry",
   "url": "https://weightplay.com/it/games/animal-flip-foundry/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "Lancia un contenitore di cristallo con un gesto e regola la forza per atterrare su 24 piattaforme in sei capitoli.",
+  "description": "Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Officina del flip</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
@@ -98,22 +98,21 @@
   <section class="game-page-info game-page-info-static" aria-label="Informazioni su Officina del flip">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Officina del flip</h2><p>Lancia un contenitore di cristallo con un gesto e regola la forza per atterrare su 24 piattaforme in sei capitoli.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Officina del flip</h2><p>Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Lancio con scorrimento</span><span>Regolazione della forza</span><span>Arcade fisico</span><span>Atterraggio preciso</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Arcade di lancio e atterraggio</strong></div><div class="game-info-fact"><span>Genere</span><strong>Lancio con scorrimento · Regolazione della forza · Arcade fisico · Atterraggio preciso</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>1–3 minuti per capitolo</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mondo e missione</h3><p>Ogni capitolo ha quattro piattaforme dell’officina. Un atterraggio riuscito porta il contenitore alla successiva e prolunga la serie.</p>
-<p>La sfida consiste nell’adattare la forza del gesto all’intervallo consentito da ogni piattaforma. Dopo un errore puoi correggerti e riprovare su quella piattaforma.</p></div>
-      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Premi sul contenitore e trascina verso l’alto con un gesto continuo. La lunghezza modifica forza e traiettoria; al rilascio, il gioco verifica se la forza rientra nell’intervallo consentito dalla piattaforma attuale.</p>
-<p>Un atterraggio riuscito porta alla piattaforma successiva e prolunga la serie. Dopo un errore puoi riprovare su quella piattaforma o tornare alla mappa dei capitoli.</p></div>
-      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Scegli un capitolo sulla mappa dell’officina e attendi il segnale di avvio.</li><li>Premi il contenitore e trascina verso l’alto con un gesto fluido. La lunghezza cambia la forza del lancio.</li><li>Rilascia per lanciare. Il successo dipende dal fatto che la forza al rilascio rientri nell’intervallo consentito dalla piattaforma.</li><li>Dopo un errore, scegli Riprova e regola la forza. Atterra con successo su quattro piattaforme per completare il capitolo.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Inizia con uno swipe verso l’alto controllato e usa il risultato per capire l’intervallo di forza della piattaforma.</li><li>Dopo un errore, modifica leggermente la lunghezza del gesto e confronta il risultato; la distanza non determina il successo.</li><li>Mantieni il gesto quasi verticale e regola la forza in base alla risposta della piattaforma.</li></ul></div>
-      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>L’officina comprende sei capitoli con quattro piattaforme ciascuno. Ogni atterraggio riuscito porta alla piattaforma successiva e prolunga la serie; dopo un errore puoi riprovare sulla stessa piattaforma o tornare alla mappa dei capitoli.</p></div>
-      <div class="game-info-section"><h3>Nota di design</h3><p>In Rally delle Ruote Disegnate, la ruota tracciata cambia il comportamento del veicolo sul terreno; Officina del flip si concentra invece sulla regolazione di uno swipe verso l’alto, così che la forza al rilascio rientri nell’intervallo della piattaforma attuale. Touch e mouse usano lo stesso gesto e il risultato aiuta a regolare il tentativo successivo sulla stessa piattaforma.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informazioni del giocatore e salvataggio</h3><p>Officina del flip è un breve gioco per browser rivolto al pubblico generale; non servono account né acquisti. In questo browser viene salvata solo la migliore serie di atterraggi. La serie attuale termina con la partita e la cancellazione dei dati del sito può rimuovere il record. WeightPlay può usare analisi di pagine e partite come descritto nell’Informativa sulla privacy.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Come lancio il contenitore?</dt><dd>Premi il contenitore e trascina verso l’alto; la lunghezza modifica la forza del lancio.</dd></div><div><dt>Cosa determina un atterraggio riuscito?</dt><dd>Al rilascio, la forza deve rientrare nell’intervallo consentito dalla piattaforma attuale. La rotazione è un riscontro visivo, non un controllo separato dell’angolo.</dd></div><div><dt>Posso usare il mouse?</dt><dd>Sì. Il trascinamento con il mouse e lo swipe sullo schermo usano lo stesso gesto.</dd></div><div><dt>I progressi vengono salvati?</dt><dd>Solo la serie migliore viene salvata in questo browser. La serie attuale dura soltanto durante la partita.</dd></div><div><dt>Quante piattaforme ci sono in un capitolo?</dt><dd>Ognuno dei sei capitoli ha quattro piattaforme. Un atterraggio riuscito porta alla successiva; dopo un errore puoi riprovare.</dd></div><div><dt>Cosa devo regolare dopo un errore?</dt><dd>Modifica leggermente la lunghezza del gesto per regolare la forza al rilascio e confronta il risultato sulla stessa piattaforma.</dd></div><div><dt>Posso riprovare la stessa piattaforma?</dt><dd>Sì. Dopo un errore scegli Riprova per rifare quella piattaforma oppure Livelli per tornare alla mappa dei capitoli.</dd></div><div><dt>Cosa misura la serie?</dt><dd>Conta gli atterraggi in piedi riusciti consecutivi nella partita attuale. Il record migliore resta salvato in questo browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Dal livello 7 scegli Diretto o Arco alto prima del lancio. Attraversa ogni anello, evita i soffitti e considera vento e ricevitori mobili. La linea tratteggiata prevede l’atterraggio.</p>
+<p>Dal livello 31 premi E o Inverti tra gli anelli con segni. Una batteria permette un’inversione; i relè la ricaricano. Le zone scure la bloccano. Rispetta il segno del ricevitore. L’arco presume inversioni ai marcatori: devi comunque premere tu.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Trascina in alto. Punta l’arco sulla piattaforma luminosa e rilascia.</li><li>Tieni Spazio e rilascia.</li><li>Dal livello 7 scegli Diretto o Arco alto prima del lancio. Attraversa ogni anello, evita i soffitti e considera vento e ricevitori mobili. La linea tratteggiata prevede l’atterraggio.</li><li>Dal livello 31 premi E o Inverti tra gli anelli con segni. Una batteria permette un’inversione; i relè la ricaricano. Le zone scure la bloccano. Rispetta il segno del ricevitore. L’arco presume inversioni ai marcatori: devi comunque premere tu.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Attraversa tutti gli anelli.</li><li>Hai colpito il soffitto. Prova Diretto.</li><li>Polarità errata. Controlla i segni + / −.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Informazioni del giocatore e salvataggio</h3><p>I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Ugello</dt><dd>Trascina in alto. Punta l’arco sulla piattaforma luminosa e rilascia. Dal livello 7 scegli Diretto o Arco alto prima del lancio. Attraversa ogni anello, evita i soffitti e considera vento e ricevitori mobili. La linea tratteggiata prevede l’atterraggio.</dd></div><div><dt>Polarità</dt><dd>Dal livello 31 premi E o Inverti tra gli anelli con segni. Una batteria permette un’inversione; i relè la ricaricano. Le zone scure la bloccano. Rispetta il segno del ricevitore. L’arco presume inversioni ai marcatori: devi comunque premere tu.</dd></div><div><dt>Completato</dt><dd>I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rally delle Ruote Disegnate</strong><span>Disegna una ruota per il terreno successivo, osserva come le sue misure cambiano la gara e ridisegnala quando cambia il percorso.</span></span></a><a class="game-info-related-card" href="/it/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rissa rimbalzante</strong><span>Cronometra i rimbalzi, scegli gli strumenti di schiuma e fai perdere l&#39;equilibrio al rivale in una giocosa arena di fisica.</span></span></a></div></div>
     </div>
   </section>

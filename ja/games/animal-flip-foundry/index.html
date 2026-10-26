@@ -21,19 +21,19 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-game-version" content="v18" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。" />
+    <meta name="description" content="結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。" />
     <title>フリップ工房 | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
-    <meta property="og:description" content="ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。" />
-    <meta name="twitter:description" content="ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。" />
+    <script type="module" src="game.js?v=20261026-flip-stage60-v18"></script>
+    <meta property="og:description" content="結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。" />
+    <meta name="twitter:description" content="結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。" />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,7 +52,7 @@
   "alternateName": "Flip Foundry",
   "url": "https://weightplay.com/ja/games/animal-flip-foundry/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。",
+  "description": "結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>フリップ工房</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
@@ -99,22 +99,21 @@
   <section class="game-page-info game-page-info-static" aria-label="フリップ工房 ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>フリップ工房</h2><p>ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>フリップ工房</h2><p>結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>スワイプ発射</span><span>力加減の調整</span><span>物理アーケード</span><span>精密着地</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>スワイプ着地アーケード</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>スワイプ発射 · 力加減の調整 · 物理アーケード · 精密着地</strong></div><div class="game-info-fact"><span>難易度</span><strong>かんたん〜チャレンジ</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1章約1〜3分</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>各章には工房の面が4つあります。着地に成功すると容器が次の面へ進み、連勝が続きます。</p>
-<p>面ごとに決められた力の範囲に、放すときのスワイプを合わせるのが課題です。失敗した面は調整して再挑戦できます。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>容器を押さえ、途切れない上向きのジェスチャーでドラッグします。スワイプの長さで発射の力と飛び方が変わり、放したときに現在の面で許可された力の範囲内か判定されます。</p>
-<p>着地に成功すると次の面へ進み、連勝が続きます。失敗したら「再挑戦」で同じ面を再挑戦するか、「チャプター」でマップに戻ります。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>工房マップで章を選び、準備表示を待ちます。</li><li>容器を押さえ、ひと続きの上向きジェスチャーでドラッグします。長さによって発射の力が変わります。</li><li>放して発射します。成功するかは、放したときの力が現在の面の許容範囲に入るかで決まります。</li><li>失敗したら「再挑戦」を選び、力を調整します。4つの面に成功すると章をクリアします。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>まず安定した上向きのスワイプを試し、着地結果から現在の面に合う力の範囲を探ります。</li><li>失敗したらスワイプの長さを少し変えて結果を比べます。面までの距離は成功判定に影響しません。</li><li>ジェスチャーをなるべく垂直に保ち、面の結果を見ながら力を調整します。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>工房は6章構成で、各章に4つの面があります。着地に成功すると次の面へ進み連勝が続きます。失敗した場合は同じ面を再挑戦するか、章マップに戻れます。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>スケッチホイール・ラリーでは描いた車輪が地形での走り方を変えますが、フリップ工房では上向きのスワイプを調整し、放したときの力を現在の面の許容範囲に合わせます。タッチとマウスは同じ操作で、着地結果を見て同じ面の次の試行を調整できます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>フリップ工房は短時間で遊べる一般向けブラウザーゲームで、アカウントや購入は不要です。保存されるのはこのブラウザー内の最高連勝数のみです。現在の連勝数はプレイ中だけ有効で、サイトデータを消去すると最高記録も消えることがあります。WeightPlayはプライバシーポリシーに記載のとおり、ページやゲームの利用状況を分析に使う場合があります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>容器はどうやって発射しますか？</dt><dd>容器を押さえて上へドラッグします。スワイプの長さで発射の力が変わります。</dd></div><div><dt>着地の成功はどう決まりますか？</dt><dd>放したときの力が現在の面の許容範囲に入る必要があります。回転は視覚的なフィードバックで、角度は別途判定されません。</dd></div><div><dt>マウスでも遊べますか？</dt><dd>はい。マウスのドラッグとタッチのスワイプは同じ操作です。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>最高連勝数のみがこのブラウザーに保存されます。現在の連勝数はプレイ中だけ有効です。</dd></div><div><dt>1章にはいくつの面がありますか？</dt><dd>6章それぞれに工房の面が4つあります。着地に成功すると次へ進み、失敗した面は再挑戦できます。</dd></div><div><dt>失敗したら何を調整しますか？</dt><dd>スワイプの長さを少し変えて放すときの力を調整し、同じ面で結果を比べます。</dd></div><div><dt>同じ足場を再挑戦できますか？</dt><dd>はい。失敗後に「再挑戦」を選ぶと同じ足場からやり直せます。「チャプター」でマップに戻れます。</dd></div><div><dt>連続記録は何を数えますか？</dt><dd>今回のプレイで成功した直立着地の連続数です。最高記録はこのブラウザーに保存されます。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>ステージ7から発射前に直射か山なりを選べます。すべてのリングを通り、天井を避け、送風と動く受け台を考慮しましょう。点線は着地点を予測します。</p>
+<p>ステージ31から符号付きリングの間でEまたは反転を押します。電池1個で1回反転し、中継リングで充電。暗い区間は反転不可です。受け台の符号も合わせましょう。点線は印の場所で反転する想定です。実際の操作は必要です。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>上にドラッグし、点線を光る足場に合わせて離そう。</li><li>スペースを長押しして離す。</li><li>ステージ7から発射前に直射か山なりを選べます。すべてのリングを通り、天井を避け、送風と動く受け台を考慮しましょう。点線は着地点を予測します。</li><li>ステージ31から符号付きリングの間でEまたは反転を押します。電池1個で1回反転し、中継リングで充電。暗い区間は反転不可です。受け台の符号も合わせましょう。点線は印の場所で反転する想定です。実際の操作は必要です。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>すべてのリングを通ってください。</li><li>天井に衝突しました。直射を試そう。</li><li>極性が違います。＋／−を確認。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。</p></div>
+      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ノズル</dt><dd>上にドラッグし、点線を光る足場に合わせて離そう。 ステージ7から発射前に直射か山なりを選べます。すべてのリングを通り、天井を避け、送風と動く受け台を考慮しましょう。点線は着地点を予測します。</dd></div><div><dt>極性</dt><dd>ステージ31から符号付きリングの間でEまたは反転を押します。電池1個で1回反転し、中継リングで充電。暗い区間は反転不可です。受け台の符号も合わせましょう。点線は印の場所で反転する想定です。実際の操作は必要です。</dd></div><div><dt>クリア</dt><dd>元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スケッチホイール・ラリー</strong><span>次の地形に合わせて車輪を描き、測定された形がレースに与える影響を見て、コースが変わったら描き直します。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>バウンス乱闘</strong><span>バウンスのタイミングを読み、フォームツールを選び、楽しい物理アリーナでライバルのバランスを崩します。</span></span></a></div></div>
     </div>
   </section>

@@ -2,7 +2,7 @@
 import {COURSES,TOTAL_STAGES} from './campaign-data.mjs';
 import {launchState,stepFlight,simulate,invert,canInvert,targetAt,suggestedPulseWindows} from './model.mjs';
 import {readProgress,completeStage,persistProgress} from './progress.mjs';
-import {campaignCopy,ruleLabels} from './campaign-copy.mjs';
+import {campaignCopy,ruleLabels,CLARITY_COPY} from './campaign-copy.mjs';
 import {FoundryScene} from './scene.mjs';
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
@@ -29,10 +29,6 @@ import {FoundryScene} from './scene.mjs';
   const arenaFrame = document.querySelector(".arena-frame");
   const ctx = canvas.getContext("2d");
   const loadingPanel = $("loadingPanel");
-  const canisterArt = new Image(); canisterArt.src = "assets/animal-flip-foundry-original-assets-v1.png";
-  const propArt = new Image(); propArt.src = "assets/animal-flip-foundry-props.png";
-  const landingArt = propArt;
-  const sceneryArt = new Image(); sceneryArt.src = 'assets/animal-flip-foundry-background.png';
   const localeCopy = {
     en: { preparing: "Preparing the foundry…", stageTitle: "Foundry Chapters", chapter: "Chapter", platforms: "4 platforms", wideStarts: "wide starts", precisionFinish: "precision finish", newSpacing: "new spacing", backMain: "Back to Main", backStages: "Back to Stages", stageSections: "Stage sections", stages: "Stages", surface: "Chapter {chapter} · Platform {platform} / 4", ready: "Swipe upward from the canister.", rotation: "Watch the rotation…", miss: "Too soft or too wild…", perfect: "Perfect landing — next platform ready.", canvas: "Flip Foundry play area", hint: "Swipe up. Shorter swipes stay low; longer swipes climb farther.", bestStreak: "Best streak", streak: "STREAK", best: "BEST", routeClear: "Foundry route clear", chapterClear: "Chapter clear", failed: "Landing failed", resultCopy: "Chapter {chapter} · Platform {platform} · Streak {streak} · Best {best}", stagesAction: "Stages", nextSurface: "Next Surface", retry: "Retry", nextChapter: "Next Chapter", replayFoundry: "Replay Foundry", retryPlatform: "Retry Platform" },
     "zh-Hant": { preparing: "正在準備工坊……", stageTitle: "工坊章節", chapter: "第", platforms: "4 個平台", wideStarts: "寬闊起步", precisionFinish: "精準收尾", newSpacing: "新的間距", backMain: "返回主頁", backStages: "返回章節", stageSections: "章節區域", stages: "章節", surface: "第 {chapter} 章 · 平台 {platform} / 4", ready: "向上滑動晶體罐。", rotation: "觀察旋轉……", miss: "力道太弱或方向太偏……", perfect: "完美落地——下一個平台準備好了。", canvas: "翻轉工坊遊戲區", hint: "向上滑動。短滑動會保持低位；長滑動會飛得更遠。", bestStreak: "最佳連勝", streak: "連勝", best: "最佳", routeClear: "工坊路線完成", chapterClear: "章節完成", failed: "落地失敗", resultCopy: "第 {chapter} 章 · 平台 {platform} · 連勝 {streak} · 最佳 {best}", stagesAction: "章節", nextSurface: "下一個平台", retry: "重試", nextChapter: "下一章", replayFoundry: "重玩翻轉工坊", retryPlatform: "重試平台" },
@@ -109,7 +105,6 @@ import {FoundryScene} from './scene.mjs';
     if (!arenaFrame || !canvas) return;
     const width = Math.max(1, arenaFrame.clientWidth);
     const height = Math.max(1, arenaFrame.clientHeight);
-    const previousHeight = canvas.height;
     const scale = Math.min(width / 960, height / 520);
     canvas.width = Math.max(960, Math.round(width / scale));
     canvas.height = Math.max(520, Math.round(height / scale));
@@ -206,21 +201,7 @@ import {FoundryScene} from './scene.mjs';
     $('foundry-charge').textContent=`${(state.flight?.sign??c.polarity)>0?'+':'−'} · ${e.cell} ${state.flight?.cells??1} / 1`;
     recovery.querySelector('p').textContent=e.webgl;recovery.querySelector('button').textContent=e.recover;
   }
-  const clarity = {
-    en:['FLIP • LAND • BUILD','Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.','START','LAND HERE','Drag up to aim','Release to flip','Too short — drag farther up.','Too far — use a shorter drag.','On target — release!','Four landings complete the chapter.','Hold Space, release to flip.','Clean landing!','Route progress','Drag farther to reach the platform.','Ease back: your arc passes the platform.'],
-    'zh-Hant':['翻轉 · 落地 · 完工','按住畫面向上拖，讓虛線落在發光平台，再放手翻轉。','起點','落在這裡','向上拖曳，預覽落點','放手翻轉','差一點！下次向上拖長一些。','飛過頭了！下次縮短拖曳。','落點正確，現在放手！','落穩 4 次，完成這一章。','按住空白鍵蓄力，放開翻轉。','漂亮落地！','工坊進度','再向上拖長一些，就能到達平台。','稍微往回收，落點已超過平台。'],
-    'zh-Hans':['翻转 · 落地 · 完工','按住画面向上拖，让虚线落在发光平台，再松手翻转。','起点','落在这里','向上拖动，预览落点','松手翻转','差一点！下次向上拖长一些。','飞过头了！下次缩短拖动。','落点正确，现在松手！','落稳4次，完成这一章。','按住空格键蓄力，松开翻转。','漂亮落地！','工坊进度','再向上拖长一些，就能到达平台。','稍微往回收，落点已超过平台。'],
-    ja:['フリップ・着地・完成','上にドラッグし、点線を光る足場に合わせて離そう。','出発','着地点','上にドラッグして狙う','離してフリップ','届かなかった。もっと長くドラッグ。','飛びすぎ。短くドラッグ。','狙いは正確！離そう。','4回着地してチャプターを完成。','スペースを長押しして離す。','見事な着地！','進行状況'],
-    ko:['뒤집고 · 착지하고 · 완성','위로 드래그해 점선을 빛나는 발판에 맞추고 놓으세요.','출발','착지 지점','위로 드래그해 조준','놓아서 뒤집기','짧아요. 더 길게 드래그하세요.','너무 멀어요. 짧게 드래그하세요.','정확해요. 놓으세요!','4번 착지하면 챕터 완성.','스페이스를 누르고 놓으세요.','멋진 착지!','진행'],
-    es:['GIRA · ATERRIZA · CONSTRUYE','Arrastra arriba. Apunta el arco a la plataforma iluminada y suelta.','SALIDA','ATERRIZA AQUÍ','Arrastra arriba para apuntar','Suelta para girar','Muy corto: arrastra más.','Muy lejos: arrastra menos.','¡En el blanco! Suelta.','Cuatro aterrizajes completan el capítulo.','Mantén Espacio y suelta.','¡Buen aterrizaje!','Progreso'],
-    'pt-BR':['GIRE · POUSE · CONSTRUA','Arraste para cima. Mire o arco na plataforma iluminada e solte.','INÍCIO','POUSE AQUI','Arraste para cima para mirar','Solte para girar','Curto demais: arraste mais.','Longe demais: arraste menos.','No alvo! Solte.','Quatro pousos completam o capítulo.','Segure Espaço e solte.','Belo pouso!','Progresso'],
-    fr:['TOURNE · ATTERRIS · CONSTRUIS','Glisse vers le haut. Vise la plateforme lumineuse avec l’arc et relâche.','DÉPART','ATTERRIS ICI','Glisse vers le haut pour viser','Relâche pour tourner','Trop court : glisse plus loin.','Trop loin : raccourcis le geste.','Bien visé ! Relâche.','Quatre atterrissages terminent le chapitre.','Maintiens Espace et relâche.','Bel atterrissage !','Progression'],
-    de:['DREHEN · LANDEN · BAUEN','Ziehe nach oben. Richte den Bogen auf die leuchtende Plattform und lasse los.','START','HIER LANDEN','Zum Zielen nach oben ziehen','Zum Drehen loslassen','Zu kurz: weiter ziehen.','Zu weit: kürzer ziehen.','Im Ziel! Loslassen.','Vier Landungen beenden das Kapitel.','Leertaste halten und loslassen.','Saubere Landung!','Fortschritt'],
-    it:['GIRA · ATTERRA · COSTRUISCI','Trascina in alto. Punta l’arco sulla piattaforma luminosa e rilascia.','PARTENZA','ATTERRA QUI','Trascina in alto per mirare','Rilascia per girare','Troppo corto: trascina di più.','Troppo lontano: trascina meno.','Sul bersaglio! Rilascia.','Quattro atterraggi completano il capitolo.','Tieni Spazio e rilascia.','Ottimo atterraggio!','Progresso'],
-    ru:['ПЕРЕВОРОТ · ПОСАДКА · СБОРКА','Тяните вверх. Наведите дугу на светящуюся платформу и отпустите.','СТАРТ','СЮДА','Тяните вверх для прицеливания','Отпустите для броска','Недолёт: тяните дальше.','Перелёт: тяните меньше.','Точно! Отпустите.','Четыре посадки завершают главу.','Удерживайте Пробел и отпустите.','Отличная посадка!','Прогресс'],
-    hi:['पलटें · उतरें · बनाएँ','ऊपर खींचें। चाप को चमकते प्लेटफ़ॉर्म पर रखें और छोड़ें।','शुरू','यहाँ उतरें','निशाना लगाने के लिए ऊपर खींचें','पलटने के लिए छोड़ें','कम दूरी: और ऊपर खींचें।','बहुत दूर: कम खींचें।','सही निशाना! छोड़ें।','चार लैंडिंग से अध्याय पूरा होता है।','स्पेस दबाकर छोड़ें।','शानदार लैंडिंग!','प्रगति'],
-    ar:['اقلب · اهبط · ابنِ','اسحب للأعلى. وجّه القوس إلى المنصة المضيئة ثم أفلت.','البداية','اهبط هنا','اسحب للأعلى للتصويب','أفلت للقلب','قصير جداً: اسحب أكثر.','بعيد جداً: اسحب أقل.','على الهدف! أفلت.','أربع هبوطات تكمل الفصل.','اضغط المسافة ثم أفلت.','هبوط رائع!','التقدم']
-  };
+  const clarity = CLARITY_COPY;
   const tip = n => (clarity[currentLocale()] || clarity.en)[n] || (clarity[currentLocale()] || clarity.en)[n === 13 ? 6 : n === 14 ? 7 : n];
   function updateGuide() {
     const guide = document.querySelector('.game-page-info');

@@ -21,19 +21,19 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v17" />
+    <meta name="weightplay-game-version" content="v18" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Lance um recipiente de cristal com um deslize e ajuste a força para pousar em 24 plataformas de seis capítulos." />
+    <meta name="description" content="Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase." />
     <title>Oficina do Giro | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260903-animal-flip-foundry-stage-hit-target-v14" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <script defer src="game.js?v=20261021-animal-flip-foundry-i9"></script>
-    <meta property="og:description" content="Lance um recipiente de cristal com um deslize e ajuste a força para pousar em 24 plataformas de seis capítulos." />
-    <meta name="twitter:description" content="Lance um recipiente de cristal com um deslize e ajuste a força para pousar em 24 plataformas de seis capítulos." />
+    <script type="module" src="game.js?v=20261026-flip-stage60-v18"></script>
+    <meta property="og:description" content="Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase." />
+    <meta name="twitter:description" content="Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase." />
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -52,7 +52,7 @@
   "alternateName": "Flip Foundry",
   "url": "https://weightplay.com/pt-br/games/animal-flip-foundry/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp",
-  "description": "Lance um recipiente de cristal com um deslize e ajuste a força para pousar em 24 plataformas de seis capítulos.",
+  "description": "Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -75,7 +75,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-version="v17" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <body data-wp-game-version="v18" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Oficina do Giro</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
@@ -98,22 +98,21 @@
   <section class="game-page-info game-page-info-static" aria-label="Informações de Oficina do Giro">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Oficina do Giro</h2><p>Lance um recipiente de cristal com um deslize e ajuste a força para pousar em 24 plataformas de seis capítulos.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Oficina do Giro</h2><p>Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.</p></div>
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Lançamento por deslize</span><span>Ajuste de força</span><span>Arcade de física</span><span>Pouso de precisão</span></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Arcade de lançamento e pouso</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Lançamento por deslize · Ajuste de força · Arcade de física · Pouso de precisão</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Do fácil ao desafiador</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>1–3 minutos por capítulo</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>Cada capítulo tem quatro plataformas da oficina. Um pouso bem-sucedido leva o recipiente à próxima e prolonga a sequência.</p>
-<p>O desafio é ajustar a força do gesto à faixa permitida por cada plataforma. Se errar, você pode ajustar e repetir aquela plataforma.</p></div>
-      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Toque no recipiente e arraste para cima em um gesto contínuo. O comprimento altera a força e o voo; ao soltar, o jogo verifica se a força está na faixa permitida pela plataforma atual.</p>
-<p>Um pouso bem-sucedido leva à próxima plataforma e prolonga a sequência. Se errar, tente de novo nessa plataforma ou volte ao mapa de capítulos.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha um capítulo no mapa da oficina e aguarde o sinal de pronto.</li><li>Toque no recipiente e arraste para cima em um gesto fluido. O comprimento altera a força do lançamento.</li><li>Solte para lançar. O sucesso depende de a força no momento de soltar estar na faixa permitida pela plataforma atual.</li><li>Se errar, escolha Tentar de novo e ajuste a força. Pouse com sucesso em quatro plataformas para concluir o capítulo.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Comece com um deslize para cima controlado e use o resultado para descobrir a faixa de força da plataforma.</li><li>Se errar, mude um pouco o comprimento do gesto e compare o resultado; a distância não define o sucesso.</li><li>Mantenha o gesto quase vertical e ajuste a força conforme a resposta da plataforma.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>A oficina tem seis capítulos com quatro plataformas cada. Cada pouso bem-sucedido leva à próxima plataforma e prolonga a sequência; se errar, você pode tentar de novo na mesma plataforma ou voltar ao mapa de capítulos.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>Em Rali de Rodas Desenhadas, a roda desenhada muda como o veículo percorre o terreno; Oficina do Giro se concentra em ajustar um deslize para cima para que a força ao soltar fique na faixa permitida pela plataforma atual. O gesto funciona da mesma forma no toque e no mouse, e o resultado ajuda a ajustar a próxima tentativa na mesma plataforma.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informações do jogador e salvamento</h3><p>Oficina do Giro é um jogo curto de navegador para o público geral; não exige conta nem compras. Somente a melhor sequência de pousos fica salva neste navegador. A sequência atual termina com a partida, e limpar os dados do site pode apagar o recorde. O WeightPlay pode usar análises de páginas e partidas conforme explicado na Política de Privacidade.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Como lanço o recipiente?</dt><dd>Toque no recipiente e arraste para cima; o comprimento altera a força do lançamento.</dd></div><div><dt>O que determina um pouso bem-sucedido?</dt><dd>Ao soltar, a força precisa estar na faixa permitida pela plataforma atual. A rotação é um retorno visual, não uma verificação separada de ângulo.</dd></div><div><dt>Posso usar o mouse?</dt><dd>Sim. Arrastar com o mouse e deslizar na tela usam o mesmo gesto.</dd></div><div><dt>O progresso é salvo?</dt><dd>Somente a melhor sequência é salva neste navegador. A sequência atual dura apenas durante a partida.</dd></div><div><dt>Quantas plataformas há em cada capítulo?</dt><dd>Cada um dos seis capítulos tem quatro plataformas. Um pouso bem-sucedido leva à próxima; se errar, você pode tentar de novo.</dd></div><div><dt>O que devo ajustar depois de errar?</dt><dd>Mude um pouco o comprimento do gesto para ajustar a força ao soltar e compare o resultado na mesma plataforma.</dd></div><div><dt>Posso tentar a mesma plataforma de novo?</dt><dd>Sim. Depois de errar, escolha Tentar de novo para repetir a plataforma ou Etapas para voltar ao mapa de capítulos.</dd></div><div><dt>O que a sequência conta?</dt><dd>Ela conta os pousos em pé consecutivos que você consegue na partida atual. Seu melhor resultado fica salvo neste navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.</p></div>
+      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>A partir da fase 7 escolha Direto ou Arco alto antes de lançar. Atravesse todos os anéis, evite tetos e considere vento e receptores móveis. A linha pontilhada prevê o pouso.</p>
+<p>Na fase 31, use E ou Inverter entre anéis com sinais. Uma bateria permite uma inversão; relés recarregam. Áreas escuras bloqueiam a inversão. Combine o sinal do receptor. O arco supõe inversões nas marcas; você ainda precisa apertar o botão.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Arraste para cima. Mire o arco na plataforma iluminada e solte.</li><li>Segure Espaço e solte.</li><li>A partir da fase 7 escolha Direto ou Arco alto antes de lançar. Atravesse todos os anéis, evite tetos e considere vento e receptores móveis. A linha pontilhada prevê o pouso.</li><li>Na fase 31, use E ou Inverter entre anéis com sinais. Uma bateria permite uma inversão; relés recarregam. Áreas escuras bloqueiam a inversão. Combine o sinal do receptor. O arco supõe inversões nas marcas; você ainda precisa apertar o botão.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Passe por todos os anéis.</li><li>Bateu no teto. Tente Direto.</li><li>Polaridade incorreta. Veja os sinais + / −.</li></ul></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Informações do jogador e salvamento</h3><p>As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Bocal</dt><dd>Arraste para cima. Mire o arco na plataforma iluminada e solte. A partir da fase 7 escolha Direto ou Arco alto antes de lançar. Atravesse todos os anéis, evite tetos e considere vento e receptores móveis. A linha pontilhada prevê o pouso.</dd></div><div><dt>Polaridade</dt><dd>Na fase 31, use E ou Inverter entre anéis com sinais. Uma bateria permite uma inversão; relés recarregam. Áreas escuras bloqueiam a inversão. Combine o sinal do receptor. O arco supõe inversões nas marcas; você ainda precisa apertar o botão.</dd></div><div><dt>Concluída</dt><dd>As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-sketchwheel-rally/"><img src="/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rali de Rodas Desenhadas</strong><span>Desenhe uma roda para o próximo terreno, observe como as medidas mudam a corrida e redesenhe quando a rota mudar.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Briga de Rebotes</strong><span>Cronometre seus saltos, escolha ferramentas de espuma e desequilibre o rival em uma divertida arena de física.</span></span></a></div></div>
     </div>
   </section>

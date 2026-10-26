@@ -141,19 +141,71 @@
       ar: ["إنقاذ خط الصقيع", "افتح الطريق المتجمد واجمع كل التوت وابق متقدماً على المتجول الثلجي بخطوة.", "إنقاذ في متاهة جليدية قابلة للتغيير."],
     },
     "animal-flip-foundry": {
-      en: ["Flip Foundry", "Launch a crystal canister with one swipe, then tune your force to land across 24 workshop platforms in six short chapters.", "A force-calibration swipe-and-land arcade challenge."],
-      "zh-Hant": ["翻轉工坊", "用一次滑動發射水晶罐，調整力道，在六個短章節的 24 個工坊平台上精準落地。", "透過調整力道完成滑動發射與落地的街機挑戰。"],
-      "zh-Hans": ["翻转工坊", "用一次滑动发射水晶罐，调整力度，在六个短章节的 24 个工坊平台上精准落地。", "通过调整力度完成滑动发射与落地的街机挑战。"],
-      ja: ["フリップ工房", "ひと振りでクリスタル容器を発射し、力加減を調整して6章24面の工房ルートに着地します。", "スワイプの力を調整して着地を目指すアーケードゲームです。"],
-      ko: ["플립 공방", "한 번의 스와이프로 수정 용기를 발사하고 힘을 조절해 여섯 챕터의 공방 플랫폼 24곳에 착지하세요.", "스와이프 힘을 조절해 착지하는 아케이드 도전입니다."],
-      es: ["Taller de giros", "Lanza un recipiente de cristal con un deslizamiento y ajusta la fuerza para aterrizar en 24 plataformas de seis capítulos.", "Un reto arcade de deslizamiento y aterrizaje que requiere ajustar la fuerza."],
-      "pt-BR": ["Oficina do Giro", "Lance um recipiente de cristal com um deslize e ajuste a força para pousar em 24 plataformas de seis capítulos.", "Um desafio arcade de deslizar e pousar que exige calibrar a força."],
-      fr: ["Atelier du flip", "Lancez un récipient de cristal d’un geste, puis ajustez la force pour atterrir sur 24 plateformes réparties en six chapitres.", "Un défi d’arcade où il faut régler la force du geste pour atterrir."],
-      de: ["Flip-Werkstatt", "Starte einen Kristallbehälter mit einer Wischbewegung und lande mit passender Kraft auf 24 Plattformen in sechs Kapiteln.", "Eine Arcade-Herausforderung, bei der du die Wischkraft für die Landung abstimmst."],
-      it: ["Officina del flip", "Lancia un contenitore di cristallo con un gesto e regola la forza per atterrare su 24 piattaforme in sei capitoli.", "Una sfida arcade in cui regolare la forza del gesto per atterrare."],
-      ru: ["Мастерская переворотов", "Запустите хрустальный контейнер свайпом и подберите силу, чтобы приземлиться на 24 платформы в шести главах.", "Аркадное испытание на настройку силы свайпа для посадки."],
-      hi: ["फ्लिप कार्यशाला", "एक स्वाइप से क्रिस्टल कनस्तर लॉन्च करें और छह छोटे अध्यायों के 24 प्लेटफ़ॉर्म पर उतरने के लिए बल समायोजित करें।", "लैंडिंग के लिए स्वाइप का बल समायोजित करने वाली आर्केड चुनौती।"],
-      ar: ["ورشة القلب", "أطلق الحاوية البلورية بسحبة واحدة واضبط القوة للهبوط على 24 منصة في ستة فصول قصيرة.", "تحدي أركيد لضبط قوة السحب من أجل الهبوط."],
+      "en": [
+        "Flip Foundry",
+        "Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.",
+        "A force-calibration swipe-and-land arcade challenge."
+      ],
+      "zh-Hant": [
+        "翻轉工坊",
+        "把水晶送過 60 關。瞄準、穿環再落地，每關完成四次運送。",
+        "透過調整力道完成滑動發射與落地的街機挑戰。"
+      ],
+      "zh-Hans": [
+        "翻转工坊",
+        "把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。",
+        "通过调整力度完成滑动发射与落地的街机挑战。"
+      ],
+      "ja": [
+        "フリップ工房",
+        "結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。",
+        "スワイプの力を調整して着地を目指すアーケードゲームです。"
+      ],
+      "ko": [
+        "플립 공방",
+        "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!",
+        "스와이프 힘을 조절해 착지하는 아케이드 도전입니다."
+      ],
+      "es": [
+        "Taller de giros",
+        "Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.",
+        "Un reto arcade de deslizamiento y aterrizaje que requiere ajustar la fuerza."
+      ],
+      "pt-BR": [
+        "Oficina do Giro",
+        "Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.",
+        "Um desafio arcade de deslizar e pousar que exige calibrar a força."
+      ],
+      "fr": [
+        "Atelier du flip",
+        "Livre un cristal dans 60 étapes. Vise, traverse les anneaux et atterris ; quatre livraisons terminent une étape.",
+        "Un défi d’arcade où il faut régler la force du geste pour atterrir."
+      ],
+      "de": [
+        "Flip-Werkstatt",
+        "Liefere Kristalle durch 60 Stufen. Zielen, Ringe durchqueren, landen: vier Lieferungen pro Stufe.",
+        "Eine Arcade-Herausforderung, bei der du die Wischkraft für die Landung abstimmst."
+      ],
+      "it": [
+        "Officina del flip",
+        "Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.",
+        "Una sfida arcade in cui regolare la forza del gesto per atterrare."
+      ],
+      "ru": [
+        "Мастерская переворотов",
+        "Доставьте кристалл через 60 этапов. Прицельтесь, пройдите кольца и приземлитесь. Четыре доставки завершают этап.",
+        "Аркадное испытание на настройку силы свайпа для посадки."
+      ],
+      "hi": [
+        "फ्लिप कार्यशाला",
+        "60 चरणों में क्रिस्टल पहुँचाएँ। निशाना लगाएँ, छल्लों से गुजरें और उतरें। चार डिलीवरी से चरण पूरा होता है।",
+        "लैंडिंग के लिए स्वाइप का बल समायोजित करने वाली आर्केड चुनौती।"
+      ],
+      "ar": [
+        "ورشة القلب",
+        "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.",
+        "تحدي أركيد لضبط قوة السحب من أجل الهبوط."
+      ]
     },
   };
 

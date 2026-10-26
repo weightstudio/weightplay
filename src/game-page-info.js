@@ -22720,24 +22720,554 @@
   // the exact route cannot inherit the English difficulty, genre, or FAQ
   // definition while its Stage and Battle surfaces are already localized.
   const animalFlipFoundryGuideLocales = {
-    ar: {
-      title: "ورشة القلب",
-      gameplay: "تحدي التقليب الدقيق",
-      genre: ["أركيد", "فيزياء", "حيوانات"],
-      skills: ["التوقيت", "الدقة", "التنسيق بين اليد والعين"],
-      difficulty: "سهلة البداية وتزداد تحدياً",
-      time: "من دقيقة إلى 3 دقائق لكل فصل",
-      intro: "مرّر على الحاوية الكريستالية، وأدرها في الهواء، ثم هبط بها منتصبة على سطح الورشة التالي.",
-      story: ["تحوّل الورشة كل إطلاق دقيق إلى مسار من أربعة أسطح. تبقى الضربات القصيرة منخفضة، وتقطع الضربات الطويلة مسافة أبعد، ويمنح كل هبوط منتصبك القرار التالي."],
-      systems: ["اسحب إلى أعلى من الحاوية في الساحة الحية. تتحكم قوة السحب في مسافة الإطلاق، بينما تدور الحاوية أثناء طيرانها.", "يواصل الهبوط الجيد التتابع وينقلك إلى السطح التالي. أما الخطأ فيفتح نتيجة مركزة مع زر إعادة المحاولة حتى تتعلم المنصة نفسها مباشرة."],
-      how: ["اختر فصلاً وانتظر إشارة الاستعداد.", "اضغط على الحاوية واسحب إلى أعلى بحركة واحدة واضحة.", "عدّل طول السحب وفق مسافة السطح التالي، وراقب الدوران أثناء الطيران.", "اهبط منتصباً على الأسطح الأربعة لإنهاء الفصل، ثم أعد اللعب أو واصل إلى الفصل التالي."],
-      strategyTips: ["استخدم سحباً قصيراً للسطح القريب، وأضف الطول فقط عندما يكون السطح التالي أبعد.", "اجعل الحركة عمودية في معظمها؛ فالسحب الجانبي الكبير يصعّب الهبوط الدقيق.", "اقرأ ملاحظات النتيجة بعد الخطأ وغيّر عاملاً واحداً في كل مرة."],
-      progression: ["تبدأ الفصول الستة ببدايات واسعة، ثم تضيف مسافات جديدة وتنتهي بمسار دقيق. يحافظ كل فصل على أربعة أسطح، لذلك ينمو التحدي عبر المسافة والتوقيت لا عبر التكرار وحده."],
-      designNote: "تستخدم ورشة القلب رسومات أصلية لحاوية كريستالية وفيزياء إنتاجية وإدخالاً بالإيماءات وملاحظات فورية عند الهبوط لتجعل القوة والدقة واضحتين على الهاتف وسطح المكتب.",
-      parent: "هذه لعبة متصفح عامة ولا تتضمن حساباً أو شراءً أو دردشة أو لوحة متصدرين أو إعلانات. تبقى تتابعات الهبوط وأفضل تقدم في هذا المتصفح.",
-      faq: [["كيف أطلق الحاوية؟", "اسحب إلى أعلى من الحاوية في الساحة؛ يجب أن تكون الحركة طويلة بما يكفي لبدء الإطلاق."], ["ما الذي يجعل الهبوط جيداً؟", "يُحسم النجاح عند إفلات السحب: يجب أن تكون قوة الإطلاق ضمن النطاق المسموح للسطح الحالي. عدّل طول السحب بعد الخطأ؛ فالدوران الظاهر ليس اختباراً مستقلاً لزاوية الهبوط العمودية."], ["هل يمكنني استخدام الفأرة؟", "نعم. يستخدم سحب الفأرة وسحب اللمس حركة الإطلاق نفسها."], ["هل يُحفظ التقدم؟", "يُحفظ أفضل تتابع محلي فقط في هذا المتصفح."]]
-    }
-  };
+  "en": {
+    "title": "Flip Foundry",
+    "intro": "Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.",
+    "story": [
+      "Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage."
+    ],
+    "systems": [
+      "From Stage 7, choose Direct or Loft before launching. Follow every ring, stay below roofs and account for fan fields and moving receivers. The dotted arc predicts your landing.",
+      "From Stage 31, press E or Invert between signed rings. One cell powers one reversal; a relay restores it. Dark fields block inversion. Match the receiver sign when shown. The arc assumes you invert at the marked positions; you still press the button yourself."
+    ],
+    "how": [
+      "Drag UP anywhere. Follow the dotted arc, then release on the glowing platform.",
+      "Hold Space, release to flip.",
+      "From Stage 7, choose Direct or Loft before launching. Follow every ring, stay below roofs and account for fan fields and moving receivers. The dotted arc predicts your landing.",
+      "From Stage 31, press E or Invert between signed rings. One cell powers one reversal; a relay restores it. Dark fields block inversion. Match the receiver sign when shown. The arc assumes you invert at the marked positions; you still press the button yourself."
+    ],
+    "strategyTips": [
+      "Pass through every ring.",
+      "The crystal hit the roof. Try Direct.",
+      "Wrong polarity. Read the + / − signs."
+    ],
+    "progression": [
+      "The original six stages stay available. Clear Stage 6 to open 7, then progress in order. Clears and best records save locally; the existing best streak and collected blocks are preserved. Retry repeats the current landing."
+    ],
+    "designNote": "Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.",
+    "parent": "The original six stages stay available. Clear Stage 6 to open 7, then progress in order. Clears and best records save locally; the existing best streak and collected blocks are preserved. Retry repeats the current landing.",
+    "faq": [
+      [
+        "Nozzle",
+        "Drag UP anywhere. Follow the dotted arc, then release on the glowing platform. From Stage 7, choose Direct or Loft before launching. Follow every ring, stay below roofs and account for fan fields and moving receivers. The dotted arc predicts your landing."
+      ],
+      [
+        "Polarity",
+        "From Stage 31, press E or Invert between signed rings. One cell powers one reversal; a relay restores it. Dark fields block inversion. Match the receiver sign when shown. The arc assumes you invert at the marked positions; you still press the button yourself."
+      ],
+      [
+        "Cleared",
+        "The original six stages stay available. Clear Stage 6 to open 7, then progress in order. Clears and best records save locally; the existing best streak and collected blocks are preserved. Retry repeats the current landing."
+      ]
+    ]
+  },
+  "zh-Hant": {
+    "title": "翻轉工坊",
+    "intro": "把水晶送過 60 關。瞄準、穿環再落地，每關完成四次運送。",
+    "story": [
+      "把水晶送過 60 關。瞄準、穿環再落地，每關完成四次運送。"
+    ],
+    "systems": [
+      "第 7 關起，發射前可選直射或高拋。穿過所有水晶環、避開頂棚，並考慮風區與移動平台。虛線會預測落點。",
+      "第 31 關起，在不同磁極環之間按 E 或反轉按鈕。一顆電池能反轉一次，充電環可補回；深色區域內無法反轉。接收台若有磁極也必須相符。虛線假設你在標記處反轉，實際飛行仍須親自按鈕。"
+    ],
+    "how": [
+      "按住畫面向上拖，讓虛線落在發光平台，再放手翻轉。",
+      "按住空白鍵蓄力，放開翻轉。",
+      "第 7 關起，發射前可選直射或高拋。穿過所有水晶環、避開頂棚，並考慮風區與移動平台。虛線會預測落點。",
+      "第 31 關起，在不同磁極環之間按 E 或反轉按鈕。一顆電池能反轉一次，充電環可補回；深色區域內無法反轉。接收台若有磁極也必須相符。虛線假設你在標記處反轉，實際飛行仍須親自按鈕。"
+    ],
+    "strategyTips": [
+      "請穿過每一個水晶環。",
+      "水晶撞到頂棚了，試試直射。",
+      "磁極不符，請看清楚 +／− 標記。"
+    ],
+    "progression": [
+      "原有六關維持開放。通過第 6 關解鎖第 7 關，之後依序前進。通關與最佳紀錄保存在本機，原本連勝及已收藏方塊會保留。重試從本次落地段開始。"
+    ],
+    "designNote": "把水晶送過 60 關。瞄準、穿環再落地，每關完成四次運送。",
+    "parent": "原有六關維持開放。通過第 6 關解鎖第 7 關，之後依序前進。通關與最佳紀錄保存在本機，原本連勝及已收藏方塊會保留。重試從本次落地段開始。",
+    "faq": [
+      [
+        "發射嘴",
+        "按住畫面向上拖，讓虛線落在發光平台，再放手翻轉。 第 7 關起，發射前可選直射或高拋。穿過所有水晶環、避開頂棚，並考慮風區與移動平台。虛線會預測落點。"
+      ],
+      [
+        "磁極",
+        "第 31 關起，在不同磁極環之間按 E 或反轉按鈕。一顆電池能反轉一次，充電環可補回；深色區域內無法反轉。接收台若有磁極也必須相符。虛線假設你在標記處反轉，實際飛行仍須親自按鈕。"
+      ],
+      [
+        "已通過",
+        "原有六關維持開放。通過第 6 關解鎖第 7 關，之後依序前進。通關與最佳紀錄保存在本機，原本連勝及已收藏方塊會保留。重試從本次落地段開始。"
+      ]
+    ]
+  },
+  "zh-Hans": {
+    "title": "翻转工坊",
+    "intro": "把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。",
+    "story": [
+      "把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。"
+    ],
+    "systems": [
+      "第 7 关起，发射前可选直射或高抛。穿过所有水晶环、避开顶棚，并考虑风区与移动平台。虚线会预测落点。",
+      "第 31 关起，在不同磁极环之间按 E 或反转按钮。一颗电池能反转一次，充电环可补回；深色区域内无法反转。接收台若有磁极也必须相符。虚线假设你在标记处反转，实际飞行仍须亲自按按钮。"
+    ],
+    "how": [
+      "按住画面向上拖，让虚线落在发光平台，再松手翻转。",
+      "按住空格键蓄力，松开翻转。",
+      "第 7 关起，发射前可选直射或高抛。穿过所有水晶环、避开顶棚，并考虑风区与移动平台。虚线会预测落点。",
+      "第 31 关起，在不同磁极环之间按 E 或反转按钮。一颗电池能反转一次，充电环可补回；深色区域内无法反转。接收台若有磁极也必须相符。虚线假设你在标记处反转，实际飞行仍须亲自按按钮。"
+    ],
+    "strategyTips": [
+      "请穿过每一个水晶环。",
+      "水晶撞到顶棚了，试试直射。",
+      "磁极不符，请看清楚 +／− 标记。"
+    ],
+    "progression": [
+      "原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳纪录保存在本机，原本连胜及已收藏方块会保留。重试从本次落地段开始。"
+    ],
+    "designNote": "把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。",
+    "parent": "原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳纪录保存在本机，原本连胜及已收藏方块会保留。重试从本次落地段开始。",
+    "faq": [
+      [
+        "发射嘴",
+        "按住画面向上拖，让虚线落在发光平台，再松手翻转。 第 7 关起，发射前可选直射或高抛。穿过所有水晶环、避开顶棚，并考虑风区与移动平台。虚线会预测落点。"
+      ],
+      [
+        "磁极",
+        "第 31 关起，在不同磁极环之间按 E 或反转按钮。一颗电池能反转一次，充电环可补回；深色区域内无法反转。接收台若有磁极也必须相符。虚线假设你在标记处反转，实际飞行仍须亲自按按钮。"
+      ],
+      [
+        "已通过",
+        "原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳纪录保存在本机，原本连胜及已收藏方块会保留。重试从本次落地段开始。"
+      ]
+    ]
+  },
+  "ja": {
+    "title": "フリップ工房",
+    "intro": "結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。",
+    "story": [
+      "結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。"
+    ],
+    "systems": [
+      "ステージ7から発射前に直射か山なりを選べます。すべてのリングを通り、天井を避け、送風と動く受け台を考慮しましょう。点線は着地点を予測します。",
+      "ステージ31から符号付きリングの間でEまたは反転を押します。電池1個で1回反転し、中継リングで充電。暗い区間は反転不可です。受け台の符号も合わせましょう。点線は印の場所で反転する想定です。実際の操作は必要です。"
+    ],
+    "how": [
+      "上にドラッグし、点線を光る足場に合わせて離そう。",
+      "スペースを長押しして離す。",
+      "ステージ7から発射前に直射か山なりを選べます。すべてのリングを通り、天井を避け、送風と動く受け台を考慮しましょう。点線は着地点を予測します。",
+      "ステージ31から符号付きリングの間でEまたは反転を押します。電池1個で1回反転し、中継リングで充電。暗い区間は反転不可です。受け台の符号も合わせましょう。点線は印の場所で反転する想定です。実際の操作は必要です。"
+    ],
+    "strategyTips": [
+      "すべてのリングを通ってください。",
+      "天井に衝突しました。直射を試そう。",
+      "極性が違います。＋／−を確認。"
+    ],
+    "progression": [
+      "元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。"
+    ],
+    "designNote": "結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。",
+    "parent": "元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。",
+    "faq": [
+      [
+        "ノズル",
+        "上にドラッグし、点線を光る足場に合わせて離そう。 ステージ7から発射前に直射か山なりを選べます。すべてのリングを通り、天井を避け、送風と動く受け台を考慮しましょう。点線は着地点を予測します。"
+      ],
+      [
+        "極性",
+        "ステージ31から符号付きリングの間でEまたは反転を押します。電池1個で1回反転し、中継リングで充電。暗い区間は反転不可です。受け台の符号も合わせましょう。点線は印の場所で反転する想定です。実際の操作は必要です。"
+      ],
+      [
+        "クリア",
+        "元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。"
+      ]
+    ]
+  },
+  "ko": {
+    "title": "플립 공방",
+    "intro": "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!",
+    "story": [
+      "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!"
+    ],
+    "systems": [
+      "7스테이지부터 발사 전에 직사나 곡사를 선택하세요. 모든 고리를 지나고 천장을 피하며 송풍 구역과 움직이는 받침대를 고려하세요. 점선이 착지를 예측합니다.",
+      "31스테이지부터 극성 고리 사이에서 E 또는 반전을 누르세요. 전지 하나로 한 번 반전하며 중계 고리에서 충전합니다. 어두운 구역에서는 반전이 차단됩니다. 받침대의 극성도 맞추세요. 점선은 표시 위치에서 반전한다고 가정하며 실제 버튼 조작이 필요합니다."
+    ],
+    "how": [
+      "위로 드래그해 점선을 빛나는 발판에 맞추고 놓으세요.",
+      "스페이스를 누르고 놓으세요.",
+      "7스테이지부터 발사 전에 직사나 곡사를 선택하세요. 모든 고리를 지나고 천장을 피하며 송풍 구역과 움직이는 받침대를 고려하세요. 점선이 착지를 예측합니다.",
+      "31스테이지부터 극성 고리 사이에서 E 또는 반전을 누르세요. 전지 하나로 한 번 반전하며 중계 고리에서 충전합니다. 어두운 구역에서는 반전이 차단됩니다. 받침대의 극성도 맞추세요. 점선은 표시 위치에서 반전한다고 가정하며 실제 버튼 조작이 필요합니다."
+    ],
+    "strategyTips": [
+      "모든 고리를 통과하세요.",
+      "천장에 부딪혔어요. 직사를 시도하세요.",
+      "극성이 달라요. + / − 기호를 확인하세요."
+    ],
+    "progression": [
+      "기존 여섯 스테이지는 계속 열려 있어요. 6을 완료하면 7이 열리고 이후 순서대로 진행합니다. 완료와 최고 기록은 기기에 저장하며 기존 연속 기록과 수집 블록은 유지됩니다. 재시도는 현재 착지 구간부터입니다."
+    ],
+    "designNote": "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!",
+    "parent": "기존 여섯 스테이지는 계속 열려 있어요. 6을 완료하면 7이 열리고 이후 순서대로 진행합니다. 완료와 최고 기록은 기기에 저장하며 기존 연속 기록과 수집 블록은 유지됩니다. 재시도는 현재 착지 구간부터입니다.",
+    "faq": [
+      [
+        "노즐",
+        "위로 드래그해 점선을 빛나는 발판에 맞추고 놓으세요. 7스테이지부터 발사 전에 직사나 곡사를 선택하세요. 모든 고리를 지나고 천장을 피하며 송풍 구역과 움직이는 받침대를 고려하세요. 점선이 착지를 예측합니다."
+      ],
+      [
+        "극성",
+        "31스테이지부터 극성 고리 사이에서 E 또는 반전을 누르세요. 전지 하나로 한 번 반전하며 중계 고리에서 충전합니다. 어두운 구역에서는 반전이 차단됩니다. 받침대의 극성도 맞추세요. 점선은 표시 위치에서 반전한다고 가정하며 실제 버튼 조작이 필요합니다."
+      ],
+      [
+        "완료",
+        "기존 여섯 스테이지는 계속 열려 있어요. 6을 완료하면 7이 열리고 이후 순서대로 진행합니다. 완료와 최고 기록은 기기에 저장하며 기존 연속 기록과 수집 블록은 유지됩니다. 재시도는 현재 착지 구간부터입니다."
+      ]
+    ]
+  },
+  "es": {
+    "title": "Taller de giros",
+    "intro": "Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.",
+    "story": [
+      "Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase."
+    ],
+    "systems": [
+      "Desde la fase 7 elige Directo o Arco alto antes de lanzar. Cruza todos los anillos, evita techos y considera el viento y los receptores móviles. El arco punteado predice el aterrizaje.",
+      "Desde la fase 31 pulsa E o Invertir entre anillos con signos. Una batería permite una inversión; los relevos la recargan. Las zonas oscuras la bloquean. Iguala el signo del receptor. El arco supone inversiones en las marcas; debes pulsar tú."
+    ],
+    "how": [
+      "Arrastra arriba. Apunta el arco a la plataforma iluminada y suelta.",
+      "Mantén Espacio y suelta.",
+      "Desde la fase 7 elige Directo o Arco alto antes de lanzar. Cruza todos los anillos, evita techos y considera el viento y los receptores móviles. El arco punteado predice el aterrizaje.",
+      "Desde la fase 31 pulsa E o Invertir entre anillos con signos. Una batería permite una inversión; los relevos la recargan. Las zonas oscuras la bloquean. Iguala el signo del receptor. El arco supone inversiones en las marcas; debes pulsar tú."
+    ],
+    "strategyTips": [
+      "Pasa por todos los anillos.",
+      "Choque con el techo. Prueba Directo.",
+      "Polaridad incorrecta. Mira los signos + / −."
+    ],
+    "progression": [
+      "Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual."
+    ],
+    "designNote": "Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.",
+    "parent": "Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual.",
+    "faq": [
+      [
+        "Boquilla",
+        "Arrastra arriba. Apunta el arco a la plataforma iluminada y suelta. Desde la fase 7 elige Directo o Arco alto antes de lanzar. Cruza todos los anillos, evita techos y considera el viento y los receptores móviles. El arco punteado predice el aterrizaje."
+      ],
+      [
+        "Polaridad",
+        "Desde la fase 31 pulsa E o Invertir entre anillos con signos. Una batería permite una inversión; los relevos la recargan. Las zonas oscuras la bloquean. Iguala el signo del receptor. El arco supone inversiones en las marcas; debes pulsar tú."
+      ],
+      [
+        "Completada",
+        "Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual."
+      ]
+    ]
+  },
+  "pt-BR": {
+    "title": "Oficina do Giro",
+    "intro": "Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.",
+    "story": [
+      "Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase."
+    ],
+    "systems": [
+      "A partir da fase 7 escolha Direto ou Arco alto antes de lançar. Atravesse todos os anéis, evite tetos e considere vento e receptores móveis. A linha pontilhada prevê o pouso.",
+      "Na fase 31, use E ou Inverter entre anéis com sinais. Uma bateria permite uma inversão; relés recarregam. Áreas escuras bloqueiam a inversão. Combine o sinal do receptor. O arco supõe inversões nas marcas; você ainda precisa apertar o botão."
+    ],
+    "how": [
+      "Arraste para cima. Mire o arco na plataforma iluminada e solte.",
+      "Segure Espaço e solte.",
+      "A partir da fase 7 escolha Direto ou Arco alto antes de lançar. Atravesse todos os anéis, evite tetos e considere vento e receptores móveis. A linha pontilhada prevê o pouso.",
+      "Na fase 31, use E ou Inverter entre anéis com sinais. Uma bateria permite uma inversão; relés recarregam. Áreas escuras bloqueiam a inversão. Combine o sinal do receptor. O arco supõe inversões nas marcas; você ainda precisa apertar o botão."
+    ],
+    "strategyTips": [
+      "Passe por todos os anéis.",
+      "Bateu no teto. Tente Direto.",
+      "Polaridade incorreta. Veja os sinais + / −."
+    ],
+    "progression": [
+      "As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual."
+    ],
+    "designNote": "Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.",
+    "parent": "As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual.",
+    "faq": [
+      [
+        "Bocal",
+        "Arraste para cima. Mire o arco na plataforma iluminada e solte. A partir da fase 7 escolha Direto ou Arco alto antes de lançar. Atravesse todos os anéis, evite tetos e considere vento e receptores móveis. A linha pontilhada prevê o pouso."
+      ],
+      [
+        "Polaridade",
+        "Na fase 31, use E ou Inverter entre anéis com sinais. Uma bateria permite uma inversão; relés recarregam. Áreas escuras bloqueiam a inversão. Combine o sinal do receptor. O arco supõe inversões nas marcas; você ainda precisa apertar o botão."
+      ],
+      [
+        "Concluída",
+        "As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual."
+      ]
+    ]
+  },
+  "fr": {
+    "title": "Atelier du flip",
+    "intro": "Livre un cristal dans 60 étapes. Vise, traverse les anneaux et atterris ; quatre livraisons terminent une étape.",
+    "story": [
+      "Livre un cristal dans 60 étapes. Vise, traverse les anneaux et atterris ; quatre livraisons terminent une étape."
+    ],
+    "systems": [
+      "Dès l’étape 7, choisis Tir direct ou Tir en cloche avant de lancer. Traverse tous les anneaux, évite les plafonds et tiens compte du vent et des récepteurs mobiles. Le pointillé prévoit l’atterrissage.",
+      "Dès l’étape 31, appuie sur E ou Inverser entre les anneaux signés. Une pile permet une inversion ; les relais la rechargent. Les zones sombres bloquent l’inversion. Respecte aussi le signe du récepteur. L’arc suppose une inversion aux repères ; tu dois encore appuyer."
+    ],
+    "how": [
+      "Glisse vers le haut. Vise la plateforme lumineuse avec l’arc et relâche.",
+      "Maintiens Espace et relâche.",
+      "Dès l’étape 7, choisis Tir direct ou Tir en cloche avant de lancer. Traverse tous les anneaux, évite les plafonds et tiens compte du vent et des récepteurs mobiles. Le pointillé prévoit l’atterrissage.",
+      "Dès l’étape 31, appuie sur E ou Inverser entre les anneaux signés. Une pile permet une inversion ; les relais la rechargent. Les zones sombres bloquent l’inversion. Respecte aussi le signe du récepteur. L’arc suppose une inversion aux repères ; tu dois encore appuyer."
+    ],
+    "strategyTips": [
+      "Traverse tous les anneaux.",
+      "Le cristal a heurté le plafond. Essaie le tir direct.",
+      "Mauvaise polarité. Vérifie les signes + / −."
+    ],
+    "progression": [
+      "Les six étapes originales restent ouvertes. Termine la 6 pour ouvrir la 7, puis avance dans l’ordre. Réussites et records sont sauvegardés localement ; série et blocs restent acquis. Réessayer reprend l’atterrissage actuel."
+    ],
+    "designNote": "Livre un cristal dans 60 étapes. Vise, traverse les anneaux et atterris ; quatre livraisons terminent une étape.",
+    "parent": "Les six étapes originales restent ouvertes. Termine la 6 pour ouvrir la 7, puis avance dans l’ordre. Réussites et records sont sauvegardés localement ; série et blocs restent acquis. Réessayer reprend l’atterrissage actuel.",
+    "faq": [
+      [
+        "Buse",
+        "Glisse vers le haut. Vise la plateforme lumineuse avec l’arc et relâche. Dès l’étape 7, choisis Tir direct ou Tir en cloche avant de lancer. Traverse tous les anneaux, évite les plafonds et tiens compte du vent et des récepteurs mobiles. Le pointillé prévoit l’atterrissage."
+      ],
+      [
+        "Polarité",
+        "Dès l’étape 31, appuie sur E ou Inverser entre les anneaux signés. Une pile permet une inversion ; les relais la rechargent. Les zones sombres bloquent l’inversion. Respecte aussi le signe du récepteur. L’arc suppose une inversion aux repères ; tu dois encore appuyer."
+      ],
+      [
+        "Terminée",
+        "Les six étapes originales restent ouvertes. Termine la 6 pour ouvrir la 7, puis avance dans l’ordre. Réussites et records sont sauvegardés localement ; série et blocs restent acquis. Réessayer reprend l’atterrissage actuel."
+      ]
+    ]
+  },
+  "de": {
+    "title": "Flip-Werkstatt",
+    "intro": "Liefere Kristalle durch 60 Stufen. Zielen, Ringe durchqueren, landen: vier Lieferungen pro Stufe.",
+    "story": [
+      "Liefere Kristalle durch 60 Stufen. Zielen, Ringe durchqueren, landen: vier Lieferungen pro Stufe."
+    ],
+    "systems": [
+      "Ab Stufe 7 wählst du vor dem Start Direkt oder Hoher Bogen. Durchfliege alle Ringe, vermeide Decken und beachte Windfelder sowie bewegliche Plattformen. Die Punktlinie zeigt die erwartete Landung.",
+      "Ab Stufe 31 drücke E oder Umpolen zwischen markierten Ringen. Eine Zelle erlaubt einen Wechsel; Relais laden sie auf. Dunkle Felder sperren das Umpolen. Beachte das Zeichen der Plattform. Der Bogen nimmt Wechsel an den Markierungen an; drücken musst du selbst."
+    ],
+    "how": [
+      "Ziehe nach oben. Richte den Bogen auf die leuchtende Plattform und lasse los.",
+      "Leertaste halten und loslassen.",
+      "Ab Stufe 7 wählst du vor dem Start Direkt oder Hoher Bogen. Durchfliege alle Ringe, vermeide Decken und beachte Windfelder sowie bewegliche Plattformen. Die Punktlinie zeigt die erwartete Landung.",
+      "Ab Stufe 31 drücke E oder Umpolen zwischen markierten Ringen. Eine Zelle erlaubt einen Wechsel; Relais laden sie auf. Dunkle Felder sperren das Umpolen. Beachte das Zeichen der Plattform. Der Bogen nimmt Wechsel an den Markierungen an; drücken musst du selbst."
+    ],
+    "strategyTips": [
+      "Fliege durch alle Ringe.",
+      "Die Decke wurde getroffen. Versuche Direkt.",
+      "Falsche Polarität. Beachte + / −."
+    ],
+    "progression": [
+      "Die ursprünglichen sechs Stufen bleiben offen. Schließe 6 ab, um 7 zu öffnen, danach geht es der Reihe nach weiter. Abschlüsse und Rekorde werden lokal gespeichert; Serie und gesammelte Blöcke bleiben erhalten. Wiederholen startet beim aktuellen Sprung."
+    ],
+    "designNote": "Liefere Kristalle durch 60 Stufen. Zielen, Ringe durchqueren, landen: vier Lieferungen pro Stufe.",
+    "parent": "Die ursprünglichen sechs Stufen bleiben offen. Schließe 6 ab, um 7 zu öffnen, danach geht es der Reihe nach weiter. Abschlüsse und Rekorde werden lokal gespeichert; Serie und gesammelte Blöcke bleiben erhalten. Wiederholen startet beim aktuellen Sprung.",
+    "faq": [
+      [
+        "Düse",
+        "Ziehe nach oben. Richte den Bogen auf die leuchtende Plattform und lasse los. Ab Stufe 7 wählst du vor dem Start Direkt oder Hoher Bogen. Durchfliege alle Ringe, vermeide Decken und beachte Windfelder sowie bewegliche Plattformen. Die Punktlinie zeigt die erwartete Landung."
+      ],
+      [
+        "Polarität",
+        "Ab Stufe 31 drücke E oder Umpolen zwischen markierten Ringen. Eine Zelle erlaubt einen Wechsel; Relais laden sie auf. Dunkle Felder sperren das Umpolen. Beachte das Zeichen der Plattform. Der Bogen nimmt Wechsel an den Markierungen an; drücken musst du selbst."
+      ],
+      [
+        "Geschafft",
+        "Die ursprünglichen sechs Stufen bleiben offen. Schließe 6 ab, um 7 zu öffnen, danach geht es der Reihe nach weiter. Abschlüsse und Rekorde werden lokal gespeichert; Serie und gesammelte Blöcke bleiben erhalten. Wiederholen startet beim aktuellen Sprung."
+      ]
+    ]
+  },
+  "it": {
+    "title": "Officina del flip",
+    "intro": "Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.",
+    "story": [
+      "Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello."
+    ],
+    "systems": [
+      "Dal livello 7 scegli Diretto o Arco alto prima del lancio. Attraversa ogni anello, evita i soffitti e considera vento e ricevitori mobili. La linea tratteggiata prevede l’atterraggio.",
+      "Dal livello 31 premi E o Inverti tra gli anelli con segni. Una batteria permette un’inversione; i relè la ricaricano. Le zone scure la bloccano. Rispetta il segno del ricevitore. L’arco presume inversioni ai marcatori: devi comunque premere tu."
+    ],
+    "how": [
+      "Trascina in alto. Punta l’arco sulla piattaforma luminosa e rilascia.",
+      "Tieni Spazio e rilascia.",
+      "Dal livello 7 scegli Diretto o Arco alto prima del lancio. Attraversa ogni anello, evita i soffitti e considera vento e ricevitori mobili. La linea tratteggiata prevede l’atterraggio.",
+      "Dal livello 31 premi E o Inverti tra gli anelli con segni. Una batteria permette un’inversione; i relè la ricaricano. Le zone scure la bloccano. Rispetta il segno del ricevitore. L’arco presume inversioni ai marcatori: devi comunque premere tu."
+    ],
+    "strategyTips": [
+      "Attraversa tutti gli anelli.",
+      "Hai colpito il soffitto. Prova Diretto.",
+      "Polarità errata. Controlla i segni + / −."
+    ],
+    "progression": [
+      "I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale."
+    ],
+    "designNote": "Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.",
+    "parent": "I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale.",
+    "faq": [
+      [
+        "Ugello",
+        "Trascina in alto. Punta l’arco sulla piattaforma luminosa e rilascia. Dal livello 7 scegli Diretto o Arco alto prima del lancio. Attraversa ogni anello, evita i soffitti e considera vento e ricevitori mobili. La linea tratteggiata prevede l’atterraggio."
+      ],
+      [
+        "Polarità",
+        "Dal livello 31 premi E o Inverti tra gli anelli con segni. Una batteria permette un’inversione; i relè la ricaricano. Le zone scure la bloccano. Rispetta il segno del ricevitore. L’arco presume inversioni ai marcatori: devi comunque premere tu."
+      ],
+      [
+        "Completato",
+        "I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale."
+      ]
+    ]
+  },
+  "ru": {
+    "title": "Мастерская переворотов",
+    "intro": "Доставьте кристалл через 60 этапов. Прицельтесь, пройдите кольца и приземлитесь. Четыре доставки завершают этап.",
+    "story": [
+      "Доставьте кристалл через 60 этапов. Прицельтесь, пройдите кольца и приземлитесь. Четыре доставки завершают этап."
+    ],
+    "systems": [
+      "С этапа 7 выбирайте прямой бросок или высокую дугу до запуска. Пройдите все кольца, избегайте потолков, учитывайте ветер и подвижные платформы. Пунктир предсказывает посадку.",
+      "С этапа 31 нажимайте E или смену полюса между кольцами. Батареи хватает на одно переключение; реле её заряжает. Тёмные зоны блокируют действие. Соблюдайте знак приёмника. Дуга предполагает переключение у меток, но нажимать нужно самому."
+    ],
+    "how": [
+      "Тяните вверх. Наведите дугу на светящуюся платформу и отпустите.",
+      "Удерживайте Пробел и отпустите.",
+      "С этапа 7 выбирайте прямой бросок или высокую дугу до запуска. Пройдите все кольца, избегайте потолков, учитывайте ветер и подвижные платформы. Пунктир предсказывает посадку.",
+      "С этапа 31 нажимайте E или смену полюса между кольцами. Батареи хватает на одно переключение; реле её заряжает. Тёмные зоны блокируют действие. Соблюдайте знак приёмника. Дуга предполагает переключение у меток, но нажимать нужно самому."
+    ],
+    "strategyTips": [
+      "Пролетите через все кольца.",
+      "Кристалл задел потолок. Попробуйте прямой бросок.",
+      "Неверный полюс. Проверьте знаки + / −."
+    ],
+    "progression": [
+      "Первые шесть этапов остаются открытыми. Пройдите 6, чтобы открыть 7, затем двигайтесь по порядку. Победы и рекорды сохраняются на устройстве; серия и собранные блоки остаются. Повтор начинается с текущего прыжка."
+    ],
+    "designNote": "Доставьте кристалл через 60 этапов. Прицельтесь, пройдите кольца и приземлитесь. Четыре доставки завершают этап.",
+    "parent": "Первые шесть этапов остаются открытыми. Пройдите 6, чтобы открыть 7, затем двигайтесь по порядку. Победы и рекорды сохраняются на устройстве; серия и собранные блоки остаются. Повтор начинается с текущего прыжка.",
+    "faq": [
+      [
+        "Сопло",
+        "Тяните вверх. Наведите дугу на светящуюся платформу и отпустите. С этапа 7 выбирайте прямой бросок или высокую дугу до запуска. Пройдите все кольца, избегайте потолков, учитывайте ветер и подвижные платформы. Пунктир предсказывает посадку."
+      ],
+      [
+        "Полярность",
+        "С этапа 31 нажимайте E или смену полюса между кольцами. Батареи хватает на одно переключение; реле её заряжает. Тёмные зоны блокируют действие. Соблюдайте знак приёмника. Дуга предполагает переключение у меток, но нажимать нужно самому."
+      ],
+      [
+        "Пройдено",
+        "Первые шесть этапов остаются открытыми. Пройдите 6, чтобы открыть 7, затем двигайтесь по порядку. Победы и рекорды сохраняются на устройстве; серия и собранные блоки остаются. Повтор начинается с текущего прыжка."
+      ]
+    ]
+  },
+  "hi": {
+    "title": "फ्लिप कार्यशाला",
+    "intro": "60 चरणों में क्रिस्टल पहुँचाएँ। निशाना लगाएँ, छल्लों से गुजरें और उतरें। चार डिलीवरी से चरण पूरा होता है।",
+    "story": [
+      "60 चरणों में क्रिस्टल पहुँचाएँ। निशाना लगाएँ, छल्लों से गुजरें और उतरें। चार डिलीवरी से चरण पूरा होता है।"
+    ],
+    "systems": [
+      "चरण 7 से छोड़ने से पहले सीधा या ऊँचा चाप चुनें। सभी छल्लों से गुजरें, छत से बचें और हवा व चलते रिसीवर का ध्यान रखें। बिंदुओं वाला चाप उतरने का अनुमान दिखाता है।",
+      "चरण 31 से चिह्न वाले छल्लों के बीच E या ध्रुव बदलें दबाएँ। एक बैटरी से एक बदलाव; रिले फिर चार्ज करता है। अँधेरे क्षेत्र में बदलाव रुकता है। रिसीवर का ध्रुव भी मिलाएँ। चाप चिह्नों पर बदलाव मानता है; बटन आपको दबाना होगा।"
+    ],
+    "how": [
+      "ऊपर खींचें। चाप को चमकते प्लेटफ़ॉर्म पर रखें और छोड़ें।",
+      "स्पेस दबाकर छोड़ें।",
+      "चरण 7 से छोड़ने से पहले सीधा या ऊँचा चाप चुनें। सभी छल्लों से गुजरें, छत से बचें और हवा व चलते रिसीवर का ध्यान रखें। बिंदुओं वाला चाप उतरने का अनुमान दिखाता है।",
+      "चरण 31 से चिह्न वाले छल्लों के बीच E या ध्रुव बदलें दबाएँ। एक बैटरी से एक बदलाव; रिले फिर चार्ज करता है। अँधेरे क्षेत्र में बदलाव रुकता है। रिसीवर का ध्रुव भी मिलाएँ। चाप चिह्नों पर बदलाव मानता है; बटन आपको दबाना होगा।"
+    ],
+    "strategyTips": [
+      "हर छल्ले से होकर जाएँ।",
+      "क्रिस्टल छत से टकराया। सीधा प्रक्षेपण आज़माएँ।",
+      "गलत ध्रुव। + / − चिह्न देखें।"
+    ],
+    "progression": [
+      "मूल छह चरण खुले रहते हैं। 6 पूरा करने पर 7 खुलेगा, फिर क्रम से आगे बढ़ें। जीत और रिकॉर्ड इसी उपकरण पर सहेजते हैं; पुरानी लड़ी और मिले ब्लॉक सुरक्षित हैं। फिर प्रयास वर्तमान लैंडिंग से शुरू होता है।"
+    ],
+    "designNote": "60 चरणों में क्रिस्टल पहुँचाएँ। निशाना लगाएँ, छल्लों से गुजरें और उतरें। चार डिलीवरी से चरण पूरा होता है।",
+    "parent": "मूल छह चरण खुले रहते हैं। 6 पूरा करने पर 7 खुलेगा, फिर क्रम से आगे बढ़ें। जीत और रिकॉर्ड इसी उपकरण पर सहेजते हैं; पुरानी लड़ी और मिले ब्लॉक सुरक्षित हैं। फिर प्रयास वर्तमान लैंडिंग से शुरू होता है।",
+    "faq": [
+      [
+        "नोज़ल",
+        "ऊपर खींचें। चाप को चमकते प्लेटफ़ॉर्म पर रखें और छोड़ें। चरण 7 से छोड़ने से पहले सीधा या ऊँचा चाप चुनें। सभी छल्लों से गुजरें, छत से बचें और हवा व चलते रिसीवर का ध्यान रखें। बिंदुओं वाला चाप उतरने का अनुमान दिखाता है।"
+      ],
+      [
+        "ध्रुव",
+        "चरण 31 से चिह्न वाले छल्लों के बीच E या ध्रुव बदलें दबाएँ। एक बैटरी से एक बदलाव; रिले फिर चार्ज करता है। अँधेरे क्षेत्र में बदलाव रुकता है। रिसीवर का ध्रुव भी मिलाएँ। चाप चिह्नों पर बदलाव मानता है; बटन आपको दबाना होगा।"
+      ],
+      [
+        "पूरा",
+        "मूल छह चरण खुले रहते हैं। 6 पूरा करने पर 7 खुलेगा, फिर क्रम से आगे बढ़ें। जीत और रिकॉर्ड इसी उपकरण पर सहेजते हैं; पुरानी लड़ी और मिले ब्लॉक सुरक्षित हैं। फिर प्रयास वर्तमान लैंडिंग से शुरू होता है।"
+      ]
+    ]
+  },
+  "ar": {
+    "title": "ورشة القلب",
+    "gameplay": "تحدي التقليب الدقيق",
+    "genre": [
+      "أركيد",
+      "فيزياء",
+      "حيوانات"
+    ],
+    "skills": [
+      "التوقيت",
+      "الدقة",
+      "التنسيق بين اليد والعين"
+    ],
+    "difficulty": "سهلة البداية وتزداد تحدياً",
+    "time": "من دقيقة إلى 3 دقائق لكل فصل",
+    "intro": "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.",
+    "story": [
+      "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة."
+    ],
+    "systems": [
+      "من المرحلة 7 اختر المباشر أو القوس العالي قبل الإطلاق. اعبر كل الحلقات وتجنب السقوف وراعِ الرياح والمستقبِلات المتحركة. يتنبأ القوس المنقّط بمكان الهبوط.",
+      "من المرحلة 31 اضغط E أو عكس القطب بين الحلقات المعلّمة. خلية واحدة تكفي لعكس واحد، وحلقات الشحن تعيدها. المناطق الداكنة تمنع العكس. طابق علامة المستقبِل أيضاً. يفترض القوس العكس عند العلامات؛ عليك الضغط بنفسك أثناء الطيران."
+    ],
+    "how": [
+      "اسحب للأعلى. وجّه القوس إلى المنصة المضيئة ثم أفلت.",
+      "اضغط المسافة ثم أفلت.",
+      "من المرحلة 7 اختر المباشر أو القوس العالي قبل الإطلاق. اعبر كل الحلقات وتجنب السقوف وراعِ الرياح والمستقبِلات المتحركة. يتنبأ القوس المنقّط بمكان الهبوط.",
+      "من المرحلة 31 اضغط E أو عكس القطب بين الحلقات المعلّمة. خلية واحدة تكفي لعكس واحد، وحلقات الشحن تعيدها. المناطق الداكنة تمنع العكس. طابق علامة المستقبِل أيضاً. يفترض القوس العكس عند العلامات؛ عليك الضغط بنفسك أثناء الطيران."
+    ],
+    "strategyTips": [
+      "اعبر جميع الحلقات.",
+      "اصطدم البلور بالسقف. جرّب الإطلاق المباشر.",
+      "القطبية غير صحيحة. اقرأ علامتي + / −."
+    ],
+    "progression": [
+      "تبقى المراحل الست الأصلية مفتوحة. أكمل 6 لفتح 7 ثم تقدّم بالترتيب. تُحفظ الانتصارات والأرقام محلياً، وتبقى السلسلة السابقة والمكعبات المجموعة. تعيد المحاولة الهبوط الحالي."
+    ],
+    "designNote": "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.",
+    "parent": "تبقى المراحل الست الأصلية مفتوحة. أكمل 6 لفتح 7 ثم تقدّم بالترتيب. تُحفظ الانتصارات والأرقام محلياً، وتبقى السلسلة السابقة والمكعبات المجموعة. تعيد المحاولة الهبوط الحالي.",
+    "faq": [
+      [
+        "الفوهة",
+        "اسحب للأعلى. وجّه القوس إلى المنصة المضيئة ثم أفلت. من المرحلة 7 اختر المباشر أو القوس العالي قبل الإطلاق. اعبر كل الحلقات وتجنب السقوف وراعِ الرياح والمستقبِلات المتحركة. يتنبأ القوس المنقّط بمكان الهبوط."
+      ],
+      [
+        "القطبية",
+        "من المرحلة 31 اضغط E أو عكس القطب بين الحلقات المعلّمة. خلية واحدة تكفي لعكس واحد، وحلقات الشحن تعيدها. المناطق الداكنة تمنع العكس. طابق علامة المستقبِل أيضاً. يفترض القوس العكس عند العلامات؛ عليك الضغط بنفسك أثناء الطيران."
+      ],
+      [
+        "مكتملة",
+        "تبقى المراحل الست الأصلية مفتوحة. أكمل 6 لفتح 7 ثم تقدّم بالترتيب. تُحفظ الانتصارات والأرقام محلياً، وتبقى السلسلة السابقة والمكعبات المجموعة. تعيد المحاولة الهبوط الحالي."
+      ]
+    ]
+  }
+};
+
   for (const [code, guide] of Object.entries(animalFlipFoundryGuideLocales)) {
     arcadeGuideLocales[code] ||= {};
     arcadeGuideLocales[code]["animal-flip-foundry"] = guide;
