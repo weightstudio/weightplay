@@ -1,4 +1,5 @@
 // Text Growth 1.4.0 copy for Animal 2048's owned public Guide and SEO fields.
+import {nurseryCopy} from './nursery-copy.mjs';
 // Gameplay dictionaries and tutorial copy stay in locales.js unchanged.
 export const animal2048TextGrowth140 = {
   en: {
@@ -366,3 +367,12 @@ export const animal2048TextGrowth140 = {
     ],
   },
 };
+
+// The second chapter extends existing original mission guidance.
+for (const [locale, copy] of Object.entries(nurseryCopy)) {
+  const target = animal2048TextGrowth140[locale];
+  target.description = target.description.replaceAll("30", "60");
+  target.overview = target.overview.replaceAll("30", "60") + " " + copy.guideNursery;
+  target.progressionTitle = copy.progressionTitle;
+  target.progression = copy.progression;
+}

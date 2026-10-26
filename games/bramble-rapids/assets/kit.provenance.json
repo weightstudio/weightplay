@@ -1,0 +1,12 @@
+{
+  "generator": "image_gen built-in",
+  "generationSource": "/Users/kuoyu/.codex/generated_images/01a177cc-f406-7803-978d-f9c973e2d2eb/exec-a049418a-aab5-4124-a868-c32da1bb077e.png",
+  "prompt": "Use case: stylized-concept. Create one square premium game item sprite atlas on genuinely transparent background. Exactly a clean 3 by 3 evenly spaced grid of nine independent fully visible objects, each centered within its cell with ample transparent margin, no outlines separating cells, no text, no numerals, no logos. Row1 three distinct beautifully crafted small river surfing boards viewed three-quarter from above: honey wood board with teal inlay, sleek dark teal speed board with golden fin, wider moss-green stable board with cream endcaps. Row2: a compact square brass river anchor on teal rope spool, coral-red glowing night-surf board with turquoise luminous inlays, a handsome wooden trophy pole crowned with a cubic aqua water gem. Row3: bronze forest-river route medal with cuboid leaf motif, silver brass tide-gate medal with coral hinge motif, golden teal sail championship keepsake. Consistent original WeightPlay premium block-world game prop language: beveled cuboid construction, tactile wood grain, brushed brass, clean enamel, teal/seafoam/coral palette, coherent warm upper-left studio light, small soft contact shadow only, convincing volume, readable as a polished actual object at 64 pixels. All art is substantive rendered objects, not flat icon glyphs, not emoji, not CSS shapes, not UI. Keep every object in its own equal grid cell, not overlapping. Preserve true alpha transparency outside the props.",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "sourceSha256": "7717ad260f607a67d926e6c6a83a10be2949f415dea0dc8a276d2428501f4542",
+  "deliverySha256": "f42a3f22a06cfc02ee166ff887f94ebd90c4f00adccf57cdad92438cb2b99d7d",
+  "sourceReview": "Inspected generated output: coherent crafted scene/props, no text, distinct silhouettes; runtime surface review pending."
+}

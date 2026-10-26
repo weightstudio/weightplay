@@ -3118,5 +3118,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Жизнь в мгновениях",
     "hi": "पलों में एक जीवन",
     "ar": "حياة في لحظات"
+  },
+  "bramble-rapids": {
+    "__localizedExact": true,
+    "en": "Bramble Rapids",
+    "zh-Hant": "棘溪滑浪",
+    "zh-Hans": "棘溪滑浪",
+    "ja": "いばら渓流ライド",
+    "ko": "가시계곡 급류",
+    "es": "Rápidos del Zarzal",
+    "pt-BR": "Corredeiras do Espinhal",
+    "fr": "Rapides des Ronces",
+    "de": "Dornenbach-Stromschnellen",
+    "it": "Rapide del Roveto",
+    "ru": "Терновые пороги",
+    "hi": "कंटीली धारा",
+    "ar": "منحدرات جدول العليق"
   }
 };

@@ -1,0 +1,12 @@
+{
+  "generator": "image_gen built-in",
+  "generationSource": "/Users/kuoyu/.codex/generated_images/01a177cc-f406-7803-978d-f9c973e2d2eb/exec-8e8c782b-bae9-4f05-9594-4018904c953d.png",
+  "prompt": "Use case: stylized-concept. Create one production game environment atlas, genuine square 1:1 image divided into exactly two equally sized horizontal landscape panels without borders, labels, letters or gutters. Upper panel: a lush sunlit forest ravine with warm honey wooden water chutes, vivid turquoise current splitting around a stepped stone island, one short river jump ramp and safe blue landing pool, lanterns and blocky foliage. Lower panel: a twilight tidal aqueduct with visibly engineered brass and wood sluice gates, a calm small mooring bay with square coral-colored anchor post, aqua water under a soft lavender sky, stepped monumental garden cliffs. Match original premium WeightPlay Block Animals world: deliberately authored cuboid stonework, geometric foliage, tactile beveled crafted materials, strong depth, warm keys and cool jewel shadows, painterly polished 3D animated game scenery. Pure environment scenes, no characters, no photorealism, no HUD, no text, no logos, no diagrams, no painted user interface. Each panel is a complete usable wide background with depth and readable water route. Original designed world, no third-party recognizable composition or characteristic textures.",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "sourceSha256": "0dc764a4cace0fe46e6cb20ff846394552d3bc1635c1d52bd53b449801fa476a",
+  "deliverySha256": "93b598f552b1ff2dee8d14edada4a2933160cc417a4b38d89f26dbf3998d1777",
+  "sourceReview": "Inspected generated output: coherent crafted scene/props, no text, distinct silhouettes; runtime surface review pending."
+}

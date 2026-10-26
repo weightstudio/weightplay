@@ -33,7 +33,7 @@
     {"type":"tile","target":1024,"limit":52,"blocked":[5,10],"start":[64,64,64,32,32,0,32,32,32,32,0,32,32,256,256,64],"seed":3492165349}, // 28
     {"type":"score","target":1200,"limit":54,"blocked":[6,9],"start":[32,32,32,32,32,32,0,32,32,0,0,0,0,0,0,0],"seed":1920970932}, // 29
     {"type":"tile","target":2048,"limit":60,"blocked":[1,14],"start":[64,0,64,64,512,512,128,128,128,128,64,64,64,64,0,64],"seed":347552519,"checkpoint":{"kind":"pairs","target":3}} // 30
-  ];
+  ].concat(window.ForestNursery.levels);
 
   /* Interface 7: Infinite Forest is a real Stage-rail destination, not a
    private right-side Stage tab.  Wrap the shared data-backed selector before
@@ -42,7 +42,7 @@
   const stageApi = window.WeightPlayStageV6;
   if (!stageApi?.install || stageApi.__animal2048UnifiedRail) return;
   const originalInstall = stageApi.install.bind(stageApi);
-  const INFINITE_INDEX = 30;
+  const INFINITE_INDEX = window.ForestCampaign.length;
   const SAVE_KEY = "weightplay_animal_2048_v1";
   const localeAliases = {"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR"};
   const currentLocale = () => {
