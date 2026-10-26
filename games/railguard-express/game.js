@@ -14,6 +14,8 @@ const SFX=['ui.click','feedback.error','board.move','game.start','game.checkpoin
 window.WeightPlayAudio.preload(SFX);
 for(let i=0;i<LOCALES.length;i++)$('locale').add(new Option(NATIVE[i],LOCALES[i]));
 $('battleContent').prepend($('stats'));
+const statValues={};
+for(const [id,key]of [['hull','hull'],['power','power'],['wave','wave']]){const label=document.createElement('span'),value=document.createElement('strong');label.textContent=t(key);$(id).replaceChildren(label,value);statValues[id]=value;}
 const frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('locale'),playUI:true,scenes:{
  main:{root:$('main'),header:$('mainHeader'),content:$('hero')},
  stage:{root:$('stage'),header:$('stageHeader'),content:$('stageContent')},
@@ -47,7 +49,7 @@ function change(next){
  if(next==='stage')showStages(previous==='main');if(next==='main')translate();
 }
 function forecast(r,wave=null,branch=null){
- if(r.encounters){const plans=wave===null?r.encounters:[r.encounters[wave]];const kinds=[...new Set(plans.flatMap(p=>Object.entries(p).filter(([key])=>!branch||key===branch).flatMap(([,list])=>list.map(e=>e.kind))))];return kinds.map(t).join(' · ');}
+ if(r.encounters){const plans=wave===null?r.encounters:[r.encounters[wave]];const enemies=plans.flatMap(p=>Object.entries(p).filter(([key])=>!branch||key===branch).flatMap(([,list])=>list));return [1,-1].filter(side=>enemies.some(e=>e.side===side)).map(side=>t(side===1?'front':'rear')+': '+[...new Set(enemies.filter(e=>e.side===side).map(e=>e.kind))].map(t).join(', ')).join(' / ');}
  return t(r.direction==='front'?'front':r.direction==='rear'?'rear':'front')+(r.direction==='split'?' + '+t('rear'):'')+' · '+t(r.kind==='mixed'?'armor':r.kind);
 }
 function stageConfig(){return {gameId:GAME,count:ROUTES.length,poster:'/games/'+GAME+'/assets/cover-block-v1.webp',background:'/assets/lobby-block-atmosphere.svg',stage(i){const r=ROUTES[i],locked=r.id>save.unlocked;return {id:r.id,kicker:t('route')+' '+r.id,title:r.encounters?t('chapter'+r.chapter)+' · '+r.id:locale.startsWith('zh')?r.zh:r.en,subtitle:r.chapter===2?t('quota')+' '+r.cargoGoal:t(r.kind==='mixed'?'armor':r.kind),status:locked?t('locked'):save.cleared.includes(r.id)?'✓':'',summary:forecast(r),details:[t('forecast')+': '+forecast(r),t('power')+': '+r.power,...(r.encounters?[t('cells')+': '+r.cells]:[])],locked,cleared:save.cleared.includes(r.id)};}};}
@@ -64,7 +66,7 @@ function start(id){
  state=newRun(id);selected=0;paused=false;accumulator=0;change('battle');
  const renderFailure=()=>{if(screen!=='battle')return;modal('render-error',t('pause'),t('renderError'),[[t('retry'),()=>start(state.route.id)],[t('stages'),()=>change('stage')]]);};
  try{scene=createScene($('arena'),{onFailure:renderFailure});$('arenaError').hidden=true;}catch{renderFailure();}
- $('notice').textContent=state.route.chapter===2?t('quota')+': '+state.route.cargoGoal+' · '+t('junction'):t('forecast')+': '+forecast(state.route);update();
+ $('notice').textContent=state.route.chapter===2?t('quota')+': '+state.route.cargoGoal+' · '+t('junction'):state.route.encounters?t('ward')+' → '+t('frost')+' / '+t('pulse'):t('forecast')+': '+forecast(state.route);update();
 }
 function closeOverlay(){
  const focus=modalReturnFocus;modalReturnFocus=null;
@@ -74,7 +76,7 @@ function closeOverlay(){
 }
 function modal(kind,heading,text,actions){
  if($('overlay').hidden)modalReturnFocus=document.activeElement;
- overlayKind=kind;paused=true;$('modalTitle').textContent=heading;$('modalText').textContent=text;$('modalActions').replaceChildren();
+ overlayKind=kind;paused=true;$('overlay').dataset.kind=kind;$('modalTitle').textContent=heading;$('modalText').textContent=text;$('modalText').scrollTop=0;$('modalActions').replaceChildren();
  for(const [label,fn,disabled=false,id]of actions){const b=document.createElement('button');b.type='button';b.textContent=label;b.disabled=disabled;if(id)b.id=id;b.addEventListener('click',()=>{speak('ui.click');fn();});$('modalActions').append(b);}
  $('overlay').hidden=false;$('battleContent').inert=true;
  $('overlay').toggleAttribute('data-wp-result-screen',kind==='result');$('modalCard').toggleAttribute('data-wp-result-card',kind==='result');
@@ -93,9 +95,9 @@ function edit(index){
 for(let i=0;i<3;i++)$('mount'+i).addEventListener('click',()=>edit(i));
 function update(){
  if(!state)return;
- $('hull').textContent=t('hull')+' '+Math.ceil(state.hull);$('hullBar').value=state.hull;
- $('power').textContent=t('power')+' '+usedPower(state)+'/'+state.power;
- $('wave').textContent=Math.max(1,state.wave)+' / 3';$('wave').setAttribute('aria-label',t('wave')+' '+Math.max(1,state.wave)+' / 3');
+ statValues.hull.textContent=Math.ceil(state.hull);$('hullBar').value=state.hull;
+ statValues.power.textContent=usedPower(state)+'/'+state.power;
+ statValues.wave.textContent=Math.max(1,state.wave)+' / 3';$('wave').setAttribute('aria-label',t('wave')+' '+Math.max(1,state.wave)+' / 3');
  const facts=[t('shield')+' '+Math.floor(state.shield)];if(state.route.encounters)facts.push(t('cells')+' '+state.cells+'/3');if(state.route.chapter===2)facts.push(t('cargo')+' '+state.cargo+'/'+state.route.cargoGoal);$('shieldValue').replaceChildren(...facts.map(text=>{const span=document.createElement('span');span.textContent=text;return span;}));
  $('waveProgress').value=state.wave===0?0:(state.wave-1)/3;
  for(let i=0;i<3;i++){const m=state.mounts[i],b=$('mount'+i);b.querySelector('strong').textContent=t(['rear','middle','front'][i]);b.querySelector('span').textContent=t(m.type);b.querySelector('small').textContent=(state.jamSlot===i?t('jammer'):t(m.on?'on':'off'))+' · '+MODULES[m.type].power;b.classList.toggle('selected',selected===i);b.classList.toggle('offline',!m.on||state.jamSlot===i);b.setAttribute('aria-label',t(['rear','middle','front'][i])+': '+t(m.type)+', '+t(m.on?'on':'off'));}
@@ -134,7 +136,7 @@ $('battleBack').addEventListener('click',()=>modal('leave',t('pause'),t('stages'
 $('depart').addEventListener('click',()=>{
  if(state.route.chapter!==2){if(depart(state))update();return;}
  modal('junction',t('junction'),t('quota')+' '+state.cargo+'/'+state.route.cargoGoal+' · '+t('cells')+' '+state.cells+'/3',[
-  ...['freight','service'].map(branch=>[t(branch)+' — '+t(branch==='freight'?'freightGain':'serviceGain')+'\n'+forecast(state.route,state.wave,branch),()=>{if(chooseBranch(state,branch)&&depart(state)){closeOverlay();update();}},false,'branch-'+branch]),
+  ...['freight','service'].map(branch=>[t(branch)+' — '+(branch==='freight'?t('freightGain'):t('cells')+' '+state.cells+' → '+Math.min(3,state.cells+1)+'/3')+'\n'+forecast(state.route,state.wave,branch),()=>{if(chooseBranch(state,branch)&&depart(state)){closeOverlay();update();}},false,'branch-'+branch]),
   [t('close'),closeOverlay]
  ]);
 });
@@ -164,4 +166,6 @@ function animate(now){
 }
 window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);scene?.dispose();scene=null;sound.dispose();stageController?.destroy();frame.destroy();});
 window.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});
+// Observational copies only: no commands, live references, save writes or time advancement.
+Object.defineProperty(window,'RailguardDiagnostics',{value:Object.freeze({snapshot:()=>structuredClone({screen,overlay:overlayKind,paused,save,game:state?{route:{id:state.route.id,chapter:state.route.chapter},status:state.status,wave:state.wave,time:state.time,tick:state.tick,waveTime:state.waveTime,hull:state.hull,power:state.power,shield:state.shield,cells:state.cells,cargo:state.cargo,branch:state.branch,lastThreat:state.lastThreat,mounts:state.mounts,enemies:state.enemies,shots:state.shots}:null,renderer:scene?.info()||null})}),configurable:false,writable:false});
 translate();frame.activate('main');raf=requestAnimationFrame(animate);

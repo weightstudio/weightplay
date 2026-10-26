@@ -13,6 +13,11 @@
 #modalActions button{white-space:pre-line}
 #pulse{background:#1f655e;border-color:#79dfc3;font-weight:700}
 #modalText{white-space:pre-line}
+#notice{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;align-content:center;overflow:hidden}
+#overlay[data-kind="help"] #modalCard{height:min(680px,100%);display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:12px;overflow:hidden}
+#overlay[data-kind="help"] #modalTitle{margin:0}
+#overlay[data-kind="help"] #modalText{min-height:0;overflow:auto;margin:0;overscroll-behavior:contain}
+#overlay[data-kind="help"] #modalActions{grid-template-columns:minmax(0,1fr)}
 #modalActions button:disabled{background:#29434b;color:#a6bbb9;opacity:.6}
 @layer wp-frame-contract{#battleHeader [data-wp-return],#battleHeader [data-wp-settings]{width:var(--wp-frame-control-size);height:var(--wp-frame-control-size);min-width:var(--wp-frame-control-size);min-height:var(--wp-frame-control-size)}}
 #overlay[data-wp-result-screen] #modalActions{grid-template-columns:minmax(0,1fr)}

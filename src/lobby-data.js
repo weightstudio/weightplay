@@ -22,6 +22,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "bramble-rapids",
       "nori-bankshot",
       "wildborn",
       "kindred-habitats",
@@ -82,6 +83,17 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "bramble-rapids", audience: "general", status: "planned", internalOnly: true,
+      href: "games/bramble-rapids/", internalTrial: "/games/bramble-rapids/?preview=1",
+      title: { __localizedExact: true, en: "Bramble Rapids", "zh-Hant": "棘溪滑浪", "zh-Hans": "棘溪滑浪", ja: "いばら渓流ライド", ko: "가시계곡 급류", es: "Rápidos del Zarzal", "pt-BR": "Corredeiras do Espinhal", fr: "Rapides des Ronces", de: "Dornenbach-Stromschnellen", it: "Rapide del Roveto", ru: "Терновые пороги", hi: "कंटीली धारा", ar: "منحدرات جدول العليق" },
+      type: { en: "River Racing", "zh-Hant": "水道競速" },
+      description: { en: "Steer Nori through branching river slides, time ramp jumps and read tide gates across sixty saved challenges.", "zh-Hant": "帶諾里滑過分流水道，抓準跳台落點與潮閘時機，挑戰六十關並保存航線紀錄。" },
+      categories: ["Racing", "Arcade", "Animal Games"], skills: ["Reaction", "Hand-Eye Coordination", "Planning"],
+      ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
+      meta: { en: ["60 Stages", "Route Racing", "Permanent Styles"], "zh-Hant": ["60 關", "水道選線", "永久外觀"] },
+      art: { kind: "image", background: "/games/bramble-rapids/assets/cover.webp", hideHero: true },
+    },
     {
       id: "nori-bankshot", audience: "general", status: "playable",
       href: "games/nori-bankshot/", previewVideo: "assets/previews/nori-bankshot-battle.webm",

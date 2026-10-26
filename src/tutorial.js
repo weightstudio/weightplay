@@ -1240,6 +1240,9 @@
 
   function scheduleFirstShow(gameId) {
     const startTime = Date.now();
+    // Install an already-ready first-play tutorial before Main accepts input.
+    // Keep the existing bounded loading poll for games still loading.
+    if (loadingIsDone(startTime)) { showTutorial(gameId); return; }
     const id = window.setInterval(() => {
       if (!loadingIsDone(startTime)) return;
       window.clearInterval(id);
