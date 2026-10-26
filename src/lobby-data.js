@@ -83,8 +83,8 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "nori-bankshot", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "/games/nori-bankshot/?preview=1", href: "games/nori-bankshot/",
+      id: "nori-bankshot", audience: "general", status: "playable",
+      href: "games/nori-bankshot/", previewVideo: "assets/previews/nori-bankshot-battle.webm",
       title: {"__localizedExact":true,"en":"Nori Bankshot","zh-Hant":"諾里撞球館","zh-Hans":"诺里台球馆","ja":"ノリのビリヤード","ko":"노리의 당구장","es":"Billar con Nori","pt-BR":"Bilhar com Nori","fr":"Le billard de Nori","de":"Noris Billardhalle","it":"Il biliardo di Nori","ru":"Бильярд с Нори","hi":"नोरी का बिलियर्ड्स","ar":"بلياردو نوري"},
       type: {en:"Billiards Puzzle","zh-Hant":"撞球益智","zh-Hans":"台球益智",ja:"ビリヤードパズル",ko:"당구 퍼즐",es:"Puzle de billar","pt-BR":"Quebra-cabeça de bilhar",fr:"Puzzle de billard",de:"Billardrätsel",it:"Rompicapo di biliardo",ru:"Бильярдная головоломка",hi:"बिलियर्ड्स पहेली",ar:"ألغاز البلياردو"},
       description: {"en":"Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.","zh-Hant":"看準碰撞，也替下一球留路。清完規則各異的港灣球檯。","zh-Hans":"看准碰撞，也为下一球留路。清完规则各异的港湾球台。","ja":"白球を狙って的球をポケットへ。次の一打の位置も考え、港のテーブルを攻略しよう。","ko":"흰 공으로 목표 공을 넣고 다음 샷의 자리까지 계획하세요. 항구의 다양한 당구대를 도전해 보세요.","es":"Apunta con la bola blanca, emboca los objetivos y prepara el siguiente tiro en las mesas del puerto.","pt-BR":"Mire com a bola branca, encaçape os alvos e prepare a próxima tacada nas mesas do porto.","fr":"Visez avec la blanche, empochez les cibles et préparez le coup suivant sur les tables du port.","de":"Ziele mit der Weißen, versenke die Zielkugeln und plane den nächsten Stoß auf den Tischen im Hafen.","it":"Mira con la bianca, manda in buca i bersagli e prepara il prossimo tiro sui tavoli del porto.","ru":"Цельтесь белым шаром, отправляйте цели в лузы и продумывайте следующий удар на столах гавани.","hi":"सफेद गेंद से निशाना लगाएँ, लक्ष्य गेंदें डालें और अगला शॉट सोचकर बंदरगाह की मेज़ें पूरी करें।","ar":"صوّب بالكرة البيضاء، وأدخل الأهداف، وخطط للضربة التالية على طاولات الميناء."},
