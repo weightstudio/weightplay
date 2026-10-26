@@ -51,6 +51,7 @@
   copy.dataset.wpFrameCopy = "";
   summary.dataset.wpFrameSummary = "";
   progress.dataset.wpFrameProgress = "";
+  progress.classList.remove("main-progress");
   start.dataset.wpFrameAction = "primary";
   for (const button of [document.getElementById("restartBtn"), document.getElementById("newGameBtn")]) {
     if (button) button.dataset.wpFrameAction = "secondary";
@@ -85,10 +86,13 @@
   legacyStats.remove();
   frame.battleTopUI.add(battleInfo);
 
-  const sync = () => frame.activate(document.body.dataset.screen === "battle" ? "battle" : "main");
+  const sync = () => {
+    frame.activate(document.body.dataset.screen === "battle" ? "battle" : "main");
+    window.WeightPlayBattleCanvas?.sync?.();
+  };
   const abort = new AbortController();
   window.addEventListener("weightplay:shell-sync", sync, { signal: abort.signal });
-  frame.activate(document.body.dataset.screen === "battle" ? "battle" : "main");
+  sync();
 
   window.addEventListener("pagehide", (event) => {
     if (event.persisted) return;

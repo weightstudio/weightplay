@@ -159,7 +159,7 @@
   const score=document.createElement('div'); score.className='hoop-scoreboard'; score.innerHTML='<div><span id="hoop-you"></span><b id="hoop-score">0</b></div><span class="hoop-score-divider">:</span><div><span id="hoop-rival"></span><b id="hoop-opponent">0</b></div>'; canvas.parentElement.append(score);
   const steps=document.createElement('div'); steps.className='hoop-steps'; steps.innerHTML='<span><b>01</b><i></i></span><span><b>02</b><i></i></span><span><b>03</b><i></i></span>'; document.querySelector('.m5-copy').prepend(steps);
   const help=document.createElement('div'); help.className='hoop-help'; help.hidden=true;help.setAttribute('role','dialog');help.setAttribute('aria-modal','true'); help.innerHTML='<p></p><button type="button">×</button>'; $('battle-screen').append(help);
-  help.querySelector('button').onclick=()=>{help.hidden=true;state.paused=false;state.last=performance.now();shoot.focus();};
+  help.querySelector('button').onclick=()=>{help.hidden=true;state.paused=false;state.last=performance.now();hud();shoot.focus();};
   const leave=document.createElement('section'); leave.className='hoop-leave-dialog'; leave.hidden=true; leave.setAttribute('role','dialog');leave.setAttribute('aria-modal','true');leave.innerHTML='<div class="hoop-leave-card"><p></p><div class="hoop-leave-actions"><button type="button" id="hoop-continue">▶</button><button type="button" id="hoop-exit">←</button></div></div>'; $('battle-screen').append(leave);
   const sound=id=>window.WeightPlayAudio?.play(id);
   window.WeightPlayAudio?.preload(['game.start','projectile.launch','sport.goal','sport.bounce','result.win','result.lose','ui.click','feedback.success']);
@@ -195,7 +195,7 @@
   function hud(){
     const t=text(),r=state.round,c=courts[r.stage-1],ch=challenge(r.stage,Math.min(r.shots,c.shots-1),state.route,state.focusArmed);
     $('score-label').textContent=`${r.shots} / ${c.shots}`;swap($('hoop-score'),r.score);swap($('hoop-opponent'),r.rival);
-    $('hoop-shot-count').textContent=`${t[15]} ${Math.min(r.shots+1,c.shots)} / ${c.shots}`;
+    $('hoop-shot-count').textContent=`${t[15]} \u2066${Math.min(r.shots+1,c.shots)} / ${c.shots}\u2069`;
     $('hoop-zone').style.left=`${(ch.target-ch.tolerance)*100}%`;$('hoop-zone').style.width=`${ch.tolerance*200}%`;
     $('hoop-perfect').style.left=`${ch.target*100}%`;
     shoot.disabled=Boolean(state.flight)||r.finished;shoot.textContent=state.flight?t[12]:state.charging?t[6]:t[5];
@@ -229,13 +229,13 @@
   window.addEventListener('keyup',e=>{if([' ','Enter'].includes(e.key)&&state.charging&&state.input==='keyboard'){e.preventDefault();release();}});
   window.addEventListener('blur',()=>{cancel();if(state.screen==='battle')state.paused=true;hud();});
   document.addEventListener('visibilitychange',()=>{cancel();if(document.hidden)state.paused=true;else if(help.hidden&&leave.hidden){state.paused=false;state.last=performance.now();}hud();});
-  window.addEventListener('focus',()=>{if(help.hidden&&leave.hidden){state.paused=false;state.last=performance.now();}});
+  window.addEventListener('focus',()=>{if(help.hidden&&leave.hidden){state.paused=false;state.last=performance.now();hud();}});
   $('start-game').onclick=openRecommendedStage;$('stage-back').onclick=()=>show('main');
-  $('battle-back').onclick=()=>{if(state.screen==='result'){selectedStageIndex=state.round.stage-1;show('stage');return;}cancel();state.paused=true;leave.querySelector('p').textContent=`${common(4)}? ${text()[1]}`;leave.hidden=false;$('hoop-continue').textContent=common(1);$('hoop-exit').textContent=common(4);$('hoop-continue').focus();};
-  $('hoop-continue').onclick=()=>{leave.hidden=true;state.paused=false;state.last=performance.now();shoot.focus();};
+  $('battle-back').onclick=()=>{if(state.screen==='result'){selectedStageIndex=state.round.stage-1;show('stage');return;}cancel();state.paused=true;leave.querySelector('p').textContent=`${common(4)}? ${text()[1]}`;leave.hidden=false;hud();$('hoop-continue').textContent=common(1);$('hoop-exit').textContent=common(4);$('hoop-continue').focus();};
+  $('hoop-continue').onclick=()=>{leave.hidden=true;state.paused=false;state.last=performance.now();hud();shoot.focus();};
   $('hoop-exit').onclick=()=>{selectedStageIndex=state.round.stage-1;show('stage');};
   leave.addEventListener('keydown',e=>{if(e.key==='Escape')$('hoop-continue').click();if(e.key==='Tab'){e.preventDefault();(document.activeElement===$('hoop-continue')?$('hoop-exit'):$('hoop-continue')).focus();}});
-  $('battle-utility').onclick=()=>{cancel();state.paused=true;help.querySelector('p').textContent=`${text()[0]} ${text()[1]} ${text()[20]} ${state.round.stage>=7?xp().routeGuide+' '+xp().focusGuide+' '+xp().goalsGuide:''} ${state.round.stage>=31?xp().relayGuide:''}`;help.hidden=false;help.querySelector('button').setAttribute('aria-label',common(3));help.querySelector('button').focus();};
+  $('battle-utility').onclick=()=>{cancel();state.paused=true;help.querySelector('p').textContent=`${text()[0]} ${text()[1]} ${text()[20]} ${state.round.stage>=7?xp().routeGuide+' '+xp().focusGuide+' '+xp().goalsGuide:''} ${state.round.stage>=31?xp().relayGuide:''}`;help.hidden=false;hud();help.querySelector('button').setAttribute('aria-label',common(3));help.querySelector('button').focus();};
   help.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();help.querySelector('button').click();}if(e.key==='Tab'){e.preventDefault();help.querySelector('button').focus();}});
   const overlayObserver=new MutationObserver(()=>{
     const blocked=!help.hidden||!leave.hidden, parent=help.parentElement;
@@ -256,6 +256,7 @@
     const settingsOpen=[...document.querySelectorAll('.wp-frame-popover')].some(n=>!n.hidden);
     if(settingsOpen){cancel();state.paused=true;}
     else if(help.hidden&&leave.hidden){state.paused=false;state.last=performance.now();}
+    hud();
   });
   function ball(x,y,r,spin=0){ctx.save();ctx.translate(x,y);ctx.rotate(spin);ctx.fillStyle='#ff9c47';ctx.strokeStyle='#512c26';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.ellipse(0,0,r*.48,r,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
   function draw(now){

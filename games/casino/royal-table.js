@@ -107,6 +107,7 @@
     const tutorialButton=document.createElement('button');
     tutorialButton.type='button';
     tutorialButton.className='casino-tutorial-help';
+    tutorialButton.dataset.wpFrameAction='secondary';
     tutorialGuide.prepend(tutorialButton);
     let tutorialLayer=null;
     const tutorialSeenKey='weightplay_tutorial_seen_casino_v1';

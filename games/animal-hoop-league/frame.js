@@ -83,7 +83,10 @@
   courtArea.append(battleStatus, battleObjectives, canvasWrap);
   controlsArea.append(utilitySlot, controls, hint);
   battle.append(battleContent);
-  battleContent.append(courtArea, controlsArea, result);
+  const matchLayout = document.createElement('div');
+  matchLayout.className = 'hoop-match-layout';
+  matchLayout.append(courtArea, controlsArea);
+  battleContent.append(matchLayout, result);
   for (const overlay of battle.querySelectorAll('.hoop-help,.hoop-leave-dialog')) battleContent.append(overlay);
   battleContent.append(battleInfo);
 

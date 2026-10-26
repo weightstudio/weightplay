@@ -7,6 +7,11 @@
         "Backboard Circuit",
         "Relay Skyline",
         "Focus"
+      ],
+      "basics": [
+        "Hold. Find the green zone. Release.",
+        "Keep the marker inside the green zone. The thin gold line is perfect.",
+        "Space / Enter also work. Leaving the tab cancels your charge."
       ]
     },
     "zh-Hant": {
@@ -15,6 +20,11 @@
         "擦板巡迴",
         "天際接力",
         "專注"
+      ],
+      "basics": [
+        "按住蓄力，進入綠區，放開投籃。",
+        "讓游標落在綠色區域；中央金線就是完美出手。",
+        "鍵盤空白鍵／Enter 也能投籃，切換分頁會取消蓄力。"
       ]
     },
     "zh-Hans": {
@@ -23,6 +33,11 @@
         "擦板巡回",
         "天际接力",
         "专注"
+      ],
+      "basics": [
+        "按住蓄力，进入绿区，松开投篮。",
+        "让游标落在绿色区域；中央金线就是完美出手。",
+        "键盘空格键／Enter 也能投篮，切换分页会取消蓄力。"
       ]
     },
     "ja": {
@@ -31,6 +46,11 @@
         "バンクサーキット",
         "空中リレー",
         "集中"
+      ],
+      "basics": [
+        "長押し。緑に合わせて離す。",
+        "緑の中で離す。中央の金線が完璧。",
+        "スペース／Enterでも操作。タブを離れるとチャージ取消。"
       ]
     },
     "ko": {
@@ -39,6 +59,11 @@
         "뱅크 서킷",
         "스카이 릴레이",
         "집중"
+      ],
+      "basics": [
+        "누르고, 초록 구간에서 놓으세요.",
+        "초록 구간에서 놓으세요. 금색 선은 완벽한 슛입니다.",
+        "스페이스/Enter 지원. 탭을 떠나면 충전이 취소됩니다."
       ]
     },
     "es": {
@@ -47,6 +72,11 @@
         "Circuito de tablero",
         "Relevo aéreo",
         "Enfoque"
+      ],
+      "basics": [
+        "Mantén. Llega al verde. Suelta.",
+        "Suelta dentro del verde. La línea dorada es perfecta.",
+        "También Espacio/Enter. Cambiar de pestaña cancela la carga."
       ]
     },
     "pt-BR": {
@@ -55,6 +85,11 @@
         "Circuito da tabela",
         "Revezamento aéreo",
         "Foco"
+      ],
+      "basics": [
+        "Segure. Encontre o verde. Solte.",
+        "Solte no verde. A linha dourada é perfeita.",
+        "Espaço/Enter também funcionam. Sair da aba cancela a carga."
       ]
     },
     "fr": {
@@ -63,6 +98,11 @@
         "Circuit du panneau",
         "Relais aérien",
         "Focus"
+      ],
+      "basics": [
+        "Maintenez. Visez le vert. Relâchez.",
+        "Relâchez dans le vert. La ligne dorée est parfaite.",
+        "Espace/Entrée aussi. Quitter l’onglet annule la charge."
       ]
     },
     "de": {
@@ -71,6 +111,11 @@
         "Brett-Rundkurs",
         "Himmelsstaffel",
         "Fokus"
+      ],
+      "basics": [
+        "Halten. Grün treffen. Loslassen.",
+        "Im Grünen loslassen. Die goldene Linie ist perfekt.",
+        "Auch Leertaste/Enter. Tabwechsel bricht das Laden ab."
       ]
     },
     "it": {
@@ -79,6 +124,11 @@
         "Circuito del tabellone",
         "Staffetta aerea",
         "Focus"
+      ],
+      "basics": [
+        "Tieni. Trova il verde. Rilascia.",
+        "Rilascia nel verde. La linea dorata è perfetta.",
+        "Anche Spazio/Invio. Cambiare scheda annulla la carica."
       ]
     },
     "ru": {
@@ -87,6 +137,11 @@
         "Турнир щита",
         "Небесная эстафета",
         "Фокус"
+      ],
+      "basics": [
+        "Удерживай. Попади в зелёное. Отпусти.",
+        "Отпусти в зелёной зоне. Золотая линия — идеал.",
+        "Пробел/Enter тоже работают. Смена вкладки отменяет заряд."
       ]
     },
     "hi": {
@@ -95,6 +150,11 @@
         "बैकबोर्ड सर्किट",
         "आकाश रिले",
         "फोकस"
+      ],
+      "basics": [
+        "दबाएँ। हरे में आएँ। छोड़ें।",
+        "हरे क्षेत्र में छोड़ें। सुनहरी रेखा सटीक शॉट है।",
+        "स्पेस/Enter भी। टैब बदलने पर चार्ज रद्द होता है।"
       ]
     },
     "ar": {
@@ -103,6 +163,11 @@
         "دوري اللوحة",
         "تتابع السماء",
         "تركيز"
+      ],
+      "basics": [
+        "اضغط. انتظر الأخضر. أفلت.",
+        "أفلت داخل الأخضر. الخط الذهبي مثالي.",
+        "المسافة/Enter أيضًا. مغادرة التبويب تلغي الشحن."
       ]
     }
   }
