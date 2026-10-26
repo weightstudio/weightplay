@@ -1,16 +1,13 @@
 /* Moonlight Workshop: game-owned deterministic puzzle and guided play. */
 import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
+import {profiles} from './campaign-data.mjs';
+import {initial,won,transition,at,allMask,count,held,ready} from './rules.mjs';
+import {normalizeProgress,mergeProgress} from './progress.mjs';
+import './campaign-copy.js';
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
-  const profiles = [
-    { badge:"◎", start:[0,2], switches:[[2,1],[4,3]], key:[5,1], exit:[7,2], limit:18, walls:[[1,0],[3,0],[3,2],[4,2],[4,4],[6,4]] },
-    { badge:"⚙", start:[0,4], switches:[[1,3],[3,1],[5,3]], key:[6,3], exit:[7,4], limit:22, walls:[[1,2],[2,2],[4,2],[6,2],[2,1],[2,0],[4,0],[6,0],[1,4],[2,4],[3,4],[4,4],[5,4],[6,4]], gates:[{x:2,y:3,needs:1},{x:4,y:1,needs:2},{x:6,y:3,needs:3}] },
-    { badge:"❄", start:[0,4], switches:[[2,4],[4,2],[6,0]], key:[7,2], exit:[7,4], limit:15, walls:[[0,0],[1,0],[2,0],[3,0],[3,1],[3,2],[3,3],[5,1],[6,1],[5,2],[6,2]], ice:[[1,4],[2,4],[4,3],[4,2],[4,1],[5,0],[6,0]] },
-    { badge:"✦", start:[0,2], switches:[[1,1],[3,3],[6,1]], key:[6,3], exit:[7,2], limit:20, walls:[[1,2],[2,2],[3,2],[1,3],[2,3],[5,0],[6,0]], portals:[[[2,1],[5,3]]] },
-    { badge:"①", start:[0,4], switches:[[2,3],[1,1],[4,3],[6,1]], key:[7,1], exit:[7,4], limit:24, ordered:true, walls:[[0,3],[0,2],[2,2],[3,2],[4,2],[6,2],[3,4],[4,4],[5,4],[6,4]] },
-    { badge:"★", start:[0,4], switches:[[2,4],[3,1],[5,3],[6,1]], key:[7,0], exit:[7,4], limit:22, walls:[[0,0],[1,0],[2,0],[4,0],[5,0],[6,0],[1,3],[2,3],[4,3],[6,3],[1,2],[2,2],[4,2],[6,2]], gates:[{x:3,y:3,needs:1},{x:7,y:2,needs:4}], ice:[[1,4],[2,4]], portals:[[[4,1],[5,3]]] },
-  ];
+  const campaignAtlas=new Image();campaignAtlas.src=new URL('./assets/campaign-mechanisms-v10.png',import.meta.url).href;
   // Every locale owns the same compact instruction and feedback vocabulary.
   const words = {
     en: ['Light switches','Collect the key','Reach the door','Undo','Show a step','Moves left','Use arrows / WASD, or tap a neighbouring tile.','Walls and closed gates block movement. No move spent.','Light switches in number order.','All switches lit! The key is ready.','Key collected! Head for the glowing door.','Out of moves. Try a different route; your unlocked rooms are safe.','No route within the remaining moves. Undo or retry.','Your next step','Room cleared','Rooms cleared','Switches → key → door. Take your time; only steps count.','Leave this room? Your current route will reset. Unlocked rooms stay saved.','Keep playing','Return to rooms','No rush · plan before moving', 'First lights|Gear gates|Ice rails|Portal passage|Number sequence|Moonlight finale','Walk onto both switches. Lit switches stay on.|A gate opens when its number of switches is lit.|Ice keeps you sliding. Each crossed tile costs a move.|Matching portals transport you instantly.|Light switches 1 → 2 → 3 → 4.|Combine ice, gates and portals to escape.','Switch','Key','Door','You','Wall','Gate','Ice','Portal','Route restored.','Route reset.'],
@@ -29,15 +26,17 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   };
   const t = index => (words[window.WeightPlayMarketFiveLocale?.locale] || words.en)[index];
   const common = index => window.wpMarketCommon(index);
-  const names = () => t(21).split('|');
-  const mechanics = () => t(22).split('|');
+  const xp=()=>window.WorkshopCampaignCopy[window.WeightPlayMarketFiveLocale?.locale]||window.WorkshopCampaignCopy.en;
+  const chapter=p=>p.chapter===2?xp().chapter2:xp().chapter1;
+  const names=()=>profiles.map((p,i)=>i<6?t(21).split('|')[i]:chapter(p)+' · '+common(9)+' '+(i+1));
+  const mechanics=()=>profiles.map((p,i)=>i<6?t(22).split('|')[i]:[p.ordered?t(8):t(16),p.switchPhases?xp().phaseGuide:'',p.batteries?.length?xp().batteryGuide:'',p.crates?.length?xp().crateGuide:''].filter(Boolean).join(' '));
   const key = 'weightplay-moonlight-workshop-best-stage';
   const recordsKey = 'weightplay-moonlight-workshop-routes-v1';
   const read = (name, fallback) => { try { return localStorage.getItem(name) ?? fallback; } catch { return fallback; } };
   const save = (name, value) => { try { localStorage.setItem(name, value); } catch { /* Play remains available without storage. */ } };
-  let best = Math.max(0, Math.min(profiles.length, Math.floor(Number(read(key, '0')) || 0)));
-  let records; try { records = JSON.parse(read(recordsKey, '{}')); } catch { records = {}; }
-  if (!records || typeof records !== 'object' || Array.isArray(records)) records = {};
+  let {best,records}=normalizeProgress(read(key,'0'),read(recordsKey,'{}'),profiles.length);
+  function mergeStored(){const merged=mergeProgress({best,records},normalizeProgress(read(key,'0'),read(recordsKey,'{}'),profiles.length));best=merged.best;records=merged.records;}
+  function persist(){mergeStored();save(key,String(best));save(recordsKey,JSON.stringify(records));}
   let selectedStageIndex = Math.min(profiles.length - 1, best);
   const stageConfig = createMoonlightWorkshopStageConfig({profiles,getState:()=>({
     best, records, names:names(), mechanics:mechanics(), stageLabel:common(9), bestLabel:common(8),
@@ -61,68 +60,8 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   const toWorld = d => portrait() ? camera[d] : d;
   const toScreen = d => portrait() ? Object.keys(camera).find(k=>camera[k]===d) : d;
   const tilePosition = (x,y) => portrait() ? [4-y,x] : [x,y];
-  const at = (cells, x, y) => Boolean(cells?.some(cell => cell[0] === x && cell[1] === y));
-  const allMask = profile => (1 << profile.switches.length) - 1;
-  const count = mask => mask.toString(2).replaceAll('0','').length;
-  const initial = profile => ({x:profile.start[0], y:profile.start[1], mask:0, taken:false, steps:0});
-  const won = (g,p) => g.taken && at([p.exit],g.x,g.y);
-
-  // One pure transition owns keyboard, touch, undo snapshots and the hint search.
-  // Ice charges each crossed tile; a portal transfer costs no extra step.
-  function transition(before, direction, profile) {
-    const g = {...before}, [dx,dy] = directions[direction], path = [];
-    let rejected = false;
-    function step() {
-      const x = g.x + dx, y = g.y + dy;
-      const gate = profile.gates?.find(cell => cell.x === x && cell.y === y);
-      if (x < 0 || x > 7 || y < 0 || y > 4 || at(profile.walls,x,y) || (gate && count(g.mask) < gate.needs)) return false;
-      g.x=x; g.y=y; g.steps++; path.push([x,y]);
-      const switchIndex = profile.switches.findIndex(cell => cell[0]===x && cell[1]===y);
-      if (switchIndex >= 0 && !(g.mask & (1 << switchIndex))) {
-        const next = profile.switches.findIndex((_,i) => !(g.mask & (1 << i)));
-        if (!profile.ordered || switchIndex === next) g.mask |= 1 << switchIndex;
-        else rejected = true;
-      }
-      const portal = profile.portals?.find(pair => at(pair,g.x,g.y));
-      if (portal) {
-        [g.x,g.y] = portal.find(cell => cell[0]!==g.x || cell[1]!==g.y);
-        path.push([g.x,g.y]);
-        const landed = profile.switches.findIndex(cell => cell[0]===g.x && cell[1]===g.y);
-        const next = profile.switches.findIndex((_,i) => !(g.mask & (1 << i)));
-        if (landed >= 0 && (!profile.ordered || landed === next)) g.mask |= 1 << landed;
-      }
-      return true;
-    }
-    if (!step()) return null;
-    let coast = 0;
-    while (at(profile.ice,g.x,g.y) && coast++ < 8) if (!step()) break;
-    if (g.mask === allMask(profile) && at([profile.key],g.x,g.y)) g.taken = true;
-    return {game:g, path, rejected};
-  }
-
-  // Weighted shortest path: the state space is bounded by 40 cells × switch
-  // masks × key state. Hints reveal a single direction, never execute a move.
-  function solve(start, profile) {
-    const id = g => `${g.x},${g.y},${g.mask},${Number(g.taken)}`;
-    const frontier = [{g:{...start}, route:[]}], costs = new Map([[id(start),start.steps]]);
-    while (frontier.length) {
-      frontier.sort((a,b) => b.g.steps-a.g.steps);
-      const node = frontier.pop();
-      if (node.g.steps !== costs.get(id(node.g))) continue;
-      if (won(node.g,profile)) return node.route;
-      if (node.g.steps >= profile.limit) continue;
-      for (const direction of Object.keys(directions)) {
-        const next = transition(node.g,direction,profile);
-        if (!next || next.game.steps > profile.limit) continue;
-        const identity = id(next.game);
-        if (costs.has(identity) && costs.get(identity) <= next.game.steps) continue;
-        costs.set(identity,next.game.steps);
-        frontier.push({g:next.game,route:[...node.route,direction]});
-      }
-    }
-    return null;
-  }
-
+  let hintWorker=null,hintSerial=0,hintTimer=null;
+  function cancelHint(){hintSerial++;hintWorker?.terminate();hintWorker=null;clearTimeout(hintTimer);if($('workshop-hint'))$('workshop-hint').disabled=false;}
   const objective = document.createElement('section');
   objective.id = 'workshop-objective';
   objective.innerHTML = '<div class="workshop-checklist first-steps"></div><p class="workshop-mission"></p>';
@@ -154,7 +93,7 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   dialog.innerHTML='<p id="workshop-leave-copy"></p><button type="button" id="workshop-stay"></button><button type="button" id="workshop-leave"></button>';
   $('battle-screen').append(dialog);
   const controlHost = $('battle-controls');
-  controlHost.innerHTML = '<div class="workshop-tools"><button id="workshop-undo" type="button"></button><button id="workshop-hint" type="button"></button><button id="workshop-reset" type="button">↺</button></div><div class="workshop-pad" dir="ltr"></div>';
+  controlHost.innerHTML = '<div class="workshop-tools"><button id="workshop-undo" type="button"></button><button id="workshop-hint" type="button"></button><button id="workshop-reset" type="button">↺</button><button id="workshop-lantern" type="button" hidden><span class="workshop-mechanism-icon" data-sprite="0"></span><span class="workshop-lantern-label"></span></button></div><div class="workshop-pad" dir="ltr"></div>';
   for (const [direction,values] of Object.entries(directions)) {
     const button = document.createElement('button'); button.type='button'; button.dataset.action=`move-${direction}`;
     button.textContent=values[2]; button.className=`workshop-direction ${direction}`;
@@ -175,8 +114,13 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   const stageTab = $('stageTabButton');
   frame.commonDownButton.add(stageTab);
   stageTab.addEventListener('click',()=>stageSelector?.select(selectedStageIndex,{center:true,focus:false,notify:false}));
-  const battleInfoGroup = window.WeightPlayScreenFrame.createGroup().add($('stage-label')).add($('score-label'));
-  frame.battleTopUI.add(battleInfoGroup);
+  const headerContent=document.createElement('div');headerContent.className='workshop-header-content';
+  const headerFacts=document.createElement('div');headerFacts.className='workshop-header-facts';headerFacts.append($('stage-label'),$('score-label'));headerContent.append(headerFacts);
+  const helpButton=document.createElement('button');helpButton.type='button';helpButton.className='workshop-help-button';helpButton.textContent='?';helpButton.setAttribute('aria-label',common(7));
+  headerContent.append(helpButton);const headerStat=document.createElement('div');headerStat.append(headerContent);frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(headerStat));
+  const help=document.createElement('dialog');help.className='workshop-help';help.innerHTML='<h2></h2><div></div><button type="button"></button>';$('battle-screen').append(help);
+  helpButton.addEventListener('click',()=>{cancelHint();help.querySelector('h2').textContent=chapter(profiles[stage-1]);help.querySelector('div').replaceChildren(...[t(6),mechanics()[stage-1]].map(text=>{const p=document.createElement('p');p.textContent=text;return p;}));help.querySelector('button').textContent=t(18);help.showModal();});help.querySelector('button').addEventListener('click',()=>help.close());
+  help.addEventListener('close',()=>helpButton.focus({preventScroll:true}));
   function updateStageProgress() {
     stageProgress.textContent = `${common(9)} ${selectedStageIndex+1} / ${profiles.length} · ${t(15)} ${best} / ${profiles.length}`;
   }
@@ -199,6 +143,7 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
     feedbackNode.animate([{opacity:.35},{opacity:1}],{duration:180});
   }
   function show(next) {
+    cancelHint();if(help.open)help.close();
     settleEffects(); grid.getAnimations({subtree:true}).forEach(a=>a.cancel());
     if(next!=='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
     audio?.stop(); screen=next; leaving=false; if (dialog.open) dialog.close();
@@ -220,7 +165,7 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
     observe();
   }
   function localize() {
-    document.querySelector('[data-m5-lede]').textContent=t(16);
+    document.querySelector('[data-m5-lede]').textContent=xp().intro;
     stageTab.textContent=common(2);
     $('main-progress').textContent=`${t(15)}: ${best} / ${profiles.length}`;
     $('workshop-undo').textContent=`↶ ${t(3)}`;
@@ -240,10 +185,10 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
     selectedStageIndex=n-1;
     stageSelector?.select(selectedStageIndex,{center:true,notify:false});
     updateStageProgress();
-    stage=n; game=initial(profiles[n-1]); history=[]; hinted=null; notice=''; resultWin=false;
+    cancelHint();stage=n; game=initial(profiles[n-1]); history=[]; hinted=null; notice=''; resultWin=false;
     $('stage-label').textContent=`${common(9)} ${stage} / ${profiles.length}`;
     measure.roundKey={}; measure.started=true; measure.ended=false; measure.restart=replay; measure.outcome='complete';
-    show('battle'); render(); feedback(mechanics()[stage-1]);
+    show('battle'); render(); feedback(stage<=6?mechanics()[stage-1]:names()[stage-1]);
     sound('game.start');
   }
   function canAct() {
@@ -251,16 +196,18 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   }
   function move(direction) {
     if (!canAct()) return;
-    const p=profiles[stage-1], next=transition(game,toWorld(direction),p);
+    cancelHint();const p=profiles[stage-1], next=transition(game,direction==='phase'?direction:toWorld(direction),p);
     if (!next) { feedback(t(7)); sound('feedback.error'); return; }
     history.push({...game}); if(history.length>80)history.shift();
     const before=game; game=next.game; hinted=null;
     render();
     if(game.taken&&!before.taken){feedback(t(10));collectKey();sound('reward.collect');}
     else if(game.mask===allMask(p)&&before.mask!==game.mask){feedback(t(9));sound('mechanism.unlock');}
-    else if(next.rejected){feedback(t(8));sound('feedback.error');}
+    else if(next.rejected){feedback(p.switchPhases?xp().wrongPhase:t(8));sound('feedback.error');}
+    else if(next.phaseChanged){feedback(xp().changed+' · '+(game.phase?xp().sun:xp().moon));sound('mechanism.unlock');}
+    else if(game.used!==before.used){feedback(xp().collected);sound('reward.collect');}
     else if(game.mask!==before.mask){feedback(`${t(0)} · ${count(game.mask)}/${p.switches.length}`);sound('mechanism.unlock');}
-    else { feedback(mechanics()[stage-1]); sound('board.move'); }
+    else { feedback(stage<=6?mechanics()[stage-1]:names()[stage-1]); sound('board.move'); }
     if(won(game,p)) finish(true);
     else if(game.steps>=p.limit) finish(false);
   }
@@ -277,17 +224,17 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
   }
   function undoMove() {
     if(!canAct()||!history.length)return;
-    settleEffects(); game=history.pop(); hinted=null; render(); feedback(t(31));
+    cancelHint();settleEffects(); game=history.pop(); hinted=null; render(); feedback(t(31));
   }
-  function hint() {
-    if(!canAct())return;
-    const route=solve(game,profiles[stage-1]);
-    hinted=route?.[0]?toScreen(route[0]):null; render();
-    feedback(hinted?`${t(13)}: ${directions[hinted][2]} ${common(directions[hinted][3])}`:t(12)); sound('feedback.hint');
+  function hint(){
+    if(!canAct())return;cancelHint();const requestId=hintSerial,stateKey=JSON.stringify(game);$('workshop-hint').disabled=true;feedback(xp().searching);
+    hintWorker=new Worker(new URL('./solver-worker.mjs',import.meta.url),{type:'module'});
+    const done=route=>{if(requestId!==hintSerial)return;cancelHint();if(!canAct()||stateKey!==JSON.stringify(game))return;hinted=route?.[0]==='phase'?'phase':route?.[0]?toScreen(route[0]):null;render();feedback(hinted==='phase'?xp().hintPhase:hinted?t(13)+': '+directions[hinted][2]+' '+common(directions[hinted][3]):t(12));sound('feedback.hint');};
+    hintWorker.onmessage=({data})=>done(data.route);hintWorker.onerror=()=>done(null);hintTimer=setTimeout(()=>done(null),10000);hintWorker.postMessage({requestId,state:game,profile:profiles[stage-1]});
   }
   function finish(win) {
     resultWin=win;
-    if(win){best=Math.max(best,stage);save(key,String(best));const old=Number(records[stage]);records[stage]=Number.isFinite(old)&&old>0?Math.min(old,game.steps):game.steps;save(recordsKey,JSON.stringify(records));}
+    if(win){mergeStored();best=Math.max(best,stage);const old=Number(records[stage]);records[stage]=Number.isFinite(old)&&old>0?Math.min(old,game.steps):game.steps;persist();}
     measure.ended=true; measure.outcome=win?'win':'lose';
     $('result-title').textContent=win?t(14):common(11);
     $('result-copy').textContent=win?`${names()[stage-1]} · ${game.steps} / ${profiles[stage-1].limit} · ${count(game.mask)}/${profiles[stage-1].switches.length} ${t(23)}`:t(11);
@@ -297,14 +244,15 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
     $('retry').focus({preventScroll:true});
   }
   function render() {
-    const p=profiles[stage-1], lit=count(game.mask), phase=game.taken?2:game.mask===allMask(p)?1:0;
+    const p=profiles[stage-1], lit=count(game.mask), phase=game.taken?2:ready(game,p)?1:0;
     const mission=phase===0?`${t(0)} · ${lit}/${p.switches.length}`:t(phase);
     objective.querySelector('.workshop-checklist').replaceChildren(...[0,1,2].map((step) => {
       const item=document.createElement('div'); item.className=`workshop-task${step===phase?' current':''}${step<phase?' done':''}`;
       const num=document.createElement('b'); num.textContent=step<phase?'✓':String(step+1);
       const label=document.createElement('span'); label.textContent=t(step); item.append(num,label); return item;
     }));
-    objective.querySelector('.workshop-mission').textContent=mission;
+    objective.querySelector('.workshop-mission').textContent=mission+(p.plates?.length?' · '+xp().plate+' '+held(game,p)+'/'+p.plates.length:'');
+    const lantern=$('workshop-lantern'),available=Boolean(p.switchPhases);lantern.hidden=!available;controlHost.querySelector('.workshop-tools').dataset.lantern=String(available);lantern.disabled=!game.charges;lantern.classList.toggle('hinted',hinted==='phase');lantern.querySelector('.workshop-lantern-label').textContent=(game.phase?xp().sun:xp().moon)+' · '+(game.charges||0);lantern.setAttribute('aria-label',xp().lantern+' · '+(game.phase?xp().sun:xp().moon)+' · '+xp().charges+' '+(game.charges||0));lantern.title=xp().phaseGuide;
     $('score-label').textContent=`${t(5)} ${Math.max(0,p.limit-game.steps)}`;
     $('score-label').classList.toggle('workshop-low',p.limit-game.steps<=4);
     $('workshop-undo').disabled=!history.length;
@@ -328,13 +276,22 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
       cell.replaceChildren();
       if(sprite>=0){const icon=document.createElement('span');icon.className='workshop-sprite';icon.style.backgroundPosition=`${(sprite%4)*100/3}% ${sprite<4?'0':'100'}%`;cell.append(icon);}
       if(badge){const tag=document.createElement('span');tag.className='workshop-tile-badge';tag.textContent=badge;cell.append(tag);}
-      if(hinted){const delta=directions[toWorld(hinted)];if(x===game.x+delta[0]&&y===game.y+delta[1]){cell.classList.add('hinted');const arrow=document.createElement('b');arrow.className='workshop-hint-arrow';arrow.textContent=directions[hinted][2];cell.append(arrow);}}
+      if(hinted&&hinted!=='phase'){const delta=directions[toWorld(hinted)];if(x===game.x+delta[0]&&y===game.y+delta[1]){cell.classList.add('hinted');const arrow=document.createElement('b');arrow.className='workshop-hint-arrow';arrow.textContent=directions[hinted][2];cell.append(arrow);}}
+      const pg=p.phaseGates?.find(v=>v.x===x&&v.y===y),battery=p.batteries?.findIndex(v=>v[0]===x&&v[1]===y)??-1,plate=at(p.plates,x,y),crate=at(game.crates,x,y),pressure=at(p.pressureGates,x,y);
+      function mechanism(index,cls=''){const icon=document.createElement('span');icon.className='workshop-mechanism-icon '+cls;icon.dataset.sprite=String(index);cell.append(icon);}
+      if(pg){mechanism(pg.phase?3:2,pg.phase===game.phase?'open':'');cell.classList.add('phase-gate');cell.classList.toggle('closed',pg.phase!==game.phase);labels.push(t(28)+' · '+(pg.phase?xp().sun:xp().moon));}
+      if(battery>=0&&!(game.used&(1<<battery))){mechanism(1);labels.push(xp().battery);}
+      if(plate){mechanism(5,'plate');cell.classList.toggle('held',crate);labels.push(xp().plate);}
+      if(pressure){mechanism(5);cell.classList.add('gate');cell.classList.toggle('closed',held(game,p)!==p.plates.length);labels.push(xp().plate+' · '+t(28));}
+      if(crate){mechanism(4,'crate');labels.push(xp().crate);}
+      if(s>=0&&p.switchPhases){mechanism(p.switchPhases[s]?3:2,'phase-badge');labels.push(p.switchPhases[s]?xp().sun:xp().moon);}
       if(x===game.x&&y===game.y)labels.push(t(26));
       cell.setAttribute('aria-label',labels.join(' · '));
     });
     const [col,row]=tilePosition(game.x,game.y);
     player.style.left=`${col*(portrait()?20:12.5)}%`; player.style.top=`${row*(portrait()?12.5:20)}%`;
   }
+  $('workshop-lantern').addEventListener('click',()=>move('phase'));
   $('workshop-undo').addEventListener('click',undoMove);
   $('workshop-hint').addEventListener('click',hint);
   $('workshop-reset').addEventListener('click',() => {if(canAct()){start(stage,true);feedback(t(32));}});
@@ -357,8 +314,10 @@ import { createMoonlightWorkshopStageConfig } from './stage-config.mjs';
     const d={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',a:'left',s:'down',d:'right'}[event.key]||{W:'up',A:'left',S:'down',D:'right'}[event.key];
     if(d){event.preventDefault();move(d);} else if(event.key==='z'||event.key==='Z'){event.preventDefault();undoMove();}
   });
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){audio?.stop();settleEffects();grid.getAnimations({subtree:true}).forEach(a=>a.finish());}});
-  window.addEventListener('pagehide',()=>audio?.stop());
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelHint();audio?.stop();settleEffects();grid.getAnimations({subtree:true}).forEach(a=>a.finish());}});
+  window.addEventListener('pagehide',()=>{cancelHint();audio?.stop();});
+  window.addEventListener('storage',event=>{if(event.key===key||event.key===recordsKey){mergeStored();localize();}});
+  Object.defineProperty(window,'MoonlightWorkshopDiagnostics',{value:Object.freeze({snapshot:()=>structuredClone({screen,stage,game,best,records,history:history.length,hinted,hintPending:Boolean(hintWorker)})})});
   window.addEventListener('weightplay:market-locale-change',localize);
   window.addEventListener('resize',()=>{hinted=null;if(game)render();},{passive:true});
   ensureStageSelector();

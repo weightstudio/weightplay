@@ -1,5 +1,5 @@
 import { SnakeBoard3D } from "./board-3d.js?v=20261018-snake-v34";
-import { updateExperience } from "./experience.js?v=20261018-snake-v34";
+import { updateExperience } from "./experience.js?v=20261026-i9-eaae85377a93";
 
 (() => {
   "use strict";
@@ -96,5 +96,91 @@ import { updateExperience } from "./experience.js?v=20261018-snake-v34";
     diagnostics: () => visual?.diagnostics() || { initialized: false },
     cellPoint: (cell) => visual?.cellPoint(cell),
   });
-  window.WPPopularArcade?.mount("snake");
+  window.WPPopularArcade?.mount("snake", {sharedFrame:true});
+  mountSnakeSharedInterface();
 })();
+
+function mountSnakeSharedInterface() {
+  document.body.dataset.gameVersion = 'v35';
+  const core = window.WeightPlayScreenFrame;
+  const root = document.getElementById('popularArcade');
+  const main = document.getElementById('mainScreen');
+  const battle = document.getElementById('battleScreen');
+  const result = document.getElementById('resultScreen');
+  const mainHeader = root.querySelector('.arcade-header');
+  const mainContent = main.querySelector('.main-panel');
+  const copy = mainContent.querySelector('.main-copy');
+  const title = document.getElementById('gameTitle');
+  const poster = mainContent.querySelector('.main-poster');
+  const locale = document.getElementById('localeSelect');
+  const battleContent = battle.querySelector('.battle-panel');
+  const legacyTop = battleContent.querySelector('.battle-top');
+  const utilities = legacyTop.querySelector('.control-row');
+  const round = document.getElementById('roundLabel');
+  const back = battle.querySelector('[data-wp-return="battle"]');
+  if (!core || !poster || !locale || !back) throw new Error('SNAKE_COMMON_I9_INPUTS_REQUIRED');
+  main.className = 'main-screen';
+  mainContent.className = '';
+  copy.className = '';
+  poster.className = '';
+  document.getElementById('objective').className = '';
+  const legacyFooter = root.querySelector('footer');
+  if (legacyFooter) { legacyFooter.hidden = true; legacyFooter.inert = true; }
+  main.prepend(mainHeader);
+  mainHeader.querySelector('.language-select')?.remove();
+  // The existing locale handler keeps its source select, inside shared Settings.
+  const carrier = document.createElement('div');
+  carrier.hidden = true; carrier.inert = true; carrier.append(locale); root.append(carrier);
+  mainHeader.replaceChildren(mainHeader.querySelector('[data-wp-return="main"]'),title);
+  title.dataset.wpFrameTitle = '';
+  poster.dataset.wpFramePoster = '';
+  poster.removeAttribute('style');
+  mainContent.prepend(poster);
+  mainContent.querySelector('.preview-art')?.remove();
+  copy.dataset.wpFrameCopy = '';
+  document.getElementById('objective').dataset.wpFrameSummary = '';
+  document.getElementById('mainInstruction').hidden = true;
+  const progress = document.getElementById('mainProgress');
+  progress.dataset.wpFrameProgress = ''; progress.classList.remove('main-progress');
+  progress.removeAttribute('data-wp-main-progress');
+  const recordLabels = {en:'Best score','zh-Hant':'最佳分數','zh-Hans':'最佳分数',ja:'ベストスコア',ko:'최고 점수',es:'Mejor puntuación','pt-BR':'Melhor pontuação',fr:'Meilleur score',de:'Bestpunktzahl',it:'Miglior punteggio',ru:'Лучший счёт',hi:'सर्वश्रेष्ठ स्कोर',ar:'أفضل نتيجة'};
+  const syncRecord = () => {
+    let best = 0; try { best = Math.max(0,Number(localStorage.getItem('weightplay_popular_snake_best')) || 0); } catch {}
+    progress.querySelector('strong').textContent = recordLabels[document.documentElement.lang] || recordLabels.en;
+    progress.querySelector('span').textContent = String(best);
+  };
+  syncRecord();
+  const start = document.getElementById('startBtn'); start.dataset.wpFrameAction = 'primary';
+  const battleHeader = document.createElement('header');
+  const battleTitle = document.createElement('strong');
+  battleTitle.dataset.wpFrameTitle = ''; battleTitle.hidden = true;
+  battleTitle.textContent = title.textContent;
+  battleHeader.append(back,battleTitle);
+  legacyTop.remove(); battle.prepend(battleHeader);
+  const actions = document.createElement('nav');
+  actions.className = 'snake-content-actions'; actions.append(...utilities.children);
+  battleContent.append(actions);
+  const frame = core.mount({root,localeSelect:locale,playUI:true,scenes:{main:{root:main,header:mainHeader,content:mainContent},battle:{root:battle,header:battleHeader,content:battleContent}}});
+  const info = core.createGroup();
+  info.add(round); frame.battleTopUI.add(info);
+  window.WPSnakeInterface = Object.freeze({hudGroup:info});
+  const markActions = () => root.querySelectorAll('#controls button,.snake-content-actions button,#resultScreen button,.snake-leave-dialog button').forEach(button => {button.dataset.wpFrameAction = 'secondary';});
+  markActions();
+  const controlsObserver = new MutationObserver(markActions);
+  controlsObserver.observe(document.getElementById('controls'),{childList:true,subtree:true});
+  const sync = () => {
+    const screen = document.body.dataset.screen;
+    if (screen === 'main') syncRecord();
+    if (screen === 'result') {
+      // Result stays in the same shared physical Battle envelope.
+      battle.hidden = false; battleContent.hidden = true; battle.append(result);
+    } else battleContent.hidden = false;
+    frame.activate(screen === 'main' ? 'main' : 'battle');
+    if (screen === 'main') window.WeightPlayBattleCanvas?.sync?.();
+    if (screen === 'result') frame.close();
+  };
+  const abort = new AbortController();
+  window.addEventListener('weightplay:shell-sync',sync,{signal:abort.signal});
+  sync();
+  window.addEventListener('pagehide',event => {if(event.persisted)return;abort.abort();controlsObserver.disconnect();frame.destroy();},{once:true});
+}

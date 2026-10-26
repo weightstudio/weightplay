@@ -1,40 +1,100 @@
 {
   "metaDescriptions": {
-    "en": "Guide Rux through six switch, ice, and portal rooms; collect the key and reach each exit within its 15–24 move limit.",
-    "zh-Hant": "帶領 Rux 挑戰六個含開關、冰面與傳送門的房間，收集鑰匙並在各房 15 至 24 步的上限內抵達出口。",
-    "zh-Hans": "带领 Rux 挑战六个含开关、冰面和传送门的房间，收集钥匙并在每间 15 至 24 步的上限内抵达出口。",
-    "ja": "スイッチ、氷、ポータルが登場する6部屋でRuxを導き、各部屋15～24手の制限内に鍵を集めて出口へ進みましょう。",
-    "ko": "스위치, 얼음, 포털이 등장하는 여섯 방에서 Rux를 안내하고, 방마다 15~24회인 이동 제한 안에 열쇠를 얻어 출구에 도착하세요.",
-    "es": "Guía a Rux por seis salas con interruptores, hielo y portales; recoge la llave y llega a cada salida dentro del límite de 15 a 24 movimientos.",
-    "pt-BR": "Guie Rux por seis salas com interruptores, gelo e portais; pegue a chave e alcance cada saída no limite de 15 a 24 movimentos.",
-    "fr": "Guidez Rux dans six salles avec interrupteurs, glace et portails ; prenez la clé et atteignez chaque sortie en 15 à 24 déplacements.",
-    "de": "Führe Rux durch sechs Räume mit Schaltern, Eis und Portalen; hole den Schlüssel und erreiche jeden Ausgang in 15 bis 24 Zügen.",
-    "it": "Guida Rux in sei stanze con interruttori, ghiaccio e portali; prendi la chiave e raggiungi ogni uscita entro 15–24 mosse.",
-    "ru": "Проведите Рукса через шесть комнат с переключателями, льдом и порталами; возьмите ключ и доберитесь до выхода за 15–24 хода.",
-    "hi": "स्विच, बर्फ़ और पोर्टल वाले छह कमरों में Rux को ले जाएँ; चाबी लेकर हर कमरे की 15–24 चालों की सीमा में निकास तक पहुँचें।",
-    "ar": "قد روكس عبر ست غرف تضم مفاتيح تبديل وجليداً وبوابات؛ خذ المفتاح وبلغ المخرج ضمن حدّ 15 إلى 24 حركة لكل غرفة."
+    "en": "Restore 60 rooms: light the switches, collect the key and reach the door. Plan lantern charges and counterweights in two chapters.",
+    "zh-Hant": "修復 60 個房間：點亮開關、取得鑰匙、抵達出口。在兩章中規劃燈具電量與配重箱。",
+    "zh-Hans": "修复 60 个房间：点亮开关、取得钥匙、抵达出口。在两章中规划灯具电量与配重箱。",
+    "ja": "60の部屋を修復。スイッチを点灯し、鍵を取り、出口へ。2章でランタンの電力と重りを使い分けます。",
+    "ko": "60개 방을 복구하세요. 스위치를 켜고 열쇠를 얻어 문으로 이동하세요. 두 장에서 랜턴 충전과 균형추를 계획합니다.",
+    "es": "Restaura 60 salas: enciende interruptores, recoge la llave y llega a la puerta. Planifica cargas y contrapesos en dos capítulos.",
+    "pt-BR": "Restaure 60 salas: acenda interruptores, pegue a chave e alcance a porta. Planeje cargas e contrapesos em dois capítulos.",
+    "fr": "Restaurez 60 salles : allumez les interrupteurs, prenez la clé et rejoignez la porte. Gérez lumière et contrepoids dans deux chapitres.",
+    "de": "Repariere 60 Räume: Schalter aktivieren, Schlüssel holen und Tür erreichen. Plane Lichtladungen und Gegengewichte in zwei Kapiteln.",
+    "it": "Ripara 60 stanze: accendi gli interruttori, prendi la chiave e raggiungi la porta. Pianifica cariche e contrappesi in due capitoli.",
+    "ru": "Восстановите 60 комнат: включите кнопки, возьмите ключ и дойдите до двери. Планируйте заряды и противовесы в двух главах.",
+    "hi": "60 कमरों को सुधारें: स्विच जलाएँ, चाबी लें और दरवाज़े तक पहुँचें। दो अध्यायों में लालटेन के चार्ज और प्रतिभार की योजना बनाएँ।",
+    "ar": "أصلح 60 غرفة: أضئ المفاتيح والتقط المفتاح وبلغ الباب. خطط لشحنات الفانوس والأثقال في فصلين."
   },
   "workId": "wp140-20261003-moonlight-workshop-cloud-01a0ff10",
   "tags": {
-    "en": ["Switch-and-key puzzle", "Ice-slide route planning", "Move-limit escape"],
-    "zh-Hant": ["開關鑰匙解謎", "冰軌路線規劃", "步數限制逃脫"],
-    "zh-Hans": ["开关钥匙解谜", "冰轨路线规划", "步数限制逃脱"],
-    "ja": ["スイッチと鍵の脱出", "氷上ルートの計画", "手数制限パズル"],
-    "ko": ["스위치·열쇠 탈출", "얼음길 경로 계획", "이동 횟수 제한 퍼즐"],
-    "es": ["Puzle de interruptores y llave", "Rutas con deslizamiento sobre hielo", "Escape con límite de movimientos"],
-    "pt-BR": ["Quebra-cabeça de interruptores e chave", "Rotas com deslizamento no gelo", "Fuga com limite de movimentos"],
-    "fr": ["Énigme des interrupteurs et de la clé", "Parcours sur glace", "Évasion à déplacements limités"],
-    "de": ["Schalter-und-Schlüsselrätsel", "Routenplanung auf Eis", "Flucht mit Zuglimit"],
-    "it": ["Enigma di interruttori e chiave", "Percorsi sul ghiaccio", "Fuga con limite di mosse"],
-    "ru": ["Побег с переключателями и ключом", "Маршрут по льду", "Побег с лимитом ходов"],
-    "hi": ["स्विच और चाबी की पहेली", "बर्फ़ीले रास्ते की योजना", "चाल सीमा वाला एस्केप"],
-    "ar": ["لغز الهروب بالمفاتيح والبوابات", "تخطيط المسار فوق الجليد", "هروب بحدّ للحركات"]
+    "en": [
+      "Switch-and-key puzzle",
+      "Ice-slide route planning",
+      "Move-limit escape"
+    ],
+    "zh-Hant": [
+      "開關鑰匙解謎",
+      "冰軌路線規劃",
+      "步數限制逃脫"
+    ],
+    "zh-Hans": [
+      "开关钥匙解谜",
+      "冰轨路线规划",
+      "步数限制逃脱"
+    ],
+    "ja": [
+      "スイッチと鍵の脱出",
+      "氷上ルートの計画",
+      "手数制限パズル"
+    ],
+    "ko": [
+      "스위치·열쇠 탈출",
+      "얼음길 경로 계획",
+      "이동 횟수 제한 퍼즐"
+    ],
+    "es": [
+      "Puzle de interruptores y llave",
+      "Rutas con deslizamiento sobre hielo",
+      "Escape con límite de movimientos"
+    ],
+    "pt-BR": [
+      "Quebra-cabeça de interruptores e chave",
+      "Rotas com deslizamento no gelo",
+      "Fuga com limite de movimentos"
+    ],
+    "fr": [
+      "Énigme des interrupteurs et de la clé",
+      "Parcours sur glace",
+      "Évasion à déplacements limités"
+    ],
+    "de": [
+      "Schalter-und-Schlüsselrätsel",
+      "Routenplanung auf Eis",
+      "Flucht mit Zuglimit"
+    ],
+    "it": [
+      "Enigma di interruttori e chiave",
+      "Percorsi sul ghiaccio",
+      "Fuga con limite di mosse"
+    ],
+    "ru": [
+      "Побег с переключателями и ключом",
+      "Маршрут по льду",
+      "Побег с лимитом ходов"
+    ],
+    "hi": [
+      "स्विच और चाबी की पहेली",
+      "बर्फ़ीले रास्ते की योजना",
+      "चाल सीमा वाला एस्केप"
+    ],
+    "ar": [
+      "لغز الهروب بالمفاتيح والبوابات",
+      "تخطيط المسار فوق الجليد",
+      "هروب بحدّ للحركات"
+    ]
   },
   "designNoteTitle": {
-    "en": "Developer Design Note", "zh-Hant": "設計筆記", "zh-Hans": "设计笔记",
-    "ja": "デザインノート", "ko": "디자인 노트", "es": "Nota de diseño",
-    "pt-BR": "Nota de design", "fr": "Note de conception", "de": "Designnotiz",
-    "it": "Nota di progettazione", "ru": "Заметка о дизайне", "hi": "डिज़ाइन नोट",
+    "en": "Developer Design Note",
+    "zh-Hant": "設計筆記",
+    "zh-Hans": "设计笔记",
+    "ja": "デザインノート",
+    "ko": "디자인 노트",
+    "es": "Nota de diseño",
+    "pt-BR": "Nota de design",
+    "fr": "Note de conception",
+    "de": "Designnotiz",
+    "it": "Nota di progettazione",
+    "ru": "Заметка о дизайне",
+    "hi": "डिज़ाइन नोट",
     "ar": "ملاحظة التصميم"
   },
   "designNote": {
@@ -53,18 +113,57 @@
     "ar": "تستخدم الغرف الست المصممة يدوياً شبكة واحدة 5×8، لذا يكمن التحدي في قراءة كل مسار لا في تعلّم شكل لوحة جديد. تعلّم الغرف الأولى عدّ المفاتيح والبوابات المرقمة؛ ثم تضيف الغرف اللاحقة الانزلاق على الجليد وبوابة انتقال مزدوجة ومفاتيح تُفعّل بالترتيب قبل جمع هذه القواعد. لكل غرفة حدّ للحركات، لذلك يصبح الالتفاف قراراً في المسار. للنجاح أضئ كل المفاتيح وخذ المفتاح وقد روكس إلى المخرج مع احترام ترتيب الأهداف، حتى عند وجود طريق أقصر. تعمل قواعد الاتجاه نفسها باللمس والمؤشر ولوحة المفاتيح. وبما أن التخطيطات ثابتة وليست عشوائية، تتيح الإعادة تجربة مسار أكفأ في الظروف نفسها."
   },
   "moveBudgetFaq": {
-    "en": ["How many moves does each room allow?", "Each room has its own limit; the six room limits range from 15 to 24 moves."],
-    "zh-Hant": ["每個房間有多少步數？", "每個房間都有自己的步數上限；六個房間的上限介於 15 至 24 步。"],
-    "zh-Hans": ["每个房间有多少步数？", "每个房间都有自己的步数上限；六个房间的上限介于 15 至 24 步。"],
-    "ja": ["各部屋の手数はいくつですか？", "部屋ごとに上限が異なり、6部屋の上限は15～24手です。"],
-    "ko": ["방마다 이동 횟수 제한이 다른가요?", "방마다 제한이 다르며 여섯 방의 제한은 15~24회입니다."],
-    "es": ["¿Cuántos movimientos permite cada sala?", "Cada sala tiene su propio límite; en las seis, va de 15 a 24 movimientos."],
-    "pt-BR": ["Quantos movimentos cada sala permite?", "Cada sala tem seu próprio limite; nas seis, ele varia de 15 a 24 movimentos."],
-    "fr": ["Combien de déplacements chaque salle autorise-t-elle ?", "Chaque salle a sa limite ; sur les six, elle va de 15 à 24 déplacements."],
-    "de": ["Wie viele Züge sind je Raum erlaubt?", "Jeder Raum hat sein eigenes Limit; über die sechs Räume reicht es von 15 bis 24 Zügen."],
-    "it": ["Quante mosse consente ogni stanza?", "Ogni stanza ha il proprio limite; nelle sei stanze varia da 15 a 24 mosse."],
-    "ru": ["Сколько ходов отведено на комнату?", "У каждой комнаты свой лимит; для шести комнат он составляет от 15 до 24 ходов."],
-    "hi": ["हर कमरे में कितनी चालों की सीमा है?", "हर कमरे की सीमा अलग है; छह कमरों में यह 15 से 24 चालों तक है."],
-    "ar": ["كم حركة يسمح بها كل غرفة؟", "لكل غرفة حدّها الخاص؛ وتتراوح حدود الغرف الست بين 15 و24 حركة."]
+    "en": [
+      "How many moves does each room allow?",
+      "Each room has its own limit; the six room limits range from 15 to 24 moves."
+    ],
+    "zh-Hant": [
+      "每個房間有多少步數？",
+      "每個房間都有自己的步數上限；六個房間的上限介於 15 至 24 步。"
+    ],
+    "zh-Hans": [
+      "每个房间有多少步数？",
+      "每个房间都有自己的步数上限；六个房间的上限介于 15 至 24 步。"
+    ],
+    "ja": [
+      "各部屋の手数はいくつですか？",
+      "部屋ごとに上限が異なり、6部屋の上限は15～24手です。"
+    ],
+    "ko": [
+      "방마다 이동 횟수 제한이 다른가요?",
+      "방마다 제한이 다르며 여섯 방의 제한은 15~24회입니다."
+    ],
+    "es": [
+      "¿Cuántos movimientos permite cada sala?",
+      "Cada sala tiene su propio límite; en las seis, va de 15 a 24 movimientos."
+    ],
+    "pt-BR": [
+      "Quantos movimentos cada sala permite?",
+      "Cada sala tem seu próprio limite; nas seis, ele varia de 15 a 24 movimentos."
+    ],
+    "fr": [
+      "Combien de déplacements chaque salle autorise-t-elle ?",
+      "Chaque salle a sa limite ; sur les six, elle va de 15 à 24 déplacements."
+    ],
+    "de": [
+      "Wie viele Züge sind je Raum erlaubt?",
+      "Jeder Raum hat sein eigenes Limit; über die sechs Räume reicht es von 15 bis 24 Zügen."
+    ],
+    "it": [
+      "Quante mosse consente ogni stanza?",
+      "Ogni stanza ha il proprio limite; nelle sei stanze varia da 15 a 24 mosse."
+    ],
+    "ru": [
+      "Сколько ходов отведено на комнату?",
+      "У каждой комнаты свой лимит; для шести комнат он составляет от 15 до 24 ходов."
+    ],
+    "hi": [
+      "हर कमरे में कितनी चालों की सीमा है?",
+      "हर कमरे की सीमा अलग है; छह कमरों में यह 15 से 24 चालों तक है."
+    ],
+    "ar": [
+      "كم حركة يسمح بها كل غرفة؟",
+      "لكل غرفة حدّها الخاص؛ وتتراوح حدود الغرف الست بين 15 و24 حركة."
+    ]
   }
 }

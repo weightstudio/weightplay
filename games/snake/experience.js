@@ -57,14 +57,14 @@ export function updateExperience(state, locale) {
   queueMicrotask(() => {
     if (document.body.dataset.screen !== "battle") { stopEffect(); previous = null; return; }
     const c = labels[locale] || labels.en;
-    const top = document.querySelector("#battleScreen .battle-top");
+    const top = window.WPSnakeInterface?.hudGroup;
     if (!top) return;
     if (!hud) {
       hud = document.createElement("div");
       hud.className = "snake-hud";
       hud.dataset.runtimeLocalize = "off";
       hud.innerHTML = '<div class="snake-score"><span></span><strong class="snake-score-value"></strong></div><div class="snake-goal"><span></span><strong></strong><progress max="1" value="0"></progress></div>';
-      top.append(hud);
+      top.add(hud);
       cue = document.createElement("div");
       cue.className = "snake-control-cue";
       cue.dataset.runtimeLocalize = "off";

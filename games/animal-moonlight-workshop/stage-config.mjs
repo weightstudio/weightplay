@@ -2,7 +2,7 @@ const POSTER = '/assets/lobby-thumbs/w480/games__animal-moonlight-workshop__asse
 const BACKGROUND = '/assets/lobby-block-atmosphere.svg';
 
 export function createMoonlightWorkshopStageConfig({ profiles, getState }) {
-  if (!Array.isArray(profiles) || profiles.length !== 6 || typeof getState !== 'function') {
+  if (!Array.isArray(profiles) || profiles.length < 6 || typeof getState !== 'function') {
     throw new TypeError('MOONLIGHT_WORKSHOP_STAGE_CONFIG_REQUIRED');
   }
 

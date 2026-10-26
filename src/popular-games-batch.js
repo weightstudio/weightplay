@@ -1152,7 +1152,7 @@
     }
   };
 
-  function mount(gameId) {
+  function mount(gameId, { sharedFrame = false } = {}) {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -2089,8 +2089,9 @@
     const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "breakout" && success) { const completedState = state; render(); window.setTimeout(() => { if (state !== completedState || !completedState.done || document.body.dataset.screen !== "battle") return; renderResult(); show("result"); }, 230); __wpMeasurement.ended = true; __wpMeasurement.outcome = "win"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement(); return; } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = (ticUiClock || window).setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result");
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (success ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 };
+    const snakeSharedSettingsOpen = () => sharedFrame && Boolean(document.querySelector("#battleScreen .wp-frame-popover:not([hidden])"));
     const moveSnake = () => {
-      if (game.type !== "snake" || state.done || !state.started) return;
+      if (game.type !== "snake" || state.done || !state.started || snakeSharedSettingsOpen()) return;
       const [dx, dy] = SNAKE_DELTAS[state.direction];
       const head = state.trail[0];
       const headX = head % SNAKE_GRID_SIZE;
@@ -2156,7 +2157,7 @@
       else state.trail.pop();
       render();
     };
-    const scheduleSnakeTick = () => { if (game.type === "snake" && state.started && !state.done) snakeTimer = window.setTimeout(() => { moveSnake(); scheduleSnakeTick(); }, snakeTickMs()); };
+    const scheduleSnakeTick = () => { if (game.type === "snake" && state.started && !state.done && !snakeSharedSettingsOpen()) snakeTimer = window.setTimeout(() => { moveSnake(); scheduleSnakeTick(); }, snakeTickMs()); };
     const beginSnake = (direction = state.direction) => {
       if (game.type !== "snake" || state.done || state.started) return;
       state.direction = direction;
@@ -2621,6 +2622,14 @@
     els.leaveContinue?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); render(); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); });
     els.leaveMain?.addEventListener("click", () => { (__wpNotifyMeasurement(), els.leaveModal.hidden = true); show("main"); state = makeState(game.type); render(); els.start?.focus({ preventScroll: true }); });
     if (game.type === "snake") document.addEventListener("visibilitychange", () => { if (document.hidden && document.body.dataset.screen === "battle") openSnakeLeaveDialog(); });
+    // The explicit shared-Frame adopter uses the common Settings lifecycle.
+    // Stop only movement; settlement, finite feedback and native Leave retain
+    // their existing owners. Legacy/default callers keep their prior behavior.
+    window.addEventListener("weightplay:interaction-state", () => {
+      if (!sharedFrame || game.type !== "snake" || document.body.dataset.screen !== "battle") return;
+      if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; }
+      if (!snakeSharedSettingsOpen() && !els.snakeLeave?.dialog.open && !document.hidden && state.started && !state.done) scheduleSnakeTick();
+    });
     els.snakeLeave?.dialog.addEventListener("cancel", (event) => { event.preventDefault(); resumeSnakeRun(); });
     els.snakeLeave?.continueButton.addEventListener("click", resumeSnakeRun);
     els.snakeLeave?.mainButton.addEventListener("click", returnSnakeToMain);
@@ -2632,7 +2641,7 @@
       event.stopImmediatePropagation();
       action("fire");
     });
-    document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle" || (game.type === "breakout" && els.breakoutLeaveDialog?.open)) return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && els.snakeLeave?.dialog.open) return; if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
+    document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle" || (game.type === "breakout" && els.breakoutLeaveDialog?.open)) return; if (game.type === "wordle" && els.leaveModal && !els.leaveModal.hidden && event.key === "Escape") { event.preventDefault(); (__wpNotifyMeasurement(), els.leaveModal.hidden = true); document.querySelector("#battleBackBtn")?.focus({ preventScroll: true }); return; } if (game.type === "snake" && (els.snakeLeave?.dialog.open || snakeSharedSettingsOpen())) return; if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
     if (game.type === "snake") battleBack?.addEventListener("click", (event) => {
       if (state.done || !state.started || state.moves <= 0 || typeof els.snakeLeave?.dialog?.showModal !== "function") return;

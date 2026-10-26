@@ -1,0 +1,132 @@
+{
+  "en": {
+    "controls": "Use arrows / WASD, or tap a neighbouring tile.",
+    "ordered": "Light switches in number order.",
+    "ice": "Ice keeps you sliding. Each crossed tile costs a move.",
+    "portal": "Matching portals transport you instantly.",
+    "save": "Leave this room? Your current route will reset. Unlocked rooms stay saved.",
+    "retry": "Out of moves. Try a different route; your unlocked rooms are safe.",
+    "loop": "Switches → key → door. Take your time; only steps count.",
+    "hint": "No route within the remaining moves. Undo or retry."
+  },
+  "zh-Hant": {
+    "controls": "按方向鍵／WASD，或點角色旁的格子移動。",
+    "ordered": "請依數字順序點亮開關。",
+    "ice": "踏上冰軌會沿直線滑行，經過每格都計步。",
+    "portal": "走進同字母的傳送門，會立即移到另一端。",
+    "save": "要離開這個房間嗎？本次路線會重設，已解鎖的房間會保留。",
+    "retry": "步數用完了。換條路再試，已解鎖房間會保留。",
+    "loop": "開關 → 鑰匙 → 出口。不用搶快，移動才計步。",
+    "hint": "剩餘步數無法抵達出口，請退一步或重試。"
+  },
+  "zh-Hans": {
+    "controls": "按方向键／WASD，或点角色旁的格子移动。",
+    "ordered": "请依数字顺序点亮开关。",
+    "ice": "踏上冰轨会沿直线滑行，经过每格都计步。",
+    "portal": "走进同字母的传送门，会立即移到另一端。",
+    "save": "要离开这个房间吗？本次路线会重设，已解锁的房间会保留。",
+    "retry": "步数用完了。换条路再试，已解锁房间会保留。",
+    "loop": "开关 → 钥匙 → 出口。不用抢快，移动才计步。",
+    "hint": "剩余步数无法抵达出口，请退一步或重试。"
+  },
+  "ja": {
+    "controls": "矢印／WASD、または隣のマスをタップ。",
+    "ordered": "番号順に点灯してください。",
+    "ice": "氷では直進します。通ったマスごとに1歩。",
+    "portal": "同じ文字のポータルは一対です。",
+    "save": "この部屋を離れますか？今の道順はリセットされます。解放した部屋は残ります。",
+    "retry": "歩数切れ。別の道を試そう。解放した部屋は残ります。",
+    "loop": "スイッチ → 鍵 → 出口。時間制限はありません。",
+    "hint": "残り歩数では脱出できません。戻すかリトライ。"
+  },
+  "ko": {
+    "controls": "방향키 / WASD 또는 옆 칸을 누르세요.",
+    "ordered": "번호 순서대로 스위치를 켜세요.",
+    "ice": "얼음에서는 직진해요. 지난 칸마다 한 걸음.",
+    "portal": "같은 문자의 포털은 연결되어 있어요.",
+    "save": "방을 떠날까요? 현재 경로는 초기화되지만 열린 방은 유지됩니다.",
+    "retry": "걸음을 다 썼어요. 다른 경로를 시도하세요. 열린 방은 유지됩니다.",
+    "loop": "스위치 → 열쇠 → 출구. 시간제한은 없어요.",
+    "hint": "남은 걸음으로 탈출할 수 없어요. 취소하거나 다시 하세요."
+  },
+  "es": {
+    "controls": "Flechas / WASD, o toca una casilla vecina.",
+    "ordered": "Activa los interruptores por orden.",
+    "ice": "El hielo te desliza en línea recta. Cada casilla cuesta un paso.",
+    "portal": "Los portales con la misma letra están conectados.",
+    "save": "¿Salir? La ruta actual se reinicia. Las salas desbloqueadas se conservan.",
+    "retry": "Sin pasos. Prueba otra ruta; las salas desbloqueadas se conservan.",
+    "loop": "Interruptores → llave → puerta. Sin límite de tiempo.",
+    "hint": "No quedan pasos suficientes. Deshaz o reintenta."
+  },
+  "pt-BR": {
+    "controls": "Setas / WASD, ou toque numa casa vizinha.",
+    "ordered": "Acenda os interruptores em ordem.",
+    "ice": "O gelo faz deslizar em linha reta. Cada casa custa um passo.",
+    "portal": "Portais com a mesma letra estão ligados.",
+    "save": "Sair? A rota atual será reiniciada. Salas abertas ficam salvas.",
+    "retry": "Sem passos. Tente outra rota; salas abertas ficam salvas.",
+    "loop": "Interruptores → chave → porta. Sem limite de tempo.",
+    "hint": "Passos insuficientes. Desfaça ou tente de novo."
+  },
+  "fr": {
+    "controls": "Flèches / WASD, ou touche une case voisine.",
+    "ordered": "Allume les boutons dans l’ordre.",
+    "ice": "La glace fait glisser tout droit. Chaque case coûte un pas.",
+    "portal": "Les portails de même lettre sont reliés.",
+    "save": "Quitter ? Le chemin actuel sera réinitialisé. Les salles ouvertes restent acquises.",
+    "retry": "Plus de pas. Essaie un autre chemin ; les salles ouvertes restent acquises.",
+    "loop": "Boutons → clé → porte. Pas de limite de temps.",
+    "hint": "Pas insuffisants. Annule ou réessaie."
+  },
+  "de": {
+    "controls": "Pfeile / WASD oder ein Nachbarfeld antippen.",
+    "ordered": "Schalter in Zahlenfolge aktivieren.",
+    "ice": "Auf Eis rutschst du geradeaus. Jedes Feld zählt.",
+    "portal": "Portale mit gleichem Buchstaben sind verbunden.",
+    "save": "Verlassen? Der aktuelle Weg wird zurückgesetzt. Offene Räume bleiben erhalten.",
+    "retry": "Keine Schritte mehr. Versuche einen anderen Weg; offene Räume bleiben erhalten.",
+    "loop": "Schalter → Schlüssel → Tür. Kein Zeitlimit.",
+    "hint": "Nicht genug Schritte. Gehe zurück oder versuche es erneut."
+  },
+  "it": {
+    "controls": "Frecce / WASD oppure tocca una casella vicina.",
+    "ordered": "Accendi gli interruttori in ordine.",
+    "ice": "Il ghiaccio fa scivolare in linea retta. Ogni casella costa un passo.",
+    "portal": "I portali con la stessa lettera sono collegati.",
+    "save": "Uscire? Il percorso attuale verrà azzerato. Le stanze aperte restano salvate.",
+    "retry": "Passi esauriti. Prova un altro percorso; le stanze aperte restano salvate.",
+    "loop": "Interruttori → chiave → porta. Nessun limite di tempo.",
+    "hint": "Passi insufficienti. Annulla o riprova."
+  },
+  "ru": {
+    "controls": "Стрелки / WASD или нажмите соседнюю клетку.",
+    "ordered": "Включайте кнопки по порядку.",
+    "ice": "Лёд скользит по прямой. Каждая клетка стоит шаг.",
+    "portal": "Порталы с одной буквой связаны.",
+    "save": "Выйти? Текущий путь сбросится. Открытые комнаты сохранятся.",
+    "retry": "Шаги закончились. Попробуйте другой путь; открытые комнаты сохранятся.",
+    "loop": "Кнопки → ключ → дверь. Без ограничения времени.",
+    "hint": "Шагов недостаточно. Отмените ход или начните снова."
+  },
+  "hi": {
+    "controls": "तीर / WASD या पास वाला खाना दबाएँ।",
+    "ordered": "स्विच संख्या के क्रम में जलाएँ।",
+    "ice": "बर्फ पर सीधे फिसलते हैं। हर खाने का एक कदम।",
+    "portal": "एक अक्षर वाले पोर्टल जुड़े हैं।",
+    "save": "बाहर जाएँ? मौजूदा रास्ता रीसेट होगा। खुले कमरे सुरक्षित रहेंगे।",
+    "retry": "कदम खत्म। दूसरा रास्ता आज़माएँ; खुले कमरे सुरक्षित हैं।",
+    "loop": "स्विच → चाबी → दरवाज़ा। समय सीमा नहीं।",
+    "hint": "कदम पर्याप्त नहीं। चाल वापस लें या फिर प्रयास करें।"
+  },
+  "ar": {
+    "controls": "الأسهم / WASD أو المس مربعاً مجاوراً.",
+    "ordered": "أضئ المفاتيح بترتيب الأرقام.",
+    "ice": "الجليد يزلقك بخط مستقيم. كل مربع يكلف خطوة.",
+    "portal": "البوابات بنفس الحرف متصلة.",
+    "save": "هل تريد المغادرة؟ سيُعاد المسار الحالي. الغرف المفتوحة محفوظة.",
+    "retry": "انتهت الخطوات. جرّب طريقاً آخر؛ الغرف المفتوحة محفوظة.",
+    "loop": "المفاتيح ← المفتاح ← الباب. لا يوجد حد زمني.",
+    "hint": "الخطوات غير كافية. تراجع أو أعد المحاولة."
+  }
+}

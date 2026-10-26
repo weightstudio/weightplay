@@ -454,7 +454,11 @@
       // html-level value lets an inner game-frame reset or miss the inherited
       // variable after Main -> Battle; the Canvas owns the transform, so its
       // local inverse-scaled value is the stable source for every game.
-      "--wp-frame-control-size-physical": `${Math.max(48, 48 / scale)}px`,
+      // Explicit shared Frame consumers own their physical control track.
+      // The Canvas owns scaling; legacy canvases retain their fallback below.
+      ...(root.dataset.wpFrameLogicalActions === "battle" ? {} : {
+        "--wp-frame-control-size-physical": `${Math.max(48, 48 / scale)}px`,
+      }),
       position: "fixed",
       inset: "auto",
       top: `${top}px`,

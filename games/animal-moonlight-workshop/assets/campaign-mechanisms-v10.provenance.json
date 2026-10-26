@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "taskId": "01a17716-e595-7c92-acb8-65902ae49027",
+  "prompt": "Use case: stylized-concept. Asset type: one production sprite atlas for WeightPlay Moonlight Workshop Escape, a top-down block-animal clockwork puzzle. Create ONE transparent PNG sheet, landscape 3:2, EXACTLY 3 columns and 2 rows of equal square cells, no border lines or text. Each object fully isolated with 15 percent transparent padding inside its cell, same orthographic three-quarter angle, polished cuboid voxel construction, hard squared silhouettes, brass and dark teal machinery, soft readable lighting. TOP ROW left: portable square lantern with a cuboid handle and split cyan moon / amber sun panes; middle: small cuboid cyan energy battery with brass end caps; right: thick closed square moon doorway, cyan crescent in square lintel and chunky teal bars. BOTTOM ROW left: thick closed square sun doorway with amber geometric sun emblem and brass bars; middle: heavy wooden-and-brass cube counterweight crate with a turquoise square inset; right: low flat square pressure plate in dark brass with a cyan inset and four corner bolts. Every sprite centered precisely in its own equal cell, six independent objects, whole image real alpha transparency. No backdrop, no floor, no labels, no letters, no animals, no logos, no rounded cartoon forms, no drop shadow extending beyond its cell.",
+  "source": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-80126fe2-45a9-4107-9b96-f0a7651b9117.png",
+  "asset": "games/animal-moonlight-workshop/assets/campaign-mechanisms-v10.png",
+  "layout": "3 columns × 2 rows, 1536 × 1024 RGBA; lantern, battery, moon gate, sun gate, crate, pressure plate",
+  "alpha": {
+    "min": 0,
+    "max": 254
+  },
+  "status": "Generated and visually inspected; integration verification pending"
+}
