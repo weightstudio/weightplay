@@ -1,5 +1,5 @@
 /* Additional chapter objects; old trail layout and art remain unchanged. */
-#battleLive, .stage-workspace, .result-card, .leave-confirm-card, #albumDialog[open] {
+#mainGroup, #battleLive, .stage-workspace, .result-card, .leave-confirm-card, #albumDialog[open] {
   animation: word-trails-appear 180ms ease-out both;
 }
 @keyframes word-trails-appear {
@@ -10,6 +10,17 @@
   transition: box-shadow 120ms ease, filter 120ms ease, opacity 120ms ease;
 }
 .tile.selected { box-shadow: inset 0 0 0 3px #ffeb8f; }
+.tile.hint-next {
+  z-index: 2;
+  outline: 3px solid #ffdc65;
+  outline-offset: -3px;
+  animation: word-trails-hint-pulse 850ms ease-in-out infinite;
+}
+@keyframes word-trails-hint-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.4); }
+}
+.board[data-hint-paused] .tile.hint-next { animation-play-state: paused; }
 .tile:active, .word60-target:active, .word60-bridge-button:active, .actions button:active {
   filter: brightness(1.12);
 }
@@ -22,6 +33,24 @@
   border-radius: 8px;
   font-size: 14px;
 }
+/* Alternate names restart the finite notice on rapid successive words without
+   forcing a synchronous layout or moving the interactive board. */
+.clue-reveal.clue-fade-a { animation: word-trails-clue-a 850ms linear both; }
+.clue-reveal.clue-fade-b { animation: word-trails-clue-b 850ms linear both; }
+@keyframes word-trails-clue-a {
+  0%, 82% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes word-trails-clue-b {
+  0%, 82% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.clue-reveal.clue-fade-b i { animation-name: word-trails-clear-pop-b; }
+@keyframes word-trails-clear-pop-b {
+  from { opacity: 0; transform: scale(.72); }
+  to { opacity: 1; transform: scale(1); }
+}
+.clue-reveal[data-clue-paused], .clue-reveal[data-clue-paused] i { animation-play-state: paused; }
 .clue-reveal i { width: 28px; height: 28px; flex: none; }
 .clue-reveal strong {
   min-width: 0;
@@ -37,14 +66,20 @@
   color: #153329;
   text-shadow: 0 1px 0 #fff4d1;
 }
-.play-scene:has(.word60-bridge-controls) {
-  grid-template-rows: auto minmax(0, 1fr) auto;
+#battleLive { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
+#battleLive:has(> .word60-bridge-controls) {
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
 }
+#playScene { grid-template-rows: minmax(0, 1fr); }
 
 .word60-target {
+  box-sizing: border-box;
+  min-width: 44px;
   min-height: 44px;
   cursor: pointer;
 }
+/* Let all four targets wrap into view instead of clipping a second row. */
+#targets:has(> .word60-target) { max-height: none; }
 .word60-target[aria-pressed="true"] {
   outline: 3px solid #ffe07d;
   outline-offset: -3px;
@@ -76,6 +111,32 @@
   background: #173a34;
   font: inherit;
   cursor: pointer;
+}
+
+/* A short wide viewport keeps the board and reading/actions side by side.
+   The shared Battle Canvas remains the only scaler. */
+@media (max-height: 560px) and (min-aspect-ratio: 3/2) {
+  #battleLive,
+  #battleLive:has(> .word60-bridge-controls) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+    grid-template-areas: 'scene objective' 'scene targets' 'scene bridge' 'scene feedback' 'scene actions';
+  }
+  #objectiveBar { grid-area: objective; }
+  #targets { grid-area: targets; max-height: none; min-height: 0; align-content: start; }
+  #targets .target { flex: 1 1 calc(50% - 5px); min-width: 0; }
+  #playScene { grid-area: scene; container-type: size; }
+  #playScene .board {
+    box-sizing: border-box;
+    width: min(100cqw, 100cqh, 450px);
+    height: min(100cqw, 100cqh, 450px);
+    max-width: 100%;
+    max-height: 100%;
+  }
+  #word60BridgeControls { grid-area: bridge; padding: 4px; }
+  #feedback { grid-area: feedback; padding: 2px 4px; background: var(--wp-ui-surface, #0c2638); }
+  #battleLive .actions { grid-area: actions; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #battleLive .actions button { min-height: 44px; }
 }
 .word60-bridge-button::before,
 .word60-bridge-cell::after,
@@ -157,7 +218,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #battleLive, .stage-workspace, .result-card, .leave-confirm-card, #albumDialog[open] { animation-duration: .01ms; }
-  .clue-reveal i { animation: none; }
+  #mainGroup, #battleLive, .stage-workspace, .result-card, .leave-confirm-card, #albumDialog[open] { animation-duration: .01ms; }
+  .clue-reveal.clue-fade-a, .clue-reveal.clue-fade-b { animation: none; }
+  .clue-reveal i, .clue-reveal.clue-fade-b i { animation: none; }
+  .tile.hint-next { animation: none; }
   .tile, .target, .word60-bridge-button, .word60-bridge-cell::after, .actions button { transition-duration: .01ms; }
 }

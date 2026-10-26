@@ -1,0 +1,13 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "tool": "built-in image_gen",
+  "styleReference": "assets/animal-coloring-studio-safari-pages/lion.webp",
+  "promptTemplate": "Use case: illustration-story. Asset type: an original portrait coloring page for a child-friendly animal creativity game. The supplied lion page is a style reference only: match its rounded cartoon proportions, black line weight, white paper, large enclosed coloring regions and simple background while drawing an entirely new composition. Draw {subject}. Use clean solid dark outlines and broad separately enclosed white areas for preschool tap-to-color; simple rounded border and vertical 2:3 composition. No gray shading, color, lettering, watermark, tiny clutter, or extra panels.",
+  "drafts": [
+    {"stage": 21, "file": "21-pond-duck-source.png", "subject": "a friendly duck beside a pond with broad reeds and gentle water shapes", "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-b2d7d741-33ef-4a0b-bac7-8a75a2d647e9.png"},
+    {"stage": 22, "file": "22-lotus-fish-source.png", "subject": "a friendly fish near a large lily pad and lotus flower in a pond", "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-9e03d21f-a75a-43e9-8b6f-4ed9d26fd1cc.png"},
+    {"stage": 23, "file": "23-river-otter-source.png", "subject": "a friendly otter by a river with large smooth stones and a scarf", "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-a60b2bf6-d667-4212-ae75-c2df0beef708.png"},
+    {"stage": 24, "file": "24-kingfisher-source.png", "subject": "a friendly kingfisher perched on a branch beside a stream and broad leaves", "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-671e3a70-4f3f-4846-babd-ecdff5f47ab7.png"}
+  ],
+  "remaining": "Independent art assessment, region closure and mask verification, 768x1152 production derivatives, playable integration and local testing are pending."
+}

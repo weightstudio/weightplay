@@ -56,6 +56,8 @@
   copy.ar = { title: '\u0645\u0633\u0627\u0631\u0627\u062a \u0643\u0644\u0645\u0629 \u0627\u0644\u062d\u064a\u0648\u0627\u0646', language: '\u0627\u0644\u0644\u063a\u0629', album: '\u0627\u0644\u0623\u0644\u0628\u0648\u0645', chooseStage: '\u0627\u062e\u062a\u0631 \u0645\u0633\u0627\u0631\u064b\u0627', hint: '\u062a\u0644\u0645\u064a\u062d', undo: '\u062a\u0631\u0627\u062c\u0639 \u0639\u0646 \u0627\u0644\u062e\u0637\u0648\u0629', clear: '\u0627\u0645\u0633\u062d \u0627\u0644\u0645\u0633\u0627\u0631', complete: '\u0627\u0643\u062a\u0645\u0644 \u0627\u0644\u0645\u0633\u0627\u0631', next: '\u0627\u0644\u0645\u0633\u0627\u0631 \u0627\u0644\u062a\u0627\u0644\u064a', replay: '\u0627\u0644\u0639\u0628 \u0645\u062c\u062f\u062f\u064b\u0627', found: '\u0643\u0644\u0645\u0627\u062a \u0639\u064f\u062b\u0631 \u0639\u0644\u064a\u0647\u0627', backLobby: '\u0627\u0644\u0639\u0648\u062f\u0629 \u0625\u0644\u0649 WeightPlay', backMain: '\u0627\u0644\u0639\u0648\u062f\u0629 \u0625\u0644\u0649 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629', stages: '\u0627\u0644\u0645\u0633\u0627\u0631\u0627\u062a', words: '\u0643\u0644\u0645\u0627\u062a', leaveTitle: '\u0647\u0644 \u062a\u0631\u064a\u062f \u0645\u063a\u0627\u062f\u0631\u0629 \u0647\u0630\u0627 \u0627\u0644\u0645\u0633\u0627\u0631\u061f', keepReading: '\u062a\u0627\u0628\u0639 \u0627\u0644\u0644\u0639\u0628', leaveTrail: '\u063a\u0627\u062f\u0631 \u0627\u0644\u0645\u0633\u0627\u0631' };
   const app = document.getElementById('app'), locale = document.getElementById('locale');
   const stageCanvas=document.querySelector('.stage-screen');stageCanvas?.setAttribute('data-wp-stage-landscape-width','760');stageCanvas?.setAttribute('data-wp-stage-landscape-height','360');
+  // The shared Battle scaler reads these before the scene is first mounted.
+  const battleCanvas=document.getElementById('battleScreen');battleCanvas?.setAttribute('data-wp-battle-landscape-width','760');battleCanvas?.setAttribute('data-wp-battle-landscape-height','334');
   const supportedLocales=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru','hi','ar'];
   const runtimeTranslate=value=>window.WeightPlayGameRuntimeLocalizer?.translate?.(String(value))||String(value);
   const cleanWord=value=>Array.from(String(value).normalize('NFC').toLocaleUpperCase()).filter(char=>/[\p{Letter}\p{Mark}]/u.test(char)).join('');
@@ -234,6 +236,9 @@
     }
   }
   const $ = id => document.getElementById(id);
+  // Keep the live feedback in its own track so the board can use the full
+  // play-scene height in short landscape without hiding the message.
+  $('playScene').after($('feedback'));
   // These word and tile values already belong to the selected language.
   // Re-translating individual graphemes can make the visible board disagree
   // with the path data, especially across Traditional/Simplified Chinese.
@@ -379,8 +384,8 @@
     battleTasks.set(key,task);
     if(!battleTasksPaused&&!document.hidden)task.frame=requestAnimationFrame(task.step);
   }
-  function pauseBattleTasks(){ if(battleTasksPaused)return; (__wpNotifyMeasurement(), battleTasksPaused=true); const now=performance.now(); battleTasks.forEach(task=>{if(task.last!==null)task.remaining-=Math.max(0,now-task.last);task.last=null;if(task.frame)cancelAnimationFrame(task.frame);task.frame=0;}); }
-  function resumeBattleTasks(){ if(!battleTasksPaused||leaveConfirmOpen)return; (__wpNotifyMeasurement(), battleTasksPaused=false); battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
+  function pauseBattleTasks(){ if(battleTasksPaused)return; (__wpNotifyMeasurement(), battleTasksPaused=true); $('board').setAttribute('data-hint-paused',''); $('clueReveal').setAttribute('data-clue-paused',''); const now=performance.now(); battleTasks.forEach(task=>{if(task.last!==null)task.remaining-=Math.max(0,now-task.last);task.last=null;if(task.frame)cancelAnimationFrame(task.frame);task.frame=0;}); }
+  function resumeBattleTasks(){ if(!battleTasksPaused||leaveConfirmOpen)return; (__wpNotifyMeasurement(), battleTasksPaused=false); $('board').removeAttribute('data-hint-paused'); $('clueReveal').removeAttribute('data-clue-paused'); battleTasks.forEach(task=>{if(!task.frame)task.frame=requestAnimationFrame(task.step);}); }
   function restoreBoardPath(length=dragStartLength){path=path.slice(0,length);document.querySelectorAll('.tile').forEach(tile=>tile.classList.toggle('selected',path.includes(Number(tile.dataset.index))));}
   function cancelBoardPointer(event){if(boardPointerId===null||(event&&event.pointerId!==boardPointerId))return;const board=$('board');const pointerId=boardPointerId;boardPointerId=null;restoreBoardPath();try{if(board.hasPointerCapture?.(pointerId))board.releasePointerCapture(pointerId)}catch{/* The browser may already have released an interrupted pointer. */}}
   function highestUnlockedTrail(){
@@ -449,12 +454,11 @@
   function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; const target=data.legacyLocalized?data.legacyTargets.find(item=>item.display===word):null; const ix=target?target.path[0]:data.board.findIndex(l=>l===word[0]); if(ix<0)return; hints++; track('word_trails_hint_used', { hints_used: hints }); window.WeightPlayAudio?.play("ui.click"); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${data.board[ix]}`; }
   function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); $('resultSummary').textContent=`${found.size} ${t('found')} · ★ ${stars}`; screen('result'); }
   function renderStages(){ if(!stageUI)return; stageUI.refresh(stage); stageUI.select(stage,{center:true}); updateFrameStats(); }
-  function renderBattle(){ cancelBoardPointer(); cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.style.setProperty('--grid-size',String(data.size||4));board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{const wrongMouseButton=e.pointerType==='mouse'&&e.button!==0;if(!e.target.matches('.tile')||!e.isPrimary||wrongMouseButton||boardPointerId!==null||leaveConfirmOpen)return;boardPointerId=e.pointerId;dragStartLength=path.length;try{board.setPointerCapture?.(e.pointerId)}catch{/* Synthetic and already-ended pointers cannot be captured. */}select(+e.target.dataset.index)}; board.onpointermove=e=>{if(e.pointerId!==boardPointerId)return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(e.pointerId!==boardPointerId)return;const shouldSubmit=path.length-dragStartLength>1;const pointerId=boardPointerId;boardPointerId=null;try{if(board.hasPointerCapture?.(pointerId))board.releasePointerCapture(pointerId)}catch{/* The browser may already have released the pointer. */}if(shouldSubmit)submit()}; board.onpointercancel=cancelBoardPointer; board.onlostpointercapture=e=>cancelBoardPointer(e); $('feedback').textContent=t('connect'); screen('battle'); requestAnimationFrame(()=>board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true}));
+  function renderBattle(){ cancelBoardPointer(); cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.style.setProperty('--grid-size',String(data.size||4));board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{const wrongMouseButton=e.pointerType==='mouse'&&e.button!==0;if(!e.target.matches('.tile')||!e.isPrimary||wrongMouseButton||boardPointerId!==null||leaveConfirmOpen)return;boardPointerId=e.pointerId;dragStartLength=path.length;try{board.setPointerCapture?.(e.pointerId)}catch{/* Synthetic and already-ended pointers cannot be captured. */}select(+e.target.dataset.index)}; board.onpointermove=e=>{if(e.pointerId!==boardPointerId)return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(e.pointerId!==boardPointerId)return;const shouldSubmit=path.length-dragStartLength>1;const pointerId=boardPointerId;boardPointerId=null;try{if(board.hasPointerCapture?.(pointerId))board.releasePointerCapture(pointerId)}catch{/* The browser may already have released the pointer. */}if(shouldSubmit)submit()}; board.onpointercancel=cancelBoardPointer; board.onlostpointercapture=e=>cancelBoardPointer(e); $('feedback').textContent=t('connect'); screen('battle'); requestAnimationFrame(()=>{if(document.body.dataset.screen==='battle'&&!leaveConfirmOpen&&!$('battleLive').hidden)board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true});});
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-  function submit(){ const data=packs[lang][stage], word=data.legacyLocalized?legacyWordForPath(data,path):path.map(i=>data.board[i]).join(''); if(!word||!data.words.includes(word)||found.has(word)){ clear(); $('feedback').textContent=t('try'); return; } found.add(word); [...$('targets').querySelectorAll('[data-word]')].find(node=>node.dataset.word===word)?.classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; scheduleBattleTask('transition',found.size===data.words.length?450:420,found.size===data.words.length?result:clear); }
-  function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints), terminal=stage>=packs[lang].length-1; best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); stageUI?.refresh(stage); updateFrameStats(); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WeightPlayAudio?.play("result.win"); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').disabled=terminal; $('next').setAttribute('aria-disabled',String(terminal)); $('next').classList.toggle('primary',!terminal); $('next').classList.toggle('secondary',terminal); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('primary',terminal)); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('secondary',!terminal)); $('replay').classList.remove('primary'); $('replay').classList.add('secondary'); resultActionClaimed=false; screen('result'); requestAnimationFrame(()=>(terminal?$('resultsBack'):$('next')).focus({preventScroll:true}));
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+  function submit(){ const data=packs[lang][stage], word=data.legacyLocalized?legacyWordForPath(data,path):path.map(i=>data.board[i]).join(''); if(!word||!data.words.includes(word)||found.has(word)){ clear(); $('feedback').textContent=t('try'); return; } found.add(word); [...$('targets').querySelectorAll('[data-word]')].find(node=>node.dataset.word===word)?.classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; if(found.size<data.words.length)scheduleBattleTask('transition',420,clear); }
+  function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints), terminal=stage>=packs[lang].length-1; best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); stageUI?.refresh(stage); updateFrameStats(); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WeightPlayAudio?.play("result.win"); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').disabled=terminal; $('next').setAttribute('aria-disabled',String(terminal)); $('next').classList.toggle('primary',!terminal); $('next').classList.toggle('secondary',terminal); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('primary',terminal)); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('secondary',!terminal)); $('replay').classList.remove('primary'); $('replay').classList.add('secondary'); resultActionClaimed=false; screen('result'); requestAnimationFrame(()=>{if(!$('resultPanel').hidden&&!resultActionClaimed)(terminal?$('resultsBack'):$('next')).focus({preventScroll:true});});
 }
   function claimResultAction(){ if($('resultPanel').classList.contains('hidden')||resultActionClaimed)return false; resultActionClaimed=true; return true; }
   const baseRenderBattle = renderBattle;
@@ -477,6 +481,9 @@
     const effectPositions=['0%','33.333%','66.667%','100%'];
     $('clueTitle').textContent=`${t('clueFound')} ${word}`;
     $('clearFx').style.backgroundPosition=`${effectPositions[(found.size-1)%effectPositions.length]} center`;
+    const useA=!panel.classList.contains('clue-fade-a');
+    panel.classList.toggle('clue-fade-a',useA);panel.classList.toggle('clue-fade-b',!useA);
+    panel.toggleAttribute('data-clue-paused',battleTasksPaused);
     panel.classList.remove('hidden');
     scheduleBattleTask('reveal',850,()=>panel.classList.add('hidden'));
   }
@@ -492,6 +499,7 @@
   // New trails use stable concept IDs for rules, while the existing album and
   // public run snapshot continue to store the localized display word.
   let word60Target=null, word60Committed=null, word60Bridge=null;
+  let winSettled=false;
   let checkpointTarget=null;
   const extended=()=>Boolean(packs[lang]?.[stage]?.word60);
   const legacyCheckpoint=()=>Boolean(stage60Packs && (stage===4 || stage===9));
@@ -520,11 +528,19 @@
   }
   function word60ClearPath(){path=[];$('board').querySelectorAll('.tile').forEach(node=>node.classList.remove('selected','correct'));}
   function prepareNextWord(){
+    if(winSettled)return false;
     if(!battleTasks.has('transition'))return true;
     // A final word owns the pending Result; earlier words can settle their
     // visual path immediately when the player starts the next action.
     if(found.size>=packs[lang][stage].words.length)return false;
     cancelBattleTask('transition');word60ClearPath();dragStartLength=0;return true;
+  }
+  function finishWin(){
+    if(winSettled||leaveConfirmOpen||found.size!==packs[lang][stage].words.length)return false;
+    winSettled=true;
+    cancelBoardPointer();cancelBattleTasks();$('clueReveal')?.classList.add('hidden');
+    result();
+    return true;
   }
   function syncLegacyCheckpoint(){
     const data=packs[lang][stage], expected=stage===9?data.words[found.size]:checkpointTarget;
@@ -552,36 +568,71 @@
     for(let cell=0;cell<data.board.length;cell++){const route=visit(cell,0,[]);if(route)return route;}
     return null;
   }
+  function chooseWord60Hint(data,state,rules){
+    const selected=state.target&&data.targets.find(item=>item.id===state.target);
+    if(state.target&&!selected)return {ok:false,reason:'selectTarget'};
+    const candidates=selected?[selected]:data.targets;
+    for(const target of candidates){
+      if(state.found.has(target.id))continue;
+      const choice=data.categoryOrder?rules.chooseTarget(data,state,target.id):{ok:true};
+      if(!choice.ok){if(selected)return choice;continue;}
+      if(target.bridge!=null&&target.bridge!==state.bridge){if(selected)return {ok:false,reason:'bridgeBlocked'};continue;}
+      const test={...state,target:data.categoryOrder?target.id:null,path:[]};
+      let valid=true;
+      for(const cell of target.path){const step=rules.append(data,test,cell);if(!step.ok){valid=false;break;}test.path=step.path;}
+      if(valid){const result=rules.submit(data,test);if(result.ok&&result.target.id===target.id)return {ok:true,target,route:target.path};}
+      if(selected)return {ok:false,reason:data.bridges?.length?'bridgeBlocked':'try'};
+    }
+    return {ok:false,reason:data.bridges?.length?'bridgeBlocked':'try'};
+  }
+  function clearHintDirection(){
+    cancelBattleTask('hintDirection');
+    $('board').querySelectorAll('.hint-next').forEach(tile=>tile.classList.remove('hint-next'));
+  }
+  function showHintDirection(data,route){
+    clearHintDirection();
+    const label=cell=>data.wildcards?.includes(cell)?word60Copy().wildLeaf:data.board[cell];
+    const next=route[1];
+    if(next!==undefined){
+      $('board').querySelector(`.tile[data-index="${next}"]`)?.classList.add('hint-next');
+      scheduleBattleTask('hintDirection',1800,()=>$('board').querySelectorAll('.hint-next').forEach(tile=>tile.classList.remove('hint-next')));
+    }
+    $('feedback').textContent=`${t('hint')}: ${label(route[0])}${next===undefined?'':` → ${label(next)}`}`;
+  }
   const oldWord60Select=select;
   select=function(index){
     if(leaveConfirmOpen||!prepareNextWord())return;
     if(!extended()){
       if(legacyCheckpoint()&&stage===4&&!checkpointTarget){$('feedback').textContent=t('checkpointChoose');return;}
-      return oldWord60Select(index);
+      clearHintDirection();return oldWord60Select(index);
     }
     const decision=window.WordTrailsStage60Rules.append(packs[lang][stage],word60State(),index);
     if(!decision.ok){if(decision.reason!=='unavailable')word60Feedback(decision.reason);return;}
-    path=decision.path;$('board').querySelectorAll('.tile').forEach(node=>node.classList.toggle('selected',path.includes(Number(node.dataset.index))));
+    clearHintDirection();path=decision.path;$('board').querySelectorAll('.tile').forEach(node=>node.classList.toggle('selected',path.includes(Number(node.dataset.index))));
     $('feedback').textContent='';
   };
   const oldWord60Clear=clear;
-  clear=function(){if(!prepareNextWord())return;if(!extended())return oldWord60Clear();word60ClearPath();$('feedback').textContent='';};
+  clear=function(){if(!prepareNextWord())return;clearHintDirection();if(!extended())return oldWord60Clear();word60ClearPath();$('feedback').textContent='';};
   const oldWord60Undo=undo;
-  undo=function(){if(!prepareNextWord())return;if(!extended())return oldWord60Undo();if(!path.length)return;path=path.slice(0,-1);$('board').querySelectorAll('.tile').forEach(node=>node.classList.toggle('selected',path.includes(Number(node.dataset.index))));$('feedback').textContent='';window.WeightPlayAudio?.play('ui.click');};
+  undo=function(){if(!prepareNextWord())return;clearHintDirection();if(!extended())return oldWord60Undo();if(!path.length)return;path=path.slice(0,-1);$('board').querySelectorAll('.tile').forEach(node=>node.classList.toggle('selected',path.includes(Number(node.dataset.index))));$('feedback').textContent='';window.WeightPlayAudio?.play('ui.click');};
   const oldWord60Submit=submit;
   submit=function(){
+    if(leaveConfirmOpen||!prepareNextWord())return;
+    clearHintDirection();
     if(!extended()){
-      if(!legacyCheckpoint())return oldWord60Submit();
-      if(!prepareNextWord()||leaveConfirmOpen)return;
+      if(!legacyCheckpoint()){
+        const before=found.size;oldWord60Submit();
+        if(found.size>before&&found.size===packs[lang][stage].words.length)finishWin();
+        return;
+      }
       const data=packs[lang][stage];
       const word=data.legacyLocalized?legacyWordForPath(data,path):path.map(index=>data.board[index]).join('');
       const expected=stage===4?checkpointTarget:data.words[found.size];
       if(!expected||word!==expected){word60ClearPath();$('feedback').textContent=t(!expected?'checkpointChoose':'checkpointWrong');window.WeightPlayAudio?.play('feedback.error');return;}
       const before=found.size;oldWord60Submit();
-      if(found.size>before){checkpointTarget=null;syncLegacyCheckpoint();}
+      if(found.size>before){checkpointTarget=null;syncLegacyCheckpoint();if(found.size===data.words.length)finishWin();}
       return;
     }
-    if(!prepareNextWord()||leaveConfirmOpen)return;
     const decision=window.WordTrailsStage60Rules.submit(packs[lang][stage],word60State());
     if(!decision.ok){word60ClearPath();word60Feedback(decision.reason);window.WeightPlayAudio?.play('feedback.error');return;}
     const target=decision.target;word60Committed=decision.committedCategory;word60Target=null;found.add(target.display);
@@ -590,31 +641,29 @@
     $('foundCount').textContent=`${found.size}/${packs[lang][stage].targets.length}`;runStars=Math.max(1,3-hints);$('starCount').textContent=`★ ${runStars}`;
     const album=readRecord('wordTrailsAlbum');album[lang+'-'+target.display]=true;writeStorage('wordTrailsAlbum',JSON.stringify(album));
     track('word_trails_word_found',{words_found:found.size,word_length:target.tokens.length});window.WeightPlayAudio?.play('feedback.success');reveal(target.display);updateFrameStats();word60Sync();$('feedback').textContent=t('great');
-    scheduleBattleTask('transition',found.size===packs[lang][stage].targets.length?450:420,found.size===packs[lang][stage].targets.length?result:clear);
+    if(found.size===packs[lang][stage].targets.length)finishWin();
+    else scheduleBattleTask('transition',420,clear);
   };
-  const oldWord60Hint=hint;
   hint=function(){
+    if(leaveConfirmOpen||!prepareNextWord())return;
     if(!extended()){
-      if(!legacyCheckpoint())return oldWord60Hint();
-      if(!prepareNextWord()||leaveConfirmOpen)return;
-      const data=packs[lang][stage],word=stage===4?(checkpointTarget||data.words.find(item=>!found.has(item))):data.words[found.size];
+      const data=packs[lang][stage],word=legacyCheckpoint()&&stage===4?(checkpointTarget||data.words.find(item=>!found.has(item))):legacyCheckpoint()&&stage===9?data.words[found.size]:data.words.find(item=>!found.has(item));
       const route=word&&checkpointPath(data,word);if(!route?.length){$('feedback').textContent=t('try');return;}
-      cancelBoardPointer();word60ClearPath();if(stage===4)checkpointTarget=word;
+      cancelBoardPointer();word60ClearPath();if(legacyCheckpoint()&&stage===4)checkpointTarget=word;
       select(route[0]);hints++;track('word_trails_hint_used',{hints_used:hints});window.WeightPlayAudio?.play('ui.click');
-      $('feedback').textContent=`${t('hint')}: ${data.board[route[0]]}`;syncLegacyCheckpoint();return;
+      showHintDirection(data,route);if(legacyCheckpoint())syncLegacyCheckpoint();return;
     }
-    if(!prepareNextWord())return;
     const data=packs[lang][stage],rules=window.WordTrailsStage60Rules,state=word60State();
-    const target=data.targets.find(item=>!state.found.has(item.id)&&(!data.categoryOrder||rules.chooseTarget(data,state,item.id).ok)&&(item.bridge==null||item.bridge===word60Bridge));
-    if(!target){word60Feedback(data.bridges?.length?'bridgeBlocked':'try');return;}
-    const probe=rules.append(data,{...state,path:[],target:data.categoryOrder?target.id:null},target.path[0]);
-    if(!probe.ok){word60Feedback(probe.reason);return;}
-    cancelBoardPointer();word60ClearPath();word60Target=data.categoryOrder?target.id:null;path=probe.path;
+    const choice=chooseWord60Hint(data,state,rules);
+    if(!choice.ok){word60Feedback(choice.reason);return;}
+    const {target,route}=choice;
+    cancelBoardPointer();word60ClearPath();word60Target=data.categoryOrder?target.id:null;path=[route[0]];
     $('board').querySelector(`.tile[data-index="${path[0]}"]`)?.classList.add('selected');hints++;track('word_trails_hint_used',{hints_used:hints});window.WeightPlayAudio?.play('ui.click');
-    $('feedback').textContent=`${t('hint')}: ${data.wildcards?.includes(path[0])?word60Copy().wildLeaf:data.board[path[0]]}`;word60Sync();
+    showHintDirection(data,route);word60Sync();
   };
   const oldWord60Render=renderBattle;
   renderBattle=function(){
+    winSettled=false;
     word60Target=null;word60Committed=null;word60Bridge=null;checkpointTarget=null;
     document.getElementById('word60BridgeControls')?.remove();$('board').removeAttribute('data-word60');
     oldWord60Render();$('board').style.direction=packs[lang][stage].legacyLocalized?'ltr':'';
@@ -626,7 +675,7 @@
           $('targets').replaceChildren();
           for(const word of data.words){
             const button=document.createElement('button');button.type='button';button.className='target word60-target';button.dataset.word=word;button.textContent=word;
-            button.addEventListener('click',()=>{if(leaveConfirmOpen||found.has(word)||!prepareNextWord())return;cancelBoardPointer();word60ClearPath();checkpointTarget=word;$('feedback').textContent='';syncLegacyCheckpoint();});
+            button.addEventListener('click',()=>{if(leaveConfirmOpen||found.has(word)||!prepareNextWord())return;cancelBoardPointer();clearHintDirection();word60ClearPath();checkpointTarget=word;$('feedback').textContent='';syncLegacyCheckpoint();});
             $('targets').append(button);
           }
         }
@@ -639,13 +688,13 @@
       $('targets').replaceChildren();
       for(const target of data.targets){
         const button=document.createElement('button');button.type='button';button.className='target word60-target';button.dataset.targetId=target.id;button.dataset.word=target.display;button.textContent=target.display;
-        button.addEventListener('click',()=>{if(leaveConfirmOpen||!prepareNextWord())return;const decision=window.WordTrailsStage60Rules.chooseTarget(data,word60State(),target.id);if(!decision.ok){word60Feedback(decision.reason);return;}if(word60Target!==target.id){cancelBoardPointer();word60ClearPath();word60Target=target.id;}$('feedback').textContent='';word60Sync();});
+        button.addEventListener('click',()=>{if(leaveConfirmOpen||!prepareNextWord())return;const decision=window.WordTrailsStage60Rules.chooseTarget(data,word60State(),target.id);if(!decision.ok){word60Feedback(decision.reason);return;}if(word60Target!==target.id){cancelBoardPointer();clearHintDirection();word60ClearPath();word60Target=target.id;}$('feedback').textContent='';word60Sync();});
         $('targets').append(button);
       }
     }
     if(data.bridges?.length){
       const controls=document.createElement('div');controls.id='word60BridgeControls';controls.className='word60-bridge-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label',c.moveBridge);
-      data.bridges.forEach((index,position)=>{const button=document.createElement('button');button.type='button';button.className='word60-bridge-button';button.dataset.bridgeIndex=String(index);button.textContent=`${c.bridge} ${new Intl.NumberFormat(lang).format(position+1)}`;button.addEventListener('click',()=>{if(leaveConfirmOpen||!prepareNextWord())return;const decision=window.WordTrailsStage60Rules.moveBridge(data,word60State(),index);if(!decision.ok){word60Feedback(decision.reason);return;}cancelBoardPointer();word60Bridge=decision.bridge;word60ClearPath();$('feedback').textContent=c.bridgeChosen;word60Sync();});controls.append(button);});board.before(controls);
+      data.bridges.forEach((index,position)=>{const button=document.createElement('button');button.type='button';button.className='word60-bridge-button';button.dataset.bridgeIndex=String(index);button.textContent=`${c.bridge} ${new Intl.NumberFormat(lang).format(position+1)}`;button.addEventListener('click',()=>{if(leaveConfirmOpen||!prepareNextWord())return;const decision=window.WordTrailsStage60Rules.moveBridge(data,word60State(),index);if(!decision.ok){word60Feedback(decision.reason);return;}cancelBoardPointer();clearHintDirection();word60Bridge=decision.bridge;word60ClearPath();$('feedback').textContent=c.bridgeChosen;word60Sync();});controls.append(button);});$('targets').after(controls);
     }
     for(const tile of board.querySelectorAll('.tile')){
       const index=Number(tile.dataset.index), parts=[data.board[index]];
@@ -693,6 +742,9 @@
   const rejectRepeatedActivation=event=>{
     if(event.repeat&&(event.key==='Enter'||event.key===' ')){event.preventDefault();event.stopImmediatePropagation();}
   };
+  // A held Result activation can move focus into the newly opened board before
+  // the key is released. Do not let its repeated keydown activate that tile.
+  $('battleScreen').addEventListener('keydown',rejectRepeatedActivation,true);
   const focusSelectedStage=()=>requestAnimationFrame(()=>document.querySelector('.stage-card[aria-current="true"]')?.focus({preventScroll:true}));
   function setLeaveConfirmOpen(open,restoreFocus=true){
     if(open===leaveConfirmOpen)return;
