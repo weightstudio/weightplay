@@ -1,27 +1,5 @@
-/* Dungeon Venture (animal-crystal-survivor) — Interface 7 source cleanup.
-   Shared frame, shared Settings, Battle Canvas and the authored v31 game runtime
-   remain the owners. Formal metadata stays Interface 6 until independent QA. */
-
-html[data-wp-shared-interface="7"] {
-  --crystal-i7-stage-card-width: 264px;
-  --crystal-i7-stage-card-height: 190px;
-}
-
-/* Main: keep one square poster, concise progress and one 52px Start Game. */
-html[data-wp-shared-interface="7"] body #menuPanel [data-wp-frame-poster] {
-  display: block !important;
-  width: min(420px, 100%) !important;
-  max-width: 420px !important;
-  aspect-ratio: 1 / 1 !important;
-  object-fit: cover !important;
-  margin-inline: auto !important;
-}
-html[data-wp-shared-interface="7"] body #startBtn {
-  width: 100% !important;
-  height: 52px !important;
-  min-height: 52px !important;
-  max-height: 52px !important;
-}
+/* Dungeon Venture content containment. Shared I9 Frame/Play UI owns
+   all Main, scene, header, card and gesture geometry. */
 
 /* bannerAds=false means the old physical reserve may not keep a hidden 56px row.
    The Stage/Battle scene itself owns the complete safe-height root. */
@@ -48,21 +26,7 @@ html[data-wp-shared-interface="7"] body.crystal-playing #upgradePanel.upgrade-pa
   inset: 4px !important;
 }
 
-/* Full-width capped Stage/Battle envelope; retire the legacy 612×788 phone card.
-   Shared frame/theme still owns scene border, radius, header, Settings and tabs. */
-html[data-wp-shared-interface="7"] body.crystal-stage-select #stagePanel,
-html[data-wp-shared-interface="7"] body.crystal-playing #gamePanel {
-  width: min(100%, 920px) !important;
-  max-width: 920px !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  transform: none !important;
-}
-
-/* Stage: shared frame owns the 48px title-free header and 56px three-slot nav.
-   Game-local CSS only lays out the bounded workspace and its 264×190 selector. */
+/* Game-owned Stage workspace and Workshop content stay inside shared slots. */
 html[data-wp-shared-interface="7"] body #stagePanel [data-wp-frame-content="stage"] {
   min-width: 0 !important;
   min-height: 0 !important;
@@ -98,43 +62,9 @@ html[data-wp-shared-interface="7"] body #stageCheckpointText {
   max-width: min(100%, 560px) !important;
   margin-inline: auto !important;
 }
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-candidate="9"]) #stageRail {
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  top: clamp(
-    calc(var(--crystal-i7-stage-card-height) / 2 + 8px),
-    38%,
-    calc(100% - var(--crystal-i7-stage-card-height) / 2 - 8px)
-  ) !important;
-  width: 100% !important;
-  height: var(--crystal-i7-stage-card-height) !important;
-  min-height: var(--crystal-i7-stage-card-height) !important;
-  max-height: var(--crystal-i7-stage-card-height) !important;
-  margin: 0 !important;
-  padding: 0 max(20px, calc((100% - var(--crystal-i7-stage-card-width)) / 2)) !important;
-  transform: translateY(-50%) !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scroll-snap-type: x mandatory !important;
-  scrollbar-width: none !important;
-  overscroll-behavior-inline: contain !important;
-  touch-action: none !important;
-}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-candidate="9"]) #stageRail::-webkit-scrollbar {
-  display: none !important;
-}
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-candidate="9"]) #stageRail > .stage-card {
-  flex: 0 0 var(--crystal-i7-stage-card-width) !important;
-  width: var(--crystal-i7-stage-card-width) !important;
-  min-width: var(--crystal-i7-stage-card-width) !important;
-  max-width: var(--crystal-i7-stage-card-width) !important;
-  height: var(--crystal-i7-stage-card-height) !important;
-  min-height: var(--crystal-i7-stage-card-height) !important;
-  max-height: var(--crystal-i7-stage-card-height) !important;
-  scroll-snap-align: center !important;
-  scroll-snap-stop: always !important;
-}
+
+
+
 html[data-wp-shared-interface="7"] body #equipmentPage {
   height: 100% !important;
   min-height: 0 !important;
@@ -143,12 +73,9 @@ html[data-wp-shared-interface="7"] body #equipmentPage {
 }
 
 /* Interface 8 replaces the cleared-card star with the shared cube marker. */
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-candidate="9"]) .stage-card.is-cleared::after {
-  content: none !important;
-  display: none !important;
-}
 
-/* Battle: shared frame owns the 48px title-free header, Back and Settings.
+
+/* Battle: shared frame owns the 56px title-free header, Back and Settings.
    Keep only game-content containment here and do not restyle shared controls. */
 html[data-wp-shared-interface="7"] body #gamePanel [data-wp-frame-content="battle"] {
   min-width: 0 !important;

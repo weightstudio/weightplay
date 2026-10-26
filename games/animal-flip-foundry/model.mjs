@@ -68,7 +68,7 @@ export function stepFlight(before,c) {
     }
     f.reason=x<targetX?'short':'long';
   }
-  if(f.y>220||f.x>1100||f.age>=240)return fail(f.reason||'short');
+  if(f.y>195||f.x>1100||f.age>=240)return fail(f.reason||'short');
   return f;
 }
 export function simulate(c,force,nozzle='direct',time=0,pulseXs=[]) {
@@ -79,7 +79,7 @@ export function simulate(c,force,nozzle='direct',time=0,pulseXs=[]) {
   }
   return {flight:f,path,hit:f.status==='landed',reason:f.reason};
 }
-// Preview models the player's explicitly placed inversion marks. Marks do not
+// Preview assumes an inversion at each visible suggested mark. Marks never
 // execute actions: the live flight still requires a real E/button press.
 export function suggestedPulseWindows(c) {
   if(!c.polarity)return [];

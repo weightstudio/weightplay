@@ -50,7 +50,8 @@ import {FoundryScene} from './scene.mjs';
   };
   const storage=(()=>{try{return localStorage;}catch{return {getItem:()=>null,setItem:()=>{}};}})();
   let progress=readProgress(storage,TOTAL_STAGES),world=null;
-  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: Math.min(TOTAL_STAGES,progress.unlocked)-1, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(storage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "", nozzle:'direct',clock:0,attempts:0,graphicsLost:false };
+  const initialSelection=progress.cleared[6]?Math.min(TOTAL_STAGES,progress.unlocked)-1:Math.max(0,COURSES.findIndex(course=>!progress.cleared[course.id]));
+  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: initialSelection, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(storage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "", nozzle:'direct',clock:0,attempts:0,graphicsLost:false };
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
   const expansion = () => campaignCopy(currentLocale(),TOTAL_STAGES);
@@ -171,10 +172,11 @@ import {FoundryScene} from './scene.mjs';
     state.stageController?.select(state.selectedChapterIndex, {center:true});
   }
   const audio = window.WeightPlayAudio?.createScope();
-  window.WeightPlayAudio?.preload(['projectile.launch','movement.land','result.lose','result.win'])?.catch(()=>{});
+  window.WeightPlayAudio?.preload(['projectile.launch','movement.land','mechanism.unlock','result.lose','result.win'])?.catch(()=>{});
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const tools=document.createElement('div');tools.id='foundry-tools';
   tools.innerHTML='<div class="foundry-nozzle"><button id="foundry-direct" type="button"></button><button id="foundry-loft" type="button"></button></div><button id="foundry-invert" type="button"></button><output id="foundry-charge"></output>';
+  $('reset-surface').removeAttribute('data-wp-battle-utility');$('reset-surface').removeAttribute('data-wp-primary-action');tools.append($('reset-surface'));
   document.querySelector('.touch-hint').before(tools);
   const recovery=document.createElement('div');recovery.className='foundry-recovery';recovery.hidden=true;
   recovery.innerHTML='<p></p><button type="button"></button>';arenaFrame.append(recovery);
@@ -194,7 +196,7 @@ import {FoundryScene} from './scene.mjs';
     else setStatus(state.flight.cells?e.blocked:e.spent);
   }
   function updateTools(){
-    const c=config(),e=expansion();tools.hidden=state.chapter<7;
+    const c=config(),e=expansion();tools.hidden=false;tools.querySelector('.foundry-nozzle').hidden=state.chapter<7;
     $('foundry-direct').textContent=e.direct;$('foundry-loft').textContent=e.loft;
     tools.querySelector('.foundry-nozzle').setAttribute('aria-label',e.nozzle);
     for(const name of ['direct','loft']){$('foundry-'+name).disabled=!!state.flight||!!state.settle;$('foundry-'+name).setAttribute('aria-pressed',String(state.nozzle===name));}
@@ -261,8 +263,8 @@ import {FoundryScene} from './scene.mjs';
     $("reset-surface").setAttribute("aria-label", c.retry);
     $("arena").setAttribute("aria-label", c.canvas);
     $("main-progress").textContent = `${expansion().cleared}: ${Object.keys(progress.cleared).length} / ${TOTAL_STAGES} · ${c.bestStreak}: ${state.best}`;
-    $("surface-label").textContent = `${stageTitle(state.chapter)} · ${state.platform} / 4`;
-    $("chapter-stat-label").textContent = state.chapter<=30?expansion().gearworks:expansion().observatory;
+    $("surface-label").textContent = `${state.chapter} / ${TOTAL_STAGES} · ${state.platform} / 4`;
+    $("chapter-stat-label").textContent = expansion().stage;
     $("streak-stat-label").textContent = c.streak;
     $("best-stat-label").textContent = c.best;
     $("streak-label").textContent = String(state.streak);
@@ -318,58 +320,36 @@ import {FoundryScene} from './scene.mjs';
     ctx.save();ctx.fillStyle=color;ctx.font=`700 ${size}px system-ui`;ctx.textAlign=align;ctx.direction=currentLocale()==='ar'?'rtl':'ltr';ctx.fillText(value,x,y);ctx.restore();
   }
   function drawScene(){
-    const c=config(), h=canvas.height, f=state.flight;
-    const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#102b42');bg.addColorStop(1,'#081925');ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,h);
-    if(sceneryArt.complete && sceneryArt.naturalWidth){
-      const scale=Math.max(canvas.width/sceneryArt.naturalWidth,h/sceneryArt.naturalHeight);
-      ctx.globalAlpha=.22;
-      ctx.drawImage(sceneryArt,(canvas.width-sceneryArt.naturalWidth*scale)/2,(h-sceneryArt.naturalHeight*scale)/2,sceneryArt.naturalWidth*scale,sceneryArt.naturalHeight*scale);
-      ctx.globalAlpha=1;
-    }
-    ctx.save();ctx.translate((canvas.width-960)/2,0);
-    // Quiet industrial architecture: the play pieces carry the highest contrast.
-    for(let i=0;i<8;i++){rect(i*150-30,0,3,h,'#a6d6da0b');rect(i*150,80,85,130,'#87e5dc07');}
-    rect(0,h-80,960,80,'#123c49');rect(0,h-80,960,3,'#335d68');
-    text(tip(0),48,62,25,'#99c0ce');
-    for(let i=0;i<4;i++){const x=690+i*58;rect(x,36,40,12,i<state.platform-1?'#7cebc5':i===state.platform-1?'#ffca78':'#365563');text(String(i+1),x+20,78,19,'#aacbd6','center');}
-    if(h>850){text(tip(4),480,Math.min(290,h*.23),38,'#f2f6ee','center');text(tip(9),480,Math.min(350,h*.27),25,'#9cbcc8','center');}
-    // Fixed starting pedestal and a single unmistakable collision target.
-    rect(c.x-78,c.y,156,h-c.y-80,'#284e60');rect(c.x-85,c.y,170,13,'#90b9c4');
-    rect(c.targetX-c.width/2,c.targetY,c.width,h-c.targetY-80,'#2f6670');
-    rect(c.targetX-c.width/2,c.targetY,c.width,15,c.color);
-    for(let x=c.targetX-c.width/2+10;x<c.targetX+c.width/2;x+=30)rect(x,c.targetY+32,14,6,'#8cdcc733');
-    text(tip(2),c.x,c.y+52,23,'#b5d2dd','center');text(tip(3),c.targetX,c.targetY-70,25,c.color,'center');
-    if(c.wind){text(c.wind>0?'→ → →':'← ← ←',810,150,26,c.color,'center');}
+    const c=config(),h=canvas.height,f=state.flight,offset=h-135,e=expansion();
+    const target=targetAt(c,state.clock);
+    world?.draw(c,{height:h,clock:state.clock,flight:f,angle:f?.angle||0,nozzle:state.nozzle,reduced:reducedMotion.matches,stage:state.chapter,settle:state.settle});
+    ctx.clearRect(0,0,canvas.width,h);ctx.save();ctx.translate((canvas.width-960)/2,offset);
+    text(state.chapter<=30?e.gearworks:e.observatory,48,58-offset,25,'#b5d4dc');
+    for(let i=0;i<4;i++){const x=690+i*58;rect(x,32-offset,40,10,i<state.platform-1?'#7cebc5':i===state.platform-1?'#ffca78':'#365563');text(String(i+1),x+20,77-offset,19,'#c7e1e5','center');}
+    if(c.wind)text(c.wind>0?'→ → →':'← ← ←',810,150-offset,26,'#9ed9ef','center');
+    c.fields.forEach(field=>text(field.wind>0?'→ → →':'← ← ←',field.x+field.width/2,-265,25,'#80cee8','center'));
+    c.rings.forEach((r,i)=>{
+      const passed=f&&f.ring>i,color=passed?'#7cebc5':r.sign<0?'#eeb6ff':r.sign>0?'#9ee8ff':'#ffca78';
+      ctx.strokeStyle=color;ctx.lineWidth=3;ctx.setLineDash([5,7]);ctx.strokeRect(r.x-12,r.y-r.radius,24,r.radius*2);ctx.setLineDash([]);
+      text(passed?'✓':r.sign?(r.sign>0?'+':'−'):String(i+1),r.x,r.y-r.radius-23,31,color,'center');
+      if(r.relay)text('↻',r.x+32,r.y+r.radius+39,25,'#b0ffe0','center');
+    });
+    c.silence.forEach(z=>text('E ×',(z[0]+z[1])/2,-315,22,'#d0cfe2','center'));
+    if(c.receiverSign)text(c.receiverSign>0?'+':'−',target.x,target.y-88,35,'#e7dcff','center');
+    text(tip(2),190,48,21,'#c3dde2','center');text(tip(3),target.x,target.y-64,22,'#c1f2db','center');
     const force=forceNow();
-    if(!f && !state.settle){
-      const aiming=!!state.drag || state.charge!=null, preview=trajectory(aiming?force:150);
-      ctx.save();ctx.setLineDash(aiming?[]:[5,10]);ctx.strokeStyle=aiming?(preview.hit?'#7cebc5':'#ffca78'):'#87b8c04d';ctx.lineWidth=3;
-      ctx.beginPath();ctx.moveTo(c.x,c.y-36);preview.points.forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.restore();
-      if(aiming){
-        ctx.strokeStyle=preview.hit?'#7cebc5':'#ffca78';ctx.lineWidth=4;ctx.strokeRect(preview.x-28,preview.y-34,56,68);
-        setStatus(preview.hit?tip(8):preview.x<c.targetX?tip(13):tip(14));
-      }
-      drawCanister(c.x,c.y-36,0,1);
-      // Upward hand cue and live power track give the first gesture a visible origin.
-      if(!aiming){text('↑',c.x,c.y-115,64,'#ffca78','center');}
-      const meterY=h-48;rect(48,meterY,864,9,'#365462');rect(48,meterY,864*force/300,9,preview.hit?'#7cebc5':'#ffca78');
-      if(aiming)text(tip(5),480,h-72,23,'#f3f8ed','center');
-    }else if(f){
-      if(!reducedMotion.matches)f.trail.forEach((p,i)=>{ctx.globalAlpha=i/f.trail.length*.35;rect(p.x-4,p.y-4,8,8,c.color);});ctx.globalAlpha=1;
-      drawCanister(f.x,f.y,f.angle,1);
-    }
-    if(state.settle){
-      const fx=state.settle,progress=1-fx.t/36,travel=reducedMotion.matches?0:progress;
-      if(fx.win){ctx.strokeStyle=c.color;ctx.globalAlpha=1-progress;ctx.lineWidth=5;ctx.strokeRect(fx.x-45-travel*70,c.targetY-10-travel*30,90+travel*140,20+travel*60);ctx.globalAlpha=1;text(tip(11),480,c.targetY-160,36,c.color,'center');}
-    }
+    if(!f&&!state.settle){
+      const aiming=!!state.drag||state.charge!=null,preview=trajectory(aiming?force:150);
+      ctx.strokeStyle=aiming?(preview.hit?'#8bf0bd':'#ffca78'):'#9fbeca77';ctx.lineWidth=3;ctx.setLineDash(aiming?[]:[5,10]);
+      ctx.beginPath();ctx.moveTo(190,-36);preview.points.forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);
+      for(const x of suggestedPulseWindows(c)||[]){const p=preview.points.find(p=>p.x>=x);if(p){ctx.strokeStyle='#ddc9ff';ctx.lineWidth=2;ctx.strokeRect(x-13,p.y-58,26,116);text('E',x,p.y-68,23,'#f3dfff','center');}}
+      if(aiming){ctx.strokeStyle=preview.hit?'#8bf0bd':'#ffca78';ctx.lineWidth=3;ctx.strokeRect(preview.x-22,preview.y-34,44,68);const reason=({ring:e.ringMiss,roof:e.roofMiss,polarity:e.signMiss})[preview.reason];setStatus(preview.hit?tip(8):reason|| (preview.x<target.x?tip(13):tip(14)));}
+      else text('↑',190,-112,56,'#ffca78','center');
+      rect(48,87,864,9,'#365462');rect(48,87,864*force/300,9,preview.hit?'#7cebc5':'#ffca78');
+      if(aiming)text(tip(5),480,64,21,'#f2f7ef','center');
+    }else if(f&&!reducedMotion.matches){f.trail.forEach((p,i)=>{ctx.globalAlpha=i/f.trail.length*.3;rect(p.x-3,p.y-3,6,6,'#b6ffdf');});ctx.globalAlpha=1;}
+    if(state.settle?.win)text(tip(11),480,target.y-170,32,'#b5f3d6','center');
     ctx.restore();
-  }
-  function drawCanister(x,y,angle,alpha){
-    ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.globalAlpha=alpha;
-    // Original crystal assembly: flat voxel faces stay readable at phone scale.
-    rect(-27,-36,54,65,'#87e6dc');rect(-27,-36,12,65,'#39a8ad');rect(15,-36,12,65,'#ccfff0');
-    rect(-30,-43,60,12,'#eecb85');rect(-31,25,62,12,'#eecb85');rect(-13,-19,26,29,'#206276');
-    rect(-7,-13,14,17,'#b7fff0');ctx.strokeStyle='#143c4c';ctx.lineWidth=3;ctx.strokeRect(-28,-36,56,65);ctx.restore();
   }
   function resolveLanding(win){
     const f=state.flight;if(!f)return;
@@ -377,7 +357,7 @@ import {FoundryScene} from './scene.mjs';
     else{audio?.play('result.lose');setStatus(state.missReason||tip(6));}
     state.settle={win,t:36,x:f.x}; if(!win)state.flight=null;
   }
-  function finish(win){state.resultWin=win;state.status=win?'perfect':'miss';renderLocalized();show('result');
+  function finish(win){if(win)progress=persistProgress(storage,completeStage(progress,state.chapter,state.attempts,TOTAL_STAGES),TOTAL_STAGES);state.resultWin=win;state.status=win?'perfect':'miss';renderLocalized();show('result');
     if(win)audio?.play('result.win');
     __wpMeasurement.ended=true;__wpMeasurement.outcome=win?'win':'lose';__wpMeasurement.screen=null;__wpNotifyMeasurement();
   }
@@ -385,7 +365,7 @@ import {FoundryScene} from './scene.mjs';
   canvas.tabIndex=0;
   canvas.setAttribute('role','application');
   canvas.addEventListener('pointerdown',event=>{
-    if(state.screen!=='battle'||state.flight||state.settle||state.drag||state.charge!=null||event.button>0)return;
+    if(state.screen!=='battle'||state.graphicsLost||state.flight||state.settle||state.drag||state.charge!=null||event.button>0)return;
     canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);
     state.drag={...pos(event),id:event.pointerId,force:0};setStatus(tip(4));
   });
@@ -395,19 +375,21 @@ import {FoundryScene} from './scene.mjs';
     const force=clamp(state.drag.y-pos(event).y,0,300);state.drag=null;launch(force);
   });
   ['pointercancel','lostpointercapture'].forEach(name=>canvas.addEventListener(name,()=>{state.drag=null;}));
-  canvas.addEventListener('keydown',event=>{if(event.code!=='Space'||state.screen!=='battle')return;event.preventDefault();if(!event.repeat&&!state.flight&&!state.settle&&!state.drag)state.charge=performance.now();});
+  canvas.addEventListener('keydown',event=>{if(state.screen!=='battle'||state.graphicsLost)return;if(event.code==='KeyE'){event.preventDefault();if(!event.repeat)pulse();return;}if(event.code==='KeyQ'){event.preventDefault();if(!event.repeat)chooseNozzle(state.nozzle==='direct'?'loft':'direct');return;}if(event.code!=='Space')return;event.preventDefault();if(!event.repeat&&!state.flight&&!state.settle&&!state.drag)state.charge=performance.now();});
   canvas.addEventListener('keyup',event=>{if(event.code!=='Space'||state.charge==null)return;event.preventDefault();const force=forceNow();state.charge=null;launch(force);});
   canvas.addEventListener('blur',()=>{state.charge=null;state.drag=null;});
   document.addEventListener('visibilitychange',()=>{state.drag=null;state.charge=null;state.lastFrame=0;state.accumulator=0;});
-  window.addEventListener('pagehide',()=>{cancelAnimationFrame(state.raf);audio?.dispose();arenaObserver?.disconnect();});
+  window.addEventListener('pagehide',()=>{cancelAnimationFrame(state.raf);audio?.dispose();arenaObserver?.disconnect();world?.dispose();});
   $("start-game").addEventListener("click", () => { show("stage"); renderLocalized(); });
   document.querySelectorAll("[data-back]").forEach((button) => button.addEventListener("click", () => { show(button.dataset.back); renderLocalized(); }));
   $("reset-surface").addEventListener("click", () => __wpReplayStart(() => start(state.chapter, state.platform)));
   $("retry").addEventListener("click", () => __wpReplayStart(() => start(state.chapter, state.platform)));
-  $("next").addEventListener("click", () => { if (!state.resultWin || state.chapter >= 6) return; if (state.platform < 4) start(state.chapter, state.platform); else start(state.chapter + 1, 1); });
+  $("next").addEventListener("click", () => { if (!state.resultWin || state.chapter >= TOTAL_STAGES) return; start(state.chapter + 1, 1); });
   $("to-stages").addEventListener("click", () => { show("stage"); renderLocalized(); });
   const bindLocale = () => { renderLocalized(); updateGuide(); $("localeSelect")?.addEventListener("change", () => setTimeout(()=>{renderLocalized();updateGuide();}, 0)); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bindLocale, { once: true }); else bindLocale();
+  createWorld();
+  Object.defineProperty(window,'FlipFoundryDiagnostics',{value:Object.freeze({snapshot:()=>structuredClone({screen:state.screen,stage:state.chapter,platform:state.platform,total:TOTAL_STAGES,clock:state.clock,nozzle:state.nozzle,flight:state.flight,settle:state.settle,unlocked:progress.unlocked,cleared:Object.keys(progress.cleared).map(Number),resultWin:state.resultWin,attempts:state.attempts,graphicsLost:state.graphicsLost,render:world?.stats()})}),writable:false});
   cards();
   renderLocalized();
   window.addEventListener("load",()=>{renderLocalized();updateGuide();},{once:true});

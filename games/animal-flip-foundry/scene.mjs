@@ -18,6 +18,7 @@ export class FoundryScene {
     this.material=new THREE.MeshStandardMaterial({roughness:.38,metalness:.32});
     this.boxes=new THREE.InstancedMesh(this.geometry,this.material,512);this.boxes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);this.boxes.frustumCulled=false;
     this.scene.add(this.boxes);this.transform=new THREE.Object3D();this.color=new THREE.Color();
+    this.canisterTransform=new THREE.Object3D();this.partTransform=new THREE.Object3D();this.partMatrix=new THREE.Matrix4();
     this.lost=event=>{event.preventDefault();this.contextLost=true;onLost();};
     this.restored=()=>{this.contextLost=false;onRestored();};
     this.renderer.domElement.addEventListener('webglcontextlost',this.lost);
@@ -26,7 +27,8 @@ export class FoundryScene {
   resize(width,height,cssWidth,cssHeight){
     const extra=(width-960)/200;this.camera.left=-extra;this.camera.right=9.6+extra;
     this.camera.top=(height-135)/100;this.camera.bottom=-1.35;this.camera.updateProjectionMatrix();
-    this.renderer.setSize(Math.min(width,1600),Math.min(height,1600)*Math.min(width,1600)/width,false);
+    const resolution=Math.min(1,1600/Math.max(width,height));
+    this.renderer.setSize(width*resolution,height*resolution,false);
     Object.assign(this.renderer.domElement.style,{width:cssWidth+'px',height:cssHeight+'px'});
   }
   box(x,y,w,h,d,color,z=0,angle=0){
@@ -75,7 +77,11 @@ export class FoundryScene {
     });
     c.silence.forEach(z=>{box((z[0]+z[1])/2,-180,z[1]-z[0],330,7,0x26384c,-60);box(z[0],-180,4,330,9,0xa2a7ba,-50);box(z[1],-180,4,330,9,0xa2a7ba,-50);});
     const f=flight||{x:190,y:-36},rotation=reduced?0:angle;
-    const part=(dx,dy,w,h,d,color,z=25)=>{const x=f.x+Math.cos(rotation)*dx-Math.sin(rotation)*dy,y=f.y+Math.sin(rotation)*dx+Math.cos(rotation)*dy;box(x,y,w,h,d,color,z,rotation);};
+    const group=this.canisterTransform;group.position.set(f.x/100,-f.y/100,.25);group.rotation.set(.12,.3,-rotation);group.updateMatrix();
+    const part=(dx,dy,w,h,d,color,z=25)=>{
+      const i=this.count++,local=this.partTransform;local.position.set(dx/100,-dy/100,(z-25)/100);local.scale.set(w/100,h/100,d/100);local.updateMatrix();
+      this.partMatrix.multiplyMatrices(group.matrix,local.matrix);this.boxes.setMatrixAt(i,this.partMatrix);this.boxes.setColorAt(i,this.color.set(color));
+    };
     // Crystal canister: stepped facets, copper end caps, inset core and brackets.
     part(0,0,44,64,42,0x69d8cf);part(-18,0,8,56,48,0x278f9e);part(18,0,8,56,48,0xb7fff0);
     part(0,-35,54,9,52,0xd7a56a);part(0,33,54,9,52,0xd7a56a);

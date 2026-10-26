@@ -164,7 +164,7 @@
     rendererDialog = dialog;
     (__wpNotifyMeasurement(), dialog.showModal());
   }
-  const INTERFACE_VERSION = 8;
+  const INTERFACE_VERSION = 9;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
   const W = 1024;
@@ -217,7 +217,6 @@
   const arenaLayer = document.createElement("canvas");
   const arenaCtx = arenaLayer.getContext("2d", { alpha: false });
   const nodes = {
-    localeSelect: $("localeSelect"),
     titleNode: document.querySelector("[data-ui='title']"),
     topbar: document.querySelector(".topbar"),
     stagePanelHead: document.querySelector(".stage-panel-head"),
@@ -289,7 +288,6 @@
   const screenFrame = window.WeightPlayScreenFrame.mount({
     playUI: true,
     root: document.querySelector('[data-wp-frame-root]'),
-    localeSelect: nodes.localeSelect,
     scenes: {
       main: { root: nodes.menuPanel, header: $('mainFrameHeader'), content: $('mainContent') },
       stage: { root: nodes.stagePanel, header: $('stageFrameHeader'), content: document.querySelector('[data-wp-stage-content]') },
@@ -1675,7 +1673,6 @@
     nodes.settingsPopover?.setAttribute("aria-label", t("audioSettings"));
     if (nodes.equipmentTabBtn) nodes.equipmentTabBtn.textContent = runeCopy().workshop;
     updatePageMeta();
-    nodes.localeSelect.value = requested;
     renderMainProgress();
     renderExpeditionRecord();
     renderTalents();
@@ -1803,11 +1800,10 @@
     else battleLive.removeAttribute("aria-hidden");
     const stageOpen = panel === nodes.stagePanel;
     setSettingsOpen(false);
-    screenFrame.activate(panel === nodes.menuPanel ? 'main' : stageOpen ? 'stage' : 'battle', { covered: resultOpen });
     document.body?.classList.toggle("crystal-stage-select", stageOpen);
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel && !stageOpen);
-    document.body?.classList.toggle("wp-shell-stage-active", stageOpen);
-    document.body?.classList.toggle("wp-shell-battle-active", panel !== nodes.menuPanel && !stageOpen);
+    screenFrame.activate(panel === nodes.menuPanel ? 'main' : stageOpen ? 'stage' : 'battle', { covered: resultOpen });
+    window.WeightPlayBattleCanvas.sync();
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     updateCrystalBattleViewport();
     if (resultOpen) requestAnimationFrame(updateCrystalBattleViewport);
@@ -1821,7 +1817,11 @@
   function updateCrystalBattleViewport() {
     const battleOpen = document.body?.classList.contains("crystal-playing");
     const stageOpen = document.body?.classList.contains("crystal-stage-select");
-    if (!battleOpen && !stageOpen) return;
+    if (!battleOpen && !stageOpen) {
+      document.documentElement.style.removeProperty("--crystal-vw");
+      document.documentElement.style.removeProperty("--crystal-vh");
+      return;
+    }
     const viewport = window.visualViewport;
     const visualWidth = Math.round(viewport?.width || 0);
     const visualHeight = Math.round(viewport?.height || 0);
@@ -3639,7 +3639,6 @@
     resetFrameClock();
   });
 
-  nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
