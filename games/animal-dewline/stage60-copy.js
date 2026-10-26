@@ -1,0 +1,213 @@
+// Draft for the proposed campaign. NOT INTEGRATED; human language review pending.
+// Templates are plain text. Render as textContent, not HTML.
+// Arabic dynamic values are isolated in format() to preserve bidirectional order.
+(() => {
+  'use strict';
+  const keys = [
+    'clip','clipPipe','clipSelected','noClip','removeClip','invalidPipe',
+    'diverter','divertTo','diverterAt','diverterSensorLocked',
+    'transfer','transferAction','transferBlocked','valveLocked',
+    'sensor','sensorGoal','sensorProgress','sensorLatched',
+    'bottle','capture','captureValue','slots','captureOrder','captureUnavailable',
+    'captureCondition','moveClipAfterCapture','valveLocksAfterCapture',
+    'bedState','undoMove','resetAttempt','hintAction','noPath','hintUsed',
+    'goalCondition','bloomNotReady','stageLocked','resultComplete','resultStars',
+    'storageFailed','campaignDone'
+  ];
+  const rows = {
+    en: [
+      'Pipe clip','Clip pipe {pipe}','Clip on pipe {pipe}','No clip placed','Remove clip','That pipe cannot be clipped.',
+      'Diverter','Direct to bed {bed}','Flow directed to bed {bed}','Reach the sensor goal before redirecting.',
+      'Transfer','Transfer one unit from {from} to {to}','Transfer needs water in the source and room in the destination.','Valve {valve} is locked.',
+      'Sensor','Bed {bed} must reach {value}.','Sensors: {done} of {total}','Sensor {number} reached.',
+      'Capture bottle','Capture bed {bed}','Bed {bed} captured at {value}.','Bottle slots: {used} of {total}','Capture bed {bed} next.','This bed cannot be captured now.',
+      'To capture bed {bed}, bed {requiredBed} must be at {value}.','After capture, move the clip to the other pipe of bed {bed}.','Valve {valve} locks after capture.',
+      'Bed {bed}: {current} / {target}; difference {difference}.','Undo (one move)','Reset attempt','Hint: {action}','No route from here. Try Undo or Reset.','Hint used',
+      'Goal: valve {valve} at least {value}.','Some goals are not ready yet.','Complete stage {stage} to unlock.','Stage {stage} complete!','Best: {stars} stars.',
+      'Storage is unavailable. You can keep playing, but progress may not be saved.','All 60 stages complete!'
+    ],
+    'zh-Hant': [
+      '水管夾','夾住水管 {pipe}','已夾住水管 {pipe}','尚未放置水管夾','移除水管夾','這條水管不能夾住。',
+      '分流器','轉向花圃 {bed}','水流轉向花圃 {bed}','先達成感測目標才能轉向。',
+      '移水','從 {from} 移一格水到 {to}','來源要有水，目的閥門也要有空間才能移水。','閥門 {valve} 已鎖定。',
+      '感測器','花圃 {bed} 須達到 {value}。','感測進度：{done}／{total}','已達成第 {number} 個感測目標。',
+      '儲水瓶','儲存花圃 {bed}','已儲存花圃 {bed} 的數值 {value}。','瓶子空格：已用 {used}／{total}','下一個儲存花圃 {bed}。','現在無法儲存這個花圃。',
+      '儲存花圃 {bed} 時，花圃 {requiredBed} 須為 {value}。','儲存後，將夾子移到花圃 {bed} 的另一條水管。','儲存後閥門 {valve} 會鎖定。',
+      '花圃 {bed}：目前 {current}／目標 {target}；差額 {difference}。','復原（算一步）','重設本次挑戰','提示：{action}','目前沒有通關路徑，試試復原或重設。','已使用提示',
+      '目標：閥門 {valve} 至少為 {value}。','還有目標尚未達成。','完成第 {stage} 關即可解鎖。','第 {stage} 關完成！','最佳：{stars} 星。',
+      '無法使用儲存空間。你可以繼續遊玩，但進度可能無法保存。','60 關全部完成！'
+    ],
+    'zh-Hans': [
+      '水管夹','夹住水管 {pipe}','已夹住水管 {pipe}','尚未放置水管夹','移除水管夹','这条水管不能夹住。',
+      '分流器','转向花圃 {bed}','水流转向花圃 {bed}','先达成感应目标才能转向。',
+      '移水','从 {from} 移一格水到 {to}','来源要有水，目标阀门也要有空间才能移水。','阀门 {valve} 已锁定。',
+      '感应器','花圃 {bed} 须达到 {value}。','感应进度：{done}／{total}','已达成第 {number} 个感应目标。',
+      '储水瓶','储存花圃 {bed}','已储存花圃 {bed} 的数值 {value}。','瓶子空格：已用 {used}／{total}','下一个储存花圃 {bed}。','现在无法储存这个花圃。',
+      '储存花圃 {bed} 时，花圃 {requiredBed} 须为 {value}。','储存后，将夹子移到花圃 {bed} 的另一条水管。','储存后阀门 {valve} 会锁定。',
+      '花圃 {bed}：当前 {current}／目标 {target}；差值 {difference}。','撤销（算一步）','重置本次挑战','提示：{action}','目前没有通关路径，试试撤销或重置。','已使用提示',
+      '目标：阀门 {valve} 至少为 {value}。','还有目标尚未达成。','完成第 {stage} 关即可解锁。','第 {stage} 关完成！','最佳：{stars} 星。',
+      '无法使用存储空间。你可以继续游戏，但进度可能无法保存。','60 关全部完成！'
+    ],
+    ja: [
+      '配管クリップ','配管 {pipe} を留める','配管 {pipe} にクリップ中','クリップ未設置','クリップを外す','この配管には付けられません。',
+      '切替器','花壇 {bed} に切り替える','花壇 {bed} に送水中','切り替える前にセンサーの条件を満たしてください。',
+      '水の移動','{from} から {to} へ水を1移す','移動元に水があり、移動先に空きが必要です。','バルブ {valve} はロック中です。',
+      'センサー','花壇 {bed} を {value} にする。','センサー：{done}／{total}','センサー {number} 達成。',
+      '貯水ボトル','花壇 {bed} を記録','花壇 {bed} の値 {value} を記録しました。','ボトル枠：{used}／{total} 使用','次は花壇 {bed} を記録。','今はこの花壇を記録できません。',
+      '花壇 {bed} を記録するとき、花壇 {requiredBed} は {value} にしてください。','記録後、花壇 {bed} のもう一方の配管にクリップを移してください。','記録後、バルブ {valve} がロックされます。',
+      '花壇 {bed}：現在 {current}／目標 {target}、差 {difference}。','元に戻す（1手）','この挑戦をリセット','ヒント：{action}','ここからの達成経路がありません。元に戻すかリセットしてください。','ヒント使用済み',
+      '条件：バルブ {valve} を {value} 以上にする。','まだ達成していない条件があります。','ステージ {stage} をクリアすると開放。','ステージ {stage} クリア！','最高：{stars} 星。',
+      '保存できません。プレイは続けられますが、進行状況は保存されない場合があります。','全60ステージをクリア！'
+    ],
+    ko: [
+      '파이프 클립','파이프 {pipe}에 클립 놓기','파이프 {pipe}에 클립 있음','클립 없음','클립 제거','이 파이프에는 클립을 놓을 수 없어요.',
+      '물길 전환기','화단 {bed}(으)로 전환','화단 {bed}(으)로 물이 흐르는 중','전환하기 전에 센서 목표를 달성하세요.',
+      '물 옮기기','{from}에서 {to}(으)로 물 한 칸 옮기기','출발 밸브에 물이 있고 도착 밸브에 여유가 있어야 해요.','밸브 {valve}은(는) 잠겨 있어요.',
+      '센서','화단 {bed}의 수치를 {value}(으)로 맞추세요.','센서 진행: {done}/{total}','센서 {number} 달성.',
+      '물 저장병','화단 {bed} 저장','화단 {bed}의 수치 {value} 저장됨.','병 칸: {used}/{total} 사용','다음으로 화단 {bed}을(를) 저장하세요.','지금은 이 화단을 저장할 수 없어요.',
+      '화단 {bed}을(를) 저장할 때 화단 {requiredBed}의 수치가 {value}여야 해요.','저장 후 클립을 화단 {bed}의 다른 파이프로 옮기세요.','저장 후 밸브 {valve}이(가) 잠겨요.',
+      '화단 {bed}: 현재 {current} / 목표 {target}, 차이 {difference}.','되돌리기 (한 수)','이번 도전 초기화','힌트: {action}','현재 상태에서 목표에 도달할 수 없어요. 되돌리거나 초기화해 보세요.','힌트 사용함',
+      '목표: 밸브 {valve}이(가) {value} 이상.','아직 달성하지 못한 목표가 있어요.','스테이지 {stage}을(를) 완료하면 열려요.','스테이지 {stage} 완료!','최고 기록: 별 {stars}개.',
+      '저장 공간을 사용할 수 없어요. 계속 플레이할 수 있지만 진행 상황이 저장되지 않을 수 있어요.','60개 스테이지 모두 완료!'
+    ],
+    es: [
+      'Pinza de tubo','Colocar pinza en {pipe}','Pinza en el tubo {pipe}','Sin pinza colocada','Quitar pinza','No se puede colocar la pinza en ese tubo.',
+      'Desviador','Dirigir al cantero {bed}','Flujo dirigido al cantero {bed}','Alcanza el objetivo del sensor antes de desviar.',
+      'Trasvase','Pasar una unidad de {from} a {to}','La válvula de origen necesita agua y la de destino, espacio.','La válvula {valve} está bloqueada.',
+      'Sensor','El cantero {bed} debe llegar a {value}.','Sensores: {done} de {total}','Sensor {number} activado.',
+      'Botella de captura','Capturar cantero {bed}','Cantero {bed} guardado con valor {value}.','Espacios de botella: {used} de {total}','Captura ahora el cantero {bed}.','No se puede capturar este cantero ahora.',
+      'Para capturar el cantero {bed}, el cantero {requiredBed} debe estar en {value}.','Después de capturar, mueve la pinza al otro tubo del cantero {bed}.','La válvula {valve} se bloquea después de capturar.',
+      'Cantero {bed}: actual {current} / objetivo {target}; diferencia {difference}.','Deshacer (un movimiento)','Reiniciar intento','Pista: {action}','No hay ruta desde aquí. Prueba Deshacer o Reiniciar.','Pista utilizada',
+      'Objetivo: válvula {valve} con al menos {value}.','Aún faltan objetivos por cumplir.','Completa el nivel {stage} para desbloquear.','¡Nivel {stage} completado!','Mejor: {stars} estrellas.',
+      'El almacenamiento no está disponible. Puedes seguir jugando, pero puede que el progreso no se guarde.','¡Completaste los 60 niveles!'
+    ],
+    'pt-BR': [
+      'Presilha de cano','Prender o cano {pipe}','Presilha no cano {pipe}','Nenhuma presilha colocada','Remover presilha','Não é possível prender esse cano.',
+      'Desviador','Direcionar ao canteiro {bed}','Fluxo direcionado ao canteiro {bed}','Atinja a meta do sensor antes de desviar.',
+      'Transferência','Transferir uma unidade de {from} para {to}','A origem precisa ter água e o destino precisa ter espaço.','A válvula {valve} está bloqueada.',
+      'Sensor','O canteiro {bed} precisa chegar a {value}.','Sensores: {done} de {total}','Sensor {number} atingido.',
+      'Garrafa de captura','Capturar canteiro {bed}','Canteiro {bed} guardado com valor {value}.','Espaços da garrafa: {used} de {total}','Capture o canteiro {bed} em seguida.','Não é possível capturar este canteiro agora.',
+      'Para capturar o canteiro {bed}, o canteiro {requiredBed} deve estar em {value}.','Após capturar, mova a presilha para o outro cano do canteiro {bed}.','A válvula {valve} é bloqueada após a captura.',
+      'Canteiro {bed}: atual {current} / meta {target}; diferença {difference}.','Desfazer (uma jogada)','Reiniciar tentativa','Dica: {action}','Não há caminho a partir daqui. Tente Desfazer ou Reiniciar.','Dica usada',
+      'Meta: válvula {valve} com pelo menos {value}.','Ainda há metas a cumprir.','Conclua a fase {stage} para desbloquear.','Fase {stage} concluída!','Melhor: {stars} estrelas.',
+      'O armazenamento não está disponível. Você pode continuar, mas o progresso talvez não seja salvo.','Todas as 60 fases concluídas!'
+    ],
+    fr: [
+      'Pince de tuyau','Pincer le tuyau {pipe}','Pince sur le tuyau {pipe}','Aucune pince placée','Retirer la pince','Ce tuyau ne peut pas être pincé.',
+      'Aiguillage','Diriger vers le parterre {bed}','Flux dirigé vers le parterre {bed}','Atteignez l’objectif du capteur avant de changer la direction.',
+      'Transfert','Transférer une unité de {from} vers {to}','La source doit contenir de l’eau et la destination avoir de la place.','La vanne {valve} est verrouillée.',
+      'Capteur','Le parterre {bed} doit atteindre {value}.','Capteurs : {done} sur {total}','Capteur {number} activé.',
+      'Bouteille de capture','Capturer le parterre {bed}','Parterre {bed} conservé à {value}.','Places de bouteille : {used} sur {total}','Capturez ensuite le parterre {bed}.','Ce parterre ne peut pas être capturé maintenant.',
+      'Pour capturer le parterre {bed}, le parterre {requiredBed} doit être à {value}.','Après la capture, déplacez la pince vers l’autre tuyau du parterre {bed}.','La vanne {valve} se verrouille après la capture.',
+      'Parterre {bed} : actuel {current} / objectif {target} ; écart {difference}.','Annuler (un coup)','Recommencer la tentative','Indice : {action}','Aucun chemin depuis cet état. Essayez Annuler ou Recommencer.','Indice utilisé',
+      'Objectif : vanne {valve} à au moins {value}.','Certains objectifs ne sont pas encore atteints.','Terminez le niveau {stage} pour débloquer.','Niveau {stage} terminé !','Meilleur résultat : {stars} étoiles.',
+      'Le stockage est indisponible. Vous pouvez continuer, mais votre progression risque de ne pas être enregistrée.','Les 60 niveaux sont terminés !'
+    ],
+    de: [
+      'Rohrklemme','Rohr {pipe} abklemmen','Klemme an Rohr {pipe}','Keine Klemme gesetzt','Klemme entfernen','Dieses Rohr kann nicht abgeklemmt werden.',
+      'Umlenker','Zu Beet {bed} leiten','Wasser fließt zu Beet {bed}','Erreiche erst das Sensorziel, bevor du umlenkst.',
+      'Umfüllen','Eine Einheit von {from} nach {to} umfüllen','Die Quelle braucht Wasser und das Ziel freien Platz.','Ventil {valve} ist gesperrt.',
+      'Sensor','Beet {bed} muss {value} erreichen.','Sensoren: {done} von {total}','Sensor {number} erreicht.',
+      'Auffangflasche','Beet {bed} speichern','Beet {bed} mit Wert {value} gespeichert.','Flaschenplätze: {used} von {total}','Speichere als Nächstes Beet {bed}.','Dieses Beet kann jetzt nicht gespeichert werden.',
+      'Um Beet {bed} zu speichern, muss Beet {requiredBed} bei {value} stehen.','Verschiebe nach dem Speichern die Klemme zum anderen Rohr von Beet {bed}.','Ventil {valve} wird nach dem Speichern gesperrt.',
+      'Beet {bed}: aktuell {current} / Ziel {target}; Differenz {difference}.','Rückgängig (ein Zug)','Versuch zurücksetzen','Tipp: {action}','Von hier gibt es keinen Lösungsweg. Versuche Rückgängig oder Zurücksetzen.','Tipp verwendet',
+      'Ziel: Ventil {valve} mindestens {value}.','Einige Ziele sind noch nicht erreicht.','Schließe Level {stage} ab, um es freizuschalten.','Level {stage} geschafft!','Bestwert: {stars} Sterne.',
+      'Der Speicher ist nicht verfügbar. Du kannst weiterspielen, aber dein Fortschritt wird möglicherweise nicht gespeichert.','Alle 60 Level geschafft!'
+    ],
+    it: [
+      'Morsetto','Blocca il tubo {pipe}','Morsetto sul tubo {pipe}','Nessun morsetto posizionato','Rimuovi morsetto','Non puoi bloccare questo tubo.',
+      'Deviatore','Dirigi verso l’aiuola {bed}','Flusso diretto all’aiuola {bed}','Raggiungi l’obiettivo del sensore prima di deviare.',
+      'Trasferimento','Trasferisci un’unità da {from} a {to}','La valvola di origine deve avere acqua e quella di destinazione spazio.','La valvola {valve} è bloccata.',
+      'Sensore','L’aiuola {bed} deve raggiungere {value}.','Sensori: {done} su {total}','Sensore {number} raggiunto.',
+      'Bottiglia di raccolta','Salva l’aiuola {bed}','Aiuola {bed} salvata al valore {value}.','Spazi bottiglia: {used} su {total}','Salva poi l’aiuola {bed}.','Non puoi salvare questa aiuola ora.',
+      'Per salvare l’aiuola {bed}, l’aiuola {requiredBed} deve essere a {value}.','Dopo il salvataggio, sposta il morsetto sull’altro tubo dell’aiuola {bed}.','La valvola {valve} si blocca dopo il salvataggio.',
+      'Aiuola {bed}: attuale {current} / obiettivo {target}; differenza {difference}.','Annulla (una mossa)','Ricomincia il tentativo','Indizio: {action}','Non c’è un percorso da qui. Prova Annulla o Ricomincia.','Indizio usato',
+      'Obiettivo: valvola {valve} almeno a {value}.','Alcuni obiettivi non sono ancora raggiunti.','Completa il livello {stage} per sbloccare.','Livello {stage} completato!','Migliore: {stars} stelle.',
+      'L’archiviazione non è disponibile. Puoi continuare, ma i progressi potrebbero non essere salvati.','Completati tutti i 60 livelli!'
+    ],
+    ru: [
+      'Зажим трубы','Зажать трубу {pipe}','Зажим на трубе {pipe}','Зажим не установлен','Снять зажим','Эту трубу нельзя зажать.',
+      'Переключатель потока','Направить к клумбе {bed}','Поток направлен к клумбе {bed}','Перед переключением выполните условие датчика.',
+      'Перелив','Перелить одну единицу из {from} в {to}','В источнике нужна вода, а в получателе — свободное место.','Клапан {valve} заблокирован.',
+      'Датчик','Клумба {bed} должна достичь {value}.','Датчики: {done} из {total}','Датчик {number} сработал.',
+      'Бутылка для сбора','Сохранить клумбу {bed}','Значение клумбы {bed} сохранено: {value}.','Места в бутылке: {used} из {total}','Следующей сохраните клумбу {bed}.','Сейчас эту клумбу сохранить нельзя.',
+      'Чтобы сохранить клумбу {bed}, значение клумбы {requiredBed} должно быть {value}.','После сохранения перенесите зажим на другую трубу клумбы {bed}.','Клапан {valve} заблокируется после сохранения.',
+      'Клумба {bed}: сейчас {current} / цель {target}; разница {difference}.','Отменить (один ход)','Начать попытку заново','Подсказка: {action}','Отсюда нет пути к цели. Попробуйте отменить ход или начать заново.','Подсказка использована',
+      'Цель: клапан {valve} не менее {value}.','Не все условия выполнены.','Пройдите уровень {stage}, чтобы открыть.','Уровень {stage} пройден!','Лучший результат: звёзд — {stars}.',
+      'Хранилище недоступно. Можно продолжать играть, но прогресс может не сохраниться.','Все 60 уровней пройдены!'
+    ],
+    hi: [
+      'पाइप क्लिप','पाइप {pipe} पर क्लिप लगाएँ','पाइप {pipe} पर क्लिप लगी है','कोई क्लिप नहीं लगी','क्लिप हटाएँ','इस पाइप पर क्लिप नहीं लग सकती।',
+      'पानी की दिशा','क्यारी {bed} की ओर मोड़ें','पानी क्यारी {bed} की ओर जा रहा है','दिशा बदलने से पहले सेंसर का लक्ष्य पूरा करें।',
+      'पानी भेजें','{from} से {to} में एक इकाई पानी भेजें','भेजने वाले वाल्व में पानी और पाने वाले में जगह होनी चाहिए।','वाल्व {valve} लॉक है।',
+      'सेंसर','क्यारी {bed} को {value} तक पहुँचाएँ।','सेंसर: {done} / {total}','सेंसर {number} पूरा हुआ।',
+      'पानी सँभालने की बोतल','क्यारी {bed} का मान सँभालें','क्यारी {bed} का मान {value} सँभाला गया।','बोतल की जगह: {used} / {total}','अब क्यारी {bed} का मान सँभालें।','अभी इस क्यारी का मान नहीं सँभाल सकते।',
+      'क्यारी {bed} का मान सँभालते समय क्यारी {requiredBed} का मान {value} होना चाहिए।','मान सँभालने के बाद क्लिप को क्यारी {bed} के दूसरे पाइप पर ले जाएँ।','मान सँभालने के बाद वाल्व {valve} लॉक हो जाएगा।',
+      'क्यारी {bed}: अभी {current} / लक्ष्य {target}; अंतर {difference}।','पिछली चाल हटाएँ (एक चाल)','यह कोशिश फिर शुरू करें','संकेत: {action}','यहाँ से लक्ष्य तक रास्ता नहीं है। पिछली चाल हटाएँ या फिर शुरू करें।','संकेत लिया गया',
+      'लक्ष्य: वाल्व {valve} कम से कम {value} हो।','कुछ लक्ष्य अभी पूरे नहीं हुए हैं।','खोलने के लिए स्तर {stage} पूरा करें।','स्तर {stage} पूरा हुआ!','सर्वश्रेष्ठ: {stars} तारे।',
+      'संग्रहण उपलब्ध नहीं है। आप खेल जारी रख सकते हैं, लेकिन प्रगति सहेजी न भी जाए।','सभी 60 स्तर पूरे हुए!'
+    ],
+    ar: [
+      'مشبك الأنبوب','ثبّت المشبك على الأنبوب {pipe}','المشبك على الأنبوب {pipe}','لم يوضع مشبك','أزل المشبك','لا يمكن تثبيت المشبك على هذا الأنبوب.',
+      'محوّل التدفق','وجّه الماء إلى الحوض {bed}','الماء يتجه إلى الحوض {bed}','حقّق هدف المستشعر قبل تغيير الاتجاه.',
+      'نقل الماء','انقل وحدة واحدة من {from} إلى {to}','يجب أن يحتوي المصدر على ماء وأن تتوفر مساحة في الوجهة.','الصمام {valve} مقفل.',
+      'المستشعر','يجب أن يصل الحوض {bed} إلى {value}.','المستشعرات: {done} من {total}','تحقق هدف المستشعر {number}.',
+      'زجاجة الاحتفاظ','احتفظ بقيمة الحوض {bed}','تم الاحتفاظ بقيمة الحوض {bed} وهي {value}.','خانات الزجاجة: {used} من {total}','احتفظ بقيمة الحوض {bed} تالياً.','لا يمكن الاحتفاظ بقيمة هذا الحوض الآن.',
+      'للاحتفاظ بقيمة الحوض {bed}، يجب أن تكون قيمة الحوض {requiredBed} هي {value}.','بعد الاحتفاظ بالقيمة، انقل المشبك إلى الأنبوب الآخر للحوض {bed}.','يُقفل الصمام {valve} بعد الاحتفاظ بالقيمة.',
+      'الحوض {bed}: الحالي {current} / الهدف {target}؛ الفرق {difference}.','تراجع (حركة واحدة)','أعد المحاولة من البداية','تلميح: {action}','لا يوجد مسار إلى الهدف من هنا. جرّب التراجع أو إعادة المحاولة.','استُخدم تلميح',
+      'الهدف: الصمام {valve} عند {value} على الأقل.','لم تتحقق كل الأهداف بعد.','أكمل المرحلة {stage} لفتحها.','اكتملت المرحلة {stage}!','أفضل نتيجة: {stars} نجوم.',
+      'التخزين غير متاح. يمكنك مواصلة اللعب، لكن قد لا يُحفظ التقدم.','اكتملت المراحل الستون كلها!'
+    ]
+  };
+  const extraKeys = ['clipEffect', 'captureEffect', 'captureSlotFull', 'sensorOnePerMove', 'toolMoveCost'];
+  const extras = {
+    en: ['The clip stops one contribution to the bed.', 'A captured bed keeps its recorded value.', 'Undo back past a capture or Reset to free a slot.', 'At most one sensor advances per accepted action.', 'Placing, moving or removing the clip costs one move.'],
+    'zh-Hant': ['水管夾會移除該花圃的一路水流。', '儲存後花圃會保留記錄的數值。', '復原到儲存前或重設，才能騰出瓶子空格。', '每次有效操作最多推進一個感測目標。', '放置、移動或移除夾子各算一步。'],
+    'zh-Hans': ['水管夹会移除该花圃的一路水流。', '储存后花圃会保留记录的数值。', '撤销到储存前或重置，才能腾出瓶子空格。', '每次有效操作最多推进一个感应目标。', '放置、移动或移除夹子各算一步。'],
+    ja: ['クリップは花壇への水の一経路を止めます。', '記録した花壇はその値を保ちます。', '記録前まで戻すかリセットすると枠が空きます。', '有効な操作1回につき進むセンサーは最大1つです。', 'クリップの設置・移動・取り外しは各1手です。'],
+    ko: ['클립은 화단으로 가는 물길 하나를 막아요.', '저장한 화단은 기록된 수치를 유지해요.', '저장 전까지 되돌리거나 초기화하면 병 칸을 비울 수 있어요.', '유효한 행동 한 번에 센서는 최대 하나만 진행돼요.', '클립을 놓거나 옮기거나 제거하면 각각 한 수예요.'],
+    es: ['La pinza corta una de las entradas de agua del cantero.', 'El cantero capturado conserva su valor.', 'Deshaz hasta antes de una captura o reinicia para liberar un espacio.', 'Cada acción válida activa como máximo un sensor.', 'Colocar, mover o quitar la pinza cuesta un movimiento.'],
+    'pt-BR': ['A presilha interrompe uma entrada de água do canteiro.', 'O canteiro capturado mantém o valor registrado.', 'Desfaça até antes de uma captura ou reinicie para liberar um espaço.', 'Cada ação válida avança no máximo um sensor.', 'Colocar, mover ou remover a presilha custa uma jogada.'],
+    fr: ['La pince coupe une arrivée d’eau du parterre.', 'Un parterre capturé conserve sa valeur enregistrée.', 'Annulez jusqu’avant une capture ou recommencez pour libérer une place.', 'Une action valide fait avancer au plus un capteur.', 'Placer, déplacer ou retirer la pince coûte un coup.'],
+    de: ['Die Klemme unterbricht einen Wasserzulauf zum Beet.', 'Ein gespeichertes Beet behält seinen gespeicherten Wert.', 'Gehe bis vor eine Speicherung zurück oder setze zurück, um einen Platz freizugeben.', 'Pro gültiger Aktion rückt höchstens ein Sensor vor.', 'Setzen, Verschieben oder Entfernen der Klemme kostet je einen Zug.'],
+    it: ['Il morsetto interrompe un apporto d’acqua all’aiuola.', 'Un’aiuola salvata mantiene il valore registrato.', 'Annulla fino a prima di un salvataggio o ricomincia per liberare uno spazio.', 'Ogni azione valida fa avanzare al massimo un sensore.', 'Posare, spostare o rimuovere il morsetto costa una mossa.'],
+    ru: ['Зажим перекрывает один поток к клумбе.', 'Сохранённая клумба сохраняет записанное значение.', 'Отмените действия до сохранения клумбы или начните заново, чтобы освободить место.', 'За одно допустимое действие продвигается не более одного датчика.', 'Установка, перенос и снятие зажима стоят по одному ходу.'],
+    hi: ['क्लिप क्यारी तक आने वाला एक पानी का रास्ता रोकती है।', 'सँभाली गई क्यारी का दर्ज मान बना रहता है।', 'जगह खाली करने के लिए मान सँभालने से पहले तक चालें हटाएँ या फिर शुरू करें।', 'एक मान्य कार्रवाई पर अधिकतम एक सेंसर आगे बढ़ता है।', 'क्लिप लगाना, हटाना या खिसकाना, हर एक में एक चाल लगती है।'],
+    ar: ['يوقف المشبك أحد مصادر الماء المتجهة إلى الحوض.', 'يحتفظ الحوض الملتقط بقيمته المسجلة.', 'لإخلاء خانة، تراجع إلى ما قبل حفظ قيمة أو أعد المحاولة.', 'تتقدم خطوة مستشعر واحدة كحد أقصى في كل إجراء مقبول.', 'وضع المشبك أو نقله أو إزالته يكلف حركة واحدة لكل إجراء.']
+  };
+  const hintMessages = {
+    en: ['Hint temporarily unavailable. Please try again later.', 'Searching for a hint…'],
+    'zh-Hant': ['提示暫時無法取得，請稍後再試。', '正在搜尋提示……'],
+    'zh-Hans': ['提示暂时无法获取，请稍后再试。', '正在搜索提示……'],
+    ja: ['ヒントを一時的に取得できません。しばらくしてからお試しください。', 'ヒントを探しています…'],
+    ko: ['힌트를 일시적으로 가져올 수 없어요. 나중에 다시 시도해 주세요.', '힌트를 찾고 있어요…'],
+    es: ['La pista no está disponible temporalmente. Inténtalo de nuevo más tarde.', 'Buscando una pista…'],
+    'pt-BR': ['A dica está temporariamente indisponível. Tente novamente mais tarde.', 'Buscando uma dica…'],
+    fr: ['L’indice est temporairement indisponible. Réessayez plus tard.', 'Recherche d’un indice…'],
+    de: ['Der Tipp ist vorübergehend nicht verfügbar. Bitte versuche es später erneut.', 'Tipp wird gesucht…'],
+    it: ['L’indizio non è temporaneamente disponibile. Riprova più tardi.', 'Ricerca di un indizio…'],
+    ru: ['Подсказка временно недоступна. Попробуйте позже.', 'Ищем подсказку…'],
+    hi: ['संकेत अभी उपलब्ध नहीं है। कृपया थोड़ी देर बाद फिर कोशिश करें।', 'संकेत खोजा जा रहा है…'],
+    ar: ['التلميح غير متاح مؤقتاً. يرجى المحاولة لاحقاً.', 'جارٍ البحث عن تلميح…']
+  };
+  const copy = Object.fromEntries(Object.entries(rows).map(([locale, values]) => {
+    if (values.length !== keys.length) throw new Error(`BAD_STAGE60_COPY_LENGTH:${locale}`);
+    if (extras[locale]?.length !== extraKeys.length) throw new Error(`BAD_STAGE60_EXTRA_LENGTH:${locale}`);
+    if (hintMessages[locale]?.length !== 2) throw new Error(`BAD_STAGE60_HINT_LENGTH:${locale}`);
+    return [locale, Object.freeze(Object.fromEntries([...keys.map((key, index) => [key, values[index]]),
+      ...extraKeys.map((key, index) => [key, extras[locale][index]]),
+      ['hintError', hintMessages[locale][0]], ['hintPending', hintMessages[locale][1]]]))];
+  }));
+  function format(locale, key, vars = {}) {
+    const template = copy[locale]?.[key];
+    if (typeof template !== 'string') throw new Error(`MISSING_STAGE60_COPY:${locale}:${key}`);
+    return template.replace(/\{([A-Za-z][A-Za-z0-9]*)\}/g, (_, name) => {
+      if (!Object.hasOwn(vars, name) || vars[name] == null) throw new Error(`MISSING_STAGE60_VARIABLE:${key}:${name}`);
+      const value = String(vars[name]);
+      // Isolate inserted LTR valve names, numbers and any translated action text
+      // from surrounding Arabic punctuation; do not embed markup.
+      return locale === 'ar' ? `\u2068${value}\u2069` : value;
+    });
+  }
+  globalThis.AnimalDewlineStage60Copy = Object.freeze({ locales: Object.freeze(copy), format });
+})();

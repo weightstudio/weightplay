@@ -119,7 +119,7 @@ body[data-wp-game-id="animal-dewline"] #battleScreen .battle-content.dewline-gar
   overflow: auto;
   background: #071925bb;
 }
-#resultScreen .result-card { width: min(100%, 520px); max-height: 100%; margin: 0; overflow: auto; text-align: center; }
+#resultScreen .result-card { width: min(100%, 520px); max-height: 100%; margin: 0; padding: 18px; box-sizing: border-box; overflow: auto; text-align: center; background: #f7f4e6; border: 1px solid #e4d8ad; border-radius: 18px; box-shadow: 0 12px 32px #061c2380; }
 #resultScreen .nori-result { display: block; width: 64px; height: 64px; margin: 0 auto 6px; object-fit: contain; }
 #resultScreen .result-card h2 { margin: 8px 0 4px; line-height: 1.1; color: #173c38; }
 #resultScreen .result-card p { margin: 4px 0; color: #405b5a; line-height: 1.4; }
@@ -184,4 +184,119 @@ body[data-wp-game-id="animal-dewline"] #resultScreen:not([hidden]) .result-card 
 }
 @media (prefers-reduced-motion: reduce) {
   .garden-pipes .flowing, .dewline-garden, .dewline-garden * { animation: none !important; transition: none !important; }
+}
+
+/* v19 expansion only: keep all controls in the shared, ad-safe Battle canvas.
+   Extra rules can exceed short screens, so the puzzle itself scrolls rather
+   than shrinking controls or covering the shared physical reserve. */
+body[data-wp-game-id="animal-dewline"] #battleScreen .battle-content.dewline-garden:has(#dewStage60Tools:not([hidden])) {
+  --dew60-hit: max(44px, calc(44.5px * var(--wp-battle-canvas-inverse-scale, 1)));
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto 48px auto auto auto auto auto !important;
+  align-content: start !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scroll-padding-block: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewStage60Tools:not([hidden])) > :is(.garden-mission, .garden-flowers, .garden-pipes, .garden-valves, .dew60-tools, .garden-feedback, .garden-tools, .garden-check) {
+  grid-column: 1 !important;
+  grid-row: auto !important;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewStage60Tools:not([hidden])) .garden-pipes {
+  height: 48px;
+  align-self: stretch;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewStage60Tools:not([hidden])) :is(.garden-controls button, .garden-tools button, .garden-check) {
+  min-width: var(--dew60-hit);
+  min-height: var(--dew60-hit) !important;
+  height: auto;
+  touch-action: manipulation;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewStage60Tools:not([hidden])) .garden-tools button {
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewStage60Tools:not([hidden])) .garden-check {
+  height: auto;
+  padding: 10px;
+}
+.dew60-tools {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #7eb69c99;
+  border-radius: 14px;
+  background: #0c292af2;
+  color: #f3f8ed;
+}
+.dew60-tools > p {
+  margin: 0;
+  color: #e7f3e9;
+  font-size: max(13px, calc(13px * var(--wp-battle-canvas-inverse-scale, 1)));
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.dew60-tools > p:empty { display: none; }
+.dew60-group { display: grid; gap: 5px; min-width: 0; }
+.dew60-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: #f4e4a7;
+  font-size: max(14px, calc(14px * var(--wp-battle-canvas-inverse-scale, 1)));
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+/* The text remains the accessible name; the atlas is decorative. */
+.dew60-label::before {
+  content: "";
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  background-image: url("assets/stage60-water-tools-v19-gutter.png?v=20261027-dewline-v19");
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  pointer-events: none;
+}
+[data-dew-tool="route"] .dew60-label::before { background-position: 100% 0; }
+[data-dew-tool="transfer"] .dew60-label::before { background-position: 0 100%; }
+[data-dew-tool="capture"] .dew60-label::before { background-position: 100% 100%; }
+.dew60-buttons { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.dew60-buttons button {
+  flex: 1 1 130px;
+  min-width: var(--dew60-hit, 44px);
+  min-height: var(--dew60-hit, 44px);
+  padding: 8px 10px;
+  border: 1px solid #b9d8c6;
+  border-radius: 10px;
+  background: #edf6ec;
+  color: #143b39;
+  font-size: max(13px, calc(13px * var(--wp-battle-canvas-inverse-scale, 1)));
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  overflow-wrap: anywhere;
+  touch-action: manipulation;
+}
+.dew60-buttons button[aria-pressed="true"] {
+  border-color: #ffe39a;
+  background: #f5d16e;
+  color: #243323;
+  box-shadow: inset 0 0 0 2px #725b25;
+}
+.dew60-buttons button[aria-disabled="true"] { background: #c3d0c8; color: #40584f; border-color: #96aa9c; }
+.dew60-buttons button:focus-visible { outline: 3px solid #ffcc54; outline-offset: 2px; }
+@media (max-width: 360px) {
+  body[data-wp-game-id="animal-dewline"] #battleScreen .dewline-garden:has(#dewStage60Tools:not([hidden])) .garden-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dew60-tools, .dew60-tools * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

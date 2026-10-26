@@ -1,0 +1,7 @@
+{
+  "status": "DRAFT_PENDING_RENDERED_ART_REVIEW",
+  "generator": "built-in image_gen edit",
+  "input": "games/animal-dewline/assets/stage60-water-tools-v19.png",
+  "source": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-e89bcdbf-b6ef-448a-9802-b98acfb49214.png",
+  "prompt": "Edit this 2 by 2 sprite atlas for a game. Keep the same four distinct objects and their positions: upper left brass pipe clip, upper right three-way diverter, lower left two linked transfer vessels, lower right glass capture bottle. Preserve the polished brass, jewel-blue water and green leaves. Reduce the scale of each object so that the entire object fits well within its own exact quadrant, with a wide transparent empty gutter on both center lines and around every outer edge. No object or shadow may cross a quadrant boundary. No text, no borders, no additional objects. Transparent background."
+}

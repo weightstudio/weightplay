@@ -27,33 +27,33 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-dewline">
-  <meta name="weightplay-game-version" content="v18">
+  <meta name="weightplay-game-version" content="v19">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
   <title>晨露連動水閥 | WeightPlay</title>
 
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-  <link rel="stylesheet" href="style.css?v=20261022-dewline-i9-v18"><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="style.css?v=20261027-dewline-i9-v19"><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-play-ui>
-  <meta name="description" content="在這款沒有計時的邏輯益智遊戲中，分別調整三個 0 到 6 的晨露閥門，逐一符合草地目標。" />
+  <meta name="description" content="用 + 和 − 將各閥門調整到 0–6；一個閥門可能供應多個花圃。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="晨露連動水閥 | WeightPlay" />
-    <meta property="og:description" content="在這款沒有計時的邏輯益智遊戲中，分別調整三個 0 到 6 的晨露閥門，逐一符合草地目標。" />
+    <meta property="og:description" content="用 + 和 − 將各閥門調整到 0–6；一個閥門可能供應多個花圃。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-dewline/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-dewline.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="晨露連動水閥 | WeightPlay" />
-    <meta name="twitter:description" content="在這款沒有計時的邏輯益智遊戲中，分別調整三個 0 到 6 的晨露閥門，逐一符合草地目標。" />
+    <meta name="twitter:description" content="用 + 和 − 將各閥門調整到 0–6；一個閥門可能供應多個花圃。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-dewline.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"晨露連動水閥","alternateName":"Linked Dew Valves","url":"https://weightplay.com/zh-tw/games/animal-dewline/","image":"https://weightplay.com/assets/interface7-redrawn/animal-dewline.webp","description":"在這款沒有計時的邏輯益智遊戲中，分別調整三個 0 到 6 的晨露閥門，逐一符合草地目標。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["益智","邏輯","規劃"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"晨露連動水閥","alternateName":"Linked Dew Valves","url":"https://weightplay.com/zh-tw/games/animal-dewline/","image":"https://weightplay.com/assets/interface7-redrawn/animal-dewline.webp","description":"用 + 和 − 將各閥門調整到 0–6；一個閥門可能供應多個花圃。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["益智","邏輯","規劃"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-audience="general" data-wp-game-id="animal-dewline" data-wp-game-version="v18" data-wp-interface-version="9" data-has-stage="true" data-wp-game-owned-guide="true" data-screen="main">
+  <body data-audience="general" data-wp-game-id="animal-dewline" data-wp-game-version="v19" data-wp-interface-version="9" data-has-stage="true" data-wp-game-owned-guide="true" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">晨光正在喚醒草地……</strong><div class="loading-track"><i></i></div></div></section>
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
   <main id="mainScreen" class="screen main-screen wp-standard-main-screen" data-screen="main" hidden>
@@ -75,27 +75,78 @@
   <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="nori-result" src="assets/animal-dewline-nori.png" width="1224" height="1285" alt="" aria-hidden="true"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="plots">選擇草地</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">回到選單</button></div></div></section>
   </div>
-  <section class="guide-card game-page-info" data-wp-game-guide data-runtime-localize="off" data-wp-game-owned-guide="true" aria-label="Meadow Dewline game guide">
-    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 原創遊戲指南</span><h2 data-copy="guideTitle">玩法</h2><p data-copy="guideIntro">修復 12 座晨露花園。沿水管找來源，調整三個閥門，讓每片花圃得到剛好的水。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">玩法</span><strong data-copy="guideGameplayValue">數值配對益智</strong></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>目標配對</span><span>邏輯益智</span><span>規劃</span></div></div></div>
+  <section class="guide-card game-page-info" data-wp-game-guide data-runtime-localize="off" data-wp-game-owned-guide="true" aria-labelledby="dewlineGuideHeading">
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 原創遊戲指南</span><h2 id="dewlineGuideHeading" data-copy="guideTitle">玩法</h2><p data-copy="guideIntro">修復 12 座晨露花園。沿水管找來源，調整三個閥門，讓每片花圃得到剛好的水。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">玩法</span><strong data-copy="guideGameplayValue">數值配對益智</strong></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>目標配對</span><span>邏輯益智</span><span>規劃</span></div></div></div>
     <div class="guide-grid game-info-sections" data-wp-guide-depth="true">
       <article class="game-info-section"><h3 data-copy="guideOneTitle">1. 閱讀筆記</h3><p data-copy="guideOne">讓每片花圃的水量剛剛好，點下方 ＋／− 調整。</p></article>
       <article class="game-info-section"><h3 data-copy="guideTwoTitle">2. 調整閥門</h3><p data-copy="guideTwo">沿著水管看：一個閥門會同時影響多片花圃。</p></article>
       <article class="game-info-section"><h3 data-copy="guideThreeTitle">3. 平靜檢查</h3><p data-copy="guideThree">三片花圃都好了，讓花朵綻放！</p></article>
-      <article class="game-info-section dewline-public-faq"><h3 data-copy="faqTitle">常見問題</h3><dl><div><dt data-copy="faqCountQuestion">共有幾片草地？</dt><dd data-copy="faqCountAnswer">修復 12 座晨露花園。沿水管找來源，調整三個閥門，讓每片花圃得到剛好的水。</dd></div><div><dt data-copy="faqValvesQuestion">相互連動的閥門怎麼運作？</dt><dd data-copy="faqValvesAnswer">沿著水管看：一個閥門會同時影響多片花圃。</dd></div><div><dt data-copy="faqWrongQuestion">檢查錯誤時會怎樣？</dt><dd data-copy="faqWrongAnswer">上方 A／B／C 表示供水來源，對應下方閥門。</dd></div><div><dt data-copy="faqSelectionQuestion">如何解鎖與重玩？</dt><dd data-copy="faqSelectionAnswer">修復 12 座晨露花園。沿水管找來源，調整三個閥門，讓每片花圃得到剛好的水。</dd></div><div><dt data-copy="faqProgressQuestion">進度保存在哪裡？</dt><dd data-copy="faqProgressAnswer">星星保存在這個瀏覽器；不保存未完成的閥門設定。</dd></div><div><dt data-copy="faqTotalExampleQuestion">為什麼總和正確，檢查卻沒有通過？</dt><dd data-copy="faqTotalExampleAnswer">上方 A／B／C 表示供水來源，對應下方閥門。</dd></div><div><dt data-copy="faqCheckCountQuestion">哪些操作會增加檢查次數？</dt><dd data-copy="faqCheckCountAnswer">最少步數且不使用提示可獲三星；使用提示後，本次最高兩星。</dd></div></dl></article>
+      <article class="game-info-section dewline-public-faq"><h3 data-copy="faqTitle">常見問題</h3><dl><div><dt data-copy="faqCountQuestion">共有幾片草地？</dt><dd data-copy="faqCountAnswer">修復 12 座晨露花園。沿水管找來源，調整三個閥門，讓每片花圃得到剛好的水。</dd></div><div><dt data-copy="faqValvesQuestion">相互連動的閥門怎麼運作？</dt><dd data-copy="faqValvesAnswer">沿著水管看：一個閥門會同時影響多片花圃。</dd></div><div><dt data-copy="faqWrongQuestion">檢查錯誤時會怎樣？</dt><dd data-copy="faqWrongAnswer">上方 A／B／C 表示供水來源，對應下方閥門。</dd></div><div><dt data-copy="faqSelectionQuestion">如何解鎖與重玩？</dt><dd data-copy="faqSelectionAnswer">修復 12 座晨露花園。沿水管找來源，調整三個閥門，讓每片花圃得到剛好的水。</dd></div><div><dt data-copy="faqProgressQuestion">進度保存在哪裡？</dt><dd data-copy="faqProgressAnswer">星星保存在這個瀏覽器；不保存未完成的閥門設定。</dd></div><div><dt data-copy="faqTotalExampleQuestion">為什麼總和正確，檢查卻沒有通過？</dt><dd data-copy="faqTotalExampleAnswer">上方 A／B／C 表示供水來源，對應下方閥門。</dd></div><div><dt data-copy="faqCheckCountQuestion">如何獲得星星？</dt><dd data-copy="faqCheckCountAnswer">最少步數且不使用提示可獲三星；使用提示後，本次最高兩星。</dd></div></dl></article>
       <article class="game-info-section"><h3 data-copy="guidePlanTitle">先安排調整順序</h3><p data-copy="guidePlan">上方 A／B／C 表示供水來源，對應下方閥門。</p></article>
 
       <article class="game-info-section"><h3 data-copy="guideFeedbackTitle">利用錯誤提示</h3><p data-copy="guideFeedback">最少步數且不使用提示可獲三星；使用提示後，本次最高兩星。</p></article>
 
       <article class="game-info-section"><h3 data-copy="guidePrivacyTitle">紀錄與隱私</h3><p data-copy="guidePrivacy">星星保存在這個瀏覽器；不保存未完成的閥門設定。</p></article>
 
+      
+      <!-- DEWLINE_STAGE60_GUIDE_START --><article class="game-info-section" data-dewline-stage60-guide hidden><h3 data-dewline-copy="chapterOne"></h3><p data-dewline-copy="chapterOneDescription"></p><p data-dewline-copy="guideClip"></p><p data-dewline-copy="guideDiverter"></p><p data-dewline-copy="guideTransfer"></p><p data-dewline-copy="guideSensors"></p><h3 data-dewline-copy="chapterTwo"></h3><p data-dewline-copy="chapterTwoDescription"></p><p data-dewline-copy="guideBottle"></p><p data-dewline-copy="guideLate"></p><p data-dewline-copy="guideUndoHint"></p><p data-dewline-copy="guideStars"></p><p data-dewline-copy="guideProgress"></p><p data-dewline-copy="guideStorage"></p></article><!-- DEWLINE_STAGE60_GUIDE_END -->
       <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><p data-copy="publicRelatedIntro">再試試 WeightPlay 另一款結合訊號、圖樣與細心觀察的益智遊戲。</p><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-signal-scout" href="/en/games/animal-signal-scout/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-signal-scout.webp" data-final-src="/assets/weightplay-logo.png" alt="Patrol Signal Match" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Patrol Signal Match</strong><span data-copy="publicRelated1Intro">讀懂三張偵察筆記，把動物配對到訊號顏色，再照著可見巡邏順序點選。</span></span></a><a class="game-info-related-card" data-game-id="lights-out" href="/en/games/lights-out/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/lights-out.webp" data-final-src="/assets/weightplay-logo.png" alt="Lights Out" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Lights Out</strong><span data-copy="publicRelated2Intro">點擊一格與鄰近格，關掉全部燈並挑戰最少步數。</span></span></a></div></div>
     </div>
   </section>
   <select id="localeSelect" hidden aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
-  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script><script src="locales.js?v=20261022-dewline-i9-v18"></script><script src="game.js?v=20261022-dewline-i9-v18"></script>
+  <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script><script src="locales.js?v=20261027-dewline-i9-v19"></script><script src="game.js?v=20261027-dewline-i9-v19"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+
+<!-- DEWLINE_STAGE60_ADAPTER_START --><script>
+(() => {
+  'use strict';
+  const section = document.querySelector('[data-wp-game-guide]');
+  const extra = document.querySelector('[data-dewline-stage60-guide]');
+  const selector = document.getElementById('localeSelect');
+  const fallbackStarQuestion = {
+    en:'How are stars earned?', 'zh-Hant':'如何獲得星星？', 'zh-Hans':'如何获得星星？',
+    ja:'星はどう獲得しますか？', ko:'별은 어떻게 얻나요?', es:'¿Cómo se ganan estrellas?',
+    'pt-BR':'Como ganhar estrelas?', fr:'Comment gagner des étoiles ?', de:'Wie erhält man Sterne?',
+    it:'Come si ottengono le stelle?', ru:'Как получить звёзды?', hi:'तारे कैसे मिलते हैं?', ar:'كيف أحصل على النجوم؟'
+  };
+  const mapping = {
+    intro:'guideIntro', guideIntro:'guideIntro', guideOne:'guideGoal', guideTwo:'guideValves',
+    guideThree:'guideUndoHint', guidePlan:'guideGoal', guideFeedback:'guideStars', guidePrivacy:'guideStorage',
+    faqCountQuestion:'faqCountQuestion', faqCountAnswer:'faqCountAnswer',
+    faqValvesQuestion:'faqValvesQuestion', faqValvesAnswer:'faqValvesAnswer',
+    faqWrongQuestion:'faqWrongQuestion', faqWrongAnswer:'faqWrongAnswer',
+    faqSelectionQuestion:'faqSelectionQuestion', faqSelectionAnswer:'faqSelectionAnswer',
+    faqProgressQuestion:'faqProgressQuestion', faqProgressAnswer:'faqProgressAnswer',
+    faqTotalExampleQuestion:'faqTotalExampleQuestion', faqTotalExampleAnswer:'faqTotalExampleAnswer',
+    faqCheckCountQuestion:'faqCheckCountQuestion', faqCheckCountAnswer:'faqCheckCountAnswer'
+  };
+  function render() {
+    const locale = selector?.value || document.documentElement.lang || 'en';
+    if (!['12', '60'].includes(document.body.dataset.dewlineStageCount)) return;
+    const extended = document.body.dataset.dewlineStageCount === '60';
+    const guide = globalThis.AnimalDewlineStage60Guide?.locales?.[locale]?.guide;
+    const baseline = globalThis.ANIMAL_DEWLINE_LOCALES?.[locale];
+    if (extra) extra.hidden = !extended || !guide;
+    // If expansion is active but its guide failed to load, hide the stale
+    // 12-stage guide instead of presenting it as a complete campaign guide.
+    if (section) section.hidden = extended && !guide;
+    for (const [key, expandedKey] of Object.entries(mapping)) {
+      const text = extended ? (guide?.[expandedKey] || (key === 'intro' ? baseline?.gardenLink : '')) : baseline?.[key];
+      if (typeof text === 'string' && text) document.querySelectorAll(`[data-copy="${key}"]`).forEach(node => {
+        // The legacy answer describes stars, not the number of Check presses.
+        node.textContent = !extended && key === 'faqCheckCountQuestion' ? (fallbackStarQuestion[locale] || text) : text;
+      });
+    }
+    if (extra && guide) extra.querySelectorAll('[data-dewline-copy]').forEach(node => { node.textContent = guide[node.dataset.dewlineCopy] || ''; });
+  }
+  const schedule = () => queueMicrotask(render);
+  selector?.addEventListener('change', schedule);
+  for (const event of ['weightplay:dewline-campaign-ready', 'weightplay:shell-sync', 'wonder:locale-change']) window.addEventListener(event, schedule);
+  schedule();
+})();
+</script><!-- DEWLINE_STAGE60_ADAPTER_END -->
 </body>
 </html>

@@ -758,10 +758,17 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
           const value = stateReader();
           if (!value || (value.screen !== null && !screens.has(value.screen))) throw new Error("INVALID_GAME_MEASUREMENT_STATE");
           const key = value.roundKey ?? null;
-          const stateStageId = value.stageId ?? value.stage_id ?? value.levelId ?? value.level_id ?? value.roomId ?? value.room_id ?? value.floorId ?? value.floor_id ?? value.chapterId ?? value.chapter_id ?? value.stage ?? value.level ?? value.room ?? value.floor ?? value.chapter;
+          // A consumer may opt into an authoritative stageId on every snapshot.
+          // Only its explicit null clears a prior identity; absent/undefined and
+          // all legacy nulls retain the event-based fallback used by other games.
+          const authoritativeStage = value.stageIdAuthoritative === true;
+          const stateStageId = authoritativeStage ? value.stageId : (value.stageId ?? value.stage_id ?? value.levelId ?? value.level_id ?? value.roomId ?? value.room_id ?? value.floorId ?? value.floor_id ?? value.chapterId ?? value.chapter_id ?? value.stage ?? value.level ?? value.room ?? value.floor ?? value.chapter);
           if ((typeof stateStageId === "string" || typeof stateStageId === "number") && String(stateStageId).trim()) {
             activeStageId = stateStageId;
             pendingStageId = stateStageId;
+          } else if (authoritativeStage && Object.hasOwn(value, "stageId") && value.stageId === null) {
+            activeStageId = null;
+            pendingStageId = null;
           }
           if (!stateReady && value.screen === null && key === null && !value.started) return;
           stateReady = true;
@@ -785,8 +792,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
           }
           restartRequested = false;
           if (value.ended && key !== null) {
-            const completedStageId = value.stageId ?? value.stage_id ?? value.levelId ?? value.level_id ?? value.roomId ?? value.room_id ?? value.floorId ?? value.floor_id ?? value.chapterId ?? value.chapter_id ?? value.stage ?? value.level ?? value.room ?? value.floor ?? value.chapter;
-            end(value.outcome || "complete", completedStageId);
+            end(value.outcome || "complete", stateStageId);
             observedEnded = true;
           } else if (key === null || value.started === false) {
             end("abandon");

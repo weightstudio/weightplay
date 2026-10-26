@@ -1,0 +1,9 @@
+{
+  "status": "DRAFT_NOT_YET_INTEGRATED_OR_ART_APPROVED",
+  "tool": "built-in image_gen",
+  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-cbaf7182-4d48-4ef3-9f9f-c26cf6c98dd4.png",
+  "styleReference": "games/animal-dewline/assets/animal-dewline-valve-atlas.png",
+  "transparentBackgroundRequested": true,
+  "prompt": "Use case: stylized-concept. Asset type: one transparent 2-by-2 sprite sheet of original puzzle tools for a meadow water-routing game. Image 1 is a reference only for its luminous jewel-like water, polished warm brass, friendly botanical detailing and premium illustrated finish. Show exactly four clearly different, centered and separate objects, one per cell: top left a small removable brass pipe clamp, top right a three-way brass pipe junction with a visible turn arrow, bottom left two connected small vessels showing water transfer, bottom right a clear glass reservoir bottle holding a blue droplet. Keep each silhouette recognizable at small phone size, with generous transparent padding and exact even grid cells. No people or animals, no letters, numbers, labels, logos, watermark, background or extra objects.",
+  "remaining": "Verify alpha, sprite bounds, actual phone-size readability, integrated screens, source identity and independent Art evidence."
+}

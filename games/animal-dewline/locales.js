@@ -563,3 +563,26 @@ Object.assign(window.ANIMAL_DEWLINE_LOCALES.ar, {
  Object.assign(table, {intro:table.gardenIntro, progress:table.gardenProgress.replace("{n}","0"), guideIntro:table.gardenIntro, guideOne:table.gardenGoal, guideTwo:table.gardenLink, guideThree:table.gardenAllReady, guidePlan:table.gardenTip, guideTotal:table.gardenLink, guideFeedback:table.gardenStarRule, guideFinish:table.gardenIntro, guidePrivacy:table.gardenSave, guideReplay:table.gardenStarRule, faqCountAnswer:table.gardenIntro, faqProgressAnswer:table.gardenSave, faqValvesAnswer:table.gardenLink, faqWrongAnswer:table.gardenTip, faqSelectionAnswer:table.gardenIntro, faqTotalExampleAnswer:table.gardenTip, faqCheckCountAnswer:table.gardenStarRule, guideTotalTitle:table.gardenStage1});
  });
 })();
+
+// A failed browser save leaves the current attempt available only on this page.
+// This copy is shared by the original gardens and the expanded campaign's fallback.
+(() => {
+ const messages = {
+  en: 'Could not save. Progress stays on this page until you leave or reload.',
+  'zh-Hant': '無法儲存。進度只保留在此頁面，離開或重新載入後就會消失。',
+  'zh-Hans': '无法保存。进度只保留在此页面，离开或重新加载后就会消失。',
+  ja: '保存できませんでした。進行状況はこのページを離れるか再読み込みするまで保持されます。',
+  ko: '저장하지 못했어요. 이 페이지를 떠나거나 새로고침할 때까지만 진행 상황이 유지돼요.',
+  es: 'No se pudo guardar. El progreso solo se mantendrá en esta página hasta que salgas o la recargues.',
+  'pt-BR': 'Não foi possível salvar. O progresso só ficará nesta página até você sair ou recarregá-la.',
+  fr: 'Enregistrement impossible. La progression reste sur cette page jusqu’à ce que vous la quittiez ou la rechargiez.',
+  de: 'Speichern nicht möglich. Der Fortschritt bleibt nur auf dieser Seite, bis du sie verlässt oder neu lädst.',
+  it: 'Impossibile salvare. I progressi restano solo su questa pagina finché non la lasci o la ricarichi.',
+  ru: 'Не удалось сохранить. Прогресс останется на этой странице до выхода или перезагрузки.',
+  hi: 'सहेज नहीं पाए। इस पेज से जाने या इसे फिर लोड करने तक ही प्रगति बनी रहेगी।',
+  ar: 'تعذّر الحفظ. سيبقى التقدّم في هذه الصفحة حتى تغادرها أو تعيد تحميلها فقط.',
+ };
+ for (const [locale, message] of Object.entries(messages)) {
+  window.ANIMAL_DEWLINE_LOCALES[locale].storageFailure = message;
+ }
+})();
