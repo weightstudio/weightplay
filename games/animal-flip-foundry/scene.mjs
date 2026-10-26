@@ -97,5 +97,5 @@ export class FoundryScene {
     this.renderer.render(this.scene,this.camera);
   }
   stats(){const i=this.renderer.info;return {revision:THREE.REVISION,calls:i.render.calls,triangles:i.render.triangles,geometries:i.memory.geometries,textures:i.memory.textures,instances:this.count||0,contextLost:!!this.contextLost,backgroundFailed:!!this.backgroundFailed};}
-  dispose(){this.disposed=true;this.renderer.domElement.removeEventListener('webglcontextlost',this.lost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.restored);this.geometry.dispose();this.material.dispose();this.background?.dispose();this.renderer.dispose();this.renderer.domElement.remove();}
+  dispose(){this.disposed=true;this.renderer.domElement.removeEventListener('webglcontextlost',this.lost);this.renderer.domElement.removeEventListener('webglcontextrestored',this.restored);this.geometry.dispose();this.material.dispose();this.background?.dispose();if(!this.contextLost)this.renderer.forceContextLoss();this.renderer.dispose();this.renderer.domElement.remove();}
 }

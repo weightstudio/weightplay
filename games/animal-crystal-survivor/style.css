@@ -1,7 +1,7 @@
 /* Dungeon Venture v31 source preservation + Interface 7 compatibility cleanup.
    The authored v31 stylesheet is kept byte-for-byte in style-v31-base.css. */
 @import url("/games/animal-crystal-survivor/style-v31-base.css?v=20261026-crystal-i9-21238189145a");
-@import url("/games/animal-crystal-survivor/interface-7-cleanup.css?v=20261026-crystal-i9-28947b226dc4");
+@import url("/games/animal-crystal-survivor/interface-7-cleanup.css?v=20261026-crystal-i9-ee1755de3d13");
 
 /* Localized Result labels may use two lines inside the existing action cells. */
 html body #resultPanel :is(#resultMenuBtn, #nextStageBtn, #retryBtn) {

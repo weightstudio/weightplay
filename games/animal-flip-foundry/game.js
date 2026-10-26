@@ -69,12 +69,12 @@ import {FoundryScene} from './scene.mjs';
       const focus = id<=6?(id === 1 ? c.wideStarts : id === 6 ? c.precisionFinish : c.newSpacing):rules.join(' · ');
       return {
         id,
-        kicker: title,
+        kicker: id<=30?e.gearworks:e.observatory,
         title,
-        subtitle: `${id<=30?e.gearworks:e.observatory} · ${c.platforms}`,
+        subtitle: c.platforms,
         status: id>progress.unlocked?e.locked:progress.cleared[id]?e.cleared:c.platforms,
         summary: focus,
-        details: [focus, label("surface", {chapter:id, platform:1})],
+        details: [focus, `${title} · ${c.platforms}`],
         locked: id>progress.unlocked,
         cleared: Boolean(progress.cleared[id]),
         poster: chapterPoster,
@@ -179,7 +179,7 @@ import {FoundryScene} from './scene.mjs';
     try{world?.dispose();world=new FoundryScene(arenaFrame,()=>{state.graphicsLost=true;state.drag=null;state.charge=null;recovery.hidden=false;},()=>{state.graphicsLost=false;recovery.hidden=true;state.lastFrame=0;state.accumulator=0;fitArena();});state.graphicsLost=false;recovery.hidden=true;fitArena();}
     catch(error){state.graphicsLost=true;recovery.hidden=false;console.warn('FOUNDRY_WEBGL_UNAVAILABLE',error.message);}
   }
-  recovery.querySelector('button').addEventListener('click',()=>{if(world?.contextLost)world.renderer.forceContextRestore();else createWorld();});
+  recovery.querySelector('button').addEventListener('click',createWorld);
   function chooseNozzle(value){if(state.screen!=='battle'||state.flight||state.settle||state.chapter<7)return;state.nozzle=value;updateTools();drawScene();canvas.focus({preventScroll:true});}
   $('foundry-direct').addEventListener('click',()=>chooseNozzle('direct'));
   $('foundry-loft').addEventListener('click',()=>chooseNozzle('loft'));
@@ -223,22 +223,22 @@ import {FoundryScene} from './scene.mjs';
   }
   function setStatus(text){ const el=$('battle-status'); if(el.textContent!==text) el.textContent=text; }
   function forceNow(){ return state.charge!==null && state.charge!==undefined ? clamp((performance.now()-state.charge)*.16,0,300) : state.drag?.force || 0; }
-  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = c.stagesAction; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
+  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = e.stage; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
   function renderLocalized() {
     const c = copy();
     const mainTitle = document.querySelector(".main-title")?.textContent || "Flip Foundry";
     document.querySelector(".main-summary")?.removeAttribute("data-five-copy");
     $("loadingPanel")?.querySelector("strong")?.replaceChildren(document.createTextNode(mainTitle));
     $("loadingPanel")?.querySelector("span")?.replaceChildren(document.createTextNode(c.preparing));
-    document.querySelector("#stage-screen h2").textContent = c.stageTitle;
+    document.querySelector("#stage-screen h2").textContent = expansion().stage;
     document.querySelector('#stage-screen [data-wp-return="stage"]').setAttribute("aria-label", c.backMain);
     const stageNavigation = document.querySelector("#stage-screen [data-wp-frame-nav]");
     if (stageNavigation) {
-      stageNavigation.setAttribute("aria-label", c.stageSections);
+      stageNavigation.setAttribute("aria-label", `${expansion().stage} 1–${TOTAL_STAGES}`);
       const stageTab = stageNavigation.querySelector("button");
-      if (stageTab) stageTab.textContent = c.stages;
+      if (stageTab) stageTab.textContent = expansion().stage;
     }
-    document.querySelector('#battle-screen [data-wp-return="battle"]').setAttribute("aria-label", c.backStages);
+    document.querySelector('#battle-screen [data-wp-return="battle"]').setAttribute("aria-label", expansion().stage);
     $("reset-surface").textContent = "↻";
     $("reset-surface").title = c.retry;
     $("reset-surface").setAttribute("aria-label", c.retry);

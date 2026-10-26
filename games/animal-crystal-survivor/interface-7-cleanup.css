@@ -93,21 +93,17 @@ html[data-wp-shared-interface="7"] body #resultPanel .wp-i7-result-actions {
   min-width: 0 !important;
   margin: 0 !important;
 }
+/* Common Frame actions own skin and physical target size inside the logical
+   Battle Canvas. Only this content row's wrapping/placement stays game-owned. */
 html[data-wp-shared-interface="7"] body #resultPanel .wp-i7-result-actions > button {
   grid-column: auto !important;
   grid-row: auto !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
   margin: 0 !important;
-  padding: 0 8px !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
-  font-size: 13px !important;
-  line-height: 1.2 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  line-height: 1.15 !important;
 }
 html[data-wp-shared-interface="7"] body #resultPanel #nextStageBtn:disabled {
   display: block !important;

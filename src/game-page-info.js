@@ -22759,7 +22759,8 @@
         "Cleared",
         "The original six stages stay available. Clear Stage 6 to open 7, then progress in order. Clears and best records save locally; the existing best streak and collected blocks are preserved. Retry repeats the current landing."
       ]
-    ]
+    ],
+    "time": "1–3 minutes per stage"
   },
   "zh-Hant": {
     "title": "翻轉工坊",
@@ -22800,7 +22801,8 @@
         "已通過",
         "原有六關維持開放。通過第 6 關解鎖第 7 關，之後依序前進。通關與最佳紀錄保存在本機，原本連勝及已收藏方塊會保留。重試從本次落地段開始。"
       ]
-    ]
+    ],
+    "time": "每關約 1–3 分鐘"
   },
   "zh-Hans": {
     "title": "翻转工坊",
@@ -22841,7 +22843,8 @@
         "已通过",
         "原有六关保持开放。通过第 6 关解锁第 7 关，之后依序前进。通关与最佳纪录保存在本机，原本连胜及已收藏方块会保留。重试从本次落地段开始。"
       ]
-    ]
+    ],
+    "time": "每关约 1–3 分钟"
   },
   "ja": {
     "title": "フリップ工房",
@@ -22882,13 +22885,14 @@
         "クリア",
         "元の6ステージは開放のまま。6をクリアすると7、その後は順番に開きます。クリアと記録は端末に保存し、連続記録と獲得ブロックは維持します。再挑戦は現在の着地区間から。"
       ]
-    ]
+    ],
+    "time": "1ステージ約1～3分"
   },
   "ko": {
     "title": "플립 공방",
-    "intro": "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!",
+    "intro": "60개 스테이지! 고리를 지나 착지하세요. 네 번 운반하면 통과!",
     "story": [
-      "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!"
+      "60개 스테이지! 고리를 지나 착지하세요. 네 번 운반하면 통과!"
     ],
     "systems": [
       "7스테이지부터 발사 전에 직사나 곡사를 선택하세요. 모든 고리를 지나고 천장을 피하며 송풍 구역과 움직이는 받침대를 고려하세요. 점선이 착지를 예측합니다.",
@@ -22908,7 +22912,7 @@
     "progression": [
       "기존 여섯 스테이지는 계속 열려 있어요. 6을 완료하면 7이 열리고 이후 순서대로 진행합니다. 완료와 최고 기록은 기기에 저장하며 기존 연속 기록과 수집 블록은 유지됩니다. 재시도는 현재 착지 구간부터입니다."
     ],
-    "designNote": "60개 스테이지에 수정을 운반하세요. 조준하고 고리를 지나 착지하면 됩니다. 네 번 운반하면 완료!",
+    "designNote": "60개 스테이지! 고리를 지나 착지하세요. 네 번 운반하면 통과!",
     "parent": "기존 여섯 스테이지는 계속 열려 있어요. 6을 완료하면 7이 열리고 이후 순서대로 진행합니다. 완료와 최고 기록은 기기에 저장하며 기존 연속 기록과 수집 블록은 유지됩니다. 재시도는 현재 착지 구간부터입니다.",
     "faq": [
       [
@@ -22923,7 +22927,8 @@
         "완료",
         "기존 여섯 스테이지는 계속 열려 있어요. 6을 완료하면 7이 열리고 이후 순서대로 진행합니다. 완료와 최고 기록은 기기에 저장하며 기존 연속 기록과 수집 블록은 유지됩니다. 재시도는 현재 착지 구간부터입니다."
       ]
-    ]
+    ],
+    "time": "스테이지당 1–3분"
   },
   "es": {
     "title": "Taller de giros",
@@ -22964,7 +22969,8 @@
         "Completada",
         "Las seis fases originales siguen abiertas. Completa la 6 para abrir la 7 y luego avanza en orden. Se guardan victorias y récords locales; se conservan la racha y los bloques. Reintentar repite el aterrizaje actual."
       ]
-    ]
+    ],
+    "time": "1–3 minutos por fase"
   },
   "pt-BR": {
     "title": "Oficina do Giro",
@@ -23005,7 +23011,8 @@
         "Concluída",
         "As seis fases originais continuam abertas. Conclua a 6 para abrir a 7 e avance em ordem. Vitórias e recordes ficam salvos no aparelho; sequência e blocos são preservados. Tentar novamente repete o pouso atual."
       ]
-    ]
+    ],
+    "time": "1–3 minutos por fase"
   },
   "fr": {
     "title": "Atelier du flip",
@@ -23046,7 +23053,8 @@
         "Terminée",
         "Les six étapes originales restent ouvertes. Termine la 6 pour ouvrir la 7, puis avance dans l’ordre. Réussites et records sont sauvegardés localement ; série et blocs restent acquis. Réessayer reprend l’atterrissage actuel."
       ]
-    ]
+    ],
+    "time": "1–3 minutes par étape"
   },
   "de": {
     "title": "Flip-Werkstatt",
@@ -23087,7 +23095,8 @@
         "Geschafft",
         "Die ursprünglichen sechs Stufen bleiben offen. Schließe 6 ab, um 7 zu öffnen, danach geht es der Reihe nach weiter. Abschlüsse und Rekorde werden lokal gespeichert; Serie und gesammelte Blöcke bleiben erhalten. Wiederholen startet beim aktuellen Sprung."
       ]
-    ]
+    ],
+    "time": "1–3 Minuten pro Stufe"
   },
   "it": {
     "title": "Officina del flip",
@@ -23128,7 +23137,8 @@
         "Completato",
         "I sei livelli originali restano aperti. Completa il 6 per aprire il 7 e prosegui in ordine. Vittorie e record sono salvati localmente; serie e blocchi raccolti restano intatti. Riprova riparte dall’atterraggio attuale."
       ]
-    ]
+    ],
+    "time": "1–3 minuti per livello"
   },
   "ru": {
     "title": "Мастерская переворотов",
@@ -23169,7 +23179,8 @@
         "Пройдено",
         "Первые шесть этапов остаются открытыми. Пройдите 6, чтобы открыть 7, затем двигайтесь по порядку. Победы и рекорды сохраняются на устройстве; серия и собранные блоки остаются. Повтор начинается с текущего прыжка."
       ]
-    ]
+    ],
+    "time": "1–3 минуты на этап"
   },
   "hi": {
     "title": "फ्लिप कार्यशाला",
@@ -23210,7 +23221,8 @@
         "पूरा",
         "मूल छह चरण खुले रहते हैं। 6 पूरा करने पर 7 खुलेगा, फिर क्रम से आगे बढ़ें। जीत और रिकॉर्ड इसी उपकरण पर सहेजते हैं; पुरानी लड़ी और मिले ब्लॉक सुरक्षित हैं। फिर प्रयास वर्तमान लैंडिंग से शुरू होता है।"
       ]
-    ]
+    ],
+    "time": "हर चरण में 1–3 मिनट"
   },
   "ar": {
     "title": "ورشة القلب",
@@ -23226,7 +23238,7 @@
       "التنسيق بين اليد والعين"
     ],
     "difficulty": "سهلة البداية وتزداد تحدياً",
-    "time": "من دقيقة إلى 3 دقائق لكل فصل",
+    "time": "1–3 دقائق لكل مرحلة",
     "intro": "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة.",
     "story": [
       "سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة."
