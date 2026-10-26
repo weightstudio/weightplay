@@ -342,36 +342,21 @@
       playUI:true,
       scenes:{
         main:{root:mainScreen,header:mainHeader,content:mainContent},
-        stage:{root:stageScreen,header:stageHeader,content:stageWorkspace,headerInfo:stageInfo},
-        battle:{root:battleScreen,header:battleHeader,content:battleContent,headerInfo:battleInfo},
+        stage:{root:stageScreen,header:stageHeader,content:stageWorkspace},
+        battle:{root:battleScreen,header:battleHeader,content:battleContent},
       },
     });
-    const names=gameText().stageNames||[];
-    const arcs=gameText().arcNames||[];
+    const stageGroup=window.WeightPlayScreenFrame.createGroup();
+    stageGroup.add(stageProgress);stageInfo.remove();frame.stageTopUI.add(stageGroup);
+    const battleGroup=window.WeightPlayScreenFrame.createGroup();
+    for(const node of [...battleInfo.children])battleGroup.add(node);
+    battleInfo.remove();frame.battleTopUI.add(battleGroup);
     stageUI=window.WeightPlayPlayUI.mountStage({
       page:stageWorkspace,
       rail:stageRail,
       selected:selectedStage,
       isActive:()=>frame.active==="stage",
-      config:window.ChameleonStageConfig.create({
-        count:profiles.length,
-        stage(index){
-          const stage=index+1;
-          const profile=profiles[index];
-          const locked=stage>Math.min(profiles.length,best+1);
-          return{
-            id:stage,
-            kicker:[arcs[Math.floor(index/5)],common(9)+" "+stage].filter(Boolean).join(" · "),
-            title:names[index]||common(9)+" "+stage,
-            subtitle:t(13)+" "+profile.need+"/"+profile.rounds,
-            status:locked?"🔒":stage<=best?common(8)+" "+stage:t(17),
-            locked,
-            cleared:stage<=best,
-            summary:t(0)+" · "+t(16),
-            details:[t(12)+" "+profile.need+"/"+profile.rounds,profile.sequence+" "+t(19)+" · "+(profile.reverse?t(14):t(15)),profile.preview.toFixed(1)+"s / "+profile.choose.toFixed(1)+"s"],
-          };
-        },
-      }),
+      config:window.ChameleonStageConfig.create({profiles,getBest:()=>best,gameText,t,common}),
       onSelect(index){selectedStage=index;},
       onStart(index){start(index+1);},
     });
@@ -387,11 +372,12 @@
   }
   function show(screen){
     if(screen!=="battle"&&state.screen==="battle"&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome="abandon";}
+    if(screen!=="stage")stageUI?.cancel();
     cancelAnimationFrame(frameId);state.screen=screen;document.body.dataset.screen=screen;
     for(const name of ["main","stage","battle"]){const node=$(name+"-screen");node.hidden=name!==screen;node.classList.toggle("active",name===screen);}
     if(guide){guide.hidden=screen!=="main";guide.inert=screen!=="main";guide.setAttribute("aria-hidden",String(screen!=="main"));}
     if(screen!=="battle"){resultScreen.hidden=true;audio?.stop();}
-    frame?.activate(screen);
+    frame?.activate(screen);window.WeightPlayBattleCanvas?.sync?.();
     if(screen==="stage")stageCards();
     if(screen==='main')startButton.focus({preventScroll:true});
     if(screen==='stage')stageUI?.select(selectedStage,{focus:true});
@@ -480,8 +466,6 @@
   document.addEventListener('visibilitychange',()=>{lastTime=performance.now();});
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(frameId);audio?.stop();});
   window.addEventListener('pageshow',e=>{if(e.persisted&&state.screen==='battle'){lastTime=performance.now();frameId=requestAnimationFrame(tick);}});
-  const localeSource=$('localeSelect')?.closest('label');
-  if(localeSource){const retained=document.createElement('div');retained.hidden=true;retained.dataset.wpFrameLocaleSource='';retained.append(localeSource);app.append(retained);}
   mountSharedPlayUI();
   selectedStage=best;
   updateProgress();stageCards();show('main');
