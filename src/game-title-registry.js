@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "nori-bankshot": {
+    "__localizedExact": true,
+    "en": "Nori Bankshot",
+    "zh-Hant": "諾里撞球館",
+    "zh-Hans": "诺里台球馆",
+    "ja": "ノリのビリヤード",
+    "ko": "노리의 당구장",
+    "es": "Billar con Nori",
+    "pt-BR": "Bilhar com Nori",
+    "fr": "Le billard de Nori",
+    "de": "Noris Billardhalle",
+    "it": "Il biliardo di Nori",
+    "ru": "Бильярд с Нори",
+    "hi": "नोरी का बिलियर्ड्स",
+    "ar": "بلياردو نوري"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

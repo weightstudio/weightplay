@@ -206,7 +206,7 @@
   };
 
   document.body.dataset.gameVersion = GAME_VERSION;
-  document.body.dataset.interfaceVersion = "6";
+  document.body.dataset.interfaceVersion = document.body.dataset.wpInterfaceVersion || "9";
   const start = document.querySelector("#startButton");
   const replay = document.querySelector("#resultReplay");
   if (start) start.addEventListener("click", () => {

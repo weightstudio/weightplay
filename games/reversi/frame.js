@@ -33,8 +33,7 @@
     mainHeader.querySelector('h1').textContent = official;
     for (const header of [mainHeader,battleHeader]) header.querySelector('h1').dataset.wpFrameTitle = '';
     mainHeader.querySelector('h1').dataset.wpGameTitle = '';
-    const source = document.createElement('div'); source.hidden = true;
-    source.append(q('.logic-header-tools')); root.append(source);
+    q('.logic-header-tools')?.remove();
     mainHeader.replaceChildren(mainHeader.querySelector('[data-wp-return]'), mainHeader.querySelector('h1'));
     main.classList.remove('logic-main'); hero.className = 'reversi-main-content';
     const poster = hero.querySelector('.main-poster'); poster.dataset.wpFramePoster = '';
@@ -74,6 +73,7 @@
       content.inert = blocked; app.board.inert = blocked;
       q('#logicHint').disabled = ended;
       frame.activate(scene,{covered:blocked});
+      window.WeightPlayBattleCanvas.sync();
       if (guide) {guide.hidden=scene!=='main';guide.inert=scene!=='main';}
     };
     const mainReturn = () => {

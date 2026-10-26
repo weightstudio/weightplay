@@ -82,6 +82,16 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
+      id: "nori-bankshot", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "/games/nori-bankshot/?preview=1", href: "games/nori-bankshot/",
+      title: {"__localizedExact":true,"en":"Nori Bankshot","zh-Hant":"諾里撞球館","zh-Hans":"诺里台球馆","ja":"ノリのビリヤード","ko":"노리의 당구장","es":"Billar con Nori","pt-BR":"Bilhar com Nori","fr":"Le billard de Nori","de":"Noris Billardhalle","it":"Il biliardo di Nori","ru":"Бильярд с Нори","hi":"नोरी का बिलियर्ड्स","ar":"بلياردو نوري"},
+      type: {en:"Billiards Puzzle","zh-Hant":"撞球益智","zh-Hans":"台球益智",ja:"ビリヤードパズル",ko:"당구 퍼즐",es:"Puzle de billar","pt-BR":"Quebra-cabeça de bilhar",fr:"Puzzle de billard",de:"Billardrätsel",it:"Rompicapo di biliardo",ru:"Бильярдная головоломка",hi:"बिलियर्ड्स पहेली",ar:"ألغاز البلياردو"},
+      description: {en:"Plan the collision and leave the next shot. Clear 30 harbor tables with ordered balls, cushion shots and lantern finales.","zh-Hant":"看準碰撞，也替下一球留路。在 30 張港灣球檯挑戰次序球、碰庫球與燈球終局。"},
+      categories:["Sports","Puzzle","Animal Games"],skills:["Aiming","Spatial Planning","Focus"],ages:["9","family"],
+      meta:{en:["30 Tables","Saved Collection","Permanent Diamond Style"],"zh-Hant":["30 張球檯","永久收藏","鑽石永久外觀"]},
+      art:{kind:"image",background:"games/nori-bankshot/art/poster.png",hideHero:true}
+    },
+    {
       id: "wildborn", audience: "general", status: "planned", internalOnly: true,
       internalTrial: "index.html?preview=1", href: "games/wildborn/",
       title: {"__localizedExact":true,"en":"Wildborn","zh-Hant":"荒野輪迴","zh-Hans":"荒野轮回","ja":"荒野の輪廻","ko":"야생의 윤회","es":"Renacer salvaje","pt-BR":"Renascer selvagem","fr":"Renaître sauvage","de":"Wild geboren","it":"Rinascita selvaggia","ru":"Дикий круговорот","hi":"वन्य पुनर्जन्म","ar":"ولادة برية"},

@@ -24,12 +24,10 @@
   document.body.dataset.wpGameOwnedGuide = 'true';
   document.body.dataset.wpMainStartOnly = 'true';
   const main = $('#mainScreen'), battle = $('#battleScreen'), canvas = $('.card-game-battle');
-  const guide = main.querySelector('.game-page-info');
-  if (guide) {main.after(guide);guide.setAttribute('aria-labelledby','speed-guide-title');}
-  const app = document.createElement('div');
-  app.id = 'speedApp'; app.dataset.wpFrameRoot = '';
-  main.before(app); app.append(main, battle);
-  document.body.removeAttribute('data-wp-frame-root');
+  const app = $('#speedApp');
+  if (!app) {loader.fail(undefined, () => location.reload());return;}
+  const guide = document.querySelector('.game-page-info');
+  if (guide) {if(guide.previousElementSibling!==app)app.after(guide);guide.setAttribute('aria-labelledby','speed-guide-title');}
   $('#restartBtn')?.remove(); $('#newGameBtn')?.remove();
   window.WPCardGamesNext.mount({ id: 'speed' });
 
@@ -38,12 +36,6 @@
   const title = document.createElement('h1');
   title.dataset.wpFrameTitle = ''; title.dataset.wpGameTitle = '';
   title.textContent = main.querySelector('[data-card-title]').textContent;
-  // Keep obsolete source controls out of the visible tree. Shared Settings
-  // owns locale navigation; the old engine's reload listener stays unused.
-  const sources = document.createElement('div'); sources.hidden = true;
-  const utilities = header.querySelector('.header-utilities');
-  if (utilities) sources.append(utilities);
-  document.body.append(sources);
   header.replaceChildren(back, title);
   const hero = main.querySelector('.main-hero'), copy = main.querySelector('.main-copy');
   const poster = hero.querySelector('img.cover'); poster.dataset.wpFramePoster = '';
@@ -75,6 +67,7 @@
     const playing = document.body.dataset.screen === 'battle' && !battle.hidden;
     const covered = playing && !result.hidden;
     frame.activate(playing ? 'battle' : 'main', {covered});
+    window.WeightPlayBattleCanvas.sync();
     table.inert = covered || Boolean(battle.querySelector('[data-card-game-return-confirm]'));
   };
   window.addEventListener('weightplay:shell-sync', sync);
@@ -154,8 +147,5 @@
   };
 
   applyShellCopy();
-  window.setTimeout(applyShellCopy, 0);
-  window.setTimeout(applyShellCopy, 350);
-  window.setTimeout(applyShellCopy, 1000);
-  window.setTimeout(applyShellCopy, 1800);
+  window.addEventListener('wonder:locale-change',applyShellCopy);
 })();
