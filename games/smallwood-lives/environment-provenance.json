@@ -1,0 +1,77 @@
+{
+  "owner": "01a17284-8189-7232-bccd-e657926ea1cc",
+  "retrieved": "2026-10-26",
+  "files": [
+    {
+      "name": "internet",
+      "indicator": "IT.NET.USER.ZS",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/IT.NET.USER.ZS?format=json&date=2019:2023&per_page=20000",
+      "bytes": 314607,
+      "sha256": "575e670a58474b36c9781bca8f6236ec5e6c60672d9ab56d0503f0fba8d9ddad",
+      "nonNull": 1076
+    },
+    {
+      "name": "cooking",
+      "indicator": "EG.CFT.ACCS.ZS",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/EG.CFT.ACCS.ZS?format=json&date=2019:2023&per_page=20000",
+      "bytes": 335747,
+      "sha256": "968bda9c9bb3ea857e09e73b0c533f8028953dbb714f2338875b3f53163e9a3b",
+      "nonNull": 1200
+    },
+    {
+      "name": "education",
+      "indicator": "SE.SEC.CMPT.LO.ZS",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SE.SEC.CMPT.LO.ZS?format=json&date=2019:2023&per_page=20000",
+      "bytes": 343978,
+      "sha256": "ed4e11e66c83cd4f19357b5035f08bc39f54e90b2b0557bfb84ec94ec65c9bfd",
+      "nonNull": 889
+    },
+    {
+      "name": "agriculture",
+      "indicator": "SL.AGR.EMPL.ZS",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.AGR.EMPL.ZS?format=json&date=2019:2023&per_page=20000",
+      "bytes": 354045,
+      "sha256": "5c3ba30a9e6319b3cbab5747e56f088094f4d8e5384671efbbae7c4840d897e6",
+      "nonNull": 1171
+    },
+    {
+      "name": "industry",
+      "indicator": "SL.IND.EMPL.ZS",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.IND.EMPL.ZS?format=json&date=2019:2023&per_page=20000",
+      "bytes": 350051,
+      "sha256": "873c8f0be84c63e679ca626061c237af3e9d31c990126738483ff72a1281c168",
+      "nonNull": 1171
+    },
+    {
+      "name": "services",
+      "indicator": "SL.SRV.EMPL.ZS",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.SRV.EMPL.ZS?format=json&date=2019:2023&per_page=20000",
+      "bytes": 350046,
+      "sha256": "02b3ae2f33af7e705a069f9eca8116e5ba3e4607ae8a15aef465820c4d2d6eb7",
+      "nonNull": 1171
+    },
+    {
+      "name": "health",
+      "indicator": "SH_UHC_SCI",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SH_UHC_SCI?format=json&date=2019:2023&per_page=20000",
+      "bytes": 273982,
+      "sha256": "4cff0b712ef98116c5213a30dc25c3a675f736734140df3ca86e013f328398ef",
+      "nonNull": 1205
+    }
+  ],
+  "referenceYear": 2023,
+  "oldestYear": 2019,
+  "countryCoverage": {
+    "internet": 190,
+    "cooking": 192,
+    "education": 172,
+    "agriculture": 186,
+    "industry": 186,
+    "services": 186,
+    "health": 193
+  },
+  "countries": 237,
+  "missingValues": "Omitted; no regional or global substitution for living conditions",
+  "outputSHA256": "b0e34c9d7a17f46d0f785f752ed27d7fb17c4cf47a6acbd7a8ce4d3ec7d90177",
+  "bytes": 53416
+}

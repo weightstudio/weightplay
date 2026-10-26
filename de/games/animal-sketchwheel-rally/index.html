@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-  <script defer src="../../src/game-page-info.js?v=20261003-sketchwheel-text140-v2"></script>
+  <script defer src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1" charset="utf-8"></script>
   <script defer src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260923-play-header48">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
@@ -62,37 +62,37 @@
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainGroup" class="main-screen" data-screen="main">
       <header id="mainHeader" class="main-header">
-        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Spielgrafik zu Skizzenrad-Rennen"></a>
+        <a class="lobby-return" href="/" aria-label="Zurück zu WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Spielgrafik zu Skizzenrad-Rennen"></a>
         <h1 data-wp-frame-title data-t="title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Skizzenrad-Rennen</h1>
-        <label class="locale" hidden><span data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
+        <label class="locale" hidden><span data-t="language">Sprache</span><select id="localeSelect" aria-label="Sprache" data-t-aria="language"></select></label>
       </header>
       <section id="mainContent" class="main-content" data-wp-frame-content="main">
-        <img class="poster" src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" data-t-alt="posterAlt" alt="Gear Horn Rux sketches rune wheels for a forest race cart">
+        <img class="poster" src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp" data-t-alt="Gear Horn Rux zeichnet Runenräder für seinen Waldwagen" alt="Gear Horn Rux sketches rune wheels for a forest race cart">
         <div id="mainCopy" class="main-copy">
-          <small data-t="kicker">DRAW-TO-DRIVE RALLY</small>
+          <small data-t="kicker">ZEICHNEN UND FAHREN</small>
           <h2 data-t="title" data-wp-game-title data-runtime-localize="off">Skizzenrad-Rennen</h2>
-          <p data-t="pitch">Zeichne ein Rad, das zum nächsten Gelände passt. Zeichne während des Rennens neu, bevor Fia das Ziel erreicht.</p>
+          <p data-t="pitch">Zeichne ein Rad für das nächste Gelände. Ändere es während des Rennens, bevor Fia das Ziel erreicht.</p>
           <span id="mainProgress" data-wp-main-progress role="status" aria-live="polite"></span>
-          <button id="start" class="primary" type="button" data-wp-frame-action="primary" data-t="start">Start Game</button>
+          <button id="start" class="primary" type="button" data-wp-frame-action="primary" data-t="start">Spiel starten</button>
         </div>
       </section>
     </main>
   <section id="stageScreen" class="screen-shell" data-screen="stage" hidden>
     <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
       <header id="stageHeader" class="stage-header">
-        <button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button>
-        <strong data-wp-frame-title data-t="chooseRace">Choose a forge rally</strong>
+        <button id="stageBack" type="button" data-wp-return="stage" aria-label="Zurück" data-t-aria="back">←</button>
+        <strong data-wp-frame-title data-t="chooseRace">Rennen wählen</strong>
       </header>
       <div id="stageContent" class="stage-content">
         <div id="stageInfo" hidden><span id="stageSummary" role="status" aria-live="polite"></span></div>
         <div id="stagePage" class="stage-page">
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="Race selector" data-t-aria="raceSelector"></div>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="Rennauswahl" data-t-aria="raceSelector"></div>
         </div>
-              <section id="forgePanel" class="forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
+              <section id="forgePanel" class="forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Runenwerkstatt</strong><p data-t="forgeIntro">Nutze Schmiedebolzen für Werkzeuge in allen Rennen.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
       </div>
       <nav id="stageNav" class="stage-tabs" data-wp-frame-nav data-wp-frame-stage-nav aria-label="Stage navigation">
-        <button id="raceTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-t="stages">Stages</button>
-        <button id="forgeTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment" data-t="forge">Rune Forge</button>
+        <button id="raceTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="stages" data-t="stages">Level</button>
+        <button id="forgeTab" type="button" data-wp-frame-action="tab" data-wp-frame-stage-slot="equipment" data-t="forge">Runenwerkstatt</button>
       </nav>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
@@ -101,24 +101,24 @@
   <section id="battleScreen" class="screen-shell" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <header id="battleHeader" class="battle-header">
-        <button id="battleBack" type="button" data-wp-return="battle" aria-label="Back" data-t-aria="back">←</button>
+        <button id="battleBack" type="button" data-wp-return="battle" aria-label="Zurück" data-t-aria="back">←</button>
         <strong data-wp-frame-title data-t="title" data-wp-game-title data-runtime-localize="off">Skizzenrad-Rennen</strong>
       </header>
       <section id="battleContent" class="battle-content">
         <div id="battleInfo" hidden>
           <span id="battleChapterRace"><small id="battleChapter"></small><strong id="battleRace"></strong></span>
-          <span id="playerProgressStat"><b data-t="you">You</b><strong id="playerProgress">0%</strong></span>
-          <span id="rivalProgressStat"><b data-t="rival">Rival</b><strong id="rivalProgress">0%</strong></span>
-          <span id="timeStat"><b data-t="time">Time</b><strong id="timeValue">0</strong></span>
+          <span id="playerProgressStat"><b data-t="you">Du</b><strong id="playerProgress">0%</strong></span>
+          <span id="rivalProgressStat"><b data-t="rival">Gegner</b><strong id="rivalProgress">0%</strong></span>
+          <span id="timeStat"><b data-t="time">Zeit</b><strong id="timeValue">0</strong></span>
         </div>
-                <div class="objective-row"><strong id="objective"></strong><span id="nextTerrain"></span><button id="battleHelp" type="button" aria-label="Terrain profile guide" data-t-aria="helpTitle">?</button></div>
-                <div id="raceScene" class="race-scene"><canvas id="raceCanvas" aria-label="Live side-view rune cart race" data-t-aria="raceCanvasLabel"></canvas><div id="feedback" class="feedback" role="status" aria-live="polite"></div></div>
-                <section class="draw-controls"><div class="draw-copy"><strong data-t="drawWheel">Draw the wheel</strong><span id="profileStats"></span></div><canvas id="wheelPad" width="240" height="116" aria-label="Wheel drawing pad" data-t-aria="wheelPadLabel"></canvas><div class="blueprints" aria-label="Wheel blueprints" data-t-aria="blueprintLabel"><button type="button" data-preset="circle" data-t-aria="circle"><span class="shape circle"></span><b data-t="circle">Round</b></button><button type="button" data-preset="tall" data-t-aria="tall"><span class="shape tall"></span><b data-t="tall">Tall</b></button><button type="button" data-preset="spike" data-t-aria="spike"><span class="shape spike"></span><b data-t="spike">Grip</b></button><button type="button" data-preset="wide" data-t-aria="wide"><span class="shape wide"></span><b data-t="wide">Wide</b></button></div></section>
+                <div class="objective-row"><strong id="objective"></strong><span id="nextTerrain"></span><button id="battleHelp" type="button" aria-label="Gelände- und Radführer" data-t-aria="helpTitle">?</button></div>
+                <div id="raceScene" class="race-scene"><canvas id="raceCanvas" aria-label="Live-Seitenansicht des Runenwagenrennens" data-t-aria="raceCanvasLabel"></canvas><div id="feedback" class="feedback" role="status" aria-live="polite"></div></div>
+                <section class="draw-controls"><div class="draw-copy"><strong data-t="drawWheel">Rad zeichnen</strong><span id="profileStats"></span></div><canvas id="wheelPad" width="240" height="116" aria-label="Zeichenfeld für Räder" data-t-aria="wheelPadLabel"></canvas><div class="blueprints" aria-label="Radbaupläne" data-t-aria="blueprintLabel"><button type="button" data-preset="circle" data-t-aria="circle"><span class="shape circle"></span><b data-t="circle">Rund</b></button><button type="button" data-preset="tall" data-t-aria="tall"><span class="shape tall"></span><b data-t="tall">Hoch</b></button><button type="button" data-preset="spike" data-t-aria="spike"><span class="shape spike"></span><b data-t="spike">Griff</b></button><button type="button" data-preset="wide" data-t-aria="wide"><span class="shape wide"></span><b data-t="wide">Breit</b></button></div></section>
       </section>
-      <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Sketch, release, adapt</h2><ol><li data-t="tutorial1">Draw inside the pad or choose a blueprint.</li><li data-t="tutorial2">The wheel's actual shape changes speed, height, grip, and width.</li><li data-t="tutorial3">Redraw before each obstacle while the rival keeps moving.</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">Start rally</button></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this rally?</h2><p data-t="leaveText">Continue preserves this exact race. Returning to the map ends the attempt.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnStage">Race Map</button></div></div></section>
-      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Redraws</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Lead</b><strong id="resultLead"></strong></span><span><b data-t="reward">Reward</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">Stages</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Next Race</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">Terrain profile guide</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></section>
+      <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Zeichnen, loslassen, anpassen</h2><ol><li data-t="tutorial1">Zeichne im Feld oder wähle einen Bauplan.</li><li data-t="tutorial2">Die Form ändert Tempo, Höhe, Griff und Breite.</li><li data-t="tutorial3">Zeichne vor dem Hindernis neu, während die Gegnerin weiterfährt.</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">Rennen starten</button></div></section>
+      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Rennen verlassen?</h2><p data-t="leaveText">Fortsetzen erhält das Rennen; die Karte beendet den Versuch.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Weiter</button><button id="leaveStage" type="button" data-t="returnStage">Rennkarte</button></div></div></section>
+      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Neuzeichnungen</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Vorsprung</b><strong id="resultLead"></strong></span><span><b data-t="reward">Belohnung</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">Level</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Nächstes Rennen</button><button id="retry" type="button" data-t="retry">Erneut</button></div></div></section>
+      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">Gelände- und Radführer</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">Weiter</button></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
@@ -159,7 +159,7 @@
       <div class="game-info-section"><h3>Designnotiz</h3><p>Das Rad ist sichtbar mit dem Fahrzeug verbunden, dreht sich während der Fahrt, berührt die Bodenlinie und zeigt in Bewegungsrichtung. Handy und Desktop teilen Zeichnungskoordinaten und Maßstab.</p></div>
       <div class="game-info-section game-info-parent"><h3>Spielerinformationen und Speicherstand</h3><p>Konto, Kauf und öffentliche Rangliste sind nicht nötig. Siege, Bolzen, Upgrades, Linsenstatus und lokale Bestzeiten bleiben in diesem Browser.</p></div>
       <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie viele Rennen gibt es?</dt><dd>Es gibt 30 gestaltete Rennen in sechs Kapiteln mit je fünf Rennen.</dd></div><div><dt>Welches Rad eignet sich für Eis?</dt><dd>Wähle ein Profil mit viel Grip: Auf Eis prüft das Spiel die Haftung. Ein glattes rundes Rad passt nicht automatisch am besten.</dd></div><div><dt>Wo wird mein Fortschritt gespeichert?</dt><dd>Siege, Bolzen, Verbesserungen, Linsenstatus und Bestzeiten werden in diesem Browser gespeichert und nicht mit anderen Geräten synchronisiert.</dd></div><div><dt>Kann ich während eines Rennens neu zeichnen?</dt><dd>Ja. Zeichne vor dem nächsten Abschnitt neu, wenn sich die Anforderungen des Geländes ändern.</dd></div><div><dt>Benutzt der Rivale mein Rad?</dt><dd>Nein. Der Rivale sorgt für den Wettbewerb; dein Ergebnis hängt von deiner gezeichneten Form ab.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-prism-breakers/"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Prismabrecher</strong><span>Bewege das Paddle unter jede zurückkehrende Lichtkugel, steuere den Winkel über den Kontaktpunkt und zerstöre alle zerbrechlichen Kristalle, bevor du alle drei Kugeln verlierst.</span></span></a><a class="game-info-related-card" href="/de/games/animal-bounce-brawl/"><img src="/assets/interface7-redrawn/animal-bounce-brawl.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Hüpfduell</strong><span>Planen Sie Ihre Sprünge, wählen Sie Schaumstoff-Werkzeuge und bringen Sie den Rivalen in einer spielerischen Physik-Arena aus dem Gleichgewicht.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Weitere ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-prism-breakers" href="/de/games/animal-prism-breakers/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-breakers.webp" data-final-src="/assets/weightplay-logo.png" alt="Prismabrecher" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Prismabrecher</strong><span>Bewege das Paddle unter jede zurückkehrende Lichtkugel, steuere den Winkel über den Kontaktpunkt und zerstöre alle zerbrechlichen Kristalle, bevor du alle drei Kugeln verlierst.</span></span></a></div></div>
     </div>
   </section>
 </body>

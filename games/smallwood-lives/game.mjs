@@ -1,5 +1,6 @@
 import {DATA,COUNTRY_BY_ID,THEMES,SAVE_KEY,createStore,newLife,advanceLife,settle,readLegacy} from './life-model.mjs';
 import {COPY,LOCALES,ROUTES,normalizeLocale,format,SOURCE_LINKS} from './life-copy.mjs';
+import {ENV,LOCAL_SOURCES,eventMetric,environmentFacts} from './life-environment.mjs';
 const $=id=>document.getElementById(id),route=location.pathname.split('/').filter(Boolean)[0];
 let locale=normalizeLocale(ROUTES.includes(route)?route:document.documentElement.lang),c=COPY[locale];
 let store,save,legacy,frame,timer,busy=false,paused=false,fatal=false,dialogReturn,dialogKind=null,lastEvents='',lastResult='';
@@ -61,14 +62,22 @@ function narrative(event,r){
  const country=COUNTRY_BY_ID.get(r.country);
  if(event.key==='birth')return text('born',{country:place(country)})+' '+c.contextLines[r.home.urban===null?2:r.home.urban?0:1];
  if(event.kind==='story')return c.stories[event.key];
+ if(event.kind==='environment')return event.key.startsWith('local')?c.localStories[r.country+'_'+event.key.slice(-1)]:c.environmentStories[event.key];
  const indices={water:3,sanitation:5,electricity:7,urban:9};return c.contextLines[indices[event.key]+(r.home[event.key]?0:1)];
 }
 function contextFact(event,r){
- const country=COUNTRY_BY_ID.get(r.country);if(event.kind!=='context')return null;
+ const country=COUNTRY_BY_ID.get(r.country);
+ if(event.kind==='environment'){
+  if(event.key.startsWith('local'))return c.localScene;
+  const key=eventMetric(event,r),fact=environmentFacts(country)[key];
+  if(!fact||!Number.isFinite(fact.value))return null;
+  return c[key+'Label']+' · '+factValue(key,fact.value)+' · '+fact.year;
+ }
+ if(event.kind!=='context')return null;
  return c.contextLines[{urban:11,water:12,sanitation:13,electricity:14}[event.key]]+' · '+percent(country.facts[event.key]/100)+' · '+DATA.year;
 }
 function entry(event,r){
- const item=node('li',undefined,'life-entry');item.append(node('span',age(event.age),'entry-age'),node('p',narrative(event,r)));
+ const item=node('li',undefined,'life-entry');item.dataset.event=event.key;item.append(node('span',age(event.age),'entry-age'),node('p',narrative(event,r)));
  const fact=contextFact(event,r);if(fact)item.append(node('small',fact,'fact-line'));return item;
 }
 function renderControls(){
@@ -103,16 +112,32 @@ function dialog(title,body,actions=[{label:c.close,run:closeDialog}],kind=null){
  $('dialogActions').replaceChildren(...actions.map(a=>button(a.label,async()=>{if(!busy)await a.run();},a.primary?'primary':'')));
  if(!$('choiceDialog').open)$('choiceDialog').showModal();$('dialogActions').querySelector('button')?.focus({preventScroll:true});
 }
+function factValue(key,value){const valueText=key==='health'?text('indexValue',{n:number(value,1)}):percent(value/100);return '\u2066'+valueText+'\u2069';}
 function showSources(){
- const body=node('div');[c.howText,c.model,c.causeModel,c.fiction,c.inspirationNote].forEach(p=>body.append(node('p',p)));
- const list=node('ul');for(const [i,[label,url]]of SOURCE_LINKS.entries()){const li=node('li'),a=node('a',c[['sourceUN','sourceWHO','sourceWB'][i]]);a.href=url;a.target='_blank';a.rel='noopener noreferrer';li.append(a);list.append(li);}body.append(list);dialog(c.sources,body,undefined,'sources');
+ const body=node('div'),country=run()?COUNTRY_BY_ID.get(run().country):null;
+ body.append(node('p',c.environmentNote));
+ if(country){
+  body.append(node('h3',place(country)),node('p',c.nationalContext));
+  const facts=environmentFacts(country),list=node('dl',undefined,'environment-facts');let missing=false;
+  for(const key of ['urban','water','sanitation','electricity','cooking','internet','education','agriculture','industry','services','health']){
+   const f=facts[key];if(!f||!Number.isFinite(f.value)){missing=true;continue;}
+   const term=node('dt',c[key+'Label']),value=node('dd',factValue(key,f.value)+' · '+f.year);value.dataset.metric=key;list.append(term,value);
+  }
+  body.append(list);if(missing)body.append(node('p',c.missingEnvironment,'muted'));
+  if(facts.education)body.append(node('p',c.educationCaveat,'muted'));
+  if(LOCAL_SOURCES[country.iso3]){const p=node('p',c.localScene+' '),a=node('a',c.localSource);a.href=LOCAL_SOURCES[country.iso3];a.target='_blank';a.rel='noopener noreferrer';p.append(a);body.append(p);}
+ }
+ [c.howText,c.model,c.causeModel,c.fiction,c.inspirationNote].forEach(p=>body.append(node('p',p)));
+ const list=node('ul');for(const [i,[label,url]]of SOURCE_LINKS.entries()){const li=node('li'),a=node('a',c[['sourceUN','sourceWHO','sourceWB'][i]]);a.href=url;a.target='_blank';a.rel='noopener noreferrer';li.append(a);list.append(li);}
+ for(const[key,{url}]of Object.entries(ENV.indicators)){const li=node('li'),a=node('a',c[key+'Label']);a.href=url;a.target='_blank';a.rel='noopener noreferrer';li.append(a);list.append(li);}
+ body.append(list);dialog(c.environment,body,undefined,'sources');
 }
 function showHistory(){
  const body=node('div');body.append(node('p',text('stats',{n:number(save.total),places:number(Object.keys(save.countryCounts).length)})),node('p',c.historyLimit,'muted'));
  if(!save.history.length)body.append(node('p',c.empty));
  for(const r of save.history){const country=COUNTRY_BY_ID.get(r.country),b=button(place(country)+' · '+age(r.age)+' · '+c.causes[DATA.causeKeys.indexOf(r.cause)],()=>showRecord(r),'history-row');body.append(b);}
  if(legacy)body.append(button(c.legacy,showLegacy,'history-row'));
- body.append(button(c.themes,showThemes,'history-row'),button(c.sources,showSources,'history-row'));dialog(c.history,body,undefined,'history');
+ body.append(button(c.themes,showThemes,'history-row'),button(c.environmentButton,showSources,'history-row'));dialog(c.history,body,undefined,'history');
 }
 function showRecord(r){const body=node('div'),list=node('ol',undefined,'life-log');list.append(...r.events.map(e=>entry(e,r)));body.append(node('p',c.causes[DATA.causeKeys.indexOf(r.cause)]),list);dialog(place(COUNTRY_BY_ID.get(r.country))+' · '+age(r.age),body,[{label:c.history,run:showHistory},{label:c.close,run:closeDialog}],'record');}
 async function showLegacy(){

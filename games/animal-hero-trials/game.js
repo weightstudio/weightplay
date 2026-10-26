@@ -296,6 +296,8 @@
     replay: "إعادة اللعب",
   };
 
+  copy.hi = { progress: "प्रगति" };
+
   const TRIAL_COUNT = 30;
   const trialTitles = [
     ["First Footprints","初始足跡"],["Scout Ring","斥候包圍"],["Bramble Pursuit","荊棘追逐"],["Root Ambush","樹根伏擊"],["Prowler Gate","潛影者之門"],

@@ -68,6 +68,8 @@ const handsOnCopy={
 };
 const profileReadyCopy={en:"Wheel forged. Keep adapting.","zh-Hant":"車輪已鍛造，繼續觀察並應變。","zh-Hans":"车轮已锻造，继续观察并应变。",ja:"車輪を鍛造しました。状況に合わせて変え続けましょう。",ko:"바퀴를 제작했습니다. 계속 상황에 맞춰 바꾸세요.",es:"Rueda forjada. Sigue adaptándola.","pt-BR":"Roda forjada. Continue se adaptando.",fr:"Roue forgée. Continuez à l’adapter.",de:"Rad geschmiedet. Passe es weiter an.",it:"Ruota forgiata. Continua ad adattarla.",ru:"Колесо готово. Продолжайте менять его по ситуации.",hi:"पहिया तैयार है। स्थिति के अनुसार बदलते रहें।",ar:"تم تشكيل العجلة. واصل التكيّف."};
 for(const [code,copy] of Object.entries(handsOnCopy))Object.assign(packs[code],copy,{profileReady:profileReadyCopy[code]});
+packs.hi.guideTitle="हर बाधा के लिए सही पहिया बनाएं";
+packs.ar.guideTitle="اصنع العجلة المناسبة لكل عائق";
 window.SKETCHWHEEL_LOCALES=packs;
 })();
 // v18 additions are owned in all thirteen locales.

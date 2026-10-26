@@ -10,10 +10,11 @@ export class Climb {
  emit(type,data={}){this.events.push({type,...data});}
  drainEvents(){return this.events.splice(0);}
  neighbors(){return this.level.edges.filter(e=>e.a===this.position||e.b===this.position).map(e=>({id:e.a===this.position?e.b:e.a,edge:e}));}
- calm(edge){return ((this.time+edge.phase)%6)<(this.kit==='wind'?4.4:3.6);}
+ windWindow(edge){const phase=(this.time+edge.phase)%6,limit=this.kit==='wind'?4.4:3.6,calm=phase<limit;return {calm,seconds:(calm?limit:6)-phase};}
+ calm(edge){return this.windWindow(edge).calm;}
  cost(edge){return edge.cost+(edge.wet&&!(this.kit==='dry'&&this.dryUses<2)?7:0)+(this.cargo!==null?4:0);}
  preview(id){const entry=this.neighbors().find(n=>n.id===id);if(!entry)return {ok:false,reason:'unreachable'};const {edge}=entry,cost=this.cost(edge);let reason=this.status!=='playing'?'finished':this.motion||this.catchMotion?'moving':edge.needs.some(x=>!this.flags.includes(x))?'anchorNeeded':this.fragile[id]!==undefined&&this.time-this.fragile[id]>=4?'crumbled':edge.wind&&!this.calm(edge)?'gust':cost>this.energy+.001?'lowEnergy':null;return {ok:!reason,reason,cost,edge,remaining:Math.max(0,this.energy-cost)};}
- move(id){const p=this.preview(id);if(!p.ok){this.emit('reject',{reason:p.reason});return false;}this.motion={from:this.position,to:id,elapsed:0,duration:p.edge.duration,cost:p.cost,wet:p.edge.wet};this.emit('start',{id});return true;}
+ move(id){const p=this.preview(id);if(!p.ok){this.emit('reject',{reason:p.reason,id});return false;}this.motion={from:this.position,to:id,elapsed:0,duration:p.edge.duration,cost:p.cost,wet:p.edge.wet};this.emit('start',{id});return true;}
  tick(delta){
   if(this.status!=='playing'||!Number.isFinite(delta)||delta<=0)return;
   // Caller supplies active foreground time only. Bounded stepping preserves exact timers.

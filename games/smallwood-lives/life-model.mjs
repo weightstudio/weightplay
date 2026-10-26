@@ -1,4 +1,5 @@
 import DATA from './demography.mjs';
+import {newEnvironment,validEnvironment,environmentEvent,ENV_KEYS,LOCAL_SOURCES} from './life-environment.mjs';
 
 export {DATA};
 export const SAVE_KEY='weightplay.smallwood-lives.v2';
@@ -48,6 +49,7 @@ export function sampleCause(country,age,u){
 const storyAges=[1,3,8,14,20,28,37,46,55,64,73,84,96];
 export function storyAt(run,age){
  if(age===0)return {age:0,key:'birth',kind:'story'};
+ if(run.version===3)return environmentEvent(run,age,key=>random(run.seed,key));
  const factAt={5:'water',17:'sanitation',32:'electricity',45:'urban'}[age];
  if(factAt&&Number.isFinite(COUNTRY_BY_ID.get(run.country).facts[factAt]))return {age,key:factAt,kind:'context'};
  const index=storyAges.findIndex((base,i)=>age===base+(i>1?Math.floor(random(run.seed,400+i)*3):0));
@@ -61,7 +63,8 @@ export function newLife(seed,id){
   home[key]=Number.isFinite(country.facts[key])?random(seed,20+Object.keys(home).length)<country.facts[key]/100:null;
  }
  return {id,seed,country:country.iso3,age:0,finished:false,cause:null,home,
-  events:[{age:0,key:'birth',kind:'story'}],version:2};
+  environment:newEnvironment(country,key=>random(seed,key)),
+  events:[{age:0,key:'birth',kind:'story'}],version:3};
 }
 export function advanceLife(run){
  if(run.finished)return clone(run);
@@ -83,13 +86,19 @@ export function settle(save){
  return save;
 }
 function validRun(r){
- if(!r||r.version!==2||typeof r.id!=='string'||r.id.length>100||!COUNTRY_BY_ID.has(r.country)||!Number.isInteger(r.seed)||r.seed<0||r.seed>0xffffffff||!Number.isInteger(r.age)||r.age<0||r.age>10000||typeof r.finished!=='boolean'||!Array.isArray(r.events)||r.events.length>40||!r.home)throw Error('saveCorrupt');
+ if(!r||![2,3].includes(r.version)||typeof r.id!=='string'||r.id.length>100||!COUNTRY_BY_ID.has(r.country)||!Number.isInteger(r.seed)||r.seed<0||r.seed>0xffffffff||!Number.isInteger(r.age)||r.age<0||r.age>10000||typeof r.finished!=='boolean'||!Array.isArray(r.events)||r.events.length>40||!r.home)throw Error('saveCorrupt');
+ if(r.version===3&&!validEnvironment(r.environment))throw Error('saveCorrupt');
  if(r.finished&&!DATA.causeKeys.includes(r.cause))throw Error('saveCorrupt');
  if(!r.finished&&r.cause!==null)throw Error('saveCorrupt');
  for(const key of ['urban','water','sanitation','electricity'])if(r.home[key]!==null&&typeof r.home[key]!=='boolean')throw Error('saveCorrupt');
- for(const e of r.events)if(!Number.isInteger(e.age)||e.age<0||e.age>r.age||!['story','context'].includes(e.kind)||!(Number.isInteger(e.key)&&e.key>=0&&e.key<26||['birth','urban','water','sanitation','electricity'].includes(e.key)))throw Error('saveCorrupt');
+ for(const e of r.events){
+  if(!Number.isInteger(e.age)||e.age<0||e.age>r.age)throw Error('saveCorrupt');
+  if(e.kind==='environment'){
+   if(r.version!==3||!ENV_KEYS.has(e.key)||(e.key.startsWith('local')&&!Object.hasOwn(LOCAL_SOURCES,r.country)))throw Error('saveCorrupt');
+  }else if(!['story','context'].includes(e.kind)||!(Number.isInteger(e.key)&&e.key>=0&&e.key<26||['birth','urban','water','sanitation','electricity'].includes(e.key)))throw Error('saveCorrupt');
+ }
  if(r.events[0]?.key!=='birth'||r.events[0]?.age!==0||r.events.some((e,i)=>i>0&&e.age<=r.events[i-1].age))throw Error('saveCorrupt');
- for(const e of r.events)if(e.kind==='context'?!['urban','water','sanitation','electricity'].includes(e.key):!(e.key==='birth'||Number.isInteger(e.key)))throw Error('saveCorrupt');
+ for(const e of r.events)if(e.kind!=='environment'&&(e.kind==='context'?!['urban','water','sanitation','electricity'].includes(e.key):!(e.key==='birth'||Number.isInteger(e.key))))throw Error('saveCorrupt');
  return r;
 }
 export function validateSave(s){

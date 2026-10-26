@@ -526,12 +526,12 @@
       ],
     },
     "wonder-crash": {
-      title: { en: "Protect the wall.", "zh-Hant": "\u5b88\u4f4f\u57ce\u7246\u3002" },
+      title: { en: "Protect the wall.", "pt-BR": "Proteja a muralha.", "zh-Hant": "\u5b88\u4f4f\u57ce\u7246\u3002" },
       steps: [
         {"icon":"★","en":["Drag to move","Drag to move · automatic fire and passive skills · no skill buttons"],"zh-Hant":["拖曳移動","拖曳移動・自動射擊與被動技能・不需按技能"],"zh-Hans":["拖动移动","拖动移动・自动射击与被动技能・无需技能按钮"],"ja":["ドラッグで移動","ドラッグで移動・自動射撃と自動スキル・スキルボタンなし"],"ko":["드래그 이동","드래그 이동 · 자동 사격과 패시브 스킬 · 스킬 버튼 없음"],"es":["Arrastra para moverte","Arrastra para moverte · disparos y habilidades automáticos"],"pt-BR":["Arraste para mover","Arraste para mover · tiros e habilidades automáticos"],"fr":["Glissez pour bouger","Glissez pour bouger · tirs et compétences automatiques"],"de":["Ziehen zum Bewegen","Ziehen zum Bewegen · automatische Schüsse und passive Fähigkeiten"],"it":["Trascina per muoverti","Trascina per muoverti · colpi e abilità automatici"],"ru":["Тяните для движения","Тяните для движения · автоогонь и пассивные навыки"],"hi":["खींचकर चलें","खींचकर चलें · स्वतः गोलीबारी और निष्क्रिय कौशल"],"ar":["اسحب للتحرك","اسحب للتحرك · إطلاق ومهارات تلقائية"]},
-        { icon: "1", en: ["Move", "Tap or drag anywhere to move the hero left and right."], "zh-Hant": ["\u79fb\u52d5", "\u9ede\u6216\u62d6\u66f3\u756b\u9762\u4efb\u4f55\u4f4d\u7f6e\uff0c\u8b93\u4e3b\u89d2\u5de6\u53f3\u79fb\u52d5\u3002"] },
-        { icon: "2", en: ["Auto Weapons", "Equipped weapons fire when cooldown is ready."], "zh-Hant": ["\u81ea\u52d5\u6b66\u5668", "\u88dd\u5099\u7684\u6b66\u5668\u51b7\u537b\u5b8c\u6210\u5f8c\u6703\u81ea\u52d5\u653b\u64ca\u3002"] },
-        { icon: "3", en: ["Win", "Stop enemies before the wall breaks."], "zh-Hant": ["\u52dd\u5229", "\u5728\u57ce\u7246\u88ab\u7834\u58de\u524d\u64cb\u4f4f\u6575\u4eba\u3002"] },
+        { icon: "1", en: ["Move", "Tap or drag anywhere to move the hero left and right."], "pt-BR": ["Mova-se", "Toque ou arraste em qualquer ponto para mover o herói para a esquerda e para a direita."], "zh-Hant": ["\u79fb\u52d5", "\u9ede\u6216\u62d6\u66f3\u756b\u9762\u4efb\u4f55\u4f4d\u7f6e\uff0c\u8b93\u4e3b\u89d2\u5de6\u53f3\u79fb\u52d5\u3002"] },
+        { icon: "2", en: ["Auto Weapons", "Equipped weapons fire when cooldown is ready."], "pt-BR": ["Armas automáticas", "As armas equipadas disparam quando o tempo de recarga termina."], "zh-Hant": ["\u81ea\u52d5\u6b66\u5668", "\u88dd\u5099\u7684\u6b66\u5668\u51b7\u537b\u5b8c\u6210\u5f8c\u6703\u81ea\u52d5\u653b\u64ca\u3002"] },
+        { icon: "3", en: ["Win", "Stop enemies before the wall breaks."], "pt-BR": ["Vença", "Detenha os inimigos antes que a muralha seja destruída."], "zh-Hant": ["\u52dd\u5229", "\u5728\u57ce\u7246\u88ab\u7834\u58de\u524d\u64cb\u4f4f\u6575\u4eba\u3002"] },
       ],
     },
     "animal-rescue": {
@@ -1080,7 +1080,9 @@
 
   if (window.RIVER_GATES_TUTORIAL) tutorials["animal-river-gates"] = window.RIVER_GATES_TUTORIAL;
   if (window.RAIN_ROOST_TUTORIAL) tutorials["animal-rain-roost"] = window.RAIN_ROOST_TUTORIAL;
+  if (window.FIA_HIGHTRAIL_TUTORIAL) tutorials["fia-hightrail"] = window.FIA_HIGHTRAIL_TUTORIAL;
   const battleTutorialGames = new Set([
+    "fia-hightrail",
     "animal-rain-roost",
     "animal-river-gates",
     "block-apex",

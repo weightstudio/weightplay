@@ -519,7 +519,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ja": "ファンタジー・ライオン防衛",
     "ko": "Fantasy Lion Defense",
     "es": "Fantasía: Defensa del León",
-    "pt-BR": "Fantasy Lion Defense",
+    "pt-BR": "Defesa do Leão Fantasia",
     "fr": "Fantasy Lion Defense",
     "de": "Fantasy Lion Defense",
     "it": "Fantasy Lion Defense",
@@ -1116,7 +1116,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "de": "Animal Skyport Dispatch",
     "it": "Animal Skyport Dispatch",
     "ru": "Диспетчер небесного порта",
-    "hi": "Animal Skyport Dispatch",
+    "hi": "पशु स्काईपोर्ट डिस्पैच",
     "ar": "إرسال سكايبورت الحيوان"
   },
   "animal-starlight-trails": {
@@ -1164,7 +1164,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "de": "Animal Abyss Diver",
     "it": "Animal Abyss Diver",
     "ru": "Animal Abyss Diver",
-    "hi": "Animal Abyss Diver",
+    "hi": "एनिमल एबिस डाइवर",
     "ar": "غواص الهاوية الحيوانية"
   },
   "animal-bubble-safari": {
@@ -1229,7 +1229,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Parking Patrol",
     "ru": "Animal Parking Patrol",
     "hi": "Animal Parking Patrol",
-    "ar": "Animal Parking Patrol"
+    "ar": "دورية مواقف الحيوانات"
   },
   "animal-habitat-mahjong": {
     "__localizedExact": true,
@@ -1452,7 +1452,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "de": "Animal Hero Trials",
     "it": "Animal Hero Trials",
     "ru": "Animal Hero Trials",
-    "hi": "Animal Hero Trials",
+    "hi": "नायक की परीक्षाएँ",
     "ar": "محاكمات بطل الحيوان"
   },
   "animal-gearpack-expedition": {

@@ -4,7 +4,8 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-skyport-dispatch/" />
-  <meta name="weightplay-interface-version" content="9">
+
+    <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-game-version" content="v21">
 
     <script src="../../../src/weightplay-audio.js?v=1.0.0"></script>
@@ -49,8 +50,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Animal Skyport Dispatch | WeightPlay" />
     <meta name="twitter:description" content="Risolvi 30 turni di percorsi a Cloudline Skyport: traccia dall’aeronave passando in ordine per tutti i nodi numerati fino al molo indicato." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-skyport-dispatch.webp" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-<style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-skyport-dispatch.webp" /><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1"><style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-no-mobile-immersive="true" data-sound-toggle="off">
@@ -64,10 +64,10 @@
       </header>
       <section id="mainScreen" class="main-screen">
         <img class="cover" src="../../assets/interface7-redrawn/animal-skyport-dispatch.webp" alt="Immagine del gioco Animal Skyport Dispatch" />
-        <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
-        <p class="main-summary wp-standard-main-summary" data-i18n="intro">Draw safe routes and match airships to docks.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">Best shift: 1</p>
-        <button id="startBtn" class="primary" data-i18n="start" data-runtime-localize="off">Start Dispatch</button>
+        <h2 data-i18n="headline">Mantieni in movimento il porto celeste Cloudline.</h2>
+        <p class="main-summary wp-standard-main-summary" data-i18n="intro">Collega i nodi numerati in ordine, evita le rotte aeree bloccate e guida il dirigibile fino al molo indicato.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">Turno migliore: 1</p>
+        <button id="startBtn" class="primary" data-i18n="start" data-runtime-localize="off">Avvia dispacciamento</button>
         <section class="game-page-info game-page-info-static" aria-label="Informazioni su Animal Skyport Dispatch">
 
     <div class="game-info-hero">
@@ -91,10 +91,10 @@
       </section>
       <section id="stageScreen" class="stage-screen hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-skyport-dispatch.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-skyport-dispatch.webp')">
         <button id="stageBack" class="return" data-wp-return="stage" aria-label="Indietro">&larr;</button>
-        <div class="stage-copy" data-runtime-localize="off"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
+        <div class="stage-copy" data-runtime-localize="off"><strong data-i18n="chooseShift">Scegli turno</strong><span id="bestText"></span></div>
         <div class="contract-row" data-runtime-localize="off"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
         <div id="stageRail" data-runtime-localize="off" class="stage-rail" aria-label="Selezione del turno"></div>
-        <nav class="stage-tabs" aria-label="Shift sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-i18n="chooseShift">Choose a shift</button><span aria-hidden="true"></span></nav>
+        <nav class="stage-tabs" aria-label="Shift sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-i18n="chooseShift">Scegli turno</button><span aria-hidden="true"></span></nav>
       </section>
       <section id="battleShell" class="battle-shell hidden">
         <section class="battle-canvas">
@@ -115,7 +115,7 @@
           </div>
           <div class="flight-row" data-runtime-localize="off"><span id="flightHint" data-i18n="dragHint">Draw one continuous route through the numbered nodes to the matching dock.</span></div>
           </div>
-          <section id="battleHelpPopover" class="battle-help-popover hidden" role="dialog" aria-modal="false" aria-labelledby="battleHelpTitle"><h2 id="battleHelpTitle" data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, connect the numbered nodes in order, avoid red blocked airways when they appear, and guide each airship to its matching dock.</p></section>
+          <section id="battleHelpPopover" class="battle-help-popover hidden" role="dialog" aria-modal="false" aria-labelledby="battleHelpTitle"><h2 id="battleHelpTitle" data-i18n="guideTitle">Come effettuare il dispatch</h2><p data-i18n="guideBody">Scegli un turno, collega i nodi numerati in ordine, evita le vie aeree rosse bloccate e guida ogni aeronave al molo corretto.</p></section>
           <section id="result" data-runtime-localize="off" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><p id="nextShiftPreview" class="result-next-preview" aria-live="polite"></p><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
           <section id="leaveConfirm" data-runtime-localize="off" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
         </section>

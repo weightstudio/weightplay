@@ -89,7 +89,7 @@ export class MountainView {
   if(sim.catchMotion){const c=sim.catchMotion,progress=Math.min(1,c.elapsed/c.duration),from=v(this.level.nodes[c.from].p);from.y-=.7+Math.sin(progress*Math.PI)*.5;from.z+=.68;this.avatar.root.position.lerpVectors(from,v(pos),ease(progress));this.avatar.body.rotation.z=Math.sin(progress*Math.PI)*.2;}
   for(const {prop,edge}of this.windProps){prop.rotation.z=reduced?0:Math.sin(sim.time*7)*(sim.calm(edge)?.08:.35);}
   for(const [id,obj]of this.objects){const n=this.level.nodes[id],age=sim.time-(sim.fragile[id]??sim.time);obj.visible=!n.fragile||age<4||sim.pinned.includes(id);obj.rotation.z=n.fragile&&age>3&&!reduced?Math.sin(sim.time*32)*.035:0;}
-  const age=sim.time-sim.arrived;this.sparks.forEach((dot,i)=>{dot.visible=!reduced&&age<.35&&!m;const angle=i*2.4;dot.position.set(pos[0]+Math.cos(angle)*age*1.9,pos[1]+.1+Math.sin(angle)*age-.5*age*age,pos[2]+.1);dot.scale.setScalar(Math.max(0,.065*(1-age/.35)));});
+  const age=sim.time-sim.arrived;this.sparks.forEach((dot,i)=>{dot.visible=!reduced&&age<.42&&!m;const angle=i*2.4;dot.position.set(pos[0]+Math.cos(angle)*age*1.9,pos[1]+.1+Math.sin(angle)*age-.5*age*age,pos[2]+.1);dot.scale.setScalar(Math.max(0,.1*(1-age/.42)));});
   const checkpoint=v(this.level.nodes[sim.checkpoint.position].p);checkpoint.z+=.5;const endRope=this.avatar.root.position.clone();endRope.y+=.35;const middle=checkpoint.clone().lerp(endRope,.5);middle.y-=sim.catchMotion?0:.24;this.rope.geometry.setFromPoints([checkpoint,middle,endRope]);
   this.renderer.render(this.scene,this.camera);return {triangles:this.renderer.info.render.triangles,drawCalls:this.renderer.info.render.calls,textures:this.renderer.info.memory.textures,geometries:this.renderer.info.memory.geometries};
  }

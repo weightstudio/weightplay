@@ -1,4 +1,8 @@
 /* Skyspire-specific Battle content only; shared frame and Stage own geometry. */
+#resultModal .result-card {border:1px solid var(--wp-ui-line);border-radius:14px;background:var(--wp-ui-surface);color:var(--wp-ui-text)}
+#resultModal .result-stats span {background:var(--wp-ui-background)}
+#resultModal .modal-actions {grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+#resultModal .modal-actions button {min-width:0;white-space:normal;overflow-wrap:anywhere}
 #battleContent {
   display: grid;
   grid-template-rows: minmax(0, 1fr);

@@ -37,6 +37,8 @@
     <meta name="twitter:description" content="Mova parafusos de latão para buracos vazios e solte placas sobrepostas em 30 quebra-cabeças fixos com limite de jogadas." />
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Oficina de Parafusos","url":"https://weightplay.com/pt-br/games/animal-screw-workshop/","image":"https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp","description":"Mova parafusos de latão para buracos vazios e solte placas sobrepostas em 30 quebra-cabeças fixos com limite de jogadas.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Movimento de parafusos","Lógica de apoios sobrepostos","Quebra-cabeças com limite de jogadas"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"alternateName":"Screw Workshop"}</script>
 
+<meta name="weightplay-game-version" content="v5">
+<meta name="weightplay-interface-version" content="9">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Oficina de Parafusos | WeightPlay" />
@@ -47,8 +49,6 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-<meta name="weightplay-game-version" content="v5">
-<meta name="weightplay-interface-version" content="9">
 </head>
 <body data-wp-combined-sound="true" data-wp-game-id="animal-screw-workshop" data-wp-game-version="v5" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-game-owned-guide data-screen="loading">
   <main id="gameFrame" class="game-frame" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off">
@@ -57,14 +57,14 @@
       <header id="mainHeader" class="main-header">
         <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <h1 data-runtime-localize="off" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Oficina de Parafusos</h1>
-        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">Idioma</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section id="mainContent" class="main-hero" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="Imagem do jogo Oficina de Parafusos" />
         <div class="main-copy" data-wp-frame-copy>
-          <p data-i18n="pitch" data-wp-frame-summary>Mova cada parafuso de latão para um orifício aberto. Solte todas as placas de madeira dos animais sem ficar sem movimentos.</p>
+          <p data-i18n="pitch" data-wp-frame-summary>Mova os parafusos de latão para buracos livres e solte todas as placas animais antes de acabar os movimentos.</p>
           <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress role="status" aria-live="polite"></p>
-          <button id="startBtn" class="primary-action" type="button" data-i18n="start" data-wp-main-start data-wp-frame-action="primary" data-wp-primary-action>Iniciar jogo</button>
+          <button id="startBtn" class="primary-action" type="button" data-i18n="start" data-wp-main-start data-wp-frame-action="primary" data-wp-primary-action>Jogar</button>
         </div>
       </section>
     </main>
@@ -83,7 +83,7 @@
   <section id="stageScreen" class="stage-screen" hidden data-wp-standard-stage-screen data-wp-canvas-max-width="920">
     <header id="stageHeader" class="stage-header">
       <button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="backMain" aria-label="Back to Main"><span aria-hidden="true">←</span></button>
-      <h2 data-wp-frame-title data-i18n="chooseStage">Escolha um quebra-cabeça da oficina</h2>
+      <h2 data-wp-frame-title data-i18n="chooseStage">Escolha um quebra-cabeça</h2>
     </header>
     <div id="stageWorkspace" class="stage-workspace" data-wp-frame-content="stage">
       <div id="stageRail" class="stage-rail" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
@@ -98,13 +98,13 @@
     <div id="battleWorkspace" class="battle-workspace" data-wp-frame-content="battle">
       <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
       <section id="puzzleBoard" class="puzzle-board" data-i18n-aria="boardLabel" aria-label="Screw puzzle board"></section>
-      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
-      <section id="resultPanel" class="modal-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-frame-result-card><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Relatório de oficina</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="resultStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="next">Next</button><button id="retryBtn" type="button" data-wp-frame-action="secondary" data-i18n="retry">Try again</button></div></div></section>
-      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">Continue mantém o tabuleiro exato. O retorno às etapas encerra esta tentativa.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="returnStages">Return to stages</button></div></div></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Desfazer</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Reiniciar</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Dica</b></button></div>
+      <section id="resultPanel" class="modal-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-frame-result-card><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">Relatório da oficina</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="resultStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="stages">Fases</button><button id="nextBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="next">Próxima</button><button id="retryBtn" type="button" data-wp-frame-action="secondary" data-i18n="retry">Tentar de novo</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Sair do quebra-cabeça?</h2><p data-i18n="leaveText">Continuar mantém o tabuleiro; voltar às fases encerra a tentativa.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="continue">Continuar</button><button id="leaveStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="returnStages">Voltar às fases</button></div></div></section>
     </div>
   </section>
 
-  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Mova um parafuso, solte uma placa</h2><ol><li data-i18n="tutorial1">Toque em um parafuso. Ele vai brilhar.</li><li data-i18n="tutorial2">Toque em qualquer buraco vazio brilhante.</li><li data-i18n="tutorial3">Remova todos os parafusos de suporte para soltar todas as placas.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Comece o quebra-cabeça 1</button></div></section>
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Mova um parafuso e solte uma placa</h2><ol><li data-i18n="tutorial1">Toque num parafuso para acendê-lo.</li><li data-i18n="tutorial2">Toque em qualquer buraco vazio iluminado.</li><li data-i18n="tutorial3">Remova todos os apoios para soltar as placas.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Começar fase 1</button></div></section>
   </main>
   <div id="toast" class="toast" aria-live="polite"></div>
 

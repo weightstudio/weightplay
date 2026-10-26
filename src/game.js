@@ -118,6 +118,11 @@ const WONDER_DYNAMIC_COPY = {
   hi: { hud_stage: "चरण", hud_wave: "लहर", stage_waves: "{count} लहरें", stage_reward: "~{coins} सिक्के", stage_boss: "बॉस", boss_shield: "ढाल {count}", victory_stage_clear: "चरण पूरा!", btn_leave: "लड़ाई छोड़ें", btn_play_again: "फिर खेलें" },
 };
 
+Object.assign(WONDER_DYNAMIC_COPY["pt-BR"], {
+  game_title: "Defesa do Leão Fantasia",
+  browser_title: "Defesa do Leão Fantasia - WeightPlay",
+});
+
 function t(key, params = {}) {
   const activeLocale = locale();
   if (window.LionTalents) {

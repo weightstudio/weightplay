@@ -6197,7 +6197,7 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "de": "Animal Skyport Dispatch",
     "it": "Animal Skyport Dispatch",
     "ru": "Диспетчер небесного порта",
-    "hi": "Animal Skyport Dispatch",
+    "hi": "पशु स्काईपोर्ट डिस्पैच",
     "ar": "إرسال سكايبورت الحيوان",
     "zh-Hant": "天空港調度隊",
     "zh-Hans": "天空港调度队"
@@ -6212,7 +6212,7 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "de": "Animal Abyss Diver",
     "it": "Animal Abyss Diver",
     "ru": "Animal Abyss Diver",
-    "hi": "Animal Abyss Diver",
+    "hi": "एनिमल एबिस डाइवर",
     "ar": "غواص الهاوية الحيوانية",
     "zh-Hant": "深淵潛航員",
     "zh-Hans": "深渊潜航员"
@@ -6422,7 +6422,7 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "de": "Animal Hero Trials",
     "it": "Animal Hero Trials",
     "ru": "Animal Hero Trials",
-    "hi": "Animal Hero Trials",
+    "hi": "नायक की परीक्षाएँ",
     "ar": "محاكمات بطل الحيوان",
     "zh-Hant": "英雄試煉",
     "zh-Hans": "英雄试炼"

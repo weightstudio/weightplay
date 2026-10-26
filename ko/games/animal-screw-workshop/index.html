@@ -37,6 +37,8 @@
     <meta name="twitter:description" content="황동 나사를 빈 구멍으로 옮기고 공유 지지대를 살펴 30개 고정 퍼즐을 이동 제한 안에 해결하세요." />
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"나사 워크숍","url":"https://weightplay.com/ko/games/animal-screw-workshop/","image":"https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp","description":"황동 나사를 빈 구멍으로 옮기고 공유 지지대를 살펴 30개 고정 퍼즐을 이동 제한 안에 해결하세요.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ko","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["나사 이동","겹친 지지 논리","이동 제한 퍼즐"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"alternateName":"Screw Workshop"}</script>
 
+<meta name="weightplay-game-version" content="v5">
+<meta name="weightplay-interface-version" content="9">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="나사 워크숍 | WeightPlay" />
@@ -47,8 +49,6 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-<meta name="weightplay-game-version" content="v5">
-<meta name="weightplay-interface-version" content="9">
 </head>
 <body data-wp-combined-sound="true" data-wp-game-id="animal-screw-workshop" data-wp-game-version="v5" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-game-owned-guide data-screen="loading">
   <main id="gameFrame" class="game-frame" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off">
@@ -57,12 +57,12 @@
       <header id="mainHeader" class="main-header">
         <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <h1 data-runtime-localize="off" data-wp-frame-title data-wp-game-title data-runtime-localize="off">나사 워크숍</h1>
-        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        <label class="locale-control"><span class="sr-only" data-i18n="language">언어</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section id="mainContent" class="main-hero" data-wp-frame-content="main">
         <img class="main-poster" data-wp-frame-poster src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="나사 워크숍 게임 이미지" />
         <div class="main-copy" data-wp-frame-copy>
-          <p data-i18n="pitch" data-wp-frame-summary>각 황동 나사를 열린 구멍으로 옮깁니다. 움직임이 부족하지 않고 모든 나무 동물 접시를 놓습니다.</p>
+          <p data-i18n="pitch" data-wp-frame-summary>황동 나사를 빈 구멍으로 옮겨 제한 횟수 안에 모든 동물 나무판을 떨어뜨리세요.</p>
           <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress role="status" aria-live="polite"></p>
           <button id="startBtn" class="primary-action" type="button" data-i18n="start" data-wp-main-start data-wp-frame-action="primary" data-wp-primary-action>게임 시작</button>
         </div>
@@ -83,7 +83,7 @@
   <section id="stageScreen" class="stage-screen" hidden data-wp-standard-stage-screen data-wp-canvas-max-width="920">
     <header id="stageHeader" class="stage-header">
       <button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="backMain" aria-label="Back to Main"><span aria-hidden="true">←</span></button>
-      <h2 data-wp-frame-title data-i18n="chooseStage">워크숍 퍼즐을 선택하세요</h2>
+      <h2 data-wp-frame-title data-i18n="chooseStage">공방 퍼즐 선택</h2>
     </header>
     <div id="stageWorkspace" class="stage-workspace" data-wp-frame-content="stage">
       <div id="stageRail" class="stage-rail" data-i18n-aria="stageRailLabel" aria-label="Workshop puzzle selection"></div>
@@ -98,13 +98,13 @@
     <div id="battleWorkspace" class="battle-workspace" data-wp-frame-content="battle">
       <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
       <section id="puzzleBoard" class="puzzle-board" data-i18n-aria="boardLabel" aria-label="Screw puzzle board"></section>
-      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>
-      <section id="resultPanel" class="modal-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-frame-result-card><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">워크숍 보고서</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="resultStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="next">Next</button><button id="retryBtn" type="button" data-wp-frame-action="secondary" data-i18n="retry">Try again</button></div></div></section>
-      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this puzzle?</h2><p data-i18n="leaveText">계속해서 정확한 보드를 유지합니다. 단계로 돌아가면 이 시도가 종료됩니다.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="returnStages">Return to stages</button></div></div></section>
+      <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">되돌리기</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">다시 시작</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">힌트</b></button></div>
+      <section id="resultPanel" class="modal-layer" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card" data-wp-frame-result-card><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><small data-i18n="resultKicker">공방 보고서</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="resultStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="stages">스테이지</button><button id="nextBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="next">다음</button><button id="retryBtn" type="button" data-wp-frame-action="secondary" data-i18n="retry">다시 하기</button></div></div></section>
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">퍼즐을 나갈까요?</h2><p data-i18n="leaveText">계속하면 같은 판을 유지하고 스테이지로 가면 이번 도전을 끝냅니다.</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-wp-frame-action="primary" data-i18n="continue">계속</button><button id="leaveStagesBtn" type="button" data-wp-frame-action="secondary" data-i18n="returnStages">스테이지로</button></div></div></section>
     </div>
   </section>
 
-  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">나사 이동, 플레이트 풀기</h2><ol><li data-i18n="tutorial1">나사를 두드립니다. 빛날 것이다.</li><li data-i18n="tutorial2">빛나는 빈 구멍을 두드립니다.</li><li data-i18n="tutorial3">모든 지지 나사를 제거하여 모든 플레이트를 떨어뜨립니다.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">퍼즐 1 시작</button></div></section>
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-gear-horn-rhino-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">나사를 옮겨 판을 놓기</h2><ol><li data-i18n="tutorial1">나사를 탭하면 빛납니다.</li><li data-i18n="tutorial2">빛나는 빈 구멍을 탭합니다.</li><li data-i18n="tutorial3">모든 지지 나사를 빼서 판을 떨어뜨립니다.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">퍼즐 1 시작</button></div></section>
   </main>
   <div id="toast" class="toast" aria-live="polite"></div>
 
