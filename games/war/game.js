@@ -24,16 +24,12 @@
   document.body.dataset.wpGameOwnedGuide = 'true';
   document.body.dataset.wpMainStartOnly = 'true';
   const main = $('#mainScreen'), battle = $('#battleScreen'), canvas = $('.card-game-battle');
-  const guide = main.querySelector('.game-page-info');
+  const guide = document.querySelector('.game-page-info');
   if (guide) {
-    main.after(guide);
     const heading = guide.querySelector('h2');
     if (heading) {heading.id = 'war-guide-title';guide.setAttribute('aria-labelledby', heading.id);}
   }
-  const app = document.createElement('div');
-  app.id = 'warApp'; app.dataset.wpFrameRoot = '';
-  main.before(app); app.append(main, battle);
-  document.body.removeAttribute('data-wp-frame-root');
+  const app = $('#warApp');
   $('#restartBtn')?.remove(); $('#newGameBtn')?.remove();
   window.WPCardGamesNext.mount({ id: 'war' });
 
@@ -42,12 +38,7 @@
   const title = document.createElement('h1');
   title.dataset.wpFrameTitle = ''; title.dataset.wpGameTitle = '';
   title.textContent = main.querySelector('[data-card-title]').textContent;
-  // Keep obsolete source controls out of the visible tree. Shared Settings
-  // owns locale navigation; the old engine's reload listener stays unused.
-  const sources = document.createElement('div'); sources.hidden = true;
-  const utilities = header.querySelector('.header-utilities');
-  if (utilities) sources.append(utilities);
-  document.body.append(sources);
+  header.querySelector('.header-utilities')?.remove();
   header.replaceChildren(back, title);
   const hero = main.querySelector('.main-hero'), copy = main.querySelector('.main-copy');
   const poster = hero.querySelector('img.cover'); poster.dataset.wpFramePoster = '';
@@ -83,6 +74,7 @@
     const playing = document.body.dataset.screen === 'battle' && !battle.hidden;
     const covered = playing && !result.hidden;
     frame.activate(playing ? 'battle' : 'main', {covered});
+    window.WeightPlayBattleCanvas.sync();
     table.inert = covered || Boolean(battle.querySelector('[data-card-game-return-confirm]'));
     if (wasPlaying && !playing) requestAnimationFrame(() => start.focus({preventScroll:true}));
     wasPlaying = playing;

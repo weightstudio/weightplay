@@ -22,6 +22,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "nori-bankshot",
       "wildborn",
       "kindred-habitats",
       "deep-drill",
@@ -86,10 +87,10 @@ window.WONDER_LOBBY = {
       internalTrial: "/games/nori-bankshot/?preview=1", href: "games/nori-bankshot/",
       title: {"__localizedExact":true,"en":"Nori Bankshot","zh-Hant":"諾里撞球館","zh-Hans":"诺里台球馆","ja":"ノリのビリヤード","ko":"노리의 당구장","es":"Billar con Nori","pt-BR":"Bilhar com Nori","fr":"Le billard de Nori","de":"Noris Billardhalle","it":"Il biliardo di Nori","ru":"Бильярд с Нори","hi":"नोरी का बिलियर्ड्स","ar":"بلياردو نوري"},
       type: {en:"Billiards Puzzle","zh-Hant":"撞球益智","zh-Hans":"台球益智",ja:"ビリヤードパズル",ko:"당구 퍼즐",es:"Puzle de billar","pt-BR":"Quebra-cabeça de bilhar",fr:"Puzzle de billard",de:"Billardrätsel",it:"Rompicapo di biliardo",ru:"Бильярдная головоломка",hi:"बिलियर्ड्स पहेली",ar:"ألغاز البلياردو"},
-      description: {en:"Plan the collision and leave the next shot. Clear 30 harbor tables with ordered balls, cushion shots and lantern finales.","zh-Hant":"看準碰撞，也替下一球留路。在 30 張港灣球檯挑戰次序球、碰庫球與燈球終局。"},
+      description: {"en":"Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.","zh-Hant":"看準碰撞，也替下一球留路。清完規則各異的港灣球檯。","zh-Hans":"看准碰撞，也为下一球留路。清完规则各异的港湾球台。","ja":"白球を狙って的球をポケットへ。次の一打の位置も考え、港のテーブルを攻略しよう。","ko":"흰 공으로 목표 공을 넣고 다음 샷의 자리까지 계획하세요. 항구의 다양한 당구대를 도전해 보세요.","es":"Apunta con la bola blanca, emboca los objetivos y prepara el siguiente tiro en las mesas del puerto.","pt-BR":"Mire com a bola branca, encaçape os alvos e prepare a próxima tacada nas mesas do porto.","fr":"Visez avec la blanche, empochez les cibles et préparez le coup suivant sur les tables du port.","de":"Ziele mit der Weißen, versenke die Zielkugeln und plane den nächsten Stoß auf den Tischen im Hafen.","it":"Mira con la bianca, manda in buca i bersagli e prepara il prossimo tiro sui tavoli del porto.","ru":"Цельтесь белым шаром, отправляйте цели в лузы и продумывайте следующий удар на столах гавани.","hi":"सफेद गेंद से निशाना लगाएँ, लक्ष्य गेंदें डालें और अगला शॉट सोचकर बंदरगाह की मेज़ें पूरी करें।","ar":"صوّب بالكرة البيضاء، وأدخل الأهداف، وخطط للضربة التالية على طاولات الميناء."},
       categories:["Sports","Puzzle","Animal Games"],skills:["Aiming","Spatial Planning","Focus"],ages:["9","family"],
-      meta:{en:["30 Tables","Saved Collection","Permanent Diamond Style"],"zh-Hant":["30 張球檯","永久收藏","鑽石永久外觀"]},
-      art:{kind:"image",background:"games/nori-bankshot/art/poster.png",hideHero:true}
+      meta: {"en":["Table · 30","Collection · Permanent","Sea-glass Set"],"zh-Hant":["球檯 · 30","收藏 · 永久","海玻璃套組"],"zh-Hans":["球台 · 30","收藏 · 永久","海玻璃套组"],"ja":["テーブル · 30","コレクション · ずっと使える","シーグラスセット"],"ko":["당구대 · 30","컬렉션 · 영구","바다 유리 세트"],"es":["Mesa · 30","Colección · Permanente","Conjunto de vidrio marino"],"pt-BR":["Mesa · 30","Coleção · Permanente","Conjunto de vidro marinho"],"fr":["Table · 30","Collection · Permanent","Ensemble verre de mer"],"de":["Tisch · 30","Sammlung · Dauerhaft","Meerglas-Set"],"it":["Tavolo · 30","Collezione · Permanente","Set di vetro marino"],"ru":["Стол · 30","Коллекция · Навсегда","Набор морского стекла"],"hi":["मेज़ · 30","संग्रह · स्थायी","समुद्री काँच सेट"],"ar":["الطاولة · 30","المجموعة · دائم","طقم زجاج البحر"]},
+      art:{kind:"image",background:"games/nori-bankshot/art/poster.webp",hideHero:true}
     },
     {
       id: "wildborn", audience: "general", status: "planned", internalOnly: true,

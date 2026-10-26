@@ -1159,7 +1159,8 @@
       if(!found)throw new Error(`Missing War VideoGame schema for ${code}`);
       return open+JSON.stringify(schema)+close;
     });
-    function textNode(pattern,key,initialOnly=false) {
+    const sharedSettings=/id="warApp" data-wp-frame-root/.test(html)&&/data-wp-play-ui="1"/.test(html)&&/data-wp-interface-version="9"/.test(html);
+    function textNode(pattern,key,initialOnly=false,allowMissing=false) {
       let matched=0;
       html=html.replace(pattern,(_,open,prior,close)=>{
         matched++;
@@ -1167,13 +1168,13 @@
         open=open.replace(/>$/,` data-war-text="${key}"${initialOnly?' data-war-initial-only':''} data-runtime-localize="off">`);
         return open+escape(ui[key])+close;
       });
-      if(matched!==1) throw new Error(`War initial text node ${key}: ${matched}`);
+      if(matched!==1&&!(allowMissing&&matched===0)) throw new Error(`War initial text node ${key}: ${matched}`);
     }
     for(const [id,key] of Object.entries({startBtn:'start',restartBtn:'restart',newGameBtn:'newGame',soundBtn:'soundOn',resultNewGame:'newGame',resultRestart:'restart',resultClose:'close',cardGamePhase:'flip',resultTitle:'roundOver'})) {
-      textNode(new RegExp(`(<(?:button|small|h2)\\b[^>]*\\bid=["']${id}["'][^>]*>)([\\s\\S]*?)(<\\/(?:button|small|h2)>)`,'i'),key,['cardGamePhase','resultTitle'].includes(id));
+      textNode(new RegExp(`(<(?:button|small|h2)\\b[^>]*\\bid=["']${id}["'][^>]*>)([\\s\\S]*?)(<\\/(?:button|small|h2)>)`,'i'),key,['cardGamePhase','resultTitle'].includes(id),sharedSettings&&id==='soundBtn');
     }
-    textNode(/(<strong\b[^>]*class=["']settings-title["'][^>]*>)([\s\S]*?)(<\/strong>)/i,'settings');
-    textNode(/(<label\b[^>]*class=["']settings-row["'][^>]*>\s*<span\b[^>]*>)([\s\S]*?)(<\/span>)/i,'language');
+    textNode(/(<strong\b[^>]*class=["']settings-title["'][^>]*>)([\s\S]*?)(<\/strong>)/i,'settings',false,sharedSettings);
+    textNode(/(<label\b[^>]*class=["']settings-row["'][^>]*>\s*<span\b[^>]*>)([\s\S]*?)(<\/span>)/i,'language',false,sharedSettings);
     textNode(/(<small\b[^>]*class=["']eyebrow["'][^>]*>)([\s\S]*?)(<\/small>)/i,'eyebrow');
     textNode(/(<p\b[^>]*\bdata-card-summary\b[^>]*>)([\s\S]*?)(<\/p>)/i,'summary');
     textNode(/(<div\b[^>]*class=["']card-game-player-header["'][^>]*>\s*<strong\b[^>]*>)([\s\S]*?)(<\/strong>)/i,'hand');

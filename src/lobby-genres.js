@@ -24,6 +24,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["nori-bankshot", "Sports", "Aim", "Physics", "Puzzle"],
     ["animal-peach-oath", "RPG", "Strategy", "Idle"],
     ["wildborn", "Action", "Survival", "Adventure"],
     ["kindred-habitats", "Pet Care", "Collection", "Adventure"],

@@ -94,7 +94,7 @@
     if (target.matches("#startButton")) {
       sessionStarted = true;
       track("game_start", { from: "main", input_type });
-      setTimeout(installStateObservers, 0);
+      installStateObservers();
       return;
     }
     if (target.matches(".logic-reversi-board .logic-cell.legal")) {
@@ -153,12 +153,14 @@
 
   function installStateObservers() {
     if (stateObserversInstalled) return;
-    const reply = document.querySelector(".logic-reversi-reply");
-    const board = document.querySelector(".logic-reversi-board");
-    if (!reply || !board) return;
+    const host = document.querySelector("#logicBattle");
+    if (!host) return;
     stateObserversInstalled = true;
     const observeReply = () => {
       if (!sessionStarted) return;
+      const reply = host.querySelector(".logic-reversi-reply");
+      const board = host.querySelector(".logic-reversi-board");
+      if (!reply || !board) return;
       const choice = reply.dataset.aiChoice;
       const text = reply.textContent?.trim() || "";
       if (!choice || !text) return;
@@ -175,8 +177,10 @@
         }
       }, 40);
     };
-    new MutationObserver(observeReply).observe(reply, { subtree: true, childList: true, characterData: true, attributes: true });
+    // Matches rebuild their content; the shared Battle scene remains owned.
+    new MutationObserver(observeReply).observe(host, { subtree: true, childList: true, characterData: true, attributes: true });
   }
 
+  installStateObservers();
   track("preview_open", { from: "preview" });
 })();

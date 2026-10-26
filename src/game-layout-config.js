@@ -3,6 +3,7 @@
   'use strict';
   if (window.WeightPlayLayout) return;
   const games = Object.freeze({
+    "nori-bankshot": Object.freeze({ bannerAds: false }),
     "meadow-touchdown": Object.freeze({ bannerAds: false }),
     "fia-hightrail": Object.freeze({ bannerAds: false }),
     "kindred-habitats": Object.freeze({ bannerAds: false }),
