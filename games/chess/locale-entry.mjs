@@ -10,8 +10,7 @@ export function entryLocale(href, savedLocale, documentLocale) {
  const segment = url.pathname.split('/')[1];
  const routeLocale = Object.keys(localeSegments).find(key => localeSegments[key] === segment);
  if (routeLocale) return routeLocale;
- const requested = url.searchParams.get('lang');
- return [requested,savedLocale,documentLocale,'en'].find(supported);
+ return [savedLocale,documentLocale,'en'].find(supported);
 }
 export function lobbyHref(locale, href) {
  const url = new URL(href);

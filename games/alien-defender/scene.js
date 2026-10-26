@@ -58,8 +58,8 @@ export class BattleScene {
    if(e.type==='drive'){this.driveGhosts.push({...e,life:.24});this.driveGhosts=this.driveGhosts.slice(-2);this.rings.push({...e,life:.24,max:.24,size:8,color:PALETTE.teal});}
    if(e.type==='driveCharge')this.rings.push({...e,life:.28,max:.28,size:5,color:PALETTE.ice});
    if(e.type==='driveReject')this.rings.push({...e,life:.16,max:.16,size:5,color:PALETTE.coral});
-   if(e.type==='beacon'){this.rings.push({...e,life:.3,max:.3,size:8,color:PALETTE.teal});this.fx.push({x:e.x,y:e.y,z:12,life:.55,max:.55,size:1.2,color:PALETTE.teal,collect:true,route:true,sx:e.x,sy:e.y});}
- }this.rings=this.rings.slice(-12);}
+   if(e.type==='beacon'){this.rings.push({...e,life:.3,max:.3,size:8,color:PALETTE.teal});this.fx.push({x:e.x,y:e.y,z:12,life:.55,max:.55,size:1.2,color:PALETTE.teal,collect:!this.reduced,route:true,vx:0,vy:0,sx:e.x,sy:e.y});}
+ }this.rings=this.rings.slice(-12);this.fx=this.fx.slice(-140);}
  draw(w,dt=0){
   if(this.disposed)return;this.resize();if(!this.width)return;
   const height=this.camera.top*2,unit=modelScale(w),mapY=y=>(.5-y)*height;

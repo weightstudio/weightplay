@@ -22794,36 +22794,35 @@
     localizedGames[code] ||= {};
     localizedGames[code]["alien-defender"] = { ...(localizedGames[code]["alien-defender"] || games["alien-defender"]), ...guide };
   }
-  // v45 guide repair: describe the long campaign and its paid upgrade loop
-  // directly instead of asking a replacement pass to reinterpret old wave
-  // language. Every required locale owns the same player-facing contract.
-  const alienV45GuideCopy = {
+  // Current campaign guide: shared 60-stage chapter rules in every required locale.
+  const alienV63GuideCopy = {
   "en": {
-    "intro": "Pilot an otter gunship through 30 orbital battles. Break the fleet, dodge volleys and charge your pulse.",
+    "intro": "Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.",
     "story": [
-      "Pilot an otter gunship through 30 orbital battles. Break the fleet, dodge volleys and charge your pulse."
+      "Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway."
     ],
     "systems": [
-      "Six chapters introduce volleys, armor, relay shields, crossfire and six bosses. Defeats charge Pulse; eight defeats restore one shield. Credits permanently improve your ship."
+      "Kills charge Pulse in 1–30; eight kills restore a shield. Credits buy permanent upgrades. In 31–60, amber lane edges warn before coral beams hurt. Prisms block shots during discharge. Remove green relays to erase their lanes and copper Anchors to unjam Phase. Phase moves 28 units toward your direction, costs one of two cells, protects for 0.45 seconds and recovers for 2 seconds. One cell recharges every 8 active seconds; relay kills return one. Without a direction, it jumps away from your current side. Blue beacons are required route objectives: collect them in order by moving close. The next lights after each discharge; an active beam prevents collection. Clearing the fleet alone does not finish the route."
     ],
     "how": [
-      "Move with arrows or A/D. Hold Space to fire; press E for a charged pulse.",
+      "Arrows or A/D move; hold Space to fire. E uses Pulse in 1–30 and the Phase drive in 31–60.",
       "Drag the field to steer and fire, or hold the direction and Fire pads.",
-      "Clear each formation before the invaders reach the defense line.",
+      "31–60: Clear the fleet and collect 2–4 blue beacons in order.",
       "Spend credits earned in Battle. Upgrades persist between stages."
     ],
     "strategyTips": [
-      "Six chapters introduce volleys, armor, relay shields, crossfire and six bosses. Defeats charge Pulse; eight defeats restore one shield. Credits permanently improve your ship."
+      "Combine storm timing, relay priority and Phase.",
+      "Direction + E: jump · 2 cells · recharge 8s."
     ],
     "progression": [
-      "Thirty Stages are arranged as six chapters of five. Clearing the current frontier unlocks the next Stage; replaying a cleared Stage does not grant automatic bullets, so spend earned Credits in Upgrades."
+      "The 60 stages form two chapters of 30, each with six five-stage arcs. Clear the current frontier to unlock the next stage. In 31–60, also collect the blue beacons in order. Credits, upgrades and unlocked stages remain saved in this browser."
     ],
-    "designNote": "Alien Defender combines readable fixed-screen formations with a 30-Stage, six-chapter campaign and a clear Credit-driven upgrade loop: Stage rules create challenge, while the player owns the firepower choice.",
+    "designNote": "Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.",
     "parent": "Spend credits earned in Battle. Upgrades persist between stages. Permanent pink-violet hull and engine colors. Cosmetic only. 15 diamonds · permanent",
     "faq": [
       [
         "How many waves are in a Stage?",
-        "Each Stage has one Battle and one formation. The campaign has 30 Stages, not a confusing Stage-to-wave offset."
+        "Each stage contains one battle and one formation. The 60 stages form two chapters of 30, each with six five-stage arcs. Clear the current frontier to unlock the next stage. In 31–60, also collect the blue beacons in order. Credits, upgrades and unlocked stages remain saved in this browser."
       ],
       [
         "How do bullets increase?",
@@ -22831,7 +22830,7 @@
       ],
       [
         "How do I unlock more Stages?",
-        "Clear the current frontier Stage. The next Stage unlocks in order, across six chapters of five."
+        "The 60 stages form two chapters of 30, each with six five-stage arcs. Clear the current frontier to unlock the next stage. In 31–60, also collect the blue beacons in order. Credits, upgrades and unlocked stages remain saved in this browser."
       ],
       [
         "Is progress saved?",
@@ -22844,31 +22843,32 @@
     ]
   },
   "zh-Hant": {
-    "intro": "駕駛水獺砲艇迎戰 30 關星際艦隊。閃避彈幕、擊破編隊，蓄滿脈衝逆轉戰局。",
+    "intro": "駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。",
     "story": [
-      "駕駛水獺砲艇迎戰 30 關星際艦隊。閃避彈幕、擊破編隊，蓄滿脈衝逆轉戰局。"
+      "駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。"
     ],
     "systems": [
-      "六大章節帶來彈幕、裝甲、中繼護盾、交叉火力及六位首領。擊破蓄積脈衝，每擊破八架回復一格護盾；零件可永久升級砲艇。"
+      "1–30 關擊敗敵人可充填脈衝，每八次擊敗恢復一格護盾；點數購買永久升級。31–60 關的琥珀色航道先預警，再以珊瑚色光束造成傷害。稜鏡機在放電時擋住射擊；擊破綠色中繼器可移除其航道，擊破銅色錨點可解除相位干擾。相位沿輸入方向移動 28 單位，消耗兩格電池之一、保護 0.45 秒，並恢復 2 秒。每八秒有效遊玩補回一格，擊破中繼器也補一格；未指定方向時朝目前所在側的反方向跳躍。 藍色航標是必要路線目標，靠近後依序收集。每次放電結束才亮起下一個；光束作用中無法收取。只清除敵人尚未完成航線。"
     ],
     "how": [
-      "方向鍵或 A/D 移動，按住空白鍵射擊；E 釋放充能脈衝。",
+      "方向鍵或 A/D 移動，按住空白鍵射擊。E 在 1–30 關使用脈衝，31–60 關使用相位引擎。",
       "拖曳戰場即可移動並射擊，也可按住方向與射擊按鈕。",
-      "在敵人抵達防線前清除整個隊形。",
+      "31–60: 清除編隊，依序收集 2–4 個藍色航標。",
       "用戰鬥賺到的能源點購買強化，效果會保留到之後的關卡。"
     ],
     "strategyTips": [
-      "六大章節帶來彈幕、裝甲、中繼護盾、交叉火力及六位首領。擊破蓄積脈衝，每擊破八架回復一格護盾；零件可永久升級砲艇。"
+      "結合風暴時機、中繼優先序與相位跳躍。",
+      "方向＋E 跳躍 · 兩格電池 · 八秒回充。"
     ],
     "progression": [
-      "30 個關卡分成六章，每章五關。清除當前最前沿關卡會解鎖下一關；重玩已完成關卡不會自動送子彈，請把賺到的能源點花在強化頁。"
+      "60 關分為兩章，每章 30 關、六段各五關。通過目前最前沿關卡後依序解鎖下一關；31–60 關也必須依序收集藍色信標。點數、強化與已解鎖關卡都保留在此瀏覽器。"
     ],
-    "designNote": "星際守衛把易讀的固定畫面編隊，和 30 關、六章戰役及清楚的能源點強化循環結合：關卡規則製造挑戰，火力選擇由玩家掌握。",
+    "designNote": "駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。",
     "parent": "用戰鬥賺到的能源點購買強化，效果會保留到之後的關卡。 永久解鎖粉紫色船體與引擎光。僅改變外觀。 15 鑽石・永久",
     "faq": [
       [
         "每關有幾波？",
-        "每個 Stage 只有一場 Battle、清除一個編隊。整體是 30 個 Stage，不會再出現關卡和波數錯位。"
+        "每關包含一場戰鬥與一組編隊。 60 關分為兩章，每章 30 關、六段各五關。通過目前最前沿關卡後依序解鎖下一關；31–60 關也必須依序收集藍色信標。點數、強化與已解鎖關卡都保留在此瀏覽器。"
       ],
       [
         "子彈怎麼增加？",
@@ -22876,7 +22876,7 @@
       ],
       [
         "怎麼解鎖更多關卡？",
-        "清除當前最前沿關卡即可依序解鎖下一關；完整戰役是六章、每章五關。"
+        "60 關分為兩章，每章 30 關、六段各五關。通過目前最前沿關卡後依序解鎖下一關；31–60 關也必須依序收集藍色信標。點數、強化與已解鎖關卡都保留在此瀏覽器。"
       ],
       [
         "進度會保存嗎？",
@@ -22889,31 +22889,32 @@
     ]
   },
   "zh-Hans": {
-    "intro": "驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。",
+    "intro": "驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。",
     "story": [
-      "驾驶水獭炮艇迎战 30 关星际舰队。闪避弹幕、击破编队，蓄满脉冲逆转战局。"
+      "驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。"
     ],
     "systems": [
-      "六大章节带来弹幕、装甲、中继护盾、交叉火力及六位首领。击破蓄积脉冲，每击破八架恢复一格护盾；零件可永久升级炮艇。"
+      "1–30 关击败敌人可充填脉冲，每八次击败恢复一格护盾；点数购买永久升级。31–60 关的琥珀色航道先预警，再以珊瑚色光束造成伤害。棱镜机在放电时挡住射击；击破绿色中继器可移除其航道，击破铜色锚点可解除相位干扰。相位沿输入方向移动 28 单位，消耗两格电池之一、保护 0.45 秒，并恢复 2 秒。每八秒有效游玩补回一格，击破中继器也补一格；未指定方向时向当前所在侧的反方向跳跃。 蓝色航标是必要路线目标，靠近后依次收集。每次放电结束才亮起下一个；光束作用中无法收取。只清除敌人尚未完成航线。"
     ],
     "how": [
-      "方向键或 A/D 移动，按住空格键射击；E 释放充能脉冲。",
+      "方向键或 A/D 移动，按住空格键射击。E 在 1–30 关使用脉冲，31–60 关使用相位引擎。",
       "拖曳战场即可移动并射击，也可按住方向与射击按钮。",
-      "在敌人抵达防线前清除整个队形。",
+      "31–60: 清除编队，依次收集 2–4 个蓝色航标。",
       "用战斗赚到的能源点购买强化，效果会保留到之后的关卡。"
     ],
     "strategyTips": [
-      "六大章节带来弹幕、装甲、中继护盾、交叉火力及六位首领。击破蓄积脉冲，每击破八架恢复一格护盾；零件可永久升级炮艇。"
+      "结合风暴时机、中继优先顺序与相位跳跃。",
+      "方向＋E 跳跃 · 两格电池 · 八秒回充。"
     ],
     "progression": [
-      "30 个关卡分成六章，每章五关。清除当前最前沿关卡会解锁下一关；重玩已完成关卡不会自动送子弹，请把赚到的能源点花在强化页。"
+      "60 关分为两章，每章 30 关、六段各五关。通过当前最前沿关卡后依序解锁下一关；31–60 关还必须依序收集蓝色信标。点数、强化与已解锁关卡都保留在此浏览器。"
     ],
-    "designNote": "星际守卫把易读的固定画面编队，和 30 关、六章战役及清楚的能源点强化循环结合：关卡规则制造挑战，火力选择由玩家掌握。",
+    "designNote": "驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。",
     "parent": "用战斗赚到的能源点购买强化，效果会保留到之后的关卡。 永久解锁粉紫色船体与引擎光。仅改变外观。 15 钻石・永久",
     "faq": [
       [
         "每关有几波？",
-        "每个 Stage 只有一场 Battle、清除一个编队。整体是 30 个 Stage，不会再出现关卡和波数错位。"
+        "每关包含一场战斗与一组编队。 60 关分为两章，每章 30 关、六段各五关。通过当前最前沿关卡后依序解锁下一关；31–60 关还必须依序收集蓝色信标。点数、强化与已解锁关卡都保留在此浏览器。"
       ],
       [
         "子弹怎么增加？",
@@ -22921,7 +22922,7 @@
       ],
       [
         "怎么解锁更多关卡？",
-        "清除当前最前沿关卡即可依次解锁下一关；完整战役是六章、每章五关。"
+        "60 关分为两章，每章 30 关、六段各五关。通过当前最前沿关卡后依序解锁下一关；31–60 关还必须依序收集蓝色信标。点数、强化与已解锁关卡都保留在此浏览器。"
       ],
       [
         "进度会保存吗？",
@@ -22934,31 +22935,32 @@
     ]
   },
   "ja": {
-    "intro": "ラッコの砲艇で30の宇宙戦へ。弾幕を避け、敵陣を崩し、パルスを放とう。",
+    "intro": "ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。",
     "story": [
-      "ラッコの砲艇で30の宇宙戦へ。弾幕を避け、敵陣を崩し、パルスを放とう。"
+      "ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。"
     ],
     "systems": [
-      "6章で弾幕、装甲、中継シールド、交差射撃と6体のボスに挑戦。撃破でパルスが充填され、8機撃破でシールドが1回復。資材で永久強化。"
+      "1〜30は撃破でパルスを充填し、8体ごとにシールドが1回復。クレジットで永続強化。31〜60は琥珀色の予告後、赤い光線が危険になる。放電中のプリズムは射撃を防ぐ。緑のリレーを壊すとその光線が消え、銅のアンカーを壊すと位相妨害が解ける。位相は入力方向へ28移動し、2セルのうち1つを消費、0.45秒保護、再使用まで2秒。活動時間8秒またはリレー撃破で1セル回復。方向入力がなければ現在の側から反対側へ跳ぶ。 青い標識は必須目標。近づいて順番に集めよう。次の標識は放電後に点灯し、作動中の光線内では回収できない。敵を倒すだけでは航路は完成しない。"
     ],
     "how": [
-      "矢印かA/Dで移動、Space長押しで射撃、Eで充填したパルス。",
+      "矢印またはA/Dで移動、スペース長押しで射撃。Eは1〜30でパルス、31〜60で位相ドライブ。",
       "画面をドラッグして移動と射撃。方向と射撃ボタンの長押しも可能。",
-      "侵略者が防衛線に着く前に編隊を倒します。",
+      "31–60: 編隊を倒し、青い標識2–4個を順番に集めよう。",
       "バトルで得たエネルギーで購入。強化は次のステージにも残ります。"
     ],
     "strategyTips": [
-      "6章で弾幕、装甲、中継シールド、交差射撃と6体のボスに挑戦。撃破でパルスが充填され、8機撃破でシールドが1回復。資材で永久強化。"
+      "嵐の間隔、リレー優先、位相を組み合わせよう。",
+      "方向＋Eで跳躍・2セル・8秒で回復。"
     ],
     "progression": [
-      "30ステージは6チャプター、各5ステージです。最前線をクリアすると次が順番に解放され、クリア済みステージを再挑戦しても弾は自動付与されません。獲得したクレジットを強化に使います。"
+      "全60ステージは30ステージずつの2章で、各章に5ステージの区間が6つあります。最前線をクリアすると次が解放されます。31〜60では青いビーコンも順番に集めます。クレジット、強化、解放状態はこのブラウザーに保存されます。"
     ],
-    "designNote": "エイリアン・ディフェンダーは読みやすい固定画面編隊に、30ステージ・6チャプターの進行とクレジット強化を組み合わせます。ステージが挑戦を作り、火力の選択はプレイヤーが決めます。",
+    "designNote": "ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。",
     "parent": "バトルで得たエネルギーで購入。強化は次のステージにも残ります。 ピンクと紫の船体とエンジン光を永久解放。外見のみ変更。 15ダイヤ・永久",
     "faq": [
       [
         "1ステージに何ウェーブありますか？",
-        "各ステージは1バトル、1編隊です。全体は30ステージで、ステージ番号とウェーブ番号がずれる設計ではありません。"
+        "各ステージは1回の戦闘と1つの編隊です。 全60ステージは30ステージずつの2章で、各章に5ステージの区間が6つあります。最前線をクリアすると次が解放されます。31〜60では青いビーコンも順番に集めます。クレジット、強化、解放状態はこのブラウザーに保存されます。"
       ],
       [
         "弾を増やすには？",
@@ -22966,7 +22968,7 @@
       ],
       [
         "次のステージはどう解放しますか？",
-        "現在の最前線ステージをクリアすると、6チャプター各5ステージの順番で次が解放されます。"
+        "全60ステージは30ステージずつの2章で、各章に5ステージの区間が6つあります。最前線をクリアすると次が解放されます。31〜60では青いビーコンも順番に集めます。クレジット、強化、解放状態はこのブラウザーに保存されます。"
       ],
       [
         "進行は保存されますか？",
@@ -22979,31 +22981,32 @@
     ]
   },
   "ko": {
-    "intro": "수달 전투정으로 30번의 우주 전투에 도전하세요. 탄막을 피하고 함대를 격파해 펄스를 충전하세요.",
+    "intro": "수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요.",
     "story": [
-      "수달 전투정으로 30번의 우주 전투에 도전하세요. 탄막을 피하고 함대를 격파해 펄스를 충전하세요."
+      "수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요."
     ],
     "systems": [
-      "6개 챕터에서 탄막, 장갑, 중계 보호막, 교차 사격과 보스 6기를 만납니다. 격파로 펄스를 충전하고 8기마다 보호막을 하나 회복합니다. 자원으로 영구 강화하세요."
+      "1–30에서는 처치로 펄스를 충전하고 8회 처치마다 방어막을 회복합니다. 크레딧으로 영구 강화하세요. 31–60의 호박색 선은 산호색 광선의 예고입니다. 방전 중 프리즘은 사격을 막습니다. 녹색 중계기를 부수면 해당 광선이 사라지고 구리색 앵커를 부수면 위상 방해가 풀립니다. 위상은 입력 방향으로 28 이동하며 2칸 중 1칸을 쓰고 0.45초 보호, 재사용까지 2초가 필요합니다. 활동 8초 또는 중계기 처치로 1칸 회복합니다. 방향이 없으면 현재 위치의 반대편으로 도약합니다. 파란 표지는 필수 목표입니다. 가까이 이동하여 순서대로 모으세요. 방전이 끝날 때 다음 표지가 켜지며 작동 중인 광선 안에서는 모을 수 없습니다. 적만 없애면 항로가 완성되지 않습니다."
     ],
     "how": [
-      "방향키 또는 A/D로 이동, Space를 눌러 발사, E로 충전된 펄스 사용.",
+      "방향키 또는 A/D로 이동, 스페이스를 누르고 사격합니다. E는 1–30에서 펄스, 31–60에서 위상 도약입니다.",
       "화면을 드래그해 이동하며 발사하거나 방향과 발사 버튼을 누르세요.",
-      "침입자가 방어선에 닿기 전에 대형을 모두 처치하세요.",
+      "31–60: 편대를 없애고 파란 표지 2–4개를 순서대로 모으세요.",
       "전투에서 얻은 에너지로 구매하세요. 강화 효과는 다음 스테이지에도 유지됩니다."
     ],
     "strategyTips": [
-      "6개 챕터에서 탄막, 장갑, 중계 보호막, 교차 사격과 보스 6기를 만납니다. 격파로 펄스를 충전하고 8기마다 보호막을 하나 회복합니다. 자원으로 영구 강화하세요."
+      "폭풍 시기, 중계기 우선순위와 위상을 조합하세요.",
+      "방향＋E 도약 · 2칸 · 8초 충전."
     ],
     "progression": [
-      "30개 스테이지는 6개 챕터, 챕터당 5개입니다. 현재 전선을 클리어하면 다음 스테이지가 순서대로 열리고, 클리어한 스테이지를 다시 해도 탄환이 자동 지급되지 않습니다. 얻은 크레딧을 강화에 사용하세요."
+      "60개 스테이지는 30개씩 두 장이며 각 장은 5개씩 여섯 구간입니다. 현재 마지막 스테이지를 완료하면 다음이 열립니다. 31–60에서는 파란 신호기도 순서대로 모아야 합니다. 크레딧, 강화와 해제 상태는 이 브라우저에 저장됩니다."
     ],
-    "designNote": "에일리언 디펜더는 읽기 쉬운 고정 화면 대형에 30스테이지·6챕터 진행과 크레딧 강화 루프를 결합합니다. 스테이지가 도전을 만들고 화력 선택은 플레이어가 결정합니다.",
+    "designNote": "수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요.",
     "parent": "전투에서 얻은 에너지로 구매하세요. 강화 효과는 다음 스테이지에도 유지됩니다. 분홍·보라 선체와 엔진 색상을 영구 해제합니다. 외형만 변경됩니다. 다이아 15개 · 영구",
     "faq": [
       [
         "한 스테이지에 웨이브가 몇 개 있나요?",
-        "각 스테이지는 한 번의 Battle과 하나의 대형입니다. 전체는 30스테이지이며 스테이지와 웨이브 번호가 어긋나지 않습니다."
+        "각 스테이지는 한 번의 전투와 한 편대로 구성됩니다. 60개 스테이지는 30개씩 두 장이며 각 장은 5개씩 여섯 구간입니다. 현재 마지막 스테이지를 완료하면 다음이 열립니다. 31–60에서는 파란 신호기도 순서대로 모아야 합니다. 크레딧, 강화와 해제 상태는 이 브라우저에 저장됩니다."
       ],
       [
         "탄환을 늘리려면 어떻게 하나요?",
@@ -23011,7 +23014,7 @@
       ],
       [
         "다음 스테이지는 어떻게 열리나요?",
-        "현재 전선 스테이지를 클리어하면 6챕터, 챕터당 5스테이지 순서로 다음이 열립니다."
+        "60개 스테이지는 30개씩 두 장이며 각 장은 5개씩 여섯 구간입니다. 현재 마지막 스테이지를 완료하면 다음이 열립니다. 31–60에서는 파란 신호기도 순서대로 모아야 합니다. 크레딧, 강화와 해제 상태는 이 브라우저에 저장됩니다."
       ],
       [
         "진행 상황이 저장되나요?",
@@ -23024,31 +23027,32 @@
     ]
   },
   "es": {
-    "intro": "Pilota la nave de una nutria en 30 batallas. Esquiva descargas, rompe la flota y carga tu pulso.",
+    "intro": "Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora.",
     "story": [
-      "Pilota la nave de una nutria en 30 batallas. Esquiva descargas, rompe la flota y carga tu pulso."
+      "Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora."
     ],
     "systems": [
-      "Seis capítulos con descargas, blindaje, escudos de relé, fuego cruzado y seis jefes. Las bajas cargan el pulso; cada ocho restauran un escudo. Mejora la nave con créditos."
+      "En 1–30, las bajas cargan Pulso y cada ocho restauran un escudo. Compra mejoras permanentes con créditos. En 31–60, el ámbar avisa antes del rayo coral. Los prismas bloquean durante la descarga. Destruye relés verdes para quitar sus rayos y anclas cobrizas para liberar Fase. Fase avanza 28 unidades en la dirección elegida, gasta una de dos celdas, protege 0,45 s y se recupera en 2 s. Recarga una celda cada 8 s activos o al destruir un relé. Sin dirección, salta hacia el lado opuesto. Las balizas azules son obligatorias: acércate y recógelas en orden. La siguiente se enciende tras cada descarga; un rayo activo impide recogerla. Destruir la flota no basta para completar la ruta."
     ],
     "how": [
-      "Flechas o A/D para moverte, mantén Espacio para disparar y E para el pulso cargado.",
+      "Flechas o A/D para moverte; mantén Espacio para disparar. E usa Pulso en 1–30 y Fase en 31–60.",
       "Arrastra para moverte y disparar, o mantén los botones de dirección y disparo.",
-      "Despeja cada formación antes de que llegue a la línea defensiva.",
+      "31–60: Destruye la flota y recoge 2–4 balizas azules en orden.",
       "Gasta la energía ganada en Battle. Las mejoras permanecen entre fases."
     ],
     "strategyTips": [
-      "Seis capítulos con descargas, blindaje, escudos de relé, fuego cruzado y seis jefes. Las bajas cargan el pulso; cada ocho restauran un escudo. Mejora la nave con créditos."
+      "Combina tiempos, prioridad de relés y Fase.",
+      "Dirección + E: salto · 2 celdas · recarga 8 s."
     ],
     "progression": [
-      "Las 30 fases se dividen en seis capítulos de cinco. Superar la frontera actual desbloquea la siguiente; repetir una fase superada no entrega balas automáticamente, así que gasta los Créditos ganados en Mejoras."
+      "Las 60 fases forman dos capítulos de 30, cada uno con seis tramos de cinco. Supera la última fase abierta para desbloquear la siguiente. En 31–60 también debes recoger las balizas azules en orden. Créditos, mejoras y fases abiertas se guardan en este navegador."
     ],
-    "designNote": "Defensor Alienígena combina formaciones legibles de pantalla fija con una campaña de 30 fases, seis capítulos y un ciclo claro de mejoras con Créditos: la fase crea el reto y el jugador decide la potencia.",
+    "designNote": "Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora.",
     "parent": "Gasta la energía ganada en Battle. Las mejoras permanecen entre fases. Colores rosa y violeta permanentes para casco y motores. Solo cosmético. 15 diamantes · permanente",
     "faq": [
       [
         "¿Cuántas oleadas tiene una fase?",
-        "Cada fase tiene un Battle y una formación. La campaña tiene 30 fases, sin desfases confusos entre fase y oleada."
+        "Cada fase contiene una batalla y una formación. Las 60 fases forman dos capítulos de 30, cada uno con seis tramos de cinco. Supera la última fase abierta para desbloquear la siguiente. En 31–60 también debes recoger las balizas azules en orden. Créditos, mejoras y fases abiertas se guardan en este navegador."
       ],
       [
         "¿Cómo aumentan las balas?",
@@ -23056,7 +23060,7 @@
       ],
       [
         "¿Cómo desbloqueo más fases?",
-        "Supera la fase de frontera actual. La siguiente se desbloquea en orden, en seis capítulos de cinco."
+        "Las 60 fases forman dos capítulos de 30, cada uno con seis tramos de cinco. Supera la última fase abierta para desbloquear la siguiente. En 31–60 también debes recoger las balizas azules en orden. Créditos, mejoras y fases abiertas se guardan en este navegador."
       ],
       [
         "¿Se guarda el progreso?",
@@ -23069,31 +23073,32 @@
     ]
   },
   "pt-BR": {
-    "intro": "Pilote a nave de uma lontra em 30 batalhas. Desvie das rajadas, destrua a frota e carregue o pulso.",
+    "intro": "Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora.",
     "story": [
-      "Pilote a nave de uma lontra em 30 batalhas. Desvie das rajadas, destrua a frota e carregue o pulso."
+      "Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora."
     ],
     "systems": [
-      "Seis capítulos com rajadas, blindagem, escudos de relé, fogo cruzado e seis chefes. Abates carregam o pulso; oito abates restauram um escudo. Créditos melhoram a nave."
+      "Em 1–30, abates carregam Pulso e cada oito restauram um escudo. Créditos compram melhorias permanentes. Em 31–60, o âmbar avisa antes do raio coral. Prismas bloqueiam tiros durante a descarga. Destrua relés verdes para remover seus raios e âncoras de cobre para liberar Fase. Fase move 28 unidades na direção escolhida, gasta uma de duas células, protege por 0,45 s e recupera em 2 s. Uma célula volta a cada 8 s ativos ou ao destruir um relé. Sem direção, salta para o lado oposto. As balizas azuis são obrigatórias: aproxime-se e colete em ordem. A próxima acende após cada descarga; um raio ativo impede a coleta. Destruir a frota não basta para concluir a rota."
     ],
     "how": [
-      "Setas ou A/D para mover, segure Espaço para atirar e E para o pulso carregado.",
+      "Setas ou A/D movem; segure Espaço para atirar. E usa Pulso em 1–30 e Fase em 31–60.",
       "Arraste para mover e atirar, ou segure os botões de direção e tiro.",
-      "Limpe cada formação antes que os invasores alcancem a linha de defesa.",
+      "31–60: Destrua a frota e colete 2–4 balizas azuis em ordem.",
       "Gaste a energia ganha na Batalha. As melhorias permanecem entre as fases."
     ],
     "strategyTips": [
-      "Seis capítulos com rajadas, blindagem, escudos de relé, fogo cruzado e seis chefes. Abates carregam o pulso; oito abates restauram um escudo. Créditos melhoram a nave."
+      "Combine o ritmo, a prioridade dos relés e Fase.",
+      "Direção + E: salto · 2 células · recarga 8 s."
     ],
     "progression": [
-      "As 30 fases são divididas em seis capítulos de cinco. Vencer a fronteira atual desbloqueia a próxima; repetir uma fase concluída não dá balas automáticas, então gaste os Créditos ganhos em Melhorias."
+      "As 60 fases formam dois capítulos de 30, cada um com seis trechos de cinco. Vença a última fase aberta para liberar a próxima. Em 31–60, também colete os sinalizadores azuis em ordem. Créditos, melhorias e fases abertas ficam salvos neste navegador."
     ],
-    "designNote": "Defensor Alienígena combina formações legíveis de tela fixa com uma campanha de 30 fases, seis capítulos e um ciclo claro de melhorias por Créditos: a fase cria o desafio e o jogador escolhe o poder.",
+    "designNote": "Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora.",
     "parent": "Gaste a energia ganha na Batalha. As melhorias permanecem entre as fases. Cores rosa e violeta permanentes no casco e motores. Apenas visual. 15 diamantes · permanente",
     "faq": [
       [
         "Quantas ondas há em uma fase?",
-        "Cada fase tem um Battle e uma formação. A campanha tem 30 fases, sem confusão entre o número da fase e da onda."
+        "Cada fase contém uma batalha e uma formação. As 60 fases formam dois capítulos de 30, cada um com seis trechos de cinco. Vença a última fase aberta para liberar a próxima. Em 31–60, também colete os sinalizadores azuis em ordem. Créditos, melhorias e fases abertas ficam salvos neste navegador."
       ],
       [
         "Como aumento as balas?",
@@ -23101,7 +23106,7 @@
       ],
       [
         "Como desbloqueio mais fases?",
-        "Conclua a fase de fronteira atual. A próxima abre em ordem, em seis capítulos de cinco."
+        "As 60 fases formam dois capítulos de 30, cada um com seis trechos de cinco. Vença a última fase aberta para liberar a próxima. Em 31–60, também colete os sinalizadores azuis em ordem. Créditos, melhorias e fases abertas ficam salvos neste navegador."
       ],
       [
         "O progresso é salvo?",
@@ -23114,31 +23119,32 @@
     ]
   },
   "fr": {
-    "intro": "Pilotez la canonnière d’une loutre dans 30 batailles. Évitez les salves et chargez votre impulsion.",
+    "intro": "Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores.",
     "story": [
-      "Pilotez la canonnière d’une loutre dans 30 batailles. Évitez les salves et chargez votre impulsion."
+      "Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores."
     ],
     "systems": [
-      "Six chapitres : salves, blindages, boucliers relais, tirs croisés et six boss. Les destructions chargent l’impulsion ; huit restaurent un bouclier. Les crédits renforcent le vaisseau."
+      "En 1–30, les destructions chargent Impulsion ; huit restaurent un bouclier. Les crédits achètent des améliorations permanentes. En 31–60, les bords ambre annoncent le rayon corail. Les prismes bloquent pendant la décharge. Détruisez les relais verts pour supprimer leurs rayons et les ancres cuivrées pour libérer Phase. Phase déplace de 28 unités dans la direction choisie, coûte une des deux cellules, protège 0,45 s et récupère en 2 s. Une cellule revient toutes les 8 s actives ou par relais détruit. Sans direction, le saut part vers le côté opposé. Les balises bleues sont obligatoires : approchez et prenez-les dans l’ordre. La suivante s’allume après chaque décharge ; un rayon actif empêche sa collecte. Détruire la flotte ne suffit pas."
     ],
     "how": [
-      "Flèches ou A/D pour bouger, Espace maintenu pour tirer, E pour l’impulsion chargée.",
+      "Flèches ou A/D pour bouger ; maintenez Espace pour tirer. E utilise Impulsion en 1–30 et Phase en 31–60.",
       "Faites glisser pour bouger et tirer, ou maintenez les boutons directionnels et de tir.",
-      "Élimine chaque formation avant la ligne de défense.",
+      "31–60: Détruisez la flotte et prenez 2–4 balises bleues dans l’ordre.",
       "Dépense l'énergie gagnée en Battle. Les améliorations restent entre les niveaux."
     ],
     "strategyTips": [
-      "Six chapitres : salves, blindages, boucliers relais, tirs croisés et six boss. Les destructions chargent l’impulsion ; huit restaurent un bouclier. Les crédits renforcent le vaisseau."
+      "Combinez le rythme, les relais et Phase.",
+      "Direction + E : saut · 2 cellules · recharge 8 s."
     ],
     "progression": [
-      "Les 30 niveaux sont répartis en six chapitres de cinq. Réussir la frontière actuelle débloque le suivant; rejouer un niveau réussi ne donne pas de tirs automatiques: dépense les Crédits gagnés dans les Améliorations."
+      "Les 60 niveaux forment deux chapitres de 30, chacun en six groupes de cinq. Termine le dernier niveau ouvert pour débloquer le suivant. Dans les niveaux 31–60, collecte aussi les balises bleues dans l’ordre. Crédits, améliorations et niveaux ouverts restent enregistrés dans ce navigateur."
     ],
-    "designNote": "Défenseur Alien associe des formations lisibles à écran fixe à une campagne de 30 niveaux, six chapitres et une boucle d'amélioration claire par Crédits: le niveau crée le défi et le joueur choisit sa puissance.",
+    "designNote": "Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores.",
     "parent": "Dépense l'énergie gagnée en Battle. Les améliorations restent entre les niveaux. Coque et moteurs roses et violets permanents. Effet visuel uniquement. 15 diamants · permanent",
     "faq": [
       [
         "Combien de vagues contient un niveau?",
-        "Chaque niveau contient un Battle et une formation. La campagne compte 30 niveaux, sans décalage confus entre niveau et vague."
+        "Chaque niveau comprend un combat et une formation. Les 60 niveaux forment deux chapitres de 30, chacun en six groupes de cinq. Termine le dernier niveau ouvert pour débloquer le suivant. Dans les niveaux 31–60, collecte aussi les balises bleues dans l’ordre. Crédits, améliorations et niveaux ouverts restent enregistrés dans ce navigateur."
       ],
       [
         "Comment augmenter les tirs?",
@@ -23146,7 +23152,7 @@
       ],
       [
         "Comment débloquer les niveaux suivants?",
-        "Réussis le niveau frontière actuel. Le suivant se débloque dans l'ordre, en six chapitres de cinq."
+        "Les 60 niveaux forment deux chapitres de 30, chacun en six groupes de cinq. Termine le dernier niveau ouvert pour débloquer le suivant. Dans les niveaux 31–60, collecte aussi les balises bleues dans l’ordre. Crédits, améliorations et niveaux ouverts restent enregistrés dans ce navigateur."
       ],
       [
         "La progression est-elle sauvegardée?",
@@ -23159,31 +23165,32 @@
     ]
   },
   "de": {
-    "intro": "Steuere das Otter-Kanonenboot durch 30 Gefechte. Weiche Salven aus und lade deinen Impuls auf.",
+    "intro": "Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg.",
     "story": [
-      "Steuere das Otter-Kanonenboot durch 30 Gefechte. Weiche Salven aus und lade deinen Impuls auf."
+      "Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg."
     ],
     "systems": [
-      "Sechs Kapitel mit Salven, Panzerung, Relais-Schilden, Kreuzfeuer und sechs Bossen. Abschüsse laden den Impuls; acht stellen einen Schild wieder her. Credits verbessern das Schiff dauerhaft."
+      "In 1–30 laden Abschüsse den Impuls; acht stellen einen Schild wieder her. Credits kaufen dauerhafte Upgrades. In 31–60 warnen bernsteinfarbene Ränder vor korallroten Strahlen. Prismen blocken während der Entladung. Zerstöre grüne Relais, um ihre Strahlen zu entfernen, und kupferne Anker, um Phase freizugeben. Phase versetzt dich 28 Einheiten in Eingaberichtung, kostet eine von zwei Zellen, schützt 0,45 s und erholt sich 2 s. Alle 8 aktiven Sekunden oder pro zerstörtem Relais kommt eine Zelle zurück. Ohne Richtung springst du zur Gegenseite. Blaue Baken sind Pflichtziele: Nähere dich und sammle sie der Reihe nach. Die nächste leuchtet nach jeder Entladung; ein aktiver Strahl verhindert das Einsammeln. Die Flotte allein zu besiegen reicht nicht."
     ],
     "how": [
-      "Pfeile oder A/D zum Bewegen, Leertaste halten zum Schießen, E für den geladenen Impuls.",
+      "Pfeile oder A/D bewegen, Leertaste halten feuert. E nutzt Impuls in 1–30 und Phase in 31–60.",
       "Ziehen bewegt und feuert; alternativ Richtungs- und Feuertasten halten.",
-      "Räume jede Formation, bevor sie die Verteidigungslinie erreicht.",
+      "31–60: Besiege die Flotte und sammle 2–4 blaue Baken der Reihe nach.",
       "Gib die im Battle verdiente Energie aus. Verbesserungen bleiben zwischen den Stufen erhalten."
     ],
     "strategyTips": [
-      "Sechs Kapitel mit Salven, Panzerung, Relais-Schilden, Kreuzfeuer und sechs Bossen. Abschüsse laden den Impuls; acht stellen einen Schild wieder her. Credits verbessern das Schiff dauerhaft."
+      "Verbinde Sturmzeiten, Relaispriorität und Phase.",
+      "Richtung + E: Sprung · 2 Zellen · 8 s laden."
     ],
     "progression": [
-      "Die 30 Stufen sind sechs Kapitel mit je fünf Stufen. Wenn du die aktuelle Grenzstufe schaffst, wird die nächste freigeschaltet; ein Wiederholen gibt keine automatische Munition, also investiere verdiente Credits in Upgrades."
+      "Die 60 Stufen bilden zwei Kapitel mit je 30 Stufen und sechs Abschnitten zu je fünf. Schließe die zuletzt freigeschaltete Stufe ab, um die nächste zu öffnen. In 31–60 musst du auch die blauen Signalgeber der Reihe nach sammeln. Credits, Upgrades und Freischaltungen bleiben in diesem Browser gespeichert."
     ],
-    "designNote": "Alien-Verteidiger verbindet lesbare Fixed-Screen-Formationen mit einer Kampagne aus 30 Stufen, sechs Kapiteln und einer klaren Credit-Upgrade-Schleife: Die Stufe erzeugt die Herausforderung, die Feuerkraft wählt der Spieler.",
+    "designNote": "Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg.",
     "parent": "Gib die im Battle verdiente Energie aus. Verbesserungen bleiben zwischen den Stufen erhalten. Dauerhaft rosa-violette Hülle und Triebwerke. Nur kosmetisch. 15 Diamanten · dauerhaft",
     "faq": [
       [
         "Wie viele Wellen hat eine Stufe?",
-        "Jede Stufe hat ein Battle und eine Formation. Die Kampagne hat 30 Stufen, ohne verwirrende Verschiebung zwischen Stufe und Welle."
+        "Jede Stufe enthält einen Kampf und eine Formation. Die 60 Stufen bilden zwei Kapitel mit je 30 Stufen und sechs Abschnitten zu je fünf. Schließe die zuletzt freigeschaltete Stufe ab, um die nächste zu öffnen. In 31–60 musst du auch die blauen Signalgeber der Reihe nach sammeln. Credits, Upgrades und Freischaltungen bleiben in diesem Browser gespeichert."
       ],
       [
         "Wie bekomme ich mehr Munition?",
@@ -23191,7 +23198,7 @@
       ],
       [
         "Wie schalte ich weitere Stufen frei?",
-        "Schaffe die aktuelle Grenzstufe. Die nächste wird der Reihe nach freigeschaltet, in sechs Kapiteln mit je fünf Stufen."
+        "Die 60 Stufen bilden zwei Kapitel mit je 30 Stufen und sechs Abschnitten zu je fünf. Schließe die zuletzt freigeschaltete Stufe ab, um die nächste zu öffnen. In 31–60 musst du auch die blauen Signalgeber der Reihe nach sammeln. Credits, Upgrades und Freischaltungen bleiben in diesem Browser gespeichert."
       ],
       [
         "Wird der Fortschritt gespeichert?",
@@ -23204,31 +23211,32 @@
     ]
   },
   "it": {
-    "intro": "Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso.",
+    "intro": "Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora.",
     "story": [
-      "Pilota la cannoniera di una lontra in 30 battaglie. Schiva le raffiche e carica il tuo impulso."
+      "Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora."
     ],
     "systems": [
-      "Sei capitoli con raffiche, corazze, scudi relè, fuoco incrociato e sei boss. Le eliminazioni caricano l’impulso; otto ripristinano uno scudo. I crediti migliorano la nave."
+      "In 1–30, le eliminazioni caricano Impulso e ogni otto ripristinano uno scudo. I crediti comprano potenziamenti permanenti. In 31–60, i bordi ambra avvisano prima del raggio corallo. I prismi bloccano durante la scarica. Distruggi i relè verdi per rimuovere i loro raggi e le ancore di rame per liberare Fase. Fase sposta di 28 unità nella direzione scelta, usa una di due celle, protegge per 0,45 s e recupera in 2 s. Una cella torna ogni 8 s attivi o per relè distrutto. Senza direzione, salta verso il lato opposto. I segnali blu sono obbligatori: avvicinati e raccoglili in ordine. Il successivo si accende dopo ogni scarica; un raggio attivo ne impedisce la raccolta. Distruggere la flotta non basta."
     ],
     "how": [
-      "Frecce o A/D per muoverti, tieni Spazio per sparare ed E per l’impulso carico.",
+      "Frecce o A/D muovono; tieni Spazio per sparare. E usa Impulso in 1–30 e Fase in 31–60.",
       "Trascina per muoverti e sparare, oppure tieni premuti i pulsanti direzione e fuoco.",
-      "Elimina ogni formazione prima che raggiunga la linea difensiva.",
+      "31–60: Distruggi la flotta e raccogli 2–4 segnali blu in ordine.",
       "Spendi l'energia ottenuta in Battaglia. I potenziamenti restano tra i livelli."
     ],
     "strategyTips": [
-      "Sei capitoli con raffiche, corazze, scudi relè, fuoco incrociato e sei boss. Le eliminazioni caricano l’impulso; otto ripristinano uno scudo. I crediti migliorano la nave."
+      "Combina tempi, priorità dei relè e Fase.",
+      "Direzione + E: salto · 2 celle · ricarica 8 s."
     ],
     "progression": [
-      "I 30 livelli sono divisi in sei capitoli da cinque. Superare la frontiera attuale sblocca il livello successivo; rigiocare un livello completato non regala proiettili automatici: investi i Crediti nei Potenziamenti."
+      "Le 60 fasi formano due capitoli da 30, ciascuno con sei gruppi di cinque. Completa l’ultima fase aperta per sbloccare la successiva. In 31–60 raccogli anche i segnali blu nell’ordine indicato. Crediti, potenziamenti e fasi sbloccate restano salvati in questo browser."
     ],
-    "designNote": "Difensore Alieno unisce formazioni leggibili a schermo fisso con una campagna di 30 livelli, sei capitoli e un ciclo chiaro di potenziamenti a Crediti: il livello crea la sfida e il giocatore sceglie la potenza.",
+    "designNote": "Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora.",
     "parent": "Spendi l'energia ottenuta in Battaglia. I potenziamenti restano tra i livelli. Scafo e motori rosa-viola permanenti. Solo estetica. 15 diamanti · permanente",
     "faq": [
       [
         "Quante ondate ci sono in un livello?",
-        "Ogni livello ha un Battle e una formazione. La campagna ha 30 livelli, senza confusione tra numero del livello e dell'ondata."
+        "Ogni fase contiene una battaglia e una formazione. Le 60 fasi formano due capitoli da 30, ciascuno con sei gruppi di cinque. Completa l’ultima fase aperta per sbloccare la successiva. In 31–60 raccogli anche i segnali blu nell’ordine indicato. Crediti, potenziamenti e fasi sbloccate restano salvati in questo browser."
       ],
       [
         "Come aumento i proiettili?",
@@ -23236,7 +23244,7 @@
       ],
       [
         "Come sblocco altri livelli?",
-        "Completa il livello di frontiera attuale. Il successivo si apre in ordine, in sei capitoli da cinque."
+        "Le 60 fasi formano due capitoli da 30, ciascuno con sei gruppi di cinque. Completa l’ultima fase aperta per sbloccare la successiva. In 31–60 raccogli anche i segnali blu nell’ordine indicato. Crediti, potenziamenti e fasi sbloccate restano salvati in questo browser."
       ],
       [
         "I progressi vengono salvati?",
@@ -23249,31 +23257,32 @@
     ]
   },
   "ru": {
-    "intro": "Ведите корабль выдры через 30 боёв. Уклоняйтесь от залпов, разбивайте флот и заряжайте импульс.",
+    "intro": "Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры.",
     "story": [
-      "Ведите корабль выдры через 30 боёв. Уклоняйтесь от залпов, разбивайте флот и заряжайте импульс."
+      "Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры."
     ],
     "systems": [
-      "Шесть глав: залпы, броня, релейные щиты, перекрёстный огонь и шесть боссов. Победы заряжают импульс; каждые восемь возвращают щит. Кредиты улучшают корабль навсегда."
+      "В 1–30 победы заряжают Импульс; каждые восемь возвращают щит. Кредиты дают постоянные улучшения. В 31–60 янтарные границы предупреждают о коралловом луче. Призмы блокируют огонь при разряде. Разрушайте зелёные реле, чтобы убрать их лучи, и медные якоря, чтобы снять помехи Фазы. Фаза перемещает на 28 единиц по вводу, тратит одну из двух ячеек, защищает 0,45 с и восстанавливается 2 с. Ячейка возвращается за 8 активных секунд или за реле. Без направления прыжок идёт к противоположной стороне. Синие маяки обязательны: подойдите и соберите их по порядку. Следующий загорается после разряда; в активном луче сбор невозможен. Одной победы над флотом недостаточно."
     ],
     "how": [
-      "Стрелки или A/D — движение, удерживайте пробел для огня, E — заряженный импульс.",
+      "Стрелки или A/D — движение, удерживайте пробел для огня. E включает Импульс в 1–30 и Фазу в 31–60.",
       "Перетаскивайте поле для движения и стрельбы или удерживайте кнопки направления и огня.",
-      "Уничтожь строй до того, как он достигнет линии обороны.",
+      "31–60: Разбейте флот и соберите 2–4 синих маяков по порядку.",
       "Тратьте энергию, заработанную в бою. Усиления сохраняются между этапами."
     ],
     "strategyTips": [
-      "Шесть глав: залпы, броня, релейные щиты, перекрёстный огонь и шесть боссов. Победы заряжают импульс; каждые восемь возвращают щит. Кредиты улучшают корабль навсегда."
+      "Совмещайте ритм бури, приоритет реле и Фазу.",
+      "Направление + E: прыжок · 2 ячейки · заряд 8 с."
     ],
     "progression": [
-      "30 этапов разделены на шесть глав по пять. Победа на текущем передовом этапе открывает следующий; повторное прохождение не выдаёт автоматические снаряды — тратьте заработанные кредиты на усиления."
+      "60 этапов разделены на две главы по 30, каждая из шести участков по пять этапов. Пройдите последний открытый этап, чтобы открыть следующий. На этапах 31–60 также соберите синие маяки по порядку. Кредиты, улучшения и открытые этапы сохраняются в этом браузере."
     ],
-    "designNote": "«Защитник от пришельцев» сочетает понятные строи фиксированного экрана с кампанией из 30 этапов, шести глав и ясным циклом усилений за кредиты: этап задаёт испытание, а мощь выбирает игрок.",
+    "designNote": "Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры.",
     "parent": "Тратьте энергию, заработанную в бою. Усиления сохраняются между этапами. Розово-фиолетовые корпус и двигатели навсегда. Только внешний вид. 15 алмазов · навсегда",
     "faq": [
       [
         "Сколько волн в одном этапе?",
-        "В каждом этапе один Battle и один строй. В кампании 30 этапов, без путаницы между номерами этапа и волны."
+        "В каждом этапе один бой и одно построение противников. 60 этапов разделены на две главы по 30, каждая из шести участков по пять этапов. Пройдите последний открытый этап, чтобы открыть следующий. На этапах 31–60 также соберите синие маяки по порядку. Кредиты, улучшения и открытые этапы сохраняются в этом браузере."
       ],
       [
         "Как увеличить число снарядов?",
@@ -23281,7 +23290,7 @@
       ],
       [
         "Как открыть следующие этапы?",
-        "Пройдите текущий передовой этап. Следующий открывается по порядку: шесть глав по пять этапов."
+        "60 этапов разделены на две главы по 30, каждая из шести участков по пять этапов. Пройдите последний открытый этап, чтобы открыть следующий. На этапах 31–60 также соберите синие маяки по порядку. Кредиты, улучшения и открытые этапы сохраняются в этом браузере."
       ],
       [
         "Сохраняется ли прогресс?",
@@ -23294,31 +23303,32 @@
     ]
   },
   "hi": {
-    "intro": "ऊदबिलाव की गनशिप से 30 अंतरिक्ष युद्ध लड़ें। गोलियों से बचें, बेड़ा तोड़ें और पल्स चार्ज करें।",
+    "intro": "ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।",
     "story": [
-      "ऊदबिलाव की गनशिप से 30 अंतरिक्ष युद्ध लड़ें। गोलियों से बचें, बेड़ा तोड़ें और पल्स चार्ज करें।"
+      "ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।"
     ],
     "systems": [
-      "छह अध्यायों में बौछार, कवच, रिले ढाल, क्रॉसफायर और छह बॉस। दुश्मन हराने से पल्स भरता है; आठ से एक ढाल लौटती है। क्रेडिट से स्थायी सुधार करें।"
+      "1–30 में दुश्मन हराने से पल्स भरता है; हर आठ पर ढाल लौटती है। क्रेडिट से स्थायी सुधार लें। 31–60 में अंबर किनारे मूंगे रंग की किरण की चेतावनी हैं। डिस्चार्ज के दौरान प्रिज़्म गोली रोकते हैं। हरे रिले तोड़कर उनकी किरणें हटाएँ और ताँबे के एंकर तोड़कर फेज़ खोलें। फेज़ चुनी दिशा में 28 इकाई ले जाता है, दो में से एक सेल खर्च करता है, 0.45 सेकंड बचाता है और 2 सेकंड में फिर तैयार होता है। हर 8 सक्रिय सेकंड या रिले नष्ट करने पर एक सेल लौटता है। दिशा न देने पर विपरीत ओर छलाँग लगती है। नीले संकेत ज़रूरी लक्ष्य हैं: पास जाकर क्रम से लें। हर डिस्चार्ज के बाद अगला जलता है; सक्रिय किरण में उसे नहीं ले सकते। केवल बेड़ा हराने से मार्ग पूरा नहीं होता।"
     ],
     "how": [
-      "तीर या A/D से चलें, गोली के लिए Space दबाए रखें और चार्ज पल्स के लिए E दबाएँ।",
+      "तीर या A/D से चलें, गोली के लिए Space दबाए रखें। E से 1–30 में पल्स और 31–60 में फेज़ छलाँग लगाएँ।",
       "चलने और गोली चलाने के लिए मैदान पर खींचें या दिशा और गोली बटन दबाए रखें।",
-      "घुसपैठियों के रक्षा रेखा तक पहुँचने से पहले गठन साफ़ करें।",
+      "31–60: बेड़ा हराएँ और 2–4 नीले संकेत क्रम से लें।",
       "बैटल में मिली ऊर्जा खर्च करें। अपग्रेड अगले स्टेज में भी बने रहते हैं।"
     ],
     "strategyTips": [
-      "छह अध्यायों में बौछार, कवच, रिले ढाल, क्रॉसफायर और छह बॉस। दुश्मन हराने से पल्स भरता है; आठ से एक ढाल लौटती है। क्रेडिट से स्थायी सुधार करें।"
+      "तूफान का समय, रिले प्राथमिकता और फेज़ मिलाएँ।",
+      "दिशा + E: छलाँग · 2 सेल · 8 सेकंड चार्ज।"
     ],
     "progression": [
-      "30 स्टेज छह अध्यायों में बाँटे गए हैं, हर अध्याय में पाँच। मौजूदा अग्रिम स्टेज साफ़ करने पर अगला खुलता है; दोबारा खेलने पर गोलियाँ अपने-आप नहीं मिलतीं, इसलिए कमाए क्रेडिट अपग्रेड में लगाएँ।"
+      "60 चरणों के दो अध्याय हैं, हर अध्याय में 30 चरण और पाँच-पाँच चरणों के छह खंड हैं। अगला चरण खोलने के लिए आखिरी खुले चरण को पूरा करें। 31–60 में नीले बीकन भी क्रम से इकट्ठा करें। क्रेडिट, अपग्रेड और खुले चरण इसी ब्राउज़र में सहेजे जाते हैं।"
     ],
-    "designNote": "एलियन रक्षक पढ़ने योग्य फिक्स्ड-स्क्रीन गठन को 30 स्टेज, छह अध्याय और स्पष्ट क्रेडिट-अपग्रेड लूप से जोड़ता है: स्टेज चुनौती बनाता है और फायरपावर का चुनाव खिलाड़ी करता है।",
+    "designNote": "ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।",
     "parent": "बैटल में मिली ऊर्जा खर्च करें। अपग्रेड अगले स्टेज में भी बने रहते हैं। गुलाबी-बैंगनी ढाँचे और इंजन के रंग स्थायी रूप से खोलें। केवल रूप बदलता है। 15 हीरे · स्थायी",
     "faq": [
       [
         "एक स्टेज में कितनी लहरें हैं?",
-        "हर स्टेज में एक Battle और एक गठन है। अभियान 30 स्टेज का है; स्टेज और लहर की संख्या आपस में नहीं उलझती।"
+        "हर चरण में एक लड़ाई और एक दुश्मन दल होता है। 60 चरणों के दो अध्याय हैं, हर अध्याय में 30 चरण और पाँच-पाँच चरणों के छह खंड हैं। अगला चरण खोलने के लिए आखिरी खुले चरण को पूरा करें। 31–60 में नीले बीकन भी क्रम से इकट्ठा करें। क्रेडिट, अपग्रेड और खुले चरण इसी ब्राउज़र में सहेजे जाते हैं।"
       ],
       [
         "गोलियाँ कैसे बढ़ती हैं?",
@@ -23326,7 +23336,7 @@
       ],
       [
         "अगले स्टेज कैसे खुलते हैं?",
-        "मौजूदा अग्रिम स्टेज साफ़ करें। अगला क्रम से खुलेगा: छह अध्याय, हर अध्याय में पाँच स्टेज।"
+        "60 चरणों के दो अध्याय हैं, हर अध्याय में 30 चरण और पाँच-पाँच चरणों के छह खंड हैं। अगला चरण खोलने के लिए आखिरी खुले चरण को पूरा करें। 31–60 में नीले बीकन भी क्रम से इकट्ठा करें। क्रेडिट, अपग्रेड और खुले चरण इसी ब्राउज़र में सहेजे जाते हैं।"
       ],
       [
         "क्या प्रगति सेव होती है?",
@@ -23352,31 +23362,32 @@
       "الحركة",
       "رد الفعل"
     ],
-    "intro": "قد سفينة القضاعة في 30 معركة فضائية. تفادَ الرشقات وحطّم الأسطول واشحن النبضة.",
+    "intro": "قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق.",
     "story": [
-      "قد سفينة القضاعة في 30 معركة فضائية. تفادَ الرشقات وحطّم الأسطول واشحن النبضة."
+      "قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق."
     ],
     "systems": [
-      "ستة فصول تضم رشقات ودروعاً وحماية مرحّلات ونيراناً متقاطعة وستة زعماء. التدمير يشحن النبضة؛ كل ثمانية يعيد درعاً. الأرصدة تطور السفينة دائماً."
+      "في 1–30 يشحن التدمير النبضة؛ كل ثمانية يعيد درعاً. اشترِ تحسينات دائمة بالأرصدة. في 31–60 تحذّر الحواف الكهرمانية قبل الشعاع المرجاني. تحجب المنشورات الطلقات أثناء التفريغ. حطّم المرحّلات الخضراء لإزالة أشعتها والمراسي النحاسية لفك تشويش الطور. ينقلك الطور 28 وحدة باتجاه الإدخال، ويستهلك خلية من اثنتين ويحميك 0.45 ثانية ويتعافى خلال ثانيتين. تعود خلية كل 8 ثوانٍ نشطة أو عند تدمير مرحّل. دون اتجاه تقفز نحو الجانب المقابل. المنارات الزرقاء أهداف إلزامية: اقترب لجمعها بالترتيب. تضيء التالية بعد كل تفريغ، ويمنع الشعاع النشط جمعها. تدمير الأسطول وحده لا يكمل الطريق."
     ],
     "how": [
-      "الأسهم أو A/D للحركة، اضغط مطولاً على المسافة للإطلاق وE للنبضة المشحونة.",
+      "الأسهم أو A/D للحركة، واضغط مطولاً المسافة للإطلاق. E للنبضة في 1–30 وللقفزة الطورية في 31–60.",
       "اسحب الميدان للتحرك والإطلاق أو اضغط مطولاً أزرار الاتجاه والإطلاق.",
-      "اقضِ على كل تشكيل قبل وصول الغزاة إلى خط الدفاع.",
+      "31–60: حطّم الأسطول واجمع 2–4 منارات زرقاء بالترتيب.",
       "أنفق الطاقة التي تكسبها في المعركة. تبقى الترقيات بين المراحل."
     ],
     "strategyTips": [
-      "ستة فصول تضم رشقات ودروعاً وحماية مرحّلات ونيراناً متقاطعة وستة زعماء. التدمير يشحن النبضة؛ كل ثمانية يعيد درعاً. الأرصدة تطور السفينة دائماً."
+      "اجمع توقيت العاصفة وأولوية المرحّلات والطور.",
+      "اتجاه + E: قفزة · خليتان · شحن 8 ثوانٍ."
     ],
     "progression": [
-      "تنقسم المراحل الثلاثون إلى ستة فصول، في كل فصل خمس مراحل. يفتح اجتياز المرحلة الأمامية الحالية المرحلة التالية؛ وإعادة المرحلة المكتملة لا تمنح رصاصاً تلقائياً، فأنفق الاعتمادات المكتسبة في الترقيات."
+      "تتكون المراحل الستون من فصلين، كل منهما 30 مرحلة في ست مجموعات من خمس. أكمل آخر مرحلة مفتوحة لفتح التالية. في 31–60 اجمع أيضاً المنارات الزرقاء بالترتيب. تبقى الاعتمادات والترقيات والمراحل المفتوحة محفوظة في هذا المتصفح."
     ],
-    "designNote": "تجمع مدافع الفضائيين بين تشكيلات الشاشة الثابتة سهلة القراءة وحملة من 30 مرحلة وستة فصول وحلقة ترقيات واضحة بالاعتمادات: المرحلة تصنع التحدي واللاعب يختار القوة.",
+    "designNote": "قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق.",
     "parent": "أنفق الطاقة التي تكسبها في المعركة. تبقى الترقيات بين المراحل. ألوان وردية وبنفسجية دائمة للهيكل والمحركات. تغيير تجميلي فقط. 15 ألماسة · دائم",
     "faq": [
       [
         "كم موجة في كل مرحلة؟",
-        "كل مرحلة تضم معركة واحدة وتشكيلًا واحدًا. الحملة 30 مرحلة، بلا إزاحة مربكة بين رقم المرحلة والموجة."
+        "تضم كل مرحلة معركة واحدة وتشكيلًا واحدًا. تتكون المراحل الستون من فصلين، كل منهما 30 مرحلة في ست مجموعات من خمس. أكمل آخر مرحلة مفتوحة لفتح التالية. في 31–60 اجمع أيضاً المنارات الزرقاء بالترتيب. تبقى الاعتمادات والترقيات والمراحل المفتوحة محفوظة في هذا المتصفح."
       ],
       [
         "كيف أزيد الرصاص؟",
@@ -23384,7 +23395,7 @@
       ],
       [
         "كيف أفتح مراحل أخرى؟",
-        "اجتز المرحلة الأمامية الحالية. تفتح التالية بالترتيب ضمن ستة فصول، في كل فصل خمس مراحل."
+        "تتكون المراحل الستون من فصلين، كل منهما 30 مرحلة في ست مجموعات من خمس. أكمل آخر مرحلة مفتوحة لفتح التالية. في 31–60 اجمع أيضاً المنارات الزرقاء بالترتيب. تبقى الاعتمادات والترقيات والمراحل المفتوحة محفوظة في هذا المتصفح."
       ],
       [
         "هل يُحفظ التقدم؟",
@@ -23397,7 +23408,7 @@
     ]
   }
 };
-  for (const [code, guide] of Object.entries(alienV45GuideCopy)) {
+  for (const [code, guide] of Object.entries(alienV63GuideCopy)) {
     localizedGames[code] ||= {};
     localizedGames[code]["alien-defender"] = { ...(localizedGames[code]["alien-defender"] || games["alien-defender"]), ...guide };
   }

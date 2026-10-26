@@ -40,6 +40,6 @@ export const TABLES=Object.freeze(authored.map(([name,cue,groups,shots,par,extra
 export const ITEMS=Object.freeze([
  {id:'harbor',cost:0,currency:'stamp',unlock:0,color:0xd9a567,cloth:0x0d847f},
  {id:'coral',cost:5,currency:'stamp',unlock:5,color:0xe87559,cloth:0x0d847f},
- {id:'moon',cost:15,currency:'stamp',unlock:15,color:0x9ba9ed,cloth:0x253e77},
+ {id:'moon',cost:25,currency:'stamp',unlock:25,color:0x9ba9ed,cloth:0x253e77},
  {id:'seaglass',cost:5,currency:'diamond',unlock:0,color:0x65ddda,cloth:0x0d6a7b},
 ]);

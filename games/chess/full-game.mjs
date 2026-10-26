@@ -17,8 +17,8 @@
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 import {ChessSession} from './full-rules.mjs';
-import {mountChessFrame} from './frame.mjs?v=20261022-chess-i9-frame1';
-import {createChessStageConfig} from './stage-config.mjs?v=20261022-chess-i9-stage-config1';
+import {mountChessFrame} from './frame.mjs?v=20261026-chess-i9-71f8095e1f48';
+import {createChessStageConfig} from './stage-config.mjs?v=20261026-chess-i9-be6c1ebd6488';
 import {ChessAI} from './ai-client.mjs';
 import {ChessBoard3D} from './board-3d.mjs?v=20260909-knight-v17';
 import {chessLocales} from './full-locales.mjs';
@@ -32,7 +32,7 @@ import {mainLocales} from './main-locales.mjs';
 import {resultLocales} from './result-locales.mjs';
 import {leaveLocales} from './leave-locales.mjs';
 import {stageLocales} from './stage-locales.mjs';
-import {entryLocale,lobbyHref} from './locale-entry.mjs';
+import {entryLocale,lobbyHref} from './locale-entry.mjs?v=20261026-chess-i9-de851a8e44ed';
 const $=id=>document.getElementById(id==='stages'?'chessStages':id),saveKey='weightplay_chess_complete_v1';
 let savedLocale;try{savedLocale=localStorage.getItem('weightPlayLocale');}catch{}
 let locale=entryLocale(location.href,savedLocale,document.documentElement.lang);
@@ -62,7 +62,7 @@ function showScene(name){
  for(const node of [$('arena'),$('controls'),$('saved'),$('battle').querySelector('[data-wp-frame-header="battle"],.topbar')]){node.hidden=result;node.inert=result;}
  (__wpNotifyMeasurement(), $('result').hidden=!result);$('result').inert=!result;$('battle').classList.toggle('is-result',result);
  if(!result){(__wpNotifyMeasurement(), $('resultBoard').removeAttribute('src'));(__wpNotifyMeasurement(), $('resultBoard').hidden=true);}
- $('main').hidden=scene!=='main';document.body.dataset.screen=scene;
+ document.body.dataset.screen=scene;
  if(scene==='battle')fitBattle();
  window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
 
@@ -78,11 +78,10 @@ function persist(){if(currentChallenge){$('saved').textContent='';return;}try{lo
 function localize(){
  for(const button of $('promoteChoices').children)button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[button.dataset.piece]);
  if($('saved').textContent)$('saved').textContent=text('saved');
- $('locale').setAttribute('aria-label',boardLocales[locale].language);
  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
  $('exit').href=lobbyHref(locale,location.href);
  $('title').dataset.runtimeLocalize='off';
- for(const [id,key] of Object.entries({title:'title',start:'start',resume:'resume',intro:'intro',guideTitle:'guide',undo:'undo',restart:'restart',hint:'hint',again:'start',resultBack:'back',promoteTitle:'promote',confirmText:'confirm',confirmYes:'start',confirmNo:'cancel',errorText:'unavailable',errorRetry:'retry',errorBack:'back'}))$(id).textContent=text(key);
+ for(const [id,key] of Object.entries({title:'title',start:'start',resume:'resume',intro:'intro',guideTitle:'title',undo:'undo',restart:'restart',hint:'hint',again:'start',resultBack:'back',promoteTitle:'promote',confirmText:'confirm',confirmYes:'start',confirmNo:'cancel',errorText:'unavailable',errorRetry:'retry',errorBack:'back'}))$(id).textContent=text(key);
  // Return artwork is permanent. Localization owns its accessible name only.
  $('back').setAttribute('aria-label',text('back'));$('back').setAttribute('title',text('back'));
  $('arena').setAttribute('aria-label',`${text('title')}. ${text('help')}`);
@@ -92,8 +91,6 @@ function localize(){
  if(!$('result').hidden&&outcomeKey){$('outcome').textContent=text(outcomeKey);$('again').textContent=text(currentChallenge?'retry':'start');}
  if(active)render();
 }
-const languageNames={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
-for(const key of Object.keys(chessLocales)){const o=document.createElement('option');o.value=key;o.textContent=languageNames[key];$('locale').append(o);}$('locale').value=locale;$('locale').onchange=()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();window.dispatchEvent(new CustomEvent('wonder:locale-change'));window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));};
 function stop(){sharedSettingsPaused=false;epoch++;ai.cancel();busy=false;selected=null;promotion=null;for(const button of $('controls').querySelectorAll('button'))button.disabled=false;if($('promotion').open)$('promotion').close();view?.dispose();view=null;}
 function stageDefaultIndex(){return Math.min(challenges.length-1,Math.max(0,...progress.cleared));}
 function refreshStageSelector(selected=stageDefaultIndex()){

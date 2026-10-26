@@ -44,6 +44,7 @@ function show(next){
 function ensureScene(){if(scene)return true;try{scene=new BattleScene(canvas,{reduced:matchMedia('(prefers-reduced-motion: reduce)').matches});return true;}catch(error){console.error('Alien Defender WebGL initialization failed',error);$('battleMessage').textContent=t('renderError');$('battleMessage').classList.add('is-visible');return false;}}
 function start(index=selected){
  const next=Math.floor(Number(index));if(!Number.isInteger(next)||next<0||next>=TOTAL_STAGES||next>=(practice?TOTAL_STAGES:progress.unlocked)){sound('feedback.error');return;}
+ window.WeightPlayCastle?.dismissRewardNotice?.('alien-defender');
  selected=next;show('battle');if(!ensureScene())return;
  scene.resize();world=createWorld(next+1,progress,canvas.clientHeight/Math.max(1,canvas.clientWidth));scene.reset();ending=0;last=0;messageUntil=5;updateHud();
  window.WeightPlayAudio?.preload?.([...new Set([...Object.values(soundMap),'combat.shield.break','explosion.large','result.win','result.lose'])]);

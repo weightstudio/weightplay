@@ -1,4 +1,5 @@
 (() => {
+  if (window.WeightPlayTutorial?.createEmbedded) return;
   const memoryStorage = new Map();
   function readStorage(key) {
     try { return localStorage.getItem(key); } catch { return memoryStorage.get(key) || null; }
@@ -1133,6 +1134,42 @@
     return readStorage(seenKey(gameId)) === "1";
   }
 
+  // I9 games keep tutorial panels inside their own Battle canvas. Reuse the
+  // shared seen-state and lesson renderer without a second body-level dialog.
+  const embedded = new Map();
+  window.WeightPlayTutorial = Object.freeze({
+    createEmbedded({ gameId, open, isSeen = () => false, onComplete = () => {}, canPersist = () => true }) {
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(gameId || '') || typeof open !== 'function'
+          || [isSeen,onComplete,canPersist].some(fn => typeof fn !== 'function')) throw new Error('INVALID_EMBEDDED_TUTORIAL');
+      if (embedded.has(gameId)) throw new Error('DUPLICATE_EMBEDDED_TUTORIAL');
+      let visible = false, disposed = false;
+      const controller = Object.freeze({
+        show(force = false) {
+          if (disposed || visible || (!force && (hasSeen(gameId) || isSeen()))) return false;
+          visible = true;try { open(); } catch (error) { visible = false;throw error; }
+          if (canPersist()) window.WonderAnalytics?.track?.('tutorial_show', { game_id:gameId,from_button:Boolean(force) });
+          return true;
+        },
+        complete() {
+          if (!visible || disposed) return;visible = false;
+          if (canPersist()) markSeen(gameId);onComplete();
+          if (canPersist()) window.WonderAnalytics?.track?.('tutorial_close', { game_id:gameId });
+        },
+        hide() { visible = false; },
+        render(root, steps, footer = '') {
+          if (disposed || !root || root.ownerDocument !== document || !Array.isArray(steps)
+              || steps.length < 1 || steps.length > 3 || steps.some(text => typeof text !== 'string' || !text.trim())) throw new Error('INVALID_EMBEDDED_TUTORIAL_STEPS');
+          const fragment = document.createDocumentFragment();
+          steps.forEach((text,index) => { const p=document.createElement('p');p.dataset.wpTutorialStep=String(index+1);p.textContent=text;fragment.append(p); });
+          if (footer) { const p=document.createElement('p');p.textContent=String(footer);fragment.append(p); }
+          root.append(fragment);
+        },
+        destroy() { visible = false;disposed = true;embedded.delete(gameId); },
+      });
+      embedded.set(gameId,controller);return controller;
+    },
+  });
+
   function renderTutorial(backdrop, gameId, fromButton = false) {
     const tutorial = tutorials[gameId];
     if (!tutorial || !backdrop) return;
@@ -1227,7 +1264,7 @@
 
   function install() {
     const gameId = gameIdFromPath();
-    if (!tutorials[gameId]) return;
+    if (embedded.has(gameId) || !tutorials[gameId]) return;
     applyCommonLabels();
     const button = document.createElement("button");
     button.type = "button";
