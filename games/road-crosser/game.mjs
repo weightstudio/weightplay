@@ -1,9 +1,9 @@
 import { createWorld, requestMove, advance, signalState, readJourney, saveJourney, readBest, buyAurora, COST, readCampaign, recordClear, CAMPAIGN_KEY, missingCargo, useSignal } from './model.mjs?v=23';
 import { createRenderer } from './renderer.mjs?v=23';
-import { EXTRA } from './copy.mjs?v=23';
+import { EXTRA } from './copy.mjs?v=20261026-road-i9-7e1f8597a631';
 import { LEVELS } from './levels.mjs?v=23';
-import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=23';
-import { createStageConfig } from './stage-config.mjs?v=23';
+import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=20261026-road-i9-d59d45a61fcb';
+import { createStageConfig } from './stage-config.mjs?v=20261026-road-i9-a226a50acdc1';
 import { LocalPractice } from '../../src/game-local-practice.mjs';
 
 const $ = id => document.getElementById(id);

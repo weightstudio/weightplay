@@ -1,5 +1,5 @@
 import { LEVELS } from './levels.mjs?v=23';
-import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=23';
+import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=20261026-road-i9-d59d45a61fcb';
 export function createStageConfig({locale,getSave,isPractice}) {
   const c=CAMPAIGN_COPY[locale]||CAMPAIGN_COPY.en;
   return {gameId:'road-crosser',count:LEVELS.length,
