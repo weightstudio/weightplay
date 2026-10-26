@@ -1870,7 +1870,7 @@
     const show = (screen) => {
       const breakoutResult = game.type === "breakout" && screen === "result";
       const checkersResult = game.type === "checkers" && screen === "result";
-      const battleResult = breakoutResult || checkersResult;
+      const battleResult = breakoutResult || checkersResult || (sharedFrame && game.type === "snake" && screen === "result");
       const targetScene = screen === "result" ? "battle" : screen;
       const previousScene = document.body.dataset.screen;
       const sceneRoots = { main: els.main, stage: els.stage, battle: els.battle };

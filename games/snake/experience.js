@@ -62,6 +62,7 @@ export function updateExperience(state, locale) {
     if (!hud) {
       hud = document.createElement("div");
       hud.className = "snake-hud";
+      hud.dataset.wpFrameGroup = "";
       hud.dataset.runtimeLocalize = "off";
       hud.innerHTML = '<div class="snake-score"><span></span><strong class="snake-score-value"></strong></div><div class="snake-goal"><span></span><strong></strong><progress max="1" value="0"></progress></div>';
       top.add(hud);

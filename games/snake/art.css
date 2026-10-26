@@ -190,14 +190,14 @@ body[data-game-id="snake"] #resultScreen .snake-impact-review figcaption {
 body[data-game-id="snake"] #battleScreen .battle-panel {
   display: grid;
   grid-template-columns: minmax(0,1fr);
-  grid-template-rows: minmax(0,1fr) auto auto auto;
+  grid-template-rows: minmax(0,1fr) auto auto auto auto;
   gap: calc(8 * var(--wp-play-unit,1px));
   min-width: 0; min-height: 0; height: 100%;
   margin: 0; padding: calc(8 * var(--wp-play-unit,1px));
   border: 0; border-radius: 0; background: transparent;
 }
 body[data-game-id="snake"] #battleScreen .board-wrap {
-  position: relative; container-type: size; min-width: 0; min-height: 0;
+  position: relative; container-type: size; grid-column: 1; grid-row: 1; min-width: 0; min-height: 0;
   width: 100%; height: 100%; padding: 0; margin: 0;
   border: 0; border-radius: 0; background: transparent;
 }
@@ -211,10 +211,14 @@ body[data-game-id="snake"] #battleScreen :is(.game-message,.snake-control-cue) {
   overflow: auto; border: 0; background: transparent; color: inherit;
   font-size: inherit; line-height: 1.4; text-align: center;
 }
-body[data-game-id="snake"] .snake-hud { display: flex; gap: .5em; align-items: center; min-width: 0; }
-body[data-game-id="snake"] .snake-hud > div { display: flex; gap: .25em; align-items: center; min-width: 0; }
+body[data-game-id="snake"] .snake-hud { display: contents; }
+body[data-game-id="snake"] .snake-hud > div { min-width: 0; }
 body[data-game-id="snake"] .snake-hud :is(span,strong) { font: inherit; color: inherit; white-space: nowrap; }
 body[data-game-id="snake"] .snake-hud progress { width: 2.5em; height: .4em; }
+body[data-game-id="snake"] #battleScreen .game-message { grid-column: 1; grid-row: 2; height: 3.1em; }
+body[data-game-id="snake"] #battleScreen .snake-control-cue { grid-column: 1; grid-row: 3; }
+body[data-game-id="snake"] #battleScreen #controls { grid-column: 1; grid-row: 4; }
+body[data-game-id="snake"] #battleScreen .snake-content-actions { grid-column: 1; grid-row: 5; }
 body[data-game-id="snake"] #controls .control-row { display: contents; }
 body[data-game-id="snake"] #controls { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: calc(6 * var(--wp-play-unit,1px)); min-width: 0; }
 body[data-game-id="snake"] #controls button::before { content: attr(data-arrow); margin-inline-end: .25em; }
@@ -224,5 +228,25 @@ body[data-game-id="snake"] .snake-content-actions { display: flex; justify-conte
   body[data-game-id="snake"] #battleScreen .battle-panel { grid-template-columns: minmax(0,1fr) minmax(180px,30%); grid-template-rows: auto auto minmax(0,1fr) auto; }
   body[data-game-id="snake"] #battleScreen .board-wrap { grid-column: 1; grid-row: 1 / -1; }
   body[data-game-id="snake"] #battleScreen :is(.game-message,.snake-control-cue,#controls,.snake-content-actions) { grid-column: 2; }
+  body[data-game-id="snake"] #battleScreen .game-message { grid-row: 1; }
+  body[data-game-id="snake"] #battleScreen .snake-control-cue { grid-row: 2; }
+  body[data-game-id="snake"] #battleScreen #controls { grid-row: 3; }
+  body[data-game-id="snake"] #battleScreen .snake-content-actions { grid-row: 4; }
   body[data-game-id="snake"] #controls { grid-template-columns: repeat(2,minmax(0,1fr)); align-content: center; }
+}
+
+/* Result content remains inside the shared physical Battle Canvas. */
+body[data-game-id="snake"] #battleScreen .battle-panel[hidden] { display: none !important; }
+body[data-game-id="snake"] #resultScreen {
+  position: absolute; inset: 0; z-index: 30; display: grid; place-items: center;
+  box-sizing: border-box; width: 100%; height: 100%; min-height: 0;
+  padding: calc(12 * var(--wp-play-unit,1px)); margin: 0; overflow: auto;
+  background: var(--wp-ui-background); color: var(--wp-ui-text);
+}
+body[data-game-id="snake"] #resultScreen[hidden] { display: none !important; }
+body[data-game-id="snake"] #resultScreen > .arcade-panel {
+  box-sizing: border-box; width: min(100%,calc(600 * var(--wp-play-unit,1px)));
+  max-height: 100%; min-height: 0; height: auto; margin: 0; overflow: auto;
+  padding: calc(16 * var(--wp-play-unit,1px)); background: var(--wp-ui-surface);
+  border: 2px solid var(--wp-ui-line); border-radius: var(--wp-ui-radius);
 }

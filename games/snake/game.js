@@ -1,5 +1,5 @@
 import { SnakeBoard3D } from "./board-3d.js?v=20261018-snake-v34";
-import { updateExperience } from "./experience.js?v=20261026-i9-eaae85377a93";
+import { updateExperience } from "./experience.js?v=20261026-i9-4a19c6ecd4bb";
 
 (() => {
   "use strict";
@@ -163,23 +163,47 @@ function mountSnakeSharedInterface() {
   const frame = core.mount({root,localeSelect:locale,playUI:true,scenes:{main:{root:main,header:mainHeader,content:mainContent},battle:{root:battle,header:battleHeader,content:battleContent}}});
   const info = core.createGroup();
   info.add(round); frame.battleTopUI.add(info);
-  window.WPSnakeInterface = Object.freeze({hudGroup:info});
-  const markActions = () => root.querySelectorAll('#controls button,.snake-content-actions button,#resultScreen button,.snake-leave-dialog button').forEach(button => {button.dataset.wpFrameAction = 'secondary';});
+  window.WPSnakeInterface = Object.freeze({hudGroup:frame.battleTopUI});
+  const markActions = () => root.querySelectorAll('#controls button,.snake-content-actions button,#resultScreen button,.snake-leave-dialog button').forEach(button => {button.dataset.wpFrameAction = button.id === 'retryBtn' ? 'primary' : 'secondary';});
   markActions();
   const controlsObserver = new MutationObserver(markActions);
   controlsObserver.observe(document.getElementById('controls'),{childList:true,subtree:true});
+  result.className = 'snake-result';
+  result.setAttribute('role','dialog');
+  result.setAttribute('aria-modal','true');
+  result.setAttribute('aria-labelledby','resultTitle');
+  battle.append(result);
+  let resultWasOpen = false;
+  let resultReturnFocus = null;
   const sync = () => {
-    const screen = document.body.dataset.screen;
+    const resultOpen = !result.hidden;
+    const screen = resultOpen ? 'result' : document.body.dataset.screen;
     if (screen === 'main') syncRecord();
-    if (screen === 'result') {
-      // Result stays in the same shared physical Battle envelope.
-      battle.hidden = false; battleContent.hidden = true; battle.append(result);
-    } else battleContent.hidden = false;
+    battleContent.hidden = resultOpen;
     frame.activate(screen === 'main' ? 'main' : 'battle');
+    battleContent.inert = resultOpen;
+    battleHeader.inert = resultOpen;
     if (screen === 'main') window.WeightPlayBattleCanvas?.sync?.();
-    if (screen === 'result') frame.close();
+    if (resultOpen && !resultWasOpen) {
+      resultReturnFocus = document.activeElement;
+      frame.close();
+      document.getElementById('retryBtn').focus({preventScroll:true});
+    } else if (!resultOpen && resultWasOpen) {
+      const target = screen === 'main' ? start : resultReturnFocus?.isConnected && resultReturnFocus.getClientRects().length ? resultReturnFocus : document.querySelector('#controls button');
+      target?.focus({preventScroll:true});
+    }
+    resultWasOpen = resultOpen;
   };
   const abort = new AbortController();
+  result.addEventListener('keydown',event => {
+    if (event.key !== 'Tab') return;
+    const buttons = [...result.querySelectorAll('button:not(:disabled)')].filter(node => node.getClientRects().length);
+    if (!buttons.length) return;
+    const index = buttons.indexOf(document.activeElement);
+    event.preventDefault();
+    buttons[(index + (event.shiftKey ? buttons.length - 1 : 1)) % buttons.length].focus();
+  },{signal:abort.signal});
+
   window.addEventListener('weightplay:shell-sync',sync,{signal:abort.signal});
   sync();
   window.addEventListener('pagehide',event => {if(event.persisted)return;abort.abort();controlsObserver.disconnect();frame.destroy();},{once:true});
