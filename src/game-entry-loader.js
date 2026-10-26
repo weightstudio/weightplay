@@ -252,7 +252,7 @@
       const failed = event.target;
       if (!(failed instanceof HTMLScriptElement)) return;
       const source = failed.src || "";
-      if (source.includes(`/games/${GAME_ID}/`) || source.includes("/src/game-screen-frame.js")) {
+      if (failed.hasAttribute("data-wp-entry-required") || source.includes(`/games/${GAME_ID}/`) || source.includes("/src/game-screen-frame.js")) {
         fail(undefined, () => window.location.reload());
       }
     }

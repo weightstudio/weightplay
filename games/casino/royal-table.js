@@ -150,6 +150,7 @@
       const start=document.createElement('button');
       start.type='button';start.className='casino-tutorial-start';start.textContent=copy.button;
       start.setAttribute('data-wp-tutorial-next','');
+      start.dataset.wpFrameAction='secondary';
       panel.append(heading,steps,start);tutorialLayer.append(panel);
       owner.append(tutorialLayer);
       document.body.classList.add('casino-tutorial-open');
@@ -202,10 +203,12 @@
     continueButton.type='button';
     continueButton.className='casino-return-continue';
     continueButton.id='casinoReturnContinue';
+    continueButton.dataset.wpFrameAction='secondary';
     const leaveButton=document.createElement('button');
     leaveButton.type='button';
     leaveButton.className='casino-return-leave';
     leaveButton.id='casinoReturnLeave';
+    leaveButton.dataset.wpFrameAction='secondary';
     panel.setAttribute('aria-labelledby',heading.id);
     panel.setAttribute('aria-describedby',message.id);
     panel.append(heading,message,actions);
@@ -224,8 +227,7 @@
     const resultStateObserver=new MutationObserver(()=>{
       const resultOpen=!resultOverlay.hidden;
       syncBattleInteraction();
-      if(resultOpen)resultOverlay.querySelector('.result-actions button:not(:disabled)')?.focus({preventScroll:true});
-      else if(document.activeElement?.closest('#resultOverlay'))backButton.focus({preventScroll:true});
+      // The shared card runtime owns Result entry, focus containment and restore.
     });
     resultStateObserver.observe(resultOverlay,{attributes:true,attributeFilter:['hidden']});
     syncBattleInteraction();

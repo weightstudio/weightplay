@@ -20,6 +20,7 @@
   const copy = main?.querySelector('.m5-copy');
   const rail = byId('stage-list');
   const battleStatus = byId('battle-status');
+  const battleObjectives = byId('hoop-objectives');
   const canvasWrap = battle?.querySelector('.m5-canvas-wrap');
   const controls = byId('battle-controls');
   const hint = battle?.querySelector('.m5-hint');
@@ -29,7 +30,7 @@
   const scoreLabel = byId('score-label');
 
   if (!root || !main || !stage || !battle || !mainHeader || !stageHeader || !battleHeader
-      || !mainTitle || !poster || !copy || !rail || !battleStatus || !canvasWrap || !controls
+      || !mainTitle || !poster || !copy || !rail || !battleStatus || !battleObjectives || !canvasWrap || !controls
       || !hint || !result || !utility || !stageLabel || !scoreLabel || !game
       || !window.WeightPlayScreenFrame || !window.WeightPlayPlayUI
       || !window.WeightPlayHoopLeagueStageConfig) {
@@ -37,7 +38,7 @@
   }
 
   document.body.dataset.wpInterfaceVersion = '9';
-  document.body.dataset.wpGameVersion = 'v9';
+  document.body.dataset.wpGameVersion = 'v10';
 
   const mainContent = document.createElement('div');
   mainContent.className = 'hoop-main-content';
@@ -79,7 +80,7 @@
   utilitySlot.className = 'hoop-court-utility';
   utilitySlot.append(utility);
   canvasWrap.querySelector('#arena')?.setAttribute('data-wp-court-canvas', '');
-  courtArea.append(battleStatus, canvasWrap);
+  courtArea.append(battleStatus, battleObjectives, canvasWrap);
   controlsArea.append(utilitySlot, controls, hint);
   battle.append(battleContent);
   battleContent.append(courtArea, controlsArea, result);

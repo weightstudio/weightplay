@@ -2008,7 +2008,7 @@
     return sorted[Math.floor(Math.random() * Math.min(sorted.length, mode === "high" ? 3 : 4))];
   }
 
-  function mountCardGame({ id, requestReturn }) {
+  function mountCardGame({ id, requestReturn, frameActions = false }) {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -2041,7 +2041,14 @@
     const result = document.querySelector("#resultOverlay");
     const resultTitle = document.querySelector("#resultTitle");
     const resultText = document.querySelector("#resultText");
-    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || ((id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
+    const applyFrameActions = (container, emphasizePrimary = true) => {
+      if (!frameActions) return;
+      container?.querySelectorAll("button").forEach(button => {
+        button.dataset.wpFrameAction = emphasizePrimary && button.classList.contains("primary-btn") ? "primary" : "secondary";
+      });
+    };
+    applyFrameActions(result, false);
+    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || ((id === "casino" || id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
     let i9ResultReturnFocus = null;
     const i9ResultControls = () => [...(result?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])]
       .filter((control) => control.getClientRects().length > 0);
@@ -2565,6 +2572,7 @@
       writeRenderedMarkup(center, view.center || "");
       writeRenderedMarkup(hand, view.hand || "");
       writeRenderedMarkup(actions, view.actions || "");
+      applyFrameActions(actions);
       if (id === "hearts" && heartsShellCopy()) {
         [opponents, center, hand, actions, status, statusText].forEach((node) => node?.setAttribute("data-runtime-localize", "off"));
       }

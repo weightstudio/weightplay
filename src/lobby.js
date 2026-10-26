@@ -2962,7 +2962,9 @@ function showPlannedGame(game) {
     } catch (error) {
       // The explicit preview route can still open when storage is unavailable.
     }
-    window.location.href = hiddenTrialUrl(game, trialPath);
+    const targetUrl = hiddenTrialUrl(game, trialPath);
+    if (window.WeightPlayGameEntryLoader?.navigateTo?.({ url: targetUrl, gameId: game.id, title: text(game.title) })) return;
+    window.location.href = targetUrl;
     return;
   }
   if (handleHiddenTrialGate(game)) return;

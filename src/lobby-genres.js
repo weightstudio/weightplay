@@ -218,6 +218,7 @@
     ["fia-hightrail", "Strategy", "Adventure", "Route Planning"],
     ["nori-sandworks", "Puzzle", "Spatial Planning"],
     ["meadow-touchdown", "Sports", "Action", "Strategy"],
+    ["smallwood-lives", "Simulation"],
   ];
 
   const byGame = Object.create(null);

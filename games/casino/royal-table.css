@@ -19,11 +19,11 @@ body.casino-royal-table #cardGameActions button:disabled {opacity:.45;cursor:def
 /* One Canvas owner: fixed logical feedback/action tracks, no viewport portal,
    duplicate spacer or private 56px reserve. Text cannot steal hand space. */
 body[data-wp-card-game="casino"] #battleScreen .card-table-ui {
- grid-template-rows:minmax(0,1fr)116px;
+ grid-template-rows:minmax(0,1fr)auto;
 }
 body[data-wp-card-game="casino"] #battleScreen #cardGameActions {
  box-sizing:border-box;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- grid-template-rows:64px 44px;gap:8px 6px;align-items:stretch;
+ grid-template-rows:64px auto;gap:8px 6px;align-items:stretch;
 }
 body[data-wp-card-game="casino"] #battleScreen #cardGameActions .card-game-quick-guide {
  grid-column:1/-1;box-sizing:border-box;width:100%;min-width:0;height:64px;

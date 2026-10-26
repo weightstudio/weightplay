@@ -19,12 +19,12 @@
           const locale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || 'en';
           return {
             id: number,
-            kicker: new Intl.NumberFormat(locale).format(number),
+            kicker: game.getChapterName(index) + ' · ' + new Intl.NumberFormat(locale).format(number),
             title: game.getCourtName(index),
             subtitle: court.shots + ' ' + copy[15] + ' · ' + copy[18] + ' ' + rival,
             status: number > best + 1 ? '🔒' : record ? copy[16] + ' ' + record + ' ★' : copy[16] + ' —',
-            summary: copy[1],
-            details: [copy[1], copy[19], copy[20]],
+            summary: game.getStageGoals(index),
+            details: game.getStageGuide(index),
             locked: number > best + 1,
             cleared: number <= best,
             poster,

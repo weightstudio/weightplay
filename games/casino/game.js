@@ -28,5 +28,5 @@
     "card.draw", "card.place", "game.start", "result.lose", "result.win", "ui.click",
   ]);
 
-  window.WPCardGamesNext?.mount({ id: "casino" });
+  window.WPCardGamesNext?.mount({ id: "casino", frameActions: true });
 })();
