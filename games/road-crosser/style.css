@@ -45,6 +45,8 @@ button:focus-visible,select:focus-visible,canvas:focus-visible{outline:3px solid
 .result-stats strong,.journal-stats strong{font-size:24px}
 .result-actions,.leave-actions,.panel-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
 .result-actions button,.leave-actions button,.panel-actions button{min-height:var(--wp-play-control,48px);min-width:112px;max-width:100%;padding:8px 12px;cursor:pointer}
+.result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.result-actions button{min-width:0;white-space:normal;overflow-wrap:anywhere}
 .leave-view,.road-panel{position:absolute;z-index:10;inset:var(--wp-frame-play-header-height,56px) 0 0;display:flex;min-height:0;padding:12px;overflow:auto;background:rgba(6,15,27,.78);backdrop-filter:blur(5px)}
 .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .panel-heading button{min-width:var(--wp-play-control,48px);min-height:var(--wp-play-control,48px);padding:6px;cursor:pointer}

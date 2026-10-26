@@ -21,6 +21,7 @@ let storage;
 try { storage = window.localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw Error('Storage unavailable'); }, removeItem() {} }; }
 let journey = readJourney(storage), best = readBest(storage), screen = 'main', panel = null, ready = false;
 let campaign = readCampaign(storage), selector, practiceMode = false, practiceRun = false, starting = false;
+let selectedStage = campaign.unlocked - 1, resultActionClaimed = false;
 let world = null, total = 0, runLanterns = 0, raf = 0, last = 0, paused = true, renderer, gesture, generation = 0;
 let purchaseBusy = false, transient = 0, committedRoute = false, resultDone = false, focusReturn;
 const effects = new Set();
@@ -36,7 +37,6 @@ for (const [id, label] of [['helpBtn','help'],['campBtn','camp']]) {
 $('helpBtn').textContent = '?';
 $('campBtn').textContent=t('camp');
 $('medalList').setAttribute('aria-label',t('medals'));
-$('localeSelect').value = locale;
 canvas.setAttribute('aria-label', window.WEIGHTPLAY_GAME_TITLES?.['road-crosser']?.[locale] || copy.canvasLabel);
 $('leaveTitle').textContent = leaveCopy[0]; $('continueBtn').textContent = leaveCopy[2]; $('leaveBtn').textContent = leaveCopy[3];
 $('leaveBtn').textContent=t('stages');
@@ -49,7 +49,7 @@ $('helpCampaign').textContent=t('medalRules'); $('helpCharge').textContent=t('ch
 $('resultBestLabel').textContent=t('stageBest');
 for (const node of battle.querySelectorAll('button:not([data-wp-return])')) node.dataset.wpFrameAction = node.matches('#retryBtn,#continueBtn,#confirmBuy') ? 'primary' : 'secondary';
 for(const node of $('campPanel').querySelectorAll('button'))node.dataset.wpFrameAction=node.id==='confirmBuy'?'primary':'secondary';
-const frame = window.WeightPlayScreenFrame.mount({ root: $('roadCrosserApp'), localeSelect: $('localeSelect'), playUI: true,
+const frame = window.WeightPlayScreenFrame.mount({ root: $('roadCrosserApp'), playUI: true,
   scenes: { main: { root: main, header: main.querySelector('header'), content: main.querySelector('.hero-card') },
     stage: {root:stage,header:stage.querySelector('header'),content:$('stageWorkspace')},
     battle: { root: battle, header: battle.querySelector('header'), content: stageContent } } });
@@ -71,8 +71,8 @@ function showKit() { if(screen!=='stage')setScreen('stage');selectStageTab(true)
 function renderStages() {
   $('stageSummary').textContent=`${t('cleared')} ${campaign.medals.filter(v=>v&1).length} / 30`;
   if(!selector)selector=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail:$('stageRail'),config:stageConfig,
-    selected:campaign.unlocked-1,onStart:index=>start(index+1),isActive:()=>screen==='stage'&&!$('stageContent').hidden});
-  else selector.refresh(campaign.unlocked-1);
+    selected:selectedStage,onSelect:index=>{selectedStage=index;},onStart:index=>start(index+1),isActive:()=>screen==='stage'&&!$('stageContent').hidden});
+  else selector.refresh(selectedStage);
 }
 
 function animate(node, frames, duration = 160) {
@@ -110,6 +110,7 @@ function setScreen(next) {
   document.body.dataset.screen = next === 'result' ? 'battle' : next;
   battle.dataset.substate = result ? 'result' : 'play';
   frame.activate(next === 'result' ? 'battle' : next);
+  window.WeightPlayBattleCanvas.sync();
   if(next==='stage')selectStageTab(false);
   paused = true;
   renderer?.clear();
@@ -117,7 +118,7 @@ function setScreen(next) {
   requestAnimationFrame(() => {
     if (ticket !== generation || lifetime.signal.aborted) return;
     renderer?.resize(); if (world) renderer?.draw(world, 0, journey.equipped === 'aurora');
-    (next === 'main' ? $('startBtn') : next==='stage' ? $('stageRail').querySelector('[aria-current="true"]') : result ? ($('nextBtn').hidden?$('retryBtn'):$('nextBtn')) : canvas)?.focus({ preventScroll: true });
+    (next === 'main' ? $('startBtn') : next==='stage' ? $('stageRail').querySelector('[aria-current="true"]') : result ? ($('nextBtn').disabled?$('retryBtn'):$('nextBtn')) : canvas)?.focus({ preventScroll: true });
     animate(result ? $('resultScreen').firstElementChild : next === 'main' ? main.querySelector('.hero-card') : next==='stage' ? $('stageContent') : stageContent,
       [{ opacity: .65 }, { opacity: 1 }]);
     syncPause();
@@ -162,6 +163,7 @@ async function start(id=world?.stage||1, {practice=false}={}) {
     if(requestedPractice&&!await LocalPractice.validate())return;
     if(ticket!==generation||lifetime.signal.aborted)return;
     practiceRun=requestedPractice;
+    selectedStage=id-1;
     total=0;runLanterns=0;world=createWorld(id);committedRoute=false;resultDone=false;
     setScreen('battle');updateHud();notice(t(world.level.hint),4);play('game.start');
   } finally { starting=false; }
@@ -207,8 +209,12 @@ function finish(win) {
   resultDone = true;
   const finalScore = total + world.score;
   const route = world.stage;
-  $('nextBtn').hidden = !win || route===30;
-  $('nextBtn').dataset.wpFrameAction='primary';
+  resultActionClaimed = false;
+  $('nextBtn').hidden = false;
+  $('nextBtn').disabled = !win || route===30;
+  $('homeBtn').disabled = false; $('retryBtn').disabled = false;
+  $('homeBtn').dataset.wpFrameAction='secondary';
+  $('nextBtn').dataset.wpFrameAction=win&&route<30?'primary':'secondary';
   $('retryBtn').dataset.wpFrameAction=win&&route<30?'secondary':'primary';
   setScreen('result'); updateHud();
   $('resultTitle').textContent = t(win ? 'winTitle' : 'loseTitle');
@@ -276,16 +282,21 @@ async function purchase() {
   } finally { purchaseBusy = false; $('confirmBuy').disabled = false; $('buyBtn').focus({ preventScroll: true }); }
 }
 
-listen($('startBtn'), 'click', showStages); listen($('retryBtn'), 'click', () => start());
-listen($('nextBtn'), 'click', () => start(world.stage+1));
-listen($('homeBtn'), 'click', showStages); listen($('stageBackBtn'),'click',()=>setScreen('main'));
+function claimResultAction() {
+  if (screen!=='result' || resultActionClaimed) return false;
+  resultActionClaimed=true;
+  for(const id of ['homeBtn','nextBtn','retryBtn'])$(id).disabled=true;
+  return true;
+}
+listen($('startBtn'), 'click', showStages); listen($('retryBtn'), 'click', () => {if(claimResultAction())start();});
+listen($('nextBtn'), 'click', () => {if(!$('nextBtn').disabled&&claimResultAction())start(world.stage+1);});
+listen($('homeBtn'), 'click', () => {if(claimResultAction())showStages();}); listen($('stageBackBtn'),'click',()=>setScreen('main'));
 listen($('stageTab'),'click',()=>selectStageTab(false));
 listen($('battleBackBtn'), 'click', () => screen === 'result' ? showStages() : openPanel('leaveDialog'));
 listen($('continueBtn'), 'click', closePanel); listen($('leaveBtn'), 'click', showStages);
 listen($('signalBtn'),'click',()=>{if(!isBlocked()&&useSignal(world))consumeEvents();});
 listen($('helpBtn'), 'click', () => openPanel('helpPanel', $('helpBtn')));
 listen($('campBtn'), 'click', () => openPanel('campPanel', $('campBtn')));
-listen($('resultCampBtn'), 'click', () => openPanel('campPanel', $('resultCampBtn')));
 for (const button of document.querySelectorAll('[data-close-panel]')) listen(button, 'click', closePanel);
 for (const button of document.querySelectorAll('[data-move]')) listen(button, 'click', () => move(button.dataset.move));
 listen($('equipGold'), 'click', () => equip('gold'));

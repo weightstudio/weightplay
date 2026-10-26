@@ -3,7 +3,7 @@ import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=23';
 export function createStageConfig({locale,getSave,isPractice}) {
   const c=CAMPAIGN_COPY[locale]||CAMPAIGN_COPY.en;
   return {gameId:'road-crosser',count:LEVELS.length,
-    poster:'/assets/interface7-redrawn/road-crosser.webp',background:'/assets/interface7-redrawn/road-crosser.webp',
+    poster:'/assets/interface7-redrawn/road-crosser.webp',background:'/assets/lobby-block-atmosphere.svg',
     stage(index) {
       const level=LEVELS[index],save=getSave(),mask=save.medals[index],locked=!isPractice()&&level.id>save.unlocked;
       return {id:level.id,kicker:`${c.stages} ${level.id} / 30`,title:stageName(level,locale),

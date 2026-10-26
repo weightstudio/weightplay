@@ -18,4 +18,4 @@ const stageNames={en:'First foothold|Restful turn|Mail detour|Piton path|Treetop
 for(const [locale,bundle]of Object.entries({...international,...moreLocales,...eastLocales})){words[locale]=bundle.words;prose[locale]=bundle;stageNames[locale]=bundle.stageNames;}
 export const BUNDLES=Object.fromEntries(Object.keys(words).map(locale=>{const values=words[locale].split('|');if(values.length!==keys.length)throw Error(`Locale fields ${locale}: ${values.length}/${keys.length}`);const text={...Object.fromEntries(keys.map((key,i)=>[key,values[i]])),...prose[locale],stageNames:stageNames[locale].split('|')};text.objectives=text.objectives||text.mechanisms;delete text.words;return [locale,text];}));
 export const getText=locale=>BUNDLES[locale]||BUNDLES.en;
-for(const [locale,text]of Object.entries(BUNDLES)){Object.assign(text,FEEDBACK[locale],EXPERIENCE[locale]);text.guide[2]+=' '+text.rules;}
+for(const [locale,text]of Object.entries(BUNDLES)){Object.assign(text,FEEDBACK[locale],EXPERIENCE[locale]);text.gust=text.mechanisms[2];text.guide[2]+=' '+text.rules;}
