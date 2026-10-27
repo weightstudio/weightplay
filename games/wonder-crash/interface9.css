@@ -172,6 +172,16 @@
   grid-row: 1 / -1;
 }
 
+/* The shared selector is a sibling of the legacy menu overlay so it owns the
+   complete Stage content and receives native pointer input. */
+#wonderStageContent > #stagePlayPage {
+  z-index: 6;
+}
+#wonderStageContent:has(> #stagePlayPage:not(.hidden)) > #overlay {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 #wonderStageContent #profilePanel {
   grid-row: 2;
 }
@@ -246,7 +256,7 @@
 
 #wonderBattleScene [data-wp-frame-info] {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 5px;
   padding: 0 6px;
   background: transparent;
@@ -257,7 +267,7 @@ body.wonder-playing #wonderBattleScene #battleHud {
   inset: auto !important;
   z-index: auto !important;
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   justify-items: stretch;
   width: 100%;
   min-width: 0;

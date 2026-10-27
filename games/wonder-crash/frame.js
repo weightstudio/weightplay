@@ -131,6 +131,21 @@
     battleContent.append(board, pauseButton, battleHud);
     battleRoot.append(battleHeader, battleContent);
 
+    // Give Stage and Wave their own shared HUD stats instead of stacking five
+    // spans into one stat and clipping the live battle progress on phones.
+    const stageWave = battleHud.querySelector('.battle-status:not(.wall-shield-status)');
+    const stageLabel = stageWave?.querySelector('[data-i18n="hud_stage"]');
+    const stageValue = stageWave?.querySelector('#levelText');
+    const waveLabel = stageWave?.querySelector('[data-i18n="hud_wave"]');
+    const waveValue = stageWave?.querySelector('#waveText');
+    if (!stageLabel || !stageValue || !waveLabel || !waveValue) throw new Error('WONDER_CRASH_BATTLE_STATS_REQUIRED');
+    const stageStat = document.createElement('div');
+    const waveStat = document.createElement('div');
+    stageStat.className = waveStat.className = 'battle-status';
+    stageStat.append(stageLabel, stageValue);
+    waveStat.append(waveLabel, waveValue);
+    stageWave.replaceWith(stageStat, waveStat);
+
     const localeBridge = document.createElement('div');
     localeBridge.hidden = true;
     localeBridge.setAttribute('aria-hidden', 'true');
@@ -180,6 +195,9 @@
     const page = document.getElementById('stagePlayPage');
     const rail = document.getElementById('levelGrid');
     if (!page || !rail) throw new Error('WONDER_CRASH_I9_STAGE_INPUTS_REQUIRED');
+    // Keep the shared selector in the full-height Stage content rather than
+    // the legacy overlay's collapsed menu grid. Other tabs still use overlay.
+    stageContent.append(page);
     const stageSelector = playUI.mountStage({
       page,
       rail,

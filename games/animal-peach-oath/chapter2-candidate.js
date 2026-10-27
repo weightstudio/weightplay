@@ -54,7 +54,7 @@ function chapterTwoDesign(stage){return Number.isInteger(stage)&&stage>=31&&stag
 const visuals=Object.freeze({warden:'boar',medic:'cobra',drummer:'wolf',sapper:'hyena'});
 function chapterTwoActor(role,C,makeUnit,index,extra={}){
  const visual=visuals[role]||role,base=C?.enemies?.find(x=>x.id===visual);if(!base||typeof makeUnit!=='function')throw Error(`MISSING_EXISTING_VISUAL:${visual}`);
- const data=visuals[role]?{...base,id:role,visualId:visual,name:role,chapterRole:role,...extra}:base;return makeUnit(data,'enemy',index);
+ const data=visuals[role]?{...base,id:role,visualId:['warden','medic'].includes(role)?role:visual,name:role,chapterRole:role,...extra}:base;return makeUnit(data,'enemy',index);
 }
 function chapterTwoWave(stage,wave,C,makeUnit){
  const plan=chapterTwoDesign(stage);if(!plan)return null;

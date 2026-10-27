@@ -28,7 +28,7 @@
           locked: !open,
           cleared: Boolean(best),
           poster: "/assets/interface7-redrawn/animal-cloudhook-courier.webp",
-          posterPosition: "50% " + posterPositions[Math.floor(index / 5)] + "%",
+          posterPosition: "50% " + posterPositions[Math.floor(index / 5) % posterPositions.length] + "%",
         };
       },
     };

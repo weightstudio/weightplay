@@ -1,5 +1,5 @@
 (() => {
-// Isolated native-control candidate; not loaded by any game entry.
+// Native-control candidate, used only by the gated Chapter 2 practice path.
 // Caller supplies current live units, translated names and the real order method.
 const COPY = Object.freeze({
   en:['Oath orders','Seals remaining','Enemy to interrupt','Ally to protect','Choose a target','Break','Guard','Order used','Select a living target','Nothing to interrupt','No seals remain','Battle is paused'],
@@ -31,14 +31,14 @@ const PANEL_COPY = Object.freeze({
 function createOrderDock(document, mount, id, getState, order, onFault=()=>{}, onOpen=()=>{}, onClose=()=>{}, modalMount=mount) {
   if (!/^[a-z][a-z0-9-]*$/.test(id)) throw Error('INVALID_ID');
   const node=(tag,cls)=>{const x=document.createElement(tag);if(cls)x.className=cls;return x};
-  const root=node('section','oath-orders'),launcher=node('button'),panel=node('section','oath-orders-panel'),title=node('h3'),remaining=node('p'),paused=node('p'),status=node('p'),signals=node('p'),allSignals=node('p'),close=node('button');
+  const root=node('section','oath-orders'),launcher=node('button'),panel=node('section','oath-orders-panel'),title=node('h3'),remaining=node('p'),paused=node('p'),status=node('p'),signals=node('p'),allSignals=node('p'),close=node('button'),links=node('div','oath-link-layer');
   const interruptLabel=node('label'),protectLabel=node('label'),interrupt=node('select'),protect=node('select'),breakButton=node('button'),guardButton=node('button');
   panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-labelledby',`${id}-title`);panel.id=`${id}-panel`;panel.hidden=true;title.id=`${id}-title`;interrupt.id=`${id}-enemy`;protect.id=`${id}-ally`;
   launcher.type=close.type='button';launcher.setAttribute('aria-controls',panel.id);launcher.setAttribute('aria-expanded','false');
   interruptLabel.htmlFor=interrupt.id;protectLabel.htmlFor=protect.id;breakButton.type=guardButton.type='button';
   status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   signals.setAttribute('role','status');signals.setAttribute('aria-live','polite');
-  panel.append(title,paused,remaining,interruptLabel,interrupt,breakButton,protectLabel,protect,guardButton,status,allSignals,close);root.append(launcher,signals);mount.append(root);modalMount.append(panel);
+  links.setAttribute('aria-hidden','true');panel.append(title,paused,remaining,interruptLabel,interrupt,breakButton,protectLabel,protect,guardButton,status,allSignals,close);root.append(launcher,signals,links);mount.append(root);modalMount.append(panel);
   let current=null;
   function choices(select,units,placeholder){
     const rows=[['',placeholder],...units.filter(u=>u.hp>0).map(u=>[u.key,u.name])];
@@ -46,18 +46,37 @@ function createOrderDock(document, mount, id, getState, order, onFault=()=>{}, o
     const old=select.value;select.replaceChildren(...rows.map(([value,label])=>{const option=node('option');option.value=value;option.textContent=label;return option}));
     select.dataset.options=next;select.value=rows.some(([value])=>value===old)?old:'';
   }
+  // This line is functional targeting geometry. Text remains the accessible
+  // equivalent; never draw links for broken wards or missing/dead units.
+  function updateLinks(s){
+    if(typeof mount.querySelectorAll!=='function'||typeof root.getBoundingClientRect!=='function')return;
+    const frame=root.getBoundingClientRect(),scaleX=frame.width/root.offsetWidth,scaleY=frame.height/root.offsetHeight;
+    if(!s.visible||!Number.isFinite(scaleX)||!Number.isFinite(scaleY)||scaleX<=0||scaleY<=0){links.replaceChildren();return}
+    const units=new Map([...mount.querySelectorAll('[data-unit]')].map(unit=>[unit.dataset.unit,unit]));
+    const living=new Set(s.enemies.filter(unit=>unit.hp>0).map(unit=>unit.key)),rows=[];
+    for(const link of s.signals?.wardLinks||[]){
+      if(!link.active||!link.target||!living.has(link.key)||!living.has(link.target))continue;
+      const from=units.get(link.key)?.querySelector('.sprite'),to=units.get(link.target)?.querySelector('.sprite');if(!from||!to)continue;
+      const a=from.getBoundingClientRect(),b=to.getBoundingClientRect();if(!a.width||!b.width)continue;
+      const ax=(a.left+a.width/2-frame.left)/scaleX,ay=(a.bottom-8-frame.top)/scaleY,bx=(b.left+b.width/2-frame.left)/scaleX,by=(b.bottom-8-frame.top)/scaleY;
+      const line=node('span','oath-link');line.style.left=`${ax}px`;line.style.top=`${ay}px`;line.style.width=`${Math.hypot(bx-ax,by-ay)}px`;line.style.transform=`rotate(${Math.atan2(by-ay,bx-ax)}rad)`;rows.push(line);
+    }
+    links.replaceChildren(...rows);
+  }
   function sync(){
     const s=getState(),t=COPY[s.locale]||COPY.en;current={s,t};root.hidden=!s.visible;if(!s.visible){panel.hidden=true;launcher.setAttribute('aria-expanded','false');}
     const p=PANEL_COPY[s.locale]||PANEL_COPY.en;title.textContent=t[0];launcher.textContent=`${t[0]} · ${s.seals}`;paused.textContent=p[1];close.textContent=p[0];remaining.textContent=`${t[1]}: ${s.seals}`;interruptLabel.textContent=t[2];protectLabel.textContent=t[3];
     breakButton.textContent=t[5];guardButton.textContent=t[6];choices(interrupt,s.enemies,t[4]);choices(protect,s.heroes,t[4]);
     const names=new Map([...s.enemies,...s.heroes].map(unit=>[unit.key,unit.name])),words=SIGNAL_COPY[s.locale]||SIGNAL_COPY.en;
-    const name=key=>names.get(key)||key, lines=[];
+    const name=key=>names.get(key)||key, lines=[],urgent=[];
     for(const link of s.signals?.wardLinks||[])if(link.active&&link.target)lines.push(`${name(link.key)}: ${words[0]} ${name(link.target)}`);
     const role=new Map(s.enemies.map(unit=>[unit.key,unit.role]));
-    for(const channel of s.signals?.channels||[])if(channel.target){const kind=role.get(channel.key),index=kind==='medic'?1:kind==='drummer'?2:3;lines.push(`${name(channel.key)}: ${words[index]} ${name(channel.target)}`)}
-    if(s.signals?.bossChannel?.target){const c=s.signals.bossChannel,index=c.kind==='drummer'?2:3;lines.push(`${name(c.key)}: ${words[index]} ${name(c.target)}`)}
-    const allCue=s.visible?lines.join(' · '):'',cue=s.visible&&lines.length?`${lines[0]}${lines.length>1?` (+${lines.length-1})`:''}`:'';
+    for(const channel of s.signals?.channels||[])if(channel.target){const kind=role.get(channel.key),index=kind==='medic'?1:kind==='drummer'?2:3;urgent.push(`${name(channel.key)}: ${words[index]} ${name(channel.target)}`)}
+    if(s.signals?.bossChannel?.target){const c=s.signals.bossChannel,index=c.kind==='drummer'?2:3;urgent.push(`${name(c.key)}: ${words[index]} ${name(c.target)}`)}
+    const cues=[...urgent,...lines];
+    const allCue=s.visible?cues.join(' · '):'',cue=s.visible&&cues.length?`${cues[0]}${cues.length>1?` (+${cues.length-1})`:''}`:'';
     if(signals.textContent!==cue)signals.textContent=cue;if(allSignals.textContent!==allCue)allSignals.textContent=allCue;
+    updateLinks(s);
     launcher.disabled=!s.visible||!s.active;
     breakButton.disabled=guardButton.disabled=!s.visible||!s.active||s.seals<=0;
     interrupt.disabled=protect.disabled=!s.visible||!s.active||s.seals<=0;

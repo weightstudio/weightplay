@@ -37,6 +37,8 @@
       hyena: { source: "hyena-crossbow-block-alpha-v1.png", width: 1144, height: 1375, facing: "left" },
       cobra: { source: "enemy-cobra-block-v1.png", width: 1024, height: 1536 },
       buffalo: { source: "enemy-buffalo-block-v1.png", width: 1024, height: 1536 },
+      warden: { source: "enemy-warden-candidate-v2.webp", width: 1024, height: 1536 },
+      medic: { source: "enemy-medic-candidate-v1.webp", width: 1024, height: 1536 },
     },
   };
 
@@ -44,8 +46,8 @@
     if (side !== "hero" && side !== "enemy") throw new Error("Unknown Peach Oath side");
     const atlas = atlases[side === "hero" ? "heroes" : "enemies"];
     const frame = atlas.frames[id];
-    if (!frame || !/^[a-zA-Z0-9-]+$/.test(instance)) throw new Error("Unknown Peach Oath sprite");
     const asset = individual[side]?.[id];
+    if ((!frame && !asset) || !/^[a-zA-Z0-9-]+$/.test(instance)) throw new Error("Unknown Peach Oath sprite");
     if (asset) {
       return `<svg class="sprite" data-sprite="${id}" data-native-facing="${asset.facing || 'right'}" viewBox="0 0 ${asset.width} ${asset.height}"
         preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">

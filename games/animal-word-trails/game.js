@@ -1,7 +1,7 @@
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
-  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", saveSucceeded: true };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
     paused: Boolean(battleTasksPaused || leaveConfirmOpen), node: document.body, stageId: stage + 1,
@@ -179,13 +179,34 @@
   const storageFallback=new Map();
   function readStorage(key){try{const value=localStorage.getItem(key);if(value!==null)storageFallback.set(key,value);return value??storageFallback.get(key)??null;}catch{return storageFallback.get(key)??null;}}
   function writeStorage(key,value){const normalized=String(value);storageFallback.set(key,normalized);try{localStorage.setItem(key,normalized);}catch{}}
-  function readRecord(key){try{return JSON.parse(readStorage(key)||'{}');}catch{return{};}}
+  const validRecord=value=>Boolean(value&&typeof value==='object'&&!Array.isArray(value));
+  function readRecord(key){try{const value=JSON.parse(readStorage(key)||'{}');return validRecord(value)?value:{};}catch{return{};}}
+  let albumSaveUnconfirmed=false;
+  const pendingAlbumWords=new Set();
+  function mutateRecord(key,change){
+    let raw=null,record=null,readable=false;
+    try{raw=localStorage.getItem(key);record=raw===null?{}:JSON.parse(raw);readable=validRecord(record);}catch{}
+    if(!readable){try{const cached=JSON.parse(storageFallback.get(key)||'{}');record=validRecord(cached)?cached:{};}catch{record={};}}
+    const next=change(record);if(next===null)return readable;if(next===false)return false;
+    const text=JSON.stringify(next);if(key!=='wordTrailsBest')storageFallback.set(key,text);
+    if(!readable)return false;
+    try{if(localStorage.getItem(key)!==raw)return false;localStorage.setItem(key,text);const confirmed=localStorage.getItem(key)===text;if(confirmed)storageFallback.set(key,text);return confirmed;}catch{return false;}
+  }
+  function flushPendingAlbum(){
+    if(!pendingAlbumWords.size){albumSaveUnconfirmed=false;return true;}
+    const saved=mutateRecord('wordTrailsAlbum',album=>{for(const wordKey of pendingAlbumWords){if(Object.hasOwn(album,wordKey)&&typeof album[wordKey]!=='boolean')return false;album[wordKey]=true;}return album;});
+    if(saved)pendingAlbumWords.clear();
+    albumSaveUnconfirmed=pendingAlbumWords.size>0;
+    return saved;
+  }
+  function saveFoundWord(key){pendingAlbumWords.add(key);return flushPendingAlbum();}
+  const saveUnconfirmed={en:'Saving could not be confirmed; progress may be lost.','zh-Hant':'無法確認儲存，進度可能會遺失。','zh-Hans':'无法确认保存，进度可能会丢失。',ja:'保存を確認できませんでした。進み具合が失われる場合があります。',ko:'저장을 확인할 수 없어 진행 내용이 사라질 수 있어요.',es:'No se pudo confirmar el guardado; podrías perder el progreso.','pt-BR':'Não foi possível confirmar o salvamento; o progresso pode ser perdido.',fr:'Enregistrement non confirmé : la progression pourrait être perdue.',de:'Das Speichern konnte nicht bestätigt werden; Fortschritt könnte verloren gehen.',it:'Salvataggio non confermato: i progressi potrebbero andare persi.',ru:'Не удалось подтвердить сохранение; прогресс может быть потерян.',hi:'सेव होने की पुष्टि नहीं हुई; प्रगति खो सकती है।',ar:'تعذّر تأكيد الحفظ؛ قد تفقد التقدم.'};
   function migrateLegacyAlbum(localeName){
     const translator=window.WeightPlayGameRuntimeLocalizer,lexicon=window.WordTrailsStage60?.lexicon?.[localeName];
     if(!lexicon||translator?.locale!==localeName||typeof translator.translate!=='function')return;
     const original=readRecord('wordTrailsAlbum');
     const result=migratedLegacyAlbum(original,localeName,packs.en.slice(0,10),lexicon,word=>translator.translate(word));
-    if(result.changed)writeStorage('wordTrailsAlbum',JSON.stringify(result.album));
+    if(result.changed)mutateRecord('wordTrailsAlbum',album=>{const next=migratedLegacyAlbum(album,localeName,packs.en.slice(0,10),lexicon,word=>translator.translate(word));return next.changed?next.album:null;});
   }
   const gameLocalePreference=readStorage('wordTrailsLocale');
   const platformLocale=readStorage('weightPlayLocale')||readStorage('weightplayLocale');
@@ -447,25 +468,26 @@
     if ($('mainPoster')) $('mainPoster').alt = t('title');
     updateFrameStats();
   }
-  function save(){ writeStorage('wordTrailsLocale',lang); writeStorage('weightPlayLocale',lang); writeStorage('wordTrailsBest',JSON.stringify(readRecord('wordTrailsBest'))); }
+  function save(){ writeStorage('wordTrailsLocale',lang); writeStorage('weightPlayLocale',lang); }
   function renderStages(){ if(!stageUI)return; stageUI.refresh(stage); stageUI.select(stage,{center:true}); updateFrameStats(); }
   function neighbors(a,b){ const size=packs[lang][stage].size||4;return Math.abs(Math.floor(a/size)-Math.floor(b/size))<=1 && Math.abs(a%size-b%size)<=1; }
   function renderBattle(){ const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='★ 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile';b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));b.addEventListener('pointerenter',e=>{if(e.buttons)select(i)});board.append(b)}); board.onpointerdown=e=>{if(e.target.matches('.tile')){dragStartLength=path.length;board.setPointerCapture(e.pointerId);select(+e.target.dataset.index)}}; board.onpointerup=()=>{if(path.length-dragStartLength>1)submit()}; $('feedback').textContent=t('connect'); screen('battle'); }
   function select(i){ const data=packs[lang][stage]; if(data.blocked?.includes(i)||path.includes(i)) return; if(path.length && !neighbors(path.at(-1),i)){ path=[i]; $('feedback').textContent=t('newPath'); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); return; } if(data.oneWay?.index===i && path.length && path.at(-1)!==data.oneWay.from){ $('feedback').textContent=t('oneWay'); return; } path.push(i); document.querySelectorAll('.tile').forEach(x=>x.classList.toggle('selected',path.includes(+x.dataset.index))); }
-  function clear(){ path=[];document.querySelectorAll('.tile').forEach(x=>x.classList.remove('selected','correct'));$('feedback').textContent=''; }
+  function clear(){ path=[];document.querySelectorAll('.tile').forEach(x=>x.classList.remove('selected','correct'));$('feedback').textContent=albumSaveUnconfirmed?(saveUnconfirmed[lang]||saveUnconfirmed.en):''; }
   function submit(){ const data=packs[lang][stage], word=path.map(i=>data.board[i]).join(''); if(!data.words.includes(word)||found.has(word)){ $('feedback').textContent=t('try'); clear(); return; } found.add(word); document.querySelector(`[data-word="${word}"]`).classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`★ ${Math.max(1,3-hints)}`; if(found.size===data.words.length) setTimeout(result,450); else setTimeout(clear,420); }
   function hint(){ const data=packs[lang][stage], word=data.words.find(w=>!found.has(w)); if(!word)return; const target=data.legacyLocalized?data.legacyTargets.find(item=>item.display===word):null; const ix=target?target.path[0]:data.board.findIndex(l=>l===word[0]); if(ix<0)return; hints++; track('word_trails_hint_used', { hints_used: hints }); window.WeightPlayAudio?.play("ui.click"); clear(); select(ix); $('feedback').textContent=`${t('hint')}: ${data.board[ix]}`; }
   function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints); best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); $('resultSummary').textContent=`${found.size} ${t('found')} · ★ ${stars}`; screen('result'); }
   function renderStages(){ if(!stageUI)return; stageUI.refresh(stage); stageUI.select(stage,{center:true}); updateFrameStats(); }
   function renderBattle(){ cancelBoardPointer(); cancelBattleTasks(); $('clueReveal')?.classList.add('hidden'); const data=packs[lang][stage]; path=[]; found=new Set(); hints=0; $('battleTitle').textContent=data.name; $('objective').textContent=t('objective'); $('foundCount').textContent=`0/${data.words.length}`; $('starCount').textContent='\u2605 0'; $('targets').innerHTML=data.words.map(w=>`<span class="target" data-word="${w}">${w}</span>`).join(''); const board=$('board'); board.style.setProperty('--grid-size',String(data.size||4));board.innerHTML=''; data.board.forEach((letter,i)=>{const b=document.createElement('button');b.className='tile'+(data.blocked?.includes(i)?' blocked':'');b.disabled=Boolean(data.blocked?.includes(i));b.dataset.index=i;b.textContent=letter;b.addEventListener('click',()=>select(i));board.append(b)}); board.onpointerdown=e=>{const wrongMouseButton=e.pointerType==='mouse'&&e.button!==0;if(!e.target.matches('.tile')||!e.isPrimary||wrongMouseButton||boardPointerId!==null||leaveConfirmOpen)return;boardPointerId=e.pointerId;dragStartLength=path.length;try{board.setPointerCapture?.(e.pointerId)}catch{/* Synthetic and already-ended pointers cannot be captured. */}select(+e.target.dataset.index)}; board.onpointermove=e=>{if(e.pointerId!==boardPointerId)return;const tile=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');if(tile&&board.contains(tile))select(+tile.dataset.index)}; board.onpointerup=e=>{if(e.pointerId!==boardPointerId)return;const shouldSubmit=path.length-dragStartLength>1;const pointerId=boardPointerId;boardPointerId=null;try{if(board.hasPointerCapture?.(pointerId))board.releasePointerCapture(pointerId)}catch{/* The browser may already have released the pointer. */}if(shouldSubmit)submit()}; board.onpointercancel=cancelBoardPointer; board.onlostpointercapture=e=>cancelBoardPointer(e); $('feedback').textContent=t('connect'); screen('battle'); requestAnimationFrame(()=>{if(document.body.dataset.screen==='battle'&&!leaveConfirmOpen&&!$('battleLive').hidden)board.querySelector('.tile:not(:disabled)')?.focus({preventScroll:true});});
-    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.saveSucceeded = true; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function submit(){ const data=packs[lang][stage], word=data.legacyLocalized?legacyWordForPath(data,path):path.map(i=>data.board[i]).join(''); if(!word||!data.words.includes(word)||found.has(word)){ clear(); $('feedback').textContent=t('try'); return; } found.add(word); [...$('targets').querySelectorAll('[data-word]')].find(node=>node.dataset.word===word)?.classList.add('done'); path.forEach(i=>document.querySelector(`.tile[data-index="${i}"]`).classList.add('correct')); $('feedback').textContent=t('great'); $('foundCount').textContent=`${found.size}/${data.words.length}`; $('starCount').textContent=`\u2605 ${Math.max(1,3-hints)}`; if(found.size<data.words.length)scheduleBattleTask('transition',420,clear); }
-  function result(){ const key=lang+'-'+stage, best=readRecord('wordTrailsBest'), stars=Math.max(1,3-hints), terminal=stage>=packs[lang].length-1; best[key]=Math.max(best[key]||0,stars);writeStorage('wordTrailsBest',JSON.stringify(best)); stageUI?.refresh(stage); updateFrameStats(); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WeightPlayAudio?.play("result.win"); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}`; $('next').disabled=terminal; $('next').setAttribute('aria-disabled',String(terminal)); $('next').classList.toggle('primary',!terminal); $('next').classList.toggle('secondary',terminal); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('primary',terminal)); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('secondary',!terminal)); $('replay').classList.remove('primary'); $('replay').classList.add('secondary'); resultActionClaimed=false; screen('result'); requestAnimationFrame(()=>{if(!$('resultPanel').hidden&&!resultActionClaimed)(terminal?$('resultsBack'):$('next')).focus({preventScroll:true});});
+  function result(){ const key=lang+'-'+stage, stars=Math.max(1,3-hints), terminal=stage>=packs[lang].length-1; if(albumSaveUnconfirmed)flushPendingAlbum(); const bestSaved=mutateRecord('wordTrailsBest',best=>{if(Object.hasOwn(best,key)&&(!Number.isInteger(best[key])||best[key]<0||best[key]>3))return false;best[key]=Math.max(best[key]||0,stars);return best;}); __wpMeasurement.saveSucceeded=bestSaved; stageUI?.refresh(stage); updateFrameStats(); track('word_trails_stage_complete', { words_found: found.size, hints_used: hints, stars }); window.WeightPlayAudio?.play("result.win"); $('resultSummary').textContent=`${found.size} ${t('found')} \u00b7 \u2605 ${stars}${bestSaved&&!albumSaveUnconfirmed?'':` \u00b7 ${saveUnconfirmed[lang]||saveUnconfirmed.en}`}`; $('next').disabled=terminal||!bestSaved; $('next').setAttribute('aria-disabled',String(terminal||!bestSaved)); $('next').classList.toggle('primary',!terminal&&bestSaved); $('next').classList.toggle('secondary',terminal||!bestSaved); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('primary',terminal||!bestSaved)); (__wpNotifyMeasurement(), $('resultsBack').classList.toggle('secondary',!terminal&&bestSaved)); $('replay').classList.remove('primary'); $('replay').classList.add('secondary'); resultActionClaimed=false; screen('result'); requestAnimationFrame(()=>{if(!$('resultPanel').hidden&&!resultActionClaimed)(terminal||!bestSaved?$('resultsBack'):$('next')).focus({preventScroll:true});});
 }
   function claimResultAction(){ if($('resultPanel').classList.contains('hidden')||resultActionClaimed)return false; resultActionClaimed=true; return true; }
   const baseRenderBattle = renderBattle;
   renderBattle = function(){
+    albumSaveUnconfirmed=pendingAlbumWords.size>0;
     baseRenderBattle();
     runStars=0;
     updateFrameStats();
@@ -498,7 +520,7 @@
     window.WeightPlayAudio?.play("ui.click");
   }
   const originalSubmit = submit;
-  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ runStars=Math.max(1,3-hints); const word=[...found].at(-1); const album=readRecord('wordTrailsAlbum'); album[lang+'-'+word]=true; writeStorage('wordTrailsAlbum',JSON.stringify(album)); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WeightPlayAudio?.play("feedback.success"); reveal(word); updateFrameStats(); } else { window.WeightPlayAudio?.play("feedback.error"); } };
+  submit = function(){ const before=found.size; originalSubmit(); if(found.size>before){ runStars=Math.max(1,3-hints); const word=[...found].at(-1); const saved=saveFoundWord(lang+'-'+word); track('word_trails_word_found', { words_found: found.size, word_length: word.length }); window.WeightPlayAudio?.play("feedback.success"); reveal(word); updateFrameStats();if(!saved)$('feedback').textContent=saveUnconfirmed[lang]||saveUnconfirmed.en; } else { window.WeightPlayAudio?.play("feedback.error"); } };
   // New trails use stable concept IDs for rules, while the existing album and
   // public run snapshot continue to store the localized display word.
   let word60Target=null, word60Committed=null, word60Bridge=null;
@@ -640,7 +662,7 @@
     $('feedback').textContent='';
   };
   const oldWord60Clear=clear;
-  clear=function(){if(!prepareNextWord())return;clearHintDirection();if(!extended())return oldWord60Clear();word60ClearPath();$('feedback').textContent='';};
+  clear=function(){if(!prepareNextWord())return;clearHintDirection();if(!extended())return oldWord60Clear();word60ClearPath();$('feedback').textContent=albumSaveUnconfirmed?(saveUnconfirmed[lang]||saveUnconfirmed.en):'';};
   const oldWord60Undo=undo;
   undo=function(){if(!prepareNextWord())return;clearHintDirection();if(!extended())return oldWord60Undo();if(!path.length)return;path=path.slice(0,-1);$('board').querySelectorAll('.tile').forEach(node=>node.classList.toggle('selected',path.includes(Number(node.dataset.index))));$('feedback').textContent='';window.WeightPlayAudio?.play('ui.click');};
   const oldWord60Submit=submit;
@@ -667,8 +689,8 @@
     for(const node of $('targets').querySelectorAll('.target[data-word]'))if(node.dataset.word===target.display)node.classList.add('done');
     path.forEach(index=>$('board').querySelector(`.tile[data-index="${index}"]`)?.classList.add('correct'));
     $('foundCount').textContent=`${found.size}/${packs[lang][stage].targets.length}`;runStars=Math.max(1,3-hints);$('starCount').textContent=`★ ${runStars}`;
-    const album=readRecord('wordTrailsAlbum');album[lang+'-'+target.display]=true;writeStorage('wordTrailsAlbum',JSON.stringify(album));
-    track('word_trails_word_found',{words_found:found.size,word_length:target.tokens.length});window.WeightPlayAudio?.play('feedback.success');reveal(target.display);updateFrameStats();word60Sync();$('feedback').textContent=t('great');
+    const albumSaved=saveFoundWord(lang+'-'+target.display);
+    track('word_trails_word_found',{words_found:found.size,word_length:target.tokens.length});window.WeightPlayAudio?.play('feedback.success');reveal(target.display);updateFrameStats();word60Sync();$('feedback').textContent=albumSaved?t('great'):(saveUnconfirmed[lang]||saveUnconfirmed.en);
     if(found.size===packs[lang][stage].targets.length)finishWin();
     else scheduleBattleTask('transition',420,clear);
   };

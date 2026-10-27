@@ -387,9 +387,14 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 /* Disabled Chapter 2 candidate only; its layout still requires real play review. */
 .oath-orders { position: absolute; z-index: 14; top: 48px; left: 35%; right: 35%; display: grid; gap: 3px; pointer-events: none; color: #fff; text-align: center; }
 .oath-orders[hidden] { display: none; }
-.oath-orders > button { min-height: 44px; pointer-events: auto; }
+.oath-orders > button { justify-self: center; width: min(100%, 168px); min-height: 44px; padding: 4px 8px; border: 1px solid var(--wp-ui-gold); border-radius: 10px; color: #fff; background: #102632ed; font: inherit; font-size: 12px; font-weight: 800; pointer-events: auto; }
 .oath-orders > p { margin: 0; padding: 3px 6px; background: #102632e8; font-size: 11px; overflow-wrap: anywhere; }
 .oath-orders > p:empty { display: none; }
+.oath-link-layer { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+.oath-link { position: absolute; height: 3px; background: repeating-linear-gradient(90deg,#fff3b0 0 8px,transparent 8px 12px); filter: drop-shadow(0 1px 1px #382407); transform-origin: 0 50%; pointer-events: none; }
+.oath-link::before, .oath-link::after { content: ''; position: absolute; top: -3px; width: 7px; height: 7px; border: 1px solid #57350c; border-radius: 50%; background: #fff3b0; }
+.oath-link::before { left: -3px; }
+.oath-link::after { right: -3px; }
 .oath-orders-panel { position: absolute; z-index: 90; inset: 0; display: grid; align-content: start; justify-items: stretch; gap: 5px; overflow-y: auto; padding: 12px max(12px, calc((100vw - 480px) / 2)); background: #102632fa; color: #fff; pointer-events: auto; text-align: start; }
 .oath-orders-panel[hidden] { display: none; }
 .oath-orders-panel { padding-top: 80px; }
@@ -403,6 +408,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 @media (max-width:359px) and (orientation:portrait) { html[dir="rtl"] .oath-orders { left: 4px; right: 84px; } }
 @media (max-height:520px) and (orientation:landscape) {
   .arena-wrap:has(.oath-orders:not([hidden])) .wave-hud { top: 0; }
+  .arena-wrap:has(.oath-orders:not([hidden])) .unit { flex-basis: 80px; width: 80px; max-height: 140px; }
   .oath-orders { top: 30px; left: 30%; right: 30%; }
   .oath-orders > p { padding: 1px 4px; font-size: 10px; line-height: 1.05; }
 }

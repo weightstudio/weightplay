@@ -77,7 +77,7 @@
     frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageLabel).add(stageProgress));
     const syncStageInfo = () => {
       stageLabel.textContent = bridge.text("stage") + " " + (bridge.getSelectedStage() + 1);
-      stageProgress.textContent = bridge.text("stages") + ": " + bridge.unlocked() + " / " + bridge.count;
+      stageProgress.textContent = bridge.practiceText?.() || bridge.text("stages") + ": " + bridge.unlocked() + " / " + bridge.count;
     };
     const battleInfo = window.WeightPlayScreenFrame.createGroup()
       .add(battleInfoNodes[0])

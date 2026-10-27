@@ -10,3 +10,8 @@
 .battle-layout{padding-inline:4px}.result-card::before{content:"";display:block;width:104px;height:104px;margin:0 auto;background:url('/games/animal-cloudhook-courier/flight-atlas-v23.webp') 0 0/300% 300% no-repeat}.result-screen[data-success=true] .result-card::before{background-position:100% 0}
 .spool-art{background-image:url('/games/animal-cloudhook-courier/spools-v23.webp');background-size:300% 100%;background-position:0 50%;filter:none}.spool-mastery{background-position:50% 50%}.spool-aurora{background-position:100% 50%}
 @media(min-width:700px) and (max-height:560px){.result-card::before{float:inline-end;width:80px;height:80px;margin:0}}
+.flight-utilities:has(.beacon-pulse:not([hidden])){grid-template-columns:1fr 1fr 1fr}
+.flight-utilities .beacon-pulse:not([hidden]){display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:44px;color:#fff}
+.beacon-pulse img{width:32px;height:32px;object-fit:contain;flex:none}
+.beacon-pulse span{font-size:12px;line-height:1.1;overflow-wrap:anywhere}
+.beacon-pulse:disabled{opacity:.6}

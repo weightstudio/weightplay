@@ -1,6 +1,8 @@
 // Campaign state and accessible controls; spatial rules and effects are separate modules.
 (() => {
   "use strict";
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceEnabled=false,practiceAdapter=null,practiceBadge=null,mirrorAssess=null,mirrorCopy=null,mirrorGuide=null,mirrorRelations=null,originalCompleted=0;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -9,7 +11,7 @@
     paused: Boolean(state?.paused || state?.suspended), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(practiceRequested)return;try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -108,41 +110,47 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v11", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v11", interface_version: 9, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
-  const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);
+  const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 };
   const readBest = () => { try { const value = Number(localStorage.getItem(BEST_KEY) || localStorage.getItem("weightplay-animal-constellation-keeper-best-v4")); return Number.isFinite(value) && value >= maps.length ? value : null; } catch (_) { return null; } };
-  const saveBest = () => { if (!mastery.every(value => value > 0)) return; try { const total = mastery.reduce((sum, value) => sum + value, 0); const old = readBest(); if (!old || old < maps.length || total < old) localStorage.setItem(BEST_KEY, String(total)); } catch (_) {} };
-  const saveProgress = () => { try { localStorage.setItem(PROGRESS_KEY, String(state.completed)); } catch (_) {} };
-  const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind; stellar.enter(node); };
-  const describeRelation = ([subject, relation, object]) => t(`relation${relation[0].toUpperCase()}${relation.slice(1)}`, { subject: t(subject), object: t(object) });
+  const saveBest = () => { if (practiceRequested||!mastery.every(value => value > 0)) return; try { const total = mastery.reduce((sum, value) => sum + value, 0); const old = readBest(); if (!old || old < maps.length || total < old) localStorage.setItem(BEST_KEY, String(total)); } catch (_) {} };
+  const saveProgress = () => { if(practiceRequested)return;try { localStorage.setItem(PROGRESS_KEY, String(state.completed)); } catch (_) {} };
+  const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind;placePracticeBadge();stellar.enter(node); };
+  const mirrorText=()=>mirrorCopy?.[state.locale]||mirrorCopy?.en;
+  const describeRelation = ([subject, relation, object]) => {const index=mirrorRelations?.indexOf(relation)??-1;if(practiceEnabled&&index>=0)return mirrorText()[4][index].replaceAll('{a}',t(subject)).replaceAll('{b}',t(object));return t(`relation${relation[0].toUpperCase()}${relation.slice(1)}`, { subject: t(subject), object: t(object) });};
+  const lensButton=document.createElement('button');lensButton.type='button';lensButton.id='ckMirrorLens';lensButton.hidden=true;
+  const lensHelp=document.createElement('p');lensHelp.id='ckMirrorLensHelp';lensHelp.hidden=true;document.querySelector('.rule-card').append(lensHelp);
+  const lensIcon=document.createElementNS('http://www.w3.org/2000/svg','svg');lensIcon.setAttribute('viewBox','0 0 32 32');lensIcon.setAttribute('width','24');lensIcon.setAttribute('height','24');lensIcon.setAttribute('aria-hidden','true');
+  const lensCircle=document.createElementNS('http://www.w3.org/2000/svg','circle');lensCircle.setAttribute('cx','13');lensCircle.setAttribute('cy','13');lensCircle.setAttribute('r','8');lensCircle.setAttribute('fill','#63bfd0');lensCircle.setAttribute('stroke','#f6d77b');lensCircle.setAttribute('stroke-width','3');const lensHandle=document.createElementNS('http://www.w3.org/2000/svg','path');lensHandle.setAttribute('d','M19 19 L27 27');lensHandle.setAttribute('stroke','#f6d77b');lensHandle.setAttribute('stroke-width','4');lensHandle.setAttribute('stroke-linecap','square');lensIcon.append(lensCircle,lensHandle);const lensLabel=document.createElement('span');lensButton.append(lensIcon,lensLabel);$('checkBtn').before(lensButton);
+  lensButton.addEventListener('click',()=>{if(!practiceEnabled||state.screen!=='battle'||state.map<30||state.lensUsed)return;const current=maps[state.map],option=current.options.find(o=>!state.evaluations[o.id]&&!mirrorAssess(current,o).every(Boolean));if(!option)return;state.lensUsed=true;state.lensEliminated=option.id;if(state.selected===option.id)state.selected='';renderBattle();const node=$('battleStatus');node.textContent=mirrorText()[2];node.dataset.kind='';placePracticeBadge();stellar.enter(node);});
   let stageSelectionIndex = Math.min(state.completed, maps.length - 1);
   let stageRailController = null;
   const updateStageStats = () => {
     const selected = $("stageSelectionValue");
     const completion = $("stageCompletionValue");
     if (selected) selected.textContent = t("round", { n: stageSelectionIndex + 1, total: maps.length });
-    if (completion) completion.textContent = `${state.completed} / ${maps.length}`;
+    if (completion) completion.textContent = practiceEnabled?mirrorText()[0]:`${state.completed} / ${maps.length}`;
   };
   const stageRecord = (index) => {
-    const map = maps[index];
-    const locked = index > state.completed;
-    const cleared = index < state.completed;
+    const map = maps[index];if(!map)return {id:index+1,kicker:t('round',{n:index+1,total:60}),title:t('locked'),locked:true,cleared:false};
+    const locked = practiceRequested?(index<30||!practiceEnabled):index > state.completed;
+    const cleared = practiceRequested?false:index < state.completed;
     const status = locked ? t("locked") : cleared ? t("complete") : t("open");
-    const detail = [t(map.arcKey), t(map.mechanicKey), map.checkpoint ? t(map.checkpointKey) : ""].filter(Boolean);
+    const mirror=practiceEnabled&&index>=30;const detail = mirror?map.clues.map(describeRelation):[t(map.arcKey), t(map.mechanicKey), map.checkpoint ? t(map.checkpointKey) : ""].filter(Boolean);
     return {
       id: index + 1,
       kicker: t("round", { n: index + 1, total: maps.length }),
-      title: t(map.nameKey),
-      subtitle: t(map.arcKey),
+      title: mirror?mirrorText()[0]:t(map.nameKey),
+      subtitle: mirror?mirrorText()[1]:t(map.arcKey),
       status,
-      summary: t(map.introKey),
+      summary: mirror?map.clues.map(describeRelation).join(' · '):t(map.introKey),
       details: detail,
       locked,
       cleared,
@@ -167,12 +175,12 @@
         rail,
         selected: stageSelectionIndex,
         config: {
-          count: maps.length,
+          count: practiceRequested?60:maps.length,
           poster: "/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png",
           stage: stageRecord,
         },
         onSelect: (index) => { stageSelectionIndex = index; updateStageStats(); },
-        onStart: (index) => { if (index <= state.completed) startMap(index); },
+        onStart: (index) => { if (index <= state.completed) requestMap(index); },
         isActive: () => state.screen === "stage" && !$("stageScreen").hidden,
       });
       if (!stageRailController) {
@@ -199,6 +207,7 @@
     .add(createFrameStat("maps", "stageSelectionValue"))
     .add(createFrameStat("complete", "stageCompletionValue"));
   sharedFrame.stageTopUI.add(stageGroup);
+  function placePracticeBadge(){const badge=practiceBadge||(practiceBadge=document.querySelector('[data-wp-local-practice]'));if(!badge)return;if(!practiceEnabled){badge.hidden=true;return;}badge.hidden=false;badge.style.cssText='position:static;transform:none;background:#17243a;color:#f5c84c;padding:2px 4px;font:10px monospace;white-space:nowrap;pointer-events:none';if(state.screen==='battle')(matchMedia('(orientation: landscape) and (max-height: 590px)').matches?$('battleStatus'):$('mapIntro')).append(' ',badge);else if(state.screen==='result')$('resultTitle').after(badge);else if(state.screen==='stage')stageGroup.add(badge);else $('mainContent').append(badge);}
   const battleGroup = window.WeightPlayScreenFrame.createGroup();
   [...$("battleHeaderInfo").children].forEach((field) => battleGroup.add(field));
   $("battleHeaderInfo").replaceChildren();
@@ -222,9 +231,12 @@
   $("choiceGrid").closest(".choice-card").before(observatory);
   const renderBattle = () => {
     const current = maps[state.map];
-    $("mapName").textContent = t(current.nameKey);
-    $("mapLabel").textContent = t("round", { n: state.map + 1, total: maps.length });
-    $("mapIntro").textContent = `${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.introKey)}`;
+    const mirror=practiceEnabled&&state.map>=30;
+    $("mapName").textContent = mirror?mirrorText()[0]:t(current.nameKey);
+    $("mapLabel").textContent = mirror?`${state.map+1} / ${maps.length}`:t("round", { n: state.map + 1, total: maps.length });if(mirror)$("mapLabel").dir='ltr';else $("mapLabel").removeAttribute('dir');
+    $("mapIntro").textContent = mirror?`${current.checkpoint?t('checkpoint')+' · ':''}${mirrorText()[0]}`:`${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.introKey)}`;
+    if(mirror)placePracticeBadge();
+    lensButton.hidden=!mirror;lensHelp.hidden=!mirror;if(mirror){lensLabel.textContent=mirrorText()[1];lensHelp.textContent=mirrorGuide[state.locale]||mirrorGuide.en;lensButton.setAttribute('aria-describedby','ckMirrorLensHelp');lensButton.disabled=Boolean(state.lensUsed)||!current.options.some(o=>!state.evaluations[o.id]&&!mirrorAssess(current,o).every(Boolean));}
     const evaluation = state.evaluations[state.selected];
     ["ruleOne", "ruleTwo"].forEach((id, index) => {
       const button = $(id); button.replaceChildren();
@@ -255,12 +267,13 @@
     current.options.forEach(option => {
       const button = grid.querySelector(`[data-option-id="${option.id}"]`);
       const tested = state.evaluations[option.id];
+      const eliminated=mirror&&state.lensEliminated===option.id;button.disabled=eliminated;button.classList.toggle('ck-lens-eliminated',eliminated);
       button.setAttribute("aria-pressed", String(state.selected === option.id));
       button.dataset.state = tested && !tested.every(Boolean) ? "wrong" : state.selected === option.id ? "selected" : "idle";
       button.querySelector(".star-board").replaceWith(renderBoard(option));
       const verdict = button.querySelector(".ck-choice-verdict");
       verdict.textContent = tested ? `${tested.filter(Boolean).length} / ${current.clues.length} ✓` : "✦ · ✦";
-      button.setAttribute("aria-label", `${t("boardOption", { slot: option.slot })}: ${option.stars.map(star => `${t(star.animal)} (${star.row + 1}, ${star.col + 1})`).join(", ")}${tested ? `. ${t("matchedRules", { count: tested.filter(Boolean).length })}` : ""}`);
+      button.setAttribute("aria-label", `${t("boardOption", { slot: option.slot })}: ${option.stars.map(star => `${t(star.animal)} (${star.row + 1}, ${star.col + 1})`).join(", ")}${tested ? `. ${t("matchedRules", { count: tested.filter(Boolean).length })}` : ""}${eliminated?`. ${mirrorText()[2]}`:''}`);
     });
     const chosen = current.options.find(option => option.id === state.selected);
     const hero = observatory.querySelector(".ck-hero-board");
@@ -284,27 +297,29 @@
     let reward = $("ckResultReward");
     if (!reward) { reward = document.createElement("div"); reward.id = "ckResultReward"; $("resultTitle").before(reward); }
     reward.dataset.milestone = complete ? "finale" : current.checkpoint ? "checkpoint" : "map";
-    const stars = state.mapChecks === 1 ? 3 : state.mapChecks === 2 ? 2 : 1;
+    const stars = Math.min(state.mapChecks === 1 ? 3 : state.mapChecks === 2 ? 2 : 1,practiceEnabled&&state.lensUsed?2:3);
     reward.replaceChildren(stellar.board(current.options.find(option => option.id === current.correctId), current, t, -1, [true, true]));
     const rating = document.createElement("p"); rating.className = "ck-rating";
     rating.textContent = "★".repeat(stars) + "☆".repeat(3 - stars); rating.setAttribute("aria-label", t("starsEarned", { count: stars }));
     const detail = document.createElement("p"); detail.className = "ck-result-detail";
     detail.textContent = `${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} · ` : ""}${t(state.mapChecks === 1 ? "perfectRead" : "skyRestored")} · ${t("checksLabel", { count: state.mapChecks })}`;
+    if(practiceEnabled){detail.textContent=`${t('checksLabel',{count:state.mapChecks})}${state.lensUsed?' · '+mirrorText()[2]:''} · ${mirrorText()[3]}`;$("resultText").textContent=mirrorText()[3];}
     const progress = document.createElement("div"); progress.className = "ck-progress";
-    progress.setAttribute("role", "progressbar"); progress.setAttribute("aria-label", t("maps")); progress.setAttribute("aria-valuemin", "0"); progress.setAttribute("aria-valuemax", String(maps.length)); progress.setAttribute("aria-valuenow", String(state.completed));
+    progress.hidden=practiceEnabled;progress.setAttribute("role", "progressbar"); progress.setAttribute("aria-label", t("maps")); progress.setAttribute("aria-valuemin", "0"); progress.setAttribute("aria-valuemax", String(maps.length)); progress.setAttribute("aria-valuenow", String(state.completed));
     progress.style.setProperty("--progress", `${state.completed / maps.length * 100}%`);
     reward.append(rating, detail, progress);
     $("resultPrimaryBtn").textContent = complete ? t("map") : t("next");
-    $("resultPrimaryBtn").onclick = complete ? openStage : () => startMap(state.map + 1);
+    $("resultPrimaryBtn").onclick = complete ? openStage : () => requestMap(state.map + 1);
     $("resultMapBtn").hidden = false;
     __wpNotifyMeasurement();
   };
-  const openStage = (preserveSelection = false) => { if (!preserveSelection) stageSelectionIndex = Math.min(state.completed, maps.length - 1); show("stage"); renderStages(); };
-  const startMap = (index) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length) return; state.map = index; stageSelectionIndex = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {}; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } show("battle"); renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
+  const openStage = (preserveSelection = false) => { if (!preserveSelection) stageSelectionIndex = practiceEnabled?Math.max(30,state.map):Math.min(state.completed, maps.length - 1); show("stage"); renderStages(); };
+  function requestMap(index){if(practiceRequested)return practiceAdapter?.challenge('animal-constellation-keeper',String(index+1));return startMap(index);}
+  const startMap = (index) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length||(practiceRequested&&(!practiceEnabled||index<30))) return; state.map = index; stageSelectionIndex = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {};state.lensUsed=false;state.lensEliminated=''; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } show("battle"); renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
   const chooseOption = (id) => {
-    if (state.screen !== "battle" || !maps[state.map].options.some(option => option.id === id)) return;
+    if (state.screen !== "battle" || (practiceEnabled&&state.lensEliminated===id) || !maps[state.map].options.some(option => option.id === id)) return;
     state.selected = id; renderBattle();
     const previous = state.evaluations[id];
     announce(previous ? "reviewedBoard" : "selected", {}, previous ? "wrong" : "");
@@ -316,7 +331,7 @@
     const current = maps[state.map]; const option = current.options.find(item => item.id === state.selected);
     if (!option) return;
     state.checks++; state.sessionChecks++; state.mapChecks++;
-    const evaluation = puzzle.assess(current, option); state.evaluations[option.id] = evaluation;
+    const evaluation = practiceEnabled&&state.map>=30?mirrorAssess(current, option):puzzle.assess(current, option); state.evaluations[option.id] = evaluation;
     if (!evaluation.every(Boolean)) {
       state.clue = evaluation.indexOf(false); state.streak = 0; renderBattle();
       announce("wrong", { hint: describeRelation(current.clues[state.clue]) }, "wrong");
@@ -326,7 +341,7 @@
     const wasCompleted = state.completed;
     state.completed = Math.max(state.completed, state.map + 1); saveProgress();
     mastery[state.map] = mastery[state.map] ? Math.min(mastery[state.map], state.mapChecks) : state.mapChecks;
-    try { localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery)); } catch {}
+    if(!practiceRequested)try { localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery)); } catch {}
     if (state.mapChecks === 1) state.streak++;
     saveBest(); $("bestValue").textContent = readBest() || t("noBest");
     track("map_check", { map: state.map + 1, result: "correct", checkpoint: Boolean(current.checkpoint), unlocked: state.completed > wasCompleted });
@@ -350,7 +365,7 @@
       localeSelect.setAttribute("aria-label", t("language"));
     }
     const mainProgress = $("mainProgress");
-    if (mainProgress) mainProgress.textContent = `${t("maps")}: ${state.completed} / ${maps.length}`;
+    if (mainProgress) mainProgress.textContent = practiceEnabled?mirrorText()[3]:`${t("maps")}: ${state.completed} / ${maps.length}`;
     const bestValue = $("bestValue");
     if (bestValue) bestValue.textContent = readBest() || t("noBest");
     if (state.screen === "stage") renderStages();
@@ -363,10 +378,18 @@
   $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); });
   $("battleBackBtn").addEventListener("click", () => openStage(true));
   $("resultMapBtn").addEventListener("click", () => openStage());
-  $("resultReplayBtn").addEventListener("click", () => __wpReplayStart(() => startMap(state.map)));
+  $("resultReplayBtn").addEventListener("click", () => __wpReplayStart(() => requestMap(state.map)));
   $("resultHomeBtn").addEventListener("click", () => show("main"));
   $("checkBtn").addEventListener("click", checkChoice);
   $("clearBtn").addEventListener("click", clearChoice);
-  $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} if (window.WonderI18n?.actualLocale?.() !== state.locale) window.WonderI18n.setLocale(state.locale, { navigate: false }); applyLocale(); });
-  const routeLocale = document.documentElement.lang; if (routeLocale && locales[routeLocale]) state.locale = routeLocale; else { try { const saved = localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) state.locale = saved; } catch (_) {} } installSoundBridge(); applyLocale(); show("main"); $("loadingPanel").hidden = true; window.__ANIMAL_CONSTELLATION_KEEPER_TEST__ = { maps, startMap, chooseOption, checkChoice, clearChoice, seedProgress: (count) => { state.completed = Math.min(maps.length, Math.max(0, Number(count) || 0)); saveProgress(); applyLocale(); }, getState: () => ({ ...state }) };
+  $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; if(!practiceRequested)try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} if (window.WonderI18n?.actualLocale?.() !== state.locale) window.WonderI18n.setLocale(state.locale, { navigate: false }); applyLocale(); });
+  const routeLocale = document.documentElement.lang; if (routeLocale && locales[routeLocale]) state.locale = routeLocale; else { try { const saved = localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) state.locale = saved; } catch (_) {} } installSoundBridge(); applyLocale(); show("main"); $("loadingPanel").hidden = true; window.__ANIMAL_CONSTELLATION_KEEPER_TEST__ = { maps, startMap, chooseOption, checkChoice, clearChoice, seedProgress: (count) => { if(practiceRequested)return;state.completed = Math.min(maps.length, Math.max(0, Number(count) || 0)); saveProgress(); applyLocale(); }, getState: () => ({ ...state }) };
+  if(practiceRequested)void activatePractice().catch(()=>{ $('battleStatus').textContent='Local practice unavailable'; });
+  async function activatePractice(){
+    const ready=await new Promise(resolve=>{let done=false;const timer=setTimeout(()=>finish(false),25000),observer=new MutationObserver(check);function finish(v){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(v)}function check(){const d=document.documentElement.dataset;if($('loadingPanel').hidden&&(d.wpGameEntryLoaderInstalled!=='true'||d.wpGameEntryLoaderActive!=='true'))finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['hidden','class','data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
+    if(!ready)return;const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs'),import('./mirror-observatory-candidate.mjs?v=20261027-mirror1'),import('./mirror-observatory-locales.mjs?v=20261027-mirror1')]);if(!await LocalPractice.ready)return;
+    const data=chapter.createMirrorMaps();if(data.length!==30||data.some((m,i)=>m.number!==31+i))return;practiceAdapter=LocalPractice;mirrorAssess=chapter.assess;mirrorCopy=locale.MIRROR_COPY;mirrorGuide=locale.MIRROR_GUIDE;mirrorRelations=locale.MIRROR_RELATIONS;originalCompleted=state.completed;
+    const style=document.createElement('style');style.textContent='body[data-wp-constellation-mirror] .battle-actions{grid-template-columns:repeat(3,minmax(0,1fr));position:relative;z-index:3}body[data-wp-constellation-mirror] .battle-actions button{min-width:0}body[data-wp-constellation-mirror] #ckMirrorLens{display:inline-flex;gap:4px;align-items:center;justify-content:center}body[data-wp-constellation-mirror] #ckMirrorLens[hidden]{display:none}body[data-wp-constellation-mirror] .ck-lens-eliminated{opacity:.35}body[data-wp-constellation-mirror] .battle-info-field:has(#mapName){display:none}';document.head.append(style);
+    await LocalPractice.register({gameId:'animal-constellation-keeper',stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){practiceEnabled=enabled===true;const nameField=$('mapName').closest('.battle-info-field');if(practiceEnabled){document.body.dataset.wpConstellationMirror='';battleRoot.dataset.wpBattleLandscapeWidth='760';battleRoot.dataset.wpBattleLandscapeHeight='334';nameField?.style.setProperty('display','none','important');if(maps.length===30)maps.push(...puzzle.assignBalancedAnswerSlots(data));state.completed=59;stageSelectionIndex=30;}else{delete document.body.dataset.wpConstellationMirror;delete battleRoot.dataset.wpBattleLandscapeWidth;delete battleRoot.dataset.wpBattleLandscapeHeight;nameField?.style.removeProperty('display');maps.length=30;mastery.length=30;state.completed=originalCompleted;stageSelectionIndex=Math.min(state.completed,29);show('main');}applyLocale();if(state.screen==='stage')renderStages();placePracticeBadge();window.WeightPlayBattleCanvas?.sync?.();},async startStage(id){const n=Number(id);if(practiceEnabled&&Number.isInteger(n)&&n>=31&&n<=60)startMap(n-1)}});
+  }
 })();
