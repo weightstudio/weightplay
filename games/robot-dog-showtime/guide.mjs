@@ -1,5 +1,5 @@
 // Static, game-owned Guide copy. This module does not boot or alter the game.
-import {showText} from './spotlight-remix.js?v=20261027-rebuild1';
+import {showText} from './spotlight-remix.js?v=20261027-showtime-optimize1';
 const titles = {en:'Robot Dog Showtime','zh-Hant':'機器狗才藝秀','zh-Hans':'机器狗才艺秀',ja:'ロボット犬のショータイム',ko:'로봇 강아지 쇼타임',es:'El espectáculo del perro robot','pt-BR':'Show do Cão Robô',fr:'Le Spectacle du Chien Robot',de:'Die Robot-Hundeshow',it:'Lo Show del Cane Robot',ru:'Шоу робопса',hi:'रोबोट कुत्ते का शो',ar:'عرض الكلب الآلي'};
 const copy = {
   en: [
@@ -119,8 +119,8 @@ export function renderGuide(locale) {
       <article class="game-info-section"><h3>${c[6]}</h3><ol><li>${c[7]}</li><li>${c[8]}</li><li>${c[9]}</li></ol></article>
       <article class="game-info-section"><h3>${c[10]}</h3><p>${c[11]}</p></article>
       <article class="game-info-section"><h3>${c[12]}</h3><p>${c[13]}</p></article>
-      <article class="game-info-section"><h3>${escape(t('perfect'))}</h3><p>${escape(t('masteryRule'))}</p><p>${escape(t('hintRule'))}</p></article>
-      <article class="game-info-section"><h3>${escape(t('wardrobe'))}</h3><p>${escape(t('costumeRule'))} ${escape(t('permanent'))} · 12 ${escape(t('balance'))}.</p></article>
+      <article class="game-info-section"><h3>${escape(t('perfect'))}</h3><p>${escape(t('masteryRule'))}</p><p>${escape(t('hintRule'))}</p><p>${escape(t('defaultWaitRule'))}</p></article>
+      <article class="game-info-section"><h3>${escape(t('wardrobe'))}</h3><p>${escape(t('costumeRule'))} ${escape(t('permanent'))} · 12 ${escape(t('balance'))}.</p><p>${escape(t('diamondSource'))}</p></article>
       <article class="game-info-section"><h3>${c[14]}</h3><p>${c[15]}</p></article>
       <article class="game-info-section"><h3>${c[16]}</h3><dl><div><dt>${c[17]}</dt><dd>${c[18]}</dd></div><div><dt>${c[19]}</dt><dd>${c[20]}</dd></div><div><dt>${c[21]}</dt><dd>${c[22]}</dd></div></dl></article>
     </div>

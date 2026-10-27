@@ -28,7 +28,7 @@
   <title>El espectáculo del perro robot | WeightPlay</title>
   <meta name="description" content="Planifica las indicaciones de ambos artistas y ensaya juntos sus rutas y gestos." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20261027-showtime-rebuild1">
+  <link rel="stylesheet" href="style.css?v=20261027-showtime-optimize1">
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="../../src/wallet.js"></script>
   <script src="../../src/game-layout-config.js"></script>
@@ -102,8 +102,8 @@
       <article class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un artista y un tiempo, y coloca un movimiento o una acción.</li><li>Planifica ambas rutas a la vez y ensaya la formación.</li><li>Corrige el primer tiempo inválido y vuelve a intentarlo; el plan se conserva.</li></ol></article>
       <article class="game-info-section"><h3>Reglas</h3><p>Permanece en el escenario, evita las casillas bloqueadas y nunca sitúes a ambos artistas en la misma casilla. Algunos finales requieren que ambos hagan una reverencia en el último tiempo.</p></article>
       <article class="game-info-section"><h3>Progreso y repetición</h3><p>Supera un escenario para guardar el progreso y abrir el siguiente. Puedes repetir cualquiera que esté desbloqueado. Tras superar los escenarios 2, 3 o 6, prueba la Mezcla de focos opcional con objetivos intercambiados.</p></article>
-      <article class="game-info-section"><h3>¡Perfecto!</h3><p>Sin pistas: 3/3 al primer ensayo; 2/3 en tres. Se guarda la mejor nota.</p><p>La pista rellena un tiempo y limita esta nota a 1/3.</p></article>
-      <article class="game-info-section"><h3>Vestuario</h3><p>Bufanda azul, patas doradas y luces a juego. Solo apariencia. Permanente · 12 Diamantes.</p></article>
+      <article class="game-info-section"><h3>¡Perfecto!</h3><p>Sin pistas: 3/3; una: 2/3; varias: 1/3. Ensayar no resta estrellas. Las rutas opcionales dan marcas de maestría.</p><p>La pista rellena ambas acciones de un tiempo: una permite 2/3; varias, 1/3.</p><p>Los tiempos sin acción esperan.</p></article>
+      <article class="game-info-section"><h3>Vestuario</h3><p>Bufanda azul, patas doradas y luces a juego. Solo apariencia. Permanente · 12 Diamantes.</p><p>Consigue diamantes compartidos con el acceso diario del vestíbulo.</p></article>
       <article class="game-info-section"><h3>Privacidad y ajustes</h3><p>El progreso queda en este navegador. No hace falta una cuenta. Usa los ajustes compartidos para elegir idioma y sonido.</p></article>
       <article class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Es un juego de memoria?</dt><dd>No. Planificas rutas y acciones para dos artistas en un tablero de tiempos visible.</dd></div><div><dt>¿Un error de ensayo borra el progreso?</dt><dd>No. Se muestra el primer tiempo inválido y puedes seguir editando el plan.</dd></div><div><dt>¿Se transfiere el progreso entre navegadores?</dt><dd>No. El progreso actual se guarda localmente en este navegador.</dd></div></dl></article>
     </div>
@@ -113,7 +113,7 @@
       <header id="stageHeader" class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back to Main"><span aria-hidden="true">←</span></button><h2 id="stageTitle" data-wp-frame-title hidden>Choose a stage</h2></header>
       <div id="stageWorkspace"><nav id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-total="30" aria-label="Stages"></nav></div>
       <nav id="stageTabs" data-wp-frame-nav aria-label="Stage actions"><button id="wardrobeAction" type="button">Dressing room</button><button id="spotlightAction" type="button" hidden>Spotlight Mix</button></nav>
-      <section id="wardrobeDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="wardrobeTitle" hidden><div class="dialog-card wardrobe-card"><h2 id="wardrobeTitle">Dressing room</h2><p class="wallet-line"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span id="walletBalance"></span></p><div class="costume-art"><img src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt="Comet costume" width="320" height="320"></div><h3 id="costumeTitle">Comet costume</h3><p id="costumeEffect"></p><p id="costumeCost" class="costume-cost"></p><p id="purchaseStatus" class="purchase-status" role="status" aria-live="polite"></p><div class="wardrobe-actions"><button id="baseCostume" type="button">Original costume</button><button id="buyCostume" class="primary" type="button">Unlock</button></div><button id="closeWardrobe" type="button">Continue</button></div></section>
+      <section id="wardrobeDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="wardrobeTitle" hidden><div class="dialog-card wardrobe-card"><h2 id="wardrobeTitle">Dressing room</h2><p class="wallet-line"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span id="walletBalance"></span></p><div class="costume-art"><img src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt="Comet costume" width="320" height="320"></div><h3 id="costumeTitle">Comet costume</h3><p id="costumeOwnership" class="costume-ownership"></p><p id="costumeEffect"></p><p id="costumeCost" class="costume-cost"></p><p id="diamondSource" class="diamond-source"></p><p id="purchaseStatus" class="purchase-status" role="status" aria-live="polite"></p><div class="wardrobe-actions"><button id="baseCostume" type="button">Original costume</button><button id="buyCostume" class="primary" type="button">Unlock</button></div><button id="closeWardrobe" type="button">Continue</button></div></section>
     </section>
 
     <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas="390x720" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden>
@@ -128,7 +128,7 @@
           <div class="action-row"><button id="undoCue" type="button">Undo</button><button id="resetPlan" type="button">Reset</button><button id="rehearseButton" type="button" class="primary">Rehearse</button></div>
         </aside>
       </div>
-      <section id="helpDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle">How to play</h2><ol id="helpSteps"></ol><p id="hintExplanation"></p><p id="masteryExplanation"></p><div class="result-actions help-actions"><button id="hintButton" type="button">Hint</button><button id="closeHelp" class="primary" type="button">Continue</button></div></div></section>
+      <section id="helpDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle">How to play</h2><ol id="helpSteps"></ol><p id="hintExplanation"></p><p id="masteryExplanation"></p><p id="routeMastery" hidden></p><div class="result-actions help-actions"><button id="hintButton" type="button">Hint</button><button id="closeHelp" class="primary" type="button">Continue</button></div></div></section>
       <section id="leaveDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle">Continue</h2><p id="leaveText"></p><div class="result-actions help-actions"><button id="continueBattle" class="primary" type="button">Continue</button><button id="returnMap" type="button">Stages</button></div></div></section>
       <section id="resultDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="resultTitle" data-wp-battle-substate="result" hidden><div class="dialog-card result-card" data-wp-result-card><small id="resultKicker">SHOW COMPLETE</small><div id="showRating" class="show-rating" aria-label="Show rating"></div><h2 id="resultTitle">Great formation!</h2><p id="resultText"></p><div class="result-actions"><button id="resultMap" type="button">Stages</button><button id="nextStage" type="button" class="primary">Next stage</button><button id="replayStage" type="button">Replay</button></div></div></section>
     </section>
@@ -140,9 +140,9 @@
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-spacing1"></script>
-  <script src="stage-config.js?v=20261027-showtime-rebuild1"></script>
-  <script src="frame.js?v=20261027-showtime-rebuild1"></script>
-  <script type="module" src="game.js?v=20261027-showtime-rebuild1"></script>
+  <script src="stage-config.js?v=20261027-showtime-optimize1"></script>
+  <script src="frame.js?v=20261027-showtime-optimize1"></script>
+  <script type="module" src="game.js?v=20261027-showtime-optimize1"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

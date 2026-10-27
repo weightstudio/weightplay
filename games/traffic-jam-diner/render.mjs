@@ -31,8 +31,8 @@ export class DinerScene {
     return this.materials.get(key);
   }
   position(node){const [x,y]=this.stage.points[node];return new THREE.Vector3(x-this.originX,this.originY-y,.12);}
-  setStage(stage,style='classic'){
-    this.cancel();this.stage=stage;this.style=style;
+  setStage(stage,style='classic',milestones=0){
+    this.cancel();this.stage=stage;this.style=style;this.milestones=milestones;
     this.originX=(Math.min(...stage.points.map(p=>p[0]))+Math.max(...stage.points.map(p=>p[0])))/2;
     this.originY=(Math.min(...stage.points.map(p=>p[1]))+Math.max(...stage.points.map(p=>p[1])))/2;
     for(const mesh of [...this.staticGroup.children]){this.staticGroup.remove(mesh);mesh.dispose?.();}
@@ -74,6 +74,7 @@ export class DinerScene {
     box(0xfff1ce,counter.x,counter.y-.24,.34,.65,.10,.04);
     // Diner back wall, block windows and a striped canopy.
     const cafeY=top-.28,cafeWidth=Math.min(4.4,right-left-.5);
+    this.flatRoute=maxY-minY<1;this.cafeCue=new THREE.Vector3(0,cafeY-.10,1.65);
     box(0xa84e37,0,cafeY,.46,cafeWidth,.26,1.05);
     box(0xf5e5c3,0,cafeY-.17,.50,cafeWidth-.22,.12,.77);
     for(const x of [-cafeWidth*.31,cafeWidth*.31]){
@@ -111,7 +112,7 @@ export class DinerScene {
     for(const x of [-.55,0,.55]){
       box(0xad7351,x,bottom+.13,.03,.48,.28,.23);
       box(0x60824e,x,bottom+.13,.19,.43,.25,.12);
-      for(const offset of [-.12,.1]){box(0xe7b17b,x+offset,bottom+.13,.28,.09,.09,.10);box(0xffefd0,x+offset,bottom+.12,.35,.14,.13,.05);}
+      if(milestones>=2)for(const offset of [-.12,.1]){box(0xe7b17b,x+offset,bottom+.13,.28,.09,.09,.10);box(0xffefd0,x+offset,bottom+.12,.35,.14,.13,.05);}
     }
     // Cafe seating occupies scenery only; it never looks like a legal stop.
     const tableY=bottom+.35;
@@ -129,6 +130,22 @@ export class DinerScene {
     };
     plant(left+.29,top-.35);plant(right-.29,top-.35);
     plant(left+.25,bottom+.20);plant(right-.25,bottom+.20);
+    // Earned diner additions are real scene geometry; they never change routes.
+    if(milestones>=1){
+      box(0xb97c38,0,cafeY-.12,1.84,.78,.13,.50);box(0xffd47e,0,cafeY-.21,1.84,.66,.05,.38);
+      box(0xb96c3d,0,cafeY-.25,1.83,.40,.04,.09);box(0x77a45b,0,cafeY-.25,1.88,.43,.04,.05);box(0xffe4a3,0,cafeY-.25,1.98,.46,.04,.14);
+    }
+    if(milestones>=3)for(const side of [-1,1]){
+      const x=side*(right-left)*.23;box(0xa66d48,x,bottom+.45,.32,.72,.28,.12);box(0xe2b576,x,bottom+.58,.55,.72,.10,.30);
+      for(const foot of [-.24,.24])box(0x7e654c,x+foot,bottom+.45,.12,.10,.20,.27);
+    }
+    if(milestones>=4)for(const x of [-1.05,1.05]){
+      box(0x645d45,x,cafeY-.36,1.30,.045,.045,.36);box(0xffce78,x,cafeY-.36,1.09,.23,.20,.26);box(0xf6e5b3,x,cafeY-.37,1.09,.10,.205,.19);
+    }
+    if(milestones>=5)for(let i=0;i<7;i++)box(i%2?0x79b49d:0xd88c59,(i-3)*.30,cafeY-.39,.68,.20,.035,.22);
+    if(milestones>=6)for(const side of [-1,1]){
+      const x=side*(right-left)*.42;box(0xb98b4d,x,bottom+.20,.38,.25,.22,.62);box(0xffdda0,x,bottom+.20,.76,.38,.30,.12);box(0xdba852,x,bottom+.20,.91,.23,.22,.18);
+    }
     for(const [color,items] of buckets){
       const mesh=new THREE.InstancedMesh(this.boxGeometry,this.material(color),items.length),matrix=new THREE.Matrix4();
       items.forEach((item,i)=>{matrix.compose(new THREE.Vector3(item.x,item.y,item.z),new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),item.rotation),new THREE.Vector3(item.w,item.h,item.d));mesh.setMatrixAt(i,matrix);});
@@ -154,12 +171,14 @@ export class DinerScene {
     });
     this.gateMeshes=[];
     this.stage.gates.forEach((gate,i)=>{
-      const a=this.position(this.stage.ids.get(`${gate.a[0]},${gate.a[1]}`)),b=this.position(this.stage.ids.get(`${gate.b[0]},${gate.b[1]}`));
+     for(const [branch,[edge,open]] of [[[gate.a,gate.b],state.gates[i]],...(gate.alternate?[[gate.alternate,!state.gates[i]]]:[])].entries()){
+      const a=this.position(this.stage.ids.get(`${edge[0][0]},${edge[0][1]}`)),b=this.position(this.stage.ids.get(`${edge[1][0]},${edge[1][1]}`));
       const group=new THREE.Group();group.position.copy(a.clone().add(b).multiplyScalar(.5));
       group.rotation.z=Math.atan2(b.y-a.y,b.x-a.x);
       for(const side of [-1,1]){const post=new THREE.Mesh(this.boxGeometry,this.material(0xe1a866));post.scale.set(.12,.12,.48);post.position.set(0,side*.35,.18);group.add(post);}
-      const bar=new THREE.Mesh(this.boxGeometry,this.material(state.gates[i]?0x77ba9a:0xcf6547));
-      bar.scale.set(.10,.78,.12);bar.position.z=state.gates[i]?.78:.36;group.add(bar);this.dynamicGroup.add(group);this.gateMeshes.push(bar);
+      const bar=new THREE.Mesh(this.boxGeometry,this.material(open?0x77ba9a:0xcf6547));
+      bar.scale.set(.10,.78,.12);bar.position.z=open ? .78 : .36;bar.userData.gateIndex=i;bar.userData.primary=branch===0;group.add(bar);this.dynamicGroup.add(group);this.gateMeshes.push(bar);
+     }
     });
     this.draw();
   }
@@ -171,6 +190,10 @@ export class DinerScene {
       const value=(1-(1-progress)**2)*(points.length-1),at=Math.min(points.length-2,Math.floor(value));
       group.position.lerpVectors(points[at],points[at+1],value-at);group.position.z+=Math.sin(progress*Math.PI)*.06;
     });
+  }
+  switchGate(index,previous){
+    const bars=this.gateMeshes.filter(bar=>bar.userData.gateIndex===index).map(bar=>({bar,from:(bar.userData.primary?previous:!previous) ? .78 : .36,to:bar.position.z}));
+    this.tween(this.reduced()?80:180,p=>{for(const {bar,from,to} of bars)bar.position.z=this.reduced()?to:from+(to-from)*p;});
   }
   depart(guest,done){
     const group=this.guestMeshes.get(guest);if(!group){done?.();return;}
@@ -192,6 +215,11 @@ export class DinerScene {
     const p=this.position(node);p.z=z;p.project(this.camera);
     return {x:(p.x+1)*this.canvas.clientWidth/2,y:(1-p.y)*this.canvas.clientHeight/2};
   }
+  projectEdge(edge){
+    const a=this.position(this.stage.ids.get(`${edge[0][0]},${edge[0][1]}`)),b=this.position(this.stage.ids.get(`${edge[1][0]},${edge[1][1]}`));
+    const point=a.add(b).multiplyScalar(.5);point.z=.65;point.project(this.camera);
+    return {x:(point.x+1)*this.canvas.clientWidth/2,y:(1-point.y)*this.canvas.clientHeight/2};
+  }
   pick(event){
     const rect=this.canvas.getBoundingClientRect();this.pointer.set((event.clientX-rect.left)/rect.width*2-1,1-(event.clientY-rect.top)/rect.height*2);
     this.raycaster.setFromCamera(this.pointer,this.camera);const p=new THREE.Vector3();
@@ -202,20 +230,18 @@ export class DinerScene {
     const width=this.canvas.clientWidth,height=this.canvas.clientHeight;if(!width||!height)return;
     this.renderer.setSize(width,height,false);
     if(this.bounds){
-      const {left,right,bottom,top}=this.bounds,cx=(left+right)/2,cy=(bottom+top)/2;
-      this.camera.position.set(cx,cy-9,15);this.camera.lookAt(cx,cy,0);
-      // Fit all scenery corners, including the elevated awning, in camera space.
-      this.camera.updateMatrixWorld();const inverse=this.camera.matrixWorldInverse;
-      const projected=[];for(const x of [left,right])for(const y of [bottom,top])for(const z of [0,1.85])projected.push(new THREE.Vector3(x,y,z).applyMatrix4(inverse));
-      const halfW=Math.max(...projected.map(p=>Math.abs(p.x)))+.04,halfH=Math.max(...projected.map(p=>Math.abs(p.y)))+.04;
-      const fullFit=Math.max(halfH,halfW/(width/height));
-      // Fit every possible guest/stop first. A bounded close-up may crop only
-      // peripheral patio scenery instead of making the interactive road tiny.
+      this.camera.position.set(0,-9,15);this.camera.lookAt(0,0,0);this.camera.updateMatrixWorld();
+      // Centre and fit required road/avatar bounds in camera space. Scenery
+      // never imposes a zoom floor on the short-landscape playfield.
       const play=[];for(let node=0;node<this.stage.points.length;node++){
-        const p=this.position(node);for(const dx of [-.60,.60])for(const dy of [-.25,.65])for(const z of [.12,1.15])play.push(new THREE.Vector3(p.x+dx,p.y+dy,z).applyMatrix4(inverse));
+        const p=this.position(node);for(const dx of [-.60,.60])for(const dy of [-.25,.65])for(const z of [.02,1.15])play.push(new THREE.Vector3(p.x+dx,p.y+dy,z).applyMatrix4(this.camera.matrixWorldInverse));
       }
-      const playW=Math.max(...play.map(p=>Math.abs(p.x)))+.16,playH=Math.max(...play.map(p=>Math.abs(p.y)))+.16;
-      const fit=Math.max(playH,playW/(width/height),fullFit/1.35);this.camera.left=-fit*width/height;this.camera.right=fit*width/height;this.camera.top=fit;this.camera.bottom=-fit;this.camera.updateProjectionMatrix();
+      // Flat introductory lanes keep one recognisable diner cue. This single
+      // anchor does not fit the whole patio or shrink dense multi-row puzzles.
+      if(this.flatRoute)play.push(this.cafeCue.clone().applyMatrix4(this.camera.matrixWorldInverse));
+      const minX=Math.min(...play.map(p=>p.x)),maxX=Math.max(...play.map(p=>p.x)),minY=Math.min(...play.map(p=>p.y)),maxY=Math.max(...play.map(p=>p.y));
+      const offset=new THREE.Vector3((minX+maxX)/2,(minY+maxY)/2,0).applyQuaternion(this.camera.quaternion);this.camera.position.add(offset);this.camera.lookAt(offset);this.camera.updateMatrixWorld();
+      const fit=Math.max((maxY-minY)/2+.07,((maxX-minX)/2+.07)/(width/height));this.camera.left=-fit*width/height;this.camera.right=fit*width/height;this.camera.top=fit;this.camera.bottom=-fit;this.camera.updateProjectionMatrix();
     }
     this.draw();
   }

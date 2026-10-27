@@ -24,7 +24,7 @@ export function persistProgress(storage,progress,total){
 
 // A first-clear reward requires a verified save. Never turn an unreadable or
 // future save into an empty one, and preserve fields this version does not own.
-export function persistProgressChecked(storage,progress,total){
+export function persistProgressChecked(storage,progress,total,ticket){
   const memory=sanitizeProgress(progress,total);
   let session=memory;
   try{
@@ -42,6 +42,8 @@ export function persistProgressChecked(storage,progress,total){
     const serialized=JSON.stringify({...saved,...next,cleared:entries});
     if(storage.getItem(CAMPAIGN_KEY)!==raw)return {progress:next,saved:false};
     storage.setItem(CAMPAIGN_KEY,serialized);
-    return {progress:next,saved:storage.getItem(CAMPAIGN_KEY)===serialized};
+    const readBytes=storage.getItem(CAMPAIGN_KEY);
+    if(readBytes!==serialized)return {progress:next,saved:false};
+    return ticket?{progress:next,saved:true,confirmation:Object.freeze({ticket,readbackCompleted:true,expectedBytes:serialized,readBytes})}:{progress:next,saved:true};
   }catch{return {progress:session,saved:false};}
 }

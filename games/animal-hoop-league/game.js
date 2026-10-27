@@ -229,13 +229,18 @@
     state.flight={t:0,power,kind:next.last.kind,route:state.route,delta:next.last.delta,pending:next};
     state.feedback='';sound('projectile.launch');hud();
   }
+  function renderResult(){
+    const r=state.round,win=won(r);
+    $('result-title').textContent=text()[win?13:14];
+    $('result-copy').textContent=`${text()[17]} ${r.score} : ${r.rival} ${text()[18]} · ${r.made}/${courts[r.stage-1].shots} · ${text()[8]} ×${r.perfect}${r.stage>=7?' · '+goalSummary(r):''}${win?' · '+(saveSucceeded?xp().saveConfirmed:xp().saveUnconfirmed):r.score>r.rival?' · '+xp().needGoals:` · ${state.feedback}`}`;
+  }
   function land(now){
     const f=state.flight;state.round=f.pending;state.flight=null;
     const r=state.round,index={perfect:8,made:9,early:10,late:11}[r.last.kind];if(state.route==='assist'&&!r.assists)state.route='direct';state.feedback=`${r.last.kind==='pass'?xp().passDone:r.last.kind==='blocked'?xp().blocked:text()[index]}${r.last.points?` +${r.last.points}`:''}`;state.feedbackUntil=now+1400;
     sound(r.last.kind==='pass'?'feedback.success':r.last.points?'sport.goal':'sport.bounce');
     if(r.finished){
       const win=won(r);if(win){best=Math.max(best,r.stage);records[r.stage]=Math.max(Number(records[r.stage])||0,r.score);save();}
-      $('result-title').textContent=text()[win?13:14];$('result-copy').textContent=`${text()[17]} ${r.score} : ${r.rival} ${text()[18]} · ${r.made}/${courts[r.stage-1].shots} · ${text()[8]} ×${r.perfect}${r.stage>=7?' · '+goalSummary(r):''}${win?'':r.score>r.rival?' · '+xp().needGoals:` · ${state.feedback}`}`;
+      renderResult();
       $('next').disabled=!win||r.stage===courts.length;$('next').setAttribute('aria-disabled',String($('next').disabled));show('result');progress();sound(win?'result.win':'result.lose');$('retry').focus({preventScroll:true});
     }
     hud();
@@ -267,7 +272,7 @@
   function localize(){
     const t=text();document.querySelectorAll('[data-m5-lede]').forEach(n=>n.textContent=xp().intro);document.querySelectorAll('[data-m5-guide]').forEach(n=>n.textContent=n.closest('#battle-screen')?t[0]:`${t[1]} ${t[19]} ${t[20]} ${xp().routeGuide} ${xp().focusGuide} ${xp().relayGuide} ${xp().goalsGuide}`);
     steps.querySelectorAll('i').forEach((n,i)=>n.textContent=t[i+2]);$('hoop-zone-label').textContent=t[3];$('hoop-you').textContent=t[17];$('hoop-rival').textContent=t[18];meter.setAttribute('aria-label',t[3]);progress();refreshStage();hud();
-    document.querySelectorAll('.game-info-tags > span').forEach((n,i)=>n.textContent=t[i+2]);
+    document.querySelectorAll('.game-info-tags > span').forEach((n,i)=>n.textContent=t[i+2]);if(state.screen==='result')renderResult();
   }
   window.addEventListener('weightplay:market-locale-change',localize);
   window.addEventListener('weightplay:interaction-state',()=>{

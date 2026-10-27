@@ -71,6 +71,7 @@ button { cursor: pointer; }
 .target-thumb { width: 28px; height: 28px; flex: 0 0 28px; border: 2px solid #65ffe1; border-radius: 50%; background-color: #052c35; background-repeat: no-repeat; background-size: 200% 200%; }
 .target-chip.done { background: #1b6954; color: #c6ffe6; opacity: .72; text-decoration: line-through; }
 .target-strip > button { flex: 0 0 auto; width: 44px; min-width: 44px; padding: 0 4px; border: 1px solid var(--line); border-radius: 9px; background: #164b54; color: #fff; font-size: 12px; font-weight: 900; }
+#pauseBtn, #restartBtn { width: 50px; min-width: 50px; min-height: 50px; }
 #restartBtn { margin-inline-start: auto; font-size: 21px !important; }
 .machine-wrap { position: relative; min-height: 0; overflow: hidden; border: 2px solid #4c9ca4; border-radius: 18px; background: #0b3039; }
 .machine-wrap canvas { display: block; width: 100%; height: 100%; touch-action: none; }

@@ -45,10 +45,39 @@ export class FieldRenderer{
     for(const x of [-10,10])b(x,.08,-20,.1,.07,48,colors.white);
     for(let y=0;y<=40;y+=5){b(0,.08,-y,20,.04,.09,colors.white);for(const x of [-6,6])for(let d=1;d<5;d++)b(x,.085,-y-d,.45,.04,.07,colors.white);}
     for(const y of [0,10,20,30,40])for(const x of [-11,11]){b(x,.2,-y,.5,.4,.6,colors.gold);b(x,.47,-y,.32,.16,.38,colors.white);}
+    // A small block-animal crowd makes the stands part of the same world as
+    // the players. Faces point toward the pitch; ears and muzzles are separate
+    // volumes rather than a flat repeating strip of coloured squares.
+    const spectator=(x,y,z,variant,facing)=>{
+      const fur=[0xe9b473,0xf0d9b9,0xf5e9cb,0xd69868][variant%4];
+      const jersey=[0xe7a83d,0x518f92,0xc96052,0x8a78a4,0xdeb567][variant%5];
+      const dark=variant%4===2?0x514656:fur;
+      b(x,y+.4,z,.45,.58,.45,jersey);
+      b(x,y+.82,z,.52,.45,.52,fur);
+      const earHeight=variant%4===1?.31:.19;
+      for(const side of [-1,1]){
+        const ex=facing==='end'?x+side*.19:x;
+        const ez=facing==='end'?z:z+side*.19;
+        b(ex,y+1.09+earHeight/2,ez,.15,earHeight,.15,dark);
+      }
+      if(facing==='end')b(x,y+.75,z+.29,.24,.16,.1,0xffe9c8);
+      else b(x+facing*.29,y+.75,z,.1,.16,.24,0xffe9c8);
+    };
     // Low stepped bleachers, pennants, and individual spectators, never an opaque arena wall.
     for(const side of [-1,1])for(let row=0;row<3;row++){
       const x=side*(13+row*1.3),height=.35+row*.55;b(x,height/2,-19,1.2,height,40,0xdec49d);b(x,height+.08,-19,1.25,.15,39,this.stands==='twilight-stands'?0x615b9d:p.stand);
-      for(let k=0;k<16;k++){const y=-1-k*2.4;b(x,height+.4,y,.45,.58,.45,[0xe7b14e,0xdea36d,0xdfdcbe,0x6f8fa2,0xd87a77][(k+row)%5]);b(x,height+.82,y,.5,.45,.5,0xe8c48e);}
+      for(let k=0;k<16;k++)spectator(x,height,-1-k*2.4,k+row*3,-side);
+    }
+    for(const side of [-1,1]){
+      // Timber cap and evenly spaced supports give the stand an authored edge.
+      b(side*16.7,2.45,-19,.16,.16,40,0x765342);
+      for(let z=0;z>=-38;z-=7.6)b(side*16.7,1.35,z,.16,2.2,.16,0x765342);
+      // Team benches and equipment sit outside the playing boundary.
+      for(const z of [-8,-29]){
+        b(side*11.35,.38,z,1.15,.22,3.1,0x936b4f);
+        for(const dz of [-1.1,1.1])b(side*11.35,.2,z+dz,.95,.36,.16,0x70513d);
+        b(side*11.45,.68,z+.65,.55,.4,.7,0xe4bd7c);
+      }
     }
     for(let i=0;i<12;i++){
       const side=i%2?1:-1,x=side*(20+(i%3)*3),z=-i*4+2;
@@ -60,19 +89,68 @@ export class FieldRenderer{
     for(const x of [-7,7]){b(x,2.2,-44,.18,4.4,.18,colors.gold);b(x+Math.sign(x)*1.2,4,-44,2.4,.18,.18,colors.gold);}
     for(let row=0;row<3;row++){
       const z=-47-row*1.3,y=.4+row*.65;b(0,y/2,z,22,y,1.2,0x9a7957);b(0,y+.08,z,22,.15,1.2,this.stands==='twilight-stands'?0x615b9d:p.stand);
-      for(let i=0;i<14;i++){const x=-9.5+i*1.45;b(x,y+.4,z,.45,.55,.45,[0xc98c45,0xd5b787,0x427b83,0xc46653][i%4]);b(x,y+.8,z,.52,.44,.52,0xe7b878);}
+      for(let i=0;i<14;i++)spectator(-9.5+i*1.45,y,z,i+row*3,'end');
+    }
+    // Gold trim and panelled steps frame the end stand without obscuring play.
+    b(0,.48,-46.31,22.2,.2,.16,colors.gold);
+    b(0,2.7,-50.6,22.2,.16,.16,0x765342);
+    for(let x=-10;x<=10;x+=5)b(x,1.4,-50.6,.16,2.6,.16,0x765342);
+    for(const x of [-8,-4,0,4,8]){
+      b(x,.22,-45.75,3.3,.15,.65,0xd6a16b);
+      b(x,.33,-45.75,2.9,.08,.4,0xf1d4a1);
     }
     for(let i=0;i<210;i++){
       const x=((i*137)%197)/197*19-9.5,y=((i*71)%211)/211*43;
       b(x,.055,-y,.055,.05,.24,i%2?0x76a95b:0x528b48);
     }
     // A different end-zone landmark identifies each cup without changing the field.
-    if(arc===0)for(const x of [-9,-6,6,9]){b(x,.22,-44.8,1.6,.45,1,0xb47d52);for(let k=0;k<3;k++){b(x-.5+k*.5,.65,-44.8,.08,.6,.08,0x43815a);b(x-.5+k*.5,1,-44.8,.38,.32,.38,k%2?0xf7d776:0xf2b9a5);}}
-    if(arc===1){b(0,.05,-45.5,12,.15,2,0x62c6d1);for(const x of [-7,7]){b(x,1.1,-45.3,2,2.2,1.4,0x8a9f9c);b(x,1.4,-44.6,1.1,2.3,.15,0xa8e4dd);}}
-    if(arc===2){for(const x of [-4,4])b(x,1.4,-45.4,.25,2.8,.25,0x80533c);b(0,2.8,-45.4,8.6,.35,.6,colors.gold);for(const x of [-2.8,0,2.8])b(x,2.1,-45.4,1.2,.8,.2,colors.teal);}
-    if(arc===3)for(const x of [-7,7]){b(x,1.5,-45.8,.25,3,.25,0x825b48);b(x,3,-45.8,2.4,.23,.25,colors.white,0,0,.6);b(x,3,-45.8,.23,2.4,.25,colors.gold,0,0,.6);}
-    if(arc===4)for(const x of [-8,-4,4,8]){b(x,1.1,-45.5,.32,2.2,.32,0x8b614a);b(x,2.3,-45.5,2.1,1.1,1.3,x%8===0?0xd6774f:0xe8b85c);b(x,3,-45.5,1.3,.7,1,0xc88264);}
-    if(arc===5){b(0,.5,-45.8,3.2,1,2,0x56638d);b(0,1.2,-45.8,1.4,.3,1.1,colors.gold);b(0,1.8,-45.8,.45,1,.45,colors.gold);b(0,2.6,-45.8,1.65,.8,1.25,colors.gold);for(const x of [-1,1])b(x,2.6,-45.8,.5,.75,.35,colors.gold);}
+    if(arc===0)for(const x of [-9,-6,6,9]){
+      b(x,.22,-44.8,1.6,.45,1,0xb47d52);b(x,.46,-44.8,1.7,.1,1.08,0xe0b477);
+      for(let k=0;k<3;k++){b(x-.5+k*.5,.65,-44.8,.08,.6,.08,0x43815a);b(x-.5+k*.5,1,-44.8,.38,.32,.38,k%2?0xf7d776:0xf2b9a5);}
+    }
+    if(arc===1){
+      // A turquoise stream with stepped, pale river stones reads from above.
+      b(0,.12,-44.9,15,.2,1.8,0x329eaf);
+      for(const x of [-5,-2,1,4])b(x,.25,-44.9,1.8,.07,.18,0xc4f0e6);
+      for(const x of [-8.1,8.1]){
+        b(x,.36,-45,2.7,.72,1.7,0x678c8b);
+        b(x-.35,.87,-45,1.75,.42,1.3,0xa4c2b8);
+        b(x+.55,1.12,-45.1,.9,.25,.85,0xcbe0ca);
+      }
+    }
+    if(arc===2){
+      // A striped stepped roof and stout posts form a readable match pavilion.
+      for(const x of [-4.4,4.4]){b(x,1.35,-45.2,.42,2.7,.42,0x81543e);b(x,.18,-45.2,.8,.36,.8,0xc29465);}
+      b(0,2.82,-45.2,9.8,.26,2.3,0x9b503e);
+      b(0,3.05,-45.2,9.4,.28,2.05,0xf3cf86);
+      for(const x of [-3.5,0,3.5])b(x,3.23,-45.2,1.55,.12,2.06,0xb95d4b);
+      b(0,3.35,-45.2,8.3,.16,.6,0x854a39);
+      for(const x of [-2.8,0,2.8]){b(x,2.22,-44.93,1.1,.8,.18,0x17848a);b(x,1.79,-44.93,1.1,.1,.2,colors.gold);}
+    }
+    if(arc===3)for(const x of [-7,7]){
+      b(x,1.5,-45.8,.25,3,.25,0x825b48);b(x,3,-45.8,2.4,.23,.25,colors.white,0,0,.6);b(x,3,-45.8,.23,2.4,.25,colors.gold,0,0,.6);
+      b(x,3,-45.6,.42,.42,.32,0x8a6549);b(x,.16,-45.8,1,.3,1,0xc7ad83);
+    }
+    if(arc===4)for(const x of [-8,-4,4,8]){
+      const leaf=x%8===0?0x4d8b54:0x69a356;
+      b(x,1.1,-45.3,.38,2.2,.42,0x805139);
+      b(x,2.2,-45.3,1.55,.75,1.5,leaf);
+      b(x,2.7,-45.3,1.1,.55,1.1,0x8cbd68);
+      for(const dx of [-.75,.75]){
+        b(x+dx,2.13,-45.3,.55,.55,1.05,leaf);
+        b(x+dx*.65,2.62,-44.7,.23,.18,.2,0xb64239);
+      }
+      b(x+.25,2.99,-45.3,.55,.16,.55,0xa6d27d);
+      // Fruit sits on the exposed crown as well as its front face, so it can
+      // be recognised from the game's high, near-orthographic camera.
+      for(const dx of [-.32,.32])b(x+dx,3.02,-45.05,.24,.18,.24,0xbc3e35);
+      b(x-.5,2.75,-45.35,.3,.16,.35,0x6b9b59);
+    }
+    if(arc===5){
+      b(0,.5,-45.8,3.2,1,2,0x56638d);b(0,1.05,-45.8,3.4,.15,2.1,0xe2c279);b(0,1.2,-45.8,1.4,.3,1.1,colors.gold);b(0,1.8,-45.8,.45,1,.45,colors.gold);b(0,2.6,-45.8,1.65,.8,1.25,colors.gold);
+      for(const x of [-1,1]){b(x,2.6,-45.8,.5,.75,.35,colors.gold);b(x*1.25,2.65,-45.8,.22,.55,.32,0xe7b44d);}
+      b(0,.58,-44.76,1.1,.36,.08,0xf1d384);
+    }
     this.static.count=n;this.static.instanceMatrix.needsUpdate=true;this.static.instanceColor.needsUpdate=true;this.static.computeBoundingSphere();
   }
   segment(a,b,color){if(this.lineN+6>this.linePositions.length)return;this.color.set(color);for(const p of [a,b]){this.linePositions.set(p,this.lineN);this.lineColors.set([this.color.r,this.color.g,this.color.b],this.lineN);this.lineN+=3;}}

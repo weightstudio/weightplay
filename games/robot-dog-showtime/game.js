@@ -1,7 +1,7 @@
-import {STAGES,validateStages} from './stage-data.js';
-import {ShowtimeScene} from './stage-scene.js?v=20261027-rebuild1';
-import {evaluatePlan,showText,spotlightAvailable,spotlightGoals,spotlightStageIds} from './spotlight-remix.js?v=20261027-rebuild1';
-import {guideCopy} from './guide.mjs?v=20261027-rebuild1';
+import {STAGES,validateStages} from './stage-data.js?v=20261027-showtime-optimize1';
+import {ShowtimeScene} from './stage-scene.js?v=20261027-showtime-optimize1';
+import {evaluatePlan,showText,spotlightAvailable,spotlightGoals,spotlightStageIds,formationSignature,replayShow,rememberShow,earnedMastery,ratingForShow} from './spotlight-remix.js?v=20261027-showtime-optimize1';
+import {guideCopy} from './guide.mjs?v=20261027-showtime-optimize1';
 const $=id=>document.getElementById(id), saveKey='wp-robot-dog-showtime-v2',stages=STAGES;
 const language=document.documentElement.lang||'en',locale=({'zh-TW':'zh-Hant','zh-tw':'zh-Hant','zh-CN':'zh-Hans','zh-cn':'zh-Hans','pt-br':'pt-BR'}[language]||language);
 const t=showText(locale),byCue={N:'↑',E:'→',S:'↓',W:'←',WAIT:'Ⅱ',BOW:'↘',WAVE:'〰'};
@@ -10,8 +10,8 @@ const practicePageIsolation=loopbackHost&&new URLSearchParams(location.search).g
 if(practicePageIsolation)document.body.dataset.localPracticePreview='true';
 const sku='robot-dog-showtime:comet-costume';let audio=window.WeightPlayAudio?.createScope();
 void window.WeightPlayAudio?.preload(['ui.click','board.move','board.undo','feedback.error','feedback.hint','game.start','result.win','shop.purchase']);
-const blank=()=>({unlocked:1,cleared:[],drafts:{},remixCleared:[],remixFirstTry:[],remixAttempted:[],ratings:{},sessions:{},costume:'original'});
-function readSave(){try{const raw=JSON.parse(localStorage.getItem(saveKey)||'{}');return{...blank(),unlocked:Math.max(1,Math.min(stages.length,Math.floor(Number(raw.unlocked)||1))),cleared:Array.isArray(raw.cleared)?raw.cleared.filter(n=>Number.isInteger(n)&&n>0&&n<=stages.length):[],drafts:raw.drafts&&typeof raw.drafts==='object'?raw.drafts:{},remixCleared:Array.isArray(raw.remixCleared)?raw.remixCleared.filter(n=>spotlightStageIds.includes(n)):[],remixFirstTry:Array.isArray(raw.remixFirstTry)?raw.remixFirstTry.filter(n=>spotlightStageIds.includes(n)):[],remixAttempted:Array.isArray(raw.remixAttempted)?raw.remixAttempted.filter(n=>spotlightStageIds.includes(n)):[],ratings:raw.ratings&&typeof raw.ratings==='object'?raw.ratings:{},sessions:raw.sessions&&typeof raw.sessions==='object'?raw.sessions:{},costume:raw.costume==='comet'?'comet':'original'}}catch{return blank()}}
+const blank=()=>({unlocked:1,cleared:[],drafts:{},draftSignatures:{},performances:{},mastered:[],remixCleared:[],remixFirstTry:[],remixAttempted:[],ratings:{},sessions:{},costume:'original'});
+function readSave(){try{const raw=JSON.parse(localStorage.getItem(saveKey)||'{}');return{...blank(),unlocked:Math.max(1,Math.min(stages.length,Math.floor(Number(raw.unlocked)||1))),cleared:Array.isArray(raw.cleared)?raw.cleared.filter(n=>Number.isInteger(n)&&n>0&&n<=stages.length):[],drafts:raw.drafts&&typeof raw.drafts==='object'?raw.drafts:{},draftSignatures:raw.draftSignatures&&typeof raw.draftSignatures==='object'?raw.draftSignatures:{},performances:raw.performances&&typeof raw.performances==='object'&&!Array.isArray(raw.performances)?raw.performances:{},mastered:Array.isArray(raw.mastered)?raw.mastered.filter(id=>stages.some(s=>s.id===id&&s.mastery)):[],remixCleared:Array.isArray(raw.remixCleared)?raw.remixCleared.filter(n=>spotlightStageIds.includes(n)):[],remixFirstTry:Array.isArray(raw.remixFirstTry)?raw.remixFirstTry.filter(n=>spotlightStageIds.includes(n)):[],remixAttempted:Array.isArray(raw.remixAttempted)?raw.remixAttempted.filter(n=>spotlightStageIds.includes(n)):[],ratings:raw.ratings&&typeof raw.ratings==='object'?raw.ratings:{},sessions:raw.sessions&&typeof raw.sessions==='object'?raw.sessions:{},costume:raw.costume==='comet'?'comet':'original'}}catch{return blank()}}
 const campaignSave=practicePageIsolation?null:readSave();
 let save=campaignSave||blank(),screen='main',stageIndex=0,selectedActor=0,selectedBeat=0,plan=[],scene=null,sharedFrame=null,pageAlive=true,entryReady=false;
 let activeRemix=false,practiceMode=false,practiceActive=false,practiceSave=null,practiceStartAuthorized=false,LocalPractice=null,practiceIntent=null,practiceInitialEntry=false;
@@ -19,12 +19,13 @@ let rehearsing=false,practicePending=false,playback=null,runFrame=0,runToken=0,m
 const els={main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen'),label:$('battleLabel'),status:$('cueStatus'),canvas:$('stage3d'),fallback:$('renderFallback'),help:$('helpDialog'),leave:$('leaveDialog'),result:$('resultDialog')};
 const currentStage=()=>stages[stageIndex],currentGoals=(stage=currentStage())=>activeRemix?spotlightGoals(stage.goals):stage.goals;
 const draftId=()=>`${stageIndex+1}${activeRemix?':spotlight':''}`;
-const name=actor=>t(actor?'fox':'pup'),cueName=cue=>({WAIT:t('wait'),BOW:t('bow'),WAVE:t('wave')}[cue]||byCue[cue]||'—');
+const name=actor=>t(actor?'fox':'pup'),cueName=cue=>({WAIT:t('wait'),BOW:t('bow'),WAVE:t('wave')}[cue]||byCue[cue]||t('defaultWait'));
+const masteryText=stage=>stage.mastery?`${t('mastery')} · ${name(stage.mastery.actor)} · ${t('visit')} ${stage.mastery.visit+1}`:'';
 const safeCount=value=>Number.isSafeInteger(value)&&value>=0?value:0;
 function persist(){if(practicePageIsolation||practiceActive)return true;try{localStorage.setItem(saveKey,JSON.stringify(save));return true}catch{setStatus(t('storage'),true);return false}}
 function setStatus(text,bad=false){els.status.textContent=text;els.status.dataset.kind=bad?'error':'info'}
-function saveDraft(){if(practiceActive)return;save.drafts[draftId()]=plan.map(row=>[...row]);save.sessions[draftId()]={attempts,hints:hintsUsed};persist()}
-function renderMain(){const rating=Object.values(save.ratings).reduce((sum,n)=>sum+Math.min(3,safeCount(n)),0);$('mainProgress').textContent=`${t('stage')} ${save.unlocked} · ${save.cleared.length}/${stages.length} · ${rating}/${stages.length*3}`}
+function saveDraft(){if(practiceActive)return;save.drafts[draftId()]=plan.map(row=>[...row]);save.draftSignatures[draftId()]=formationSignature(currentStage(),currentGoals());save.sessions[draftId()]={attempts,hints:hintsUsed};persist()}
+function renderMain(){const rating=Object.values(save.ratings).reduce((sum,n)=>sum+Math.min(3,safeCount(n)),0);$('mainProgress').textContent=`${t('stage')} ${save.unlocked} · ${save.cleared.length}/${stages.length} · ${rating}/${stages.length*3}${save.mastered.length?' · '+t('mastery')+' '+save.mastered.length+'/3':''}`}
 function renderMap(){sharedFrame?.refreshStage(stageIndex)}
 function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';$('gameGuide').hidden=next!=='main';sharedFrame?.frame.activate(next)}
 function applyCostume(){scene?.setCostume(!practiceActive&&save.costume==='comet'&&window.WeightPlayWallet?.owns(sku)===true)}
@@ -39,18 +40,19 @@ function startBattle(index,{remix=false,practice=false}={}){
   if(index<0||index>=stages.length||(!practice&&index>=save.unlocked)||(practice&&(!practiceActive||!practiceStartAuthorized)))return;
   if(practice)practiceStartAuthorized=false;if(remix&&!spotlightAvailable(stages[index].id,save.cleared))return;
   cancelRehearsal();closeDialog();stageIndex=index;activeRemix=remix;selectedActor=0;selectedBeat=0;failedBeat=-1;playingBeat=-1;undo=[];
-  const s=currentStage(),draft=save.drafts[draftId()],session=save.sessions[draftId()];
-  plan=Array.from({length:s.beats},(_,beat)=>[0,1].map(actor=>Object.hasOwn(byCue,draft?.[beat]?.[actor])?draft[beat][actor]:null));
-  attempts=safeCount(session?.attempts);hintsUsed=safeCount(session?.hints);syncScreen('battle');
+  const s=currentStage(),key=draftId(),signature=save.draftSignatures[key],draftCurrent=signature===formationSignature(s,currentGoals())||(!signature&&s.revision===1),draft=draftCurrent?save.drafts[key]:null,recorded=draft?null:replayShow(save,s,remix),source=draft||recorded,session=draft?save.sessions[key]:null;
+  plan=Array.from({length:s.beats},(_,beat)=>[0,1].map(actor=>Object.hasOwn(byCue,source?.[beat]?.[actor])?source[beat][actor]:null));
+  attempts=safeCount(session?.attempts);hintsUsed=safeCount(session?.hints);syncScreen('battle');scene?.clearFeedback();
   els.label.textContent=`${t('stage')} ${s.id} · ${s.beats} ${t('beat')}${remix?' · '+t('mix'):''}`;
-  const goals=currentGoals();$('dogGoal').textContent=`${t('pup')} · ${t('mark')} ${goals[0]+1}`;$('foxGoal').textContent=`${t('fox')} · ${t('mark')} ${goals[1]+1}`;
-  buildTracks();if(scene){scene.activate();applyCostume();preview()}else showBattleScene();renderPlan();setStatus(s.bow?t('finalBow'):t('plan'));audio?.play('game.start');
+  const goals=currentGoals();$('dogGoal').textContent=`${t('pup')} · ${t('target')} ${goals[0]+1}`;$('foxGoal').textContent=`${t('fox')} · ${t('target')} ${goals[1]+1}`;
+  $('routeMastery').textContent=!remix?masteryText(s):'';$('routeMastery').hidden=remix||!s.mastery;
+  buildTracks();if(scene){scene.activate();applyCostume();preview()}else showBattleScene();renderPlan();setStatus(recorded?t('recordedPlan'):s.bow?t('finalBow'):s.mastery?masteryText(s):`${t('plan')} ${t('defaultWaitRule')}`);audio?.play('game.start');
   if(!practiceActive&&!practicePageIsolation)window.WonderAnalytics?.track('stage_start',{stage_id:s.id});
 }
 function buildTracks(){for(let actor=0;actor<2;actor++){const root=$(actor?'foxPlan':'dogPlan');root.replaceChildren();root.classList.toggle('fox',actor===1);root.setAttribute('aria-label',name(actor));for(let beat=0;beat<currentStage().beats;beat++){const button=document.createElement('button');button.type='button';button.className='cue-cell';button.dataset.actor=String(actor);button.dataset.beat=String(beat);const small=document.createElement('small');small.textContent=String(beat+1);const strong=document.createElement('strong');button.append(small,strong);root.append(button)}}}
 function renderPlan(){
   const busy=rehearsing||practicePending;
-  for(const button of document.querySelectorAll('.cue-cell')){const actor=Number(button.dataset.actor),beat=Number(button.dataset.beat),cue=plan[beat]?.[actor];button.querySelector('strong').textContent=byCue[cue]||'·';button.setAttribute('aria-label',`${name(actor)} · ${t('beat')} ${beat+1} · ${cueName(cue)}`);button.setAttribute('aria-pressed',String(selectedActor===actor&&selectedBeat===beat));button.dataset.failed=String(failedBeat===beat);button.dataset.playing=String(playingBeat===beat);button.disabled=busy}
+  for(const button of document.querySelectorAll('.cue-cell')){const actor=Number(button.dataset.actor),beat=Number(button.dataset.beat),cue=plan[beat]?.[actor];button.querySelector('strong').textContent=byCue[cue]||byCue.WAIT;button.dataset.default=String(!cue);button.setAttribute('aria-label',`${name(actor)} · ${t('beat')} ${beat+1} · ${cueName(cue)}`);button.setAttribute('aria-pressed',String(selectedActor===actor&&selectedBeat===beat));button.dataset.failed=String(failedBeat===beat);button.dataset.playing=String(playingBeat===beat);button.disabled=busy}
   $('selectDog').setAttribute('aria-pressed',String(selectedActor===0));$('selectFox').setAttribute('aria-pressed',String(selectedActor===1));
   for(const b of document.querySelectorAll('[data-cue],#clearCue,#resetPlan,#selectDog,#selectFox'))b.disabled=busy;
   $('helpButton').disabled=practicePending;$('undoCue').disabled=busy||undo.length===0;$('rehearseButton').disabled=practicePending||!scene||!els.fallback.hidden;$('rehearseButton').textContent=t(rehearsing?'stop':'rehearse');
@@ -70,7 +72,7 @@ function resetPlan(){if(rehearsing)return;remember();plan=Array.from({length:cur
 function undoCue(){if(rehearsing||!undo.length)return;const previous=undo.pop();plan=previous.plan;selectedActor=previous.actor;selectedBeat=previous.beat;failedBeat=-1;saveDraft();renderPlan();preview();audio?.play('board.undo')}
 function hint(){if(rehearsing)return;remember();const s=currentStage();if(activeRemix){setStatus(t('mix'),true);return}plan[selectedBeat]=[...s.solution[selectedBeat]];hintsUsed++;saveDraft();closeDialog();renderPlan();preview();setStatus(t('hintRule'));audio?.play('feedback.hint')}
 const settingsOpen=()=>Boolean(document.querySelector('#battleScreen .wp-frame-popover:not([hidden])'));
-function cancelRehearsal(){runToken++;practiceIntent=null;practicePending=false;cancelAnimationFrame(runFrame);runFrame=0;playback=null;rehearsing=false;playingBeat=-1;audio?.stop()}
+function cancelRehearsal(){runToken++;practiceIntent=null;practicePending=false;cancelAnimationFrame(runFrame);runFrame=0;playback=null;rehearsing=false;playingBeat=-1;scene?.clearFeedback();audio?.stop()}
 async function rehearse(){
   if(rehearsing){cancelRehearsal();renderPlan();preview();setStatus(t('plan'));return}
   if(!scene||modal||practicePending)return;
@@ -93,28 +95,32 @@ function advanceRehearsal(now){
 function finishRehearsal(result){
   playback=null;rehearsing=false;playingBeat=-1;
   if(!result.success){const failure=result.failure;failedBeat=failure.beat;selectedBeat=failure.beat;selectedActor=failure.actor;recordRemixAttempt();renderPlan();scrollSelection();setStatus(`${t('beat')} ${failure.beat+1} · ${name(failure.actor)} · ${t(({EDGE:'edge',BLOCKED:'blocked',COLLISION:'collision',CROSSING:'crossing',FORMATION:'formation',BOW:'finalBow',CUE:'plan'})[failure.code])}`,true);audio?.play('feedback.error');$('rehearseButton').focus();return}
-  const stage=currentStage();settledRating=hintsUsed?1:attempts===1?3:attempts<=3?2:1;
+  const stage=currentStage();settledRating=ratingForShow(hintsUsed);
+  if(practiceActive)rememberShow(save,stage,plan,{remix:activeRemix,rating:settledRating});
   const saved=clearStage(stage);scene.setState({positions:result.positions,goals:currentGoals(),walls:stage.walls,gestures:['BOW','BOW']});scene.celebrate();audio?.play('result.win');renderPlan();openResult(stage,saved);
 }
 function recordRemixAttempt(){if(activeRemix&&!practiceActive&&!save.remixAttempted.includes(currentStage().id)){save.remixAttempted.push(currentStage().id);persist()}}
 function clearStage(stage){
   if(practiceActive)return true;
+  rememberShow(save,stage,plan,{remix:activeRemix,rating:settledRating});
   if(activeRemix){if(!save.remixCleared.includes(stage.id))save.remixCleared.push(stage.id);if(attempts===1&&!save.remixFirstTry.includes(stage.id))save.remixFirstTry.push(stage.id);recordRemixAttempt()}
   else{if(!save.cleared.includes(stage.id))save.cleared.push(stage.id);save.unlocked=Math.max(save.unlocked,Math.min(stages.length,stage.id+1));save.ratings[stage.id]=Math.max(Math.min(3,safeCount(save.ratings[stage.id])),settledRating)}
-  delete save.drafts[draftId()];delete save.sessions[draftId()];const saved=persist();renderMain();return saved;
+  delete save.drafts[draftId()];delete save.draftSignatures[draftId()];delete save.sessions[draftId()];const saved=persist();renderMain();return saved;
 }
 function openResult(stage,saved){
-  $('resultKicker').textContent=`${practiceActive?t('practice'):activeRemix?t('mix'):t('stage')} ${stage.id}`;$('showRating').textContent=`${settledRating} / 3`;$('resultTitle').textContent=t(settledRating===3?'perfect':settledRating===2?'smooth':'encore');$('resultText').textContent=`${t('cleared')} · ${practiceActive?t('practice'):saved?t('saved'):t('storage')}`;
+  els.battle.dataset.showResult='true';
+  const best=save.performances[draftId()]?.rating||settledRating,mastered=!activeRemix&&earnedMastery(stage,plan);
+  $('resultKicker').textContent=`${practiceActive?t('practice'):activeRemix?t('mix'):t('stage')} ${stage.id}`;$('showRating').textContent=`${settledRating} / 3`;$('resultTitle').textContent=t(settledRating===3?'perfect':settledRating===2?'smooth':'encore');$('resultText').textContent=[`${t('cleared')} · ${practiceActive?t('practice'):saved?t('saved'):t('storage')}`,`${t('hint')} · ${hintsUsed}  ·  ${t('best')} ${best}/3`,!activeRemix&&stage.mastery?mastered?`✓ ${t('mastered')}`:masteryText(stage):''].filter(Boolean).join('\n');
   $('nextStage').disabled=stage.id===stages.length;openDialog(els.result,stage.id===stages.length?'replayStage':'nextStage');scene?.setPaused(false);
   if(saved&&!practiceActive){const reward=window.WonderAnalytics?.completeStage(stage.id);window.ShowResultGet?.('robot-dog-showtime',reward?.credited===true);if(reward?.credited===true)window.WeightPlayCastle?.dismissRewardNotice('robot-dog-showtime')}else window.ShowResultGet?.('robot-dog-showtime',false);
 }
 function setBackgroundInert(value){const owner=screen==='stage'?els.stage:els.battle;for(const child of owner.children)if(!child.classList.contains('dialog'))child.inert=value}
 function openDialog(dialog,focusId){if(modal)return;modal=dialog;focusBeforeDialog=document.activeElement;dialog.hidden=false;setBackgroundInert(true);scene?.setPaused(true);$(focusId)?.focus()}
-function closeDialog(){if(!modal)return;const previous=modal;previous.hidden=true;modal=null;setBackgroundInert(false);scene?.setPaused(document.hidden);if(focusBeforeDialog?.isConnected&&!focusBeforeDialog.closest('[hidden]'))focusBeforeDialog.focus();focusBeforeDialog=null}
+function closeDialog(){if(!modal)return;const previous=modal;previous.hidden=true;modal=null;if(previous===els.result)delete els.battle.dataset.showResult;setBackgroundInert(false);scene?.setPaused(document.hidden);if(focusBeforeDialog?.isConnected&&!focusBeforeDialog.closest('[hidden]'))focusBeforeDialog.focus();focusBeforeDialog=null}
 function openHelp(){$('hintButton').disabled=activeRemix||rehearsing;openDialog(els.help,'closeHelp')}
-function goMap(){cancelRehearsal();closeDialog();scene?.suspend();syncScreen('stage');renderMap();$('stageBack').focus()}
+function goMap(){cancelRehearsal();closeDialog();scene?.clearFeedback();scene?.suspend();syncScreen('stage');renderMap();$('stageBack').focus()}
 function openWardrobe(){if(practiceMode||practiceActive)return;purchaseConfirm=false;$('purchaseStatus').textContent='';refreshWardrobe();openDialog($('wardrobeDialog'),'closeWardrobe')}
-function refreshWardrobe(){const wallet=window.WeightPlayWallet;let balance=0,owned=false;try{balance=wallet?.read().diamonds||0;owned=wallet?.owns(sku)===true}catch{}$('walletBalance').textContent=`${t('balance')} · ${balance}`;$('costumeCost').textContent=`${t('permanent')} · 12 ${t('balance')}`;$('buyCostume').textContent=owned?save.costume==='comet'?t('equipped'):t('equip'):`${t('buy')} · 12`;$('buyCostume').disabled=purchasing||(owned&&save.costume==='comet');$('baseCostume').textContent=save.costume==='original'?t('equipped'):t('base');$('baseCostume').disabled=purchasing||save.costume==='original';$('closeWardrobe').disabled=purchasing;if(purchasing)$('purchaseStatus').textContent=t('loading')}
+function refreshWardrobe(){const wallet=window.WeightPlayWallet;let balance=0,owned=false;try{balance=wallet?.read().diamonds||0;owned=wallet?.owns(sku)===true}catch{}$('walletBalance').textContent=`${t('balance')} · ${balance}`;$('costumeCost').textContent=`${t('permanent')} · 12 ${t('balance')}`;$('costumeOwnership').textContent=t(owned?'owned':'notOwned');$('buyCostume').textContent=owned?save.costume==='comet'?t('equipped'):t('equip'):`${t('buy')} · 12`;$('buyCostume').disabled=purchasing||(owned&&save.costume==='comet');$('baseCostume').textContent=save.costume==='original'?`${t('base')} · ${t('equipped')}`:t('base');$('baseCostume').disabled=purchasing||save.costume==='original';$('closeWardrobe').disabled=purchasing;if(purchasing)$('purchaseStatus').textContent=t('loading')}
 async function buyCostume(){
   if(purchasing||practiceMode||practiceActive)return;const wallet=window.WeightPlayWallet;
   if(!wallet){$('purchaseStatus').textContent=t('storage');return}
@@ -130,8 +136,8 @@ function localize(){
   const labels={selectDog:'pup',selectFox:'fox',undoCue:'undo',resetPlan:'reset',rehearseButton:'rehearse',helpTitle:'help',closeHelp:'continue',hintButton:'hint',continueBattle:'continue',returnMap:'stages',leaveTitle:'continue',resultMap:'stages',nextStage:'next',replayStage:'replay',wardrobeAction:'wardrobe',wardrobeTitle:'wardrobe',costumeTitle:'costume',closeWardrobe:'continue'};
   for(const [id,key]of Object.entries(labels))$(id).textContent=t(key);
   for(const cue of ['WAIT','BOW','WAVE'])document.querySelector(`[data-cue=${cue}]`).textContent=cueName(cue);
-  $('helpButton').setAttribute('aria-label',t('help'));$('hintExplanation').textContent=t('hintRule');$('masteryExplanation').textContent=t('masteryRule');$('costumeEffect').textContent=t('costumeRule');
-  document.querySelector('.main-summary').textContent=t('summary');const guide=guideCopy(locale);$('helpSteps').replaceChildren(...guide.slice(7,10).map(text=>{const li=document.createElement('li');li.textContent=text;return li}));
+  $('helpButton').setAttribute('aria-label',t('help'));$('hintExplanation').textContent=t('hintRule');$('masteryExplanation').textContent=t('masteryRule');$('costumeEffect').textContent=t('costumeRule');$('diamondSource').textContent=t('diamondSource');
+  document.querySelector('.main-summary').textContent=t('summary');const guide=guideCopy(locale);$('helpSteps').replaceChildren(...[...guide.slice(7,10),t('defaultWaitRule')].map(text=>{const li=document.createElement('li');li.textContent=text;return li}));
   $('leaveText').textContent=t('leave');$('retryRender').textContent=t('replay');$('renderErrorText').textContent=t('renderError');$('clearCue').setAttribute('aria-label',t('clear'));
   document.querySelector('.costume-art img').alt=t('costume');
 }
@@ -152,7 +158,7 @@ window.addEventListener('keydown',event=>{
   if(modal){if(event.key==='Escape'&&modal!==els.result&&!purchasing){event.preventDefault();closeDialog()}if(event.key==='Tab'){const buttons=[...modal.querySelectorAll('button:not(:disabled)')].filter(b=>!b.hidden);const index=buttons.indexOf(document.activeElement);if(event.shiftKey&&index<=0){event.preventDefault();buttons.at(-1)?.focus()}else if(!event.shiftKey&&index===buttons.length-1){event.preventDefault();buttons[0]?.focus()}}return}
   if(screen!=='battle'||rehearsing||practicePending||settingsOpen())return;if(event.key===' '&&event.target.closest('button,input,select'))return;const cue=({ArrowUp:'N',ArrowRight:'E',ArrowDown:'S',ArrowLeft:'W',' ':'WAIT',b:'BOW',w:'WAVE'})[event.key];if(cue){event.preventDefault();setCue(cue)}
 });
-window.addEventListener('visibilitychange',()=>{if(playback)playback.last=0;scene?.setPaused(document.hidden||Boolean(modal));if(document.hidden)audio?.stop()});
+window.addEventListener('visibilitychange',()=>{if(playback)playback.last=0;scene?.setPaused(document.hidden||Boolean(modal&&modal!==els.result));if(document.hidden)audio?.stop()});
 window.addEventListener('pagehide',()=>{pageAlive=false;cancelRehearsal();destroyScene();audio?.dispose()});
 window.addEventListener('pageshow',event=>{if(!event.persisted)return;pageAlive=true;audio=window.WeightPlayAudio?.createScope();if(screen==='battle')rebuildScene();sharedFrame?.frame.activate(screen)});
 localize();

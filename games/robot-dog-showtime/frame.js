@@ -71,8 +71,9 @@
       spotlightButton.hidden = !record.spotlightAvailable;
       if(record.spotlightAvailable)frame.commonDownButton.add(spotlightButton);
       else frame.commonDownButton.remove(spotlightButton);
-      spotlightButton.textContent = `${text('mix')} · ${record.id}`;
-      spotlightButton.setAttribute("aria-label", `${text('mix')} · ${text('stage')} ${record.id}`);
+      const mixStatus=record.spotlightRating?`${record.spotlightRating}/3`:record.spotlightCleared?'✓':'';
+      spotlightButton.textContent = `${text('mix')} · ${record.id}${mixStatus?' · '+mixStatus:''}`;
+      spotlightButton.setAttribute("aria-label", `${text('mix')} · ${text('stage')} ${record.id}${mixStatus?' · '+text('best')+' '+mixStatus:''}`);
     }
 
     spotlightButton.addEventListener("click", onSpotlight);

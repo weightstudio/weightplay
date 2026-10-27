@@ -5,6 +5,9 @@ import { BOARDS, getBoard, trackCenter, trackWidth, featureX, gateIsOpen, tideLa
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const C={water:0x21b9bd,deep:0x146d85,foam:0xd6fff2,wood:0xa36a35,gold:0xf4c46d,stone:0x526c60,leaf:0x3e7955,teal:0x118e99,cream:0xffedbe,brown:0x9f5e34};
 const hash=n=>{const v=Math.sin(n*127.1+311.7)*43758.5453;return v-Math.floor(v);};
+// A world row keeps its mesh slot while it remains in the scenery window.
+// Assigning variants by the moving window index made visible trees/rocks morph.
+const scenerySlot=(row,rows,column,columns)=>((row%rows+rows)%rows)*columns+column;
 
 // Bake designed cuboid parts into one color-vertex mesh; individual joint meshes remain animatable.
 function sculpture(parts,material){
@@ -353,11 +356,11 @@ export class RapidsRenderer{
     position.needsUpdate=true;color.needsUpdate=true;
     for(let i=0;i<LIMESTONE_SLOTS;i++){
       const row=Math.floor(s/6)-2+Math.floor(i/8),side=i%8<4?-1:1,layer=i%4,seed=row*37+side*17+layer*53;
-      const slot=this.ridgeSlots[i],at=row*6+(hash(seed+1)-.5)*3.8,distance=15.8+layer*6.4+(hash(seed+2)-.5)*2.6;
+      const poolIndex=scenerySlot(row,LIMESTONE_SLOTS/8,i%8,8),slot=this.ridgeSlots[poolIndex],at=row*6+(hash(seed+1)-.5)*3.8,distance=15.8+layer*6.4+(hash(seed+2)-.5)*2.6;
       slot.active=Math.sin(row*.84+side*1.6+layer*.71)+.6*Math.sin(row*1.39+layer*.45)>-.85&&hash(seed+7)>.12;
-      slot.at=at;slot.x=this.worldX(at)+side*(trackWidth(at,this.stage)*this.xSpread/2+distance);slot.side=side;slot.seed=seed;slot.kind=i%3;
+      slot.at=at;slot.x=this.worldX(at)+side*(trackWidth(at,this.stage)*this.xSpread/2+distance);slot.side=side;slot.seed=seed;slot.kind=poolIndex%3;
       slot.sx=3.2+hash(seed+3)*2.6;slot.sy=1.35+hash(seed+4)*2.15;slot.sz=3.5+hash(seed+5)*2;slot.rotation=(hash(seed+6)-.5)*.56;
-      const mesh=this.ridges[slot.kind],index=Math.floor(i/3);
+      const mesh=this.ridges[slot.kind],index=Math.floor(poolIndex/3);
       this.matrix(mesh,index,[slot.x,-.55,-at],slot.active?[slot.sx,slot.sy,slot.sz]:[0,0,0],slot.rotation);
       this.tint.setHex(this.stage.chapter===2?0xadc0cd:0xf3ecd9).multiplyScalar(.9+hash(seed+9)*.12);mesh.setColorAt(index,this.tint);
     }
@@ -513,7 +516,7 @@ export class RapidsRenderer{
     for(let i=0;i<80;i++){
       const row=Math.floor(s/4)-4+Math.floor(i/4),side=i%2?1:-1,layer=Math.floor(i%4/2),seed=row*11+side*19+layer*47;
       const at=row*4+(hash(seed+3)-.5)*2,w=trackWidth(at,this.stage)*this.xSpread,distance=3.6+layer*4.7+hash(seed+11)*2.8,treeX=this.worldX(at)+side*(w/2+distance);
-      const size=.88+hash(seed+7)*.45,tree=this.trees[i%3],index=Math.floor(i/3);
+      const poolIndex=scenerySlot(row,20,i%4,4),size=.88+hash(seed+7)*.45,tree=this.trees[poolIndex%3],index=Math.floor(poolIndex/3);
       this.matrix(tree,index,[treeX,-.28,-at],[size,1.06+hash(seed+9)*.45,size],(hash(seed+5)-.5)*.5);
       this.tint.setHex(this.stage.chapter===2?0x99b9c7:0xf4f4d4).multiplyScalar(.88+hash(seed+14)*.18);tree.setColorAt(index,this.tint);
     }
@@ -525,8 +528,8 @@ export class RapidsRenderer{
       this.tint.setHex(this.stage.chapter===2?0x8facb9:0xe5ebc8).multiplyScalar(.91+hash(slot.seed+13)*.1);this.outerTrees.setColorAt(i,this.tint);
     }
     for(let i=0;i<72;i++){
-      const row=Math.floor(s/3)-4+Math.floor(i/3),side=i%2?1:-1,seed=row*13+i%3*17,at=row*3+hash(seed)*1.2,w=trackWidth(at,this.stage)*this.xSpread;
-      this.matrix(this.reeds,i,[this.worldX(at)+side*(w/2+.58+hash(seed+2)*.9),.01,-at],[.7+hash(seed+3)*.4,.65+hash(seed+4)*.55,.7+hash(seed+5)*.4],side*.3);
+      const row=Math.floor(s/3)-4+Math.floor(i/3),poolIndex=scenerySlot(row,24,i%3,3),side=poolIndex%2?1:-1,seed=row*13+i%3*17,at=row*3+hash(seed)*1.2,w=trackWidth(at,this.stage)*this.xSpread;
+      this.matrix(this.reeds,poolIndex,[this.worldX(at)+side*(w/2+.58+hash(seed+2)*.9),.01,-at],[.7+hash(seed+3)*.4,.65+hash(seed+4)*.55,.7+hash(seed+5)*.4],side*.3);
     }
     for(let i=0;i<40;i++){
       const row=Math.floor(s/4)-3+Math.floor(i/2),side=i%2?1:-1,seed=row*17+side*23,at=row*4+hash(seed)*1.5,w=trackWidth(at,this.stage)*this.xSpread;

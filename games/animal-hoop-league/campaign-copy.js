@@ -16,5 +16,20 @@
     hi:['बैकबोर्ड सर्किट','आकाश रिले','60 कोर्ट। रक्षा पढ़ें और पास जोड़ें।','सीधा','बैंक','असिस्ट','पास','फोकस','रिले','खुला कोर्ट','रिम बाधा: बैंक या असिस्ट','बोर्ड बाधा: सीधा या असिस्ट','रिले द्वार: असिस्ट','रोक दिया गया: रास्ता बदलें','पास पूरा: दो रिले चार्ज','आप आगे हैं; लक्ष्य भी पूरे करें','लक्ष्य','लगातार','अंतिम','कोर्ट 7 से शूट दबाने से पहले सीधा या बैंक चुनें। रिम बाधा सीधे शॉट को, बोर्ड बाधा बैंक को रोकती है। हरा क्षेत्र और बिंदुओं वाला रास्ता भी बदलता है।','फोकस अगले वास्तव में छोड़े गए शॉट की गति 62% करता है। हर मैच में उपयोग सीमित हैं। चार्ज रद्द करने पर उपयोग नहीं घटता।','31 से पास एक कोशिश लेता है और प्रतिद्वंद्वी को तय अंक मिलते हैं; रिले दो चार्ज तक भरता है। असिस्ट चूकने पर भी एक चार्ज लेता है, हर बाधा पार करता है और 2 अंक, सटीक पर 3 देता है। पास लगातार स्कोर की कड़ी तोड़ता है।','अंत में आगे रहें और रास्ते, सटीक शॉट, लगातार स्कोर तथा अंतिम रास्ते के सभी लक्ष्य पूरे करें। बराबरी या अधूरा लक्ष्य हार है। रिकॉर्ड और अनलॉक बचते हैं; 60 अंतिम कोर्ट है।'],
     ar:['دوري اللوحة','تتابع السماء','60 ملعبًا. اقرأ الدفاع واربط التمريرات.','مباشر','لوحة','مساعدة','تمريرة','تركيز','شحنات','ملعب مفتوح','حاجز الحلقة: لوحة أو مساعدة','حاجز اللوحة: مباشر أو مساعدة','بوابة التتابع: مساعدة','صدّ! اختر مسارًا آخر','اكتملت التمريرة: شحنتان','أنت متقدم؛ أكمل الأهداف أيضًا','الأهداف','تتابع','الأخيرة','من الملعب 7 اختر مباشر أو لوحة قبل الضغط للتسديد. حاجز الحلقة يصد المباشر وحاجز اللوحة يصد الارتداد. تتغير المنطقة الخضراء والمسار المنقط حسب اختيارك.','يخفض التركيز سرعة الرمية التي تطلقها فعليًا إلى 62%. الاستخدامات محدودة لكل مباراة. إلغاء الشحن لا يستهلك استخدامًا.','من 31 تستهلك التمريرة محاولة ويأخذ المنافس نقاطه المقررة، ثم تملأ شحنتين بحد أقصى اثنتين. تستهلك المساعدة شحنة حتى عند الإخفاق، وتعبر كل حاجز وتمنح نقطتين أو ثلاثًا للمثالية. التمريرة تقطع سلسلة التسجيل.','افز بالتقدم في النهاية وتحقيق كل أهداف المسار والمثالية والسلسلة والمسار الأخير. التعادل أو هدف ناقص يعني الخسارة. تُحفظ الأرقام والفتح؛ الملعب 60 هو الأخير.']
   };
-  globalThis.HoopCampaignCopy=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,row])=>{if(row.length!==keys.length)throw new Error('Hoop chapter copy: '+locale);return [locale,Object.freeze(Object.fromEntries(keys.map((key,i)=>[key,row[i]])))];})));
+  const saveStatus={
+    en:['Progress saved on this device.','Could not confirm saved progress. Retry this court to try again.'],
+    'zh-Hant':['進度已儲存在此裝置。','無法確認進度是否已儲存。可重玩本球場再試一次。'],
+    'zh-Hans':['进度已保存在此设备。','无法确认进度是否已保存。可重玩本球场再试一次。'],
+    ja:['進行状況をこの端末に保存しました。','進行状況の保存を確認できません。同じコートで再挑戦してください。'],
+    ko:['진행 상황을 이 기기에 저장했어요.','진행 상황이 저장되었는지 확인할 수 없어요. 이 코트를 다시 플레이해 주세요.'],
+    es:['Progreso guardado en este dispositivo.','No se pudo confirmar si se guardó el progreso. Repite esta cancha para intentarlo de nuevo.'],
+    'pt-BR':['Progresso salvo neste dispositivo.','Não foi possível confirmar se o progresso foi salvo. Repita esta quadra para tentar novamente.'],
+    fr:['Progression enregistrée sur cet appareil.','Impossible de confirmer l’enregistrement. Rejouez ce terrain pour réessayer.'],
+    de:['Fortschritt auf diesem Gerät gespeichert.','Die Speicherung konnte nicht bestätigt werden. Spiele diesen Platz erneut, um es noch einmal zu versuchen.'],
+    it:['Progressi salvati su questo dispositivo.','Impossibile confermare il salvataggio. Rigioca questo campo per riprovare.'],
+    ru:['Прогресс сохранён на этом устройстве.','Не удалось подтвердить сохранение. Повторите эту площадку, чтобы попробовать снова.'],
+    hi:['प्रगति इस डिवाइस पर सहेजी गई।','प्रगति सहेजे जाने की पुष्टि नहीं हो सकी। फिर कोशिश करने के लिए यह कोर्ट दोबारा खेलें।'],
+    ar:['حُفظ التقدم على هذا الجهاز.','تعذر تأكيد حفظ التقدم. أعد لعب هذا الملعب للمحاولة مجددًا.']
+  };
+  globalThis.HoopCampaignCopy=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,row])=>{if(row.length!==keys.length||saveStatus[locale]?.length!==2)throw new Error('Hoop chapter copy: '+locale);return [locale,Object.freeze({...Object.fromEntries(keys.map((key,i)=>[key,row[i]])),saveConfirmed:saveStatus[locale][0],saveUnconfirmed:saveStatus[locale][1]})];})));
 })();

@@ -1,9 +1,11 @@
 /* Flip Foundry: visible aim, deterministic ballistic contact, four landings per chapter. */
 import {COURSES,TOTAL_STAGES} from './campaign-data.mjs';
 import {launchState,stepFlight,simulate,invert,canInvert,targetAt,suggestedPulseWindows} from './model.mjs';
-import {readProgress,completeStage,persistProgressChecked} from './progress.mjs?v=stage-reward-v19';
+import {readProgress,completeStage,persistProgressChecked} from './progress.mjs?v=20261027-flip-pending-candidate';
+import {createProgressConfirmation} from './progress-confirmation.mjs?v=20261027-flip-pending-candidate';
 import {createMeasurementQueue} from './measurement-queue.mjs?v=stage-reward-v19';
 import {campaignCopy,ruleLabels,CLARITY_COPY} from './campaign-copy.mjs';
+import {SAVE_UNCONFIRMED} from './save-warning.mjs?v=20261027-flip-pending-candidate';
 import {FoundryScene} from './scene.mjs';
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
@@ -50,8 +52,9 @@ import {FoundryScene} from './scene.mjs';
   };
   const storage=(()=>{try{return localStorage;}catch{return {getItem:()=>null,setItem:()=>{}};}})();
   let progress=readProgress(storage,TOTAL_STAGES),world=null;
+  const pendingProgress=createProgressConfirmation(TOTAL_STAGES);
   const initialSelection=progress.cleared[6]?Math.min(TOTAL_STAGES,progress.unlocked)-1:Math.max(0,COURSES.findIndex(course=>!progress.cleared[course.id]));
-  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: initialSelection, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(storage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "", nozzle:'direct',clock:0,attempts:0,graphicsLost:false };
+  const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: initialSelection, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(storage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, resultSaveConfirmed:null, cardsLocale: "", nozzle:'direct',clock:0,attempts:0,graphicsLost:false };
   __wpReady = true; __wpNotifyMeasurement();
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
@@ -106,6 +109,23 @@ import {FoundryScene} from './scene.mjs';
     onStart:index => start(index + 1, 1),
     isActive:() => state.screen === "stage",
   });
+  const saveStatuses={};
+  for(const [screen,anchor,position] of [['main',$('main-progress'),'afterend'],['stage',$('stage-list'),'beforebegin'],['battle',$('battle-status'),'beforebegin']]){
+    const status=document.createElement('p');status.className='foundry-save-status';status.id=`${screen}-save-status`;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.tabIndex=0;status.hidden=true;anchor.insertAdjacentElement(position,status);saveStatuses[screen]=status;
+  }
+  function saveWarning(){
+    const stages=pendingProgress.stages();
+    return stages.length?(SAVE_UNCONFIRMED[currentLocale()]||SAVE_UNCONFIRMED.en).replace('{stages}',`\u2066${stages.join(', ')}\u2069`):'';
+  }
+  function renderSaveStatuses(){
+    const warning=saveWarning();
+    for(const [screen,status] of Object.entries(saveStatuses)){
+      const visible=Boolean(warning)&&state.screen===screen;
+      status.hidden=!visible;
+      const text=visible?warning:'';
+      if(status.textContent!==text)status.textContent=text;
+    }
+  }
   const fitArena = () => {
     if (!arenaFrame || !canvas) return;
     const width = Math.max(1, arenaFrame.clientWidth);
@@ -129,6 +149,7 @@ import {FoundryScene} from './scene.mjs';
     state.lastFrame = 0;
     audio?.stop();
     state.screen = name;
+    renderSaveStatuses();
     if(name!=='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-flip-foundry');
     canvas.inert=name!=='battle';
     document.getElementById('foundry-tools')?.toggleAttribute('inert',name!=='battle');
@@ -228,7 +249,7 @@ import {FoundryScene} from './scene.mjs';
   }
   function setStatus(text){ const el=$('battle-status'); if(el.textContent!==text) el.textContent=text; }
   function forceNow(){ return state.charge!==null && state.charge!==undefined ? clamp((performance.now()-state.charge)*.16,0,300) : state.drag?.force || 0; }
-  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = e.stage; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
+  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; const warning=saveWarning()?` · ${saveWarning()}`:''; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }) + warning; if(warning)$("result-copy").setAttribute('tabindex','0');else $("result-copy").removeAttribute('tabindex'); $("result-screen").setAttribute("aria-describedby","result-copy"); $("to-stages").textContent = e.stage; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
   function renderLocalized() {
     const c = copy();
     const mainTitle = document.querySelector(".main-title")?.textContent || "Flip Foundry";
@@ -260,11 +281,12 @@ import {FoundryScene} from './scene.mjs';
     document.querySelector(".main-summary").textContent = expansion().intro;
     canvas.setAttribute("aria-label", `${c.canvas}. ${expansion().stage} ${state.chapter} / ${TOTAL_STAGES}. ${state.platform} / 4. ${tip(10)}`);
     if (state.cardsLocale !== currentLocale()) cards();
+    renderSaveStatuses();
     renderResult();
     updateTools();
     drawScene();
   }
-  function start(chapter = 1, platform = 1) { if(!Number.isInteger(chapter)||chapter<1||chapter>TOTAL_STAGES||chapter>progress.unlocked||!Number.isInteger(platform)||platform<1||platform>4)return; if(platform===1||chapter!==state.chapter)state.attempts=0;state.chapter = chapter; state.platform = platform; state.selectedChapterIndex = chapter - 1; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.clock=0;state.nozzle='direct';state.status = "ready"; state.resultWin = null; show("battle"); renderLocalized();
+  function start(chapter = 1, platform = 1) { if(!Number.isInteger(chapter)||chapter<1||chapter>TOTAL_STAGES||chapter>progress.unlocked||!Number.isInteger(platform)||platform<1||platform>4)return; if(platform===1||chapter!==state.chapter)state.attempts=0;state.chapter = chapter; state.platform = platform; state.selectedChapterIndex = chapter - 1; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.clock=0;state.nozzle='direct';state.status = "ready"; state.resultWin = null; state.resultSaveConfirmed=null; show("battle"); renderLocalized();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.saveSucceeded = null; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function launch(force) {
@@ -343,7 +365,7 @@ import {FoundryScene} from './scene.mjs';
     else{audio?.play('result.lose');setStatus(state.missReason||tip(6));}
     state.settle={win,t:36,x:f.x}; if(!win)state.flight=null;
   }
-  function finish(win){let saved=false;if(win){const result=persistProgressChecked(storage,completeStage(progress,state.chapter,state.attempts,TOTAL_STAGES),TOTAL_STAGES);progress=result.progress;saved=result.saved;}state.resultWin=win;state.status=win?'perfect':'miss';__wpMeasurement.ended=true;__wpMeasurement.outcome=win?'win':'lose';__wpMeasurement.saveSucceeded=saved;renderLocalized();show('result');
+  function finish(win){let saved=false;if(win){pendingProgress.win(state.chapter,state.attempts);const ticket=pendingProgress.ticket();const result=persistProgressChecked(storage,completeStage(progress,state.chapter,state.attempts,TOTAL_STAGES),TOTAL_STAGES,ticket);progress=result.progress;saved=result.saved;pendingProgress.confirm(result.confirmation);}state.resultWin=win;state.resultSaveConfirmed=win?saved:null;state.status=win?'perfect':'miss';__wpMeasurement.ended=true;__wpMeasurement.outcome=win?'win':'lose';__wpMeasurement.saveSucceeded=saved;renderLocalized();show('result');
     if(win)audio?.play('result.win');
     __wpMeasurement.ended=true;__wpMeasurement.outcome=win?'win':'lose';__wpMeasurement.screen=null;__wpNotifyMeasurement();
   }

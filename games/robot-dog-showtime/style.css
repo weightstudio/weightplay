@@ -29,6 +29,7 @@
 .cue-track .cue-cell{position:relative;display:grid;grid-template-rows:12px 22px;width:44px;flex:none;padding:2px;border-color:#d8eee920;background:#17313d}
 .cue-cell small{color:#9ab7bb;font-size:10px;font-weight:600;line-height:12px}
 .cue-cell strong{font-size:18px;line-height:22px;font-weight:800}
+.cue-cell[data-default=true] strong{color:#a9c5c8;opacity:.58;font-weight:600}
 .cue-cell[aria-pressed=true]{border-color:var(--show-teal);background:#2c575c;color:var(--show-teal)}
 .fox .cue-cell[aria-pressed=true]{border-color:var(--show-gold);background:#514935;color:var(--show-gold)}
 .cue-cell[data-failed=true]{border-color:#ffb494;background:#5b3535}
@@ -43,8 +44,8 @@
 .planner-panel .primary,.dialog .primary{background:linear-gradient(130deg,#ffe0a0,#eeb768);color:#27313a;border-color:#ffe8b466;box-shadow:0 4px 14px #deb35b14}
 #renderFallback{position:absolute;inset:0;display:grid;align-content:center;justify-items:center;gap:14px;padding:24px;background:#0f2536f5;color:#f5eee0;text-align:center}
 #renderFallback button{height:44px;min-width:100px}
-.dialog{position:absolute;z-index:50;inset:0;display:grid;align-items:center;justify-items:center;padding:16px;background:#061921dc;color:var(--show-ink);animation:show-enter 180ms ease-out}
-.dialog-card{position:relative;display:flex;flex-direction:column;width:min(100%,460px);max-height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:24px;border:1px solid #d5e8dc42;border-radius:16px;background:linear-gradient(145deg,#24434e,#132c38);box-shadow:0 18px 60px #0007}
+.dialog{box-sizing:border-box;position:absolute;z-index:50;inset:0;display:grid;align-items:center;justify-items:center;padding:16px;background:#061921dc;color:var(--show-ink);animation:show-enter 180ms ease-out}
+.dialog-card{box-sizing:border-box;position:relative;display:flex;flex-direction:column;width:min(100%,460px);max-height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:24px;border:1px solid #d5e8dc42;border-radius:16px;background:linear-gradient(145deg,#24434e,#132c38);box-shadow:0 18px 60px #0007}
 .dialog-card h2{margin:0 0 12px;color:var(--show-gold);font-size:25px;line-height:1.2}
 .dialog-card p,.dialog-card li{color:#d5e4df;font-size:14px;line-height:1.5}
 .dialog-card ol{padding-inline-start:22px;margin:8px 0}
@@ -54,6 +55,14 @@
 .result-actions button{width:100%;min-width:0;height:48px;padding:4px;font-size:12px;overflow-wrap:anywhere}
 .help-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
 .show-rating{font-size:46px;font-weight:850;letter-spacing:.06em;color:var(--show-gold);margin:16px 0}
+.dialog[data-wp-battle-substate="result"]{inset:auto 0 0;height:288px;align-items:stretch;padding:10px;background:#102935f7;border-top:1px solid #80bea85c}
+.result-card{width:100%;height:100%;max-width:none;padding:14px 16px;gap:4px;border-radius:12px}
+.result-card .show-rating{font-size:30px;line-height:1.15;margin:0}
+.result-card h2{font-size:20px;line-height:1.2;margin:0}
+.result-card #resultText{flex:1;min-height:0;overflow:auto;font-size:13px;line-height:1.35;white-space:pre-line;margin:4px 0}
+.result-card .result-actions{margin-top:auto}
+.battle-screen[data-show-result=true] .planner-panel{visibility:hidden}
+.battle-screen[data-show-result=true] .scene-beat,.battle-screen[data-show-result=true] .robot-dog-help-button{visibility:hidden}
 #resultKicker{color:var(--show-teal);font-size:12px;letter-spacing:.05em}
 .wallet-line{display:flex;align-items:center;gap:8px;margin:0!important;font-weight:750}
 .wallet-line img{flex:none}
@@ -61,12 +70,16 @@
 .costume-art{display:flex;justify-content:center;min-height:0;height:200px;margin-top:12px;border-radius:10px;background:radial-gradient(ellipse,#275665,#132c38)}
 .costume-art img{width:100%;height:100%;object-fit:contain}
 .costume-cost{font-weight:750;color:var(--show-teal)!important;margin:8px 0 0}
+.costume-ownership{font-size:12px!important;font-weight:750;color:var(--show-teal)!important;margin:4px 0!important}
+.diamond-source{font-size:12px!important;line-height:1.35!important;margin:4px 0!important}
 .purchase-status{min-height:42px;margin:6px 0!important;color:var(--show-gold)!important}
 .wardrobe-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:none}
 .wardrobe-actions button{height:auto;min-height:48px}
 @container show-battle (min-aspect-ratio:6/5){
   .battle-workspace{grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:minmax(0,1fr)}
   .planner-panel{grid-template-rows:minmax(30px,1fr) 92px 92px 44px;border-top:0;border-inline-start:1px solid #80bea85c}
+  .dialog[data-wp-battle-substate="result"]{inset:0 0 0 auto;width:320px;height:100%;align-items:end;border-top:0;border-inline-start:1px solid #80bea85c}
+  .result-card{max-height:330px}
 }
 @container show-battle (min-aspect-ratio:6/5) and (min-height:500px){
   .planner-panel{grid-template-rows:30px 92px 92px 44px;align-content:center}

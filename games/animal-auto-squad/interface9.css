@@ -374,6 +374,12 @@ html body #gamePanel.is-result > #animalAutoSquadBattleContent {
   z-index: 10;
 }
 
+/* Keep the temporary world reward notice clear of Result navigation. */
+body:has(#gamePanel.is-result) .wpb-toast {
+  top: max(62px, calc(env(safe-area-inset-top) + 62px));
+  bottom: auto;
+}
+
 @media (max-width: 520px) {
   #menuPanel .wp-standard-main-composition {
     --wp-main-poster-size: min(34vh, 250px);

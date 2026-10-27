@@ -1,6 +1,6 @@
 import {GAME_ID,SAVE_KEY,STAGES,PLAYBOOKS,COSMETICS,PORTRAITS,CAST} from './content.mjs';
 import {Match,DT,normalizeSave,saveWin,unlockedStage,clamp} from './simulation.mjs';
-import {FieldRenderer} from './render.mjs';
+import {FieldRenderer} from './render.mjs?v=6';
 import {COPY,tr,localeSegments} from './i18n.mjs';
 import {coachText,stageLesson} from './coaching.mjs';
 import {drawInterceptionDiagram} from './interception-diagram.mjs';

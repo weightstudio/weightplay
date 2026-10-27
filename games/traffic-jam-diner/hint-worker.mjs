@@ -1,4 +1,4 @@
-import {normalizeStage,solveStage} from './engine.mjs?v=20261027-diner-rebuild-v23';
+import {normalizeStage,solveStage} from './engine.mjs?v=20261027-diner-opt-v24';
 self.onmessage=({data})=>{
   try{
     const proof=solveStage(normalizeStage(data.stage),{startState:data.state,maxStates:80000});

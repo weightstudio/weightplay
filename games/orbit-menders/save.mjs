@@ -7,7 +7,7 @@ const ARCHIVE = /^W[1-6]-0[1-4]-(?:observation|mechanism|execution)$/;
 const BLUEPRINT = /^W[1-6]-blueprint$/;
 const MODE = new Set(['standard', 'assist']);
 const DANGEROUS_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
-const TOP_KEYS = new Set(['schemaVersion', 'gameVersion', 'updatedAt', 'completed', 'archives', 'blueprints', 'badges', 'cosmetics', 'best', 'preferences', 'checkpoint']);
+const TOP_KEYS = new Set(['schemaVersion', 'gameVersion', 'updatedAt', 'completed', 'archives', 'blueprints', 'badges', 'cosmetics', 'best', 'preferences', 'checkpoint', 'defense']);
 const clone = value => JSON.parse(JSON.stringify(value));
 const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value) && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
 const fail = message => { throw new Error(`ORBIT_SAVE_INVALID: ${message}`); };
@@ -36,12 +36,13 @@ function idSet(value, pattern, maximum, label) {
 
 export function freshSave() {
   return {
-    schemaVersion: 1, gameVersion: '0.2.0', updatedAt: new Date().toISOString(),
+    schemaVersion: 1, gameVersion: '0.3.0', updatedAt: new Date().toISOString(),
     completed: [], archives: [], blueprints: [], badges: {},
     cosmetics: { equipped: 'workshop', unlocked: ['workshop'] },
     best: { standard: {}, assist: {} },
     preferences: { sensitivity: 1, invertY: false, reduceMotion: false, cameraShake: false, quality: 'medium', mode: 'standard', keyMap: {} },
     checkpoint: null,
+    defense: { revision: 1, completed: [], best: {} },
   };
 }
 
@@ -54,6 +55,22 @@ export function validateSave(value) {
   if (typeof value.gameVersion !== 'string' || !/^\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?$/.test(value.gameVersion)) fail('gameVersion');
   assertDate(value.updatedAt, 'updatedAt');
   const result = clone(value);
+  // Additive v3 migration keeps the existing namespace and all legacy progress.
+  const defense = value.defense ?? { revision: 1, completed: [], best: {} };
+  assertPlain(defense, 'defense');
+  assertKeys(defense, new Set(['revision', 'completed', 'best']), 'defense');
+  if (defense.revision !== 1) fail('defense revision');
+  result.defense = { revision: 1, completed: idSet(defense.completed, /^D0[1-6]$/, 6, 'defense completed'), best: {} };
+  assertPlain(defense.best, 'defense best');
+  for (const [id, record] of Object.entries(defense.best)) {
+    if (!/^D0[1-6]$/.test(id)) fail('defense best id');
+    assertPlain(record, 'defense record');
+    assertKeys(record, new Set(['score', 'health', 'time']), 'defense record');
+    assertFinite(record.score, 0, 1e7, 'defense score');
+    assertFinite(record.health, 0, 1, 'defense health');
+    assertFinite(record.time, 0, 86400, 'defense time');
+    result.defense.best[id] = clone(record);
+  }
   result.completed = idSet(value.completed, LEVEL, 30, 'completed');
   result.archives = idSet(value.archives, ARCHIVE, 72, 'archives');
   result.blueprints = idSet(value.blueprints, BLUEPRINT, 6, 'blueprints');
@@ -164,7 +181,7 @@ export function createSaveAdapter(storage) {
       if (typeof update !== 'function') throw new TypeError('Save commit requires a function');
       const draft = clone(data);
       update(draft);
-      draft.gameVersion = '0.2.0';
+      draft.gameVersion = '0.3.0';
       draft.updatedAt = new Date().toISOString();
       return persist(validateSave(draft));
     },

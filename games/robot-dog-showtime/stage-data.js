@@ -15,7 +15,7 @@ const authored = [
   ['Precision Cues', 4,7,2,9,[1,5],false], ['Precision Cues', 1,10,11,0,[2,6],false],
   ['Precision Cues', 0,11,8,3,[1,6],true], ['Precision Cues', 3,8,4,7,[2,6],true],
   ['Precision Cues', 4,7,11,0,[5],true], ['Opening Night', 0,11,9,2,[1,5,6],true],
-  ['Opening Night', 3,8,4,7,[5,6],true], ['Opening Night', 1,10,11,0,[2,6],true],
+  ['Opening Night', 3,8,4,7,[5,6],true], ['Opening Night', 4,7,7,4,[0,2,3,8,9,11],true],
   ['Opening Night', 0,11,7,4,[1,6],true], ['Opening Night', 3,8,4,7,[1,2,5],true],
 ];
 
@@ -45,6 +45,8 @@ function solve(starts, goals, walls) {
   return null;
 }
 
+const masteryRoutes = {3:{actor:1,visit:7},8:{actor:1,visit:0},28:{actor:0,visit:1}};
+
 export const STAGES = Object.freeze(authored.map((row, index) => {
   const [arc, dogStart, foxStart, dogGoal, foxGoal, walls, bow] = row;
   const starts = [dogStart, foxStart], goals = [dogGoal, foxGoal];
@@ -53,6 +55,8 @@ export const STAGES = Object.freeze(authored.map((row, index) => {
   return Object.freeze({
     id: index + 1, arc, starts: Object.freeze(starts), goals: Object.freeze(goals),
     walls: Object.freeze(walls), bow, beats: solution?.length ?? 0,
+    revision: index===27?2:1,
+    mastery: masteryRoutes[index+1] ? Object.freeze(masteryRoutes[index+1]) : null,
     solution: solution && Object.freeze(solution.map(pair => Object.freeze(pair))),
   });
 }));
