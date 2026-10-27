@@ -307,7 +307,7 @@ body:has(#battleScreen:not([hidden])) .wpb-toast {
 .counterweight-group:not([hidden]){display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px}
 .counterweight-group button{min-width:44px;min-height:44px;border:2px solid currentColor;border-radius:8px;font:inherit;font-weight:700}
 .counterweight-group button{display:inline-flex;align-items:center;justify-content:center;gap:3px}
-.counterweight-art{width:30px;height:30px;display:inline-block;background-image:url('assets/balance-counterweights-block-v1.png');background-repeat:no-repeat;background-size:300% 100%}
+.counterweight-art{width:40px;height:40px;display:inline-block;background-image:url('assets/balance-counterweights-block-v1.webp');background-repeat:no-repeat;background-size:300% 100%}
 [data-counterweight="1"] .counterweight-art{background-position:0 50%}[data-counterweight="2"] .counterweight-art{background-position:50% 50%}[data-counterweight="3"] .counterweight-art{background-position:100% 50%}
 .counterweight-group button[aria-pressed="true"]{outline:3px solid #ffe19c;outline-offset:2px}
 .counterweight-group button:focus-visible{outline:3px solid #fff;outline-offset:3px}
@@ -342,4 +342,9 @@ body:has(#battleScreen:not([hidden])) .wpb-toast {
   #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .battle-status{grid-row:5}
   #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) #hintBtn{grid-row:6}
   #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .battle-actions{grid-row:7}
+}
+@media (min-width:721px) and (min-height:521px) {
+  /* The play surface is capped at 920 px: three cards in one half leave
+     names too narrow even on a physically wide desktop display. */
+  #battleContent[data-balance-chapter2="true"] .token-tray{grid-template-columns:repeat(2,minmax(0,1fr))}
 }

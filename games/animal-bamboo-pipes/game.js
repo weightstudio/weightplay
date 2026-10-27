@@ -25,7 +25,15 @@
   const GAME_VERSION = "v29";
   const INTERFACE_VERSION = "9";
   const BASE = window.BAMBOO_LOCALES.en;
-  const LEVELS = window.BAMBOO_LEVELS.levels;
+  // The aqueduct needs its save, reward, art and accessibility gates before
+  // it can become visible in the normal campaign.
+  const AQUEDUCT_READY = false;
+  const AQUEDUCT = window.BambooAqueductCandidate;
+  const LEVELS = window.BAMBOO_LEVELS.levels.slice();
+  if (AQUEDUCT_READY) {
+    if (!AQUEDUCT || AQUEDUCT.CHAPTER2.length !== 30) throw Error('BAMBOO_AQUEDUCT_REQUIRED');
+    AQUEDUCT.CHAPTER2.forEach(cfg => LEVELS.push({aqueductId:cfg.id,checkpoint:cfg.checkpoint,sluices:Array(cfg.sluices),beacons:[]}));
+  }
   const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = ROUTE_LOCALES[routeSegment];
   let locale = routeLocale || localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0, hintedPipeIndex = -1;
@@ -46,6 +54,23 @@
   // language switch.
   document.querySelector('main#main [data-bamboo-t="summary"]')?.classList.add("main-summary");
   const text = (key, data = {}) => String((window.BAMBOO_LOCALES[locale] || BASE)[key] || BASE[key] || key).replace(/\{(\w+)\}/g, (_, name) => data[name] ?? "");
+  const aqueductCopy = {
+    en:['Pin partner ({n})','Unpin partner ({n})','Linked pair {n}: {mode}','same direction','opposite direction','Required receiver','Closed embankment','Pin the partner, then turn pipe {n}.','Turn pipe {n}.','Undo or restart to recover the authored route.','Select a linked pipe.'],
+    'zh-Hant':['固定另一端（{n}）','取消固定（{n}）','連動組 {n}：{mode}','同向','反向','必要集水池','封閉堤岸','先固定另一端，再轉動第 {n} 管。','轉動第 {n} 管。','請復原或重新開始以找回設計路線。','請選擇連動管。'],
+    'zh-Hans':['固定另一端（{n}）','取消固定（{n}）','联动组 {n}：{mode}','同向','反向','必要集水池','封闭堤岸','先固定另一端，再转动第 {n} 管。','转动第 {n} 管。','请撤销或重新开始以找回设计路线。','请选择联动管。'],
+    ja:['相手を固定（{n}）','固定を解除（{n}）','連動 {n}：{mode}','同方向','逆方向','必須の水受け','閉じた堤','相手を固定し、管 {n} を回します。','管 {n} を回します。','元に戻すか再開して経路を復元します。','連動した管を選びます。'],
+    ko:['상대 고정 ({n})','고정 해제 ({n})','연결 {n}: {mode}','같은 방향','반대 방향','필수 물받이','막힌 둑','상대를 고정한 뒤 관 {n}을 돌리세요.','관 {n}을 돌리세요.','실행 취소하거나 다시 시작해 경로를 복구하세요.','연결된 관을 선택하세요.'],
+    es:['Fijar pareja ({n})','Soltar pareja ({n})','Pareja {n}: {mode}','misma dirección','dirección opuesta','Receptor obligatorio','Terraplén cerrado','Fija la pareja y gira el tubo {n}.','Gira el tubo {n}.','Deshaz o reinicia para recuperar la ruta.','Elige un tubo enlazado.'],
+    'pt-BR':['Fixar par ({n})','Soltar par ({n})','Par {n}: {mode}','mesma direção','direção oposta','Receptor obrigatório','Margem fechada','Fixe o par e gire o tubo {n}.','Gire o tubo {n}.','Desfaça ou reinicie para recuperar a rota.','Escolha um tubo ligado.'],
+    fr:['Bloquer le partenaire ({n})','Libérer le partenaire ({n})','Paire {n} : {mode}','même sens','sens opposé','Bassin obligatoire','Digue fermée','Bloquez le partenaire puis tournez le tuyau {n}.','Tournez le tuyau {n}.','Annulez ou recommencez pour retrouver le trajet.','Choisissez un tuyau lié.'],
+    de:['Partner fixieren ({n})','Partner lösen ({n})','Paar {n}: {mode}','gleiche Richtung','Gegenrichtung','Pflichtbecken','Geschlossener Damm','Fixiere den Partner und drehe Rohr {n}.','Drehe Rohr {n}.','Mache rückgängig oder beginne neu, um den Weg wiederherzustellen.','Wähle ein verbundenes Rohr.'],
+    it:['Blocca il partner ({n})','Libera il partner ({n})','Coppia {n}: {mode}','stessa direzione','direzione opposta','Bacino obbligatorio','Argine chiuso','Blocca il partner e ruota il tubo {n}.','Ruota il tubo {n}.','Annulla o ricomincia per ripristinare il percorso.','Scegli un tubo collegato.'],
+    ru:['Закрепить пару ({n})','Освободить пару ({n})','Пара {n}: {mode}','одно направление','противоположные направления','Обязательный приёмник','Закрытая насыпь','Закрепите пару и поверните трубу {n}.','Поверните трубу {n}.','Отмените ход или начните заново, чтобы восстановить путь.','Выберите связанную трубу.'],
+    hi:['साथी रोकें ({n})','साथी छोड़ें ({n})','जोड़ी {n}: {mode}','एक ही दिशा','विपरीत दिशा','ज़रूरी जलाशय','बंद बाँध','साथी रोककर पाइप {n} घुमाएँ।','पाइप {n} घुमाएँ।','रास्ता वापस पाने के लिए पूर्ववत करें या फिर शुरू करें।','जुड़ा पाइप चुनें।'],
+    ar:['ثبّت الشريك ({n})','ألغ تثبيت الشريك ({n})','الزوج {n}: {mode}','الاتجاه نفسه','اتجاه معاكس','حوض مطلوب','حاجز مغلق','ثبّت الشريك ثم أدر الأنبوب {n}.','أدر الأنبوب {n}.','تراجع أو أعد البدء لاستعادة المسار.','اختر أنبوبًا مرتبطًا.']
+  };
+  const aqText=(key,vars={})=>String((aqueductCopy[locale]||aqueductCopy.en)[key]).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??'');
+  const aqueductIntro={en:'Linked pipes turn together. Pin the partner when needed; fill every marked receiver.', 'zh-Hant':'連動管會一起轉動；需要時固定另一端，並注滿所有標記的集水池。','zh-Hans':'联动管会一起转动；需要时固定另一端，并注满所有标记的集水池。',ja:'連動管は一緒に回ります。必要なら相手を固定し、印の水受けをすべて満たします。',ko:'연결된 관은 함께 돌아갑니다. 필요하면 상대를 고정하고 표시된 물받이를 모두 채우세요.',es:'Los tubos enlazados giran juntos. Fija su pareja cuando haga falta y llena todos los receptores.', 'pt-BR':'Tubos ligados giram juntos. Fixe o par quando precisar e encha todos os receptores.',fr:'Les tuyaux liés tournent ensemble. Bloquez le partenaire si besoin et remplissez tous les bassins.',de:'Verbundene Rohre drehen sich gemeinsam. Fixiere bei Bedarf den Partner und fülle alle markierten Becken.',it:'I tubi collegati ruotano insieme. Blocca il partner quando serve e riempi tutti i bacini.',ru:'Связанные трубы вращаются вместе. При необходимости закрепите пару и наполните все приёмники.',hi:'जुड़े पाइप साथ घूमते हैं। ज़रूरत पर साथी रोकें और सभी चिह्नित जलाशय भरें।',ar:'تدور الأنابيب المرتبطة معًا. ثبّت الشريك عند الحاجة واملأ كل الأحواض المحددة.'};
   function beaconProgress(tiles, wet) {
     let got = 0, total = 0;
     tiles.forEach((tile, index) => {
@@ -60,6 +85,9 @@
   function sluiceArrowRotation(exit) { return (exit + 2) % 4; }
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
   let sharedFrame = null, stageUI = null;
+  const pinButton=document.createElement('button');pinButton.type='button';pinButton.id='aqueductPin';pinButton.hidden=true;pinButton.setAttribute('aria-pressed','false');
+  $('hint').insertAdjacentElement('beforebegin',pinButton);
+  pinButton.addEventListener('click',()=>{if(!run?.aqueduct||run.completed||run.aqueduct.pins<1)return;run.pinArmed=!run.pinArmed;run.hintMessage='';renderBoard();});
   $("battle").append($("leaveDialogTemplate").content.cloneNode(true));
   const battleBack = () => [...$("battle").querySelectorAll('[data-wp-return="battle"]')]
     .find(node => !node.closest("[inert]") && node.getClientRects().length);
@@ -99,6 +127,8 @@
     return window.BAMBOO_LEVELS.createStageTiles(level, index, target);
   }
   function ports(tile) {
+    if (tile.shape === 'blocked') return [];
+    if (tile.receiver) return [0,1,2,3];
     const raw = tile.shape === "x" || tile.target ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
     return raw.map(port => (port + tile.rot) % 4);
   }
@@ -107,6 +137,8 @@
     return ({ source: "pipeShapeSource", s: "pipeShapeStraight", e: "pipeShapeElbow", t: "pipeShapeTee", x: "pipeShapeCross" })[tile.shape] || "pipeShapeStraight";
   }
   function pipeAccessibleLabel(tile, index, isWet) {
+    if (tile.shape === 'blocked') return aqText(6);
+    if (tile.receiver) return `${aqText(5)}, ${text(isWet ? 'pipeFlowing' : 'pipeDry')}`;
     const name = tile.target ? text("basinLabel") : text("pipeLabel", { n: index + 1 });
     const shape = text(pipeShapeKey(tile));
     const flow = text(isWet ? "pipeFlowing" : "pipeDry");
@@ -119,7 +151,9 @@
     const beacon = tile.beacon
       ? text("beaconState", { state: text(isWet ? "beaconWet" : "beaconDry") })
       : "";
-    return [base, sluice, beacon].filter(Boolean).join(", ");
+    const pair=run?.aqueduct?.pairs.find(p=>p.a===index||p.b===index);
+    const link=pair?aqText(2,{n:run.aqueduct.pairs.indexOf(pair)+1,mode:aqText(pair.mode==='S'?3:4)}):'';
+    return [base, sluice, beacon, link].filter(Boolean).join(", ");
   }
   function targetIndex(level) {
     return level.target;
@@ -180,7 +214,7 @@
     while (queue.length) {
       const [row, col] = queue.shift(), current = run.tiles[row * 5 + col];
       const openings = ports(current);
-      const exits = current.sluice
+      const exits = run.aqueduct && (current.receiver || current.target) ? [] : current.sluice
         ? [((current.sluiceBaseExit + current.rot) % 4 + 4) % 4]
         : openings;
       DIRS.forEach(([dr, dc, direction, reverse]) => {
@@ -198,7 +232,8 @@
     return wet;
   }
   function winReady() {
-    return water().has(run.tiles.findIndex(tile => tile.target));
+    const wet=water();
+    return wet.has(run.tiles.findIndex(tile => tile.target)) && (!run.aqueduct || run.aqueduct.receivers.every(index=>wet.has(index)));
   }
   function renderStages() {
     if (stageUI) stageUI.refresh(selected);
@@ -215,12 +250,16 @@
       }));
       board.dataset.stageIndex = stageKey;
     }
-    const hintNeighborIndex = hintRouteNeighbor(hintedPipeIndex);
+    const hintNeighborIndex = run.aqueduct ? -1 : hintRouteNeighbor(hintedPipeIndex);
     const enabledIndexes = run.tiles.map((tile, index) => tile.target || tile.anchored || run.completed ? -1 : index).filter(index => index >= 0);
     if (!enabledIndexes.includes(boardFocusIndex)) boardFocusIndex = enabledIndexes[0] ?? 0;
     run.tiles.forEach((tile, index) => {
       const pipe = board.children[index], isWet = wet.has(index);
       pipe.className = `pipe${isWet ? " wet" : ""}${tile.beacon ? " beacon" : ""}${tile.sluice ? " sluice" : ""}${tile.anchored ? " anchored" : ""}${index === hintedPipeIndex ? " hint-target" : ""}${index === hintNeighborIndex ? " hint-neighbor" : ""}`;
+      const pair=run.aqueduct?.pairs.find(p=>p.a===index||p.b===index);
+      if (pair) { pipe.dataset.aqueductPair=String(run.aqueduct.pairs.indexOf(pair)+1); pipe.dataset.aqueductMode=pair.mode; } else { delete pipe.dataset.aqueductPair; delete pipe.dataset.aqueductMode; }
+      pipe.classList.toggle('aqueduct-receiver',Boolean(tile.receiver));pipe.classList.toggle('aqueduct-blocked',tile.shape==='blocked');
+      let linkBadge=pipe.querySelector('.aqueduct-link-badge');if(pair&&!linkBadge){linkBadge=document.createElement('span');linkBadge.className='aqueduct-link-badge';linkBadge.setAttribute('aria-hidden','true');pipe.append(linkBadge);}if(pair)linkBadge.textContent=`${run.aqueduct.pairs.indexOf(pair)+1}${pair.mode==='S'?'↻':'↔'}`;else linkBadge?.remove();
       if (tile.target) pipe.classList.add("target");
       pipe.dataset.shape = tile.shape;
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
@@ -252,14 +291,14 @@
       else pipe.removeAttribute("data-wp-primary-action");
       pipe.tabIndex = !pipe.disabled && index === boardFocusIndex ? 0 : -1;
       let flow = pipe.querySelector(".flow");
-      if (isWet && !tile.target && !flow) pipe.append(flowSvg(tile, index, true));
-      else if ((!isWet || tile.target) && flow) flow.remove();
+      if (isWet && !tile.target && !tile.receiver && !flow) pipe.append(flowSvg(tile, index, true));
+      else if ((!isWet || tile.target || tile.receiver) && flow) flow.remove();
       pipe.onclick = tile.target || tile.anchored ? null : event => {
         if (run.completed) return;
         hintedPipeIndex = -1;
         boardFocusIndex = index;
-        run.history.push(run.tiles.map(item => item.rot));
-        tile.rot = (tile.rot + 1) % 4;
+        if(run.aqueduct){const prior={rotations:run.tiles.map(item=>item.rot),pins:run.aqueduct.pins};try{AQUEDUCT.turn(run.aqueduct,index,run.pinArmed);}catch{run.hintMessage=aqText(10);renderBoard();return;}run.history.push(prior);run.pinArmed=false;run.hintMessage='';}
+        else { run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; }
         run.moves++;
         renderBoard(event.detail === 0 ? index : -1);
         if (winReady()) complete();
@@ -268,18 +307,21 @@
     $("moves").textContent = text("moves", { n: run.moves });
     const bloom = beaconProgress(run.tiles, wet);
     const hasSluice = run.tiles.some(tile => tile.sluice);
-    $("cue").textContent = hintedPipeIndex >= 0
+    $("cue").textContent = run.aqueduct ? (run.hintMessage || aqueductIntro[locale] || aqueductIntro.en) : hintedPipeIndex >= 0
       ? text("hintRoute", { pipe: hintLabel(hintedPipeIndex), next: hintLabel(hintNeighborIndex) })
       : hasSluice && bloom.total ? text("mixedCue", bloom)
         : hasSluice ? text("sluiceCue")
           : bloom.total ? text("bloomCue", bloom)
             : text("cue");
+    if (run.aqueduct && pinButton){pinButton.hidden=false;pinButton.disabled=run.completed||run.aqueduct.pins<1;pinButton.setAttribute('aria-pressed',String(run.pinArmed));pinButton.textContent=aqText(run.pinArmed?1:0,{n:run.aqueduct.pins});}
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
   function startStage(entry = "stage") {
     cancelCompletionReveal();
     setResultOpen(false, false);
-    run = { tiles: stageData(selected), history: [], moves: 0, completed: false, hintUsed: false, undoUsed: false, flowDistance: [] };
+    const aqueduct=selected>=30&&AQUEDUCT_READY?AQUEDUCT.createAqueduct(window.BAMBOO_LEVELS,selected+1):null;
+    run = { tiles: aqueduct?.tiles || stageData(selected), aqueduct, pinArmed:false, hintMessage:'', history: [], moves: 0, completed: false, hintUsed: false, undoUsed: false, flowDistance: [] };
+    $('battle').dataset.bambooAqueduct=String(Boolean(aqueduct));if(pinButton)pinButton.hidden=!aqueduct;
     hintedPipeIndex = -1;
     boardFocusIndex = run.tiles.findIndex(tile => !tile.target);
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
@@ -564,10 +606,11 @@
     [...$("board").children].forEach((child, index) => { child.tabIndex = index === next && !child.disabled ? 0 : -1; });
     $("board").children[next].focus({ preventScroll: true });
   });
-  $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.undoUsed = true; track("undo_used", { turns_before: run.moves }); run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
+  $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.undoUsed = true; track("undo_used", { turns_before: run.moves }); const rotations=run.aqueduct?prior.rotations:prior;run.tiles.forEach((tile, i) => { tile.rot = rotations[i]; });if(run.aqueduct){run.aqueduct.pins=prior.pins;run.pinArmed=false;run.hintMessage='';}run.moves--; renderBoard(); } };
   $("restart").onclick = () => { if (run && !run.completed) track("restart_used", { turns_before: run.moves }); __wpReplayStart(() => startStage("restart")); };
   $("hint").onclick = () => {
     if (run?.completed) return;
+    if(run?.aqueduct){const advice=AQUEDUCT.hint(window.BAMBOO_LEVELS,run.aqueduct);run.hintUsed=true;run.hintMessage=advice.kind==='turn'?aqText(advice.pin?7:8,{n:advice.index+1}):aqText(9);hintedPipeIndex=advice.kind==='turn'?advice.index:-1;if(hintedPipeIndex>=0)boardFocusIndex=hintedPipeIndex;renderBoard(hintedPipeIndex);return;}
     hintedPipeIndex = hintTargetIndex(run.tiles);
     if (hintedPipeIndex < 0) return;
     run.hintUsed = true;

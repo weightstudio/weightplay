@@ -218,13 +218,13 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 
 @media (max-width:699px) and (orientation:portrait) {
   .battle-layout { grid-template-columns: 0 minmax(0,1fr); }
-  .quick-rail { position: absolute; z-index: 18; top: 52px; inset-inline-start: 4px; width: 56px; padding: 4px; background: transparent; }
-  .quick-rail button { min-height: 44px; padding: 3px; border-color: rgba(255,255,255,.3); background: rgba(24,43,60,.82); font-size: 10px; }
+  .quick-rail { position: absolute; z-index: 18; top: 52px; inset-inline-start: 4px; width: 88px; box-sizing: border-box; grid-template-columns: minmax(0,1fr); padding: 4px; background: transparent; }
+  .quick-rail button { min-width: 0; width: 100%; min-height: 44px; padding: 3px; overflow-wrap: anywhere; hyphens: auto; white-space: normal; border-color: rgba(255,255,255,.3); background: rgba(24,43,60,.82); font-size: 10px; }
   .arena-wrap { grid-column: 1/-1; }
-  .unit-line { left: 64px; right: 8px; }
-  html[dir="rtl"] .unit-line { left: 8px; right: 64px; }
-  #arena .command-dock { inset-inline: auto; left: 64px; right: 8px; }
-  html[dir="rtl"] #arena .command-dock { left: 8px; right: 64px; }
+  .unit-line { left: 96px; right: 8px; }
+  html[dir="rtl"] .unit-line { left: 8px; right: 96px; }
+  #arena .command-dock { inset-inline: auto; left: 96px; right: 8px; }
+  html[dir="rtl"] #arena .command-dock { left: 8px; right: 96px; }
   .battle-tip { left: 64px; width: calc(100% - 72px); transform: none; gap: 4px; }
   .wave-hud { top: 6px; }
   /* The portrait quick rail sits above the arena on narrow screens.  Shift
@@ -235,6 +235,15 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .equipment-row { grid-template-columns: minmax(0,1fr); gap: 10px; padding-block: 12px; }
 }
 
+@media (max-width:359px) and (orientation:portrait) {
+  .quick-rail { width: 76px; }
+  .quick-rail button { font-size: 9px; }
+  .unit-line { left: 84px; right: 4px; gap: 1px; }
+  html[dir="rtl"] .unit-line { left: 4px; right: 84px; }
+  #arena .command-dock { left: 84px; right: 4px; }
+  html[dir="rtl"] #arena .command-dock { left: 4px; right: 84px; }
+}
+
 @media (max-height:520px) and (orientation:landscape) {
   .battle-layout { inset: 0 0 96px; grid-template-columns: 124px minmax(0,1fr); }
   .resource-bar { bottom: 54px; height: 42px; }
@@ -242,7 +251,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   /* Intrinsic rail height must not enlarge the arena below the resource row.
      Keep usable label tracks and bounded scrolling at unusually short heights. */
   .quick-rail { min-height: 0; overflow-y: auto; grid-template-columns: repeat(2,minmax(0,1fr)); align-content: start; gap: 2px; padding: 2px; }
-  .quick-rail button { min-width: 0; min-height: 44px; padding: 3px; font-size: 10px; }
+  .quick-rail button { min-width: 0; min-height: 44px; padding: 3px; overflow-wrap: anywhere; hyphens: auto; white-space: normal; font-size: 10px; }
   .unit-line { top: 38px; bottom: 4px; height: auto; flex-wrap: nowrap; gap: 4px; transform: none; }
   .hero-line { left: 2%; right: 66%; justify-content: center; }
   .enemy-line { left: 66%; right: 2%; justify-content: center; }

@@ -46,7 +46,12 @@ export function createWaveGate({prepare, show, begin, isCurrent}) {
       // callbacks cannot spend the same wave's supplies or start it twice.
       ticket.phase='starting';
       const result=ticket.bundle.start();
-      if (!result || result.ok !== true) { ticket.phase='halted'; return {ok:false,reason:'start-unconfirmed'}; }
+      if (!result || result.ok !== true) {
+        if(active === ticket && ticket.phase === 'starting' && ['target-unavailable','insufficient-supplies'].includes(result?.reason)) {
+          ticket.phase='open'; return result;
+        }
+        if(active === ticket) ticket.phase='halted'; return {ok:false,reason:'start-unconfirmed'};
+      }
       if (active !== ticket || ticket.phase !== 'starting') return {ok:false,reason:'decision-changed'};
       begin(ticket.bundle,{stage:ticket.stage,wave:ticket.wave,runId:ticket.runId});
       if (active !== ticket || ticket.phase !== 'starting') return {ok:false,reason:'decision-changed'};

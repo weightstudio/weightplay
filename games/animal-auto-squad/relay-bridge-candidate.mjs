@@ -1,6 +1,6 @@
 // Unconnected adapter candidate for the v43 Auto Squad combat object shape.
 // It requires future stage data, localized cues, assets and verified save input.
-import {createRelayWave,chooseRelayOrder,beginRelayWave,relayFirstStrikeTarget,relayEnemyAction,relayAdjustHealing} from './relay-candidate.mjs?v=20261027-auto-squad-relay-data1';
+import {createRelayWave,chooseRelayOrder,beginRelayWave,relayFirstStrikeTarget,relayEnemyAction,relayAdjustHealing} from './relay-candidate.mjs?v=20261027-auto-squad-relay-data3';
 
 export function createRelayBridge({stage,wave,playerSquad,enemySquad,confirmedProgress,ops}){
   if(stage<=30)return null;
@@ -24,14 +24,27 @@ export function createRelayBridge({stage,wave,playerSquad,enemySquad,confirmedPr
     for(const actor of layer.actors){const live=enemies.get(actor.id);actor.alive=Boolean(live&&live.hp>0);}
   }
   function halt(reason){phase='halted';return {ok:false,reason};}
-  function choose(type,target){if(phase!=='preparation')return {ok:false,reason:'order-locked'};const amount=ops.getSupplies();if(!Number.isSafeInteger(amount)||amount<0)return halt('supplies-unavailable');layer.supplies=amount;return chooseRelayOrder(layer,type,target);}
+  function choose(type,target){
+    if(phase!=='preparation')return {ok:false,reason:'order-locked'};
+    phase='selecting';
+    try{
+      const amount=ops.getSupplies();if(!Number.isSafeInteger(amount)||amount<0)return halt('supplies-unavailable');
+      layer.supplies=amount;synchronize();const result=chooseRelayOrder(layer,type,target);phase='preparation';return result;
+    }catch{return halt('selection-unconfirmed');}
+  }
   function start(){
     if(phase!=='preparation')return {ok:false,reason:'order-locked'};
+    phase='starting';
     try{
-      layer.supplies=ops.getSupplies();if(!Number.isSafeInteger(layer.supplies)||layer.supplies<0)return halt('supplies-unavailable');const selected=layer.selected||{type:'none'};
-      if(selected.type!=='none'&&layer.supplies<2)return {ok:false,reason:'insufficient-supplies'};
+      layer.supplies=ops.getSupplies();if(!Number.isSafeInteger(layer.supplies)||layer.supplies<0)return halt('supplies-unavailable');synchronize();const selected=layer.selected||{type:'none'};
+      if(selected.type!=='none'&&layer.supplies<2){phase='preparation';return {ok:false,reason:'insufficient-supplies'};}
+      if(selected.type==='ward'&&!(layer.team[selected.target-1]?.hp>0)){phase='preparation';return {ok:false,reason:'target-unavailable'};}
       // A thrown callback may have already committed: halt, never replay it.
       if(selected.type!=='none'&&ops.spendSupplies(2)!==true)return halt('debit-unconfirmed');
+      // The real runtime debit callback has no host callbacks. A hostile or
+      // reentrant substitute that changes the target after debit is ambiguous:
+      // halt and never retry or claim the shield was applied.
+      if(selected.type==='ward'){synchronize();if(!(layer.team[selected.target-1]?.hp>0))return halt('target-changed-after-debit');}
       const begun=beginRelayWave(layer);if(!begun.ok)return halt('candidate-start-failed');
       for(const part of layer.contributions)if(part.remaining>0)ops.shield(enemies.get(part.target),part.remaining,'enemy');
       if(selected.type==='ward'){const ally=teamSlots()[selected.target-1];if(ally&&ally.hp>0)ops.shield(ally,4,'player');}
@@ -67,5 +80,5 @@ export function createRelayBridge({stage,wave,playerSquad,enemySquad,confirmedPr
     }catch{return halt('combat-side-effect-unconfirmed');}
   }
   function adjustHealing(amount){if(phase!=='battle')return {ok:false,reason:'not-in-battle'};try{return {ok:true,...relayAdjustHealing(layer,amount)};}catch{return halt('invalid-heal');}}
-  return Object.freeze({choose,start,firstStrike,enemyAction,adjustHealing,preview:()=>({actors:layer.actors.map(x=>({id:x.id,kind:x.kind,alive:x.alive})),marks:layer.marks.map(x=>({...x})),contributions:layer.contributions.map(x=>({guard:x.guard,target:x.target})),bossCues:layer.bossCues.map(x=>({actor:x.actor,signals:[...x.signals]})),wardTargets:[...layer.wardTargets],orders:[...layer.orders],phase})});
+  return Object.freeze({choose,start,firstStrike,enemyAction,adjustHealing,preview:()=>({actors:layer.actors.map(x=>({id:x.id,kind:x.kind,alive:x.alive})),marks:layer.marks.map(x=>({...x})),contributions:layer.contributions.map(x=>({guard:x.guard,target:x.target})),bossCues:layer.bossCues.map(x=>({actor:x.actor,signals:[...x.signals]})),wardTargets:layer.wardTargets.filter(slot=>teamSlots()[slot-1]?.hp>0),orders:[...layer.orders],phase})});
 }

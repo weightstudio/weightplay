@@ -79,6 +79,11 @@ button,select {font:inherit}
   height:48px;
   padding:8px;
 }
+#battle[data-bamboo-aqueduct="true"] .tools{grid-template-columns:repeat(4,minmax(0,1fr))}
+#battle[data-bamboo-aqueduct="true"] .aqueduct-link-badge{position:absolute;z-index:6;inset-block-start:2px;inset-inline-start:2px;padding:2px 4px;border:1px solid #fff3c9;border-radius:6px;background:#123c40;color:#fff6d7;font:700 12px/1.1 system-ui;pointer-events:none;direction:ltr}
+#battle[data-bamboo-aqueduct="true"] .aqueduct-blocked{background:#344b3d;box-shadow:inset 0 0 0 3px #809279}
+#battle[data-bamboo-aqueduct="true"] .aqueduct-receiver{outline:3px double #ffe8a4;outline-offset:-4px}
+#battle[data-bamboo-aqueduct="true"] .aqueduct-receiver.wet{background-color:#1f7774}
 
 #battle .board {
   display:grid;

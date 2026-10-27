@@ -42,7 +42,9 @@ export function createRelayWave({stage,wave,allies,supplies,confirmedProgress}){
   if(!row||!Number.isInteger(wave)||wave<1||wave>5||!Array.isArray(allies)||allies.length!==6||!Number.isSafeInteger(supplies)||supplies<0)throw new TypeError('invalid relay wave');
   const team=allies.map((unit,i)=>{
     if(unit===null)return null;
-    if(!unit||!Number.isFinite(unit.hp)||!Number.isFinite(unit.maxHp)||!Number.isFinite(unit.shield)||unit.hp<0||unit.hp>unit.maxHp||unit.shield<0)throw new TypeError('invalid ally');
+    // v43 faint abilities can increase current HP above maxHp. Preserve that
+    // live state; never clamp the real squad to satisfy this preview model.
+    if(!unit||!Number.isFinite(unit.hp)||!Number.isFinite(unit.maxHp)||!Number.isFinite(unit.shield)||unit.hp<0||unit.maxHp<=0||unit.shield<0)throw new TypeError('invalid ally');
     return {slot:i+1,hp:unit.hp,maxHp:unit.maxHp,shield:unit.shield};
   });
   const actors=row.waves[wave-1].map((kind,index)=>({id:`${stage}:${wave}:${index}`,kind,actions:0,alive:true,shield:0}));
@@ -68,7 +70,7 @@ export function chooseRelayOrder(state,type,target){
   if(!state.orders.includes(type))return {ok:false,reason:'order-locked-stage'};
   if(state.supplies<2)return {ok:false,reason:'insufficient-supplies'};
   const actor=state.actors.find(x=>x.id===target);
-  if(type==='ward'&&(!Number.isInteger(target)||!state.wardTargets.includes(target)))return {ok:false,reason:'invalid-target'};
+  if(type==='ward'&&(!Number.isInteger(target)||!state.wardTargets.includes(target)||!(state.team[target-1]?.hp>0)))return {ok:false,reason:'invalid-target'};
   if(type==='flare'&&actor?.kind!=='G')return {ok:false,reason:'invalid-target'};
   if(type==='seal'&&!['P','B50','B55','B60'].includes(actor?.kind))return {ok:false,reason:'invalid-target'};
   state.selected={type,target,consumed:false};
@@ -79,6 +81,7 @@ export function beginRelayWave(state){
   state.selected??={type:'none'};
   const {type,target}=state.selected;
   if(type!=='none'&&state.supplies<2)return {ok:false,reason:'insufficient-supplies'};
+  if(type==='ward'&&!(state.team[target-1]?.hp>0))return {ok:false,reason:'target-unavailable'};
   if(type!=='none')state.supplies-=2;
   if(type==='ward'){const ally=state.team[target-1];if(ally)ally.shield+=4;}
   if(type==='flare'){
@@ -132,6 +135,7 @@ export function relayAdjustHealing(state,amount){
 export function relayHeal(state,slot,amount){
   if(!Number.isInteger(slot)||slot<1||slot>6||!Number.isFinite(amount)||amount<0)throw new TypeError('invalid heal');
   const ally=state.team[slot-1];if(!ally||ally.hp<=0)return {type:'heal-no-target',slot};
-  const {jam,adjusted}=relayAdjustHealing(state,amount),healed=Math.min(ally.maxHp-ally.hp,adjusted);ally.hp+=healed;
+  const {jam,adjusted}=relayAdjustHealing(state,amount),healed=Math.min(Math.max(0,ally.maxHp-ally.hp),adjusted);
+  if(adjusted>0)ally.hp=Math.min(ally.maxHp,ally.hp+adjusted);
   const event={type:'heal',slot,requested:amount,jam,healed};state.events.push(event);return event;
 }

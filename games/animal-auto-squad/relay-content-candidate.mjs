@@ -1,7 +1,7 @@
 // Candidate content adapter for the existing v43 combat shape. This module is
 // deliberately not imported by game.js until the save, UI, art and signal
 // hooks are ready; constructing data alone never opens a stage.
-import {RELAY_DRAFT} from './relay-candidate.mjs?v=20261027-auto-squad-relay-data1';
+import {RELAY_DRAFT} from './relay-candidate.mjs?v=20261027-auto-squad-relay-data3';
 import {RELAY_COPY_LOCALES,relayCopy} from './relay-copy-candidate.mjs?v=20261027-auto-squad-relay-copy1';
 
 const newKinds=['D','G','P','B35','B40','B45','B50','B55','B60'];

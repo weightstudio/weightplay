@@ -48,19 +48,33 @@
     it:"Allenamento: progressi e ricompense non vengono salvati.",ru:"Тренировка: прогресс и награды не сохраняются.",
     hi:"अभ्यास: प्रगति या पुरस्कार सहेजे नहीं जाते।",ar:"تدريب: لا يُحفظ التقدم أو المكافآت."
   };
+  const relayTargetUnavailableCopy = {
+    en:"That marked position has no living ally. Choose another order.","zh-Hant":"該標記位置沒有存活隊員，請選擇其他指令。","zh-Hans":"该标记位置没有存活队员，请选择其他指令。",
+    ja:"その標的位置に生存中の仲間はいません。別の指令を選んでください。",ko:"표식 위치에 살아 있는 아군이 없습니다. 다른 명령을 선택하세요.",
+    es:"No hay un aliado vivo en ese puesto marcado. Elige otra orden.","pt-BR":"Não há aliado vivo nessa posição marcada. Escolha outra ordem.",
+    fr:"Aucun allié vivant à cette place marquée. Choisissez un autre ordre.",de:"Auf diesem markierten Platz lebt kein Verbündeter. Wähle einen anderen Befehl.",
+    it:"Non c’è un alleato vivo nella posizione marcata. Scegli un altro ordine.",ru:"На отмеченной позиции нет живого союзника. Выберите другой приказ.",
+    hi:"चिह्नित स्थान पर कोई जीवित साथी नहीं है। दूसरा आदेश चुनें।",ar:"لا يوجد حليف حي في الموقع المحدد. اختر أمرًا آخر."
+  };
+  const relayDetailsCopy = {
+    en:"Wave details and order effects","zh-Hant":"波次詳情與指令效果","zh-Hans":"波次详情与指令效果",ja:"ウェーブ詳細と指令の効果",ko:"웨이브 상세 및 명령 효과",
+    es:"Detalles de la oleada y efectos", "pt-BR":"Detalhes da onda e efeitos",fr:"Détails de la vague et effets",de:"Wellendetails und Befehlseffekte",
+    it:"Dettagli dell’ondata ed effetti",ru:"Сведения о волне и эффектах",hi:"लहर और आदेश के विवरण",ar:"تفاصيل الموجة وتأثير الأوامر"
+  };
   function practiceNoSaveText() { return practiceNoSaveCopy[actualGameLocale()] || practiceNoSaveCopy.en; }
   let relayModulePromise, relayContent = null, relayConfirmedProgress = null, relayDecision = null, relayDecisionView = null;
   function loadRelayChapterCandidate() {
     if (!relayModulePromise) relayModulePromise = Promise.all([
-      import("./relay-content-candidate.mjs?v=20261027-auto-squad-relay-content1"),
-      import("./relay-bridge-candidate.mjs?v=20261027-auto-squad-relay-bridge1"),
-      import("./relay-wave-gate-candidate.mjs?v=20261027-auto-squad-relay-gate1"),
-      import("./relay-preparation-candidate.mjs?v=20261027-auto-squad-relay-prep2"),
+      import("./relay-content-candidate.mjs?v=20261027-auto-squad-relay-content3"),
+      import("./relay-bridge-candidate.mjs?v=20261027-auto-squad-relay-bridge3"),
+      import("./relay-wave-gate-candidate.mjs?v=20261027-auto-squad-relay-gate2"),
+      import("./relay-preparation-candidate.mjs?v=20261027-auto-squad-relay-prep5"),
       import("./relay-copy-candidate.mjs?v=20261027-auto-squad-relay-copy1")
     ]);
     return relayModulePromise;
   }
   function relayUnavailableText() { return relayUnavailableCopy[actualGameLocale()] || relayUnavailableCopy.en; }
+  function relayTargetUnavailableText() { return relayTargetUnavailableCopy[actualGameLocale()] || relayTargetUnavailableCopy.en; }
   function holdRelayWaveForPreparation() {
     // The next wave must not start until artwork, save proof and all other
     // Chapter 2 prerequisites are implemented and explicitly enabled.
@@ -73,7 +87,12 @@
   }
   function closeRelayWaveDecision() {
     relayDecision?.invalidate(); relayDecision=null;
-    relayDecisionView?.destroy(); relayDecisionView=null;
+    removeRelayDecisionView();
+  }
+  function removeRelayDecisionView() {
+    if (!relayDecisionView) return;
+    setBattleDecisionOwnership(relayDecisionView.element,false);
+    relayDecisionView.destroy(); relayDecisionView=null;
   }
   function openRelayWaveDecision(modules,stage,wave,runId) {
     closeRelayWaveDecision();
@@ -81,7 +100,7 @@
     const enemySquad=relayContent.generateEnemySquad(stage,wave);
     const bridge=bridgeModule.createRelayBridge({stage,wave,playerSquad:state.combat.playerSquad,enemySquad,confirmedProgress:relayConfirmedProgress,ops:{
       getSupplies:()=>state.gold,
-      spendSupplies(amount){if(state.gold<amount)return false;state.gold-=amount;updateHUD();return true;},
+      spendSupplies(amount){if(state.gold<amount)return false;state.gold-=amount;return true;},
       hit(unit,amount){const point=formationTargetPoint("player",state.combat.playerSquad,unit);damageTarget(unit,amount,point.x,point.y);},
       shield(unit,amount,team){const squad=team==="player"?state.combat.playerSquad:enemySquad;addUnitShield(unit,amount,team,Math.max(0,squad.indexOf(unit)));}
     }});
@@ -102,11 +121,12 @@
         });
         const copy=copyModule.relayCopy(actualGameLocale(),stage);
         relayDecisionView=viewModule.createRelayPreparationView({document,host,copy,preview,actors,supplies:state.gold,
-          labels:{heading:`${stageLabel(stage)} · ${t("round")} ${wave}/${WAVES_PER_STAGE}`,supplies:t("supplies"),none:t("none"),slot:index=>t("slotPosition",{index}),start:t("startBattle"),unavailable:relayUnavailableText()},
-          choose:(type,target)=>gate.choose(id,type,target),confirm:()=>gate.confirm(id),onError:()=>{}});
+          labels:{heading:`${stageLabel(stage)} · ${t("round")} ${wave}/${WAVES_PER_STAGE}`,supplies:t("supplies"),none:t("none"),slot:index=>t("slotPosition",{index}),details:relayDetailsCopy[actualGameLocale()]||relayDetailsCopy.en,start:t("startBattle"),cancel:t("backToStages"),noSupplies:t("noSupplies"),unavailable:relayUnavailableText(),targetUnavailable:relayTargetUnavailableText()},
+          choose:(type,target)=>gate.choose(id,type,target),confirm:()=>gate.confirm(id),cancel:()=>{state.activeRun=false;showStageSelection();},onError:()=>{}});
+        setBattleDecisionOwnership(relayDecisionView.element,true);
         relayDecisionView.focus();
       },
-      begin(bundle){relayDecisionView?.destroy();relayDecisionView=null;startNextWaveBattle({stage,wave,enemySquad:bundle.enemySquad,bridge:bundle.bridge});},
+      begin(bundle){updateHUD();removeRelayDecisionView();startNextWaveBattle({stage,wave,enemySquad:bundle.enemySquad,bridge:bundle.bridge});},
       isCurrent:ticket=>state.activeRun && state.stage===ticket.stage && state.round===ticket.wave && state.combat.runId===ticket.runId
     });
     relayDecision=gate;
@@ -126,6 +146,23 @@
     if (!practiceAdapter || !practiceAuthorized || practiceStartPending) return;
     practiceStartPending = true;
     void practiceAdapter.validate().then(ok => { if (ok && practiceAuthorized) action(); }).catch(() => {}).finally(() => { practiceStartPending = false; });
+  }
+  function waitForSharedEntryReady() {
+    // Direct practice must not hide Main before the shared entry loader has
+    // observed its actual ready state. Failure/timeout does not bypass it.
+    return new Promise(resolve => {
+      let done=false;
+      const observer=new MutationObserver(check);
+      const timer=setTimeout(()=>finish(false),25000);
+      function finish(value){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(value);}
+      function check(){
+        const root=document.documentElement;
+        if (window.WeightPlayGameEntryLoader?.isActive && root.dataset.wpGameEntryLoaderInstalled === "true" && root.dataset.wpGameEntryLoaderActive !== "true") finish(true);
+        else if(document.querySelector('.wp-game-entry-loader[data-state="error"]')) finish(false);
+      }
+      observer.observe(document.documentElement,{attributes:true,attributeFilter:["data-wp-game-entry-loader-installed","data-wp-game-entry-loader-active"],childList:true,subtree:true});
+      check();
+    });
   }
 
   // Localization Dictionary
@@ -3054,7 +3091,9 @@
     if (practiceRequested) {
       // Only the currently implemented stages are registered. Incomplete
       // Chapter 2 content is not exposed even in local practice.
-      void import("../../src/game-local-practice.mjs").then(async ({LocalPractice}) => {
+      void waitForSharedEntryReady().then(ready => ready ? import("../../src/game-local-practice.mjs") : null).then(async module => {
+        if (!module) return;
+        const {LocalPractice}=module;
         practiceAdapter = LocalPractice;
         await LocalPractice.register({
           gameId: GAME_ID,
