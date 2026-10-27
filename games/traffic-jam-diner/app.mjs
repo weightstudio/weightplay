@@ -1,13 +1,14 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import { CAMPAIGN_STAGES, SNACKS } from './campaign.mjs?v=20261027-diner-opt-v24';
-import { normalizeStage, createInitialState, legalActions, applyAction, isWon, routeForMove, stateKey, explainMove } from './engine.mjs?v=20261027-diner-opt-v24';
+import { CAMPAIGN_STAGES, SNACKS } from './campaign.mjs?v=20261027-diner-opt-v25';
+import { normalizeStage, createInitialState, legalActions, applyAction, isWon, routeForMove, stateKey, explainMove } from './engine.mjs?v=20261027-diner-opt-v25';
 import { GAME_COPY, LOCALE_LABELS } from './copy.mjs';
 import { LEAVE_UI } from './interface-copy.mjs';
-import {REBUILD_COPY,stageTitle} from './rebuild-copy.mjs?v=20261027-diner-opt-v24';
-import {OPTIMIZATION_COPY} from './optimization-copy.mjs?v=20261027-diner-opt-v24';
-import {MILESTONE_STAGES,currentBest,cleanRouteBest,preserveAchievements,preserveRouteHistory,totalEarnedStars,earnedMilestones,recordClear} from './progress.mjs?v=20261027-diner-opt-v24';
-import {pantryWarning} from './pantry.mjs?v=20261027-diner-opt-v24';
-import {DinerScene} from './render.mjs?v=20261027-diner-opt-v24';
+import {REBUILD_COPY,stageTitle} from './rebuild-copy.mjs?v=20261027-diner-opt-v25';
+import {OPTIMIZATION_COPY} from './optimization-copy.mjs?v=20261027-diner-opt-v25';
+import {MILESTONE_STAGES,currentBest,cleanRouteBest,preserveAchievements,preserveRouteHistory,totalEarnedStars,earnedMilestones,recordClear} from './progress.mjs?v=20261027-diner-opt-v25';
+import {pantryWarning} from './pantry.mjs?v=20261027-diner-opt-v25';
+import {DinerScene,createDecorPreviews} from './render.mjs?v=20261027-diner-opt-v25';
+import {LESSON_COPY} from './lesson-copy.mjs?v=20261027-diner-opt-v25';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 
 const $ = s => document.querySelector(s), localeSelect=$('#localeSelect'), root=$('#app');
@@ -18,7 +19,7 @@ const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const totalStars=()=>totalEarnedStars(save,CAMPAIGN_STAGES.length);
 const CHARACTER_ART={turtle:'/games/traffic-jam-diner/assets/taro-block-sprite-v23.webp',fox:'/games/traffic-jam-diner/assets/fia-block-sprite-v23.webp',rabbit:'/games/traffic-jam-diner/assets/mimi-block-sprite-v23.webp',bear:'/games/traffic-jam-diner/assets/panko-block-sprite-v23.webp'};
 let characterTextures={};
-let assetsReady=false,entryLoader=null,assetGeneration=0,loadTimedOut=false;
+let assetsReady=false,entryLoader=null,assetGeneration=0,loadTimedOut=false,decorPreviews=null,decorPreviewTask=null;
 const saveKey='weightplay:traffic-jam-diner:v1', backupKey=`${saveKey}:backup`;
 const fresh=()=>({version:1,unlocked:1,best:{},routeBest:{},routeHistory:{},achievements:{},lastStage:1,ownedItems:[],boardStyle:'classic'});
 function loadSave(){
@@ -32,7 +33,7 @@ function loadSave(){
 }
 let save=loadSave();
 function persist(){if(practiceRun)return;try{localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}catch{say('loadError','error');}}
-const t=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,v), (OPTIMIZATION_COPY[locale]?.[key]||REBUILD_COPY[locale]?.[key]||GAME_COPY[locale]?.[key]||GAME_COPY.en[key]||key));
+const t=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,v), (LESSON_COPY[locale]?.[key]||OPTIMIZATION_COPY[locale]?.[key]||REBUILD_COPY[locale]?.[key]||GAME_COPY[locale]?.[key]||GAME_COPY.en[key]||key));
 const shopCost=12,shopItem='berry-grove-board',purchaseKey=`${saveKey}:purchase-pending`;
 function recoverPendingPurchase(){if(new URLSearchParams(location.search).get('practice')==='1')return;try{const pending=JSON.parse(localStorage.getItem(purchaseKey)||'null');if(!pending)return;const balance=Number(window.WeightPlayWallet?.read?.()?.diamonds)||0;if(pending.item===shopItem&&Number.isFinite(pending.before)&&balance<=pending.before-shopCost){save.ownedItems=[...new Set([...(save.ownedItems||[]),shopItem])];save.boardStyle='berry-grove';localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}localStorage.removeItem(purchaseKey);}catch{}}
 function renderStore(){const balance=Math.max(0,Number(window.WeightPlayWallet?.read?.()?.diamonds)||0),owned=save.ownedItems?.includes(shopItem);$('#shop-balance').textContent=String(balance);$('#shop-classic').setAttribute('aria-pressed',String(save.boardStyle==='classic'));$('#shop-confirm').setAttribute('aria-pressed',String(owned&&save.boardStyle==='berry-grove'));$('#shop-confirm').disabled=practiceRun||(owned?save.boardStyle==='berry-grove':balance<shopCost);$('#shop-confirm').textContent=owned?t(save.boardStyle==='berry-grove'?'equipped':'equip'):t('shopConfirm');$('#shop-status').textContent=owned?t(save.boardStyle==='berry-grove'?'shopBought':'shopOwned'):balance<shopCost?t('shopNeedDiamonds'):localStorage.getItem(purchaseKey)?t('shopError'):'';}
@@ -42,7 +43,7 @@ function renderMilestones(){
  const earned=earnedMilestones(save),names=OPTIMIZATION_COPY[locale].milestoneNames;
  $('#milestone-title').textContent=t('milestones');$('#milestone-progress').textContent=t('milestoneProgress',{n:earned.length,total:MILESTONE_STAGES.length});
  const grid=$('#milestone-list');grid.replaceChildren();
- MILESTONE_STAGES.forEach((id,index)=>{const row=document.createElement('li'),name=document.createElement('strong'),status=document.createElement('span');row.dataset.earned=String(earned.includes(id));name.textContent=names[index];status.textContent=earned.includes(id)?t('milestoneEarned'):t('milestoneLocked',{n:id});row.append(name,status);grid.append(row);});
+ MILESTONE_STAGES.forEach((id,index)=>{const row=document.createElement('li'),image=document.createElement('img'),name=document.createElement('strong'),status=document.createElement('span');row.dataset.earned=String(earned.includes(id));image.src=decorPreviews[index];image.alt='';image.width=64;image.height=64;image.draggable=false;name.textContent=names[index];status.textContent=earned.includes(id)?t('milestoneEarned'):t('milestoneLocked',{n:id});row.append(image,name,status);grid.append(row);});
 }
 function buyBoardFinish(){
     if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("traffic-jam-diner:app.mjs:buyBoardFinish", () => buyBoardFinish(...arguments));
@@ -140,7 +141,7 @@ async function startStage(id){
  cancelEffects();run++;practiceRun=LocalPractice.enabled;selectedStageIndex=id-1;stage=normalizeStage(CAMPAIGN_STAGES[id-1]);state=createInitialState(stage);battleEntryState=JSON.stringify(state);undoStack=[];selectedGuest=null;candidates=[];paused=false;
  for(const id of ['result-panel','help-panel','orders-panel','leave-panel','render-error'])$('#'+id).hidden=true;
  if(!practiceRun){save.lastStage=stage.id;persist();}
- enter('battle');if(!ensureRenderer())return;renderer.setStage(stage,save.boardStyle,earnedMilestones(save).length);$('#order-dock').dataset.hasGates=String(stage.gates.length>0);updateUI();say(stage.id===1?'firstPlay':'experience');audio('game.start');$('#board-canvas').focus({preventScroll:true});
+ enter('battle');if(!ensureRenderer())return;renderer.setStage(stage,save.boardStyle,earnedMilestones(save).length);$('#order-dock').dataset.hasGates=String(stage.gates.length>0);updateUI();say(stage.lesson==='yield'?'lessonYield':stage.lesson==='reserve'?'lessonReserve':stage.id===1?'firstPlay':'experience');audio('game.start');$('#board-canvas').focus({preventScroll:true});
 }
 function renderFailure(){cancelEffects();paused=true;$('#render-error').hidden=false;}
 function ensureRenderer(){
@@ -233,13 +234,16 @@ function finish(){
  $('#result-title').textContent=finale?t('finaleTitle'):stage.id%5===0?t('arcComplete',{n:stage.arc}):t('clear');$('#result-copy').textContent=t('starTargets',{moves:state.moves,three:stage.targetMoves,two:stage.par});$('#result-stars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#result-stars').setAttribute('aria-label',`${stars} / 3`);$('#result-best').textContent=practiceRun?t('practice'):t('mastery',{n:totalStars()});
  $('#result-record').textContent=practiceRun?t('practiceNoProgress'):t('routeBest',{n:currentBest(save,stage).moves});
  $('#result-reward').textContent=unlocked.length?t('milestoneReward',{name:OPTIMIZATION_COPY[locale].milestoneNames[MILESTONE_STAGES.indexOf(unlocked[0])]}):finale&&!practiceRun?t('finaleCopy'):'';$('#result-reward').hidden=!$('#result-reward').textContent;
+ const rewardArt=$('#result-reward-art');rewardArt.hidden=!unlocked.length;
+ if(unlocked.length){rewardArt.src=decorPreviews[MILESTONE_STAGES.indexOf(unlocked[0])];rewardArt.alt=OPTIMIZATION_COPY[locale].milestoneNames[MILESTONE_STAGES.indexOf(unlocked[0])];emphasize(rewardArt);}
+ else{rewardArt.removeAttribute('src');rewardArt.alt='';}
  $('#result-panel').dataset.finale=String(finale);$('#result-next').textContent=finale?t('nextStage'):t('stage',{n:stage.id+1});$('#result-next').disabled=finale;
  $('#result-panel').hidden=false;audio(unlocked.length?'reward.unlock':'result.win');
 }
 function hint(){
  if(covered())return;cancelEffects();const request=++hintRequest,currentRun=run,key=stateKey(state);say('thinking');
  try{
-  hintWorker=new Worker(new URL('./hint-worker.mjs?v=20261027-diner-opt-v24',import.meta.url),{type:'module'});
+  hintWorker=new Worker(new URL('./hint-worker.mjs?v=20261027-diner-opt-v25',import.meta.url),{type:'module'});
   hintTimer=setTimeout(()=>{if(request!==hintRequest)return;hintWorker?.terminate();hintWorker=null;say('hintError','error');},4000);
   hintWorker.onmessage=({data})=>{
    if(request!==hintRequest||currentRun!==run||key!==stateKey(state))return;audio('feedback.hint');clearTimeout(hintTimer);hintWorker?.terminate();hintWorker=null;
@@ -290,8 +294,17 @@ async function sharedEntryLoader(){
  if(!window.WeightPlayGameEntryLoader?.isActive)throw new Error('Shared entry loader unavailable');return window.WeightPlayGameEntryLoader;
 }
 async function loadAssets(){
- const generation=++assetGeneration,current=()=>generation===assetGeneration,start=$('#start-game');let timeout=0;loadTimedOut=false;start.disabled=true;$('#main-progress').textContent=t('loading');entryLoader?.begin(8);
- const work=async()=>{if(!await loadCharacterArt(current,loaded=>entryLoader?.assetProgress(loaded,8))||!current())return false;const poster=$('[data-wp-frame-poster]');if(poster){await poster.decode();if(!poster.naturalWidth)throw new Error('Main poster unavailable');}if(current())entryLoader?.assetProgress(8,8);return current();};
+ const generation=++assetGeneration,current=()=>generation===assetGeneration,start=$('#start-game');let timeout=0;loadTimedOut=false;start.disabled=true;$('#main-progress').textContent=t('loading');entryLoader?.begin(9);
+ const work=async()=>{
+  if(!await loadCharacterArt(current,loaded=>entryLoader?.assetProgress(loaded,9))||!current())return false;
+  decorPreviewTask??=createDecorPreviews().then(async previews=>{
+   if(previews.length!==MILESTONE_STAGES.length)throw new Error('Incomplete diner decor artwork');
+   await Promise.all(previews.map(src=>{const image=new Image();image.src=src;return image.decode();}));return previews;
+  }).catch(error=>{decorPreviewTask=null;throw error;});
+  decorPreviews=await decorPreviewTask;if(!current())return false;entryLoader?.assetProgress(8,9);
+  const poster=$('[data-wp-frame-poster]');if(poster){await poster.decode();if(!poster.naturalWidth)throw new Error('Main poster unavailable');}
+  if(current())entryLoader?.assetProgress(9,9);return current();
+ };
  try{const ready=await Promise.race([work(),new Promise((_,reject)=>{timeout=setTimeout(()=>{loadTimedOut=true;reject(new Error('Asset load timeout'));},12000);})]);if(!ready||!current())return;assetsReady=true;start.textContent=t('start');start.disabled=false;updateMain();entryLoader?.ready();}
  catch(error){if(!current())return;assetGeneration++;console.error('traffic-jam-diner assets failed',error);$('#main-progress').textContent=t('loadError');start.textContent=t('retry');start.disabled=false;entryLoader?.fail(t('loadError'),loadTimedOut?()=>location.reload():loadAssets);}
  finally{clearTimeout(timeout);}

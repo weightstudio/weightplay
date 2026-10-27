@@ -14,6 +14,11 @@ body[data-wp-market-game="animal-hoop-league"] .m5-lede { color:#f2f5df; font-si
 body[data-wp-market-game="animal-hoop-league"] .m5-progress { color:#9ce6b0; font-weight:800; }
 body[data-wp-market-game="animal-hoop-league"] .m5-primary { width:100%; min-height:52px; background:#a8f1c4; color:#12382e; }
 .hoop-stage-content { position:relative; width:100%; height:100%; min-width:0; min-height:0; overflow:hidden; }
+.hoop-stage-content[data-wp-frame-content="stage"] { display:flex!important; flex-direction:column; }
+.hoop-stage-workspace { position:relative; flex:1 1 0; width:100%; min-width:0; min-height:0; }
+.hoop-save-warning { box-sizing:border-box; flex:0 0 auto; max-height:clamp(48px,18vh,100px); overflow:auto; margin:0; padding:6px 10px; border:1px solid #e7c77b; border-radius:6px; background:#4a3317; color:#fff3cf; font:600 13px/1.35 system-ui; overflow-wrap:anywhere; }
+.hoop-save-warning[hidden] { display:none!important; }
+.hoop-save-warning:focus-visible { outline:3px solid #fff1a6; outline-offset:2px; }
 .hoop-battle-content { position:relative; box-sizing:border-box; flex:1 1 auto; min-width:0; min-height:0; gap:8px!important; padding:8px!important; background:#0c2437; }
 .hoop-match-layout { display:flex; flex:1 1 auto; flex-direction:column; min-width:0; min-height:0; gap:inherit; }
 .hoop-court-area { display:flex; flex:1 1 auto; min-width:0; min-height:0; flex-direction:column; gap:6px; overflow:hidden; }
@@ -47,6 +52,8 @@ body[data-wp-market-game="animal-hoop-league"] .m5-result { position:absolute; z
 body[data-wp-market-game="animal-hoop-league"] .m5-result[hidden] { display:none!important; }
 body[data-wp-market-game="animal-hoop-league"] .m5-result h2 { margin:0; color:#a8f1c4; font-size:clamp(22px,4vw,32px); }
 body[data-wp-market-game="animal-hoop-league"] .m5-result p { max-width:36rem; margin:0; color:#d8e8e3; line-height:1.5; }
+body[data-wp-market-game="animal-hoop-league"] #result-copy[tabindex="0"] { max-height:22vh; overflow:auto; overflow-wrap:anywhere; }
+body[data-wp-market-game="animal-hoop-league"] #result-copy[tabindex="0"]:focus-visible { outline:3px solid #fff1a6; outline-offset:2px; }
 body[data-wp-market-game="animal-hoop-league"] .m5-result-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; width:min(560px,100%); }
 body[data-wp-market-game="animal-hoop-league"] .m5-result-actions button { min-width:0; min-height:max(48px,calc(44px * var(--wp-battle-canvas-inverse-scale,1))); height:max(48px,calc(44px * var(--wp-battle-canvas-inverse-scale,1))); padding-inline:8px; border:1px solid #7bc49e; border-radius:6px; background:#173d4e; color:#f0f8f4; font-size:14px; }
 body[data-wp-market-game="animal-hoop-league"] .m5-result-actions button.primary { background:#b1f0be; color:#143f32; }

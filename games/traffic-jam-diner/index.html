@@ -8,7 +8,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#163b49" />
-  <meta name="weightplay-game-version" content="v24" />
+  <meta name="weightplay-game-version" content="v25" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="robots" content="index,follow" />
   <meta name="description" content="Route animal neighbors through one-way diner lanes, use small waiting bays, and complete each snack basket in the right order." />
@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260921-interface7-single-frame-v2" data-wp-shell-standard />
-  <link rel="stylesheet" href="./app.css?v=20261027-diner-opt-v24" />
+  <link rel="stylesheet" href="./app.css?v=20261027-diner-opt-v25" />
   <script src="../../src/site-config.js?v=20261017-shared-dark-loader1" defer></script>
   <script src="../../src/wallet.js?v=20260531-wallet-i8" defer></script>
   <script src="../../src/game-screen-frame.js?v=20261017-shared-dark-loader1" defer></script>
@@ -49,7 +49,7 @@
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <script data-wp-entry-required src="/src/stage-rail-i9.js?v=20261016-shared-play1" defer></script>
   <script data-wp-entry-required src="/src/game-play-ui.js?v=20261017-shared-play-spacing1" defer></script>
-  <script type="module" src="./app.mjs?v=20261027-diner-opt-v24"></script>
+  <script type="module" src="./app.mjs?v=20261027-diner-opt-v25"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
@@ -83,7 +83,7 @@
         <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true"></p>
         <section id="render-error" class="help-panel" role="dialog" aria-modal="true" aria-labelledby="render-error-title" hidden><div class="help-card"><h2 id="render-error-title" data-copy="loadError">The board could not load. Retry or return to the stage map.</h2><div class="leave-actions"><button id="render-map" type="button" data-copy="map">Map</button><button id="render-retry" type="button" class="primary" data-copy="retry">Retry</button></div></div></section>
         <section id="help-panel" class="help-panel" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden><div class="help-card"><h2 id="help-title">How to route</h2><p id="help-copy">Move a guest to the diner counter or a blue waiting bay. Lane cells are travel space; only stops hold a guest.</p><button id="help-close" type="button">Close</button></div></section>
-        <section id="result-panel" class="result-panel" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><div class="result-card" data-wp-result-card><h2 id="result-title">Diner served!</h2><p id="result-copy"></p><div id="result-stars" class="result-stars" aria-label="Stars"></div><p id="result-best"></p><p id="result-record"></p><p id="result-reward" class="result-reward" hidden></p><div class="result-actions"><button id="result-map" type="button">Stages</button><button id="result-next" class="primary" type="button">Next stage</button><button id="result-replay" type="button">Replay</button></div></div></section>
+        <section id="result-panel" class="result-panel" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><div class="result-card" data-wp-result-card><h2 id="result-title">Diner served!</h2><p id="result-copy"></p><div id="result-stars" class="result-stars" aria-label="Stars"></div><p id="result-best"></p><p id="result-record"></p><div class="result-reward-row"><img id="result-reward-art" width="64" height="64" alt="" hidden><p id="result-reward" class="result-reward" hidden></p></div><div class="result-actions"><button id="result-map" type="button">Stages</button><button id="result-next" class="primary" type="button">Next stage</button><button id="result-replay" type="button">Replay</button></div></div></section>
       </div>
     </section>
   </main>

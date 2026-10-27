@@ -1,7 +1,7 @@
 window.WEIGHTPLAY_GAME_TITLES = {
   "orbit-menders": {
-    "en": "Orbit Menders",
-    "zh-Hant": "方塊星途：重力修復隊"
+    "en": "Boom Mane: Tower Guard",
+    "zh-Hant": "爆炸頭獅子：守塔防線"
   },
   "animal-peach-oath": {
     "__localizedExact": true,

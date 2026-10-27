@@ -355,7 +355,8 @@ export class RapidsRenderer{
     }
     position.needsUpdate=true;color.needsUpdate=true;
     for(let i=0;i<LIMESTONE_SLOTS;i++){
-      const row=Math.floor(s/6)-2+Math.floor(i/8),side=i%8<4?-1:1,layer=i%4,seed=row*37+side*17+layer*53;
+      // Keep the retiring ridge (and its tree) behind the short-landscape view.
+      const row=Math.floor(s/6)-3+Math.floor(i/8),side=i%8<4?-1:1,layer=i%4,seed=row*37+side*17+layer*53;
       const poolIndex=scenerySlot(row,LIMESTONE_SLOTS/8,i%8,8),slot=this.ridgeSlots[poolIndex],at=row*6+(hash(seed+1)-.5)*3.8,distance=15.8+layer*6.4+(hash(seed+2)-.5)*2.6;
       slot.active=Math.sin(row*.84+side*1.6+layer*.71)+.6*Math.sin(row*1.39+layer*.45)>-.85&&hash(seed+7)>.12;
       slot.at=at;slot.x=this.worldX(at)+side*(trackWidth(at,this.stage)*this.xSpread/2+distance);slot.side=side;slot.seed=seed;slot.kind=poolIndex%3;

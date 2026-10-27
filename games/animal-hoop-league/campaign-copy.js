@@ -31,5 +31,20 @@
     hi:['प्रगति इस डिवाइस पर सहेजी गई।','प्रगति सहेजे जाने की पुष्टि नहीं हो सकी। फिर कोशिश करने के लिए यह कोर्ट दोबारा खेलें।'],
     ar:['حُفظ التقدم على هذا الجهاز.','تعذر تأكيد حفظ التقدم. أعد لعب هذا الملعب للمحاولة مجددًا.']
   };
-  globalThis.HoopCampaignCopy=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,row])=>{if(row.length!==keys.length||saveStatus[locale]?.length!==2)throw new Error('Hoop chapter copy: '+locale);return [locale,Object.freeze({...Object.fromEntries(keys.map((key,i)=>[key,row[i]])),saveConfirmed:saveStatus[locale][0],saveUnconfirmed:saveStatus[locale][1]})];})));
+  const savePending={
+    en:'Progress for courts {stages} is not confirmed. Clear any court to retry saving; leaving or reloading may lose unconfirmed progress.',
+    'zh-Hant':'無法確認第 {stages} 關的進度已儲存。通關任一球場會再次嘗試儲存；離開遊戲或重新載入可能失去未確認的進度。',
+    'zh-Hans':'无法确认第 {stages} 关的进度已保存。通关任一球场会再次尝试保存；离开游戏或重新加载可能失去未确认的进度。',
+    ja:'コート {stages} の進行状況を保存できたか確認できません。いずれかのコートをクリアすると再保存を試みます。ゲームを離れるか再読み込みすると未確認の進行状況が失われる場合があります。',
+    ko:'코트 {stages}의 진행 상황이 저장되었는지 확인할 수 없습니다. 아무 코트나 완료하면 저장을 다시 시도합니다. 게임을 떠나거나 새로고침하면 확인되지 않은 진행 상황이 사라질 수 있습니다.',
+    es:'No se pudo confirmar el guardado del progreso de las canchas {stages}. Completa cualquier cancha para intentar guardar de nuevo; salir del juego o recargar puede hacerte perder el progreso no confirmado.',
+    'pt-BR':'Não foi possível confirmar o salvamento do progresso das quadras {stages}. Conclua qualquer quadra para tentar salvar de novo; sair do jogo ou recarregar pode apagar o progresso não confirmado.',
+    fr:'Impossible de confirmer l’enregistrement des terrains {stages}. Terminez un terrain pour réessayer ; quitter le jeu ou recharger peut faire perdre la progression non confirmée.',
+    de:'Das Speichern des Fortschritts für die Plätze {stages} konnte nicht bestätigt werden. Schließe einen beliebigen Platz ab, um erneut zu speichern; beim Verlassen oder Neuladen kann unbestätigter Fortschritt verloren gehen.',
+    it:'Impossibile confermare il salvataggio dei progressi dei campi {stages}. Completa un campo qualsiasi per riprovare a salvare; uscendo dal gioco o ricaricando potresti perdere i progressi non confermati.',
+    ru:'Не удалось подтвердить сохранение прогресса площадок {stages}. Завершите любую площадку, чтобы повторить сохранение; при выходе из игры или перезагрузке неподтверждённый прогресс может потеряться.',
+    hi:'कोर्ट {stages} की प्रगति सहेजे जाने की पुष्टि नहीं हो सकी। किसी भी कोर्ट को पूरा करने पर सहेजने की फिर कोशिश होगी; खेल छोड़ने या दोबारा लोड करने पर अपुष्ट प्रगति खो सकती है।',
+    ar:'تعذّر تأكيد حفظ تقدم الملاعب {stages}. أكمل أي ملعب لإعادة محاولة الحفظ؛ قد تفقد التقدم غير المؤكد عند مغادرة اللعبة أو إعادة التحميل.'
+  };
+  globalThis.HoopCampaignCopy=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,row])=>{if(row.length!==keys.length||saveStatus[locale]?.length!==2||!savePending[locale]?.includes('{stages}'))throw new Error('Hoop chapter copy: '+locale);return [locale,Object.freeze({...Object.fromEntries(keys.map((key,i)=>[key,row[i]])),saveConfirmed:saveStatus[locale][0],saveUnconfirmed:saveStatus[locale][1],savePending:savePending[locale]})];})));
 })();

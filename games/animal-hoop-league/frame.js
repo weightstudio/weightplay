@@ -28,6 +28,18 @@
   const utility = byId('battle-utility');
   const stageLabel = byId('stage-label');
   const scoreLabel = byId('score-label');
+  function saveWarning(scene) {
+    const node = document.createElement('p');
+    node.className = 'hoop-save-warning';
+    node.dataset.hoopSaveWarning = scene;
+    node.setAttribute('role','status');
+    node.setAttribute('aria-live','polite');
+    node.setAttribute('aria-atomic','true');
+    node.setAttribute('tabindex','0');
+    node.hidden = true;
+    return node;
+  }
+  const mainSaveWarning=saveWarning('main'),stageSaveWarning=saveWarning('stage'),battleSaveWarning=saveWarning('battle');
 
   if (!root || !main || !stage || !battle || !mainHeader || !stageHeader || !battleHeader
       || !mainTitle || !poster || !copy || !rail || !battleStatus || !battleObjectives || !canvasWrap || !controls
@@ -52,6 +64,7 @@
   byId('start-game')?.setAttribute('data-wp-frame-action', 'primary');
   main.insertBefore(mainContent, mainHeader.nextSibling);
   mainContent.append(poster, copy);
+  copy.insertBefore(mainSaveWarning,byId('start-game'));
 
   stage.removeAttribute('data-wp-standard-stage-screen');
   stage.style.removeProperty('background-image');
@@ -59,7 +72,10 @@
   stageContent.className = 'hoop-stage-content';
   stageHeader.querySelector('h2')?.setAttribute('data-wp-frame-title', '');
   stage.append(stageContent);
-  stageContent.append(rail);
+  const stageWorkspace = document.createElement('div');
+  stageWorkspace.className = 'hoop-stage-workspace';
+  stageContent.append(stageSaveWarning,stageWorkspace);
+  stageWorkspace.append(rail);
 
   const battleContent = document.createElement('div');
   battleContent.className = 'wp-frame-play-content hoop-battle-content';
@@ -80,7 +96,7 @@
   utilitySlot.className = 'hoop-court-utility';
   utilitySlot.append(utility);
   canvasWrap.querySelector('#arena')?.setAttribute('data-wp-court-canvas', '');
-  courtArea.append(battleStatus, battleObjectives, canvasWrap);
+  courtArea.append(battleSaveWarning, battleStatus, battleObjectives, canvasWrap);
   controlsArea.append(utilitySlot, controls, hint);
   battle.append(battleContent);
   const matchLayout = document.createElement('div');
@@ -103,7 +119,7 @@
 
   const config = window.WeightPlayHoopLeagueStageConfig.create(game);
   const selector = window.WeightPlayPlayUI.mountStage({
-    page: stageContent,
+    page: stageWorkspace,
     rail,
     config,
     selected: game.selectedStage(),
@@ -112,6 +128,7 @@
     onStart: game.startStage,
   });
   game.attachStageController(selector);
+  game.attachSaveWarningNodes?.({main:mainSaveWarning,stage:stageSaveWarning,battle:battleSaveWarning});
 
   function syncScene() {
     const screen = game.currentScreen();

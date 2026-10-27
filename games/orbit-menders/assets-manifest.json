@@ -1,19 +1,25 @@
 {
   "gameId": "orbit-menders",
-  "manifestVersion": 2,
+  "manifestVersion": 3,
+  "gameVersion": "v3",
   "createdAt": "2026-10-27",
-  "milestone": "M1",
   "status": "已實作未驗證",
-  "artDirection": "Owner-approved per-game rounded3D cartoon adventure. Boom Mane Leo: golden face, voluminous fiery-orange afro, spark tufts, short red cape and cyan repair glove. Bright sky, lush green/terracotta planets; no block-style requirement for this game.",
+  "artDirection": "Owner-directed flat-courtyard zombie shooter with rounded explosive-afro Boom Mane Leo. Warm coral/ivory fortress, mint-green lawn, cyan gates and energy cannon. Per-game non-block exception retained.",
   "coordinateConvention": {
     "up": "+Y",
     "forward": "+Z",
-    "unit": "approximately one meter"
+    "ground": "XZ plane",
+    "tower": [
+      0,
+      0,
+      9
+    ],
+    "camera": "fixed orthographic oblique"
   },
   "provenance": {
     "type": "original-procedural-geometry",
-    "source": "Owner GDD2026-10-27 plus direct owner visual amendment in same task: non-block style, explosive-afro lion, bright rich effects.",
-    "implementationTool": "Codex code generation through apply_patch",
+    "source": "Direct owner instruction2026-10-27: remove sphere/platforming; mouse-directed zombie shooting, protect tower, smooth bright presentation; keep explosive-afro lion.",
+    "implementationTool": "Codex code-native mesh/source authoring",
     "externalArt": false,
     "imageGeneration": false,
     "licenseStatus": "Original project-authored geometry. No claim of exclusive rights or name clearance. Repository ownership and applicable service terms govern generated source.",
@@ -22,60 +28,40 @@
   },
   "resources": [
     {
-      "file": "art.mjs",
-      "export": "createLion",
-      "usage": "Boom Mane Leo procedural3D hero; afro, cape, arms, legs, glove, tail and spark animation pivots",
-      "dimensions": "Approximately1.43 units tall; decorative sparks near1.5, foot origin",
-      "state": "Implemented rounded hero; fresh local visual inspection required per handoff; all final action states still incomplete"
+      "file": "defense-art.mjs",
+      "export": "createDefenseArt",
+      "usage": "Per-Battle factory with private deduplicated geometry/material clones and dispose; original templates stay CPU-only",
+      "format": "procedural realtime3D"
     },
     {
-      "file": "art.mjs",
-      "export": "createPlanet",
-      "usage": "Smooth exact-radius grass/terracotta/cream planet with rounded trees, workshop and flowers",
-      "dimensions": "Radius supplied by level field",
-      "state": "M1 representative environment; six final world kits not complete"
+      "file": "defense-art.mjs",
+      "export": "createArena",
+      "usage": "Flat courtyard, five converging paths, cyan gates, rounded trees/flowers, perimeter fortress",
+      "dimensions": "x[-14,14],z[-12,13]; visual decoration never changes simulation"
     },
     {
-      "file": "art.mjs",
-      "export": "makeAnchor",
-      "usage": "Forked diamond gravity anchor",
-      "dimensions": "Approximately 1.3 by 1.7 by 0.95 units",
-      "state": "Geometry exposes gate/core for state changes; four-state validation pending"
+      "file": "defense-art.mjs",
+      "export": "createTower",
+      "usage": "Coral/ivory protected main tower with cyan crystal, platform and material accents",
+      "dimensions": "ground origin, platformY1.48"
     },
     {
-      "file": "art.mjs",
-      "export": "makeTerminal",
-      "usage": "Repair console",
-      "dimensions": "Approximately 0.76 by 1.15 by 0.7 units",
-      "state": "M1 geometry"
+      "file": "defense-art.mjs",
+      "export": "createDefender",
+      "usage": "Rounded Leo plus cyan/gold cannon; mane/cape followthrough and firing recoil",
+      "reference": "/assets/weightplay-boom-mane-lion.png",
+      "dimensions": "art.mjs Leo, head1.12/cannon1.22; runtime root1.35"
     },
     {
-      "file": "art.mjs",
-      "export": "makeCheckpoint",
-      "usage": "Safe checkpoint outlined landing square and flag",
-      "dimensions": "Approximately 1.1 units square",
-      "state": "M1 geometry"
+      "file": "defense-art.mjs",
+      "export": "createZombie/animateZombie",
+      "usage": "Walker,runner,brute,bomber,spitter,boss; identifiable clothing/equipment/silhouette, gait, attackwindup, hitsquash, defeatproxy",
+      "dimensions": "groundorigin +Z forward, type-scaled; bossapproximately3.9units high"
     },
     {
-      "file": "art.mjs",
-      "export": "makeArchive",
-      "usage": "Repair archive collectible",
-      "dimensions": "Approximately 0.5 by 0.61 by 0.2 units",
-      "state": "M1 geometry; permanent ID and pickup transaction belong to level/save modules"
-    },
-    {
-      "file": "art.mjs",
-      "export": "makeBridge",
-      "usage": "Moving ceramic deck and readable edge rails",
-      "dimensions": "Default 4 by 2.2 units; length on local Z; deck top local Y=0",
-      "state": "Parent must bind platform collision and authored mechanism state to the same transform"
-    },
-    {
-      "file": "art.mjs",
-      "export": "createDrone",
-      "usage": "Three-leaf tool drone KouKou",
-      "dimensions": "Approximately 1 unit span",
-      "state": "M1 geometry; docking and pointing integration pending"
+      "file": "defense-view.mjs",
+      "usage": "Instanced projectiles/trails/contactstars, finite shockrings/muzzleflash/healthbars, tower damage shield; actual event bound",
+      "format": "real3D meshes; no new raster art"
     }
   ],
   "runtimeDependency": {
@@ -84,35 +70,6 @@
     "license": "MIT",
     "source": "Copied repository-pinned three@0.180.0 distribution from games/animal-skyspire-drop/vendor/three; local vendor/LICENSE and vendor/README.md retained",
     "referenceStatus": "Used by game.mjs, motor.mjs and art.mjs"
-  },
-  "resourceOwnership": {
-    "cache": "Bounded reused geometry/materials and per-theme planet geometry. Each InstancedMesh is disposed by GameAdapter.",
-    "scene": "Each invocation creates a new Group. Parent collects and disposes unique owned geometries/materials and InstancedMesh resources after scene exit.",
-    "collision": "Main planet sphere is solid. Inset panels, equatorial trim, trees and workshop are declared decorative for M1. Final scenery-blocking acceptance remains pending. Bridge exposes a box descriptor."
-  },
-  "measurements": {
-    "sourceBytes": 18387,
-    "compressedTransferBytes": null,
-    "visibleTriangles": null,
-    "drawCalls": null,
-    "status": "Source bytes measured; draw calls, triangles, compressed transfer and hardware frame-time remain unmeasured. M1 rendered evidence is in the sole handoff."
-  },
-  "missingFinalAssets": [
-    "Final six enemy kits",
-    "Six Boss kits",
-    "Final six world kits and scripted changes",
-    "Cover and lobby poster",
-    "UI illustrations",
-    "Music tracks",
-    "Final blueprint models",
-    "All required animation states and transitions"
-  ],
-  "verification": {
-    "syntax": "Art module imported successfully in local Chrome for Testing151.0.7922.34",
-    "renderedSilhouette": "v2 rounded Leo face/rear, environment and effects require current handoff evidence; old block-pangolin image acceptance is not reused for new art.",
-    "animation": "Run/jump/dash/bridge visible input exercised; all final action states not complete",
-    "collisionAgreement": "M1 sphere/bridge only; authored scenery blocking and full capsule acceptance pending",
-    "resources": "20-cycle GPU-resource test not run"
   },
   "sharedReferences": [
     {
@@ -128,26 +85,65 @@
       "usage": "Existing catalog SFX, original/CC0 sources maintained by shared audio manifests; no new private audio engine"
     }
   ],
-  "gameVersion": "v2",
+  "legacyResources": {
+    "status": "Historical platform course no longer loaded by game.mjs; tested motor and old content retained, not falsely completed",
+    "source": "motor.mjs/input.mjs/levels.mjs and planet/repair exports ofart.mjs"
+  },
   "effects": {
-    "source": "game.mjs createEffects",
     "particleCapacity": 224,
     "ringCapacity": 8,
-    "glowTexture": "One64x64 code-generated radial glow",
+    "projectileCapacity": 160,
+    "enemyProjectileCapacity": 80,
     "events": [
-      "start",
-      "jump",
-      "land",
-      "dash",
-      "pulse",
-      "power",
-      "transit",
-      "repair",
-      "archive",
-      "respawn",
+      "shot",
+      "hit",
+      "kill",
+      "blast",
+      "chain",
+      "detonate",
+      "tower-hit",
+      "upgrade",
       "victory"
     ],
-    "reducedMotion": "At most6 particles per burst, lower velocity, fixed-radius rings with lower alpha; no camera shake",
-    "bounds": "Finite lifetimes, reused InstancedMesh particle slots; no event-specific growing allocation pool"
+    "reducedMotion": "OS or custom preference: <=5 particles perburst, stationaryfade, fixed-size ring, no camera shake; functional projectiles/telegraphs retained"
+  },
+  "audio": {
+    "api": "WeightPlayAudio API1.0.0",
+    "newExternalAssets": false,
+    "music": "No new music delivered; complete soundtrack remains unfinished",
+    "events": [
+      "game.start",
+      "weapon.laser.fire",
+      "magic.hit",
+      "enemy.defeat",
+      "player.hurt",
+      "explosion.large",
+      "alert.boss",
+      "alert.warning",
+      "result.win",
+      "result.lose",
+      "feedback.success",
+      "reward.upgrade",
+      "magic.heal",
+      "impact.metal"
+    ]
+  },
+  "measurements": {
+    "compressedTransferBytes": null,
+    "frameTime": "Fresh local1280x720 browser observations in current handoff; not a universalFPS claim",
+    "sourceBytes": {
+      "defense-art.mjs": 23001,
+      "defense-view.mjs": 19749
+    }
+  },
+  "verification": {
+    "rendered": "Actual local screenshot inspection and normal input in currenthandoff; full art gate remains CHANGES_REQUIRED until remaining matrix",
+    "resourceLifecycle": "Scene ownership implemented; five-entry real GPUtrend still requires observations",
+    "licensing": "Existing own reference and original source only; Three.js MIT retained. No third-party game assets, artwork or sound copied"
+  },
+  "resourceOwnership": {
+    "cache": "Immutable CPU-only authoring templates; per-Battle private geometry/material clones; bounded enemy and effect pools",
+    "teardown": "cancel RAF/listeners/ResizeObserver, dispose owned InstancedMesh buffers/geometry/materials, audio scope, renderer and art factory",
+    "prewarm": "Only current operation enemy families and particle instance-colour shader compile during loading; initialization ms shown separately from live frame samples"
   }
 }

@@ -6,6 +6,8 @@
 .board-section{position:absolute;top:3px;transform:translateX(-50%);font-size:11px;color:#ffdf89;background:#17333c;padding:2px 5px}
 
 .scene-canvas{transform-origin:top left;margin-left:0;margin-right:auto}
+/* Wrap the longer move target label within the shared Battle information row. */
+html body[data-wp-game-id="animal-crownfall"] #battleInfo [data-t="moveTarget"]{max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere;line-height:1.05!important}
 /* A stable compact status row gives the released space to the board. */
 #battleContent{position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 48px 56px 48px 48px}
 #arena{grid-column:1;grid-row:1}

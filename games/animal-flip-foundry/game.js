@@ -5,7 +5,7 @@ import {readProgress,completeStage,persistProgressChecked} from './progress.mjs?
 import {createProgressConfirmation} from './progress-confirmation.mjs?v=20261027-flip-pending-candidate';
 import {createMeasurementQueue} from './measurement-queue.mjs?v=stage-reward-v19';
 import {campaignCopy,ruleLabels,CLARITY_COPY} from './campaign-copy.mjs';
-import {SAVE_UNCONFIRMED} from './save-warning.mjs?v=20261027-flip-pending-candidate';
+import {createPendingSummaryView} from './pending-summary-view.mjs?v=20261027-flip-summary-candidate2';
 import {FoundryScene} from './scene.mjs';
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
@@ -110,21 +110,15 @@ import {FoundryScene} from './scene.mjs';
     isActive:() => state.screen === "stage",
   });
   const saveStatuses={};
-  for(const [screen,anchor,position] of [['main',$('main-progress'),'afterend'],['stage',$('stage-list'),'beforebegin'],['battle',$('battle-status'),'beforebegin']]){
-    const status=document.createElement('p');status.className='foundry-save-status';status.id=`${screen}-save-status`;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.tabIndex=0;status.hidden=true;anchor.insertAdjacentElement(position,status);saveStatuses[screen]=status;
-  }
-  function saveWarning(){
-    const stages=pendingProgress.stages();
-    return stages.length?(SAVE_UNCONFIRMED[currentLocale()]||SAVE_UNCONFIRMED.en).replace('{stages}',`\u2066${stages.join(', ')}\u2069`):'';
+  const focusForScreen=()=>state.screen==='result'?$('retry'):state.screen==='battle'?canvas:state.screen==='stage'?document.querySelector('#stage-list button[aria-current="true"]')||$('stage-list'):$('start-game');
+  for(const [screen,anchor,position] of [['main',$('main-progress'),'afterend'],['stage',$('stage-list'),'beforebegin'],['battle',$('battle-status'),'beforebegin'],['result',$('result-copy'),'afterend']]){
+    const host=document.createElement('div');host.id=`${screen}-save-status`;anchor.insertAdjacentElement(position,host);
+    saveStatuses[screen]=createPendingSummaryView({document,host,detailsId:`${screen}-pending-details`,focusFallback:focusForScreen});
   }
   function renderSaveStatuses(){
-    const warning=saveWarning();
-    for(const [screen,status] of Object.entries(saveStatuses)){
-      const visible=Boolean(warning)&&state.screen===screen;
-      status.hidden=!visible;
-      const text=visible?warning:'';
-      if(status.textContent!==text)status.textContent=text;
-    }
+    const pending=pendingProgress.stages();
+    for(const [screen,view] of Object.entries(saveStatuses))view.update({pending,language:currentLocale(),stage:expansion().stage,visible:state.screen===screen});
+    $('result-screen').setAttribute('aria-describedby',pending.length?'result-copy result-pending-details-status':'result-copy');
   }
   const fitArena = () => {
     if (!arenaFrame || !canvas) return;
@@ -149,7 +143,6 @@ import {FoundryScene} from './scene.mjs';
     state.lastFrame = 0;
     audio?.stop();
     state.screen = name;
-    renderSaveStatuses();
     if(name!=='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-flip-foundry');
     canvas.inert=name!=='battle';
     document.getElementById('foundry-tools')?.toggleAttribute('inert',name!=='battle');
@@ -171,6 +164,7 @@ import {FoundryScene} from './scene.mjs';
     } else {
       screenFrame.activate(name);
     }
+    renderSaveStatuses();
     if (name === "battle") {
       result?.setAttribute("hidden", "");
       scheduleArenaFit();
@@ -249,7 +243,7 @@ import {FoundryScene} from './scene.mjs';
   }
   function setStatus(text){ const el=$('battle-status'); if(el.textContent!==text) el.textContent=text; }
   function forceNow(){ return state.charge!==null && state.charge!==undefined ? clamp((performance.now()-state.charge)*.16,0,300) : state.drag?.force || 0; }
-  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; const warning=saveWarning()?` · ${saveWarning()}`:''; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }) + warning; if(warning)$("result-copy").setAttribute('tabindex','0');else $("result-copy").removeAttribute('tabindex'); $("result-screen").setAttribute("aria-describedby","result-copy"); $("to-stages").textContent = e.stage; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
+  function renderResult() { if (state.resultWin === null) return; const c = copy(),e=expansion(); const nextAvailable = state.resultWin && state.chapter < TOTAL_STAGES; $("result-title").textContent = state.resultWin ? (state.chapter === TOTAL_STAGES ? c.routeClear : e.cleared) : c.failed; $("result-copy").textContent = (state.resultWin ? c.platforms : state.missReason || tip(6)) + " · " + stageTitle(state.chapter) + " · " + label("resultCopy", { chapter: Math.ceil(state.chapter/30), platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = e.stage; $("retry").textContent = c.retry; $("next").textContent = nextAvailable?`${e.stage} ${state.chapter+1}`:c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }
   function renderLocalized() {
     const c = copy();
     const mainTitle = document.querySelector(".main-title")?.textContent || "Flip Foundry";

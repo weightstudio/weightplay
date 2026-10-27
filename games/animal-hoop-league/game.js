@@ -124,7 +124,49 @@
       return {...next,saved:true};
     }catch{return {...fallback,saved:false};}
   }
-  globalThis.WeightPlayHoopRules=Object.freeze({courts,challenge,newRound,settle,pass,goalsMet,won,normalizeProgress,mergeProgress,readProgress,writeProgress});
+  // Session-only pending state, kept source-equivalent to the reviewed model.
+  function createHoopSaveReconciliation(writeChecked) {
+    if (typeof writeChecked !== 'function') throw new TypeError('CHECKED_WRITER_REQUIRED');
+    const pending = new Map();
+    const receiptReview = new Set();
+    const bestKey = 'weightplay-hoop-league-best-stage';
+    const recordsKey = 'weightplay-hoop-league-records-v2';
+    const validStage = stage => Number.isInteger(stage) && stage >= 1 && stage <= 60;
+    const validScore = score => Number.isSafeInteger(score) && score >= 0;
+    const validBest = best => Number.isSafeInteger(best) && best >= 0 && best <= 60;
+    function snapshot() {
+      return Object.freeze({saveUnconfirmed: pending.size > 0,
+        pending: Object.freeze([...pending].sort(([a],[b]) => a-b).map(([stage,score]) => Object.freeze({stage,score}))),
+        receiptUnverified: Object.freeze([...receiptReview].sort((a,b) => a-b))});
+    }
+    function recordWonSave(storage, stage, score, progress) {
+      if (!validStage(stage) || !validScore(score)) throw new TypeError('INVALID_STAGE_OR_SCORE');
+      if (!progress || !validBest(progress.best) || !progress.records || typeof progress.records !== 'object' || Array.isArray(progress.records)) throw new TypeError('INVALID_SESSION_PROGRESS');
+      pending.set(stage, Math.max(pending.get(stage) ?? 0, score));
+      receiptReview.add(stage);
+      let result;
+      const fallback = {best:progress.best,records:{...progress.records},saved:false};
+      try { result = writeChecked(storage, progress); } catch { result = fallback; }
+      if (!result || !validBest(result.best) || !result.records || typeof result.records !== 'object' || Array.isArray(result.records)) result = fallback;
+      if (result?.saved === true && validBest(result.best) && result.records && typeof result.records === 'object' && !Array.isArray(result.records)) {
+        try {
+          const bestRaw = storage.getItem(bestKey), recordsRaw = storage.getItem(recordsKey);
+          if (storage.getItem(bestKey) !== bestRaw || storage.getItem(recordsKey) !== recordsRaw) throw Error('READBACK_CHANGED');
+          if (typeof bestRaw !== 'string' || !/^\d+$/.test(bestRaw)) throw Error('INVALID_BEST');
+          const best = Number(bestRaw), records = JSON.parse(recordsRaw);
+          if (!validBest(best) || !records || typeof records !== 'object' || Array.isArray(records)) throw Error('INVALID_READBACK');
+          for (const [id, target] of pending) {
+            const stored = records[id], returned = result.records[id];
+            if (best >= id && result.best >= id && validScore(stored) && stored >= target && validScore(returned) && returned >= target) pending.delete(id);
+          }
+        } catch { /* Keep pending when a readback cannot be validated. */ }
+      }
+      return Object.freeze({saveResult:result,session:snapshot()});
+    }
+    function warningVisible(screen) { return pending.size > 0 && ['main','stage','battle','result'].includes(screen); }
+    return Object.freeze({recordWonSave,snapshot,warningVisible});
+  }
+  globalThis.WeightPlayHoopRules=Object.freeze({courts,challenge,newRound,settle,pass,goalsMet,won,normalizeProgress,mergeProgress,readProgress,writeProgress,createHoopSaveReconciliation});
   if (typeof document === 'undefined') return;
   const $ = id => document.getElementById(id), locale = window.WeightPlayMarketFiveLocale;
   const common = i => window.wpMarketCommon(i);
@@ -149,6 +191,8 @@
   const courtName=index=>index<6?locale.game().courts[index]:`${index<30?xp().chapter1:xp().chapter2} · ${index+1}`;
   let storage;try{storage=window.localStorage;}catch{};
   let {best,records}=readProgress(storage),storageOK=true;
+  const saveSession=createHoopSaveReconciliation(writeProgress);
+  let saveWarningNodes={};
   let selectedStageIndex=Math.min(courts.length-1,best),stageController=null;
   const state={screen:'main', round:newRound(1), charging:false, power:0, direction:1, flight:null, paused:false, raf:0, last:0, feedback:'', feedbackUntil:0, pointer:null};
   state.route='direct';state.focusArmed=false;
@@ -186,7 +230,22 @@
     const next=String(value);if(node.textContent===next)return;node.textContent=next;
     node.getAnimations().forEach(a=>a.cancel());node.animate([{opacity:.45},{opacity:1}],{duration:reduced.matches?70:150});
   }
-  const save=()=>{const merged=writeProgress(storage,{best,records});best=merged.best;records=merged.records;storageOK=merged.saved;saveSucceeded=merged.saved;};
+  const save=()=>{const settled=saveSession.recordWonSave(storage,state.round.stage,state.round.score,{best,records}),merged=settled.saveResult;best=merged.best;records=merged.records;saveSucceeded=merged.saved&&!settled.session.pending.some(item=>item.stage===state.round.stage);storageOK=saveSucceeded;};
+  function pendingSaveText(){
+    const pending=saveSession.snapshot().pending;
+    if(!pending.length)return '';
+    const format=new Intl.NumberFormat(locale.locale||'en');
+    const stages=pending.map(item=>format.format(item.stage)).join(', ');
+    return xp().savePending.replace('{stages}',`\u2068${stages}\u2069`);
+  }
+  function syncSaveWarning(){
+    const message=pendingSaveText();
+    for(const [scene,node] of Object.entries(saveWarningNodes)){
+      const visible=Boolean(message)&&state.screen===scene;
+      if(visible){node.hidden=false;if(node.textContent!==message)node.textContent=message;}
+      else{node.hidden=true;if(node.textContent)node.textContent='';}
+    }
+  }
   window.addEventListener('storage',e=>{if(e.key!==null&&e.key!==progressKey&&e.key!==progressRecordKey)return;const merged=mergeProgress({best,records},readProgress(storage));best=merged.best;records=merged.records;progress();refreshStage();});
   function progress(){ $('main-progress').textContent=`${text()[16]} · ${best} / ${courts.length}`; }
   function refreshStage(){stageController?.refresh(selectedStageIndex);}
@@ -207,7 +266,7 @@
     window.dispatchEvent(new CustomEvent(scene==='battle'?'weightplay:battle-open':'weightplay:shell-sync'));
     window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
     state.last=performance.now();
-    notify();
+    syncSaveWarning();notify();
   }
   function start(stage){if(!courtFor(stage)||stage>best+1)return;selectedStageIndex=stage-1;roundKey={};ended=false;outcome='complete';restart=false;saveSucceeded=false;state.round=newRound(stage);state.route='direct';state.focusArmed=false;state.flight=null;state.feedback='';show('battle');$('stage-label').textContent=(stage<=6?courtName(stage-1):stage+' / '+courts.length);hud();sound('game.start');shoot.focus({preventScroll:true});}
   function hud(){
@@ -232,7 +291,9 @@
   function renderResult(){
     const r=state.round,win=won(r);
     $('result-title').textContent=text()[win?13:14];
-    $('result-copy').textContent=`${text()[17]} ${r.score} : ${r.rival} ${text()[18]} · ${r.made}/${courts[r.stage-1].shots} · ${text()[8]} ×${r.perfect}${r.stage>=7?' · '+goalSummary(r):''}${win?' · '+(saveSucceeded?xp().saveConfirmed:xp().saveUnconfirmed):r.score>r.rival?' · '+xp().needGoals:` · ${state.feedback}`}`;
+    const warning=pendingSaveText();
+    $('result-copy').textContent=`${text()[17]} ${r.score} : ${r.rival} ${text()[18]} · ${r.made}/${courts[r.stage-1].shots} · ${text()[8]} ×${r.perfect}${r.stage>=7?' · '+goalSummary(r):''}${win?(warning?'':` · ${xp().saveConfirmed}`):r.score>r.rival?' · '+xp().needGoals:` · ${state.feedback}`}${warning?' · '+warning:''}`;
+    if(warning)$('result-copy').setAttribute('tabindex','0');else $('result-copy').removeAttribute('tabindex');
   }
   function land(now){
     const f=state.flight;state.round=f.pending;state.flight=null;
@@ -272,7 +333,7 @@
   function localize(){
     const t=text();document.querySelectorAll('[data-m5-lede]').forEach(n=>n.textContent=xp().intro);document.querySelectorAll('[data-m5-guide]').forEach(n=>n.textContent=n.closest('#battle-screen')?t[0]:`${t[1]} ${t[19]} ${t[20]} ${xp().routeGuide} ${xp().focusGuide} ${xp().relayGuide} ${xp().goalsGuide}`);
     steps.querySelectorAll('i').forEach((n,i)=>n.textContent=t[i+2]);$('hoop-zone-label').textContent=t[3];$('hoop-you').textContent=t[17];$('hoop-rival').textContent=t[18];meter.setAttribute('aria-label',t[3]);progress();refreshStage();hud();
-    document.querySelectorAll('.game-info-tags > span').forEach((n,i)=>n.textContent=t[i+2]);if(state.screen==='result')renderResult();
+    document.querySelectorAll('.game-info-tags > span').forEach((n,i)=>n.textContent=t[i+2]);syncSaveWarning();if(state.screen==='result')renderResult();
   }
   window.addEventListener('weightplay:market-locale-change',localize);
   window.addEventListener('weightplay:interaction-state',()=>{
@@ -338,6 +399,7 @@
     selectStage,
     startStage:index=>{const stage=index+1;if(stage<=Math.min(courts.length,best+1))start(stage);},
     attachStageController(controller){stageController=controller;refreshStage();},
+    attachSaveWarningNodes(nodes){saveWarningNodes=nodes;syncSaveWarning();},
     refreshStage,
   });
   window.HoopLeagueDiagnostics=Object.freeze({snapshot:()=>JSON.parse(JSON.stringify({screen:state.screen,round:state.round,charging:state.charging,power:state.power,route:state.route,focusArmed:state.focusArmed,flight:state.flight,paused:state.paused,best,records,storageOK,total:courts.length}))});
