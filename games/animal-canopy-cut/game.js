@@ -1,5 +1,7 @@
 /* Canopy Cut v17: game-owned simulation and declared shared scene slots. */
 (() => {
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceAuthorized=false,practiceStarting=false,dawn=null,dawnCopy=null,practiceAdapter=null,stagePageStart=0;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +10,7 @@
     paused: Boolean(state?.paused || state?.suspended), stageId: state.stage, node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(practiceRequested)return;try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -19,7 +21,9 @@
   __wpNotifyMeasurement();
 
   const $ = (id) => document.getElementById(id);
+  if(practiceRequested&&$('localeSelect'))$('localeSelect').disabled=true;
   const emitAnalytics = (event, detail = {}) => {
+    if(practiceRequested)return;
     try {
       window.dispatchEvent(new CustomEvent("wp-canopy-analytics", { detail: { event, ...detail } }));
     } catch {
@@ -62,7 +66,7 @@
     hi: { label: "लक्ष्य कुंजी", safe: "सुरक्षित फल", hazard: "गहरी बीज की फली" },
     ar: { label: "مفتاح الأهداف", safe: "ثمرة آمنة", hazard: "قرن بذور داكن" },
   };
-  const TOTAL_STAGES = 30;
+  let TOTAL_STAGES = 30;
   const stageDefs = [
     { id: 1, arc: 1, name: "First Spark", nameZh: "初見星火", nameAr: "الشرارة الأولى", mechanic: "learn", count: 3, hazard: .08, duration: 13, speed: 7.2 },
     { id: 2, arc: 1, name: "Twin Arcs", nameZh: "雙弧採收", nameAr: "قوسان متعاقبان", mechanic: "split", count: 4, hazard: .1, duration: 13, speed: 7.5 },
@@ -106,8 +110,8 @@
     ar: ["بستان الضوء الأول", "أغصان الريح", "بستان الشفق", "المظلة المتحركة", "بستان الإشارة", "غابة الإتقان"],
   };
   const stageLabel = () => stageCopy[currentLocale()] || stageCopy.en;
-  const arcLabel = (arc) => (stageArcs[currentLocale()] || stageArcs.en)[arc - 1] || stageArcs.en[arc - 1];
-  const stageName = (definition) => currentLocale() === "zh-Hant" ? definition.nameZh : currentLocale() === "ar" ? definition.nameAr : definition.name;
+  const arcLabel = (arc) => arc>6?(dawnCopy?.[currentLocale()]?.chapter||dawnCopy?.en.chapter||'Dawn Orchard'):(stageArcs[currentLocale()] || stageArcs.en)[arc - 1] || stageArcs.en[arc - 1];
+  const stageName = (definition) => definition.id>30?`${dawnCopy?.[currentLocale()]?.chapter||dawnCopy?.en.chapter||'Dawn Orchard'} ${definition.id}`:currentLocale() === "zh-Hant" ? definition.nameZh : currentLocale() === "ar" ? definition.nameAr : definition.name;
   const stageFor = (number) => stageDefs[Math.max(0, Math.min(TOTAL_STAGES - 1, number - 1))];
   const normalizeProgress = (value) => {
     const source = value && typeof value === "object" ? value : {};
@@ -125,9 +129,9 @@
   const loadProgress = () => {
     try { return normalizeProgress(JSON.parse(localStorage.getItem("wp-canopy-progress-v15") || localStorage.getItem("wp-canopy-progress-v14") || localStorage.getItem("wp-canopy-progress-v13") || "{}")); } catch { return normalizeProgress({}); }
   };
-  const saveProgress = () => { try { localStorage.setItem("wp-canopy-progress-v15", JSON.stringify(progress)); } catch {} };
-  const progress = loadProgress();
-  const state = { screen: "main", stage: Math.min(progress.unlocked, TOTAL_STAGES), chapter: 1, wave: 1, score: 0, best: (() => { try { return Math.max(0, Number.isFinite(Number(localStorage.getItem("wp-canopy-best"))) ? Number(localStorage.getItem("wp-canopy-best")) : 0); } catch { return 0; } })(), chain: 0, misses: 0, targets: [], stroke: [], active: false, strokeInputType: "unknown", elapsed: 0, last: 0, spawn: 0, ready: 0, previewUntil: 0, previewSafeShown: false, checkpointSpawned: false, checkpointHit: false, seed: 1, raf: 0, status: "ready", resultWin: null, bestImproved: false, cardsLocale: "" };
+  const saveProgress = () => { if(practiceRequested)return;try { localStorage.setItem("wp-canopy-progress-v15", JSON.stringify(progress)); } catch {} };
+  const progress = practiceRequested?normalizeProgress({}):loadProgress();
+  const state = { screen: "main", stage: Math.min(progress.unlocked, TOTAL_STAGES), chapter: 1, wave: 1, score: 0, best: practiceRequested?0:(() => { try { return Math.max(0, Number.isFinite(Number(localStorage.getItem("wp-canopy-best"))) ? Number(localStorage.getItem("wp-canopy-best")) : 0); } catch { return 0; } })(), chain: 0, misses: 0, targets: [], stroke: [], active: false, strokeInputType: "unknown", elapsed: 0, last: 0, spawn: 0, ready: 0, previewUntil: 0, previewSafeShown: false, checkpointSpawned: false, checkpointHit: false, seed: 1, raf: 0, status: "ready", resultWin: null, bestImproved: false, cardsLocale: "" };
   const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
   const syncArenaSize = () => {
     const rect = canvas.getBoundingClientRect();
@@ -145,10 +149,21 @@
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
   const fill = (value, values) => value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
+  const dawnText=(name,vars={})=>fill(dawnCopy?.[currentLocale()]?.[name]||dawnCopy?.en?.[name]||name,vars);
   const label = (key, values = {}) => fill(copy()[key] || localeCopy.en[key] || key, values);
   const key = () => keyCopy[currentLocale()] || keyCopy.en;
   const config = () => stageFor(state.stage);
-  function show(name) { audioScope?.stop(); state.screen = name; state.active = false; state.pointerId = null; state.stroke = []; effects.length = 0; state.paused = false; $("pause-panel").hidden = true; frameController.activate(name === "result" ? "battle" : name, {covered:name === "result"}); document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (!reducedMotion) $(name === "result" ? "result-screen" : `${name}-content`)?.animate([{opacity:.4},{opacity:1}],{duration:180}); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
+  const dawnButton=document.createElement('button'),dawnButtonText=document.createElement('span'),dawnImage=document.createElement('img');
+  const practiceStatusText=practiceRequested?document.createElement('span'):null;
+  if(practiceStatusText)$('battle-status').replaceChildren(practiceStatusText);
+  function movePracticeBadge(owner){const badge=document.querySelector('[data-wp-local-practice]');if(!badge||!owner)return;if(badge.parentElement!==owner){badge.style.position='static';badge.style.transform='none';badge.style.marginInlineStart='8px';owner.append(badge);}if(badge.style.display!=='inline-block')badge.style.display='inline-block';}
+  dawnButton.type='button';dawnButton.className='dawn-net';dawnButton.hidden=true;dawnImage.src='/games/animal-canopy-cut/assets/dawn-canopy-net-v1.png';dawnImage.alt='';dawnImage.width=48;dawnImage.height=48;dawnButton.append(dawnImage,dawnButtonText);$('stage-objective').parentElement.append(dawnButton);
+  dawnButton.addEventListener('click',()=>{if(state.screen!=='battle'||state.paused||state.ready>0||!practiceAuthorized||state.stage<=30)return;if(state.round?.useNet()){renderHud();draw();}});
+  const pagePrev=document.createElement('button'),pageNext=document.createElement('button'),stageNav=document.querySelector('#stage-screen nav');
+  pagePrev.type=pageNext.type='button';pagePrev.className='dawn-page-prev';pageNext.className='dawn-page-next';pagePrev.hidden=pageNext.hidden=true;stageNav.prepend(pagePrev);stageNav.append(pageNext);
+  pagePrev.addEventListener('click',()=>{if(!practiceAuthorized)return;stagePageStart=Math.max(0,stagePageStart-9);stageCards();(pagePrev.disabled?pageNext:pagePrev).focus({preventScroll:true});});
+  pageNext.addEventListener('click',()=>{if(!practiceAuthorized)return;stagePageStart=Math.min(Math.floor((TOTAL_STAGES-1)/9)*9,stagePageStart+9);stageCards();(pageNext.disabled?pagePrev:pageNext).focus({preventScroll:true});});
+  function show(name) { audioScope?.stop(); state.screen = name; state.active = false; state.pointerId = null; state.stroke = []; effects.length = 0; state.paused = false; $("pause-panel").hidden = true; frameController.activate(name === "result" ? "battle" : name, {covered:name === "result"}); document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = document.querySelector("#result-screen");const badge=document.querySelector('[data-wp-local-practice]');if(badge&&name==='result')badge.style.display='none'; document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") (__wpNotifyMeasurement(), result?.setAttribute("hidden", "")); if (!reducedMotion) $(name === "result" ? "result-screen" : `${name}-content`)?.animate([{opacity:.4},{opacity:1}],{duration:180}); if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = state.resultWin ? "win" : "loss"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -158,14 +173,17 @@
     const copy = stageLabel();
     const unlocked = Math.max(1, Math.min(TOTAL_STAGES, progress.unlocked));
     $("stage-list").dataset.wpStageRecommendation = String(unlocked);
-    $("stage-progress").textContent = fill(copy.total, { unlocked, total: TOTAL_STAGES });
-    $("stage-list").innerHTML = stageDefs.map((definition) => {
-      const available = definition.id <= unlocked;
+    $("stage-progress").textContent = practiceAuthorized?dawnText('practice'):fill(copy.total, { unlocked, total: TOTAL_STAGES });
+    if(practiceAuthorized&&state.screen==='stage')movePracticeBadge($('stage-progress'));
+    const displayed=practiceAuthorized?stageDefs.slice(stagePageStart,stagePageStart+9):stageDefs;
+    pagePrev.hidden=pageNext.hidden=!practiceAuthorized;if(practiceAuthorized){pagePrev.textContent='‹';pageNext.textContent='›';pagePrev.setAttribute('aria-label',dawnText('previous'));pageNext.setAttribute('aria-label',dawnText('next'));pagePrev.disabled=stagePageStart===0;pageNext.disabled=stagePageStart+9>=TOTAL_STAGES;}
+    $("stage-list").innerHTML = displayed.map((definition) => {
+      const available = practiceAuthorized||definition.id <= unlocked;
       const cleared = Boolean(progress.cleared[definition.id]);
       const selected = definition.id === state.stage;
       const status = cleared ? copy.cleared : available ? copy.ready : copy.locked;
       const checkpoint = definition.checkpoint ? ` · ${copy.checkpoint}` : "";
-      const objective = copy.objective[definition.mechanic] || stageCopy.en.objective[definition.mechanic];
+      const objective = definition.id>30?dawnText('goal',{n:0,goal:definition.markedGoal}):copy.objective[definition.mechanic] || stageCopy.en.objective[definition.mechanic];
       const aria = `${copy.stage} ${definition.id} · ${stageName(definition)} · ${objective}${checkpoint} · ${status}`;
       return `<button class="stage-card${available ? " unlocked" : " locked"}${cleared ? " cleared" : ""}${selected ? " selected" : ""}" type="button" data-wp-enter-battle data-stage="${definition.id}" data-chapter="${Math.ceil(definition.id / 5)}" data-wave="${((definition.id - 1) % 5) + 1}" aria-label="${aria}" aria-disabled="${available ? "false" : "true"}" aria-posinset="${definition.id}" aria-setsize="${TOTAL_STAGES}"${available ? "" : " disabled"}><span data-wp-item-content><span class="stage-number">${String(definition.id).padStart(2, "0")}</span><strong>${stageName(definition)}</strong><small>${arcLabel(definition.arc)}${checkpoint}</small><span>${objective}</span><b>${status}${progress.checkpoints?.[definition.id] ? " · ◆" : ""}</b></span></button>`;
     }).join("");
@@ -178,7 +196,7 @@
     if (state.screen === "stage") requestAnimationFrame(centerStageCard);
   }
   function centerStageCard() {
-    const anchor = Math.max(1, Math.min(TOTAL_STAGES, progress.unlocked));
+    const anchor = Math.max(1, Math.min(TOTAL_STAGES, practiceAuthorized?state.stage:progress.unlocked));
     const card = $("stage-list")?.querySelector(`[data-stage="${anchor}"]`);
     card?.scrollIntoView({ block: "center", inline: "center" });
     markStageCard(card);
@@ -197,10 +215,12 @@
     markStageCard(nearest);
   });
 
-  function startStage(stage = 1, from = "stage") {
+  async function startStage(stage = 1, from = "stage") {
     const nextStage = Math.max(1, Math.min(TOTAL_STAGES, Number(stage) || 1));
-    if (nextStage > progress.unlocked) return;
+    if(practiceRequested){if(!practiceAuthorized||practiceStarting||window.__canopyCutPracticeAnalyticsSafe!==true)return false;practiceStarting=true;try{if(!await practiceAdapter.validate()||!practiceAuthorized)return false;}finally{practiceStarting=false;}}
+    else if (nextStage > progress.unlocked) return false;
     state.stage = nextStage;
+    if(practiceAuthorized)stagePageStart=Math.floor((nextStage-1)/9)*9;
     state.roundStartedAt = Date.now();
     state.chapter = Math.ceil(nextStage / 5);
     state.wave = ((nextStage - 1) % 5) + 1;
@@ -211,9 +231,10 @@
     $("score-label").textContent = "0";
     $("next").hidden = false;
     $("next").disabled = false;
-    show("battle"); syncArenaSize(); state.round = new CanopyEngine.Round(stageFor(nextStage), state.arenaWidth, state.arenaHeight); renderLocalized(); sound("game.start", .26);
+    show("battle"); syncArenaSize(); state.round = nextStage>30&&practiceAuthorized?dawn.makeDawnRound(CanopyEngine.Round,stageFor(nextStage),state.arenaWidth,state.arenaHeight):new CanopyEngine.Round(stageFor(nextStage), state.arenaWidth, state.arenaHeight); renderLocalized(); sound("game.start", .26);
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    return true;
 }
   const playCopy = {
     en: ["Harvest", "Misses", "Time", "Continue", "Paused", "Three fruit missed", "Avoid the dark pods", "Keep harvesting until the timer ends", "Best chain", "Clean harvest", "New best!"],
@@ -251,8 +272,9 @@
   }
   function writeText(id, value) { const node = $(id), text = String(value); if (node.textContent !== text) node.textContent = text; }
   function renderStatus() {
-    let message = state.paused ? ui(4) : state.status === "miss" ? `${ui(1)} ${state.misses}/3` : state.status === "targetPreview" ? ui(7) : label(state.status, {chain: state.chain});
-    writeText("battle-status", message);
+    let message = state.paused ? ui(4) : state.status==='dawnUnripe'?dawnText('waiting'):state.status === "miss" ? `${ui(1)} ${state.misses}/3` : state.status === "targetPreview" ? (state.stage>30&&practiceAuthorized?dawnText('guide'):ui(7)) : label(state.status, {chain: state.chain});
+    if(practiceStatusText){if(practiceStatusText.textContent!==message)practiceStatusText.textContent=message;if(practiceAuthorized&&state.screen==='battle')movePracticeBadge($('battle-status'));}else writeText("battle-status", message);
+    $("battle-status").dataset.dawn=String(state.stage>30&&practiceAuthorized);
     $("battle-status").dataset.targetPreview = state.status === "targetPreview" ? "active" : "inactive";
     $("battle-status").dataset.tone = ["miss", "seedPod"].includes(state.status) ? "danger" : "normal";
   }
@@ -264,6 +286,8 @@
     $("miss-label").dataset.danger = String(state.misses > 0);
     $("round-meter").value = Math.min(config().duration, state.elapsed);
     $("round-meter").max = config().duration;
+    dawnButton.hidden=!(practiceAuthorized&&state.stage>30);
+    if(!dawnButton.hidden){const round=state.round;dawnButtonText.textContent=dawnText('uses',{n:round?.netUses??2});dawnButton.setAttribute('aria-label',`${dawnText('net')} · ${dawnButtonText.textContent}`);dawnButton.disabled=!round||round.finished||state.paused||state.ready>0||round.netUses===0||round.time<round.netReadyAt||!round.targets.some(t=>!t.hazard&&t.y-t.r<round.height);$('stage-objective').textContent=dawnText('goal',{n:round?.markedHarvested??0,goal:config().markedGoal});}
   }
   function consumeEvents() {
     syncRound();
@@ -282,7 +306,8 @@
         state.status = "miss"; state.statusUntil = state.round.time + 1;
         sound("alert.warning", .25);
         effects.push({...e.target, y: state.arenaHeight - 28, type:"miss", life:.65, duration:.65});
-      } else if (e.type === "finish") state.settle = .65;
+      } else if(e.type==='unripe'){state.status='dawnUnripe';state.statusUntil=state.round.time+.85;}
+      else if (e.type === "finish") state.settle = .65;
     }
     renderStatus(); renderHud();
   }
@@ -295,7 +320,7 @@
     const round = state.round, previousBest = state.best;
     state.best = Math.max(state.best, state.score);
     state.bestImproved = state.best > previousBest;
-    try { localStorage.setItem("wp-canopy-best", String(state.best)); } catch {}
+    if(!practiceRequested)try { localStorage.setItem("wp-canopy-best", String(state.best)); } catch {}
     state.resultWin = round.won;
     if (state.resultWin) {
       progress.cleared[state.stage] = true;
@@ -317,7 +342,8 @@
     if (state.resultWin === null) return;
     const round = state.round;
     $("result-title").textContent = state.resultWin ? label("waveClear") : label("waveEnded");
-    $("result-copy").textContent = state.resultWin ? (round.misses === 0 ? ui(9) : ui(7)) : round.reason === "hazard" ? ui(6) : ui(5);
+    $("result-copy").textContent = state.resultWin ? (round.misses === 0 ? ui(9) : ui(7)) : round.reason==='quota'?dawnText('quota'):round.reason === "hazard" ? ui(6) : ui(5);
+    if(practiceRequested)$("result-copy").textContent+=` · ${dawnText('practice')}`;
     $("result-score").textContent = String(state.score);
     $("result-stats").textContent = `${ui(0)} ${round.harvested} · ${ui(8)} ${round.peakChain} · ${ui(1)} ${round.misses}/3`;
     $("result-record").textContent = state.bestImproved ? ui(10) : `${label("bestScore")}: ${state.best}`;
@@ -329,14 +355,15 @@
     $("next").setAttribute("aria-disabled", String(!hasNext));
     $("next").textContent = hasNext ? `${stageLabel().stage} ${state.stage + 1}` : label("nextWave");
     $("retry").textContent = label("retry");
-    const awarded = collectionHistory()[`animal-canopy-cut:stage-${state.stage}`];
-    window.ShowResultGet?.("animal-canopy-cut", Boolean(state.resultWin && awarded && awarded >= state.roundStartedAt));
+    const awarded = practiceRequested?null:collectionHistory()[`animal-canopy-cut:stage-${state.stage}`];
+    if(!practiceRequested)window.ShowResultGet?.("animal-canopy-cut", Boolean(state.resultWin && awarded && awarded >= state.roundStartedAt));
   }
   function collectionHistory() {
     try { return (window.WeightPlayCastle?.read() || JSON.parse(localStorage.getItem('weightplayCastleV1') || '{}')).completions || {}; }
     catch { return {}; }
   }
   function renderCollectionBadges() {
+    if(practiceRequested)return;
     const history = collectionHistory();
     $("stage-list").querySelectorAll('[data-stage]').forEach(card => {
       const id = Number(card.dataset.stage), saved = history[`animal-canopy-cut:stage-${id}`];
@@ -352,16 +379,16 @@
     $("stage-header").querySelector("h2").textContent = label("stageTitle");
     document.querySelector('[data-wp-return="stage"]').setAttribute("aria-label", label("backMain"));
     document.querySelector('#stage-screen nav').setAttribute("aria-label", label("stageSections"));
-    document.querySelector('#stage-screen nav button').textContent = label("stages");
+    document.querySelector('#stage-screen nav [data-wp-frame-stage-slot="stages"]').textContent = label("stages");
     document.querySelector('[data-wp-return="battle"]').setAttribute("aria-label", label("backStages"));
     canvas.setAttribute("aria-label", `${label("canvas")}. ${ui(7)}. ${ui(6)}.`);
     $("battle-key").setAttribute("aria-label", targetKey.label);
     $("safe-key").textContent = targetKey.safe; $("hazard-key").textContent = targetKey.hazard;
-    $("main-progress").textContent = `${stageLabel().total.replace("{unlocked}",progress.unlocked).replace("{total}",TOTAL_STAGES)} · ${label("bestScore")}: ${state.best}`;
+    $("main-progress").textContent = practiceAuthorized?dawnText('practice'):`${stageLabel().total.replace("{unlocked}",progress.unlocked).replace("{total}",TOTAL_STAGES)} · ${label("bestScore")}: ${state.best}`;
     $("wave-label").textContent = `${stageLabel().stage} ${state.stage}`;
     $("score-caption").textContent = scoreCaption(); $("time-caption").textContent = ui(2);
     $("stage-objective").textContent = stageName(currentStage);
-    $("stage-objective").title = stageLabel().objective[currentStage.mechanic];
+    $("stage-objective").title = currentStage.id>30?dawnText('guide'):stageLabel().objective[currentStage.mechanic];
     $("resume").textContent = ui(3); $("pause-title").textContent = ui(4);
     $("round-meter").setAttribute("aria-label", ui(2));
     renderStatus(); renderHud();
@@ -396,6 +423,7 @@
       ctx.lineWidth=t.checkpoint?3:1.5;ctx.strokeStyle=t.hazard?"#ff869c":t.checkpoint?"#ffe38a":"#b3f0cb99";ctx.stroke();
       if(t.hazard){ctx.strokeStyle="#ffabc0";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-t.r*.55,-t.r*.55);ctx.lineTo(t.r*.55,t.r*.55);ctx.moveTo(t.r*.55,-t.r*.55);ctx.lineTo(-t.r*.55,t.r*.55);ctx.stroke();}
       ctx.restore();sprite(t,t.x,t.y,t.r*2.4);
+      if(t.marked){const ripe=t.age>=t.ripeAge;ctx.save();ctx.translate(t.x,t.y);ctx.lineWidth=3;ctx.strokeStyle=ripe?'#fff2a0':'#b8d7e4';ctx.setLineDash(ripe?[]:[5,4]);ctx.beginPath();ctx.arc(0,0,t.r+8,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=ripe?'#fff2a0':'#d5e9f1';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.fillText(ripe?'◆':'…',0,-t.r-10);ctx.restore();}
     }
     for (const e of effects) {
       const k=1-e.life/e.duration, travel=reducedMotion?0:k;
@@ -434,5 +462,22 @@
   canvas.addEventListener("pointerdown",e=>{if(state.screen!=="battle"||state.ready>0||state.paused||state.active||state.round?.finished)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);state.pointerId=e.pointerId;state.active=true;state.strokeInputType=e.pointerType||"unknown";const p=point(e);state.stroke=[p];state.previousPoint=p;hitAt(p);});
   canvas.addEventListener("pointermove",e=>{if(!state.active||e.pointerId!==state.pointerId)return;const p=point(e);hitAt(p,state.previousPoint);state.stroke.push(p);state.previousPoint=p;if(state.stroke.length>32)state.stroke.shift();});
   ["pointerup","pointercancel","lostpointercapture"].forEach(event=>canvas.addEventListener(event,e=>{if(e.pointerId!==state.pointerId)return;if(state.active)emitAnalytics("pointer_stroke",{inputType:state.strokeInputType,from:"battle",outcome:event==="pointerup"?"completed":"cancelled"});stopStroke();}));
-  $("start-game").addEventListener("click",()=>{show("stage");renderLocalized()}); document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(b.dataset.back==="stage")emitAnalytics("stage_return",{from:state.screen==="result"?"result":"battle",outcome:"returned"});show(b.dataset.back);renderLocalized()})); $("retry").addEventListener("click",()=>{emitAnalytics("retry",{from:"result",outcome:"retry",stage:state.stage});__wpReplayStart(() => startStage(state.stage,"result"))}); $("next").addEventListener("click",()=>{if(!state.resultWin||state.stage>=TOTAL_STAGES)return;emitAnalytics("next_wave",{from:"result",outcome:"next_stage",stage:state.stage+1});startStage(state.stage+1,"result")}); $("to-stages").addEventListener("click",()=>{emitAnalytics("stage_return",{from:"result",outcome:"returned",stage:state.stage});show("stage");renderLocalized()}); $("localeSelect")?.addEventListener("change",()=>setTimeout(renderLocalized,0)); window.addEventListener("wonder:locale-change", renderLocalized); stageCards(); renderLocalized();
+  $("start-game").addEventListener("click",()=>{if(practiceRequested&&!practiceAuthorized)return;show("stage");renderLocalized()}); document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>{if(b.dataset.back==="stage")emitAnalytics("stage_return",{from:state.screen==="result"?"result":"battle",outcome:"returned"});show(b.dataset.back);renderLocalized()})); $("retry").addEventListener("click",()=>{emitAnalytics("retry",{from:"result",outcome:"retry",stage:state.stage});__wpReplayStart(() => startStage(state.stage,"result"))}); $("next").addEventListener("click",()=>{if(!state.resultWin||state.stage>=TOTAL_STAGES)return;emitAnalytics("next_wave",{from:"result",outcome:"next_stage",stage:state.stage+1});startStage(state.stage+1,"result")}); $("to-stages").addEventListener("click",()=>{emitAnalytics("stage_return",{from:"result",outcome:"returned",stage:state.stage});show("stage");renderLocalized()}); $("localeSelect")?.addEventListener("change",()=>setTimeout(renderLocalized,0)); window.addEventListener("wonder:locale-change", renderLocalized); stageCards(); renderLocalized();
+  if(practiceRequested){
+    // Read-only local-test observation; no method can move targets or settle a round.
+    window.__CANOPY_CUT_PRACTICE_SNAPSHOT__=()=>practiceAuthorized&&state.round?{stage:state.stage,time:state.round.time,score:state.round.score,won:state.round.won,finished:state.round.finished,markedHarvested:state.round.markedHarvested??0,targets:state.round.targets.map(t=>({x:t.x,y:t.y,r:t.r,hazard:t.hazard,marked:!!t.marked,ripe:!t.marked||t.age>=t.ripeAge}))}:null;
+    const practiceStatus=document.createElement('p');practiceStatus.setAttribute('role','status');$('start-game').after(practiceStatus);
+    const waitForEntryReady=()=>new Promise(resolve=>{let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(ok);}function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check();});
+    void Promise.all([import('/src/game-local-practice.mjs'),import('./dawn-levels.mjs?v=20261027-cut-dawn1'),import('./dawn-round.mjs?v=20261027-cut-dawn1'),import('./dawn-copy.mjs?v=20261027-cut-dawn1'),waitForEntryReady()]).then(([practice,levels,round,copy,ready])=>{
+      dawn={...levels,...round};dawnCopy=copy.DAWN_COPY;practiceAdapter=practice.LocalPractice;practiceStatus.textContent=dawnText('practice');
+      if(!ready||window.__canopyCutPracticeAnalyticsSafe!==true)return false;
+      return practiceAdapter.register({gameId:'animal-canopy-cut',stageIds:Array.from({length:60},(_,i)=>i+1),enable(value){
+        practiceAuthorized=value===true&&window.__canopyCutPracticeAnalyticsSafe===true;
+        $('start-game').disabled=!practiceAuthorized;
+        if(practiceAuthorized){if(stageDefs.length===30)stageDefs.push(...dawn.DAWN_LEVELS);TOTAL_STAGES=60;progress.unlocked=60;practiceStatus.textContent=dawnText('practice');}
+        else{stageDefs.splice(30);TOTAL_STAGES=30;progress.unlocked=1;stagePageStart=0;state.stage=1;state.round=null;state.resultWin=null;dawnButton.hidden=true;document.querySelector('[data-wp-local-practice]')?.remove();practiceStatus.textContent=dawnText('expired');show('main');}
+        stageCards();renderLocalized();
+      },startStage:id=>startStage(Number(id),'stage')});
+    }).then(ok=>{if(!ok&&!practiceAuthorized){$('start-game').disabled=true;practiceStatus.textContent=dawnText('expired');}}).catch(()=>{$('start-game').disabled=true;practiceStatus.textContent=dawnText('expired');});
+  }
 })();

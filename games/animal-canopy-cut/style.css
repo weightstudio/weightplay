@@ -122,3 +122,11 @@ body[data-wp-game-id="animal-canopy-cut"] .battle-screen{border:0!important;bord
 
 /* The authored Guide belongs to Main; keep it outside both play scenes. */
 body[data-wp-game-id="animal-canopy-cut"]:not([data-screen="main"]) > .game-page-info{display:none!important}
+#app .dawn-net{display:inline-flex;align-items:center;gap:4px;min-height:48px;padding:2px 8px;border:1px solid #cee9c1;border-radius:9px;background:#214c49;color:#fff8dd;font:inherit;font-weight:700;}
+#app .dawn-net[hidden],#app .dawn-page-prev[hidden],#app .dawn-page-next[hidden]{display:none!important;}
+#app .dawn-net img{width:44px;height:44px;object-fit:contain;}
+#app .dawn-net:disabled{opacity:.55;}
+#app #battle-content:has(.dawn-net:not([hidden])){grid-template-rows:auto 4px minmax(0,1fr) auto auto;}
+#app #battle-status[data-dawn="true"]{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25;}
+body[data-wp-game-id="animal-canopy-cut"] .stage-tabs>.dawn-page-prev{grid-column:1!important;grid-row:1!important;}
+body[data-wp-game-id="animal-canopy-cut"] .stage-tabs>.dawn-page-next{grid-column:3!important;grid-row:1!important;}

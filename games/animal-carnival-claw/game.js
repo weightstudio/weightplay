@@ -1,5 +1,7 @@
 (function(){
 "use strict";
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceAuthorized=false,practiceStarting=false,practiceAdapter=null,festival=null,festivalCopy=null,brakeButton=null,practiceBadge=null;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +10,7 @@
     paused: Boolean(run?.paused || run?.suspended), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(practiceRequested)return;try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -24,7 +26,7 @@ const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[
 const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v49",ANALYTICS_INTERFACE_VERSION="9",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
-function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
+function track(eventName,details={}){if(practiceRequested)return;try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
 const localeNames={"en":"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans","ja":"ja","ko":"ko","es":"es","pt-br":"pt-BR","fr":"fr","de":"de","it":"it","ru":"ru","hi":"hi","ar":"ar"};
 const routeLocale=localeNames[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
 let locale=routeLocale||safeGet("weightPlayLocale")||safeGet("weightplayLocale")||document.documentElement.lang||"en";
@@ -49,7 +51,7 @@ const images={
   clawClosed:loadImage("../../assets/animal-carnival-claw-claw-closed-block-v1.webp")
 };
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
-let save=loadSave();
+let save=practiceRequested?defaultSave():loadSave();
 let run=null,pointerId=null,frame=null;
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
@@ -75,11 +77,13 @@ const levels=Array.from({length:30},(_,index)=>{
 });
 
 function safeGet(key){try{return localStorage.getItem(key)}catch{return null}}
-function safeSet(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}
+function safeSet(key,value){if(practiceRequested)return false;try{localStorage.setItem(key,value);return true}catch{return false}}
 function loadSave(){try{const parsed=JSON.parse(safeGet("weightplay_animal_carnival_claw_v1")||"null"),base=defaultSave();if(!parsed)return base;return{...base,...parsed,medals:[...(parsed.medals||[]),...base.medals].slice(0,30),cabinet:[...(parsed.cabinet||[]),...base.cabinet].slice(0,8),upgrades:{...base.upgrades,...(parsed.upgrades||{})}}}catch{return defaultSave()}}
 function persist(){safeSet("weightplay_animal_carnival_claw_v1",JSON.stringify(save))}
 function loadImage(src){const image=new Image();image.src=src;return image}
 function t(key,data){return fmt(copy[key]??window.CARNIVAL_CLAW_LOCALES.en[key]??key,data)}
+function festivalText(index){return festivalCopy?.[locale]?.[index]??festivalCopy?.en?.[index]??''}
+function placePracticeBadge(host){practiceBadge ||= document.querySelector('[data-wp-local-practice]');if(!practiceBadge||!host||!practiceAuthorized)return;practiceBadge.style.cssText='display:inline-block;margin-inline-start:.4em;color:#f5c84c;font:700 10px sans-serif;pointer-events:none;white-space:nowrap';if(practiceBadge.parentNode!==host)host.append(practiceBadge)}
 function prizeName(kind){return t(`prize${kind+1}`)}
 window.CARNIVAL_CLAW_I9=Object.freeze({
   getSelectedStage:()=>selected,
@@ -95,16 +99,16 @@ window.CARNIVAL_CLAW_I9=Object.freeze({
       stage(index){
         const level=levels[index];if(!level)throw new RangeError(`CARNIVAL_CLAW_STAGE_MISSING:${index}`);
         const cleared=Boolean(save.medals[index]),unlocked=index<save.unlocked;
-        const rule=t(chapters[level.chapter].rule);
+        const rule=level.festival?festivalText(1):t(chapters[level.chapter].rule);
         return{
           id:index+1,
           kicker:t("mission",{n:index+1}),
-          title:t(chapters[level.chapter].name),
+          title:level.festival?festivalText(0):t(chapters[level.chapter].name),
           subtitle:t("objective",{count:level.targets.length}),
           status:cleared?t("cleared",{medal:medalText(save.medals[index])}):unlocked?t("ready"):t("locked"),
           poster,
           summary:rule,
-          details:[rule,`${t("targets")}: ${level.targets.map(prizeName).join(" · ")}`,`${t("drops")}: 3`],
+          details:[rule,`${t("targets")}: ${level.targets.map(prizeName).join(level.festival?" → ":" · ")}`,level.festival&&level.festival.checkpoint!==null?festivalText(3):`${t("drops")}: 3`],
           locked:!unlocked,
           cleared,
         };
@@ -163,7 +167,8 @@ function show(next){
 }
 function renderMain(){
   const cleared=save.medals.filter(Boolean).length,charms=save.cabinet.filter(Boolean).length;
-  $("mainProgress").textContent=t("progress",{cleared,charms});
+  $("mainProgress").textContent=practiceAuthorized?festivalText(4):t("progress",{cleared,charms});
+  if(practiceAuthorized)placePracticeBadge($("mainProgress"));
 }
 function setStagePanel(name){
   activeStagePanel=name;
@@ -174,7 +179,8 @@ function setStagePanel(name){
 }
 function renderStage(){
   const cleared=save.medals.filter(Boolean).length;
-  $("stageSummary").textContent=t("stageSummary",{cleared,bolts:save.bolts});
+  $("stageSummary").textContent=practiceAuthorized?festivalText(4):t("stageSummary",{cleared,bolts:save.bolts});
+  if(practiceAuthorized)placePracticeBadge($("stageSummary"));
   stageUI?.refresh(selected);
   renderCabinet();renderWorkshop();
 }
@@ -209,11 +215,20 @@ function buyUpgrade(id){
 }
 
 function startMission(index,entry="stage_select"){
+  if(!practiceRequested)return beginMission(index,entry);
+  if(!practiceAuthorized||practiceStarting||window.__carnivalPracticeAnalyticsSafe!==true)return false;
+  practiceStarting=true;
+  return practiceAdapter.validate().then(ok=>{
+    if(!ok||!practiceAuthorized||window.__carnivalPracticeAnalyticsSafe!==true)return false;
+    beginMission(index,entry);return true;
+  }).catch(()=>false).finally(()=>{practiceStarting=false});
+}
+function beginMission(index,entry="stage_select"){
   const missionEntry=stageEntry==="battle_return"?"stage_reentry":entry;stageEntry="main";
   selected=index;const level=levels[index];
   run={
     index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:randomBetween(150,850),aimY:randomBetween(250,455),dropX:null,lockValue:randomBetween(.06,.94),lockCenter:.5,lockDirection:Math.random()<.5?-1:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
-    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,lockGrace:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim"
+    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,lockGrace:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim",festival:level.festival?festival.beginFestival(level.festival):null
   };
   settledDecision=false;resolvedWallAnchor=0;(__wpNotifyMeasurement(), $("resultPanel").hidden=true);(__wpNotifyMeasurement(), $("leavePanel").hidden=true);(__wpNotifyMeasurement(), $("pausePanel").hidden=true);$("battleLive").hidden=false;$("battleLive").inert=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
@@ -223,10 +238,11 @@ function startMission(index,entry="stage_select"){
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
-function remainingTargets(){const deliveredKinds=new Set(run.delivered.filter(entry=>entry.target).map(entry=>entry.kind));return run.targets.filter(kind=>!deliveredKinds.has(kind))}
+function remainingTargets(){if(run.festival)return run.targets.slice(run.festival.delivered.length);const deliveredKinds=new Set(run.delivered.filter(entry=>entry.target).map(entry=>entry.kind));return run.targets.filter(kind=>!deliveredKinds.has(kind))}
 function renderHud(){
   if(!run)return;
-  $("missionLabel").textContent=t("mission",{n:run.index+1});$("objectiveText").textContent=t("objective",{count:remainingTargets().length});
+  $("missionLabel").textContent=t("mission",{n:run.index+1});$("objectiveText").textContent=run.festival?`${festivalText(1)}: ${remainingTargets().map(prizeName).join(' → ')}`:t("objective",{count:remainingTargets().length});
+  if(practiceAuthorized)placePracticeBadge($("missionLabel"));
   $("dropsValue").textContent=run.drops;$("gripValue").textContent=`${Math.round(run.grip*100)}%`;
   $("timingMeter").classList.toggle("timing-active",run.phase==="secure");
   $("timingMeter").disabled=run.phase!=="secure";
@@ -236,17 +252,20 @@ function renderHud(){
   $("timingMeter").style.setProperty("--timing-start",`${((timingCenter-timingWindow)*100).toFixed(1)}%`);
   $("timingMeter").style.setProperty("--timing-end",`${((timingCenter+timingWindow)*100).toFixed(1)}%`);
   $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}"><i class="target-thumb" aria-hidden="true" style="${prizeSpriteStyle(kind)}"></i><b>${prizeName(kind)}</b></span>`).join("");
+  if(brakeButton){brakeButton.hidden=!run.festival;brakeButton.disabled=!run.festival||run.phase!=="aim"||run.festival.brakes===0||run.festival.brakeTime>0;brakeButton.textContent=`${festivalText(2)} ${run.festival?.brakes??0}/2`;}
   $("restartBtn").disabled=!!run.result;
   if(!["secure","lift","fall"].includes(run.phase))$("steerAction").hidden=true;
   announce(run.feedback||"phaseAim");
+  if(run.festival&&run.phase==='secure'&&run.festival.checkpointLocks===1)$("phaseHint").textContent=festivalText(3);
 }
 function beginDrop(){
   if(!run||run.phase!=="aim"||run.result)return;
-  run.dropX=clawPosition().x;run.phase="drop";run.phaseTime=0;run.drops--;run.grip=1;run.stability=1;run.aimCorrection=null;run.feedback="phaseDrop";renderHud();
+  run.dropX=clawPosition().x;run.phase="drop";run.phaseTime=0;run.drops--;if(run.festival)run.festival.drops=run.drops+1;run.grip=1;run.stability=1;run.aimCorrection=null;run.feedback="phaseDrop";renderHud();
 }
 function update(dt,wallTime=null){
   if(!run||run.result||screen!=="battle"||activeModal())return;
   run.elapsed+=dt;run.phaseTime+=dt;
+  if(run.festival&&run.festival.brakeTime>0){const previous=run.festival.brakeTime;festival.tickBrake(run.festival,dt);if(previous>0&&run.festival.brakeTime===0)renderHud();}
   if(wallTime!==null&&resolvedAutoplayPhase()){
     if(!resolvedWallAnchor)resolvedWallAnchor=wallTime-run.phaseTime*1000;
     run.phaseTime=Math.max(run.phaseTime,(wallTime-resolvedWallAnchor)/1000);
@@ -281,7 +300,7 @@ function update(dt,wallTime=null){
 }
 function clawPosition(){
   if(!run)return{x:500,y:80};
-  const sway=Math.sin(run.elapsed*(2.5-run.level.drift)+run.level.index*.4)*(38+run.level.chapter*6);
+  const naturalSway=Math.sin(run.elapsed*(2.5-run.level.drift)+run.level.index*.4)*(38+run.level.chapter*6),sway=run.festival?festival.railSway(run.festival,naturalSway):naturalSway;
   const liveX=clamp(run.aimX+sway,68,932),x=run.phase==="aim"?liveX:(run.dropX??liveX);
   if(run.phase==="drop")return{x,y:80+(run.aimY-80)*clamp(run.phaseTime/.72)};
   if(run.phase==="secure"||run.phase==="fall")return{x,y:run.aimY};
@@ -329,11 +348,16 @@ function attemptLock(){
   if(!run||run.phase!=="secure"||!run.held)return;
   const distance=Math.abs(run.lockValue-run.lockCenter),windowSize=lockWindow();
   if(distance<=windowSize||run.lockGrace>0){
+    if(run.festival&&run.held.kind===run.festival.checkpoint&&remainingTargets()[0]===run.held.kind){
+      if(!festival.checkpointLock(run.festival,run.held.kind))return;
+      if(run.festival.checkpointLocks===1){run.phaseTime=0;randomizeTimingChallenge();run.feedback="phaseLift";renderHud();return;}
+    }
     run.lockQuality=clamp(1-distance/windowSize);run.phase="lift";run.phaseTime=0;resolvedWallAnchor=performance.now();run.grip=.72+run.lockQuality*.28;run.feedback="holdingGood";updateTimingCoach(true);renderHud();
   }else beginFall("lockMiss");
 }
 function beginFall(reason="lockMiss"){
   if(!run?.held||!["secure","lift"].includes(run.phase))return;
+  if(run.festival)festival.resetCheckpointLocks(run.festival);
   const claw=clawPosition();run.phase="fall";run.phaseTime=0;run.fallX=claw.x;run.fallY=claw.y;run.fallVelocity=45;run.fallRotation=0;run.grip=0;run.feedback=reason;run.lastCorrection=reason;updateTimingCoach(false,true);renderHud();
 }
 function completeFall(){
@@ -344,7 +368,7 @@ function completeFall(){
 function deliverHeld(){
   const held=run.held;if(!held)return;
   held.active=false;held.delivered=true;
-  const target=run.targets.includes(held.kind)&&!run.delivered.some(entry=>entry.target&&entry.kind===held.kind);
+  const target=run.festival?festival.deliverFestival(run.festival,held.kind).accepted:run.targets.includes(held.kind)&&!run.delivered.some(entry=>entry.target&&entry.kind===held.kind);
   run.delivered.push({kind:held.kind,target});save.cabinet[held.kind]=true;persist();
   run.phase="return";run.phaseTime=0;resolvedWallAnchor=performance.now();run.held=null;run.feedback=target?"caught":"wrong";
   if(!target)run.lastCorrection="objective";
@@ -354,7 +378,7 @@ function finish(won){
   if(run.result)return;
   const medal=won?clamp(1+run.drops+(run.misses===0?1:0),1,3):0,previous=save.medals[run.index],newBest=medal>previous;
   if(won){
-    save.medals[run.index]=Math.max(previous,medal);save.unlocked=Math.max(save.unlocked,Math.min(30,run.index+2));
+    save.medals[run.index]=Math.max(previous,medal);save.unlocked=Math.max(save.unlocked,Math.min(levels.length,run.index+2));
     const reward=medal+(newBest?1:0);save.bolts+=reward;persist();
   }
   run.result={won,medal,newBest};settledDecision=false;cancelAnimationFrame(raf);raf=0;
@@ -367,8 +391,9 @@ function finish(won){
   const failureCue=run.lastCorrection==="lockMiss"?t("lockMissResult",resultData):`${t(run.lastCorrection||"phaseAim",resultData)} ${run.lastSpatialCorrection||""}`.trim();
   $("resultText").textContent=won?t("winText",resultData):`${t("failText",resultData)} ${failureCue}`.trim();
   $("bestText").textContent=won?(newBest?t("newBest"):t("best",{medal:medalText(previous)})):"";
-  $("nextBtn").disabled=!won||run.index>=29;$("nextBtn").classList.toggle("primary-action",won&&run.index<29);
-  requestAnimationFrame(()=>(won&&run.index<29?$("nextBtn"):$("retryBtn")).focus({preventScroll:true}));
+  if(practiceRequested)$("resultText").textContent+=` · ${festivalText(4)}`;
+  $("nextBtn").disabled=!won||run.index>=levels.length-1;$("nextBtn").classList.toggle("primary-action",won&&run.index<levels.length-1);
+  requestAnimationFrame(()=>(won&&run.index<levels.length-1?$("nextBtn"):$("retryBtn")).focus({preventScroll:true}));
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = (won ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -493,7 +518,7 @@ function bind(){
     const next=event.detail?.locale;
     if(window.CARNIVAL_CLAW_LOCALES[next])setLocale(next,false);
   });
-  $("startBtn").addEventListener("click",()=>{track("game_start",{entry:"main"});stageEntry="main";show("stage")});
+  $("startBtn").addEventListener("click",()=>{if(practiceRequested&&!practiceAuthorized)return;track("game_start",{entry:"main"});stageEntry="main";show("stage")});
   $("stageBackBtn").addEventListener("click",()=>{track("main_return",{from:"stages"});stageEntry="main";show("main")});
   $("stagesTab").addEventListener("click",()=>setStagePanel("stages"));
   $("cabinetTab").addEventListener("click",()=>setStagePanel("cabinet"));
@@ -507,8 +532,9 @@ function bind(){
   $("timingMeter").addEventListener("click",()=>attemptLock());
   $("restartBtn").addEventListener("click",()=>__wpReplayStart(() => startMission(run.index,"battle_restart")));
   $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"stages",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});track("battle_return",{from:"result",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";show("stage")}));
-  $("nextBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"next",mission:boundedMetric((run?.index??0)+1,30),outcome:"clear"});startMission(Math.min(29,run.index+1),"next_mission")}));
+  $("nextBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"next",mission:boundedMetric((run?.index??0)+1,30),outcome:"clear"});startMission(Math.min(levels.length-1,run.index+1),"next_mission")}));
   $("retryBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"replay",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});__wpReplayStart(() => startMission(run.index,"replay"))}));
+  if(practiceRequested){brakeButton=document.createElement('button');brakeButton.type='button';brakeButton.hidden=true;brakeButton.className='festival-brake';brakeButton.addEventListener('click',()=>{if(!practiceAuthorized||!run?.festival||activeModal())return;const sway=Math.sin(run.elapsed*(2.5-run.level.drift)+run.level.index*.4)*(38+run.level.chapter*6);if(festival.useBrake(run.festival,run.phase,sway))renderHud();});document.querySelector('.target-strip').append(brakeButton);}
   canvas.addEventListener("pointerdown",event=>{if(pointerId!==null||run?.phase!=="aim")return;pointerId=event.pointerId;canvas.setPointerCapture(event.pointerId);handlePointerAim(event);event.preventDefault()});
   canvas.addEventListener("pointermove",event=>{if(pointerId===event.pointerId)handlePointerAim(event)});
   canvas.addEventListener("pointerup",event=>{if(pointerId!==event.pointerId)return;handlePointerAim(event,run?.phase==="aim");pointerId=null;event.preventDefault()});
@@ -519,6 +545,7 @@ function bind(){
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
 }
 function init(){
+  if(practiceRequested)$("localeSelect").disabled=true;
   frame=window.mountCarnivalFrame();bind();setLocale(locale,false);
   let started=false;
   const loadAssets=loader=>{
@@ -538,6 +565,20 @@ function init(){
     loaderScript.addEventListener("load",()=>loadAssets(window.WeightPlayGameEntryLoader),{once:true});
     loaderScript.addEventListener("error",()=>loadAssets(null),{once:true});
   }else loadAssets(null);
+  if(practiceRequested){
+    const status=document.createElement('p');status.setAttribute('role','status');$("startBtn").after(status);
+    const waitForEntryReady=()=>new Promise(resolve=>{let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(ok)}function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
+    void Promise.all([import('/src/game-local-practice.mjs'),import('./festival-dispatch-candidate.mjs?v=20261027-claw-practice1'),import('./festival-copy.mjs?v=20261027-claw-practice1'),waitForEntryReady()]).then(([practice,chapter,copy,ready])=>{
+      festival=chapter;festivalCopy=copy.FESTIVAL_COPY;practiceAdapter=practice.LocalPractice;status.textContent=festivalText(4);
+      if(!ready||window.__carnivalPracticeAnalyticsSafe!==true)return false;
+      return practiceAdapter.register({gameId:'animal-carnival-claw',stageIds:Array.from({length:60},(_,i)=>i+1),enable(value){
+        practiceAuthorized=value===true&&window.__carnivalPracticeAnalyticsSafe===true;
+        if(practiceAuthorized){if(levels.length===30)levels.push(...festival.FESTIVAL_LEVELS.map(level=>({index:level.index,chapter:5,slot:level.index%5,prizes:level.prizes,targets:level.order,obstacle:'none',drift:level.drift,shelfPhase:0,festival:level})));save=defaultSave();save.medals=Array(60).fill(0);save.unlocked=60;save.tutorial=true;status.textContent=festivalText(4);}
+        else{levels.splice(30);save=defaultSave();selected=0;run=null;if(brakeButton)brakeButton.hidden=true;practiceBadge?.remove();practiceBadge=null;document.querySelector('[data-wp-local-practice]')?.remove();status.textContent=festivalText(4);show('main');}
+        $("startBtn").disabled=!practiceAuthorized;stageUI?.setConfig(window.CARNIVAL_CLAW_I9.getStageConfig({poster:new URL('/assets/interface7-redrawn/animal-carnival-claw.webp',location.origin).href}),selected);renderMain();renderStage();
+      },startStage:id=>startMission(Number(id)-1,'stage_card')});
+    }).then(ok=>{if(!ok&&!practiceAuthorized)$("startBtn").disabled=true}).catch(()=>{$("startBtn").disabled=true});
+  }
 }
 window.__CARNIVAL_CLAW_TEST__={
   levels,startMission,beginDrop,selectStage(index,center=false){if(stageUI)stageUI.select(index,{center,notify:true});else selectStage(index);return this.stageWindow()},stageWindow(){const rail=$("stageRail");return{selected:stageUI?.selected??selected,start:Number(rail.dataset.wpStageWindowStart),end:Number(rail.dataset.wpStageWindowEnd),pool:Number(rail.dataset.wpStagePoolSize),total:Number(rail.dataset.wpStageTotal),indexes:[...rail.children].map(card=>Number(card.dataset.stageIndex))}},step(seconds){for(let time=0;time<seconds&&!run?.result;time+=.02)update(.02);draw();return this.snapshot()},

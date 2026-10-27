@@ -1,6 +1,9 @@
 (() => {
   "use strict";
 
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceEnabled=false,practiceAdapter=null,shiftAnswers=null,shiftRule=null,shiftCopy=null;
+
   const entryLoader = window.WeightPlayGameEntryLoader;
   const startButton = document.getElementById('start-game');
   startButton.disabled = true;
@@ -31,13 +34,13 @@
   let resultRewardObtained = false;
   const rewardGameId = 'animal-chameleon-blend';
   const refreshResultReward = () => {
-    if (resultScreen.hidden) return;
+    if (practiceRequested || resultScreen.hidden) return;
     window.ShowResultGet?.(rewardGameId,resultRewardObtained);
     if (resultRewardObtained) window.WeightPlayCastle?.dismissRewardNotice?.(rewardGameId);
   };
   window.addEventListener('weightplay:castle-reward',event=>{
     const reward=event.detail;
-    if(reward?.gameId!==rewardGameId||state.screen!=='battle'||state.phase!=='result')return;
+    if(practiceRequested||reward?.gameId!==rewardGameId||state.screen!=='battle'||state.phase!=='result')return;
     resultRewardObtained=true;
     queueMicrotask(refreshResultReward);
   });
@@ -273,10 +276,14 @@
     colorGroup.append(color);patternGroup.append(pattern);controls.push(color,pattern);
   }
   const lock=makeButton('','lock');lock.id='blend-lock';lock.className='primary-control';
-  $('battle-controls').replaceChildren(colorGroup,patternGroup,lock);
+  const reminder=makeButton('','reminder');reminder.id='blend-reminder';reminder.hidden=true;
+  $('battle-controls').replaceChildren(colorGroup,patternGroup,reminder,lock);
+  const shiftHelp=document.createElement('div');shiftHelp.className='blend-shift-help';shiftHelp.hidden=true;board.prepend(shiftHelp);
   function pairName(pair){return `${gameText().colors?.[pair[0]]||shapes[pair[0]]} + ${gameText().patterns?.[pair[1]]||patterns[pair[1]]}`;}
   function targets(){const p=profiles[state.stage-1],offset=(state.stage-1)*2+(state.round-1)*p.sequence;return Array.from({length:p.sequence},(_,i)=>cycle[(offset+i)%cycle.length]);}
-  function answers(){const a=targets();return profiles[state.stage-1].reverse?a.reverse():a;}
+  function answers(){const a=targets();return practiceEnabled&&state.stage>=31?shiftAnswers(profiles[state.stage-1],a):profiles[state.stage-1].reverse?a.reverse():a;}
+  const shiftText=()=>shiftCopy?.[localeKey()]||shiftCopy?.en;
+  function shiftLabel(rule){const c=shiftText();return rule.replace(/swap|c|p/g,token=>token==='swap'?c[4]:token==='c'?c[2]:c[3]);}
   const audio=window.WeightPlayAudio?.createScope?.();
   window.WeightPlayAudio?.preload?.(['game.start','puzzle.match','feedback.error','result.win','result.lose']);
   function sound(id){audio?.play(id);}
@@ -368,20 +375,24 @@
     const battleGroup=window.WeightPlayScreenFrame.createGroup();
     for(const node of [...battleInfo.children])battleGroup.add(node);
     battleInfo.remove();frame.battleTopUI.add(battleGroup);
+    mountStageRail();
+  }
+  function mountStageRail(){
+    stageUI?.destroy();
     stageUI=window.WeightPlayPlayUI.mountStage({
       page:stageWorkspace,
       rail:stageRail,
       selected:selectedStage,
       isActive:()=>frame.active==="stage",
-      config:window.ChameleonStageConfig.create({profiles,getBest:()=>best,gameText,t,common}),
+      config:window.ChameleonStageConfig.create({profiles,getBest:()=>practiceEnabled?59:best,gameText,t,common,practiceRequested,practice:()=>practiceEnabled,practiceTitle:()=>shiftText()?.[0]||''}),
       onSelect(index){selectedStage=index;},
-      onStart(index){start(index+1);},
+      onStart(index){requestStage(index+1);},
     });
   }
 
   function updateProgress(){
     $('main-progress').textContent=`${common(8)}: ${best} / 30`;
-    if(stageProgress)stageProgress.textContent=`${common(8)}: ${best} / 30`;
+    if(stageProgress)stageProgress.textContent=practiceEnabled?shiftText()[0]:`${common(8)}: ${best} / 30`;
     document.querySelector('[data-m5-lede]').textContent=t(0)+' · '+t(16);
     const nextLabel=window.ChameleonStageConfig.nextLabel(localeKey());
     if(nextLabel)$('next').textContent=nextLabel;
@@ -406,16 +417,18 @@
     observeMeasurement();
   }
   function start(stage){
-    if(stage>Math.min(30,best+1)||stage<1)return;
+    if(!Number.isInteger(stage)||stage<1||(practiceRequested?(!practiceEnabled||stage<31||stage>60):(stage>Math.min(30,best+1))))return;
     selectedStage=stage-1;stageCards();
-    state={screen:'battle',stage,round:1,wins:0,phase:'ready',color:-1,pattern:-1,entry:0,preview:0,timer:0,correct:false};
+    state={screen:'battle',stage,round:1,wins:0,phase:'ready',color:-1,pattern:-1,entry:0,preview:0,timer:0,correct:false,reminder:1};
     Object.assign(measurement,{roundKey:{},started:true,ended:false,restart:false,outcome:'complete'});
     uiPauseReasons.clear();battlePaused=false;resultScreen.hidden=true;show('battle');render();sound('game.start');
   }
   function begin(){state.phase='preview';state.preview=0;state.entry=0;state.color=-1;state.pattern=-1;state.timer=profiles[state.stage-1].preview;render();}
-  function nextRound(){const p=profiles[state.stage-1];if(state.round>=p.rounds){finish();return;}state.round++;begin();}
+  function requestStage(stage){if(practiceRequested)return practiceAdapter?.challenge('animal-chameleon-blend',String(stage));return start(stage);}
+  function nextRound(){const p=profiles[state.stage-1];if(state.round>=p.rounds){finish();return;}state.round++;state.reminder=1;begin();}
   function act(action){
     if(state.screen!=='battle'||battlePaused||!resultScreen.hidden)return;
+    if(action==='reminder'&&practiceEnabled&&state.stage>=31&&state.phase==='choose'&&state.entry===0&&state.reminder>0){state.reminder--;begin();return;}
     if(action==='lock'&&state.phase==='ready'){begin();return;}
     if(action==='lock'&&state.phase==='feedback'){nextRound();return;}
     if(state.phase!=='choose')return;
@@ -433,14 +446,17 @@
     coach.textContent=phase==='ready'?t(0):phase==='preview'?t(1):phase==='choose'?t(2):state.correct?t(6):t(7);
     progress.textContent=`${t(19)} ${state.round}/${p.rounds} · ${t(12)} ${state.wins}/${p.need}`;
     board.dataset.phase=phase;board.dataset.correct=String(state.correct);
-    $('stage-label').textContent=`${common(9)} ${state.stage} / 30`;
+    $('stage-label').textContent=`${common(9)} ${state.stage} / ${practiceEnabled?60:30}`;
     $('score-label').textContent=`${state.wins} / ${p.need} ✓`;
   }
   function render(){
     const p=profiles[state.stage-1],phase=state.phase;
+    const shifting=practiceEnabled&&state.stage>=31;
+    shiftHelp.hidden=!shifting;reminder.hidden=!shifting;
+    if(shifting){const c=shiftText();shiftHelp.textContent=`${c[1]} 1→2→3→1 · ${Array.from({length:p.sequence},(_,i)=>`${i+1}: ${shiftLabel(shiftRule(p,i))}`).join(' · ')}`;reminder.textContent=c[5];reminder.disabled=phase!=='choose'||state.entry!==0||state.reminder<1;}
     updateBlendCoach();
     colorLegend.textContent=`1 · ${t(8)}`;patternLegend.textContent=`2 · ${t(9)}`;
-    for(const b of controls){const color=b.dataset.action.startsWith('color'),i=Number(b.dataset.action.slice(-1));b.textContent=`${color?shapes[i]:patterns[i]} ${color?(gameText().colors?.[i]||shapes[i]):(gameText().patterns?.[i]||patterns[i])}`;b.disabled=phase!=='choose';b.setAttribute('aria-pressed',String((color?state.color:state.pattern)===i));}
+    for(const b of controls){const color=b.dataset.action.startsWith('color'),i=Number(b.dataset.action.slice(-1));b.textContent=`${shifting?`${i+1} · `:''}${color?shapes[i]:patterns[i]} ${color?(gameText().colors?.[i]||shapes[i]):(gameText().patterns?.[i]||patterns[i])}`;b.disabled=phase!=='choose';b.setAttribute('aria-pressed',String((color?state.color:state.pattern)===i));}
     lock.disabled=phase==='preview'||(phase==='choose'&&(state.color<0||state.pattern<0));
     lock.textContent=phase==='ready'?`▶ ${t(4)}`:phase==='preview'?`◉ ${t(1)}`:phase==='feedback'? (state.round>=p.rounds?(resultActionCopy[localeKey()]||resultActionCopy.en):t(5)):`3 · ${t(3)}`;
     let pair=null;
@@ -461,9 +477,10 @@
   function finish(){
     const p=profiles[state.stage-1],win=state.wins>=p.need;state.phase='result';
     measurement.ended=true;measurement.outcome=win?'win':'lose';observeMeasurement();
-    if(win){best=Math.max(best,state.stage);try{localStorage.setItem(storageKey,String(best));}catch{/* Nonpersistent play. */}}
+    if(win&&!practiceRequested){best=Math.max(best,state.stage);try{localStorage.setItem(storageKey,String(best));}catch{/* Nonpersistent play. */}}
     $('result-title').textContent=win?common(10):common(11);$('result-copy').textContent=`${t(12)}: ${state.wins}/${p.rounds} · ${t(13)}: ${p.need}${state.stage%5===0?' · '+(state.stage===30?(gameText().finale||'★'):(gameText().checkpoint||'★')):''}`;
-    $('next').disabled=!win||state.stage===30;$('next').setAttribute('aria-disabled',String($('next').disabled));resultScreen.hidden=false;board.inert=true;updateProgress();sound(win?'result.win':'result.lose');
+    if(practiceEnabled)$('result-copy').textContent+=` · ${shiftText()[6]}`;
+    $('next').disabled=!win||state.stage===(practiceEnabled?60:30);$('next').setAttribute('aria-disabled',String($('next').disabled));resultScreen.hidden=false;board.inert=true;updateProgress();sound(win?'result.win':'result.lose');
   }
   function tick(now){
     const dt=Math.min(.1,Math.max(0,(now-lastTime)/1000));lastTime=now;
@@ -478,9 +495,9 @@
   }
   $('start-game').addEventListener('click',()=>{stageCards();show('stage');});
   $('stage-back').addEventListener('click',()=>show('main'));
-  $('to-stages').addEventListener('click',()=>{if(!resultScreen.hidden)selectedStage=Math.min(29,best);board.inert=false;stageCards();show('stage');});
-  $('retry').addEventListener('click',()=>{board.inert=false;start(state.stage);});
-  $('next').addEventListener('click',()=>{if(!$('next').disabled){board.inert=false;start(state.stage+1);}});
+  $('to-stages').addEventListener('click',()=>{if(!resultScreen.hidden)selectedStage=practiceEnabled?state.stage-1:Math.min(29,best);board.inert=false;stageCards();show('stage');});
+  $('retry').addEventListener('click',()=>{board.inert=false;requestStage(state.stage);});
+  $('next').addEventListener('click',()=>{if(!$('next').disabled){board.inert=false;requestStage(state.stage+1);}});
   window.addEventListener('keydown',e=>{if(state.screen!=='battle'||!resultScreen.hidden||battlePaused||e.repeat||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;const actions={'1':'color-0','2':'color-1','3':'color-2','4':'pattern-0','5':'pattern-1','6':'pattern-2'};if(actions[e.key]){e.preventDefault();act(actions[e.key]);}});
   window.addEventListener('weightplay:market-locale-change',()=>{updateProgress();stageCards();frame?.refresh();if(state.screen==='battle')render();});
   window.addEventListener('weightplay:interaction-state',()=>{
@@ -507,8 +524,21 @@
   Promise.all([waitImage(document.querySelector('.m5-cover')),waitImage(backdrop),waitImage(atlas)]).then(()=>{
     if(failed||abortEntry.signal.aborted)return;
     const canvas=$('arena'),ctx=canvas?.getContext('2d');if(!ctx)throw new Error('CANVAS_UNAVAILABLE');
-    ctx.drawImage(backdrop,0,0,canvas.width,canvas.height);clearTimeout(entryTimeout);startButton.disabled=false;entryLoader.ready();
+    ctx.drawImage(backdrop,0,0,canvas.width,canvas.height);clearTimeout(entryTimeout);startButton.disabled=false;entryLoader.ready();if(practiceRequested)void activatePractice();
   }).catch(failEntry);
+  async function activatePractice(){
+    const ready=await new Promise(resolve=>{let done=false;const timer=setTimeout(()=>finish(false),25000),observer=new MutationObserver(check);function finish(value){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(value)}function check(){const d=document.documentElement.dataset;if(d.wpGameEntryLoaderInstalled!=='true'||d.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
+    if(!ready)return;
+    const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs'),import('./shift-garden-candidate.mjs?v=20261027-shift1'),import('./shift-garden-locales.mjs?v=20261027-shift1')]);
+    if(!await LocalPractice.ready||chapter.SHIFT_STAGES.length!==30||chapter.SHIFT_STAGES.some((s,i)=>s.id!==31+i))return;
+    practiceAdapter=LocalPractice;shiftAnswers=chapter.shiftAnswers;shiftRule=chapter.shiftRule;shiftCopy=locale.SHIFT_COPY;
+    const style=document.createElement('style');style.textContent='body[data-wp-chameleon-shift] #battle-controls{grid-template-columns:1fr 1fr}body[data-wp-chameleon-shift] #battle-controls fieldset{grid-column:1 / -1}body[data-wp-chameleon-shift] .blend-shift-help{max-width:96%;max-height:5em;overflow:auto;color:#f7edc6;background:#102f34;padding:4px 8px;border-radius:8px;font:600 13px/1.3 system-ui,sans-serif}';document.head.append(style);shiftHelp.tabIndex=0;
+    await LocalPractice.register({gameId:'animal-chameleon-blend',stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){
+      practiceEnabled=enabled===true;if(practiceEnabled){document.body.dataset.wpChameleonShift='';if(profiles.length===30)profiles.push(...chapter.SHIFT_STAGES);selectedStage=30;}
+      else{delete document.body.dataset.wpChameleonShift;profiles.length=30;selectedStage=Math.min(29,best);board.inert=false;show('main');}
+      updateProgress();stageCards();
+    },async startStage(id){const stage=Number(id);if(practiceEnabled&&Number.isInteger(stage)&&stage>=31&&stage<=60)start(stage)}});
+  }
   addEventListener('pagehide',()=>{clearTimeout(entryTimeout);abortEntry.abort();},{once:true});
 
 })();

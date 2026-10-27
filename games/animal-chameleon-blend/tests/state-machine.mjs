@@ -5,6 +5,7 @@ const code=section('  const base =','  const storageKey =')+section('  function 
 const nodes=new Map();const saved=new Map();let sounds=0;
 const context=vm.createContext({assert,Map,console,Math,Number,Array,Boolean,String,
  resultScreen:{hidden:true},board:{inert:false},measurement:{},best:0,storageKey:'best',battlePaused:false,
+ practiceEnabled:false,practiceRequested:false,practiceAdapter:null,shiftAnswers:null,shiftRule:null,shiftCopy:null,
  t:i=>String(i),common:i=>String(i),gameText:()=>({}),render:()=>{},updateProgress:()=>{},observeMeasurement:()=>{},sound:()=>{sounds++},
  $:id=>{if(!nodes.has(id))nodes.set(id,{setAttribute(){},disabled:false,textContent:''});return nodes.get(id)},localStorage:{setItem:(k,v)=>saved.set(k,v)},
  state:{screen:'battle',stage:1,round:1,wins:0,phase:'ready',color:-1,pattern:-1,entry:0,preview:0,timer:0,correct:false}
