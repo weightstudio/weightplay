@@ -616,7 +616,7 @@
     if(state?.engine?.kind==='crate')put('pullMode',`${w[3]} ${state.engine.pulls}`);
     put('resultStage',w[6]);put('next',w[7]);put('retry',w[8]);
     const result=document.getElementById('resultModal');
-    if(result&&!result.hidden){put('resultTitle',w[9]);if(result.dataset.wpCrateSaveUnconfirmed!=='true')put('resultText',practice?practiceCopy[2]:c.win);put('resultA',`${state?.engine?.moves??0} ${w[0]}`);put('resultB',`${state?.engine?.pulls??0} ${w[2]}`);put('resultC',w[10]);}
+    if(result&&!result.hidden){if(result.dataset.wpCrateSaveUnconfirmed!=='true'){put('resultTitle',w[9]);put('resultText',practice?practiceCopy[2]:c.win)}put('resultA',`${state?.engine?.moves??0} ${w[0]}`);put('resultB',`${state?.engine?.pulls??0} ${w[2]}`);put('resultC',w[10]);}
     document.querySelectorAll('#resultModal .result-stats b,#resultModal .result-grid b').forEach((n,i)=>{const value=[w[0],w[2],traditional()?'狀態':'状态'][i];if(value&&n.textContent!==value)n.textContent=value;});
     document.querySelectorAll('#stageRail [data-stage]').forEach(card=>{
       const n=Number(card.dataset.stage),chapter=card.querySelector('small'),title=card.querySelector('strong'),status=card.querySelector('span');

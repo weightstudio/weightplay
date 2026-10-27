@@ -78,6 +78,7 @@ export class CrownScene {
         this.box(this.terrain,gx,gy,.57,.64,.64,.12,key||!locked?0x155d52:0x533a75,true);
         if(key){this.box(this.terrain,gx-.13,gy+.12,.66,.22,.22,.08,0xffdd70,true);this.box(this.terrain,gx+.06,gy-.05,.66,.28,.08,.08,0xffdd70,true);this.box(this.terrain,gx+.17,gy-.13,.66,.08,.18,.08,0xffdd70,true)}
         else{this.box(this.terrain,gx,gy-.05,.66,.36,.28,.08,0xffdd70,true);this.box(this.terrain,gx-.14,gy+.17,.66,.08,.22,.08,0xffdd70,true);if(locked)this.box(this.terrain,gx+.14,gy+.17,.66,.08,.22,.08,0xffdd70,true);this.box(this.terrain,gx+(locked?0:-.06),gy+.27,.66,locked?.36:.25,.08,.08,0xffdd70,true)}
+        if(state.latches.length>1){const dots=state.latches.indexOf(mark)+1;this.box(this.terrain,gx,gy-.36,.75,.68,.25,.08,0x172c37,true);for(let i=0;i<dots;i++)this.box(this.terrain,gx+(dots===1?0:(i===0?-.17:.17)),gy-.36,.82,.20,.20,.06,0xffffff);}
       }
     }
     }

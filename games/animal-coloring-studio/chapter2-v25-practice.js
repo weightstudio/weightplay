@@ -5,6 +5,7 @@
     ready:false,id:'garden-bee-v25-practice',
     art:'/Assets/animal-coloring-studio-expansion-drafts/13-garden-bee-block-v25-source.png',
     mask:'/docs/game-build-handoffs/animal-coloring-studio-v25-pilot/UNREVIEWED-grouped-mask.png',
-    anchors:Object.freeze(points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`})))
+    anchors:Object.freeze(points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`}))),
+    textureAt(mode,x,y){if(mode==='dots'){const dx=x%18-9,dy=y%18-9;return dx*dx+dy*dy<=9}if(mode==='stripes')return (x+y)%18<5;return false;}
   });
 })();

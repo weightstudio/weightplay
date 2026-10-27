@@ -39,6 +39,8 @@
       buffalo: { source: "enemy-buffalo-block-v1.png", width: 1024, height: 1536 },
       warden: { source: "enemy-warden-candidate-v2.webp", width: 1024, height: 1536 },
       medic: { source: "enemy-medic-candidate-v1.webp", width: 1024, height: 1536 },
+      drummer: { source: "enemy-drummer-candidate-v1.webp", width: 1024, height: 1536 },
+      sapper: { source: "enemy-sapper-candidate-v2.webp", width: 1024, height: 1536 },
     },
   };
 
