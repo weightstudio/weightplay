@@ -379,7 +379,8 @@
     pausedAt: 0,
     pendingWaveMs: null,
     resultOpen: false,
-    manageFromResult: false
+    manageFromResult: false,
+    chapterSignal: null
   };
 
   // Effects own presentation only. Cancellation never changes rewards or combat.
@@ -637,6 +638,11 @@
   }
 
   function enemyPack() {
+    const candidate = window.PEACH_OATH_CHAPTER2_CANDIDATE;
+    if (candidate?.ready === true) {
+      const pack = candidate.chapterTwoWave(state.stage, state.wave, C, makeUnit);
+      if (pack) return pack;
+    }
     const boss = state.wave === C.bossEvery;
     if (boss) return [makeUnit(C.enemies[4], "enemy", 0)];
     const count = clamp(2 + Math.floor((state.stage + state.wave) / 4), 2, 5);
@@ -660,6 +666,11 @@
     battle.heroes = state.team.filter((id) => state.heroes[id]?.owned).map((id, i) => makeUnit(heroData(id), "hero", i));
     if (state.wave > 1) battle.heroes.forEach(unit => { unit.attacks = charge.get(unit.id) || 0; });
     battle.enemies = enemyPack();
+    const candidate = window.PEACH_OATH_CHAPTER2_CANDIDATE;
+    if (candidate?.ready === true && candidate.chapterTwoDesign(state.stage)) {
+      if (state.wave === 1 || !battle.chapterSignal) battle.chapterSignal = candidate.createSignalCombat(state.stage, battle.heroes, battle.enemies, (role, index, extra) => candidate.chapterTwoActor(role, C, makeUnit, index, extra));
+      else battle.chapterSignal.nextWave(battle.heroes, battle.enemies);
+    } else battle.chapterSignal = null;
     (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden"));
     syncFrameCoverage();
     if (returningFromResult) $("#autoBtn").focus({preventScroll: true});
@@ -690,7 +701,7 @@
   function unitMarkup(unit) {
     const hp = clamp(unit.hp / unit.maxHp * 100, 0, 100);
     return `<div class="unit" data-unit="${unit.key}" ${unit.side === 'enemy' ? `data-focus="${unit.key}"` : ''}>
-      <i class="hp"><b style="width:${hp}%"></b></i>${sprites.markup(unit.side, unit.data.id, `battle-${unit.key}`)}
+      <i class="hp"><b style="width:${hp}%"></b></i>${sprites.markup(unit.side, unit.data.visualId || unit.data.id, `battle-${unit.key}`)}
       ${unit.side === 'enemy' ? `<button class="unit-name target-choice" data-focus="${unit.key}" aria-pressed="false" aria-label="${commandText(0)} · ${localizedValue(unit.data.name)}">${localizedValue(unit.data.name)}</button>` : `<span class="unit-name">${localizedValue(unit.data.name)}</span>`}<span class="status-badge is-hidden"></span>
     </div>`;
   }
@@ -734,9 +745,23 @@
   function battleTick() {
     if ($("#app").dataset.scene !== "battle" || document.hidden || battle.pausedAt || !battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
     const dt = .26 * battle.speed;
+    if (battle.chapterSignal) for (let elapsed = 0; elapsed < dt;) { const step = Math.min(.26, dt - elapsed); battle.chapterSignal.tick(step); elapsed += step; }
     battle.heroes.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.enemies, dt));
     battle.enemies.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.heroes, dt));
     settleCombat();
+  }
+
+  function applyCombatDamage(unit, target, damage, crit, skill) {
+    if (battle.chapterSignal) {
+      const outcome = battle.chapterSignal.attack(unit, target, damage);
+      if (!outcome) return;
+      const actual = [...battle.heroes, ...battle.enemies].find(item => item.key === outcome.target) || target;
+      animateAttack(unit, actual, outcome.applied, crit, skill);
+    } else {
+      const applied = Math.min(target.hp, damage);
+      target.hp = Math.max(0, target.hp - damage);
+      animateAttack(unit, target, applied, crit, skill);
+    }
   }
 
   function runUnitAttack(unit, targets, dt, commanded = false) {
@@ -760,15 +785,13 @@
     if ((unit.status.weakenUntil || 0) > Date.now()) damage = Math.round(damage * .78);
     if ((target.status.shieldUntil || 0) > Date.now()) damage = Math.round(damage * .76);
     if (target.id === "bear" && target.side === "hero") damage = Math.round(damage * .92);
-    const applied = Math.min(target.hp, damage);
-    target.hp = Math.max(0, target.hp - damage);
-    animateAttack(unit, target, applied, crit, skill);
+    applyCombatDamage(unit, target, damage, crit, skill);
     if (skill) applySkill(unit, targets);
   }
 
   function applySkill(unit, targets) {
     if (unit.id === "crane") {
-      targets.filter((target) => target.hp > 0).forEach((target) => { const amount = Math.min(target.hp, Math.round(unit.atk * .62)); target.hp -= amount; animateAttack(unit,target,amount,false,true); });
+      targets.filter((target) => target.hp > 0).forEach((target) => { applyCombatDamage(unit, target, Math.round(unit.atk * .62), false, true); });
       $("#battleStatus").textContent = copy("skillCrane", { name: localizedValue(unit.data.name), skill: localizedValue(unit.data.skill) });
     } else if (unit.id === "leo") {
       battle.heroes.filter((hero) => hero.hp > 0).forEach((hero) => { const amount = Math.min(hero.maxHp - hero.hp, Math.round(hero.maxHp * .08)); hero.hp += amount; hero.status.buffUntil = Date.now() + 2800; effectAt(hero, amount ? `+${amount}` : copy('buff'), 'healing'); });

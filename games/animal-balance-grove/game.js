@@ -1,5 +1,8 @@
 (function () {
   "use strict";
+  // A local practice request is isolated even if authorization later fails.
+  const practiceRequested = location.protocol === 'http:' && ['localhost','127.0.0.1','[::1]'].includes(location.hostname) && new URLSearchParams(location.search).get('practice') === '1';
+  let practiceActive = false, practiceAdapter = null;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +11,7 @@
     paused: Boolean(state?.paused || state?.suspended), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if (practiceRequested) return; try { const collector=window.WonderAnalytics?.game; if(collector?.supportsRewardEligibility===true&&collector?.supportsSavedCompletionGate===true)collector.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
 
@@ -307,18 +310,32 @@
     target, count, anchor, avoid, arc: Math.floor(index / 5), checkpoint: index % 5 === 4,
     pieces: originalStages[2].pieces.slice(0, size)
   }));
-  let progress = { cleared: [], stars: {} };
-  try {
-    const saved = JSON.parse(localStorage.getItem("weightplay-balance-grove-campaign-v1") || "null");
-    if (saved && Array.isArray(saved.cleared)) {
-      progress.cleared = [...new Set(saved.cleared.filter(n => Number.isInteger(n) && n >= 0 && n < stages.length))];
-      for (const index of progress.cleared) progress.stars[index] = Math.max(1, Math.min(3, Number(saved.stars?.[index]) || 1));
-    }
-  } catch { /* Corrupt/blocked storage starts a safe in-memory visit. */ }
-  const unlocked = () => Math.min(stages.length - 1, Math.max(2, ...progress.cleared.map(n => n + 1)));
+  // Internal wiring only: never expose the new boards until the art, complete
+  // save/reward handling, localization review and rendered checks are ready.
+  const CHAPTER2_READY = false;
+  const chapter2 = window.BalanceGroveChapter2;
+  function installChapter2() {
+    if (!chapter2 || chapter2.CHAPTER2.length !== 30) throw new Error('BALANCE_CHAPTER2_REQUIRED');
+    if (stages.length !== 30) return;
+    stages.push(...chapter2.CHAPTER2.map((model, index) => ({
+      title: originalStages[0].title, hint: originalStages[0].hint,
+      target: model.base, count: model.count, anchor: model.anchor, avoid: model.avoid,
+      arc: 6 + Math.floor(index / 5), checkpoint: index % 5 === 4,
+      pieces: originalStages[2].pieces, chapter2: model
+    })));
+  }
+  if (CHAPTER2_READY) installChapter2();
+  const inaccessibleStorage={getItem(){throw Error('storage unavailable');},setItem(){throw Error('storage unavailable');}};
+  let campaignStorage;try{campaignStorage=window.localStorage;}catch{campaignStorage=inaccessibleStorage;}
+  let campaignStore=null;try{campaignStore=window.BalanceGroveSaveCandidate?.createBalanceSave(campaignStorage || inaccessibleStorage) || null;}catch{/* Keep wins in session if the helper or storage is unavailable. */}
+  const initialSave=campaignStore?.read();
+  let progress = initialSave?.ok ? {cleared:[...initialSave.cleared],stars:{...initialSave.stars}} : {cleared:[],stars:{}};
+  let activeSaveRound=null;
+  const fallbackPending=new Map();
+  const unlocked = () => practiceActive ? stages.length - 1 : Math.min(stages.length - 1, Math.max(2, ...progress.cleared.map(n => n + 1)));
   const routedLocale = window.WonderI18n?.localeFromPath?.();
   const savedLocale = (() => { try { return localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); } catch (error) { return null; } })();
-  const state = { locale: normalizeLocale(routedLocale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang || savedLocale), stage: 0, selected: [], checks: 0, sessionChecks: 0, sessionClears: [], hints: 0, lastEquation: "", lastStars: 0, sound: !Boolean(window.WeightPlayAudio?.isMuted?.()), storage: true };
+  const state = { locale: normalizeLocale(routedLocale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang || savedLocale), stage: 0, selected: [], checks: 0, sessionChecks: 0, sessionClears: [], hints: 0, lastEquation: "", lastStars: 0, sound: !Boolean(window.WeightPlayAudio?.isMuted?.()), storage: true, counterweight: null, counterLocked: false };
   const syncSoundState = () => {
     if (typeof window.WeightPlayAudio?.isMuted === "function") state.sound = !window.WeightPlayAudio.isMuted();
   };
@@ -328,6 +345,26 @@
   const battleContent = $("battleContent");
   let stageSelector = null;
   let selectedStage = 0;
+  let currentSaveScreen='main';
+  const saveViews={},saveHosts={};
+  function saveFallback(){return currentSaveScreen==='result'?$('resultPrimaryBtn'):currentSaveScreen==='battle'?$('hintBtn')||$('battleBackBtn'):currentSaveScreen==='stages'?$('stageBackBtn'):$('startBtn');}
+  function addSaveView(name,anchor,where){
+    if(saveViews[name])return;
+    const host=document.createElement('div');host.dataset.balanceSaveHost=name;host.hidden=true;saveHosts[name]=host;anchor.insertAdjacentElement(where,host);
+    if(window.BalanceGroveSaveWarning)saveViews[name]=window.BalanceGroveSaveWarning.create({host,id:`balance-${name}-save`,fallback:saveFallback});
+    else {const status=document.createElement('p');status.hidden=true;status.setAttribute('role','status');status.setAttribute('aria-live','polite');host.append(status);saveViews[name]={update({pending,visible}){status.hidden=!visible||!pending.length;status.textContent=status.hidden?'':`Save not confirmed: ${pending.join(', ')}. Clear a stage to retry; leaving or reloading may lose progress.`;}};}
+  }
+  addSaveView('main',$('mainProgress'),'afterend');addSaveView('battle',$('battleHint'),'beforebegin');addSaveView('result',$('resultText'),'afterend');
+  function syncSaveViews(){
+    const pending=[...new Set([...(campaignStore?.pending()||[]),...fallbackPending].map(([index])=>index+1))].sort((a,b)=>a-b);
+    for(const [name,view] of Object.entries(saveViews)){
+      const visible=currentSaveScreen===name&&pending.length>0;
+      if(visible)saveHosts[name].hidden=false;
+      view.update({pending,language:state.locale,visible});
+      if(!visible)saveHosts[name].hidden=true;
+    }
+    if(window.BalanceGroveSaveWarning)$('resultScreen').setAttribute('aria-describedby',pending.length?'resultText balance-result-save-status':'resultText');
+  }
   const t = (key, vars) => {
     const table = copy[state.locale] || copy.en || {};
     let value = table[key] || (copy.en && copy.en[key]) || key;
@@ -335,19 +372,22 @@
     return value;
   };
   const track = (name, detail) => {
+    if (practiceRequested) return;
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(Object.assign({ event: "animal_balance_grove_" + name }, detail || {}));
     document.dispatchEvent(new CustomEvent("weightplay:balance-grove", { detail: Object.assign({ name }, detail || {}) }));
   };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-balance-grove-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (error) { state.storage = false; return null; } };
-  const writeBest = (value) => { try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-balance-grove-best-v1", String(value)); } catch (error) { state.storage = false; } };
+  const writeBest = (value) => { if (practiceRequested) return; try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-balance-grove-best-v1", String(value)); } catch (error) { state.storage = false; } };
   const show = (name) => {
+    currentSaveScreen=name;
     Object.keys(screens).forEach((key) => { screens[key].hidden = key === "battle" ? !["battle", "result"].includes(name) : key !== name; });
     battleContent.hidden = name === "result";
     const scene = name === "stages" ? "stage" : name === "result" ? "battle" : name;
     if (scene !== "stage") stageSelector?.cancel?.();
     if (scene !== "battle") $("leaveConfirm").hidden = true;
     window.BalanceGroveScreenFrame.activate(scene);
+    syncSaveViews();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",result:"battle",stages:"stage"})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -367,6 +407,7 @@
     document.querySelector(".scale").setAttribute("aria-label", t("scaleLabel"));
     $("bestValue").textContent = readBest() || t("noBest");
     $("mainProgress").textContent = t("campaignProgress", { n: progress.cleared.length });
+    syncSaveViews();
     if (document.querySelector(".game-page-info[data-wp-balance-grove-guide]")) applyTextGrowthGuide();
     else applyGuideLocale(guideCopy);
     if (!screens.stages.hidden) renderStages();
@@ -428,14 +469,24 @@
       setText(comparisonSection.querySelector("[data-wp-comparison-source]"), comparisonCopy.sourceLabel);
     }
   };
-  const setLocale = (locale) => { state.locale = normalizeLocale(locale); try { localStorage.setItem("weightPlayLocale", state.locale); localStorage.setItem("weightplayLocale", state.locale); } catch (error) { state.storage = false; } applyLocale(); track("locale", { locale: state.locale }); };
+  const setLocale = (locale) => { state.locale = normalizeLocale(locale); if (!practiceRequested) try { localStorage.setItem("weightPlayLocale", state.locale); localStorage.setItem("weightplayLocale", state.locale); } catch (error) { state.storage = false; } applyLocale(); track("locale", { locale: state.locale }); };
   const beep = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
-  const stageName = index => `${t("arc" + stages[index].arc)} · ${index + 1}`;
+  const t2 = (index, vars = {}) => {
+    let value = (chapter2?.COPY[state.locale] || chapter2?.COPY.en || [])[index] || '';
+    for (const [key, replacement] of Object.entries(vars)) value = value.replaceAll(`{${key}}`, String(replacement));
+    return value;
+  };
+  const stageName = index => `${stages[index].chapter2 ? t2(0) : t("arc" + stages[index].arc)} · ${index + 1}`;
   const ruleText = stage => [
     t("target", { n: stage.target }),
     stage.count ? t("exactCount", { n: stage.count }) : t("anyCount"),
     stage.anchor ? t("anchorRule", { n: stage.anchor }) : "",
-    stage.avoid ? t("avoidRule", { n: stage.avoid }) : ""
+    stage.avoid ? t("avoidRule", { n: stage.avoid }) : "",
+    stage.chapter2 ? t2(1) : '',
+    stage.chapter2?.oddCount !== null && stage.chapter2 ? t2(2, {n:stage.chapter2.oddCount}) : '',
+    stage.chapter2?.pair ? t2(stage.chapter2.pairMode === 'both' ? 4 : stage.chapter2.pairMode === 'one' ? 5 : 3, {a:stage.chapter2.pair[0],b:stage.chapter2.pair[1]}) : '',
+    stage.chapter2?.anchorFirst ? t2(6, {n:stage.anchor}) : '',
+    stage.chapter2?.lockAfterCheck ? t2(10) : ''
   ].filter(Boolean).join(" · ");
   const renderStages = () => {
     $("stageSummary").textContent = t("round", { n: selectedStage + 1, total: stages.length });
@@ -455,6 +506,7 @@
         isActive: stageIsActive,
       });
     } else stageSelector.refresh(selectedStage);
+    addSaveView('stages',$('stageList'),'beforebegin');syncSaveViews();
   };
   window.BalanceGroveStageTab?.addEventListener("click", () => {
     if (stageIsActive()) stageSelector?.refresh(selectedStage);
@@ -467,6 +519,22 @@
     $("battleStatus").insertAdjacentElement("afterend", hint);
     hint.addEventListener("click", () => {
       const stage = stages[state.stage];
+      if (stage.chapter2) {
+        const values = state.selected.map(index => stage.pieces[index][1]);
+        const advice = chapter2.hint(stage.chapter2, values, state.counterweight, state.counterLocked);
+        if (advice.kind === 'ready') { $("battleStatus").textContent = t("readyCheck"); return; }
+        if (advice.kind === 'no-solution' || advice.kind === 'invalid-input') return;
+        state.hints += 1;
+        $("tokenTray").querySelectorAll(".hinted").forEach(node => node.classList.remove("hinted"));
+        if (advice.kind === 'counterweight') $("battleStatus").textContent = t2(8, {n:advice.value});
+        else if (advice.kind === 'clear') $("battleStatus").textContent = t2(9);
+        else {
+          const index = stage.pieces.findIndex(piece => piece[1] === advice.value);
+          $("tokenTray").querySelector(`[data-token="${index}"]`)?.classList.add("hinted");
+          $("battleStatus").textContent = t(advice.kind === 'add' ? "hintAdd" : "hintRemove", {n:advice.value});
+        }
+        return;
+      }
       const solution = window.BalanceGroveRules.solutions(stage).sort((a,b) =>
         a.filter(i => !state.selected.includes(i)).length + state.selected.filter(i => !a.includes(i)).length -
         b.filter(i => !state.selected.includes(i)).length - state.selected.filter(i => !b.includes(i)).length)[0];
@@ -480,22 +548,51 @@
       $("battleStatus").textContent = t(remove === undefined ? "hintAdd" : "hintRemove", { n: stage.pieces[index][1] });
     });
   };
+  function renderCounterweights(stage) {
+    let group = $('counterweightGroup');
+    if (!stage.chapter2) { if (group) group.hidden = true; return; }
+    if (!group) {
+      group = document.createElement('div'); group.id = 'counterweightGroup'; group.className = 'counterweight-group';
+      group.setAttribute('role','group'); $('battleHint').insertAdjacentElement('afterend',group);
+    }
+    group.hidden = false; group.setAttribute('aria-label',t2(1));
+    if (group.dataset.stage !== String(state.stage)) {
+      group.dataset.stage = String(state.stage); group.replaceChildren();
+      for (const value of stage.chapter2.counterweights) {
+        const button=document.createElement('button'); button.type='button'; button.dataset.counterweight=String(value);
+        const art=document.createElement('span');art.className='counterweight-art';art.setAttribute('aria-hidden','true');
+        const number=document.createElement('span');number.className='counterweight-value';number.textContent=String(value);button.append(art,number);
+        button.addEventListener('click',()=>{if(state.counterLocked)return;state.counterweight=value;beep('board.move');renderBattle();});
+        group.append(button);
+      }
+    }
+    for (const button of group.querySelectorAll('[data-counterweight]')) {
+      const value=Number(button.dataset.counterweight);
+      button.setAttribute('aria-label',`${t2(1)} · ${value}`);
+      button.setAttribute('aria-pressed',String(value===state.counterweight)); button.disabled=state.counterLocked;
+    }
+  }
   const renderBattle = () => {
     ensureBattleUI();
     const stage = stages[state.stage];
+    battleContent.dataset.balanceChapter2 = String(Boolean(stage.chapter2));
     const values = state.selected.map(index => stage.pieces[index][1]);
-    const outcome = window.BalanceGroveRules.evaluate(values, stage.target, stage);
+    renderCounterweights(stage);
+    const target = stage.target + (stage.chapter2 ? (state.counterweight ?? 0) : 0);
+    const evaluated = stage.chapter2 && state.counterweight !== null ? chapter2.evaluate(stage.chapter2, values, state.counterweight) : null;
+    const total = values.reduce((sum,value)=>sum+value,0);
+    const outcome = stage.chapter2 ? {total,remaining:target-total,valid:Boolean(evaluated?.valid),state:!values.length?'empty':state.counterweight===null?'rule':evaluated.valid?'balanced':total>target?'heavy':total<target?'light':'rule'} : window.BalanceGroveRules.evaluate(values, stage.target, stage);
     $("roundLabel").textContent = t("round", { n: state.stage + 1, total: stages.length });
     $("battleHint").textContent = ruleText(stage);
-    $("leftGoal").textContent = t("target", { n: stage.target });
+    $("leftGoal").textContent = t("target", { n: target });
     $("rightGoal").textContent = values.length ? `${values.join(" + ")} = ${outcome.total}` : t("tapInstruction");
     $("leftPanLabel").textContent = t("goalLabel");
     $("rightPanLabel").textContent = t("yourWeight");
-    document.querySelector(".fixed-weight").textContent = stage.target;
+    document.querySelector(".fixed-weight").textContent = target;
     const scale = document.querySelector(".scale");
     scale.dataset.balance = outcome.state;
-    scale.style.setProperty("--tilt", `${Math.max(-12, Math.min(12, (outcome.total - stage.target) * 2))}deg`);
-    scale.style.setProperty("--pan-shift", `${Math.max(-24, Math.min(24, (outcome.total - stage.target) * 4))}px`);
+    scale.style.setProperty("--tilt", `${Math.max(-12, Math.min(12, (outcome.total - target) * 2))}deg`);
+    scale.style.setProperty("--pan-shift", `${Math.max(-24, Math.min(24, (outcome.total - target) * 4))}px`);
     $("sessionChecks").textContent = String(state.checks);
     $("sessionChecks").previousElementSibling.textContent = t("checksLabel");
     $("selectionCount").textContent = stage.count ? `${state.selected.length} / ${stage.count}` : t("selected", { n: state.selected.length });
@@ -517,17 +614,17 @@
       button.classList.remove("hinted");
       button.setAttribute("aria-label", `${t(stage.pieces[index][0])} · ${value}${value === stage.anchor ? " · " + t("anchorRule",{n:value}) : ""}${value === stage.avoid ? " · " + t("avoidRule",{n:value}) : ""}`);
     });
-    $("checkBtn").disabled = !values.length;
-    $("clearBtn").disabled = !values.length;
+    $("checkBtn").disabled = !values.length || Boolean(stage.chapter2 && state.counterweight === null);
+    $("clearBtn").disabled = !values.length && (!stage.chapter2 || state.counterweight === null);
     $("hintBtn").textContent = t("hint");
     $("battleStatus").dataset.state = outcome.state;
-    const statusMessage = outcome.state === "empty" ? t(state.stage === 0 ? "firstLesson" : "tapInstruction") :
+    const statusMessage = stage.chapter2 && state.counterweight === null ? t2(1) : outcome.state === "empty" ? t(state.stage === 0 ? "firstLesson" : "tapInstruction") :
       outcome.state === "balanced" ? t("readyCheck") : outcome.state === "rule" ? t("checkRule") :
       t(outcome.remaining > 0 ? "tooLight" : "tooHeavy", { n: Math.abs(outcome.remaining) });
     if (state.stage === 0 && outcome.state === "empty") {
       $("battleStatus").innerHTML = '<span class="first-steps"></span>';
       $("battleStatus").firstElementChild.textContent = statusMessage;
-    } else $("battleStatus").textContent = statusMessage;
+    } else $("battleStatus").textContent = state.counterLocked && stage.chapter2 ? `${statusMessage} · ${t2(7)}` : statusMessage;
   };
   const renderResult = () => {
     const final = state.stage === stages.length - 1;
@@ -563,24 +660,36 @@
     show("stages");
     renderStages();
   };
-  const startSession = () => { state.sessionChecks = 0; state.sessionClears = []; selectedStage = Math.min(unlocked(), stages.length - 1); track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
-  const startStage = index => {
+  const startSession = () => { if (practiceRequested && !practiceActive) return; state.sessionChecks = 0; state.sessionClears = []; selectedStage = Math.min(unlocked(), stages.length - 1); track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
+  const startStageInternal = index => {
     if (!Number.isInteger(index) || index < 0 || index > unlocked()) return;
     selectedStage = index;
     $("leaveConfirm").hidden = true;
-    state.stage = index; state.selected = []; state.checks = 0; state.hints = 0;
-    show("battle"); renderBattle(); track("stage_start", { stage: index + 1 });
-    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    state.stage = index; state.selected = []; state.checks = 0; state.hints = 0; state.counterweight = null; state.counterLocked = false;
+    show("battle"); renderBattle();
+    if (stages[index].chapter2) { battleContent.scrollTop = 0; $('counterweightGroup')?.querySelector('button:not(:disabled)')?.focus({preventScroll:true}); }
+    track("stage_start", { stage: index + 1 });
+    activeSaveRound = practiceRequested ? null : campaignStore?.begin(index,{sessionAllowed:true});
+    const round = activeSaveRound ? campaignStore.start(activeSaveRound) : null;
+    __wpMeasurement.roundKey = round?.roundKey || {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle";
+    __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.stageId = index + 1; __wpMeasurement.rewardEligible = round?.rewardEligible === true; __wpMeasurement.saveSucceeded = false; __wpNotifyMeasurement();
+  };
+  const startStage = index => {
+    if (!practiceRequested) return startStageInternal(index);
+    if (!practiceActive || !practiceAdapter) return;
+    return practiceAdapter.challenge('animal-balance-grove', String(index + 1));
   };
   const toggleToken = index => {
     state.selected = state.selected.includes(index) ? state.selected.filter(item => item !== index) : [...state.selected,index];
     beep("board.move"); renderBattle(); track("stone_select", { stage: state.stage + 1, value: stages[state.stage].pieces[index][1] });
   };
-  const clearTokens = () => { state.selected = []; renderBattle(); track("stone_clear", { stage: state.stage + 1 }); };
+  const clearTokens = () => { state.selected = []; state.counterweight = null; state.counterLocked = false; renderBattle(); track("stone_clear", { stage: state.stage + 1 }); };
   const checkBalance = () => {
     if (!state.selected.length || screens.battle.hidden) return;
     const stage = stages[state.stage], values = state.selected.map(index => stage.pieces[index][1]);
-    const outcome = window.BalanceGroveRules.evaluate(values, stage.target, stage);
+    if (stage.chapter2 && state.counterweight === null) return;
+    const outcome = stage.chapter2 ? chapter2.evaluate(stage.chapter2, values, state.counterweight) : window.BalanceGroveRules.evaluate(values, stage.target, stage);
+    if (stage.chapter2?.lockAfterCheck) state.counterLocked = true;
     state.checks++; state.sessionChecks++;
     $("sessionChecks").textContent = String(state.checks);
     track("balance_check", { stage: state.stage + 1, checks: state.checks, correct: outcome.valid });
@@ -590,17 +699,27 @@
       void $("battleStatus").offsetWidth; $("battleStatus").classList.add("rejected");
       return;
     }
-    beep("feedback.success"); state.lastEquation = `${values.join(" + ")} = ${stage.target}`;
+    beep("feedback.success"); state.lastEquation = `${values.join(" + ")} = ${stage.target + (stage.chapter2 ? state.counterweight : 0)}`;
     state.lastStars = state.hints ? 1 : state.checks === 1 ? 3 : 2;
-    if (!progress.cleared.includes(state.stage)) progress.cleared.push(state.stage);
-    progress.stars[state.stage] = Math.max(progress.stars[state.stage] || 0, state.lastStars);
-    try { localStorage.setItem("weightplay-balance-grove-campaign-v1", JSON.stringify(progress)); } catch { state.storage = false; }
+    if (!practiceRequested) {
+      if (!progress.cleared.includes(state.stage)) progress.cleared.push(state.stage);
+      progress.stars[state.stage] = Math.max(progress.stars[state.stage] || 0, state.lastStars);
+      const written=activeSaveRound ? campaignStore.win(activeSaveRound,state.lastStars) : {saved:false};
+      if (!activeSaveRound) fallbackPending.set(state.stage,Math.max(fallbackPending.get(state.stage)||0,state.lastStars));
+      // The shared Stage adapter retains this object; replace its fields, not
+      // its identity, so its existing cards see confirmed updates.
+      if (written.saved) {progress.cleared=[...written.progress.cleared];progress.stars={...written.progress.stars};}
+      else state.storage=false;
+      const collector=window.WonderAnalytics?.game;
+      const final=activeSaveRound ? campaignStore.end(activeSaveRound,{won:true,proof:written.proof,knownSaveGate:collector?.supportsSavedCompletionGate===true,knownRewardGate:collector?.supportsRewardEligibility===true}) : null;
+      __wpMeasurement.ended=true;__wpMeasurement.outcome=final?.outcome || 'abandon';__wpMeasurement.saveSucceeded=final?.saveSucceeded===true;
+    }
     if (!state.sessionClears.includes(state.stage)) state.sessionClears.push(state.stage);
     if (state.stage === 2 && [0,1,2].every(index => state.sessionClears.includes(index))) writeBest(state.sessionChecks);
     if (state.stage === stages.length - 1) track("session_complete", { checks: state.sessionChecks });
     state.selected = []; show("result"); renderResult();
   };
-  $("startBtn").addEventListener("click", startSession); $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn").addEventListener("click", requestBattleReturn); $("continueBattle").addEventListener("click", closeLeaveConfirm); $("returnToMap").addEventListener("click", returnToStage); $("leaveConfirm").addEventListener("click", (event) => { if (event.target === $("leaveConfirm")) closeLeaveConfirm(); }); document.addEventListener("keydown", (event) => { if ($("leaveConfirm").hidden) return; if (event.key === "Escape") { event.preventDefault(); closeLeaveConfirm(); } else if (event.key === "Tab") { const actions = [$("continueBattle"), $("returnToMap")]; const active = actions.indexOf(document.activeElement); if (event.shiftKey && active <= 0) { event.preventDefault(); actions.at(-1).focus(); } else if (!event.shiftKey && active === actions.length - 1) { event.preventDefault(); actions[0].focus(); } } }, true); $("resultMapBtn").addEventListener("click", () => { selectedStage = state.stage; show("stages"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn").addEventListener("click", checkBalance); $("clearBtn").addEventListener("click", clearTokens); $("localeSelect").addEventListener("change", (event) => { const next = normalizeLocale(event.target.value); if (window.WonderI18n?.setLocale) { window.WonderI18n.setLocale(next); return; } setLocale(next); });
+  $("startBtn").addEventListener("click", startSession); $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("battleBackBtn").addEventListener("click", requestBattleReturn); $("continueBattle").addEventListener("click", closeLeaveConfirm); $("returnToMap").addEventListener("click", returnToStage); $("leaveConfirm").addEventListener("click", (event) => { if (event.target === $("leaveConfirm")) closeLeaveConfirm(); }); document.addEventListener("keydown", (event) => { if ($("leaveConfirm").hidden) return; if (event.key === "Escape") { event.preventDefault(); closeLeaveConfirm(); } else if (event.key === "Tab") { const actions = [$("continueBattle"), $("returnToMap")]; const active = actions.indexOf(document.activeElement); if (event.shiftKey && active <= 0) { event.preventDefault(); actions.at(-1).focus(); } else if (!event.shiftKey && active === actions.length - 1) { event.preventDefault(); actions[0].focus(); } } }, true); $("resultMapBtn").addEventListener("click", () => { selectedStage = state.stage; show("stages"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); }); $("checkBtn").addEventListener("click", checkBalance); $("clearBtn").addEventListener("click", clearTokens); $("localeSelect").addEventListener("change", (event) => { const next = normalizeLocale(event.target.value); if (!practiceRequested && window.WonderI18n?.setLocale) { window.WonderI18n.setLocale(next); return; } setLocale(next); });
   window.addEventListener?.("wonder:locale-change", (event) => setLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
   window.addEventListener?.("weightplay:audio-volume-change", () => { syncSoundState(); applyLocale(); });
   let guideRefreshPending = false;
@@ -616,6 +735,20 @@
   show("main");
   applyLocale();
   track("main_ready");
+  if (practiceRequested) {
+    import('/src/game-local-practice.mjs').then(({LocalPractice}) => {
+      practiceAdapter = LocalPractice;
+      return LocalPractice.register({
+        gameId:'animal-balance-grove', stageIds:Array.from({length:60},(_,i)=>i+1),
+        enable(enabled) {
+          practiceActive=enabled;
+          if (enabled) installChapter2();
+          else { selectedStage=0; state.stage=0; state.selected=[]; show('main'); applyLocale(); }
+        },
+        startStage(id) { if (practiceActive) startStageInternal(Number(id)-1); }
+      });
+    }).catch(() => { practiceActive=false; });
+  }
   let entryReadyStarted = false;
   const waitForImage = image => new Promise((resolve, reject) => {
     if (!image) { resolve(); return; }

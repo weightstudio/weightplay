@@ -16,14 +16,14 @@
 
   (async () => {
     await load(here("interface-7-compat.js?v=20261022-animal-lantern-guides-v12-i9"), "lantern-compat-i9");
-    await load(here("game-v11-base.js?v=20261022-animal-lantern-guides-v12-i9&wp-audio=1.0.0&wp-interface9=1"), "lantern-v12-base");
+    await load(here("game-v11-base.js?v=20261027-animal-lantern-guides-v13-i9&wp-audio=1.0.0&wp-interface9=1"), "lantern-v13-base");
   })().catch((error) => {
     console.error("[Animal Lantern Guides] Interface 9 loader failed", error);
-    if (!document.querySelector('script[data-wp-loader="lantern-v12-fallback"]')) {
+    if (!document.querySelector('script[data-wp-loader="lantern-v13-fallback"]')) {
       const fallback = document.createElement("script");
-      fallback.src = here("game-v11-base.js?v=20261022-animal-lantern-guides-v12-i9&wp-audio=1.0.0&wp-interface9=1");
+      fallback.src = here("game-v11-base.js?v=20261027-animal-lantern-guides-v13-i9&wp-audio=1.0.0&wp-interface9=1");
       fallback.async = false;
-      fallback.dataset.wpLoader = "lantern-v12-fallback";
+      fallback.dataset.wpLoader = "lantern-v13-fallback";
       document.head.append(fallback);
     }
   });

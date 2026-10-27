@@ -1,10 +1,10 @@
 {
   "gameId": "orbit-menders",
-  "manifestVersion": 4,
-  "gameVersion": "v4",
+  "manifestVersion": 5,
+  "gameVersion": "v5",
   "createdAt": "2026-10-27",
   "status": "已實作未驗證",
-  "artDirection": "Owner-directed flat-courtyard zombie shooter with rounded explosive-afro Boom Mane Leo. Warm coral/ivory fortress, mint-green lawn, cyan gates and energy cannon. Per-game non-block exception retained.",
+  "artDirection": "Owner2026-10-27 explicitly selects uniform WeightPlay Block Animals. Block-afro Leo, square muzzle/paws/red cape/blue cannon; designed cuboid zombies, ivory/coral tower, stepped mint courtyard, bounded cyan/gold energy effects.",
   "coordinateConvention": {
     "up": "+Y",
     "forward": "+Z",
@@ -21,10 +21,10 @@
     "source": "Direct owner instruction2026-10-27: remove sphere/platforming; mouse-directed zombie shooting, protect tower, smooth bright presentation; keep explosive-afro lion.",
     "implementationTool": "Codex code-native mesh/source authoring",
     "externalArt": false,
-    "imageGeneration": false,
+    "imageGeneration": true,
     "licenseStatus": "Original project-authored geometry. No claim of exclusive rights or name clearance. Repository ownership and applicable service terms govern generated source.",
-    "termsReview": "No external art or music licensed in this module; image-generation terms do not apply. Broader release rights review remains pending.",
-    "reference": "assets/weightplay-boom-mane-lion.png inspected; original WeightPlay character, rounded code-native3D adaptation. No third-party game asset used."
+    "termsReview": "Built-in imagegen; generation/source/prompt/hash recorded by canonical poster writer. No new third-party game assets or music. No global exclusivity or legal-clearance claim.",
+    "reference": "assets/weightplay-character-boom-mane-lion-block-v1.webp inspected. Realtime source is original game-owned procedural block geometry. Poster provenance and full prompt live in docs/game-poster-records/orbit-menders.md."
   },
   "resources": [
     {
@@ -36,7 +36,7 @@
     {
       "file": "defense-art.mjs",
       "export": "createArena",
-      "usage": "Layered turf courtyard, inset stone terrace/walk, five converging paths, cyan gates, asymmetrical rounded trees/flowers and repair supplies; semantic material batches and directional shadows",
+      "usage": "Stepped block terrain, cuboid tree crowns, masonry, garden supplies; existing bounds and shared material batching.",
       "dimensions": "x[-14,14],z[-12,13]; visual decoration never changes simulation"
     },
     {
@@ -48,9 +48,9 @@
     {
       "file": "defense-art.mjs",
       "export": "createDefender",
-      "usage": "Rounded Leo plus cyan/gold cannon; mane/cape followthrough and firing recoil",
-      "reference": "/assets/weightplay-boom-mane-lion.png",
-      "dimensions": "art.mjs Leo, head1.12/cannon1.22; runtime root1.6"
+      "usage": "Game-owned Block Leo: stepped explosive cube mane, box muzzle/paws, red cape/paw seal and cyan-gold cannon; aimed pivot/recoil preserved.",
+      "reference": "/assets/weightplay-character-boom-mane-lion-block-v1.webp",
+      "dimensions": "Independent defense-art.mjs block rig; runtime root1.6; no legacy rounded art.mjs import."
     },
     {
       "file": "defense-art.mjs",
@@ -82,27 +82,31 @@
       "source": "Current project-owned3D assets and gameplay capture; no external game footage"
     },
     {
-      "file": "/assets/lobby-thumbs/w480/assets__weightplay-boom-mane-lion.webp",
-      "usage": "Proportional480x480 static lobby fallback derived with canonical generate-lobby-thumbnails.make_thumbnail from unchanged own lion PNG",
-      "bytes": 35662,
-      "source": "Existing own character reference; technical delivery resize, no new illustration or poster replacement"
-    },
-    {
-      "file": "/assets/weightplay-boom-mane-lion.png",
-      "usage": "Owner-approved character reference and Main/Stage cutout for this game. Existing WeightPlay original artwork; global brand assets not modified. Final composed world cover remains pending."
-    },
-    {
       "file": "/assets/lobby-block-atmosphere.svg",
       "usage": "Existing shared Stage background"
     },
     {
       "file": "/src/weightplay-audio.js",
       "usage": "Existing catalog SFX, original/CC0 sources maintained by shared audio manifests; no new private audio engine"
+    },
+    {
+      "file": "/assets/orbit-menders-poster-block-v1.webp",
+      "usage": "Composed game-specific square poster actually loaded by Main/Stage/lobby and canonical poster registry.",
+      "dimensions": "1254x1254",
+      "bytes": 266144,
+      "sha256": "d729639d1481fed7ec6ac6f88e8712302b8a73caf781bb8f0920e8977bb99824",
+      "source": "Assets/orbit-menders-poster-block-v1.png; canonical generation record docs/game-poster-records/orbit-menders.md"
+    },
+    {
+      "file": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp",
+      "usage": "480x480 proportional poster delivery",
+      "bytes": 55038,
+      "sha256": "6f2e9c4161725601686d3b4469fd59275bd583413ea98c145b38148b1e6200d2"
     }
   ],
   "legacyResources": {
     "status": "Historical platform course no longer loaded by game.mjs; tested motor and old content retained, not falsely completed",
-    "source": "motor.mjs/input.mjs/levels.mjs and planet/repair exports ofart.mjs"
+    "source": "Legacy modules: motor, input, levels and planet/repair art exports (preserved source history)."
   },
   "effects": {
     "lighting": "One warm directional sun and cool hemisphere; standard/high use one1024px PCFSoft shadow map, intensity0.65; low disables realtime shadow map. Marked caster batches and explicit owned shadow disposal.",
@@ -161,5 +165,11 @@
     "cache": "Immutable CPU-only authoring templates; per-Battle private geometry/material clones; bounded enemy and effect pools",
     "teardown": "cancel RAF/listeners/ResizeObserver, dispose owned InstancedMesh buffers/geometry/materials, audio scope, renderer and art factory",
     "prewarm": "Only current operation enemy families and particle instance-colour shader compile during loading; initialization ms shown separately from live frame samples"
+  },
+  "runtimeCopy": {
+    "file": "ui-copy.mjs",
+    "locales": 13,
+    "messagesPerLocale": 88,
+    "status": "Implemented; source contract tested, rendered verification in current handoff; no specialist approval inferred."
   }
 }

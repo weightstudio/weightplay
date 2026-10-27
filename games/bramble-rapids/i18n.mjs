@@ -324,6 +324,7 @@ export function renderLocalizedRoute(sourceHtml, locale, titles) {
   const title = titles[selected].trim(), pageTitle = `${title} | WeightPlay`, segment = ROUTE_SEGMENTS[selected];
   const route = `https://weightplay.com/${segment}/games/bramble-rapids/`;
   const description = t(selected, 'pageDescription'), content = guide(selected);
+  const robots = routeAttribute(sourceHtml.match(/<meta\b[^>]*\bname=["']robots["'][^>]*>/i)?.[0] || '', 'content') || 'noindex,nofollow';
   let html = sourceHtml.replace(/<html\b[^>]*>/i, opening => setRouteAttribute(setRouteAttribute(opening, 'lang', selected), 'dir', selected === 'ar' ? 'rtl' : 'ltr'));
   html = html.replace(/<body\b[^>]*>/i, opening => setRouteAttribute(opening, 'data-audience', 'general'));
   html = html.replace(/(<([a-z][\w-]*)\b[^>]*\bdata-t=["']([^"']+)["'][^>]*>)[\s\S]*?(<\/\2\s*>)/gi, (_all, open, _tag, key, close) => `${open}${htmlText(t(selected, key, { cost: routeAttribute(open, 'data-cost') || 5 }))}${close}`);
@@ -369,7 +370,21 @@ export function renderLocalizedRoute(sourceHtml, locale, titles) {
       { '@type': 'FAQPage', '@id': `${route}#faq`, inLanguage: selected, mainEntity: content.faq.map(item => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })) },
     ],
   };
-  const metadata = `<title>${htmlText(pageTitle)}</title>\n<meta name="description" content="${htmlText(description)}">\n<meta name="robots" content="noindex,nofollow">\n<link rel="canonical" href="${route}">\n${alternates}\n<link rel="alternate" hreflang="x-default" href="https://weightplay.com/games/bramble-rapids/">\n<meta property="og:type" content="website"><meta property="og:site_name" content="WeightPlay"><meta property="og:title" content="${htmlText(pageTitle)}"><meta property="og:description" content="${htmlText(description)}"><meta property="og:url" content="${route}"><meta property="og:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp"><meta property="og:image:alt" content="${htmlText(t(selected, 'posterAlt'))}">\n<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${htmlText(pageTitle)}"><meta name="twitter:description" content="${htmlText(description)}"><meta name="twitter:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp">\n<script type="application/ld+json">${JSON.stringify(graph).replaceAll('<', '\\u003c')}</script>\n`;
+  const metadata = `<title>${htmlText(pageTitle)}</title>\n<meta name="description" content="${htmlText(description)}">\n<meta name="robots" content="${htmlText(robots)}">\n<link rel="canonical" href="${route}">\n${alternates}\n<link rel="alternate" hreflang="x-default" href="https://weightplay.com/games/bramble-rapids/">\n<meta property="og:type" content="website"><meta property="og:site_name" content="WeightPlay"><meta property="og:title" content="${htmlText(pageTitle)}"><meta property="og:description" content="${htmlText(description)}"><meta property="og:url" content="${route}"><meta property="og:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp"><meta property="og:image:alt" content="${htmlText(t(selected, 'posterAlt'))}">\n<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${htmlText(pageTitle)}"><meta name="twitter:description" content="${htmlText(description)}"><meta name="twitter:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp">\n<script type="application/ld+json">${JSON.stringify(graph).replaceAll('<', '\\u003c')}</script>\n`;
   if (!/<\/head>/i.test(html)) throw new Error('BRAMBLE_ROUTE_HEAD_MISSING');
-  return html.replace(/<\/head>/i, `${metadata}</head>`);
+  html = html.replace(/<\/head>/i, `${metadata}</head>`);
+  if (!/<base\b[^>]*href=["']\/games\/bramble-rapids\/["']/i.test(html)) {
+    html = html.replace(/(<head\b[^>]*>)/i, '$1\n    <base href="/games/bramble-rapids/" />');
+  }
+  if (selected === 'ja' && !html.includes('i18n-ja.js')) {
+    const japaneseDictionary = '<script src="/src/i18n-ja.js?v=20260719-ja1"></script>';
+    html = html.replace(
+      /(<script\s+src=["'][^"']*i18n\.js[^"']*["'][^>]*><\/script>)/i,
+      `${japaneseDictionary}\n  $1`,
+    );
+    if (!html.includes('i18n-ja.js')) {
+      html = html.replace(/(<\/head>)/i, `${japaneseDictionary}\n  $1`);
+    }
+  }
+  return html;
 }

@@ -57,8 +57,8 @@
     if (coachDetail.hidden) return;
     coachDetail.hidden = true;
     coachHint.setAttribute('aria-expanded', 'false');
-    screens.battle.querySelector('.coop-card').inert = false;
-    screens.battle.querySelector('.panel-head').inert = false;
+    $('battleContent').inert = false;
+    $('battleHeader').inert = false;
     if (resume) { resumeSettlement(); focusNoScroll(coachReturnFocus); }
   }
   function renderCoach() {
@@ -83,8 +83,8 @@
     if (screens.battle.hidden || !screens.result.hidden) return;
     coachReturnFocus = document.activeElement;
     pauseSettlement(); renderCoachDetail(); coachDetail.hidden = false;
-    screens.battle.querySelector('.coop-card').inert = true;
-    screens.battle.querySelector('.panel-head').inert = true;
+    $('battleContent').inert = true;
+    $('battleHeader').inert = true;
     coachHint.setAttribute('aria-expanded', 'true'); focusNoScroll($('coachClose'));
   });
   $('coachClose').addEventListener('click', () => closeCoach());

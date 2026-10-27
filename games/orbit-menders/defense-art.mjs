@@ -1,27 +1,29 @@
 import * as THREE from './vendor/three.module.min.js';
-import { createLion } from './art.mjs';
 
 // Original, code-native art for the owner's flat lion defence replacement.
-// Rounded character exception: docs/game-specs/orbit-menders.md, 2026-10-27.
+// Owner amendment 2026-10-27: a coherent WeightPlay Block Animals cast/world.
+// Reference: assets/weightplay-character-boom-mane-lion-block-v1.webp.
 // +Y up, +Z faces the castle. Every object has a ground-level origin.
 // Static subassemblies are baked into vertex-coloured geometry; repeated
 // enemies share bounded templates. No external texture or private effect engine.
-const ballGeometry = new THREE.SphereGeometry(1,16,12);
-const cylinderGeometry = new THREE.CylinderGeometry(1,1,1,20);
-const coneGeometry = new THREE.ConeGeometry(1,1,16);
-const ringGeometry = new THREE.TorusGeometry(1,.075,6,32);
+// The same small bevel is used across anatomy, foliage, masonry and props.
+// Broad planar faces and stepped silhouettes remain visible at play distance.
+const blockGeometry = (() => {
+  const shape=new THREE.Shape();shape.moveTo(-.465,-.465);shape.lineTo(.465,-.465);shape.lineTo(.465,.465);shape.lineTo(-.465,.465);shape.closePath();
+  const geometry=new THREE.ExtrudeGeometry(shape,{depth:.93,bevelEnabled:true,bevelSize:.035,bevelThickness:.035,bevelSegments:1,steps:1});geometry.translate(0,0,-.465);return geometry;
+})();
+const cylinderGeometry = new THREE.BoxGeometry(2,1,2);
+const coneGeometry = new THREE.ConeGeometry(1,1,4);
+const ringGeometry = (()=>{const s=new THREE.Shape();s.moveTo(-1.075,-1.075);s.lineTo(1.075,-1.075);s.lineTo(1.075,1.075);s.lineTo(-1.075,1.075);s.closePath();const hole=new THREE.Path();hole.moveTo(-.925,-.925);hole.lineTo(-.925,.925);hole.lineTo(.925,.925);hole.lineTo(.925,-.925);hole.closePath();s.holes.push(hole);const g=new THREE.ExtrudeGeometry(s,{depth:.1,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:1,steps:1});g.translate(0,0,-.05);return g;})();
 const crystalGeometry = new THREE.OctahedronGeometry(1,0);
 const shadowGeometry=new THREE.CircleGeometry(1,24);
-const lawnPatchGeometry=new THREE.CircleGeometry(1,7);
-const archGeometry=(()=>{const shape=new THREE.Shape();shape.moveTo(-.38,-.5);shape.lineTo(.38,-.5);shape.lineTo(.38,.16);shape.quadraticCurveTo(.38,.61,0,.61);shape.quadraticCurveTo(-.38,.61,-.38,.16);shape.closePath();return new THREE.ExtrudeGeometry(shape,{depth:.07,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:2,steps:1});})();
+const lawnPatchGeometry=new THREE.PlaneGeometry(2,2);
+const archGeometry=(()=>{const shape=new THREE.Shape();shape.moveTo(-.38,-.5);shape.lineTo(.38,-.5);shape.lineTo(.38,.34);shape.lineTo(.22,.34);shape.lineTo(.22,.5);shape.lineTo(-.22,.5);shape.lineTo(-.22,.34);shape.lineTo(-.38,.34);shape.closePath();return new THREE.ExtrudeGeometry(shape,{depth:.07,bevelEnabled:true,bevelSize:.02,bevelThickness:.02,bevelSegments:1,steps:1});})();
 const shadowMaterial=new THREE.MeshBasicMaterial({color:0x24495a,transparent:true,opacity:.14,depthWrite:false});
 const heroShadowMaterial=new THREE.MeshBasicMaterial({color:0x324154,transparent:true,opacity:.23,depthWrite:false});
 const polishedGold=new THREE.MeshStandardMaterial({color:0xf5bc4e,metalness:.68,roughness:.28});
 const polishedBlue=new THREE.MeshStandardMaterial({color:0x286b8c,metalness:.42,roughness:.31});
-const softGeometry = (() => {
-  const shape=new THREE.Shape();shape.moveTo(-.38,-.38);shape.lineTo(.38,-.38);shape.lineTo(.38,.38);shape.lineTo(-.38,.38);shape.closePath();
-  const result=new THREE.ExtrudeGeometry(shape,{depth:.76,bevelEnabled:true,bevelSize:.12,bevelThickness:.12,bevelSegments:2,steps:1});result.translate(0,0,-.38);return result;
-})();
+const softGeometry = blockGeometry;
 const materials=new Map();
 function material(color,glow=false){const key=`${color}:${glow}`;if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({color,roughness:.68,metalness:glow?.12:0,emissive:glow?color:0,emissiveIntensity:glow?.65:0}));return materials.get(key);}
 const surfaceProfiles={
@@ -35,7 +37,9 @@ function bakedMaterialFor(family){if(!bakedMaterials.has(family)){const m=new TH
 function surface(node,family,caster=true,ground=false){node.userData.artSurface=family;node.userData.artShadowCaster=caster;node.userData.artGround=ground;return node;}
 function inherited(node,key,fallback){for(let current=node;current;current=current.parent)if(current.userData[key]!==undefined)return current.userData[key];return fallback;}
 function add(parent,geometry,color,x,y,z,sx=1,sy=sx,sz=sx,glow=false){const node=new THREE.Mesh(geometry,material(color,glow));node.position.set(x,y,z);node.scale.set(sx,sy,sz);node.receiveShadow=true;parent.add(node);return node;}
-const ball=(p,c,x,y,z,sx,sy=sx,sz=sx)=>add(p,ballGeometry,c,x,y,z,sx,sy,sz);
+// Existing spherical decorations used radii. Keep their visible envelope while
+// replacing them with designed cuboids; this helper is no longer a sphere.
+const ball=(p,c,x,y,z,sx,sy=sx,sz=sx)=>add(p,blockGeometry,c,x,y,z,sx*2,sy*2,sz*2);
 const soft=(p,c,x,y,z,sx,sy,sz)=>add(p,softGeometry,c,x,y,z,sx,sy,sz);
 const cylinder=(p,c,x,y,z,sx,sy,sz=sx)=>add(p,cylinderGeometry,c,x,y,z,sx,sy,sz);
 function group(parent,name,x=0,y=0,z=0){const g=new THREE.Group();g.name=name;g.position.set(x,y,z);parent?.add(g);return g;}
@@ -78,7 +82,7 @@ function bake(root,direct=false){
   return root;
 }
 
-function tree(parent,x,z,scale=1){const g=surface(group(parent,'rounded_canopy',x,0,z),'foliage');g.scale.setScalar(scale);cylinder(g,0xaf7961,0,.74,0,.16,1.5);ball(g,0x238f7d,0,1.6,0,.8,.75,.75);ball(g,0x43b388,-.36,1.94,.12,.62,.58,.58);ball(g,0x7ad292,.35,2.08,-.04,.56,.55,.56);ball(g,0xc3ed9f,.08,2.4,.07,.4,.33,.38);for(let i=0;i<3;i++)ball(g,0xffcc70,(i-1)*.25,1.9+(i%2)*.3,.56,.07);}
+function tree(parent,x,z,scale=1){const g=surface(group(parent,'stepped_block_canopy',x,0,z),'foliage');g.scale.setScalar(scale);cylinder(g,0xaf7961,0,.74,0,.16,1.5);ball(g,0x238f7d,0,1.6,0,.8,.55,.75);ball(g,0x43b388,-.36,1.94,.12,.62,.40,.58);ball(g,0x7ad292,.35,2.08,-.04,.56,.36,.56);ball(g,0xc3ed9f,.08,2.4,.07,.4,.22,.38);for(let i=0;i<3;i++)ball(g,0xffcc70,(i-1)*.25,1.9+(i%2)*.3,.56,.07);}
 function shrub(parent,x,z,scale=1){const g=surface(group(parent,'side_shrub',x,0,z),'foliage');g.scale.setScalar(scale);for(let i=0;i<3;i++)ball(g,[0x2b9d8b,0x4cbda1,0x94d9a1][i],(i-1)*.29,.3+(i%2)*.15,0,.43,.4,.38);}
 function pawSeal(parent,x,y,z,scale=.3){
   const seal=surface(group(parent,'guardian_paw_seal',x,y,z),'metal');seal.scale.setScalar(scale);
@@ -191,8 +195,80 @@ export function createTower(){
   bake(root);root.userData.platformHeight=plateau;root.userData.parts={crystal,halo};root.userData.radius=2.45;return root;
 }
 
+// This rig belongs to the defence game. The archived spherical-adventure Leo
+// remains untouched in art.mjs, so other/legacy consumers keep their source.
+function createBlockLion(){
+  const hero=new THREE.Group();hero.name='Boom_Mane_Leo_block_guardian';surface(hero,'paint');
+  const body=group(hero,'body',0,.53,0);
+  soft(body,0xf8b632,0,.025,0,.43,.56,.32);
+  soft(body,0xffd978,0,.025,.175,.29,.39,.06);
+  for(let row=0;row<3;row++)soft(body,0xffe5a0,0,.15-row*.095,.214,.23-row*.045,.085,.035);
+  const head=surface(group(body,'head',0,.4,.035),'skin');
+  const mane=surface(group(head,'explosive_cube_afro',0,.045,-.045),'paint');
+  const colours=[0xe65a14,0xf9840d,0xffb829,0xf9a018];
+  // Layered cuboid clusters make a firework crown with intentional depth,
+  // rather than a circular fur ring or a single inflated cube.
+  soft(mane,0xe97113,0,.02,-.12,.72,.66,.39);
+  for(let layer=0;layer<2;layer++)for(let i=0;i<14;i++){
+    const a=(i+.5*(layer%2))/14*Math.PI*2,r=.34+(i%3)*.018;
+    const block=soft(mane,colours[(i+layer*2)%4],Math.cos(a)*r,.025+Math.sin(a)*r,-.16+layer*.18,.22+(i%3)*.027,.22+(i%2)*.04,.23);
+    block.rotation.z=((i%3)-1)*.11;
+  }
+  for(let i=0;i<5;i++)soft(mane,colours[(i+2)%4],(i-2)*.145,.38+(i%2)*.065,-.035,.18,.20,.22);
+  soft(head,0xffc34d,0,.015,.075,.48,.47,.36);
+  // Strong rectangular ears, square eyes and a projecting double box muzzle.
+  for(const side of [-1,1]){
+    soft(head,0xf8bc3b,side*.248,.16,.083,.16,.20,.135);
+    soft(head,0x9d5d25,side*.253,.165,.157,.095,.12,.027);
+    soft(head,0xfff5de,side*.111,.055,.269,.146,.19,.034);
+    soft(head,0x9e5a22,side*.111,.045,.291,.089,.13,.018);
+    soft(head,0x392820,side*.111,.046,.305,.054,.106,.011);
+    soft(head,0xffffff,side*.111-.015,.087,.314,.028,.035,.009);
+    const brow=soft(head,0x79411e,side*.111,.178,.288,.15,.045,.035);brow.rotation.z=side*.22;
+    soft(head,0xffe5a4,side*.071,-.09,.292,.154,.135,.13);
+  }
+  soft(head,0xffe4a4,0,-.17,.273,.23,.07,.14);
+  soft(head,0x84451f,0,-.018,.367,.12,.06,.034);
+  soft(head,0x84451f,0,-.079,.365,.018,.065,.014);
+  soft(head,0x84451f,0,-.114,.366,.13,.016,.016);
+  for(const side of [-1,1]){const smile=soft(head,0x84451f,side*.071,-.104,.366,.016,.035,.016);smile.rotation.z=-side*.15;}
+  const sparks=[];
+  for(let i=0;i<6;i++){
+    const a=i/6*Math.PI*2+.18;
+    const spark=soft(mane,0xffd85b,Math.cos(a)*.52,Math.sin(a)*.48+.055,.01,.065,.065,.065);
+    spark.rotation.z=.26+i*.3;spark.userData.basePosition=spark.position.clone();sparks.push(spark);
+  }
+  const cape=surface(group(body,'short_red_cape',0,.22,-.19),'cloth');
+  // Stepped cloth panels keep the cape readable from front and rear angles.
+  soft(cape,0xda4930,0,-.21,-.06,.48,.42,.055);
+  soft(cape,0xce3f29,-.18,-.39,-.08,.25,.19,.07);soft(cape,0xe7532e,.18,-.38,-.09,.25,.21,.07);
+  soft(cape,0xffc85b,0,-.45,-.04,.53,.045,.055);
+  for(const side of [-1,1]){const collar=soft(body,0xe4572d,side*.12,.226,.13,.25,.11,.11);collar.rotation.z=side*.15;soft(body,0xffd35d,side*.12,.186,.19,.23,.035,.035);}
+  const badge=surface(group(body,'guardian_paw_badge',0,.21,.235),'metal');
+  soft(badge,0xf6c24f,0,0,0,.16,.17,.045);soft(badge,0x824d23,0,0,.028,.119,.13,.018);
+  soft(badge,0xffdf7f,0,-.018,.041,.054,.049,.012);
+  for(let toe=0;toe<3;toe++)soft(badge,0xffdf7f,(toe-1)*.029,.026+(toe===1?.013:0),.042,.022,.031,.012);
+  const legs=[],arms=[];
+  for(const side of [-1,1]){
+    const leg=group(hero,`leg_${side}`,side*.125,.31,.005);
+    soft(leg,0xf0ad31,0,-.105,0,.18,.30,.19);soft(leg,0xffd47a,0,-.244,.065,.22,.13,.28);
+    for(let toe=-1;toe<=1;toe++)soft(leg,0xffe7aa,toe*.065,-.247,.202,.055,.09,.049);
+    legs.push(leg);
+    const arm=group(body,`arm_${side}`,side*.25,.12,.018);arm.rotation.z=-side*.15;
+    soft(arm,0xf4ae2f,0,-.075,.015,.18,.27,.19);soft(arm,0xffcf70,0,-.205,.045,.205,.15,.20);
+    for(let toe=-1;toe<=1;toe++)soft(arm,0xffe1a1,toe*.058,-.221,.154,.047,.075,.026);
+    arms.push(arm);
+  }
+  const tail=group(hero,'segmented_lion_tail',0,.4,-.13);
+  for(let i=0;i<4;i++){const segment=soft(tail,0xe9a431,.08+i*.095,-.025+(i>1?(i-1)*.04:0),-.09-i*.035,.14,.08,.085);segment.rotation.y=-.18;segment.rotation.z=i>1?.2:0;}
+  for(let i=0;i<5;i++){const a=i*Math.PI*2/5;soft(tail,colours[i%4],.43+Math.cos(a)*.055,.14+Math.sin(a)*.055,-.21,.11,.11,.11);}
+  hero.userData.parts={body,head,mane,cape,arms,legs,tail,sparks};
+  hero.userData.character='WeightPlay Boom Mane Leo';hero.userData.style='Block Animals';hero.userData.dimensions={height:1.5,footOrigin:true,forward:'+Z'};
+  return hero;
+}
+
 export function createDefender(){
-  const hero=surface(createLion(),'paint');hero.name='Boom_Mane_Leo_sunheart_guard';
+  const hero=createBlockLion();hero.name='Boom_Mane_Leo_block_sunheart_guard';
   const parts=hero.userData.parts;
   parts.head.scale.setScalar(1.12);
   // Keep Leo's authored identity intact. The independent gun pivot can track
@@ -306,7 +382,7 @@ export function animateZombie(mesh,{time=0,speed=0,hit=0,attack=0,death=0,reduce
   if(death>0){const t=Math.min(1,death);mesh.scale.copy(mesh.userData.originalScale).multiplyScalar(Math.max(.001,1-t*t));mesh.rotation.z=(reduced?0:.7)*t;p.arms[0].rotation.z=-.1-t;p.arms[1].rotation.z=.1+t;}
 }
 
-export const ART_PROVENANCE=Object.freeze({author:'WeightPlay owner-directed code-native production',date:'2026-10-27',engine:'Three.js 0.180.0',reference:'/assets/weightplay-boom-mane-lion.png',externalAssets:[],bounds:{x:[-14,14],z:[-12,13]},enemyTypes:Object.keys(PALETTES)});
+export const ART_PROVENANCE=Object.freeze({author:'WeightPlay owner-directed code-native production',date:'2026-10-27',engine:'Three.js 0.180.0',style:'WeightPlay Block Animals',reference:'/assets/weightplay-character-boom-mane-lion-block-v1.webp',externalAssets:[],bounds:{x:[-14,14],z:[-12,13]},enemyTypes:Object.keys(PALETTES)});
 
 // Use this factory for a running Battle. Module-level shapes/templates are
 // immutable authoring sources, never GPU resources shared between scenes.

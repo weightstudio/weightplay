@@ -1,4 +1,9 @@
 (function () {
+  // A requested local practice session is isolated from its first statement,
+  // including while shared authentication is pending or has expired.
+  const practiceRequested = location.protocol === "http:" && ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname) && new URLSearchParams(location.search).get("practice") === "1";
+  let practiceAdapter = null, practiceMemory = null, practiceAuthorized = false;
+  let practiceStartPending = false, practiceBattleValidated = false;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -7,7 +12,8 @@
     paused: Boolean(combatSuspendedForBackground || !state.combat.animating), node: nodes.gamePanel,
     activityMode: "state", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if (practiceRequested) return; try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function trackGame(name, data) { if (!practiceRequested) window.WonderAnalytics?.track(name, data); }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -23,6 +29,48 @@
   const GAME_VERSION = "v43";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
+
+  // Chapter 2 remains unavailable until its art, save/readback, decision UI,
+  // and actual combat signal dispatch are integrated and checked together.
+  // Stage 1–30 never invoke the candidate loader or the new wave branch.
+  const RELAY_CHAPTER_READY = false;
+  const relayUnavailableCopy = {
+    en:"This chapter is not ready yet.","zh-Hant":"此章節尚未準備完成。","zh-Hans":"此章节尚未准备完成。",
+    ja:"この章はまだ準備中です。",ko:"이 챕터는 아직 준비 중입니다.",es:"Este capítulo aún no está listo.",
+    "pt-BR":"Este capítulo ainda não está pronto.",fr:"Ce chapitre n’est pas encore prêt.",de:"Dieses Kapitel ist noch nicht bereit.",
+    it:"Questo capitolo non è ancora pronto.",ru:"Эта глава ещё не готова.",hi:"यह अध्याय अभी तैयार नहीं है।",ar:"هذا الفصل غير جاهز بعد."
+  };
+  const practiceNoSaveCopy = {
+    en:"Practice only: no progress or rewards are saved.","zh-Hant":"練習模式：不會保存進度或獎勵。","zh-Hans":"练习模式：不会保存进度或奖励。",
+    ja:"練習モード：進行状況や報酬は保存されません。",ko:"연습 모드: 진행과 보상은 저장되지 않습니다.",
+    es:"Práctica: no se guardan el progreso ni las recompensas.","pt-BR":"Treino: progresso e recompensas não são salvos.",
+    fr:"Entraînement : la progression et les récompenses ne sont pas enregistrées.",de:"Übung: Fortschritt und Belohnungen werden nicht gespeichert.",
+    it:"Allenamento: progressi e ricompense non vengono salvati.",ru:"Тренировка: прогресс и награды не сохраняются.",
+    hi:"अभ्यास: प्रगति या पुरस्कार सहेजे नहीं जाते।",ar:"تدريب: لا يُحفظ التقدم أو المكافآت."
+  };
+  function practiceNoSaveText() { return practiceNoSaveCopy[actualGameLocale()] || practiceNoSaveCopy.en; }
+  let relayModulePromise;
+  function loadRelayChapterCandidate() {
+    if (!relayModulePromise) relayModulePromise = Promise.all([
+      import("./relay-content-candidate.mjs"),
+      import("./relay-bridge-candidate.mjs"),
+      import("./relay-wave-gate-candidate.mjs")
+    ]);
+    return relayModulePromise;
+  }
+  function relayUnavailableText() { return relayUnavailableCopy[actualGameLocale()] || relayUnavailableCopy.en; }
+  function holdRelayWaveForPreparation() {
+    // Load only for a future Chapter 2 request. The next wave must not start
+    // while its UI, roster, battle hooks and saved progression are incomplete.
+    void loadRelayChapterCandidate().catch(() => {});
+    combatLog(relayUnavailableText());
+  }
+  function validatePracticeAction(action) {
+    if (!practiceRequested) { action(); return; }
+    if (!practiceAdapter || !practiceAuthorized || practiceStartPending) return;
+    practiceStartPending = true;
+    void practiceAdapter.validate().then(ok => { if (ok && practiceAuthorized) action(); }).catch(() => {}).finally(() => { practiceStartPending = false; });
+  }
 
   // Localization Dictionary
   const text = {
@@ -614,6 +662,21 @@
     }
   };
   Object.entries(paceCopy).forEach(([key, copy]) => { text[key] = { ...(text[key] || {}), ...copy }; });
+
+  // These short role-link labels are owned by the game's locale catalog;
+  // relying on the runtime phrase translator left Arabic preparation in English.
+  const roleLinkCopy = {
+    en:["Guardian link","Striker link","Support link"],
+    "zh-Hant":["守護羈絆","輸出羈絆","支援羈絆"],"zh-Hans":["守护羁绊","输出羁绊","支援羁绊"],
+    ja:["守護の連携","攻撃の連携","支援の連携"],ko:["수호 연계","공격 연계","지원 연계"],
+    es:["Vínculo guardián","Vínculo atacante","Vínculo de apoyo"],"pt-BR":["Vínculo de guarda","Vínculo de ataque","Vínculo de apoio"],
+    fr:["Lien gardien","Lien attaquant","Lien soutien"],de:["Wächter-Verbindung","Angreifer-Verbindung","Unterstützer-Verbindung"],
+    it:["Legame guardiano","Legame attaccante","Legame supporto"],ru:["Связь защитников","Связь бойцов","Связь поддержки"],
+    hi:["रक्षक तालमेल","हमलावर तालमेल","सहायक तालमेल"],ar:["ترابط الحماة","ترابط المهاجمين","ترابط الدعم"]
+  };
+  Object.entries(roleLinkCopy).forEach(([key, values]) => {
+    text[key] = {...(text[key] || {}),synergyGuardian:values[0],synergyStriker:values[1],synergySupport:values[2]};
+  });
 
   const tacticCopy = {
     en: { tacticBalanced: "Balanced", tacticFocus: "Focus fire", tacticGuard: "Guard line", tacticAria: "Change auto-battle tactic", tacticNotice: "Tactic: {tactic}" },
@@ -1438,6 +1501,7 @@
     try { return localStorage.getItem(key); } catch { return null; }
   };
   const writeStorage = (key, value) => {
+    if (practiceRequested) return false;
     try { localStorage.setItem(key, value); return true; } catch { return false; }
   };
 
@@ -2239,6 +2303,7 @@
   }
 
   function loadSave() {
+    if (practiceRequested && practiceMemory) return normalizeSave(practiceMemory);
     let normalized;
     try {
       const data = readStorage(saveKey);
@@ -2251,6 +2316,7 @@
   }
 
   function saveSave() {
+    if (practiceRequested) { practiceMemory = normalizeSave(save); return; }
     writeStorage(saveKey, JSON.stringify(save));
   }
 
@@ -2781,10 +2847,12 @@
   }
 
   function getWalletDiamonds() {
+    if (practiceRequested) return 0;
     return window.WeightPlayWallet?.read?.().diamonds || 0;
   }
 
   function spendWalletDiamonds(amount) {
+    if (practiceRequested) return false;
     if (window.WeightPlayWallet?.spendDiamonds) {
       const ok = window.WeightPlayWallet.spendDiamonds(amount);
       if (ok) {
@@ -2926,6 +2994,32 @@
       menuHidden: nodes.menuPanel.classList.contains("is-hidden")
     };
     scheduleAssetPreload();
+    if (practiceRequested) {
+      // Only the currently implemented stages are registered. Incomplete
+      // Chapter 2 content is not exposed even in local practice.
+      void import("../../src/game-local-practice.mjs").then(async ({LocalPractice}) => {
+        practiceAdapter = LocalPractice;
+        await LocalPractice.register({
+          gameId: GAME_ID,
+          stageIds: STAGE_DEFINITIONS.map(definition => definition.id),
+          enable(enabled) {
+            practiceAuthorized = enabled === true;
+            if (!practiceAuthorized) return;
+            save = normalizeSave({...save,unlockedStage:STAGE_COUNT});
+            saveSave();
+            renderMenu();
+            if (!nodes.stagePanel.classList.contains("is-hidden")) renderStageSelector();
+          },
+          startStage(id) {
+            const stageNumber=Number(id);
+            if (!practiceAuthorized || !Number.isInteger(stageNumber) || stageNumber<1 || stageNumber>STAGE_COUNT) return;
+            save = normalizeSave({...save,unlockedStage:STAGE_COUNT,selectedStage:stageNumber});
+            saveSave();
+            startExpedition();
+          }
+        });
+      }).catch(() => { practiceAuthorized = false; });
+    }
   }
 
   // Render Functions
@@ -3136,12 +3230,14 @@
   }
 
   function startExpeditionFromSharedStage(index) {
-    save = normalizeSave(save);
-    const stageNumber = Number(index) + 1;
-    if (!Number.isInteger(stageNumber) || stageNumber < 1 || stageNumber > save.unlockedStage) return;
-    save.selectedStage = stageNumber;
-    saveSave();
-    startExpedition();
+    validatePracticeAction(() => {
+      save = normalizeSave(save);
+      const stageNumber = Number(index) + 1;
+      if (!Number.isInteger(stageNumber) || stageNumber < 1 || stageNumber > save.unlockedStage) return;
+      save.selectedStage = stageNumber;
+      saveSave();
+      startExpedition();
+    });
   }
 
   function renderStageSelector() {
@@ -3224,6 +3320,7 @@
   }
 
   function handleBuySkin() {
+    if (practiceRequested) return;
     if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleBuySkin", () => handleBuySkin(...arguments));
 
     initAudio();
@@ -3256,7 +3353,7 @@
       saveSave();
       playSynth("result.win");
       renderCosmeticSection();
-      window.WonderAnalytics?.track("cosmetic_skin_purchase", { game_id: GAME_ID, cost: 15 });
+      trackGame("cosmetic_skin_purchase", { game_id: GAME_ID, cost: 15 });
     }
   }
 
@@ -3364,7 +3461,8 @@
   }
 
   function handleUnlockAnimal(id) {
-    if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleUnlockAnimal", () => handleUnlockAnimal(...arguments));
+    if (practiceRequested && isPremiumAnimal(id)) return;
+    if (!practiceRequested && window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleUnlockAnimal", () => handleUnlockAnimal(...arguments));
 
     initAudio();
     clearActionNotice(nodes.stageNotice);
@@ -3548,7 +3646,7 @@
     // after the player explicitly presses Start Battle.
     showTeamPreparationView();
     startRoundPrep();
-    window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
+    trackGame("expedition_start", { game_id: GAME_ID, stage: state.stage });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = false; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpNotifyMeasurement();
 }
@@ -4112,7 +4210,7 @@
       combineCards(animal, { exp: 2, level: 1, atk: 0, hp: 0 });
       playSynth("puzzle.merge");
     }
-    window.WonderAnalytics?.track("feed_food", { game_id: GAME_ID, food_id: food.id });
+    trackGame("feed_food", { game_id: GAME_ID, food_id: food.id });
   }
 
   // Skill Card Triggers
@@ -4563,6 +4661,18 @@
 
   // Combat Execution
   function startBattle(event) {
+    if (practiceRequested && !practiceBattleValidated) {
+      validatePracticeAction(() => {
+        practiceBattleValidated = true;
+        try { startBattle(event); } finally { practiceBattleValidated = false; }
+      });
+      return;
+    }
+    if (state.stage > 30 && !RELAY_CHAPTER_READY) {
+      void loadRelayChapterCandidate().catch(() => {});
+      showActionNotice(nodes.prepNotice, relayUnavailableText(), nodes.startBattleBtn);
+      return;
+    }
     reclaimVisibleForeground(event);
     initAudio();
     playSynth("ui.click");
@@ -4646,7 +4756,7 @@
     // Start animation loop
     ensureCombatProgressTimer();
     runCombatAnimation();
-    window.WonderAnalytics?.track("battle_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+    trackGame("battle_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = Boolean(__wpMeasurement.restart && !__wpMeasurement.started); __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
@@ -5732,11 +5842,14 @@
     saveSave();
   }
 
-  function startNextWaveBattle() {
+  function startNextWaveBattle(preparedWave = null) {
+    // The prepared Chapter 2 roster must be the one shown to the player;
+    // until dispatch and preparation are wired it is never accepted.
+    if (state.stage > 30 && (!RELAY_CHAPTER_READY || !preparedWave || preparedWave.stage !== state.stage || preparedWave.wave !== state.round || !Array.isArray(preparedWave.enemySquad))) return;
     clearScheduledCombatTimers();
     (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     const runId = ++combatRunSequence;
-    state.combat.enemySquad = generateEnemySquad(state.stage, state.round);
+    state.combat.enemySquad = state.stage > 30 ? preparedWave.enemySquad : generateEnemySquad(state.stage, state.round);
     state.combat.step = 0;
     state.combat.log = [];
     state.combat.status = "";
@@ -5774,7 +5887,7 @@
     updateCombatSummary();
     ensureCombatProgressTimer();
     runCombatAnimation();
-    window.WonderAnalytics?.track("battle_wave_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+    trackGame("battle_wave_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
   }
 
   function endBattleRun(result, runId = state.combat.runId) {
@@ -5801,7 +5914,8 @@
           save.bestRound = state.round;
           saveSave();
         }
-        startNextWaveBattle();
+        if (state.stage > 30) holdRelayWaveForPreparation();
+        else startNextWaveBattle();
       }
     } else if (result === "lose") {
       awardTeamXp(Math.max(1, state.round));
@@ -5827,7 +5941,7 @@
       showTeamPreparationView();
       startRoundPrep();
     }
-    window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, stage: state.stage, wave: settledRound, result });
+    trackGame("battle_end", { game_id: GAME_ID, stage: state.stage, wave: settledRound, result });
   }
 
   // Revival Popup (spend 5 diamonds)
@@ -5840,6 +5954,7 @@
   }
 
   function handleRevive() {
+    if (practiceRequested) return;
     if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-auto-squad:game.js:handleRevive", () => handleRevive(...arguments));
 
     initAudio();
@@ -5859,7 +5974,7 @@
       showTeamPreparationView();
       startRoundPrep();
       requestAnimationFrame(focusPreparationOwner);
-      window.WonderAnalytics?.track("expedition_revive", { game_id: GAME_ID, cost: 5 });
+      trackGame("expedition_revive", { game_id: GAME_ID, cost: 5 });
     }
   }
 
@@ -5904,7 +6019,7 @@
     stallDecisionOpen = true;
     nodes.combatStallPanel.classList.remove("is-hidden");
     setBattleDecisionOwnership(nodes.combatStallPanel, true);
-    window.WonderAnalytics?.track("battle_no_progress", { game_id: GAME_ID, stage: state.stage, wave: state.round, steps: state.combat.noProgressSteps });
+    trackGame("battle_no_progress", { game_id: GAME_ID, stage: state.stage, wave: state.round, steps: state.combat.noProgressSteps });
     requestAnimationFrame(() => nodes.reconfigureStallBtn.focus({ preventScroll: true }));
   }
 
@@ -5922,7 +6037,7 @@
     showTeamPreparationView();
     startRoundPrep();
     showActionNotice(nodes.prepNotice, t("stallRecoveryNotice"), nodes.startBattleBtn);
-    window.WonderAnalytics?.track("battle_no_progress_reconfigure", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+    trackGame("battle_no_progress_reconfigure", { game_id: GAME_ID, stage: state.stage, wave: state.round });
   }
 
   function endStalledRun() {
@@ -5932,7 +6047,7 @@
     playSynth("reward.coin");
     state.activeRun = false;
     state.combat.stallEnded = true;
-    window.WonderAnalytics?.track("battle_no_progress_end", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+    trackGame("battle_no_progress_end", { game_id: GAME_ID, stage: state.stage, wave: state.round });
     openResultScreen(false);
   }
 
@@ -6069,7 +6184,7 @@
         ? `${t("nextStage")} · ${stageLabel(state.stage + 1)}`
         : isFinalVictory ? t("backToStages") : t("retry");
     }
-    nodes.resultText.textContent = isWin
+    nodes.resultText.textContent = practiceRequested ? practiceNoSaveText() : isWin
       ? state.stage < STAGE_COUNT
         ? t("stageClearText", { stage: state.stage, next: state.stage + 1 })
         : t("allStagesClearText")
@@ -6080,11 +6195,11 @@
     const bonus = teamBonus();
     const goal = teamXpGoal(save.teamLevel);
     const remaining = Math.max(0, goal - save.teamXp);
-    nodes.resultXpText.textContent = t("resultXpEarned", { earned: state.earnedTeamXp || 0, level: save.teamLevel, xp: save.teamXp, goal });
-    nodes.resultGoldText.textContent = t("resultGoldEarned", { earned: state.earnedTrainingCoins || 0, total: save.coins });
+    nodes.resultXpText.textContent = practiceRequested ? "" : t("resultXpEarned", { earned: state.earnedTeamXp || 0, level: save.teamLevel, xp: save.teamXp, goal });
+    nodes.resultGoldText.textContent = practiceRequested ? "" : t("resultGoldEarned", { earned: state.earnedTrainingCoins || 0, total: save.coins });
     const stagePreview = canAdvance ? nextStagePreview(state.stage) : "";
     nodes.resultStageText.textContent = [
-      t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT }),
+      practiceRequested ? practiceNoSaveText() : t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT }),
       stagePreview,
     ].filter(Boolean).join(". ");
     nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
@@ -6103,7 +6218,7 @@
     requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
 
     playSynth(isWin ? "result.win" : "result.lose");
-    window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
+    trackGame("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -6212,20 +6327,20 @@
     nodes.giveUpBtn.addEventListener("click", handleGiveUp);
     nodes.reconfigureStallBtn.addEventListener("click", reconfigureAfterStall);
     nodes.endStallBtn.addEventListener("click", endStalledRun);
-    nodes.retryBtn.addEventListener("click", () => __wpReplayStart(() => commitResultDecision(() => {
+    nodes.retryBtn.addEventListener("click", () => validatePracticeAction(() => __wpReplayStart(() => commitResultDecision(() => {
       (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
       save = normalizeSave(save);
       save.selectedStage = state.stage;
       saveSave();
       __wpReplayStart(() => startExpedition());
-    })));
-    nodes.nextStageBtn.addEventListener("click", () => commitResultDecision(() => {
+    }))));
+    nodes.nextStageBtn.addEventListener("click", () => validatePracticeAction(() => commitResultDecision(() => {
       save = normalizeSave(save);
       save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
       saveSave();
       (__wpNotifyMeasurement(), nodes.resultPanel.classList.add("is-hidden"));
       startExpedition();
-    }));
+    })));
     nodes.resultMenuBtn.addEventListener("click", () => commitResultDecision(showStageSelection));
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {

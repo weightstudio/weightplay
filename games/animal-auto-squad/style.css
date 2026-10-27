@@ -161,3 +161,7 @@ html body #gamePanel:has(#combatArea:not(.is-hidden)) .command-tactics button[ar
   #prepPhaseArea .card-item .card-graphic, #gamePanel .expedition-report { animation: none; }
   #prepPhaseArea .card-item, .commander-actions button { transition: none; }
 }
+
+/* Keep the shared local-practice marker clear of this game's centered stage
+   counter. The marker remains owned and created by the shared adapter. */
+[data-wp-local-practice] { top: 52px !important; left: 8px !important; transform: none !important; }

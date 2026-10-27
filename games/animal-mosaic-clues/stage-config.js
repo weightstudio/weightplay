@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const boardSize = (stage) => stage <= 5 ? 5 : stage <= 10 ? 7 : stage <= 15 ? 8 : stage <= 25 ? 10 : 12;
+  const boardSize = (stage) => stage === 1 ? 3 : stage <= 3 ? 4 : stage <= 5 ? 5 : stage <= 10 ? 7 : stage <= 15 ? 8 : stage <= 25 ? 10 : 12;
 
   window.AnimalMosaicStageConfig = Object.freeze({
     create(getApi) {

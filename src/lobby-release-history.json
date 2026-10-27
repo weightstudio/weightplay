@@ -493,6 +493,10 @@
       "date": "2026-08-01T12:46:15+08:00",
       "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
     },
+    "bramble-rapids": {
+      "date": "2026-10-27T09:43:29.076Z",
+      "evidence": "canonical-public-catalog"
+    },
     "breakout": {
       "date": "2026-10-24T07:39:29.093Z",
       "evidence": "canonical-public-catalog"
