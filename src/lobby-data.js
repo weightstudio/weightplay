@@ -89,10 +89,11 @@ window.WONDER_LOBBY = {
       href: "games/orbit-menders/", internalTrial: "/games/orbit-menders/?preview=1",
       title: { en: "Orbit Menders", "zh-Hant": "方塊星途：重力修復隊" },
       type: { en: "3D Platform Adventure", "zh-Hant": "3D 星球平台冒險" },
-      description: { en: "A desktop adventure in development. Run around small planets and reconnect gravity routes as a block pangolin repairer.", "zh-Hant": "電腦限定冒險，開發中。操作方塊穿山甲繞行小星球，修復接軌與重力路線。" },
+      description: { en: "A desktop adventure in development. Explore colourful planets and reconnect gravity routes as Boom Mane Leo, the explosive-afro lion.", "zh-Hant": "電腦限定冒險，開發中。操作爆炸頭獅子繞行繽紛星球，修復接軌與重力路線。" },
       categories: ["Adventure", "Platformer", "Animal Games"], skills: ["Spatial Planning", "Coordination"],
       ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
       meta: { en: ["Desktop", "In development"], "zh-Hant": ["電腦限定", "開發中"] },
+      art: { kind: "image", background: "/assets/weightplay-boom-mane-lion.png", hideHero: true },
     },
     {
       id: "bramble-rapids", audience: "general", status: "planned", internalOnly: true,

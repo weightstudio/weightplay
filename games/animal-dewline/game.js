@@ -118,7 +118,7 @@
     return {name:row[offset], goal:row[offset+1], pending:row[4], complete:row[5], wrong:row[6]};
   };
   const flowFor = (values, meadow = meadows[state.meadow]) => meadow.network.map((row) => row.reduce((sum, weight, index) => sum + weight * values[index], 0));
-  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sessionTries12:0, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], checkpointStatus:null, checkpointChoice:null, hintUsed: false, hintedValve: -1, sessionCleared: new Set(), stage60Attempt:null, hintRevision:0, saveFailed:false };
+  const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sessionTries12:0, screen: "main", resultOpen: false, leaveOpen: false, moves: 0, history: [], checkpointStatus:null, checkpointChoice:null, hintUsed: false, hintedValve: -1, sessionCleared: new Set(), stage60Attempt:null, hintRevision:0, saveFailed:false, bestSaveFailed:false };
   if (extension) extension.rules.STAGES.forEach((stage) => meadows.push({
     titleKey:'gardenStage3', chapter:stage.number <= 30 ? 4 : 5,
     targets:stage.targets, stage60:stage,
@@ -157,8 +157,17 @@
   };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-dewline-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
   const readBest60 = () => { try { const value = Number(localStorage.getItem('weightplay-animal-dewline-best60-v1')); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
-  const writeBest = (value) => { try { const old = readBest(); if (!old || value < old) localStorage.setItem("weightplay-animal-dewline-best-v1", String(value)); } catch (_) { state.saveFailed = true; } };
-  const writeBest60 = (value) => { try { const key = 'weightplay-animal-dewline-best60-v1', old = Number(localStorage.getItem(key)); if (!Number.isFinite(old) || old <= 0 || value < old) localStorage.setItem(key,String(value)); } catch (_) { state.saveFailed = true; } };
+  // Best check counts are separate records: their failure must not reclassify
+  // a confirmed stage save or suppress that stage's first-clear reward.
+  const writeBestRecord = (key, value) => { try {
+    const old = Number(localStorage.getItem(key));
+    if (Number.isFinite(old) && old > 0 && value >= old) return true;
+    const bytes = String(value);
+    try { localStorage.setItem(key,bytes); } catch (_) { /* a write may commit before throwing */ }
+    return localStorage.getItem(key) === bytes;
+  } catch (_) { return false; } };
+  const writeBest = (value) => { if (!writeBestRecord('weightplay-animal-dewline-best-v1',value)) state.bestSaveFailed = true; };
+  const writeBest60 = (value) => { if (!writeBestRecord('weightplay-animal-dewline-best60-v1',value)) state.bestSaveFailed = true; };
   const clearedCount = () => Object.keys(progress).filter(key => +key < meadows.length).length;
   const refreshMainBest = () => { const node = $("bestValue"); if (node) node.textContent = readBest() || t("noBest"); document.querySelectorAll('[data-copy="progress"]').forEach((item) => item.textContent = `★ ${clearedCount()} / ${meadows.length}`); };
 
@@ -487,7 +496,8 @@
     const failureCopy = copy[state.locale]?.storageFailure ? t('storageFailure') : globalThis.AnimalDewlineStage60Copy?.locales?.[state.locale]?.storageFailed || '⚠';
     const checkpoint = checkpointWords(state.locale,state.meadow + 1);
     const checkpointResult = checkpoint ? ` ${checkpoint.complete}` : '';
-    $("resultText").textContent = `${'★'.repeat(state.earnedStars || 1)}${'☆'.repeat(3-(state.earnedStars || 1))} · ${t('gardenMoves')} ${state.moves}. ${state.saveFailed ? failureCopy : t('gardenSave')}${checkpointResult}`;
+    const bestFailure = state.bestSaveFailed ? ` ${t('bestStorageFailure')}` : '';
+    $("resultText").textContent = `${'★'.repeat(state.earnedStars || 1)}${'☆'.repeat(3-(state.earnedStars || 1))} · ${t('gardenMoves')} ${state.moves}. ${state.saveFailed ? failureCopy : t('gardenSave')}${bestFailure}${checkpointResult}`;
     $("resultMapBtn").hidden = false; $("resultMapBtn").textContent = t('stages'); $("resultMapBtn").onclick = () => { show('stage'); renderStages(); };
     $("resultPrimaryBtn").hidden = false; $("resultPrimaryBtn").textContent = t("next"); $("resultPrimaryBtn").disabled = complete; $("resultPrimaryBtn").onclick = complete ? () => {} : () => startMeadow(state.meadow + 1);
     $("resultHomeBtn").hidden = false; $("resultHomeBtn").textContent = t('replay'); $("resultHomeBtn").onclick = () => startMeadow(state.meadow);
@@ -499,7 +509,7 @@
     if (!Number.isInteger(index) || !isUnlocked(index)) return;
     cancelHint();
     closeLeaveDialog(false); setResultOpen(false);
-    state.meadow = index; state.values = [0, 0, 0]; state.tries = 0; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(index + 1) ? 'pending' : null; state.checkpointChoice = null; state.hintUsed = false; state.hintedValve = -1; state.saveFailed = false;
+    state.meadow = index; state.values = [0, 0, 0]; state.tries = 0; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(index + 1) ? 'pending' : null; state.checkpointChoice = null; state.hintUsed = false; state.hintedValve = -1; state.saveFailed = false; state.bestSaveFailed = false;
     state.stage60Attempt = meadows[index].stage60 ? extension.rules.initialAttempt(meadows[index].stage60) : null;
     $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 });
     __wpMeasurement.roundKey = {}; __wpMeasurement.stageId = index + 1; __wpMeasurement.saveSucceeded = false; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();

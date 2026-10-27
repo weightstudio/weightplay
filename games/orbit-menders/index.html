@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v2"><meta name="weightplay-interface-target" content="9">
+  <title>方塊星途：重力修復隊 · 開發中 | WeightPlay</title>
+  <meta name="description" content="電腦限定原創3D星球平台冒險，開發中。繞行球面，接通引力錨點，修復破碎路線。">
+  <script src="/src/weightplay-audio.js" data-wp-entry-required></script>
+  <script src="/src/game-layout-config.js" data-wp-entry-required></script>
+  <script src="/src/game-title-registry.js" data-wp-game-title-registry></script>
+  <link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css">
+  <link rel="stylesheet" href="/src/game-entry-loader.css"><link rel="stylesheet" href="/src/game-page-info.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-wp-play-ui="1">
+<div id="gameFrame" data-wp-frame-root>
+  <main id="mainScreen" data-wp-frame-scene="main">
+    <header data-wp-frame-header="main"><a href="/" data-wp-return="main" aria-label="返回 WeightPlay">← W</a><strong data-wp-frame-title>方塊星途：重力修復隊</strong><select id="localeSelect" aria-label="語言"><option value="zh-Hant">繁體中文</option></select></header>
+    <section id="mainContent" data-wp-frame-content="main">
+      <img class="main-poster leo-poster" data-wp-frame-poster src="/assets/weightplay-boom-mane-lion.png" width="512" height="512" alt="爆炸頭獅子：金色臉、橘金鬃毛、火花與披風">
+      <div data-wp-frame-copy><p data-wp-frame-summary>爆炸頭獅子的繽紛星球冒險，讓破碎路線重新接軌。</p><p id="buildStatus">爆炸頭獅子 · 明亮3D新造型 · M1開發中</p><p id="deviceNotice">本作需使用電腦鍵鼠。</p><button id="start" data-wp-main-start data-wp-frame-action="primary" disabled>開始遊戲</button></div>
+    </section>
+  </main>
+  <section id="guide" class="game-page-info game-page-info-static" aria-label="遊戲說明">
+    <div class="game-info-section"><h2>先修好腳下的路</h2><p>這是開發中的操作測試場。完整遊戲規劃六個世界、24個冒險關與六場不同機制的Boss戰；目前不能把測試場當成完成版。</p><p>WASD／方向鍵移動，Space跳躍（放開提早落下），Shift短衝，E互動／牽引，Q或滑鼠左鍵定向脈衝，R相機回正，F路線提示。按住右鍵拖曳視角，或在遊玩中選擇鎖定滑鼠。Esc暫停。</p></div>
+    <div class="game-info-section"><h3>存檔與相機</h3><p>進度保存在目前瀏覽器，可於暫停時匯出／匯入JSON。此測試場不授予正式關卡通關或收藏。失焦後暫停，按繼續才恢復。若容易暈眩，可在暫停中調低靈敏度與選擇減少動態。</p></div>
+    <div class="game-info-section"><h3>常見問題</h3><dl><dt>手機能玩嗎？</dt><dd>本作需電腦鍵鼠，手機僅顯示介紹，不啟動3D場景。</dd><dt>需要下載嗎？</dt><dd>使用支援WebGL2的瀏覽器即可；本機測試需要啟動倉庫預覽伺服器。</dd><dt>手把支援了嗎？</dt><dd>尚未完成實機驗證，目前請使用鍵鼠。</dd><dt>如何重玩？</dt><dd>返回選關再進入，或於測試結果選擇重玩。</dd></dl></div>
+  </section>
+  <section id="stageScreen" class="scene-canvas" hidden data-wp-frame-logical-header="stage" data-wp-frame-play-fill>
+    <header data-wp-frame-header="stage"><button id="stageBack" data-wp-return="stage" aria-label="返回">←</button><strong data-wp-frame-title hidden></strong></header>
+    <div id="stageContent" data-wp-frame-content="stage"><div id="stageSummary">操作測試場 · 其餘關卡規劃中</div><section id="stagePanel"><div id="stageRail" role="list" aria-label="關卡"></div></section></div>
+    <nav data-wp-frame-nav data-wp-frame-stage-nav><button id="stagesTab">關卡</button></nav>
+  </section>
+  <section id="battleScreen" class="scene-canvas" hidden data-wp-logical-battle-canvas data-wp-frame-logical-header="battle" data-wp-frame-play-fill>
+    <header data-wp-frame-header="battle"><button id="battleBack" data-wp-return="battle" aria-label="返回選關">←</button><strong data-wp-frame-title hidden></strong></header>
+    <div id="battleContent" data-wp-frame-content="battle">
+      <div id="battleInfo"><span id="health">生命5</span><span id="courseProgress">M1</span><button id="pauseButton" aria-label="暫停">Ⅱ</button></div>
+      <div id="playArea"><canvas id="arena" tabindex="0" aria-label="星球操作測試場" aria-keyshortcuts="W A S D Space Shift E Q R F Escape"></canvas><div id="objective" role="status"></div><div id="context" aria-live="polite"></div><div id="diagnostics" aria-label="M1操作觀察"></div></div>
+      <section id="pauseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card"><h2 id="pauseTitle">已暫停</h2><p>WASD移動 · Space跳 · Shift短衝 · E互動 · 右鍵拖曳視角</p><label>相機靈敏度 <input id="sensitivity" type="range" min="0.25" max="2" step="0.05" value="1"></label><label><input id="invertY" type="checkbox">反轉Y軸</label><label><input id="reduceMotion" type="checkbox">減少動態</label><label><input id="assist" type="checkbox">輔助模式（本次重新進入生效）</label><p id="saveNotice" role="status"></p><div class="modal-actions"><button id="resume" class="primary">繼續</button><button id="lockMouse">繼續並鎖定滑鼠</button><button id="returnStage">返回選關</button></div><details><summary>本機存檔備份</summary><div class="modal-actions"><button id="exportSave">匯出JSON</button><label class="file-button">匯入JSON<input id="importSave" type="file" accept="application/json,.json"></label></div></details></div></section>
+      <section id="resultModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="resultTitle" data-wp-battle-substate="result" hidden><div class="dialog-card"><h2 id="resultTitle">操作測試場完成</h2><p id="resultText"></p><p>此為M1核心驗證，未計入正式通關與收藏。W1-01完整路線及Boss尚待製作。</p><div class="modal-actions result-actions"><button id="resultStage">關卡</button><button disabled>下一關</button><button id="replay">重玩</button></div></div></section>
+      <section id="errorModal" class="modal" role="alertdialog" aria-modal="true" aria-labelledby="errorTitle" hidden><div class="dialog-card"><h2 id="errorTitle">場景無法啟動</h2><p id="errorText"></p><button id="errorBack">返回選關</button><button id="reload">重新載入</button></div></section>
+    </div>
+  </section>
+</div>
+<script src="/src/site-config.js"></script><script src="/src/i18n.js"></script><script src="/src/game-entry-loader.js" data-wp-entry-required></script><script src="/src/battle-canvas-standard.js" data-wp-battle-standard data-wp-entry-required></script><script src="/src/game-screen-frame.js" data-wp-entry-required></script><script src="/src/stage-rail-i9.js" data-wp-entry-required></script><script src="/src/game-play-ui.js" data-wp-entry-required></script>
+<script type="module" src="game.mjs" data-wp-entry-required></script>
+</body></html>

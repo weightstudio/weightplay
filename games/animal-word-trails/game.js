@@ -289,7 +289,10 @@
   function updateFrameStats() {
     const best = readRecord('wordTrailsBest');
     const album = readRecord('wordTrailsAlbum');
-    const completed = Object.keys(best).filter(key => key.startsWith(lang + '-')).length;
+    // Count only actual loaded stages, using the same truthy-clear rule as
+    // the Stage rail. Keep higher-stage records intact if the extension is
+    // temporarily unavailable and the game falls back to its original ten.
+    const completed = packs[lang].reduce((total, _item, index) => total + (best[`${lang}-${index}`] ? 1 : 0), 0);
     const clues = currentAlbumGroups(album).filter(item=>item.unlocked).length;
     if (stageStats) {
       stageStats.completed.label.textContent = t('progress');
@@ -572,15 +575,40 @@
     const selected=state.target&&data.targets.find(item=>item.id===state.target);
     if(state.target&&!selected)return {ok:false,reason:'selectTarget'};
     const candidates=selected?[selected]:data.targets;
+    // Prefer each authored route, then search matching graphemes when the
+    // current bridge makes that route unavailable. A fixture's chosen bridge
+    // is not proof that every valid spelling needs that bridge.
+    let visits=0,exhausted=false;
+    function alternateRoute(target){
+      const targetId=data.categoryOrder?target.id:null;
+      function walk(route){
+        if(route.length===target.tokens.length){
+          const result=rules.submit(data,{...state,target:targetId,path:route});
+          return result.ok&&result.target.id===target.id?route:null;
+        }
+        for(let cell=0;cell<data.board.length;cell++){
+          if(data.board[cell]!==target.tokens[route.length]&&!data.wildcards?.includes(cell))continue;
+          if(++visits>50000){exhausted=true;return null;}
+          const step=rules.append(data,{...state,target:targetId,path:route},cell);
+          if(!step.ok)continue;
+          const foundRoute=walk(step.path);if(foundRoute)return foundRoute;
+          if(exhausted)return null;
+        }
+        return null;
+      }
+      return walk([]);
+    }
     for(const target of candidates){
       if(state.found.has(target.id))continue;
       const choice=data.categoryOrder?rules.chooseTarget(data,state,target.id):{ok:true};
       if(!choice.ok){if(selected)return choice;continue;}
-      if(target.bridge!=null&&target.bridge!==state.bridge){if(selected)return {ok:false,reason:'bridgeBlocked'};continue;}
       const test={...state,target:data.categoryOrder?target.id:null,path:[]};
       let valid=true;
       for(const cell of target.path){const step=rules.append(data,test,cell);if(!step.ok){valid=false;break;}test.path=step.path;}
       if(valid){const result=rules.submit(data,test);if(result.ok&&result.target.id===target.id)return {ok:true,target,route:target.path};}
+      const alternative=alternateRoute(target);
+      if(alternative)return {ok:true,target,route:alternative};
+      if(exhausted)return {ok:false,reason:'try'};
       if(selected)return {ok:false,reason:data.bridges?.length?'bridgeBlocked':'try'};
     }
     return {ok:false,reason:data.bridges?.length?'bridgeBlocked':'try'};

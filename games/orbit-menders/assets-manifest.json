@@ -1,55 +1,153 @@
 {
   "gameId": "orbit-menders",
-  "manifestVersion": 1,
+  "manifestVersion": 2,
   "createdAt": "2026-10-27",
   "milestone": "M1",
-  "status": "implemented-unverified",
-  "artDirection": "Original WeightPlay Block Animals; ceramic workshop engineering, layered pangolin armor, stepped silhouettes",
-  "coordinateConvention": { "up": "+Y", "forward": "+Z", "unit": "approximately one meter" },
+  "status": "已實作未驗證",
+  "artDirection": "Owner-approved per-game rounded3D cartoon adventure. Boom Mane Leo: golden face, voluminous fiery-orange afro, spark tufts, short red cape and cyan repair glove. Bright sky, lush green/terracotta planets; no block-style requirement for this game.",
+  "coordinateConvention": {
+    "up": "+Y",
+    "forward": "+Z",
+    "unit": "approximately one meter"
+  },
   "provenance": {
     "type": "original-procedural-geometry",
-    "source": "Owner supplied Orbit Menders design document v1.0 dated 2026-10-27",
+    "source": "Owner GDD2026-10-27 plus direct owner visual amendment in same task: non-block style, explosive-afro lion, bright rich effects.",
     "implementationTool": "Codex code generation through apply_patch",
     "externalArt": false,
     "imageGeneration": false,
     "licenseStatus": "Original project-authored geometry. No claim of exclusive rights or name clearance. Repository ownership and applicable service terms govern generated source.",
-    "termsReview": "No external art or music licensed in this module; image-generation terms do not apply. Broader release rights review remains pending."
+    "termsReview": "No external art or music licensed in this module; image-generation terms do not apply. Broader release rights review remains pending.",
+    "reference": "assets/weightplay-boom-mane-lion.png inspected; original WeightPlay character, rounded code-native3D adaptation. No third-party game asset used."
   },
   "resources": [
-    { "file": "art.mjs", "export": "createPangolin", "usage": "Player geometry and named procedural animation pivots", "dimensions": "Approximately 1.25 units tall, origin at feet", "state": "M1 geometry; animation integration and rendered inspection pending" },
-    { "file": "art.mjs", "export": "createPlanet", "usage": "Moss workshop spherical field; inset panels, ceramic equator, block trees and workshop", "dimensions": "Radius supplied by level field", "state": "M1 representative environment; six final world kits not complete" },
-    { "file": "art.mjs", "export": "makeAnchor", "usage": "Forked diamond gravity anchor", "dimensions": "Approximately 1.3 by 1.7 by 0.95 units", "state": "Geometry exposes gate/core for state changes; four-state validation pending" },
-    { "file": "art.mjs", "export": "makeTerminal", "usage": "Repair console", "dimensions": "Approximately 0.76 by 1.15 by 0.7 units", "state": "M1 geometry" },
-    { "file": "art.mjs", "export": "makeCheckpoint", "usage": "Safe checkpoint outlined landing square and flag", "dimensions": "Approximately 1.1 units square", "state": "M1 geometry" },
-    { "file": "art.mjs", "export": "makeArchive", "usage": "Repair archive collectible", "dimensions": "Approximately 0.5 by 0.61 by 0.2 units", "state": "M1 geometry; permanent ID and pickup transaction belong to level/save modules" },
-    { "file": "art.mjs", "export": "makeBridge", "usage": "Moving ceramic deck and readable edge rails", "dimensions": "Default 4 by 2.2 units; length on local Z; deck top local Y=0", "state": "Parent must bind platform collision and authored mechanism state to the same transform" },
-    { "file": "art.mjs", "export": "createDrone", "usage": "Three-leaf tool drone KouKou", "dimensions": "Approximately 1 unit span", "state": "M1 geometry; docking and pointing integration pending" }
+    {
+      "file": "art.mjs",
+      "export": "createLion",
+      "usage": "Boom Mane Leo procedural3D hero; afro, cape, arms, legs, glove, tail and spark animation pivots",
+      "dimensions": "Approximately1.43 units tall; decorative sparks near1.5, foot origin",
+      "state": "Implemented rounded hero; fresh local visual inspection required per handoff; all final action states still incomplete"
+    },
+    {
+      "file": "art.mjs",
+      "export": "createPlanet",
+      "usage": "Smooth exact-radius grass/terracotta/cream planet with rounded trees, workshop and flowers",
+      "dimensions": "Radius supplied by level field",
+      "state": "M1 representative environment; six final world kits not complete"
+    },
+    {
+      "file": "art.mjs",
+      "export": "makeAnchor",
+      "usage": "Forked diamond gravity anchor",
+      "dimensions": "Approximately 1.3 by 1.7 by 0.95 units",
+      "state": "Geometry exposes gate/core for state changes; four-state validation pending"
+    },
+    {
+      "file": "art.mjs",
+      "export": "makeTerminal",
+      "usage": "Repair console",
+      "dimensions": "Approximately 0.76 by 1.15 by 0.7 units",
+      "state": "M1 geometry"
+    },
+    {
+      "file": "art.mjs",
+      "export": "makeCheckpoint",
+      "usage": "Safe checkpoint outlined landing square and flag",
+      "dimensions": "Approximately 1.1 units square",
+      "state": "M1 geometry"
+    },
+    {
+      "file": "art.mjs",
+      "export": "makeArchive",
+      "usage": "Repair archive collectible",
+      "dimensions": "Approximately 0.5 by 0.61 by 0.2 units",
+      "state": "M1 geometry; permanent ID and pickup transaction belong to level/save modules"
+    },
+    {
+      "file": "art.mjs",
+      "export": "makeBridge",
+      "usage": "Moving ceramic deck and readable edge rails",
+      "dimensions": "Default 4 by 2.2 units; length on local Z; deck top local Y=0",
+      "state": "Parent must bind platform collision and authored mechanism state to the same transform"
+    },
+    {
+      "file": "art.mjs",
+      "export": "createDrone",
+      "usage": "Three-leaf tool drone KouKou",
+      "dimensions": "Approximately 1 unit span",
+      "state": "M1 geometry; docking and pointing integration pending"
+    }
   ],
   "runtimeDependency": {
     "import": "./vendor/three.module.min.js",
     "engine": "three@0.180.0",
     "license": "MIT",
-    "source": "Repository-pinned upstream Three.js distribution; parent owns vendoring and license copy",
-    "referenceStatus": "Named procedural exports ready for GameAdapter integration"
+    "source": "Copied repository-pinned three@0.180.0 distribution from games/animal-skyspire-drop/vendor/three; local vendor/LICENSE and vendor/README.md retained",
+    "referenceStatus": "Used by game.mjs, motor.mjs and art.mjs"
   },
   "resourceOwnership": {
-    "cache": "Three shared geometries and a bounded palette material Map; no cached scenes or renderers",
+    "cache": "Bounded reused geometry/materials and per-theme planet geometry. Each InstancedMesh is disposed by GameAdapter.",
     "scene": "Each invocation creates a new Group. Parent collects and disposes unique owned geometries/materials and InstancedMesh resources after scene exit.",
     "collision": "Main planet sphere is solid. Inset panels, equatorial trim, trees and workshop are declared decorative for M1. Final scenery-blocking acceptance remains pending. Bridge exposes a box descriptor."
   },
   "measurements": {
-    "sourceBytes": null,
+    "sourceBytes": 18387,
     "compressedTransferBytes": null,
     "visibleTriangles": null,
     "drawCalls": null,
-    "status": "not-measured; no browser/render/hardware evidence produced by this task"
+    "status": "Source bytes measured; draw calls, triangles, compressed transfer and hardware frame-time remain unmeasured. M1 rendered evidence is in the sole handoff."
   },
-  "missingFinalAssets": ["Final six enemy kits", "Six Boss kits", "Final six world kits and scripted changes", "Cover and lobby poster", "UI illustrations", "Music tracks", "Final blueprint models", "All required animation states and transitions"],
+  "missingFinalAssets": [
+    "Final six enemy kits",
+    "Six Boss kits",
+    "Final six world kits and scripted changes",
+    "Cover and lobby poster",
+    "UI illustrations",
+    "Music tracks",
+    "Final blueprint models",
+    "All required animation states and transitions"
+  ],
   "verification": {
-    "syntax": "not-run",
-    "renderedSilhouette": "not-run",
-    "animation": "not-run",
-    "collisionAgreement": "not-run",
-    "resources": "not-run"
+    "syntax": "Art module imported successfully in local Chrome for Testing151.0.7922.34",
+    "renderedSilhouette": "v2 rounded Leo face/rear, environment and effects require current handoff evidence; old block-pangolin image acceptance is not reused for new art.",
+    "animation": "Run/jump/dash/bridge visible input exercised; all final action states not complete",
+    "collisionAgreement": "M1 sphere/bridge only; authored scenery blocking and full capsule acceptance pending",
+    "resources": "20-cycle GPU-resource test not run"
+  },
+  "sharedReferences": [
+    {
+      "file": "/assets/weightplay-boom-mane-lion.png",
+      "usage": "Owner-approved character reference and Main/Stage cutout for this game. Existing WeightPlay original artwork; global brand assets not modified. Final composed world cover remains pending."
+    },
+    {
+      "file": "/assets/lobby-block-atmosphere.svg",
+      "usage": "Existing shared Stage background"
+    },
+    {
+      "file": "/src/weightplay-audio.js",
+      "usage": "Existing catalog SFX, original/CC0 sources maintained by shared audio manifests; no new private audio engine"
+    }
+  ],
+  "gameVersion": "v2",
+  "effects": {
+    "source": "game.mjs createEffects",
+    "particleCapacity": 224,
+    "ringCapacity": 8,
+    "glowTexture": "One64x64 code-generated radial glow",
+    "events": [
+      "start",
+      "jump",
+      "land",
+      "dash",
+      "pulse",
+      "power",
+      "transit",
+      "repair",
+      "archive",
+      "respawn",
+      "victory"
+    ],
+    "reducedMotion": "At most6 particles per burst, lower velocity, fixed-radius rings with lower alpha; no camera shake",
+    "bounds": "Finite lifetimes, reused InstancedMesh particle slots; no event-specific growing allocation pool"
   }
 }

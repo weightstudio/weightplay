@@ -3,7 +3,7 @@ export class InputRouter {
     this.canvas=canvas;this.keys=new Set();this.edges=new Set();this.dragging=false;this.active=false;this.wasLocked=false;this.abort=new AbortController();const signal=this.abort.signal;
     const listen=(target,type,fn,options={})=>target.addEventListener(type,fn,{...options,signal});
     const supported=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','ShiftLeft','ShiftRight','KeyE','KeyQ','KeyR','KeyF','Escape']);
-    listen(window,'keydown',e=>{if(!this.active||e.ctrlKey||e.metaKey||e.altKey||!supported.has(e.code))return;if(document.activeElement!==canvas&&document.pointerLockElement!==canvas)return;e.preventDefault();if(!this.keys.has(e.code))this.edges.add(e.code);this.keys.add(e.code);if(e.code==='Escape'){this.clear();pause('escape');}});
+    listen(window,'keydown',e=>{if(e.defaultPrevented||!this.active||e.ctrlKey||e.metaKey||e.altKey||!supported.has(e.code))return;if(document.activeElement!==canvas&&document.pointerLockElement!==canvas)return;e.preventDefault();if(!this.keys.has(e.code))this.edges.add(e.code);this.keys.add(e.code);if(e.code==='Escape'){this.clear();pause('escape');}});
     listen(window,'keyup',e=>{this.keys.delete(e.code);});
     listen(canvas,'pointerdown',e=>{if(!this.active)return;canvas.focus({preventScroll:true});if(e.button===2){this.dragging=true;canvas.setPointerCapture(e.pointerId);}else if(e.button===0)onAction('pulse');});
     listen(canvas,'pointerup',()=>{this.dragging=false;});listen(canvas,'lostpointercapture',()=>{this.dragging=false;});

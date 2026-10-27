@@ -1,263 +1,322 @@
 import * as THREE from './vendor/three.module.min.js';
 
-// Orbit Menders M1 authored geometry. Local +Y is up, +Z is forward.
-// These small immutable geometry/material caches are bounded. Scene ownership
-// stays with GameAdapter: collect unique resources during traversal, then dispose.
-const box = new THREE.BoxGeometry(1, 1, 1);
-const sphere = new THREE.SphereGeometry(1, 32, 20);
-const ring = new THREE.TorusGeometry(1, .055, 6, 32);
-const materials = new Map();
+// Per-game owner visual amendment, 2026-10-27: rounded Boom Mane Leo.
+// Reference inspected: assets/weightplay-boom-mane-lion.png. This is an original
+// code-native adaptation of the WeightPlay character, not third-party artwork.
+// +Y up, +Z forward; all geometry/material caches are small and bounded.
+const round = (() => {
+  const s = new THREE.Shape(); s.moveTo(-.38,-.38); s.lineTo(.38,-.38);
+  s.lineTo(.38,.38); s.lineTo(-.38,.38); s.closePath();
+  const g = new THREE.ExtrudeGeometry(s,{depth:.76,bevelEnabled:true,bevelSize:.12,bevelThickness:.12,bevelSegments:3,steps:1});
+  g.translate(0,0,-.38); return g;
+})();
+const sphere = new THREE.SphereGeometry(1,24,16);
+const flowerSphere = new THREE.SphereGeometry(1,10,8);
+const cylinder = new THREE.CylinderGeometry(1,1,1,16);
+const torus = new THREE.TorusGeometry(1,.075,6,32);
+const sparkGeometry = new THREE.LatheGeometry([
+  new THREE.Vector2(0,0),new THREE.Vector2(.28,.07),new THREE.Vector2(.4,.27),
+  new THREE.Vector2(.31,.58),new THREE.Vector2(.12,.84),new THREE.Vector2(0,1),
+],10);
+const materials = new Map(), planetGeometries = new Map();
 const palettes = {
-  moss: { soil: 0x344746, grass: 0x719a67, light: 0xabc487, trim: 0xeee0b7, accent: 0x50c6bb },
-  wind: { soil: 0x3d5571, grass: 0x779cad, light: 0xd3d9ba, trim: 0xf3dfbc, accent: 0xe6aa59 },
-  crystal: { soil: 0x353e60, grass: 0x6f729b, light: 0xafa4d8, trim: 0xd4e7e5, accent: 0x71e2da },
-  tide: { soil: 0x385c68, grass: 0x689b97, light: 0xa7d2bc, trim: 0xe8dec0, accent: 0x57d9db },
-  forge: { soil: 0x3e4654, grass: 0x7d8586, light: 0xc6af87, trim: 0xd1c9b5, accent: 0xf1a15a },
-  core: { soil: 0x39445b, grass: 0x76859a, light: 0xa7bbbd, trim: 0xe9e1cb, accent: 0x8bdfd3 },
+  moss:{grass:0x65cb4e,light:0xa0e865,soil:0xdc9760,trim:0xffedbd,accent:0x51ddd2},
+  wind:{grass:0x7bd8b0,light:0xc1efa4,soil:0xd79b6d,trim:0xffecc6,accent:0x65dbed},
+  crystal:{grass:0x9ac3ec,light:0xc4ddfa,soil:0x9a8dbb,trim:0xe9e6ff,accent:0x7bf2e0},
+  tide:{grass:0x65d0a6,light:0xb8ecc2,soil:0xdaaf83,trim:0xfff1ce,accent:0x63e7e8},
+  forge:{grass:0xabbf82,light:0xd5db99,soil:0xc98468,trim:0xffdeb0,accent:0xffc85a},
+  core:{grass:0x95d7bd,light:0xcdf2c5,soil:0x9da9c2,trim:0xf9f3dc,accent:0x8ee7ee},
 };
-function material(color, metalness = 0, emissive = 0) {
-  const key = `${color}:${metalness}:${emissive}`;
-  if (!materials.has(key)) materials.set(key, new THREE.MeshStandardMaterial({
-    color, metalness, roughness: metalness ? .48 : .82,
-    emissive, emissiveIntensity: emissive ? .55 : 0,
-  }));
+function mat(color,metalness=0,emissive=0){
+  const key=`${color}:${metalness}:${emissive}`;
+  if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({color,metalness,roughness:metalness ? .34 : .69,emissive,emissiveIntensity:emissive ? .6 : 0}));
   return materials.get(key);
 }
-function cube(parent, color, x, y, z, sx, sy, sz, options = {}) {
-  const mesh = new THREE.Mesh(box, material(color, options.metalness || 0, options.emissive || 0));
-  mesh.position.set(x, y, z); mesh.scale.set(sx, sy, sz);
-  mesh.castShadow = options.shadow !== false; mesh.receiveShadow = true;
-  mesh.userData.collision = options.collision || 'decorative';
-  parent.add(mesh); return mesh;
+function mesh(parent,geometry,color,x,y,z,sx=1,sy=sx,sz=sx,options={}){
+  const m=new THREE.Mesh(geometry,mat(color,options.metalness||0,options.emissive||0));
+  m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=options.shadow!==false;m.receiveShadow=true;
+  m.userData.collision=options.collision||'ornamental';parent.add(m);return m;
 }
-function pivot(parent, x, y, z, name) {
-  const group = new THREE.Group(); group.position.set(x, y, z);
-  group.name = name; parent.add(group); return group;
+const ball=(p,c,x,y,z,sx,sy=sx,sz=sx,o={})=>mesh(p,sphere,c,x,y,z,sx,sy,sz,o);
+const soft=(p,c,x,y,z,sx,sy,sz,o={})=>mesh(p,round,c,x,y,z,sx,sy,sz,o);
+function group(parent,x=0,y=0,z=0,name=''){const g=new THREE.Group();g.position.set(x,y,z);g.name=name;parent.add(g);return g;}
+function tube(points,radius=.02){return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),20,radius,8,false);}
+function band(parent,color,x,y,z,radius,sx=1,sy=1,sz=1){const m=mesh(parent,torus,color,x,y,z,radius*sx,radius*sy,radius*sz,{metalness:.15});return m;}
+
+// Batch only static direct children. Named animation pivots and dynamic sparks
+// retain their identity. The scene owner must dispose every InstancedMesh too.
+function batchDirect(parent){
+  const batches=new Map();
+  for(const child of [...parent.children])if(child.isMesh&&!child.isInstancedMesh&&!child.userData.dynamic){
+    const key=`${child.geometry.uuid}:${child.material.uuid}`;
+    if(!batches.has(key))batches.set(key,[]);batches.get(key).push(child);
+  }
+  for(const items of batches.values())if(items.length>1){
+    const inst=new THREE.InstancedMesh(items[0].geometry,items[0].material,items.length);
+    items.forEach((item,i)=>{item.updateMatrix();inst.setMatrixAt(i,item.matrix);parent.remove(item);});
+    inst.instanceMatrix.needsUpdate=true;inst.castShadow=true;inst.receiveShadow=true;
+    inst.userData.collision='ornamental';parent.add(inst);
+  }
 }
-function instanceBoxes(parent, color, transforms) {
-  const mesh = new THREE.InstancedMesh(box, material(color), transforms.length);
-  const pose = new THREE.Object3D();
-  transforms.forEach((t, i) => {
-    pose.position.copy(t.position); pose.quaternion.copy(t.quaternion);
-    pose.scale.set(...t.scale); pose.updateMatrix(); mesh.setMatrixAt(i, pose.matrix);
-  });
-  mesh.instanceMatrix.needsUpdate = true;
-  mesh.receiveShadow = true; mesh.castShadow = false;
-  mesh.userData.collision = 'decorative-flush-surface'; parent.add(mesh); return mesh;
+function batchScenery(root){
+  root.updateMatrixWorld(true);const batches=new Map();
+  root.traverse(child=>{if(child.isMesh&&!child.isInstancedMesh){const key=`${child.geometry.uuid}:${child.material.uuid}`;if(!batches.has(key))batches.set(key,[]);batches.get(key).push(child);}});
+  for(const items of batches.values())if(items.length>1){
+    const inst=new THREE.InstancedMesh(items[0].geometry,items[0].material,items.length);
+    items.forEach((item,i)=>{inst.setMatrixAt(i,item.matrixWorld);item.parent.remove(item);});
+    inst.instanceMatrix.needsUpdate=true;inst.castShadow=true;inst.receiveShadow=true;
+    inst.userData.collision='ornamental';root.add(inst);
+  }
 }
 
-export function createPangolin() {
-  const hero = new THREE.Group(); hero.name = 'MaoMao_block_pangolin';
-  const body = pivot(hero, 0, .58, -.025, 'body');
-  // Warm square anatomy, broad clawed feet, and overlapping armor distinguish
-  // the repairer from an unadorned voxel or a smooth primitive animal doll.
-  cube(body, 0xb47e4b, 0, .02, 0, .57, .55, .65);
-  cube(body, 0xddb77c, 0, -.06, .315, .4, .39, .07);
-  const head = pivot(body, 0, .37, .235, 'head');
-  cube(head, 0xc89155, 0, .005, .015, .53, .44, .44);
-  cube(head, 0xe8c893, 0, -.08, .31, .28, .19, .29);
-  cube(head, 0x27363b, 0, -.025, .465, .135, .08, .045);
-  for (const side of [-1, 1]) {
-    cube(head, 0x9a673e, side * .24, .19, -.04, .1, .13, .1);
-    cube(head, 0xf2dcaf, side * .174, .04, .242, .12, .15, .025);
-    cube(head, 0x20353b, side * .163, .038, .259, .055, .095, .02);
-    cube(head, 0xfff8e4, side * .173 - .013, .068, .272, .026, .028, .012);
-    cube(head, 0x775236, side * .17, .15, .24, .15, .04, .04).rotation.z = -side * .12;
+const smileGeometry=tube([[-.095,-.025,.302],[-.06,-.065,.319],[0,-.075,.326],[.06,-.065,.319],[.095,-.025,.302]],.008);
+const browGeometry=tube([[-.065,0,0],[-.025,.032,0],[.025,.027,0],[.057,-.005,0]],.014);
+const capeGeometry=(()=>{
+  const s=new THREE.Shape();s.moveTo(-.23,0);s.quadraticCurveTo(0,.055,.23,0);
+  s.bezierCurveTo(.3,-.18,.47,-.46,.36,-.59);s.quadraticCurveTo(.05,-.5,-.34,-.6);
+  s.bezierCurveTo(-.47,-.47,-.3,-.18,-.23,0);
+  const g=new THREE.ExtrudeGeometry(s,{depth:.025,bevelEnabled:true,bevelSize:.018,bevelThickness:.012,bevelSegments:2,curveSegments:12});
+  const a=g.attributes.position;for(let i=0;i<a.count;i++){const y=a.getY(i),x=a.getX(i);a.setZ(i,a.getZ(i)-Math.sin(Math.min(1,Math.max(0,-y/.62))*Math.PI)*.16-x*x*.15);}
+  g.computeVertexNormals();return g;
+})();
+const capeTrim=tube([[-.34,-.6,-.025],[-.16,-.565,-.04],[.05,-.55,-.045],[.24,-.56,-.025],[.36,-.59,-.025]],.014);
+const tailGeometry=tube([[0,0,0],[.12,-.04,-.2],[.3,0,-.27],[.43,.14,-.21],[.44,.24,-.13]],.035);
+
+export function createLion(){
+  const hero=new THREE.Group();hero.name='Boom_Mane_Leo_orbit_repairer';
+  const body=group(hero,0,.53,0,'body');
+  ball(body,0xf6b52f,0,.025,0,.245,.32,.18);
+  ball(body,0xffd677,0,.025,.137,.16,.22,.06);
+  ball(body,0xffe8ad,0,.19,.13,.13,.12,.05);
+  const head=group(body,0,.4,.035,'head');
+  const mane=group(head,0,.015,-.065,'explosive_afro');
+  // A deep orange core and rear-hemisphere curls give the afro volume from
+  // behind. All added volume stays behind the face plane and clear of muzzle.
+  const maneColors=[0xe95710,0xf8750b,0xff9b12];
+  ball(mane,maneColors[0],0,.045,-.145,.375,.355,.285);
+  for(let i=0;i<16;i++){
+    const depth=(i+.5)/16,r=Math.sqrt(1-depth*depth),a=i*2.39996323;
+    const puff=ball(mane,maneColors[(i+1)%3],Math.cos(a)*r*.31,.06+Math.sin(a)*r*.3,
+      -.115-depth*.25,.135+(i%3)*.012,.145+(i%2)*.012,.15);
+    puff.rotation.z=a*.17;
   }
-  const armor = [];
-  for (let row = 0; row < 4; row++) {
-    for (let col = 0; col < 3; col++) {
-      const tile = cube(body, [0x665e47, 0x82724d, 0xa18b5d][(row + col) % 3],
-        (col - 1) * .188, .28 - row * .115, -.32 - Math.sin(row / 3 * Math.PI) * .045,
-        .205, .15, .16);
-      tile.rotation.x = -.18 + row * .12; tile.rotation.z = (1 - col) * .07;
-      armor.push(tile);
-    }
+  // Asymmetric clustered firework crown, not a shallow uniform braid ring.
+  for(let i=0;i<22;i++){
+    const a=i/22*Math.PI*2,flare=1+Math.sin(i*2.6)*.09;
+    const x=Math.cos(a)*.32*flare,y=Math.sin(a)*.305+.045;
+    const puff=ball(mane,maneColors[i%3],x,y,-.025+(i%3)*.018,.145+(i%4)*.011,.15+(i%3)*.009,.135);
+    puff.rotation.z=a*.2;
   }
-  const legs = [];
-  for (const side of [-1, 1]) {
-    for (const fore of [-1, 1]) {
-      const leg = pivot(hero, side * .225, .32, fore * .22, `leg_${side}_${fore}`);
-      cube(leg, 0xa97143, 0, -.085, 0, .155, .27, .18);
-      cube(leg, 0x3c5558, 0, -.25, .04, .205, .13, .27);
-      for (const claw of [-1, 0, 1]) cube(leg, 0xe3d6b1, claw * .055, -.267, .18, .035, .05, .08);
-      legs.push(leg);
-    }
+  for(let i=0;i<7;i++){
+    const x=(i-3)*.097,y=.27+Math.sin((i/6)*Math.PI)*.04;
+    ball(mane,maneColors[(i+1)%3],x,y,-.055,.14,.15,.14);
   }
-  const tail = pivot(hero, 0, .46, -.31, 'tail');
-  for (let i = 0; i < 5; i++) {
-    cube(tail, i % 2 ? 0x9c8556 : 0x786949, 0, -.055 * i, -.11 - i * .14,
-      .34 - i * .05, .22 - i * .025, .205);
+  batchDirect(mane);
+  ball(head,0xffc04b,0,.015,.075,.265,.265,.205);
+  // Recessed warm ears and a projecting double muzzle preserve Leo's face.
+  for(const side of [-1,1]){
+    ball(head,0xf9bc36,side*.238,.115,.067,.10,.115,.07);
+    ball(head,0x9e5b20,side*.244,.12,.125,.062,.072,.024);
+    ball(head,0xffe5a4,side*.065,-.09,.262,.102,.085,.075);
+    ball(head,0xfff5dc,side*.105,.054,.247,.079,.105,.027);
+    ball(head,0xb76b24,side*.105,.049,.274,.047,.065,.013);
+    ball(head,0x3d251b,side*.105,.05,.285,.025,.047,.009);
+    ball(head,0xffffff,side*.105-.014,.082,.294,.016,.021,.005);
+    ball(head,0xffeec2,side*.105+.012,.025,.295,.007,.009,.005);
+    const brow=mesh(head,browGeometry,0x6f3c1a,side*.105,.178,.255);
+    if(side>0)brow.scale.x=-1;
   }
-  const backpack = pivot(body, -.31, .1, -.07, 'asymmetric_tool_pack');
-  backpack.rotation.z = -.12;
-  cube(backpack, 0x315d62, -.02, 0, -.11, .2, .39, .25, { metalness: .25 });
-  cube(backpack, 0xedb961, -.13, .015, -.08, .07, .27, .17);
-  cube(backpack, 0x84d4cd, -.02, .18, .03, .15, .06, .1, { emissive: 0x275a52 });
-  cube(backpack, 0xd7caa2, -.035, .29, -.1, .045, .25, .045, { metalness: .4 });
-  const glove = pivot(body, .33, -.05, .18, 'rectangular_gravity_glove');
-  cube(glove, 0x3b666b, 0, -.045, .06, .18, .27, .22, { metalness: .35 });
-  cube(glove, 0xe8b65a, 0, -.02, .2, .26, .22, .11, { metalness: .3 });
-  cube(glove, 0x75e7da, 0, -.02, .266, .13, .105, .035, { emissive: 0x3d9e91 });
-  const fingers = [];
-  for (const side of [-1, 1]) {
-    const finger = cube(glove, 0xf1d59b, side * .155, -.02, .21, .055, .26, .1, { metalness: .2 });
-    fingers.push(finger);
+  ball(head,0xffe5a4,0,-.152,.22,.123,.055,.075);
+  ball(head,0x81421f,0,-.025,.325,.066,.039,.034);
+  mesh(head,smileGeometry,0x81421f,0,-.055,.01);
+  // Raised golden forelock with three flame-like tips.
+  for(let i=0;i<3;i++){
+    const tuft=mesh(head,sparkGeometry,i===1?0xffbd32:0xf59b1e,(i-1)*.065,.195,.13,.105,.20+i*.018,.085);
+    tuft.rotation.z=(1-i)*.3;
   }
-  cube(body, 0x294b50, 0, -.19, .333, .48, .08, .035);
-  cube(body, 0xeac36b, 0, -.19, .359, .1, .1, .035, { metalness: .4 });
-  hero.userData.parts = { body, head, legs, tail, glove, fingers, armor, backpack };
-  hero.userData.dimensions = { height: 1.25, footOrigin: true, forward: '+Z' };
+  batchDirect(head);
+  const sparks=[];
+  for(let i=0;i<6;i++){
+    const a=i/6*Math.PI*2+.15;
+    const spark=mesh(mane,sparkGeometry,0xffe27b,Math.cos(a)*.45,Math.sin(a)*.42+.06,.025,.035,.09,.035,{emissive:0x9c4f00});
+    spark.rotation.z=a-Math.PI/2;spark.userData.dynamic=true;spark.userData.basePosition=spark.position.clone();sparks.push(spark);
+  }
+  const cape=group(body,0,.23,-.17,'short_red_cape');
+  mesh(cape,capeGeometry,0xd94e25,0,0,0);mesh(cape,capeTrim,0xffcf58,0,0,0);
+  const collar=band(body,0xd75224,0,.225,0,.235,1,.82,1);collar.rotation.x=Math.PI/2;
+  ball(body,0xffd05b,0,.23,.20,.081,.081,.027,{metalness:.35});
+  ball(body,0xc47b20,0,.23,.229,.047,.047,.008,{metalness:.15});
+  ball(body,0xffe9a0,0,.23,.24,.021,.021,.006);
+  const legs=[];
+  for(const side of [-1,1]){
+    const leg=group(hero,side*.125,.31,.005,`leg_${side}`);
+    ball(leg,0xefaa2f,0,-.1,0,.095,.17,.105);
+    ball(leg,0xffd47a,0,-.245,.068,.115,.065,.15);
+    const toes=[];for(let i=-1;i<=1;i++)toes.push(ball(leg,0xffe1a0,i*.055,-.25,.168,.028,.035,.041));
+    batchDirect(leg);legs.push(leg);
+  }
+  const arms=[];
+  for(const side of [-1,1]){
+    const arm=group(body,side*.25,.12,.018,`arm_${side}`);
+    arm.rotation.z=-side*.15;
+    ball(arm,0xf3ad2d,0,-.075,.015,.09,.155,.095);
+    if(side<0)ball(arm,0xffcc61,0,-.18,.05,.1,.105,.105);
+    arms.push(arm);
+  }
+  const glove=group(arms[1],0,-.15,.035,'cyan_repair_glove');
+  soft(glove,0x2d9da9,0,0,0,.20,.18,.20,{metalness:.3});
+  soft(glove,0x6fe9dc,0,-.005,.115,.22,.19,.07,{metalness:.15});
+  ball(glove,0xc3fff0,0,0,.163,.057,.057,.018,{emissive:0x348f77});
+  const cuff=band(glove,0xffd368,0,.095,0,.105);cuff.rotation.x=Math.PI/2;
+  const tail=group(hero,0,.4,-.12,'flared_tail');mesh(tail,tailGeometry,0xeaa42f,0,0,0);
+  const tailFlare=group(tail,.44,.22,-.13,'tail_flare');tailFlare.rotation.z=-.28;
+  for(let i=0;i<3;i++){
+    const tuft=mesh(tailFlare,sparkGeometry,i%2?0xffcf43:0xf29917,(i-1)*.027,0,0,.10,.17+i*.025,.075);tuft.rotation.z=(1-i)*.3;
+  }
+  batchDirect(tailFlare);batchDirect(body);
+  hero.userData.parts={body,head,legs,arms,tail,glove,mane,cape,sparks,fingers:[],armor:[],backpack:null};
+  hero.userData.dimensions={height:1.43,decorativeSparkHeight:1.5,footOrigin:true,forward:'+Z'};
+  hero.userData.character='WeightPlay Boom Mane Leo';
   return hero;
 }
+// Internal compatibility only; the returned mesh and public identity are Leo.
+export const createPangolin=createLion;
 
-function onSurface(parent, radius, direction, name) {
-  const group = new THREE.Group(); group.name = name;
-  const normal = new THREE.Vector3(...direction).normalize();
-  group.position.copy(normal).multiplyScalar(radius);
-  group.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
-  group.userData.collision = 'decorative'; parent.add(group); return group;
+function onSurface(parent,radius,direction,name){
+  const g=new THREE.Group();g.name=name;const up=new THREE.Vector3(...direction).normalize();
+  g.position.copy(up).multiplyScalar(radius);g.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),up);
+  g.userData.collision='ornamental';parent.add(g);return g;
 }
-function createTree(parent, scale = 1) {
-  const tree = new THREE.Group(); tree.scale.setScalar(scale); parent.add(tree);
-  cube(tree, 0x786345, 0, .6, 0, .26, 1.2, .28);
-  cube(tree, 0x577f58, 0, 1.3, 0, 1.3, .65, 1.05);
-  cube(tree, 0x83a563, -.14, 1.8, -.02, .96, .5, .92);
-  cube(tree, 0xb4c886, -.19, 2.1, .06, .56, .2, .57);
-  cube(tree, 0x6d965b, .61, 1.32, .02, .46, .37, .44);
-  return tree;
+function tree(parent,scale=1){
+  const root=group(parent);root.scale.setScalar(scale);
+  mesh(root,cylinder,0xb97a45,0,.58,0,.14,1.16,.14);
+  ball(root,0x32a95f,0,1.25,0,.6,.54,.55);
+  ball(root,0x56c956,-.27,1.53,.035,.44,.39,.42);
+  ball(root,0x8ade55,.22,1.58,.015,.42,.4,.4);
+  ball(root,0xa8ec72,.03,1.82,.035,.28,.24,.28);
+  for(const [x,y,z] of [[-.45,1.4,.2],[.29,1.6,.32],[.06,1.9,.15]])ball(root,0xffce5a,x,y,z,.075);
+  return root;
 }
-function createWorkshop(parent, scale) {
-  const building = new THREE.Group(); parent.add(building); building.scale.setScalar(scale);
-  cube(building, 0xe2c693, 0, .68, 0, 1.65, 1.36, 1.35);
-  cube(building, 0x466972, 0, 1.43, -.04, 1.9, .2, 1.65);
-  cube(building, 0x557e81, 0, 1.61, -.1, 1.5, .18, 1.35);
-  cube(building, 0x344e57, -.23, .43, .69, .48, .86, .06);
-  cube(building, 0x83d8cc, .47, .85, .69, .4, .39, .045, { emissive: 0x295d55 });
-  cube(building, 0xe8b969, .47, .85, .725, .05, .4, .025);
-  cube(building, 0xeee1be, -.22, 1.06, .78, .8, .12, .35);
-  cube(building, 0x45656b, .56, 1.89, -.35, .22, .6, .23);
-  cube(building, 0xd0c6a4, .56, 2.19, -.35, .36, .12, .36);
-  return building;
+function workshop(parent,scale){
+  const root=group(parent);root.scale.setScalar(scale);
+  mesh(root,cylinder,0xffdda4,0,.65,0,.77,1.3,.67);
+  soft(root,0xffefca,0,.12,0,1.6,.24,1.45);
+  ball(root,0xec8550,0,1.26,0,.95,.35,.86);
+  ball(root,0xf1a460,0,1.48,0,.7,.2,.65);
+  soft(root,0x449ba6,-.21,.46,.655,.45,.86,.12);
+  const window=band(root,0xf7b957,.38,.79,.638,.20,1,1,.45);
+  ball(root,0x8be8e5,.38,.79,.65,.165,.165,.035,{emissive:0x245a60});
+  soft(root,0xffdf8b,-.24,.97,.71,.72,.12,.4);
+  mesh(root,cylinder,0x50b6bb,.39,1.75,-.15,.105,.65,.105);
+  ball(root,0xffe4ad,.39,2.08,-.15,.17,.09,.17);
+  return root;
 }
-
-export function createPlanet(field) {
-  const root = new THREE.Group(); root.name = `planet_${field.id || 'moss'}`;
-  const radius = Number.isFinite(field.radius) ? field.radius : 6;
-  const palette = palettes[field.theme] || palettes.moss;
-  const surface = new THREE.Mesh(sphere, material(palette.soil));
-  surface.scale.setScalar(radius); surface.receiveShadow = true;
-  surface.userData.collision = 'sphere'; surface.userData.radius = radius; root.add(surface);
-  // Flush inset panels echo ceramic workshop plating without a private terrain
-  // texture. Most of each slab stays below the collision sphere.
-  const poses = [], lightPoses = [], goldenAngle = Math.PI * (3 - Math.sqrt(5));
-  const count = radius > 8 ? 180 : 84, size = radius > 8 ? 1.65 : .96;
-  for (let i = 0; i < count; i++) {
-    const y = 1 - (i + .5) / count * 2;
-    const r = Math.sqrt(1 - y * y), a = goldenAngle * i;
-    const up = new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
-    const pose = { position: up.clone().multiplyScalar(radius - .24),
-      quaternion: new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), up),
-      scale: [size, .37, size * .92] };
-    (i % 6 === 0 ? lightPoses : poses).push(pose);
+function getPlanetGeometry(theme){
+  if(planetGeometries.has(theme))return planetGeometries.get(theme);
+  const p=palettes[theme]||palettes.moss,g=new THREE.SphereGeometry(1,96,64),colors=[];
+  const grass=new THREE.Color(p.grass),light=new THREE.Color(p.light),soil=new THREE.Color(p.soil),cream=new THREE.Color(p.trim);
+  const point=new THREE.Vector3();
+  for(let i=0;i<g.attributes.position.count;i++){
+    point.fromBufferAttribute(g.attributes.position,i);let color;
+    if(point.y>-.19){const shade=Math.min(1,Math.max(0,(point.y+.19)/1.19));color=grass.clone().lerp(light,shade*.2);}
+    else if((point.y<-.32&&point.y>-.39)||(point.y<-.7&&point.y>-.76))color=cream;
+    else color=soil.clone().lerp(cream,Math.max(0,-point.y-.8));
+    colors.push(color.r,color.g,color.b);
   }
-  instanceBoxes(root, palette.grass, poses); instanceBoxes(root, palette.light, lightPoses);
-  const ceramic = new THREE.Mesh(ring, material(palette.trim, .12));
-  ceramic.scale.setScalar(radius + .015); ceramic.rotation.x = Math.PI / 2;
-  ceramic.userData.collision = 'decorative-flush-surface'; root.add(ceramic);
-  const ornamentScale = Math.min(1.2, radius / 9);
-  for (const [i, direction] of [[0, [-.65, .55, -.5]], [1, [.72, .18, -.65]], [2, [-.3, -.85, .4]]]) {
-    createTree(onSurface(root, radius, direction, `tree_site_${i}`), ornamentScale * (i === 1 ? .8 : 1));
+  g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));planetGeometries.set(theme,g);return g;
+}
+export function createPlanet(field){
+  const root=new THREE.Group();root.name=`rounded_workshop_planet_${field.id||'moss'}`;
+  const radius=Number.isFinite(field.radius)?field.radius:6,theme=palettes[field.theme]?field.theme:'moss';
+  const key=`planet:${theme}`;if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({vertexColors:true,roughness:.84}));
+  const surface=new THREE.Mesh(getPlanetGeometry(theme),materials.get(key));surface.scale.setScalar(radius);surface.receiveShadow=true;
+  surface.userData.collision='sphere';surface.userData.radius=radius;root.add(surface);
+  const scale=Math.min(1.2,radius/8.5);
+  for(const [i,d] of [[0,[-.65,.55,-.5]],[1,[.72,.18,-.65]],[2,[-.3,-.85,.4]]])tree(onSurface(root,radius,d,`ornamental_tree_${i}`),scale*(i===1?.8:1));
+  workshop(onSurface(root,radius,[.55,-.35,.76],'ornamental_workshop'),Math.min(1,radius/7.5));
+  // Tiny flowers never resemble an alternate solid landing surface. Their
+  // deterministic positions deliberately avoid the main x=0 training meridian.
+  const flowerColors=[0xffe6a0,0xff95ad,0xa9e6ff];
+  for(let i=0;i<18;i++){
+    const a=i*2.39996323,y=.12+(i%7)/8,rad=Math.sqrt(1-y*y),normal=[Math.cos(a)*rad,y,Math.sin(a)*rad];
+    if(Math.abs(normal[0])<.14)continue;
+    const flower=onSurface(root,radius,normal,`ornamental_flower_${i}`);flower.scale.setScalar(Math.min(1,radius/8));
+    const c=flowerColors[i%3];
+    for(let j=0;j<4;j++){const r=j*Math.PI/2;mesh(flower,flowerSphere,c,Math.cos(r)*.065,.07,Math.sin(r)*.065,.061,.035,.061);}
+    mesh(flower,flowerSphere,0xffc95a,0,.1,0,.045,.035,.045);
   }
-  createWorkshop(onSurface(root, radius, [.55, -.35, .76], 'exit_workshop'), Math.min(1, radius / 8));
-  root.userData.surfaceRadius = radius;
-  root.userData.collisionContract = 'Sphere is solid; inset plates, ring, and scenery are decorative. Add authored blockers before accepting scenery collision QA.';
+  batchScenery(root);
+  root.userData.surfaceRadius=radius;
+  root.userData.collisionContract='Exact-radius sphere is solid. Trees, workshop, flowers and color bands are ornamental; none claim extra solid ground.';
   return root;
 }
 
-export function makeAnchor() {
-  const root = new THREE.Group(); root.name = 'forked_diamond_anchor';
-  cube(root, 0x345960, 0, .1, 0, 1, .2, .95, { metalness: .35 });
-  cube(root, 0xf1cf84, 0, .24, 0, .64, .08, .64, { metalness: .35 });
-  const gate = pivot(root, 0, 1.08, 0, 'diamond_gate');
-  for (const side of [-1, 1]) {
-    for (const half of [-1, 1]) {
-      const arm = cube(gate, 0x66dfcf, side * .27, half * .27, 0, .12, .73, .15, { metalness: .2, emissive: 0x20665c });
-      arm.rotation.z = -side * half * Math.PI / 4;
-    }
-    const prong = cube(root, 0x42737a, side * .55, .63, 0, .12, .9, .2, { metalness: .4 });
-    prong.rotation.z = -side * .15;
+export function makeAnchor(){
+  const root=new THREE.Group();root.name='curved_fork_diamond_anchor';
+  soft(root,0x388fa1,0,.1,0,1,.2,.95,{metalness:.25});
+  soft(root,0xffe2a1,0,.24,0,.64,.08,.64,{metalness:.2});
+  const gate=group(root,0,1.08,0,'diamond_gate');
+  for(const side of [-1,1])for(const half of [-1,1]){
+    const arm=soft(gate,0x6df4d6,side*.27,half*.27,0,.12,.73,.15,{emissive:0x247964});arm.rotation.z=-side*half*Math.PI/4;
   }
-  const core = cube(gate, 0xf9e0a1, 0, 0, 0, .17, .17, .22, { emissive: 0x8c6a24 });
-  core.rotation.z = Math.PI / 4;
-  root.userData.parts = { gate, core }; return root;
-}
-
-export function makeTerminal() {
-  const root = new THREE.Group(); root.name = 'repair_terminal';
-  cube(root, 0x354e54, 0, .1, 0, .7, .2, .7, { metalness: .35 });
-  cube(root, 0x537c7a, 0, .54, 0, .38, .8, .38, { metalness: .25 });
-  const console = pivot(root, 0, .96, .03, 'console'); console.rotation.x = -.25;
-  cube(console, 0xe7c485, 0, 0, 0, .76, .14, .5, { metalness: .25 });
-  const display = cube(console, 0x69d7c9, 0, .085, -.06, .51, .035, .2, { emissive: 0x265e54 });
-  for (const side of [-1, 1]) cube(console, side < 0 ? 0xf7ddb2 : 0xf1a45c,
-    side * .18, .09, .145, .13, .05, .09);
-  root.userData.parts = { console, display }; return root;
-}
-
-export function makeCheckpoint() {
-  const root = new THREE.Group(); root.name = 'safe_checkpoint';
-  for (const side of [-1, 1]) {
-    cube(root, 0x7ed5bd, side * .45, .035, 0, .09, .07, 1.1, { emissive: 0x194c3d });
-    cube(root, 0x7ed5bd, 0, .035, side * .5, .9, .07, .09, { emissive: 0x194c3d });
+  for(const side of [-1,1]){
+    const path=tube([[side*.43,.25,0],[side*.59,.6,0],[side*.55,.95,0]],.055);
+    mesh(root,path,0xffd069,0,0,0);
   }
-  cube(root, 0x3d5d60, -.4, .56, -.35, .1, 1.1, .12, { metalness: .3 });
-  const flag = cube(root, 0xf2d18c, -.16, 1.02, -.35, .48, .26, .065);
-  cube(root, 0x70c9b3, -.16, 1.02, -.309, .12, .12, .03, { emissive: 0x225a49 });
-  root.userData.parts = { flag }; return root;
+  const core=ball(gate,0xffecac,0,0,0,.12,.12,.12,{emissive:0x886326});
+  batchDirect(gate);root.userData.parts={gate,core};return root;
 }
-
-export function makeArchive() {
-  const root = new THREE.Group(); root.name = 'repair_archive';
-  const record = pivot(root, 0, .85, 0, 'archive_record');
-  cube(record, 0x366678, 0, 0, 0, .44, .56, .13, { metalness: .25 });
-  cube(record, 0xf2d58f, -.19, 0, .01, .07, .61, .18, { metalness: .3 });
-  cube(record, 0xf2d58f, .17, .22, .035, .16, .09, .17, { metalness: .3 });
-  for (let i = 0; i < 3; i++) cube(record, 0xa4eee0, .025, .12 - i * .12, .082,
-    .23 - i * .035, .035, .035, { emissive: 0x3e756b });
-  root.userData.parts = { record }; return root;
+export function makeTerminal(){
+  const root=new THREE.Group();root.name='rounded_repair_terminal';
+  soft(root,0x318fa1,0,.1,0,.7,.2,.7,{metalness:.25});
+  mesh(root,cylinder,0x56b9b4,0,.54,0,.21,.8,.21,{metalness:.15});
+  const console=group(root,0,.96,.03,'console');console.rotation.x=-.25;
+  soft(console,0xffd589,0,0,0,.76,.14,.5,{metalness:.15});
+  const display=soft(console,0x65e5d2,0,.085,-.06,.51,.035,.2,{emissive:0x326d5e});
+  for(const side of [-1,1])ball(console,side<0?0xfff1c8:0xf4a46c,side*.18,.09,.145,.07,.035,.055);
+  root.userData.parts={console,display};return root;
 }
-
-export function makeBridge(options = {}) {
-  if (typeof options === 'number') options = { length: options };
-  const length = options.length || 4, width = options.width || 2.2;
-  const root = new THREE.Group(); root.name = 'ceramic_rail_bridge';
-  // Top of deck is local y=0; length follows local Z. The parent supplies the
-  // matching physical platform and moves that same platform with this Group.
-  cube(root, 0xb1b999, 0, -.14, 0, width, .28, length, { collision: 'authored-platform' });
-  for (const side of [-1, 1]) {
-    cube(root, 0x355d63, side * (width / 2 - .055), .08, 0, .11, .16, length, { metalness: .3 });
-    cube(root, 0x8de0c9, side * (width / 2 - .17), .012, 0, .06, .025, length - .12, { emissive: 0x285e4c });
-  }
-  for (let z = -length / 2 + .35; z < length / 2; z += .7) {
-    cube(root, 0xe3d5b2, 0, .012, z, width - .42, .025, .045);
-  }
-  root.userData.collision = { type: 'box', halfExtents: [width / 2, .14, length / 2], offset: [0, -.14, 0] };
-  return root;
+export function makeCheckpoint(){
+  const root=new THREE.Group();root.name='rounded_safe_checkpoint';
+  const perimeter=band(root,0x77ebc4,0,.035,0,.54);perimeter.rotation.x=Math.PI/2;perimeter.scale.z=.7;
+  mesh(root,cylinder,0x3f97a3,-.4,.56,-.35,.045,1.1,.045,{metalness:.2});
+  const flag=soft(root,0xffd77d,-.16,1.02,-.35,.48,.26,.065);
+  ball(root,0x6bdcc2,-.16,1.02,-.303,.068,.068,.02,{emissive:0x2d6d52});
+  root.userData.parts={flag};return root;
 }
-
-export function createDrone() {
-  const root = new THREE.Group(); root.name = 'KouKou_three_leaf_tool_drone';
-  cube(root, 0xe4c58c, 0, 0, 0, .28, .2, .28, { metalness: .25 });
-  cube(root, 0x4ebdaf, 0, .12, 0, .14, .05, .14, { emissive: 0x20564e });
-  cube(root, 0x254c54, 0, -.015, .16, .17, .08, .045);
-  cube(root, 0xa5eee0, 0, -.015, .19, .1, .035, .02, { emissive: 0x346b62 });
-  const rotor = pivot(root, 0, .02, 0, 'tool_leaves');
-  for (let i = 0; i < 3; i++) {
-    const leaf = pivot(rotor, 0, 0, 0, `tool_leaf_${i}`); leaf.rotation.y = i * Math.PI * 2 / 3;
-    cube(leaf, 0x3f7277, 0, 0, -.26, .12, .09, .35, { metalness: .35 });
-    cube(leaf, 0xe6cf99, 0, 0, -.44, .25, .1, .14, { metalness: .35 });
-    cube(leaf, 0x7be0c9, 0, .065, -.42, .12, .025, .07, { emissive: 0x2d6d5c });
+export function makeArchive(){
+  const root=new THREE.Group();root.name='rounded_repair_archive';
+  const record=group(root,0,.85,0,'archive_record');
+  soft(record,0x308ab5,0,0,0,.44,.56,.13,{metalness:.2});
+  soft(record,0xffd882,-.19,0,.01,.07,.61,.18,{metalness:.25});
+  soft(record,0xffd882,.17,.22,.035,.16,.09,.17,{metalness:.25});
+  for(let i=0;i<3;i++)soft(record,0xc3fff0,.025,.12-i*.12,.082,.23-i*.035,.035,.035,{emissive:0x3c7562});
+  batchDirect(record);root.userData.parts={record};return root;
+}
+export function makeBridge(options={}){
+  if(typeof options==='number')options={length:options};
+  const length=options.length||4,width=options.width||2.2,root=new THREE.Group();root.name='rounded_ceramic_bridge';
+  // Exact unchanged collision contract: top y=0, long axis Z.
+  soft(root,0xffe4af,0,-.14,0,width,.28,length,{collision:'authored-platform'});
+  for(const side of [-1,1]){
+    soft(root,0x459faa,side*(width/2-.055),.08,0,.11,.16,length,{metalness:.2});
+    soft(root,0x8bffd3,side*(width/2-.17),.012,0,.06,.025,length-.12,{emissive:0x2c7151});
   }
-  root.userData.parts = { rotor }; return root;
+  for(let z=-length/2+.35;z<length/2;z+=.7)soft(root,0xe9bb76,0,.012,z,width-.42,.025,.045);
+  batchDirect(root);root.userData.collision={type:'box',halfExtents:[width/2,.14,length/2],offset:[0,-.14,0]};return root;
+}
+export function createDrone(){
+  const root=new THREE.Group();root.name='KouKou_rounded_three_leaf_tool_drone';
+  ball(root,0xffd693,0,0,0,.17,.12,.17);
+  ball(root,0x64e5d0,0,.12,0,.083,.035,.083,{emissive:0x255d4d});
+  soft(root,0x2b7292,0,-.015,.16,.17,.08,.045);
+  ball(root,0xccfff2,0,-.015,.19,.055,.022,.012,{emissive:0x396e60});
+  const rotor=group(root,0,.02,0,'tool_leaves');
+  for(let i=0;i<3;i++){
+    const leaf=group(rotor);leaf.rotation.y=i*Math.PI*2/3;
+    soft(leaf,0x4ca9b6,0,0,-.26,.12,.09,.35,{metalness:.25});
+    ball(leaf,0xffd994,0,0,-.44,.13,.055,.085,{metalness:.2});
+    ball(leaf,0x8df3d2,0,.065,-.42,.065,.018,.045,{emissive:0x34715b});
+  }
+  root.userData.parts={rotor};return root;
 }

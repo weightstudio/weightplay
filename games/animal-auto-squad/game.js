@@ -20,7 +20,7 @@
   document.body.dataset.wpCombinedSound = "true";
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v42";
+  const GAME_VERSION = "v43";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -5945,7 +5945,7 @@
   let battleDecisionObserver = null;
 
   function setCoveredBattleChild(child, panel, active) {
-    if (!(child instanceof HTMLElement) || child === panel) return;
+    if (!(child instanceof HTMLElement) || child === panel || child.contains(panel)) return;
     child.inert = active;
     if (active) child.setAttribute("aria-hidden", "true");
     else child.removeAttribute("aria-hidden");
@@ -5954,9 +5954,14 @@
   function setBattleDecisionOwnership(panel, active) {
     battleDecisionObserver?.disconnect();
     battleDecisionObserver = null;
-    [...nodes.gamePanel.children].forEach((child) => {
-      setCoveredBattleChild(child, panel, active);
-    });
+    // I9 nests decision panels inside the play-content wrapper. Cover the
+    // siblings at each level without making the dialog's ancestors inert.
+    const owners = [];
+    for (let owner = panel.parentElement; owner && nodes.gamePanel.contains(owner); owner = owner.parentElement) {
+      owners.push(owner);
+      [...owner.children].forEach((child) => setCoveredBattleChild(child, panel, active));
+      if (owner === nodes.gamePanel) break;
+    }
     if (!active) return;
 
     battleDecisionObserver = new MutationObserver((records) => {
@@ -5964,7 +5969,7 @@
         record.addedNodes.forEach((child) => setCoveredBattleChild(child, panel, true));
       });
     });
-    battleDecisionObserver.observe(nodes.gamePanel, { childList: true });
+    owners.forEach((owner) => battleDecisionObserver.observe(owner, { childList: true }));
   }
 
   function trapBattleDecisionFocus(panel, event) {
