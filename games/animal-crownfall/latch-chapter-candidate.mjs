@@ -104,4 +104,18 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun',boss:true,next:{x:0,y:8,power:120,shield:'moon'}}],required:['weak','last'],
   items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:8},{id:'rune',kind:'rune',x:4,y:4,link:'sun'},{id:'seal1',kind:'seal',x:3,y:0,link:'1'},{id:'seal2',kind:'seal',x:5,y:0,link:'2'},{id:'boost',kind:'power',x:0,y:4,amount:24},{id:'moonRune',kind:'rune',x:4,y:8,link:'moon'}],sealOrder:['1','2'],
   latches:[{id:'sun',lock:[0,1],key:[5,1]},{id:'moon',lock:[0,3],key:[5,3]}]
+},{
+  id:46,name:'Three seals in order',
+  decision:'Open the key support before the lock and collect all three seals in order while planning the arithmetic route.',
+  board:['.......','AAA.BCC','.......','BB.CCCA','.......','CCCAAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'},{id:'seal3',kind:'seal',x:3,y:4,link:'3'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[0,1],key:[0,3]}]
+},{
+  id:47,name:'Three seals, two pairs',
+  decision:'Release both matched support pairs while preserving the three-seal order and the arithmetic route.',
+  board:['.......','AA.BCCC','.......','BB.CCCA','.......','CCCAAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'},{id:'seal3',kind:'seal',x:3,y:4,link:'3'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[0,1],key:[3,1]},{id:'moon',lock:[4,1],key:[0,3]}]
 }];

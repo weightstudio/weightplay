@@ -9,13 +9,12 @@ export async function mountBeaconPractice({localPractice,enable,start,halt,host=
   let ok;
   try {ok=await localPractice.register({
     gameId:'animal-crystal-survivor',
-    // Only the actual first playable slice may be offered; the other candidate
-    // labels are not implementations and must never produce empty stage cards.
-    acceptStage:id=>id==='31',
+    // Register only implemented slices; 33–60 are still design candidates.
+    acceptStage:id=>id==='31'||id==='32',
     enable:value=>{if(!value)revoke();else if(!closed)enable(true)},
     // The engine must check isActive again after every await before exposing
     // or resuming a round; the bridge cannot cancel an arbitrary engine await.
-    startStage:async id=>{if(closed||id!=='31')return false;const result=await start(31,()=>!closed&&localPractice.dynamicEnabled===true);if(closed){halt();return false}return result},
+    startStage:async id=>{if(closed||(id!=='31'&&id!=='32'))return false;const result=await start(Number(id),()=>!closed&&localPractice.dynamicEnabled===true);if(closed){halt();return false}return result},
   })}catch{revoke();return {ok:false,close:revoke}}
   if(!ok||closed||localPractice.dynamicEnabled!==true){revoke();return {ok:false,close:revoke}}
   try {timer=host.setInterval(async()=>{

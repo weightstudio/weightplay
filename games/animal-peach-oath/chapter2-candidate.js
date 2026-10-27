@@ -60,7 +60,7 @@ function chapterTwoWave(stage,wave,C,makeUnit){
  const plan=chapterTwoDesign(stage);if(!plan)return null;
  if(!C||!Array.isArray(C.enemies)||typeof makeUnit!=='function'||!Number.isInteger(wave)||wave<1||wave>5)throw TypeError('INVALID_WAVE_ADAPTER_INPUT');
  const byId=id=>{const unit=C.enemies.find(x=>x.id===id);if(!unit)throw Error(`MISSING_EXISTING_VISUAL:${id}`);return unit};
- if(wave===5){const original=byId('buffalo');const data=plan.boss==='buffalo'?original:{...original,id:plan.boss,visualId:['stone-bastion','red-lantern','thunder-signal','twin-seal'].includes(plan.boss)?plan.boss:'buffalo',name:plan.boss,boss:true};return [makeUnit(data,'enemy',0)];}
+ if(wave===5){const original=byId('buffalo');const data=plan.boss==='buffalo'?original:{...original,id:plan.boss,visualId:['stone-bastion','red-lantern','thunder-signal','twin-seal','crossroads','oathmaster'].includes(plan.boss)?plan.boss:'buffalo',name:plan.boss,boss:true};return [makeUnit(data,'enemy',0)];}
  return plan.waves[wave-1].map((role,index)=>chapterTwoActor(role,C,makeUnit,index));
 }
 // Isolated Chapter 2 combat experiment. No gameplay entry imports this module.

@@ -120,6 +120,18 @@ export function createRenderer(container, onContextLost = () => {}) {
       const rule=stage.route[i], start=stage.distance*i/stage.route.length, length=stage.distance/stage.route.length;
       const color=rule==='slow'?0x65a7b7:rule==='fast'||rule==='headfast'?0xf0b85a:rule==='bridge'?0x5c9ca2:rule.startsWith('fork')?0x8a78ad:0x9b9074;
       const surface=box(markers,6.8,.04,Math.max(.2,length-.12),0,.03,start+length/2,color); const marker={surface,rule,leftLane:null,rightLane:null};markerMeshes.push(marker);
+      // Repeated inlays distinguish surfaces at a glance without covering the live bridge light.
+      if(rule==='bridge') {
+        for(const x of [-3.16,3.16])box(markers,.16,.1,Math.max(.2,length-.35),x,.10,start+length/2,0xd4b576);
+        for(let k=1;k<=4;k++)box(markers,5.95,.025,.10,0,.07,start+length*k/5,0xb8dfcc);
+      }
+      if(rule==='slow'||rule==='fast'||rule==='headfast') {
+        const inlay=rule==='slow'?0xc0e2df:0xffe5a4;
+        for(let k=1;k<=3;k++) {
+          if(rule==='slow')for(const x of [-1.15,1.15])box(markers,1.35,.025,.12,x,.07,start+length*k/4,inlay);
+          else box(markers,3.3,.025,.12,0,.07,start+length*k/4,inlay);
+        }
+      }
       if(rule==='headwind'||rule==='headfast'||rule==='tailwind')windFlag(markers,3.55,start+2,rule!=='tailwind');
       if(rule==='forkwindbridge')windFlag(markers,-1.7,start+2,true);
       if(rule==='forkmaster')windFlag(markers,1.7,start+2,true);

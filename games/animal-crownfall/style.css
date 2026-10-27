@@ -174,3 +174,16 @@ body[data-screen="stage"] .wp-tutorial-button{display:none}
 /* Distinguish the two practice-only phase runes at overview scale. */
 .actor-tag.item.phase-rune{font-size:14px;line-height:1.15}
 .actor-tag.enemy.phase-shield{font-size:14px;line-height:1.15}
+/* Keep the practice badge and progress readable without a horizontal scrollbar. */
+body[data-crown-latch-practice="true"] #side{grid-template-rows:60px 16px 34px}
+body[data-crown-latch-practice="true"] #objective{max-height:60px}
+body[data-crown-latch-practice="true"] #feedback{max-height:16px;line-height:16px}
+body[data-crown-latch-practice="true"] #legend{white-space:normal;overflow-wrap:anywhere;overflow:hidden}
+@media(min-aspect-ratio:1.45){
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice[hidden]){grid-template-rows:minmax(0,1fr) 94px 124px 0 48px}
+  body[data-crown-latch-practice="true"] #side{height:124px;grid-template-rows:60px 32px 32px}
+  body[data-crown-latch-practice="true"] #feedback{max-height:32px;line-height:16px;white-space:normal;overflow-wrap:anywhere;overflow:hidden}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 94px 120px 48px 48px}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #side{height:120px;grid-template-rows:56px 32px 32px}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #objective{max-height:56px}
+}

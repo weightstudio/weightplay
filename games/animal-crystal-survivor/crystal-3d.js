@@ -689,7 +689,12 @@ export class Crystal3D {
       cue.children[0].material = enemy.chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
       cue.children[0].scale.setScalar(enemy.size / UNIT * .7);
       cue.children[1].visible = Boolean(enemy.chargeAim);
-      const chargeLength = enemy.isBoss ? 6 : 3.2;
+      // The new practice charger uses a broad, longer ground lane; all legacy
+      // enemies retain their existing cue. Its length follows the actual dash.
+      const chapterCharger=state.stage===32&&enemy.beaconCarrier;
+      const chargeLength = enemy.isBoss ? 6 : chapterCharger ? 4.75 : 3.2;
+      cue.children[1].material=chapterCharger?this.warning:this.groundGlow;
+      cue.children[1].scale.x=chapterCharger ? .45 : .18;
       cue.children[1].scale.z = chargeLength;
       cue.children[1].position.z = chargeLength / 2;
       cue.rotation.y = enemy.chargeAim ? Math.atan2(enemy.chargeAim.x, enemy.chargeAim.y) : 0;

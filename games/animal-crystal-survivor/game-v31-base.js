@@ -21,6 +21,14 @@
     window.WeightPlayGameEntryLoader?.fail(undefined, () => location.reload());
     return;
   }
+  // Requested localhost practice must never persist or report rewards while
+  // authorization and the Stage 31 adapter are being established. The public
+  // game and ordinary local routes do not enter this branch.
+  const __crystalPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let __crystalPracticeActive=false;
+  let __crystalPracticeIsActive=()=>false;
+  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalFragmentMesh=null;
+  const __crystalPracticeText=()=>__crystalBeaconCopy.beaconCopy(window.WonderI18n?.actualLocale?.()||locale);
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -29,7 +37,7 @@
     paused: Boolean(state?.paused || state?.suspended || sharedSettingsPaused || state?.mode === "paused"), node: nodes.gamePanel,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(__crystalPracticeRequested)return; try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -49,7 +57,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v50";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20261011-crystal-head-health-v45", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20261028-beacon-charger1", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -83,6 +91,7 @@
     upgradeReady = false;
     upgradePointerChoice = null;
     rendererRequest += 1;
+    __crystalBeaconMesh?.dispose();__crystalBeaconMesh=null;__crystalFragmentMesh?.dispose();__crystalFragmentMesh=null;
     crystal3D?.dispose();
     crystal3D = null;
     (__wpNotifyMeasurement(), rendererDialog?.remove());
@@ -176,7 +185,7 @@
   const MAX_BACKING_PIXELS = 900000;
   const MIN_BACKING_SCALE = 0.25;
   const RUN_SECONDS = 180;
-  const STAGE_COUNT = 30;
+  let STAGE_COUNT = 30;
   const crystalCharmCost = 12;
   const combatBalance = Object.freeze({
     playerHp: 100,
@@ -857,6 +866,11 @@
     bossTempest: "../../assets/animal-crystal-survivor-boss-tempest-roc.webp",
     bossEclipse: "../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp",
   };
+  if(__crystalPracticeRequested)Object.assign(assetPaths,{
+    beaconLamp:'/assets/animal-crystal-survivor-expansion-drafts/lamp-v1-256.png',
+    beaconStation:'/assets/animal-crystal-survivor-expansion-drafts/beacon-v1-256.png',
+    beaconFragment:'/assets/animal-crystal-survivor-expansion-drafts/fragment-v1-256.png',
+  });
 
   Object.entries({
     en: ["Chain lightning", "Every 3 hits: lightning jumps to 1–3 nearby enemies. Automatic; ranks add jumps.", "Frost crystal", "Hits slow enemies by 40% (bosses 15%). Ranks extend the chill. Automatic.", "Crystal burst", "Every 4 hits: an area blast. Ranks increase damage and radius; chilled targets trigger stronger shatter. Automatic."],
@@ -1172,12 +1186,14 @@
   let resultStageCleared = false;
   let runBlockRewardCredited = false;
   const renderResultBlockReward = () => {
+    if(__crystalPracticeRequested)return;
     const icon = window.ShowResultGet?.(GAME_ID, resultStageCleared && runBlockRewardCredited);
     if (icon) queueMicrotask(() => {
       if (icon.isConnected && state.mode === 'result') window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
     });
   };
   window.addEventListener('weightplay:castle-reward', event => {
+    if(__crystalPracticeRequested)return;
     if (event.detail?.gameId !== GAME_ID || event.detail?.completionId !== `stage-${state.stage}`
         || !['running', 'ending', 'result'].includes(state.mode)) return;
     runBlockRewardCredited = true;
@@ -1200,6 +1216,7 @@
   }
 
   function track(eventName, details = {}) {
+    if(__crystalPracticeRequested)return undefined;
     try {
       return window.WonderAnalytics?.track?.(eventName, {
         game_id: GAME_ID,
@@ -1269,6 +1286,7 @@
   }
 
   function writeStorage(key, value) {
+    if(__crystalPracticeRequested)return false;
     try {
       localStorage.setItem(key, value);
       return true;
@@ -1502,6 +1520,7 @@
   }
 
   function objectiveComplete() {
+    if(__crystalPracticeRequested&&state.beaconRound)return state.timeLeft<=0&&state.beaconRound.completed===1;
     return state.stageConfig.mode === "waves" ? state.waveCleared >= state.stageConfig.waveGoal
       : state.stageConfig.mode === "boss" ? state.bossDefeated : state.timeLeft <= 0;
   }
@@ -1759,6 +1778,7 @@
   }
 
   function buyCrystalCharm() {
+    if(__crystalPracticeRequested)return;
     if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("animal-crystal-survivor:game-v31-base.js:buyCrystalCharm", () => buyCrystalCharm(...arguments));
 
     if (save.crystalCharm) {
@@ -1803,6 +1823,17 @@
     const resultOpen = panel === nodes.resultPanel;
     if (resultOpen) nodes.gamePanel.classList.remove("hidden");
     panel.classList.remove("hidden");
+    if (__crystalPracticeRequested) {
+      const badge = document.querySelector('[data-wp-local-practice]');
+      const objective = document.querySelector('.battle-objective');
+      if (badge && objective && panel === nodes.gamePanel) {
+        objective.prepend(badge);
+        badge.style.cssText = 'position:static;float:inline-end;transform:none;background:#17243a;color:#f5c84c;padding:2px 5px;margin-inline-start:6px;font:10px monospace;pointer-events:none;white-space:nowrap';
+      } else if (badge) {
+        document.body.append(badge);
+        badge.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:10000;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';
+      }
+    }
     const battleLive = $("battleLive");
     battleLive.inert = resultOpen;
     if (resultOpen) battleLive.setAttribute("aria-hidden", "true");
@@ -1979,6 +2010,7 @@
     const config = window.DungeonVentureStageConfig({
       stages, save: () => save, text: t, stageName, stageRule, enemyLesson, modeObjective,
       regionName(item) {
+        if(__crystalPracticeRequested&&item.number>=31&&item.number<=32&&__crystalBeaconCopy)return __crystalBeaconCopy.beaconStageCopy(window.WonderI18n?.actualLocale?.()||locale,item.number)[0];
         const region = regions[item.region];
         return localeRegionNames[locale]?.[item.region] || (locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : locale === "ar" ? region.ar : region.en);
       },
@@ -2004,6 +2036,7 @@
   }
 
   async function startRun(entry = "stage_select") {
+    if(__crystalPracticeRequested&&(!__crystalPracticeActive||!__crystalPracticeIsActive()))return false;
     runBlockRewardCredited = false;
     releaseRenderer();
     const request = rendererRequest;
@@ -2019,6 +2052,7 @@
         new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error("3D load timeout")), 12000); }),
       ]);
       if (request !== rendererRequest) return;
+      if(__crystalPracticeRequested&&(!__crystalPracticeActive||!__crystalPracticeIsActive()))return false;
       crystal3D = new module.Crystal3D({ onContextLost: showRendererFailure, floorImage: images.arena });
     } catch (error) {
       if (request === rendererRequest) showRendererFailure();
@@ -2034,6 +2068,13 @@
     state = makeState();
     state.stage = save.selectedStage;
     state.stageConfig = stages[state.stage - 1];
+    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=32&&__crystalBeaconModel){
+      state.beaconRound=__crystalBeaconModel.makeBeaconRound(state.stage);state.beaconDrop=null;
+      __crystalBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);
+      crystal3D.scene.add(__crystalBeaconMesh.group);
+      __crystalFragmentMesh=__crystalBeaconArt.makeBeaconFragmentArt(__crystalBeaconThree);
+      crystal3D.scene.add(__crystalFragmentMesh.group);
+    }
     state.mode = "running";
     battleSuspended = Boolean(document.hidden);
     save.playCount += 1;
@@ -2064,6 +2105,7 @@
     scheduleLoop();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = entry === "retry"; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    return true;
 }
 
   function loop(now, token = runToken) {
@@ -2101,11 +2143,24 @@
     updateEnemies(dt);
     updateShots(dt);
     updateDrops();
+    updateBeaconPractice(dt);
     updateFloaters(dt);
     renderHud();
     if (state.player.hp <= 0) endRun("fail");
     else if (objectiveComplete()) endRun("complete");
     else if (state.timeLeft <= 0) endRun("time");
+  }
+
+  function updateBeaconPractice(dt){
+    if(!state.beaconRound||!__crystalBeaconModel)return;
+    const station=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0],player=state.player;
+    const pickup=Boolean(state.beaconDrop&&Math.hypot(state.beaconDrop.x-player.x,state.beaconDrop.y-player.y)<=player.pickup);
+    if(pickup)state.beaconDrop=null;
+    const nearBeacon=Math.hypot(station.x-player.x,station.y-player.y)<=95?station.id:null;
+    const step=__crystalBeaconModel.stepBeaconRound(state.beaconRound,{dt,pickup,nearBeacon});state.beaconRound=step.state;
+    if(step.events.includes('charge-expired'))state.beaconLossUntil=performance.now()+2500;
+    // The current objective persists in the Battle HUD. Floating text here
+    // covered the player's health at exactly the moment of activation.
   }
 
   function addHazard(kind, options = {}) {
@@ -2350,7 +2405,7 @@
     }
     state.spawnTimer -= dt;
     if (state.spawnTimer > 0) return;
-    if (state.enemies.length >= 18) {
+    if (state.enemies.length >= (state.beaconRound&&!state.beaconRound.completed?5:18)) {
       state.spawnTimer = 0.6;
       return;
     }
@@ -2367,6 +2422,7 @@
     if (state.stage >= 3 && state.spawnCount % (state.stage >= 11 ? 4 : 5) === 1 && state.enemies.filter(e => e.role === "archer").length < Math.min(5, 1 + Math.floor(state.stage / 5))) {
       type = "archer"; role = "archer";
     } else if (state.stage >= 4 && state.spawnCount % 6 === 3) { type = "runner"; role = "charger"; }
+    if(state.beaconRound&&!state.beaconRound.completed){type='basic';role='melee'}
     const edge = Math.floor(Math.random() * 4);
     const pos = randomPoint(0);
     if (edge === 0) pos.y = -54;
@@ -2384,7 +2440,10 @@
         pos.y = state.player.y + inwardY / distance * 450;
       }
     }
-    const stageHp = 1 + Math.min(1.2, (state.stage - 1) * .04);
+    const needsCarrier=Boolean(state.beaconRound&&!state.beaconRound.completed&&!state.beaconRound.charge&&!state.beaconDrop&&!state.enemies.some(enemy=>enemy.beaconCarrier));
+    if(needsCarrier){pos.x=Math.max(60,Math.min(W-60,state.player.x+(state.stage===32?360:240)));pos.y=Math.max(60,Math.min(H-60,state.player.y-(state.stage===32?180:80)));}
+    if(needsCarrier&&state.stage===32){type='runner';role='charger';}
+    const stageHp = state.beaconRound&&!state.beaconRound.completed ? 1 : 1 + Math.min(1.2, (state.stage - 1) * .04);
     const stats = {
       basic: { hp: combatBalance.enemy.basic.hp, speed: 112, size: 62, damage: combatBalance.enemy.basic.damage, image: "basic" },
       runner: { hp: combatBalance.enemy.runner.hp, speed: 162, size: 58, damage: combatBalance.enemy.runner.damage, image: "runner" },
@@ -2392,12 +2451,13 @@
       archer: { hp: combatBalance.enemy.archer.hp, speed: 100, size: 64, damage: combatBalance.enemy.archer.damage, image: "archer" },
     }[type];
     state.spawnCount += 1;
-    const hp = Math.round(stats.hp * stageHp);
+    const hp = needsCarrier&&state.stage===32 ? 60 : Math.round(stats.hp * stageHp);
     const shielded = ["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0;
-    const stageDamage = state.stage === 1 ? .8 : 1 + config.region * .08 + (state.stage - 1) % 5 * .015;
+    const stageDamage = state.beaconRound&&!state.beaconRound.completed ? 1 : state.stage === 1 ? .8 : 1 + config.region * .08 + (state.stage - 1) % 5 * .015;
     const damage = integerDamage(stats.damage * stageDamage);
     stats.speed*=1+Math.min(.22,(state.stage-1)*.008);
-    state.enemies.push({ ...pos, ...stats, role, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 18 + config.region * 5 : 0, chargeTimer: Math.random() * 2 + 1.2, shotTimer: 1.2 });
+    const beaconCarrier=needsCarrier;
+    state.enemies.push({ ...pos, ...stats, role, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 18 + config.region * 5 : 0, chargeTimer: needsCarrier&&state.stage===32?1:Math.random() * 2 + 1.2, shotTimer: 1.2, ...(beaconCarrier?{beaconCarrier:true}:{}) });
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
     if (config.mode === "waves") { state.waveRemaining -= 1; state.spawnTimer = .85; }
     if (config.mode === "boss") state.spawnTimer = 4.5;
@@ -2495,7 +2555,9 @@
     const before=p.hp;
     p.hp=Math.max(0,p.hp-integerDamage(damage));
     if(p.hp<=0&&p.talents.phoenix&&!p.phoenixUsed){p.phoenixUsed=true;p.reviveGrace=1.2;p.hp=combatBalance.reviveHp[p.talents.phoenix];runePulse(p.x,p.y,220,1.2);}
-    return Math.max(0,before-p.hp);
+    const received=Math.max(0,before-p.hp);
+    if(received&&state.beaconRound){const step=__crystalBeaconModel.stepBeaconRound(state.beaconRound,{damaged:true});state.beaconRound=step.state;if(step.events.includes('charge-lost'))state.beaconLossUntil=performance.now()+2500;}
+    return received;
   }
   function updateAdvancedTalents(dt){
     const p=state.player;p.surgeTimer=Math.max(0,p.surgeTimer-dt);p.reviveGrace=Math.max(0,(p.reviveGrace||0)-dt);
@@ -2618,6 +2680,7 @@
     addSpark(enemy.x, enemy.y, "#f5e6c6", { kind: "voxelDeath", life: .7, duration: .7,
       height: (enemy.size || 64) / 64 * .7, boss: !!enemy.isBoss, punch: enemy.isBoss ? .16 : 0 });
     state.calmed += 1;
+    if(enemy.beaconCarrier&&state.beaconRound&&!state.beaconRound.charge&&!state.beaconRound.completed&&!state.beaconDrop)state.beaconDrop={x:enemy.x,y:enemy.y};
     const harvest = state.player.talents.harvest;
     if (harvest && state.calmed % (harvest === 2 ? 4 : 6) === 0) {
       state.xpDrops.filter(drop => Math.hypot(drop.x - state.player.x, drop.y - state.player.y) < 500)
@@ -2927,11 +2990,17 @@
     persist();
     renderExpeditionRecord();
     renderResult(reason, previousBestKeys, improved, previousRank.index, stageCleared);
+    if(__crystalPracticeRequested&&__crystalBeaconCopy){
+      const practiceResult=__crystalBeaconCopy.beaconResult(window.WonderI18n?.actualLocale?.()||locale,state.calmed,state.level,Math.round(state.survived));
+      nodes.resultText.textContent=practiceResult.stats;
+      nodes.resultRankText.textContent=practiceResult.label;
+      nodes.resultPlanText.textContent=__crystalPracticeText()[6];nodes.resultProgressText.textContent=__crystalPracticeText()[6];nodes.nextStageBtn.disabled=true;
+    }
     resultActionClaimed = false;
     resultReadyAt = performance.now() + 450;
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
-    const primaryAction = stageCleared && state.stage < STAGE_COUNT
+    const primaryAction = __crystalPracticeRequested ? nodes.resultMenuBtn : stageCleared && state.stage < STAGE_COUNT
       ? nodes.nextStageBtn
       : stageCleared
         ? nodes.resultMenuBtn
@@ -3034,6 +3103,7 @@
         stage: state.stage,
         stageName: stageName(state.stageConfig),
         stageModifier: state.stageConfig.modifier,
+        beacon: state.beaconRound ? {round:{...state.beaconRound},drop:state.beaconDrop?{...state.beaconDrop}:null,station:{...__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0]}} : null,
         firstKeyCue: firstKeyCueVisible(),
         keys: state.keys,
         key: null,
@@ -3063,6 +3133,7 @@
           castCount: enemy.castCount || 0, castTime: enemy.castTime || 0,
           chargeAim: enemy.chargeAim ? {...enemy.chargeAim} : null, chargeTimer: enemy.chargeTimer,
           shielded: Boolean(enemy.shielded),
+          beaconCarrier: Boolean(enemy.beaconCarrier),
           chill: enemy.chill || 0,
           role: enemy.role, bowAim: enemy.bowAim ? { ...enemy.bowAim } : null, bowWindup: enemy.bowWindup,
           danger: Math.hypot(enemy.x - state.player.x, enemy.y - state.player.y) <= 170,
@@ -3263,13 +3334,17 @@
       const config = state.stageConfig;
       const boss = state.enemies.find(enemy => enemy.isBoss);
       const progress = config.mode === "waves" ? state.waveCleared / config.waveGoal : config.mode === "boss" ? (state.bossDefeated ? 1 : boss ? 1 - boss.hp / boss.maxHp : 0) : state.survived / state.duration;
-      writeHudValue("modeText", modeText, config.mode === "waves" ? `${modeLabels()[1]} ${Math.min(config.waveGoal, state.wave || 1)} / ${config.waveGoal} · ${state.enemies.length + state.waveRemaining} ◈` : modeObjective(config));
+      const beaconPhase=state.beaconRound?.completed?3:state.beaconRound?.charge?2:state.beaconDrop?1:0;
+      const objective=state.beaconRound&&__crystalBeaconCopy ? (state.beaconLossUntil>performance.now()&&!state.beaconRound.charge&&!state.beaconRound.completed ? __crystalPracticeText()[4] : __crystalBeaconCopy.beaconObjective(window.WonderI18n?.actualLocale?.()||locale,beaconPhase,state.stage))
+        : config.mode === "waves" ? `${modeLabels()[1]} ${Math.min(config.waveGoal, state.wave || 1)} / ${config.waveGoal} · ${state.enemies.length + state.waveRemaining} ◈` : modeObjective(config);
+      if(state.beaconRound){modeText.setAttribute('role','status');modeText.setAttribute('aria-live','polite');}
+      writeHudValue("modeText", modeText, objective);
       writeHudValue("modeProgress", modeFill.style, `${Math.round(Math.max(0, Math.min(1, progress)) * 100)}%`, "width");
     }
     const time = formatTime(state.timeLeft);
     const hp = Math.max(0, state.player.hp);
     if (force) hudValues = Object.create(null);
-    writeHudValue("stage", nodes.stageText, `${state.stage}/${STAGE_COUNT}`);
+    writeHudValue("stage", nodes.stageText, state.beaconRound ? String(state.stage) : `${state.stage}/${STAGE_COUNT}`);
     writeHudValue("time", nodes.timeText, time);
     writeHudValue("level", nodes.levelText, String(state.level));
     writeHudValue("hp", nodes.hpText, `${hp}/${state.player.maxHp}`);
@@ -3277,7 +3352,7 @@
     const playfieldSignature = [locale, state.stage, time, state.keys, hp, state.player.maxHp, state.level, state.stageConfig?.modifier].join("|");
     if (playfieldSignature !== playfieldLabelSignature) {
       playfieldLabelSignature = playfieldSignature;
-      canvas.setAttribute("aria-label", `${t("stage")} ${state.stage}/${STAGE_COUNT}. ${modeObjective(state.stageConfig)}. ${t("time")} ${time}. ${t("hp")} ${hp}/${state.player.maxHp}. ${t("level")} ${state.level}. ${t("controlMove")}. ${t("controlAttack")}. ${stageRule(state.stageConfig)}.`);
+      canvas.setAttribute("aria-label", `${t("stage")} ${state.beaconRound?state.stage:`${state.stage}/${STAGE_COUNT}`}. ${modeObjective(state.stageConfig)}. ${t("time")} ${time}. ${t("hp")} ${hp}/${state.player.maxHp}. ${t("level")} ${state.level}. ${t("controlMove")}. ${t("controlAttack")}. ${stageRule(state.stageConfig)}.`);
     }
     renderActionHint(force);
   }
@@ -3303,6 +3378,7 @@
     }
     const boss = state.enemies.find(enemy => enemy.isBoss);
     if (boss) { writeBattleBriefing(bossLesson(state.stageConfig)); return; }
+    if(state.beaconRound&&__crystalBeaconCopy){const copy=__crystalPracticeText();writeBattleBriefing(state.beaconRound.completed?copy[5]:state.beaconRound.charge?copy[3]:copy[1]);return;}
     const hasCloseEnemy = state.enemies.some(enemy => Math.hypot(enemy.x - p.x, enemy.y - p.y) <= p.range);
     const nextHint = state.xpNeed - state.xp <= 1 && state.xpDrops.length ? "hintUpgradeSoon"
       : state.xpDrops.length ? "hintCrystal" : hasCloseEnemy ? "hintCombat" : "playHint";
@@ -3328,7 +3404,11 @@
     }
     if (hintValue !== value) {
       hintValue = value;
-      briefingActionNode.textContent = value;
+      if(state.beaconRound){
+        const icon=document.createElement('img');icon.alt='';icon.width=24;icon.height=24;icon.style.cssText='display:inline-block;vertical-align:middle;object-fit:contain;margin-inline-end:4px';
+        icon.src=state.beaconRound.charge?assetPaths.beaconLamp:state.beaconDrop?assetPaths.beaconFragment:assetPaths.beaconStation;
+        briefingActionNode.replaceChildren(icon,document.createTextNode(value));
+      }else briefingActionNode.textContent = value;
       renderMetrics.hudWrites += 1;
     }
   }
@@ -3387,6 +3467,11 @@
       // The shared shell can finish its transform after the window resize.
       // Measure the displayed arena; allocate only when its pixel size changes.
       syncCanvasBackingStore();
+      if(state.beaconRound&&__crystalBeaconMesh&&__crystalFragmentMesh){
+        const beacon=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0];crystal3D.setPosition(__crystalBeaconMesh.group,beacon,.075);__crystalBeaconMesh.setCharged(Boolean(state.beaconRound.completed));
+        const carrier=state.enemies.find(enemy=>enemy.beaconCarrier),marker=state.beaconRound.charge?state.player:state.beaconDrop||carrier;
+        __crystalFragmentMesh.group.visible=Boolean(marker);if(marker)crystal3D.setPosition(__crystalFragmentMesh.group,marker,carrier&&!state.beaconDrop&&!state.beaconRound.charge?1.7:state.beaconRound.charge?1.5:.1);
+      }
       if (!crystal3D.render(state, renderCanvas.width, renderCanvas.height, performance.now())) return;
       displayCtx.drawImage(crystal3D.canvas, 0, 0);
       positionPlayerHealth();
@@ -3770,4 +3855,51 @@
   window.setTimeout(syncOwnedTitle, 250);
   installSmokeHooks();
   preload();
+
+  // Local practice is an authenticated temporary view, never a campaign
+  // migration. Only the two implemented local-practice slices are registered.
+  if(__crystalPracticeRequested)void (async()=>{
+    let notice=null;
+    const showPracticeNotice=message=>{
+      if(!notice){notice=document.createElement('div');notice.setAttribute('role','alert');notice.style.cssText='position:fixed;z-index:10001;inset:auto 12px 12px;padding:10px;background:#17243a;color:#fff;border:2px solid #ffe391;border-radius:8px;font:14px/1.3 system-ui;text-align:center';document.body.append(notice)}
+      notice.textContent=message;
+    };
+    const halt=()=>{
+      __crystalPracticeActive=false;__crystalPracticeIsActive=()=>false;runToken+=1;clearInput();
+      if(crystal3D)releaseRenderer();state.mode='menu';show(nodes.menuPanel);
+      showPracticeNotice(__crystalBeaconCopy?__crystalPracticeText()[7]:'Local practice unavailable. Return and sign in again.');
+    };
+    try{
+      if(window.__CrystalPracticeGuardReady!==true||window.WONDER_SITE?.analytics?.enabled!==false)throw Error('PRACTICE_GUARD_UNAVAILABLE');
+      const [{LocalPractice},bridge,model,copy,art,three]=await Promise.all([
+        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon2'),
+        import('./beacon-circuit-candidate.mjs?v=20261028-beacon1'),import('./beacon-circuit-copy.mjs?v=20261028-beacon4'),
+        import('./beacon-art-candidate.mjs?v=20261028-beacon2'),import('../animal-skyspire-drop/vendor/three/three.module.min.js'),
+      ]);
+      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;
+      const enable=value=>{
+        __crystalPracticeActive=value;
+        if(value)__crystalPracticeIsActive=()=>LocalPractice.dynamicEnabled;
+        if(value&&STAGE_COUNT===30){
+          for(const number of [31,32]){
+            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,copy.beaconStageCopy(key,number)[0]]));
+            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,copy.beaconStageCopy(key,number)[1]]));
+            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:null,mode:'survival',waveGoal:0,duration:number===31?45:50,targetKeys:0});
+          }
+          STAGE_COUNT=32;save=JSON.parse(JSON.stringify(save));save.unlockedStage=32;save.selectedStage=31;
+        }
+      };
+      const start=async(stage,isActive)=>{
+        __crystalPracticeIsActive=isActive;
+        for(let attempts=0;attempts<120;attempts++){
+          if(!isActive())return false;
+          if(!nodes.startBtn.disabled&&images.arena){save.selectedStage=stage;return await startRun('local_practice')}
+          await new Promise(resolve=>setTimeout(resolve,100));
+        }
+        return false;
+      };
+      const mounted=await bridge.mountBeaconPractice({localPractice:LocalPractice,enable,start,halt});
+      if(!mounted.ok)halt();
+    }catch{halt()}
+  })();
 })();

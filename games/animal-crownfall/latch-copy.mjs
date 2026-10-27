@@ -46,6 +46,36 @@ const FOURTEENTH_NAMES={en:'Pairs, seals and shield','zh-Hant':'配對、印記�
 for(const [locale,value] of Object.entries(FOURTEENTH_NAMES))LATCH_NAMES[locale].push(value);
 const FIFTEENTH_NAMES={en:'The two-rune guardian','zh-Hant':'雙符文守衛','zh-Hans':'双符文守卫',ja:'二つのルーンの守護者',ko:'두 룬의 수호자',es:'El guardián de dos runas','pt-BR':'O guardião das duas runas',fr:'Le gardien aux deux runes',de:'Der Wächter der zwei Runen',it:'Il guardiano delle due rune',ru:'Страж двух рун',hi:'दो रून वाला रक्षक',ar:'حارس الرونين'};
 for(const [locale,value] of Object.entries(FIFTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const SIXTEENTH_NAMES={en:'Three seals in order','zh-Hant':'三枚印記的順序','zh-Hans':'三枚印记的顺序',ja:'三つの印の順番',ko:'세 인장의 순서',es:'Tres sellos en orden','pt-BR':'Três selos em ordem',fr:'Trois sceaux en ordre',de:'Drei Siegel in Reihenfolge',it:'Tre sigilli in ordine',ru:'Три печати по порядку',hi:'तीन मुहरों का क्रम',ar:'ترتيب الأختام الثلاثة'};
+for(const [locale,value] of Object.entries(SIXTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const SEVENTEENTH_NAMES={en:'Three seals, two pairs','zh-Hant':'三印記、兩組配對','zh-Hans':'三印记、两组配对',ja:'三つの印と二組の鍵',ko:'세 인장과 두 쌍',es:'Tres sellos, dos pares','pt-BR':'Três selos, dois pares',fr:'Trois sceaux, deux paires',de:'Drei Siegel, zwei Paare',it:'Tre sigilli, due coppie',ru:'Три печати, две пары',hi:'तीन मुहरें, दो जोड़े',ar:'ثلاثة أختام وزوجان'};
+for(const [locale,value] of Object.entries(SEVENTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_DUAL_THREE_SEALS_RULE={
+ en:'Match numbered keys and locks. Collect seals 1, 2 and 3 in order; use arrows to find items.',
+ 'zh-Hant':'依編號配對鑰匙與鎖，印記依序收集1、2、3；用箭頭找物件。','zh-Hans':'按编号配对钥匙与锁，印记依序收集1、2、3；用箭头找物件。',
+ ja:'同番号の鍵と錠を合わせ、印を1、2、3の順に取る。矢印で探そう。',ko:'같은 번호의 열쇠와 잠금을 맞추고 인장 1, 2, 3을 차례로 모으세요. 화살표로 찾으세요.',
+ es:'Empareja llaves y candados. Recoge los sellos 1, 2 y 3 en orden; usa las flechas para buscar.',
+ 'pt-BR':'Combine chaves e travas. Pegue os selos 1, 2 e 3 em ordem; use as setas para procurar.',
+ fr:'Associez clés et verrous. Prenez les sceaux 1, 2 puis 3 ; cherchez avec les flèches.',
+ de:'Ordne Schlüssel und Sperren zu. Sammle Siegel 1, 2 und 3 in Reihenfolge; suche mit Pfeilen.',
+ it:'Abbina chiavi e blocchi. Raccogli i sigilli 1, 2 e 3 in ordine; cerca con le frecce.',
+ ru:'Сопоставьте ключи и замки. Соберите печати 1, 2 и 3 по порядку; ищите стрелками.',
+ hi:'समान चाबी और ताला मिलाएँ। मुहरें 1, 2, 3 क्रम से लें; तीरों से खोजें।',
+ ar:'طابق المفاتيح والأقفال المرقمة. اجمع الأختام 1 و2 و3 بالترتيب واستخدم الأسهم للبحث.'
+};
+export const LATCH_THREE_SEALS_RULE={
+ en:'Use arrows to find items. Remove the key before the lock; collect seals 1, 2 and 3 in order.',
+ 'zh-Hant':'用箭頭找物件，先移鑰匙再移鎖，印記依序收集1、2、3。','zh-Hans':'用箭头找物件，先移钥匙再移锁，印记依序收集1、2、3。',
+ ja:'矢印で探そう。鍵を錠より先に消し、印を1、2、3の順に取る。',ko:'화살표로 찾으세요. 열쇠를 잠금보다 먼저 없애고 인장 1, 2, 3을 차례로 모으세요.',
+ es:'Busca con las flechas. Quita la llave antes del candado y recoge los sellos 1, 2 y 3 en orden.',
+ 'pt-BR':'Use as setas. Remova a chave antes da trava e pegue os selos 1, 2 e 3 em ordem.',
+ fr:'Cherchez avec les flèches. Retirez la clé avant le verrou et prenez les sceaux 1, 2 puis 3.',
+ de:'Suche mit Pfeilen. Entferne den Schlüssel vor der Sperre und sammle Siegel 1, 2 und 3 in Reihenfolge.',
+ it:'Cerca con le frecce. Togli la chiave prima del blocco e raccogli i sigilli 1, 2 e 3 in ordine.',
+ ru:'Ищите стрелками. Уберите ключ до замка и соберите печати 1, 2 и 3 по порядку.',
+ hi:'तीरों से खोजें। ताले से पहले चाबी हटाएँ और मुहरें 1, 2, 3 क्रम से लें।',
+ ar:'ابحث بالأسهم. أزل المفتاح قبل القفل واجمع الأختام 1 و2 و3 بالترتيب.'
+};
 export const LATCH_TWO_RUNES_RULE={
  en:'Match keys; seals 1 then 2. Use ☀ for the first shield and ☾ for the second.',
  'zh-Hant':'配對鑰匙，印記先1後2；第一盾用☀符文，第二盾用☾符文。','zh-Hans':'配对钥匙，印记先1后2；第一盾用☀符文，第二盾用☾符文。',

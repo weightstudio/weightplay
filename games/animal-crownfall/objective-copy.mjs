@@ -22,6 +22,6 @@ export function battleObjective(locale,state){
   const goal=targetCount&&sealOrder.length?words.goalBoth:targetCount?words.goalTargets:sealOrder.length?words.goalSeals:words.goalCrown;
   const progress=[];
   if(targetCount){const defeated=[...targetIds].filter(id=>(state.killed||[]).includes(id)).length;progress.push(`${words.targets} ${defeated}/${targetCount}`);}
-  if(sealOrder.length){progress.push(`${words.seals} ${(state.seals||[]).length}/${sealOrder.length}`,`${words.order} ${sealOrder.join('→')}`);}
+  if(sealOrder.length){const sequence=sealOrder.join('→');progress.push(`${words.seals} ${(state.seals||[]).length}/${sealOrder.length}`,`${words.order} ${locale==='ar'?`\u2066${sequence}\u2069`:sequence}`);}
   return {goal,progress:progress.join(' · ')};
 }
