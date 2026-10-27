@@ -311,6 +311,9 @@ body:has(#battleScreen:not([hidden])) .wpb-toast {
 [data-counterweight="1"] .counterweight-art{background-position:0 50%}[data-counterweight="2"] .counterweight-art{background-position:50% 50%}[data-counterweight="3"] .counterweight-art{background-position:100% 50%}
 .counterweight-group button[aria-pressed="true"]{outline:3px solid #ffe19c;outline-offset:2px}
 .counterweight-group button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#battleContent[data-balance-chapter2="true"]{grid-template-rows:none;grid-auto-rows:max-content;align-content:start}
+#battleContent[data-balance-chapter2="true"] .battle-hint{height:auto;min-height:max-content;overflow-wrap:anywhere}
+#battleContent > [data-wp-local-practice]{position:static!important;transform:none!important;width:max-content;justify-self:center}
 [data-balance-save-host][hidden],.balance-save-warning[hidden],.balance-save-warning [hidden]{display:none!important}
 .balance-save-warning{box-sizing:border-box;padding:7px 10px;border:1px solid #ffe19c;border-radius:6px;background:#402e15;color:#fff3d3;font:600 16px/1.35 system-ui;overflow-wrap:anywhere}
 .balance-save-warning p{margin:0}.balance-save-warning button{min-height:44px;margin-top:4px;padding:4px 10px;font:inherit;color:inherit;background:#5b4421;border:1px solid currentColor;border-radius:6px}
@@ -330,4 +333,13 @@ body:has(#battleScreen:not([hidden])) .wpb-toast {
   #battleContent[data-balance-chapter2="true"] .battle-status{grid-column:2;grid-row:4;height:auto}
   #battleContent[data-balance-chapter2="true"] #hintBtn{grid-column:2;grid-row:5}
   #battleContent[data-balance-chapter2="true"] .battle-actions{grid-column:2;grid-row:6}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]){grid-template-rows:repeat(7,max-content)}
+  #battleContent[data-balance-chapter2="true"] > [data-wp-local-practice]{grid-column:1/-1;grid-row:1}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .battle-hint{grid-row:2}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .counterweight-group,#battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .choice-head{grid-row:3}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .goal-row,#battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .token-tray{grid-row:4}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .scale{grid-row:5/8}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .battle-status{grid-row:5}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) #hintBtn{grid-row:6}
+  #battleContent[data-balance-chapter2="true"]:has(> [data-wp-local-practice]) .battle-actions{grid-row:7}
 }

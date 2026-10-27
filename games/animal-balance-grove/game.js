@@ -381,6 +381,8 @@
   const writeBest = (value) => { if (practiceRequested) return; try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-balance-grove-best-v1", String(value)); } catch (error) { state.storage = false; } };
   const show = (name) => {
     currentSaveScreen=name;
+    const practiceBadge = practiceRequested && document.querySelector('[data-wp-local-practice]');
+    if (practiceBadge) (name === 'battle' ? battleContent : document.body).prepend(practiceBadge);
     Object.keys(screens).forEach((key) => { screens[key].hidden = key === "battle" ? !["battle", "result"].includes(name) : key !== name; });
     battleContent.hidden = name === "result";
     const scene = name === "stages" ? "stage" : name === "result" ? "battle" : name;
@@ -595,7 +597,8 @@
     scale.style.setProperty("--pan-shift", `${Math.max(-24, Math.min(24, (outcome.total - target) * 4))}px`);
     $("sessionChecks").textContent = String(state.checks);
     $("sessionChecks").previousElementSibling.textContent = t("checksLabel");
-    $("selectionCount").textContent = stage.count ? `${state.selected.length} / ${stage.count}` : t("selected", { n: state.selected.length });
+    $("selectionCount").textContent = stage.count ? `\u2066${state.selected.length} / ${stage.count}\u2069` : t("selected", { n: state.selected.length });
+    if (stage.count) $("selectionCount").setAttribute('dir','ltr'); else $("selectionCount").removeAttribute('dir');
     $("selectedItems").innerHTML = `<strong class="pan-total">${outcome.total}</strong><div class="pan-stones">${state.selected.map(index => `<span class="placed-token placed-token-${index}" aria-label="${t(stage.pieces[index][0])}"></span>`).join("")}</div>`;
     const tray = $("tokenTray");
     // Keep buttons and keyboard focus mounted while the selected set changes.
@@ -629,7 +632,8 @@
   const renderResult = () => {
     const final = state.stage === stages.length - 1;
     $("resultHeading").textContent = final ? t("finishTitle") : t("balanced");
-    $("resultText").textContent = `${"★".repeat(state.lastStars)}${"☆".repeat(3-state.lastStars)}  ${state.lastEquation} · ${t("solvedChecks",{n:state.checks})}\n${t("starRule")}`;
+    const checksText = state.locale === 'en' && state.checks === 1 ? '1 check' : t("solvedChecks",{n:state.checks});
+    $("resultText").textContent = `${"★".repeat(state.lastStars)}${"☆".repeat(3-state.lastStars)}  ${state.lastEquation} · ${checksText}\n${t("starRule")}`;
     $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next");
     $("resultMapBtn").hidden = false;
     if (!$("resultReplayBtn")) {

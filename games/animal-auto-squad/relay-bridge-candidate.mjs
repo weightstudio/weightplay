@@ -1,6 +1,6 @@
 // Unconnected adapter candidate for the v43 Auto Squad combat object shape.
 // It requires future stage data, localized cues, assets and verified save input.
-import {createRelayWave,chooseRelayOrder,beginRelayWave,relayFirstStrikeTarget,relayEnemyAction,relayAdjustHealing} from './relay-candidate.mjs';
+import {createRelayWave,chooseRelayOrder,beginRelayWave,relayFirstStrikeTarget,relayEnemyAction,relayAdjustHealing} from './relay-candidate.mjs?v=20261027-auto-squad-relay-data1';
 
 export function createRelayBridge({stage,wave,playerSquad,enemySquad,confirmedProgress,ops}){
   if(stage<=30)return null;
@@ -67,5 +67,5 @@ export function createRelayBridge({stage,wave,playerSquad,enemySquad,confirmedPr
     }catch{return halt('combat-side-effect-unconfirmed');}
   }
   function adjustHealing(amount){if(phase!=='battle')return {ok:false,reason:'not-in-battle'};try{return {ok:true,...relayAdjustHealing(layer,amount)};}catch{return halt('invalid-heal');}}
-  return Object.freeze({choose,start,firstStrike,enemyAction,adjustHealing,preview:()=>({actors:layer.actors.map(x=>({id:x.id,kind:x.kind,alive:x.alive})),marks:layer.marks.map(x=>({...x})),bossCues:layer.bossCues.map(x=>({actor:x.actor,signals:[...x.signals]})),wardTargets:[...layer.wardTargets],orders:[...layer.orders],phase})});
+  return Object.freeze({choose,start,firstStrike,enemyAction,adjustHealing,preview:()=>({actors:layer.actors.map(x=>({id:x.id,kind:x.kind,alive:x.alive})),marks:layer.marks.map(x=>({...x})),contributions:layer.contributions.map(x=>({guard:x.guard,target:x.target})),bossCues:layer.bossCues.map(x=>({actor:x.actor,signals:[...x.signals]})),wardTargets:[...layer.wardTargets],orders:[...layer.orders],phase})});
 }

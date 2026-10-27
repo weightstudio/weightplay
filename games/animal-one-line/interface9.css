@@ -66,3 +66,13 @@ body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logi
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Preserve physical touch targets when the shared frame stacks Battle content. */
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas] > [data-wp-frame-content="battle"] > .battle-actions {
+  flex: 0 0 calc(44px / var(--wp-battle-canvas-scale, 1)) !important;
+  min-height: calc(44px / var(--wp-battle-canvas-scale, 1)) !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+body[data-game-id="animal-one-line"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas] .battle-actions button {
+  min-height: calc(44px / var(--wp-battle-canvas-scale, 1)) !important;
+}

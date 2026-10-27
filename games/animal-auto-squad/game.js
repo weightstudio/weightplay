@@ -49,21 +49,69 @@
     hi:"अभ्यास: प्रगति या पुरस्कार सहेजे नहीं जाते।",ar:"تدريب: لا يُحفظ التقدم أو المكافآت."
   };
   function practiceNoSaveText() { return practiceNoSaveCopy[actualGameLocale()] || practiceNoSaveCopy.en; }
-  let relayModulePromise;
+  let relayModulePromise, relayContent = null, relayConfirmedProgress = null, relayDecision = null, relayDecisionView = null;
   function loadRelayChapterCandidate() {
     if (!relayModulePromise) relayModulePromise = Promise.all([
-      import("./relay-content-candidate.mjs"),
-      import("./relay-bridge-candidate.mjs"),
-      import("./relay-wave-gate-candidate.mjs")
+      import("./relay-content-candidate.mjs?v=20261027-auto-squad-relay-content1"),
+      import("./relay-bridge-candidate.mjs?v=20261027-auto-squad-relay-bridge1"),
+      import("./relay-wave-gate-candidate.mjs?v=20261027-auto-squad-relay-gate1"),
+      import("./relay-preparation-candidate.mjs?v=20261027-auto-squad-relay-prep2"),
+      import("./relay-copy-candidate.mjs?v=20261027-auto-squad-relay-copy1")
     ]);
     return relayModulePromise;
   }
   function relayUnavailableText() { return relayUnavailableCopy[actualGameLocale()] || relayUnavailableCopy.en; }
   function holdRelayWaveForPreparation() {
-    // Load only for a future Chapter 2 request. The next wave must not start
-    // while its UI, roster, battle hooks and saved progression are incomplete.
-    void loadRelayChapterCandidate().catch(() => {});
-    combatLog(relayUnavailableText());
+    // The next wave must not start until artwork, save proof and all other
+    // Chapter 2 prerequisites are implemented and explicitly enabled.
+    const stage=state.stage, wave=state.round, runId=state.combat.runId;
+    void loadRelayChapterCandidate().then(modules => {
+      if (state.stage!==stage || state.round!==wave || state.combat.runId!==runId || !state.activeRun) return;
+      if (!RELAY_CHAPTER_READY || !relayContent || !relayConfirmedProgress) { combatLog(relayUnavailableText()); return; }
+      try { openRelayWaveDecision(modules,stage,wave,runId); } catch { holdRelayCombat(); }
+    }).catch(() => { if (state.stage===stage && state.round===wave && state.combat.runId===runId && state.activeRun) holdRelayCombat(); });
+  }
+  function closeRelayWaveDecision() {
+    relayDecision?.invalidate(); relayDecision=null;
+    relayDecisionView?.destroy(); relayDecisionView=null;
+  }
+  function openRelayWaveDecision(modules,stage,wave,runId) {
+    closeRelayWaveDecision();
+    const [,bridgeModule,gateModule,viewModule,copyModule]=modules;
+    const enemySquad=relayContent.generateEnemySquad(stage,wave);
+    const bridge=bridgeModule.createRelayBridge({stage,wave,playerSquad:state.combat.playerSquad,enemySquad,confirmedProgress:relayConfirmedProgress,ops:{
+      getSupplies:()=>state.gold,
+      spendSupplies(amount){if(state.gold<amount)return false;state.gold-=amount;updateHUD();return true;},
+      hit(unit,amount){const point=formationTargetPoint("player",state.combat.playerSquad,unit);damageTarget(unit,amount,point.x,point.y);},
+      shield(unit,amount,team){const squad=team==="player"?state.combat.playerSquad:enemySquad;addUnitShield(unit,amount,team,Math.max(0,squad.indexOf(unit)));}
+    }});
+    const host=document.getElementById("animalAutoSquadBattleContent");
+    if (!host || !bridge) throw new Error("relay preparation unavailable");
+    let gate;
+    gate=gateModule.createWaveGate({
+      prepare:()=>({choose:bridge.choose,start:bridge.start,preview:bridge.preview,enemySquad,bridge}),
+      show({id,preview}) {
+        const actors=preview.actors.map((actor,index)=>{
+          let role=localizedField(enemySquad[index],"role");
+          const mark=preview.marks.find(item=>item.actor===actor.id);
+          if (mark) role+=` · ${t("slotPosition",{index:mark.slot})}`;
+          const protectedId=preview.contributions.find(item=>item.guard===actor.id)?.target;
+          const protectedIndex=preview.actors.findIndex(item=>item.id===protectedId);
+          if (protectedIndex>=0) role+=` → ${combatUnitName(enemySquad[protectedIndex])} · ${t("slotPosition",{index:enemySquad[protectedIndex].formationSlot+1})}`;
+          return {id:actor.id,name:combatUnitName(enemySquad[index]),slot:enemySquad[index].formationSlot+1,role};
+        });
+        const copy=copyModule.relayCopy(actualGameLocale(),stage);
+        relayDecisionView=viewModule.createRelayPreparationView({document,host,copy,preview,actors,supplies:state.gold,
+          labels:{heading:`${stageLabel(stage)} · ${t("round")} ${wave}/${WAVES_PER_STAGE}`,supplies:t("supplies"),none:t("none"),slot:index=>t("slotPosition",{index}),start:t("startBattle"),unavailable:relayUnavailableText()},
+          choose:(type,target)=>gate.choose(id,type,target),confirm:()=>gate.confirm(id),onError:()=>{}});
+        relayDecisionView.focus();
+      },
+      begin(bundle){relayDecisionView?.destroy();relayDecisionView=null;startNextWaveBattle({stage,wave,enemySquad:bundle.enemySquad,bridge:bundle.bridge});},
+      isCurrent:ticket=>state.activeRun && state.stage===ticket.stage && state.round===ticket.wave && state.combat.runId===ticket.runId
+    });
+    relayDecision=gate;
+    const opened=gate.transition({stage,wave,runId,legacyNext:()=>{}});
+    if (!opened.ok) throw new Error("relay preparation failed");
   }
   function holdRelayCombat() {
     // A missing or ambiguous signal application must not be retried as a
@@ -3081,6 +3129,7 @@
 }
 
   function showStageSelection() {
+    closeRelayWaveDecision();
     closeQuitDecision(false);
     closeStallDecision(false);
     stopCombatSession();
@@ -3638,6 +3687,7 @@
 
   // Start Expedition Run
   function startExpedition() {
+    closeRelayWaveDecision();
     initAudio();
     playSynth("ui.click");
     setResultOwnership(false);
@@ -4733,6 +4783,12 @@
     }));
 
     triggerBattleStartAbilities();
+
+    if (state.stage > 30) {
+      state.combat.runId = runId;
+      holdRelayWaveForPreparation();
+      return;
+    }
 
     // Generate a stage-specific wave instead of adding another enemy every round.
     state.combat.enemySquad = generateEnemySquad(state.stage, state.round);
@@ -5888,6 +5944,7 @@
     const runId = ++combatRunSequence;
     state.combat.enemySquad = state.stage > 30 ? preparedWave.enemySquad : generateEnemySquad(state.stage, state.round);
     state.combat.relayBridge = state.stage > 30 ? preparedWave.bridge : null;
+    if (state.stage > 30 && !canvasCtx) canvasCtx = nodes.gameCanvas.getContext("2d");
     state.combat.step = 0;
     state.combat.log = [];
     state.combat.status = "";
@@ -5925,7 +5982,10 @@
     updateCombatSummary();
     ensureCombatProgressTimer();
     runCombatAnimation();
-    trackGame("battle_wave_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+    if (state.stage > 30 && state.round === 1) {
+      trackGame("battle_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+      __wpMeasurement.roundKey = {}; __wpMeasurement.restart = Boolean(__wpMeasurement.restart && !__wpMeasurement.started); __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    } else trackGame("battle_wave_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
   }
 
   function endBattleRun(result, runId = state.combat.runId) {

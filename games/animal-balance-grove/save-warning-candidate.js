@@ -15,6 +15,14 @@ const COPY={
  hi:['{count} स्तरों का सहेजना अपुष्ट है: {sample}। पुनः प्रयास के लिए कोई स्तर पूरा करें; बाहर जाने या पुनः लोड करने पर प्रगति खो सकती है।','सभी स्तर देखें','स्तर छिपाएँ','पुष्टि की प्रतीक्षा वाले स्तर'],
  ar:['لم يُؤكَّد حفظ {count} من المراحل: {sample}. أكمل مرحلة لإعادة المحاولة؛ قد تفقد التقدم عند المغادرة أو إعادة التحميل.','عرض كل المراحل','إخفاء المراحل','مراحل بانتظار تأكيد الحفظ']
 };
+const SINGLE={
+ en:'{count} stage awaiting save confirmation: {sample}. Clear a stage to retry; leaving or reloading may lose this progress.',
+ es:'{count} nivel sin confirmar: {sample}. Completa un nivel para reintentar; salir o recargar puede perder el progreso.',
+ 'pt-BR':'{count} fase sem confirmação: {sample}. Conclua uma fase para tentar de novo; sair ou recarregar pode perder o progresso.',
+ fr:'{count} étape en attente : {sample}. Terminez une étape pour réessayer ; quitter ou recharger peut faire perdre la progression.',
+ de:'{count} Stufe nicht bestätigt: {sample}. Schließe eine Stufe ab, um erneut zu speichern; Verlassen oder Neuladen kann Fortschritt verlieren.',
+ it:'{count} livello non confermato: {sample}. Completa un livello per riprovare; uscire o ricaricare può perdere i progressi.'
+};
 function create({host,id,fallback}){
  const wrap=document.createElement('section'),status=document.createElement('p'),toggle=document.createElement('button'),details=document.createElement('section'),list=document.createElement('ol');
  wrap.className='balance-save-warning';wrap.hidden=true;status.id=`${id}-status`;status.setAttribute('role','status');status.setAttribute('aria-live','polite');
@@ -23,7 +31,7 @@ function create({host,id,fallback}){
  const leave=(node,target)=>{if(node.contains(document.activeElement))target()?.focus?.({preventScroll:true});};
  function render(){const epoch=revision;if(!active||!ids.length){leave(wrap,fallback);if(epoch!==revision)return;wrap.hidden=true;status.textContent='';toggle.hidden=true;details.hidden=true;expanded=false;return;}
   wrap.hidden=false;const copy=COPY[locale]||COPY.en,hasDetails=ids.length>4,sample=ids.slice(0,4).join(', ')+(hasDetails?', …':'');
-  status.textContent=copy[0].replace('{count}',String(ids.length)).replace('{sample}',`\u2066${sample}\u2069`);
+  status.textContent=(ids.length===1&&SINGLE[locale]||copy[0]).replace('{count}',String(ids.length)).replace('{sample}',`\u2066${sample}\u2069`);
   if(!hasDetails){leave(details,fallback);if(epoch!==revision)return;leave(toggle,fallback);if(epoch!==revision)return;expanded=false;}
   toggle.hidden=!hasDetails;toggle.textContent=expanded?copy[2]:copy[1];toggle.setAttribute('aria-expanded',String(expanded));details.hidden=!hasDetails||!expanded;details.setAttribute('aria-label',copy[3]);list.replaceChildren();
   for(const n of ids){const li=document.createElement('li'),bdi=document.createElement('bdi');li.setAttribute('role','listitem');bdi.setAttribute('dir','ltr');bdi.textContent=String(n);li.append(bdi);list.append(li);}

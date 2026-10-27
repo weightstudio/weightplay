@@ -165,3 +165,16 @@ html body #gamePanel:has(#combatArea:not(.is-hidden)) .command-tactics button[ar
 /* Keep the shared local-practice marker clear of this game's centered stage
    counter. The marker remains owned and created by the shared adapter. */
 [data-wp-local-practice] { top: 52px !important; left: 8px !important; transform: none !important; }
+
+/* Chapter 2's text-first decision surface is mounted only after the chapter's
+   readiness gate is satisfied; controls use native radios and shared buttons. */
+.relay-wave-preparation { position: absolute; inset: 58px 10px 10px; z-index: 40; overflow: auto; overscroll-behavior: contain; padding: 16px; background: #102c31; color: #fff; border: 2px solid #77b9a7; border-radius: 10px; }
+.relay-wave-preparation h2 { margin: 0 0 8px; font-size: 1.2rem; }
+.relay-wave-preparation p { margin: 6px 0; }
+.relay-wave-threats, .relay-order-help { display: grid; gap: 6px; padding-inline-start: 1.4em; }
+.relay-wave-threats li span { display: block; }
+.relay-order-options { display: grid; gap: 8px; border: 1px solid #77b9a7; }
+.relay-order-choice { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px; }
+.relay-order-choice input { width: 20px; height: 20px; flex: none; }
+.relay-order-choice:focus-within { outline: 3px solid #ffe09a; outline-offset: 2px; }
+.relay-wave-preparation > button { min-height: 44px; width: 100%; }

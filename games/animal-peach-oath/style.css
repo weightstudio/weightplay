@@ -223,6 +223,8 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .arena-wrap { grid-column: 1/-1; }
   .unit-line { left: 64px; right: 8px; }
   html[dir="rtl"] .unit-line { left: 8px; right: 64px; }
+  #arena .command-dock { inset-inline: auto; left: 64px; right: 8px; }
+  html[dir="rtl"] #arena .command-dock { left: 8px; right: 64px; }
   .battle-tip { left: 64px; width: calc(100% - 72px); transform: none; gap: 4px; }
   .wave-hud { top: 6px; }
   /* The portrait quick rail sits above the arena on narrow screens.  Shift
@@ -309,9 +311,9 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 
 /* Commands and impacts share the arena coordinate space. */
 .unit-line { height: calc((100% - 190px) / 2); }
-.command-dock { position: absolute; z-index: 10; top: calc(50% - 15px); inset-inline: 5%; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; height: 44px; }
-.command-dock button { position: relative; min-width: 0; height: 44px; overflow: hidden; padding: 4px; border: 1px solid #5b7983; border-radius: 8px; color: #c9dae1; background: #102632ed; text-align: center; }
-.command-dock strong, .command-dock small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.command-dock { position: absolute; z-index: 10; top: calc(50% - 15px); inset-inline: 5%; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; height: auto; }
+.command-dock button { position: relative; min-width: 0; min-height: 44px; height: auto; overflow: hidden; padding: 4px; border: 1px solid #5b7983; border-radius: 8px; color: #c9dae1; background: #102632ed; text-align: center; }
+.command-dock strong, .command-dock small { display: block; overflow-wrap: anywhere; white-space: normal; font-size: 10px; line-height: 1.15; }
 .command-dock small { color: #94bbb9; font-size: 9px; }
 .command-dock i { position: absolute; inset-inline: 0; bottom: 0; height: 3px; background: #0a141c; }
 .command-dock b { display: block; height: 100%; background: #55bfad; transition: width .22s; }
