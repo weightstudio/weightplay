@@ -1,12 +1,12 @@
 /* Flip Foundry: visible aim, deterministic ballistic contact, four landings per chapter. */
 import {COURSES,TOTAL_STAGES} from './campaign-data.mjs';
-import {launchState,stepFlight,simulate,invert,canInvert,targetAt,suggestedPulseWindows} from './model.mjs';
+import {launchState,stepFlight,simulate,invert,canInvert,targetAt,suggestedPulseWindows} from './model.mjs?v=20261027-flip-miss-direction-v19';
 import {readProgress,completeStage,persistProgressChecked} from './progress.mjs?v=20261027-flip-pending-candidate';
 import {createProgressConfirmation} from './progress-confirmation.mjs?v=20261027-flip-pending-candidate';
 import {createMeasurementQueue} from './measurement-queue.mjs?v=stage-reward-v19';
 import {campaignCopy,ruleLabels,CLARITY_COPY} from './campaign-copy.mjs';
 import {createPendingSummaryView} from './pending-summary-view.mjs?v=20261027-flip-summary-candidate2';
-import {FoundryScene} from './scene.mjs';
+import {FoundryScene} from './scene.mjs?v=20261027-flip-miss-direction-v19';
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.

@@ -68,7 +68,7 @@ export function stepFlight(before,c) {
     }
     f.reason=x<targetX?'short':'long';
   }
-  if(f.y>195||f.x>1100||f.age>=240)return fail(f.reason||'short');
+  if(f.y>195||f.x>1100||f.age>=240)return fail(f.reason||(f.x>target.x+c.width/2-22?'long':'short'));
   return f;
 }
 export function simulate(c,force,nozzle='direct',time=0,pulseXs=[]) {

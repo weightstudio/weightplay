@@ -46,6 +46,13 @@ function solve(starts, goals, walls) {
 }
 
 const masteryRoutes = {3:{actor:1,visit:7},8:{actor:1,visit:0},28:{actor:0,visit:1}};
+// Timed poses preserve the board and inputs while changing the route decision.
+const formations = {
+  9:[{beat:2,positions:[5,1]}], 10:[{beat:1,positions:[5,3]}],
+  16:[{beat:2,positions:[3,8]}], 20:[{beat:1,positions:[8,3]}],
+  25:[{beat:0,positions:[8,3]}], 29:[{beat:2,positions:[9,8]}],
+  30:[{beat:4,positions:[8,3]}],
+};
 
 export const STAGES = Object.freeze(authored.map((row, index) => {
   const [arc, dogStart, foxStart, dogGoal, foxGoal, walls, bow] = row;
@@ -55,7 +62,8 @@ export const STAGES = Object.freeze(authored.map((row, index) => {
   return Object.freeze({
     id: index + 1, arc, starts: Object.freeze(starts), goals: Object.freeze(goals),
     walls: Object.freeze(walls), bow, beats: solution?.length ?? 0,
-    revision: index===27?2:1,
+    revision: formations[index+1]?3:index===27?2:1,
+    checkpoints: Object.freeze((formations[index+1]||[]).map(c=>Object.freeze({beat:c.beat,positions:Object.freeze(c.positions)}))),
     mastery: masteryRoutes[index+1] ? Object.freeze(masteryRoutes[index+1]) : null,
     solution: solution && Object.freeze(solution.map(pair => Object.freeze(pair))),
   });
@@ -69,11 +77,12 @@ export function validateStages() {
     if (stage.walls.some(cell => stage.starts.includes(cell) || stage.goals.includes(cell))) issues.push(`stage ${stage.id}: wall blocks a start or goal`);
     if (stage.solution) {
       let positions=[...stage.starts];
-      for (const [a,b] of stage.solution) {
+      for (const [beat,[a,b]] of stage.solution.entries()) {
         const next=[move(positions[0],a),move(positions[1],b)];
         if(next.some((cell,i)=>cell<0||stage.walls.includes(cell)||(i===1&&cell===next[0])))issues.push(`stage ${stage.id}: solution has an invalid mark`);
         if(next[0]===positions[1]&&next[1]===positions[0]&&next[0]!==next[1])issues.push(`stage ${stage.id}: solution crosses actors`);
         positions=next;
+        for(const c of stage.checkpoints)if(c.beat===beat&&c.positions.some((p,i)=>p!==positions[i]))issues.push(`stage ${stage.id}: solution misses timed formation`);
       }
       if(positions[0]!==stage.goals[0]||positions[1]!==stage.goals[1])issues.push(`stage ${stage.id}: solution misses a goal`);
       if(stage.bow&&stage.solution.at(-1)?.[0]==='BOW'&&stage.solution.at(-1)?.[1]==='BOW'){}else if(stage.bow)issues.push(`stage ${stage.id}: missing final partner bow`);

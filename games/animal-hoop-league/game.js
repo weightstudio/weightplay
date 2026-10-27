@@ -192,7 +192,7 @@
   let storage;try{storage=window.localStorage;}catch{};
   let {best,records}=readProgress(storage),storageOK=true;
   const saveSession=createHoopSaveReconciliation(writeProgress);
-  let saveWarningNodes={};
+  let saveWarningViews={},saveWarningRevision=0;
   let selectedStageIndex=Math.min(courts.length-1,best),stageController=null;
   const state={screen:'main', round:newRound(1), charging:false, power:0, direction:1, flight:null, paused:false, raf:0, last:0, feedback:'', feedbackUntil:0, pointer:null};
   state.route='direct';state.focusArmed=false;
@@ -231,20 +231,11 @@
     node.getAnimations().forEach(a=>a.cancel());node.animate([{opacity:.45},{opacity:1}],{duration:reduced.matches?70:150});
   }
   const save=()=>{const settled=saveSession.recordWonSave(storage,state.round.stage,state.round.score,{best,records}),merged=settled.saveResult;best=merged.best;records=merged.records;saveSucceeded=merged.saved&&!settled.session.pending.some(item=>item.stage===state.round.stage);storageOK=saveSucceeded;};
-  function pendingSaveText(){
-    const pending=saveSession.snapshot().pending;
-    if(!pending.length)return '';
-    const format=new Intl.NumberFormat(locale.locale||'en');
-    const stages=pending.map(item=>format.format(item.stage)).join(', ');
-    return xp().savePending.replace('{stages}',`\u2068${stages}\u2069`);
-  }
   function syncSaveWarning(){
-    const message=pendingSaveText();
-    for(const [scene,node] of Object.entries(saveWarningNodes)){
-      const visible=Boolean(message)&&state.screen===scene;
-      if(visible){node.hidden=false;if(node.textContent!==message)node.textContent=message;}
-      else{node.hidden=true;if(node.textContent)node.textContent='';}
-    }
+    const revision=++saveWarningRevision;
+    const pending=saveSession.snapshot().pending.map(item=>item.stage);
+    for(const [scene,view] of Object.entries(saveWarningViews)){view.update({pending,locale:locale.locale,active:state.screen===scene});if(revision!==saveWarningRevision)return;}
+    result.setAttribute('aria-describedby',pending.length?'result-copy hoop-result-pending-status':'result-copy');
   }
   window.addEventListener('storage',e=>{if(e.key!==null&&e.key!==progressKey&&e.key!==progressRecordKey)return;const merged=mergeProgress({best,records},readProgress(storage));best=merged.best;records=merged.records;progress();refreshStage();});
   function progress(){ $('main-progress').textContent=`${text()[16]} · ${best} / ${courts.length}`; }
@@ -291,9 +282,8 @@
   function renderResult(){
     const r=state.round,win=won(r);
     $('result-title').textContent=text()[win?13:14];
-    const warning=pendingSaveText();
-    $('result-copy').textContent=`${text()[17]} ${r.score} : ${r.rival} ${text()[18]} · ${r.made}/${courts[r.stage-1].shots} · ${text()[8]} ×${r.perfect}${r.stage>=7?' · '+goalSummary(r):''}${win?(warning?'':` · ${xp().saveConfirmed}`):r.score>r.rival?' · '+xp().needGoals:` · ${state.feedback}`}${warning?' · '+warning:''}`;
-    if(warning)$('result-copy').setAttribute('tabindex','0');else $('result-copy').removeAttribute('tabindex');
+    const pending=saveSession.snapshot().saveUnconfirmed;
+    $('result-copy').textContent=`${text()[17]} ${r.score} : ${r.rival} ${text()[18]} · ${r.made}/${courts[r.stage-1].shots} · ${text()[8]} ×${r.perfect}${r.stage>=7?' · '+goalSummary(r):''}${win?(pending?'':` · ${xp().saveConfirmed}`):r.score>r.rival?' · '+xp().needGoals:` · ${state.feedback}`}`;
   }
   function land(now){
     const f=state.flight;state.round=f.pending;state.flight=null;
@@ -399,7 +389,7 @@
     selectStage,
     startStage:index=>{const stage=index+1;if(stage<=Math.min(courts.length,best+1))start(stage);},
     attachStageController(controller){stageController=controller;refreshStage();},
-    attachSaveWarningNodes(nodes){saveWarningNodes=nodes;syncSaveWarning();},
+    attachSaveWarningViews(views){saveWarningViews=views;syncSaveWarning();},
     refreshStage,
   });
   window.HoopLeagueDiagnostics=Object.freeze({snapshot:()=>JSON.parse(JSON.stringify({screen:state.screen,round:state.round,charging:state.charging,power:state.power,route:state.route,focusArmed:state.focusArmed,flight:state.flight,paused:state.paused,best,records,storageOK,total:courts.length}))});

@@ -1,7 +1,7 @@
-import {STAGES,validateStages} from './stage-data.js?v=20261027-showtime-optimize1';
-import {ShowtimeScene} from './stage-scene.js?v=20261027-showtime-optimize1';
-import {evaluatePlan,showText,spotlightAvailable,spotlightGoals,spotlightStageIds,formationSignature,replayShow,rememberShow,earnedMastery,ratingForShow} from './spotlight-remix.js?v=20261027-showtime-optimize1';
-import {guideCopy} from './guide.mjs?v=20261027-showtime-optimize1';
+import {STAGES,validateStages} from './stage-data.js?v=20261027-showtime-act-polish1';
+import {ShowtimeScene} from './stage-scene.js?v=20261027-showtime-act-polish1';
+import {evaluatePlan,showText,spotlightAvailable,spotlightGoals,spotlightStageIds,formationSignature,replayShow,rememberShow,earnedMastery,ratingForShow} from './spotlight-remix.js?v=20261027-showtime-act-polish1';
+import {guideCopy} from './guide.mjs?v=20261027-showtime-act-polish1';
 const $=id=>document.getElementById(id), saveKey='wp-robot-dog-showtime-v2',stages=STAGES;
 const language=document.documentElement.lang||'en',locale=({'zh-TW':'zh-Hant','zh-tw':'zh-Hant','zh-CN':'zh-Hans','zh-cn':'zh-Hans','pt-br':'pt-BR'}[language]||language);
 const t=showText(locale),byCue={N:'↑',E:'→',S:'↓',W:'←',WAIT:'Ⅱ',BOW:'↘',WAVE:'〰'};
@@ -16,11 +16,17 @@ const campaignSave=practicePageIsolation?null:readSave();
 let save=campaignSave||blank(),screen='main',stageIndex=0,selectedActor=0,selectedBeat=0,plan=[],scene=null,sharedFrame=null,pageAlive=true,entryReady=false;
 let activeRemix=false,practiceMode=false,practiceActive=false,practiceSave=null,practiceStartAuthorized=false,LocalPractice=null,practiceIntent=null,practiceInitialEntry=false;
 let rehearsing=false,practicePending=false,playback=null,runFrame=0,runToken=0,modal=null,focusBeforeDialog=null,failedBeat=-1,playingBeat=-1,undo=[],attempts=0,hintsUsed=0,purchasing=false,purchaseConfirm=false,settledRating=0;
+let trackScrollFrame=0;
 const els={main:$('mainScreen'),stage:$('stageScreen'),battle:$('battleScreen'),label:$('battleLabel'),status:$('cueStatus'),canvas:$('stage3d'),fallback:$('renderFallback'),help:$('helpDialog'),leave:$('leaveDialog'),result:$('resultDialog')};
 const currentStage=()=>stages[stageIndex],currentGoals=(stage=currentStage())=>activeRemix?spotlightGoals(stage.goals):stage.goals;
 const draftId=()=>`${stageIndex+1}${activeRemix?':spotlight':''}`;
 const name=actor=>t(actor?'fox':'pup'),cueName=cue=>({WAIT:t('wait'),BOW:t('bow'),WAVE:t('wave')}[cue]||byCue[cue]||t('defaultWait'));
 const masteryText=stage=>stage.mastery?`${t('mastery')} · ${name(stage.mastery.actor)} · ${t('visit')} ${stage.mastery.visit+1}`:'';
+const actNumber=stage=>Math.floor((stage.id-1)/5)+1;
+const actName=stage=>t('act'+actNumber(stage));
+const showName=stage=>stage.id%5===0?t('finale'+actNumber(stage)):actName(stage);
+const formationText=stage=>(stage.checkpoints||[]).map(c=>`◇ ${t('beat')} ${c.beat+1} · ${name(0)} ${c.positions[0]+1} / ${name(1)} ${c.positions[1]+1}`).join(' · ');
+function updateObjectives(){const s=currentStage(),text=[formationText(s),!activeRemix&&s.mastery?'◇ '+masteryText(s):''].filter(Boolean).join('\n');$('sceneObjective').textContent=text;$('sceneObjective').hidden=!text;$('arenaWrap').dataset.hasObjective=String(Boolean(text));scene?.setObjectives({mastery:activeRemix?null:s.mastery,checkpoints:s.checkpoints});}
 const safeCount=value=>Number.isSafeInteger(value)&&value>=0?value:0;
 function persist(){if(practicePageIsolation||practiceActive)return true;try{localStorage.setItem(saveKey,JSON.stringify(save));return true}catch{setStatus(t('storage'),true);return false}}
 function setStatus(text,bad=false){els.status.textContent=text;els.status.dataset.kind=bad?'error':'info'}
@@ -29,7 +35,7 @@ function renderMain(){const rating=Object.values(save.ratings).reduce((sum,n)=>s
 function renderMap(){sharedFrame?.refreshStage(stageIndex)}
 function syncScreen(next){screen=next;document.body.dataset.screen=next;els.main.hidden=next!=='main';els.stage.hidden=next!=='stage';els.battle.hidden=next!=='battle';$('gameGuide').hidden=next!=='main';sharedFrame?.frame.activate(next)}
 function applyCostume(){scene?.setCostume(!practiceActive&&save.costume==='comet'&&window.WeightPlayWallet?.owns(sku)===true)}
-function showBattleScene(){try{scene=new ShowtimeScene(els.canvas);applyCostume();preview();els.fallback.hidden=true}catch(error){console.error('Showtime renderer initialization failed',error);els.fallback.hidden=false}renderPlan()}
+function showBattleScene(){try{scene=new ShowtimeScene(els.canvas);applyCostume();scene.setAct(actNumber(currentStage())-1,currentStage().id%5===0);updateObjectives();preview();els.fallback.hidden=true}catch(error){console.error('Showtime renderer initialization failed',error);els.fallback.hidden=false}renderPlan()}
 function destroyScene(){scene?.dispose();scene=null}
 function rebuildScene(){destroyScene();const replacement=els.canvas.cloneNode(false);els.canvas.replaceWith(replacement);els.canvas=replacement;if(screen==='battle')showBattleScene()}
 function emptyPracticeSave(){return blank()}
@@ -43,10 +49,11 @@ function startBattle(index,{remix=false,practice=false}={}){
   const s=currentStage(),key=draftId(),signature=save.draftSignatures[key],draftCurrent=signature===formationSignature(s,currentGoals())||(!signature&&s.revision===1),draft=draftCurrent?save.drafts[key]:null,recorded=draft?null:replayShow(save,s,remix),source=draft||recorded,session=draft?save.sessions[key]:null;
   plan=Array.from({length:s.beats},(_,beat)=>[0,1].map(actor=>Object.hasOwn(byCue,source?.[beat]?.[actor])?source[beat][actor]:null));
   attempts=safeCount(session?.attempts);hintsUsed=safeCount(session?.hints);syncScreen('battle');scene?.clearFeedback();
-  els.label.textContent=`${t('stage')} ${s.id} · ${s.beats} ${t('beat')}${remix?' · '+t('mix'):''}`;
+  els.label.textContent=`${t('stage')} ${s.id} · ${showName(s)}${remix?' · '+t('mix'):''}`;
   const goals=currentGoals();$('dogGoal').textContent=`${t('pup')} · ${t('target')} ${goals[0]+1}`;$('foxGoal').textContent=`${t('fox')} · ${t('target')} ${goals[1]+1}`;
   $('routeMastery').textContent=!remix?masteryText(s):'';$('routeMastery').hidden=remix||!s.mastery;
-  buildTracks();if(scene){scene.activate();applyCostume();preview()}else showBattleScene();renderPlan();setStatus(recorded?t('recordedPlan'):s.bow?t('finalBow'):s.mastery?masteryText(s):`${t('plan')} ${t('defaultWaitRule')}`);audio?.play('game.start');
+  $('formationExplanation').textContent=formationText(s)?`${t('formationRule')} ${formationText(s)}`:'';$('formationExplanation').hidden=!s.checkpoints?.length;
+  buildTracks();if(scene){scene.activate();applyCostume();preview()}else showBattleScene();scene?.setAct(actNumber(s)-1,s.id%5===0);updateObjectives();renderPlan();queueSelection(true);setStatus(recorded?t('recordedPlan'):s.checkpoints?.length?t('formationCue'):s.bow?t('finalBow'):s.mastery?masteryText(s):`${t('plan')} ${t('defaultWaitRule')}`);audio?.play('game.start');
   if(!practiceActive&&!practicePageIsolation)window.WonderAnalytics?.track('stage_start',{stage_id:s.id});
 }
 function buildTracks(){for(let actor=0;actor<2;actor++){const root=$(actor?'foxPlan':'dogPlan');root.replaceChildren();root.classList.toggle('fox',actor===1);root.setAttribute('aria-label',name(actor));for(let beat=0;beat<currentStage().beats;beat++){const button=document.createElement('button');button.type='button';button.className='cue-cell';button.dataset.actor=String(actor);button.dataset.beat=String(beat);const small=document.createElement('small');small.textContent=String(beat+1);const strong=document.createElement('strong');button.append(small,strong);root.append(button)}}}
@@ -58,7 +65,7 @@ function renderPlan(){
   $('helpButton').disabled=practicePending;$('undoCue').disabled=busy||undo.length===0;$('rehearseButton').disabled=practicePending||!scene||!els.fallback.hidden;$('rehearseButton').textContent=t(rehearsing?'stop':'rehearse');
   $('sceneBeat').textContent=`${t('beat')} ${(playingBeat>=0?playingBeat:selectedBeat)+1} / ${currentStage().beats} · ${name(selectedActor)}`;
 }
-function selectCue(actor,beat){if(rehearsing)return;selectedActor=actor;selectedBeat=beat;renderPlan();preview();setStatus(`${name(actor)} · ${t('beat')} ${beat+1}`)}
+function selectCue(actor,beat){if(rehearsing)return;selectedActor=actor;selectedBeat=beat;renderPlan();preview();queueSelection();setStatus(`${name(actor)} · ${t('beat')} ${beat+1}`)}
 function chooseActor(actor){selectCue(actor,selectedBeat)}
 function remember(){undo.push({plan:plan.map(row=>[...row]),actor:selectedActor,beat:selectedBeat});if(undo.length>60)undo.shift()}
 function preview(){if(!scene||screen!=='battle')return;const s=currentStage(),evaluation=evaluatePlan(s,plan,currentGoals());const before=selectedBeat>0?evaluation.frames[Math.min(selectedBeat-1,evaluation.frames.length-1)]?.positions:null;scene.setState({positions:before||s.starts,goals:currentGoals(),walls:s.walls,activeActor:selectedActor});scene.setPreview(evaluation.frames,s.starts)}
@@ -66,13 +73,21 @@ function setCue(cue){if(rehearsing||practicePending||!Object.hasOwn(byCue,cue))r
   if(selectedBeat<plan.length-1)selectedBeat++;else if(selectedActor===0){selectedActor=1;selectedBeat=0}
   renderPlan();preview();setStatus(`${name(a)} · ${t('beat')} ${b+1} · ${cueName(cue)}`);audio?.play('board.move');scrollSelection();
 }
-function scrollSelection(){const selected=document.querySelector('.cue-cell[aria-pressed=true]');if(selected){const tracks=selected.closest('.tracks'),r=selected.getBoundingClientRect(),container=tracks.getBoundingClientRect();if(r.right>container.right)tracks.scrollLeft+=(r.right-container.right)/Math.max(.1,Number(els.battle.dataset.wpCanvasScale)||1);if(r.left<container.left+84)tracks.scrollLeft-=container.left+84-r.left}}
+function scrollSelection(){
+  const selected=document.querySelector('.cue-cell[aria-pressed=true]');if(!selected)return;
+  const tracks=selected.closest('.tracks'),label=selected.closest('.track-line').querySelector('.actor-label');
+  const r=selected.getBoundingClientRect(),box=tracks.getBoundingClientRect(),scale=box.width/tracks.clientWidth;if(!Number.isFinite(scale)||scale<=0)return;
+  const rtl=getComputedStyle(tracks).direction==='rtl',edge=label.getBoundingClientRect(),left=rtl?box.left+4*scale:edge.right+4*scale,right=rtl?edge.left-4*scale:box.right-4*scale;
+  if(r.right>right)tracks.scrollLeft+=(r.right-right)/scale;else if(r.left<left)tracks.scrollLeft-=(left-r.left)/scale;
+  if(Math.abs(tracks.scrollLeft)<.01)tracks.scrollLeft=0;
+}
+function queueSelection(reset=false){cancelAnimationFrame(trackScrollFrame);if(reset){const tracks=document.querySelector('.tracks');if(tracks)tracks.scrollLeft=0}trackScrollFrame=requestAnimationFrame(()=>{trackScrollFrame=requestAnimationFrame(()=>{trackScrollFrame=0;if(screen==='battle'&&!modal)scrollSelection()})})}
 function clearCue(){if(rehearsing)return;remember();plan[selectedBeat][selectedActor]=null;failedBeat=-1;saveDraft();renderPlan();preview();audio?.play('board.undo')}
-function resetPlan(){if(rehearsing)return;remember();plan=Array.from({length:currentStage().beats},()=>[null,null]);failedBeat=-1;selectedBeat=0;saveDraft();renderPlan();preview();setStatus(t('plan'));audio?.play('board.undo')}
-function undoCue(){if(rehearsing||!undo.length)return;const previous=undo.pop();plan=previous.plan;selectedActor=previous.actor;selectedBeat=previous.beat;failedBeat=-1;saveDraft();renderPlan();preview();audio?.play('board.undo')}
+function resetPlan(){if(rehearsing)return;remember();plan=Array.from({length:currentStage().beats},()=>[null,null]);failedBeat=-1;selectedBeat=0;saveDraft();renderPlan();preview();queueSelection(true);setStatus(t('plan'));audio?.play('board.undo')}
+function undoCue(){if(rehearsing||!undo.length)return;const previous=undo.pop();plan=previous.plan;selectedActor=previous.actor;selectedBeat=previous.beat;failedBeat=-1;saveDraft();renderPlan();preview();queueSelection();audio?.play('board.undo')}
 function hint(){if(rehearsing)return;remember();const s=currentStage();if(activeRemix){setStatus(t('mix'),true);return}plan[selectedBeat]=[...s.solution[selectedBeat]];hintsUsed++;saveDraft();closeDialog();renderPlan();preview();setStatus(t('hintRule'));audio?.play('feedback.hint')}
 const settingsOpen=()=>Boolean(document.querySelector('#battleScreen .wp-frame-popover:not([hidden])'));
-function cancelRehearsal(){runToken++;practiceIntent=null;practicePending=false;cancelAnimationFrame(runFrame);runFrame=0;playback=null;rehearsing=false;playingBeat=-1;scene?.clearFeedback();audio?.stop()}
+function cancelRehearsal(){runToken++;practiceIntent=null;practicePending=false;cancelAnimationFrame(runFrame);cancelAnimationFrame(trackScrollFrame);trackScrollFrame=0;runFrame=0;playback=null;rehearsing=false;playingBeat=-1;scene?.clearFeedback();audio?.stop()}
 async function rehearse(){
   if(rehearsing){cancelRehearsal();renderPlan();preview();setStatus(t('plan'));return}
   if(!scene||modal||practicePending)return;
@@ -94,7 +109,7 @@ function advanceRehearsal(now){
 }
 function finishRehearsal(result){
   playback=null;rehearsing=false;playingBeat=-1;
-  if(!result.success){const failure=result.failure;failedBeat=failure.beat;selectedBeat=failure.beat;selectedActor=failure.actor;recordRemixAttempt();renderPlan();scrollSelection();setStatus(`${t('beat')} ${failure.beat+1} · ${name(failure.actor)} · ${t(({EDGE:'edge',BLOCKED:'blocked',COLLISION:'collision',CROSSING:'crossing',FORMATION:'formation',BOW:'finalBow',CUE:'plan'})[failure.code])}`,true);audio?.play('feedback.error');$('rehearseButton').focus();return}
+  if(!result.success){const failure=result.failure;failedBeat=failure.beat;selectedBeat=failure.beat;selectedActor=failure.actor;recordRemixAttempt();renderPlan();scrollSelection();setStatus(`${t('beat')} ${failure.beat+1} · ${name(failure.actor)} · ${t(({EDGE:'edge',BLOCKED:'blocked',COLLISION:'collision',CROSSING:'crossing',FORMATION:'formation',BOW:'finalBow',CUE:'plan',CHECKPOINT:'formationCue'})[failure.code])}`,true);audio?.play('feedback.error');$('rehearseButton').focus();return}
   const stage=currentStage();settledRating=ratingForShow(hintsUsed);
   if(practiceActive)rememberShow(save,stage,plan,{remix:activeRemix,rating:settledRating});
   const saved=clearStage(stage);scene.setState({positions:result.positions,goals:currentGoals(),walls:stage.walls,gestures:['BOW','BOW']});scene.celebrate();audio?.play('result.win');renderPlan();openResult(stage,saved);
@@ -109,9 +124,12 @@ function clearStage(stage){
 }
 function openResult(stage,saved){
   els.battle.dataset.showResult='true';
+  scene?.setObjectives();
   const best=save.performances[draftId()]?.rating||settledRating,mastered=!activeRemix&&earnedMastery(stage,plan);
   $('resultKicker').textContent=`${practiceActive?t('practice'):activeRemix?t('mix'):t('stage')} ${stage.id}`;$('showRating').textContent=`${settledRating} / 3`;$('resultTitle').textContent=t(settledRating===3?'perfect':settledRating===2?'smooth':'encore');$('resultText').textContent=[`${t('cleared')} · ${practiceActive?t('practice'):saved?t('saved'):t('storage')}`,`${t('hint')} · ${hintsUsed}  ·  ${t('best')} ${best}/3`,!activeRemix&&stage.mastery?mastered?`✓ ${t('mastered')}`:masteryText(stage):''].filter(Boolean).join('\n');
   $('nextStage').disabled=stage.id===stages.length;openDialog(els.result,stage.id===stages.length?'replayStage':'nextStage');scene?.setPaused(false);
+  $('resultKicker').textContent=`${practiceActive?t('practice'):activeRemix?t('mix'):t('stage')} ${stage.id} · ${showName(stage)}`;
+  if(stage.id%5===0&&stage.id<stages.length)$('resultText').textContent+=`\n${t('next')} · ${t('act'+(actNumber(stage)+1))}`;
   if(saved&&!practiceActive){const reward=window.WonderAnalytics?.completeStage(stage.id);window.ShowResultGet?.('robot-dog-showtime',reward?.credited===true);if(reward?.credited===true)window.WeightPlayCastle?.dismissRewardNotice('robot-dog-showtime')}else window.ShowResultGet?.('robot-dog-showtime',false);
 }
 function setBackgroundInert(value){const owner=screen==='stage'?els.stage:els.battle;for(const child of owner.children)if(!child.classList.contains('dialog'))child.inert=value}
@@ -136,7 +154,7 @@ function localize(){
   const labels={selectDog:'pup',selectFox:'fox',undoCue:'undo',resetPlan:'reset',rehearseButton:'rehearse',helpTitle:'help',closeHelp:'continue',hintButton:'hint',continueBattle:'continue',returnMap:'stages',leaveTitle:'continue',resultMap:'stages',nextStage:'next',replayStage:'replay',wardrobeAction:'wardrobe',wardrobeTitle:'wardrobe',costumeTitle:'costume',closeWardrobe:'continue'};
   for(const [id,key]of Object.entries(labels))$(id).textContent=t(key);
   for(const cue of ['WAIT','BOW','WAVE'])document.querySelector(`[data-cue=${cue}]`).textContent=cueName(cue);
-  $('helpButton').setAttribute('aria-label',t('help'));$('hintExplanation').textContent=t('hintRule');$('masteryExplanation').textContent=t('masteryRule');$('costumeEffect').textContent=t('costumeRule');$('diamondSource').textContent=t('diamondSource');
+  $('helpButton').setAttribute('aria-label',t('help'));$('hintExplanation').textContent=t('hintAction');$('masteryExplanation').textContent=t('masteryRule');$('costumeEffect').textContent=t('costumeRule');$('diamondSource').textContent=t('diamondSource');
   document.querySelector('.main-summary').textContent=t('summary');const guide=guideCopy(locale);$('helpSteps').replaceChildren(...[...guide.slice(7,10),t('defaultWaitRule')].map(text=>{const li=document.createElement('li');li.textContent=text;return li}));
   $('leaveText').textContent=t('leave');$('retryRender').textContent=t('replay');$('renderErrorText').textContent=t('renderError');$('clearCue').setAttribute('aria-label',t('clear'));
   document.querySelector('.costume-art img').alt=t('costume');
@@ -159,6 +177,7 @@ window.addEventListener('keydown',event=>{
   if(screen!=='battle'||rehearsing||practicePending||settingsOpen())return;if(event.key===' '&&event.target.closest('button,input,select'))return;const cue=({ArrowUp:'N',ArrowRight:'E',ArrowDown:'S',ArrowLeft:'W',' ':'WAIT',b:'BOW',w:'WAVE'})[event.key];if(cue){event.preventDefault();setCue(cue)}
 });
 window.addEventListener('visibilitychange',()=>{if(playback)playback.last=0;scene?.setPaused(document.hidden||Boolean(modal&&modal!==els.result));if(document.hidden)audio?.stop()});
+window.addEventListener('resize',()=>{if(screen==='battle')queueSelection()},{passive:true});
 window.addEventListener('pagehide',()=>{pageAlive=false;cancelRehearsal();destroyScene();audio?.dispose()});
 window.addEventListener('pageshow',event=>{if(!event.persisted)return;pageAlive=true;audio=window.WeightPlayAudio?.createScope();if(screen==='battle')rebuildScene();sharedFrame?.frame.activate(screen)});
 localize();

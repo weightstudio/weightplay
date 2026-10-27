@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {targetAt} from './model.mjs';
+import {targetAt} from './model.mjs?v=20261027-flip-miss-direction-v19';
 
 // Actual cuboid geometry in a fixed orthographic plane. The transparent input
 // Canvas overlays only labels and the trajectory, with identical projection.

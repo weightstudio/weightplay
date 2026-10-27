@@ -1,21 +1,38 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+    <link rel="canonical" href="https://weightplay.com/en/games/orbit-menders/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/orbit-menders/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/orbit-menders/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/orbit-menders/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/orbit-menders/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/orbit-menders/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/orbit-menders/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/orbit-menders/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/orbit-menders/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/orbit-menders/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/orbit-menders/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/orbit-menders/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/orbit-menders/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/orbit-menders/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/orbit-menders/" />
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/orbit-menders/")}catch{location.replace("/en/games/orbit-menders/")}})();</script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v3"><meta name="weightplay-interface-target" content="9">
-  <title>爆炸頭獅子：守塔防線 · 開發中 | WeightPlay</title>
+  <meta name="robots" content="index,follow"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="orbit-menders">
+  <meta name="weightplay-game-version" content="v4"><meta name="weightplay-interface-target" content="9">
+  <title>爆炸頭獅子：守塔防線 | WeightPlay</title>
   <meta name="description" content="爆炸頭獅子的平面戰場守塔射擊。滑鼠指向敵人、按住連射，擊退殭屍，守住主塔。電腦瀏覽器遊玩。">
   <script src="/src/weightplay-audio.js" data-wp-entry-required></script><script src="/src/game-layout-config.js" data-wp-entry-required></script><script src="/src/game-title-registry.js" data-wp-game-title-registry></script>
   <link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/game-entry-loader.css"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="style.css">
 </head>
 <body data-wp-play-ui="1">
+<h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">爆炸頭獅子：守塔防線</h1>
 <div id="gameFrame" data-wp-frame-root>
   <main id="mainScreen" data-wp-frame-scene="main">
     <header data-wp-frame-header="main"><a href="/" data-wp-return="main" aria-label="返回 WeightPlay">← W</a><strong data-wp-frame-title>爆炸頭獅子：守塔防線</strong><select id="localeSelect" aria-label="語言"><option value="zh-Hant">繁體中文</option></select></header>
     <section id="mainContent" data-wp-frame-content="main"><img class="main-poster leo-poster" data-wp-frame-poster src="/assets/weightplay-boom-mane-lion.png" width="512" height="512" alt="爆炸頭獅子：金色臉、橘金鬃毛、火花與披風"><div data-wp-frame-copy><p data-wp-frame-summary>滑鼠瞄準、按住連射！擊退殭屍，別讓主塔倒下。</p><p id="buildStatus">守塔任務 0 / 6</p><p id="deviceNotice">電腦滑鼠遊玩 · 固定鏡頭，輕鬆瞄準。</p><button id="start" data-wp-main-start data-wp-frame-action="primary" disabled>開始遊戲</button></div></section>
   </main>
-  <section id="guide" class="game-page-info game-page-info-static" aria-label="遊戲說明">
+  <section id="guide" class="game-page-info game-page-info-static" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="遊戲說明">
     <div class="game-info-section"><h2>守住最後一道防線</h2><p>爆炸頭獅子守在主塔上，殭屍正從庭院前方逼近。用滑鼠指向目標，按住左鍵持續射擊；子彈有飛行時間，優先處理靠近主塔與移動快速的敵人。主塔被摧毀就會失敗，擊退全部敵潮與首領就能開放下一個防衛任務。</p></div>
     <div class="game-info-section"><h3>操作與強化</h3><p>左鍵射擊，按住可連射。右鍵或 Space 在瞄準處施放震爆，使用後需等待冷卻；畫面下方也有震爆按鈕。F 可向目前準星持續射擊，Esc 暫停。每波之間選擇一次火力強化或主塔修繕，效果限本次戰鬥。固定俯視鏡頭，不必轉動相機或控制跳躍。</p></div>
     <div class="game-info-section"><h3>存檔與舒適設定</h3><p>通關與最佳分數保存在目前瀏覽器。暫停時可以匯出或匯入 JSON；離開未完成的戰鬥會從該任務第一波重新開始。失焦後暫停，按繼續才恢復。暫停中可選減少動態、低畫質與輔助模式；輔助模式於下次進入生效。</p></div>

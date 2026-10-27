@@ -85,14 +85,14 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "orbit-menders", audience: "general", status: "planned", internalOnly: true,
-      href: "games/orbit-menders/", internalTrial: "/games/orbit-menders/?preview=1",
-      title: { en: "Boom Mane: Tower Guard", "zh-Hant": "爆炸頭獅子：守塔防線" },
+      id: "orbit-menders", audience: "general", status: "playable",
+      href: "games/orbit-menders/", previewVideo: "assets/previews/orbit-menders-battle.webm",
+      title: {"__localizedExact":true,"en":"Boom Mane: Tower Guard","zh-Hant":"爆炸頭獅子：守塔防線","zh-Hans":"爆炸头狮子：守塔防线","ja":"アフロライオン：タワー防衛戦","ko":"폭탄머리 사자: 타워 수비대","es":"Melena Explosiva: Defensa de la Torre","pt-BR":"Juba Explosiva: Defesa da Torre","fr":"Crinière explosive : Défense de la tour","de":"Explosionsmähne: Turmwache","it":"Criniera esplosiva: Difesa della torre","ru":"Взрывная грива: Защита башни","hi":"धमाकेदार अयाल: टावर रक्षा","ar":"اللبدة المتفجرة: حارس البرج"},
       type: { en: "Tower Defense Shooter", "zh-Hant": "守塔射擊" },
-      description: { en: "Aim with the mouse, shoot the zombie horde and protect the main tower as Boom Mane Leo. Desktop game in development.", "zh-Hant": "滑鼠指哪射哪，操作爆炸頭獅子擊退殭屍，守住主塔。電腦版開發中。" },
+      description: {"en":"Aim with the mouse and hold to fire. Defend the main tower from approaching zombies in a flat 3D courtyard, with a fixed camera and bright combat effects.","zh-Hant":"爆炸頭獅子的平面戰場守塔射擊。滑鼠指向敵人、按住連射，擊退殭屍，守住主塔。電腦瀏覽器遊玩。","zh-Hans":"爆炸头狮子的平面战场守塔射击。鼠标指向敌人、按住连射，击退僵尸，守住主塔。在电脑浏览器中游玩。","ja":"マウスで狙い、押し続けて連射。固定カメラの平らな3D広場で、アフロのライオンとゾンビから主塔を守るブラウザー射撃ゲーム。","ko":"마우스로 조준하고 누른 채 연사하세요. 고정 카메라로 보는 평평한 3D 전장에서 폭탄머리 사자와 함께 좀비로부터 주탑을 지키는 브라우저 슈팅 게임입니다.","es":"Apunta con el ratón y mantén pulsado para disparar. Protege la torre de los zombis en un patio 3D plano con cámara fija y efectos de combate luminosos.","pt-BR":"Mire com o mouse e segure para atirar. Defenda a torre dos zumbis em um pátio 3D plano, com câmera fixa e efeitos de combate vibrantes.","fr":"Visez à la souris et maintenez le bouton pour tirer. Défendez la tour contre les zombies dans une cour 3D plane, avec une caméra fixe et des effets lumineux.","de":"Mit der Maus zielen und zum Schießen gedrückt halten. Verteidige den Hauptturm gegen Zombies in einem ebenen 3D-Hof mit fester Kamera und leuchtenden Kampfeffekten.","it":"Mira con il mouse e tieni premuto per sparare. Difendi la torre dagli zombi in un cortile 3D piano, con telecamera fissa ed effetti di combattimento luminosi.","ru":"Цельтесь мышью и удерживайте кнопку для непрерывной стрельбы. Защитите башню от зомби на плоской трёхмерной арене с неподвижной камерой и яркими эффектами.","hi":"माउस से निशाना लगाएँ और लगातार गोली चलाने के लिए बटन दबाए रखें। स्थिर कैमरे और चमकीले प्रभावों वाले समतल 3D मैदान में मुख्य टावर को ज़ॉम्बियों से बचाएँ।","ar":"صوّب بالفأرة واضغط باستمرار لإطلاق النار. احمِ البرج الرئيسي من الزومبي في ساحة ثلاثية الأبعاد مسطحة، بكاميرا ثابتة ومؤثرات قتالية ساطعة."},
       categories: ["Action", "Shooting", "Animal Games"], skills: ["Strategy", "Coordination"],
       ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      meta: { en: ["Desktop", "In development"], "zh-Hant": ["電腦限定", "開發中"] },
+      meta: { en: ["Desktop", "6 Operations"], "zh-Hant": ["電腦限定", "6 個任務"] },
       art: { kind: "image", background: "/assets/weightplay-boom-mane-lion.png", hideHero: true },
     },
     {

@@ -12,6 +12,8 @@ const coneGeometry = new THREE.ConeGeometry(1,1,16);
 const ringGeometry = new THREE.TorusGeometry(1,.075,6,32);
 const crystalGeometry = new THREE.OctahedronGeometry(1,0);
 const shadowGeometry=new THREE.CircleGeometry(1,24);
+const lawnPatchGeometry=new THREE.CircleGeometry(1,7);
+const archGeometry=(()=>{const shape=new THREE.Shape();shape.moveTo(-.38,-.5);shape.lineTo(.38,-.5);shape.lineTo(.38,.16);shape.quadraticCurveTo(.38,.61,0,.61);shape.quadraticCurveTo(-.38,.61,-.38,.16);shape.closePath();return new THREE.ExtrudeGeometry(shape,{depth:.07,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:2,steps:1});})();
 const shadowMaterial=new THREE.MeshBasicMaterial({color:0x24495a,transparent:true,opacity:.14,depthWrite:false});
 const heroShadowMaterial=new THREE.MeshBasicMaterial({color:0x324154,transparent:true,opacity:.23,depthWrite:false});
 const polishedGold=new THREE.MeshStandardMaterial({color:0xf5bc4e,metalness:.68,roughness:.28});
@@ -22,7 +24,16 @@ const softGeometry = (() => {
 })();
 const materials=new Map();
 function material(color,glow=false){const key=`${color}:${glow}`;if(!materials.has(key))materials.set(key,new THREE.MeshStandardMaterial({color,roughness:.68,metalness:glow?.12:0,emissive:glow?color:0,emissiveIntensity:glow?.65:0}));return materials.get(key);}
-const bakedMaterial=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.72,metalness:.03});
+const surfaceProfiles={
+  paint:{roughness:.55,metalness:.035},stone:{roughness:.86,metalness:.015},
+  turf:{roughness:.98,metalness:0},foliage:{roughness:.77,metalness:.01},
+  cloth:{roughness:.93,metalness:0},skin:{roughness:.67,metalness:.015},
+  metal:{roughness:.3,metalness:.48},wood:{roughness:.87,metalness:0}
+};
+const bakedMaterials=new Map();
+function bakedMaterialFor(family){if(!bakedMaterials.has(family)){const m=new THREE.MeshStandardMaterial({vertexColors:true,...(surfaceProfiles[family]||surfaceProfiles.paint)});m.userData.artSurface=family;bakedMaterials.set(family,m);}return bakedMaterials.get(family);}
+function surface(node,family,caster=true,ground=false){node.userData.artSurface=family;node.userData.artShadowCaster=caster;node.userData.artGround=ground;return node;}
+function inherited(node,key,fallback){for(let current=node;current;current=current.parent)if(current.userData[key]!==undefined)return current.userData[key];return fallback;}
 function add(parent,geometry,color,x,y,z,sx=1,sy=sx,sz=sx,glow=false){const node=new THREE.Mesh(geometry,material(color,glow));node.position.set(x,y,z);node.scale.set(sx,sy,sz);node.receiveShadow=true;parent.add(node);return node;}
 const ball=(p,c,x,y,z,sx,sy=sx,sz=sx)=>add(p,ballGeometry,c,x,y,z,sx,sy,sz);
 const soft=(p,c,x,y,z,sx,sy,sz)=>add(p,softGeometry,c,x,y,z,sx,sy,sz);
@@ -32,29 +43,65 @@ function group(parent,name,x=0,y=0,z=0){const g=new THREE.Group();g.name=name;g.
 // Only use on a finished, static subtree. Animated pivots are baked separately.
 // Emits one draw regardless of the original palette/shape count.
 function bake(root,direct=false){
-  root.updateMatrixWorld(true);const inverse=root.matrixWorld.clone().invert();const positions=[],normals=[],colors=[],uvs=[];const meshes=[];
+  root.updateMatrixWorld(true);const inverse=root.matrixWorld.clone().invert(),batches=new Map(),meshes=[];
   const candidates=[];if(direct)candidates.push(...root.children);else root.traverse(mesh=>candidates.push(mesh));
-  for(const mesh of candidates)if(mesh.isMesh&&!mesh.material.emissiveIntensity&&!mesh.material.transparent&&!mesh.userData.noBake){meshes.push(mesh);const baseTransform=inverse.clone().multiply(mesh.matrixWorld),geometry=mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry;
-    const pos=geometry.getAttribute('position'),normal=geometry.getAttribute('normal'),uv=geometry.getAttribute('uv'),point=new THREE.Vector3(),direction=new THREE.Vector3(),color=mesh.material.color;
+  for(const mesh of candidates){
+    if(!mesh.isMesh||Array.isArray(mesh.material)||mesh.material.emissiveIntensity||mesh.material.transparent||mesh.userData.noBake)continue;
+    const family=mesh.userData.artSurface||mesh.material.userData.artSurface||inherited(mesh.parent,'artSurface','paint');
+    const caster=inherited(mesh,'artShadowCaster',true),ground=inherited(mesh,'artGround',false),key=`${family}:${caster}:${ground}`;
+    if(!batches.has(key))batches.set(key,{family,caster,ground,positions:[],normals:[],colors:[],uvs:[]});
+    const out=batches.get(key),baseTransform=inverse.clone().multiply(mesh.matrixWorld),geometry=mesh.geometry.index?mesh.geometry.toNonIndexed():mesh.geometry;
+    const pos=geometry.getAttribute('position'),normal=geometry.getAttribute('normal'),uv=geometry.getAttribute('uv'),sourceColors=mesh.material.vertexColors?geometry.getAttribute('color'):null;
+    const point=new THREE.Vector3(),direction=new THREE.Vector3(),color=new THREE.Color(),sourceColor=new THREE.Color(),instanceColor=new THREE.Color();
+    geometry.computeBoundingBox();const bounds=geometry.boundingBox,height=Math.max(.001,bounds.max.y-bounds.min.y);
     for(let instance=0;instance<(mesh.isInstancedMesh?mesh.count:1);instance++){
-      const transform=baseTransform.clone();if(mesh.isInstancedMesh){const instanceTransform=new THREE.Matrix4();mesh.getMatrixAt(instance,instanceTransform);transform.multiply(instanceTransform);}const normalMatrix=new THREE.Matrix3().getNormalMatrix(transform);
-      for(let i=0;i<pos.count;i++){point.fromBufferAttribute(pos,i).applyMatrix4(transform);direction.fromBufferAttribute(normal,i).applyMatrix3(normalMatrix).normalize();positions.push(point.x,point.y,point.z);normals.push(direction.x,direction.y,direction.z);colors.push(color.r,color.g,color.b);uvs.push(uv?.getX(i)||0,uv?.getY(i)||0);}
+      const transform=baseTransform.clone();instanceColor.set(0xffffff);
+      if(mesh.isInstancedMesh){const matrix=new THREE.Matrix4();mesh.getMatrixAt(instance,matrix);transform.multiply(matrix);if(mesh.instanceColor)mesh.getColorAt(instance,instanceColor);}
+      const normalMatrix=new THREE.Matrix3().getNormalMatrix(transform);
+      for(let i=0;i<pos.count;i++){
+        point.fromBufferAttribute(pos,i).applyMatrix4(transform);direction.fromBufferAttribute(normal,i).applyMatrix3(normalMatrix).normalize();
+        out.positions.push(point.x,point.y,point.z);out.normals.push(direction.x,direction.y,direction.z);
+        color.copy(mesh.material.color).multiply(instanceColor);if(sourceColors)color.multiply(sourceColor.fromBufferAttribute(sourceColors,i));
+        // Existing vertex colours survive re-baking; contact shading is applied once.
+        if(!mesh.userData.artBaked&&family!=='metal'&&family!=='turf')color.multiplyScalar(.87+.13*THREE.MathUtils.smoothstep(pos.getY(i),bounds.min.y,bounds.min.y+height));
+        out.colors.push(color.r,color.g,color.b);out.uvs.push(uv?.getX(i)||0,uv?.getY(i)||0);
+      }
     }
-    if(geometry!==mesh.geometry)geometry.dispose();
+    meshes.push(mesh);if(geometry!==mesh.geometry)geometry.dispose();
   }
-  if(!meshes.length)return root;const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.computeBoundingSphere();
-  for(const mesh of meshes)mesh.parent.remove(mesh);const merged=new THREE.Mesh(geometry,bakedMaterial);merged.name='baked_original_art';merged.receiveShadow=true;root.add(merged);return root;
+  for(const mesh of meshes)mesh.parent.remove(mesh);
+  for(const out of batches.values()){
+    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(out.positions,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(out.normals,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(out.colors,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(out.uvs,2));geometry.computeBoundingSphere();
+    const merged=new THREE.Mesh(geometry,bakedMaterialFor(out.family));merged.name=`baked_${out.family}`;merged.receiveShadow=true;merged.castShadow=out.caster&&!out.ground;
+    surface(merged,out.family,out.caster,out.ground);merged.userData.artBaked=true;root.add(merged);
+  }
+  return root;
 }
 
-function tree(parent,x,z,scale=1){const g=group(parent,'rounded_canopy',x,0,z);g.scale.setScalar(scale);cylinder(g,0xaf7961,0,.74,0,.16,1.5);ball(g,0x238f7d,0,1.6,0,.8,.75,.75);ball(g,0x43b388,-.36,1.94,.12,.62,.58,.58);ball(g,0x7ad292,.35,2.08,-.04,.56,.55,.56);ball(g,0xc3ed9f,.08,2.4,.07,.4,.33,.38);for(let i=0;i<3;i++)ball(g,0xffcc70,(i-1)*.25,1.9+(i%2)*.3,.56,.07);}
-function shrub(parent,x,z,scale=1){const g=group(parent,'side_shrub',x,0,z);g.scale.setScalar(scale);for(let i=0;i<3;i++)ball(g,[0x2b9d8b,0x4cbda1,0x94d9a1][i],(i-1)*.29,.3+(i%2)*.15,0,.43,.4,.38);}
-function banner(parent,x,z,side=1){const g=group(parent,'castle_banner',x,0,z);cylinder(g,0xf4d690,0,1.9,0,.075,3.8);ball(g,0xffcc58,0,3.86,0,.16);soft(g,0xe66c6e,.42*side,3.07,0,.76,1.11,.07);soft(g,0xffe3a7,.42*side,3.1,.047,.08,.72,.028);ball(g,0xffe3a7,.42*side,3.3,.055,.12,.12,.04);}
+function tree(parent,x,z,scale=1){const g=surface(group(parent,'rounded_canopy',x,0,z),'foliage');g.scale.setScalar(scale);cylinder(g,0xaf7961,0,.74,0,.16,1.5);ball(g,0x238f7d,0,1.6,0,.8,.75,.75);ball(g,0x43b388,-.36,1.94,.12,.62,.58,.58);ball(g,0x7ad292,.35,2.08,-.04,.56,.55,.56);ball(g,0xc3ed9f,.08,2.4,.07,.4,.33,.38);for(let i=0;i<3;i++)ball(g,0xffcc70,(i-1)*.25,1.9+(i%2)*.3,.56,.07);}
+function shrub(parent,x,z,scale=1){const g=surface(group(parent,'side_shrub',x,0,z),'foliage');g.scale.setScalar(scale);for(let i=0;i<3;i++)ball(g,[0x2b9d8b,0x4cbda1,0x94d9a1][i],(i-1)*.29,.3+(i%2)*.15,0,.43,.4,.38);}
+function pawSeal(parent,x,y,z,scale=.3){
+  const seal=surface(group(parent,'guardian_paw_seal',x,y,z),'metal');seal.scale.setScalar(scale);
+  const rim=add(seal,ringGeometry,0xe7b24b,0,0,0,1,1,.45);rim.rotation.z=Math.PI/8;
+  ball(seal,0x266e81,0,0,-.025,.88,.88,.13);
+  ball(seal,0xffd878,0,-.12,.12,.35,.29,.08);
+  for(let i=0;i<3;i++)ball(seal,0xffe0a0,(i-1)*.31,.23+(i===1?.14:0),.14,.16,.19,.07);
+  return seal;
+}
+function banner(parent,x,z,side=1){const g=surface(group(parent,'castle_banner',x,0,z),'cloth');cylinder(g,0xf4d690,0,1.9,0,.075,3.8);ball(g,0xffcc58,0,3.86,0,.16);soft(g,0xe66c6e,.42*side,3.07,0,.76,1.11,.07);soft(g,0xffe3a7,.42*side,3.1,.047,.08,.72,.028);ball(g,0xffe3a7,.42*side,3.3,.055,.12,.12,.04);}
 
 export function createArena(){
-  const root=new THREE.Group();root.name='original_sunrise_guardian_courtyard';
+  const root=new THREE.Group();root.name='original_sunrise_guardian_courtyard';surface(root,'turf',false,true);
   soft(root,0x437f79,0,-.64,.4,29.5,.8,27.5);soft(root,0x63b67e,0,-.17,.4,28.9,.26,27);
   // Low-contrast stone paths are ground-level decoration, never obstacles.
   soft(root,0x76bf82,0,-.015,-1.2,20.9,.05,21.2);
+  // Authored, flush lawn colour islands bring surface scale without new hit
+  // regions, moving decoration or high-contrast false hazards.
+  for(let row=0;row<8;row++)for(let col=0;col<8;col++){
+    const x=-9.4+col*2.65+Math.sin(row*3+col)*.3,z=-9.4+row*2.1;
+    const patch=add(root,lawnPatchGeometry,(row+col)%3?0x71bd83:0x6bb980,x,.013,z,.53+(col%3)*.15,.3+(row%3)*.1,1);
+    patch.rotation.set(-Math.PI/2,0,(row*.7+col)*.4);
+  }
   // Five gentle converging routes communicate the incoming pressure at once.
   // They are paint/stone insets on the flat ground, never collision geometry.
   for(let lane=-2;lane<=2;lane++){
@@ -62,15 +109,16 @@ export function createArena(){
     const road=soft(root,lane%2?0x8ecb89:0x9bd18b,mid.x,.018,mid.z,1.58,.022,delta.length());road.rotation.y=Math.atan2(delta.x,delta.z);
     for(let dash=0;dash<5;dash++){const t=(dash+.5)/5,point=start.clone().lerp(end,t);const mark=soft(root,0x63b798,point.x,.042,point.z,.54,.025,.12);mark.rotation.y=road.rotation.y;}
   }
-  soft(root,0xc6d18e,0,.025,1,2.45,.025,17);
-  for(let row=0;row<9;row++)for(let col=0;col<2;col++){const tile=soft(root,(row+col)%2?0xcbd69a:0xd7dda8,(col-.5)*1.03,.05,-8.8+row*1.95,.95,.03,1.76);tile.rotation.y=(row%2?.018:-.012);}
+  const walk=surface(group(root,'warm_stone_walk'),'stone',false,true);
+  soft(walk,0xb7bc7f,0,.025,1,2.45,.025,17);
+  for(let row=0;row<9;row++)for(let col=0;col<2;col++){const tile=soft(walk,(row+col)%2?0xd4d4a1:0xe0dcb1,(col-.5)*1.03,.05,-8.8+row*1.95,.95,.03,1.76);tile.rotation.y=(row%2?.018:-.012);}
   // Edges define the full combat footprint without confusing extra entrances.
   for(const side of [-1,1]){
     soft(root,0x4d9f7c,side*12.65,.11,-.3,1.5,.3,23.6);soft(root,0xe0cf8f,side*13.5,.04,-.3,.19,.16,24);
     for(let i=0;i<6;i++){shrub(root,side*12.7,-9.4+i*3.8,.85+(i%2)*.16);for(let j=0;j<3;j++){cylinder(root,0x4b9a76,side*(11.8+j*.17),.16,-8.7+i*3.8,.024,.34);ball(root,[0xffd675,0xffa5b0,0xf4f2d8][j],side*(11.8+j*.17),.34,-8.7+i*3.8,.10,.075,.10);}}
     for(let i=0;i<3;i++){
       // Alternating planter families break the mirrored shrub repetition.
-      const z=-7.5+i*7.2;const pot=group(root,'coral_courtyard_planter',side*12.65,0,z);
+      const z=-7.5+i*7.2;const pot=surface(group(root,'coral_courtyard_planter',side*12.65,0,z),'stone');
       cylinder(pot,i%2?0xe0b86e:0xce8470,0,.18,0,.48,.34,.4);cylinder(pot,0xefcb91,0,.36,0,.53,.09,.44);ball(pot,0x398f77,0,.48,0,.43,.29,.35);
       for(let petal=0;petal<3;petal++){const a=petal*2.399;ball(pot,i%2?0xffd16e:0xf7a6ae,Math.sin(a)*.23,.67+(petal%2)*.07,Math.cos(a)*.2,.14,.12,.13);}
     }
@@ -78,23 +126,31 @@ export function createArena(){
       const stone=soft(root,i%2?0x7bae89:0xa4c7a3,side*(10.55-(i%2)*.4),.052,-7.5+i*3.1,.44,.075,.3);stone.rotation.y=side*(.35+i*.7);
       for(let blade=0;blade<2;blade++){const grass=soft(root,0x4ea67c,side*(10.1+blade*.11),.09,-6.8+i*3.1,.045,.12,.055);grass.rotation.z=side*.18;}
     }
-    tree(root,side*14.7,-10.8,1.6);tree(root,side*15.4,-3,1.75);tree(root,side*15.1,5.4,1.4);
+    // Original repair-garden props stay outside the actual combat footprint.
+    const cabinet=surface(group(root,'garden_guard_supply',side*12.65,0,8.9),'wood');
+    soft(cabinet,0x609891,0,.33,0,.78,.66,.68);soft(cabinet,0xe4bf72,0,.69,0,.86,.12,.75);
+    for(const band of [-1,1])soft(cabinet,0x287d83,band*.22,.34,.35,.055,.49,.04);
+    soft(cabinet,0xf4d691,0,.43,.38,.21,.16,.035);
+    tree(root,side*14.7,-10.8,side<0?1.56:1.7);tree(root,side*15.4,-3,side<0?1.83:1.63);tree(root,side*15.1,5.4,side<0?1.35:1.48);
     // Distant rolling hills keep the active courtyard clearly flat.
     ball(root,side<0?0x58b2a2:0x72c4ae,side*21,-1.4,-17,12,5,8);ball(root,0x8bd4b2,side*13,-1.5,-24,11,6,7);
   }
   // Incoming gateway is deliberately low and behind the spawn line.
   soft(root,0x397d83,0,.24,-13.1,21,.5,1.1);
   for(let lane=-2;lane<=2;lane++){
-    const gate=group(root,'incoming_gate',lane*4,0,-12.5);
+    const gate=surface(group(root,'incoming_gate',lane*4,0,-12.5),'stone');
     soft(gate,0x3e7b86,0,.87,-.38,2.5,1.6,.12);
     for(const side of [-1,1]){soft(gate,0xc5ddba,side*1.48,.85,0,.34,1.7,.52);soft(gate,0x42b9bb,side*1.48,.95,.29,.13,1.15,.07);}
     soft(gate,0xd9e5b8,0,1.79,0,3.35,.24,.69);soft(gate,0xf2c86c,0,1.99,.02,.44,.25,.57);
+    soft(gate,0x387d84,0,1.54,.39,2.65,.08,.055);
+    if(lane===0)pawSeal(gate,0,1.64,.43,.32);
     for(const side of [-1,1]){const chevron=soft(root,0x39b8af,lane*4+side*.17,.069,-10.45,.13,.035,.55);chevron.rotation.y=side*.7;}
   }
   for(const side of [-1,1]){soft(root,0xf0e8c5,side*10.7,.95,-12.4,1.5,1.95,1.6);ball(root,0xf7d18a,side*10.7,2,-12.4,.89,.31,.9);banner(root,side*10.7,-12.3,side);}
   for(let i=0;i<5;i++){const x=(i-2)*3.75;soft(root,0xf4d58e,x,.035,-10.8,1.5,.06,.25);soft(root,0xffedbe,x,.035,-10.45,.7,.06,.16);}
   // Fortress forecourt frames the protected area without covering targets.
-  soft(root,0x9ab58e,0,.09,9.1,10.9,.22,6.2);soft(root,0xe9d4a7,0,.23,9.1,9.7,.14,5.4);
+  const forecourt=surface(group(root,'fortress_stone_terrace'),'stone',false,true);
+  soft(forecourt,0x719b84,0,.09,9.1,10.9,.22,6.2);soft(forecourt,0xe6c995,0,.23,9.1,9.7,.14,5.4);
   for(const side of [-1,1]){
     // Flush guardian-yard inlays add authored detail while targets stay clear.
     const inlay=add(root,ringGeometry,0x62ae8c,side*6.7,.045,2.2,.94,.94,.94);inlay.rotation.x=-Math.PI/2;
@@ -105,8 +161,8 @@ export function createArena(){
 }
 
 export function createTower(){
-  const root=new THREE.Group();root.name='sunheart_crystal_fortress';
-  const contact=new THREE.Mesh(shadowGeometry,shadowMaterial);contact.name='tower_contact_shadow';contact.rotation.x=-Math.PI/2;contact.position.y=.045;contact.scale.set(3.18,2.48,1);root.add(contact);
+  const root=new THREE.Group();root.name='sunheart_crystal_fortress';surface(root,'stone');
+  const contact=new THREE.Mesh(shadowGeometry,shadowMaterial);contact.name='tower_contact_shadow';surface(contact,'paint',false,true);contact.rotation.x=-Math.PI/2;contact.position.y=.045;contact.scale.set(3.18,2.48,1);root.add(contact);
   soft(root,0x9c8a75,0,.19,0,5.5,.38,4.3);soft(root,0xf3dbb0,0,.47,0,4.85,.5,3.7);soft(root,0xdfb18f,0,.95,0,4.5,.56,3.36);
   soft(root,0xfeefd2,0,1.34,0,5.08,.25,3.85);
   const plateau=1.48;
@@ -119,23 +175,33 @@ export function createTower(){
   }
   // Teal reliquary is a narrative main tower target; lion stands in front.
   soft(root,0x4a8992,0,1.88,-.73,1.22,.9,1.2);soft(root,0xf5cc73,0,2.33,-.73,1.44,.16,1.42);
-  const crystal=add(root,crystalGeometry,0x61e8e0,0,2.89,-.73,.48,.7,.48,true);crystal.rotation.y=Math.PI/4;crystal.name='tower_crystal';
-  const halo=add(root,ringGeometry,0xffd777,0,2.8,-.73,.68,.68,.68,true);halo.rotation.x=.15;halo.name='tower_halo';
+  const crystal=add(root,crystalGeometry,0x61e8e0,0,2.89,-.73,.48,.7,.48,true);crystal.rotation.y=Math.PI/4;crystal.name='tower_crystal';surface(crystal,'metal',false,false);
+  const halo=add(root,ringGeometry,0xffd777,0,2.8,-.73,.68,.68,.68,true);halo.rotation.x=.15;halo.name='tower_halo';surface(halo,'metal',false,false);
   soft(root,0xdc756e,0,.91,1.71,1.1,.84,.06);soft(root,0xfbe0a2,0,.96,1.75,.1,.52,.025);ball(root,0xffd977,0,1.09,1.78,.12,.12,.04);
+  // Recessed arch, stone courses and embossed guardian seal give the tower
+  // authored depth at the fixed camera, while the platform origin stays1.48.
+  add(root,archGeometry,0xbc916d,0,.85,1.76,1.32,1.12,1);
+  add(root,archGeometry,0x28697a,0,.83,1.86,1.01,.95,.55);
+  for(const side of [-1,1]){
+    for(let row=0;row<3;row++)soft(root,0xc49f7b,side*1.63,.49+row*.27,1.716,.93,.035,.025);
+    const trim=surface(group(root,'turret_brass_trim',side*2.15,1.59,.05),'metal');
+    cylinder(trim,0xe5b25d,0,0,0,.725,.055);
+  }
+  pawSeal(root,0,1.05,1.967,.265);
   bake(root);root.userData.platformHeight=plateau;root.userData.parts={crystal,halo};root.userData.radius=2.45;return root;
 }
 
 export function createDefender(){
-  const hero=createLion();hero.name='Boom_Mane_Leo_sunheart_guard';
+  const hero=surface(createLion(),'paint');hero.name='Boom_Mane_Leo_sunheart_guard';
   const parts=hero.userData.parts;
   parts.head.scale.setScalar(1.12);
   // Keep Leo's authored identity intact. The independent gun pivot can track
   // aim immediately while body/head follow with a small, bounded lag.
   // A shoulder-height swivelling mount lets Leo keep his expressive face
   // towards the fixed player camera without twisting his neck through180°.
-  const mount=group(hero,'defender_cannon_mount',.53,.18,.025);
+  const mount=surface(group(hero,'defender_cannon_mount',.53,.18,.025),'metal');
   cylinder(mount,0x347f8d,0,.07,0,.24,.12);cylinder(mount,0xe9b45b,0,.16,0,.18,.09);cylinder(mount,0x38677d,0,.32,0,.085,.3);ball(mount,0x68d6d4,0,.48,0,.18,.13,.18);
-  const gun=group(hero,'defender_cannon',.53,.68,.025);
+  const gun=surface(group(hero,'defender_cannon',.53,.68,.025),'metal');
   soft(gun,0x24667e,0,0,.18,.35,.37,.63);soft(gun,0x58ccda,0,.025,.36,.43,.31,.5);soft(gun,0xffcd62,0,.02,.55,.48,.34,.12);
   const barrel=cylinder(gun,0x274f70,0,.03,.71,.145,.44);barrel.rotation.x=Math.PI/2;
   barrel.material=polishedBlue;barrel.userData.noBake=true;
@@ -145,7 +211,7 @@ export function createDefender(){
   for(const side of [-1,1])soft(gun,0xc4fff3,side*.222,.04,.32,.032,.17,.27);
   soft(gun,0x3685a3,0,-.23,.08,.15,.32,.18);ball(gun,0xffebae,0,.23,.23,.067);
   gun.scale.setScalar(1.22);bake(gun);parts.gun=gun;parts.muzzle=muzzle;parts.barrel=barrel;parts.mount=mount;
-  const contact=new THREE.Mesh(shadowGeometry,heroShadowMaterial);contact.name='Leo_contact_shadow';contact.rotation.x=-Math.PI/2;contact.position.y=.012;contact.scale.set(.51,.31,1);hero.add(contact);
+  const contact=new THREE.Mesh(shadowGeometry,heroShadowMaterial);contact.name='Leo_contact_shadow';surface(contact,'paint',false,true);contact.rotation.x=-Math.PI/2;contact.position.y=.012;contact.scale.set(.51,.31,1);hero.add(contact);
   // Preserve every authored animation pivot while collapsing its direct
   // static meshes/instances across colours. No limb or mane identity is lost.
   const heroPivots=[];hero.traverse(node=>{if(node.isGroup&&node!==gun)heroPivots.push(node);});for(const pivot of heroPivots.reverse())bake(pivot,true);
@@ -175,15 +241,15 @@ const PALETTES={
 };
 const templates=new Map();
 function buildZombie(type){
-  const p=PALETTES[type]||PALETTES.walker,root=new THREE.Group();root.name=`sunheart_${type}_zombie`;root.scale.setScalar(p.scale);
+  const p=PALETTES[type]||PALETTES.walker,root=new THREE.Group();root.name=`sunheart_${type}_zombie`;surface(root,'cloth');root.scale.setScalar(p.scale);
   const body=group(root,'body',0,.63,0);
   soft(body,p.shirt,0,.04,0,.54,.61,.33);soft(body,p.light,0,.31,.03,.18,.13,.21);
   soft(body,0xe1e5c7,-.11,.11,.18,.045,.11,.02);soft(body,0x355f69,.15,-.01,.18,.09,.13,.025);soft(body,0xd7d9be,0,-.23,0,.57,.07,.35);
-  const head=group(root,'head',0,1.19,.02);
+  const head=surface(group(root,'head',0,1.19,.02),'skin');head.scale.set(1.1,1.08,1.04);
   soft(head,p.skin,0,0,0,.63,.59,.47);soft(head,p.light,-.09,-.13,.245,.34,.17,.12);
   ball(head,p.skin,-.34,.005,.015,.1,.15,.11);ball(head,p.skin,.34,.005,.015,.1,.15,.11);
   for(const side of [-1,1]){
-    ball(head,0xf8f3d5,side*.145,.055,.258,.11,.125,.04);ball(head,0x32364c,side*.145,.04,.294,.047,.071,.018);ball(head,0xffffff,side*.155,.072,.31,.018,.023,.007);
+    ball(head,0xfff9df,side*.15,.055,.258,.119,.135,.044);ball(head,0x243547,side*.15,.04,.299,.052,.077,.018);ball(head,0xffffff,side*.155,.072,.31,.018,.023,.007);
     const brow=soft(head,p.hair,side*.145,.198,.258,.18,.055,.055);brow.rotation.z=-side*.18;
   }
   soft(head,0x4f665f,.04,-.145,.305,.26,.092,.035);soft(head,0xf7efd3,-.037,-.137,.331,.058,.073,.025);soft(head,0xf7efd3,.106,-.135,.331,.055,.065,.025);
@@ -224,8 +290,8 @@ export function createZombie(type='walker'){
   if(!PALETTES[type])type='walker';if(!templates.has(type))templates.set(type,buildZombie(type));
   const root=templates.get(type).clone(true);const parts={body:root.getObjectByName('body'),head:root.getObjectByName('head'),arms:[root.getObjectByName('arm_-1'),root.getObjectByName('arm_1')],legs:[root.getObjectByName('leg_-1'),root.getObjectByName('leg_1')],fuse:root.getObjectByName('fuse_spark')};
   if(parts.fuse)parts.fuse.userData.originalScale=parts.fuse.scale.clone();
-  const shadow=new THREE.Mesh(shadowGeometry,shadowMaterial);shadow.name='contact_shadow';shadow.rotation.x=-Math.PI/2;shadow.position.y=.04;shadow.scale.set(.48,.3,1);root.add(shadow);
-  root.userData.parts=parts;root.userData.type=type;root.userData.groundOrigin=true;root.userData.height=1.66*root.userData.baseScale;root.userData.originalScale=root.scale.clone();return root;
+  const shadow=new THREE.Mesh(shadowGeometry,shadowMaterial);shadow.name='contact_shadow';surface(shadow,'paint',false,true);shadow.rotation.x=-Math.PI/2;shadow.position.y=.04;shadow.scale.set(.48,.3,1);root.add(shadow);
+  root.userData.parts=parts;root.userData.type=type;root.userData.groundOrigin=true;root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root);root.userData.height=bounds.max.y;root.userData.bounds={min:bounds.min.toArray(),max:bounds.max.toArray()};root.userData.originalScale=root.scale.clone();return root;
 }
 
 export function animateZombie(mesh,{time=0,speed=0,hit=0,attack=0,death=0,reduced=false}={}){

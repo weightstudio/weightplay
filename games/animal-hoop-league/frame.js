@@ -29,23 +29,17 @@
   const stageLabel = byId('stage-label');
   const scoreLabel = byId('score-label');
   function saveWarning(scene) {
-    const node = document.createElement('p');
-    node.className = 'hoop-save-warning';
+    const node = document.createElement('div');
     node.dataset.hoopSaveWarning = scene;
-    node.setAttribute('role','status');
-    node.setAttribute('aria-live','polite');
-    node.setAttribute('aria-atomic','true');
-    node.setAttribute('tabindex','0');
-    node.hidden = true;
     return node;
   }
-  const mainSaveWarning=saveWarning('main'),stageSaveWarning=saveWarning('stage'),battleSaveWarning=saveWarning('battle');
+  const mainSaveWarning=saveWarning('main'),stageSaveWarning=saveWarning('stage'),battleSaveWarning=saveWarning('battle'),resultSaveWarning=saveWarning('result');
 
   if (!root || !main || !stage || !battle || !mainHeader || !stageHeader || !battleHeader
       || !mainTitle || !poster || !copy || !rail || !battleStatus || !battleObjectives || !canvasWrap || !controls
       || !hint || !result || !utility || !stageLabel || !scoreLabel || !game
       || !window.WeightPlayScreenFrame || !window.WeightPlayPlayUI
-      || !window.WeightPlayHoopLeagueStageConfig) {
+      || !window.WeightPlayHoopLeagueStageConfig || !window.WeightPlayHoopPendingSummary) {
     throw new Error('ANIMAL_HOOP_LEAGUE_I9_FRAME_REQUIRED');
   }
 
@@ -103,6 +97,7 @@
   matchLayout.className = 'hoop-match-layout';
   matchLayout.append(courtArea, controlsArea);
   battleContent.append(matchLayout, result);
+  result.insertBefore(resultSaveWarning,result.querySelector('.m5-result-actions'));
   for (const overlay of battle.querySelectorAll('.hoop-help,.hoop-leave-dialog')) battleContent.append(overlay);
   battleContent.append(battleInfo);
 
@@ -128,7 +123,10 @@
     onStart: game.startStage,
   });
   game.attachStageController(selector);
-  game.attachSaveWarningNodes?.({main:mainSaveWarning,stage:stageSaveWarning,battle:battleSaveWarning});
+  const fallback=()=>!result.hidden?byId('retry'):game.currentScreen()==='stage'?byId('stage-back'):game.currentScreen()==='battle'?byId('hoop-shoot'):byId('start-game');
+  const createSummary=window.WeightPlayHoopPendingSummary.createHoopPendingSummary;
+  const views=Object.fromEntries(Object.entries({main:mainSaveWarning,stage:stageSaveWarning,battle:battleSaveWarning,result:resultSaveWarning}).map(([scene,host])=>[scene,createSummary({document,host,detailsId:`hoop-${scene}-pending-list`,statusId:`hoop-${scene}-pending-status`,focusFallback:fallback,campaignCopy:window.HoopCampaignCopy})]));
+  game.attachSaveWarningViews(views);
 
   function syncScene() {
     const screen = game.currentScreen();

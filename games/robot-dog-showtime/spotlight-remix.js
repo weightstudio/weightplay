@@ -32,13 +32,15 @@ export function evaluatePlan(stage, plan, goals=stage.goals) {
     if(next[0]===positions[1]&&next[1]===positions[0])return stop('CROSSING',beat,1);
     positions=next;
     frames.push({beat,positions:[...positions],cues});
+    const checkpoint=stage.checkpoints?.find(c=>c.beat===beat);
+    if(checkpoint&&checkpoint.positions.some((cell,actor)=>cell!==positions[actor]))return stop('CHECKPOINT',beat,checkpoint.positions[0]!==positions[0]?0:1);
   }
   if(positions.some((cell,actor)=>cell!==goals[actor]))return stop('FORMATION',stage.beats-1,positions[0]!==goals[0]?0:1);
   if(stage.bow&&(plan.at(-1)?.[0]!=='BOW'||plan.at(-1)?.[1]!=='BOW'))return stop('BOW',stage.beats-1);
   return {success:true,frames,positions,missing,failure:null};
 }
 
-export function formationSignature(stage,goals=stage.goals){return JSON.stringify([stage.starts,goals,stage.walls,stage.beats,stage.bow])}
+export function formationSignature(stage,goals=stage.goals){const fields=[stage.starts,goals,stage.walls,stage.beats,stage.bow];if(stage.checkpoints?.length)fields.push(stage.checkpoints);return JSON.stringify(fields)}
 export function earnedMastery(stage,plan){const result=evaluatePlan(stage,plan);return Boolean(stage.mastery&&result.success&&result.frames.some(frame=>frame.positions[stage.mastery.actor]===stage.mastery.visit))}
 export function ratingForShow(hints=0){return hints>1?1:hints>0?2:3}
 export function replayShow(save,stage,remix=false){
@@ -103,6 +105,22 @@ const optimizationCopy={
   hi:['लक्ष्य','डिफ़ॉल्ट प्रतीक्षा','खाली ताल पर प्रतीक्षा होती है।','महारत लक्ष्य','खाने से गुजरें','महारत पूरी','लॉबी में रोज़ प्रवेश करके साझा हीरे पाएँ।','पिछला सफल क्रम लोड हुआ।','आपके पास है','पूर्वावलोकन · अभी नहीं मिला','सर्वश्रेष्ठ','संकेत एक ताल की दोनों चालें भरता है: एक संकेत पर अधिकतम 2/3, अधिक पर 1/3।','बिना संकेत 3/3, एक पर 2/3, अधिक पर 1/3। अभ्यास से तारे नहीं घटते। वैकल्पिक रास्ते महारत चिह्न देते हैं।'],
   ar:['الهدف','انتظار افتراضي','النبضات غير المحددة تعني الانتظار.','هدف الإتقان','زيارة الخانة','تم الإتقان','احصل على الألماس المشترك بتسجيل الدخول اليومي في الردهة.','تم تحميل آخر خطة ناجحة.','مملوك','معاينة · غير مملوك','الأفضل','يملأ التلميح حركتي نبضة واحدة: تلميح واحد حتى 2/3، وأكثر من ذلك 1/3.','بلا تلميحات 3/3، بتلميح واحد 2/3، وبأكثر 1/3. التدريب لا ينقص النجوم. المسارات الاختيارية تمنح علامات إتقان.'],
 };
+const actKeys=['actLabel','formationCue','formationRule','hintAction',...Array.from({length:6},(_,i)=>`act${i+1}`),...Array.from({length:6},(_,i)=>`lesson${i+1}`),...Array.from({length:6},(_,i)=>`finale${i+1}`)];
+const actCopy={
+  en:['Act','Match the marked formation','Reach both diamond marks on the numbered beat, then continue to the final goals.','A hint fills both performers’ cues for the selected beat.','First Marks','Shared Lanes','Passing Partners','Relay Formations','Precision Cues','Opening Night','Plan separate paths.','Meet the marked beat.','Let a partner pass.','Exchange through both lanes.','Arrive on cue.','Combine formation and Bow.','First Curtain','On the Mark','Passing Duet','Relay Spotlight','Precision Encore','Twin-Star Finale'],
+  'zh-Hant':['幕','先到標記隊形','在指定拍點同時抵達兩個菱形位置，再前往最終目標。','提示填入目前一拍的雙人動作。','初登舞台','共用走道','交錯走位','接力隊形','精準候場','雙星終幕','規劃各自路線。','準時到達標記。','讓搭檔先通過。','從兩側接力換位。','在指定拍點到位。','結合隊形與鞠躬。','同拍謝幕','準點合照','錯身雙舞','接力聚光','精準返場','雙星謝幕'],
+  'zh-Hans':['幕','先到标记队形','在指定拍点同时抵达两个菱形位置，再前往最终目标。','提示填入当前一拍的双人动作。','初登舞台','共用走道','交错走位','接力队形','精准候场','双星终幕','规划各自路线。','准时到达标记。','让搭档先通过。','从两侧接力换位。','在指定拍点到位。','结合队形与鞠躬。','同拍谢幕','准点合照','错身双舞','接力聚光','精准返场','双星谢幕'],
+  ja:['幕','印の隊形をそろえよう','指定の拍で二人が菱形のマスに着き、その後で最後の目標へ進みます。','ヒントは選んだ拍の二人分の動作を埋めます。','初めの一歩','共有の道','すれ違う二人','リレー隊形','正確な合図','開幕の夜','それぞれの経路を計画。','印に拍を合わせよう。','相棒を先に通そう。','両側から交代しよう。','合図の拍で到着。','隊形とお辞儀を組み合わせよう。','初めのカーテン','ぴったりの隊形','すれ違いの二重奏','リレーの光','正確なアンコール','二つ星のフィナーレ'],
+  ko:['막','표시된 대형을 맞추세요','지정된 박자에 두 다이아몬드 칸에 도착한 뒤 마지막 목표로 가세요.','힌트는 선택한 박자의 두 동작을 채웁니다.','첫 무대','함께 쓰는 길','엇갈리는 동료','릴레이 대형','정확한 신호','개막의 밤','각자의 경로를 계획하세요.','표시된 박자에 맞추세요.','동료를 먼저 보내세요.','양쪽 길로 교대하세요.','신호에 맞춰 도착하세요.','대형과 인사를 합치세요.','첫 커튼','정시 대형','교차 이중주','릴레이 조명','정확한 앙코르','두 별의 피날레'],
+  es:['Acto','Alcanza la formación marcada','Llegad a los rombos en el tiempo indicado y después a las metas finales.','La pista completa las dos acciones del tiempo seleccionado.','Primeros pasos','Caminos compartidos','Cruce de compañeros','Formaciones de relevo','Señales precisas','Noche de estreno','Planea caminos separados.','Llega en el tiempo marcado.','Deja pasar al compañero.','Intercambia por ambos caminos.','Llega a la señal.','Combina formación y saludo.','Primer telón','En su sitio','Dúo de cruces','Focos de relevo','Bis preciso','Final de dos estrellas'],
+  'pt-BR':['Ato','Alcance a formação marcada','Cheguem aos losangos na batida indicada e depois às metas finais.','A dica preenche as duas ações da batida selecionada.','Primeiros passos','Caminhos comuns','Dupla de passagem','Formações de revezamento','Sinais precisos','Noite de estreia','Planeje caminhos separados.','Chegue na batida marcada.','Deixe o parceiro passar.','Troque pelos dois caminhos.','Chegue ao sinal.','Combine formação e reverência.','Primeira cortina','No lugar certo','Dueto de passagem','Luzes de revezamento','Bis preciso','Final de duas estrelas'],
+  fr:['Acte','Rejoignez la formation marquée','Atteignez les losanges au temps indiqué, puis les cibles finales.','Un indice remplit les deux actions du temps sélectionné.','Premiers pas','Voies communes','Partenaires de passage','Formations en relais','Signaux précis','Soir de première','Planifiez deux parcours.','Respectez le temps marqué.','Laissez passer le partenaire.','Échangez par les deux côtés.','Arrivez au signal.','Combinez formation et salut.','Premier rideau','À la bonne place','Duo croisé','Relais sous les feux','Rappel précis','Finale des deux étoiles'],
+  de:['Akt','Erreiche die markierte Formation','Erreicht im angegebenen Takt die Rauten und danach die Endziele.','Ein Tipp füllt beide Aktionen des gewählten Takts.','Erste Schritte','Gemeinsame Wege','Partner passieren','Staffelformationen','Präzise Einsätze','Premierenabend','Plane getrennte Wege.','Triff den markierten Takt.','Lass den Partner vorbei.','Wechsle über beide Seiten.','Komme zum Einsatz an.','Verbinde Formation und Verbeugung.','Erster Vorhang','Auf den Punkt','Kreuzungsduett','Staffel im Rampenlicht','Präzise Zugabe','Zwei-Sterne-Finale'],
+  it:['Atto','Raggiungi la formazione segnata','Raggiungete i rombi alla battuta indicata, poi gli obiettivi finali.','L’indizio completa le due azioni della battuta selezionata.','Primi passi','Percorsi comuni','Compagni in incrocio','Formazioni a staffetta','Segnali precisi','Serata inaugurale','Pianifica percorsi separati.','Rispetta la battuta segnata.','Lascia passare il compagno.','Scambiatevi sui due lati.','Arriva al segnale.','Combina formazione e inchino.','Primo sipario','Al posto giusto','Duetto d’incroci','Staffetta sotto i fari','Bis preciso','Finale delle due stelle'],
+  ru:['Акт','Займите отмеченное построение','В указанный такт достигните ромбов, затем конечных целей.','Подсказка заполняет обе команды выбранного такта.','Первые шаги','Общие пути','Пропусти партнёра','Эстафета построений','Точные сигналы','Вечер премьеры','Планируйте отдельные пути.','Успейте к нужному такту.','Пропустите партнёра.','Меняйтесь по двум сторонам.','Приходите по сигналу.','Совместите построение и поклон.','Первый занавес','Точно на место','Встречный дуэт','Эстафета в лучах','Точный выход на бис','Финал двух звёзд'],
+  hi:['अंक','चिह्नित गठन पर पहुँचें','बताई ताल पर दोनों हीरे वाले खानों तक पहुँचें, फिर अंतिम लक्ष्यों पर जाएँ।','संकेत चुनी ताल की दोनों चालें भरता है।','पहले कदम','साझा रास्ते','साथी को रास्ता','रिले गठन','सटीक संकेत','उद्घाटन रात','अलग रास्ते बनाएँ।','चिह्नित ताल पर पहुँचें।','साथी को पहले जाने दें।','दोनों ओर से जगह बदलें।','संकेत पर पहुँचें।','गठन और नमन जोड़ें।','पहला पर्दा','सही जगह','रास्तों की जोड़ी','रिले की रोशनी','सटीक दोहराव','दो सितारों का समापन'],
+  ar:['فصل','حقق التشكيل المحدد','بلغا المعينين في النبضة المحددة، ثم تابعا إلى الهدفين النهائيين.','يملأ التلميح حركتي النبضة المحددة.','الخطوات الأولى','مسارات مشتركة','مرور الشريكين','تشكيلات التتابع','إشارات دقيقة','ليلة الافتتاح','خططا لمسارين منفصلين.','صلا في النبضة المحددة.','اترك الشريك يمر أولاً.','تبادلا من الجانبين.','صلا عند الإشارة.','اجمعا التشكيل والانحناء.','الستار الأول','في الموعد','ثنائي العبور','أضواء التتابع','عودة دقيقة','ختام النجمتين'],
+};
 export function showText(locale='en') {
   const values=dictionaries[locale]||dictionaries.en;
   if(values.length!==keys.length)throw Error(`SHOW_COPY_LENGTH:${locale}:${values.length}`);
@@ -111,5 +129,6 @@ export function showText(locale='en') {
   const optimized=optimizationCopy[locale]||optimizationCopy.en;
   if(optimized.length!==optimizationKeys.length)throw Error(`SHOW_OPTIMIZATION_COPY_LENGTH:${locale}`);
   optimizationKeys.forEach((key,index)=>copy[key]=optimized[index]);
+  const act=actCopy[locale]||actCopy.en;if(act.length!==actKeys.length)throw Error(`SHOW_ACT_COPY_LENGTH:${locale}`);actKeys.forEach((key,index)=>copy[key]=act[index]);
   return key=>copy[key]||key;
 }

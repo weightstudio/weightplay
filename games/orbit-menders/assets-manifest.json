@@ -1,7 +1,7 @@
 {
   "gameId": "orbit-menders",
-  "manifestVersion": 3,
-  "gameVersion": "v3",
+  "manifestVersion": 4,
+  "gameVersion": "v4",
   "createdAt": "2026-10-27",
   "status": "已實作未驗證",
   "artDirection": "Owner-directed flat-courtyard zombie shooter with rounded explosive-afro Boom Mane Leo. Warm coral/ivory fortress, mint-green lawn, cyan gates and energy cannon. Per-game non-block exception retained.",
@@ -36,13 +36,13 @@
     {
       "file": "defense-art.mjs",
       "export": "createArena",
-      "usage": "Flat courtyard, five converging paths, cyan gates, rounded trees/flowers, perimeter fortress",
+      "usage": "Layered turf courtyard, inset stone terrace/walk, five converging paths, cyan gates, asymmetrical rounded trees/flowers and repair supplies; semantic material batches and directional shadows",
       "dimensions": "x[-14,14],z[-12,13]; visual decoration never changes simulation"
     },
     {
       "file": "defense-art.mjs",
       "export": "createTower",
-      "usage": "Coral/ivory protected main tower with cyan crystal, platform and material accents",
+      "usage": "Coral/ivory protected main tower with cyan crystal, recessed arch, stone courses, paw seals and metal trim",
       "dimensions": "ground origin, platformY1.48"
     },
     {
@@ -50,17 +50,17 @@
       "export": "createDefender",
       "usage": "Rounded Leo plus cyan/gold cannon; mane/cape followthrough and firing recoil",
       "reference": "/assets/weightplay-boom-mane-lion.png",
-      "dimensions": "art.mjs Leo, head1.12/cannon1.22; runtime root1.35"
+      "dimensions": "art.mjs Leo, head1.12/cannon1.22; runtime root1.6"
     },
     {
       "file": "defense-art.mjs",
       "export": "createZombie/animateZombie",
       "usage": "Walker,runner,brute,bomber,spitter,boss; identifiable clothing/equipment/silhouette, gait, attackwindup, hitsquash, defeatproxy",
-      "dimensions": "groundorigin +Z forward, type-scaled; bossapproximately3.9units high"
+      "dimensions": "groundorigin +Z forward; actual bounds metadata (boss maxY4.725), head1.1x1.08x1.04 within existing hit radius; no simulation root/collision change"
     },
     {
       "file": "defense-view.mjs",
-      "usage": "Instanced projectiles/trails/contactstars, finite shockrings/muzzleflash/healthbars, tower damage shield; actual event bound",
+      "usage": "Instanced larger projectiles/trails/contactstars, bounded cyan/gold shockrings/muzzleflash/healthbars, tower damage shield; actual event bound, no damage/radius/timing change",
       "format": "real3D meshes; no new raster art"
     }
   ],
@@ -72,6 +72,21 @@
     "referenceStatus": "Used by game.mjs, motor.mjs and art.mjs"
   },
   "sharedReferences": [
+    {
+      "file": "/assets/previews/orbit-menders-battle.webm",
+      "usage": "Actual D01 wave3/Boss lobby highlight from normal fresh-save Main/Stage play, native aimed continuous fire and midpoint blast; original renderer and rules",
+      "dimensions": "480x480,25fps,7.40s,VP8,yuv420p,muted/no audio stream",
+      "bytes": 189785,
+      "sha256": "b3e267d8427b154f82a5901812c7f66f2fcf50c559ea7d6bad3f570bd91ff527",
+      "recorder": "scripts/record-orbit-menders-lobby-preview.mjs",
+      "source": "Current project-owned3D assets and gameplay capture; no external game footage"
+    },
+    {
+      "file": "/assets/lobby-thumbs/w480/assets__weightplay-boom-mane-lion.webp",
+      "usage": "Proportional480x480 static lobby fallback derived with canonical generate-lobby-thumbnails.make_thumbnail from unchanged own lion PNG",
+      "bytes": 35662,
+      "source": "Existing own character reference; technical delivery resize, no new illustration or poster replacement"
+    },
     {
       "file": "/assets/weightplay-boom-mane-lion.png",
       "usage": "Owner-approved character reference and Main/Stage cutout for this game. Existing WeightPlay original artwork; global brand assets not modified. Final composed world cover remains pending."
@@ -90,6 +105,7 @@
     "source": "motor.mjs/input.mjs/levels.mjs and planet/repair exports ofart.mjs"
   },
   "effects": {
+    "lighting": "One warm directional sun and cool hemisphere; standard/high use one1024px PCFSoft shadow map, intensity0.65; low disables realtime shadow map. Marked caster batches and explicit owned shadow disposal.",
     "particleCapacity": 224,
     "ringCapacity": 8,
     "projectileCapacity": 160,
@@ -132,13 +148,13 @@
     "compressedTransferBytes": null,
     "frameTime": "Fresh local1280x720 browser observations in current handoff; not a universalFPS claim",
     "sourceBytes": {
-      "defense-art.mjs": 23001,
-      "defense-view.mjs": 19749
+      "defense-art.mjs": 28327,
+      "defense-view.mjs": 20525
     }
   },
   "verification": {
     "rendered": "Actual local screenshot inspection and normal input in currenthandoff; full art gate remains CHANGES_REQUIRED until remaining matrix",
-    "resourceLifecycle": "Scene ownership implemented; five-entry real GPUtrend still requires observations",
+    "resourceLifecycle": "Five retained same-state650ms entry readings at1280x720 returned38draws/145k triangles/G34 T1 each after current prewarm/shadow changes; short renderer count trend, not20-cycle/global GPU-memory acceptance",
     "licensing": "Existing own reference and original source only; Three.js MIT retained. No third-party game assets, artwork or sound copied"
   },
   "resourceOwnership": {

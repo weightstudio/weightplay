@@ -1,8 +1,4 @@
 window.WEIGHTPLAY_GAME_TITLES = {
-  "orbit-menders": {
-    "en": "Boom Mane: Tower Guard",
-    "zh-Hant": "爆炸頭獅子：守塔防線"
-  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
@@ -18,6 +14,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Клятва Персикового сада",
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
+  },
+  "orbit-menders": {
+    "__localizedExact": true,
+    "en": "Boom Mane: Tower Guard",
+    "zh-Hant": "爆炸頭獅子：守塔防線",
+    "zh-Hans": "爆炸头狮子：守塔防线",
+    "ja": "アフロライオン：タワー防衛戦",
+    "ko": "폭탄머리 사자: 타워 수비대",
+    "es": "Melena Explosiva: Defensa de la Torre",
+    "pt-BR": "Juba Explosiva: Defesa da Torre",
+    "fr": "Crinière explosive : Défense de la tour",
+    "de": "Explosionsmähne: Turmwache",
+    "it": "Criniera esplosiva: Difesa della torre",
+    "ru": "Взрывная грива: Защита башни",
+    "hi": "धमाकेदार अयाल: टावर रक्षा",
+    "ar": "اللبدة المتفجرة: حارس البرج"
+  },
+  "bramble-rapids": {
+    "__localizedExact": true,
+    "en": "Bramble Rapids",
+    "zh-Hant": "棘溪滑浪",
+    "zh-Hans": "棘溪滑浪",
+    "ja": "いばら渓流ライド",
+    "ko": "가시계곡 급류",
+    "es": "Rápidos del Zarzal",
+    "pt-BR": "Corredeiras do Espinhal",
+    "fr": "Rapides des Ronces",
+    "de": "Dornenbach-Stromschnellen",
+    "it": "Rapide del Roveto",
+    "ru": "Терновые пороги",
+    "hi": "कंटीली धारा",
+    "ar": "منحدرات جدول العليق"
   },
   "nori-bankshot": {
     "__localizedExact": true,
@@ -3122,21 +3150,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Жизнь в мгновениях",
     "hi": "पलों में एक जीवन",
     "ar": "حياة في لحظات"
-  },
-  "bramble-rapids": {
-    "__localizedExact": true,
-    "en": "Bramble Rapids",
-    "zh-Hant": "棘溪滑浪",
-    "zh-Hans": "棘溪滑浪",
-    "ja": "いばら渓流ライド",
-    "ko": "가시계곡 급류",
-    "es": "Rápidos del Zarzal",
-    "pt-BR": "Corredeiras do Espinhal",
-    "fr": "Rapides des Ronces",
-    "de": "Dornenbach-Stromschnellen",
-    "it": "Rapide del Roveto",
-    "ru": "Терновые пороги",
-    "hi": "कंटीली धारा",
-    "ar": "منحدرات جدول العليق"
   }
 };

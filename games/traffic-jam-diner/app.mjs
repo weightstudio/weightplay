@@ -299,9 +299,10 @@ async function loadAssets(){
   if(!await loadCharacterArt(current,loaded=>entryLoader?.assetProgress(loaded,9))||!current())return false;
   decorPreviewTask??=createDecorPreviews().then(async previews=>{
    if(previews.length!==MILESTONE_STAGES.length)throw new Error('Incomplete diner decor artwork');
-   await Promise.all(previews.map(src=>{const image=new Image();image.src=src;return image.decode();}));return previews;
+   if(!previews.boardFinish)throw new Error('Missing board finish artwork');
+   await Promise.all([...previews,previews.boardFinish].map(src=>{const image=new Image();image.src=src;return image.decode();}));return previews;
   }).catch(error=>{decorPreviewTask=null;throw error;});
-  decorPreviews=await decorPreviewTask;if(!current())return false;entryLoader?.assetProgress(8,9);
+  decorPreviews=await decorPreviewTask;if(!current())return false;$('#shop-board-preview').src=decorPreviews.boardFinish;entryLoader?.assetProgress(8,9);
   const poster=$('[data-wp-frame-poster]');if(poster){await poster.decode();if(!poster.naturalWidth)throw new Error('Main poster unavailable');}
   if(current())entryLoader?.assetProgress(9,9);return current();
  };

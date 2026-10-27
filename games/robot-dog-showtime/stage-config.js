@@ -11,6 +11,7 @@
     background,
     stage(index) {
       const stage = stages[index];
+      const act=Math.floor(index/5)+1,formation=(stage.checkpoints||[]).map(c=>`◇ ${t('beat')} ${c.beat+1}: ${c.positions.map(p=>p+1).join(' / ')}`).join(' · ');
       const state = getState();
       const practice = state.practiceMode || state.practiceActive;
       const locked = !practice && stage.id > state.save.unlocked;
@@ -22,13 +23,13 @@
       return {
         id: stage.id,
         kicker: `${stage.id}/${stages.length}`,
-        title: `${t('stage')} ${stage.id}`,
-        subtitle: `${stage.beats} ${t('beat')}`,
+        title: stage.id%5===0?t('finale'+act):`${t('stage')} ${stage.id}`,
+        subtitle: `${t('act'+act)} · ${stage.beats} ${t('beat')}`,
         status: `${t(practice?'practice':locked?'locked':cleared?'cleared':'ready')}${!practice&&state.save.ratings[stage.id]?' · '+state.save.ratings[stage.id]+'/3':''}${mastered?' · ✓ '+t('mastered'):''}`,
-        summary: mastery || t('plan'),
+        summary: formation || mastery || t('lesson'+act),
         details: [
           `${stage.beats} ${t('beat')} · ${stage.walls.length} ${t('blocked')}`,
-          stage.bow ? t('finalBow') : t('formation'),mastery,mix,
+          t('lesson'+act),formation,stage.bow ? t('finalBow') : t('formation'),mastery,mix,
         ].filter(Boolean),
         locked,
         cleared,

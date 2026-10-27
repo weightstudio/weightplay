@@ -16,9 +16,16 @@ body[data-wp-market-game="animal-hoop-league"] .m5-primary { width:100%; min-hei
 .hoop-stage-content { position:relative; width:100%; height:100%; min-width:0; min-height:0; overflow:hidden; }
 .hoop-stage-content[data-wp-frame-content="stage"] { display:flex!important; flex-direction:column; }
 .hoop-stage-workspace { position:relative; flex:1 1 0; width:100%; min-width:0; min-height:0; }
-.hoop-save-warning { box-sizing:border-box; flex:0 0 auto; max-height:clamp(48px,18vh,100px); overflow:auto; margin:0; padding:6px 10px; border:1px solid #e7c77b; border-radius:6px; background:#4a3317; color:#fff3cf; font:600 13px/1.35 system-ui; overflow-wrap:anywhere; }
-.hoop-save-warning[hidden] { display:none!important; }
-.hoop-save-warning:focus-visible { outline:3px solid #fff1a6; outline-offset:2px; }
+[data-hoop-save-warning] { flex:0 0 auto; min-width:0; }
+.hoop-pending-summary { --hoop-summary-inverse:1; box-sizing:border-box; margin:0; padding:6px 10px; border:1px solid #e7c77b; border-radius:6px; background:#4a3317; color:#fff3cf; font:600 calc(16px * var(--hoop-summary-inverse))/1.35 system-ui; overflow-wrap:anywhere; }
+#stage-screen .hoop-pending-summary { --hoop-summary-inverse:var(--wp-stage-canvas-inverse-scale,1); }
+#battle-screen .hoop-pending-summary { --hoop-summary-inverse:var(--wp-battle-canvas-inverse-scale,1); }
+.hoop-pending-summary[hidden],.hoop-pending-summary [hidden] { display:none!important; }
+.hoop-pending-summary__status { margin:0; }
+.hoop-pending-summary__toggle { min-height:calc(44px * var(--hoop-summary-inverse)); margin-block:4px 0; padding:6px 10px; border:1px solid currentColor; border-radius:5px; background:#241a0d; color:#fff3cf; font:inherit; cursor:pointer; }
+.hoop-pending-summary__details { max-height:clamp(70px,20vh,140px); overflow:auto; margin-block:4px 0; }
+.hoop-pending-summary__details ol { display:flex; flex-wrap:wrap; gap:5px 14px; margin:0; padding:4px; list-style:none; }
+.hoop-pending-summary__toggle:focus-visible,.hoop-pending-summary__details:focus-visible { outline:3px solid #fff1a6; outline-offset:2px; }
 .hoop-battle-content { position:relative; box-sizing:border-box; flex:1 1 auto; min-width:0; min-height:0; gap:8px!important; padding:8px!important; background:#0c2437; }
 .hoop-match-layout { display:flex; flex:1 1 auto; flex-direction:column; min-width:0; min-height:0; gap:inherit; }
 .hoop-court-area { display:flex; flex:1 1 auto; min-width:0; min-height:0; flex-direction:column; gap:6px; overflow:hidden; }
