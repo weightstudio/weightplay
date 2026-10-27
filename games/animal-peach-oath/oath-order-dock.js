@@ -22,19 +22,23 @@ const SIGNAL_COPY = Object.freeze({
  en:['Protecting','Preparing to heal','Preparing a boost for','Preparing to strike'], 'zh-Hant':['保護中','準備治療','準備強化','準備攻擊'], 'zh-Hans':['保护中','准备治疗','准备强化','准备攻击'], ja:['守護中','回復準備','強化準備','攻撃準備'], ko:['보호 중','치유 준비','강화 준비','공격 준비'],
  es:['Protege a','Prepara curación para','Prepara mejora para','Prepara ataque contra'], 'pt-BR':['Protege','Prepara cura para','Prepara reforço para','Prepara ataque contra'], fr:['Protège','Prépare des soins pour','Prépare un renfort pour','Prépare une attaque contre'], de:['Schützt','Bereitet Heilung vor für','Bereitet Verstärkung vor für','Bereitet Angriff vor gegen'], it:['Protegge','Prepara cure per','Prepara un potenziamento per','Prepara un attacco contro'], ru:['Защищает','Готовит лечение для','Готовит усиление для','Готовит удар по'], hi:['रक्षा कर रहा है','उपचार की तैयारी','मजबूत करने की तैयारी','हमले की तैयारी'], ar:['يحمي','يستعد لعلاج','يستعد لتعزيز','يستعد لمهاجمة']
 });
+const PANEL_COPY = Object.freeze({
+ en:['Close orders','Battle paused while orders are open'], 'zh-Hant':['關閉指令','指令開啟期間戰鬥暫停'], 'zh-Hans':['关闭指令','指令开启期间战斗暂停'], ja:['指令を閉じる','指令表示中は戦闘を一時停止'], ko:['명령 닫기','명령을 여는 동안 전투 일시 정지'], es:['Cerrar órdenes','La batalla se pausa mientras las órdenes están abiertas'], 'pt-BR':['Fechar ordens','A batalha fica pausada enquanto as ordens estão abertas'], fr:['Fermer les ordres','Le combat est en pause pendant les ordres'], de:['Befehle schließen','Der Kampf pausiert, solange Befehle geöffnet sind'], it:['Chiudi ordini','La battaglia è in pausa mentre gli ordini sono aperti'], ru:['Закрыть приказы','Бой приостановлен, пока открыты приказы'], hi:['आदेश बंद करें','आदेश खुले रहने पर युद्ध रुका रहेगा'], ar:['إغلاق الأوامر','تتوقف المعركة مؤقتًا أثناء فتح الأوامر']
+});
 
 // State and language are passed afresh on every sync. The two selects and
 // buttons are created once, so ordinary timer updates do not steal focus.
-function createOrderDock(document, mount, id, getState, order, onFault=()=>{}) {
+function createOrderDock(document, mount, id, getState, order, onFault=()=>{}, onOpen=()=>{}, onClose=()=>{}, modalMount=mount) {
   if (!/^[a-z][a-z0-9-]*$/.test(id)) throw Error('INVALID_ID');
   const node=(tag,cls)=>{const x=document.createElement(tag);if(cls)x.className=cls;return x};
-  const root=node('section','oath-orders'),title=node('h3'),remaining=node('p'),status=node('p'),signals=node('p');
+  const root=node('section','oath-orders'),launcher=node('button'),panel=node('section','oath-orders-panel'),title=node('h3'),remaining=node('p'),paused=node('p'),status=node('p'),signals=node('p'),allSignals=node('p'),close=node('button');
   const interruptLabel=node('label'),protectLabel=node('label'),interrupt=node('select'),protect=node('select'),breakButton=node('button'),guardButton=node('button');
-  root.setAttribute('aria-labelledby',`${id}-title`);title.id=`${id}-title`;interrupt.id=`${id}-enemy`;protect.id=`${id}-ally`;
+  panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-labelledby',`${id}-title`);panel.id=`${id}-panel`;panel.hidden=true;title.id=`${id}-title`;interrupt.id=`${id}-enemy`;protect.id=`${id}-ally`;
+  launcher.type=close.type='button';launcher.setAttribute('aria-controls',panel.id);launcher.setAttribute('aria-expanded','false');
   interruptLabel.htmlFor=interrupt.id;protectLabel.htmlFor=protect.id;breakButton.type=guardButton.type='button';
   status.setAttribute('role','status');status.setAttribute('aria-live','polite');
   signals.setAttribute('role','status');signals.setAttribute('aria-live','polite');
-  root.append(title,remaining,interruptLabel,interrupt,breakButton,protectLabel,protect,guardButton,status,signals);mount.append(root);
+  panel.append(title,paused,remaining,interruptLabel,interrupt,breakButton,protectLabel,protect,guardButton,status,allSignals,close);root.append(launcher,signals);mount.append(root);modalMount.append(panel);
   let current=null;
   function choices(select,units,placeholder){
     const rows=[['',placeholder],...units.filter(u=>u.hp>0).map(u=>[u.key,u.name])];
@@ -43,8 +47,8 @@ function createOrderDock(document, mount, id, getState, order, onFault=()=>{}) {
     select.dataset.options=next;select.value=rows.some(([value])=>value===old)?old:'';
   }
   function sync(){
-    const s=getState(),t=COPY[s.locale]||COPY.en;current={s,t};root.hidden=!s.visible;
-    title.textContent=t[0];remaining.textContent=`${t[1]}: ${s.seals}`;interruptLabel.textContent=t[2];protectLabel.textContent=t[3];
+    const s=getState(),t=COPY[s.locale]||COPY.en;current={s,t};root.hidden=!s.visible;if(!s.visible){panel.hidden=true;launcher.setAttribute('aria-expanded','false');}
+    const p=PANEL_COPY[s.locale]||PANEL_COPY.en;title.textContent=t[0];launcher.textContent=`${t[0]} · ${s.seals}`;paused.textContent=p[1];close.textContent=p[0];remaining.textContent=`${t[1]}: ${s.seals}`;interruptLabel.textContent=t[2];protectLabel.textContent=t[3];
     breakButton.textContent=t[5];guardButton.textContent=t[6];choices(interrupt,s.enemies,t[4]);choices(protect,s.heroes,t[4]);
     const names=new Map([...s.enemies,...s.heroes].map(unit=>[unit.key,unit.name])),words=SIGNAL_COPY[s.locale]||SIGNAL_COPY.en;
     const name=key=>names.get(key)||key, lines=[];
@@ -52,11 +56,16 @@ function createOrderDock(document, mount, id, getState, order, onFault=()=>{}) {
     const role=new Map(s.enemies.map(unit=>[unit.key,unit.role]));
     for(const channel of s.signals?.channels||[])if(channel.target){const kind=role.get(channel.key),index=kind==='medic'?1:kind==='drummer'?2:3;lines.push(`${name(channel.key)}: ${words[index]} ${name(channel.target)}`)}
     if(s.signals?.bossChannel?.target){const c=s.signals.bossChannel,index=c.kind==='drummer'?2:3;lines.push(`${name(c.key)}: ${words[index]} ${name(c.target)}`)}
-    const cue=s.visible?lines.join(' · '):'';if(signals.textContent!==cue)signals.textContent=cue;
+    const allCue=s.visible?lines.join(' · '):'',cue=s.visible&&lines.length?`${lines[0]}${lines.length>1?` (+${lines.length-1})`:''}`:'';
+    if(signals.textContent!==cue)signals.textContent=cue;if(allSignals.textContent!==allCue)allSignals.textContent=allCue;
+    launcher.disabled=!s.visible||!s.active;
     breakButton.disabled=guardButton.disabled=!s.visible||!s.active||s.seals<=0;
     interrupt.disabled=protect.disabled=!s.visible||!s.active||s.seals<=0;
     if(!s.visible)status.textContent='';
   }
+  launcher.addEventListener('click',()=>{try{const s=getState();if(!s.visible||!s.active)return;panel.hidden=false;launcher.setAttribute('aria-expanded','true');onOpen();sync();(interrupt.disabled?close:interrupt).focus({preventScroll:true})}catch{onFault()}});
+  close.addEventListener('click',()=>{try{if(panel.hidden)return;panel.hidden=true;launcher.setAttribute('aria-expanded','false');onClose();sync();launcher.focus({preventScroll:true})}catch{onFault()}});
+  panel.addEventListener('keydown',event=>{if(event.key!=='Tab')return;const items=[interrupt,breakButton,protect,guardButton,close].filter(x=>!x.disabled);if(!items.length)return;const i=items.indexOf(document.activeElement),next=event.shiftKey?(i<=0?items.length-1:i-1):(i<0||i===items.length-1?0:i+1);event.preventDefault();items[next].focus({preventScroll:true});});
   function perform(kind,select){
     try {
       const s=getState(),t=COPY[s.locale]||COPY.en;if(!s.visible)return;
@@ -65,7 +74,7 @@ function createOrderDock(document, mount, id, getState, order, onFault=()=>{}) {
     } catch { onFault(); }
   }
   breakButton.addEventListener('click',()=>perform('break',interrupt));guardButton.addEventListener('click',()=>perform('guard',protect));
-  sync();return Object.freeze({root,sync});
+  sync();return Object.freeze({root,panel,sync});
 }
 
 window.PEACH_OATH_ORDER_DOCK = Object.freeze({ createOrderDock });

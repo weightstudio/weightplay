@@ -1,5 +1,5 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import {createModels} from './models.mjs';
+import {createModels} from './models.mjs?v=20261027-hillside-candidate2';
 
 export class BurrowRenderer {
   constructor(container,{onProjection,onLost,onRestored,reduced=false}) {
@@ -28,7 +28,7 @@ export class BurrowRenderer {
     const oldSize=this.renderer.getSize(new THREE.Vector2());this.renderer.setSize(192,192,false);
     const s=new THREE.Scene();s.add(new THREE.HemisphereLight(0xffffff,0x7c6151,3));const l=new THREE.DirectionalLight(0xffe7ba,3);l.position.set(-3,5,4);s.add(l);
     const c=new THREE.OrthographicCamera(-.83,.83,.83,-.83,.1,10);c.position.set(1.7,2.1,2.8);c.lookAt(0,.35,0);
-    const icons={};for(const type of ['hall','bed','pantry','garden','bridge','nursery','lantern']){const model=this.models.room(type==='lantern'?'hall':type,type==='lantern');s.add(model);this.renderer.render(s,c);icons[type]=this.renderer.domElement.toDataURL('image/png');s.remove(model);this.disposeInstances(model);}
+    const icons={};for(const type of ['hall','bed','pantry','garden','bridge','nursery','vent','brace','lantern']){const model=this.models.room(type==='lantern'?'hall':type,type==='lantern');s.add(model);this.renderer.render(s,c);icons[type]=this.renderer.domElement.toDataURL('image/png');s.remove(model);this.disposeInstances(model);}
     this.renderer.setSize(oldSize.x,oldSize.y,false);return icons;
   }
   disposeInstances(root) {root.traverse(n=>{if(n.isInstancedMesh)n.dispose();});}

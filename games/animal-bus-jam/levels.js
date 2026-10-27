@@ -222,6 +222,73 @@
     return visit({ ...sourceState, queues: sourceState.queues.map((q) => q.slice()), waiting: sourceState.waiting.slice() });
   }
 
+  // Chapter 2 transition primitives. The authored 1–30 levels and their
+  // ordinary step/analyze callers remain unchanged; no new level is exposed.
+  // Gate unlockAfter is a count of buses that must already have departed.
+  // Priority indices refer to passengers' original positions in their lane.
+  function transferClone(source) {
+    if (!source || !Array.isArray(source.queues) || !Array.isArray(source.waiting)
+      || !Number.isInteger(source.busIndex) || !Number.isInteger(source.busFilled)
+      || (source.ticket !== 0 && source.ticket !== 1)) return null;
+    if (source.queues.some((queue) => !Array.isArray(queue))) return null;
+    return { queues: source.queues.map((queue) => queue.slice()), waiting: source.waiting.slice(),
+      busIndex: source.busIndex, busFilled: source.busFilled, ticket: source.ticket };
+  }
+
+  function transferStep(level, source, queueIndex, events) {
+    const state = transferClone(source);
+    if (!state || !Number.isInteger(queueIndex) || queueIndex < 0 || queueIndex >= state.queues.length) return null;
+    settle(level, state);
+    const queue = state.queues[queueIndex], bus = level.buses[state.busIndex];
+    if (!queue?.length || !bus) return null;
+    if ((level.transferGates || []).some((gate) => gate.lane === queueIndex && state.busIndex < gate.unlockAfter)) return null;
+    const position = level.queues[queueIndex].length - queue.length;
+    if ((level.transferPriority || []).some((marker) => marker.lane === queueIndex && marker.position === position)
+      && queue[0] !== bus.color) return null;
+    const next = step(level, state, queueIndex, events);
+    return next ? { ...next, ticket: state.ticket } : null;
+  }
+
+  function transferSwap(level, source, events) {
+    const state = transferClone(source);
+    if (!state || state.ticket !== 1 || state.waiting.length < 2) return null;
+    [state.waiting[0], state.waiting[1]] = [state.waiting[1], state.waiting[0]];
+    state.ticket = 0;
+    events?.push({ kind: 'transfer-swap' });
+    settle(level, state, events);
+    return state;
+  }
+
+  function transferAnalyze(level, source) {
+    const initial = transferClone(source);
+    if (!initial) return { holds: Infinity, action: null };
+    // Per-analysis memoization avoids reusing stale answers if a candidate
+    // author changes a gate or priority marker while iterating locally.
+    const cache = new Map();
+    const visit = (state) => {
+      settle(level, state);
+      const key = `${state.busIndex}:${state.busFilled}:${state.ticket}:${state.waiting.join(',')}:${state.queues.map((q) => q.join(',')).join('/')}`;
+      if (cache.has(key)) return cache.get(key);
+      if (isComplete(level, state)) return { holds: 0, action: null };
+      let best = { holds: Infinity, action: null };
+      state.queues.forEach((queue, index) => {
+        const next = transferStep(level, state, index);
+        if (!next) return;
+        const cost = Number(queue[0] !== level.buses[state.busIndex]?.color);
+        const tail = visit(next);
+        if (cost + tail.holds < best.holds) best = { holds: cost + tail.holds, action: { type: 'dispatch', lane: index } };
+      });
+      const swapped = transferSwap(level, state);
+      if (swapped) {
+        const tail = visit(swapped);
+        if (tail.holds < best.holds) best = { holds: tail.holds, action: { type: 'swap' } };
+      }
+      cache.set(key, best);
+      return best;
+    };
+    return visit(initial);
+  }
+
   const levels = Array.from({ length: 30 }, (_, index) => build(index));
   root.BUS_JAM_LEVELS = {
     colors: COLOR_COUNT,
@@ -232,6 +299,9 @@
     isComplete,
     isDeadlocked,
     analyze,
+    transferStep,
+    transferSwap,
+    transferAnalyze,
   };
   if (typeof module !== "undefined") module.exports = root.BUS_JAM_LEVELS;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -23,6 +23,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible {outline:3px solid #f
 .build-brief {padding:14px 18px 2px;z-index:2}
 .plan-heading {display:flex;flex-direction:column;gap:4px}
 .plan-heading h2 {font-size:22px;line-height:1.2;margin:0;color:#fff2d6;letter-spacing:-.035em}
+#chapterLabel [data-wp-local-practice] {position:static!important;transform:none!important;display:inline-block;margin-inline-start:8px;vertical-align:middle;letter-spacing:normal}
 .objectives {display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
 .objective {display:flex;align-items:center;gap:6px;background:#102923bd;border:1px solid #456555;border-radius:7px;padding:6px 8px;font-size:11px;line-height:1.25;color:#deeadf;min-height:31px}
 .objective.is-met {border-color:#9ec785;color:#d7f1bd;background:#294633}
@@ -36,6 +37,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible {outline:3px solid #f
 .cell-hit:focus-visible,.cell-hit.is-hint {border-color:#ffe0a4;background:#ffe0a42b;outline:0;box-shadow:0 0 0 3px #16352b99}
 .cell-hit:focus-visible::after,.cell-hit.is-hint::after {opacity:1}
 .cell-hit.is-hint::after {content:"↓"}
+.cell-hit[data-hillside-marker]::before {content:attr(data-hillside-marker);position:absolute;top:1px;right:1px;display:grid;place-items:center;width:19px;height:19px;border:1px solid #fff3c2;border-radius:5px;background:#102e2d;color:#fff4c9;font:800 14px/1 system-ui;pointer-events:none}
 .build-desk {position:relative;z-index:3;background:linear-gradient(#1a3430f5,#122b28);border-top:1px solid #58705a;padding:10px 14px 14px;box-shadow:0 -8px 26px #0a17162e}
 .desk-heading {display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;color:var(--burrow-muted);min-height:18px}
 #selectedTool {font-weight:750;color:#f3dfb9}
@@ -48,6 +50,12 @@ button:focus-visible,a:focus-visible,summary:focus-visible {outline:3px solid #f
 .tool-button[aria-pressed="true"] {border:2px solid var(--burrow-gold);background:#4b5138;box-shadow:0 0 0 2px #f4ce8912;color:#fff1d2;padding-top:1px}
 .tool-button[aria-pressed="true"] .tool-cost {color:#f4d396}
 .tool-button[aria-disabled="true"] {opacity:.38}
+#battleView[data-hillside="true"] .tool-shelf {grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+#battleView[data-hillside="true"] .tool-button {min-height:60px;height:68px}
+#battleView[data-hillside="true"] .tool-button img {width:30px;height:30px}
+#battleView[data-hillside="true"] .tool-button:is([data-tool="vent"],[data-tool="brace"])::before {position:absolute;top:2px;right:4px;color:#fff4c9;font:800 14px/1 system-ui}
+#battleView[data-hillside="true"] .tool-button[data-tool="vent"]::before {content:"≋"}
+#battleView[data-hillside="true"] .tool-button[data-tool="brace"]::before {content:"✕"}
 .feedback {font-size:12px;line-height:1.3;min-height:36px;max-height:48px;margin:8px 0;color:#c8dbc9;overflow:auto;display:flex;align-items:center}
 .feedback.is-error {color:#ffd1b8}
 .build-actions {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}

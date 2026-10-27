@@ -26,6 +26,19 @@
     const required = [root, main, stage, battle, localeSelect, stageHeader, stageContent, stageInfo, stageRail, battleHeader, battleLive, battleFrameInfo];
     if (required.some((node) => !node)) throw new Error("SPECTRUM_PULSE_I9_SCENES_REQUIRED");
 
+    // Give the shared HUD one direct child per live value so every stat owns
+    // a column instead of nesting three statuses inside a single column.
+    const status = battleFrameInfo.querySelector(".battle-status");
+    if (!status || status.children.length !== 3) throw new Error("SPECTRUM_PULSE_BATTLE_STATS_REQUIRED");
+    for (const label of status.querySelectorAll("b")) {
+      const text = document.createElement("span");
+      for (const attribute of label.attributes) text.setAttribute(attribute.name, attribute.value);
+      text.textContent = label.textContent;
+      label.replaceWith(text);
+    }
+    battleFrameInfo.append(...status.children);
+    status.remove();
+
     document.body.dataset.wpInterfaceVersion = "9";
     const frame = window.WeightPlayScreenFrame.mount({
       root,

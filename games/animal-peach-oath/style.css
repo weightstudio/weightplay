@@ -385,11 +385,25 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 @keyframes workspace-enter { from { opacity: .55; } to { opacity: 1; } }
 
 /* Disabled Chapter 2 candidate only; its layout still requires real play review. */
-.oath-orders { position: absolute; z-index: 14; inset-inline-end: 8px; top: 56px; width: min(220px, 45%); max-height: 55%; overflow-y: auto; display: grid; gap: 4px; padding: 8px; border: 1px solid #e6cd8a; border-radius: 10px; background: #102632f5; color: #fff; }
+.oath-orders { position: absolute; z-index: 14; top: 48px; left: 35%; right: 35%; display: grid; gap: 3px; pointer-events: none; color: #fff; text-align: center; }
 .oath-orders[hidden] { display: none; }
-.oath-orders h3, .oath-orders p { margin: 0; }
-.oath-orders label { font-size: 12px; }
-.oath-orders select, .oath-orders button { min-width: 0; min-height: 44px; width: 100%; }
+.oath-orders > button { min-height: 44px; pointer-events: auto; }
+.oath-orders > p { margin: 0; padding: 3px 6px; background: #102632e8; font-size: 11px; overflow-wrap: anywhere; }
+.oath-orders > p:empty { display: none; }
+.oath-orders-panel { position: absolute; z-index: 90; inset: 0; display: grid; align-content: start; justify-items: stretch; gap: 5px; overflow-y: auto; padding: 12px max(12px, calc((100vw - 480px) / 2)); background: #102632fa; color: #fff; pointer-events: auto; text-align: start; }
+.oath-orders-panel[hidden] { display: none; }
+.oath-orders-panel h3, .oath-orders-panel p { margin: 0; }
+.oath-orders-panel label { font-size: 12px; }
+.oath-orders-panel select, .oath-orders-panel button { min-width: 0; min-height: 44px; width: 100%; }
+@media (max-width:699px) and (orientation:portrait) { .oath-orders { left: 96px; right: 8px; } }
+@media (max-width:359px) and (orientation:portrait) { .oath-orders { left: 84px; right: 4px; } }
+@media (max-width:699px) and (orientation:portrait) { html[dir="rtl"] .oath-orders { left: 8px; right: 96px; } }
+@media (max-width:359px) and (orientation:portrait) { html[dir="rtl"] .oath-orders { left: 4px; right: 84px; } }
+@media (max-height:520px) and (orientation:landscape) {
+  .arena-wrap:has(.oath-orders:not([hidden])) .wave-hud { top: 0; }
+  .oath-orders { top: 30px; left: 30%; right: 30%; }
+  .oath-orders > p { padding: 1px 4px; font-size: 10px; line-height: 1.05; }
+}
 .oath-recovery { position: absolute; z-index: 100; inset: 0; display: grid; align-content: center; justify-items: center; gap: 12px; overflow-y: auto; padding: 20px; background: #102632fa; color: #fff; text-align: center; }
 .oath-recovery h2, .oath-recovery p { max-width: 36rem; margin: 0; }
 .oath-recovery button { min-height: 44px; width: min(100%, 22rem); }

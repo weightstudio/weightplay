@@ -381,7 +381,8 @@
     resultOpen: false,
     manageFromResult: false,
     chapterSignal: null,
-    chapterFault: false
+    chapterFault: false,
+    chapterPlanning: false
   };
 
   // Effects own presentation only. Cancellation never changes rewards or combat.
@@ -558,6 +559,7 @@
       else if (battle.running && !battle.resultOpen && !battle.tickHandle) battle.tickHandle = window.setInterval(battleTick, 260);
       if (!state.tutorialDone) showCoach();
     } else {
+      battle.chapterPlanning = false;
       suspendCombat();
       closeManagement();
       closeModal();
@@ -585,7 +587,7 @@
 }
 
   function resumeCombat() {
-    if (battle.chapterFault) return;
+    if (battle.chapterFault || battle.chapterPlanning) return;
     if (!$('#coach').classList.contains('is-hidden')) return;
     if (!battle.pausedAt) return;
     const pausedAt = battle.pausedAt, elapsed = Date.now() - pausedAt;
@@ -715,6 +717,7 @@
       battle.chapterSignal = null;
       battle.enemies = enemyPack(false);
       $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove());
+      $('#battleScene').querySelectorAll('.oath-orders-panel').forEach(node => node.remove());
       renderUnits();
     }
     motion($('#enemyLane'), [{opacity:0,transform:'translateY(-18px)'},{opacity:1,transform:'translateY(0)'}], 320);
@@ -767,7 +770,7 @@
 
   let chapterOrderDock = null;
   function chapterOrdersAllowed() {
-    return !!battle.chapterSignal && !battle.chapterFault && $('#app').dataset.scene === 'battle' && !document.hidden && battle.running && !battle.pausedAt && !battle.resultOpen && $('#management').classList.contains('is-hidden') && $('#modalLayer').classList.contains('is-hidden') && $('#coach').classList.contains('is-hidden');
+    return !!battle.chapterSignal && !battle.chapterFault && $('#app').dataset.scene === 'battle' && !document.hidden && battle.running && (!battle.pausedAt || battle.chapterPlanning) && !battle.resultOpen && $('#management').classList.contains('is-hidden') && $('#modalLayer').classList.contains('is-hidden') && $('#coach').classList.contains('is-hidden');
   }
   function syncChapterOrders() {
     try {
@@ -782,7 +785,7 @@
       chapterOrderDock = window.PEACH_OATH_ORDER_DOCK.createOrderDock(document, $('#arena'), 'peach-oath-orders', stateForDock, (kind, key) => {
         if (!chapterOrdersAllowed()) return {ok:false, reason:'paused'};
         return battle.chapterSignal.order(kind, key);
-      }, showChapterFault);
+      }, showChapterFault, () => { battle.chapterPlanning=true; suspendCombat(); }, () => { battle.chapterPlanning=false; resumeCombat(); }, $('#battleScene'));
       if (!chapterOrderDock || typeof chapterOrderDock.sync !== 'function') throw Error('INVALID_CHAPTER_ORDER_DOCK');
     }
     chapterOrderDock?.sync();
@@ -809,6 +812,7 @@
   function showChapterFault() {
     if (!battle.chapterSignal || battle.chapterFault) return;
     battle.chapterFault = true;
+    battle.chapterPlanning = false;
     suspendCombat();
     const copy = chapterFaultCopy[activeLocale()] || chapterFaultCopy.en;
     const dialog = document.createElement('section'), title = document.createElement('h2'), message = document.createElement('p'), retry = document.createElement('button'), leave = document.createElement('button');
@@ -816,17 +820,17 @@
     title.id='oath-recovery-title'; title.textContent=copy[0]; message.id='oath-recovery-message'; message.textContent=copy[1]; retry.type=leave.type='button'; retry.textContent=copy[2]; leave.textContent=copy[3];
     retry.addEventListener('click', () => {
       if (!battle.chapterFault) return;
-      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove()); chapterOrderDock=null;
+      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove()); $('#battleScene').querySelectorAll('.oath-orders-panel').forEach(node => node.remove()); chapterOrderDock=null;
       if (!syncChapterOrders()) return;
       dialog.remove(); chapterFaultDialog=null; battle.chapterFault=false;
       resumeCombat();
       if (!syncChapterOrders()) { showChapterFault(); return; }
-      $('#arena .oath-orders select')?.focus({preventScroll:true});
+      $('#arena .oath-orders > button')?.focus({preventScroll:true});
     });
     leave.addEventListener('click', () => {
       if (!battle.chapterFault) return;
       dialog.remove(); chapterFaultDialog=null; battle.chapterFault=false;
-      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove()); chapterOrderDock=null;
+      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove()); $('#battleScene').querySelectorAll('.oath-orders-panel').forEach(node => node.remove()); chapterOrderDock=null;
       showScene('main');
       $('#startBtn')?.focus({preventScroll:true});
     });

@@ -564,16 +564,19 @@ class ArenaWorld{
     const [width,height,base,face]=shapes[boss]||shapes[35],middle=.75+height/2,depth=.85;
     b(base,0,middle,0,width,height,depth);b(0x2c465d,0,.35,0,width*.8,.35,.65);
     for(const z of [-1,1]){b(face,0,middle,z*(depth/2+.045),width*.76,height*.62,.09);for(const x of [-.25,.25])b(0x243b4d,x,middle+.08,z*(depth/2+.105),.14,.22,.06);b(0x477080,0,middle-.25,z*(depth/2+.11),.32,.08,.06);}
+    // The fixed camera may see a turning rival in profile; give both side
+    // profiles readable eyes rather than relying on a front-facing texture.
+    for(const side of [-1,1]){b(face,side*(width/2+.045),middle+.28,0,.09,height*.42,.7);for(const z of [-.2,.2])b(0x243b4d,side*(width/2+.105),middle+.33,z,.06,.18,.14);}
     for(const x of [-.25,.25])b(0x243b4d,x,.79+height,.22,.14,.08,.17);
     for(const x of [-.42,.42])b(base,x,.14,.05,.38,.28,.55);
     const left=new THREE.Group(),right=new THREE.Group();left.position.set(-width/2-.25,middle-.15,.1);right.position.set(width/2+.25,middle-.15,.1);body.add(left,right);
     for(const arm of [left,right])this.block(arm,base,0,0,0,.45,.45,.52);
     if(boss===35){for(const arm of [left,right]){this.block(arm,0x2abbb6,0,0,.18,.6,.7,.6);this.block(arm,0xf17a45,0,0,.48,.84,.85,.45);}b(0xf4b45d,0,middle+height*.57,0,width*.7,.25,.7);}
     if(boss===40){for(const x of [-.7,.7]){b(0x327cae,x,middle+height*.55,0,.22,.65,.3);b(0xe9b25e,x,middle+height*.88,0,.65,.48,.56);}b(0xe1c170,0,.65,0,1.5,.22,1);}
-    if(boss===45){for(const x of [-.9,.9]){b(0x3265a8,x,middle+height*.45,0,.48,1.15,.6);b(0xf16858,x,middle+height*.9,0,.5,.3,.64);}b(0x2cc4c6,0,.55,0,1.75,.22,1);}
-    if(boss===50){for(const x of [-1,1]){const wing=b(0x57c8d5,x,middle+.2,0,.6,1,.5);wing.rotation.z=x<0?-.35:.35;}const crest=b(0xffc348,0,middle+height*.65,0,.65,.65,.6);crest.rotation.z=Math.PI/4;b(0x30416e,0,.55,0,1.2,.25,1);}
-    if(boss===55){b(0xeeb343,-1.25,middle,0,.35,1.9,1.05);b(0x2cc3b8,-1.25,middle,-.58,.55,1.5,.18);b(0xf5d779,-1.25,middle+.88,0,.7,.2,1.1);b(0x235c77,0,.55,0,1.9,.25,1);}
-    if(boss===60){this.crown=b(0xf1b43e,0,middle+height*.58,0,1.75,.3,.9);this.phaseMat=this.mat(0xff9b88);for(const x of [-.65,0,.65])b(0x35cac1,x,middle+height*.8,0,.35,x===0?.8:.55,.5);for(const x of [-1,1])b(0xeab74c,x,middle+.4,0,.55,.4,.7);}
+    if(boss===45){for(const x of [-1.2,1.2]){b(0x3265a8,x,middle+height*.45,0,.48,1.15,.6);b(0xf16858,x,middle+height*.9,0,.5,.3,.64);}b(0x2cc4c6,0,.55,0,1.75,.22,1);}
+    if(boss===50){for(const x of [-1.3,1.3]){const wing=b(0x57c8d5,x,middle+.2,0,.6,1,.5);wing.rotation.z=x<0?-.35:.35;}const crest=b(0xffc348,0,middle+height*.65,0,.65,.65,.6);crest.rotation.z=Math.PI/4;b(0x30416e,0,.55,0,1.2,.25,1);}
+    if(boss===55){b(0xeeb343,-1.6,middle,0,.7,1.9,1.2);b(0x2cc3b8,-1.6,middle,-.65,.78,1.45,.18);b(0xf5d779,-1.6,middle+.88,0,.9,.2,1.25);b(0x235c77,0,.55,0,1.9,.25,1);}
+    if(boss===60){this.crown=b(0xf1b43e,0,middle+height*.58,0,1.75,.3,.9);this.phaseMat=this.mat(0xff9b88);for(const x of [-.65,0,.65])b(0x35cac1,x,middle+height*.8,0,.35,x===0?.8:.55,.5);for(const x of [-1.35,1.35])b(0xeab74c,x,middle+.4,0,.55,.4,.7);}
     return {root,body,left,right};
   }
   setTool(color){if(this.hero)this.hero.glove.material=this.mat(color);}

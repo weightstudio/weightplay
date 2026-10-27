@@ -78,6 +78,17 @@ export function createModels() {
       box(g,-.1,.62,-.09,.2,.17,.18,'cream');box(g,-.17,.72,-.09,.06,.07,.07,'cream');box(g,-.03,.72,-.09,.06,.07,.07,'cream');
       box(g,-.14,.64,.009,.025,.03,.02,'dark');box(g,-.06,.64,.009,.025,.03,.02,'dark');
       box(g,.22,.22,.39,.13,.13,.13,'blue',.2);
+    } else if(type==='vent') {
+      box(g,0,.2,0,.60,.22,.60,'edge');box(g,0,.48,0,.48,.55,.45,'blue');
+      for(const x of [-.15,0,.15])box(g,x,.49,.235,.065,.36,.03,'cream');
+      box(g,0,.79,0,.64,.09,.61,'wood');box(g,0,.87,0,.39,.09,.39,'light');
+      for(const x of [-.2,.2])box(g,x,.94,0,.055,.14,.055,'cream');
+    } else if(type==='brace') {
+      for(const x of [-.32,.32])box(g,x,.43,0,.13,.70,.15,'edge');
+      box(g,0,.76,0,.76,.13,.19,'light');
+      box(g,0,.42,0,.09,.71,.11,'wood').rotation.z=.68;
+      box(g,0,.42,-.04,.09,.71,.11,'wood').rotation.z=-.68;
+      box(g,0,.42,.08,.15,.15,.05,'gold');
     } else if(type==='entry') {
       for(const x of [-.38,.38])box(g,x,.5,-.3,.15,.92,.22,'wood');
       box(g,0,.99,-.3,.95,.16,.3,'light');box(g,0,1.11,-.3,.71,.12,.35,'green');
@@ -104,6 +115,10 @@ export function createModels() {
         for(let k=0;k<3;k++)box(g,x-.2+k*.18,.002,z-.25+k*.2,.25,.012,.025,'cream');
       } else {
         for(const a of [-.39,.39])for(const b of [-.39,.39])box(g,x+a,.002,z+b,.055,.025,.055,'light');
+        if(t==='!'){
+          box(g,x,-.002,z,.78,.022,.78,'soil');
+          for(const [dx,dz,angle] of [[-.16,-.1,.45],[.12,.12,-.55],[.25,-.18,.9]])box(g,x+dx,.012,z+dz,.31,.015,.045,'gold',angle);
+        }
         if(t==='*'){
           box(g,x,.15,z,.18,.28,.18,'violet',Math.PI/4);box(g,x+.14,.08,z-.07,.1,.15,.1,'gold',Math.PI/4);
         }

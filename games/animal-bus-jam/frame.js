@@ -74,10 +74,24 @@
     });
     game.attach(selector);
 
-    const dialogs = ["result", "deadlock", "leaveBattle"].map($);
+    const dialogs = ["result", "deadlock", "leaveBattle", "transferHelpDialog"].map($).filter(Boolean);
     const sync = () => {
       const scene = document.body.dataset.screen || "main";
       const covered = scene === "battle" && dialogs.some((dialog) => dialog.open);
+      const badge=game.localPractice?.()?document.querySelector('[data-wp-local-practice]'):null;
+      if(badge){
+        stageGroup.remove(badge);battleGroup.remove(badge);
+        if(scene==='battle'&&!covered){
+          battleGroup.remove(chapter);chapter.hidden=true;document.body.append(chapter);
+          battleGroup.remove(remaining);remaining.hidden=true;document.body.append(remaining);
+          badge.style.cssText='position:static;display:inline-block;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';battleGroup.add(badge);
+        }else{
+          if(chapter.parentElement!==battleGroup.element){chapter.hidden=false;battleGroup.add(chapter);}
+          if(remaining.parentElement!==battleGroup.element){remaining.hidden=false;battleGroup.add(remaining);}
+          if(scene==='stage'){badge.style.cssText='position:static;display:inline-block;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';stageGroup.add(badge);}
+          else{document.body.append(badge);badge.style.cssText='position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:10000;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';}
+        }
+      }else {if(chapter.parentElement!==battleGroup.element){chapter.hidden=false;battleGroup.add(chapter);}if(remaining.parentElement!==battleGroup.element){remaining.hidden=false;battleGroup.add(remaining);}}
       guide.hidden = scene !== "main";
       if (scene === "stage") selector.refresh(game.selected());
       else selector.cancel();
