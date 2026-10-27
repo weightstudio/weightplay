@@ -1,12 +1,24 @@
 {
   "generator": "image_gen built-in",
-  "generationSource": "/Users/kuoyu/.codex/generated_images/01a177cc-f406-7803-978d-f9c973e2d2eb/exec-a049418a-aab5-4124-a868-c32da1bb077e.png",
-  "prompt": "Use case: stylized-concept. Create one square premium game item sprite atlas on genuinely transparent background. Exactly a clean 3 by 3 evenly spaced grid of nine independent fully visible objects, each centered within its cell with ample transparent margin, no outlines separating cells, no text, no numerals, no logos. Row1 three distinct beautifully crafted small river surfing boards viewed three-quarter from above: honey wood board with teal inlay, sleek dark teal speed board with golden fin, wider moss-green stable board with cream endcaps. Row2: a compact square brass river anchor on teal rope spool, coral-red glowing night-surf board with turquoise luminous inlays, a handsome wooden trophy pole crowned with a cubic aqua water gem. Row3: bronze forest-river route medal with cuboid leaf motif, silver brass tide-gate medal with coral hinge motif, golden teal sail championship keepsake. Consistent original WeightPlay premium block-world game prop language: beveled cuboid construction, tactile wood grain, brushed brass, clean enamel, teal/seafoam/coral palette, coherent warm upper-left studio light, small soft contact shadow only, convincing volume, readable as a polished actual object at 64 pixels. All art is substantive rendered objects, not flat icon glyphs, not emoji, not CSS shapes, not UI. Keep every object in its own equal grid cell, not overlapping. Preserve true alpha transparency outside the props.",
+  "generationSource": "/Users/kuoyu/.codex/generated_images/01a177cc-f406-7803-978d-f9c973e2d2eb/exec-85ce390c-01b4-46b9-b0f1-058351f95050.png",
+  "prompt": "Use case: precise-object-edit. Asset: production transparent 3 by 3 item atlas for original Bramble Rapids. Edit the attached atlas only to make it safe for nine exactly equal CSS sprite cells. Preserve all nine original item identities, their order, silhouettes, craftsmanship, colors and polished cuboid game style. Genuine transparent background. A square image divided into 3 equal columns and 3 equal rows; NO drawn grid or dividers. Each item must be separately centered at the exact center of its cell, with its ENTIRE silhouette plus shadow fitting inside the central 70 percent of that cell's width AND height. Leave at least 15 percent clean transparent margin on EVERY side of EVERY cell. Absolutely no pixel from one item may cross a cell boundary; do not clip or crop ribbons, fins, anchor head, board nose, medals or shadows. Row1 left honey-wood teal Brook board, center dark teal gold-trim fin-shaped Driftfin board, right pale wood olive Reedguard board. Row2 left coral-gold mooring anchor rope fixture, center orange-coral teal decorative board, right turquoise cube trophy on a crafted wooden pedestal. Row3 complete bronze leafy-river medal including ribbon, complete silver tidal-gate medal including ribbon, complete gold sail medal including ribbon. Keep the same coherent warm highlights, tactile material detail, soft contained shadows and clean edge quality as reference. No words, labels, logos, letters, watermark, extra objects, ornaments in the margins, collage seams or background color. Main correction: SHRINK and recenter each complete object with generous transparent padding, especially the anchor and medal ribbons that currently cross the equal row boundaries.",
+  "sourceReview": "Inspected all nine complete props on alpha. Equal-cell boundaries no longer cut the anchor or medal ribbons. The requested 15% margin was not achieved uniformly: measured solid-alpha minimum is 4px; all nine cells have zero alpha>=24 pixels in the outer 4px boundary. Actual UI recheck remains pending.",
+  "previousDraft": {
+    "sourceSha256": "7717ad260f607a67d926e6c6a83a10be2949f415dea0dc8a276d2428501f4542",
+    "reasonReplaced": "Actual Brook card showed the neighboring anchor tip; original anchor/ribbons crossed the 418px/836px row boundaries."
+  },
+  "alphaInspection": {
+    "threshold": 24,
+    "minCellMarginPixels": 4,
+    "outerBoundaryPixels": 4,
+    "cellsWithBoundaryAlpha": 0,
+    "inspectionJobId": "ab8f1400-aacf-42e0-88b2-e2cdd7765a82",
+    "webpBoundaryAlphaPixels": 0
+  },
   "dimensions": [
     1254,
     1254
   ],
-  "sourceSha256": "7717ad260f607a67d926e6c6a83a10be2949f415dea0dc8a276d2428501f4542",
-  "deliverySha256": "f42a3f22a06cfc02ee166ff887f94ebd90c4f00adccf57cdad92438cb2b99d7d",
-  "sourceReview": "Inspected generated output: coherent crafted scene/props, no text, distinct silhouettes; runtime surface review pending."
+  "sourceSha256": "9719f161e1b86f6159bcd87c70acdad4b220a0860320e7fc8e8ca02fd30be954",
+  "deliverySha256": "53594ce700f609e83214be6456eed2ec39aaa57e0da97516d340222fac7dde34"
 }

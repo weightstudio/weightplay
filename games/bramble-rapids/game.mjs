@@ -9,6 +9,7 @@ const $=id=>document.getElementById(id), W=window, SKU='bramble-rapids:coral-nig
 const store=createProgressStore();store.load();
 let locale=resolveLocale(),screen='main',tab='stages',selected=store.persistedSnapshot.unlocked,frame,rail,joystick,renderer,race,modal=null,previousFocus=null,practice=false,practiceRun=false,raf=0,lastFrame=0,round=0,resultSaved=false,busy=false,feedbackUntil=0,shopFeedbackKey=null;
 const savingRuns=new WeakSet(),stageSaveNotice=document.createElement('span');stageSaveNotice.setAttribute('role','status');
+const resultRewards=new WeakMap(),rewardOwners=new Map();let publishingReward=null,rewardSyncQueued=false;
 let jumpQueued=false,anchorHeld=false;const keys=new Set(),abort=new AbortController();
 const listen=(node,event,fn,opts={})=>node.addEventListener(event,fn,{...opts,signal:abort.signal});
 const tr=(key,vars)=>t(locale,key,vars),text=(id,key,vars)=>{$(id).textContent=tr(key,vars);};
@@ -16,6 +17,44 @@ const audio=id=>W.WeightPlayAudio?.play(id), settingsOpen=()=>!!document.querySe
 const runnable=()=>screen==='battle'&&race?.status==='running'&&!modal&&!document.hidden&&!settingsOpen();
 const clock=value=>`${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`;
 const requiredFlags=stage=>stage.features.filter(f=>f.kind==='buoy'&&f.role==='required');
+const resultActive=()=>screen==='battle'&&modal==='resultPanel'&&!$('resultPanel').hidden&&!!race?.result;
+function syncResultReward(){
+  // A delayed save can commit after Result was left. Its duplicate notice
+  // must not cover an active Replay or Stage controls either.
+  W.WeightPlayCastle?.dismissRewardNotice?.('bramble-rapids');
+  if(!resultActive())return;
+  W.ShowResultGet?.('bramble-rapids',!practiceRun&&race.result.won===true&&resultRewards.get(race)?.obtained===true);
+}
+function queueResultRewardSync(){
+  if(rewardSyncQueued)return;rewardSyncQueued=true;
+  // Castle creates its viewport toast later in the same event dispatch.
+  queueMicrotask(()=>{rewardSyncQueued=false;syncResultReward();});
+}
+function rewardOwnerMatches(owner,completionId){
+  const state=owner&&resultRewards.get(owner);
+  return !!state&&!state.practice&&owner.result?.won===true&&completionId===`stage-${owner.result.stageId}`;
+}
+function confirmResultReward(owner,completionId){
+  if(!rewardOwnerMatches(owner,completionId))return;
+  try{if(W.WeightPlayCastle?.read?.().completions?.[`bramble-rapids:${completionId}`])resultRewards.get(owner).obtained=true;}
+  catch{/* A failed read cannot confirm a collectible. */}
+}
+function observeCastleReward(event){
+  const detail=event.detail;
+  if(detail?.gameId!=='bramble-rapids'||!/^stage-([1-9]|[1-5]\d|60)$/.test(detail.completionId||'')||!(detail.amount>0)||!['castle-block','castle-material'].includes(detail.currency))return;
+  const completionId=detail.completionId;
+  const owner=publishingReward?.completionId===completionId?publishingReward.owner
+    :rewardOwners.has(completionId)?rewardOwners.get(completionId)
+      :resultActive()&&resultSaved?race:null;
+  // Retain even an unowned committed event, so its delayed ready notification
+  // cannot be adopted by a later replay of the same Stage.
+  rewardOwners.set(completionId,owner);
+  confirmResultReward(owner,completionId);queueResultRewardSync();
+}
+function observeCastleReady(){
+  for(const[completionId,owner]of rewardOwners)confirmResultReward(owner,completionId);
+  queueResultRewardSync();
+}
 function clearInput(){keys.clear();jumpQueued=false;anchorHeld=false;joystick?.reset();for(const id of ['jumpBtn','anchorBtn'])$(id).dataset.held='false';}
 function notify(){W.dispatchEvent(new Event('weightplay:stage-sync'));}
 function clearFrame(){cancelAnimationFrame(raf);raf=0;lastFrame=0;}
@@ -28,6 +67,7 @@ function syncPause(){
 }
 function closeModal({restore=true}={}){
   if(!modal)return;
+  if(modal==='resultPanel')W.ShowResultGet?.('bramble-rapids',false);
   $(modal).hidden=true;modal=null;
   $('battleLive').inert=false;$('stageContent').inert=false;
   $('stageScreen').querySelector('header').inert=false;
@@ -53,7 +93,12 @@ function activate(next){
   frame.activate(next);if(next==='stage'){renderManagement();rail.refresh(selected-1);}notify();
 }
 function selectTab(name,focus=false){
-  tab=name;for(const id of ['boards','stages','collection']){const active=id===name;$(id+'Panel').hidden=!active;$(id+'Tab').setAttribute('aria-selected',String(active));$(id+'Tab').tabIndex=active?0:-1;}
+  rail?.cancel();tab=name;
+  for(const id of ['boards','stages','collection']){
+    const active=id===name,panel=$(id+'Panel');
+    panel.hidden=!active;panel.classList.toggle('hidden',!active);panel.inert=!active;panel.setAttribute('aria-hidden',String(!active));
+    $(id+'Tab').setAttribute('aria-selected',String(active));$(id+'Tab').tabIndex=active?0:-1;
+  }
   if(name==='stages')rail?.refresh(selected-1);else renderManagement();
   if(focus)$(name+'Tab').focus({preventScroll:true});notify();
 }
@@ -171,23 +216,26 @@ async function startStage(id,{practice:asPractice=practice,restart=false}={}){
   if(asPractice){if(!await LocalPractice.validate())return;}else if(id>store.persistedSnapshot.unlocked)return;
   if(restart)W.WonderAnalytics?.game?.markRestart();
   selected=id;practiceRun=asPractice;resultSaved=false;renderer?.dispose();renderer=null;activate('battle');
-  race=createRace(id,{boardId:store.snapshot.equippedBoard});round++;startRace(race);
+  race=createRace(id,{boardId:store.snapshot.equippedBoard});resultRewards.set(race,{practice:asPractice,obtained:false});round++;startRace(race);
   try{renderer=new RapidsRenderer($('riverArena'),{onContextLost:()=>openModal('graphicsDialog')});renderer.setStage(race.stage);renderer.setAppearance?.(race.boardId,W.WeightPlayWallet?.owns(SKU)&&store.snapshot.equippedCosmetic==='coral-night'?'coral-night':'default');renderer.resize();renderer.render(race,0);}
   catch(error){console.error('Bramble Rapids renderer',error);renderer?.dispose();renderer=null;openModal('graphicsDialog');return;}
   updateHUD();processEvents();joystick.setEnabled(true);$('riverArena').focus({preventScroll:true});
-  if(!store.snapshot.tutorialComplete&&!asPractice)showHelp();else schedule();notify();
+  const newMechanicLesson=(id===6||id===31)&&!store.persistedSnapshot.records[id]?.cleared;
+  if(!asPractice&&(!store.snapshot.tutorialComplete||newMechanicLesson))showHelp();else schedule();notify();
 }
 function showHelp(open=true){if(!race)return;$('helpStage').textContent=`${tr('stage')} ${race.stage.id} · ${stageName(race.stage.id,locale)}`;$('helpLesson').textContent=`${stageLesson(race.stage,locale)} ${stageDetails(race.stage).join(' · ')}`;$('helpBasics').textContent=`${tr('keyControls')} ${tr('touchControls')} ${tr('tutorialJump')} ${race.stage.chapter===2?tr('tutorialAnchor'):''}`;if(open)openModal('helpDialog');}
 function renderResult(){
   if(!race?.result)return;const r=race.result,saving=savingRuns.has(race);
   $('resultStage').textContent=`${tr('stage')} ${r.stageId} · ${stageName(r.stageId,locale)}`;text('resultTitle',r.won?'won':'lost');
   $('resultArt').style.setProperty('--kit-x',`${(r.won?Math.max(0,r.stars-1):0)*50}%`);
-  $('resultDetails').textContent=`${tr('rank')} ${r.rank}/${race.rivals.length+1} · ${tr('time')} ${clock(r.time)} · ${tr('stars')} ${r.stars}/3 · ${tr('landing')} ${r.landings}`;
+  const best=!practiceRun&&store.persistedSnapshot.records[r.stageId]?.bestTime;
+  $('resultDetails').textContent=`${tr('rank')} ${r.rank}/${race.rivals.length+1} · ${tr('time')} ${clock(r.time)} · ${tr('stars')} ${r.stars}/3 · ${tr('landing')} ${r.landings}${Number.isFinite(best)?` · ${tr('bestTime')} ${clock(best)}`:''}`;
   const reason={timeout:'timeoutReason',stability:'stabilityReason',flags:'flagsReason',landings:'landingReason',rank:'rankReason',tide:'tideReason'};
   $('resultReason').textContent=r.won?(!practiceRun&&!resultSaved?tr('notSaved'):r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'finishReason')} ${stageDetails(race.stage).join(' · ')}`;
   $('resultSaved').textContent=practiceRun?'LOCAL PRACTICE':r.won?tr(resultSaved?'progressSaved':saving?'recordPending':'saveFailed'):'';
   $('retrySave').hidden=!r.won||resultSaved||practiceRun||saving;
   $('resultNext').disabled=!r.won||r.stageId===60||(!practiceRun&&!resultSaved);
+  syncResultReward();
 }
 async function persistResult(retry=false){
   if(practiceRun||!race?.result?.won||savingRuns.has(race))return;
@@ -195,12 +243,27 @@ async function persistResult(retry=false){
   try{receipt=retry?await store.retryPersist():await store.recordResult(current.result);}
   catch(error){console.error('Bramble Rapids save',error);receipt={saved:false};}
   finally{savingRuns.delete(current);}
-  publishPersisted(receipt);
+  publishPersisted(receipt,current);
   if(current!==race){renderManagement();notify();return;}
   resultSaved=receipt.saved===true;
   renderResult();notify();
 }
-function publishPersisted(receipt){if(receipt.saved===true)for(const id of receipt.persistedStageIds||[])W.WonderAnalytics?.completeStage?.(id);}
+function publishPersisted(receipt,owner=null){
+  if(receipt.saved!==true)return;
+  for(const id of receipt.persistedStageIds||[]){
+    const completionId=`stage-${id}`,rewardOwner=rewardOwnerMatches(owner,completionId)?owner:null,previous=publishingReward;
+    publishingReward={owner:rewardOwner,completionId};
+    try{
+      const reward=W.WonderAnalytics?.completeStage?.(id);
+      // This existing API receipt is returned only after its reward commits.
+      if(reward?.credited===true&&reward.amount>0&&['castle-block','castle-material'].includes(reward.currency)){
+        rewardOwners.set(completionId,rewardOwner);
+        if(rewardOwner)resultRewards.get(rewardOwner).obtained=true;
+      }
+    }finally{publishingReward=previous;}
+  }
+  queueResultRewardSync();
+}
 async function finish(){clearFrame();clearInput();openModal('resultPanel');renderResult();if(race.result.won&&!practiceRun)await persistResult();}
 function toStages(){selected=Math.min(60,store.persistedSnapshot.unlocked);activate('stage');selectTab('stages');}
 async function purchase(){
@@ -211,6 +274,8 @@ async function purchase(){
   busy=false;$('confirmBuy').disabled=false;closeModal();renderManagement();
 }
 function bind(){
+  listen(W,'weightplay:castle-reward',observeCastleReward);
+  listen(W,'weightplay:castle-ready',observeCastleReady);
   listen($('startBtn'),'click',()=>{selected=store.persistedSnapshot.unlocked;activate('stage');selectTab('stages');});listen($('stageBack'),'click',()=>activate('main'));listen($('battleBack'),'click',()=>race?.result?toStages():openModal('leaveDialog'));
   for(const id of ['boards','stages','collection'])listen($(id+'Tab'),'click',()=>selectTab(id));
   for(const id of ['boardsTab','stagesTab','collectionTab'])listen($(id),'keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const ids=['boards','stages','collection'],dir=locale==='ar'?-1:1;selectTab(ids[e.key==='Home'?0:e.key==='End'?2:(ids.indexOf(tab)+(e.key==='ArrowRight'?dir:-dir)+3)%3],true);});
@@ -248,7 +313,7 @@ async function boot(){
   frame=W.WeightPlayScreenFrame.mount({root:$('gameFrame'),playUI:true,scenes:{main:scene('main'),stage:scene('stage'),battle:{...scene('battle'),headerInfo:$('battleInfo')}}});
   const info=W.WeightPlayScreenFrame.createGroup();for(const node of [...$('battleInfo').children])info.add(node);frame.battleTopUI.add(info);
   const tabs=W.WeightPlayScreenFrame.createGroup();for(const node of [...$('stageTabs').children])tabs.add(node);frame.commonDownButton.clear().add(tabs);frame.commonDownButton.element.setAttribute('role','tablist');$('stageTabs').hidden=true;
-  rail=W.WeightPlayPlayUI.mountStage({page:$('stagesPanel'),rail:$('stageRail'),config:makeStageConfig(stagePresentation),selected:selected-1,onSelect:index=>{selected=index+1;},onStart:index=>void startStage(index+1),isActive:()=>screen==='stage'&&tab==='stages'&&!modal});
+  rail=W.WeightPlayPlayUI.mountStage({page:$('stagesPanel'),rail:$('stageRail'),config:makeStageConfig(stagePresentation),selected:selected-1,onSelect:index=>{selected=index+1;},onStart:index=>{if(screen==='stage'&&tab==='stages'&&!modal)void startStage(index+1);},isActive:()=>screen==='stage'&&tab==='stages'&&!modal});
   joystick=W.WeightPlayJoystick.create({surface:$('riverArena'),container:$('riverArena'),mode:'floating',anchor:{left:76,bottom:76},enabled:false,isEnabled:runnable});
   bind();localize();activate('main');selectTab('stages');
   for(const card of document.querySelectorAll('.dialog-card')){

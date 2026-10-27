@@ -1,12 +1,16 @@
 {
   "generator": "image_gen built-in",
-  "generationSource": "/Users/kuoyu/.codex/generated_images/01a177cc-f406-7803-978d-f9c973e2d2eb/exec-8e8c782b-bae9-4f05-9594-4018904c953d.png",
-  "prompt": "Use case: stylized-concept. Create one production game environment atlas, genuine square 1:1 image divided into exactly two equally sized horizontal landscape panels without borders, labels, letters or gutters. Upper panel: a lush sunlit forest ravine with warm honey wooden water chutes, vivid turquoise current splitting around a stepped stone island, one short river jump ramp and safe blue landing pool, lanterns and blocky foliage. Lower panel: a twilight tidal aqueduct with visibly engineered brass and wood sluice gates, a calm small mooring bay with square coral-colored anchor post, aqua water under a soft lavender sky, stepped monumental garden cliffs. Match original premium WeightPlay Block Animals world: deliberately authored cuboid stonework, geometric foliage, tactile beveled crafted materials, strong depth, warm keys and cool jewel shadows, painterly polished 3D animated game scenery. Pure environment scenes, no characters, no photorealism, no HUD, no text, no logos, no diagrams, no painted user interface. Each panel is a complete usable wide background with depth and readable water route. Original designed world, no third-party recognizable composition or characteristic textures.",
+  "generationSource": "/Users/kuoyu/.codex/generated_images/01a177cc-f406-7803-978d-f9c973e2d2eb/exec-057ca61a-5331-4b03-a676-0e4c8d7007fd.png",
+  "prompt": "Use case: stylized-concept. Asset type: one square 1:1 production chapter-poster environment for the original WeightPlay game Bramble Rapids. The attached image is STYLE AND WORLD REFERENCE ONLY: replace its two-panel atlas composition with ONE unbroken, coherent, beautifully composed scene. A vivid turquoise river curves from a crafted warm wooden water chute in the foreground through stepped limestone forest banks toward a brass-and-wood tidal sluice and calm mooring bay in the middle distance. A small coral mooring post, readable safe landing pool, tiny warm lanterns, geometric blocky foliage, layered cliffs, subtle foam and reflective water. Show the river route as the clear main focal path with calm readable negative space. Premium original cuboid crafted animated-game world: tactile materials, controlled small bevel highlights, soft contact shadows, warm late-afternoon key light, cool jewel shadows, depth and commercial illustration finish. Whole composition is a single continuous river environment, consistent horizon, no horizontal split, no collage, no duplicate scene. No characters, words, text, HUD, UI, logos, watermark, photorealism or third-party design. Keep every essential subject fully inside the square with comfortable margins so the full image can be displayed uncropped.",
+  "sourceReview": "Inspected generated square output: single continuous crafted river scene, warm forest/sluice/mooring composition, no text or horizontal atlas seam. Current runtime review pending.",
+  "previousDraft": {
+    "sourceSha256": "0dc764a4cace0fe46e6cb20ff846394552d3bc1635c1d52bd53b449801fa476a",
+    "reasonReplaced": "Actual Stage render showed both stacked atlas panels and their horizontal seam; this single-scene revision addresses that observed composition defect."
+  },
   "dimensions": [
     1254,
     1254
   ],
-  "sourceSha256": "0dc764a4cace0fe46e6cb20ff846394552d3bc1635c1d52bd53b449801fa476a",
-  "deliverySha256": "93b598f552b1ff2dee8d14edada4a2933160cc417a4b38d89f26dbf3998d1777",
-  "sourceReview": "Inspected generated output: coherent crafted scene/props, no text, distinct silhouettes; runtime surface review pending."
+  "sourceSha256": "a9ed4d5dbdfac711656a44e1e7861787457ee46d51b373b2fe2ccfacd6af3ed5",
+  "deliverySha256": "90813d84a849c1e0dc3b6e7a5249ba00b457751f6e10caebceb28b42936ad1b5"
 }
