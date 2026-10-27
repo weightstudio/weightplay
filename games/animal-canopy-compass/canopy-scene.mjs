@@ -117,13 +117,28 @@ export function createCanopyScene(host,onPositions,onFailure) {
       m.emissiveIntensity=(i===lit||i===direction)? .9:.35;
     });request();
   }
+  // Local candidate use only: one retained block ribbon spans the two actual
+  // tower anchors. Reuse the owned box geometry and dispose its material with
+  // the scene; no mesh or texture is created per selection.
+  let ribbon=null;
+  function link(anchor,destination,blocked=-1){
+    const valid=n=>Number.isInteger(n)&&n>=0&&n<8;
+    if(valid(anchor)){glows[anchor].color.setHex(0x67e4f2);glows[anchor].emissive.setHex(0x1b7f8c);glows[anchor].emissiveIntensity=.9;}
+    if(valid(blocked)){glows[blocked].color.setHex(0x52616b);glows[blocked].emissive.setHex(0x15272b);glows[blocked].emissiveIntensity=.2;}
+    if(valid(anchor)&&valid(destination)&&anchor!==destination){
+      if(!ribbon){ribbon=new THREE.Mesh(box,material(0x76d9dc,{emissive:0x287a83,emissiveIntensity:.45}));scene.add(ribbon);}
+      const a=anchors[anchor],b=anchors[destination],dx=b.x-a.x,dz=b.z-a.z;
+      ribbon.position.set((a.x+b.x)/2,1.32,(a.z+b.z)/2);ribbon.scale.set(.14,.12,Math.hypot(dx,dz));ribbon.rotation.y=Math.atan2(dx,dz);ribbon.visible=true;
+    }else if(ribbon)ribbon.visible=false;
+    request();
+  }
   const onLost=e=>{e.preventDefault();lost=true;cancelAnimationFrame(frame);frame=0;onFailure();};
   const onRestored=()=>{lost=false;host.dispatchEvent(new CustomEvent('canopy-render-restored'));resize();};
   renderer.domElement.addEventListener('webglcontextlost',onLost);
   renderer.domElement.addEventListener('webglcontextrestored',onRestored);
   resize();
   return {
-    select,
+    select,link,
     setTheme(aurora){leaves.forEach((m,i)=>m.color.setHex((aurora?[0x222544,0x3e3a68,0x615a88,0x578e8b]:[0x123b3c,0x1b5551,0x27726a,0x358779])[i]));dark.color.setHex(aurora?0x2e315a:0x133744);request();},
     setActive(value){active=value&&!document.hidden;cancelAnimationFrame(frame);frame=0;if(active){from=to;angle=to;duration=0;resize();}},
     dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer.disconnect();renderer.domElement.removeEventListener('webglcontextlost',onLost);renderer.domElement.removeEventListener('webglcontextrestored',onRestored);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());renderer.dispose();renderer.domElement.remove();}

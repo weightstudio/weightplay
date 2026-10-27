@@ -1,5 +1,8 @@
 (function () {
   "use strict";
+  // Requested local practice remains isolated even while auth is pending or denied.
+  const practiceRequested = location.protocol === 'http:' && ['localhost','127.0.0.1','[::1]'].includes(location.hostname) && new URLSearchParams(location.search).get('practice') === '1';
+  let practiceAdapter = null, practiceAuthorized = false, practicePending = false;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +11,7 @@
     paused: Boolean(Boolean(battle.pausedAt) || !$("#management").classList.contains("is-hidden")), node: $("#battleScene"),
     activityMode: "state", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if (practiceRequested) return; try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -419,7 +422,7 @@
 
   let resettingProgress = false;
   function save() {
-    if (resettingProgress) return;
+    if (resettingProgress || practiceRequested) return;
     state.lastSave = Date.now();
     try { localStorage.setItem(C.saveKey, JSON.stringify(state)); }
     catch { /* Storage can be disabled; play remains available for this session. */ }
@@ -474,6 +477,7 @@
   }
 
   function grant(reward) {
+    if (practiceRequested) return;
     Object.entries(reward).forEach(([key, value]) => {
       if (key === "xp") gainPlayerXp(value);
       else if (key in state.resources) state.resources[key] += value;
@@ -483,6 +487,7 @@
   }
 
   function gainPlayerXp(amount) {
+    if (practiceRequested) return;
     state.player.xp += amount;
     while (state.player.xp >= levelGoal(state.player.level)) {
       state.player.xp -= levelGoal(state.player.level);
@@ -649,7 +654,8 @@
       const candidate = window.PEACH_OATH_CHAPTER2_CANDIDATE;
       const names = window.PEACH_OATH_CHAPTER2_NAMES;
       const dock = window.PEACH_OATH_ORDER_DOCK;
-      if (candidate?.ready !== true || typeof candidate.chapterTwoWave !== 'function' || typeof candidate.chapterTwoDesign !== 'function' || typeof candidate.createSignalCombat !== 'function' || typeof candidate.chapterTwoActor !== 'function' || typeof names?.chapterActorName !== 'function' || typeof dock?.createOrderDock !== 'function') return false;
+      const candidateAllowed = candidate?.ready === true || (practiceRequested && practiceAuthorized && practiceAdapter?.dynamicEnabled === true);
+      if (!candidateAllowed || typeof candidate.chapterTwoWave !== 'function' || typeof candidate.chapterTwoDesign !== 'function' || typeof candidate.createSignalCombat !== 'function' || typeof candidate.chapterTwoActor !== 'function' || typeof names?.chapterActorName !== 'function' || typeof dock?.createOrderDock !== 'function') return false;
       return ['warden','medic','drummer','sapper','stone-bastion','red-lantern','thunder-signal','twin-seal','crossroads','oathmaster'].every(id => {
         const label = names.chapterActorName(id, activeLocale());
         return typeof label === 'string' && !!label.trim() && label !== id;
@@ -1009,13 +1015,15 @@
     if (!battle.running) return;
     battle.running = false;
     syncChapterOrders();
-    state.stats.kills += battle.enemies.length;
-    const reward = { coins: 70 + state.stage * 18 + state.wave * 12, materials: state.wave === C.bossEvery ? 3 : 1 };
-    battle.pendingLoot.coins += reward.coins;
-    battle.pendingLoot.materials += reward.materials;
-    if (Math.random() < .18 || state.wave === C.bossEvery) battle.pendingLoot.gear.push(C.equipment[Math.floor(Math.random() * C.equipment.length)].id);
-    $("#lootPile").classList.remove("is-hidden");
-    motion($('#lootPile'),[{filter:'brightness(1.8)',scale:'1.08'},{filter:'brightness(1)',scale:'1'}],300);
+    const reward = practiceRequested ? {coins:0,materials:0} : { coins: 70 + state.stage * 18 + state.wave * 12, materials: state.wave === C.bossEvery ? 3 : 1 };
+    if (!practiceRequested) {
+      state.stats.kills += battle.enemies.length;
+      battle.pendingLoot.coins += reward.coins;
+      battle.pendingLoot.materials += reward.materials;
+      if (Math.random() < .18 || state.wave === C.bossEvery) battle.pendingLoot.gear.push(C.equipment[Math.floor(Math.random() * C.equipment.length)].id);
+      $("#lootPile").classList.remove("is-hidden");
+      motion($('#lootPile'),[{filter:'brightness(1.8)',scale:'1.08'},{filter:'brightness(1)',scale:'1'}],300);
+    }
     tone('game.checkpoint');
     $("#battleStatus").textContent = copy("waveVictory", { wave: state.wave });
     if (state.wave < C.bossEvery) {
@@ -1023,9 +1031,7 @@
       save();
       scheduleNextWave(900 / battle.speed);
     } else {
-      state.stats.bossKills += 1;
-      state.stats.stagesCleared += 1;
-      gainPlayerXp(35 + state.stage * 6);
+      if (!practiceRequested) { state.stats.bossKills += 1; state.stats.stagesCleared += 1; gainPlayerXp(35 + state.stage * 6); }
       openResult(true, reward);
     }
   }
@@ -1037,6 +1043,9 @@
     openResult(false, {});
   }
 
+  const practiceResultCopy = {
+    en:'Local practice: progress and rewards are not saved.', 'zh-Hant':'本機練習：不會保存進度或獎勵。', 'zh-Hans':'本机练习：不会保存进度或奖励。', ja:'ローカル練習：進行や報酬は保存されません。', ko:'로컬 연습: 진행과 보상은 저장되지 않습니다.', es:'Práctica local: no se guardan el progreso ni las recompensas.', 'pt-BR':'Treino local: progresso e recompensas não são salvos.', fr:'Entraînement local : progression et récompenses ne sont pas enregistrées.', de:'Lokale Übung: Fortschritt und Belohnungen werden nicht gespeichert.', it:'Allenamento locale: progressi e ricompense non vengono salvati.', ru:'Локальная тренировка: прогресс и награды не сохраняются.', hi:'स्थानीय अभ्यास: प्रगति और पुरस्कार सहेजे नहीं जाते।', ar:'تدريب محلي: لا يُحفظ التقدم أو المكافآت.'
+  };
   function openResult(win, reward) {
     battle.resultOpen = true;
     syncChapterOrders();
@@ -1045,11 +1054,12 @@
     syncFrameCoverage();
     $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: localizedValue(C.chapters[chapterIndex()]), stage: stageCode() }) : copy("defeatKicker");
     $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
-    $("#resultCopy").textContent = win ? copy("victoryCopy") : copy("defeatCopy");
-    $("#resultRewards").innerHTML = win ? resourceChip('xp', `+${35 + state.stage * 6}`) + resourceChip('materials', `+${reward.materials || 3}`) : "";
+    $("#resultCopy").textContent = practiceRequested ? (practiceResultCopy[activeLocale()] || practiceResultCopy.en) : win ? copy("victoryCopy") : copy("defeatCopy");
+    $("#resultRewards").innerHTML = win && !practiceRequested ? resourceChip('xp', `+${35 + state.stage * 6}`) + resourceChip('materials', `+${reward.materials || 3}`) : "";
     renderCampaignMilestone();
     // Outcomes change availability, never the three permanent action tracks.
     $("#resultNext").disabled = !win;
+    $("#resultManage").disabled = practiceRequested;
     if (win) collectLoot(true);
     updateHud();
     $("#resultTitle").focus({preventScroll: true});
@@ -1060,6 +1070,7 @@
 }
 
   function collectLoot(silent) {
+    if (practiceRequested) return;
     const loot = battle.pendingLoot;
     if (!loot.coins && !loot.materials && !loot.gear.length) return;
     state.resources.coins += loot.coins;
@@ -1289,6 +1300,7 @@
   }
 
   function managementAction(event) {
+    if (practiceRequested) return;
     const button = event.target.closest("button[data-action]");
     if (!button) return;
     const { action, id, uid: itemUid } = button.dataset;
@@ -1583,6 +1595,7 @@
   }
 
   function modalAction(event) {
+    if (practiceRequested) return;
     const claim = event.target.closest("[data-claim]");
     if (claim) {
       const pool = claim.dataset.kind === "mission" ? C.missions : C.achievements;
@@ -1655,6 +1668,7 @@
     return { title, body: template.replace(/\{(minutes|hours)\}/g, (_, key) => formatter.format(numbers[key])) };
   }
   function calculateOffline() {
+    if (practiceRequested) return;
     const elapsed = clamp(Math.floor((Date.now() - Number(state.lastSave || Date.now())) / 1000), 0, C.maxOfflineSeconds);
     if (elapsed < 60) return;
     const coins = Math.floor(elapsed * (1.5 + state.stage * .24));
@@ -1715,6 +1729,7 @@
       effectAt(target, '◎', 'guard'); renderUnitHealth();
     });
     $("#startBtn").addEventListener("click", () => {
+      if (practiceRequested) { requestPracticeStage(state.stage); return; }
       window.WeightPlayAudio?.preload(['weapon.sword.hit','weapon.arrow.hit','magic.hit','magic.cast','combat.block','combat.critical','player.hurt','enemy.defeat','game.checkpoint','reward.coin']);
       showScene("battle");
     });
@@ -1759,8 +1774,8 @@
       if (event.target.dataset.setting === "quality") { state.settings.quality = event.target.value; document.body.dataset.quality = event.target.value; save(); }
     });
     $("#resultManage").addEventListener("click", () => { (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); battle.manageFromResult = true; openManagement("heroes"); });
-    $("#resultNext").addEventListener("click", () => { if ($("#resultNext").disabled) return; state.stage += 1; state.wave = 1; (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); startWave(); save(); });
-    $("#resultRetry").addEventListener("click", () => { (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); state.wave = 1; __wpReplayStart(() => startWave()); });
+    $("#resultNext").addEventListener("click", () => { if ($("#resultNext").disabled) return; if (practiceRequested) { requestPracticeStage(state.stage + 1); return; } state.stage += 1; state.wave = 1; (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); startWave(); save(); });
+    $("#resultRetry").addEventListener("click", () => { if (practiceRequested) { requestPracticeStage(state.stage); return; } (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden")); state.wave = 1; __wpReplayStart(() => startWave()); });
     document.addEventListener("keydown", (event) => {
       if (event.defaultPrevented) return;
       const resultPanel = $("#resultPanel");
@@ -1797,6 +1812,44 @@
     return ({"zh-Hant":"戰鬥選項","zh-Hans":"战斗选项",en:"Battle options",ja:"戦闘オプション",ko:"전투 옵션",es:"Opciones de combate","pt-BR":"Opções de batalha",fr:"Options de combat",de:"Kampfoptionen",it:"Opzioni di battaglia",ru:"Настройки боя",hi:"युद्ध विकल्प",ar:"خيارات المعركة"})[activeLocale()] || "Battle options";
   }
 
+  function requestPracticeStage(stage) {
+    if (!practiceRequested || !practiceAuthorized || !practiceAdapter?.dynamicEnabled || practicePending || !Number.isSafeInteger(stage) || stage < 1) return;
+    practicePending = true;
+    void practiceAdapter.challenge('animal-peach-oath', String(stage)).catch(() => {}).finally(() => { practicePending = false; });
+  }
+  function startPracticeStage(id) {
+    const stage = Number(id);
+    // Shared challenge revalidated immediately before this synchronous callback.
+    if (!practiceRequested || !practiceAuthorized || !practiceAdapter?.dynamicEnabled || window.__peachPracticeAnalyticsSafe !== true || !Number.isSafeInteger(stage) || stage < 1) return false;
+    clearInterval(battle.tickHandle); clearTimeout(battle.nextWaveHandle);
+    battle.tickHandle=0; battle.nextWaveHandle=0; battle.pendingWaveMs=null; battle.running=false; battle.resultOpen=false;
+    battle.chapterSignal=null; battle.chapterFault=false; battle.chapterPlanning=false; battle.pendingLoot={coins:0,materials:0,gear:[]};
+    $('#resultPanel').classList.add('is-hidden'); $('#lootPile').classList.add('is-hidden');
+    $('#arena').querySelectorAll('.oath-orders').forEach(node=>node.remove()); $('#battleScene').querySelectorAll('.oath-orders-panel,.oath-recovery').forEach(node=>node.remove()); chapterOrderDock=null; chapterFaultDialog=null;
+    state.stage=stage; state.wave=1; showScene('battle'); return true;
+  }
+  function initLocalPractice() {
+    if (!practiceRequested || window.__peachPracticeAnalyticsSafe !== true) return;
+    const waitForEntryReady=()=>new Promise(resolve=>{
+      let done=false; const observer=new MutationObserver(check), timer=setTimeout(()=>finish(false),25000);
+      function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(ok);}
+      function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}
+      observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check();
+    });
+    practicePending=true;
+    void waitForEntryReady().then(ready=>ready?import('/src/game-local-practice.mjs?v=20261027-dynamic1'):null).then(async module=>{
+      if (!module || window.__peachPracticeAnalyticsSafe !== true) return;
+      practiceAdapter=module.LocalPractice;
+      await practiceAdapter.register({gameId:'animal-peach-oath',acceptStage:id=>/^[1-9][0-9]*$/.test(id)&&Number.isSafeInteger(Number(id)),
+        enable(enabled){
+          practiceAuthorized=enabled===true && window.__peachPracticeAnalyticsSafe===true;
+          if (!practiceAuthorized) { suspendCombat(); battle.running=false; battle.resultOpen=false; battle.chapterSignal=null; $('#resultPanel').classList.add('is-hidden'); showScene('main'); }
+        },
+        startStage:startPracticeStage
+      });
+    }).catch(()=>{practiceAuthorized=false;}).finally(()=>{practicePending=false;});
+  }
+
   function syncFrameCoverage() {
     const scene = $("#app").dataset.scene;
     const modalOpen = !$('#modalLayer').classList.contains('is-hidden');
@@ -1830,8 +1883,7 @@
     localeSelect.addEventListener("change", () => {
       const next = localeSelect.value;
       if (!localeSegments[next]) return;
-      localStorage.setItem("weightPlayLocale", next);
-      localStorage.setItem("weightplayLocale", next);
+      if (!practiceRequested) { localStorage.setItem("weightPlayLocale", next); localStorage.setItem("weightplayLocale", next); }
       location.assign(`/${localeSegments[next]}/games/animal-peach-oath/${location.search}${location.hash}`);
     });
     $("#app").append(localeSelect);
@@ -1851,6 +1903,7 @@
   updateHud();
   document.body.dataset.quality = state.settings.quality;
   calculateOffline();
+  initLocalPractice();
 
   if (__wpMeasurement.screen === null && !__wpMeasurement.started) { __wpMeasurement.screen = "main"; __wpNotifyMeasurement(); }
 })();

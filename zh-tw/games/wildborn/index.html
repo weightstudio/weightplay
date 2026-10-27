@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="從渺小開始。在荒野覓食、躲藏，慢慢進化。死亡之後，重新投生。" />
   <title>荒野輪迴 | WeightPlay</title>
@@ -43,7 +43,7 @@
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
   <script defer src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script defer src="/src/battle-canvas-standard.js"></script>
-  <script type="module" src="/games/wildborn/game.js?v=2"></script>
+  <script type="module" src="/games/wildborn/game.js?v=20261027-guide-v3"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="荒野輪迴 | WeightPlay" />
@@ -83,7 +83,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-game-id="wildborn" data-wp-game-id="wildborn" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
+<body data-screen="main" data-game-id="wildborn" data-game-version="v3" data-interface-version="9" data-wp-interface-version="9" data-wp-game-id="wildborn" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
 <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen">
@@ -100,26 +100,18 @@
         </div>
       </div>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="荒野輪迴 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>荒野輪迴</h2><p>從渺小開始。在荒野覓食、躲藏，慢慢進化。死亡之後，重新投生。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>進化 · 生態世界</strong></div><div class="game-info-fact"><span>類型</span><strong>Action · Adventure · Animal Games</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-locales="locales.mjs#COPY" data-wp-guide-locale="zh-Hant" aria-label="生存筆記">
+      <div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2 data-official-title data-wp-game-title data-runtime-localize="off">荒野輪迴</h2><p data-copy="summary" data-runtime-localize="off" data-wp-intro-faq-source>從渺小開始。在荒野覓食、躲藏，慢慢進化。死亡之後，重新投生。</p></div>
+      <div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts">
+        <div class="game-info-fact"><strong>6</strong><span data-copy="origins" data-runtime-localize="off">隨機投生</span></div>
+        <div class="game-info-fact"><strong data-copy="world" data-runtime-localize="off">生態世界</strong><span data-copy="noStages" data-runtime-localize="off">沒有關卡</span></div>
+      </div>
+      <div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections">
+        <section class="game-info-section"><h2 data-copy="how" data-runtime-localize="off">如何活下來</h2><p data-copy="rules" data-runtime-localize="off">走近食物自動進食；在高草中慢下來就能躲藏。水會拖慢陸生動物。看見天敵蓄力，就準備閃開。</p><p data-copy="controls" data-runtime-localize="off">移動：WASD／方向鍵／拖曳。攻擊：空白鍵。衝刺：Shift。</p></section>
+        <section class="game-info-section"><h2 data-copy="life" data-runtime-localize="off">一次生命</h2><p data-copy="progress" data-runtime-localize="off">覓食、狩獵，沿有關聯的隨機分支不斷進化，甚至成為人類、恐龍與神話巨獸。進化自動存檔；死亡後從不同小生物開始，繼承這一世新增力量與生命的 20%。傳承持續累積，沒有關卡與最終形態。</p><img class="guide-orla" src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="Moon Cap Orla" width="100" height="100" loading="lazy"></section>
+      </div>
+      <div id="gameGuideFaq" data-wp-content-slot="guide-faq"></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"></div>
+    <article class="game-info-section" data-wp-intro-faq><h3>常見問題</h3><dl><dt>這款遊戲要做什麼？</dt><dd>從渺小開始。在荒野覓食、躲藏，慢慢進化。死亡之後，重新投生。</dd></dl></article></section>
   </div>
   <section id="battleScreen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
     <header id="battleHeader"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>

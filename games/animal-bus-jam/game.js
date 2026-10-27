@@ -136,7 +136,7 @@
   try { progress = JSON.parse(read(progressKey) || "[]"); } catch { progress = []; }
   if (!Array.isArray(progress)) progress = [];
   if (!codes.includes(locale)) locale = "en";
-  if (routeLocale) {
+  if (routeLocale && !localPracticeRequested) {
     write("weightPlayLocale", locale);
     write("wp-locale", locale);
     try { window.WonderI18n?.setLocale?.(locale); } catch {}
@@ -809,7 +809,7 @@
     if(!ready)return;
     const {LocalPractice}=await import('../../src/game-local-practice.mjs');practiceAdapter=LocalPractice;
     if(!await LocalPractice.ready)return;
-    await import('./transfer-levels-candidate.js?v=20261027-bus-transfer-candidate1');
+    await import('./transfer-levels-candidate.js?v=20261027-bus-transfer-candidate3');
     const candidates=window.BUS_JAM_TRANSFER_LEVELS;if(!Array.isArray(candidates)||candidates.length!==30||candidates.some((level,index)=>level.index!==30+index))return;
     const originalSelected=selected;
     await LocalPractice.register({gameId:GAME_ID,stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){

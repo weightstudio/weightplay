@@ -1,4 +1,4 @@
-// Unexposed, source-reviewed candidate only; not a release or play acceptance.
+// Unexposed candidate only; not a release or play acceptance.
 (function(root){
   const levels = [
   {
@@ -525,26 +525,26 @@
     ],
     "queues": [
       [
-        2,
         0
       ],
       [
+        0,
+        2,
+        1,
         2
       ],
       [
-        2,
         1
       ],
       [
-        0,
-        1,
+        2,
         2
       ]
     ],
     "transferGates": [
       {
-        "lane": 2,
-        "unlockAfter": 1
+        "lane": 3,
+        "unlockAfter": 3
       }
     ],
     "transferPriority": [],
@@ -552,7 +552,15 @@
     "solution": [
       {
         "type": "dispatch",
-        "lane": 0
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 1
       },
       {
         "type": "dispatch",
@@ -563,23 +571,15 @@
         "lane": 2
       },
       {
-        "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
+        "type": "swap"
       },
       {
         "type": "dispatch",
         "lane": 0
       },
       {
-        "type": "swap"
+        "type": "dispatch",
+        "lane": 3
       },
       {
         "type": "dispatch",
@@ -776,22 +776,22 @@
     "queues": [
       [
         2,
+        1,
         0
-      ],
-      [
-        2
       ],
       [
         1
       ],
       [
-        1,
         0
+      ],
+      [
+        2
       ]
     ],
     "transferGates": [
       {
-        "lane": 2,
+        "lane": 3,
         "unlockAfter": 1
       }
     ],
@@ -813,22 +813,22 @@
       },
       {
         "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
+        "lane": 0
       },
       {
         "type": "dispatch",
         "lane": 2
       },
       {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
         "type": "swap"
       },
       {
         "type": "dispatch",
-        "lane": 1
+        "lane": 3
       }
     ]
   },
@@ -857,10 +857,10 @@
         1
       ],
       [
-        0
+        2
       ],
       [
-        2
+        0
       ],
       [
         1,
@@ -870,13 +870,13 @@
     ],
     "transferGates": [
       {
-        "lane": 1,
+        "lane": 0,
         "unlockAfter": 1
       }
     ],
     "transferPriority": [
       {
-        "lane": 0,
+        "lane": 2,
         "position": 0
       }
     ],
@@ -884,23 +884,23 @@
     "solution": [
       {
         "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
         "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 2
       },
       {
         "type": "swap"
@@ -937,29 +937,33 @@
     ],
     "queues": [
       [
-        2,
+        1,
         1
       ],
       [
         1,
+        0
+      ],
+      [
         0,
         2
       ],
       [
-        0
-      ],
-      [
-        1,
+        2,
         1
       ]
     ],
     "transferGates": [
       {
-        "lane": 1,
+        "lane": 0,
         "unlockAfter": 1
       }
     ],
     "transferPriority": [
+      {
+        "lane": 2,
+        "position": 1
+      },
       {
         "lane": 0,
         "position": 0
@@ -969,26 +973,6 @@
     "solution": [
       {
         "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
         "lane": 1
       },
       {
@@ -996,7 +980,27 @@
         "lane": 2
       },
       {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 2
+      },
+      {
         "type": "swap"
+      },
+      {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
       },
       {
         "type": "dispatch",
@@ -1031,31 +1035,31 @@
     "queues": [
       [
         0,
-        3
+        0
       ],
       [
-        3,
         1
       ],
       [
         2,
-        0,
-        1
+        3
       ],
       [
+        3,
+        1,
         2
       ]
     ],
     "transferGates": [
       {
-        "lane": 1,
+        "lane": 2,
         "unlockAfter": 1
       }
     ],
     "transferPriority": [
       {
-        "lane": 3,
-        "position": 0
+        "lane": 2,
+        "position": 1
       }
     ],
     "holdingTarget": 2,
@@ -1066,27 +1070,27 @@
       },
       {
         "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
         "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 2
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 2
       },
       {
         "type": "swap"
@@ -1628,61 +1632,53 @@
     ],
     "queues": [
       [
-        2,
-        0,
-        0,
+        1,
         3
       ],
       [
-        1,
+        1
+      ],
+      [
         0,
         0
       ],
       [
+        0,
+        3,
+        2,
+        0,
         2
-      ],
-      [
-        1,
-        3
       ]
     ],
     "transferGates": [
       {
-        "lane": 3,
+        "lane": 0,
         "unlockAfter": 1
       },
       {
-        "lane": 1,
-        "unlockAfter": 2
+        "lane": 2,
+        "unlockAfter": 3
       }
     ],
     "transferPriority": [
       {
-        "lane": 1,
-        "position": 0
+        "lane": 3,
+        "position": 4
       },
       {
         "lane": 2,
         "position": 0
       }
     ],
-    "holdingTarget": 2,
+    "holdingTarget": 3,
     "solution": [
       {
         "type": "dispatch",
-        "lane": 0
+        "lane": 3
       },
       {
         "type": "dispatch",
-        "lane": 0
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
+        "lane": 3
       },
       {
         "type": "dispatch",
@@ -1691,6 +1687,14 @@
       {
         "type": "dispatch",
         "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
       },
       {
         "type": "dispatch",
@@ -1701,15 +1705,15 @@
       },
       {
         "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
         "lane": 2
       },
       {
         "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
+        "lane": 2
       }
     ]
   },
@@ -1838,40 +1842,75 @@
     ],
     "queues": [
       [
-        2,
+        1,
+        3,
         3
+      ],
+      [
+        0,
+        0,
+        2
+      ],
+      [
+        2
       ],
       [
         3,
         1
       ],
       [
-        2,
-        1,
-        0
-      ],
-      [
         3
-      ],
-      [
-        3,
-        0
       ]
     ],
     "transferGates": [
       {
-        "lane": 1,
-        "unlockAfter": 1
+        "lane": 3,
+        "unlockAfter": 2
       }
     ],
     "transferPriority": [
       {
-        "lane": 2,
+        "lane": 4,
         "position": 0
       }
     ],
-    "holdingTarget": 2,
+    "holdingTarget": 4,
     "solution": [
+      {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 1
+      },
+      {
+        "type": "dispatch",
+        "lane": 2
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "swap"
+      },
       {
         "type": "dispatch",
         "lane": 3
@@ -1879,41 +1918,6 @@
       {
         "type": "dispatch",
         "lane": 4
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 4
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "swap"
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
       }
     ]
   },
@@ -2151,55 +2155,70 @@
     ],
     "queues": [
       [
-        3,
+        2,
+        0,
         3
       ],
       [
-        0
-      ],
-      [
-        2,
-        1,
-        0,
-        2
-      ],
-      [
-        3,
         1
       ],
       [
+        0,
+        3,
+        2
+      ],
+      [
+        3
+      ],
+      [
+        1,
         3
       ]
     ],
     "transferGates": [
       {
-        "lane": 2,
-        "unlockAfter": 1
+        "lane": 3,
+        "unlockAfter": 3
       },
       {
-        "lane": 0,
-        "unlockAfter": 2
+        "lane": 1,
+        "unlockAfter": 1
       }
     ],
     "transferPriority": [
       {
-        "lane": 1,
+        "lane": 4,
         "position": 0
       },
       {
         "lane": 3,
-        "position": 1
+        "position": 0
       }
     ],
-    "holdingTarget": 2,
+    "holdingTarget": 3,
     "solution": [
       {
         "type": "dispatch",
-        "lane": 3
+        "lane": 2
       },
       {
         "type": "dispatch",
-        "lane": 4
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 0
+      },
+      {
+        "type": "dispatch",
+        "lane": 2
+      },
+      {
+        "type": "swap"
       },
       {
         "type": "dispatch",
@@ -2207,11 +2226,7 @@
       },
       {
         "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
+        "lane": 4
       },
       {
         "type": "dispatch",
@@ -2222,19 +2237,8 @@
         "lane": 3
       },
       {
-        "type": "swap"
-      },
-      {
         "type": "dispatch",
-        "lane": 2
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
-      },
-      {
-        "type": "dispatch",
-        "lane": 0
+        "lane": 4
       }
     ]
   },
@@ -2486,47 +2490,51 @@
     ],
     "queues": [
       [
+        0
+      ],
+      [
+        1
+      ],
+      [
         1,
         3
       ],
       [
+        1,
         2,
-        0,
-        1
-      ],
-      [
-        1,
-        1
-      ],
-      [
-        0,
         3
       ],
       [
+        0,
+        1,
         2
       ]
     ],
     "transferGates": [
       {
-        "lane": 4,
+        "lane": 2,
         "unlockAfter": 1
+      },
+      {
+        "lane": 4,
+        "unlockAfter": 2
       }
     ],
     "transferPriority": [
       {
-        "lane": 2,
-        "position": 1
+        "lane": 0,
+        "position": 0
       }
     ],
-    "holdingTarget": 2,
+    "holdingTarget": 3,
     "solution": [
       {
         "type": "dispatch",
-        "lane": 0
+        "lane": 1
       },
       {
         "type": "dispatch",
-        "lane": 1
+        "lane": 3
       },
       {
         "type": "dispatch",
@@ -2534,19 +2542,23 @@
       },
       {
         "type": "dispatch",
+        "lane": 2
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
+        "lane": 3
+      },
+      {
+        "type": "dispatch",
         "lane": 0
       },
       {
         "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 3
-      },
-      {
-        "type": "dispatch",
-        "lane": 1
+        "lane": 4
       },
       {
         "type": "swap"
@@ -2557,11 +2569,7 @@
       },
       {
         "type": "dispatch",
-        "lane": 1
-      },
-      {
-        "type": "dispatch",
-        "lane": 2
+        "lane": 4
       }
     ]
   },

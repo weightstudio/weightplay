@@ -77,7 +77,6 @@ async function entryReady(){
  $('startBtn').disabled=false;window.WeightPlayGameEntryLoader?.ready();
 }
 function boot(){
- const preview=new URLSearchParams(location.search).getAll('preview');if(!(preview.length===1&&preview[0]==='1')){$('gameFrame').hidden=true;$('mainGuide').hidden=true;$('comingSoon').hidden=false;return;}
  window.WonderI18n?.setLocale?.(locale,{navigate:false});$('localeSource').value=locale;
  frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('localeSource'),playUI:true,scenes:{main:{root:$('mainScreen'),header:$('mainScreen').querySelector('header'),content:$('mainScreen').querySelector('.main-hero')},stage:{root:$('stageScreen'),header:$('stageScreen').querySelector('header'),content:$('stageWorkspace')},battle:{root:$('battleScreen'),header:$('battleScreen').querySelector('header'),content:$('battleLive')}}});
  const stat=(id,label)=>{const n=make('div');n.append(make('span',t(label)),Object.assign(make('strong'),{id}));return n;};frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stat('tableStat','table')).add(stat('shotStat','shotsLabel')).add(stat('targetStat','remaining')));
@@ -96,6 +95,6 @@ function boot(){
  wallet();window.WeightPlayAudio?.preload?.(['sport.bounce','sport.goal','mechanism.unlock','game.start','game.checkpoint','feedback.error','result.win','result.lose','reward.upgrade','shop.purchase']);setScreen('main');if(loadError){$('saveWarning').textContent=t('saveError');$('saveWarning').hidden=false;}
  entryReady();LocalPractice.register({gameId:GAME_ID,stageIds:TABLES.map(d=>d.id),enable(enabled){practice=enabled;selector.refresh(selected);},startStage:id=>start(Number(id))});
  // Read-only engineering counters. No start, reward, physics or save hooks.
- window.NoriBankshot=Object.freeze({identity:()=>({game:GAME_ID,version:'v1',interface:'9',store:STORE}),renderStats:()=>harbor?.stats()||null});
+ window.NoriBankshot=Object.freeze({identity:()=>({game:GAME_ID,version:'v2',interface:'9',store:STORE}),renderStats:()=>harbor?.stats()||null});
 }
 boot();

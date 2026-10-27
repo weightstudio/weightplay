@@ -1,7 +1,7 @@
 {
   "gameId": "orbit-menders",
-  "manifestVersion": 5,
-  "gameVersion": "v5",
+  "manifestVersion": 6,
+  "gameVersion": "v7",
   "createdAt": "2026-10-27",
   "status": "已實作未驗證",
   "artDirection": "Owner2026-10-27 explicitly selects uniform WeightPlay Block Animals. Block-afro Leo, square muzzle/paws/red cape/blue cannon; designed cuboid zombies, ivory/coral tower, stepped mint courtyard, bounded cyan/gold energy effects.",
@@ -62,6 +62,12 @@
       "file": "defense-view.mjs",
       "usage": "Instanced larger projectiles/trails/contactstars, bounded cyan/gold shockrings/muzzleflash/healthbars, tower damage shield; actual event bound, no damage/radius/timing change",
       "format": "real3D meshes; no new raster art"
+    },
+    {
+      "file": "defense-pointer-input.mjs",
+      "export": "createDefensePointerInput",
+      "usage": "Original game-owned native touch/mouse/pen pointer ownership and release adapter; no art asset, joystick, game-state mutation or alternate simulation clock",
+      "format": "JavaScript module"
     }
   ],
   "runtimeDependency": {

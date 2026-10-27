@@ -1,7 +1,7 @@
 import { GAME_ID, SAVE_KEY, LEGACY_SAVE_KEY, STEP, AUDIO_EVENTS, groundHeight, habitat } from './content.mjs';
 import { createLife, step, growthProgress, lifeSummary, normalizeRecords,drawOrigin,inheritLife,checkpointLife,restoreLife } from './simulation.mjs';
 import { createWorld } from './world.js';
-import { LOCALES, SEGMENTS, text, creatureName } from './locales.mjs';
+import { LOCALES, SEGMENTS, text, creatureName } from './locales.mjs?v=20261027-guide-v3';
 
 const $=id=>document.getElementById(id), abort=new AbortController();
 const listen=(node,event,fn,opts={})=>node.addEventListener(event,fn,{...opts,signal:abort.signal});

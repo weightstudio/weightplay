@@ -251,7 +251,9 @@
 
   function transferSwap(level, source, events) {
     const state = transferClone(source);
-    if (!state || state.ticket !== 1 || state.waiting.length < 2) return null;
+    if (!state) return null;
+    settle(level, state);
+    if (state.ticket !== 1 || state.waiting.length < 2) return null;
     [state.waiting[0], state.waiting[1]] = [state.waiting[1], state.waiting[0]];
     state.ticket = 0;
     events?.push({ kind: 'transfer-swap' });

@@ -1,7 +1,9 @@
 import {STAGES,DIRECTIONS,SEALS,CAMPAIGN_KEY,candidates,matches,normalizeSave,unlocked,rating,settle,wrap} from './puzzles.mjs?v=26';
-import {createCanopyScene} from './canopy-scene.mjs?v=26';
+import {createCanopyScene} from './canopy-scene.mjs?v=20261027-linked-practice1';
 import {purchaseAurora} from './purchase.mjs?v=26';
 
+const localPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+let practiceAdapter=null,practiceEnabled=false,linkedCandidates=null,linkedCopy=null,linkedSubmit=null,linkAnchor=-1,linkDestination=-1;
 const $=id=>document.getElementById(id);
 const copy=window.CANOPY_COMPASS_LOCALES;
 const routes={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
@@ -17,6 +19,9 @@ const t=(key,vars={})=>Object.entries(vars).reduce((s,[k,v])=>s.replaceAll(`{${k
 const dir=i=>labels('bearings')[wrap(i)];
 const symbols=['☀','☾','❧','✦'];
 const badgeFiles=['dawn-lantern','crosswind-bell','mirror-moth','echo-heron','high-bough-kite','moon-canopy-guide'];
+const ribbonButton=document.createElement('button');ribbonButton.type='button';ribbonButton.hidden=true;ribbonButton.dataset.linkRibbon='';
+const ribbonIcon=document.createElement('img');ribbonIcon.alt='';ribbonIcon.width=36;ribbonIcon.height=36;const ribbonLabel=document.createElement('span');ribbonButton.append(ribbonIcon,ribbonLabel);document.querySelector('.battle-tools').append(ribbonButton);
+ribbonButton.addEventListener('click',()=>{if(!isPlaying()||!linked())return;linkAnchor=-1;linkDestination=-1;state.selected=-1;renderBoard();announce(linkedText().anchor);});
 const COVER='/games/animal-canopy-compass/assets/v26/canopy-cover.webp';
 const APPEARANCE_KEY='weightplay-canopy-appearance-v1';
 let appearance=read(APPEARANCE_KEY,{owned:false,theme:'classic'});
@@ -29,6 +34,9 @@ const sound=id=>audio?.play(id);
 window.WeightPlayAudio?.preload(['board.rotate','feedback.success','feedback.error','feedback.hint','result.win','game.start','reward.upgrade']);
 const stage=()=>STAGES[state.stage];
 const phase=()=>stage().phases[state.phase];
+const linked=()=>localPracticeRequested&&practiceEnabled&&state.stage>=30;
+const linkedText=()=>linkedCopy?.[state.locale]||linkedCopy?.en;
+const countStages=()=>practiceEnabled?STAGES.length:30;
 const previous=()=>state.trail.at(-1)??0;
 const settingsOpen=()=>!!document.querySelector('[data-wp-settings][aria-expanded="true"]');
 const isPlaying=()=>state.screen==='battle'&&$('result').hidden&&$('renderError').hidden&&!modalKind&&!document.hidden&&!settingsOpen()&&!state.pending;
@@ -40,6 +48,7 @@ function clueText(clue){
   return t(`${clue.kind}Clue`,vars);
 }
 function persist(){
+  if(localPracticeRequested)return false;
   const other=normalizeSave(read(CAMPAIGN_KEY,{}));
   state.save.completed=[...new Set([...state.save.completed,...other.completed])].sort((a,b)=>a-b);
   state.save.badges=[...new Set([...state.save.badges,...other.badges])].sort((a,b)=>a-b);
@@ -49,8 +58,8 @@ function persist(){
 }
 function updateProgress(){
   $('progress').textContent=t('progress',{count:state.save.completed.length,unlocked:unlocked(state.save)});
-  $('stageCompletionValue').textContent=`${state.save.completed.length}/30`;
-  $('stageSelectionValue').textContent=t('round',{number:selectedStage+1,total:30});
+  $('stageCompletionValue').textContent=`${state.save.completed.length}/${countStages()}`;
+  $('stageSelectionValue').textContent=t('round',{number:selectedStage+1,total:countStages()});
 }
 function clearPending(){clearTimeout(transitionTimer);transitionTimer=0;state.pending=null;}
 function syncActivity(){
@@ -75,24 +84,32 @@ function showScreen(name){
   $('battleContent').inert=false;$('battleContent').hidden=false;$('result').hidden=true;
   $('gameGuide').hidden=name!=='main';$('gameGuide').setAttribute('aria-hidden',String(name!=='main'));
   frame.activate(name);
-  if(name==='stage'){selectedStage=unlocked(state.save)-1;renderStages();}
+  placePracticeBadge();
+  if(name==='stage'){selectedStage=practiceEnabled?Math.max(30,selectedStage):unlocked(state.save)-1;renderStages();}
   scene?.setActive(name==='battle');
   updateProgress();window.scrollTo(0,0);
   window.dispatchEvent(new Event('weightplay:stage-sync'));
 }
 function stageRecord(index){
-  const s=STAGES[index],name=labels('mechanics')[s.arc-1],stars=state.save.masteryV26[s.id]||0;
-  const done=state.save.completed.includes(s.id),locked=s.id>unlocked(state.save);
+  const s=STAGES[index],name=index>=30?(linkedCopy?.[state.locale]||linkedCopy?.en)?.title:labels('mechanics')[s.arc-1],stars=state.save.masteryV26[s.id]||0;
+  const done=state.save.completed.includes(s.id),locked=index>=30?!practiceEnabled:s.id>unlocked(state.save);
   const status=locked?t('lockedStage'):stars?'★'.repeat(stars)+'☆'.repeat(3-stars):done?t('complete'):s.checkpoint?t('checkpoint'):t('readyStage');
   const objective=t('stageObjective',{count:s.phases.length});
-  return{id:s.id,kicker:t('round',{number:s.id,total:30}),title:name,subtitle:objective,status,summary:`${name} · ${objective}`,details:[objective,t('selectPrompt'),status],poster:COVER,posterPosition:'center',locked,cleared:done};
+  return{id:s.id,kicker:t('round',{number:s.id,total:countStages()}),title:name,subtitle:objective,status,summary:`${name} · ${objective}`,details:[objective,t('selectPrompt'),status],poster:COVER,posterPosition:'center',locked,cleared:done};
 }
 function renderStages(){
-  if(!rail)rail=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail:$('stageList'),selected:selectedStage,config:{count:30,poster:COVER,background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord},onSelect:index=>{selectedStage=index;updateProgress();},onStart:startStage,isActive:()=>state.screen==='stage'});
+  if(!rail)rail=window.WeightPlayPlayUI.mountStage({page:$('stageContent'),rail:$('stageList'),selected:selectedStage,config:{count:countStages(),poster:COVER,background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord},onSelect:index=>{selectedStage=index;updateProgress();},onStart:requestStage,isActive:()=>state.screen==='stage'});
   else rail.refresh(selectedStage);
 }
 function renderClues(){
   const p=phase();
+  if(linked()){
+    const c=linkedText(),rule=p.rule,vars={dir:dir(p.anchorCenter),seal:labels('seals')[p.targetSeal],n:Math.abs(rule.steps),turn:t(rule.steps<0?'counterclockwise':'clockwise'),axis:labels('axes')[rule.axis==='horizontal'?1:0],previous:previous()};
+    const replace=text=>Object.entries(vars).reduce((value,[key,item])=>value.replaceAll(`{${key}}`,String(item)),text);
+    const lines=[replace(c.anchorClue),replace(c.sealClue),replace(rule.kind==='turn'?c.turnClue:rule.kind==='mirror-turn'?c.mirrorClue:c.echoClue)];
+    for(let i=0;i<3;i++){const card=$(`clue${i}`);card.hidden=false;card.classList.remove('violated','inspected');card.querySelector('small').textContent=t('clueLabel',{n:i+1});card.querySelector('p').textContent=lines[i];}
+    $('clueText').textContent=c.title+(p.blocked!==null?` · ${c.blocked.replace('{dir}',dir(p.blocked))}`:'');$('hint').textContent=t('phaseProgress',{current:state.phase+1,total:stage().phases.length});return;
+  }
   for(let i=0;i<3;i++){
     const card=$(`clue${i}`),clue=p.clues[i];card.hidden=!clue;
     card.classList.remove('violated','inspected');
@@ -113,41 +130,60 @@ function renderBoard(){
   $('board').dataset.mode=state.noteMode?'notes':'choose';
   const blocked=!!state.pending;
   for(let i=0;i<8;i++){
-    const b=$(`perch${i}`),excluded=state.notes.has(i),chosen=state.selected===i;
+    const b=$(`perch${i}`),excluded=state.notes.has(i),chosen=linked()?(linkAnchor===i||linkDestination===i):state.selected===i;
     b.classList.toggle('selected',chosen);b.classList.toggle('excluded',excluded);b.classList.toggle('hinted',state.hinted.includes(i));
+    b.classList.toggle('link-blocked',linked()&&p.blocked===i);
     b.classList.toggle('lit',blocked&&chosen);
     b.setAttribute('aria-pressed',String(state.noteMode?excluded:chosen));
-    b.setAttribute('aria-label',`${dir(i)} · ${labels('seals')[p.seals[i]]}${excluded?' · ×':''}`);
+    b.disabled=linked()&&p.blocked===i;
+    b.setAttribute('aria-label',`${dir(i)} · ${labels('seals')[p.seals[i]]}${excluded?' · ×':''}${linked()&&linkAnchor===i?` · ${linkedText().anchor}`:''}${linked()&&linkDestination===i?` · ${linkedText().destination}`:''}${linked()&&p.blocked===i?` · ${linkedText().blocked.replace('{dir}',dir(i))}`:''}`);
     b.querySelector('.perch-direction').textContent=dir(i);b.querySelector('.perch-symbol').textContent=symbols[p.seals[i]];
     b.dataset.seal=SEALS[p.seals[i]];
   }
   $('notesBtn').setAttribute('aria-pressed',String(state.noteMode));
-  $('checkBtn').disabled=blocked||state.selected<0||state.noteMode;
+  $('checkBtn').disabled=blocked||(linked()?(linkAnchor<0||linkDestination<0):state.selected<0)||state.noteMode;
   $('hintBtn').disabled=blocked;
   $('notesBtn').disabled=blocked;
-  $('facing').textContent=state.selected<0?'—':dir(state.selected);
+  $('facing').textContent=linked()?`${linkAnchor<0?'—':dir(linkAnchor)} → ${linkDestination<0?'—':dir(linkDestination)}`:state.selected<0?'—':dir(state.selected);
+  if(linked())document.querySelector('.field-notes-title strong').textContent=linkAnchor<0?linkedText().anchor:linkDestination<0?linkedText().destination:linkedText().title;
   scene?.select(state.selected,[...state.notes],state.hinted,blocked?state.selected:-1);
+  if(linked())scene?.link?.(linkAnchor,linkDestination,p.blocked);
+  else scene?.link?.(-1,-1);
+  ribbonButton.hidden=!linked();$('battleContent').classList.toggle('linked-active',linked());
+  if(linked()){ribbonIcon.src='/assets/animal-canopy-compass-expansion-drafts/path-ribbon-v1-256.png';ribbonButton.setAttribute('aria-label',linkedText().reset);ribbonLabel.textContent=linkedText().reset;$('checkBtn').textContent=linkedSubmit[state.locale]||linkedSubmit.en;}else $('checkBtn').textContent=t('check');
 }
 function ensureScene(){
-  if(scene)return;
+  if(scene){if(linked()&&typeof scene.link!=='function'){$('renderError').hidden=false;$('boardControls').inert=true;}return;}
   try{
     scene=createCanopyScene($('scene'),points=>points.forEach((p,i)=>{const b=$(`perch${i}`);b.style.left=`${p.x}px`;b.style.top=`${p.y}px`;}),()=>{$('renderError').hidden=false;$('boardControls').inert=true;syncActivity();});
+    if(linked()&&typeof scene.link!=='function')throw Error('LINKED_SCENE_UNAVAILABLE');
     scene.setTheme(appearance.theme==='aurora');
   }catch(error){$('renderError').hidden=false;$('boardControls').inert=true;console.error('Canopy renderer unavailable',error);}
 }
 function startStage(index){
-  if(index<0||index>=30||index>=unlocked(state.save))return;
-  state.stage=index;state.phase=0;state.selected=-1;state.notes.clear();state.noteMode=false;state.hintIndex=-1;state.hinted=[];state.mistakes=0;state.hints=0;state.trail=[];
+  if(index<0||index>=countStages())return;
+  if(localPracticeRequested&&(!practiceEnabled||index<30))return;
+  if(!localPracticeRequested&&(index>=30||index>=unlocked(state.save)))return;
+  state.stage=index;selectedStage=index;state.phase=0;state.selected=-1;state.notes.clear();state.noteMode=false;state.hintIndex=-1;state.hinted=[];state.mistakes=0;state.hints=0;state.trail=[];
+  linkAnchor=-1;linkDestination=-1;
   showScreen('battle');ensureScene();
-  $('roundLabel').textContent=t('round',{number:index+1,total:30});
+  $('roundLabel').textContent=t('round',{number:index+1,total:countStages()});
   $('badge').textContent='0/'+stage().phases.length;
   $('board').classList.remove('answer-wrong','answer-right');
-  renderClues();renderTrail();renderBoard();announce(t('selectPrompt'));
+  renderClues();renderTrail();renderBoard();announce(linked()?linkedText().anchor:t('selectPrompt'));
   $('compass').focus({preventScroll:true});sound('game.start');
 }
+function requestStage(index){if(localPracticeRequested)return practiceAdapter?.challenge('animal-canopy-compass',String(index+1));return startStage(index);}
 function choose(index){
   if(!isPlaying())return;
+  if(linked()&&phase().blocked===index)return;
   if(state.noteMode){state.notes.has(index)?state.notes.delete(index):state.notes.add(index);announce(t('notePrompt'));}
+  else if(linked()){
+    if(linkAnchor<0){linkAnchor=index;linkDestination=-1;announce(linkedText().destination);}
+    else if(linkDestination<0&&index!==linkAnchor){linkDestination=index;announce(`${linkedText().anchor}: ${dir(linkAnchor)} · ${linkedText().destination}: ${dir(linkDestination)}`);}
+    else{linkAnchor=index;linkDestination=-1;announce(linkedText().destination);}
+    state.selected=index;state.notes.delete(index);sound('board.rotate');
+  }
   else{
     state.selected=index;state.notes.delete(index);announce(`${dir(index)} · ${labels('seals')[phase().seals[index]]}`);sound('board.rotate');
   }
@@ -156,14 +192,16 @@ function choose(index){
 function check(){
   if(!isPlaying())return;
   if(state.selected<0||state.noteMode){announce(t('chooseFirst'));return;}
-  const mismatch=phase().clues.findIndex(clue=>!matches(clue,state.selected,phase(),previous()));
+  if(linked()&&(linkAnchor<0||linkDestination<0)){announce(linkedText().destination);return;}
+  const keys=['anchor','seal','link'];
+  const mismatch=linked()?keys.findIndex(key=>!linkedCandidates(phase(),previous(),[key]).some(([a,b])=>a===linkAnchor&&b===linkDestination)):phase().clues.findIndex(clue=>!matches(clue,state.selected,phase(),previous()));
   if(mismatch>=0){
-    state.mistakes++;announce(t('wrongDetail',{n:mismatch+1}),'error');
+    state.mistakes++;announce(linked()?linkedText().wrong:t('wrongDetail',{n:mismatch+1}),'error');
     for(let i=0;i<3;i++)$(`clue${i}`).classList.toggle('violated',i===mismatch);
     $('board').classList.remove('answer-wrong');void $('board').offsetWidth;$('board').classList.add('answer-wrong');
     clearTimeout(feedbackTimer);feedbackTimer=setTimeout(()=>$('board').classList.remove('answer-wrong'),260);sound('feedback.error');return;
   }
-  state.pending={direction:state.selected,deadline:performance.now()+(matchMedia('(prefers-reduced-motion: reduce)').matches?160:600)};
+  state.pending={direction:linked()?linkDestination:state.selected,deadline:performance.now()+(matchMedia('(prefers-reduced-motion: reduce)').matches?160:600)};
   $('board').classList.add('answer-right');announce(t('correct'),'success');renderBoard();sound('feedback.success');syncActivity();
 }
 function advancePhase(){
@@ -172,12 +210,17 @@ function advancePhase(){
   state.trail.push(state.pending.direction);state.pending=null;state.phase++;
   $('badge').textContent=`${state.phase}/${stage().phases.length}`;renderTrail();$('board').classList.remove('answer-right');
   if(state.phase===stage().phases.length){finish();return;}
-  state.selected=-1;state.notes.clear();state.noteMode=false;state.hinted=[];state.hintIndex=-1;
-  renderClues();renderBoard();announce(t('selectPrompt'));
+  state.selected=-1;linkAnchor=-1;linkDestination=-1;state.notes.clear();state.noteMode=false;state.hinted=[];state.hintIndex=-1;
+  renderClues();renderBoard();announce(linked()?linkedText().anchor:t('selectPrompt'));
   $('clueCards').classList.remove('clues-enter');void $('clueCards').offsetWidth;$('clueCards').classList.add('clues-enter');
 }
 function hint(){
   if(!isPlaying())return;
+  if(linked()){
+    state.hints++;state.hintIndex=(state.hintIndex+1)%3;const pairs=linkedCandidates(phase(),previous(),[['anchor','seal','link'][state.hintIndex]]);
+    state.hinted=[...new Set(pairs.filter(([a])=>linkAnchor<0||a===linkAnchor).map(([a,b])=>linkAnchor<0?a:b))];
+    for(let i=0;i<3;i++)$(`clue${i}`).classList.toggle('inspected',i===state.hintIndex);renderBoard();announce(t('hintDetail',{n:state.hintIndex+1}));sound('feedback.hint');return;
+  }
   state.hints++;state.hintIndex=(state.hintIndex+1)%phase().clues.length;
   state.hinted=candidates(phase(),previous(),[phase().clues[state.hintIndex]]);
   for(let i=0;i<3;i++)$(`clue${i}`).classList.toggle('inspected',i===state.hintIndex);
@@ -185,22 +228,24 @@ function hint(){
 }
 function finish(){
   const stars=rating(state.mistakes,state.hints),s=stage();
-  state.save=settle(state.save,s.id,state.mistakes,state.hints);const saved=persist();updateProgress();
+  let saved=false;if(!localPracticeRequested){state.save=settle(state.save,s.id,state.mistakes,state.hints);saved=persist();}updateProgress();
   $('resultTitle').textContent=t(`rank${stars}`);
-  $('resultText').textContent=s.id===30?t('finaleText'):t('stageClear');
+  $('resultText').textContent=localPracticeRequested?`${t('stageClear')} ${linkedText().saved}`:s.id===30?t('finaleText'):t('stageClear');
   $('resultStars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);
   $('resultStars').setAttribute('aria-label',`${stars}/3`);
-  $('resultProgress').textContent=t('resultProgress',{count:state.save.completed.length,total:30});
+  $('resultProgress').textContent=t('resultProgress',{count:state.save.completed.length,total:countStages()});
   $('stats').textContent=t('statsDetail',{stars,mistakes:state.mistakes,hints:state.hints});
-  $('saveWarning').hidden=saved;$('saveWarning').textContent=t('saveError');
-  $('badgeReward').hidden=!s.checkpoint;
-  if(s.checkpoint){$('badgeRewardImage').src=`/games/animal-canopy-compass/assets/checkpoint-badges/${badgeFiles[s.arc-1]}.png`;$('badgeRewardImage').alt=t('badge'+s.arc);$('badgeRewardLabel').textContent=t('badgeEarned',{badge:t('badge'+s.arc)});}
-  $('resultPrimary').disabled=s.id===30;$('resultPrimary').hidden=false;
+  $('saveWarning').hidden=saved||localPracticeRequested;$('saveWarning').textContent=t('saveError');
+  $('badgeReward').hidden=!s.checkpoint||localPracticeRequested;
+  if(s.checkpoint&&!localPracticeRequested){$('badgeRewardImage').src=`/games/animal-canopy-compass/assets/checkpoint-badges/${badgeFiles[s.arc-1]}.png`;$('badgeRewardImage').alt=t('badge'+s.arc);$('badgeRewardLabel').textContent=t('badgeEarned',{badge:t('badge'+s.arc)});}
+  $('resultPrimary').disabled=s.id===countStages();$('resultPrimary').hidden=false;
   $('battleContent').inert=true;$('battleContent').hidden=true;$('result').hidden=false;
   $('battleBack').disabled=true;document.body.setAttribute('data-wp-canopy-result','');scene?.setActive(false);
-  (s.id===30?$('resultHome'):$('resultPrimary')).focus({preventScroll:true});sound('result.win');
+  placePracticeBadge();
+  (s.id===countStages()?$('resultHome'):$('resultPrimary')).focus({preventScroll:true});sound('result.win');
 }
 function openModal(kind){
+  if(localPracticeRequested&&kind==='shop')return;
   if(modalKind)return;modalReturn=document.activeElement;modalKind=kind;
   $('modalTitle').textContent=kind==='help'?t('helpAction'):kind==='shop'?t('collection'):t('back');
   $('modalHelp').hidden=kind!=='help';$('modalShop').hidden=kind!=='shop';$('modalLeave').hidden=kind!=='leave';
@@ -225,9 +270,9 @@ function renderShop(){
   $('auroraButton').textContent=t(appearance.theme==='aurora'?'equipped':appearance.owned?'equip':'buy');
   $('classicButton').disabled=appearance.theme==='classic';$('auroraButton').disabled=appearance.theme==='aurora'||buying;
 }
-function saveAppearance(next){localStorage.setItem(APPEARANCE_KEY,JSON.stringify(next));appearance=next;scene?.setTheme(next.theme==='aurora');}
+function saveAppearance(next){if(localPracticeRequested)throw Error('PRACTICE_NO_PURCHASE');localStorage.setItem(APPEARANCE_KEY,JSON.stringify(next));appearance=next;scene?.setTheme(next.theme==='aurora');}
 async function buyOrEquip(){
-  if(buying)return;buying=true;renderShop();
+  if(localPracticeRequested||buying)return;buying=true;renderShop();
   const transaction=async ()=>{
     const result=(await purchaseAurora(localStorage,window.WeightPlayWallet,APPEARANCE_KEY));
     if(result.status==='insufficient'){notify(t('insufficient'));return;}
@@ -275,8 +320,8 @@ $('leaveExit').addEventListener('click',()=>{closeModal(false);$('battleBack').d
 $('classicButton').addEventListener('click',()=>{try{saveAppearance({...appearance,theme:'classic'});renderShop();}catch{notify(t('saveError'));}});
 $('auroraButton').addEventListener('click',buyOrEquip);
 $('resultMap').addEventListener('click',()=>{$('battleBack').disabled=false;showScreen('stage');});
-$('resultHome').addEventListener('click',()=>{$('battleBack').disabled=false;startStage(state.stage);});
-$('resultPrimary').addEventListener('click',()=>{if(stage().id<30){$('battleBack').disabled=false;startStage(state.stage+1);}});
+$('resultHome').addEventListener('click',()=>{$('battleBack').disabled=false;requestStage(state.stage);});
+$('resultPrimary').addEventListener('click',()=>{if(stage().id<countStages()){$('battleBack').disabled=false;requestStage(state.stage+1);}});
 $('renderRetry').addEventListener('click',()=>location.reload());
 $('scene').addEventListener('canopy-render-restored',()=>{$('renderError').hidden=true;$('boardControls').inert=false;renderBoard();syncActivity();});
 document.addEventListener('keydown',event=>{
@@ -290,6 +335,13 @@ document.addEventListener('keydown',event=>{
     }return;
   }
   if(!isPlaying()||event.altKey||event.ctrlKey||event.metaKey)return;
+  if(linked()&&event.key.startsWith('Arrow')){
+    if(document.activeElement?.closest('.wp-frame-utility'))return;
+    event.preventDefault();const delta=event.key==='ArrowRight'||event.key==='ArrowDown'?1:-1;
+    let current=Number(document.activeElement?.dataset?.directionIndex);if(!Number.isInteger(current))current=delta>0?-1:0;
+    let next=wrap(current+delta);while(phase().blocked===next)next=wrap(next+delta);$(`perch${next}`).focus({preventScroll:true});return;
+  }
+  if(linked()&&document.activeElement?.closest('.perch')&&(event.key==='Enter'||event.key===' '))return;
   if(event.key.startsWith('Arrow')){
     if(document.activeElement?.closest('.wp-frame-utility'))return;
     event.preventDefault();const delta=event.key==='ArrowRight'||event.key==='ArrowDown'?1:-1;
@@ -311,10 +363,27 @@ window.addEventListener('pageshow',event=>{if(event.persisted)syncActivity();});
 
 frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),scenes:{main:{root:$('mainScreen'),header:$('mainHeader'),content:$('mainContent')},stage:{root:$('stageScreen'),header:$('stageHeader'),content:$('stageContent')},battle:{root:$('battleScreen'),header:$('battleHeader'),content:$('battleContent'),headerInfo:$('battleHeaderInfo')}},playUI:true});
 function stat(label,id){const node=document.createElement('div'),caption=document.createElement('small'),value=document.createElement('strong');caption.dataset.copy=label;value.id=id;node.append(caption,value);return node;}
-frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stat('stageSections','stageSelectionValue')).add(stat('complete','stageCompletionValue')));
+const stageSelectionStat=stat('stageSections','stageSelectionValue'),stageCompletionStat=stat('complete','stageCompletionValue');
+const stageGroup=window.WeightPlayScreenFrame.createGroup().add(stageSelectionStat).add(stageCompletionStat);frame.stageTopUI.add(stageGroup);
 const battleGroup=window.WeightPlayScreenFrame.createGroup();[...$('battleHeaderInfo').children].forEach(n=>battleGroup.add(n));frame.battleTopUI.add(battleGroup);
+const phaseStat=$('badge').closest('.battle-info-field');
+function placePracticeBadge(){
+ const badge=document.querySelector('[data-wp-local-practice]');if(!badge)return;
+ stageGroup.remove(badge);battleGroup.remove(badge);
+ if(state.screen==='battle'&&$('result').hidden){
+  battleGroup.remove(phaseStat);phaseStat.hidden=true;document.body.append(phaseStat);
+  badge.style.cssText='position:static;display:inline-block;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';battleGroup.add(badge);
+ }else{
+  if(phaseStat.parentElement!==battleGroup.element){phaseStat.hidden=false;battleGroup.add(phaseStat);}
+  if(state.screen==='stage'){
+   stageGroup.remove(stageCompletionStat);stageCompletionStat.hidden=true;document.body.append(stageCompletionStat);
+   badge.style.cssText='position:static;display:inline-block;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';stageGroup.add(badge);
+  }else{if(stageCompletionStat.parentElement!==stageGroup.element){stageCompletionStat.hidden=false;stageGroup.add(stageCompletionStat);}document.body.append(badge);badge.style.cssText='position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:10000;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';}
+ }
+}
 const collectionButton=$('collectionBtn'),stageTab=$('stageTab');
 frame.commonDownButton.clear().add(collectionButton).add(stageTab);
+if(localPracticeRequested)collectionButton.hidden=true;
 // Shared loader waits for actual Main image decoding and the rendered Start.
 $('app').hidden=false;showScreen('main');applyLocale();
 function mainImageReady(img){
@@ -333,3 +402,13 @@ Promise.all([...$('mainScreen').querySelectorAll('img')].map(mainImageReady)).th
   $('loadingPanel').textContent=t('renderError');
   const retry=document.createElement('button');retry.textContent=t('retryAction');retry.addEventListener('click',()=>location.reload());$('loadingPanel').append(retry);
 });
+function waitForPracticeEntryReady(){return new Promise(resolve=>{let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);function finish(value){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(value);}function check(){const page=document.documentElement,shared=page.dataset.wpGameEntryLoaderInstalled==='true';if($('loadingPanel').hidden&&(!shared||page.dataset.wpGameEntryLoaderActive!=='true'))finish(true);else if($('loadingPanel').classList.contains('has-error')||document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}observer.observe(document.documentElement,{attributes:true,attributeFilter:['hidden','class','data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check();});}
+if(localPracticeRequested)void waitForPracticeEntryReady().then(async ready=>{
+ if(!ready)return;const [{LocalPractice},data,locale]=await Promise.all([import('../../src/game-local-practice.mjs'),import('./linked-lookouts-candidate.mjs?v=20261027-linked1'),import('./linked-locales-candidate.mjs?v=20261027-linked1')]);practiceAdapter=LocalPractice;if(!await LocalPractice.ready)return;
+ if(data.LINKED_STAGES.length!==30||data.LINKED_STAGES.some((s,i)=>s.id!==31+i))return;linkedCandidates=data.linkedCandidates;linkedCopy=locale.LINKED_COPY;linkedSubmit=locale.LINKED_SUBMIT;const oldSelected=selectedStage;
+ await LocalPractice.register({gameId:'animal-canopy-compass',stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){
+  practiceEnabled=enabled===true;if(practiceEnabled){if(STAGES.length===30)STAGES.push(...data.LINKED_STAGES);selectedStage=30;rail?.destroy();rail=null;if(state.screen==='stage')renderStages();}
+  else{STAGES.length=30;selectedStage=oldSelected;rail?.destroy();rail=null;scene?.link?.(-1,-1);if(modalKind)closeModal(false);showScreen('main');}
+  updateProgress();placePracticeBadge();
+ },async startStage(id){const index=Number(id)-1;if(practiceEnabled&&Number.isSafeInteger(index)&&index>=30&&index<60)startStage(index);}});
+}).catch(()=>{practiceEnabled=false;});

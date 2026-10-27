@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="छोटे जीव बनें। भोजन खोजें, छिपें और विकसित हों। मृत्यु पर नया जन्म मिलता है।" />
   <title>वन्य पुनर्जन्म | WeightPlay</title>
@@ -43,7 +43,7 @@
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
   <script defer src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script defer src="/src/battle-canvas-standard.js"></script>
-  <script type="module" src="/games/wildborn/game.js?v=2"></script>
+  <script type="module" src="/games/wildborn/game.js?v=20261027-guide-v3"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="वन्य पुनर्जन्म | WeightPlay" />
@@ -83,7 +83,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-game-id="wildborn" data-wp-game-id="wildborn" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
+<body data-screen="main" data-game-id="wildborn" data-game-version="v3" data-interface-version="9" data-wp-interface-version="9" data-wp-game-id="wildborn" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
 <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen">
@@ -100,26 +100,18 @@
         </div>
       </div>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="वन्य पुनर्जन्म गेम की जानकारी">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>वन्य पुनर्जन्म</h2><p>छोटे जीव बनें। भोजन खोजें, छिपें और विकसित हों। मृत्यु पर नया जन्म मिलता है।</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>विकास · जीवंत दुनिया</strong></div><div class="game-info-fact"><span>शैली</span><strong>Action · Adventure · Animal Games</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-locales="locales.mjs#COPY" data-wp-guide-locale="hi" aria-label="जीवन के नोट्स">
+      <div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2 data-official-title data-wp-game-title data-runtime-localize="off">वन्य पुनर्जन्म</h2><p data-copy="summary" data-runtime-localize="off" data-wp-intro-faq-source>छोटे जीव बनें। भोजन खोजें, छिपें और विकसित हों। मृत्यु पर नया जन्म मिलता है।</p></div>
+      <div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts">
+        <div class="game-info-fact"><strong>6</strong><span data-copy="origins" data-runtime-localize="off">यादृच्छिक जन्म</span></div>
+        <div class="game-info-fact"><strong data-copy="world" data-runtime-localize="off">जीवंत दुनिया</strong><span data-copy="noStages" data-runtime-localize="off">कोई स्तर नहीं</span></div>
+      </div>
+      <div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections">
+        <section class="game-info-section"><h2 data-copy="how" data-runtime-localize="off">कैसे जीवित रहें</h2><p data-copy="rules" data-runtime-localize="off">भोजन पर चलकर खाएँ। ऊँची घास में धीमे चलकर छिपें। पानी ज़मीनी जीवों को धीमा करता है। शिकारी के झपटने से पहले संकेत देखें।</p><p data-copy="controls" data-runtime-localize="off">चलें: WASD, तीर या खींचें। वार: Space। दौड़: Shift।</p></section>
+        <section class="game-info-section"><h2 data-copy="life" data-runtime-localize="off">एक जीवन</h2><p data-copy="progress" data-runtime-localize="off">खाएँ और शिकार करके संबंधित जीवों में विकसित हों। विकास अपने-आप सहेजता है। मृत्यु पर दूसरा छोटा जीव अर्जित शक्ति और जीवन का 20% विरासत में पाता है। कोई अंतिम रूप नहीं।</p><img class="guide-orla" src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="Moon Cap Orla" width="100" height="100" loading="lazy"></section>
+      </div>
+      <div id="gameGuideFaq" data-wp-content-slot="guide-faq"></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"></div>
+    <article class="game-info-section" data-wp-intro-faq><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><dt>इस खेल में मुझे क्या करना होगा?</dt><dd>छोटे जीव बनें। भोजन खोजें, छिपें और विकसित हों। मृत्यु पर नया जन्म मिलता है।</dd></dl></article></section>
   </div>
   <section id="battleScreen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
     <header id="battleHeader"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>

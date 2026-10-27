@@ -1,4 +1,5 @@
 // Rendering/input adapter. DefenseRun exclusively owns combat outcomes.
+import {createDefensePointerInput} from './defense-pointer-input.mjs';
 export function createDefenseView({T,art,run,copy,canvas,hud,preferences,onPause,onUpgrade,onResult}){
   const t=copy.t;const loadStarted=performance.now();art=art.createDefenseArt();
   const gl=canvas.getContext('webgl2',{antialias:true,alpha:false});if(!gl)throw Error(t('errorMessage'));
@@ -18,8 +19,8 @@ export function createDefenseView({T,art,run,copy,canvas,hud,preferences,onPause
   let contextLost=false;let raf=0,disposed=false,paused=false,last=performance.now(),lastHUD=0,time=0,firing=false,keyFire=false,burst=0,blast=false,aimX=0,aimZ=-5,hasAim=false,recoil=0,towerHit=0,previousState='playing',bannerTime=2.5,banner=t('stageControls'),lastPrefs=preferences(),reduced=false;
   const media=matchMedia('(prefers-reduced-motion: reduce)'),samples=[],stats={median:0,p95:0,calls:0,triangles:0,geometries:0,textures:0,frames:0,initMs:0};
   const listeners=[];function listen(target,type,fn,options){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
-  function clearInput(){firing=false;keyFire=false;burst=0;blast=false;try{if(canvas.hasPointerCapture(pointerId))canvas.releasePointerCapture(pointerId);}catch{}}
-  let pointerId=-1;
+  let pointerInput=null;
+  function clearInput(){firing=false;keyFire=false;burst=0;blast=false;pointerInput?.clear();}
   function aim(e){const rect=canvas.getBoundingClientRect();if(rect.width<=0||rect.height<=0)return;pointer.set((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1);raycaster.setFromCamera(pointer,camera);
     // Pick the actual visible mesh before ground projection: clicking a tall
     // head must aim at that enemy, not at the ground behind it. No nearby snap.
@@ -27,12 +28,11 @@ export function createDefenseView({T,art,run,copy,canvas,hud,preferences,onPause
     if(intersections.length){let root=intersections[0].object;while(root&&!root.userData.enemyId)root=root.parent;const enemy=root&&run.enemies.find(e=>e.id===root.userData.enemyId);if(enemy){aimX=enemy.x;aimZ=enemy.z;hasAim=true;return;}}
     if(raycaster.ray.intersectPlane(plane,hitPoint)){aimX=T.MathUtils.clamp(hitPoint.x,-13,13);aimZ=T.MathUtils.clamp(hitPoint.z,-12,8);hasAim=true;}}
   const active=()=>!paused&&!api.finished&&run.state==='playing';
-  listen(canvas,'pointermove',e=>{if(active())aim(e);});
-  listen(canvas,'pointerdown',e=>{if(!active())return;canvas.focus({preventScroll:true});aim(e);if(e.button===0){firing=true;burst=.19;pointerId=e.pointerId;canvas.setPointerCapture?.(pointerId);}else if(e.button===2){blast=true;}e.preventDefault();});
-  listen(canvas,'pointerup',e=>{if(e.button===0){firing=false;try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}catch{}}});
-  listen(canvas,'pointercancel',clearInput);listen(canvas,'lostpointercapture',()=>firing=false);listen(canvas,'contextmenu',e=>e.preventDefault());
+  pointerInput=createDefensePointerInput({surface:canvas,isActive:active,onAim:aim,onFocus:()=>canvas.focus({preventScroll:true}),onBlast:()=>blast=true,onFire(value,{pointerType,cancelled}){firing=value;if(value)burst=pointerType==='mouse'?.19:0;else if(pointerType!=='mouse'||cancelled)burst=0;}});
+  listeners.push(()=>pointerInput.dispose());
   listen(document,'keydown',e=>{if(e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey||paused||api.finished||run.state!=='playing'||document.activeElement!==canvas)return;if(e.code==='Escape'){e.preventDefault();onPause();}else if(e.code==='Space'){e.preventDefault();if(!e.repeat)blast=true;}else if(e.code==='KeyF'||e.key.toLowerCase()==='f'){e.preventDefault();keyFire=true;}});
   listen(document,'keyup',e=>{if(e.code==='KeyF'||e.key.toLowerCase()==='f')keyFire=false;});
+  listen(window,'resize',clearInput);
   listen(window,'blur',()=>{clearInput();if(active())onPause();});listen(document,'visibilitychange',()=>{if(document.hidden){clearInput();if(active())onPause();}});
   listen(canvas,'webglcontextlost',e=>{e.preventDefault();contextLost=true;clearInput();onPause();document.getElementById('saveNotice').textContent=t('contextLost');});listen(canvas,'webglcontextrestored',()=>{document.getElementById('saveNotice').textContent=t('contextRestored');});
   const observer=new ResizeObserver(resize);observer.observe(canvas);function resize(){const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;renderer.setSize(r.width,r.height,false);const aspect=r.width/r.height;const halfH=Math.max(11.4,15/aspect);camera.left=-halfH*aspect;camera.right=halfH*aspect;camera.top=halfH;camera.bottom=-halfH;camera.updateProjectionMatrix();}resize();

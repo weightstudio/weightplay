@@ -46,3 +46,8 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid #f4d389;outline-
   .result-inner .stats{padding:4px}.result-inner .badge-reward{justify-content:start}
   .result-inner .badge-reward img{height:32px;width:32px}
 }
+
+/* Local linked-lookouts candidate only; normal chapter retains two tools. */
+.linked-active .battle-tools{grid-template-columns:repeat(3,minmax(0,1fr))}
+.linked-active [data-link-ribbon] img{width:36px;height:36px;object-fit:contain;flex:none}
+.perch.link-blocked{opacity:.55;filter:grayscale(.75);border-style:dashed}

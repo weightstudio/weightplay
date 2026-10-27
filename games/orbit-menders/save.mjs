@@ -36,7 +36,7 @@ function idSet(value, pattern, maximum, label) {
 
 export function freshSave() {
   return {
-    schemaVersion: 1, gameVersion: '0.6.0', updatedAt: new Date().toISOString(),
+    schemaVersion: 1, gameVersion: '0.7.0', updatedAt: new Date().toISOString(),
     completed: [], archives: [], blueprints: [], badges: {},
     cosmetics: { equipped: 'workshop', unlocked: ['workshop'] },
     best: { standard: {}, assist: {} },
@@ -181,7 +181,7 @@ export function createSaveAdapter(storage) {
       if (typeof update !== 'function') throw new TypeError('Save commit requires a function');
       const draft = clone(data);
       update(draft);
-      draft.gameVersion = '0.6.0';
+      draft.gameVersion = '0.7.0';
       draft.updatedAt = new Date().toISOString();
       return persist(validateSave(draft));
     },

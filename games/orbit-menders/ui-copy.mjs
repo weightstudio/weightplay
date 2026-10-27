@@ -6,9 +6,9 @@ const keys = `summary device desktopOnly start progress stageProgress mission cl
 
 // Each line corresponds to exactly one key above. Tables are validated before use.
 const source = {
-  en: `Aim with the mouse and hold to fire. Stop the zombies and protect the tower!
-Play with a computer mouse · Fixed camera, easy aiming.
-Please open on a computer
+  en: `Aim and hold to fire. Stop the zombies and protect the tower!
+Phone or tablet: touch and drag · Computer: mouse aiming.
+Touch and mouse controls available
 Start Game
 Defence missions {done} / {total}
 Defended {done} / {total}
@@ -17,21 +17,21 @@ Defended
 Ready to defend
 Complete the previous mission to unlock
 {waves} waves · Defeat the final boss
-Hold to fire · Protect the tower
+Aim and hold to fire · Protect the tower
 Missions
 Back
 Pause and return to missions
 Pause
-Zombie tower defence. Mouse to aim; hold left button to fire; right button or Space to blast; F to fire at the reticle; Esc to pause.
+Zombie tower defence. Mouse: aim and hold the left button to fire. Touch: hold and drag the battlefield to aim and fire; lift to stop. Use the blast and pause buttons. Right button or Space also blasts; F fires at the reticle; Esc pauses.
 Tower health remaining
 Tower
 Tower {percent}%
 Wave
 Wave {wave}/{total}
-Blast · Space
+Blast
 Blast {seconds}s
 Protect the tower · {count} zombies
-Hold left button to fire · Right button/Space to blast · Esc to pause
+Aim and hold to fire · Blast button · Pause
 Wave {wave} · Hold the tower
 The tower is safe!
 Wave cleared! Choose an upgrade.
@@ -39,7 +39,7 @@ Giant zombie incoming!
 Graphics context lost. Saved mission progress is safe; return to missions and retry.
 Graphics restored. Return to missions and enter again.
 Paused
-Mouse to aim · Hold left button to fire · Right button/Space to blast · F to fire at the reticle
+Mouse: aim and hold left to fire. Touch: hold and drag the battlefield to aim and fire; lift to stop. Use the blast and pause buttons. Right button/Space: blast; F: fire at the reticle; Esc: pause.
 Reduce motion
 Assist mode (next entry)
 Quality
@@ -89,9 +89,9 @@ Fan barrage
 Adds two side shots to widen the firing arc
 Emergency repair
 Restores 30% tower health and adds 5% maximum health`,
-  'zh-Hant': `滑鼠瞄準、按住連射！擊退殭屍，別讓主塔倒下。
-電腦滑鼠遊玩 · 固定鏡頭，輕鬆瞄準。
-請使用電腦開啟
+  'zh-Hant': `瞄準、按住連射！擊退殭屍，別讓主塔倒下。
+手機／平板：按住拖曳 · 電腦：滑鼠瞄準。
+支援觸控與滑鼠操作
 開始遊戲
 守塔任務 {done} / {total}
 已守住 {done} / {total}
@@ -100,21 +100,21 @@ Restores 30% tower health and adds 5% maximum health`,
 準備迎戰
 完成前一任務開放
 {waves} 波敵潮 · 擊退最終首領
-按住滑鼠連射 · 保護主塔
+瞄準並按住連射 · 保護主塔
 任務
 返回
 暫停並返回任務
 暫停
-殭屍守塔戰場；滑鼠瞄準，左鍵連射，右鍵或 Space 震爆，F 向準星射擊，Esc 暫停。
+殭屍守塔戰場。滑鼠瞄準，按住左鍵連射。觸控時按住戰場並拖曳瞄準連射，放開停止。可使用畫面上的震爆與暫停按鈕；右鍵或 Space 也可震爆，F 向準星射擊，Esc 暫停。
 主塔剩餘生命
 主塔
 主塔 {percent}%
 敵潮
 敵潮 {wave}/{total}
-震爆 · Space
+震爆
 震爆 {seconds}秒
 守住主塔 · 場上 {count} 隻殭屍
-按住左鍵連射 · 右鍵／Space 震爆 · Esc 暫停
+瞄準並按住連射 · 震爆按鈕 · 暫停
 第 {wave} 波 · 守住主塔
 敵潮退去，主塔安全！
 敵潮清空！選擇本次強化。
@@ -122,7 +122,7 @@ Restores 30% tower health and adds 5% maximum health`,
 繪圖環境中斷。已保存的任務進度仍在；請返回選關後重試。
 繪圖環境已恢復，請返回選關後重新進入。
 已暫停
-滑鼠瞄準 · 按住左鍵連射 · 右鍵／Space 震爆 · F 向準星射擊
+滑鼠瞄準、按住左鍵連射。觸控時按住戰場並拖曳瞄準連射，放開停止；使用畫面上的震爆與暫停按鈕。右鍵／Space 震爆，F 向準星射擊，Esc 暫停。
 減少動態
 輔助模式（下次進入生效）
 畫質
@@ -172,9 +172,9 @@ Restores 30% tower health and adds 5% maximum health`,
 增加兩發側彈，拓寬防線
 緊急修復
 恢復主塔 30% 生命，增加 5% 最大生命`,
-  'zh-Hans': `鼠标瞄准、按住连射！击退僵尸，别让主塔倒下。
-电脑鼠标游玩 · 固定镜头，轻松瞄准。
-请使用电脑打开
+  'zh-Hans': `瞄准、按住连射！击退僵尸，别让主塔倒下。
+手机／平板：按住拖动 · 电脑：鼠标瞄准。
+支持触控与鼠标操作
 开始游戏
 守塔任务 {done} / {total}
 已守住 {done} / {total}
@@ -183,21 +183,21 @@ Restores 30% tower health and adds 5% maximum health`,
 准备迎战
 完成前一任务开放
 {waves} 波敌潮 · 击退最终首领
-按住鼠标连射 · 保护主塔
+瞄准并按住连射 · 保护主塔
 任务
 返回
 暂停并返回任务
 暂停
-僵尸守塔战场；鼠标瞄准，左键连射，右键或 Space 震爆，F 向准星射击，Esc 暂停。
+僵尸守塔战场。鼠标瞄准，按住左键连射。触控时按住战场并拖动瞄准连射，松开停止。可使用画面上的震爆与暂停按钮；右键或 Space 也可震爆，F 向准星射击，Esc 暂停。
 主塔剩余生命
 主塔
 主塔 {percent}%
 敌潮
 敌潮 {wave}/{total}
-震爆 · Space
+震爆
 震爆 {seconds}秒
 守住主塔 · 场上 {count} 只僵尸
-按住左键连射 · 右键／Space 震爆 · Esc 暂停
+瞄准并按住连射 · 震爆按钮 · 暂停
 第 {wave} 波 · 守住主塔
 敌潮退去，主塔安全！
 敌潮清空！选择本次强化。
@@ -205,7 +205,7 @@ Restores 30% tower health and adds 5% maximum health`,
 绘图环境中断。已保存的任务进度仍在；请返回选关后重试。
 绘图环境已恢复，请返回选关后重新进入。
 已暂停
-鼠标瞄准 · 按住左键连射 · 右键／Space 震爆 · F 向准星射击
+鼠标瞄准、按住左键连射。触控时按住战场并拖动瞄准连射，松开停止；使用画面上的震爆与暂停按钮。右键／Space 震爆，F 向准星射击，Esc 暂停。
 减少动态
 辅助模式（下次进入生效）
 画质
@@ -255,9 +255,9 @@ Restores 30% tower health and adds 5% maximum health`,
 增加两发侧弹，拓宽防线
 紧急修复
 恢复主塔 30% 生命，增加 5% 最大生命`,
-  ja: `マウスで狙い、押し続けて連射！ゾンビを撃退して塔を守ろう。
-パソコンのマウスでプレイ · 固定カメラで簡単照準。
-パソコンで開いてください
+  ja: `狙って長押しで連射！ゾンビを撃退して塔を守ろう。
+スマホ／タブレット：長押しとドラッグ · パソコン：マウス照準。
+タッチ操作とマウスに対応
 ゲーム開始
 防衛ミッション {done} / {total}
 防衛済み {done} / {total}
@@ -266,21 +266,21 @@ Restores 30% tower health and adds 5% maximum health`,
 出撃準備完了
 前のミッションをクリアすると開放
 {waves} ウェーブ · 最後のボスを撃退
-押し続けて連射 · 塔を守ろう
+狙って長押しで連射 · 塔を守ろう
 ミッション
 戻る
 一時停止してミッションへ
 一時停止
-ゾンビから塔を守る戦場。マウスで照準、左ボタン長押しで連射、右ボタンまたは Space で衝撃波、F で照準へ射撃、Esc で一時停止。
+ゾンビから塔を守る戦場。マウスで狙い、左ボタン長押しで連射。タッチ操作では戦場を長押ししてドラッグで照準し、指を離すと射撃を停止します。衝撃波と一時停止は画面のボタンを使えます。右ボタンまたは Space で衝撃波、F で照準へ射撃、Esc で一時停止。
 塔の残り耐久力
 塔
 塔 {percent}%
 ウェーブ
 ウェーブ {wave}/{total}
-衝撃波 · Space
+衝撃波
 衝撃波 {seconds}秒
 塔を守ろう · ゾンビ {count} 体
-左ボタン長押しで連射 · 右ボタン／Space で衝撃波 · Esc で一時停止
+狙って長押しで連射 · 衝撃波ボタン · 一時停止
 ウェーブ {wave} · 塔を守ろう
 敵を撃退！塔は無事だ！
 ウェーブクリア！強化を選ぼう。
@@ -288,7 +288,7 @@ Restores 30% tower health and adds 5% maximum health`,
 描画機能が停止しました。保存済みの進行は無事です。ミッションに戻って再挑戦してください。
 描画機能が復旧しました。ミッションに戻り、入り直してください。
 一時停止中
-マウスで照準 · 左長押しで連射 · 右／Space で衝撃波 · F で照準へ射撃
+マウスで狙い、左ボタン長押しで連射。タッチ操作は戦場を長押しし、ドラッグで照準、指を離すと停止。衝撃波と一時停止は画面のボタンで操作できます。右ボタン／Space で衝撃波、F で照準へ射撃、Esc で一時停止。
 動きを減らす
 アシストモード（次回入場時）
 画質
@@ -338,9 +338,9 @@ JSON を読み込む
 左右に一発ずつ追加し、射撃範囲を広げる
 緊急修理
 塔の耐久力を 30% 回復し、最大値を 5% 増加`,
-  ko: `마우스로 조준하고 누른 채 연사하세요! 좀비를 물리치고 탑을 지키세요.
-컴퓨터 마우스로 플레이 · 고정 시점으로 편하게 조준하세요.
-컴퓨터에서 열어 주세요
+  ko: `조준하고 누른 채 연사하세요! 좀비를 물리치고 탑을 지키세요.
+휴대전화／태블릿: 누른 채 드래그 · 컴퓨터: 마우스 조준.
+터치와 마우스 조작 지원
 게임 시작
 방어 임무 {done} / {total}
 방어 완료 {done} / {total}
@@ -349,21 +349,21 @@ JSON を読み込む
 출격 준비 완료
 이전 임무를 완료하면 해제
 {waves} 차례의 습격 · 마지막 보스 격퇴
-누른 채 연사 · 탑 보호
+조준하고 누른 채 연사 · 탑을 지키세요
 임무
 뒤로
 일시 정지 후 임무로 돌아가기
 일시 정지
-좀비로부터 탑을 지키는 전장입니다. 마우스로 조준, 왼쪽 버튼을 누른 채 연사, 오른쪽 버튼 또는 Space로 충격파, F로 조준점에 사격, Esc로 일시 정지합니다.
+좀비로부터 탑을 지키는 전장입니다. 마우스로 조준하고 왼쪽 버튼을 누른 채 연사합니다. 터치는 전장을 누른 채 드래그해 조준하고 사격하며, 손을 떼면 멈춥니다. 화면의 충격파와 일시 정지 버튼을 사용할 수 있습니다. 오른쪽 버튼 또는 Space로 충격파, F로 조준점에 사격, Esc로 일시 정지합니다.
 탑의 남은 체력
 탑
 탑 {percent}%
 습격
 습격 {wave}/{total}
-충격파 · Space
+충격파
 충격파 {seconds}초
 탑을 지키세요 · 좀비 {count}마리
-왼쪽 버튼을 누른 채 연사 · 오른쪽 버튼／Space 충격파 · Esc 일시 정지
+조준하고 누른 채 연사 · 충격파 버튼 · 일시 정지
 습격 {wave} · 탑을 지키세요
 좀비 격퇴! 탑은 안전합니다!
 습격 격퇴! 강화를 선택하세요.
@@ -371,7 +371,7 @@ JSON を読み込む
 그래픽 연결이 끊겼습니다. 저장된 임무 진행은 안전합니다. 임무로 돌아가 다시 시도하세요.
 그래픽이 복구되었습니다. 임무로 돌아간 뒤 다시 입장하세요.
 일시 정지됨
-마우스로 조준 · 왼쪽 누른 채 연사 · 오른쪽／Space 충격파 · F 조준점 사격
+마우스로 조준하고 왼쪽 버튼을 누른 채 연사합니다. 터치는 전장을 누른 채 드래그해 조준하고 사격하며 손을 떼면 멈춥니다. 충격파와 일시 정지는 화면 버튼을 사용하세요. 오른쪽 버튼／Space 충격파, F 조준점 사격, Esc 일시 정지.
 움직임 줄이기
 보조 모드（다음 입장부터 적용）
 화질
@@ -421,9 +421,9 @@ JSON 가져오기
 양옆 탄환 두 발을 추가해 사격 범위를 넓힙니다
 긴급 수리
 탑 체력 30% 회복 및 최대 체력 5% 증가`,
-  es: `Apunta con el ratón y mantén pulsado para disparar. ¡Frena a los zombis y protege la torre!
-Juega con el ratón de un ordenador · Cámara fija y puntería sencilla.
-Abre el juego en un ordenador
+  es: `Apunta y mantén pulsado para disparar. ¡Frena a los zombis y protege la torre!
+Móvil/tableta: mantén y arrastra · Ordenador: apunta con el ratón.
+Controles táctiles y de ratón disponibles
 Jugar
 Misiones de defensa {done} / {total}
 Defendidas {done} / {total}
@@ -432,21 +432,21 @@ Defendida
 Listo para defender
 Completa la misión anterior para desbloquear
 {waves} oleadas · Derrota al jefe final
-Mantén pulsado para disparar · Protege la torre
+Apunta y mantén para disparar · Protege la torre
 Misiones
 Volver
 Pausar y volver a misiones
 Pausa
-Defiende la torre de los zombis. Ratón para apuntar; botón izquierdo mantenido para disparar; botón derecho o Space para la explosión; F para disparar a la mira; Esc para pausar.
+Defiende la torre de los zombis. Ratón: apunta y mantén el botón izquierdo para disparar. Táctil: mantén y arrastra sobre el campo para apuntar y disparar; suelta para parar. Usa los botones de explosión y pausa. Derecho o Space: explosión; F: disparar a la mira; Esc: pausa.
 Salud restante de la torre
 Torre
 Torre {percent}%
 Oleada
 Oleada {wave}/{total}
-Explosión · Space
+Explosión
 Explosión {seconds}s
 Protege la torre · {count} zombis
-Mantén el botón izquierdo para disparar · Derecho/Space para explosión · Esc para pausa
+Apunta y mantén para disparar · Botón de explosión · Pausa
 Oleada {wave} · Defiende la torre
 ¡La torre está a salvo!
 ¡Oleada superada! Elige una mejora.
@@ -454,7 +454,7 @@ Oleada {wave} · Defiende la torre
 Se ha perdido el contexto gráfico. El progreso guardado está a salvo; vuelve a misiones e inténtalo de nuevo.
 Gráficos recuperados. Vuelve a misiones y entra otra vez.
 En pausa
-Ratón para apuntar · Izquierdo mantenido para disparar · Derecho/Space para explosión · F para disparar a la mira
+Ratón: apunta y mantén el botón izquierdo para disparar. Táctil: mantén y arrastra sobre el campo para apuntar y disparar; suelta para parar. Usa los botones de explosión y pausa. Derecho/Space: explosión; F: disparar a la mira; Esc: pausa.
 Reducir movimiento
 Modo de ayuda (próxima entrada)
 Calidad
@@ -504,9 +504,9 @@ Fuego en abanico
 Añade dos disparos laterales para ampliar el arco de fuego
 Reparación urgente
 Restaura un 30% de salud de la torre y añade un 5% a la salud máxima`,
-  'pt-BR': `Mire com o mouse e segure para disparar. Detenha os zumbis e proteja a torre!
-Jogue com o mouse de um computador · Câmera fixa e mira fácil.
-Abra em um computador
+  'pt-BR': `Mire e segure para disparar. Detenha os zumbis e proteja a torre!
+Celular/tablet: segure e arraste · Computador: mire com o mouse.
+Controles por toque e mouse disponíveis
 Jogar
 Missões de defesa {done} / {total}
 Defendidas {done} / {total}
@@ -515,21 +515,21 @@ Defendida
 Pronto para defender
 Conclua a missão anterior para desbloquear
 {waves} ondas · Derrote o chefe final
-Segure para disparar · Proteja a torre
+Mire e segure para disparar · Proteja a torre
 Missões
 Voltar
 Pausar e voltar às missões
 Pausa
-Defesa da torre contra zumbis. Mouse para mirar; segure o botão esquerdo para disparar; botão direito ou Space para explosão; F para disparar na mira; Esc para pausar.
+Defenda a torre dos zumbis. Mouse: mire e segure o botão esquerdo para disparar. Toque: segure e arraste no campo para mirar e disparar; solte para parar. Use os botões de explosão e pausa. Botão direito ou Space: explosão; F: disparar na mira; Esc: pausa.
 Vida restante da torre
 Torre
 Torre {percent}%
 Onda
 Onda {wave}/{total}
-Explosão · Space
+Explosão
 Explosão {seconds}s
 Proteja a torre · {count} zumbis
-Segure o botão esquerdo para disparar · Direito/Space para explosão · Esc para pausar
+Mire e segure para disparar · Botão de explosão · Pausa
 Onda {wave} · Defenda a torre
 A torre está segura!
 Onda vencida! Escolha uma melhoria.
@@ -537,7 +537,7 @@ Um zumbi gigante está chegando!
 O contexto gráfico foi perdido. O progresso salvo está seguro; volte às missões e tente novamente.
 Gráficos restaurados. Volte às missões e entre novamente.
 Em pausa
-Mouse para mirar · Segure o esquerdo para disparar · Direito/Space para explosão · F para disparar na mira
+Mouse: mire e segure o botão esquerdo para disparar. Toque: segure e arraste no campo para mirar e disparar; solte para parar. Use os botões de explosão e pausa. Direito/Space: explosão; F: disparar na mira; Esc: pausa.
 Reduzir movimento
 Modo de ajuda (próxima entrada)
 Qualidade
@@ -587,9 +587,9 @@ Rajada em leque
 Adiciona dois disparos laterais para ampliar o arco de tiro
 Reparo de emergência
 Restaura 30% da vida da torre e aumenta a vida máxima em 5%`,
-  fr: `Visez à la souris et maintenez le bouton pour tirer. Repoussez les zombies et protégez la tour !
-Jouez avec une souris sur ordinateur · Caméra fixe, visée facile.
-Ouvrez le jeu sur un ordinateur
+  fr: `Visez et maintenez pour tirer. Arrêtez les zombies et protégez la tour !
+Téléphone/tablette : maintenir et glisser · Ordinateur : viser à la souris.
+Commandes tactiles et souris disponibles
 Jouer
 Missions de défense {done} / {total}
 Défendues {done} / {total}
@@ -598,21 +598,21 @@ Défendue
 Prêt à défendre
 Terminez la mission précédente pour débloquer
 {waves} vagues · Battez le boss final
-Maintenez pour tirer · Protégez la tour
+Visez et maintenez pour tirer · Protégez la tour
 Missions
 Retour
 Mettre en pause et revenir aux missions
 Pause
-Défendez la tour contre les zombies. Souris pour viser ; bouton gauche maintenu pour tirer ; bouton droit ou Space pour l'explosion ; F pour tirer vers le réticule ; Esc pour mettre en pause.
+Défendez la tour contre les zombies. Souris : visez et maintenez le bouton gauche pour tirer. Tactile : maintenez et glissez sur le terrain pour viser et tirer ; relâchez pour arrêter. Utilisez les boutons d’explosion et de pause. Bouton droit ou Space : explosion ; F : tir vers le viseur ; Esc : pause.
 Vie restante de la tour
 Tour
 Tour {percent} %
 Vague
 Vague {wave}/{total}
-Explosion · Space
+Explosion
 Explosion {seconds}s
 Protégez la tour · {count} zombies
-Maintenez le bouton gauche pour tirer · Droit/Space pour l'explosion · Esc pour la pause
+Visez et maintenez pour tirer · Bouton d’explosion · Pause
 Vague {wave} · Défendez la tour
 La tour est en sécurité !
 Vague repoussée ! Choisissez une amélioration.
@@ -620,7 +620,7 @@ Un zombie géant approche !
 Le contexte graphique a été perdu. La progression sauvegardée est intacte ; revenez aux missions et réessayez.
 Affichage rétabli. Revenez aux missions, puis entrez à nouveau.
 En pause
-Souris pour viser · Gauche maintenu pour tirer · Droit/Space pour l'explosion · F pour tirer au réticule
+Souris : visez et maintenez le bouton gauche pour tirer. Tactile : maintenez et glissez sur le terrain pour viser et tirer ; relâchez pour arrêter. Utilisez les boutons d’explosion et de pause. Bouton droit/Space : explosion ; F : tir vers le viseur ; Esc : pause.
 Réduire les mouvements
 Mode assistance (prochaine entrée)
 Qualité
@@ -670,9 +670,9 @@ Tir en éventail
 Ajoute deux tirs latéraux pour élargir l'arc de tir
 Réparation d'urgence
 Restaure 30 % de vie de la tour et augmente la vie maximale de 5 %`,
-  de: `Mit der Maus zielen und zum Feuern gedrückt halten. Stoppe die Zombies und schütze den Turm!
-Mit Computermaus spielen · Feste Kamera, einfaches Zielen.
-Bitte auf einem Computer öffnen
+  de: `Ziele und halte zum Schießen gedrückt. Stoppe die Zombies und schütze den Turm!
+Handy/Tablet: halten und ziehen · Computer: mit der Maus zielen.
+Touch- und Maussteuerung verfügbar
 Spiel starten
 Verteidigungsmissionen {done} / {total}
 Verteidigt {done} / {total}
@@ -681,21 +681,21 @@ Verteidigt
 Bereit zur Verteidigung
 Vorherige Mission abschließen, um freizuschalten
 {waves} Wellen · Besiege den letzten Boss
-Zum Feuern gedrückt halten · Turm schützen
+Zielen und zum Feuern halten · Schütze den Turm
 Missionen
 Zurück
 Pausieren und zu Missionen zurück
 Pause
-Verteidige den Turm gegen Zombies. Maus zum Zielen; linke Taste zum Dauerfeuer halten; rechte Taste oder Space für Druckwelle; F zum Feuern aufs Fadenkreuz; Esc für Pause.
+Verteidige den Turm gegen Zombies. Maus: zielen und linke Taste zum Feuern halten. Touch: auf dem Schlachtfeld halten und zum Zielen ziehen; zum Stoppen loslassen. Nutze die Tasten für Druckwelle und Pause. Rechts oder Space: Druckwelle; F: Schüsse aufs Fadenkreuz; Esc: Pause.
 Verbleibende Turmgesundheit
 Turm
 Turm {percent}%
 Welle
 Welle {wave}/{total}
-Druckwelle · Space
+Druckwelle
 Druckwelle {seconds}s
 Schütze den Turm · {count} Zombies
-Links halten zum Feuern · Rechts/Space für Druckwelle · Esc für Pause
+Zielen und zum Feuern halten · Druckwellentaste · Pause
 Welle {wave} · Halte den Turm
 Der Turm ist sicher!
 Welle geschafft! Wähle eine Verbesserung.
@@ -703,7 +703,7 @@ Ein Riesenzombie kommt!
 Die Grafikverbindung ging verloren. Gespeicherter Fortschritt bleibt erhalten. Kehre zu den Missionen zurück und versuche es erneut.
 Grafik wiederhergestellt. Kehre zu den Missionen zurück und starte erneut.
 Pausiert
-Maus zum Zielen · Links halten zum Feuern · Rechts/Space für Druckwelle · F feuert aufs Fadenkreuz
+Maus: zielen und linke Taste zum Feuern halten. Touch: auf dem Schlachtfeld halten und zum Zielen ziehen; zum Stoppen loslassen. Nutze die Tasten für Druckwelle und Pause. Rechts/Space: Druckwelle; F: aufs Fadenkreuz feuern; Esc: Pause.
 Bewegung reduzieren
 Hilfsmodus (beim nächsten Einstieg)
 Qualität
@@ -753,9 +753,9 @@ Fächerfeuer
 Zwei zusätzliche Seitenschüsse verbreitern den Feuerbereich
 Notreparatur
 Stellt 30% Turmgesundheit wieder her und erhöht das Maximum um 5%`,
-  it: `Mira con il mouse e tieni premuto per sparare. Ferma gli zombi e proteggi la torre!
-Gioca con il mouse di un computer · Visuale fissa, mira semplice.
-Apri il gioco su un computer
+  it: `Mira e tieni premuto per sparare. Ferma gli zombi e proteggi la torre!
+Telefono/tablet: tieni premuto e trascina · Computer: mira con il mouse.
+Comandi touch e mouse disponibili
 Inizia a giocare
 Missioni di difesa {done} / {total}
 Difese {done} / {total}
@@ -764,21 +764,21 @@ Difesa completata
 Pronto a difendere
 Completa la missione precedente per sbloccare
 {waves} ondate · Sconfiggi il boss finale
-Tieni premuto per sparare · Proteggi la torre
+Mira e tieni premuto per sparare · Proteggi la torre
 Missioni
 Indietro
 Pausa e ritorno alle missioni
 Pausa
-Difendi la torre dagli zombi. Mouse per mirare; tieni premuto il sinistro per sparare; destro o Space per l'esplosione; F per sparare al mirino; Esc per la pausa.
+Difendi la torre dagli zombi. Mouse: mira e tieni premuto il tasto sinistro per sparare. Touch: tieni premuto e trascina sul campo per mirare e sparare; solleva il dito per fermarti. Usa i pulsanti esplosione e pausa. Destro o Space: esplosione; F: fuoco sul mirino; Esc: pausa.
 Salute residua della torre
 Torre
 Torre {percent}%
 Ondata
 Ondata {wave}/{total}
-Esplosione · Space
+Esplosione
 Esplosione {seconds}s
 Proteggi la torre · {count} zombi
-Tieni premuto il sinistro per sparare · Destro/Space per l'esplosione · Esc per la pausa
+Mira e tieni premuto per sparare · Pulsante esplosione · Pausa
 Ondata {wave} · Difendi la torre
 La torre è al sicuro!
 Ondata respinta! Scegli un potenziamento.
@@ -786,7 +786,7 @@ Sta arrivando uno zombi gigante!
 Il contesto grafico è stato perso. I progressi salvati sono al sicuro; torna alle missioni e riprova.
 Grafica ripristinata. Torna alle missioni ed entra di nuovo.
 In pausa
-Mouse per mirare · Sinistro premuto per sparare · Destro/Space per l'esplosione · F per sparare al mirino
+Mouse: mira e tieni premuto il tasto sinistro per sparare. Touch: tieni premuto e trascina sul campo per mirare e sparare; solleva il dito per fermarti. Usa i pulsanti esplosione e pausa. Destro/Space: esplosione; F: fuoco sul mirino; Esc: pausa.
 Riduci movimento
 Modalità assistita (prossimo ingresso)
 Qualità
@@ -836,9 +836,9 @@ Fuoco a ventaglio
 Aggiunge due colpi laterali per ampliare l'arco di tiro
 Riparazione d'emergenza
 Ripristina il 30% della salute della torre e aumenta il massimo del 5%`,
-  ru: `Цельтесь мышью и удерживайте кнопку для стрельбы. Остановите зомби и защитите башню!
-Играйте мышью на компьютере · Неподвижная камера, удобный прицел.
-Откройте игру на компьютере
+  ru: `Цельтесь и удерживайте для стрельбы. Остановите зомби и защитите башню!
+Телефон/планшет: удерживайте и ведите пальцем · Компьютер: цельтесь мышью.
+Доступны сенсорное управление и мышь
 Начать игру
 Задания обороны {done} / {total}
 Защищено {done} / {total}
@@ -847,21 +847,21 @@ Ripristina il 30% della salute della torre e aumenta il massimo del 5%`,
 Готово к обороне
 Пройдите предыдущее задание, чтобы открыть
 {waves} волн · Победите последнего босса
-Удерживайте для стрельбы · Защищайте башню
+Цельтесь и удерживайте для стрельбы · Защитите башню
 Задания
 Назад
 Пауза и возврат к заданиям
 Пауза
-Защита башни от зомби. Мышь — прицел; удерживайте левую кнопку для стрельбы; правая кнопка или Space — взрыв; F — стрельба в прицел; Esc — пауза.
+Защита башни от зомби. Мышь: цельтесь и удерживайте левую кнопку для стрельбы. Сенсор: удерживайте палец на поле и двигайте для прицеливания и стрельбы; отпустите для остановки. Есть кнопки взрыва и паузы. Правая кнопка или Space — взрыв; F — огонь в прицел; Esc — пауза.
 Оставшееся здоровье башни
 Башня
 Башня {percent}%
 Волна
 Волна {wave}/{total}
-Взрыв · Space
+Взрыв
 Взрыв {seconds}с
 Защитите башню · Зомби: {count}
-Левая кнопка — стрельба · Правая/Space — взрыв · Esc — пауза
+Цельтесь и удерживайте для стрельбы · Кнопка взрыва · Пауза
 Волна {wave} · Удержите башню
 Башня в безопасности!
 Волна отбита! Выберите улучшение.
@@ -869,7 +869,7 @@ Ripristina il 30% della salute della torre e aumenta il massimo del 5%`,
 Графическое соединение потеряно. Сохранённый прогресс не пострадал. Вернитесь к заданиям и повторите попытку.
 Графика восстановлена. Вернитесь к заданиям и войдите снова.
 На паузе
-Мышь — прицел · Левая кнопка — стрельба · Правая/Space — взрыв · F — огонь в прицел
+Мышь: цельтесь и удерживайте левую кнопку для стрельбы. Сенсор: удерживайте и двигайте палец по полю для прицеливания и стрельбы; отпустите для остановки. Используйте кнопки взрыва и паузы. Правая/Space — взрыв; F — огонь в прицел; Esc — пауза.
 Уменьшить движение
 Режим помощи (со следующего входа)
 Качество
@@ -919,9 +919,9 @@ Ripristina il 30% della salute della torre e aumenta il massimo del 5%`,
 Добавляет два боковых выстрела, расширяя сектор огня
 Аварийный ремонт
 Восстанавливает 30% здоровья башни и повышает максимум на 5%`,
-  hi: `माउस से निशाना लगाएँ और दबाए रखकर गोली चलाएँ। ज़ॉम्बी को रोकें और मीनार बचाएँ!
-कंप्यूटर के माउस से खेलें · स्थिर कैमरा, आसान निशाना।
-कृपया कंप्यूटर पर खोलें
+  hi: `निशाना लगाएँ और दबाए रखकर गोली चलाएँ। ज़ॉम्बी को रोकें और मीनार बचाएँ!
+फ़ोन/टैबलेट: दबाए रखें और खींचें · कंप्यूटर: माउस से निशाना।
+टच और माउस नियंत्रण उपलब्ध
 खेल शुरू करें
 रक्षा अभियान {done} / {total}
 सुरक्षित किए {done} / {total}
@@ -930,21 +930,21 @@ Ripristina il 30% della salute della torre e aumenta il massimo del 5%`,
 रक्षा के लिए तैयार
 खोलने के लिए पिछला अभियान पूरा करें
 {waves} लहरें · अंतिम सरदार को हराएँ
-दबाए रखकर गोली चलाएँ · मीनार बचाएँ
+निशाना लगाएँ और दबाए रखकर गोली चलाएँ · मीनार बचाएँ
 अभियान
 वापस
 रोकें और अभियान पर लौटें
 विराम
-ज़ॉम्बी से मीनार की रक्षा करें। माउस से निशाना; बायाँ बटन दबाए रखकर गोली चलाएँ; दायाँ बटन या Space से विस्फोट; F से निशाने पर गोली; Esc से विराम।
+ज़ॉम्बी से मीनार की रक्षा करें। माउस: निशाना लगाएँ और बायाँ बटन दबाए रखकर गोली चलाएँ। टच: मैदान पर उँगली दबाए रखें और खींचकर निशाना लगाएँ; छोड़ने पर गोलीबारी रुकती है। विस्फोट और विराम के स्क्रीन बटन इस्तेमाल करें। दायाँ बटन या Space से विस्फोट; F से निशाने पर गोली; Esc से विराम।
 मीनार की बची सेहत
 मीनार
 मीनार {percent}%
 लहर
 लहर {wave}/{total}
-विस्फोट · Space
+विस्फोट
 विस्फोट {seconds}से
 मीनार बचाएँ · {count} ज़ॉम्बी
-बायाँ बटन दबाए रखकर गोली चलाएँ · दायाँ/Space से विस्फोट · Esc से विराम
+निशाना लगाएँ और दबाए रखकर गोली चलाएँ · विस्फोट बटन · विराम
 लहर {wave} · मीनार की रक्षा करें
 मीनार सुरक्षित है!
 लहर खत्म! एक सुधार चुनें।
@@ -952,7 +952,7 @@ Ripristina il 30% della salute della torre e aumenta il massimo del 5%`,
 ग्राफ़िक्स कनेक्शन टूट गया। सहेजा अभियान सुरक्षित है; अभियान पर लौटकर फिर कोशिश करें।
 ग्राफ़िक्स लौट आए हैं। अभियान पर लौटें और फिर प्रवेश करें।
 खेल रुका है
-माउस से निशाना · बायाँ दबाए रखकर गोली · दायाँ/Space से विस्फोट · F से निशाने पर गोली
+माउस से निशाना लगाएँ और बायाँ बटन दबाए रखकर गोली चलाएँ। टच में मैदान पर उँगली दबाए रखकर खींचें; छोड़ने पर गोलीबारी रुकती है। विस्फोट और विराम के स्क्रीन बटन इस्तेमाल करें। दायाँ/Space विस्फोट; F निशाने पर गोली; Esc विराम।
 गतिविधि कम करें
 सहायता मोड (अगले प्रवेश से)
 गुणवत्ता
@@ -1002,9 +1002,9 @@ JSON आयात
 दो अतिरिक्त बगल की गोलियाँ जोड़कर निशाने का फैलाव बढ़ाता है
 आपात मरम्मत
 मीनार की 30% सेहत लौटाता है और अधिकतम सेहत 5% बढ़ाता है`,
-  ar: `صوّب بالفأرة واضغط مطولًا لإطلاق النار. أوقف الزومبي واحمِ البرج!
-العب بفأرة الكمبيوتر · كاميرا ثابتة وتصويب سهل.
-يرجى فتح اللعبة على كمبيوتر
+  ar: `صوّب واضغط مطولًا لإطلاق النار. أوقف الزومبي واحمِ البرج!
+هاتف/جهاز لوحي: اضغط واسحب · كمبيوتر: صوّب بالفأرة.
+تتوفر أدوات تحكم باللمس والفأرة
 ابدأ اللعب
 مهام الدفاع {done} / {total}
 تم الدفاع {done} / {total}
@@ -1013,21 +1013,21 @@ JSON आयात
 جاهز للدفاع
 أكمل المهمة السابقة لفتحها
 {waves} موجات · اهزم الزعيم الأخير
-اضغط مطولًا لإطلاق النار · احمِ البرج
+صوّب واضغط مطولًا للإطلاق · احمِ البرج
 المهام
 رجوع
 إيقاف مؤقت والعودة إلى المهام
 إيقاف مؤقت
-دافع عن البرج من الزومبي. الفأرة للتصويب؛ اضغط مطولًا على الزر الأيسر لإطلاق النار؛ الزر الأيمن أو Space للانفجار؛ F لإطلاق النار نحو المؤشر؛ Esc للإيقاف المؤقت.
+دافع عن البرج من الزومبي. بالفأرة: صوّب واضغط مطولًا على الزر الأيسر لإطلاق النار. باللمس: اضغط على الساحة واسحب للتصويب والإطلاق؛ ارفع إصبعك للتوقف. استخدم زري الانفجار والإيقاف المؤقت. الزر الأيمن أو Space للانفجار؛ F للإطلاق نحو المؤشر؛ Esc للإيقاف.
 صحة البرج المتبقية
 البرج
 البرج {percent}%
 الموجة
 الموجة {wave}/{total}
-انفجار · Space
+انفجار
 انفجار {seconds}ث
 احمِ البرج · {count} زومبي
-اضغط مطولًا على الأيسر لإطلاق النار · الأيمن/Space للانفجار · Esc للإيقاف
+صوّب واضغط مطولًا للإطلاق · زر الانفجار · إيقاف مؤقت
 الموجة {wave} · احمِ البرج
 البرج بأمان!
 انتهت الموجة! اختر ترقية.
@@ -1035,7 +1035,7 @@ JSON आयात
 انقطع الاتصال بالرسومات. تقدم المهام المحفوظ آمن؛ عد إلى المهام وأعد المحاولة.
 عادت الرسومات. عد إلى المهام وادخل من جديد.
 اللعبة متوقفة
-الفأرة للتصويب · الأيسر مطولًا لإطلاق النار · الأيمن/Space للانفجار · F لإطلاق النار نحو المؤشر
+بالفأرة: صوّب واضغط مطولًا على الزر الأيسر للإطلاق. باللمس: اضغط على الساحة واسحب للتصويب والإطلاق؛ ارفع إصبعك للتوقف. استخدم زري الانفجار والإيقاف المؤقت. الأيمن/Space للانفجار؛ F للإطلاق نحو المؤشر؛ Esc للإيقاف.
 تقليل الحركة
 وضع المساعدة (عند الدخول التالي)
 الجودة

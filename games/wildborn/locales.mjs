@@ -102,7 +102,7 @@ silkworm:['Silkworm','蠶寶寶','蚕宝宝'],moth:['Moth','羽蛾','羽蛾'],mo
 hen:['Hen','母雞','母鸡'],rooster:['Rooster','雄雞','雄鸡'],duck:['Duck','綠頭鴨','绿头鸭'],mallard:['Wild mallard','荒原野鴨','荒原野鸭'],riverwing:['Riverwing','遠古翼鵝','远古翼鹅'],terrorbird:['Terror bird','恐鳥','恐鸟'],tyrannosaur:['Tyrannosaur','暴龍','暴龙'],plesiosaur:['Plesiosaur','蛇頸龍','蛇颈龙'],wyvern:['Wyvern','雙足飛龍','双足飞龙'],stormdragon:['Storm dragon','雷霆巨龍','雷霆巨龙'],cosmicdragon:['Cosmic dragon','星界龍神','星界龙神'],worldsaur:['Worldsaur','負界巨龍','负界巨龙'],leviathan:['Leviathan','深海利維坦','深海利维坦'],
 pig:['Pig','山地豬','山地猪'],behemoth:['Behemoth','比蒙巨獸','比蒙巨兽'],earthtitan:['Earth titan','大地泰坦','大地泰坦'],fieldmouse:['Field mouse','田野鼠','田野鼠'],primate:['Primate','森林靈猴','森林灵猴'],hunter:['Hunter','荒野獵人','荒野猎人'],shaman:['Shaman','星火巫師','星火巫师'],giant:['Giant','巨人','巨人'],celestial:['Celestial','天穹神裔','天穹神裔'],colossus:['Colossus','擎天神人','擎天神人'],
 };
-export const COPY=Object.fromEntries(LOCALES.map((locale,index)=>[locale,Object.fromEntries(Object.entries(rows).map(([key,values])=>[key,values[index]]))]));
+export const COPY=Object.fromEntries(LOCALES.map((locale,index)=>[locale,{...Object.fromEntries(Object.entries(rows).map(([key,values])=>[key,values[index]])),guideAria:rows.help[index]}]));
 export function text(locale,key){return COPY[locale]?.[key]??COPY.en[key]??key;}
 export function creatureName(locale,id,rank=0){
   const definition=SPECIES[id],index=locale==='zh-Hant'?1:locale==='zh-Hans'?2:0;

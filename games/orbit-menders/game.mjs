@@ -1,7 +1,7 @@
-import {createSaveAdapter} from './save.mjs?v=orbit-v5';
+import {createSaveAdapter} from './save.mjs?v=orbit-v7-touch';
 import {OPERATIONS,DefenseRun} from './defense.mjs';
-import {createDefenseView} from './defense-view.mjs?v=orbit-v5';
-import {getUICopy} from './ui-copy.mjs?v=orbit-v5';
+import {createDefenseView} from './defense-view.mjs?v=orbit-v7-touch';
+import {getUICopy} from './ui-copy.mjs?v=orbit-v7-touch';
 const $=id=>document.getElementById(id),save=createSaveAdapter(),copy=getUICopy(document.documentElement.lang),t=copy.t;
 document.documentElement.dir=copy.dir;
 const el=Object.fromEntries(['gameFrame','mainScreen','mainContent','stageScreen','stageContent','stagePanel','stageRail','stageBack','battleScreen','battleContent','battleInfo','battleBack','arena','objective','context','diagnostics','pauseModal','resultModal','errorModal','upgradeModal'].map(id=>[id,$(id)]));
@@ -10,7 +10,6 @@ for(const node of document.querySelectorAll('[data-game-aria]'))node.setAttribut
 for(const node of document.querySelectorAll('[data-wp-frame-title],[data-wp-game-title]'))node.textContent=copy.title;
 $('poster').alt=t('posterAlt');
 let screen='main',view=null,selector=null,selected=0,generation=0,settingsSuspended=false,pauseFocus=null;
-const mobile=(navigator.maxTouchPoints>0&&!matchMedia('(any-pointer:fine)').matches&&!matchMedia('(any-hover:hover)').matches)||Boolean(navigator.userAgentData?.mobile)||(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)&&navigator.maxTouchPoints>0&&!matchMedia('(any-pointer:fine)').matches);
 const frame=window.WeightPlayScreenFrame.mount({root:el.gameFrame,localeSelect:$('localeSelect'),playUI:true,scenes:{main:{root:el.mainScreen,header:el.mainScreen.querySelector('header'),content:el.mainContent},stage:{root:el.stageScreen,header:el.stageScreen.querySelector('header'),content:el.stageContent},battle:{root:el.battleScreen,header:el.battleScreen.querySelector('header'),content:el.battleContent,headerInfo:el.battleInfo}}});
 const info=window.WeightPlayScreenFrame.createGroup();[...el.battleInfo.children].forEach(n=>info.add(n));frame.battleTopUI.add(info);
 const summary=window.WeightPlayScreenFrame.createGroup();summary.add($('stageSummary'));frame.stageTopUI.add(summary);frame.commonDownButton.add($('stagesTab'));
@@ -26,24 +25,20 @@ function pause(){if(!view||view.finished)return;if(!view.paused){pauseFocus=docu
 function resume(){if(!view||view.contextLost)return;hideModals();view.setPaused(false);if(view.run.state==='upgrade')openUpgrade();else (pauseFocus?.isConnected&&!pauseFocus.inert?pauseFocus:el.arena).focus({preventScroll:true});}
 function openUpgrade(){if(!view)return;view.clearInput();const choices=$('upgradeChoices');choices.replaceChildren();for(const option of view.run.upgradeOptions){const id=typeof option==='string'?option:option.id,button=document.createElement('button');button.type='button';button.className='upgrade-choice';button.dataset.upgrade=id;const strong=document.createElement('strong'),small=document.createElement('span');strong.textContent=t(id+'Name');small.textContent=t(id+'Description');button.append(strong,small);button.addEventListener('click',()=>{if(!view?.run.chooseUpgrade(id))return;hideModals();view.clearInput();el.arena.focus({preventScroll:true});});choices.append(button);}modal('upgradeModal');}
 function settled(run){if(!view||view.finished)return;view.finished=true;view.clearInput();const won=run.state==='won',o=OPERATIONS[selected];if(won){save.commit(d=>{if(!d.defense.completed.includes(o.id))d.defense.completed.push(o.id);const prior=d.defense.best[o.id];if(!prior||run.score>prior.score)d.defense.best[o.id]={score:run.score,health:Math.max(0,run.towerHP/run.maxHP),time:run.time};});}refreshProgress();$('resultTitle').textContent=t(won?'success':'loss');$('resultText').textContent=t('resultStats',{name:copy.operation(selected).name,kills:run.kills,score:run.score,hp:Math.max(0,Math.ceil(run.towerHP)),max:run.maxHP});$('resultDetail').textContent=t(won?(selected+1<OPERATIONS.length?'resultWinNext':'resultWinAll'):'resultLoss');$('nextStage').disabled=!won||selected+1>=OPERATIONS.length;modal('resultModal');}
-async function startBattle(i=selected){if(mobile)return;selected=i;const own=++generation;view?.dispose();view=null;hideModals();showScreen('battle');el.objective.textContent=t('sceneLoading');try{const T=await import('./vendor/three.module.min.js');const art=await import('./defense-art.mjs?v=orbit-v5');if(own!==generation)return;const run=new DefenseRun({operation:i,assist:save.data.preferences.mode==='assist'});view=createDefenseView({T,art,run,copy,canvas:el.arena,hud:el,preferences:()=>save.data.preferences,onPause:pause,onUpgrade:openUpgrade,onResult:settled});view.start();}catch(error){if(own!==generation)return;console.error(error);$('errorText').textContent=t('errorMessage');modal('errorModal');}}
+async function startBattle(i=selected){selected=i;const own=++generation;view?.dispose();view=null;hideModals();showScreen('battle');el.objective.textContent=t('sceneLoading');try{const T=await import('./vendor/three.module.min.js');const art=await import('./defense-art.mjs?v=orbit-v5');if(own!==generation)return;const run=new DefenseRun({operation:i,assist:save.data.preferences.mode==='assist'});view=createDefenseView({T,art,run,copy,canvas:el.arena,hud:el,preferences:()=>save.data.preferences,onPause:pause,onUpgrade:openUpgrade,onResult:settled});view.start();}catch(error){if(own!==generation)return;console.error(error);$('errorText').textContent=t('errorMessage');modal('errorModal');}}
 $('start').addEventListener('click',()=>{selected=Math.min(OPERATIONS.length-1,save.data.defense.completed.length);showScreen('stage');});el.stageBack.addEventListener('click',()=>showScreen('main'));$('stagesTab').addEventListener('click',()=>selector?.refresh(selected));el.battleBack.addEventListener('click',()=>view?.finished?leaveBattle():pause());$('pauseButton').addEventListener('click',pause);$('resume').addEventListener('click',resume);$('returnStage').addEventListener('click',leaveBattle);$('resultStage').addEventListener('click',()=>{selected=Math.min(OPERATIONS.length-1,save.data.defense.completed.length);leaveBattle();});$('replay').addEventListener('click',()=>startBattle());$('nextStage').addEventListener('click',()=>startBattle(selected+1));$('errorBack').addEventListener('click',leaveBattle);$('reload').addEventListener('click',()=>location.reload());$('blastButton').addEventListener('click',()=>view?.requestBlast());
+// Browsers need not synthesize click for a secondary touch. Keep ordinary
+// button click/keyboard semantics, and accept that extra finger directly.
+for(const [id,action] of [['blastButton',()=>view?.requestBlast()],['pauseButton',pause]]){
+  const button=$(id);button.addEventListener('pointerdown',event=>{
+    if(event.pointerType==='touch'&&!event.isPrimary&&!button.disabled){event.preventDefault();action();}
+  });
+}
 for(const key of ['reduceMotion','assist','quality']){const input=$(key),p=save.data.preferences;if(key==='quality')input.value=p.quality;else input.checked=key==='assist'?p.mode==='assist':p[key];input.addEventListener('change',()=>save.commit(d=>{if(key==='assist')d.preferences.mode=input.checked?'assist':'standard';else d.preferences[key]=key==='quality'?input.value:input.checked;}));}
 $('exportSave').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([save.exportJSON()],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='orbit-menders-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 $('importSave').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>262144)throw Error('size');save.importJSON(await file.text());refreshProgress();$('saveNotice').textContent=t(save.status.persistent?'importSuccess':'memoryOnly');}catch(error){$('saveNotice').textContent=t(error.message==='size'?'importTooLarge':'importFailure');}e.target.value='';});
 document.addEventListener('keydown',e=>{const dialog=[el.pauseModal,el.resultModal,el.errorModal,el.upgradeModal].find(n=>!n.hidden);if(!dialog)return;if(e.key==='Tab'){const list=[...dialog.querySelectorAll('button:not(:disabled),input,select,summary')].filter(n=>n.getClientRects().length);if(!list.includes(document.activeElement)){e.preventDefault();list[0]?.focus({preventScroll:true});}else if(e.shiftKey&&document.activeElement===list[0]){e.preventDefault();list.at(-1)?.focus({preventScroll:true});}else if(!e.shiftKey&&document.activeElement===list.at(-1)){e.preventDefault();list[0]?.focus({preventScroll:true});}}if(e.key==='Escape'&&dialog===el.pauseModal){e.preventDefault();resume();}});
 window.addEventListener('weightplay:interaction-state',()=>{if(!view||view.finished||screen!=='battle')return;const opened=Boolean(el.battleScreen.querySelector('.wp-frame-popover:not([hidden]),.wp-shell-settings-popover:not([hidden])'));if(opened&&!view.paused){settingsSuspended=true;pauseFocus=el.battleBack;view.setPaused(true);}else if(!opened&&settingsSuspended){settingsSuspended=false;pause();}});
 window.addEventListener('pagehide',()=>{generation++;view?.dispose();selector?.dispose?.();});
-showScreen('main');if(mobile){
-  $('deviceNotice').textContent=t('desktopOnly');$('start').textContent=t('desktopOnly');
-  // The auto bridge waits for an enabled Start. This device intentionally has
-  // no playable Start, so report this Main's actual readiness after its required
-  // document resources and poster finish. Keep the common failure/retry timer;
-  // a failed or stalled poster must never produce a false ready signal.
-  const documentLoaded=document.readyState==='complete'?Promise.resolve():new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));
-  documentLoaded.then(()=>$('poster').decode())
-    .then(()=>new Promise(resolve=>requestAnimationFrame(resolve)))
-    .then(()=>window.WeightPlayGameEntryLoader.ready())
-    .catch(()=>window.WeightPlayGameEntryLoader.fail());
-}else $('start').disabled=false;
-// Desktop readiness remains owned by the common enabled-Start/image bridge.
+showScreen('main');$('start').disabled=false;
+// All input-capable devices use shared enabled-Start/poster readiness.

@@ -11,6 +11,18 @@ if(requested) {
 }
 let authorized=false;
 const adapters=new Map();
+// Dynamic access latches any observed authorization loss until a fresh page.
+// Existing finite-list callers retain their previous validate return behavior.
+let dynamicRevoked=false,validationSerial=0;
+function disableDynamicAdapters(){for(const adapter of [...adapters.values()])try{adapter.enable(false)}catch{/* Keep revoking the original adapters. */}}
+async function validateDynamic(){
+  if(!authorized||dynamicRevoked)return false;
+  const serial=++validationSerial;let valid=false;
+  try{const res=await fetch('/__weightplay/practice/session',{cache:'no-store',credentials:'same-origin'});valid=res.ok&&(await res.json()).authorized===true}catch{valid=false}
+  if(!valid){dynamicRevoked=true;authorized=false;disableDynamicAdapters();return false}
+  if(serial!==validationSerial||dynamicRevoked)return false;
+  authorized=true;return serial;
+}
 async function verify() {
   if(!requested)return false;
   try {
@@ -27,20 +39,25 @@ async function verify() {
 const ready=verify();
 export const LocalPractice=Object.freeze({
   get enabled(){return authorized;},
+  get dynamicEnabled(){return authorized&&!dynamicRevoked;},
   ready,
   async validate() {
-    if(!authorized)return false;
+    ++validationSerial;
+    if(!authorized){dynamicRevoked=true;return false;}
     try {
       const res=await fetch('/__weightplay/practice/session',{cache:'no-store',credentials:'same-origin'});
       authorized=res.ok && (await res.json()).authorized===true;
     }catch{authorized=false;}
-    if(!authorized)for(const adapter of adapters.values())adapter.enable(false);
+    if(!authorized){dynamicRevoked=true;for(const adapter of adapters.values())adapter.enable(false);}
     return authorized;
   },
-  async register({gameId,stageIds,enable,startStage}) {
-    if(!gameId || !Array.isArray(stageIds) || !stageIds.length || typeof enable!=='function' || typeof startStage!=='function')throw Error('Invalid local practice adapter');
-    const adapter={ids:new Set(stageIds.map(String)),enable,startStage};adapters.set(gameId,adapter);
+  async register({gameId,stageIds,acceptStage,enable,startStage}) {
+    const fixed=Array.isArray(stageIds)&&stageIds.length>0&&acceptStage===undefined;
+    const dynamic=stageIds===undefined&&typeof acceptStage==='function';
+    if(!gameId || (!fixed&&!dynamic) || typeof enable!=='function' || typeof startStage!=='function')throw Error('Invalid local practice adapter');
+    const adapter={ids:fixed?new Set(stageIds.map(String)):null,acceptStage:dynamic?acceptStage:null,enable,startStage,busy:false};adapters.set(gameId,adapter);
     if(!await ready)return false;
+    if(dynamic && (dynamicRevoked || !authorized || adapters.get(gameId)!==adapter))return false;
     if(!document.querySelector('[data-wp-local-practice]')) {
       const badge=document.createElement('small');badge.dataset.wpLocalPractice='';
       badge.textContent='LOCAL PRACTICE';
@@ -52,16 +69,33 @@ export const LocalPractice=Object.freeze({
       document.body.append(badge);
     }
     adapter.enable(true);
+    if(dynamic && (dynamicRevoked || adapters.get(gameId)!==adapter))return false;
     const stage=params.get('practiceStage');
-    if(stage!==null)await this.challenge(gameId,stage);
+    if(stage!==null){const started=await this.challenge(gameId,stage);if(dynamic&&!started)return false;}
     return true;
   },
   async challenge(gameId,stageId) {
     const adapter=adapters.get(gameId);
-    if(!authorized || !adapter || !adapter.ids.has(String(stageId)))return false;
-    // Recheck server-side session before each direct challenge.
-    if(!await this.validate())return false;
-    await adapter.startStage(String(stageId),{practice:true,rewards:false,persist:false});
-    return true;
+    if(!authorized || !adapter)return false;
+    if(adapter.ids){
+      if(!adapter.ids.has(String(stageId)))return false;
+      if(!await this.validate())return false;
+      await adapter.startStage(String(stageId),{practice:true,rewards:false,persist:false});
+      return true;
+    }
+    // Dynamic campaigns use canonical positive safe-integer decimal IDs only.
+    // Reject object coercion, alternate spellings and overlapping launches.
+    if(typeof stageId!=='string'&&typeof stageId!=='number')return false;
+    const id=String(stageId);
+    if(!/^[1-9][0-9]*$/.test(id)||!Number.isSafeInteger(Number(id))||adapter.busy)return false;
+    adapter.busy=true;
+    try {
+      const checkedSerial=await validateDynamic();
+      if(!checkedSerial||dynamicRevoked||!authorized||validationSerial!==checkedSerial||adapters.get(gameId)!==adapter)return false;
+      let accepted=false;try{accepted=adapter.acceptStage(id)===true}catch{return false}
+      if(!accepted||!authorized||dynamicRevoked||validationSerial!==checkedSerial||adapters.get(gameId)!==adapter)return false;
+      let started;try{started=await adapter.startStage(id,{practice:true,rewards:false,persist:false})}catch{return false}
+      return started!==false && authorized && !dynamicRevoked && validationSerial===checkedSerial && adapters.get(gameId)===adapter;
+    } finally { adapter.busy=false; }
   }
 });

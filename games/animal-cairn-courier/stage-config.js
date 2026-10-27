@@ -12,6 +12,7 @@
     ruleText,
     statusFor,
     text,
+    practice = false,
   }) {
     return {
       gameId: "animal-cairn-courier",
@@ -22,7 +23,7 @@
         const plan = stages[index];
         if (!plan) throw new RangeError("CAIRN_STAGE_INDEX_OUT_OF_RANGE");
         const cleared = solved.has(plan.id);
-        const locked = index > 0 && !solved.has(stages[index - 1].id);
+        const locked = !practice && index > 0 && !solved.has(stages[index - 1].id);
         const rule = ruleText(plan);
         const checkpoint = plan.checkpoint ? text("checkpoint") : "";
         return {

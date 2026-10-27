@@ -76,7 +76,7 @@
   const current = document.currentScript;
   const runtime = document.createElement("script");
   runtime.type = "module";
-  runtime.src = new URL("./runtime.mjs?v=20261023-cairn-v12", current?.src || location.href).href;
+  runtime.src = new URL("./runtime.mjs?v=20261027-cairn-pass2", current?.src || location.href).href;
   runtime.dataset.wpCairnCourierRuntime = "v12";
   runtime.onerror = () => window.WeightPlayGameEntryLoader?.fail("Cairn Courier could not load.", () => location.reload());
   if (current?.parentNode) current.after(runtime);

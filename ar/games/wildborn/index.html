@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="ابدأ صغيرًا. ابحث عن الطعام واختبئ وتطور. الموت بداية حياة جديدة." />
   <title>ولادة برية | WeightPlay</title>
@@ -43,7 +43,7 @@
   <script src="/src/virtual-joystick.js?v=1.0.0"></script>
   <script defer src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script defer src="/src/battle-canvas-standard.js"></script>
-  <script type="module" src="/games/wildborn/game.js?v=2"></script>
+  <script type="module" src="/games/wildborn/game.js?v=20261027-guide-v3"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ولادة برية | WeightPlay" />
@@ -83,7 +83,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-game-id="wildborn" data-wp-game-id="wildborn" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
+<body data-screen="main" data-game-id="wildborn" data-game-version="v3" data-interface-version="9" data-wp-interface-version="9" data-wp-game-id="wildborn" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
 <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen">
@@ -100,26 +100,18 @@
         </div>
       </div>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة ولادة برية">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>ولادة برية</h2><p>ابدأ صغيرًا. ابحث عن الطعام واختبئ وتطور. الموت بداية حياة جديدة.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>التطور · عالم حي</strong></div><div class="game-info-fact"><span>النوع</span><strong>Action · Adventure · Animal Games</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-locales="locales.mjs#COPY" data-wp-guide-locale="ar" aria-label="ملاحظات ميدانية">
+      <div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2 data-official-title data-wp-game-title data-runtime-localize="off">ولادة برية</h2><p data-copy="summary" data-runtime-localize="off" data-wp-intro-faq-source>ابدأ صغيرًا. ابحث عن الطعام واختبئ وتطور. الموت بداية حياة جديدة.</p></div>
+      <div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts">
+        <div class="game-info-fact"><strong>6</strong><span data-copy="origins" data-runtime-localize="off">أصول عشوائية</span></div>
+        <div class="game-info-fact"><strong data-copy="world" data-runtime-localize="off">عالم حي</strong><span data-copy="noStages" data-runtime-localize="off">بلا مراحل</span></div>
+      </div>
+      <div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections">
+        <section class="game-info-section"><h2 data-copy="how" data-runtime-localize="off">كيف تنجو</h2><p data-copy="rules" data-runtime-localize="off">اقترب من الطعام لتأكل. تحرك ببطء في العشب الطويل للاختباء. الماء يبطئ الحيوانات البرية. راقب تحذير المفترس قبل اندفاعه.</p><p data-copy="controls" data-runtime-localize="off">تحرك باستخدام WASD أو الأسهم أو السحب. هجوم: Space. اندفاع: Shift.</p></section>
+        <section class="game-info-section"><h2 data-copy="life" data-runtime-localize="off">حياة واحدة</h2><p data-copy="progress" data-runtime-localize="off">كل واصطد للتطور عبر فروع مترابطة. يُحفظ التطور تلقائيًا. بعد الموت يرث مخلوق صغير مختلف 20% من القوة والحيوية المكتسبة. لا يوجد شكل نهائي.</p><img class="guide-orla" src="/assets/weightplay-character-moon-cap-owl-block-v1.webp" alt="Moon Cap Orla" width="100" height="100" loading="lazy"></section>
+      </div>
+      <div id="gameGuideFaq" data-wp-content-slot="guide-faq"></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"></div>
+    <article class="game-info-section" data-wp-intro-faq><h3>الأسئلة الشائعة</h3><dl><dt>ماذا سأفعل في هذه اللعبة؟</dt><dd>ابدأ صغيرًا. ابحث عن الطعام واختبئ وتطور. الموت بداية حياة جديدة.</dd></dl></article></section>
   </div>
   <section id="battleScreen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
     <header id="battleHeader"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
