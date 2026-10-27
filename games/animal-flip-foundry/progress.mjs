@@ -21,3 +21,27 @@ export function persistProgress(storage,progress,total){
   const next=sanitizeProgress({cleared:merged},total);try{storage.setItem(CAMPAIGN_KEY,JSON.stringify(next));}catch{}
   return next;
 }
+
+// A first-clear reward requires a verified save. Never turn an unreadable or
+// future save into an empty one, and preserve fields this version does not own.
+export function persistProgressChecked(storage,progress,total){
+  const memory=sanitizeProgress(progress,total);
+  let session=memory;
+  try{
+    const raw=storage.getItem(CAMPAIGN_KEY);
+    const saved=raw===null?{}:JSON.parse(raw);
+    if(!saved||typeof saved!=='object'||Array.isArray(saved)||
+       (saved.version!==undefined&&saved.version!==18)||
+       (saved.cleared!==undefined&&(!saved.cleared||typeof saved.cleared!=='object'||Array.isArray(saved.cleared))))return {progress:memory,saved:false};
+    const existing=sanitizeProgress(saved,total),merged={...existing.cleared};
+    for(const [id,row]of Object.entries(memory.cleared))merged[id]={win:true,attempts:Math.min(row.attempts,merged[id]?.attempts||Infinity)};
+    const next=sanitizeProgress({cleared:merged},total);
+    session=next;
+    const entries={...(saved.cleared||{})};
+    for(const [id,row]of Object.entries(next.cleared))entries[id]={...(entries[id]&&typeof entries[id]==='object'&&!Array.isArray(entries[id])?entries[id]:{}),...row};
+    const serialized=JSON.stringify({...saved,...next,cleared:entries});
+    if(storage.getItem(CAMPAIGN_KEY)!==raw)return {progress:next,saved:false};
+    storage.setItem(CAMPAIGN_KEY,serialized);
+    return {progress:next,saved:storage.getItem(CAMPAIGN_KEY)===serialized};
+  }catch{return {progress:session,saved:false};}
+}

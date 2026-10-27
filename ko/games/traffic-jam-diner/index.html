@@ -3,13 +3,13 @@
 <head>
 
     <base href="/games/traffic-jam-diner/" />
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
   <script src="../../src/game-layout-config.js?v=20261011-traffic-diner"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#163b49" />
-  <meta name="weightplay-game-version" content="v22" />
+  <meta name="weightplay-game-version" content="v23" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="robots" content="index,follow" />
   <meta name="description" content="동물 이웃을 일방통행 차선으로 안내하고, 제한된 대기 공간을 아끼며 줄 순서대로 간식 주문을 완성하세요." />
@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-  <link rel="stylesheet" href="./app.css?v=20261018-result-fit-v22" />
+  <link rel="stylesheet" href="./app.css?v=20261027-diner-rebuild-v23" />
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1" defer></script>
   <script src="../../src/wallet.js?v=20260531-wallet-i8" defer></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
@@ -48,7 +48,10 @@
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard defer></script>
   <script src="../../src/stage-selector-standard.js?v=20261011-traffic-diner-i8" defer></script>
   <script src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard defer></script>
-  <script type="module" src="./app.mjs?v=20261014-diner-interface9-modal-ownership-v21"></script>
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+  <script data-wp-entry-required src="/src/stage-rail-i9.js?v=20261016-shared-play1" defer></script>
+  <script data-wp-entry-required src="/src/game-play-ui.js?v=20261017-shared-play-spacing1" defer></script>
+  <script type="module" src="./app.mjs?v=20261027-diner-rebuild-v23"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:url" content="https://weightplay.com/ko/games/traffic-jam-diner/" />
@@ -84,7 +87,7 @@
 }
     </script>
   </head>
-<body data-wp-interface-version="9" data-wp-guide-related-interface="9" data-wp-game-owned-guide data-wp-game-id="traffic-jam-diner" data-wp-game-version="v22" data-runtime-localize="off" data-screen="main">
+<body data-wp-play-ui="1" data-wp-interface-version="9" data-wp-guide-related-interface="9" data-wp-game-owned-guide data-wp-game-id="traffic-jam-diner" data-wp-game-version="v23" data-runtime-localize="off" data-screen="main">
   <main id="app" data-wp-frame-root data-game="traffic-jam-diner" data-audience="general">
     <section id="main-screen" class="screen main-screen" data-screen="main">
       <header id="main-header" class="screen-header wp-main-shell-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 data-wp-frame-title>교통 체증 다이너</h1><label class="locale-picker" hidden><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
@@ -93,50 +96,34 @@
         <div data-wp-frame-copy class="main-copy"><p class="lede" data-wp-frame-summary id="main-summary">Route neighbors through one-way lanes, save waiting bays, and serve snack orders.</p><p id="main-progress" class="main-progress" data-wp-frame-progress data-wp-main-progress>Stage 1 ready</p><button id="shop-open" type="button" data-copy="shopOpen">Diner Decor</button><button id="start-game" type="button" class="primary" data-wp-frame-action="primary" data-wp-main-start disabled>Start</button></div>
       </div>
       <section id="shop-dialog" class="shop-overlay" role="dialog" aria-modal="true" aria-labelledby="shop-title" hidden>
-        <div class="shop-card"><h2 id="shop-title" data-copy="shopTitle">Berry Grove Board</h2><p id="shop-description" data-copy="shopDescription">Unlock a permanent lavender road finish for every route board.</p><div class="shop-swatch" aria-hidden="true"></div><p id="shop-price" data-copy="shopPrice">12 diamonds · Permanent</p><p id="shop-effect" data-copy="shopEffect">Changes route tile colors; lane rules and difficulty stay the same.</p><p class="shop-balance"><img src="../../assets/weightplay-diamond.svg" alt="" /><span data-copy="shopBalance">Your balance</span><strong id="shop-balance">0</strong></p><p id="shop-status" class="shop-status" role="status" aria-live="polite"></p><div class="shop-actions"><button id="shop-cancel" type="button" data-copy="shopCancel">Cancel</button><button id="shop-confirm" type="button" class="primary" data-copy="shopConfirm">Unlock for 12</button></div></div>
+        <div class="shop-card"><h2 id="shop-title" data-copy="shopTitle">Berry Grove Board</h2><p id="shop-description" data-copy="shopDescription">Unlock a permanent lavender road finish for every route board.</p><div class="shop-swatch" aria-hidden="true"></div><p id="shop-price" data-copy="shopPrice">12 diamonds · Permanent</p><p id="shop-effect" data-copy="shopEffect">Changes route tile colors; lane rules and difficulty stay the same.</p><p class="shop-balance"><img src="../../assets/weightplay-diamond.svg" alt="" /><span data-copy="shopBalance">Your balance</span><strong id="shop-balance">0</strong></p><p id="shop-status" class="shop-status" role="status" aria-live="polite"></p><button id="shop-classic" type="button" data-copy="classic">Classic diner</button><div class="shop-actions"><button id="shop-cancel" type="button" data-copy="shopCancel">Cancel</button><button id="shop-confirm" type="button" class="primary" data-copy="shopConfirm">Unlock for 12</button></div></div>
       </section>
     </section>
-    <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-art="/Assets/traffic-jam-diner-cover-v3.png" style="--wp-stage-art:url('/Assets/traffic-jam-diner-cover-v3.png')">
+    <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-art="/Assets/traffic-jam-diner-cover-v3.png">
       <header id="stage-header" class="screen-header wp-stage-shell-header"><button class="back" data-wp-return="stage" type="button" aria-label="Back to Main">←</button><h2 data-wp-frame-title>Choose a Route</h2></header>
       <div id="stage-content"><p id="stage-progress" class="stage-progress" aria-live="polite"></p><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div></div>
-      <nav data-wp-frame-stage-nav data-wp-frame-nav class="stage-tabs" aria-label="Campaign sections"><button data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" aria-current="page">Stages</button></nav>
+      <nav id="stage-tabs" data-wp-frame-stage-nav data-wp-frame-nav class="stage-tabs" aria-label="Campaign sections"><button data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" aria-current="page">Stages</button></nav>
     </section>
     <section id="battle-screen" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-logical-header="battle" data-wp-frame-logical-actions="battle" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
       <header id="battle-header" class="screen-header wp-battle-shell-header"><button class="back" data-wp-return="battle" type="button" aria-label="Back to Stages">←</button><strong data-wp-frame-title hidden>Traffic Jam Diner</strong></header>
       <div id="battle-content" class="battle-content">
-        <div id="battle-info" class="battle-info"><span><small id="stage-label">Stage 1</small><strong id="moves-label">Moves 0</strong></span><span><small id="queue-label">Next guest</small><strong id="next-label">1 of 1</strong></span><span><small id="order-label">Order</small><strong id="order-progress">0 / 1</strong></span></div>
-        <div class="playfield-shell"><canvas id="board-canvas" aria-label="Diner lane puzzle board" role="application" tabindex="0"></canvas><div id="board-controls" class="board-controls" role="group" aria-label="Guest and route controls"></div></div>
-        <div class="order-dock">
+        <div id="battle-info" class="battle-info"><span><small id="stage-label">Stage 1</small><strong id="moves-label">Moves 0</strong></span><span><small id="queue-label">Queue</small><strong id="next-label">0 / 1</strong></span></div>
+        <div class="playfield-shell"><div class="queue-strip"><div id="guest-queue" class="guest-queue" role="group" aria-label="Order queue"></div><span id="par-label" class="par-label"></span></div><div class="world-shell"><canvas id="board-canvas" aria-label="Diner lane puzzle board" role="application" tabindex="0"></canvas><div id="board-controls" class="board-controls" role="group" aria-label="Guest and route controls"></div></div></div>
+        <div id="order-dock" class="order-dock">
           <div class="basket-panel"><h3 id="basket-title">Snack basket</h3><div id="basket-slots" class="basket-slots" aria-live="polite"></div><div id="snack-options" class="snack-options"></div></div>
           <div id="gate-dock" class="gate-dock" role="group" aria-label="Lane controls"></div>
-          <div class="route-actions"><button id="serve-btn" type="button" class="primary">Serve</button><button id="undo-btn" type="button">Undo</button><button id="hint-btn" type="button">Hint</button><button id="retry-btn" type="button">Retry</button><button id="map-btn" type="button">Map</button></div>
+          <div class="route-actions"><button id="serve-btn" type="button" class="primary">Serve</button><button id="undo-btn" type="button">Undo</button><button id="hint-btn" type="button">Hint</button><button id="retry-btn" type="button">Retry</button><button id="map-btn" type="button">Map</button><button id="help-open" type="button" aria-label="How to route" data-copy-aria="howTitle">?</button></div>
         </div>
         <p id="battle-status" class="battle-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <section id="render-error" class="help-panel" role="dialog" aria-modal="true" aria-labelledby="render-error-title" hidden><div class="help-card"><h2 id="render-error-title" data-copy="loadError">The board could not load. Retry or return to the stage map.</h2><div class="leave-actions"><button id="render-map" type="button" data-copy="map">Map</button><button id="render-retry" type="button" class="primary" data-copy="retry">Retry</button></div></div></section>
         <section id="help-panel" class="help-panel" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden><div class="help-card"><h2 id="help-title">How to route</h2><p id="help-copy">Move a guest to the diner counter or a blue waiting bay. Lane cells are travel space; only stops hold a guest.</p><button id="help-close" type="button">Close</button></div></section>
         <section id="result-panel" class="result-panel" data-wp-result-screen role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><div class="result-card" data-wp-result-card><h2 id="result-title">Diner served!</h2><p id="result-copy"></p><div id="result-stars" class="result-stars" aria-label="Stars"></div><p id="result-best"></p><div class="result-actions"><button id="result-map" type="button">Stages</button><button id="result-next" class="primary" type="button">Next stage</button><button id="result-replay" type="button">Replay</button></div></div></section>
       </div>
     </section>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="교통 체증 다이너 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>교통 체증 다이너</h2><p>동물 이웃을 일방통행 차선으로 안내하고, 제한된 대기 공간을 아끼며 줄 순서대로 간식 주문을 완성하세요.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>대기 줄 경로 퍼즐</strong></div><div class="game-info-fact"><span>장르</span><strong>Puzzle · Casual · Animal Games</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예. 이 브라우저에만 저장됩니다.</dd></div></dl></div>
-
-    </div>
-  </section>
+  <section class="game-page-info game-page-info-static" data-runtime-localize="off" data-wp-preserve-static-guide data-wp-guide-related-state="empty" data-wp-guide-renderer="guide.mjs#renderGuide" aria-label="교통 체증 다이너">
+ <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay</span><h2 data-wp-game-title>교통 체증 다이너</h2><p>동물 이웃을 일방통행 차선으로 안내하고 제한된 대기 공간을 활용해 주문을 완성하세요.</p></div><div class="game-info-tags"><span>차선 경로</span><span>간식 주문</span><span>30개 스테이지</span></div><div class="game-info-facts"><div class="game-info-fact"><span>목표</span><strong>표시된 순서대로 모든 손님에게 서빙하세요.</strong></div><div class="game-info-fact"><span>퍼즐</span><strong>경로 계획 · 대기 순서 · 간식 선택</strong></div><div class="game-info-fact"><span>난이도</span><strong>생각이 필요해요</strong></div><div class="game-info-fact"><span>시간</span><strong>스테이지당 1–3분</strong></div></div></div>
+ <div class="game-info-sections"><div class="game-info-section"><h3>플레이 방법</h3><p>① 번호 손님을 선택하세요. ② 빛나는 카운터나 파란 대기칸으로 이동하세요. ③ 그림 순서대로 간식을 넣고 제공하세요. 유효한 행동마다 1회이며 되돌리기는 게이트와 재료도 복원합니다.</p></div><div class="game-info-section"><h3>차선과 주문 규칙</h3><p>대기 공간과 카운터에서만 멈출 수 있습니다. 점유된 정차 지점은 통행을 막습니다. 화살표는 일방통행을 뜻합니다. 맞는 간식은 재고를 사용하고, 틀린 간식은 거절됩니다. 실행 취소와 무제한 재시도가 가능합니다.</p></div><div class="game-info-section"><h3>교통이 주제인 이유</h3><p>대만 고속도로국은 2026년 국경절 연휴에 혼잡이 예상되는 도로와 시간대를 발표했습니다. 타로의 가상 식당은 차선 흐름과 제한된 대기 공간을 계획하는 간식 주문 퍼즐로 이를 풀어냅니다. 동물과 음식은 창작입니다.</p></div><div class="game-info-section"><h3>캠페인과 저장</h3><p>30개 스테이지에서 차선 흐름, 대기 공간, 서빙 순서, 간식 선택, 공유 재고, 한 번 쓰는 게이트를 배웁니다. 클리어하면 다음 스테이지가 열리고 기록 향상을 위해 다시 할 수 있습니다. 진행 상황은 이 브라우저에 저장됩니다.</p></div><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예. 이 브라우저에만 저장됩니다.</dd></div></dl></div></div></section>
 <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>

@@ -1,0 +1,15 @@
+export const FAQ_COPY = Object.freeze({
+  en: { title: "Frequently Asked Questions", items: [["Is progress saved?", "Yes, only in this browser."]] },
+  "zh-Hant": { title: "常見問題", items: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]] },
+  "zh-Hans": { title: "常见问题", items: [["进度会保存吗？", "是，仅保存在此浏览器中。"]] },
+  ja: { title: "よくある質問", items: [["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]] },
+  ko: { title: "자주 묻는 질문", items: [["진행 상황이 저장되나요?", "예. 이 브라우저에만 저장됩니다."]] },
+  es: { title: "Preguntas frecuentes", items: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]] },
+  "pt-BR": { title: "Perguntas frequentes", items: [["O progresso é salvo?", "Sim, somente neste navegador."]] },
+  fr: { title: "Questions fréquentes", items: [["La progression est-elle sauvegardée ?", "Oui, uniquement dans ce navigateur."]] },
+  de: { title: "Häufige Fragen", items: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]] },
+  it: { title: "Domande frequenti", items: [["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
+  ru: { title: "Частые вопросы", items: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
+  hi: { title: "अक्सर पूछे जाने वाले प्रश्न", items: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
+  ar: { title: "الأسئلة الشائعة", items: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]] },
+});

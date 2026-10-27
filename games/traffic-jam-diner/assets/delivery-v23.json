@@ -1,0 +1,56 @@
+{
+  "purpose": "Deterministic delivery optimization of existing approved artwork; no new art or source replacement",
+  "resize": "384x384 Lanczos, RGBA WebP quality 94, alpha 100",
+  "decodedRGBABytes": 4128768,
+  "files": [
+    {
+      "source": "Assets/traffic-jam-diner/taro-block-sprite.webp",
+      "sourceSha256": "586f5044e751a53618156322d55a4581a67a8b40e224b08197f6ccc0a28eeac7",
+      "delivery": "games/traffic-jam-diner/assets/taro-block-sprite-v23.webp",
+      "deliverySha256": "d42b011f0f4702d2b18c137ca4006f0a12457b25d41ef5567e2013c30cb24935",
+      "bytes": 54870
+    },
+    {
+      "source": "Assets/traffic-jam-diner/fia-block-sprite.webp",
+      "sourceSha256": "f5e50cc88135a40db4c7b29e7c3056a5d5ab736dc25358ca395534cd6385d866",
+      "delivery": "games/traffic-jam-diner/assets/fia-block-sprite-v23.webp",
+      "deliverySha256": "f8ec9544791f992c16dc8d135826bb7774840f3d3127675d9e968a1c995c2690",
+      "bytes": 51902
+    },
+    {
+      "source": "Assets/traffic-jam-diner/mimi-block-sprite.webp",
+      "sourceSha256": "89b6e011c3f25c5cb8997ef7e6515d5942b9c36d293a8e19aa32d33f840cf44b",
+      "delivery": "games/traffic-jam-diner/assets/mimi-block-sprite-v23.webp",
+      "deliverySha256": "61ec4e550a4d8cb1567157a0647a615897327cf34f5d8c613ab506539c3a51f2",
+      "bytes": 38264
+    },
+    {
+      "source": "Assets/traffic-jam-diner/panko-block-sprite.webp",
+      "sourceSha256": "dc36b6407ae3544748cda66b9583b8126ca9ae8281b58c9779e7e5080b1b0afa",
+      "delivery": "games/traffic-jam-diner/assets/panko-block-sprite-v23.webp",
+      "deliverySha256": "bff6e0d9b90ed3a19ef2bb921b630da5afbd05e9121877c014ee8c4e7f5c3d43",
+      "bytes": 46690
+    },
+    {
+      "source": "Assets/traffic-jam-diner/bun-snack.webp",
+      "sourceSha256": "d13e62bcd4a5499dffa4d7d231040c143f47c748a2a53a69e5dbecc815ba757a",
+      "delivery": "games/traffic-jam-diner/assets/bun-snack-v23.webp",
+      "deliverySha256": "7f711aad7fc6432a076dfbbcb4ffdbf17075404685d694e2d16341d5817d0797",
+      "bytes": 40032
+    },
+    {
+      "source": "Assets/traffic-jam-diner/tea-snack.webp",
+      "sourceSha256": "cfbe7c1edcb0cf86ebfc2c063b08b87516e50baabbba217cb72cc3d691783878",
+      "delivery": "games/traffic-jam-diner/assets/tea-snack-v23.webp",
+      "deliverySha256": "e481718fcbe672542ef59f31e518bde7d23147b692a818c3a2325d2ddd307748",
+      "bytes": 38822
+    },
+    {
+      "source": "Assets/traffic-jam-diner/berry-snack.webp",
+      "sourceSha256": "a3e51281bba048b42b07df56f20e676a73db557e58870a51bcedc6e5747c4e42",
+      "delivery": "games/traffic-jam-diner/assets/berry-snack-v23.webp",
+      "deliverySha256": "17b960297a1ffd36fe6c2e19775072b79ecbb62f19562baafdef2a81fc3c6c09",
+      "bytes": 42704
+    }
+  ]
+}

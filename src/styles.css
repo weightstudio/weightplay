@@ -6223,8 +6223,9 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .game-card-body {
-    position: absolute;
-    inset: auto 0 0;
+    /* Keep the caption below the square poster, including the lower card rows. */
+    position: relative;
+    inset: auto;
     z-index: 3;
     display: grid;
     width: 100%;

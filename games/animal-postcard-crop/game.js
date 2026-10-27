@@ -139,11 +139,11 @@
   battle.innerHTML=`<header id="battleHeader"><button type="button" id="battleBack" data-wp-return="battle" data-act="back" data-label="back"></button><h2 data-wp-frame-title data-wp-game-title data-runtime-localize="off">Postcard Crop</h2></header>
     <div id="battleContent" class="pc-workspace" data-wp-frame-content="battle">
       <div id="battleInfo" data-wp-frame-info><div><span data-copy="card"></span><strong id="cardCount"></strong></div><div><span data-copy="moves"></span><strong id="moveCount"></strong></div><div><span data-copy="par"></span><strong id="parCount"></strong></div></div>
-      <section class="pc-clues"><p id="chapterName"></p><p><strong data-copy="include"></strong> <span id="targetText"></span></p><p><strong data-copy="exclude"></strong> <span id="avoidText"></span></p><p id="cornerText"></p></section>
-      <div id="challengeArea" class="pc-challenge" role="group" hidden></div><div id="pinControls" class="pc-pin-controls" role="group" hidden></div>
       <div id="sceneTrack" class="pc-scene-track"><div id="sceneGrid" class="pc-scene" role="group" tabindex="0" aria-describedby="positionText battleStatus"><div id="tileLayer" class="pc-tiles"></div><div id="postcardFrame" class="pc-frame" aria-hidden="true"></div><div id="captureLight" class="pc-capture-light" aria-hidden="true"></div></div></div>
+      <div class="pc-side"><section class="pc-clues"><p id="chapterName"></p><p><strong data-copy="include"></strong> <span id="targetText"></span></p><p><strong data-copy="exclude"></strong> <span id="avoidText"></span></p><p id="cornerText"></p></section>
+      <div id="challengeArea" class="pc-challenge" role="group" hidden></div><div id="pinControls" class="pc-pin-controls" role="group" hidden></div>
       <div class="pc-status"><p id="battleStatus" role="status" aria-live="polite"></p><p id="positionText" class="pc-sr-only"></p></div>
-      <div class="pc-controls" data-wp-frame-logical-actions="battle"><div class="pc-directions" dir="ltr">${button('left')}${button('up')}${button('down')}${button('right')}</div><div class="pc-tools">${button('rotate')}${button('hint')}${button('reset')}<button type="button" data-act="undo" class="pc-tool-extra" hidden></button><button type="button" data-act="lens" class="pc-tool-extra" hidden></button>${button('capture','capture',true)}</div></div>
+      <div class="pc-controls" data-wp-frame-logical-actions="battle"><div class="pc-directions" dir="ltr">${button('left')}${button('up')}${button('down')}${button('right')}</div><div class="pc-tools">${button('rotate')}${button('hint')}${button('reset')}<button type="button" data-act="undo" class="pc-tool-extra" hidden></button><button type="button" data-act="lens" class="pc-tool-extra" hidden></button>${button('capture','capture',true)}</div></div></div>
     </div>
     <div id="resultPanel" class="pc-overlay" role="dialog" aria-modal="true" aria-labelledby="resultHeading" hidden><div class="pc-result-card"><img src="${asset}animal-postcard-crop-orla-v1.webp" width="120" height="120" alt=""><h2 id="resultHeading"></h2><p id="resultStars" class="pc-stars"></p><p id="resultText"></p><p id="albumProgress"></p><p id="saveStatus" role="status"></p><div class="pc-result-actions" data-wp-frame-logical-actions="battle">${button('stages','back')}${button('next','next',true)}${button('replay')}</div></div></div>
     <div id="leavePanel" class="pc-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveHeading" hidden><div class="pc-result-card"><h2 id="leaveHeading" data-copy="leaveTitle"></h2><p data-copy="leaveBody"></p><div class="pc-result-actions" data-wp-frame-logical-actions="battle">${button('stay','stay',true)}${button('leave')}</div></div></div>`;
@@ -184,7 +184,7 @@
           kicker:`${t('card')} ${new Intl.NumberFormat(locale).format(index+1)} / ${new Intl.NumberFormat(locale).format(cards.length)}`,
           title:chapterTitle(card),subtitle:targets,
           status:locked?stageLabels[2]:medal?`${stageLabels[4]} · ${'★'.repeat(medal)}${'☆'.repeat(3-medal)}`:stageLabels[3],
-          summary,details:[stageLabels[1],summary,card.corner===null?'':t('corner',{name:L.scenes[card.corner]})],
+          summary,details:[chapterTitle(card),stageLabels[1],summary,card.corner===null?'':t('corner',{name:L.scenes[card.corner]})],
           locked,cleared:Boolean(medal),poster:asset+'animal-postcard-crop-cover-v2.webp'
         };
       }

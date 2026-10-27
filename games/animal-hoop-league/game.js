@@ -105,7 +105,25 @@
   }
   function mergeProgress(a,b){a=normalizeProgress(a?.best,a?.records);b=normalizeProgress(b?.best,b?.records);const records={...a.records};for(const [k,v]of Object.entries(b.records))records[k]=Math.max(records[k]||0,v);return {best:Math.max(a.best,b.best),records};}
   function readProgress(storage){let best=0,records={};try{best=storage.getItem(progressKey)||0;}catch{}try{records=JSON.parse(storage.getItem(progressRecordKey)||'{}');}catch{}return normalizeProgress(best,records);}
-  function writeProgress(storage,value){const next=mergeProgress(readProgress(storage),value);let saved=true;try{storage.setItem(progressKey,String(next.best));storage.setItem(progressRecordKey,JSON.stringify(next.records));}catch{saved=false;}return {...next,saved};}
+  function writeProgress(storage,value){
+    // Both keys must be readable and confirmed before a clear can grant a
+    // shared reward. Preserve unknown record fields instead of replacing an
+    // unreadable or newer store with an empty fallback.
+    const fallback=normalizeProgress(value?.best,value?.records);
+    try{
+      const rawBest=storage.getItem(progressKey),rawRecords=storage.getItem(progressRecordKey);
+      if(rawBest!==null&&(!/^\d+$/.test(rawBest)||!Number.isSafeInteger(Number(rawBest))))throw Error('invalid progress');
+      const oldRecords=rawRecords===null?{}:JSON.parse(rawRecords);
+      if(!oldRecords||typeof oldRecords!=='object'||Array.isArray(oldRecords))throw Error('invalid records');
+      for(const [key,score] of Object.entries(oldRecords))if(/^\d+$/.test(key)&&Number(key)>=1&&Number(key)<=courts.length&&(typeof score!=='number'||!Number.isFinite(score)||score<0))throw Error('invalid score');
+      const next=mergeProgress(normalizeProgress(rawBest??0,oldRecords),value);
+      const bestBytes=String(Math.max(Number(rawBest??0),next.best)),recordBytes=JSON.stringify({...oldRecords,...next.records});
+      if(storage.getItem(progressKey)!==rawBest||storage.getItem(progressRecordKey)!==rawRecords)throw Error('stale progress');
+      storage.setItem(progressKey,bestBytes);storage.setItem(progressRecordKey,recordBytes);
+      if(storage.getItem(progressKey)!==bestBytes||storage.getItem(progressRecordKey)!==recordBytes)throw Error('unconfirmed progress');
+      return {...next,saved:true};
+    }catch{return {...fallback,saved:false};}
+  }
   globalThis.WeightPlayHoopRules=Object.freeze({courts,challenge,newRound,settle,pass,goalsMet,won,normalizeProgress,mergeProgress,readProgress,writeProgress});
   if (typeof document === 'undefined') return;
   const $ = id => document.getElementById(id), locale = window.WeightPlayMarketFiveLocale;
@@ -134,9 +152,9 @@
   let selectedStageIndex=Math.min(courts.length-1,best),stageController=null;
   const state={screen:'main', round:newRound(1), charging:false, power:0, direction:1, flight:null, paused:false, raf:0, last:0, feedback:'', feedbackUntil:0, pointer:null};
   state.route='direct';state.focusArmed=false;
-  let roundKey=null,restart=false,ended=false,outcome='complete';
-  const readMeasurement=()=>({screen:state.screen==='battle'&&!ended?'battle':state.screen==='result'?null:state.screen,roundKey,started:Boolean(roundKey),ended,outcome,restart,paused:state.paused||document.hidden,node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:[' ','Enter']});
-  const notify=()=>{try{window.WonderAnalytics?.game?.observeState(readMeasurement);}catch{/* Optional shared measurement. */}};
+  let roundKey=null,restart=false,ended=false,outcome='complete',saveSucceeded=false;
+  const readMeasurement=()=>({screen:state.screen==='battle'&&!ended?'battle':state.screen==='result'?null:state.screen,roundKey,started:Boolean(roundKey),ended,outcome,restart,stageId:roundKey?state.round.stage:null,stageIdAuthoritative:true,rewardEligible:true,saveSucceeded,paused:state.paused||document.hidden,node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:[' ','Enter']});
+  const notify=()=>{try{const game=window.WonderAnalytics?.game;if(game?.supportsRewardEligibility===true&&game?.supportsSavedCompletionGate===true)game.observeState(readMeasurement);}catch{/* Older cached collectors cannot safely award saved stage clears. */}};
   window.addEventListener('weightplay:analytics-ready',notify);
   const canvas=$('arena'), ctx=canvas.getContext('2d'), hero=new Image(); hero.src='/assets/weightplay-character-boom-mane-lion-block-v1.webp';
   const teammate=new Image();teammate.src='/assets/weightplay-character-bubble-fin-otter-block-v1.webp';
@@ -168,7 +186,7 @@
     const next=String(value);if(node.textContent===next)return;node.textContent=next;
     node.getAnimations().forEach(a=>a.cancel());node.animate([{opacity:.45},{opacity:1}],{duration:reduced.matches?70:150});
   }
-  const save=()=>{const merged=writeProgress(storage,{best,records});best=merged.best;records=merged.records;storageOK=merged.saved;};
+  const save=()=>{const merged=writeProgress(storage,{best,records});best=merged.best;records=merged.records;storageOK=merged.saved;saveSucceeded=merged.saved;};
   window.addEventListener('storage',e=>{if(e.key!==null&&e.key!==progressKey&&e.key!==progressRecordKey)return;const merged=mergeProgress({best,records},readProgress(storage));best=merged.best;records=merged.records;progress();refreshStage();});
   function progress(){ $('main-progress').textContent=`${text()[16]} · ${best} / ${courts.length}`; }
   function refreshStage(){stageController?.refresh(selectedStageIndex);}
@@ -191,7 +209,7 @@
     state.last=performance.now();
     notify();
   }
-  function start(stage){if(!courtFor(stage)||stage>best+1)return;selectedStageIndex=stage-1;roundKey={};ended=false;outcome='complete';restart=false;state.round=newRound(stage);state.route='direct';state.focusArmed=false;state.flight=null;state.feedback='';show('battle');$('stage-label').textContent=(stage<=6?courtName(stage-1):stage+' / '+courts.length);hud();sound('game.start');shoot.focus({preventScroll:true});}
+  function start(stage){if(!courtFor(stage)||stage>best+1)return;selectedStageIndex=stage-1;roundKey={};ended=false;outcome='complete';restart=false;saveSucceeded=false;state.round=newRound(stage);state.route='direct';state.focusArmed=false;state.flight=null;state.feedback='';show('battle');$('stage-label').textContent=(stage<=6?courtName(stage-1):stage+' / '+courts.length);hud();sound('game.start');shoot.focus({preventScroll:true});}
   function hud(){
     const t=text(),r=state.round,c=courts[r.stage-1],ch=challenge(r.stage,Math.min(r.shots,c.shots-1),state.route,state.focusArmed);
     $('score-label').textContent=`${r.shots} / ${c.shots}`;swap($('hoop-score'),r.score);swap($('hoop-opponent'),r.rival);

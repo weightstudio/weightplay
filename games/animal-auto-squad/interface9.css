@@ -341,10 +341,14 @@ html body [data-wp-frame="2"] #gamePanel > .wp-frame-header .battle-external-ret
   object-fit: contain;
 }
 
-#gamePanel.is-result #animalAutoSquadBattleContent {
+/* The I9 Result is inside this play row. Override the legacy sibling-Result
+   rule that hides the entire row, and hide only the Result's siblings below. */
+html body #gamePanel.is-result > #animalAutoSquadBattleContent {
   position: absolute;
   inset: 0;
   display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
   padding: 8px;
 }
 

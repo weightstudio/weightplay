@@ -1,0 +1,10 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17716-e595-7c92-acb8-65902ae49027",
+  "created": "2026-10-27",
+  "method": "image_gen edit using official WeightPlay block-lion image as style reference",
+  "reference": "assets/weightplay-character-boom-mane-lion-block-v1.webp",
+  "original": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-9e1caef4-6159-4138-9b08-6057e132b1d9.png",
+  "prompt": "Create a single original square transparent PNG nine-slice border template for a children's block-world postcard puzzle. Reference the attached official block lion only for its polished geometric toy-block material and cheerful accessible forest-green and warm cream palette; do not depict any characters or animals. Orthographic flat front view, no perspective. The canvas is an exact square. Reserve the exact center from 6.25% to 93.75% of the width and height as COMPLETELY TRANSPARENT EMPTY SPACE: no speckles, shadows, glow, checkerboard or artwork in that area. Draw a very thin, simple continuous cream-and-forest-green border entirely inside the outer 6.25% band on each side. Four corners must be small matching 6.25%-square block-leaf ornaments, with all ornament pixels confined within their own corner square. Straight edge bands have a simple repeatable unmarked pattern with no central symbols so they can be stretched independently in a nine-slice UI. Outside perimeter must also be perfectly transparent. No text, numbers, logos, character, landscape, background, shadow or bevel crossing into center. Center transparency and thin edges are mandatory: puzzle landmarks beneath the frame must stay visible. Keep edges crisp, high contrast, clean and small-file-friendly. This is a functional sprite asset, not a mockup.",
+  "remaining": "Verify image geometry and transparency against the brief, independent Art review, non-distorting slicing, rendered crop visibility, performance, UI and wallet integration."
+}

@@ -4,8 +4,20 @@ import {COPY,GUIDE,GUIDE_SECTIONS,LOCALES,SEGMENTS,NATIVE} from './i18n.js';
 const $=id=>document.getElementById(id),GAME='railguard-express',SAVE='weightplay.railguard-express.v1';
 let locale=LOCALES[SEGMENTS.indexOf(location.pathname.split('/')[1])]||'en';
 const t=k=>COPY[locale][k],title=()=>window.WEIGHTPLAY_GAME_TITLES[GAME][locale];
+function validSavedProgress(value){return value===null||(value&&typeof value==='object'&&!Array.isArray(value)&&(value.schema===undefined||value.schema===1)&&(value.unlocked===undefined||(Number.isInteger(value.unlocked)&&value.unlocked>=1&&value.unlocked<=ROUTES.length))&&(value.cleared===undefined||(Array.isArray(value.cleared)&&value.cleared.every(n=>Number.isInteger(n)&&n>=1&&n<=ROUTES.length))));}
+function readSavedProgress(){const raw=localStorage.getItem(SAVE),value=raw===null?null:JSON.parse(raw);if(raw!==null&&(value===null||!validSavedProgress(value)))throw Error('invalid saved progress');return value;}
 let save=normalizeSave(null),storageOK=true;
-try{save=normalizeSave(JSON.parse(localStorage.getItem(SAVE)));}catch{storageOK=false;}
+try{save=normalizeSave(readSavedProgress());}catch{storageOK=false;}
+// Session-only reporting; the shared ledger remains the sole reward owner.
+const launchKey='weightplayCollectionLaunchV1',excludedLaunchKeys=['preview','practice','trial','qa','test','lobbyPreview','lobby-preview'];
+function generalLaunch(){try{const q=new URLSearchParams(location.search);if(excludedLaunchKeys.some(k=>q.has(k)))return false;const marker=JSON.parse(sessionStorage.getItem(launchKey)||'null'),age=Date.now()-Number(marker?.launchedAt),path=location.pathname.replace(/\/+$/,'')+'/';return marker?.version===1&&marker.domain==='general'&&marker.gameId===GAME&&marker.path===path&&Number.isFinite(age)&&age>=0&&age<=8*60*60*1000;}catch{return false;}}
+const pendingClears=[];let rewardRound=null,pendingCollector=null;
+function flushClears(){try{const game=window.WonderAnalytics?.game;if(game?.supportsRewardEligibility!==true||game?.supportsSavedCompletionGate!==true||typeof game.start!=='function'||typeof game.end!=='function')return;if(game!==pendingCollector){pendingCollector=game;for(const item of pendingClears)item.started=false;}
+ while(pendingClears.length){const item=pendingClears[0];if(!item.started){if(game.start({roundKey:item.key,stageId:item.stage,rewardEligible:true})==null)return;item.started=true;}if(game.end('win',item.stage,{saveSucceeded:true})!==true)return;pendingClears.shift();}
+ }catch{/* Collector is optional and may become ready later. */}}
+function beginRewardRound(stage){rewardRound={stage,eligible:generalLaunch()};flushClears();}
+function finishRewardRound(win,saved){const round=rewardRound;rewardRound=null;if(win&&saved&&round?.eligible&&generalLaunch()&&Number.isInteger(round.stage)&&round.stage>=1&&round.stage<=ROUTES.length&&!pendingClears.some(x=>x.stage===round.stage))pendingClears.push({stage:round.stage,key:{},started:false});flushClears();}
+window.addEventListener('weightplay:analytics-ready',flushClears);
 let screen='main',state=null,scene=null,stageController=null,selected=0,paused=false,overlayKind='',last=0,accumulator=0,raf=0;
 let stageSelection=save.unlocked-1;
 let modalReturnFocus=null;
@@ -26,7 +38,7 @@ const progress=window.WeightPlayScreenFrame.createGroup();progress.add($('stageP
 const stagesTab=document.createElement('button');stagesTab.type='button';stagesTab.id='stagesTab';stagesTab.dataset.t='stages';stagesTab.dataset.wpFrameStageSlot='stages';stagesTab.setAttribute('role','tab');stagesTab.setAttribute('aria-selected','true');stagesTab.addEventListener('click',()=>{if(screen==='stage')showStages();});frame.commonDownButton.add(stagesTab);stagesTab.parentElement.dataset.wpFrameStageNav='';
 function speak(id){sound.play(id);}
 function notice(key){$('notice').textContent=t(key);$('notice').classList.remove('ack');void $('notice').offsetWidth;$('notice').classList.add('ack');}
-function persist(){try{save=mergeSave(save,JSON.parse(localStorage.getItem(SAVE)||'null'));localStorage.setItem(SAVE,JSON.stringify(save));storageOK=true;}catch{storageOK=false;}}
+function persist(){try{const previous=readSavedProgress(),merged=mergeSave(save,previous),bytes=JSON.stringify({...previous,...merged});localStorage.setItem(SAVE,bytes);if(localStorage.getItem(SAVE)!==bytes)throw Error('save not confirmed');save=merged;storageOK=true;return true;}catch{storageOK=false;return false;}}
 function translate(){
  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=title()+' | WeightPlay';
  document.querySelectorAll('[data-t]').forEach(n=>n.textContent=t(n.dataset.t));$('officialTitle').textContent=title();$('locale').value=locale;
@@ -38,11 +50,12 @@ function translate(){
  $('lobbyBack').href='/'+SEGMENTS[LOCALES.indexOf(locale)]+'/';
  frame.refresh();if(state)update();
 }
-$('locale').addEventListener('change',()=>{const index=LOCALES.indexOf($('locale').value);location.href='/'+SEGMENTS[index]+'/games/'+GAME+'/?preview=1';});
+$('locale').addEventListener('change',()=>{const index=LOCALES.indexOf($('locale').value),path='/'+SEGMENTS[index]+'/games/'+GAME+'/';if(generalLaunch())try{const marker=JSON.parse(sessionStorage.getItem(launchKey));sessionStorage.setItem(launchKey,JSON.stringify({...marker,path}));}catch{}const q=new URLSearchParams(location.search);location.href=path+(excludedLaunchKeys.some(k=>q.has(k))?'?preview=1':'');});
 function change(next){
  const previous=screen;
  if(next!=='stage')stageController?.cancel();
  if(next!=='battle'){scene?.dispose();scene=null;sound.stop();}
+ if(next!=='battle')rewardRound=null;
  closeOverlay();screen=next;document.body.dataset.screen=next;
  for(const id of ['main','stage','battle'])$(id).hidden=id!==next;
  $('mainGuide').hidden=next!=='main';frame.activate(next);window.scrollTo(0,0);
@@ -63,7 +76,7 @@ function start(id){
  if(!ROUTES[id-1]||id>save.unlocked)return;
  stageSelection=id-1;
  scene?.dispose();scene=null;
- state=newRun(id);selected=0;paused=false;accumulator=0;change('battle');
+ state=newRun(id);beginRewardRound(id);selected=0;paused=false;accumulator=0;change('battle');
  const renderFailure=()=>{if(screen!=='battle')return;modal('render-error',t('pause'),t('renderError'),[[t('retry'),()=>start(state.route.id)],[t('stages'),()=>change('stage')]]);};
  try{scene=createScene($('arena'),{onFailure:renderFailure});$('arenaError').hidden=true;}catch{renderFailure();}
  $('notice').textContent=state.route.chapter===2?t('quota')+': '+state.route.cargoGoal+' · '+t('junction'):state.route.encounters?t('ward')+' → '+t('frost')+' / '+t('pulse'):t('forecast')+': '+forecast(state.route);update();
@@ -119,7 +132,7 @@ function events(list){
    speak('game.checkpoint');const choices=['power','damage','repair',...(state.route.encounters?['recharge']:[])];modal('station',t('station')+' '+state.wave,t('choose'),choices.map((choice,i)=>[t(['generator','damage','restore','recharge'][i]),()=>{if(upgrade(state,choice)){closeOverlay();update();}},choice==='recharge'&&state.cells>=3,'upgrade-'+choice]));
   }
   if(e.type==='win'||e.type==='lose'){
-   const win=e.type==='win';if(win){save=recordWin(save,state.route.id);persist();}
+   const win=e.type==='win';let saved=false;if(win){save=recordWin(save,state.route.id);saved=persist();}finishRewardRound(win,saved);
    speak(win?'result.win':'result.lose');const actions=[
     [t('stages'),()=>change('stage'),false,'resultStages'],
     [t('next'),()=>start(state.route.id+1),!win||state.route.id>=ROUTES.length,'resultNext'],

@@ -1,4 +1,5 @@
 // Static, game-owned Guide copy. This module does not boot or alter the game.
+import {showText} from './spotlight-remix.js?v=20261027-rebuild1';
 const titles = {en:'Robot Dog Showtime','zh-Hant':'機器狗才藝秀','zh-Hans':'机器狗才艺秀',ja:'ロボット犬のショータイム',ko:'로봇 강아지 쇼타임',es:'El espectáculo del perro robot','pt-BR':'Show do Cão Robô',fr:'Le Spectacle du Chien Robot',de:'Die Robot-Hundeshow',it:'Lo Show del Cane Robot',ru:'Шоу робопса',hi:'रोबोट कुत्ते का शो',ar:'عرض الكلب الآلي'};
 const copy = {
   en: [
@@ -107,16 +108,19 @@ const copy = {
   ]
 };
 const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+export function guideCopy(locale){return copy[locale]||copy.en}
 export function renderGuide(locale) {
   const rows = copy[locale], title = titles[locale];
   if (!rows || rows.length !== 23 || !title) throw new Error(`ROBOT_GUIDE_LOCALE_MISSING: ${locale}`);
-  const c = rows.map(escape), name = escape(title);
+  const c = rows.map(escape), name = escape(title), t=showText(locale);
   return `<section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-wp-guide-renderer="guide.mjs#renderGuide" data-wp-guide-locale="${escape(locale)}" aria-label="${name} — ${c[1]}">
     <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">${c[1]}</span><h2>${name}</h2><p>${c[0]}</p></div><div class="game-info-facts"><div class="game-info-fact"><span>${c[2]}</span><strong>${c[3]}</strong></div><div class="game-info-fact"><span>${c[4]}</span><strong>${c[5]}</strong></div></div></div>
     <div class="game-info-sections">
       <article class="game-info-section"><h3>${c[6]}</h3><ol><li>${c[7]}</li><li>${c[8]}</li><li>${c[9]}</li></ol></article>
       <article class="game-info-section"><h3>${c[10]}</h3><p>${c[11]}</p></article>
       <article class="game-info-section"><h3>${c[12]}</h3><p>${c[13]}</p></article>
+      <article class="game-info-section"><h3>${escape(t('perfect'))}</h3><p>${escape(t('masteryRule'))}</p><p>${escape(t('hintRule'))}</p></article>
+      <article class="game-info-section"><h3>${escape(t('wardrobe'))}</h3><p>${escape(t('costumeRule'))} ${escape(t('permanent'))} · 12 ${escape(t('balance'))}.</p></article>
       <article class="game-info-section"><h3>${c[14]}</h3><p>${c[15]}</p></article>
       <article class="game-info-section"><h3>${c[16]}</h3><dl><div><dt>${c[17]}</dt><dd>${c[18]}</dd></div><div><dt>${c[19]}</dt><dd>${c[20]}</dd></div><div><dt>${c[21]}</dt><dd>${c[22]}</dd></div></dl></article>
     </div>

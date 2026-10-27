@@ -227,6 +227,11 @@
       "यह ब्राउज़र सुरक्षित नहीं कर सकता",
       "لا يمكن لهذا المتصفح حفظ التقدم",
     ],
+    saving: [
+      "Saving progress…", "正在儲存進度……", "正在保存进度……", "進行状況を保存中…", "진행 상황을 저장하는 중…",
+      "Guardando progreso…", "Salvando progresso…", "Enregistrement en cours…", "Fortschritt wird gespeichert…",
+      "Salvataggio dei progressi…", "Сохранение прогресса…", "प्रगति सुरक्षित की जा रही है…", "جارٍ حفظ التقدم…",
+    ],
     finish: [
       "View expedition results",
       "查看遠征成果",
@@ -984,13 +989,31 @@
   }
   function readProgress(storage) {
     let best=0,journal={},storageOK=true;
-    try{best=storage.getItem('weightplay-habitat-atlas-best-stage');}catch{storageOK=false;}
-    try{journal=JSON.parse(storage.getItem('weightplay-habitat-atlas-rescue-v1')||'{}');}catch{storageOK=false;}
+    try{
+      const raw=storage.getItem('weightplay-habitat-atlas-best-stage');
+      if(raw!==null && (!/^(?:0|[1-9]\d*)$/.test(raw) || Number(raw)>rescuePlans.length))storageOK=false;
+      else best=raw===null?0:raw;
+    }catch{storageOK=false;}
+    try{
+      const raw=storage.getItem('weightplay-habitat-atlas-rescue-v1');
+      journal=raw===null?{}:JSON.parse(raw);
+      if(!journal || typeof journal!=='object' || Array.isArray(journal) || Object.entries(journal).some(([key,stars])=>String(completedStage(key))!==key || Number(key)<1 || !Number.isInteger(stars) || stars<1 || stars>3))storageOK=false;
+    }catch{storageOK=false;}
     return normalizeProgress({best,journal,storageOK});
   }
   function writeProgress(storage,value) {
-    const merged=mergeProgress(value,readProgress(storage));
-    try{storage.setItem('weightplay-habitat-atlas-best-stage',String(merged.best));storage.setItem('weightplay-habitat-atlas-rescue-v1',JSON.stringify(merged.journal));}catch{merged.storageOK=false;}
+    const existing=readProgress(storage),merged=mergeProgress(value,existing);
+    if(!existing.storageOK){merged.storageOK=false;return merged;}
+    const bestText=String(merged.best),journalText=JSON.stringify(merged.journal);
+    try{
+      // The detailed journal is written first; a failed best-stage write must
+      // not unlock a later stage while losing this stage's recorded result.
+      storage.setItem('weightplay-habitat-atlas-rescue-v1',journalText);
+      if(storage.getItem('weightplay-habitat-atlas-rescue-v1')!==journalText)throw new Error('JOURNAL_NOT_SAVED');
+      storage.setItem('weightplay-habitat-atlas-best-stage',bestText);
+      if(storage.getItem('weightplay-habitat-atlas-best-stage')!==bestText || storage.getItem('weightplay-habitat-atlas-rescue-v1')!==journalText)throw new Error('PROGRESS_NOT_SAVED');
+      merged.storageOK=true;
+    }catch{merged.storageOK=false;}
     return merged;
   }
   globalThis.HabitatRescueRules = Object.freeze({
@@ -1083,6 +1106,7 @@
   }));
   if (typeof document === "undefined") return;
   const assetBase = new URL(".", document.currentScript.src);
+  const progressLockModule = import(new URL("progress-lock.mjs?v=20261027-habitat-reward-candidate2", assetBase).href).catch(() => null);
   const stylesheet = document.createElement("link");
   stylesheet.rel = "stylesheet";
   stylesheet.href = new URL(
@@ -1133,7 +1157,8 @@
       ][i];
     const store = "weightplay-habitat-atlas-best-stage",
       journalKey = "weightplay-habitat-atlas-rescue-v1";
-    let {storageOK,best,journal}=R.readProgress(localStorage);
+    const storage=(()=>{try{return window.localStorage;}catch{return null;}})();
+    let {storageOK,best,journal}=R.readProgress(storage);
     let screen = "main",
       game = null,
       selected = 6,
@@ -1142,7 +1167,9 @@
       sharedFrame = null,
       history = [],
       message = "",
-      resultWin = false;
+      resultWin = false,
+      savePending = false,
+      refreshResultStatus = null;
     const measurement = {
       screen: "main",
       roundKey: null,
@@ -1150,18 +1177,32 @@
       ended: false,
       outcome: "complete",
       restart: false,
+      stageId: null,
+      saveSucceeded: null,
     };
+    const measurementQueue=[];
+    let measurementDraining=false;
     function observe() {
       try {
-        window.WonderAnalytics?.game?.observeState(() => ({
-          ...measurement,
-          node: document.body,
-          activityMode: "input",
-          idleSeconds: 300,
-          keyboardKeys: [],
-          paused:
-            document.hidden || $("habitatAtlasLeaveDialog")?.hidden === false,
-        }));
+        if(measurementQueue.length<256)measurementQueue.push({...measurement,stageIdAuthoritative:true,node:document.body,
+          activityMode:"input",idleSeconds:300,keyboardKeys:[],
+          paused:document.hidden || $("habitatAtlasLeaveDialog")?.hidden===false});
+        // Old cached collectors do not honor the save gate. Keep a bounded
+        // same-page queue until a capable collector announces readiness.
+        const adapter = window.WonderAnalytics?.game;
+        if (adapter?.supportsRewardEligibility !== true || adapter?.supportsSavedCompletionGate !== true) return;
+        if(measurementDraining)return;
+        measurementDraining=true;
+        const deliver=()=>{
+          const current=window.WonderAnalytics?.game;
+          if(current?.supportsRewardEligibility!==true || current?.supportsSavedCompletionGate!==true){measurementDraining=false;return;}
+          const snapshot=measurementQueue.shift();
+          if(!snapshot){measurementDraining=false;return;}
+          try{current.observeState(()=>snapshot);}catch{}
+          // Let the shared observer consume this snapshot before the next.
+          queueMicrotask(deliver);
+        };
+        queueMicrotask(deliver);
       } catch {}
     }
     window.addEventListener("weightplay:analytics-ready", observe);
@@ -1210,6 +1251,7 @@
         .forEach((n, i) => (n.textContent = tx([7, 8, 12][i % 3])));
     }
     function show(next) {
+      if (savePending) return;
       board.getAnimations({ subtree: true }).forEach((a) => a.cancel());
       board.querySelectorAll(".rescue-transfer").forEach((n) => n.remove());
       screen = next;
@@ -1306,6 +1348,7 @@
       });
     }
     function start(stage, restart = false) {
+      if (savePending) return;
       if (stage < 1 || stage > Math.min(rescuePlans.length, best + 1)) return;
       game = R.create(stage);
       selected = 6;
@@ -1318,6 +1361,8 @@
         ended: false,
         outcome: "complete",
         restart,
+        stageId: stage,
+        saveSucceeded: null,
       });
       show("battle");
       render();
@@ -1543,8 +1588,22 @@
         () => node.remove(),
       );
     }
-    function persist() {
-      ({best,journal,storageOK}=R.writeProgress(localStorage,{best,journal,storageOK}));
+    async function persistLocked(value) {
+      let timer;
+      try {
+        const module=await Promise.race([progressLockModule,new Promise(resolve=>{timer=setTimeout(()=>resolve(null),4000);})]);
+        let locks;try{locks=window.navigator?.locks;}catch{}
+        if(!module?.writeProgressLocked)return {progress:{...value,storageOK:false},saved:false};
+        return await module.writeProgressLocked({locks,storage,value,writeProgress:R.writeProgress});
+      } catch {return {progress:{...value,storageOK:false},saved:false};}
+      finally {clearTimeout(timer);}
+    }
+    function setSavePending(pending) {
+      savePending=pending;
+      result.setAttribute("aria-busy",String(pending));
+      for(const id of ["retry","to-stages","battle-back"])$(id).disabled=pending;
+      $("next").disabled=pending||!resultWin||game.stage===rescuePlans.length;
+      $("next").setAttribute("aria-disabled",String($("next").disabled));
     }
     function finish() {
       if (!result.hidden) return;
@@ -1557,27 +1616,44 @@
       const stars = R.stars(game);
       resultWin = stars > 0;
       game.ended = true;
+      const round=measurement.roundKey,stage=game.stage;
       if (resultWin) {
         best = Math.max(best, game.stage);
         journal[game.stage] = Math.max(Number(journal[game.stage]) || 0, stars);
-        persist();
       }
-      measurement.ended = true;
-      measurement.outcome = resultWin ? "win" : "lose";
-      measurement.screen = null;
-      observe();
+      const value={best,journal:{...journal},storageOK};
       $("result-title").textContent = tx(resultWin ? 24 : 23);
-      $("result-copy").textContent =
-        `${stars ? "★".repeat(stars) : "☆☆☆"} · ${tx(7)} ${game.saved}/${rescuePlans[game.stage - 1].animals.length} · ${tx(8)} ${R.eco(game)}/${rescuePlans[game.stage - 1].goal}${!storageOK ? " · " + (copy[lang()] || copy.en).unsaved : ""}`;
-      $("next").disabled = !resultWin || game.stage === rescuePlans.length;
-      $("next").setAttribute("aria-disabled", String($("next").disabled));
+      const renderResultStatus=()=>{
+        const localized=copy[lang()]||copy.en;
+        $("result-title").textContent=tx(resultWin ? 24 : 23);
+        $("result-copy").textContent=`${stars ? "★".repeat(stars) : "☆☆☆"} · ${tx(7)} ${game.saved}/${rescuePlans[stage - 1].animals.length} · ${tx(8)} ${R.eco(game)}/${rescuePlans[stage - 1].goal}${savePending ? " · " + localized.saving : !storageOK ? " · " + localized.unsaved : ""}`;
+      };
+      refreshResultStatus=renderResultStatus;
+      $("result-copy").setAttribute("role","status");
+      $("result-copy").setAttribute("aria-live","polite");
+      setSavePending(resultWin);
+      renderResultStatus();
       result.hidden = false;
       board.inert = true;
       $("battle-controls").inert = true;
       document.body.dataset.atlasResult = "true";
-      $("retry").focus({ preventScroll: true });
+      if(savePending){$("result-title").tabIndex=-1;$("result-title").focus({preventScroll:true});}
+      else $("retry").focus({ preventScroll: true });
       window.WeightPlayAudio?.play(resultWin ? "result.win" : "result.lose");
       mainCopy();
+      const finishMeasurement=(saved)=>{
+        if(measurement.roundKey!==round || measurement.stageId!==stage)return;
+        measurement.ended=true;measurement.outcome=resultWin?"win":"lose";
+        measurement.saveSucceeded=Boolean(saved);measurement.screen=null;observe();
+      };
+      if(!resultWin){finishMeasurement(false);return;}
+      void persistLocked(value).then(saved=>{
+        const merged=R.mergeProgress({best,journal,storageOK:true},saved.progress);
+        best=merged.best;journal=merged.journal;storageOK=saved.saved;
+        finishMeasurement(saved.saved);
+        setSavePending(false);renderResultStatus();mainCopy();
+        if(!result.hidden && document.activeElement===$("result-title"))$("retry").focus({preventScroll:true});
+      });
     }
     $("rescue-supply").addEventListener("click", () => act("supply"));
     $("rescue-undo").addEventListener("click", () => {
@@ -1591,6 +1667,7 @@
       if (!blocked()) finish();
     });
     function toStages() {
+      if(savePending)return;
       if (measurement.started && !measurement.ended) {
         measurement.ended = true;
         measurement.outcome = "abandon";
@@ -1615,11 +1692,12 @@
     window.addEventListener("weightplay:market-locale-change", () => {
       mainCopy();
       stages();
+      if(!result.hidden)refreshResultStatus?.();
       if (screen === "battle" && result.hidden) render();
     });
     window.addEventListener("storage", (e) => {
       if (e.key === store || e.key === journalKey) {
-        ({best,journal,storageOK}=R.mergeProgress({best,journal,storageOK},R.readProgress(localStorage)));
+        ({best,journal,storageOK}=R.mergeProgress({best,journal,storageOK},R.readProgress(storage)));
         mainCopy();
         if (screen === "stage") stages();
       }

@@ -84,8 +84,23 @@ export function applyAction(stage,state,action) {
 export function isWon(state){return state.positions.every(p=>p<0);}
 export function stateKey(s){return `${s.positions.join(",")}|${s.filled.join(",")}|${s.servedCount}|${Object.keys(s.stock).sort().map(k=>`${k}:${s.stock[k]}`).join(",")}|${s.gates.map(Number).join("")}|${s.gateUses.join("")}`;}
 
-export function solveStage(stage,{maxStates=400000}={}){
-  const start=createInitialState(stage), queue=[start], seen=new Map([[stateKey(start),null]]), parents=new Map(); let cursor=0, goalKey=null;
+// The renderer uses exactly the graph and occupied cells used by the rules.
+export function routeForMove(stage,state,guest,to){
+  const start=state.positions[guest], blocked=new Set(state.positions.filter(p=>p>=0));
+  if(start<0||blocked.has(to))return [];
+  const queue=[start], parents=new Map([[start,null]]);
+  for(let cursor=0;cursor<queue.length;cursor++){
+    const from=queue[cursor];
+    if(from===to){const route=[];for(let at=to;at!==null;at=parents.get(at))route.push(at);return route.reverse();}
+    const neighbors=[...stage.edges[from]];
+    stage.gates.forEach((gate,i)=>{if(!state.gates[i])return;const a=stage.ids.get(keyOf(gate.a)),b=stage.ids.get(keyOf(gate.b));if(from===a)neighbors.push(b);if(from===b)neighbors.push(a);});
+    for(const next of neighbors)if(!parents.has(next)&&!blocked.has(next)){parents.set(next,from);queue.push(next);}
+  }
+  return [];
+}
+
+export function solveStage(stage,{maxStates=400000,startState=null}={}){
+  const start=startState||createInitialState(stage), queue=[start], seen=new Map([[stateKey(start),null]]), parents=new Map(); let cursor=0, goalKey=null;
   while(cursor<queue.length){
     const current=queue[cursor++], currentKey=stateKey(current);
     if(isWon(current)){goalKey=currentKey;break;}

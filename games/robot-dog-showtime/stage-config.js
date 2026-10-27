@@ -2,10 +2,10 @@
 (() => {
   "use strict";
 
-  const poster = "/games/robot-dog-showtime/poster.svg";
+  const poster = "/assets/robot-dog-showtime-cover-v3.webp";
   const background = "/assets/lobby-block-atmosphere.svg";
 
-  window.RobotDogShowtimeStageConfig = ({ stages, getState, isSpotlightAvailable }) => ({
+  window.RobotDogShowtimeStageConfig = ({ stages, getState, text:t, isSpotlightAvailable }) => ({
     count: stages.length,
     poster,
     background,
@@ -17,14 +17,14 @@
       const cleared = !practice && state.save.cleared.includes(stage.id);
       return {
         id: stage.id,
-        kicker: `${stage.arc} · ${stage.id}/30`,
-        title: `Stage ${stage.id}`,
-        subtitle: `${stage.beats} beats · two performers`,
-        status: practice ? "Local practice" : locked ? "Locked" : cleared ? "Cleared" : "Ready",
-        summary: "Plan both performers' cues and reach their marks together.",
+        kicker: `${stage.id}/${stages.length}`,
+        title: `${t('stage')} ${stage.id}`,
+        subtitle: `${stage.beats} ${t('beat')}`,
+        status: `${t(practice?'practice':locked?'locked':cleared?'cleared':'ready')}${!practice&&state.save.ratings[stage.id]?' · '+state.save.ratings[stage.id]+'/3':''}`,
+        summary: t('plan'),
         details: [
-          `${stage.beats} beats · ${stage.walls.length} blocked marks`,
-          stage.bow ? "Both performers Bow on the final beat." : "Keep both routes clear of blocked marks and each other.",
+          `${stage.beats} ${t('beat')} · ${stage.walls.length} ${t('blocked')}`,
+          stage.bow ? t('finalBow') : t('formation'),
         ],
         locked,
         cleared,

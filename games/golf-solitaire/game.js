@@ -110,7 +110,7 @@
     .replaceAll("{best}", String(best));
   const formatProgress = (template, best) => template.replaceAll("{best}", String(best));
   const mount = () => {
-    document.body.dataset.gameVersion = "v28";
+    document.body.dataset.gameVersion = "v29";
     document.body.dataset.cardDeck = 'klondike';
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "golf", id: "golf-solitaire" });

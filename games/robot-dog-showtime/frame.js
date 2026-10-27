@@ -2,7 +2,7 @@
 (() => {
   "use strict";
 
-  window.mountRobotDogShowtimeFrame = ({ stages, getState, selected, isSpotlightAvailable, onSelect, onStart, onSpotlight, onHelp }) => {
+  window.mountRobotDogShowtimeFrame = ({ stages, getState, selected, text, isSpotlightAvailable, onSelect, onStart, onSpotlight, onHelp }) => {
     const root = document.getElementById("app");
     const main = document.getElementById("mainScreen");
     const stage = document.getElementById("stageScreen");
@@ -14,6 +14,7 @@
     const stageWorkspace = document.getElementById("stageWorkspace");
     const stageRail = document.getElementById("stageRail");
     const spotlightButton = document.getElementById("spotlightAction");
+    const wardrobeButton = document.getElementById("wardrobeAction");
     const battleLabel = document.getElementById("battleLabel");
     const helpButton = document.getElementById("helpButton");
 
@@ -22,6 +23,7 @@
     battleLabel.className = "robot-dog-battle-label";
     battleLabel.setAttribute("aria-live", "polite");
     helpButton.className = "robot-dog-help-button";
+    document.getElementById('arenaWrap').append(helpButton);
 
     const frame = window.WeightPlayScreenFrame.mount({
       root,
@@ -39,11 +41,12 @@
     stageInfo.setAttribute("role", "status");
     stageInfo.setAttribute("aria-live", "polite");
     frame.stageTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stageInfo));
-    frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(battleLabel).add(helpButton));
+    frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(battleLabel));
     frame.commonDownButton.clear();
+    frame.commonDownButton.add(wardrobeButton);
     frame.commonDownButton.add(spotlightButton);
 
-    const config = window.RobotDogShowtimeStageConfig({ stages, getState, isSpotlightAvailable });
+    const config = window.RobotDogShowtimeStageConfig({ stages, getState, text, isSpotlightAvailable });
     const selector = window.WeightPlayPlayUI.mountStage({
       page: stageWorkspace,
       rail: stageRail,
@@ -61,10 +64,15 @@
 
     function updateStage(index = selector.selected) {
       const record = config.stage(index);
+      const state=getState();
+      if(state.practiceMode||state.practiceActive)frame.commonDownButton.remove(wardrobeButton);
+      else frame.commonDownButton.add(wardrobeButton);
       stageInfo.textContent = `${record.kicker} · ${record.status}`;
       spotlightButton.hidden = !record.spotlightAvailable;
-      spotlightButton.textContent = `Spotlight Mix · Stage ${record.id}`;
-      spotlightButton.setAttribute("aria-label", `Start Spotlight Mix on Stage ${record.id}`);
+      if(record.spotlightAvailable)frame.commonDownButton.add(spotlightButton);
+      else frame.commonDownButton.remove(spotlightButton);
+      spotlightButton.textContent = `${text('mix')} · ${record.id}`;
+      spotlightButton.setAttribute("aria-label", `${text('mix')} · ${text('stage')} ${record.id}`);
     }
 
     spotlightButton.addEventListener("click", onSpotlight);

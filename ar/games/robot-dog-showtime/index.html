@@ -23,13 +23,14 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="robot-dog-showtime">
-  <meta name="weightplay-game-version" content="v6">
+  <meta name="weightplay-game-version" content="v7">
   <meta name="weightplay-interface-version" content="9">
   <title>عرض الكلب الآلي | WeightPlay</title>
   <meta name="description" content="خطّط لإشارات المؤدين على المسرح، ثم تدرّبوا معًا على المسارات والحركات." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20261021-robot-dog-showtime-i9-battle1">
+  <link rel="stylesheet" href="style.css?v=20261027-showtime-rebuild1">
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
+  <script src="../../src/wallet.js"></script>
   <script src="../../src/game-layout-config.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script defer src="/src/game-official-name.js"></script>
@@ -90,7 +91,7 @@
         <div class="wp-standard-main-copy" data-wp-frame-copy>
           <p class="main-summary" data-wp-frame-summary>Plan both routes and rehearse.</p>
           <p id="mainProgress" class="main-progress" data-wp-frame-progress role="status" aria-live="polite">Stage 1 · ready</p>
-          <button id="startButton" class="main-start" data-wp-main-start data-wp-frame-action="primary" type="button">Start Game</button>
+          <button id="startButton" class="main-start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>Start Game</button>
         </div>
       </div>
     </section>
@@ -101,6 +102,8 @@
       <article class="game-info-section"><h3>كيفية اللعب</h3><ol><li>اختر المؤدي والإيقاع، ثم ضع حركة أو فعلًا.</li><li>خطط للمسارين معًا وتدرّب على التشكيل.</li><li>عدّل أول إيقاع غير صالح وحاول مجددًا؛ تبقى خطتك متاحة.</li></ol></article>
       <article class="game-info-section"><h3>القواعد</h3><p>ابق على المسرح وتجنب الخانات المحجوبة، ولا تضع المؤديين في الخانة نفسها أبدًا. تتطلب بعض النهايات أن ينحني المؤديان في الإيقاع الأخير.</p></article>
       <article class="game-info-section"><h3>التقدم وإعادة اللعب</h3><p>أكمل المسرح لحفظ التقدم وفتح التالي. يمكنك إعادة أي مسرح مفتوح. بعد إكمال المسرح 2 أو 3 أو 6، جرّب مزيج الأضواء الاختياري مع تبادل الأهداف.</p></article>
+      <article class="game-info-section"><h3>عرض مثالي!</h3><p>بلا تلميحات: 3/3 من أول تدريب، و2/3 خلال ثلاث محاولات. يُحفظ الأفضل.</p><p>يملأ التلميح نبضة واحدة ويحدّ التقييم إلى 1/3.</p></article>
+      <article class="game-info-section"><h3>غرفة الأزياء</h3><p>وشاح أزرق وأقدام ذهبية وإضاءة متناسقة. مظهر فقط. دائم · 12 الألماس.</p></article>
       <article class="game-info-section"><h3>الخصوصية والإعدادات</h3><p>يبقى التقدم في هذا المتصفح ولا يلزم حساب. استخدم الإعدادات المشتركة لاختيار اللغة والصوت.</p></article>
       <article class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل هذه لعبة ذاكرة؟</dt><dd>لا. تخطط لمسارات وأفعال مؤديين على لوحة إيقاع ظاهرة.</dd></div><div><dt>هل يضيع التقدم بسبب خطأ في التدريب؟</dt><dd>لا. يظهر أول إيقاع غير صالح وتبقى خطة الأفعال قابلة للتعديل.</dd></div><div><dt>هل ينتقل التقدم بين المتصفحات؟</dt><dd>لا. يُحفظ التقدم الحالي محليًا في هذا المتصفح.</dd></div></dl></article>
     </div>
@@ -109,38 +112,37 @@
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-frame-play-fill hidden>
       <header id="stageHeader" class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back to Main"><span aria-hidden="true">←</span></button><h2 id="stageTitle" data-wp-frame-title hidden>Choose a stage</h2></header>
       <div id="stageWorkspace"><nav id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-total="30" aria-label="Stages"></nav></div>
-      <nav id="stageTabs" data-wp-frame-nav aria-label="Stage actions"><button id="spotlightAction" type="button" hidden>Spotlight Mix</button></nav>
+      <nav id="stageTabs" data-wp-frame-nav aria-label="Stage actions"><button id="wardrobeAction" type="button">Dressing room</button><button id="spotlightAction" type="button" hidden>Spotlight Mix</button></nav>
+      <section id="wardrobeDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="wardrobeTitle" hidden><div class="dialog-card wardrobe-card"><h2 id="wardrobeTitle">Dressing room</h2><p class="wallet-line"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span id="walletBalance"></span></p><div class="costume-art"><img src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt="Comet costume" width="320" height="320"></div><h3 id="costumeTitle">Comet costume</h3><p id="costumeEffect"></p><p id="costumeCost" class="costume-cost"></p><p id="purchaseStatus" class="purchase-status" role="status" aria-live="polite"></p><div class="wardrobe-actions"><button id="baseCostume" type="button">Original costume</button><button id="buyCostume" class="primary" type="button">Unlock</button></div><button id="closeWardrobe" type="button">Continue</button></div></section>
     </section>
 
-    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-frame-play-fill hidden>
+    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-frame-play-fill data-wp-logical-battle-canvas="390x720" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="390" hidden>
       <header id="battleHeader" class="battle-header"><button id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Stage"><span aria-hidden="true">←</span></button><h2 id="battleTitle" data-wp-frame-title hidden></h2><span id="battleLabel" class="robot-dog-battle-label">Stage 1 · First Marks</span><button id="helpButton" class="robot-dog-help-button" type="button" aria-label="Show guide">?</button></header>
       <div id="battleLive" class="battle-workspace">
-        <div id="arenaWrap" class="arena-wrap"><canvas id="stage3d" aria-label="Three-dimensional dance stage" tabindex="0"></canvas><div id="renderFallback" hidden role="alert"><strong>The 3D stage could not load.</strong><button id="retryRender" type="button">Retry</button></div></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="stage3d" aria-label="Three-dimensional dance stage" tabindex="0"></canvas><div class="scene-goals"><span class="pup-goal" id="dogGoal"></span><span class="fox-goal" id="foxGoal"></span></div><div id="sceneBeat" class="scene-beat" aria-live="off"></div><div id="renderFallback" hidden role="alert"><strong id="renderErrorText">The 3D stage could not load.</strong><button id="retryRender" type="button">Retry</button></div></div>
         <aside class="planner-panel" aria-label="Cue planner">
-          <div class="goal-row"><span>ROBOT PUP</span><span id="dogGoal">Goal: —</span><button id="selectDog" type="button" aria-pressed="true">Select</button></div>
-          <div class="goal-row fox-row"><span>FOX PARTNER</span><span id="foxGoal">Goal: —</span><button id="selectFox" type="button" aria-pressed="false">Select</button></div>
-          <div class="beat-row"><span>BEAT</span><div id="beatRail"></div></div>
           <div id="cueStatus" class="cue-status" role="status" aria-live="polite">Choose a beat and cue.</div>
-          <div class="cue-pad" aria-label="Choose cue"><button type="button" data-cue="N">↑ <small>Step</small></button><button type="button" data-cue="WAIT">Wait</button><button type="button" data-cue="BOW">Bow</button><button type="button" data-cue="W">← <small>Step</small></button><button type="button" data-cue="S">↓ <small>Step</small></button><button type="button" data-cue="E">→ <small>Step</small></button><button type="button" data-cue="WAVE">Wave</button><button id="clearCue" type="button">Clear cue</button></div>
-          <div class="plan-list"><div><strong>Pup</strong><span id="dogPlan">—</span></div><div><strong>Fox</strong><span id="foxPlan">—</span></div></div>
-          <div class="action-row"><button id="resetPlan" type="button">Reset</button><button id="rehearseButton" type="button" class="primary">Rehearse</button></div>
+          <div id="beatRail" hidden aria-hidden="true"></div>
+          <div class="tracks" aria-label="Performer cue tracks"><div class="track-line"><button id="selectDog" class="actor-label pup" type="button" aria-pressed="true">Robot Pup</button><div id="dogPlan" class="cue-track" role="group" aria-label="Robot Pup cues"></div></div><div class="track-line"><button id="selectFox" class="actor-label fox" type="button" aria-pressed="false">Fox Partner</button><div id="foxPlan" class="cue-track" role="group" aria-label="Fox Partner cues"></div></div></div>
+          <div class="cue-pad" aria-label="Choose cue"><button type="button" data-cue="N" aria-label="↑">↑</button><button type="button" data-cue="E" aria-label="→">→</button><button type="button" data-cue="S" aria-label="↓">↓</button><button type="button" data-cue="W" aria-label="←">←</button><button type="button" data-cue="WAIT">Wait</button><button type="button" data-cue="BOW">Bow</button><button type="button" data-cue="WAVE">Wave</button><button id="clearCue" type="button" aria-label="Clear cue">⌫</button></div>
+          <div class="action-row"><button id="undoCue" type="button">Undo</button><button id="resetPlan" type="button">Reset</button><button id="rehearseButton" type="button" class="primary">Rehearse</button></div>
         </aside>
       </div>
+      <section id="helpDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle">How to play</h2><ol id="helpSteps"></ol><p id="hintExplanation"></p><p id="masteryExplanation"></p><div class="result-actions help-actions"><button id="hintButton" type="button">Hint</button><button id="closeHelp" class="primary" type="button">Continue</button></div></div></section>
+      <section id="leaveDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle">Continue</h2><p id="leaveText"></p><div class="result-actions help-actions"><button id="continueBattle" class="primary" type="button">Continue</button><button id="returnMap" type="button">Stages</button></div></div></section>
+      <section id="resultDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="resultTitle" data-wp-battle-substate="result" hidden><div class="dialog-card result-card" data-wp-result-card><small id="resultKicker">SHOW COMPLETE</small><div id="showRating" class="show-rating" aria-label="Show rating"></div><h2 id="resultTitle">Great formation!</h2><p id="resultText"></p><div class="result-actions"><button id="resultMap" type="button">Stages</button><button id="nextStage" type="button" class="primary">Next stage</button><button id="replayStage" type="button">Replay</button></div></div></section>
     </section>
 
     <label id="localeSource" data-wp-frame-locale-source hidden aria-hidden="true"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
   </main>
 
-  <section id="helpDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle">How to plan the show</h2><ol><li>Select a performer and beat.</li><li>Choose a direction or Wait cue; some finales need a Bow for both performers.</li><li>Rehearse both plans. Edit the first invalid move and try again.</li><li>After clearing Stage 2, 3, or 6, choose its optional Spotlight Mix from the stage map.</li></ol><button id="closeHelp" class="primary" type="button">Continue</button></div></section>
-  <section id="leaveDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle">Keep this rehearsal?</h2><p>Your cue plan is saved in this browser. Continue editing or return to the stage map.</p><div class="result-actions"><button id="continueBattle" type="button">Continue</button><button id="returnMap" type="button">Stage map</button></div></div></section>
-  <section id="resultDialog" class="dialog" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog-card"><small id="resultKicker">SHOW COMPLETE</small><h2 id="resultTitle">Great formation!</h2><p id="resultText">Both partners reached their marks.</p><div class="result-actions"><button id="resultMap" type="button">Stage map</button><button id="nextStage" type="button" class="primary">Next stage</button><button id="spotlightResult" type="button" class="spotlight-action" hidden>Try Spotlight Mix · swap the goals</button></div></div></section>
 
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-spacing1"></script>
-  <script src="stage-config.js?v=20261021-robot-dog-showtime-i9-stage1"></script>
-  <script src="frame.js?v=20261021-robot-dog-showtime-i9-frame1"></script>
-  <script type="module" src="game.js?v=20261021-robot-dog-showtime-i9-game1"></script>
+  <script src="stage-config.js?v=20261027-showtime-rebuild1"></script>
+  <script src="frame.js?v=20261027-showtime-rebuild1"></script>
+  <script type="module" src="game.js?v=20261027-showtime-rebuild1"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

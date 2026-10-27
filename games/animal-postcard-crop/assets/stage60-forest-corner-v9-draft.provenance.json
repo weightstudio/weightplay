@@ -1,0 +1,10 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17716-e595-7c92-acb8-65902ae49027",
+  "created": "2026-10-27",
+  "method": "image_gen edit using official WeightPlay block-lion image as style reference",
+  "reference": "assets/weightplay-character-boom-mane-lion-block-v1.webp",
+  "original": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-d64a0eca-c74d-44c1-966b-15663ea02e4a.png",
+  "prompt": "Create ONE original small in-game decorative sprite for a family-friendly WeightPlay postcard framing puzzle, using the attached block-lion ONLY as a style reference for clean cheerful block-world toy materials. The sprite is a single compact square postage-corner ornament: three tiny geometric forest-green leaf blocks meeting a small warm cream square, orthographic front view, a cohesive simple readable silhouette with clean dark outline. It will be placed at all four corners at 8–12 CSS pixels, so prioritize bold readable shapes and minimal detail. Center the single ornament in a square canvas with generous completely transparent empty padding; no text, characters, background, shadow, glow, borders, additional objects, or mockup. Do not draw a whole frame or include four copies. The output is one isolated PNG sprite on transparent background.",
+  "remaining": "Verify source, transparency, 8–12 CSS px legibility, rotations, all frame proportions and boundary occlusion, independent Art review, actual wallet/UI integration."
+}

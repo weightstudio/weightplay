@@ -2504,7 +2504,11 @@ const essentialLobbyCopy = {
       const path = url.pathname;
       const isLocalizedSurface = path === "/" || path === "/kids/" || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/(?:kids\/)?$/i.test(path) || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/[a-z0-9-]+\/$/i.test(path) || /^\/games\/[a-z0-9-]+\/$/i.test(path);
       if (!isLocalizedSurface) return;
-      anchor.href = new URL(localizedPath(currentLocale, `${path}${url.search}${url.hash}`), window.location.origin).href;
+      // The Castle runtime uses this one lobby fragment to open its world.
+      // Keep the general localizedPath query/fragment allowlist unchanged.
+      const castleLobby = url.hash === "#castle" && (path === "/" || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/$/i.test(path));
+      const localized = localizedPath(currentLocale, `${path}${url.search}${url.hash}`);
+      anchor.href = new URL(localized + (castleLobby ? "#castle" : ""), window.location.origin).href;
     });
   }
 

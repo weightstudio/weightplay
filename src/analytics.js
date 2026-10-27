@@ -510,26 +510,38 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     }
     try {
       const key = "weightplayCastleV1";
-      const saved = JSON.parse(localStorage.getItem(key) || "null");
-      const validSaved = saved && [1, 2].includes(saved.version);
-      const legacySand = Math.max(0, Math.floor(Number(saved?.starSand) || 0));
-      const savedBuildings = validSaved && Array.isArray(saved.buildings) ? saved.buildings : ["hall"];
-      const buildings = saved?.version === 1
-        ? ["hall", ...["gate", "bridge", "garden", "tower", "observatory"].slice(0, ["tower", "garden", "library", "observatory", "gate"].filter((id) => savedBuildings.includes(id)).length)]
-        : savedBuildings;
-      const store = {
-        version: 2,
-        castleMaterials: saved?.castleMaterials == null ? Math.floor(legacySand / 5) : Math.max(0, Math.floor(Number(saved.castleMaterials) || 0)),
-        completions: validSaved && saved.completions && typeof saved.completions === "object" && !Array.isArray(saved.completions) ? saved.completions : {},
-        badges: validSaved && Array.isArray(saved.badges) ? saved.badges : [],
-        buildings,
-      };
+      const raw = localStorage.getItem(key);
+      const saved = raw === null ? null : JSON.parse(raw);
+      // A present but unreadable, future, or malformed ledger is not an empty
+      // castle. Keep its bytes intact and let the owner runtime recover it.
+      const object = value => value !== null && typeof value === "object" && !Array.isArray(value);
+      const validNumber = value => value == null || ((typeof value === "number" || typeof value === "string") && String(value).trim() !== "" && Number.isFinite(Number(value)) && Number(value) >= 0);
+      if (raw !== null && (!object(saved) || ![1, 2, 3].includes(saved.version)
+          || (saved.worldSchema != null && saved.worldSchema !== 1)
+          || ((saved.worldSchema === 1 || saved.version === 3) && saved.ownedBlocks == null)
+          || (saved.completions != null && !object(saved.completions))
+          || (saved.badges != null && !Array.isArray(saved.badges))
+          || (saved.buildings != null && !Array.isArray(saved.buildings))
+          || ![saved.castleMaterials, saved.starSand, saved.ownedBlocks, saved.worldLevel].every(validNumber))) {
+        return { credited: false, reason: "invalid-castle-store" };
+      }
+      // Preserve the original version and all unrelated fields. For legacy
+      // stores the Castle runtime reconstructs ownedBlocks from its builder
+      // and receipts; writing worldSchema here would prevent that migration.
+      const store = saved ? { ...saved } : { version: 2, worldSchema: 1, worldLevel: 1, ownedBlocks: 0, buildings: ["hall"] };
+      store.completions = saved?.completions ? { ...saved.completions } : {};
+      store.badges = saved?.badges ? [...saved.badges] : [];
+      const clean = value => Math.max(0, Math.floor(Number(value) || 0));
+      store.castleMaterials = saved?.castleMaterials == null ? Math.floor(clean(saved?.starSand) / 5) : clean(saved.castleMaterials);
       const completionKey = `${gameId}:${completionId}`;
       if (store.completions[completionKey]) return { credited: false, reason: "already-claimed" };
       store.completions[completionKey] = Date.now();
       if (!store.badges.includes(gameId)) store.badges.push(gameId);
       store.castleMaterials += 1;
-      localStorage.setItem(key, JSON.stringify(store));
+      if (store.worldSchema === 1 || store.version === 3) store.ownedBlocks = clean(store.ownedBlocks) + 1;
+      const serialized = JSON.stringify(store);
+      localStorage.setItem(key, serialized);
+      if (localStorage.getItem(key) !== serialized) return { credited: false, reason: "storage-unavailable" };
       announceCastleReward({ gameId, completionId, amount: 1, currency: "castle-material" });
       return { credited: true, amount: 1, currency: "castle-material" };
     } catch { return { credited: false, reason: "storage-unavailable" }; /* Local progression is optional and must never interrupt a game. */ }

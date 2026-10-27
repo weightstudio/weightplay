@@ -80,8 +80,8 @@ function stripGeometry(rows,columns,{hardEdges=false,reverse=false}={}){
 // Six fixed player variants are constructed once. Equipping never creates a
 // new material, geometry cache entry, renderer or gameplay modifier.
 function makeBoard(material,palette,boardId='brook',cosmetic=false){
-  const night=Boolean(cosmetic),drift=boardId==='driftfin',wood=night?0x173947:drift?0x124858:C.wood,deck=night?0x28556a:drift?0x176477:0xe2ac57;
-  const accent=night?0xf47e78:boardId==='reedguard'?0x75b776:boardId==='driftfin'?0x49d6e2:palette.coat;
+  const night=Boolean(cosmetic),drift=boardId==='driftfin',wood=night?0xc3602b:drift?0x124858:C.wood,deck=night?0xf3a650:drift?0x176477:0xe2ac57;
+  const accent=night?0x106376:boardId==='reedguard'?0x75b776:boardId==='driftfin'?0x49d6e2:palette.coat;
   const trim=night?0xffd17d:drift?0xe2b45f:0xd2a263,parts=[];
   if(boardId==='driftfin'){
     parts.push(part([.91,.17,2.05],[0,.08,0],wood),part([.8,.16,1.85],[0,.19,0],deck),
@@ -90,7 +90,7 @@ function makeBoard(material,palette,boardId='brook',cosmetic=false){
       part([.22,.04,1.78],[0,.285,0],accent),part([.43,.045,.13],[0,.29,-.42],trim,[0,.42,0]),
       part([.43,.045,.13],[0,.29,.2],trim,[0,-.42,0]),part([.12,.23,.56],[0,-.1,.65],accent));
   }else if(boardId==='reedguard'){
-    parts.push(part([1.29,.18,1.98],[0,.08,0],wood),part([1.16,.15,1.77],[0,.2,0],night?0x326274:0xb4c68e),
+    parts.push(part([1.29,.18,1.98],[0,.08,0],wood),part([1.16,.15,1.77],[0,.2,0],night?deck:0xb4c68e),
       part([.15,.2,1.78],[-.62,.22,0],accent),part([.15,.2,1.78],[.62,.22,0],accent),
       part([1.08,.15,.22],[0,.2,-1.03],trim),part([1.08,.15,.22],[0,.2,1.03],trim),
       part([.74,.035,.16],[0,.295,-.43],accent),part([.74,.035,.16],[0,.295,.04],accent),
@@ -113,6 +113,16 @@ function buoyGlyph(shape,color=C.cream){
   if(shape==='diamond')return [part([.4,.4,.08],[.22,y,z],color,[0,0,Math.PI/4]),part([.14,.14,.04],[.22,y,z+.065],0x6a492b,[0,0,Math.PI/4])];
   return [part([.53,.11,.07],[.22,y+.22,z],color),part([.53,.11,.07],[.22,y-.22,z],color),
     part([.11,.44,.07],[.0,y,z],color),part([.11,.44,.07],[.44,y,z],color)];
+}
+
+function phasePlaque(ready,material){
+  const frame=ready?0x43d69f:0xf49372,ink=ready?0xbaffe0:0xffd2b5;
+  const parts=[part([.94,.82,.1],[0,0,0],ready?0x103b35:0x47292b),
+    part([1.04,.06,.13],[0,.44,0],frame),part([1.04,.06,.13],[0,-.44,0],frame),
+    part([.06,.82,.13],[-.5,0,0],frame),part([.06,.82,.13],[.5,0,0],frame)];
+  if(ready)parts.push(part([.15,.34,.08],[-.17,-.1,.1],ink,[0,0,.65]),part([.15,.65,.08],[.12,.02,.1],ink,[0,0,-.55]));
+  else parts.push(part([.14,.64,.08],[0,0,.1],ink,[0,0,.72]),part([.14,.64,.08],[0,0,.1],ink,[0,0,-.72]));
+  return sculpture(parts,material);
 }
 
 function makeRacer(material,species='otter'){
@@ -209,7 +219,7 @@ export class RapidsRenderer{
     this.foam=inst(76,this.foamMat,[part([1,.016,.42],[0,0,-.34],C.foam),part([.72,.016,.23],[.18,0,.05],C.foam),part([.48,.016,.17],[-.15,0,.3],C.foam)]);
     this.glints=inst(48,new THREE.MeshBasicMaterial({color:0xe1fff2,transparent:true,opacity:.3,depthWrite:false}));
     this.ribbons=inst(76,new THREE.MeshBasicMaterial({color:0xaaf8eb,transparent:true,opacity:.16,depthWrite:false}));
-    this.wakes=inst(32,this.foamMat);this.contactShadows=inst(4,new THREE.MeshBasicMaterial({color:0x174b52,transparent:true,opacity:.16,depthWrite:false}));
+    this.wakes=inst(32,this.foamMat.clone());this.wakes.material.color.setHex(0xffffff);this.contactShadows=inst(4,new THREE.MeshBasicMaterial({color:0x174b52,transparent:true,opacity:.16,depthWrite:false}));
     this.lanternPosts=inst(24,this.woodMat);this.lanternCaps=inst(24,this.bankMat);this.lanternLights=inst(24,new THREE.MeshBasicMaterial({color:0xffd785}));
     this.models=[makeRacer(this.material,'otter'),makeRacer(this.material,'fox'),makeRacer(this.material,'turtle'),makeRacer(this.material,'rabbit')];this.models.forEach(m=>this.scene.add(m.group));
     this.models.forEach(model=>model.group.traverse(node=>{if(node.isMesh){node.castShadow=true;node.receiveShadow=true;}}));
@@ -219,10 +229,90 @@ export class RapidsRenderer{
     const originalBoard=this.models[0].board;this.models[0].group.remove(originalBoard);originalBoard.geometry.dispose();
     for(const board of BOARDS)for(const cosmetic of [false,true]){const variant=makeBoard(this.material,this.models[0].palette,board.id,cosmetic);variant.visible=false;variant.castShadow=true;variant.receiveShadow=true;this.models[0].group.add(variant);this.boardVariants.set(`${board.id}:${cosmetic}`,variant);}
     this.setAppearance('brook',false);
+    this.responses=new Map();this.motionPoint=new THREE.Vector3();this.motionUp=new THREE.Vector3(0,1,0);
+    this.anchorFrom=new THREE.Vector3();this.anchorTo=new THREE.Vector3();this.anchorDirection=new THREE.Vector3();this.bankPoint=new THREE.Vector3();
+    this.ropeMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.68});this.phaseMat=new THREE.MeshBasicMaterial({vertexColors:true});
+    this.anchorRope=sculpture([part([1,1,.75],[0,0,0],0x73502b),part([.58,1,.38],[0,0,.39],0xffe5b4),part([.12,1,.18],[-.39,0,.35],0xc99443),part([.12,1,.18],[.39,0,.35],0xc99443)],this.ropeMat);
+    this.anchorMarker=new THREE.Mesh(this.box,this.foamMat);this.anchorClasp=sculpture([part([.24,.15,.24],[0,0,0],0x73502b),part([.15,.16,.16],[0,.015,.015],0xffdf8f)],this.ropeMat);
+    this.anchorRope.visible=this.anchorMarker.visible=this.anchorClasp.visible=false;this.scene.add(this.anchorRope,this.anchorMarker,this.anchorClasp);
     this.featureRoot=new THREE.Group();this.scene.add(this.featureRoot);this.featureNodes=[];
     this.particles=inst(64,new THREE.MeshBasicMaterial({color:0xaaffee,transparent:true,opacity:.85}));this.particleData=[];
     this.onLost=e=>{e.preventDefault();onContextLost();};this.canvas.addEventListener('webglcontextlost',this.onLost);
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(container);this.resize();
+  }
+  // Returns viewport CSS pixels, never drawing-buffer/DPR coordinates.
+  projectToViewport(s,x=0,y=0){
+    if(this.disposed||!this.stage)return null;
+    const box=this.container.getBoundingClientRect();if(!box.width||!box.height)return null;
+    this.motionPoint.set(this.worldX(s,x),y,-s).project(this.camera);
+    if(![this.motionPoint.x,this.motionPoint.y,this.motionPoint.z].every(Number.isFinite)||Math.abs(this.motionPoint.x)>1||Math.abs(this.motionPoint.y)>1||Math.abs(this.motionPoint.z)>1)return null;
+    return {x:box.left+(this.motionPoint.x+1)*box.width/2,y:box.top+(1-this.motionPoint.y)*box.height/2};
+  }
+  respond(event){
+    const kind=event.type==='land'&&event.clean===true?'land':event.type==='hit'?'hit':event.type==='bump'?'bump':null;
+    if(kind){if(this.responses.size>=4&&!this.responses.has(event.racerId))this.responses.delete(this.responses.keys().next().value);this.responses.set(event.racerId,{kind,time:event.time,duration:kind==='bump'?.12:.22});}
+    if(event.type==='fall'||event.type==='recover')this.responses.delete(event.racerId);
+  }
+  reaction(id,time){
+    const response=this.responses.get(id);if(!response)return null;
+    const age=Math.max(0,time-response.time);if(age>=response.duration){this.responses.delete(id);return null;}
+    return {kind:response.kind,weight:this.reduce?0:1-age/response.duration};
+  }
+  bayBankPoint(bay,time,out){
+    const at=bay.s+(bay.length||0)/2,side=featureX(bay,time)<0?-1:1;
+    return out.set(this.worldX(at)+side*(trackWidth(at,this.stage)*this.xSpread/2+.58),1.12,-at);
+  }
+  updateAnchor(race){
+    const p=race.player,bay=p.anchored&&this.stage.features.find(feature=>feature.id===p.anchorBayId&&feature.kind==='bay');
+    this.anchorRope.visible=this.anchorMarker.visible=this.anchorClasp.visible=Boolean(bay);
+    if(!bay){this.anchorVisualId=null;return;}
+    if(this.anchorVisualId!==bay.id){this.anchorVisualId=bay.id;this.anchorVisualAt=race.activeTime;}
+    const progress=this.reduce?1:clamp((race.activeTime-this.anchorVisualAt)/.16,0,1);
+    this.bayBankPoint(bay,race.activeTime,this.anchorTo);
+    const side=Math.sign(this.anchorTo.x-this.worldX(p.s,p.x))||1;
+    this.anchorFrom.set(this.worldX(p.s,p.x)+side*.6,(p.y||0)+.33,-p.s+.65);
+    this.anchorDirection.copy(this.anchorTo).sub(this.anchorFrom);const distance=this.anchorDirection.length();
+    this.anchorRope.position.copy(this.anchorFrom).addScaledVector(this.anchorDirection,progress/2);
+    this.camera.updateMatrixWorld(true);this.motionPoint.copy(this.anchorFrom).applyMatrix4(this.camera.matrixWorldInverse);
+    const width=clamp(2.4*2*Math.max(.5,-this.motionPoint.z)*Math.tan(this.camera.fov*Math.PI/360)/this.height,.1,.32);
+    this.anchorRope.scale.set(width,Math.max(.001,distance*progress),width);
+    if(distance>.001)this.anchorRope.quaternion.setFromUnitVectors(this.motionUp,this.anchorDirection.normalize());
+    this.anchorMarker.position.copy(this.anchorTo);this.anchorMarker.scale.setScalar(.22+.1*progress);this.anchorClasp.position.copy(this.anchorFrom);this.anchorClasp.scale.setScalar(.8+.2*progress);
+  }
+  addPhaseMarker(root,phase,{x=0,z=0,landing=false}={}){
+    const marker=new THREE.Group();marker.position.set(x,landing?1.15:2.2,z);
+    marker.add(phasePlaque(true,this.phaseMat),phasePlaque(false,this.phaseMat));
+    if(landing){const glyph=[part([.48,.55,.1],[-.82,0,0],0x233b44)];
+      if(phase==='early')glyph.push(part([.3,.07,.06],[-.82,.1,.09],C.cream),part([.3,.07,.06],[-.82,-.1,.09],C.cream));
+      else glyph.push(part([.08,.33,.06],[-.82,0,.09],C.cream),part([.33,.08,.06],[-.82,0,.09],C.cream));
+      marker.add(sculpture(glyph,this.phaseMat));
+    }
+    root.add(marker);root.userData.phaseVisual=marker;root.userData.phaseRequired=phase;marker.userData.pulseScale=1;
+  }
+  updatePhaseMarker(node,time){
+    const marker=node.userData.phaseVisual;if(!marker)return;
+    const ready=tideLabel(time)===node.userData.phaseRequired;
+    if(node.userData.phaseReady!==undefined&&node.userData.phaseReady!==ready)node.userData.phaseChangedAt=time;
+    node.userData.phaseReady=ready;marker.children[0].visible=ready;marker.children[1].visible=!ready;
+    const age=time-(node.userData.phaseChangedAt??-100),weight=age>=0&&age<.18?1-age/.18:0;
+    marker.userData.pulseScale=this.reduce?1:1+.12*Math.sin(weight*Math.PI);
+    marker.visible=!(node.userData.feature.kind==='landing'&&this.lastRace?.player.landedRampIds?.includes(node.userData.feature.rampId));
+  }
+  fitPhaseMarker(node){
+    const marker=node.userData.phaseVisual;if(!marker||!node.visible||!marker.visible)return;
+    const parentScale=node.userData.lateralScale?this.xSpread:1,x=node.position.x+marker.position.x*parentScale,y=node.position.y+marker.position.y,z=node.position.z+marker.position.z;
+    this.motionPoint.set(x,y+.41,z).project(this.camera);const top=this.motionPoint.y;
+    this.motionPoint.set(x,y-.41,z).project(this.camera);const pixels=Math.abs(top-this.motionPoint.y)*this.height/2;
+    const size=clamp(14/Math.max(1,pixels),1,2.2)*marker.userData.pulseScale;
+    marker.scale.set(size/parentScale,size,size);
+  }
+  updateGateIndicator(node,time){
+    const indicator=node.userData.phaseIndicator;if(!indicator)return;
+    const open=gateIsOpen(node.userData.feature,time);
+    if(node.userData.lastOpen!==undefined&&node.userData.lastOpen!==open)node.userData.phaseAt=time;
+    node.userData.lastOpen=open;indicator.children[0].visible=open;indicator.children[1].visible=!open;
+    const age=time-(node.userData.phaseAt??-100),weight=age>=0&&age<.22?1-age/.22:0;
+    indicator.scale.setScalar(this.reduce?1:1+.14*Math.sin(weight*Math.PI));indicator.children[2].visible=this.reduce&&weight>0;
   }
   resize(){if(this.disposed)return;const r=this.container.getBoundingClientRect();if(!r.width||!r.height)return;this.width=r.width;this.height=r.height;this.aspect=r.width/r.height;this.xSpread=clamp(this.aspect/.62,1,3.15);this.renderer.setSize(r.width,r.height,false);this.camera.aspect=this.aspect;this.camera.updateProjectionMatrix();if(this.lastRace&&this.stage)this.render(this.lastRace,0);}
   worldX(s,x=0){return (trackCenter(s,this.stage)+x*trackWidth(s,this.stage)/2)*this.xSpread;}
@@ -258,10 +348,12 @@ export class RapidsRenderer{
     for(const variant of this.boardVariants.values())variant.visible=false;
     const board=this.boardVariants.get(`${id}:${night}`);board.visible=true;this.models[0].board=board;
     this.appearance={boardId:id,cosmetic:night};
+    if(this.wakes){for(let index=0;index<32;index++)this.wakes.setColorAt(index,this.tint.setHex(index<8&&night?0xff9b82:C.foam));this.wakes.instanceColor.needsUpdate=true;}
     if(this.particles)this.particles.material.color.setHex(night?0xffa29b:0xaaffee);
     return this.appearance;
   }
   setStage(stage){
+    this.responses.clear();this.anchorVisualId=null;this.anchorRope.visible=this.anchorMarker.visible=this.anchorClasp.visible=false;
     this.stage=stage;this.featureRoot.traverse(o=>{if(o.isMesh)o.geometry?.dispose();});this.featureRoot.clear();this.featureNodes=[];this.particleData=[];
     const dusk=stage.chapter===2;this.scene.fog.color.setHex(dusk?0x8b94b6:0x9bcab9);this.renderer.setClearColor(dusk?0x8b94b6:0x9bcab9);
     this.waterDeep.setHex(dusk?0x1b7897:0x138e9c);this.waterEdge.setHex(dusk?0x63acb7:0x58bcb0);
@@ -296,6 +388,7 @@ export class RapidsRenderer{
         parts.push(part([.11,1.55,.11],[0,.7,0],0x805d38),part([.82,.78,.11],[.22,1.4,.03],0x493f35),
           part([.73,.69,.055],[.22,1.4,.105],color),part([.48,.18,.48],[0,.06,0],C.gold),...buoyGlyph(f.shape||'square'));
         root.userData.collected=false;root.userData.collectProgress=0;
+        if(f.tidePhase)this.addPhaseMarker(root,f.tidePhase);
         const lane=sculpture([part([this.featureWidth(f.s,f.width||.82),.035,.24],[0,.025,0],color)],this.currentMat);lane.userData.lateralScale=true;root.add(lane);
       }else if(k==='gate'){
         const w=this.featureWidth(f.s,f.width||1.1),height=f.height||1.2,bandHeight=Math.min(.07,height*.15);
@@ -304,8 +397,15 @@ export class RapidsRenderer{
         // alone carries the same board-clearance height as the simulation.
         for(const side of [-1,1])parts.push(part([.16,2.35,.24],[side*(w/2+.13),1.175,0],C.wood),part([.4,.14,.42],[side*(w/2+.13),2.42,0],C.gold));
         const barrier=sculpture([part([w,height,.26],[0,height/2,0],0xd59045),part([w,bandHeight,.3],[0,height-bandHeight/2,0],C.cream)],this.material);root.add(barrier);root.userData.barrier=barrier;root.userData.barrierHeight=height;
+        const phase=new THREE.Group();phase.position.set(-w/2-.13,2.65,0);
+        phase.add(sculpture([part([.58,.13,.14],[0,0,0],0xaaffd4)],this.targetMat),sculpture([part([.14,.46,.14],[0,0,0],0xffb18b)],this.targetMat),sculpture([part([.74,.07,.18],[0,-.31,0],C.cream)],this.targetMat));
+        root.add(phase);root.userData.phaseIndicator=phase;
       }else if(['anchor','mooring','bay'].includes(k)){
-        parts.push(part([.8,.2,1.1],[0,.02,0],C.wood),part([.24,.8,.24],[0,.5,0],0xb07849),part([.4,.23,.4],[0,.96,0],0xe68166));
+        parts.push(part([.8,.2,1.1],[0,.02,0],C.wood),part([.2,.12,.2],[0,.18,0],0xe68166));
+        if(k==='bay'){
+          const post=sculpture([part([.7,.2,.8],[0,.04,0],0x6a4a2c),part([.25,.95,.27],[0,.57,0],0xb07849),part([.46,.16,.46],[0,1.12,0],C.gold),part([.14,.2,.14],[0,1.12,.2],0xffe8b3)],this.material);
+          post.castShadow=true;post.receiveShadow=true;root.add(post);root.userData.bankPost=post;
+        }
       }else if(k==='bridge'){
         const height=2.5+(f.clearance||.9),length=f.length||10,deckParts=[];
         for(const d of [0,length]){const w=this.featureWidth(f.s+d,f.width||2),x=this.featureOffset(f,d);for(const side of [-1,1])parts.push(part([.25,height,.3],[x+side*w/2,height/2,-d],C.gold));}
@@ -342,8 +442,9 @@ export class RapidsRenderer{
         for(let i=0;i<segments;i++){const d=(i+.5)*length/segments,w=this.featureWidth(target.sStart+d,target.width),x=this.featureOffset(landingFeature,d);for(const side of [-1,1])frameParts.push(part([.1,.07,length/segments+.08],[x+side*w/2,.06,-d],0xb2ffe0));}
         for(const d of [0,length]){const w=this.featureWidth(target.sStart+d,target.width),x=this.featureOffset(landingFeature,d);frameParts.push(part([w,.07,.12],[x,.06,-d],0xb2ffe0));for(const side of [-1,1])frameParts.push(part([.22,.32,.22],[x+side*w/2,.2,-d],0xffdf8c));}
         landing.add(sculpture(frameParts,this.targetMat));
-        const centerX=this.featureOffset(landingFeature,length/2),reticle=sculpture([part([.68,.045,.12],[centerX,.08,-length/2],0xffe6aa),part([.12,.045,.68],[centerX,.08,-length/2],0xffe6aa)],this.targetMat);landing.add(reticle);
-        if(target.tidePhase){const unavailable=sculpture([part([.15,.07,1.2],[centerX,.16,-length/2],0xffa46f,[0,Math.PI/4,0]),part([.15,.07,1.2],[centerX,.16,-length/2],0xffa46f,[0,-Math.PI/4,0])],this.targetMat);landing.add(unavailable);landing.userData.inactiveMark=unavailable;}
+        const centerX=this.featureOffset(landingFeature,length/2);
+        if(!target.tidePhase){const reticle=sculpture([part([.68,.045,.12],[centerX,.08,-length/2],0xffe6aa),part([.12,.045,.68],[centerX,.08,-length/2],0xffe6aa)],this.targetMat);landing.add(reticle);}
+        if(target.tidePhase)this.addPhaseMarker(landing,target.tidePhase,{x:centerX,z:-length/2,landing:true});
         this.featureRoot.add(landing);this.featureNodes.push(landing);
       }
     }
@@ -353,6 +454,7 @@ export class RapidsRenderer{
   render(race,dt=0){
     if(this.disposed||!race?.stage)return;
     this.lastRace=race;if(this.stage!==race.stage)this.setStage(race.stage);
+    this.reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const p=race.player,s=p.s,clock=race.activeTime||0,decorativeClock=this.reduce?0:clock;
     this.ground.position.set(this.worldX(s+20),-.74,-s-40);
     const lightX=this.worldX(s+14);this.sun.target.position.set(lightX,0,-s-14);this.sun.position.set(lightX-18,30,-s+8);this.sun.target.updateMatrixWorld();
@@ -419,6 +521,8 @@ export class RapidsRenderer{
         }
       }
       if(!node.visible)continue;
+      if(node.userData.bankPost){this.bayBankPoint(f,clock,this.bankPoint);const post=node.userData.bankPost;post.position.set(this.bankPoint.x-node.position.x,0,this.bankPoint.z-node.position.z);post.visible=-this.bankPoint.z-s>=-12&&-this.bankPoint.z-s<=42;}
+      this.updatePhaseMarker(node,clock);this.updateGateIndicator(node,clock);
       if(node.userData.barrier){node.userData.barrier.position.y=gateIsOpen(f,clock)?-node.userData.barrierHeight-.12:0;}
       if(node.userData.bridgeDeck)node.userData.bridgeDeck.position.y=2.5+(f.tidal&&tideLabel(clock)==='early'?f.lowClearance:f.clearance);
       if(node.userData.rotor)node.userData.rotor.rotation.z=clock*Math.PI*2/(f.period||4.2);
@@ -426,7 +530,7 @@ export class RapidsRenderer{
       if(node.userData.inactiveMark)node.userData.inactiveMark.visible=tideLabel(clock)!==f.tidePhase;
     }
     const racers=[p,...(race.rivals||[])];
-    this.models.forEach((model,i)=>{const r=racers[i];model.group.visible=Boolean(r)&&r.s-s>-12&&r.s-s<42;if(!r)return;model.group.position.set(this.worldX(r.s,r.x),r.y||0,-r.s);model.group.rotation.y=clamp(-(r.vx||0)*.1,-.35,.35);model.body.rotation.z=clamp(-(r.vx||0)*.1,-.22,.22);model.board.rotation.x=(r.y||0)>.05?clamp((r.vy||0)*-.035,-.2,.2):0;model.arms.forEach((arm,j)=>arm.rotation.z=(j===0?-1:1)*(.4+((r.y||0)>.05?.5:0)));});
+    this.models.forEach((model,i)=>{const r=racers[i];model.group.visible=Boolean(r)&&r.s-s>-12&&r.s-s<42;if(!r)return;model.group.position.set(this.worldX(r.s,r.x),r.y||0,-r.s);model.group.rotation.y=clamp(-(r.vx||0)*.1,-.35,.35);const response=this.reaction(r.id,clock),weight=response?.weight||0,land=response?.kind==='land',hit=response?.kind==='hit';model.body.position.y=land?-.09*weight:0;model.body.scale.y=land?1-.08*weight:1;model.body.rotation.x=land?.07*weight:hit?-.1*weight:0;model.body.rotation.z=clamp(-(r.vx||0)*.1,-.22,.22)+(hit?.16:response?.kind==='bump'?.05:0)*weight*(Math.sign(r.vx)||1);model.board.rotation.x=(r.y||0)>.05?clamp((r.vy||0)*-.035,-.2,.2):0;model.arms.forEach((arm,j)=>arm.rotation.z=(j===0?-1:1)*(.4+((r.y||0)>.05?.5:0)));});
     for(let i=0;i<4;i++){
       const r=racers[i],visible=Boolean(r)&&r.s-s>-12&&r.s-s<42;
       this.matrix(this.contactShadows,i,visible?[this.worldX(r.s,r.x),.013,-r.s]:[0,-1000,0],visible?[1.05+(r.y||0)*.16,.012,1.9+(r.y||0)*.2]:[0,0,0]);
@@ -440,8 +544,10 @@ export class RapidsRenderer{
     for(let i=0;i<64;i++){const v=this.particleData[i];this.matrix(this.particles,i,v?[v.x,v.y,v.z]:[0,-1000,0],v?[.08,.08,.08]:[0,0,0]);}this.particles.instanceMatrix.needsUpdate=true;
     const cx=this.worldX(s+8),cameraHeight=this.aspect>1.4?20:23;
     this.camera.position.set(cx+3*this.xSpread,cameraHeight,-s+16);this.camera.lookAt(cx,.3,-s-13);
+    this.camera.updateMatrixWorld(true);for(const node of this.featureNodes)this.fitPhaseMarker(node);
+    this.updateAnchor(race);
     this.renderer.render(this.scene,this.camera);
   }
   measure(){return {revision:THREE.REVISION,calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,pixelRatio:this.renderer.getPixelRatio(),activeBoard:this.appearance.boardId,cosmetic:this.appearance.cosmetic,shadowMapSize:this.sun.shadow.mapSize.x};}
-  dispose(){if(this.disposed)return;this.disposed=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);const geometries=new Set(),materials=new Set([this.material,this.waterMat,this.ridgeMat,this.woodMat,this.rockMat,this.leafMat,this.foamMat,this.currentMat,this.targetMat]);this.scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));});for(const g of geometries)g.dispose();for(const m of materials)m.dispose();this.sun.shadow.dispose();this.renderer.dispose();this.canvas.remove();this.particleData.length=0;this.boardVariants.clear();this.featureNodes.length=0;this.lastRace=null;}
+  dispose(){if(this.disposed)return;this.disposed=true;this.resizeObserver.disconnect();this.canvas.removeEventListener('webglcontextlost',this.onLost);const geometries=new Set(),materials=new Set([this.material,this.waterMat,this.ridgeMat,this.woodMat,this.rockMat,this.leafMat,this.foamMat,this.currentMat,this.targetMat,this.ropeMat,this.phaseMat]);this.scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));});for(const g of geometries)g.dispose();for(const m of materials)m.dispose();this.sun.shadow.dispose();this.renderer.dispose();this.canvas.remove();this.responses.clear();this.anchorVisualId=null;this.particleData.length=0;this.boardVariants.clear();this.featureNodes.length=0;this.lastRace=null;}
 }

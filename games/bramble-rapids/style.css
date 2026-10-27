@@ -18,3 +18,28 @@
 #feedback:not(:empty){padding:4px 10px}
 /* In shallow arenas, keep the bounded message above the near-camera racers. */
 @media(orientation:landscape){#feedback{bottom:30%}}
+
+/* Noninteractive presentation only; all travel coordinates are viewport CSS px. */
+.rapids-motion-layer{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden;contain:layout style paint}
+.rapids-motion-proxy{position:absolute;width:20px;height:20px;pointer-events:none;display:grid;place-items:center;font:800 12px/1 system-ui;border-radius:5px;background:#fff0cf;color:#3d493e;border:2px solid #e8bd65;box-sizing:border-box}
+.rapids-motion-proxy.is-flag{border-color:#f18e75}.rapids-motion-proxy.is-block{object-fit:contain;background:transparent;border:0}
+.rapids-collection-destination{position:absolute;top:52px;right:12px;z-index:5;max-width:46%;padding:3px 7px;border-radius:7px;background:#fff4d9;color:#263d3d;font:750 12px/18px system-ui;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rapids-collection-destination[data-kind="bonus"]{top:80px}
+
+/* Phase information appears only near a phase target; controls keep their fixed row. */
+#routeCue[data-phase="true"]{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);gap:4px 8px}
+#routeCue[data-phase="true"] #targetCue,#routeCue[data-phase="true"] #gateCue{max-width:none;min-width:0}
+#routeCue #phaseCue{grid-column:1/-1;max-width:none;min-height:0;padding:4px 8px;font-size:12px;line-height:16px;overflow-wrap:anywhere}
+#phaseCue[data-ready="true"]{border-inline-start:3px solid #278b6a}#phaseCue[data-ready="false"]{border-inline-start:3px solid #a95c32}
+#feedback{white-space:pre-line}
+#routeCue[data-phase="true"]~.rapids-collection-destination{top:96px}#routeCue[data-phase="true"]~.rapids-collection-destination[data-kind="bonus"]{top:124px}
+
+/* One bounded phase-information row on wide/shallow canvases; logical columns follow RTL. */
+@media(min-width:600px),(orientation:landscape){
+  #routeCue[data-phase="true"]{grid-template-columns:minmax(0,1fr) minmax(0,.9fr) minmax(0,1.35fr);align-items:stretch;gap:6px}
+  #routeCue[data-phase="true"] #targetCue{grid-column:1}
+  #routeCue[data-phase="true"] #gateCue{grid-column:2}
+  #routeCue[data-phase="true"] #phaseCue{grid-column:3;min-height:34px;padding:7px 8px;line-height:16px}
+  #routeCue[data-phase="true"]~.rapids-collection-destination{top:60px}
+  #routeCue[data-phase="true"]~.rapids-collection-destination[data-kind="bonus"]{top:88px}
+}

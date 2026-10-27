@@ -33,10 +33,25 @@ import './campaign-copy.js';
   const key = 'weightplay-moonlight-workshop-best-stage';
   const recordsKey = 'weightplay-moonlight-workshop-routes-v1';
   const read = (name, fallback) => { try { return localStorage.getItem(name) ?? fallback; } catch { return fallback; } };
-  const save = (name, value) => { try { localStorage.setItem(name, value); } catch { /* Play remains available without storage. */ } };
   let {best,records}=normalizeProgress(read(key,'0'),read(recordsKey,'{}'),profiles.length);
   function mergeStored(){const merged=mergeProgress({best,records},normalizeProgress(read(key,'0'),read(recordsKey,'{}'),profiles.length));best=merged.best;records=merged.records;}
-  function persist(){mergeStored();save(key,String(best));save(recordsKey,JSON.stringify(records));}
+  function persist(){
+    // Do not grant a shared reward on a missing, rejected or unconfirmed save.
+    // Keep unknown record fields and fail closed on corrupt known values.
+    try{
+      const oldBest=localStorage.getItem(key),oldRecords=localStorage.getItem(recordsKey);
+      if(oldBest!==null&&(!/^\d+$/.test(oldBest)||!Number.isSafeInteger(Number(oldBest))))throw Error('invalid progress');
+      const raw=oldRecords===null?{}:JSON.parse(oldRecords);
+      if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Error('invalid records');
+      for(const [name,value] of Object.entries(raw))if(/^\d+$/.test(name)&&Number(name)>=1&&Number(name)<=profiles.length&&((typeof value!=='number'&&typeof value!=='string')||String(value).trim()===''||!Number.isFinite(Number(value))||Number(value)<1))throw Error('invalid score');
+      const merged=mergeProgress({best,records},normalizeProgress(oldBest??'0',raw,profiles.length));
+      const bestBytes=String(Math.max(Number(oldBest??0),merged.best)),recordBytes=JSON.stringify({...raw,...merged.records});
+      if(localStorage.getItem(key)!==oldBest||localStorage.getItem(recordsKey)!==oldRecords)throw Error('stale progress');
+      localStorage.setItem(key,bestBytes);localStorage.setItem(recordsKey,recordBytes);
+      if(localStorage.getItem(key)!==bestBytes||localStorage.getItem(recordsKey)!==recordBytes)throw Error('unconfirmed progress');
+      best=merged.best;records=merged.records;return true;
+    }catch{return false;}
+  }
   let selectedStageIndex = Math.min(profiles.length - 1, best);
   const stageConfig = createMoonlightWorkshopStageConfig({profiles,getState:()=>({
     best, records, names:names(), mechanics:mechanics(), stageLabel:common(9), bestLabel:common(8),
@@ -44,11 +59,6 @@ import './campaign-copy.js';
   })});
   let stageSelector = null;
   let screen = 'main', stage = 1, game, history = [], hinted = null, notice = '', resultWin = false, leaving = false;
-  window.addEventListener('weightplay:castle-reward',event=>{
-    if(event.detail?.gameId==='animal-moonlight-workshop'&&screen==='result')queueMicrotask(()=>{
-      if(screen==='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
-    });
-  });
   const directions = {up:[0,-1,'↑',16],left:[-1,0,'←',17],down:[0,1,'↓',18],right:[1,0,'→',19]};
   const audio = window.WeightPlayAudio?.createScope();
   const effects = new Set();
@@ -134,8 +144,9 @@ import './campaign-copy.js';
     });
     return stageSelector;
   }
-  const measure = {screen:'main',roundKey:null,started:false,ended:false,restart:false,outcome:'complete'};
-  const observe = () => { try { window.WonderAnalytics?.game?.observeState(() => ({...measure,screen:screen==='battle'&&!leaving?'battle':screen==='main'||screen==='stage'?screen:null,paused:leaving||Boolean(document.querySelector('.wp-shell-settings-popover:not([hidden])')),node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d']})); } catch { /* Optional local telemetry. */ } };
+  const measure = {screen:'main',roundKey:null,started:false,ended:false,restart:false,outcome:'complete',stageId:null,stageIdAuthoritative:true,rewardEligible:true,saveSucceeded:false};
+  let settlementPending=false;
+  const observe = () => { try { const tracker=window.WonderAnalytics?.game;if(tracker?.supportsRewardEligibility===true&&tracker?.supportsSavedCompletionGate===true)tracker.observeState(() => ({...measure,screen:screen==='battle'&&!leaving?'battle':screen==='main'||screen==='stage'?screen:null,paused:leaving||Boolean(document.querySelector('.wp-shell-settings-popover:not([hidden])')),node:document.body,activityMode:'input',idleSeconds:300,keyboardKeys:['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d']})); } catch { /* Older cached collectors cannot safely award saved clears. */ } };
   window.addEventListener('weightplay:analytics-ready',observe);
   function feedback(message) {
     notice=message; feedbackNode.textContent=message;
@@ -145,7 +156,6 @@ import './campaign-copy.js';
   function show(next) {
     cancelHint();if(help.open)help.close();
     settleEffects(); grid.getAnimations({subtree:true}).forEach(a=>a.cancel());
-    if(next!=='result')window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
     audio?.stop(); screen=next; leaving=false; if (dialog.open) dialog.close();
     document.body.dataset.screen = next==='result'?'battle':next;
     document.querySelector('[data-wp-game-guide]')?.toggleAttribute('hidden',next!=='main');
@@ -181,13 +191,16 @@ import './campaign-copy.js';
     if(game) render();
   }
   function start(n,replay=false) {
+    // The shared observer settles in a microtask; keep the completed round's
+    // identity intact if another screen requests a new round synchronously.
+    if(settlementPending){const completed=measure.roundKey;queueMicrotask(()=>{if(measure.roundKey===completed)start(n,replay)});return;}
     if (n<1 || n>Math.min(profiles.length,best+1)) return;
     selectedStageIndex=n-1;
     stageSelector?.select(selectedStageIndex,{center:true,notify:false});
     updateStageProgress();
     cancelHint();stage=n; game=initial(profiles[n-1]); history=[]; hinted=null; notice=''; resultWin=false;
     $('stage-label').textContent=`${common(9)} ${stage} / ${profiles.length}`;
-    measure.roundKey={}; measure.started=true; measure.ended=false; measure.restart=replay; measure.outcome='complete';
+    measure.roundKey={}; measure.started=true; measure.ended=false; measure.restart=replay; measure.outcome='complete';measure.stageId=n;measure.saveSucceeded=false;
     show('battle'); render(); feedback(stage<=6?mechanics()[stage-1]:names()[stage-1]);
     sound('game.start');
   }
@@ -234,13 +247,12 @@ import './campaign-copy.js';
   }
   function finish(win) {
     resultWin=win;
-    if(win){mergeStored();best=Math.max(best,stage);const old=Number(records[stage]);records[stage]=Number.isFinite(old)&&old>0?Math.min(old,game.steps):game.steps;persist();}
+    if(win){mergeStored();best=Math.max(best,stage);const old=Number(records[stage]);records[stage]=Number.isFinite(old)&&old>0?Math.min(old,game.steps):game.steps;measure.saveSucceeded=persist();}
     measure.ended=true; measure.outcome=win?'win':'lose';
     $('result-title').textContent=win?t(14):common(11);
     $('result-copy').textContent=win?`${names()[stage-1]} · ${game.steps} / ${profiles[stage-1].limit} · ${count(game.mask)}/${profiles[stage-1].switches.length} ${t(23)}`:t(11);
     $('next').disabled=!win||stage>=profiles.length; $('next').setAttribute('aria-disabled',String($('next').disabled));
-    localize(); show('result'); sound(win?'result.win':'result.lose');
-    if(win) window.WeightPlayCastle?.dismissRewardNotice?.('animal-moonlight-workshop');
+    settlementPending=true;localize(); show('result');queueMicrotask(()=>{settlementPending=false});sound(win?'result.win':'result.lose');
     $('retry').focus({preventScroll:true});
   }
   function render() {

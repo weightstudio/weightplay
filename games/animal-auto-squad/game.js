@@ -20,7 +20,7 @@
   document.body.dataset.wpCombinedSound = "true";
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v41";
+  const GAME_VERSION = "v42";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -5998,10 +5998,11 @@
     resultOwnershipObserver?.disconnect();
     resultOwnershipObserver = null;
     const battleContent = nodes.gamePanel.querySelector(":scope > .wp-frame-play-content");
-    // The shared Battle frame keeps its play row display:flex!important. Use
-    // an inline priority only while the Result owns the screen so the canvas,
-    // summary and pace controls cannot remain painted underneath the modal.
-    if (battleContent) {
+    const resultInBattleContent = battleContent && nodes.resultPanel.parentElement === battleContent;
+    // Older frames place Result beside the play row; hide that row in that
+    // layout. I9 places Result inside the play row, so keep its parent visible
+    // and make only its siblings inert while the Result owns the screen.
+    if (battleContent && !resultInBattleContent) {
       if (active) {
         battleContent.style.setProperty("display", "none", "important");
         battleContent.style.setProperty("visibility", "hidden", "important");
@@ -6012,7 +6013,8 @@
         battleContent.style.removeProperty("pointer-events");
       }
     }
-    [...nodes.gamePanel.children].forEach((child) => {
+    const resultHost = resultInBattleContent ? battleContent : nodes.gamePanel;
+    [...resultHost.children].forEach((child) => {
       if (child === nodes.resultPanel) return;
       child.inert = active;
       if (active) child.setAttribute("aria-hidden", "true");
@@ -6025,7 +6027,7 @@
         record.addedNodes.forEach((child) => setCoveredBattleChild(child, nodes.resultPanel, true));
       });
     });
-    resultOwnershipObserver.observe(nodes.gamePanel, { childList: true });
+    resultOwnershipObserver.observe(resultHost, { childList: true });
   }
 
   function visibleResultActions() {

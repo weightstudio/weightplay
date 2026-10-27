@@ -1,0 +1,10 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17716-e595-7c92-acb8-65902ae49027",
+  "created": "2026-10-27",
+  "method": "image_gen edit of the earlier sourced corner draft",
+  "reference": "games/animal-postcard-crop/assets/stage60-forest-corner-v9-draft.png",
+  "original": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-7da7ee48-61a8-46ee-a22b-ef556c71792e.png",
+  "prompt": "Edit this existing transparent ornament into a game sprite optimized for display at only 8 to 12 pixels. Keep the same simple block-leaf and cream-square concept, but simplify to two or three large flat high-contrast shapes, with a clean bold dark outline. Make the entire ornament fill 85–90% of the square canvas width and height, centered, with only a narrow uniform transparent margin. Remove every stray pixel, glow, shadow, noise and semitransparent residue from the empty background; preserve a transparent alpha background. No text, no other objects, no frame, no mockup. The result must be one compact, very readable square sprite.",
+  "remaining": "Independent Art review, transparency, small-size readability and actual gameplay fit for every frame proportion; do not treat as approved."
+}

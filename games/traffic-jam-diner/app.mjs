@@ -1,133 +1,266 @@
 import * as THREE from './vendor/three/three.module.min.js';
-import { CAMPAIGN_STAGES, SNACKS } from './campaign.mjs';
-import { normalizeStage, createInitialState, legalActions, applyAction, isWon } from './engine.mjs';
+import { CAMPAIGN_STAGES, SNACKS } from './campaign.mjs?v=20261027-diner-rebuild-v23';
+import { normalizeStage, createInitialState, legalActions, applyAction, isWon, routeForMove, stateKey } from './engine.mjs?v=20261027-diner-rebuild-v23';
 import { GAME_COPY, LOCALE_LABELS } from './copy.mjs';
 import { LEAVE_UI } from './interface-copy.mjs';
+import {REBUILD_COPY,stageTitle} from './rebuild-copy.mjs?v=20261027-diner-rebuild-v23';
+import {DinerScene} from './render.mjs?v=20261027-diner-rebuild-v23';
+import {LocalPractice} from '../../src/game-local-practice.mjs';
 
 const $ = s => document.querySelector(s), localeSelect=$('#localeSelect'), root=$('#app');
-let locale='en', stage, state, undoStack=[], selectedGuest=null, candidates=[], scene, camera, renderer, raycaster, pointer, boardGroup, frame, paused=false, timer=null;
-const CHARACTER_ART={turtle:'/Assets/traffic-jam-diner/taro-block-sprite.webp',fox:'/Assets/traffic-jam-diner/fia-block-sprite.webp',rabbit:'/Assets/traffic-jam-diner/mimi-block-sprite.webp',bear:'/Assets/traffic-jam-diner/panko-block-sprite.webp'};
-let characterTextures={}, activeMoveAnimation=null;
-let assetsReady=false;
+let locale='en',stage,state,undoStack=[],selectedGuest=null,candidates=[],renderer,frame,paused=false;
+let selectedStageIndex=0,stageRail=null,run=0,startRequest=0,hintWorker=null,hintRequest=0,hintTimer=0,practiceRun=false,busy=false;
+const effects=new Set();
+const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const totalStars=()=>Object.values(save.best).reduce((n,b)=>n+(Number(b.stars)||0),0);
+const CHARACTER_ART={turtle:'/games/traffic-jam-diner/assets/taro-block-sprite-v23.webp',fox:'/games/traffic-jam-diner/assets/fia-block-sprite-v23.webp',rabbit:'/games/traffic-jam-diner/assets/mimi-block-sprite-v23.webp',bear:'/games/traffic-jam-diner/assets/panko-block-sprite-v23.webp'};
+let characterTextures={};
+let assetsReady=false,entryLoader=null,assetGeneration=0,loadTimedOut=false;
 const saveKey='weightplay:traffic-jam-diner:v1', backupKey=`${saveKey}:backup`;
 const fresh=()=>({version:1,unlocked:1,best:{},lastStage:1,ownedItems:[],boardStyle:'classic'});
-function loadSave(){ for(const key of [saveKey,backupKey])try{const v=JSON.parse(localStorage.getItem(key));if(v?.version===1&&Number.isInteger(v.unlocked)&&v.unlocked>0)return {...fresh(),...v,ownedItems:Array.isArray(v.ownedItems)?v.ownedItems.filter(x=>x==='berry-grove-board'):[],boardStyle:v.boardStyle==='berry-grove'&&Array.isArray(v.ownedItems)&&v.ownedItems.includes('berry-grove-board')?'berry-grove':'classic'};}catch{} return fresh(); }
+function loadSave(){
+ for(const key of [saveKey,backupKey])try{
+  const value=JSON.parse(localStorage.getItem(key));if(value?.version!==1||!Number.isInteger(value.unlocked)||value.unlocked<1)continue;
+  const best={};for(const [id,record] of Object.entries(value.best||{}))if(Number.isInteger(Number(id))&&Number(id)>=1&&Number(id)<=CAMPAIGN_STAGES.length&&Number.isInteger(record?.moves)&&record.moves>=0&&Number.isInteger(record?.stars)&&record.stars>=1&&record.stars<=3)best[id]={moves:record.moves,stars:record.stars};
+  const ownedItems=Array.isArray(value.ownedItems)?value.ownedItems.filter(item=>item==='berry-grove-board'):[];
+  return {...fresh(),...value,unlocked:Math.min(CAMPAIGN_STAGES.length,value.unlocked),lastStage:Math.max(1,Math.min(CAMPAIGN_STAGES.length,Number(value.lastStage)||1)),best,ownedItems,boardStyle:value.boardStyle==='berry-grove'&&ownedItems.includes('berry-grove-board')?'berry-grove':'classic'};
+ }catch{}
+ return fresh();
+}
 let save=loadSave();
-function persist(){try{localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}catch{say('loadError','error');}}
-const t=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,v), (GAME_COPY[locale]||GAME_COPY.en)[key]||GAME_COPY.en[key]||key);
+function persist(){if(practiceRun)return;try{localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}catch{say('loadError','error');}}
+const t=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,v), (REBUILD_COPY[locale]?.[key]||GAME_COPY[locale]?.[key]||GAME_COPY.en[key]||key));
 const shopCost=12,shopItem='berry-grove-board',purchaseKey=`${saveKey}:purchase-pending`;
-function recoverPendingPurchase(){try{const pending=JSON.parse(localStorage.getItem(purchaseKey)||'null');if(!pending)return;const balance=Number(window.WeightPlayWallet?.read?.()?.diamonds)||0;if(pending.item===shopItem&&Number.isFinite(pending.before)&&balance<=pending.before-shopCost){save.ownedItems=[...new Set([...(save.ownedItems||[]),shopItem])];save.boardStyle='berry-grove';localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}localStorage.removeItem(purchaseKey);}catch{}}
-function renderStore(){const balance=Math.max(0,Number(window.WeightPlayWallet?.read?.()?.diamonds)||0),owned=save.ownedItems?.includes(shopItem);$('#shop-balance').textContent=String(balance);$('#shop-confirm').disabled=owned||balance<shopCost;$('#shop-confirm').textContent=owned?t('shopOwned'):t('shopConfirm');$('#shop-status').textContent=owned?t('shopBought'):balance<shopCost?t('shopNeedDiamonds'):localStorage.getItem(purchaseKey)?t('shopError'):'';}
+function recoverPendingPurchase(){if(new URLSearchParams(location.search).get('practice')==='1')return;try{const pending=JSON.parse(localStorage.getItem(purchaseKey)||'null');if(!pending)return;const balance=Number(window.WeightPlayWallet?.read?.()?.diamonds)||0;if(pending.item===shopItem&&Number.isFinite(pending.before)&&balance<=pending.before-shopCost){save.ownedItems=[...new Set([...(save.ownedItems||[]),shopItem])];save.boardStyle='berry-grove';localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}localStorage.removeItem(purchaseKey);}catch{}}
+function renderStore(){const balance=Math.max(0,Number(window.WeightPlayWallet?.read?.()?.diamonds)||0),owned=save.ownedItems?.includes(shopItem);$('#shop-balance').textContent=String(balance);$('#shop-classic').setAttribute('aria-pressed',String(save.boardStyle==='classic'));$('#shop-confirm').setAttribute('aria-pressed',String(owned&&save.boardStyle==='berry-grove'));$('#shop-confirm').disabled=practiceRun||(owned?save.boardStyle==='berry-grove':balance<shopCost);$('#shop-confirm').textContent=owned?t(save.boardStyle==='berry-grove'?'equipped':'equip'):t('shopConfirm');$('#shop-status').textContent=owned?t(save.boardStyle==='berry-grove'?'shopBought':'shopOwned'):balance<shopCost?t('shopNeedDiamonds'):localStorage.getItem(purchaseKey)?t('shopError'):'';}
 function openStore(){renderStore();$('#shop-dialog').hidden=false;$('#shop-cancel').focus({preventScroll:true});}
 function closeStore(){if(!$('#shop-dialog').hidden){$('#shop-dialog').hidden=true;$('#shop-open').focus({preventScroll:true});}}
 function buyBoardFinish(){
     if (window.WeightPlayWallet?.withTransaction && !window.WeightPlayWallet.inTransaction()) return window.WeightPlayWallet.withTransaction("traffic-jam-diner:app.mjs:buyBoardFinish", () => buyBoardFinish(...arguments));
-if(save.ownedItems?.includes(shopItem))return;const wallet=window.WeightPlayWallet;if(!wallet?.read||!wallet?.spendDiamonds){$('#shop-status').textContent=t('shopError');return;}const before=Math.max(0,Number(wallet.read()?.diamonds)||0);if(before<shopCost){renderStore();return;}try{localStorage.setItem(purchaseKey,JSON.stringify({item:shopItem,before}));if(!wallet.spendDiamonds(shopCost)){localStorage.removeItem(purchaseKey);renderStore();return;}save.ownedItems=[...new Set([...(save.ownedItems||[]),shopItem])];save.boardStyle='berry-grove';localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));localStorage.removeItem(purchaseKey);renderStore();closeStore();if(stage)drawBoard();audio('reward.upgrade');}catch(error){$('#shop-status').textContent=t('shopError');console.error('traffic-jam-diner purchase recovery pending',error);}}
+if(practiceRun)return;if(save.ownedItems?.includes(shopItem)){save.boardStyle='berry-grove';persist();renderStore();if(stage)refreshTheme();return;}const wallet=window.WeightPlayWallet;if(!wallet?.read||!wallet?.spendDiamonds){$('#shop-status').textContent=t('shopError');return;}const before=Math.max(0,Number(wallet.read()?.diamonds)||0);if(before<shopCost){renderStore();return;}try{localStorage.setItem(purchaseKey,JSON.stringify({item:shopItem,before}));if(!wallet.spendDiamonds(shopCost)){localStorage.removeItem(purchaseKey);renderStore();return;}save.ownedItems=[...new Set([...(save.ownedItems||[]),shopItem])];save.boardStyle='berry-grove';localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));localStorage.removeItem(purchaseKey);renderStore();closeStore();if(stage)refreshTheme();audio('shop.purchase');}catch(error){$('#shop-status').textContent=t('shopError');console.error('traffic-jam-diner purchase recovery pending',error);}}
 recoverPendingPurchase();
 const snackLabel=key=>t(SNACKS[key].labelKey);
 function snackImage(key){const image=document.createElement('img');image.src=SNACKS[key].asset;image.alt='';image.setAttribute('aria-hidden','true');image.draggable=false;return image;}
-async function loadCharacterArt(){const loader=new THREE.TextureLoader(),entries=Object.entries(CHARACTER_ART);characterTextures=Object.fromEntries(await Promise.all(entries.map(async([animal,src])=>{const texture=await loader.loadAsync(src);texture.colorSpace=THREE.SRGBColorSpace;return[animal,texture];})));await Promise.all(Object.values(SNACKS).map(item=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>image.naturalWidth>0?resolve():reject(new Error(`Empty food art: ${item.asset}`));image.onerror=()=>reject(new Error(`Food art failed: ${item.asset}`));image.src=item.asset;})));}
-function say(key,tone=''){const el=$('#battle-status');el.textContent=t(key);el.dataset.tone=tone;}
-function audio(event){try{window.WeightPlayAudio?.play?.(event,{gameId:'traffic-jam-diner'});}catch{}}
-function setLocale(value){locale=GAME_COPY[value]?value:'en';document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy));document.querySelectorAll('[data-copy-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.copyAria)));const labels={"#main-header h1":"title","[data-wp-game-title]":"title","#main-summary":"summary","#start-game":"start","#main-progress":"ready","#shop-open":"shopOpen","#stage-header h2":"choose","#stage-screen [data-wp-frame-stage-slot]":"stages","#basket-title":"basket","#serve-btn":"serve","#undo-btn":"undo","#hint-btn":"hint","#retry-btn":"retry","#map-btn":"map","#help-title":"howTitle","#help-copy":"how","#help-close":"close","#result-title":"clear","#result-replay":"retry","#result-map":"map","#guide-summary":"guideSummary","#guide-how-title":"guideHowTitle","#guide-how":"guideHow","#guide-rules-title":"guideRulesTitle","#guide-rules":"guideRules","#guide-topic-title":"topicTitle","#guide-topic":"topic","#guide-save-title":"saveTitle","#guide-save":"save","#guide-tag-one":"tagLane","#guide-tag-two":"tagOrder","#guide-tag-three":"tagCampaign","#fact-goal-label":"goalLabel","#fact-goal":"goal","#fact-style-label":"puzzleLabel","#fact-style":"puzzle","#fact-difficulty-label":"difficultyLabel","#fact-difficulty":"difficulty","#fact-time-label":"timeLabel","#fact-time":"time"};for(const [selector,key]of Object.entries(labels)){const el=$(selector);if(el)el.textContent=key==='ready'?t(assetsReady?'ready':'loading',{n:save.lastStage}):t(key);}$('#main-summary')?.style.setProperty('color','#163b49','important');const next=$('#result-next');if(next&&stage)next.textContent=t('stage',{n:Math.min(stage.id+1,CAMPAIGN_STAGES.length)});$('#basket-title').style.color='var(--diner-ink)';$('#localeSelect').value=locale;renderStages();if(stage)renderBoard();renderStore();updateLeaveCopy();}
-function initFrame(){frame=window.WeightPlayScreenFrame?.mount?.({root,localeSelect,scenes:{main:{root:$('#main-screen'),header:$('#main-header'),content:$('#main-content')},stage:{root:$('#stage-screen'),header:$('#stage-header'),content:$('#stage-content')},battle:{root:$('#battle-screen'),header:$('#battle-header'),content:$('#battle-content'),headerInfo:$('#battle-info')}}});enter('main');}
-// The shared selector owns the nine reusable cards, input, snap and ARIA.
-let stageRail=null,stageRefitFrame=0;
-function scheduleStageRefit(){
- if(stageRefitFrame)return;
- stageRefitFrame=requestAnimationFrame(()=>{stageRefitFrame=0;if(document.body.dataset.screen==='stage')stageRail?.center();});
+async function loadCharacterArt(isCurrent,onProgress){
+ let loadedCount=0;const loader=new THREE.TextureLoader(),entries=[...Object.entries(CHARACTER_ART),...Object.entries(SNACKS).map(([key,item])=>[`snack_${key}`,item.asset])],results=await Promise.allSettled(entries.map(async([animal,src])=>{const texture=await loader.loadAsync(src);texture.colorSpace=THREE.SRGBColorSpace;if(isCurrent())onProgress(++loadedCount,entries.length);return [animal,texture];}));
+ const loaded=results.filter(result=>result.status==='fulfilled').map(result=>result.value);
+ try{
+  if(results.some(result=>result.status==='rejected'))throw new Error('Character art unavailable');
+  await Promise.all(Object.values(SNACKS).map(item=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>image.naturalWidth?resolve():reject(new Error('Empty food art'));image.onerror=()=>reject(new Error('Food art unavailable'));image.src=item.asset;})));
+  if(!isCurrent()){for(const [,texture] of loaded)texture.dispose();return false;}for(const texture of Object.values(characterTextures))texture.dispose();characterTextures=Object.fromEntries(loaded);return true;
+ }catch(error){for(const [,texture] of loaded)texture.dispose();throw error;}
 }
-function bindStageCard(button,index){
- const s=CAMPAIGN_STAGES[index],locked=s.id>save.unlocked;
- button.className='stage-card';button.dataset.cleared=String(Boolean(save.best[s.id]));button.dataset.stageId=String(s.id);
- button.setAttribute('aria-disabled',String(locked));
- button.setAttribute('aria-label',`${t('stage',{n:s.id})}${locked?`, ${t('locked')}`:''}`);
- button.innerHTML=`<span class="stage-number">${s.id}</span><span class="stage-rule">${s.arc===1?'✦':s.arc===2?'◈':s.arc===3?'◉':s.arc===4?'↗':s.arc===5?'★':'✧'}</span><span class="stage-par">${t('result',{moves:s.targetMoves,par:s.par})}</span>${save.best[s.id]?`<small>★ ${save.best[s.id].stars}</small>`:''}`;
-}
-function renderStages(){
- const rail=$('#stage-list');if(!rail)return;
- if(!stageRail){
-  if(!window.WeightPlayStageV6)throw new Error('Shared Stage selector unavailable');
-  stageRail=window.WeightPlayStageV6.install(rail,{total:()=>CAMPAIGN_STAGES.length,poolSize:9,cardSelector:'.stage-card',bind:bindStageCard,initialIndex:()=>save.unlocked-1,activate:index=>{const s=CAMPAIGN_STAGES[index];if(s&&s.id<=save.unlocked)startStage(s.id);}});
- }else stageRail.refresh();
- $('#stage-progress').textContent=t('unlocked',{n:save.unlocked});scheduleStageRefit();
-}
-function bindStageSelector(){
- const observer=new ResizeObserver(scheduleStageRefit);observer.observe($('#stage-list'));
- window.addEventListener('resize',scheduleStageRefit);
- window.addEventListener('pagehide',()=>{observer.disconnect();cancelAnimationFrame(stageRefitFrame);window.removeEventListener('resize',scheduleStageRefit);stageRail?.destroy();});
-}
+function say(key,tone='',args={}){const el=$('#battle-status');el.textContent=t(key,args);el.dataset.tone=tone;emphasize(el,tone==='error');}
+let audioScope=null;
+function audio(event){try{audioScope??=window.WeightPlayAudio?.createScope?.();audioScope?.play(event);}catch{}}
+function setLocale(value){locale=GAME_COPY[value]?value:'en';document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.querySelectorAll('[data-copy]').forEach(el=>el.textContent=t(el.dataset.copy));document.querySelectorAll('[data-copy-aria]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.copyAria)));const labels={"#queue-label":"order","#order-label":"order","#main-header h1":"title","[data-wp-game-title]":"title","#main-summary":"summary","#start-game":"start","#main-progress":"ready","#shop-open":"shopOpen","#stage-header h2":"choose","#stage-screen [data-wp-frame-stage-slot]":"stages","#basket-title":"basket","#serve-btn":"serve","#undo-btn":"undo","#hint-btn":"hint","#retry-btn":"retry","#map-btn":"map","#help-title":"howTitle","#help-copy":"how","#help-close":"close","#result-title":"clear","#result-replay":"retry","#result-map":"map","#guide-summary":"guideSummary","#guide-how-title":"guideHowTitle","#guide-how":"guideHow","#guide-rules-title":"guideRulesTitle","#guide-rules":"guideRules","#guide-topic-title":"topicTitle","#guide-topic":"topic","#guide-save-title":"saveTitle","#guide-save":"save","#guide-tag-one":"tagLane","#guide-tag-two":"tagOrder","#guide-tag-three":"tagCampaign","#fact-goal-label":"goalLabel","#fact-goal":"goal","#fact-style-label":"puzzleLabel","#fact-style":"puzzle","#fact-difficulty-label":"difficultyLabel","#fact-difficulty":"difficulty","#fact-time-label":"timeLabel","#fact-time":"time"};for(const [selector,key]of Object.entries(labels)){const el=$(selector);if(el)el.textContent=key==='ready'?t(assetsReady?'ready':'loading',{n:save.lastStage}):t(key);}const next=$('#result-next');if(next&&stage)next.textContent=t('stage',{n:Math.min(stage.id+1,CAMPAIGN_STAGES.length)});$('#localeSelect').value=locale;renderStages();if(stage)updateUI();renderStore();updateLeaveCopy();updateMain();}
 
-function enter(name){frame?.activate?.(name);for(const scene of ['main','stage','battle']){const node=$(`#${scene}-screen`);if(node)node.hidden=scene!==name;}document.body.dataset.screen=name;if(name==='stage')scheduleStageRefit();}
-// UI-only snapshot detects whether leaving can discard an unfinished attempt.
-let battleEntryState=null;
-function updateLeaveCopy(){
- const copy=LEAVE_UI[locale]||LEAVE_UI.en;
- $('#leave-title').textContent=copy.title.replace('{stage}',t('stage',{n:stage?.id||save.lastStage}));
- $('#leave-copy').textContent=copy.body;$('#leave-continue').textContent=copy.continue;$('#leave-confirm').textContent=copy.leave;
+function emphasize(element,error=false){
+ if(!element)return;const animation=element.animate(reduced()?[{opacity:.5},{opacity:1}]:error?[{transform:'translateX(-3px)'},{transform:'translateX(3px)'},{transform:'none'}]:[{opacity:.55},{opacity:1}],{duration:reduced()?80:180});
+ effects.add(animation);animation.finished.then(()=>effects.delete(animation),()=>effects.delete(animation));
 }
-function closeLeave(){paused=false;$('#leave-panel').hidden=true;}
+function cancelEffects(){audioScope?.stop();for(const animation of effects)animation.cancel();effects.clear();renderer?.cancel();hintRequest++;clearTimeout(hintTimer);hintWorker?.terminate();hintWorker=null;busy=false;}
+function transferFood(key,source,target){
+ if(!source||!target)return;const from=source.getBoundingClientRect(),to=target.getBoundingClientRect();
+ const image=snackImage(key);image.className='food-flight';image.style.cssText=`left:${from.x+from.width/2-18}px;top:${from.y+from.height/2-18}px`;
+ document.body.append(image);
+ const frames=reduced()?[{opacity:1},{opacity:0}]:[{transform:'translate(0,0) scale(1)'},{transform:`translate(${to.x+to.width/2-from.x-from.width/2}px,${to.y+to.height/2-from.y-from.height/2}px) scale(.7)`}];
+ const animation=image.animate(frames,{duration:reduced()?80:320,easing:'cubic-bezier(.2,.7,.2,1)'});effects.add(animation);
+ animation.finished.then(()=>{image.remove();effects.delete(animation);emphasize(target);},()=>{image.remove();effects.delete(animation);});
+}
+function updateMain(){if(!assetsReady)return;$('#main-progress').textContent=`${t('stage',{n:save.unlocked})} / ${CAMPAIGN_STAGES.length}`;}
+function initFrame(){
+ const shop=$('#shop-dialog');root.append(shop);$('#stage-tabs').append($('#shop-open'));
+ frame=window.WeightPlayScreenFrame.mount({root,localeSelect,playUI:true,scenes:{main:{root:$('#main-screen'),header:$('#main-header'),content:$('#main-content')},stage:{root:$('#stage-screen'),header:$('#stage-header'),content:$('#stage-content')},battle:{root:$('#battle-screen'),header:$('#battle-header'),content:$('#battle-content'),headerInfo:$('#battle-info')}}});
+ const battleGroup=window.WeightPlayScreenFrame.createGroup();for(const node of [...$('#battle-info').children])battleGroup.add(node);frame.battleTopUI.add(battleGroup);
+ frame.stageTopUI.add($('#stage-progress'));enter('main');
+}
+function stageConfig(){return {gameId:'traffic-jam-diner',count:CAMPAIGN_STAGES.length,poster:'/Assets/traffic-jam-diner-cover-v3.png',background:'/assets/lobby-block-atmosphere.svg',stage(index){
+ const item=CAMPAIGN_STAGES[index],record=save.best[item.id],arc=(REBUILD_COPY[locale]||REBUILD_COPY.en).arcs[item.arc-1];
+ return {id:item.id,kicker:t('stage',{n:item.id}),title:stageTitle(item,locale),subtitle:arc,status:LocalPractice.enabled?t('practice'):item.id>save.unlocked?t('locked'):record?'★'.repeat(record.stars)+'☆'.repeat(3-record.stars):t('target',{n:item.targetMoves}),summary:t('goal'),details:[t('experience'),t('target',{n:item.targetMoves})],locked:!LocalPractice.enabled&&item.id>save.unlocked,cleared:Boolean(record)};
+ }};}
+function renderStages(){
+ $('#stage-progress').textContent=LocalPractice.enabled?t('practice'):t('mastery',{n:totalStars()});
+ if(!stageRail){if(!window.WeightPlayPlayUI)return;stageRail=window.WeightPlayPlayUI.mountStage({page:$('#stage-content'),rail:$('#stage-list'),config:stageConfig(),selected:selectedStageIndex,onSelect:index=>{selectedStageIndex=index;},onStart:index=>startStage(index+1),isActive:()=>document.body.dataset.screen==='stage'});}
+ else stageRail.setConfig(stageConfig(),selectedStageIndex);
+}
+function enter(name){
+ if(name!=='battle')startRequest++;
+ cancelEffects();if(name!=='stage')stageRail?.cancel();
+ frame?.activate(name);for(const id of ['main','stage','battle'])$('#'+id+'-screen').hidden=id!==name;
+ document.body.dataset.screen=name;if(name==='stage')renderStages();if(name==='main')updateMain();
+ if(name==='battle')requestAnimationFrame(()=>renderer?.resize());
+}
+let battleEntryState=null;
+function updateLeaveCopy(){if(!$('#leave-title'))return;const copy=LEAVE_UI[locale]||LEAVE_UI.en;$('#leave-title').textContent=copy.title.replace('{stage}',t('stage',{n:stage?.id||save.lastStage}));$('#leave-copy').textContent=copy.body;$('#leave-continue').textContent=copy.continue;$('#leave-confirm').textContent=copy.leave;}
+function closeLeave(){paused=false;$('#leave-panel').hidden=true;updateUI();}
 function requestStageReturn(){
- if(!stage||JSON.stringify(state)===battleEntryState){enter('stage');renderStages();return;}
- paused=true;activeMoveAnimation=null;drawBoard();updateLeaveCopy();$('#leave-panel').hidden=false;
+ if(!stage||isWon(state)||JSON.stringify(state)===battleEntryState){enter('stage');return;}
+ cancelEffects();paused=true;drawBoard();updateLeaveCopy();$('#leave-panel').hidden=false;
 }
 function initLeaveDialog(){
- const panel=document.createElement('section');panel.id='leave-panel';panel.className='help-panel leave-panel';panel.hidden=true;
- panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-labelledby','leave-title');panel.setAttribute('aria-describedby','leave-copy');
+ const panel=document.createElement('section');panel.id='leave-panel';panel.className='help-panel leave-panel';panel.hidden=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-labelledby','leave-title');
  panel.innerHTML='<div class="help-card leave-card"><h2 id="leave-title"></h2><p id="leave-copy"></p><div class="leave-actions"><button id="leave-continue" class="primary" type="button"></button><button id="leave-confirm" type="button"></button></div></div>';
- $('#battle-content').append(panel);
- $('#leave-continue').addEventListener('click',closeLeave);
- $('#leave-confirm').addEventListener('click',()=>{closeLeave();enter('stage');renderStages();});
- document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!event.defaultPrevented&&!panel.hidden){event.preventDefault();closeLeave();}});
+ $('#battle-content').append(panel);$('#leave-continue').addEventListener('click',closeLeave);$('#leave-confirm').addEventListener('click',()=>{closeLeave();enter('stage');});
 }
-
-function startStage(id){stage=normalizeStage(CAMPAIGN_STAGES[id-1]);state=createInitialState(stage);battleEntryState=JSON.stringify(state);undoStack=[];save.lastStage=id;persist();selectedGuest=null;paused=false;$('#result-panel').hidden=true;setBattleControlsEnabled(true);$('#help-panel').hidden=true;enter('battle');say('firstPlay');audio('game.start');renderBoard();updateUI();}
-function drawBoard(){if(!renderer||!stage)return;while(boardGroup.children.length){const o=boardGroup.children[boardGroup.children.length-1];boardGroup.remove(o);o.traverse(part=>{part.geometry?.dispose?.();if(Array.isArray(part.material))part.material.forEach(m=>m.dispose());else part.material?.dispose?.();});}
- const add=(geo,mat,x,y,z=0)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);boardGroup.add(m);return m;};
- const w=stage.width,h=stage.height,ox=-(w-1)/2,oy=(h-1)/2;
- for(let y=0;y<h;y++)for(let x=0;x<w;x++){if(stage.rows[y][x]==="#")continue;const node=stage.ids.get(`${x},${y}`),isCounter=node===stage.counter,isPocket=stage.pockets.includes(node),active=candidates.includes(node),pos=[ox+x,oy-y],berry=save.boardStyle==='berry-grove',tileColor=active?0xffdc77:isCounter?(berry?0xffc16f:0xffbd64):isPocket?0x9edfe0:berry?0xc8b7df:0xa7c59d;add(new THREE.BoxGeometry(.96,.96,.12),new THREE.MeshStandardMaterial({color:tileColor,roughness:.92}),...pos,-.12);if(isCounter)add(new THREE.BoxGeometry(.60,.12,.05),new THREE.MeshStandardMaterial({color:0xa45a34}),...pos,.01);if(isPocket)add(new THREE.RingGeometry(.23,.29,24),new THREE.MeshBasicMaterial({color:0x278e91,side:THREE.DoubleSide}),...pos,.01);if(active)add(new THREE.RingGeometry(.34,.39,24),new THREE.MeshBasicMaterial({color:0xf18d3f,side:THREE.DoubleSide}),...pos,.03);}
- // Raised roadway links make connectivity and one-way flow readable on the board.
- const links=new Set();for(let from=0;from<stage.edges.length;from++)for(const to of stage.edges[from]){const pair=[Math.min(from,to),Math.max(from,to)].join(":");if(links.has(pair))continue;links.add(pair);const [x1,y1]=stage.points[from],[x2,y2]=stage.points[to],p1=[ox+x1,oy-y1],p2=[ox+x2,oy-y2],dx=p2[0]-p1[0],dy=p2[1]-p1[1],m=new THREE.Mesh(new THREE.BoxGeometry(Math.hypot(dx,dy),.30,.035),new THREE.MeshStandardMaterial({color:0x627b75,roughness:.9}));m.position.set((p1[0]+p2[0])/2,(p1[1]+p2[1])/2,-.015);m.rotation.z=Math.atan2(dy,dx);boardGroup.add(m);}
- for(const [ax,ay,bx,by]of stage.oneWay||[]){const a=stage.ids.get(`${ax},${ay}`),b=stage.ids.get(`${bx},${by}`);if(a===undefined||b===undefined)continue;const [x1,y1]=stage.points[a],[x2,y2]=stage.points[b],dx=x2-x1,dy=y1-y2,arrow=new THREE.Mesh(new THREE.ConeGeometry(.09,.19,3),new THREE.MeshBasicMaterial({color:0xffe59a}));arrow.position.set(ox+(x1+x2)/2,oy-(y1+y2)/2,.025);arrow.rotation.z=Math.atan2(dy,dx)-Math.PI/2;boardGroup.add(arrow);}
- for(let gi=0;gi<state.positions.length;gi++){
-  const position=state.positions[gi];if(position<0)continue;
-  const motion=activeMoveAnimation?.guest===gi?activeMoveAnimation:null,[x,y]=stage.points[motion?motion.fromNode:position],pos=[ox+x,oy-y],group=new THREE.Group();
-  group.position.set(pos[0],pos[1],.25);group.userData.guest=gi;group.userData.characterGroup=true;boardGroup.add(group);
-  const animal=stage.guests[gi].animal,texture=characterTextures[animal];
-  if(texture){const ratio=texture.image.width/texture.image.height,height=.98,width=Math.max(.68,Math.min(1.08,height*ratio));
-   const avatar=new THREE.Mesh(new THREE.PlaneGeometry(width,height),new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.035,depthWrite:false,side:THREE.DoubleSide,toneMapped:false}));
-   avatar.position.z=.20;avatar.renderOrder=2;avatar.userData.guest=gi;group.add(avatar);
-  }
-  const ring=new THREE.Mesh(new THREE.RingGeometry(.34,.39,28),new THREE.MeshBasicMaterial({color:selectedGuest===gi?0xe6783e:0xfff8e8,transparent:true,opacity:selectedGuest===gi?1:.72,side:THREE.DoubleSide}));
-  ring.position.z=.11;ring.visible=selectedGuest===gi||candidates.includes(position);ring.userData.guest=gi;group.add(ring);
-  group.traverse(o=>{if(o.isMesh)o.userData.guest=gi;});
+async function startStage(id){
+ if(!assetsReady)return;
+ const request=++startRequest;
+ if(!Number.isInteger(id)||!CAMPAIGN_STAGES[id-1]||(!LocalPractice.enabled&&id>save.unlocked))return;
+ if(LocalPractice.enabled&&!await LocalPractice.validate())return;
+ if(request!==startRequest)return;
+ cancelEffects();run++;practiceRun=LocalPractice.enabled;selectedStageIndex=id-1;stage=normalizeStage(CAMPAIGN_STAGES[id-1]);state=createInitialState(stage);battleEntryState=JSON.stringify(state);undoStack=[];selectedGuest=null;candidates=[];paused=false;
+ for(const id of ['result-panel','help-panel','leave-panel','render-error'])$('#'+id).hidden=true;
+ if(!practiceRun){save.lastStage=stage.id;persist();}
+ enter('battle');if(!ensureRenderer())return;renderer.setStage(stage,save.boardStyle);$('#order-dock').dataset.hasGates=String(stage.gates.length>0);updateUI();say(stage.id===1?'firstPlay':'experience');audio('game.start');$('#board-canvas').focus({preventScroll:true});
+}
+function renderFailure(){cancelEffects();paused=true;$('#render-error').hidden=false;}
+function ensureRenderer(){
+ if(renderer){if(renderer.isLost()){renderFailure();return false;}return true;}
+ try{renderer=new DinerScene($('#board-canvas'),{textures:characterTextures,onPick:pickNode,onProject:positionControls,reduced,onFailure:renderFailure,onRestore:()=>{paused=false;$('#render-error').hidden=true;refreshTheme();}});return true;}
+ catch{renderer?.dispose();renderer=null;renderFailure();return false;}
+}
+function refreshTheme(){if(renderer&&stage){renderer.setStage(stage,save.boardStyle);drawBoard();}}
+function drawBoard(){if(renderer&&stage&&state){renderer.show(state,selectedGuest,candidates);renderBoardControls();}}
+function renderBoard(){drawBoard();}
+function resize(){renderer?.resize();}
+function selectGuest(guest){if(covered()||state.positions[guest]<0)return;selectedGuest=guest;candidates=legalActions(stage,state).filter(a=>a.type==='move'&&a.guest===guest).map(a=>a.to);say(candidates.length?'selectStop':'occupied',candidates.length?'':'error');updateUI();audio('ui.click');}
+function positionControls(){
+ if(!renderer||!stage)return;for(const button of $('#board-controls').children){if(!stage.points[Number(button.dataset.node)]){button.style.visibility='hidden';continue;}button.style.visibility='';const p=renderer.project(Number(button.dataset.node),.18);button.style.left=p.x+'px';button.style.top=p.y+'px';}
+}
+function renderBoardControls(){
+ const dock=$('#board-controls');if(!state)return;const wanted=new Set();
+ const obtain=(key,type)=>{let button=[...dock.children].find(node=>node.dataset.controlKey===key);if(!button){button=document.createElement('button');button.type='button';button.dataset.controlKey=key;button.className=type;button.addEventListener('click',()=>{if(button.dataset.guestIndex!==undefined)selectGuest(Number(button.dataset.guestIndex));else action({type:'move',guest:selectedGuest,to:Number(button.dataset.stopNode)});});dock.append(button);}wanted.add(key);return button;};
+ if(!isWon(state)){
+  state.positions.forEach((node,guest)=>{if(node<0)return;const button=obtain(`guest:${guest}`,'guest-hit');button.dataset.node=node;button.dataset.guestIndex=guest;button.setAttribute('aria-label',t('selectGuest',{n:stage.queue.indexOf(guest)+1}));button.setAttribute('aria-pressed',String(selectedGuest===guest));button.textContent=String(stage.queue.indexOf(guest)+1);});
+  for(const to of candidates){const button=obtain(`stop:${to}`,'stop-hit');button.dataset.node=to;button.dataset.stopNode=to;button.textContent=to===stage.counter?'↳':'P';button.setAttribute('aria-label',to===stage.counter?t('counter'):t('waitingBay',{n:stage.pockets.indexOf(to)+1}));}
  }
- renderBoardControls();renderer.render(scene,camera);}
-function renderBoard(){if(!stage||!renderer)return;requestAnimationFrame(()=>{resize();});}
-function renderBoardControls(){const dock=$('#board-controls');if(!dock||!stage||!state)return;dock.setAttribute('aria-label',t('select'));dock.replaceChildren();state.positions.forEach((position,guest)=>{if(position<0)return;const b=document.createElement('button');b.type='button';b.textContent=t('selectGuest',{n:guest+1});b.setAttribute('aria-label',`${t('selectGuest',{n:guest+1})}${selectedGuest===guest?', selected':''}`);b.setAttribute('aria-pressed',String(selectedGuest===guest));b.dataset.guestIndex=String(guest);b.addEventListener('click',()=>{selectedGuest=guest;candidates=legalActions(stage,state).filter(a=>a.type==='move'&&a.guest===guest).map(a=>a.to);say('selectStop');updateUI();});dock.append(b);});if(selectedGuest===null)return;for(const move of legalActions(stage,state).filter(a=>a.type==='move'&&a.guest===selectedGuest)){const pocket=stage.pockets.indexOf(move.to),b=document.createElement('button');b.type='button';b.textContent=pocket<0?t('counter'):t('waitingBay',{n:pocket+1});b.setAttribute('aria-label',b.textContent);b.dataset.stopNode=String(move.to);b.addEventListener('click',()=>action({type:'move',guest:selectedGuest,to:move.to}));dock.append(b);}}
-function resize(){if(!renderer)return;const c=$('#board-canvas'),w=c.clientWidth,h=c.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);const asp=w/h,points=stage?.points||[[0,0]],xs=points.map(p=>p[0]),ys=points.map(p=>p[1]),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),cx=(minX+maxX)/2-((stage?.width||5)-1)/2,cy=-((minY+maxY)/2)+((stage?.height||5)-1)/2,halfW=(maxX-minX+1)/2+.28,halfH=(maxY-minY+1)/2+.28,fitH=Math.max(halfH,halfW/asp);camera.left=cx-fitH*asp;camera.right=cx+fitH*asp;camera.top=cy+fitH;camera.bottom=cy-fitH;camera.updateProjectionMatrix();drawBoard();}
-function ensureRenderer(){if(renderer)return;scene=new THREE.Scene();scene.background=new THREE.Color(0xe4f0e5);scene.add(new THREE.HemisphereLight(0xffffff,0x668277,2));const light=new THREE.DirectionalLight(0xffffff,2.2);light.position.set(-3,5,8);scene.add(light);camera=new THREE.OrthographicCamera(-3,3,3,-3,.1,40);camera.position.set(0,0,12);boardGroup=new THREE.Group();scene.add(boardGroup);renderer=new THREE.WebGLRenderer({canvas:$('#board-canvas'),antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;raycaster=new THREE.Raycaster();pointer=new THREE.Vector2();new ResizeObserver(resize).observe($('#board-canvas'));resize();}
-function updateUI(){if(!stage)return;const qi=state.servedCount,gi=stage.queue[qi],guest=gi===undefined?null:stage.guests[gi],filled=guest?state.filled[gi]:0;$('#stage-label').textContent=t('stage',{n:stage.id});$('#moves-label').textContent=t('moves',{n:state.moves});$('#next-label').textContent=`${Math.min(qi+1,stage.queue.length)} / ${stage.queue.length}`;$('#order-progress').textContent=guest?`${filled} / ${guest.order.length}`:'✓';$('#basket-slots').replaceChildren();if(guest)guest.order.forEach((slot,i)=>{const c=document.createElement('span'),keys=Array.isArray(slot)?slot:[slot];c.className='basket-slot';c.dataset.filled=String(i<filled);c.dataset.choices=String(keys.length>1);if(i<filled){c.textContent='✓';c.setAttribute('aria-label',t('snackFilled'));}else{c.setAttribute('aria-label',keys.map(snackLabel).join(' / '));keys.forEach((key,index)=>{if(index){const sep=document.createElement('span');sep.className='choice-separator';sep.textContent='·';c.append(sep);}c.append(snackImage(key));});}$('#basket-slots').append(c);});$('#snack-options').replaceChildren();for(const [key,count] of Object.entries(state.stock)){const b=document.createElement('button');b.className='snack-button';b.dataset.snackKey=key;b.type='button';b.append(snackImage(key));const n=document.createElement('small');n.className='snack-count';n.textContent=count;b.append(n);b.setAttribute('aria-label',`${snackLabel(key)} ${count}`);b.title=snackLabel(key);b.disabled=count<1||!guest||state.positions[gi]!==stage.counter||filled>=guest.order.length||paused;b.addEventListener('click',()=>action({type:'snack',guest:gi,snack:key}));$('#snack-options').append(b);}$('#serve-btn').disabled=paused||!guest||state.positions[gi]!==stage.counter||filled!==guest.order.length;$('#undo-btn').disabled=paused||!undoStack.length;$('#hint-btn').disabled=paused;$('#retry-btn').disabled=paused;$('#basket-title').textContent=t('basket');$('#serve-btn').textContent=t('serve');$('#undo-btn').textContent=t('undo');$('#hint-btn').textContent=t('hint');$('#retry-btn').textContent=t('retry');$('#map-btn').textContent=t('map');renderGates();drawBoard();}
-function renderGates(){const dock=$('#gate-dock');dock.replaceChildren();stage.gates.forEach((g,i)=>{const b=document.createElement('button');b.className='gate-button';b.type='button';b.textContent=`${t('gate')} ${state.gates[i]?'✓':'↔'} · ${g.charges-state.gateUses[i]}`;b.disabled=paused||state.gateUses[i]>=g.charges;b.addEventListener('click',()=>action({type:'gate',gate:i}));dock.append(b);});}
-function animateCharacterMove(motion){
- const group=boardGroup.children.find(o=>o.userData.characterGroup&&o.userData.guest===motion.guest);if(!group)return;
- const [fromX,fromY]=stage.points[motion.fromNode],[toX,toY]=stage.points[motion.toNode],ox=-(stage.width-1)/2,oy=(stage.height-1)/2;
- const from=new THREE.Vector3(ox+fromX,oy-fromY,.25),to=new THREE.Vector3(ox+toX,oy-toY,.25),duration=matchMedia('(prefers-reduced-motion: reduce)').matches?80:240,start=performance.now();
- const tick=now=>{if(group.parent!==boardGroup||activeMoveAnimation!==motion){if(activeMoveAnimation===motion)activeMoveAnimation=null;return;}const raw=Math.min(1,(now-start)/duration),eased=1-(1-raw)**3;group.position.lerpVectors(from,to,eased);renderer.render(scene,camera);if(raw<1)requestAnimationFrame(tick);else activeMoveAnimation=null;};requestAnimationFrame(tick);
+ for(const button of [...dock.children])if(!wanted.has(button.dataset.controlKey))button.remove();positionControls();
 }
-function action(a){if(paused)return;if(a.type==='serve')a.guest=stage.queue[state.servedCount];if(a.type==='undo'){activeMoveAnimation=null;if(undoStack.length)state=undoStack.pop();selectedGuest=null;say('select');audio('board.undo');updateUI();return;}const legal=legalActions(stage,state);if(!legal.some(x=>JSON.stringify(x)===JSON.stringify(a))){say(a.type==='serve'?'wrongTurn':a.type==='snack'?'snackWrong':a.type==='gate'?'gateClosed':'occupied','error');audio('feedback.error');return;}const motion=a.type==='move'?{guest:a.guest,fromNode:state.positions[a.guest],toNode:a.to}:null;if(a.type!=='gate')undoStack.push(structuredClone(state));state=applyAction(stage,state,a);activeMoveAnimation=motion;selectedGuest=null;let prompt=a.type==='serve'?'served':'select';const activeIndex=stage.queue[state.servedCount],activeGuest=activeIndex===undefined?null:stage.guests[activeIndex];if(activeGuest&&state.positions[activeIndex]===stage.counter)prompt=state.filled[activeIndex]<activeGuest.order.length?'snackNeeded':'hintServe';say(prompt,'success');audio(a.type==='move'?'board.move':a.type==='serve'?'puzzle.clear':'ui.click');updateUI();if(motion)animateCharacterMove(motion);if(isWon(state))finish();}
-function setBattleControlsEnabled(enabled){document.querySelectorAll('#board-controls button,#snack-options button,.route-actions button').forEach(button=>{button.disabled=!enabled;});}function finish(){setBattleControlsEnabled(false);const old=save.best[stage.id];const stars=state.moves<=stage.targetMoves?3:state.moves<=stage.par?2:1;const record={moves:Math.min(old?.moves??Infinity,state.moves),stars:Math.max(old?.stars??0,stars)};save.best[stage.id]=record;save.unlocked=Math.max(save.unlocked,Math.min(CAMPAIGN_STAGES.length,stage.id+1));persist();$('#result-title').textContent=t('clear');$('#result-next').textContent=t('stage',{n:Math.min(stage.id+1,CAMPAIGN_STAGES.length)});$('#result-copy').textContent=t('result',{moves:state.moves,par:stage.par});$('#result-stars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#result-best').textContent=old&&old.moves<=state.moves?t('best',{moves:old.moves}):t('noBest');$('#result-next').disabled=stage.id===CAMPAIGN_STAGES.length;$('#result-panel').hidden=false;audio('feedback.success');}
-function point(event){const r=$('#board-canvas').getBoundingClientRect();pointer.set((event.clientX-r.left)/r.width*2-1,-((event.clientY-r.top)/r.height*2-1));raycaster.setFromCamera(pointer,camera);return raycaster.intersectObjects(boardGroup.children,true);}
-function clickBoard(event){if(paused||!stage||!$('#result-panel').hidden)return;const hits=point(event),obj=hits.find(h=>h.object.userData.guest!==undefined);if(obj){selectedGuest=obj.object.userData.guest;candidates=legalActions(stage,state).filter(a=>a.type==='move'&&a.guest===selectedGuest).map(a=>a.to);say('selectStop');drawBoard();return;}const ground=new THREE.Plane(new THREE.Vector3(0,0,1),0),world=new THREE.Vector3();if(!raycaster.ray.intersectPlane(ground,world))return;const x=Math.round(world.x+(stage.width-1)/2),y=Math.round((stage.height-1)/2-world.y),to=stage.ids.get(`${x},${y}`);if(to===undefined)return;if(selectedGuest!==null){action({type:'move',guest:selectedGuest,to});return;}const occupied=state.positions.findIndex(position=>position===to);if(occupied>=0){selectedGuest=occupied;candidates=legalActions(stage,state).filter(a=>a.type==='move'&&a.guest===selectedGuest).map(a=>a.to);drawBoard();}}
-function bind(){localeSelect.addEventListener('change',()=>setLocale(localeSelect.value));$('#shop-open').addEventListener('click',openStore);$('#shop-cancel').addEventListener('click',closeStore);$('#shop-confirm').addEventListener('click',buyBoardFinish);$('#shop-dialog').addEventListener('click',e=>{if(e.target===$('#shop-dialog'))closeStore();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#shop-dialog').hidden){e.preventDefault();closeStore();}});window.addEventListener('focus',renderStore);renderStore();$('#start-game').addEventListener('click',()=>{renderStages();enter('stage');});document.querySelectorAll('[data-wp-return="stage"]').forEach(b=>b.addEventListener('click',()=>enter('main')));document.querySelectorAll('[data-wp-return="battle"]').forEach(b=>b.addEventListener('click',()=>requestStageReturn()));$('#board-canvas').addEventListener('pointerup',clickBoard);$('#help-title').textContent=t('howTitle');$('#help-copy').textContent=t('how');$('#serve-btn').addEventListener('click',()=>action({type:'serve'}));$('#undo-btn').addEventListener('click',()=>action({type:'undo'}));$('#retry-btn').addEventListener('click',()=>startStage(stage.id));$('#map-btn').addEventListener('click',()=>requestStageReturn());$('#hint-btn').addEventListener('click',()=>{const a=legalActions(stage,state)[0];say(a?.type==='move'?'hintMove':a?.type==='snack'?'hintSnack':a?.type==='serve'?'hintServe':'hintGate');if(a?.type==='move'){selectedGuest=a.guest;candidates=[a.to];drawBoard();}});$('#help-close').addEventListener('click',()=>$('#help-panel').hidden=true);$('#result-map').addEventListener('click',()=>{ $('#result-panel').hidden=true;enter('stage');renderStages();requestAnimationFrame(()=>stageRail?.center(save.unlocked-1));});$('#result-replay').addEventListener('click',()=>startStage(stage.id));$('#result-next').addEventListener('click',()=>startStage(Math.min(stage.id+1,CAMPAIGN_STAGES.length)));document.addEventListener('keydown',e=>{if(e.key!=='Escape'||e.defaultPrevented||document.body.dataset.screen!=='battle'||!$('#result-panel').hidden||!$('#shop-dialog').hidden)return;e.preventDefault();if(!$('#help-panel').hidden){$('#help-close').click();return;}$('#help-panel').hidden=false;$('#help-title').textContent=t('howTitle');$('#help-copy').textContent=t('how');$('#help-close').focus({preventScroll:true});});}
+function renderQueue(){
+ const queue=$('#guest-queue'),wanted=new Set();
+ stage.queue.forEach((guest,index)=>{
+  let button=queue.querySelector(`[data-guest-index="${guest}"]`);wanted.add(String(guest));
+  if(!button){button=document.createElement('button');button.type='button';button.className='queue-guest';button.dataset.guestIndex=guest;button.append(document.createElement('img'),document.createElement('span'));button.addEventListener('click',()=>selectGuest(Number(button.dataset.guestIndex)));queue.append(button);}
+  button.dataset.served=String(state.positions[guest]<0);button.dataset.current=String(index===state.servedCount);button.setAttribute('aria-label',`${t('ticket',{n:index+1})} · ${t('selectGuest',{n:index+1})}`);button.setAttribute('aria-pressed',String(selectedGuest===guest));button.disabled=state.positions[guest]<0;const image=button.querySelector('img');const src=CHARACTER_ART[stage.guests[guest].animal];if(image.getAttribute('src')!==src)image.src=src;image.alt='';button.querySelector('span').textContent=state.positions[guest]<0?'✓':String(index+1);queue.append(button);
+ });
+ for(const button of [...queue.children])if(!wanted.has(button.dataset.guestIndex))button.remove();$('#par-label').textContent=t('target',{n:stage.targetMoves});
+}
+function updateUI(){
+ if(!stage||!state)return;const guestIndex=stage.queue[state.servedCount],guest=stage.guests[guestIndex],filled=guest?state.filled[guestIndex]:0,atCounter=guest&&state.positions[guestIndex]===stage.counter;
+ $('#stage-label').textContent=practiceRun?t('practice'):t('stage',{n:stage.id});$('#moves-label').textContent=t('moves',{n:state.moves});$('#next-label').textContent=t('servedCount',{n:state.servedCount,total:stage.queue.length});
+ $('#basket-title').textContent=guest?t('ticket',{n:state.servedCount+1}):t('clear');$('#order-dock').dataset.ready=String(Boolean(atCounter));
+ $('#basket-slots').replaceChildren();if(guest)guest.order.forEach((slot,index)=>{const element=document.createElement('span'),choices=Array.isArray(slot)?slot:[slot];element.className='basket-slot';element.dataset.filled=String(index<filled);element.dataset.active=String(index===filled&&atCounter);element.setAttribute('aria-label',index<filled?t('snackFilled'):choices.map(snackLabel).join(' / '));for(const key of choices)element.append(snackImage(key));if(index<filled){const tick=document.createElement('b');tick.textContent='✓';element.append(tick);}$('#basket-slots').append(element);});
+ const food=$('#snack-options');
+ for(const [key,count] of Object.entries(state.stock)){
+  let button=food.querySelector(`[data-snack-key="${key}"]`);
+  if(!button){button=document.createElement('button');button.className='snack-button';button.type='button';button.dataset.snackKey=key;button.append(snackImage(key));const label=document.createElement('span');label.className='snack-name';const amount=document.createElement('small');amount.className='snack-count';button.append(label,amount);button.addEventListener('click',()=>action({type:'snack',guest:stage.queue[state.servedCount],snack:key}));food.append(button);}
+  button.querySelector('.snack-name').textContent=snackLabel(key);button.querySelector('.snack-count').textContent=count;button.setAttribute('aria-label',`${snackLabel(key)} × ${count}`);button.disabled=count<1||!atCounter||filled>=guest.order.length||paused||busy||isWon(state);button.dataset.hint='false';
+ }
+ for(const button of food.children)if(!(button.dataset.snackKey in state.stock))button.remove();
+ $('#serve-btn').disabled=paused||busy||!atCounter||filled!==guest.order.length;$('#undo-btn').disabled=paused||busy||!undoStack.length;$('#hint-btn').disabled=paused||busy||isWon(state);$('#retry-btn').disabled=paused;
+ renderQueue();renderGates();drawBoard();
+}
+function renderGates(){
+ const dock=$('#gate-dock');
+ stage.gates.forEach((gate,index)=>{let button=dock.children[index];if(!button){button=document.createElement('button');button.className='gate-button';button.type='button';button.dataset.gateIndex=index;button.addEventListener('click',()=>action({type:'gate',gate:index}));dock.append(button);}
+ button.textContent=`${t('gate')} ${index+1} ${state.gates[index]?'✓':'↔'} · ${gate.charges-state.gateUses[index]}`;button.setAttribute('aria-label',`${t('hintSwitch',{n:index+1})}, ${gate.charges-state.gateUses[index]} ${t('gateUses')}`);button.disabled=paused||busy||state.gateUses[index]>=gate.charges;});
+ while(dock.children.length>stage.gates.length)dock.lastElementChild.remove();
+}
+function covered(){return paused||busy||!stage||isWon(state)||document.hidden||document.body.dataset.screen!=='battle'||!$('#render-error').hidden||!$('#help-panel').hidden||!$('#leave-panel').hidden||Boolean(document.querySelector('#battle-header [data-wp-settings][aria-expanded="true"]'));}
+function pickNode(node){if(covered())return;const guest=state.positions.indexOf(node);if(guest>=0){selectGuest(guest);return;}if(selectedGuest!==null)action({type:'move',guest:selectedGuest,to:node});}
+function action(request){
+ if(covered())return;
+ cancelEffects();if(request.type==='undo'){if(!undoStack.length)return;state=undoStack.pop();selectedGuest=null;candidates=[];say('select');audio('board.undo');updateUI();return;}
+ const a=request.type==='serve'?{type:'serve',guest:stage.queue[state.servedCount]}:request;
+ const legal=legalActions(stage,state);if(!legal.some(item=>JSON.stringify(item)===JSON.stringify(a))){say(a.type==='snack'?'snackWrong':a.type==='serve'?'wrongTurn':stage.pockets.includes(a.to)?'bayFull':'occupied','error');audio('feedback.error');return;}
+ const before=state,route=a.type==='move'?routeForMove(stage,state,a.guest,a.to):[],foodSource=a.type==='snack'?$('#snack-options').querySelector(`[data-snack-key="${a.snack}"]`):null,slot=a.type==='snack'?state.filled[a.guest]:null;
+ undoStack.push(structuredClone(state));if(undoStack.length>100)undoStack.shift();state=applyAction(stage,state,a);selectedGuest=null;candidates=[];
+ updateUI();const next=stage.queue[state.servedCount];say(a.type==='serve'?'served':next!==undefined&&state.positions[next]===stage.counter?(state.filled[next]<stage.guests[next].order.length?'snackNeeded':'hintServe'):'select','success');
+ if(a.type==='move'){renderer.move(a.guest,route);audio('board.move');}
+ if(a.type==='snack'){transferFood(a.snack,foodSource,$('#basket-slots').children[slot]);audio('board.move');}
+ if(a.type==='gate'){emphasize($('#gate-dock'));audio('board.rotate');}
+ if(a.type==='serve'){
+  // A noninteractive old-state proxy completes departure; simulation is already committed.
+  renderer.show(before);const currentRun=run;renderer.depart(a.guest,()=>{if(run===currentRun&&document.body.dataset.screen==='battle')drawBoard();});audio('feedback.success');emphasize($('#guest-queue'));
+ }
+ if(isWon(state))finish();
+}
+function finish(){
+ const old=save.best[stage.id],stars=state.moves<=stage.targetMoves?3:state.moves<=stage.par?2:1;
+ if(!practiceRun){save.best[stage.id]={moves:Math.min(old?.moves??Infinity,state.moves),stars:Math.max(old?.stars??0,stars)};save.unlocked=Math.max(save.unlocked,Math.min(CAMPAIGN_STAGES.length,stage.id+1));persist();}
+ $('#result-title').textContent=t('clear');$('#result-copy').textContent=t('result',{moves:state.moves,par:stage.par});$('#result-stars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#result-stars').setAttribute('aria-label',`${stars} / 3`);$('#result-best').textContent=practiceRun?t('practice'):t('mastery',{n:totalStars()});$('#result-next').textContent=t('stage',{n:Math.min(stage.id+1,CAMPAIGN_STAGES.length)});$('#result-next').disabled=stage.id===CAMPAIGN_STAGES.length;
+ $('#result-panel').hidden=false;audio('result.win');
+}
+function hint(){
+ if(covered())return;cancelEffects();const request=++hintRequest,currentRun=run,key=stateKey(state);say('thinking');
+ try{
+  hintWorker=new Worker(new URL('./hint-worker.mjs?v=20261027-diner-rebuild-v23',import.meta.url),{type:'module'});
+  hintTimer=setTimeout(()=>{if(request!==hintRequest)return;hintWorker?.terminate();hintWorker=null;say('hintError','error');},4000);
+  hintWorker.onmessage=({data})=>{
+   if(request!==hintRequest||currentRun!==run||key!==stateKey(state))return;audio('feedback.hint');clearTimeout(hintTimer);hintWorker?.terminate();hintWorker=null;
+   if(data.error||data.overflow){say('hintError','error');return;}const a=data.action;if(!a){say('noRoute','error');return;}
+   if(a.type==='move'){selectedGuest=a.guest;candidates=[a.to];updateUI();say('hintRoute','',{n:stage.queue.indexOf(a.guest)+1,stop:a.to===stage.counter?t('counter'):t('waitingBay',{n:stage.pockets.indexOf(a.to)+1})});}
+   else if(a.type==='snack'){say('hintFood','',{snack:snackLabel(a.snack)});const button=$('#snack-options').querySelector(`[data-snack-key="${a.snack}"]`);button.dataset.hint='true';emphasize(button);}
+   else if(a.type==='serve'){say('hintServe');emphasize($('#serve-btn'));}
+   else {say('hintSwitch','',{n:a.gate+1});emphasize($('#gate-dock').children[a.gate]);}
+  };
+  hintWorker.onerror=()=>{clearTimeout(hintTimer);hintWorker?.terminate();hintWorker=null;if(request===hintRequest)say('hintError','error');};
+  hintWorker.postMessage({stage:CAMPAIGN_STAGES[stage.id-1],state,request});
+ }catch{say('hintError','error');}
+}
+function openHelp(){if(!stage||!$('#result-panel').hidden||!$('#render-error').hidden)return;cancelEffects();paused=true;$('#help-title').textContent=t('howTitle');$('#help-copy').textContent=t('helpSteps');$('#help-panel').hidden=false;}
+function bind(){
+ // Shared Main Settings owns locale navigation; this hidden select is only its source.
+ $('#shop-open').addEventListener('click',openStore);$('#shop-cancel').addEventListener('click',closeStore);$('#shop-confirm').addEventListener('click',buyBoardFinish);
+ $('#shop-classic').addEventListener('click',()=>{if(practiceRun)return;save.boardStyle='classic';persist();renderStore();if(stage)refreshTheme();});
+ $('#shop-dialog').addEventListener('click',event=>{if(event.target===$('#shop-dialog'))closeStore();});
+ $('#start-game').addEventListener('click',()=>{if(!assetsReady){if(!entryLoader||loadTimedOut)location.reload();else loadAssets();return;}selectedStageIndex=save.unlocked-1;enter('stage');});
+ document.querySelectorAll('[data-wp-return="stage"]').forEach(button=>button.addEventListener('click',()=>enter('main')));
+ document.querySelectorAll('[data-wp-return="battle"]').forEach(button=>button.addEventListener('click',requestStageReturn));
+ $('#serve-btn').addEventListener('click',()=>action({type:'serve'}));$('#undo-btn').addEventListener('click',()=>action({type:'undo'}));$('#retry-btn').addEventListener('click',()=>startStage(stage.id));$('#map-btn').addEventListener('click',requestStageReturn);$('#hint-btn').addEventListener('click',hint);$('#help-open').addEventListener('click',openHelp);
+ $('#render-map').addEventListener('click',()=>{paused=false;$('#render-error').hidden=true;enter('stage');});
+ $('#render-retry').addEventListener('click',()=>{if(renderer?.restore())return;renderer?.dispose();renderer=null;const old=$('#board-canvas');old.replaceWith(old.cloneNode(false));startStage(stage.id);});
+ $('#help-close').addEventListener('click',()=>{paused=false;$('#help-panel').hidden=true;updateUI();});
+ $('#result-map').addEventListener('click',()=>{$('#result-panel').hidden=true;enter('stage');});$('#result-replay').addEventListener('click',()=>startStage(stage.id));$('#result-next').addEventListener('click',()=>startStage(Math.min(stage.id+1,CAMPAIGN_STAGES.length)));
+ document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){
+   if(!$('#shop-dialog').hidden){event.preventDefault();closeStore();return;}if(!$('#leave-panel').hidden){event.preventDefault();closeLeave();return;}if(!$('#help-panel').hidden){event.preventDefault();$('#help-close').click();return;}
+   if(document.body.dataset.screen==='battle'&&!event.defaultPrevented){event.preventDefault();openHelp();}return;
+  }
+  if(event.defaultPrevented||covered()||/INPUT|SELECT|BUTTON/.test(event.target.tagName))return;
+  if(/^[1-3]$/.test(event.key)){const guest=stage.queue[Number(event.key)-1];if(guest!==undefined)selectGuest(guest);return;}
+  if(event.key==='Enter'){event.preventDefault();action({type:'serve'});return;}
+  const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];
+  if(direction&&selectedGuest!==null){event.preventDefault();const from=stage.points[state.positions[selectedGuest]],options=candidates.filter(node=>{const to=stage.points[node];return (to[0]-from[0])*direction[0]+(to[1]-from[1])*direction[1]>0;});if(options.length)action({type:'move',guest:selectedGuest,to:options[0]});else say('occupied','error');}
+ });
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelEffects();});
+ window.addEventListener('weightplay:interaction-state',()=>{if(document.querySelector('#battle-header [data-wp-settings][aria-expanded="true"]'))cancelEffects();});
+ window.addEventListener('focus',renderStore);
+ window.addEventListener('pagehide',event=>{cancelEffects();if(!event.persisted){renderer?.dispose();renderer=null;stageRail?.destroy();audioScope?.dispose();for(const texture of Object.values(characterTextures))texture.dispose();}});
+}
+async function sharedEntryLoader(){
+ if(window.WeightPlayGameEntryLoader?.isActive)return window.WeightPlayGameEntryLoader;
+ const script=document.querySelector('script[data-wp-game-entry-loader-bootstrap]');if(!script)throw new Error('Shared entry loader missing');
+ await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(new Error('Shared entry loader unavailable')),8000);script.addEventListener('load',()=>{clearTimeout(timeout);resolve();},{once:true});script.addEventListener('error',()=>{clearTimeout(timeout);reject(new Error('Shared entry loader failed'));},{once:true});});
+ if(!window.WeightPlayGameEntryLoader?.isActive)throw new Error('Shared entry loader unavailable');return window.WeightPlayGameEntryLoader;
+}
+async function loadAssets(){
+ const generation=++assetGeneration,current=()=>generation===assetGeneration,start=$('#start-game');let timeout=0;loadTimedOut=false;start.disabled=true;$('#main-progress').textContent=t('loading');entryLoader?.begin(8);
+ const work=async()=>{if(!await loadCharacterArt(current,loaded=>entryLoader?.assetProgress(loaded,8))||!current())return false;const poster=$('[data-wp-frame-poster]');if(poster){await poster.decode();if(!poster.naturalWidth)throw new Error('Main poster unavailable');}if(current())entryLoader?.assetProgress(8,8);return current();};
+ try{const ready=await Promise.race([work(),new Promise((_,reject)=>{timeout=setTimeout(()=>{loadTimedOut=true;reject(new Error('Asset load timeout'));},12000);})]);if(!ready||!current())return;assetsReady=true;start.textContent=t('start');start.disabled=false;updateMain();entryLoader?.ready();}
+ catch(error){if(!current())return;assetGeneration++;console.error('traffic-jam-diner assets failed',error);$('#main-progress').textContent=t('loadError');start.textContent=t('retry');start.disabled=false;entryLoader?.fail(t('loadError'),loadTimedOut?()=>location.reload():loadAssets);}
+ finally{clearTimeout(timeout);}
+}
 // Dialog focus and covered-content ownership are UI state only.
 function bindModalFocus(){
- const panels=[$('#result-panel'),$('#help-panel'),$('#shop-dialog'),$('#leave-panel')],covered=new Map();
+ const panels=[$('#result-panel'),$('#help-panel'),$('#shop-dialog'),$('#leave-panel'),$('#render-error')],covered=new Map();
  let current=null;
  const actions=panel=>[...panel.querySelectorAll('button:not(:disabled),[href],select,input,[tabindex="0"]')].filter(node=>node.getClientRects().length&&!node.closest('[hidden],[inert]'));
  const initial=panel=>panel.id==='result-panel'&&!$('#result-next').disabled?$('#result-next'):actions(panel)[0];
  const focus=node=>node?.focus({preventScroll:true});
  function synchronize(){
+  for(const panel of panels){panel.inert=panel.hidden;panel.setAttribute('aria-hidden',String(panel.hidden));}
   const next=panels.find(panel=>!panel.hidden)||null;
   if(next===current)return;
   const previous=current;current=next;
@@ -152,7 +285,13 @@ function bindModalFocus(){
   if(index<0||event.shiftKey&&index===0||!event.shiftKey&&index===buttons.length-1){event.preventDefault();focus(event.shiftKey?buttons.at(-1):buttons[0]);}
  });
  document.addEventListener('focusin',event=>{if(current&&!current.contains(event.target))focus(initial(current));});
+ synchronize();
 }
 
-async function boot(){const start=$('#start-game');start.disabled=true;try{initFrame();ensureRenderer();initLeaveDialog();bind();bindModalFocus();bindStageSelector();setLocale(localStorage.getItem('weightPlayLocale')||document.documentElement.lang||'en');$('#main-progress').textContent=t('loading');await loadCharacterArt();assetsReady=true;start.disabled=false;$('#main-progress').textContent=t('ready',{n:save.lastStage});if(stage)drawBoard();window.addEventListener('pagehide',()=>{renderer?.dispose();});}catch(error){console.error('traffic-jam-diner boot failed',error);$('#main-progress').textContent=t('loadError');start.disabled=true;}}
+
+async function boot(){
+ try{window.WeightPlayAudio?.preload(['game.start','ui.click','board.move','board.rotate','board.undo','feedback.error','feedback.hint','feedback.success','result.win','shop.purchase']);initFrame();initLeaveDialog();bind();bindModalFocus();setLocale(document.documentElement.lang||localStorage.getItem('weightPlayLocale')||'en');entryLoader=await sharedEntryLoader();await loadAssets();
+ LocalPractice.register({gameId:'traffic-jam-diner',stageIds:CAMPAIGN_STAGES.map(s=>s.id),enable:()=>renderStages(),startStage:id=>startStage(Number(id))});
+ }catch(error){console.error('traffic-jam-diner boot failed',error);$('#main-progress').textContent=t('loadError');$('#start-game').disabled=false;$('#start-game').textContent=t('retry');}
+}
 void boot();

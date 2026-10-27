@@ -32,7 +32,7 @@ export const CAMPAIGN_STAGES = Object.freeze([
 ]);
 
 export const SNACKS = Object.freeze({
-  bun: { asset:"/Assets/traffic-jam-diner/bun-snack.webp", labelKey:"snackBun", color:0xffb34d },
-  tea: { asset:"/Assets/traffic-jam-diner/tea-snack.webp", labelKey:"snackTea", color:0x78d4c2 },
-  berry: { asset:"/Assets/traffic-jam-diner/berry-snack.webp", labelKey:"snackBerry", color:0x9485f4 },
+  bun: { asset:"/games/traffic-jam-diner/assets/bun-snack-v23.webp", labelKey:"snackBun", color:0xffb34d },
+  tea: { asset:"/games/traffic-jam-diner/assets/tea-snack-v23.webp", labelKey:"snackTea", color:0x78d4c2 },
+  berry: { asset:"/games/traffic-jam-diner/assets/berry-snack-v23.webp", labelKey:"snackBerry", color:0x9485f4 },
 });

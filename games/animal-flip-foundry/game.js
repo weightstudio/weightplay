@@ -1,19 +1,23 @@
 /* Flip Foundry: visible aim, deterministic ballistic contact, four landings per chapter. */
 import {COURSES,TOTAL_STAGES} from './campaign-data.mjs';
 import {launchState,stepFlight,simulate,invert,canInvert,targetAt,suggestedPulseWindows} from './model.mjs';
-import {readProgress,completeStage,persistProgress} from './progress.mjs';
+import {readProgress,completeStage,persistProgressChecked} from './progress.mjs?v=stage-reward-v19';
+import {createMeasurementQueue} from './measurement-queue.mjs?v=stage-reward-v19';
 import {campaignCopy,ruleLabels,CLARITY_COPY} from './campaign-copy.mjs';
 import {FoundryScene} from './scene.mjs';
 (() => {
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpEnqueueMeasurement = createMeasurementQueue(() => window.WonderAnalytics);
+  let __wpReady = false;
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    stageIdAuthoritative: true, stageId: __wpMeasurement.roundKey ? state.chapter : null,
     screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
     paused: Boolean(state?.paused || state?.suspended), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if (__wpReady) __wpEnqueueMeasurement(__wpReadMeasurement()); }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -48,6 +52,7 @@ import {FoundryScene} from './scene.mjs';
   let progress=readProgress(storage,TOTAL_STAGES),world=null;
   const initialSelection=progress.cleared[6]?Math.min(TOTAL_STAGES,progress.unlocked)-1:Math.max(0,COURSES.findIndex(course=>!progress.cleared[course.id]));
   const state = { screen: "main", chapter: 1, platform: 1, selectedChapterIndex: initialSelection, stageController: null, streak: 0, best: (()=>{try{return Math.max(0,Number(storage.getItem("wp-flip-best"))||0)}catch{return 0}})(), drag: null, flight: null, raf: 0, status: "ready", resultWin: null, cardsLocale: "", nozzle:'direct',clock:0,attempts:0,graphicsLost:false };
+  __wpReady = true; __wpNotifyMeasurement();
   const currentLocale = () => localeCopy[window.WeightPlayFiveGameLocale?.locale] ? window.WeightPlayFiveGameLocale.locale : (localeCopy[document.documentElement.lang] ? document.documentElement.lang : "en");
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
   const expansion = () => campaignCopy(currentLocale(),TOTAL_STAGES);
@@ -260,7 +265,7 @@ import {FoundryScene} from './scene.mjs';
     drawScene();
   }
   function start(chapter = 1, platform = 1) { if(!Number.isInteger(chapter)||chapter<1||chapter>TOTAL_STAGES||chapter>progress.unlocked||!Number.isInteger(platform)||platform<1||platform>4)return; if(platform===1||chapter!==state.chapter)state.attempts=0;state.chapter = chapter; state.platform = platform; state.selectedChapterIndex = chapter - 1; state.streak = 0; state.flight = null; state.settle = null; state.accumulator = 0; state.charge = null; state.clock=0;state.nozzle='direct';state.status = "ready"; state.resultWin = null; show("battle"); renderLocalized();
-    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.saveSucceeded = null; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function launch(force) {
     if(state.flight || state.settle || state.screen!=='battle'||state.graphicsLost||document.hidden) return;
@@ -338,7 +343,7 @@ import {FoundryScene} from './scene.mjs';
     else{audio?.play('result.lose');setStatus(state.missReason||tip(6));}
     state.settle={win,t:36,x:f.x}; if(!win)state.flight=null;
   }
-  function finish(win){if(win)progress=persistProgress(storage,completeStage(progress,state.chapter,state.attempts,TOTAL_STAGES),TOTAL_STAGES);state.resultWin=win;state.status=win?'perfect':'miss';renderLocalized();show('result');
+  function finish(win){let saved=false;if(win){const result=persistProgressChecked(storage,completeStage(progress,state.chapter,state.attempts,TOTAL_STAGES),TOTAL_STAGES);progress=result.progress;saved=result.saved;}state.resultWin=win;state.status=win?'perfect':'miss';__wpMeasurement.ended=true;__wpMeasurement.outcome=win?'win':'lose';__wpMeasurement.saveSucceeded=saved;renderLocalized();show('result');
     if(win)audio?.play('result.win');
     __wpMeasurement.ended=true;__wpMeasurement.outcome=win?'win':'lose';__wpMeasurement.screen=null;__wpNotifyMeasurement();
   }

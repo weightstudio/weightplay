@@ -2,19 +2,55 @@
   "use strict";
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
-  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", stageId: null, rewardEligible: false, saveSucceeded: null };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     keyboardKeys: ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "W", "a", "A", "s", "S", "d", "D", "u", "U", "r", "R", "h", "H"],
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(false), node: document.body,
+    stageIdAuthoritative: true, paused: Boolean(false), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  // Older cached collectors may ignore the save gate. Never send them a
+  // lifecycle snapshot that could reward an unconfirmed or endless clear.
+  let __wpTrackedGame=null,__wpTrackedRound=null,__wpTrackedEnded=false,__wpReplayIntent=0;
+  // At most one confirmed clear per campaign stage needs recovery: the shared
+  // ledger deduplicates replay rewards. This is session memory, not durable.
+  const __wpPendingSaved=[];let __wpRetryTimer=0,__wpRetryDelay=2000;
+  function __wpScheduleRetry(){if(!__wpRetryTimer){const delay=__wpRetryDelay;__wpRetryDelay=Math.min(30000,delay*2);__wpRetryTimer=setTimeout(()=>{__wpRetryTimer=0;__wpNotifyMeasurement();},delay);}}
+  function __wpHasReceipt(stageId){try{const value=JSON.parse(localStorage.getItem("weightplayCastleV1")||"null");return Boolean(value&&typeof value==="object"&&!Array.isArray(value)&&[1,2,3].includes(value.version)&&(value.worldSchema==null||value.worldSchema===1)&&value.completions&&typeof value.completions==="object"&&!Array.isArray(value.completions)&&Object.hasOwn(value.completions,`animal-2048:stage-${stageId}`)&&value.completions[`animal-2048:stage-${stageId}`]);}catch{return false;}}
+  function __wpRememberSavedClear(){
+    const state=__wpMeasurement;
+    if(!state.roundKey||state.outcome!=="win"||state.rewardEligible!==true||state.saveSucceeded!==true||!Number.isInteger(state.stageId)||state.stageId<1||state.stageId>60)return;
+    if(!__wpPendingSaved.some(entry=>entry.stageId===state.stageId))__wpPendingSaved.push({roundKey:state.roundKey,stageId:state.stageId});
+  }
+  function __wpNotifyMeasurement() { try {
+    const game=window.WonderAnalytics?.game;
+    if(game?.supportsRewardEligibility!==true||game?.supportsSavedCompletionGate!==true||typeof game.start!=="function"||typeof game.restart!=="function"||typeof game.end!=="function"||typeof game.screen!=="function"||typeof game.configure!=="function"){if(__wpPendingSaved.length)__wpScheduleRetry();return;}
+    if(game!==__wpTrackedGame){__wpTrackedGame=game;__wpTrackedRound=null;__wpTrackedEnded=false;}
+    while(__wpPendingSaved.length){
+      const entry=__wpPendingSaved[0];
+      if(entry.roundKey!==__wpTrackedRound||__wpTrackedEnded){
+        if(game.start({roundKey:entry.roundKey,stageId:entry.stageId,rewardEligible:true})==null){__wpScheduleRetry();return;}
+        __wpTrackedRound=entry.roundKey;__wpTrackedEnded=false;
+      }
+      if(game.end("win",entry.stageId,{saveSucceeded:true})!==true){__wpScheduleRetry();return;}__wpTrackedEnded=true;
+      // end() confirms the lifecycle only. Shared storage can still fail.
+      if(!__wpHasReceipt(entry.stageId)){__wpScheduleRetry();return;}
+      __wpPendingSaved.shift();
+    }
+    if(__wpRetryTimer){clearTimeout(__wpRetryTimer);__wpRetryTimer=0;}__wpRetryDelay=2000;
+    const state=__wpMeasurement;
+    if(state.roundKey&&state.started){
+      if(state.roundKey!==__wpTrackedRound){const options={roundKey:state.roundKey,stageId:state.stageId,rewardEligible:state.rewardEligible};const started=__wpReplayIntent?game.restart(options):game.start(options);if(started==null)return;__wpTrackedRound=state.roundKey;__wpTrackedEnded=false;}
+      if(state.ended&&!__wpTrackedEnded){game.end(state.outcome,state.stageId,{saveSucceeded:state.saveSucceeded});__wpTrackedEnded=true;}
+    }
+    const snapshot=__wpReadMeasurement();
+    game.configure({locale:document.documentElement.lang||"en",activityMode:snapshot.activityMode,idleSeconds:snapshot.idleSeconds,keyboardKeys:snapshot.keyboardKeys});
+    game.screen(snapshot.screen,{node:document.body,locale:document.documentElement.lang||"en"});
+  } catch { if(__wpPendingSaved.length)__wpScheduleRetry(); /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
-    const previous = __wpMeasurement.roundKey, value = action();
-    if (__wpMeasurement.roundKey !== previous) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
-    return value;
+    __wpReplayIntent++;
+    try { return action(); } finally { __wpReplayIntent--; }
   }
   window.addEventListener("weightplay:analytics-ready", __wpNotifyMeasurement);
   __wpNotifyMeasurement();
@@ -43,13 +79,15 @@
 
   const LOCALIZED_STRINGS=window.Animal2048Locales||{};
   const t=(key,vars={})=>String(LOCALIZED_STRINGS[locale]?.[key]??LOCALIZED_STRINGS.en?.[key]??key).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
+  const saveFailureText={en:"Progress could not be confirmed as saved. You can keep playing this session.","zh-Hant":"無法確認進度已保存，這次仍可繼續遊玩。","zh-Hans":"无法确认进度已保存，本次仍可继续游戏。",ja:"進行状況の保存を確認できません。今回のプレイは続けられます。",ko:"진행 상황이 저장됐는지 확인할 수 없습니다. 이번에는 계속 플레이할 수 있습니다.",es:"No se pudo confirmar el guardado. Puedes seguir jugando en esta sesión.","pt-BR":"Não foi possível confirmar o salvamento. Você pode continuar jogando nesta sessão.",fr:"Impossible de confirmer la sauvegarde. Tu peux continuer à jouer pendant cette session.",de:"Das Speichern konnte nicht bestätigt werden. Du kannst in dieser Sitzung weiterspielen.",it:"Impossibile confermare il salvataggio. Puoi continuare a giocare in questa sessione.",ru:"Не удалось подтвердить сохранение. В этой сессии можно продолжать играть.",hi:"प्रगति सहेजने की पुष्टि नहीं हुई। आप इस सत्र में खेलना जारी रख सकते हैं।",ar:"تعذّر تأكيد حفظ التقدّم. يمكنك متابعة اللعب خلال هذه الجلسة."};
+  const savingText={en:"Saving progress…","zh-Hant":"正在保存進度…","zh-Hans":"正在保存进度…",ja:"進行状況を保存中…",ko:"진행 상황 저장 중…",es:"Guardando progreso…","pt-BR":"Salvando progresso…",fr:"Enregistrement de la progression…",de:"Fortschritt wird gespeichert…",it:"Salvataggio dei progressi…",ru:"Сохранение прогресса…",hi:"प्रगति सहेजी जा रही है…",ar:"جارٍ حفظ التقدّم…"};
   let lastInputType="programmatic";
   const setInputType=type=>{lastInputType=type||"programmatic";};
   const clickInputType=event=>event?.detail===0?"keyboard":"pointer";
   const viewportBucket=()=>{const width=Math.max(1,window.innerWidth||0),height=Math.max(1,window.innerHeight||0);if(width>height&&height<=500)return"short-landscape";if(width>=1000)return"desktop";if(width>=600)return"tablet";return"phone";};
   const missionBucket=stage=>{if(stage==="infinite")return"infinite";const index=Number(stage);if(!Number.isInteger(index)||index<1)return"not_applicable";if(index<=5)return"1-5";if(index<=15)return"6-15";if(index<=30)return"16-30";return"31-60";};
   const analyticsPayload=(data={})=>{const stage=data.stage;return{gameId:GAME_ID,game_id:GAME_ID,game_version:GAME_VERSION,interface_version:INTERFACE_VERSION,locale:locale||document.documentElement.lang||"en",viewport_bucket:viewportBucket(),input_type:data.input_type||lastInputType,mission_bucket:missionBucket(stage),...data};};
-  const track=(name,data={})=>{try{window.WonderAnalytics?.track?.(name,analyticsPayload(data));}catch{}};
+  const track=(name,data={})=>{try{const game=window.WonderAnalytics?.game;if(game?.supportsRewardEligibility===true&&game?.supportsSavedCompletionGate===true&&typeof game.start==="function"&&typeof game.restart==="function"&&typeof game.end==="function"&&typeof game.screen==="function"&&typeof game.configure==="function")window.WonderAnalytics?.track?.(name,analyticsPayload(data));}catch{}};
   const boundedCount=(value,max=1000000)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.floor(number))):undefined;};
   const funnelPayload=(data={})=>{const stage=data.stage??(stageIndex===INFINITE_INDEX?"infinite":stageIndex+1),mode=data.mode??(stage==="infinite"?"endless":"mission"),payload={stage,mode};if(["stage_select","tutorial","result_retry","next_stage","battle_restart"].includes(data.source))payload.source=data.source;if(["win","lose","endless"].includes(data.result))payload.result=data.result;if(["moves","board"].includes(data.reason))payload.reason=data.reason;for(const key of ["score","moves","merges","merge_count","highest","next_stage"]){const value=boundedCount(data[key]);if(value!==undefined)payload[key]=value;}if(typeof data.hint_available==="boolean")payload.hint_available=data.hint_available;return payload;};
   const trackFunnel=(name,data={})=>track(name,funnelPayload(data));
@@ -63,16 +101,16 @@
   const saveRecord=value=>value&&typeof value==="object"&&!Array.isArray(value)?value:{};
   const saveInteger=(value,max=Number.MAX_SAFE_INTEGER)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.floor(number))):0;};
   function normalizeSave(raw){
-    const source=saveRecord(raw),cleared={},stars={},best={};
+    const source=saveRecord(raw),cleared={...saveRecord(source.cleared)},stars={...saveRecord(source.stars)},best={...saveRecord(source.best)};
     for(let index=0;index<levels.length;index++){
       if(saveRecord(source.cleared)[index]===true)cleared[index]=true;
       const starValue=saveInteger(saveRecord(source.stars)[index],3);if(starValue)stars[index]=starValue;
       const bestValue=saveInteger(saveRecord(source.best)[index]);if(bestValue)best[index]=bestValue;
     }
-    const highestCleared=Object.keys(cleared).reduce((highest,key)=>Math.max(highest,Number(key)),-1);
+    const highestCleared=Object.keys(cleared).reduce((highest,key)=>cleared[key]===true&&Number.isInteger(Number(key))&&Number(key)>=0&&Number(key)<levels.length?Math.max(highest,Number(key)):highest,-1);
     const requestedUnlocked=saveInteger(source.unlocked,levels.length)||1;
     return{
-      unlocked:Math.max(1,Math.min(levels.length,Math.max(requestedUnlocked,highestCleared+2))),
+      ...source,unlocked:Math.max(1,Math.min(levels.length,Math.max(requestedUnlocked,highestCleared+2))),
       cleared,stars,best,
       endlessBest:saveInteger(source.endlessBest),
       endlessTile:saveInteger(source.endlessTile),
@@ -80,8 +118,29 @@
       endlessRuns:saveInteger(source.endlessRuns)
     };
   }
-  let save;try{save=normalizeSave(JSON.parse(readStorage(SAVE_KEY)||"{}"));}catch{save=normalizeSave(null);}writeStorage(SAVE_KEY,JSON.stringify(save));
-  let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,bestPairs=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,resultRevealSuspended=false,resultDecisionCommitted=false,motionTimer=0,motionLock=false,pendingMerged=[];
+  function __wpValidSave(value){
+    if(!value||typeof value!=="object"||Array.isArray(value))return false;
+    const integer=(v,max=Number.MAX_SAFE_INTEGER)=>{if(typeof v==="string"&&!/^[0-9]+$/.test(v))return false;const n=Number(v);return (typeof v==="number"||typeof v==="string")&&Number.isSafeInteger(n)&&n>=0&&n<=max;};
+    if(value.unlocked!==undefined&&(!integer(value.unlocked,levels.length)||value.unlocked<1))return false;
+    for(const field of ["endlessBest","endlessTile","endlessMoves","endlessRuns"])if(value[field]!==undefined&&!integer(value[field]))return false;
+    for(const field of ["cleared","stars","best"]){
+      const map=value[field];if(map===undefined)continue;
+      if(!map||typeof map!=="object"||Array.isArray(map))return false;
+      for(const [key,item] of Object.entries(map)){
+        const index=Number(key);if(!Number.isInteger(index)||index<0||index>=levels.length||String(index)!==key)continue;
+        if(field==="cleared"?typeof item!=="boolean":!integer(item,field==="stars"?3:Number.MAX_SAFE_INTEGER))return false;
+      }
+    }
+    return true;
+  }
+  let save,saveProtected=false,saveBase=null,lastAttempt=null,__wpSavedEndlessRuns=0;
+  try{
+    saveBase=localStorage.getItem(SAVE_KEY);
+    const raw=saveBase===null?{}:JSON.parse(saveBase);
+    if(!__wpValidSave(raw))throw new Error("INVALID_SAVE");
+    save=normalizeSave(raw);__wpSavedEndlessRuns=save.endlessRuns;
+  }catch{saveProtected=true;save=normalizeSave(null);}
+  let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,bestPairs=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,resultRevealSuspended=false,resultDecisionCommitted=false,savePending=false,motionTimer=0,motionLock=false,pendingMerged=[];
   const moveAnnouncement=document.createElement("div");moveAnnouncement.id="moveAnnouncement";moveAnnouncement.className="sr-only";moveAnnouncement.setAttribute("aria-live","polite");moveAnnouncement.setAttribute("aria-atomic","true");document.querySelector(".board-zone")?.append(moveAnnouncement);
   const dom={loading:$("#loadingPanel"),loadingFill:$("#loadingFill"),mainGroup:$("#mainGroup"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),campaignTab:$("#campaignTab"),challengeTab:$("#challengeTab"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),goalValue:$("#goalValue"),movesValue:$("#movesValue"),scoreValue:$("#scoreValue"),objective:$("#objectiveRow"),board:$("#gameBoard"),feedback:$("#moveFeedback"),announcement:moveAnnouncement,undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#leavePanel"),leaveText:$("#leaveText"),leaveContinue:$("#leaveContinueBtn"),leaveStages:$("#leaveStagesBtn"),tutorial:$("#tutorialPanel"),tutorialClose:$("#tutorialCloseBtn"),tutorialStart:$("#tutorialStartBtn")};
   const objectiveText=document.createElement('span'),homeHelpButton=document.createElement('button');
@@ -128,7 +187,52 @@
   }
 
   function announceBoard(direction="",mergeCue=""){dom.announcement.textContent=`${direction?`${t(direction)}. `:""}${t("moves")} ${moves}. ${t("score")} ${score}. ${goalText(activeLevel(),true)}${mergeCue?` ${mergeCue}`:""}`;}
-  function persist(){save=normalizeSave(save);writeStorage(SAVE_KEY,JSON.stringify(save));}
+  // WP-FOREST-LOCK-BEGIN
+  function __wpMergeSave(candidate,remote,baselineRuns){
+    const merged={...candidate,...remote};
+    for(const field of ["cleared","stars","best"])merged[field]={...(candidate[field]||{}),...(remote[field]||{})};
+    for(let i=0;i<levels.length;i++){
+      if(candidate.cleared?.[i]===true||remote.cleared?.[i]===true)merged.cleared[i]=true;
+      merged.stars[i]=Math.max(candidate.stars?.[i]||0,remote.stars?.[i]||0);
+      merged.best[i]=Math.max(candidate.best?.[i]||0,remote.best?.[i]||0);
+      if(!merged.stars[i])delete merged.stars[i];if(!merged.best[i])delete merged.best[i];
+    }
+    merged.unlocked=Math.max(candidate.unlocked||1,remote.unlocked||1);
+    for(const field of ["endlessBest","endlessTile","endlessMoves"])merged[field]=Math.max(candidate[field]||0,remote[field]||0);
+    const delta=candidate.endlessRuns-baselineRuns;
+    if(!Number.isSafeInteger(delta)||delta<0||!Number.isSafeInteger((remote.endlessRuns||0)+delta))throw Error("INVALID_RUN_DELTA");
+    merged.endlessRuns=(remote.endlessRuns||0)+delta;
+    return normalizeSave(merged);
+  }
+  async function __wpPersistLocked(candidate,timeoutMs=4000){
+    const failed=()=>({saved:false,progress:candidate});
+    let locks;try{locks=window.navigator?.locks;}catch{return failed();}
+    if(saveProtected||!locks||typeof locks.request!=="function"||!__wpValidSave(candidate))return failed();
+    const controller=new AbortController();let timer;
+    try{
+      const deadline=new Promise(resolve=>{timer=setTimeout(()=>{controller.abort();resolve(failed());},Math.max(1,timeoutMs));});
+      const request=locks.request("weightplay-animal-2048-progress-v1",{mode:"exclusive",signal:controller.signal},()=>{
+        if(controller.signal.aborted)return failed();
+        try{
+          const current=localStorage.getItem(SAVE_KEY);
+          if(lastAttempt){
+            if(current===lastAttempt.bytes){saveBase=current;__wpSavedEndlessRuns=lastAttempt.runs;lastAttempt=null;}
+            else if(current===lastAttempt.before)lastAttempt=null;
+            else return failed();
+          }
+          if(current===null&&saveBase!==null)return failed();
+          const raw=current===null?{}:JSON.parse(current);if(!__wpValidSave(raw))return failed();
+          const merged=__wpMergeSave(candidate,normalizeSave(raw),__wpSavedEndlessRuns);
+          const bytes=JSON.stringify(merged);lastAttempt={before:current,bytes,runs:candidate.endlessRuns};
+          try{localStorage.setItem(SAVE_KEY,bytes);}catch{}
+          if(localStorage.getItem(SAVE_KEY)!==bytes)return failed();
+          saveBase=bytes;__wpSavedEndlessRuns=merged.endlessRuns;lastAttempt=null;return {saved:true,progress:merged};
+        }catch{return failed();}
+      });
+      return await Promise.race([request,deadline]);
+    }catch{return failed();}finally{clearTimeout(timer);}
+  }
+  // WP-FOREST-LOCK-END
   function cloneState(){return{board:[...board],score,moves,merges,bestPairs,rngState,homeCounts:[...homeCounts],runHighest};}
   function restoreState(state){board=[...state.board];score=state.score;moves=state.moves;merges=state.merges;bestPairs=state.bestPairs||0;rngState=state.rngState;homeCounts=[...(state.homeCounts||[])];runHighest=state.runHighest??Math.max(0,...board);pendingHomeDeliveries=[];pendingMergeValues=[];renderBattle();}
   function rng(){rngState^=rngState<<13;rngState^=rngState>>>17;rngState^=rngState<<5;return(rngState>>>0)/4294967296;}
@@ -140,7 +244,7 @@
   homeHelpButton.addEventListener('click',openNurseryHelp);homeHelpClose.addEventListener('click',closeNurseryHelp);
   function cancelResultReveal(){clearTimeout(resultTimer);resultTimer=0;resultRevealSuspended=false;(__wpNotifyMeasurement(), dom.result.hidden=true);if(dom.leave.hidden)setBattleCovered(false);}
   function suspendResultReveal(){if(!resultTimer)return;clearTimeout(resultTimer);resultTimer=0;resultRevealSuspended=true;}
-  function resumeResultReveal(){if(!resultRevealSuspended||!resultState||document.body.dataset.screen!=="battle"||!dom.result.hidden)return;resultRevealSuspended=false;const primary=dom.result.querySelector(".primary-action:not([hidden])");resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);(__wpNotifyMeasurement(), dom.result.hidden=false);primary?.focus({preventScroll:true});},260);}
+  function resumeResultReveal(){if(!resultRevealSuspended||!resultState||document.body.dataset.screen!=="battle"||!dom.result.hidden)return;resultRevealSuspended=false;const primary=dom.result.querySelector(".primary-action:not([hidden])");resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);(__wpNotifyMeasurement(), dom.result.hidden=false);if(savePending){dom.resultTitle.tabIndex=-1;dom.resultTitle.focus({preventScroll:true});}else primary?.focus({preventScroll:true});},260);}
   function setScreen(name){if(name!=="battle"){cancelResultReveal();discardMotion();clearHint();}frame.activate(name);document.body.dataset.screen=name;for(const scene of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${scene}-active`,scene===name);document.body.classList.toggle("wp-stage-select-active",name==="stage");document.documentElement.classList.toggle("wp-stage-select-active",name==="stage");dom.mainGroup.hidden=name!=="main";document.querySelectorAll(".game-page-info").forEach(guide=>guide.hidden=name!=="main");dom.stage.hidden=name!=="stage";dom.battle.hidden=name!=="battle";window.WeightPlayStageArtwork?.sync?.();dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:name}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:name}}));window.WeightPlayBattleCanvas?.sync();if(name==="battle"){dispatchEvent(new CustomEvent("weightplay:battle-open",{detail:{screen:name}}));window.WeightPlayBattleCanvas?.sync();}
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -222,8 +326,8 @@
   function discardMotion(){clearEffects();clearTimeout(motionTimer);motionTimer=0;motionLock=false;pendingMerged=[];pendingHomeDeliveries=[];pendingMergeValues=[];boardCells().forEach(cell=>{cell.classList.remove("has-moving-tile");cell.querySelectorAll(".tile").forEach(tile=>tile.getAnimations().forEach(animation=>animation.cancel()));});}
   function settleMotion(){if(!motionLock)return;clearTimeout(motionTimer);motionTimer=0;boardCells().forEach(cell=>cell.querySelectorAll(".tile").forEach(tile=>tile.getAnimations().forEach(animation=>animation.cancel())));const merged=[...pendingMerged],values=[...pendingMergeValues],deliveries=[...pendingHomeDeliveries];pendingMerged=[];pendingMergeValues=[];pendingHomeDeliveries=[];motionLock=false;renderBattle(merged);emitMergeEffects(merged,values,deliveries);}
   function animateBoardMove(motions,mergedIndices){const cells=boardCells(),duration=reducedMotion()?0:145;pendingMerged=[...mergedIndices];motionLock=true;let animated=0;motions.forEach(({from,to})=>{if(from===to)return;const source=cells[from],target=cells[to],tile=source?.querySelector(":scope > .tile");if(!tile||!target)return;source.classList.add("has-moving-tile");tile.classList.add("is-moving");tile.animate([{transform:"translate3d(0,0,0)"},{transform:`translate3d(${target.offsetLeft-source.offsetLeft}px,${target.offsetTop-source.offsetTop}px,0)`}],{duration,easing:"cubic-bezier(.22,.78,.25,1)",fill:"forwards"});animated++;});if(!animated||duration===0){settleMotion();return;}motionTimer=setTimeout(settleMotion,duration);}
-  function startStage(index,entry="stage_select"){cancelResultReveal();discardMotion();stageIndex=Math.max(0,Math.min(INFINITE_INDEX,index));homeCounts=[];const level=activeLevel(),endless=level.type==="endless";score=0;moves=0;merges=0;bestPairs=0;rngState=endless?((Date.now()^Math.floor(performance.now()*1000))>>>0)||1:level.seed>>>0;board=endless?Array(16).fill(0):[...level.start];homeCounts=(level.nests||[]).map(()=>0);if(endless){spawnTile();spawnTile();}runHighest=Math.max(0,...board);undoState=null;resultState="";hintUsed=false;restarts=0;startTime=performance.now();(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleCovered(false);dom.feedback.textContent="";dom.announcement.textContent="";setScreen("battle");renderBattle();const funnelData={stage:endless?"infinite":stageIndex+1,mode:endless?"endless":"mission",source:entry};track("game_start",funnelData);trackFunnel(endless?"challenge_start":"mission_start",funnelData);if(document.body.dataset.screen==="battle"&&dom.leave.hidden&&dom.result.hidden)dom.board.focus({preventScroll:true});
-    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+  function startStage(index,entry="stage_select"){if(savePending)return;cancelResultReveal();discardMotion();stageIndex=Math.max(0,Math.min(INFINITE_INDEX,index));homeCounts=[];const level=activeLevel(),endless=level.type==="endless";score=0;moves=0;merges=0;bestPairs=0;rngState=endless?((Date.now()^Math.floor(performance.now()*1000))>>>0)||1:level.seed>>>0;board=endless?Array(16).fill(0):[...level.start];homeCounts=(level.nests||[]).map(()=>0);if(endless){spawnTile();spawnTile();}runHighest=Math.max(0,...board);undoState=null;resultState="";hintUsed=false;restarts=0;startTime=performance.now();(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleCovered(false);dom.feedback.textContent="";dom.announcement.textContent="";setScreen("battle");renderBattle();const funnelData={stage:endless?"infinite":stageIndex+1,mode:endless?"endless":"mission",source:entry};trackFunnel(endless?"challenge_start":"mission_start",funnelData);if(document.body.dataset.screen==="battle"&&dom.leave.hidden&&dom.result.hidden)dom.board.focus({preventScroll:true});
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpMeasurement.stageId=endless?null:stageIndex+1; __wpMeasurement.rewardEligible=!endless&&!saveProtected; __wpMeasurement.saveSucceeded=null; __wpNotifyMeasurement();
     if(level.nests&&!readStorage(HOME_TUTORIAL_KEY))openNurseryHelp();
 }
   function getLines(direction){const lines=[];if(direction==="left"||direction==="right"){for(let r=0;r<4;r++){const line=[];for(let c=0;c<4;c++)line.push(r*4+c);if(direction==="right")line.reverse();lines.push(line);}}else{for(let c=0;c<4;c++){const line=[];for(let r=0;r<4;r++)line.push(r*4+c);if(direction==="down")line.reverse();lines.push(line);}}return lines;}
@@ -239,31 +343,30 @@
     resultDecisionCommitted=false;
     const level=activeLevel(),endless=level.type==="endless",highest=runHighest,runSummary=t("runSummary",{animal:animalFor(highest),value:highest,score,moves});
     resultState=endless?"endless":win?"win":"lose";
+    const round=__wpMeasurement.roundKey,finishedStage=stageIndex,needsSave=endless||win;
+    let savedText="";
     if(endless){
       const previous=Number(save.endlessBest||0);
       save.endlessBest=Math.max(previous,score);
       save.endlessTile=Math.max(Number(save.endlessTile||0),highest);
       save.endlessMoves=Math.max(Number(save.endlessMoves||0),moves);
       save.endlessRuns=Number(save.endlessRuns||0)+1;
-      persist();
       dom.resultTitle.textContent=t("endlessResultTitle");
       dom.resultStars.textContent="∞";
       dom.resultText.textContent=t("endlessResultText",{moves,score,animal:animalFor(highest),value:highest});
-      dom.bestText.textContent=`${bestScoreFeedback(score,previous)} ${t("endlessRecord",{score:save.endlessBest,animal:animalFor(save.endlessTile||highest),value:save.endlessTile||highest})}`;
-      track("game_complete",{stage:"infinite",mode:"endless",score,moves,highest,result:"endless"});
+      savedText=`${bestScoreFeedback(score,previous)} ${t("endlessRecord",{score:save.endlessBest,animal:animalFor(save.endlessTile||highest),value:save.endlessTile||highest})}`;
+      track("challenge_complete",{stage:"infinite",mode:"endless",score,moves,highest,result:"endless"});
     }else if(win){
       const left=level.limit-moves,stars=hintUsed?2:left>=Math.ceil(level.limit*.45)&&restarts===0?3:2,previous=Number(save.best?.[stageIndex]||0);
       save.cleared[stageIndex]=true;
       save.stars[stageIndex]=Math.max(save.stars?.[stageIndex]||0,stars);
       save.best[stageIndex]=Math.max(previous,score);
       save.unlocked=Math.max(save.unlocked||1,Math.min(levels.length,stageIndex+2));
-      persist();
       dom.resultTitle.textContent=t("winTitle");
       dom.resultStars.textContent="★".repeat(stars)+"☆".repeat(3-stars);
       dom.resultText.textContent=`${t("winText",{stage:stageIndex+1,moves,score})} ${runSummary}`;
-      dom.bestText.textContent=bestScoreFeedback(score,previous);
+      savedText=bestScoreFeedback(score,previous);
       trackFunnel("mission_success",{stage:stageIndex+1,mode:"mission",score,moves,merges,highest, result:"win"});
-      track("game_complete",{stage:stageIndex+1,score,moves,stars,result:"win"});
     }else{
       const previous=Number(save.best?.[stageIndex]||0);
       dom.resultTitle.textContent=t("loseTitle");
@@ -275,19 +378,33 @@
     }
     const nextAvailable=!endless&&win&&stageIndex<levels.length-1;
     dom.next.hidden=false;
-    dom.next.disabled=!nextAvailable;
+    function setSaving(pending){savePending=pending;dom.result.setAttribute("aria-busy",String(pending));dom.retry.disabled=pending;dom.resultStages.disabled=pending;dom.battleBack.disabled=pending;dom.next.disabled=pending||!nextAvailable;}
+    setSaving(needsSave);
+    if(needsSave){dom.bestText.setAttribute("role","status");dom.bestText.setAttribute("aria-live","polite");dom.bestText.textContent=savingText[locale]||savingText.en;}
     [dom.retry,dom.resultStages,dom.next].forEach(button=>button.classList.remove("primary-action"));
     const primary=nextAvailable?dom.next:win&&!endless?dom.resultStages:dom.retry;
     primary.classList.add("primary-action");
-    resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);(__wpNotifyMeasurement(), dom.result.hidden=false);primary.focus({preventScroll:true});},260);
-
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+    resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);(__wpNotifyMeasurement(), dom.result.hidden=false);if(savePending){dom.resultTitle.tabIndex=-1;dom.resultTitle.focus({preventScroll:true});}else primary.focus({preventScroll:true});},260);
+    const finishMeasurement=confirmedSave=>{
+      if(__wpMeasurement.roundKey!==round||stageIndex!==finishedStage)return;
+      __wpMeasurement.ended=true;__wpMeasurement.outcome=endless?"endless":win?"win":"lose";
+      __wpMeasurement.saveSucceeded=Boolean(!endless&&win&&confirmedSave);
+      __wpRememberSavedClear();
+      if(__wpMeasurement.screen==="battle")__wpMeasurement.screen=null;__wpNotifyMeasurement();
+    };
+    if(!needsSave){finishMeasurement(false);return;}
+    const candidate=JSON.parse(JSON.stringify(save));
+    void __wpPersistLocked(candidate).then(result=>{
+      if(__wpMeasurement.roundKey!==round||stageIndex!==finishedStage)return;
+      if(result.saved)save=result.progress;
+      dom.bestText.textContent=result.saved?savedText:(saveFailureText[locale]||saveFailureText.en);
+      finishMeasurement(result.saved);setSaving(false);
+      if(!dom.result.hidden&&document.activeElement===dom.resultTitle)primary.focus({preventScroll:true});
+    });
 }
   function undo(){if(battleDecisionBlocked())return;clearHint();clearEffects();if(motionLock)settleMotion();if(!undoState){dom.feedback.textContent=t("undoEmpty");return;}const restore=undoState;undoState=null;clearEffects();restoreState(restore);dom.feedback.textContent=t("undoReady");announceBoard();trackFunnel("undo_used",{score,moves,merges,highest:Math.max(...board)});}
   function restart(){
-    const __wpPreviousRound = __wpMeasurement.roundKey;
-if(battleDecisionBlocked())return;const restartCount=restarts+1,startIndex=stageIndex;__wpReplayStart(() => startStage(startIndex));restarts=restartCount;track("game_restart",{stage:startIndex===INFINITE_INDEX?"infinite":startIndex+1,mode:startIndex===INFINITE_INDEX?"endless":"mission",source:"battle"});
-    if (__wpMeasurement.roundKey !== __wpPreviousRound) { __wpMeasurement.restart = true; __wpNotifyMeasurement(); }
+    if(battleDecisionBlocked())return;const restartCount=restarts+1,startIndex=stageIndex;__wpReplayStart(() => startStage(startIndex));restarts=restartCount;
 }
   function hintBoardStats(values,blocked){const open=values.filter((value,index)=>!value&&!blocked.has(index)).length,corner=Math.max(0,...[0,3,12,15].map(index=>values[index]||0)),highest=Math.max(...values);return{open,corner,highest};}
   // Two-ply board evaluation prioritizes usable space and prepared pairs.
@@ -333,11 +450,11 @@ if(battleDecisionBlocked())return;const restartCount=restarts+1,startIndex=stage
   const preventRepeatedActivation=event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();};
   [dom.start,dom.stageBack,dom.battleBack,dom.leaveContinue,dom.leaveStages,dom.retry,dom.resultStages,dom.next,dom.tutorialClose,dom.tutorialStart].forEach(button=>button.addEventListener("keydown",preventRepeatedActivation));
   const resultStageTarget=()=>resultState==="win"&&stageIndex<levels.length-1?stageIndex+1:stageIndex;
-  dom.battleBack.addEventListener("click",()=>{if(motionLock)settleMotion();if(resultState){showStage(resultStageTarget());return;}setBattleCovered(true);(__wpNotifyMeasurement(), dom.leave.hidden=false);dom.leaveContinue.focus({preventScroll:true});});dom.leaveContinue.addEventListener("click",()=>{(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleCovered(false);dom.battleBack.focus({preventScroll:true});});dom.leaveStages.addEventListener("click",()=>{(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleCovered(false);showStage(stageIndex);});
-  function commitResultDecision(action){if(resultDecisionCommitted||dom.result.hidden)return false;resultDecisionCommitted=true;action();return true}
+  dom.battleBack.addEventListener("click",()=>{if(savePending)return;if(motionLock)settleMotion();if(resultState){showStage(resultStageTarget());return;}setBattleCovered(true);(__wpNotifyMeasurement(), dom.leave.hidden=false);dom.leaveContinue.focus({preventScroll:true});});dom.leaveContinue.addEventListener("click",()=>{(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleCovered(false);dom.battleBack.focus({preventScroll:true});});dom.leaveStages.addEventListener("click",()=>{(__wpNotifyMeasurement(), dom.leave.hidden=true);setBattleCovered(false);showStage(stageIndex);});
+  function commitResultDecision(action){if(savePending||resultDecisionCommitted||dom.result.hidden)return false;resultDecisionCommitted=true;action();return true}
   function resultAnalyticsPayload(){const endless=stageIndex===INFINITE_INDEX;return{stage:endless?"infinite":stageIndex+1,mode:endless?"endless":"mission",result:resultState,score,moves};}
   document.addEventListener("click",event=>setInputType(clickInputType(event)),true);document.addEventListener("keydown",()=>setInputType("keyboard"),true);document.addEventListener("pointerdown",()=>setInputType("pointer"),true);
-  dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",restart);dom.hint.addEventListener("click",showHint);document.querySelectorAll("[data-direction]").forEach(button=>button.addEventListener("click",()=>performMove(button.dataset.direction)));dom.retry.addEventListener("click",()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload();track("game_restart",{...payload,source:"result"});trackFunnel("retry_start",{...payload,source:"result_retry"});__wpReplayStart(() => startStage(stageIndex,"result_retry"));}));dom.resultStages.addEventListener("click",()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload();track("game_result_menu",payload);trackFunnel("result_to_missions",payload);showStage(resultStageTarget());}));dom.next.addEventListener("click",()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextStage=Math.min(levels.length-1,stageIndex+1);track("game_next_stage",{...payload,next_stage:nextStage+1});startStage(nextStage,"next_stage");}));dom.tutorialClose.addEventListener("click",closeTutorial);dom.tutorialStart.addEventListener("click",()=>{closeTutorial();startStage(0,"tutorial");});
+  dom.undo.addEventListener("click",undo);dom.restart.addEventListener("click",restart);dom.hint.addEventListener("click",showHint);document.querySelectorAll("[data-direction]").forEach(button=>button.addEventListener("click",()=>performMove(button.dataset.direction)));dom.retry.addEventListener("click",()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload();trackFunnel("retry_start",{...payload,source:"result_retry"});__wpReplayStart(() => startStage(stageIndex,"result_retry"));}));dom.resultStages.addEventListener("click",()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload();track("game_result_menu",payload);trackFunnel("result_to_missions",payload);showStage(resultStageTarget());}));dom.next.addEventListener("click",()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextStage=Math.min(levels.length-1,stageIndex+1);track("game_next_stage",{...payload,next_stage:nextStage+1});startStage(nextStage,"next_stage");}));dom.tutorialClose.addEventListener("click",closeTutorial);dom.tutorialStart.addEventListener("click",()=>{closeTutorial();startStage(0,"tutorial");});
   dom.locale.addEventListener("change",event=>{
     const next=dom.locale.value,api=window.WonderI18n;
     // This owned control uses the canonical route API once. Do not also let
