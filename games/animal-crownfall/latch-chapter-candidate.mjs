@@ -27,4 +27,18 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:3,y:0,power:10},enemies:[{id:'weak',x:1,y:0,power:6},{id:'strong',x:5,y:0,power:20,shield:'sun'}],required:['weak','strong'],
   items:[{id:'sword',kind:'sword',x:1,y:2,amount:8},{id:'rune',kind:'rune',x:1,y:2,link:'sun'},{id:'crown',kind:'crown',x:6,y:6}],
   latches:[{id:'sun',key:[4,1],lock:[0,1]},{id:'moon',key:[0,3],lock:[5,1]}]
+},{
+  id:35,name:'The returning guardian',
+  decision:'Open both numbered pairs, collect the rune for the shielded guardian and recover the lower supply before its stronger second form.',
+  board:['.......','AAA.BCC','.......','BBB.CCC','.......','AAAAAAA','.......','BBBBBBB','.......','#######'],
+  hero:{x:3,y:0,power:10},enemies:[{id:'weak',x:1,y:0,power:6},{id:'boss',x:5,y:0,power:20,shield:'sun',boss:true,next:{x:4,y:8,power:65}}],required:['weak','boss'],
+  items:[{id:'sword',kind:'sword',x:1,y:2,amount:8},{id:'rune',kind:'rune',x:1,y:2,link:'sun'},{id:'boost',kind:'power',x:3,y:4,amount:24},{id:'crown',kind:'crown',x:6,y:8}],
+  latches:[{id:'sun',key:[4,1],lock:[0,1]},{id:'moon',key:[0,3],lock:[5,1]}]
+},{
+  id:36,name:'The timed multiplier',
+  decision:'Release the marked key before the lock and arrange the addition before the multiplier to defeat the final guard.',
+  board:['.......','.AAA...','.......','BBC.CCC','.......','AAABBBB','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6}],
+  latches:[{id:'sun',lock:[1,1],key:[4,3]}]
 }];

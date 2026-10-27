@@ -41,6 +41,7 @@
       medic: { source: "enemy-medic-candidate-v1.webp", width: 1024, height: 1536 },
       drummer: { source: "enemy-drummer-candidate-v1.webp", width: 1024, height: 1536 },
       sapper: { source: "enemy-sapper-candidate-v2.webp", width: 1024, height: 1536 },
+      "stone-bastion": { source: "enemy-stone-bastion-candidate-v3.webp", width: 1024, height: 1536, viewBox: "90 160 870 1140" },
     },
   };
 
@@ -51,7 +52,7 @@
     const asset = individual[side]?.[id];
     if ((!frame && !asset) || !/^[a-zA-Z0-9-]+$/.test(instance)) throw new Error("Unknown Peach Oath sprite");
     if (asset) {
-      return `<svg class="sprite" data-sprite="${id}" data-native-facing="${asset.facing || 'right'}" viewBox="0 0 ${asset.width} ${asset.height}"
+      return `<svg class="sprite" data-sprite="${id}" data-native-facing="${asset.facing || 'right'}" viewBox="${asset.viewBox || `0 0 ${asset.width} ${asset.height}`}"
         preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
         <image href="assets/${asset.source}" width="${asset.width}" height="${asset.height}"/>
       </svg>`;

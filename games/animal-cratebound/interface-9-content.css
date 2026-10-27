@@ -275,6 +275,32 @@ body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"] #result
     grid-template-columns:148px minmax(0,1fr) 64px 64px!important;
     gap:4px!important;
   }
+  body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleControls>button {
+    padding-inline:2px;
+    font-size:13px;
+    overflow-wrap:normal;
+    white-space:nowrap;
+  }
+  body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleControls {
+    grid-template-columns:202px minmax(0,1fr) 64px 64px!important;
+    grid-template-rows:62px 62px!important;
+    min-height:128px;
+  }
+  body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleScreen .battle-live[data-wp-frame-content="battle"] {
+    grid-template-rows:44px minmax(0,1fr) 128px 28px!important;
+  }
+  body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleControls .dpad {
+    grid-template-columns:repeat(3,62px)!important;
+    grid-template-rows:repeat(2,62px)!important;
+  }
+  body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleControls button {
+    min-height:62px;
+    height:62px;
+  }
+  body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleControls .dpad button {
+    width:62px;
+    min-width:62px;
+  }
 }
 @media (max-height:500px) and (min-aspect-ratio:3/2) {
   body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"] #battleScreen .battle-live[data-wp-frame-content="battle"] {

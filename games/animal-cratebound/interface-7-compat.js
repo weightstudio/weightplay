@@ -266,7 +266,7 @@
       const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;geometry.set(`${key}-texture`,texture);
       materials.set(key,new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false}));
     }
-    const sprite=new THREE.Sprite(materials.get(key));sprite.position.set(side==='dock'?-.25:.25,y+.45,0);sprite.scale.set(.52,.52,1);sprite.renderOrder=10;root.add(sprite);return sprite;
+    const sprite=new THREE.Sprite(materials.get(key));sprite.position.set(side==='dock'?.32:-.32,y+(side==='dock'?.15:-.2),0);sprite.scale.set(.52,.52,1);sprite.renderOrder=10;root.add(sprite);return sprite;
   }
   function makeCargo(linked, seal) {
     const root = new THREE.Group();
@@ -284,9 +284,9 @@
       block(root, [.6, .092, .6], [0, y + .005, 0], 0x946c43);
     }
     const plate = block(root, [.4, .36, .024], [0, .34, .363], 0x164e5a, .35);
-    const sign = rune(root, .67, linked ? 0xea97ff : 0x78ffe0, 1.05);
-    const front = rune(root, 0, linked ? 0xea97ff : 0x78ffe0, .88);
-    front.rotation.x = Math.PI / 2; front.position.set(0, .35, .382);
+    let sign=null,front=null;
+    if(window.__CrateboundPractice?.enabled){if(linked)block(root,[.12,.045,.68],[0,.685,0],0xea97ff,.2,true)}
+    else{sign=rune(root,.67,linked?0xea97ff:0x78ffe0,1.05);front=rune(root,0,linked?0xea97ff:0x78ffe0,.88);front.rotation.x=Math.PI/2;front.position.set(0,.35,.382)}
     addSortingSeal(root,seal,.735,'cargo');
     root.userData = { plate, sign, front, linked }; return root;
   }
@@ -340,7 +340,7 @@
         block(d, [.9, .035, .035], [0, .14, s * .43], 0x69f4de, .2, true);
         block(d, [.035, .035, .9], [s * .43, .14, 0], 0x69f4de, .2, true);
       }
-      rune(d, .143, 0xa2ffe8, 1.7); d.userData.sortingSeal=addSortingSeal(d,p.seal,.175,'dock'); docks.push(d);
+      if(!window.__CrateboundPractice?.enabled)rune(d,.143,0xa2ffe8,1.7);d.userData.sortingSeal=addSortingSeal(d,p.seal,.175,'dock'); docks.push(d);
       const pulse=ring(d,.49,0x86ffe1,.16);pulse.visible=false;dockPulses.push({mesh:pulse,age:1});
     });
     e.ice.forEach(p => {
@@ -389,8 +389,10 @@
     lastSize=key;renderer.setSize(Math.round(r.width),Math.round(r.height),false);
     const aspect=r.width/r.height,w=e.width||e.size,h=e.height||e.size;
     const follow=!e.overview;
-    // One world cell is 52 logical UI units, independent of map/aspect ratio.
-    const height=follow?r.height/(52*logicalScale):Math.max(h*.78+1.8,(w+1.2)/aspect);
+    // Compact practice boards use larger cells on narrow phones; wide boards
+    // retain the existing player-following camera when they exceed the view.
+    const cellSize=window.__CrateboundPractice?.enabled&&r.width<=320?62:52;
+    const height=follow?r.height/(cellSize*logicalScale):Math.max(h*.78+1.8,(w+1.2)/aspect);
     camera.left=-height*aspect/2;camera.right=height*aspect/2;camera.top=height/2;camera.bottom=-height/2;camera.updateProjectionMatrix();
     wrap.dataset.crateCamera=follow?'follow':e.overview?'overview':'fit';
     cameraInitialized=false;

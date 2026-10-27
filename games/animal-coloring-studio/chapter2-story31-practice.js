@@ -1,0 +1,10 @@
+// Unregistered and unreviewed localhost candidate; never a formal campaign page.
+(() => {
+  const points=[[314,152],[85,356],[522,356],[86,513],[521,513],[87,675],[521,675],[182,316],[287,282],[268,452],[415,353],[375,494],[291,553],[393,569],[661,514],[716,547],[610,554],[664,573],[706,612],[625,616],[711,702],[317,910]];
+  window.AnimalColoringStory31Practice=Object.freeze({ready:false,id:'garden-visit-story-practice',
+    art:'/docs/game-build-handoffs/animal-coloring-studio-story-art/stage31-source-v8.png',
+    mask:'/docs/game-build-handoffs/animal-coloring-studio-story-art/UNREVIEWED-stage31-v8-mask.png',
+    stamp:'/docs/game-build-handoffs/animal-coloring-studio-story-art/flower-stamp-v2.png',
+    anchors:Object.freeze(points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`})))
+  });
+})();

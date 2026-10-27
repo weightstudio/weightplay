@@ -144,12 +144,12 @@
     }),
     45: Object.freeze({
       chapter: 8, featureTier: 8, name: 'signal-ice-dock',
-      decision: 'Open the signal before sending sun along the ice to its seal.',
+      decision: 'Open the signal, exchange the cargo lanes and send moon along the ice.',
       width: 8, height: 7, size: 8,
       rows: ['        ', ' ...... ', ' ...... ', ' ...... ', ' ...... ', ' ...... ', '        '],
       walls: [{x: 4, y: 1}, {x: 4, y: 3}, {x: 4, y: 4}, {x: 4, y: 5}], player: {x: 1, y: 2},
       boxes: [{x: 2, y: 2, linked: false, seal: 'sun'}, {x: 2, y: 4, linked: false, seal: 'moon'}],
-      goals: [{x: 6, y: 2, seal: 'sun'}, {x: 3, y: 4, seal: 'moon'}],
+      goals: [{x: 6, y: 2, seal: 'moon'}, {x: 3, y: 4, seal: 'sun'}],
       ice: [{x: 5, y: 2}], switches: [{x: 3, y: 1}], gate: {x: 4, y: 2, open: false}, belts: [], pulls: 0,
     }),
     46: Object.freeze({
@@ -253,13 +253,13 @@
       ice: [], switches: [], gate: null, belts: [], pulls: 0,
     }),
     56: Object.freeze({
-      chapter: 11, featureTier: 11, name: 'belt-to-sun',
-      decision: 'Read the belt landing before pushing sun to its own dock.',
+      chapter: 11, featureTier: 11, name: 'belt-lane-exchange',
+      decision: 'Read the belt landing, exchange the cargo lanes and bring moon to the upper dock.',
       width: 8, height: 7, size: 8,
-      rows: ['        ', '        ', ' .....  ', '   ...  ', ' ...... ', ' ...... ', '        '],
+      rows: ['        ', '    ... ', ' ...... ', '   .... ', ' ...... ', ' ...... ', '        '],
       walls: [], player: {x: 1, y: 2},
       boxes: [{x: 4, y: 2, linked: false, seal: 'sun'}, {x: 2, y: 4, linked: false, seal: 'moon'}],
-      goals: [{x: 5, y: 2, seal: 'sun'}, {x: 4, y: 4, seal: 'moon'}],
+      goals: [{x: 5, y: 2, seal: 'moon'}, {x: 4, y: 4, seal: 'sun'}],
       ice: [], switches: [], gate: null, belts: [{x: 2, y: 2, dx: 1, dy: 0}], pulls: 0,
     }),
     57: Object.freeze({
@@ -294,12 +294,12 @@
     }),
     60: Object.freeze({
       chapter: 11, featureTier: 11, name: 'sorting-deck-finale',
-      decision: 'Recover the separate sun, open the gate and use the belt to route the linked pair.',
+      decision: 'Recover sun, open the gate and use the belt to turn the linked pair toward the lower docks.',
       width: 8, height: 7, size: 8,
       rows: ['        ', ' ...... ', ' ...... ', ' ...... ', ' ...... ', ' ...... ', '        '],
       walls: [{x: 3, y: 1}, {x: 3, y: 3}, {x: 3, y: 5}], player: {x: 2, y: 4},
       boxes: [{x: 1, y: 4, linked: false, seal: 'sun'}, {x: 4, y: 2, linked: true, seal: 'sun'}, {x: 4, y: 3, linked: true, seal: 'moon'}],
-      goals: [{x: 2, y: 4, seal: 'sun'}, {x: 5, y: 2, seal: 'sun'}, {x: 5, y: 3, seal: 'moon'}],
+      goals: [{x: 2, y: 4, seal: 'sun'}, {x: 6, y: 3, seal: 'sun'}, {x: 6, y: 4, seal: 'moon'}],
       ice: [], switches: [{x: 2, y: 1}], gate: {x: 3, y: 2, open: false}, belts: [{x: 2, y: 2, dx: 1, dy: 0}], pulls: 1,
     }),
   });

@@ -60,7 +60,7 @@ export class CrownScene {
   }
   point(x,row){return {x,y:-row};}
   show(state,highlight=[],{preserve=false}={}) {
-    this.state=state;this.labels.replaceChildren();this.labelNodes=[];
+    this.state=state;this.labels.replaceChildren();this.labelNodes=[];this.latchLabels=[];
     const rows=state.board.length;this.rows=rows;this.columns=state.board[0].length;this.folded=false;const middleX=(this.columns-1)/2,middleY=-(rows-1)/2,extent=Math.max(rows,this.columns)*.65+2;this.sun.position.set(middleX-5,middleY+9,14);this.sun.target.position.set(middleX,middleY,0);Object.assign(this.sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent});this.sun.shadow.camera.updateProjectionMatrix();
     const terrainKey=JSON.stringify([state.board,highlight,this.folded,state.latches||[]]);
     if(terrainKey!==this.terrainKey){this.terrainKey=terrainKey;this.terrain.traverse(n=>{if(n.isInstancedMesh)n.dispose();});this.terrain.clear();this.hitTargets=[];this.castle(rows);
@@ -82,6 +82,7 @@ export class CrownScene {
       }
     }
     }
+    if((state.latches?.length||0)>1)state.latches.forEach((latch,index)=>{for(const pos of [latch.key,latch.lock]){const [x,y]=pos;if(!/^[ABC]$/.test(state.board[y]?.[x]||''))continue;const badge=document.createElement('span');badge.className='latch-tag';badge.textContent=String(index+1);badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}});
     const alive=new Set();
     const add=(a,kind)=>{
       const id=a.id||'hero',signature=JSON.stringify(kind==='hero'?[a.armed]:[a.kind,a.shield,a.boss,a.buff]);alive.add(id);
@@ -163,6 +164,15 @@ export class CrownScene {
       for(let pass=0;pass<=placed.length;pass++){const collision=placed.find(r=>left<r.right+2&&left+w>r.left-2&&top<r.bottom+2&&top+h>r.top-2);if(!collision)break;top=collision.bottom+2;}
       top=Math.min(height-h-2,top);placed.push({left,right:left+w,top,bottom:top+h});
       l.element.style.left=`${left+w/2}px`;l.element.style.top=`${top+h}px`;
+    }
+    // Keep the matching number close to its tile, but out of actor value tags.
+    for(const badge of this.latchLabels||[]){
+      const p=new THREE.Vector3(badge.x,-badge.y,.85).project(this.camera),visible=Math.abs(p.x)<.96&&Math.abs(p.y)<.96;badge.element.hidden=!visible;if(!visible)continue;
+      const x=(p.x+1)*width/2,y=(1-p.y)*height/2,w=badge.element.offsetWidth,h=badge.element.offsetHeight;
+      const candidates=[[x+2,y+2],[x-w-2,y+2],[x+2,y-h-2],[x-w-2,y-h-2],[x-w/2,y+h],[x-w/2,y-2*h]];
+      const choices=candidates.map(([a,b])=>({left:Math.max(2,Math.min(width-w-2,a)),top:Math.max(2,Math.min(height-h-2,b))}));
+      const good=choices.find(c=>!placed.some(r=>c.left<r.right+1&&c.left+w>r.left-1&&c.top<r.bottom+1&&c.top+h>r.top-1))||choices[0];
+      badge.element.style.left=`${good.left}px`;badge.element.style.top=`${good.top}px`;placed.push({left:good.left,right:good.left+w,top:good.top,bottom:good.top+h});
     }
   }
   async animate(event,previous,isPaused=()=>false) {
