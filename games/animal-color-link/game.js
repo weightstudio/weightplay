@@ -1,6 +1,10 @@
 (()=>{
   "use strict";
   const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  // Use the shared wide Battle envelope on short landscape screens; the
+  // portrait envelope shrinks a 7×7 board to unusable physical dimensions.
+  const battleCanvas=document.querySelector('#battle');
+  if(battleCanvas){battleCanvas.dataset.wpBattleLandscapeWidth='760';battleCanvas.dataset.wpBattleLandscapeHeight='334';}
   let practiceAuthorized=false,practiceStarting=false,practiceAdapter=null,fireflyCopy=null,fireflySolver=null,practiceBadge=null,peekCell=null;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.

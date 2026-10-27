@@ -32,7 +32,17 @@ export function reachable(s, a, b) {
   return true;
 }
 export function newState(level) {
-  return { level:level.id, board:level.board.map(r=>r.split('')), hero:{x:level.hero.x,y:level.hero.y,power:level.hero.power,armed:false}, calculation:null, enemies:level.enemies.map(e=>({...clone(e),alive:true})), items:level.items.map(i=>({...clone(i),alive:true})), required:level.required||[], seals:[], sealOrder:level.sealOrder||[], collected:[], killed:[], moves:0, status:'playing', reason:null };
+  const state={ level:level.id, board:level.board.map(r=>r.split('')), hero:{x:level.hero.x,y:level.hero.y,power:level.hero.power,armed:false}, calculation:null, enemies:level.enemies.map(e=>({...clone(e),alive:true})), items:level.items.map(i=>({...clone(i),alive:true})), required:level.required||[], seals:[], sealOrder:level.sealOrder||[], collected:[], killed:[], moves:0, status:'playing', reason:null };
+  if(level.latches){
+    state.latches=clone(level.latches);const ids=new Set();
+    for(const latch of state.latches){
+      const point=p=>Array.isArray(p)&&p.length===2&&p.every(Number.isInteger)&&isColour(state.board[p[1]]?.[p[0]]);
+      if(!latch||typeof latch.id!=='string'||!latch.id||ids.has(latch.id)||!point(latch.lock)||!point(latch.key))throw Error('INVALID_LATCH');
+      if(groupAt(state,...latch.lock).some(([x,y])=>x===latch.key[0]&&y===latch.key[1]))throw Error('LATCH_KEY_IN_LOCKED_GROUP');
+      ids.add(latch.id);
+    }
+  }
+  return state;
 }
 function snapshot(s) {return clone(s);}
 export function step(input,x,y,{trace=true}={}) {
@@ -41,6 +51,9 @@ export function step(input,x,y,{trace=true}={}) {
   const fail=(reason,data={})=>{s.status='lost';s.reason={code:reason,...data};emit('fail',s.reason);};
   const group=groupAt(s,x,y);
   if(s.status!=='playing'||!group.length)return {state:s,events,valid:false};
+  const cells=new Set(group.map(([a,b])=>`${a},${b}`));
+  const latch=s.latches?.find(({lock,key})=>cells.has(lock.join(','))&&isColour(s.board[key[1]]?.[key[0]]));
+  if(latch)return {state:s,events,valid:false,reason:'latch',latchId:latch.id};
   group.forEach(([a,b])=>s.board[b][a]='.');s.moves++;emit('clear',{group});
   // Each pass either moves an entity, consumes one, kills one or changes phase.
   // Board height and inventory bound the stabilization; no real-time physics.

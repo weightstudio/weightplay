@@ -18,3 +18,11 @@ body[data-wp-game-id="animal-cozy-camp"] .cozy-seat-legend { padding: 0 4px; }
 @media (orientation: portrait) {
   body[data-wp-game-id="animal-cozy-camp"] [data-wp-local-practice] { top: 56px !important; }
 }
+@media (orientation: portrait) and (max-width: 360px) {
+  body[data-wp-game-id="animal-cozy-camp"][data-cozy-chapter2="true"] #battleScreen #battle-content.cozy-puzzle {
+    grid-template-rows: minmax(72px, auto) minmax(220px, auto) 22px auto minmax(24px, auto) 48px;
+  }
+  body[data-wp-game-id="animal-cozy-camp"][data-cozy-chapter2="true"] .layout-choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 120px;
+  }
+}

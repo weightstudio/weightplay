@@ -18,6 +18,13 @@ html body[data-wp-game-id="animal-crownfall"] #battleInfo [data-t="moveTarget"]{
 #feedback{direction:ltr;unicode-bidi:plaintext;min-width:0;max-height:14px;font-size:11px;line-height:14px;padding:0 4px;text-align:center;white-space:nowrap;overflow:auto}
 #legend{min-width:0;font-size:10px;line-height:12px;white-space:nowrap;overflow:auto;text-align:center}
 #legend:empty{display:none}
+/* Local chapter slice: keep the new instruction readable without overlaying
+   the shared header. The normal campaign retains its existing layout. */
+body[data-crown-latch-practice="true"] #battleContent{grid-template-rows:minmax(0,1fr) 48px 110px 48px 48px}
+body[data-crown-latch-practice="true"] #side{grid-template-rows:68px 20px 20px}
+body[data-crown-latch-practice="true"] #objective{max-height:68px;font-size:calc(14px * var(--wp-battle-canvas-inverse-scale,1));line-height:calc(16px * var(--wp-battle-canvas-inverse-scale,1))}
+body[data-crown-latch-practice="true"] #feedback{max-height:18px;font-size:13px;line-height:18px}
+body[data-crown-latch-practice="true"] #legend{font-size:12px;line-height:16px}
 .tools{grid-column:1;grid-row:5}
 #choice{grid-column:1/-1;grid-row:4;justify-self:end;display:grid;grid-template-columns:1fr 1fr;gap:6px;width:min(420px,100%);height:48px;background:transparent;z-index:2}
 #choice button{font-size:12px;min-width:0;padding:6px 12px}
@@ -38,6 +45,14 @@ html body[data-wp-game-id="animal-crownfall"] #battleInfo [data-t="moveTarget"]{
   #objective{font-size:10px;line-height:12px}
   #legend{font-size:9px}
   #feedback{font-size:10px}
+}
+@media(min-aspect-ratio:1.45){
+ body[data-crown-latch-practice="true"] #battleContent{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:minmax(0,1fr) 94px 60px 48px 48px}
+ body[data-crown-latch-practice="true"] #battleContent:has(#choice[hidden]){grid-template-rows:minmax(0,1fr) 94px 106px 0 48px}
+ body[data-crown-latch-practice="true"] #side{height:106px;grid-template-rows:70px 18px 18px}
+ body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #side{height:60px;grid-template-rows:26px 18px 16px}
+ body[data-crown-latch-practice="true"] #objective{max-height:70px}
+ body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #objective{max-height:26px}
 }
 
 /* The camera toolbar owns space outside the rendered board. */

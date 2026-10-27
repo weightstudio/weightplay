@@ -62,7 +62,7 @@ export class CrownScene {
   show(state,highlight=[],{preserve=false}={}) {
     this.state=state;this.labels.replaceChildren();this.labelNodes=[];
     const rows=state.board.length;this.rows=rows;this.columns=state.board[0].length;this.folded=false;const middleX=(this.columns-1)/2,middleY=-(rows-1)/2,extent=Math.max(rows,this.columns)*.65+2;this.sun.position.set(middleX-5,middleY+9,14);this.sun.target.position.set(middleX,middleY,0);Object.assign(this.sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent});this.sun.shadow.camera.updateProjectionMatrix();
-    const terrainKey=JSON.stringify([state.board,highlight,this.folded]);
+    const terrainKey=JSON.stringify([state.board,highlight,this.folded,state.latches||[]]);
     if(terrainKey!==this.terrainKey){this.terrainKey=terrainKey;this.terrain.traverse(n=>{if(n.isInstancedMesh)n.dispose();});this.terrain.clear();this.hitTargets=[];this.castle(rows);
     const marked=new Set(highlight.map(p=>p.join(',')));
     for(let y=0;y<rows;y++)for(let x=0;x<this.columns;x++) {
@@ -71,6 +71,14 @@ export class CrownScene {
       if(/^[ABC]$/.test(c)){m.userData.cell=[x,y];this.hitTargets.push(m);const rune=this.box(this.terrain,gx,gy,.46,c==='A'?.28:.35,c==='B'?.1:.3,.055,0xffffff);rune.rotation.z=c==='C'?Math.PI/4:0;if(c==='A')this.box(this.terrain,gx,gy,.46,.1,.4,.06,0xffe5ee);}
       else if(c==='1'||c==='2'){for(const dx of [-.27,0,.27])this.box(this.terrain,gx+dx,gy,.46,.07,.78,.07,0xffdf8a,true);}
       else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.terrain,gx+dx,gy+.2,.27,.16,.55,.16,0xd4e0e6,true);spike.rotation.z=.18;}}
+      const mark=state.latches?.find(l=>l.key[0]===x&&l.key[1]===y||l.lock[0]===x&&l.lock[1]===y);
+      if(mark){const key=mark.key[0]===x&&mark.key[1]===y,locked=/^[ABC]$/.test(state.board[mark.key[1]]?.[mark.key[0]]||'');
+        // Raised, distinct key and lock silhouettes use the existing scene's
+        // shared geometry/material cache; their production art is unapproved.
+        this.box(this.terrain,gx,gy,.57,.64,.64,.12,key||!locked?0x155d52:0x533a75,true);
+        if(key){this.box(this.terrain,gx-.13,gy+.12,.66,.22,.22,.08,0xffdd70,true);this.box(this.terrain,gx+.06,gy-.05,.66,.28,.08,.08,0xffdd70,true);this.box(this.terrain,gx+.17,gy-.13,.66,.08,.18,.08,0xffdd70,true)}
+        else{this.box(this.terrain,gx,gy-.05,.66,.36,.28,.08,0xffdd70,true);this.box(this.terrain,gx-.14,gy+.17,.66,.08,.22,.08,0xffdd70,true);if(locked)this.box(this.terrain,gx+.14,gy+.17,.66,.08,.22,.08,0xffdd70,true);this.box(this.terrain,gx+(locked?0:-.06),gy+.27,.66,locked?.36:.25,.08,.08,0xffdd70,true)}
+      }
     }
     }
     const alive=new Set();

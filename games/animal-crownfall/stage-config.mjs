@@ -1,8 +1,9 @@
 import {LEVELS} from './levels.mjs';
-import {newState} from './core.mjs';
+import {newState} from './core.mjs?v=20261028-latch1';
 import {NAMES} from './stage-copy.mjs';
 import {battleObjective} from './objective-copy.mjs';
 import {text} from './locales.mjs';
+import {LATCH_COPY} from './latch-copy.mjs';
 
 const POSTER='/assets/lobby-thumbs/w480/assets__animal-crownfall__cover.webp';
 
@@ -12,7 +13,7 @@ export function createCrownfallStageConfig({getLocale,getSave,isPractice}) {
   }
   return Object.freeze({
     gameId:'animal-crownfall',
-    count:LEVELS.length,
+    get count(){return LEVELS.length},
     poster:POSTER,
     background:POSTER,
     stage(index) {
@@ -25,11 +26,11 @@ export function createCrownfallStageConfig({getLocale,getSave,isPractice}) {
       return {
         id:level.id,
         kicker:`${text(locale,'stage')} ${level.id}`,
-        title:(NAMES[locale]||NAMES.en)[level.id-1]||`${text(locale,'stage')} ${level.id}`,
+        title:level.latches?(LATCH_COPY[locale]||LATCH_COPY.en)[0]:(NAMES[locale]||NAMES.en)[level.id-1]||`${text(locale,'stage')} ${level.id}`,
         subtitle:text(locale,level.id%5===0?'boss':'goal'),
         status:practice?text(locale,'practice'):locked?text(locale,'locked'):badges.map(value=>value?'★':'☆').join(' '),
-        summary:objective.goal,
-        details:[objective.goal,objective.progress].filter(Boolean),
+        summary:level.latches?(LATCH_COPY[locale]||LATCH_COPY.en)[1]:objective.goal,
+        details:[level.latches?(LATCH_COPY[locale]||LATCH_COPY.en)[1]:objective.goal,objective.progress].filter(Boolean),
         locked,
         cleared:Boolean(badges[0]),
         poster:POSTER,

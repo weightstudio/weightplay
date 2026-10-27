@@ -254,11 +254,19 @@
     block(r, [.026, .02, .36], [0, .001, 0], color, .1, true);
     return r;
   }
-  function addSortingSeal(root, seal, y) {
+  function addSortingSeal(root, seal, y, side) {
     if (!window.__CrateboundPractice?.enabled || !['sun', 'moon'].includes(seal)) return;
-    const pattern = seal === 'sun' ? ['00100','01110','11111','01110','00100'] : ['01110','11000','11000','11000','01110'];
-    block(root,[.6,.035,.6],[0,y,0],0x102333,.3);
-    pattern.forEach((row,z)=>[...row].forEach((pixel,x)=>{if(pixel==='1')block(root,[.09,.025,.09],[(x-2)*.11,y+.035,(z-2)*.11],0xfff2b2,.2,true)}));
+    const key=`sorting-seal-${seal}`;
+    if(!materials.has(key)){
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=96;const c=canvas.getContext('2d');
+      c.fillStyle='#102333';c.strokeStyle='#fff';c.lineWidth=4;c.beginPath();c.arc(48,48,43,0,Math.PI*2);c.fill();c.stroke();
+      c.fillStyle='#ffe391';c.strokeStyle='#ffe391';c.lineWidth=5;c.lineCap='round';
+      if(seal==='sun'){c.beginPath();c.arc(48,48,16,0,Math.PI*2);c.fill();for(let i=0;i<8;i++){const a=i*Math.PI/4;c.beginPath();c.moveTo(48+Math.cos(a)*23,48+Math.sin(a)*23);c.lineTo(48+Math.cos(a)*32,48+Math.sin(a)*32);c.stroke();}}
+      else{c.beginPath();c.arc(48,48,25,0,Math.PI*2);c.arc(59,39,21,0,Math.PI*2,true);c.fill('evenodd');}
+      const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;geometry.set(`${key}-texture`,texture);
+      materials.set(key,new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false}));
+    }
+    const sprite=new THREE.Sprite(materials.get(key));sprite.position.set(side==='dock'?-.25:.25,y+.45,0);sprite.scale.set(.52,.52,1);sprite.renderOrder=10;root.add(sprite);return sprite;
   }
   function makeCargo(linked, seal) {
     const root = new THREE.Group();
@@ -279,7 +287,7 @@
     const sign = rune(root, .67, linked ? 0xea97ff : 0x78ffe0, 1.05);
     const front = rune(root, 0, linked ? 0xea97ff : 0x78ffe0, .88);
     front.rotation.x = Math.PI / 2; front.position.set(0, .35, .382);
-    addSortingSeal(root,seal,.735);
+    addSortingSeal(root,seal,.735,'cargo');
     root.userData = { plate, sign, front, linked }; return root;
   }
   function clearStage() {
@@ -332,7 +340,7 @@
         block(d, [.9, .035, .035], [0, .14, s * .43], 0x69f4de, .2, true);
         block(d, [.035, .035, .9], [s * .43, .14, 0], 0x69f4de, .2, true);
       }
-      rune(d, .143, 0xa2ffe8, 1.7); addSortingSeal(d,p.seal,.175); docks.push(d);
+      rune(d, .143, 0xa2ffe8, 1.7); d.userData.sortingSeal=addSortingSeal(d,p.seal,.175,'dock'); docks.push(d);
       const pulse=ring(d,.49,0x86ffe1,.16);pulse.visible=false;dockPulses.push({mesh:pulse,age:1});
     });
     e.ice.forEach(p => {
@@ -473,6 +481,7 @@
     hero.userData.rightArm.rotation.x=reduced.matches?0:working?-1.05*effort:stride*.7;
     hero.userData.body.rotation.x=reduced.matches?0:(moveKind==='pull'?-.16:working?.17:.035)*effort;
     hero.userData.body.rotation.z=reduced.matches||working?0:stride*.075;
+    if(window.__CrateboundPractice?.enabled)docks.forEach((dock,index)=>{const goal=e.goals[index],marker=dock.userData.sortingSeal;if(!marker)return;marker.visible=!e.boxes.some((box,i)=>{const to=poseTo.boxes[i],from=poseFrom.boxes[i]||to;return box.seal===goal.seal&&Math.abs(goal.x-mix(from.x,to.x))<.06&&Math.abs(goal.y-mix(from.y,to.y))<.06})});
     cargo.forEach((c,i)=>{
       const to=poseTo.boxes[i],from=poseFrom.boxes[i]||to;
       const p={x:mix(from.x,to.x),y:mix(from.y,to.y)}; place(c,p,e.size,.075);
@@ -569,7 +578,7 @@
   feedbackObserver.observe(document.getElementById('feedback'),{childList:true,subtree:true,characterData:true});
   const sizeObserver=new ResizeObserver(()=>{lastSize='';sync();});sizeObserver.observe(wrap);
   window.WeightPlayCrateboundPresentation=Object.freeze({
-    diagnostics:()=>({renderer:wrap.dataset.arkRenderer,cameraMode:wrap.dataset.crateCamera,cameraTarget:{x:cameraX,z:cameraZ},drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,effects:particles.length,loopActive:Boolean(frame),routeActive:Boolean(routeTarget),materials:materials.size,engineRevision:THREE.REVISION,motion:moveKind,bodyLean:hero?.userData.body.rotation.x||0,leftLeg:hero?.userData.leftLeg.rotation.x||0,leftArm:hero?.userData.leftArm.rotation.x||0}),
+    diagnostics:()=>({renderer:wrap.dataset.arkRenderer,cameraMode:wrap.dataset.crateCamera,cameraTarget:{x:cameraX,z:cameraZ},drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,effects:particles.length,loopActive:Boolean(frame),routeActive:Boolean(routeTarget),sortingDockMarkers:docks.map(d=>d.userData.sortingSeal?.visible??null),materials:materials.size,engineRevision:THREE.REVISION,motion:moveKind,bodyLean:hero?.userData.body.rotation.x||0,leftLeg:hero?.userData.leftLeg.rotation.x||0,leftArm:hero?.userData.leftArm.rotation.x||0}),
     projectCell:(x,y)=>{const r=renderer.domElement.getBoundingClientRect(),v=new THREE.Vector3(x-((currentEngine?.width||currentEngine?.size||7)-1)/2,.1,y-((currentEngine?.height||currentEngine?.size||7)-1)/2).project(camera);return{x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2};}
   });
   on(renderer.domElement,'webglcontextlost',ev=>{ev.preventDefault();wrap.dataset.arkRenderer='fallback';cancelAnimationFrame(frame);frame=0;routeTarget=null;});
@@ -607,7 +616,7 @@
     if(state?.engine?.kind==='crate')put('pullMode',`${w[3]} ${state.engine.pulls}`);
     put('resultStage',w[6]);put('next',w[7]);put('retry',w[8]);
     const result=document.getElementById('resultModal');
-    if(result&&!result.hidden){put('resultTitle',w[9]);put('resultText',practice?practiceCopy[2]:c.win);put('resultA',`${state?.engine?.moves??0} ${w[0]}`);put('resultB',`${state?.engine?.pulls??0} ${w[2]}`);put('resultC',w[10]);}
+    if(result&&!result.hidden){put('resultTitle',w[9]);if(result.dataset.wpCrateSaveUnconfirmed!=='true')put('resultText',practice?practiceCopy[2]:c.win);put('resultA',`${state?.engine?.moves??0} ${w[0]}`);put('resultB',`${state?.engine?.pulls??0} ${w[2]}`);put('resultC',w[10]);}
     document.querySelectorAll('#resultModal .result-stats b,#resultModal .result-grid b').forEach((n,i)=>{const value=[w[0],w[2],traditional()?'狀態':'状态'][i];if(value&&n.textContent!==value)n.textContent=value;});
     document.querySelectorAll('#stageRail [data-stage]').forEach(card=>{
       const n=Number(card.dataset.stage),chapter=card.querySelector('small'),title=card.querySelector('strong'),status=card.querySelector('span');

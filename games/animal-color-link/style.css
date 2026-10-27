@@ -157,14 +157,21 @@ button:disabled { cursor: not-allowed; opacity: .48; }
   .battle-content {
     grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
     grid-template-rows: minmax(0, 1fr) auto;
-    column-gap: 18px;
-    padding: 8px 12px;
+    gap: 0 18px;
+    padding: 0 12px;
   }
-  #battle .grid { grid-column: 1; grid-row: 1 / 3; width: min(100%, calc(100svh - 84px)); }
+  #battle .grid { grid-column: 1; grid-row: 1 / 3; width: min(100%, calc(100svh - 62px)); gap: 0; padding: 0; border-radius: 12px; }
   .tools { grid-column: 2; grid-row: 1; align-self: center; display: grid; width: 100%; }
   .status { grid-column: 2; grid-row: 2; }
   .modal-card { padding: 18px; }
   .result-card .eyebrow { font-size: 1.3rem; }
+  #result .result-card { padding: 10px 14px; max-height: 100%; }
+  #result .result-mark { width: 68px; height: 48px; margin: 0 auto 2px; }
+  #result .result-card .eyebrow { margin: 2px 0; font-size: 1rem; }
+  #result .result-card h2 { margin: 2px 0; font-size: 1.25rem; }
+  #resultBody { margin: 4px 0; line-height: 1.25; }
+  #result .result-actions { margin-top: 6px; gap: 6px; }
+  #result .result-actions button { min-height: 44px; padding: 4px 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .cell.hint { animation: none; outline: 3px solid #f0b943; }
