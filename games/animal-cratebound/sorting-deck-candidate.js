@@ -294,12 +294,12 @@
     }),
     60: Object.freeze({
       chapter: 11, featureTier: 11, name: 'sorting-deck-finale',
-      decision: 'Recover sun, open the gate and use the belt to turn the linked pair toward the lower docks.',
+      decision: 'Recover the wall-side sun, open the gate and use the belt to align the linked pair below the separate sun dock.',
       width: 8, height: 7, size: 8,
       rows: ['        ', ' ...... ', ' ...... ', ' ...... ', ' ...... ', ' ...... ', '        '],
       walls: [{x: 3, y: 1}, {x: 3, y: 3}, {x: 3, y: 5}], player: {x: 2, y: 4},
-      boxes: [{x: 1, y: 4, linked: false, seal: 'sun'}, {x: 4, y: 2, linked: true, seal: 'sun'}, {x: 4, y: 3, linked: true, seal: 'moon'}],
-      goals: [{x: 2, y: 4, seal: 'sun'}, {x: 6, y: 3, seal: 'sun'}, {x: 6, y: 4, seal: 'moon'}],
+      boxes: [{x: 6, y: 4, linked: false, seal: 'sun'}, {x: 4, y: 2, linked: true, seal: 'sun'}, {x: 4, y: 3, linked: true, seal: 'moon'}],
+      goals: [{x: 5, y: 2, seal: 'sun'}, {x: 5, y: 3, seal: 'sun'}, {x: 5, y: 4, seal: 'moon'}],
       ice: [], switches: [{x: 2, y: 1}], gate: {x: 3, y: 2, open: false}, belts: [{x: 2, y: 2, dx: 1, dy: 0}], pulls: 1,
     }),
   });

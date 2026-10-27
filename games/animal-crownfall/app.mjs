@@ -3,15 +3,15 @@ import {cameraText} from './camera-copy.mjs';
 import {LEVELS} from './levels.mjs';
 import {COPY,LOCALES,SEGMENTS,NATIVE,text} from './locales.mjs';
 import {NAMES} from './stage-copy.mjs';
-import {createCrownfallStageConfig} from './stage-config.mjs?v=20261028-latch12';
+import {createCrownfallStageConfig} from './stage-config.mjs?v=20261028-latch17';
 import {DETAILS} from './guide.mjs';
 import {upgradeText} from './upgrade-copy.mjs';
 import {normalize,award,SAVE_KEY} from './save.mjs';
 import {masteryFeedback} from './result-copy.mjs';
 import {battleObjective} from './objective-copy.mjs';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
-import {LATCH_CHAPTER_CANDIDATES} from './latch-chapter-candidate.mjs?v=20261028-latch6';
-import {LATCH_COPY,LATCH_NAMES,LATCH_FIND_KEY,LATCH_RUNE_RULE,LATCH_PAIR_RULE,LATCH_BOSS_RULE,LATCH_ARITHMETIC_RULE} from './latch-copy.mjs?v=20261028-latch12';
+import {LATCH_CHAPTER_CANDIDATES} from './latch-chapter-candidate.mjs?v=20261028-latch12';
+import {LATCH_COPY,LATCH_NAMES,LATCH_FIND_KEY,LATCH_RUNE_RULE,LATCH_PAIR_RULE,LATCH_BOSS_RULE,LATCH_ARITHMETIC_RULE,LATCH_DUAL_ARITHMETIC_RULE,LATCH_SHIELD_ARITHMETIC_RULE,LATCH_DUAL_SHIELD_RULE,LATCH_DUAL_BOSS_RULE,LATCH_SEALS_RULE} from './latch-copy.mjs?v=20261028-latch17';
 const GAME_INTERFACE_VERSION='9';
 function assertGameInterfaceIdentity(){
  const meta=document.querySelector('meta[name="weightplay-interface-version"]');
@@ -40,7 +40,7 @@ let screen='main',state=null,history=[],moveHistory=[],usedHint=false,busy=false
 const t=(key,args)=>key==='title'?(window.WEIGHTPLAY_GAME_TITLES?.['animal-crownfall']?.[locale]||text(locale,key,args)):text(locale,key,args);
 const stageConfig=createCrownfallStageConfig({getLocale:()=>locale,getSave:()=>save,isPractice:()=>practiceMode});
 const latchText=index=>(LATCH_COPY[locale]||LATCH_COPY.en)[index];
-const chapterRule=id=>id===36?(LATCH_ARITHMETIC_RULE[locale]||LATCH_ARITHMETIC_RULE.en):id===35?(LATCH_BOSS_RULE[locale]||LATCH_BOSS_RULE.en):id===34?(LATCH_PAIR_RULE[locale]||LATCH_PAIR_RULE.en):id===33?(LATCH_RUNE_RULE[locale]||LATCH_RUNE_RULE.en):id===32?(LATCH_FIND_KEY[locale]||LATCH_FIND_KEY.en):null;
+const chapterRule=id=>id===41?(LATCH_SEALS_RULE[locale]||LATCH_SEALS_RULE.en):id===40?(LATCH_DUAL_BOSS_RULE[locale]||LATCH_DUAL_BOSS_RULE.en):id===39?(LATCH_DUAL_SHIELD_RULE[locale]||LATCH_DUAL_SHIELD_RULE.en):id===38?(LATCH_SHIELD_ARITHMETIC_RULE[locale]||LATCH_SHIELD_ARITHMETIC_RULE.en):id===37?(LATCH_DUAL_ARITHMETIC_RULE[locale]||LATCH_DUAL_ARITHMETIC_RULE.en):id===36?(LATCH_ARITHMETIC_RULE[locale]||LATCH_ARITHMETIC_RULE.en):id===35?(LATCH_BOSS_RULE[locale]||LATCH_BOSS_RULE.en):id===34?(LATCH_PAIR_RULE[locale]||LATCH_PAIR_RULE.en):id===33?(LATCH_RUNE_RULE[locale]||LATCH_RUNE_RULE.en):id===32?(LATCH_FIND_KEY[locale]||LATCH_FIND_KEY.en):null;
 function placePracticeBadge(host){practiceBadge ||= document.querySelector('[data-wp-local-practice]');if(!practiceBadge||!practiceMode||!host)return;practiceBadge.style.cssText='display:inline-block;position:static;transform:none;margin-inline-start:5px;padding:1px 4px;border-radius:3px;background:#ffe59a;color:#392900;font:700 10px sans-serif;pointer-events:none;white-space:nowrap';if(practiceBadge.parentNode!==host)host.append(practiceBadge)}
 const stageName=id=>LEVELS[id-1]?.latches?(LATCH_NAMES[locale]||LATCH_NAMES.en)[id-31]:NAMES[locale][id-1];
 const u=(key,args)=>upgradeText(locale,key,args);

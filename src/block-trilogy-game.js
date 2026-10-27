@@ -255,7 +255,7 @@ async function activateCratePractice(){
   if(document.readyState!=='complete')await new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));
   const ready=await new Promise(resolve=>{let done=false;const timer=setTimeout(()=>finish(false),25000),observer=new MutationObserver(check);function finish(value){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(value)}function check(){const d=document.documentElement.dataset;if(E.loading?.hidden&&(d.wpGameEntryLoaderInstalled!=='true'||d.wpGameEntryLoaderActive!=='true'))finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['hidden','class','data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
   if(!ready)return;
-  const [{LocalPractice}]=await Promise.all([import('./game-local-practice.mjs'),import('../games/animal-cratebound/sorting-deck-candidate.js?v=20261028-sorting11')]);
+  const [{LocalPractice}]=await Promise.all([import('./game-local-practice.mjs'),import('../games/animal-cratebound/sorting-deck-candidate.js?v=20261028-sorting12')]);
   if(!await LocalPractice.ready||!window.WeightPlayCrateboundSortingCandidate)return;
   __cratePracticeAdapter=LocalPractice;
   __crateLaunchBusy=true;

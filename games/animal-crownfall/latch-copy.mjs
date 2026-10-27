@@ -28,6 +28,96 @@ const FIFTH_NAMES={en:'The returning guardian','zh-Hant':'再臨的守衛','zh-H
 for(const [locale,value] of Object.entries(FIFTH_NAMES))LATCH_NAMES[locale].push(value);
 const SIXTH_NAMES={en:'The timed multiplier','zh-Hant':'倍率時機','zh-Hans':'倍率时机',ja:'倍率のタイミング',ko:'배율 타이밍',es:'El multiplicador oportuno','pt-BR':'O multiplicador na hora certa',fr:'Le bon moment pour multiplier',de:'Der richtige Zeitpunkt',it:'Il momento del moltiplicatore',ru:'Время умножать',hi:'गुणा का सही समय',ar:'وقت المضاعفة'};
 for(const [locale,value] of Object.entries(SIXTH_NAMES))LATCH_NAMES[locale].push(value);
+const SEVENTH_NAMES={en:'Two paths to multiplication','zh-Hant':'雙路倍率','zh-Hans':'双路倍率',ja:'倍率への二つの道',ko:'배율로 가는 두 길',es:'Dos caminos al multiplicador','pt-BR':'Dois caminhos ao multiplicador',fr:'Deux chemins vers le multiplicateur',de:'Zwei Wege zum Multiplikator',it:'Due vie al moltiplicatore',ru:'Два пути к множителю',hi:'गुणक के दो रास्ते',ar:'طريقان إلى المضاعِف'};
+for(const [locale,value] of Object.entries(SEVENTH_NAMES))LATCH_NAMES[locale].push(value);
+const EIGHTH_NAMES={en:'The shielded multiplier','zh-Hant':'護盾與倍率','zh-Hans':'护盾与倍率',ja:'盾と倍率',ko:'방패와 배율',es:'El multiplicador protegido','pt-BR':'O multiplicador protegido',fr:'Le multiplicateur protégé',de:'Der geschützte Multiplikator',it:'Il moltiplicatore protetto',ru:'Множитель и щит',hi:'ढाल और गुणक',ar:'المضاعِف والدرع'};
+for(const [locale,value] of Object.entries(EIGHTH_NAMES))LATCH_NAMES[locale].push(value);
+const NINTH_NAMES={en:'Two locks and the shield','zh-Hant':'雙鎖與護盾','zh-Hans':'双锁与护盾',ja:'二つの錠と盾',ko:'두 잠금과 방패',es:'Dos candados y el escudo','pt-BR':'Duas travas e o escudo',fr:'Deux verrous et le bouclier',de:'Zwei Sperren und der Schild',it:'Due blocchi e lo scudo',ru:'Два замка и щит',hi:'दो ताले और ढाल',ar:'قفلان ودرع'};
+for(const [locale,value] of Object.entries(NINTH_NAMES))LATCH_NAMES[locale].push(value);
+const TENTH_NAMES={en:'The shielded return','zh-Hant':'護盾守衛再臨','zh-Hans':'护盾守卫再临',ja:'盾の守護者、再び',ko:'다시 돌아온 방패 수호자',es:'El regreso del guardián','pt-BR':'O retorno do guardião',fr:'Le retour du gardien',de:'Die Rückkehr des Wächters',it:'Il ritorno del guardiano',ru:'Возвращение защитника',hi:'ढाल वाले रक्षक की वापसी',ar:'عودة الحارس المدرع'};
+for(const [locale,value] of Object.entries(TENTH_NAMES))LATCH_NAMES[locale].push(value);
+const ELEVENTH_NAMES={en:'The ordered seals','zh-Hant':'印記的順序','zh-Hans':'印记的顺序',ja:'印の順番',ko:'순서가 있는 인장',es:'El orden de los sellos','pt-BR':'A ordem dos selos',fr:'L’ordre des sceaux',de:'Die Reihenfolge der Siegel',it:'L’ordine dei sigilli',ru:'Порядок печатей',hi:'मुहरों का क्रम',ar:'ترتيب الأختام'};
+for(const [locale,value] of Object.entries(ELEVENTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWELFTH_NAMES={en:'Pairs and ordered seals','zh-Hant':'配對與印記順序','zh-Hans':'配对与印记顺序',ja:'対の鍵と印の順番',ko:'짝과 인장 순서',es:'Pares y orden de sellos','pt-BR':'Pares e ordem dos selos',fr:'Paires et ordre des sceaux',de:'Paare und Siegelreihenfolge',it:'Coppie e ordine dei sigilli',ru:'Пары и порядок печатей',hi:'जोड़े और मुहरों का क्रम',ar:'الأزواج وترتيب الأختام'};
+for(const [locale,value] of Object.entries(TWELFTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_DUAL_SEALS_RULE={
+ en:'Match numbered keys and locks. Collect seal 1 before seal 2; use arrows to find items.',
+ 'zh-Hant':'依編號配對鑰匙與鎖，先收印記1再收2；用箭頭找物件。','zh-Hans':'按编号配对钥匙与锁，先收印记1再收2；用箭头找物件。',
+ ja:'同番号の鍵と錠を組み合わせ、印を1、2の順に取る。矢印で探そう。',ko:'같은 번호의 열쇠와 잠금을 맞추고 인장 1, 2를 차례로 모으세요. 화살표로 찾으세요.',
+ es:'Empareja llaves y candados. Recoge el sello 1 antes del 2; usa las flechas para buscar.',
+ 'pt-BR':'Combine chaves e travas. Pegue o selo 1 antes do 2; use as setas para procurar.',
+ fr:'Associez clés et verrous. Prenez le sceau 1 avant le 2 ; cherchez avec les flèches.',
+ de:'Ordne Schlüssel und Sperren zu. Sammle Siegel 1 vor 2; suche mit Pfeilen.',
+ it:'Abbina chiavi e blocchi. Raccogli il sigillo 1 prima del 2; cerca con le frecce.',
+ ru:'Сопоставьте ключи и замки. Соберите печать 1 до 2; ищите стрелками.',
+ hi:'समान चाबी और ताला मिलाएँ। मुहर 2 से पहले 1 लें; तीरों से खोजें।',
+ ar:'طابق المفاتيح والأقفال المرقمة. اجمع الختم 1 قبل 2 واستخدم الأسهم للبحث.'
+};
+export const LATCH_SEALS_RULE={
+ en:'Use arrows to find items. Remove the key before its lock and collect seal 1 before seal 2.',
+ 'zh-Hant':'用箭頭找物件，先移鑰匙再移鎖，並依序收集印記 1、2。','zh-Hans':'用箭头找物件，先移钥匙再移锁，并依序收集印记 1、2。',
+ ja:'矢印で探そう。鍵を錠より先に消し、印を1、2の順に取る。',ko:'화살표로 찾으세요. 열쇠를 잠금보다 먼저 없애고 인장 1, 2를 차례로 모으세요.',
+ es:'Busca con las flechas. Quita la llave antes del candado y recoge los sellos 1 y 2 en orden.',
+ 'pt-BR':'Use as setas. Remova a chave antes da trava e pegue os selos 1 e 2 em ordem.',
+ fr:'Cherchez avec les flèches. Retirez la clé avant le verrou et prenez les sceaux 1 puis 2.',
+ de:'Suche mit Pfeilen. Entferne den Schlüssel vor der Sperre und sammle Siegel 1 vor 2.',
+ it:'Cerca con le frecce. Togli la chiave prima del blocco e raccogli i sigilli 1 e 2 in ordine.',
+ ru:'Ищите стрелками. Уберите ключ до замка и соберите печати 1 и 2 по порядку.',
+ hi:'तीरों से खोजें। ताले से पहले चाबी हटाएँ और मुहरें 1, 2 क्रम से लें।',
+ ar:'ابحث بالأسهم. أزل المفتاح قبل القفل واجمع الختم 1 قبل الختم 2.'
+};
+export const LATCH_DUAL_BOSS_RULE={
+ en:'Match numbered keys and locks. Get the rune and supplies for the guardian’s second form.',
+ 'zh-Hant':'依編號先移鑰匙再移鎖；取得符文與補給，迎戰守衛第二階段。','zh-Hans':'按编号先移钥匙再移锁；取得符文与补给，迎战守卫第二阶段。',
+ ja:'同番号の鍵を錠より先に消し、ルーンと補給で守護者の第二形態に挑もう。',ko:'같은 번호의 열쇠를 잠금보다 먼저 없애고 룬과 보급품으로 수호자 2단계를 준비하세요.',
+ es:'Empareja llaves y candados. Reúne la runa y los suministros para la segunda forma.',
+ 'pt-BR':'Combine chaves e travas. Pegue a runa e os suprimentos para a segunda forma.',
+ fr:'Associez clés et verrous. Prenez la rune et les réserves pour la seconde forme.',
+ de:'Ordne Schlüssel und Sperren zu. Sammle Rune und Vorräte für die zweite Form.',
+ it:'Abbina chiavi e blocchi. Raccogli runa e scorte per la seconda forma.',
+ ru:'Сопоставьте ключи и замки. Возьмите руну и припасы для второй формы стража.',
+ hi:'समान चाबी और ताला मिलाएँ। रक्षक के दूसरे रूप के लिए रून और सामग्री लें।',
+ ar:'طابق المفاتيح والأقفال المرقمة. اجمع الرون والإمدادات لمرحلة الحارس الثانية.'
+};
+export const LATCH_DUAL_SHIELD_RULE={
+ en:'Use arrows to find items. Match numbered keys and locks; take the addition before the multiplier and the rune for the shield.',
+ 'zh-Hant':'用箭頭找物件，依編號先移鑰匙再移鎖；加值先於倍率，符文可破盾。','zh-Hans':'用箭头找物件，按编号先移钥匙再移锁；加值先于倍率，符文可破盾。',
+ ja:'矢印で探し、同番号の鍵を錠より先に消す。加算は倍率より先、ルーンで盾を解除。',ko:'화살표로 찾고 같은 번호의 열쇠를 잠금보다 먼저 없애세요. 더한 뒤 배율을 얻고 룬으로 방패를 푸세요.',
+ es:'Busca con las flechas. Empareja llaves y candados; toma la suma antes del multiplicador y la runa para el escudo.',
+ 'pt-BR':'Use as setas. Combine chaves e travas; pegue a adição antes do multiplicador e a runa para o escudo.',
+ fr:'Cherchez avec les flèches. Associez clés et verrous ; prenez le bonus avant le multiplicateur et la rune pour le bouclier.',
+ de:'Suche mit Pfeilen. Ordne Schlüssel den Sperren zu; hole den Bonus vor dem Multiplikator und die Rune für den Schild.',
+ it:'Cerca con le frecce. Abbina chiavi e blocchi; prendi il bonus prima del moltiplicatore e la runa per lo scudo.',
+ ru:'Ищите стрелками. Сопоставьте ключи и замки; возьмите прибавку до множителя и руну против щита.',
+ hi:'तीरों से खोजें। समान चाबी और ताला मिलाएँ; गुणक से पहले जोड़ और ढाल के लिए रून लें।',
+ ar:'ابحث بالأسهم وطابق المفاتيح والأقفال المرقمة؛ اجمع الزيادة قبل المضاعِف والرون للدرع.'
+};
+export const LATCH_SHIELD_ARITHMETIC_RULE={
+ en:'Use arrows to find items. Key before lock, addition before multiplier, rune for the shield.',
+ 'zh-Hant':'用箭頭找物件：鑰匙先於鎖、加值先於倍率，符文可破盾。','zh-Hans':'用箭头找物件：钥匙先于锁、加值先于倍率，符文可破盾。',
+ ja:'矢印で探そう。鍵は錠より先、加算は倍率より先。ルーンで盾を解除。',ko:'화살표로 찾으세요. 열쇠는 잠금보다, 더하기는 배율보다 먼저. 룬으로 방패를 푸세요.',
+ es:'Busca con las flechas. Llave antes del candado, suma antes del multiplicador y runa para el escudo.',
+ 'pt-BR':'Use as setas. Chave antes da trava, adição antes do multiplicador e runa para o escudo.',
+ fr:'Cherchez avec les flèches. Clé avant verrou, bonus avant multiplicateur et rune pour le bouclier.',
+ de:'Suche mit Pfeilen. Schlüssel vor Sperre, Bonus vor Multiplikator, Rune für den Schild.',
+ it:'Cerca con le frecce. Chiave prima del blocco, bonus prima del moltiplicatore e runa per lo scudo.',
+ ru:'Ищите стрелками: ключ до замка, прибавка до множителя, руна против щита.',
+ hi:'तीरों से खोजें। ताले से पहले चाबी, गुणक से पहले जोड़ और ढाल के लिए रून लें।',
+ ar:'ابحث بالأسهم. المفتاح قبل القفل، والزيادة قبل المضاعِف، والرون للدرع.'
+};
+export const LATCH_DUAL_ARITHMETIC_RULE={
+ en:'Find items with arrows. Match numbered keys and locks; take the addition before the multiplier.',
+ 'zh-Hant':'用箭頭找物件，依編號先移鑰匙再移鎖；先取得加值再取倍率。','zh-Hans':'用箭头找物件，按编号先移钥匙再移锁；先取得加值再取倍率。',
+ ja:'矢印で探し、同番号の鍵を錠より先に消す。加算を取ってから倍率を取ろう。',ko:'화살표로 찾고 같은 번호의 열쇠를 잠금보다 먼저 없애세요. 더한 뒤 배율을 얻으세요.',
+ es:'Busca con las flechas. Empareja llaves y candados; toma la suma antes del multiplicador.',
+ 'pt-BR':'Use as setas. Combine chaves e travas; pegue a adição antes do multiplicador.',
+ fr:'Cherchez avec les flèches. Associez clés et verrous ; prenez le bonus avant le multiplicateur.',
+ de:'Suche mit Pfeilen. Ordne Schlüssel den Sperren zu; hole den Bonus vor dem Multiplikator.',
+ it:'Cerca con le frecce. Abbina chiavi e blocchi; raccogli il bonus prima del moltiplicatore.',
+ ru:'Ищите стрелками. Сопоставьте ключи и замки; возьмите прибавку до множителя.',
+ hi:'तीरों से खोजें। समान संख्या के ताले से पहले चाबी हटाएँ; गुणक से पहले जोड़ लें।',
+ ar:'ابحث بالأسهم وطابق المفاتيح والأقفال المرقمة؛ اجمع الزيادة قبل المضاعِف.'
+};
 export const LATCH_ARITHMETIC_RULE={
  en:'Use arrows to find items. Remove the key before its lock; collect the addition before the multiplier.',
  'zh-Hant':'用箭頭找物件。先移鑰匙再移鎖；先取得加值再取得倍率。','zh-Hans':'用箭头找物件。先移钥匙再移锁；先取得加值再取得倍率。',

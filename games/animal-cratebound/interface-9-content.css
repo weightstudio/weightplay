@@ -397,6 +397,11 @@ body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"] #result
 /* Shared header descendants use important rules in this named layer. Keep the
    short game-owned counters compact inside their shared three-stat slots. */
 @layer wp-frame-contract {
+  @media (max-width:360px) {
+    body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"][data-wp-cratebound-practice] #battleScreen .wp-cratebound-battle-hud-content .battle-title strong {
+      font-size:14px!important;
+    }
+  }
   body[data-wp-game-id="animal-cratebound"][data-wp-interface-version="9"] #battleScreen .wp-cratebound-battle-hud-content .battle-stats span > b {
     font:600 8px/1 system-ui!important;
   }

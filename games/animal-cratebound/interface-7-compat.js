@@ -287,8 +287,8 @@
     let sign=null,front=null;
     if(window.__CrateboundPractice?.enabled){if(linked)block(root,[.12,.045,.68],[0,.685,0],0xea97ff,.2,true)}
     else{sign=rune(root,.67,linked?0xea97ff:0x78ffe0,1.05);front=rune(root,0,linked?0xea97ff:0x78ffe0,.88);front.rotation.x=Math.PI/2;front.position.set(0,.35,.382)}
-    addSortingSeal(root,seal,.735,'cargo');
-    root.userData = { plate, sign, front, linked }; return root;
+    const sortingSeal=addSortingSeal(root,seal,.735,'cargo');
+    root.userData = { plate, sign, front, linked, sortingSeal }; return root;
   }
   function clearStage() {
     if (world) scene.remove(world);
@@ -487,6 +487,11 @@
     cargo.forEach((c,i)=>{
       const to=poseTo.boxes[i],from=poseFrom.boxes[i]||to;
       const p={x:mix(from.x,to.x),y:mix(from.y,to.y)}; place(c,p,e.size,.075);
+      if(window.__CrateboundPractice?.enabled&&c.userData.sortingSeal){
+        const goalLeft=e.goals.some((goal,index)=>docks[index]?.userData.sortingSeal?.visible&&Math.abs(goal.x-(p.x-1))<.1&&Math.abs(goal.y-p.y)<.1);
+        const cargoRight=e.boxes.some((box,index)=>index!==i&&Math.abs(box.x-(p.x+1))<.1&&Math.abs(box.y-p.y)<.1);
+        c.userData.sortingSeal.position.x = goalLeft && !cargoRight ? .32 : -.32;
+      }
       const docked=e.goals.some(g=>Math.abs(g.x-p.x)<.06&&Math.abs(g.y-p.y)<.06&&(!window.__CrateboundPractice?.enabled||g.seal===e.boxes[i].seal));
       c.userData.plate.material=mat(docked?0x39d9b5:0x164e5a,.35,docked);
       if (docked&&!lastDocked.has(i)) {

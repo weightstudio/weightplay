@@ -3,7 +3,7 @@ import {newState} from './core.mjs?v=20261028-latch1';
 import {NAMES} from './stage-copy.mjs';
 import {battleObjective} from './objective-copy.mjs';
 import {text} from './locales.mjs';
-import {LATCH_COPY,LATCH_NAMES,LATCH_FIND_KEY,LATCH_RUNE_RULE,LATCH_PAIR_RULE,LATCH_BOSS_RULE,LATCH_ARITHMETIC_RULE} from './latch-copy.mjs?v=20261028-latch12';
+import {LATCH_COPY,LATCH_NAMES,LATCH_FIND_KEY,LATCH_RUNE_RULE,LATCH_PAIR_RULE,LATCH_BOSS_RULE,LATCH_ARITHMETIC_RULE,LATCH_DUAL_ARITHMETIC_RULE,LATCH_SHIELD_ARITHMETIC_RULE,LATCH_DUAL_SHIELD_RULE,LATCH_DUAL_BOSS_RULE,LATCH_SEALS_RULE} from './latch-copy.mjs?v=20261028-latch17';
 
 const POSTER='/assets/lobby-thumbs/w480/assets__animal-crownfall__cover.webp';
 
@@ -29,8 +29,8 @@ export function createCrownfallStageConfig({getLocale,getSave,isPractice}) {
         title:level.latches?(LATCH_NAMES[locale]||LATCH_NAMES.en)[level.id-31]:(NAMES[locale]||NAMES.en)[level.id-1]||`${text(locale,'stage')} ${level.id}`,
         subtitle:text(locale,level.id%5===0?'boss':'goal'),
         status:practice?text(locale,'practice'):locked?text(locale,'locked'):badges.map(value=>value?'★':'☆').join(' '),
-        summary:level.latches?(level.id===36?(LATCH_ARITHMETIC_RULE[locale]||LATCH_ARITHMETIC_RULE.en):level.id===35?(LATCH_BOSS_RULE[locale]||LATCH_BOSS_RULE.en):level.id===34?(LATCH_PAIR_RULE[locale]||LATCH_PAIR_RULE.en):level.id===33?(LATCH_RUNE_RULE[locale]||LATCH_RUNE_RULE.en):level.id===32?(LATCH_FIND_KEY[locale]||LATCH_FIND_KEY.en):(LATCH_COPY[locale]||LATCH_COPY.en)[1]):objective.goal,
-        details:[level.latches?(level.id===36?(LATCH_ARITHMETIC_RULE[locale]||LATCH_ARITHMETIC_RULE.en):level.id===35?(LATCH_BOSS_RULE[locale]||LATCH_BOSS_RULE.en):level.id===34?(LATCH_PAIR_RULE[locale]||LATCH_PAIR_RULE.en):level.id===33?(LATCH_RUNE_RULE[locale]||LATCH_RUNE_RULE.en):level.id===32?(LATCH_FIND_KEY[locale]||LATCH_FIND_KEY.en):(LATCH_COPY[locale]||LATCH_COPY.en)[1]):objective.goal,objective.progress].filter(Boolean),
+        summary:level.latches?(level.id===41?(LATCH_SEALS_RULE[locale]||LATCH_SEALS_RULE.en):level.id===40?(LATCH_DUAL_BOSS_RULE[locale]||LATCH_DUAL_BOSS_RULE.en):level.id===39?(LATCH_DUAL_SHIELD_RULE[locale]||LATCH_DUAL_SHIELD_RULE.en):level.id===38?(LATCH_SHIELD_ARITHMETIC_RULE[locale]||LATCH_SHIELD_ARITHMETIC_RULE.en):level.id===37?(LATCH_DUAL_ARITHMETIC_RULE[locale]||LATCH_DUAL_ARITHMETIC_RULE.en):level.id===36?(LATCH_ARITHMETIC_RULE[locale]||LATCH_ARITHMETIC_RULE.en):level.id===35?(LATCH_BOSS_RULE[locale]||LATCH_BOSS_RULE.en):level.id===34?(LATCH_PAIR_RULE[locale]||LATCH_PAIR_RULE.en):level.id===33?(LATCH_RUNE_RULE[locale]||LATCH_RUNE_RULE.en):level.id===32?(LATCH_FIND_KEY[locale]||LATCH_FIND_KEY.en):(LATCH_COPY[locale]||LATCH_COPY.en)[1]):objective.goal,
+        details:[level.latches?(level.id===41?(LATCH_SEALS_RULE[locale]||LATCH_SEALS_RULE.en):level.id===40?(LATCH_DUAL_BOSS_RULE[locale]||LATCH_DUAL_BOSS_RULE.en):level.id===39?(LATCH_DUAL_SHIELD_RULE[locale]||LATCH_DUAL_SHIELD_RULE.en):level.id===38?(LATCH_SHIELD_ARITHMETIC_RULE[locale]||LATCH_SHIELD_ARITHMETIC_RULE.en):level.id===37?(LATCH_DUAL_ARITHMETIC_RULE[locale]||LATCH_DUAL_ARITHMETIC_RULE.en):level.id===36?(LATCH_ARITHMETIC_RULE[locale]||LATCH_ARITHMETIC_RULE.en):level.id===35?(LATCH_BOSS_RULE[locale]||LATCH_BOSS_RULE.en):level.id===34?(LATCH_PAIR_RULE[locale]||LATCH_PAIR_RULE.en):level.id===33?(LATCH_RUNE_RULE[locale]||LATCH_RUNE_RULE.en):level.id===32?(LATCH_FIND_KEY[locale]||LATCH_FIND_KEY.en):(LATCH_COPY[locale]||LATCH_COPY.en)[1]):objective.goal,objective.progress].filter(Boolean),
         locked,
         cleared:Boolean(badges[0]),
         poster:POSTER,

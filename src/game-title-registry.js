@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "lantern-stride": {
+    "__localizedExact": true,
+    "en": "Lantern Stride",
+    "zh-Hant": "燈徑疾步",
+    "zh-Hans": "灯径疾步",
+    "ja": "灯りの駆け道",
+    "ko": "등불 달리기",
+    "es": "Carrera de Faroles",
+    "pt-BR": "Corrida das Lanternas",
+    "fr": "Course des lanternes",
+    "de": "Laternenlauf",
+    "it": "Corsa delle lanterne",
+    "ru": "Бег фонарей",
+    "hi": "लालटेन दौड़",
+    "ar": "سباق الفوانيس"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

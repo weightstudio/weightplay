@@ -41,4 +41,46 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
   items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6}],
   latches:[{id:'sun',lock:[1,1],key:[4,3]}]
+},{
+  id:37,name:'Two paths to multiplication',
+  decision:'Match each numbered key and lock, then collect the addition before the multiplier.',
+  board:['.......','AA...CC','.......','BBB.CCC','.......','AAABBBB','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6}],
+  latches:[{id:'sun',lock:[0,1],key:[5,1]},{id:'moon',lock:[0,3],key:[4,3]}]
+},{
+  id:38,name:'The shielded multiplier',
+  decision:'Release the key support before its lock; collect the addition before the multiplier and bring the rune to the shielded guard.',
+  board:['.......','..AA...','.......','BBBAACC','.......','CCCAAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun'}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:4,y:4,link:'sun'}],
+  latches:[{id:'sun',lock:[0,3],key:[3,1]}]
+},{
+  id:39,name:'Two locks and the shield',
+  decision:'Open each numbered pair in order, add before multiplying, and collect the rune to break the guard’s shield.',
+  board:['.......','AA.BCCC','.......','BBBA.CC','.......','CCCCAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun'}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:4,y:4,link:'sun'}],
+  latches:[{id:'sun',lock:[0,1],key:[3,1]},{id:'moon',lock:[4,1],key:[0,3]}]
+},{
+  id:40,name:'The shielded return',
+  decision:'Open both numbered pairs, collect the rune and prepare enough power for the guardian’s second form.',
+  board:['.......','AA.BCCC','.......','BBBA.CC','.......','CCCCAAA','.......','BBBBBBB','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun',boss:true,next:{x:0,y:8,power:120}}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:8},{id:'rune',kind:'rune',x:4,y:4,link:'sun'},{id:'boost',kind:'power',x:0,y:4,amount:24}],
+  latches:[{id:'sun',lock:[0,1],key:[3,1]},{id:'moon',lock:[4,1],key:[0,3]}]
+},{
+  id:41,name:'The ordered seals',
+  decision:'Remove the key support before its lock and collect seal 1 before seal 2 while preparing the arithmetic route.',
+  board:['.......','.AA.BCC','.......','BBB.CCC','.......','CCCAAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'}],sealOrder:['1','2'],
+  latches:[{id:'sun',lock:[1,1],key:[4,3]}]
+},{
+  id:42,name:'Pairs and ordered seals',
+  decision:'Keep the seal route safe while opening both numbered key and lock pairs, then take seals 1 and 2 in order.',
+  board:['.......','AAA..CC','.......','BBBA.CC','.......','CCCAAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'}],sealOrder:['1','2'],
+  latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[0,3],key:[3,3]}]
 }];

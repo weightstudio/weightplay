@@ -42,6 +42,7 @@
       drummer: { source: "enemy-drummer-candidate-v1.webp", width: 1024, height: 1536 },
       sapper: { source: "enemy-sapper-candidate-v2.webp", width: 1024, height: 1536 },
       "stone-bastion": { source: "enemy-stone-bastion-candidate-v3.webp", width: 1024, height: 1536, viewBox: "90 160 870 1140" },
+      "red-lantern": { source: "enemy-red-lantern-candidate-v2.webp", width: 1024, height: 1536, viewBox: "48 120 940 1260" },
     },
   };
 
