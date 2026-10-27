@@ -1,8 +1,8 @@
 // Authored route vocabulary. Numbers are draft tuning, not playtest results.
 // Each route changes the decision sequence, not merely the timer.
 const designs = [
-  ['plain', 'finish', 50, 60], ['plain', 'steady3', 60, 55], ['plain', 'balance40', 70, 55], ['plain', 'combo4', 70, 50], ['plain', 'steady-no-stumble', 80, 60],
-  ['slow,plain', 'finish', 70, 60], ['plain,fast', 'finish', 70, 55], ['slow,fast', 'finish', 80, 60], ['fast,slow', 'stumble2', 80, 60], ['fast,slow,plain', 'balance35', 90, 65],
+  ['plain', 'finish', 50, 60], ['plain,slow', 'steady3', 60, 55], ['slow,plain', 'balance40', 70, 55], ['plain,fast', 'combo4', 70, 50], ['slow,fast', 'steady-no-stumble', 80, 60],
+  ['plain,slow,plain', 'finish', 70, 60], ['plain,fast,plain', 'finish', 70, 55], ['slow,fast', 'finish', 80, 60], ['fast,slow', 'stumble2', 80, 60], ['fast,slow,plain', 'balance35', 90, 65],
   ['headwind,plain', 'finish', 75, 60], ['tailwind,slow', 'finish', 80, 60], ['headfast,plain', 'finish', 80, 65], ['slow,tailwind', 'finish', 85, 60], ['tailwind,headwind,slow', 'stumble2', 90, 70],
   ['left', 'gates', 70, 60], ['right', 'gates', 70, 60], ['left,slow', 'gates', 80, 65], ['right,headwind', 'gates', 80, 65], ['left,right', 'gates', 90, 70],
   ['fast,left', 'gates', 85, 65], ['slow,right', 'gates', 85, 70], ['headwind,right,left', 'gates', 95, 75], ['tailwind,right,slow', 'gates', 95, 70], ['slow,left,fast,right', 'balance30', 100, 80],

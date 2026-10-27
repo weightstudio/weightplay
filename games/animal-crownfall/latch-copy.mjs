@@ -40,6 +40,60 @@ const ELEVENTH_NAMES={en:'The ordered seals','zh-Hant':'印記的順序','zh-Han
 for(const [locale,value] of Object.entries(ELEVENTH_NAMES))LATCH_NAMES[locale].push(value);
 const TWELFTH_NAMES={en:'Pairs and ordered seals','zh-Hant':'配對與印記順序','zh-Hans':'配对与印记顺序',ja:'対の鍵と印の順番',ko:'짝과 인장 순서',es:'Pares y orden de sellos','pt-BR':'Pares e ordem dos selos',fr:'Paires et ordre des sceaux',de:'Paare und Siegelreihenfolge',it:'Coppie e ordine dei sigilli',ru:'Пары и порядок печатей',hi:'जोड़े और मुहरों का क्रम',ar:'الأزواج وترتيب الأختام'};
 for(const [locale,value] of Object.entries(TWELFTH_NAMES))LATCH_NAMES[locale].push(value);
+const THIRTEENTH_NAMES={en:'The shielded seals','zh-Hant':'護盾印記','zh-Hans':'护盾印记',ja:'盾と印',ko:'방패와 인장',es:'Los sellos protegidos','pt-BR':'Os selos protegidos',fr:'Les sceaux protégés',de:'Die geschützten Siegel',it:'I sigilli protetti',ru:'Печати и щит',hi:'ढाल वाली मुहरें',ar:'الأختام والدرع'};
+for(const [locale,value] of Object.entries(THIRTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const FOURTEENTH_NAMES={en:'Pairs, seals and shield','zh-Hant':'配對、印記與護盾','zh-Hans':'配对、印记与护盾',ja:'対の鍵、印と盾',ko:'열쇠 쌍, 인장과 방패',es:'Pares, sellos y escudo','pt-BR':'Pares, selos e escudo',fr:'Paires, sceaux et bouclier',de:'Paare, Siegel und Schild',it:'Coppie, sigilli e scudo',ru:'Пары, печати и щит',hi:'जोड़े, मुहरें और ढाल',ar:'الأزواج والأختام والدرع'};
+for(const [locale,value] of Object.entries(FOURTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const FIFTEENTH_NAMES={en:'The two-rune guardian','zh-Hant':'雙符文守衛','zh-Hans':'双符文守卫',ja:'二つのルーンの守護者',ko:'두 룬의 수호자',es:'El guardián de dos runas','pt-BR':'O guardião das duas runas',fr:'Le gardien aux deux runes',de:'Der Wächter der zwei Runen',it:'Il guardiano delle due rune',ru:'Страж двух рун',hi:'दो रून वाला रक्षक',ar:'حارس الرونين'};
+for(const [locale,value] of Object.entries(FIFTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_TWO_RUNES_RULE={
+ en:'Match keys; seals 1 then 2. Use ☀ for the first shield and ☾ for the second.',
+ 'zh-Hant':'配對鑰匙，印記先1後2；第一盾用☀符文，第二盾用☾符文。','zh-Hans':'配对钥匙，印记先1后2；第一盾用☀符文，第二盾用☾符文。',
+ ja:'鍵を合わせ、印は1から2。最初の盾に☀、次の盾に☾のルーン。',ko:'열쇠를 맞추고 인장은 1, 2 순서. 첫 방패에는 ☀ 룬, 두 번째에는 ☾ 룬을 쓰세요.',
+ es:'Empareja llaves; sello 1 antes del 2. Usa ☀ para el primer escudo y ☾ para el segundo.',
+ 'pt-BR':'Combine chaves; selo 1 antes do 2. Use ☀ no primeiro escudo e ☾ no segundo.',
+ fr:'Associez les clés ; sceau 1 puis 2. Utilisez ☀ pour le premier bouclier et ☾ pour le second.',
+ de:'Ordne Schlüssel zu; Siegel 1 vor 2. Nutze ☀ für den ersten Schild und ☾ für den zweiten.',
+ it:'Abbina le chiavi; sigillo 1 poi 2. Usa ☀ per il primo scudo e ☾ per il secondo.',
+ ru:'Сопоставьте ключи; печать 1 до 2. ☀ для первого щита, ☾ для второго.',
+ hi:'चाबियाँ मिलाएँ; मुहर 1 फिर 2। पहली ढाल के लिए ☀ और दूसरी के लिए ☾ लें।',
+ ar:'طابق المفاتيح؛ الختم 1 ثم 2. استخدم ☀ للدرع الأول و☾ للثاني.'
+};
+export const LATCH_RUNE_ACCESS={
+ en:['Sun rune','Moon rune','Sun shield','Moon shield'],
+ 'zh-Hant':['太陽符文','月亮符文','太陽護盾','月亮護盾'],'zh-Hans':['太阳符文','月亮符文','太阳护盾','月亮护盾'],
+ ja:['太陽のルーン','月のルーン','太陽の盾','月の盾'],ko:['태양 룬','달 룬','태양 방패','달 방패'],
+ es:['Runa del sol','Runa de la luna','Escudo del sol','Escudo de la luna'],
+ 'pt-BR':['Runa do sol','Runa da lua','Escudo do sol','Escudo da lua'],fr:['Rune du soleil','Rune de la lune','Bouclier du soleil','Bouclier de la lune'],
+ de:['Sonnenrune','Mondrune','Sonnenschild','Mondschild'],it:['Runa del sole','Runa della luna','Scudo del sole','Scudo della luna'],
+ ru:['Руна солнца','Руна луны','Щит солнца','Щит луны'],hi:['सूर्य रून','चंद्र रून','सूर्य ढाल','चंद्र ढाल'],ar:['رون الشمس','رون القمر','درع الشمس','درع القمر']
+};
+export const LATCH_DUAL_SEAL_SHIELD_RULE={
+ en:'Match numbered keys and locks; take seal 1 before 2 and the rune for the shield.',
+ 'zh-Hant':'依編號配對鑰匙與鎖；印記先1後2，符文可破盾。','zh-Hans':'按编号配对钥匙与锁；印记先1后2，符文可破盾。',
+ ja:'同番号の鍵と錠を組み合わせ、印は1、2の順。ルーンで盾を解除。',ko:'같은 번호의 열쇠와 잠금을 맞추고 인장 1, 2 순서로 모아 룬으로 방패를 푸세요.',
+ es:'Empareja llaves y candados; sello 1 antes del 2 y runa para el escudo.',
+ 'pt-BR':'Combine chaves e travas; selo 1 antes do 2 e runa para o escudo.',
+ fr:'Associez clés et verrous ; sceau 1 avant 2 et rune pour le bouclier.',
+ de:'Ordne Schlüssel den Sperren zu; Siegel 1 vor 2 und Rune für den Schild.',
+ it:'Abbina chiavi e blocchi; sigillo 1 prima del 2 e runa per lo scudo.',
+ ru:'Сопоставьте ключи и замки; печать 1 до 2 и руна против щита.',
+ hi:'समान चाबी और ताला मिलाएँ; मुहर 2 से पहले 1 और ढाल के लिए रून लें।',
+ ar:'طابق المفاتيح والأقفال المرقمة؛ الختم 1 قبل 2 والرون للدرع.'
+};
+export const LATCH_SEAL_SHIELD_RULE={
+ en:'Use arrows to find items. Key before lock, seal 1 before 2, and rune for the shield.',
+ 'zh-Hant':'用箭頭找物件：鑰匙先於鎖，印記依序1、2，符文可破盾。','zh-Hans':'用箭头找物件：钥匙先于锁，印记依序1、2，符文可破盾。',
+ ja:'矢印で探そう。鍵は錠より先、印は1、2の順。ルーンで盾を解除。',ko:'화살표로 찾으세요. 열쇠는 잠금보다 먼저, 인장은 1, 2 순서. 룬으로 방패를 푸세요.',
+ es:'Busca con las flechas. Llave antes del candado, sello 1 antes del 2 y runa para el escudo.',
+ 'pt-BR':'Use as setas. Chave antes da trava, selo 1 antes do 2 e runa para o escudo.',
+ fr:'Cherchez avec les flèches. Clé avant verrou, sceau 1 avant 2 et rune pour le bouclier.',
+ de:'Suche mit Pfeilen. Schlüssel vor Sperre, Siegel 1 vor 2 und Rune für den Schild.',
+ it:'Cerca con le frecce. Chiave prima del blocco, sigillo 1 prima del 2 e runa per lo scudo.',
+ ru:'Ищите стрелками: ключ до замка, печать 1 до 2 и руна против щита.',
+ hi:'तीरों से खोजें। ताले से पहले चाबी, मुहर 2 से पहले 1 और ढाल के लिए रून लें।',
+ ar:'ابحث بالأسهم. المفتاح قبل القفل، والختم 1 قبل 2، والرون للدرع.'
+};
 export const LATCH_DUAL_SEALS_RULE={
  en:'Match numbered keys and locks. Collect seal 1 before seal 2; use arrows to find items.',
  'zh-Hant':'依編號配對鑰匙與鎖，先收印記1再收2；用箭頭找物件。','zh-Hans':'按编号配对钥匙与锁，先收印记1再收2；用箭头找物件。',

@@ -49,7 +49,7 @@ export function createStore(options = {}) {
   return {
     get progress(){return current;}, get error(){return error;}, refresh(){current=read();return current;},
     complete(stageId, outcome) {
-      if (!Number.isInteger(stageId) || stageId < 1 || stageId > 60 || outcome?.won !== true || !Number.isFinite(outcome.elapsed)) return Promise.resolve({ok:false,reason:'invalid'});
+      if (!Number.isInteger(stageId) || stageId < 1 || stageId > 60 || outcome?.won !== true || !Number.isFinite(outcome.elapsed) || outcome.elapsed < 0 || outcome.elapsed > 86400 || !Number.isInteger(outcome.stars) || outcome.stars < 1 || outcome.stars > 3) return Promise.resolve({ok:false,reason:'invalid'});
       return mutate(p => {
         if (stageId > highestUnlocked(p)) throw new Error('STAGE_LOCKED');
         const old=p.records[stageId]; p.records[stageId]={cleared:true,bestTime:Math.min(old?.bestTime ?? Infinity,outcome.elapsed),stars:Math.max(old?.stars || 0,outcome.stars)}; return p;

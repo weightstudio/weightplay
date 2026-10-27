@@ -4,8 +4,8 @@ import {frameSize,boundView,followView} from './camera.mjs';
 import {makeActor,makeProp,makeCastle} from './block-art.mjs';
 const PALETTE={A:0xd85078,B:0x39b8a5,C:0x8572d4,'#':0xa09c98,'1':0xd6a443,'2':0x57b7d4,'^':0x677082};
 export class CrownScene {
-  constructor(host,{navigationHost=host,label,onPick,onError,onContact=()=>{},reduced=()=>false,isBusy=()=>false,isPaused=()=>false,cameraText=key=>key}) {
-    this.isPaused=isPaused;this.isBusy=isBusy;this.cameraText=cameraText;this.following=true;this.overview=false;this.view=null;this.cameraFrame=0;this.host=host;this.label=label;this.onPick=onPick;this.reduced=reduced;this.disposed=false;this.frame=0;this.materials=new Map();this.hitTargets=[];this.ray=new THREE.Raycaster();this.abort=new AbortController();
+  constructor(host,{navigationHost=host,label,accessibleLabel=()=>null,onPick,onError,onContact=()=>{},reduced=()=>false,isBusy=()=>false,isPaused=()=>false,cameraText=key=>key}) {
+    this.isPaused=isPaused;this.isBusy=isBusy;this.cameraText=cameraText;this.following=true;this.overview=false;this.view=null;this.cameraFrame=0;this.host=host;this.label=label;this.accessibleLabel=accessibleLabel;this.onPick=onPick;this.reduced=reduced;this.disposed=false;this.frame=0;this.materials=new Map();this.hitTargets=[];this.ray=new THREE.Raycaster();this.abort=new AbortController();
     this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'low-power'});
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.setClearColor(0x243c48);this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.12;this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
     this.canvas=this.renderer.domElement;this.canvas.setAttribute('aria-hidden','true');host.prepend(this.canvas);
@@ -99,7 +99,7 @@ export class CrownScene {
       node.userData.labelLift=kind==='item'?(occupied?.45:0)+Math.max(0,rank)*.42:0;
       const at=this.point(a.x,a.y);if(!preserve||!oldPosition)node.position.set(at.x+node.userData.cellOffset,at.y+node.userData.groundOffset,.65);
       if(!preserve){node.rotation.set(0,kind==='hero'?.28:kind==='enemy'?-.28:['crown','sword'].includes(a.kind)?.2:0,0);node.visible=true;node.scale.setScalar(a.boss?.81:kind==='item'?1:.75);}
-      const label=document.createElement('span');label.className=`actor-tag ${kind}`;const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',fullLabel);this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
+      const label=document.createElement('span');label.className=`actor-tag ${kind}`;if(state.level===45&&kind==='item'&&a.kind==='rune')label.classList.add('phase-rune');if(state.level===45&&kind==='enemy'&&a.shield)label.classList.add('phase-shield');const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',this.accessibleLabel(a,kind,state)||fullLabel);this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
     };
     add(state.hero,'hero');state.enemies.filter(e=>e.alive).forEach(e=>add(e,'enemy'));state.items.filter(i=>i.alive).forEach(i=>add(i,'item'));
     for(const [id,node] of this.actorNodes)if(!alive.has(id)){this.world.remove(node);this.actorNodes.delete(id);}

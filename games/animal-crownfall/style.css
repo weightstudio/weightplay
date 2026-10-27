@@ -170,3 +170,7 @@ body[data-screen="stage"] .wp-tutorial-button{display:none}
     min-height: 46px;
   }
 }
+
+/* Distinguish the two practice-only phase runes at overview scale. */
+.actor-tag.item.phase-rune{font-size:14px;line-height:1.15}
+.actor-tag.enemy.phase-shield{font-size:14px;line-height:1.15}

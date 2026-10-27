@@ -83,4 +83,25 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
   items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'}],sealOrder:['1','2'],
   latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[0,3],key:[3,3]}]
+},{
+  id:43,name:'The shielded seals',
+  decision:'Open the marked latch, collect seals 1 and 2 in order, and bring the separate rune to the shielded guard.',
+  board:['.......','AA.BCCC','.......','BBB.CCC','.......','AAACCCC','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun'}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:4,y:4,link:'sun'},{id:'seal1',kind:'seal',x:3,y:0,link:'1'},{id:'seal2',kind:'seal',x:5,y:0,link:'2'}],sealOrder:['1','2'],
+  latches:[{id:'sun',lock:[0,1],key:[4,1]}]
+},{
+  id:44,name:'Pairs, seals and shield',
+  decision:'Match both key/lock pairs, collect seals 1 and 2 in order, and bring the rune to the shielded guard.',
+  board:['.......','AA...CC','.......','BBBA.CC','.......','AAABBBB','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun'}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:4,y:4,link:'sun'},{id:'seal1',kind:'seal',x:3,y:0,link:'1'},{id:'seal2',kind:'seal',x:5,y:0,link:'2'}],sealOrder:['1','2'],
+  latches:[{id:'sun',lock:[0,1],key:[5,1]},{id:'moon',lock:[0,3],key:[5,3]}]
+},{
+  id:45,name:'The two-rune guardian',
+  decision:'Match both latch pairs, take the seals in order, and find the sun then moon rune for the two shield phases.',
+  board:['.......','AA...CC','.......','BBBA.CC','.......','AAABBBB','.......','BBBBBBB','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun',boss:true,next:{x:0,y:8,power:120,shield:'moon'}}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:8},{id:'rune',kind:'rune',x:4,y:4,link:'sun'},{id:'seal1',kind:'seal',x:3,y:0,link:'1'},{id:'seal2',kind:'seal',x:5,y:0,link:'2'},{id:'boost',kind:'power',x:0,y:4,amount:24},{id:'moonRune',kind:'rune',x:4,y:8,link:'moon'}],sealOrder:['1','2'],
+  latches:[{id:'sun',lock:[0,1],key:[5,1]},{id:'moon',lock:[0,3],key:[5,3]}]
 }];

@@ -43,6 +43,8 @@
       sapper: { source: "enemy-sapper-candidate-v2.webp", width: 1024, height: 1536 },
       "stone-bastion": { source: "enemy-stone-bastion-candidate-v3.webp", width: 1024, height: 1536, viewBox: "90 160 870 1140" },
       "red-lantern": { source: "enemy-red-lantern-candidate-v2.webp", width: 1024, height: 1536, viewBox: "48 120 940 1260" },
+      "thunder-signal": { source: "enemy-thunder-signal-candidate-v2.webp", width: 1024, height: 1536, viewBox: "25 115 990 1260" },
+      "twin-seal": { source: "enemy-twin-seal-candidate-v2.webp", width: 1024, height: 1536, viewBox: "48 145 960 1235" },
     },
   };
 
