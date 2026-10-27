@@ -100,6 +100,7 @@
   };
   const syncResultActions=()=>{
     if(!result||result.hidden||!nextAction)return;
+    if(window.__CrateboundPractice?.enabled&&window.__blockTrilogyTest?.getState?.().selected>=60){clearReservedNext();nextAction.hidden=true;return;}
     if(nextAction.hidden)reserveNextSlot();
     else clearReservedNext();
   };
@@ -253,7 +254,13 @@
     block(r, [.026, .02, .36], [0, .001, 0], color, .1, true);
     return r;
   }
-  function makeCargo(linked) {
+  function addSortingSeal(root, seal, y) {
+    if (!window.__CrateboundPractice?.enabled || !['sun', 'moon'].includes(seal)) return;
+    const pattern = seal === 'sun' ? ['00100','01110','11111','01110','00100'] : ['01110','11000','11000','11000','01110'];
+    block(root,[.6,.035,.6],[0,y,0],0x102333,.3);
+    pattern.forEach((row,z)=>[...row].forEach((pixel,x)=>{if(pixel==='1')block(root,[.09,.025,.09],[(x-2)*.11,y+.035,(z-2)*.11],0xfff2b2,.2,true)}));
+  }
+  function makeCargo(linked, seal) {
     const root = new THREE.Group();
     block(root, [.66, .58, .66], [0, .32, 0], 0x98704b);
     for (let i = -1; i <= 1; i++) {
@@ -272,6 +279,7 @@
     const sign = rune(root, .67, linked ? 0xea97ff : 0x78ffe0, 1.05);
     const front = rune(root, 0, linked ? 0xea97ff : 0x78ffe0, .88);
     front.rotation.x = Math.PI / 2; front.position.set(0, .35, .382);
+    addSortingSeal(root,seal,.735);
     root.userData = { plate, sign, front, linked }; return root;
   }
   function clearStage() {
@@ -298,7 +306,7 @@
   function build(e, stage) {
     clearStage(); currentEngine = e; previousMoves = e.moves; previousPulls=e.pulls;
     poseFrom = poseTo = snapshotPose(e); world = new THREE.Group(); scene.add(world);
-    const size=e.size,width=e.width||size,height=e.height||size,hx=(width-1)/2,hz=(height-1)/2,chapter=Math.floor((stage-1)/5);
+    const size=e.size,width=e.width||size,height=e.height||size,hx=(width-1)/2,hz=(height-1)/2,chapter=window.__CrateboundPractice?.enabled?Math.min(5,Math.floor((stage-1)/5)):Math.floor((stage-1)/5);
     wrap.dataset.arkChapter=String(chapter);
     const cells=e.floor||Array.from({length:size},(_,y)=>Array.from({length:size},(_,x)=>({x,y}))).flat();
     const occupied=new Set(cells.map(p=>`${p.x},${p.y}`));
@@ -324,7 +332,7 @@
         block(d, [.9, .035, .035], [0, .14, s * .43], 0x69f4de, .2, true);
         block(d, [.035, .035, .9], [s * .43, .14, 0], 0x69f4de, .2, true);
       }
-      rune(d, .143, 0xa2ffe8, 1.7); docks.push(d);
+      rune(d, .143, 0xa2ffe8, 1.7); addSortingSeal(d,p.seal,.175); docks.push(d);
       const pulse=ring(d,.49,0x86ffe1,.16);pulse.visible=false;dockPulses.push({mesh:pulse,age:1});
     });
     e.ice.forEach(p => {
@@ -352,13 +360,13 @@
       for (const x of [-.25, 0, .25]) block(gate, [.06, .65, .1], [x, 0, .7], 0xffde8b, .2, true);
     }
     batchDeck();
-    e.boxes.forEach(b => { const c = makeCargo(b.linked); place(c, b, size, .075); world.add(c); cargo.push(c); });
+    e.boxes.forEach(b => { const c = makeCargo(b.linked,b.seal); place(c, b, size, .075); world.add(c); cargo.push(c); });
     hero = makeRux(); place(hero, e.player, size, .065); world.add(hero);
     hero.scale.setScalar(1.12);
     magnetic=block(world,[.05,.05,1],[0,.3,0],0xbad9ff,.1,true);magnetic.visible=false;magnetic.castShadow=false;
     routeMarker=new THREE.Group();world.add(routeMarker);ring(routeMarker,.22,0xffe8aa,.1);routeMarker.visible=false;
     facing = lastFacing = Math.PI / 2; hero.rotation.y = facing;
-    lastDocked = new Set(e.boxes.flatMap((b, i) => e.goals.some(g => g.x === b.x && g.y === b.y) ? [i] : []));
+    lastDocked = new Set(e.boxes.flatMap((b, i) => e.goals.some(g => g.x === b.x && g.y === b.y && (!window.__CrateboundPractice?.enabled || g.seal === b.seal)) ? [i] : []));
     wrap.style.setProperty('--ark-sky', `#${palette[chapter].toString(16)}`);
     lastSize = ''; fit(); effectTime = 0;
     if (!reduced.matches) renderer.domElement.animate([{ opacity: .15 }, { opacity: 1 }], { duration: 260 });
@@ -468,7 +476,7 @@
     cargo.forEach((c,i)=>{
       const to=poseTo.boxes[i],from=poseFrom.boxes[i]||to;
       const p={x:mix(from.x,to.x),y:mix(from.y,to.y)}; place(c,p,e.size,.075);
-      const docked=e.goals.some(g=>Math.abs(g.x-p.x)<.06&&Math.abs(g.y-p.y)<.06);
+      const docked=e.goals.some(g=>Math.abs(g.x-p.x)<.06&&Math.abs(g.y-p.y)<.06&&(!window.__CrateboundPractice?.enabled||g.seal===e.boxes[i].seal));
       c.userData.plate.material=mat(docked?0x39d9b5:0x164e5a,.35,docked);
       if (docked&&!lastDocked.has(i)) {
         burst(c.position,0x99ffe1); cue('puzzle.match'); lastDocked.add(i);
@@ -589,21 +597,21 @@
     const state=window.__blockTrilogyTest?.getState?.();
     document.querySelectorAll('#resultModal .result-art').forEach(img=>{const src='/assets/weightplay-character-gear-horn-rhino-block-v1.webp';if(img.getAttribute('src')!==src)img.setAttribute('src',src);});
     if(!zh())return;
-    const c=copies[traditional()?'zh-Hant':'zh-Hans'],w=c.words;
+    const locale=traditional()?'zh-Hant':'zh-Hans',c=copies[locale],w=c.words,practice=window.__CrateboundPractice?.enabled===true,practiceCopy=practice?window.WeightPlayCrateboundSortingCandidate.messages(locale):null;
     C.pitch=c.pitch;C.objective=c.objective;C.help=c.help;C.win=c.win;C.chapters=c.chapters;
     C.localeCopy={...C.localeCopy,stage:`${w[6]} {n}`};
-    put('pitch',c.pitch);put('objective',c.objective);put('helpText',c.help);
-    if(state)put('goalValue',c.chapters[Math.floor((state.selected-1)/5)]);
+    put('pitch',c.pitch);put('objective',practice?practiceCopy[1]:c.objective);put('helpText',practice?`${practiceCopy[1]} ${c.help}`:c.help);
+    if(state)put('goalValue',practice?practiceCopy[0]:c.chapters[Math.floor((state.selected-1)/5)]);
     document.querySelectorAll('#battleScreen .battle-stats b').forEach((n,i)=>{if(n.textContent!==w[i])n.textContent=w[i];});
     put('undoMove',w[4]);put('restartMove',w[5]);
     if(state?.engine?.kind==='crate')put('pullMode',`${w[3]} ${state.engine.pulls}`);
     put('resultStage',w[6]);put('next',w[7]);put('retry',w[8]);
     const result=document.getElementById('resultModal');
-    if(result&&!result.hidden){put('resultTitle',w[9]);put('resultText',c.win);put('resultA',`${state?.engine?.moves??0} ${w[0]}`);put('resultB',`${state?.engine?.pulls??0} ${w[2]}`);put('resultC',w[10]);}
+    if(result&&!result.hidden){put('resultTitle',w[9]);put('resultText',practice?practiceCopy[2]:c.win);put('resultA',`${state?.engine?.moves??0} ${w[0]}`);put('resultB',`${state?.engine?.pulls??0} ${w[2]}`);put('resultC',w[10]);}
     document.querySelectorAll('#resultModal .result-stats b,#resultModal .result-grid b').forEach((n,i)=>{const value=[w[0],w[2],traditional()?'狀態':'状态'][i];if(value&&n.textContent!==value)n.textContent=value;});
     document.querySelectorAll('#stageRail [data-stage]').forEach(card=>{
       const n=Number(card.dataset.stage),chapter=card.querySelector('small'),title=card.querySelector('strong'),status=card.querySelector('span');
-      if(chapter&&chapter.textContent!==c.chapters[Math.floor((n-1)/5)])chapter.textContent=c.chapters[Math.floor((n-1)/5)];
+      const label=practice&&n>=31?practiceCopy[0]:c.chapters[Math.floor((n-1)/5)];if(chapter&&label&&chapter.textContent!==label)chapter.textContent=label;
       if(title&&title.textContent!==`${w[6]} ${n}`)title.textContent=`${w[6]} ${n}`;
       if(status){const text=status.textContent, translated=/Locked|鎖定|锁定|未解鎖|未解锁/.test(text)?(traditional()?'未解鎖':'未解锁'):/Cleared|Replay|重玩|完成/.test(text)?'已完成 · 重玩':(traditional()?'準備出發':'准备出发');if(status.textContent!==translated)status.textContent=translated;}
     });

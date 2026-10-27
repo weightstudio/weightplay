@@ -16,6 +16,7 @@ export const MIRROR_COPY={
  ar:['مرصد المرآة','عدسة النجوم','خفتت لوحة خاطئة واحدة. استخدام العدسة يحدّ هذه المحاولة بنجمتين.','للتدريب فقط: لا يُحفظ التقدم أو المكافآت.',['{a} على يسار {b} بخانة واحدة','{a} على يسار {b} بخانتين','{a} فوق {b} بخانة واحدة','{a} فوق {b} بخانتين','{a} صورة مرآة {b} حول خط الوسط الرأسي','{a} صورة مرآة {b} حول خط الوسط الأفقي','{a} أعلى يسار {b} قطريًا بخانة واحدة','{a} أعلى يسار {b} قطريًا بخانتين','{a} يقابل {b} عبر نقطة المركز']]
 };
 export const MIRROR_RELATIONS=['L1','L2','U1','U2','MX','MY','D1','D2','O'];
+export const MIRROR_SHORT={en:'Mirror Sky','zh-Hant':'映星','zh-Hans':'映星',ja:'鏡星',ko:'거울별',es:'Cielo espejo','pt-BR':'Céu espelhado',fr:'Ciel miroir',de:'Spiegelhimmel',it:'Cielo specchio',ru:'Зеркальное небо',hi:'दर्पण आकाश',ar:'سماء المرآة'};
 export const MIRROR_GUIDE={
  en:'Once per map: dim one wrong board; this run earns at most two stars.',
  'zh-Hant':'每關一次：淡化一個錯誤星圖；本次最多兩星。',

@@ -3,7 +3,9 @@
 
   const locales = window.ANIMAL_COZY_CAMP_LOCALES || {};
   const localeKeys = window.ANIMAL_COZY_CAMP_LOCALE_KEYS || ["en"];
-  const Campaign = window.ANIMAL_COZY_CAMP_CAMPAIGN;
+  let Campaign = window.ANIMAL_COZY_CAMP_CAMPAIGN;
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceActive=false, practiceAdapter=null, markedSeat=null;
   const startLabels = {
     en: "Start Game", "zh-Hant": "開始遊戲", "zh-Hans": "开始游戏", ja: "ゲーム開始",
     ko: "게임 시작", es: "Iniciar juego", "pt-BR": "Iniciar jogo", fr: "Démarrer le jeu",
@@ -34,12 +36,13 @@
   };
   const safeStorage = () => { try { return window.localStorage; } catch (_) { return null; } };
   const refreshProgress = () => { state.progress = Campaign.loadProgress(safeStorage()); };
-  const persistProgress = () => Campaign.saveProgress(safeStorage(), state.progress);
+  const persistProgress = () => practiceRequested ? false : Campaign.saveProgress(safeStorage(), state.progress);
   state.progress = Campaign.loadProgress(safeStorage());
   state.stageBrowseIndex = Campaign.highestUnlockedIndex(state.progress);
   const stage = () => Campaign.stages[state.round];
   const isAllComplete = () => state.progress.completedIds.length === Campaign.STAGE_COUNT;
   const track = (event, detail = {}) => {
+    if(practiceRequested)return;
     window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-cozy-camp", event, ...detail } }));
   };
   const tone = (cue = "ui.click") => window.WeightPlayAudio?.play(cue);
@@ -100,12 +103,13 @@
       const next = event.target.value;
       if (!locales[next]) return;
       state.locale = next;
-      try {
+      if(!practiceRequested)try {
         safeStorage()?.setItem("weightplay-animal-cozy-camp-locale", state.locale);
         safeStorage()?.setItem("weightPlayLocale", state.locale);
       } catch (_) {}
       window.dispatchEvent(new CustomEvent("wonder:locale-change"));
       applyLocale();
+      if(practiceRequested)return;
       const segments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
       const preview = new URLSearchParams(location.search).get("preview") === "1" ? "?preview=1" : "";
       const targetPath = `/${segments[state.locale]}/games/animal-cozy-camp/`;
@@ -141,6 +145,7 @@
 
   function buildCampaign() {
     return Campaign.stages.map((item) => {
+      if(item.chapter2)return shuffleRound({ ...item, title:'round', stageId:item.id });
       const authored = authoredRounds[item.patternIndex];
       return shuffleRound({
         ...authored,
@@ -179,6 +184,9 @@
     layout.forEach((name, position) => {
       const seat = nameChip(name);
       seat.classList.add("circle-seat", `seat-${position}`);
+      if(stage()?.chapter2 && position===markedSeat)seat.classList.add('cozy-seat-marked');
+      if(stage()?.chapter2){const anchor=document.createElement('span');anchor.className=`cozy-seat-anchor ${position<2?'is-lit':'is-shaded'}`;anchor.textContent=String(position+1);anchor.setAttribute('aria-hidden','true');seat.append(anchor);}
+      if(stage()?.chapter2 && position===0){const lantern=document.createElement('img');lantern.className='cozy-lantern-icon';lantern.src='/games/animal-cozy-camp/assets/chapter2-lantern-candidate.webp';lantern.alt='';lantern.setAttribute('aria-hidden','true');seat.append(lantern);}
       circle.append(seat);
     });
     return circle;
@@ -200,7 +208,7 @@
     });
     $("check-button").disabled = state.selected === null || state.locked;
     $("reset-button").disabled = state.selected === null || state.locked;
-    const results = state.checked ? Campaign.evaluateRules(round.layouts[state.selected], stage().patternIndex) : null;
+    const results = state.checked ? evaluateStage(round.layouts[state.selected]) : null;
     $("clue-list").querySelectorAll("li").forEach((node, index) => {
       node.dataset.result = results ? (results[index] ? "pass" : "fail") : "";
       const mark = node.querySelector(".clue-mark");
@@ -209,22 +217,41 @@
     });
   }
 
+  function evaluateStage(layout){return stage()?.chapter2?stage().rules.map(rule=>window.AnimalCozyCampChapter2Candidate.evaluate(layout,rule)):Campaign.evaluateRules(layout,stage().patternIndex);}
+
+  function renderMarkerControls(){
+    const preview=$('seat-preview'),parent=preview.parentElement;let controls=$('cozy-marker-controls');
+    if(!stage()?.chapter2){controls?.remove();$('cozy-seat-legend')?.remove();return;}
+    if(!controls){controls=document.createElement('div');controls.id='cozy-marker-controls';controls.className='cozy-marker-controls';for(let index=0;index<4;index++){const button=document.createElement('button');button.type='button';button.textContent=String(index+1);button.addEventListener('click',()=>{markedSeat=markedSeat===index?null:index;renderMarkerControls();updateSelection();});controls.append(button);}parent.append(controls);}
+    const copy=window.AnimalCozyCampChapter2Copy;[...controls.children].forEach((button,index)=>{button.setAttribute('aria-label',`${copy.marker(state.locale,index+1)}: ${copy.seat(state.locale,index)}`);button.setAttribute('aria-pressed',String(markedSeat===index));button.title=copy.seat(state.locale,index);});
+    let legend=$('cozy-seat-legend');if(!legend){legend=document.createElement('p');legend.id='cozy-seat-legend';legend.className='cozy-seat-legend';parent.append(legend);}legend.textContent=`1: ${copy.seat(state.locale,0)} · 1–2: ${copy.zone(state.locale,'light')} · 3–4: ${copy.zone(state.locale,'shade')}`;
+  }
+
   function renderBattle() {
     const round = rounds[state.round];
     if (!round) return;
     const item = stage();
-    $("round-title").textContent = t(round.title);
+    const officialTitle=window.WeightPlayOfficialName?.title?.();
+    if(item?.chapter2 && officialTitle==='Campfire Seating Logic'){
+      // Keep the full approved title while letting the shared one-line stat
+      // slot wrap at a deliberate word boundary on compact displays.
+      $("round-title").replaceChildren(document.createTextNode('Campfire '),document.createElement('br'),document.createTextNode('Seating Logic'));
+    } else $("round-title").textContent = t(round.title);
     $("round-count").textContent = `${item.number}/${Campaign.STAGE_COUNT}`;
     const clues = $("clue-list");
-    clues.replaceChildren(...Campaign.ruleSets[item.patternIndex].map(([left, relation, right], index) => {
+    const rules=item.chapter2?item.rules:Campaign.ruleSets[item.patternIndex];
+    clues.replaceChildren(...rules.map(([left, relation, right, fourth, fifth], index) => {
       const clue = document.createElement("li");
       const mark = document.createElement("span");
       mark.className = "clue-mark";
       mark.textContent = String(index + 1);
       const link = document.createElement("span");
       link.className = "clue-relation";
-      link.textContent = t(relation);
-      clue.append(mark, nameChip(left), link, nameChip(right));
+      if(item.chapter2 && !['beside','opposite'].includes(left)){
+        link.textContent=window.AnimalCozyCampChapter2Copy.render(state.locale,[left,relation,right,fourth,fifth],name=>t(name));
+        clue.append(mark,link);
+      } else if(item.chapter2){link.textContent=t(left);clue.append(mark,nameChip(relation),link,nameChip(right));}
+      else {link.textContent=t(relation);clue.append(mark, nameChip(left), link, nameChip(right));}
       return clue;
     }));
     const choices = $("layout-choices");
@@ -252,7 +279,7 @@
       });
       return button;
     }));
-    updateSelection();
+    renderMarkerControls();updateSelection();
   }
 
   function renderResult() {
@@ -262,6 +289,7 @@
     $("result-kicker").textContent = t(campaignComplete ? "campaignComplete" : "circleComplete");
     $("result-title").textContent = t(campaignComplete ? "campaignResultTitle" : "stageResultTitle", { n: item.number });
     $("result-text").textContent = t("stageResultText", { stage: item.number, checks: state.checks });
+    if(practiceRequested)$("result-text").textContent+=` · ${window.AnimalCozyCampChapter2Copy.result(state.locale)}`;
     $("result-checks").textContent = String(state.checks);
     $("result-best").textContent = String(best || t("noBest"));
     $("result-status").textContent = t("stageProgressShort", { done: state.progress.completedIds.length, total: Campaign.STAGE_COUNT });
@@ -272,15 +300,21 @@
   }
 
   function playStage(index, newSession) {
+    if(practiceRequested){if(practiceActive)void practiceAdapter.challenge('animal-cozy-camp',String(index+1));return;}
+    startStageNow(index,newSession);
+  }
+  function startStageNow(index, newSession) {
     if (!Campaign.isUnlocked(state.progress, index)) return;
     state.runToken += 1;
     if (newSession) state.totalChecks = 0;
     rounds = buildCampaign();
     state.round = index;
+    document.body.dataset.cozyChapter2=String(Boolean(stage()?.chapter2));
     state.selected = null;
     state.checked = false;
     state.checks = 0;
     state.locked = false;
+    markedSeat=null;
     $("selection-note").textContent = "";
     $("battle-status").textContent = t("choose");
     $("battle-status").dataset.kind = "";
@@ -315,7 +349,7 @@
     state.totalChecks += 1;
     state.checked = true;
     updateSelection();
-    if (!Campaign.evaluateRules(rounds[state.round].layouts[state.selected], stage().patternIndex).every(Boolean)) {
+    if (!evaluateStage(rounds[state.round].layouts[state.selected]).every(Boolean)) {
       $("battle-status").textContent = t("wrong");
       $("battle-status").dataset.kind = "wrong";
       $("battleScreen").classList.remove("is-wrong");
@@ -361,6 +395,32 @@
     return "en";
   })();
 
+  async function initLocalPractice(){
+    if(!practiceRequested || window.__cozyPracticeAnalyticsSafe!==true)return;
+    try{
+      // The shared entry loader recognizes a ready Main scene. Wait until it
+      // has finished observing Main before a practice deep link opens Battle.
+      if(document.readyState!=='complete')await new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));
+      const entryReady=await new Promise(resolve=>{
+        let observer,timer;
+        const finish=value=>{observer?.disconnect();clearTimeout(timer);resolve(value);};
+        const inspect=()=>{const overlay=document.querySelector('.wp-game-entry-loader');if(!overlay||overlay.dataset.state==='ready')finish(true);else if(overlay.dataset.state==='error')finish(false);};
+        observer=new MutationObserver(inspect);observer.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['data-state']});timer=setTimeout(()=>finish(false),21000);inspect();
+      });
+      if(!entryReady)return;
+      const {LocalPractice}=await import('/src/game-local-practice.mjs');practiceAdapter=LocalPractice;
+      await LocalPractice.register({gameId:'animal-cozy-camp',stageIds:Array.from({length:60},(_,index)=>String(index+1)),
+        enable(enabled){
+          practiceActive=Boolean(enabled);
+          if(!practiceActive)return;
+          Campaign=window.AnimalCozyCampChapter2Practice.create(window.ANIMAL_COZY_CAMP_CAMPAIGN,window.AnimalCozyCampChapter2Candidate);
+          state.progress=Campaign.normalizeProgress(state.progress);rounds=buildCampaign();state.stageSelector?.refresh(state.stageBrowseIndex);
+        },
+        startStage(id){if(!practiceActive)return false;startStageNow(Number(id)-1,true);return true;}
+      });
+    }catch{practiceActive=false;}
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     refreshProgress();
     populateLocales();
@@ -379,6 +439,7 @@
     window.setTimeout(() => {
       $("loading-view").hidden = true;
       show("main");
+      void initLocalPractice();
     }, 80);
   });
 
@@ -402,7 +463,7 @@
       return {
         id: item.id,
         kicker: t("stageCircle", { n: item.number, total: Campaign.STAGE_COUNT }),
-        title: t(authoredRounds[item.patternIndex].title),
+        title: item.chapter2?t('stageCircle',{n:item.number,total:Campaign.STAGE_COUNT}):t(authoredRounds[item.patternIndex].title),
         subtitle: "",
         status: locked ? t("stageLockedShort") : cleared ? t("stageDone") : t("stageReady"),
         summary: t("stageProgressShort", { done: state.progress.completedIds.length, total: Campaign.STAGE_COUNT }),

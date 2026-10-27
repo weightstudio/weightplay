@@ -169,3 +169,8 @@ button:disabled { cursor: not-allowed; opacity: .48; }
 @media (prefers-reduced-motion: reduce) {
   .cell.hint { animation: none; outline: 3px solid #f0b943; }
 }
+/* Artwork is a real lantern; the border and matching numeral convey ownership. */
+.firefly-gate::before{content:'';position:absolute;inset:3px;border:3px solid var(--gate-color);border-radius:18%;pointer-events:none;z-index:1}
+.firefly-lantern{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;pointer-events:none;z-index:2}
+.firefly-code{position:absolute;z-index:3;top:1px;left:1px;min-width:1.2em;padding:0 2px;border-radius:5px;background:#11243b;color:#fff;font:800 clamp(10px,2.2vw,14px)/1.2 system-ui;text-align:center;pointer-events:none}
+.firefly-peek{outline:3px solid #a13cec;outline-offset:-3px;z-index:4}

@@ -352,7 +352,7 @@
   overflow-wrap: anywhere;
 }
 
-.result-actions #next[disabled] { display: none; }
+.result-actions #next[disabled] { opacity: .45; cursor: not-allowed; }
 
 .leave-confirm-overlay { z-index: 6; }
 

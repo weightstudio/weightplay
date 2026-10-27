@@ -102,7 +102,7 @@
   const bridge = window.AnimalCrateboundI9StageBridge;
   const config = window.AnimalCrateboundStageConfig?.create(bridge);
   let selector = null;
-  const selectedIndex = context => Math.max(0, Math.min(29, (Number(context?.getCentered?.()) || 1) - 1));
+  const selectedIndex = context => Math.max(0, Math.min(config.count - 1, (Number(context?.getCentered?.()) || 1) - 1));
   function renderStage(context) {
     if (context) bridge.context = context;
     const current = bridge.context;
@@ -143,11 +143,14 @@
   };
   window.addEventListener("wonder:locale-change", refreshStageLocale);
   window.addEventListener("wonder:i18n-ready", refreshStageLocale);
+  const refreshPractice = () => { if (selector && bridge?.context) selector.setConfig(config, selectedIndex(bridge.context)); };
+  window.addEventListener("weightplay:cratebound-practice-change", refreshPractice);
   window.addEventListener("pagehide", event => {
     if (event.persisted) return;
     sceneObserver.disconnect();
     window.removeEventListener("wonder:locale-change", refreshStageLocale);
     window.removeEventListener("wonder:i18n-ready", refreshStageLocale);
+    window.removeEventListener("weightplay:cratebound-practice-change", refreshPractice);
     selector?.destroy();
     frame.destroy();
   }, { once: true });

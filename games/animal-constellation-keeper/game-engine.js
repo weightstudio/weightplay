@@ -2,7 +2,7 @@
 (() => {
   "use strict";
   const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
-  let practiceEnabled=false,practiceAdapter=null,practiceBadge=null,mirrorAssess=null,mirrorCopy=null,mirrorGuide=null,mirrorRelations=null,originalCompleted=0;
+  let practiceEnabled=false,practiceAdapter=null,practiceBadge=null,mirrorAssess=null,mirrorCopy=null,mirrorShort=null,mirrorGuide=null,mirrorRelations=null,originalCompleted=0;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -135,7 +135,7 @@
   const updateStageStats = () => {
     const selected = $("stageSelectionValue");
     const completion = $("stageCompletionValue");
-    if (selected) selected.textContent = t("round", { n: stageSelectionIndex + 1, total: maps.length });
+    if (selected){selected.textContent = practiceEnabled?`${stageSelectionIndex+1} / ${maps.length}`:t("round", { n: stageSelectionIndex + 1, total: maps.length });if(practiceEnabled)selected.dir='ltr';else selected.removeAttribute('dir');}
     if (completion) completion.textContent = practiceEnabled?mirrorText()[0]:`${state.completed} / ${maps.length}`;
   };
   const stageRecord = (index) => {
@@ -147,7 +147,7 @@
     return {
       id: index + 1,
       kicker: t("round", { n: index + 1, total: maps.length }),
-      title: mirror?mirrorText()[0]:t(map.nameKey),
+      title: mirror?(mirrorShort[state.locale]||mirrorShort.en):t(map.nameKey),
       subtitle: mirror?mirrorText()[1]:t(map.arcKey),
       status,
       summary: mirror?map.clues.map(describeRelation).join(' · '):t(map.introKey),
@@ -207,7 +207,7 @@
     .add(createFrameStat("maps", "stageSelectionValue"))
     .add(createFrameStat("complete", "stageCompletionValue"));
   sharedFrame.stageTopUI.add(stageGroup);
-  function placePracticeBadge(){const badge=practiceBadge||(practiceBadge=document.querySelector('[data-wp-local-practice]'));if(!badge)return;if(!practiceEnabled){badge.hidden=true;return;}badge.hidden=false;badge.style.cssText='position:static;transform:none;background:#17243a;color:#f5c84c;padding:2px 4px;font:10px monospace;white-space:nowrap;pointer-events:none';if(state.screen==='battle')(matchMedia('(orientation: landscape) and (max-height: 590px)').matches?$('battleStatus'):$('mapIntro')).append(' ',badge);else if(state.screen==='result')$('resultTitle').after(badge);else if(state.screen==='stage')stageGroup.add(badge);else $('mainContent').append(badge);}
+  function placePracticeBadge(){const badge=practiceBadge||(practiceBadge=document.querySelector('[data-wp-local-practice]'));if(!badge)return;const field=$('stageSelectionValue').closest('.stage-info-field'),label=field?.querySelector('small');if(label)label.hidden=practiceEnabled&&state.screen==='stage';if(!practiceEnabled){badge.hidden=true;return;}badge.hidden=false;badge.style.cssText='position:static;transform:none;background:#17243a;color:#f5c84c;padding:2px 4px;font:10px monospace;white-space:nowrap;pointer-events:none';if(state.screen==='battle')(matchMedia('(orientation: landscape) and (max-height: 590px)').matches?$('battleStatus'):$('mapIntro')).append(' ',badge);else if(state.screen==='result')$('resultTitle').after(badge);else if(state.screen==='stage')$('stageSelectionValue').before(badge);else $('mainContent').append(badge);}
   const battleGroup = window.WeightPlayScreenFrame.createGroup();
   [...$("battleHeaderInfo").children].forEach((field) => battleGroup.add(field));
   $("battleHeaderInfo").replaceChildren();
@@ -303,13 +303,14 @@
     rating.textContent = "★".repeat(stars) + "☆".repeat(3 - stars); rating.setAttribute("aria-label", t("starsEarned", { count: stars }));
     const detail = document.createElement("p"); detail.className = "ck-result-detail";
     detail.textContent = `${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} · ` : ""}${t(state.mapChecks === 1 ? "perfectRead" : "skyRestored")} · ${t("checksLabel", { count: state.mapChecks })}`;
-    if(practiceEnabled){detail.textContent=`${t('checksLabel',{count:state.mapChecks})}${state.lensUsed?' · '+mirrorText()[2]:''} · ${mirrorText()[3]}`;$("resultText").textContent=mirrorText()[3];}
+    if(practiceEnabled){detail.textContent=`${t('checksLabel',{count:state.mapChecks})}${state.lensUsed?' · '+mirrorText()[2]:''}`;$("resultText").textContent=mirrorText()[3];}
     const progress = document.createElement("div"); progress.className = "ck-progress";
     progress.hidden=practiceEnabled;progress.setAttribute("role", "progressbar"); progress.setAttribute("aria-label", t("maps")); progress.setAttribute("aria-valuemin", "0"); progress.setAttribute("aria-valuemax", String(maps.length)); progress.setAttribute("aria-valuenow", String(state.completed));
     progress.style.setProperty("--progress", `${state.completed / maps.length * 100}%`);
     reward.append(rating, detail, progress);
     $("resultPrimaryBtn").textContent = complete ? t("map") : t("next");
     $("resultPrimaryBtn").onclick = complete ? openStage : () => requestMap(state.map + 1);
+    $("resultPrimaryBtn").hidden=practiceEnabled&&complete;
     $("resultMapBtn").hidden = false;
     __wpNotifyMeasurement();
   };
@@ -387,9 +388,9 @@
   if(practiceRequested)void activatePractice().catch(()=>{ $('battleStatus').textContent='Local practice unavailable'; });
   async function activatePractice(){
     const ready=await new Promise(resolve=>{let done=false;const timer=setTimeout(()=>finish(false),25000),observer=new MutationObserver(check);function finish(v){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(v)}function check(){const d=document.documentElement.dataset;if($('loadingPanel').hidden&&(d.wpGameEntryLoaderInstalled!=='true'||d.wpGameEntryLoaderActive!=='true'))finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['hidden','class','data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
-    if(!ready)return;const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs'),import('./mirror-observatory-candidate.mjs?v=20261027-mirror1'),import('./mirror-observatory-locales.mjs?v=20261027-mirror1')]);if(!await LocalPractice.ready)return;
-    const data=chapter.createMirrorMaps();if(data.length!==30||data.some((m,i)=>m.number!==31+i))return;practiceAdapter=LocalPractice;mirrorAssess=chapter.assess;mirrorCopy=locale.MIRROR_COPY;mirrorGuide=locale.MIRROR_GUIDE;mirrorRelations=locale.MIRROR_RELATIONS;originalCompleted=state.completed;
-    const style=document.createElement('style');style.textContent='body[data-wp-constellation-mirror] .battle-actions{grid-template-columns:repeat(3,minmax(0,1fr));position:relative;z-index:3}body[data-wp-constellation-mirror] .battle-actions button{min-width:0}body[data-wp-constellation-mirror] #ckMirrorLens{display:inline-flex;gap:4px;align-items:center;justify-content:center}body[data-wp-constellation-mirror] #ckMirrorLens[hidden]{display:none}body[data-wp-constellation-mirror] .ck-lens-eliminated{opacity:.35}body[data-wp-constellation-mirror] .battle-info-field:has(#mapName){display:none}';document.head.append(style);
-    await LocalPractice.register({gameId:'animal-constellation-keeper',stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){practiceEnabled=enabled===true;const nameField=$('mapName').closest('.battle-info-field');if(practiceEnabled){document.body.dataset.wpConstellationMirror='';battleRoot.dataset.wpBattleLandscapeWidth='760';battleRoot.dataset.wpBattleLandscapeHeight='334';nameField?.style.setProperty('display','none','important');if(maps.length===30)maps.push(...puzzle.assignBalancedAnswerSlots(data));state.completed=59;stageSelectionIndex=30;}else{delete document.body.dataset.wpConstellationMirror;delete battleRoot.dataset.wpBattleLandscapeWidth;delete battleRoot.dataset.wpBattleLandscapeHeight;nameField?.style.removeProperty('display');maps.length=30;mastery.length=30;state.completed=originalCompleted;stageSelectionIndex=Math.min(state.completed,29);show('main');}applyLocale();if(state.screen==='stage')renderStages();placePracticeBadge();window.WeightPlayBattleCanvas?.sync?.();},async startStage(id){const n=Number(id);if(practiceEnabled&&Number.isInteger(n)&&n>=31&&n<=60)startMap(n-1)}});
+    if(!ready)return;const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs'),import('./mirror-observatory-candidate.mjs?v=20261027-mirror1'),import('./mirror-observatory-locales.mjs?v=20261028-mirror2')]);if(!await LocalPractice.ready)return;
+    const data=chapter.createMirrorMaps();if(data.length!==30||data.some((m,i)=>m.number!==31+i))return;practiceAdapter=LocalPractice;mirrorAssess=chapter.assess;mirrorCopy=locale.MIRROR_COPY;mirrorShort=locale.MIRROR_SHORT;mirrorGuide=locale.MIRROR_GUIDE;mirrorRelations=locale.MIRROR_RELATIONS;originalCompleted=state.completed;
+    const style=document.createElement('style');style.textContent='body[data-wp-constellation-mirror] .battle-actions{grid-template-columns:repeat(3,minmax(0,1fr));position:relative;z-index:3}body[data-wp-constellation-mirror] .battle-actions button{min-width:0}body[data-wp-constellation-mirror] #ckMirrorLens{display:inline-flex;gap:4px;align-items:center;justify-content:center}body[data-wp-constellation-mirror] #ckMirrorLens[hidden]{display:none}body[data-wp-constellation-mirror] .ck-lens-eliminated{opacity:.35}body[data-wp-constellation-mirror] .battle-info-field:has(#mapName){display:none}@media (orientation:landscape) and (max-height:590px){html[data-wp-shared-interface] body[data-wp-constellation-mirror] #resultScreen .result-card{display:grid!important;grid-template-columns:minmax(120px,32%) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;align-items:center;justify-content:normal;min-height:0;max-height:100%;overflow:auto;padding:8px}body[data-wp-constellation-mirror] #ckResultReward{grid-column:1;grid-row:1 / 5}body[data-wp-constellation-mirror] #ckResultReward .star-board{width:120px;height:120px}body[data-wp-constellation-mirror] #ckResultReward .ck-animal{width:28px;height:28px}body[data-wp-constellation-mirror] #ckResultReward .ck-rating{font-size:22px;margin:2px}body[data-wp-constellation-mirror] #resultTitle,body[data-wp-constellation-mirror] #resultText,body[data-wp-constellation-mirror] #resultScreen [data-wp-local-practice],body[data-wp-constellation-mirror] #resultScreen .result-actions{grid-column:2}body[data-wp-constellation-mirror] #resultScreen .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0}body[data-wp-constellation-mirror] #resultScreen .result-actions button{min-width:0;min-height:44px}}';document.head.append(style);
+    await LocalPractice.register({gameId:'animal-constellation-keeper',stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){practiceEnabled=enabled===true;const nameField=$('mapName').closest('.battle-info-field'),completionField=$('stageCompletionValue').closest('.stage-info-field');if(practiceEnabled){document.body.dataset.wpConstellationMirror='';battleRoot.dataset.wpBattleLandscapeWidth='760';battleRoot.dataset.wpBattleLandscapeHeight='334';nameField?.style.setProperty('display','none','important');completionField?.style.setProperty('display','none','important');if(maps.length===30)maps.push(...puzzle.assignBalancedAnswerSlots(data));state.completed=59;stageSelectionIndex=30;}else{delete document.body.dataset.wpConstellationMirror;delete battleRoot.dataset.wpBattleLandscapeWidth;delete battleRoot.dataset.wpBattleLandscapeHeight;nameField?.style.removeProperty('display');completionField?.style.removeProperty('display');maps.length=30;mastery.length=30;state.completed=originalCompleted;stageSelectionIndex=Math.min(state.completed,29);show('main');}applyLocale();if(state.screen==='stage')renderStages();placePracticeBadge();window.WeightPlayBattleCanvas?.sync?.();},async startStage(id){const n=Number(id);if(practiceEnabled&&Number.isInteger(n)&&n>=31&&n<=60)startMap(n-1)}});
   }
 })();

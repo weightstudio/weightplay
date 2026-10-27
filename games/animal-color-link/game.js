@@ -1,5 +1,7 @@
 (()=>{
   "use strict";
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceAuthorized=false,practiceStarting=false,practiceAdapter=null,fireflyCopy=null,fireflySolver=null,practiceBadge=null,peekCell=null;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +10,7 @@
     paused: Boolean(false), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(practiceRequested)return;try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -40,15 +42,18 @@
     ar:["المراحل","الحدائق السابقة","الحدائق التالية","إيقاف هذه الحديقة مؤقتًا؟","المتابعة تُبقي كل مسار في مكانه. الرجوع إلى المراحل ينهي هذه المحاولة.","متابعة","العودة إلى المراحل","الحديقة التالية","العب مجددًا"]
   };
   document.body.setAttribute("data-runtime-localize","off");
-  let locale=readStore("wp-locale")||"en";
+  const practiceRouteLocale={en:'en','zh-tw':'zh-Hant','zh-cn':'zh-Hans',ja:'ja',ko:'ko',es:'es','pt-br':'pt-BR',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'}[location.pathname.split('/').filter(Boolean)[0]?.toLowerCase()];
+  let locale=(practiceRequested&&practiceRouteLocale)||readStore("wp-locale")||"en";
   if(!localeOrder.includes(locale))locale="en";
-  let unlocked=Number(readStore(storeKey))||1;
+  let unlocked=practiceRequested?1:Number(readStore(storeKey))||1;
   let selected=Math.min(unlocked,30)-1;
   let level=null,paths={},active=null,history=[],moves=0,blockedPulse=false,resultClaimed=false;
   let screenFrame=null,stageUI=null,stageStartButton=null;
 
   function readStore(key){try{return localStorage.getItem(key)}catch{return null}}
-  function writeStore(key,value){try{localStorage.setItem(key,value)}catch{}}
+  function writeStore(key,value){if(practiceRequested)return;try{localStorage.setItem(key,value)}catch{}}
+  function fireflyText(index,vars={}){const value=(fireflyCopy?.[locale]||fireflyCopy?.en||[])[index]||'';return value.replace(/\{(\w+)\}/g,(_,key)=>vars[key]??'')}
+  function movePracticeBadge(host){practiceBadge ||= document.querySelector('[data-wp-local-practice]');if(!practiceBadge||!host||!practiceAuthorized)return;practiceBadge.style.cssText='display:inline-block;margin-inline-start:.4em;padding:2px 5px;border-radius:4px;background:#ffe59a;color:#392900;font:700 11px sans-serif;pointer-events:none;white-space:nowrap';if(practiceBadge.parentNode!==host)host.append(practiceBadge)}
   function text(key,vars={}){
     let value=window.COLOR_LINK_LOCALES[locale]?.[key]??window.COLOR_LINK_LOCALES.en[key]??key;
     return typeof value==="string"?value.replace(/\{(\w+)\}/g,(_,name)=>vars[name]??""):value;
@@ -104,29 +109,35 @@
           title:text("garden",{n:index+1}),
           subtitle:`${item.size} × ${item.size}`,
           status:locked?text("locked"):"",
-          summary:text("draw"),
+          summary:item.gates?fireflyText(1):text("draw"),
           locked,
-          cleared:index+1<unlocked,
+          cleared:practiceAuthorized?false:index+1<unlocked,
         };
       },
     });
   }
   function updateMainProgress(){
     const progress=$("#mainProgress");
-    if(progress)progress.textContent=text("progress",{done:Math.min(unlocked-1,30)});
+    if(progress)progress.textContent=practiceAuthorized?fireflyText(9):text("progress",{done:Math.min(unlocked-1,30)});
   }
   function renderStages(){
     const progress=$("#progressBadge");
-    if(progress)progress.textContent=text("progress",{done:Math.min(unlocked-1,30)});
+    if(progress)progress.textContent=practiceAuthorized?fireflyText(9):text("progress",{done:Math.min(unlocked-1,30)});
     updateMainProgress();
     stageStartButton && (stageStartButton.disabled=selected+1>unlocked);
     stageUI?.setConfig(createStageConfig(),selected);
   }
   function startLevel(index){
-    selected=index;level=levels[index];paths={};active=null;history=[];moves=0;blockedPulse=false;
+    if(!practiceRequested)return beginLevel(index);
+    if(!Number.isInteger(index)||index<0||index>=levels.length||index>=unlocked||!practiceAuthorized||practiceStarting||window.__colorLinkPracticeAnalyticsSafe!==true)return false;
+    practiceStarting=true;return practiceAdapter.validate().then(ok=>{if(!ok||!practiceAuthorized||window.__colorLinkPracticeAnalyticsSafe!==true)return false;beginLevel(index);return true}).catch(()=>false).finally(()=>{practiceStarting=false});
+  }
+  function beginLevel(index){
+    selected=index;level=levels[index];paths={};active=null;history=[];moves=0;blockedPulse=false;peekCell=null;
     $("#grid").style.setProperty("--size",level.size);
     $("#stageName").textContent=text("garden",{n:index+1});
-    $("#status").textContent=text("draw");
+    $("#status").textContent=level.gates?fireflyText(1):text("draw");
+    $("#hint").textContent=level.gates?fireflyText(4):text('hint');
     show("battle");renderBoard();
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
@@ -147,14 +158,17 @@
   function renderBoard(){
     const grid=$("#grid");grid.innerHTML="";
     for(let i=0;i<level.size*level.size;i++){
-      const color=ownerAt(i),endpoint=endpointAt(i),button=document.createElement("button");
+      const color=ownerAt(i),endpoint=endpointAt(i),gate=level.gates?.find(item=>item.cell===i),button=document.createElement("button");
       button.className=`cell${color!==null?" path":""}${active?.cells.includes(i)?" active":""}`;
       button.dataset.cell=i;button.setAttribute("role","gridcell");
       if(color!==null)button.style.setProperty("--color",palette[color]);
       else if(endpoint!==null)button.style.setProperty("--color",palette[endpoint]);
       const row=Math.floor(i/level.size)+1,col=i%level.size+1;
-      button.setAttribute("aria-label",endpoint!==null?text("seed",{color:text("colors")[endpoint],row,col}):text("cell",{row,col}));
+      button.setAttribute("aria-label",gate?fireflyText(10,{color:text("colors")[gate.color],row,col}):endpoint!==null?text("seed",{color:text("colors")[endpoint],row,col}):text("cell",{row,col}));
       if(endpoint!==null){const dot=document.createElement("span");dot.className="dot";button.append(dot)}
+      if(gate){button.style.setProperty('--gate-color',palette[gate.color]);button.classList.add('firefly-gate');const art=document.createElement('img');art.src='/games/animal-color-link/assets/firefly-lantern-v1.png';art.alt='';art.className='firefly-lantern';button.append(art);}
+      if(level.gates&&(endpoint!==null||gate)){const code=document.createElement('span');code.className='firefly-code';code.setAttribute('aria-hidden','true');code.textContent=String((gate?.color??endpoint)+1);button.append(code);}
+      if(i===peekCell)button.classList.add('firefly-peek');
       grid.append(button);
     }
     const linked=Object.keys(paths).length;
@@ -163,11 +177,12 @@
     $("#linkStatus").textContent=text("links",{done:linked,total:level.count});
     $("#fillStatus").textContent=text("filled",{done:filled,total:level.size*level.size});
     $("#undo").disabled=!history.length;
+    if(practiceAuthorized)movePracticeBadge($("#status"));
   }
   function begin(cell,pointerId){
     const color=endpointAt(cell);if(color===null)return;
     if(paths[color]){delete paths[color];history=history.filter(value=>value!==color)}
-    active={color,cells:[cell],target:level.ends[color].find(end=>end!==cell),pointerId};
+    active={color,cells:[cell],target:level.ends[color].find(end=>end!==cell),pointerId};peekCell=null;
     moves++;renderBoard();
   }
   function extend(cell){
@@ -176,32 +191,34 @@
     if(cell===last)return;
     if(path.length>1&&cell===path.at(-2)){path.pop();renderBoard();return}
     const endpoint=endpointAt(cell);
-    if(!adjacent(last,cell)||active.cells.includes(cell)||ownerAt(cell,false)!==null||(endpoint!==null&&cell!==active.target)){
-      if(!blockedPulse){blockedPulse=true;$("#status").textContent=text("blocked");setTimeout(()=>blockedPulse=false,250)}
+    const gate=level.gates?.find(item=>item.cell===cell);
+    if(!adjacent(last,cell)||active.cells.includes(cell)||ownerAt(cell,false)!==null||(endpoint!==null&&cell!==active.target)||(gate&&gate.color!==active.color)){
+      if(!blockedPulse){blockedPulse=true;$("#status").textContent=gate&&gate.color!==active.color?fireflyText(2):text("blocked");setTimeout(()=>blockedPulse=false,250)}
       return;
     }
-    path.push(cell);renderBoard();
+    path.push(cell);peekCell=null;renderBoard();
   }
   function finish(){
     if(!active)return;
-    if(active.cells.at(-1)===active.target){
+    if(active.cells.at(-1)===active.target&&!(level.gates||[]).some(g=>g.color===active.color&&!active.cells.includes(g.cell))){
       paths[active.color]=active.cells.slice();
       history=history.filter(value=>value!==active.color);history.push(active.color);
       $("#status").textContent=text("continue");
-    }else $("#status").textContent=text("miss");
+    }else $("#status").textContent=active.cells.at(-1)===active.target&&level.gates?fireflyText(3):text("miss");
     active=null;renderBoard();checkComplete();
   }
   function checkComplete(){
     const cells=new Set(Object.values(paths).flat());
-    if(Object.keys(paths).length!==level.count||cells.size!==level.size*level.size)return;
-    if(selected+2>unlocked){unlocked=Math.min(31,selected+2);writeStore(storeKey,String(unlocked));updateMainProgress()}
+    if(Object.keys(paths).length!==level.count||cells.size!==level.size*level.size||(level.gates||[]).some(g=>!paths[g.color]?.includes(g.cell)))return;
+    if(selected+2>unlocked){unlocked=Math.min(levels.length+1,selected+2);writeStore(storeKey,String(unlocked));updateMainProgress()}
     playTone("puzzle.clear",.08);setTimeout(()=>void 0,90);
     $("#resultBody").textContent=text("resultBody",{n:selected+1,moves});
+    if(practiceAuthorized)$("#resultBody").textContent+=` · ${fireflyText(9)}`;
     resultClaimed=false;
-    $("#next").disabled=selected===29;
+    $("#next").disabled=selected===levels.length-1;
     [$("#resultStages"),$("#next"),$("#retry")].forEach(button=>button.classList.remove("primary"));
-    (__wpNotifyMeasurement(), (selected===29?$("#resultStages"):$("#next")).classList.add("primary"));
-    setTimeout(()=>openBattleModal($("#result"),selected===29?$("#resultStages"):$("#next")),220);
+    (__wpNotifyMeasurement(), (selected===levels.length-1?$("#resultStages"):$("#next")).classList.add("primary"));
+    setTimeout(()=>openBattleModal($("#result"),selected===levels.length-1?$("#resultStages"):$("#next")),220);
 
     __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
@@ -215,6 +232,12 @@
     $("#status").textContent=text("hinted");renderBoard();
     level.solution[unresolved].forEach(cell=>gridCell(cell)?.classList.add("hint"));
     checkComplete();
+  }
+  function peek(){
+    if(!level?.gates||!fireflySolver)return;peekCell=null;const result=fireflySolver(level,paths,active);
+    if(result.status==='step'||result.status==='start'){peekCell=result.cell;$("#status").textContent=fireflyText(result.status==='step'?5:6);renderBoard();gridCell(peekCell)?.classList.add('firefly-peek');}
+    else{$("#status").textContent=fireflyText(result.status==='unknown'?8:7);renderBoard();}
+    if(practiceAuthorized)movePracticeBadge($("#status"));
   }
   const gridCell=cell=>document.querySelector(`[data-cell="${cell}"]`);
   function mountSharedInterface(){
@@ -294,7 +317,7 @@
     if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(locale);return}
     writeStore("wp-locale",locale);applyLocale()
   };
-  $("#start").onclick=()=>show("stage");
+  $("#start").onclick=()=>{if(practiceRequested&&!practiceAuthorized)return;show("stage")};
   $("#stage [data-wp-return='stage']").onclick=event=>{event.preventDefault();show("main")};
   $("#battle [data-wp-return='battle']").onclick=()=>{
     if(!$("#result").hidden){$("#resultStages").click();return}
@@ -302,9 +325,9 @@
   };
   $("#leaveContinue").onclick=()=>closeBattleModal($("#leavePanel"),$("#battle [data-wp-return='battle']"));
   $("#leaveStages").onclick=()=>show("stage");
-  $("#undo").onclick=()=>{const color=history.pop();if(color!==undefined)delete paths[color];active=null;$("#status").textContent=text("undone");renderBoard()};
-  $("#reset").onclick=()=>{paths={};active=null;history=[];moves=0;$("#status").textContent=text("fresh");renderBoard()};
-  $("#hint").onclick=hint;
+  $("#undo").onclick=()=>{const color=history.pop();if(color!==undefined)delete paths[color];active=null;peekCell=null;$("#status").textContent=text("undone");renderBoard()};
+  $("#reset").onclick=()=>{paths={};active=null;history=[];moves=0;peekCell=null;$("#status").textContent=text("fresh");renderBoard()};
+  $("#hint").onclick=()=>level?.gates?peek():hint();
   function claimResult(action){
     if(resultClaimed)return;
     resultClaimed=true;
@@ -345,4 +368,21 @@
   mountSharedInterface();
   applyLocale();show("main");
   window.__COLOR_LINK_TEST__={levels,buildLevel,interfaceCopy};
+  if(practiceRequested){
+    localeSelect.disabled=true;
+    const status=document.createElement('p');status.setAttribute('role','status');$("#start").after(status);
+    const waitForEntryReady=()=>new Promise(resolve=>{let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(ok)}function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
+    const art=new Image();art.src='/games/animal-color-link/assets/firefly-lantern-v1.png';
+    void Promise.all([import('/src/game-local-practice.mjs'),import('./firefly-levels.mjs?v=20261028-firefly1'),import('./firefly-peek.mjs?v=20261028-firefly1'),import('./firefly-copy.mjs?v=20261028-firefly1'),art.decode(),waitForEntryReady()]).then(([practice,data,solver,copy,,ready])=>{
+      practiceAdapter=practice.LocalPractice;fireflyCopy=copy.FIREFLY_COPY;fireflySolver=solver.fireflyPeek;status.textContent=fireflyText(9);
+      if(!ready||window.__colorLinkPracticeAnalyticsSafe!==true)return false;
+      window.__COLOR_LINK_PRACTICE_SNAPSHOT__=()=>practiceAuthorized&&level?{stage:selected+1,size:level.size,ends:level.ends,gates:level.gates,paths,active,moves}:null;
+      return practiceAdapter.register({gameId:'animal-color-link',stageIds:Array.from({length:60},(_,i)=>i+1),enable(value){
+        practiceAuthorized=value===true&&window.__colorLinkPracticeAnalyticsSafe===true;
+        if(practiceAuthorized){if(levels.length===30)levels.push(...data.FIREFLY_LEVELS);unlocked=60;}
+        else{levels.splice(30);unlocked=1;selected=0;level=null;paths={};active=null;history=[];peekCell=null;practiceBadge?.remove();practiceBadge=null;document.querySelector('[data-wp-local-practice]')?.remove();show('main');}
+        $("#start").disabled=!practiceAuthorized;renderStages();updateMainProgress();
+      },startStage:id=>startLevel(Number(id)-1)});
+    }).then(ok=>{if(!ok&&!practiceAuthorized)$("#start").disabled=true}).catch(()=>{$("#start").disabled=true});
+  }
 })();

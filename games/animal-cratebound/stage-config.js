@@ -33,20 +33,21 @@
   window.AnimalCrateboundStageConfig = Object.freeze({
     create(bridge) {
       return {
-        count: 30,
+        get count() { return window.__CrateboundPractice?.enabled ? 60 : 30; },
         poster: "/assets/animal-cratebound/cover.webp",
         background: "/assets/lobby-block-atmosphere.svg",
         stage(index) {
           const context = bridge.context;
           const config = window.BlockTrilogyConfig || {};
           const number = index + 1;
-          const unlocked = Math.max(1, Math.min(30, Number(context?.save?.unlocked) || 1));
-          const locked = number > unlocked;
-          const cleared = Boolean(context?.save?.cleared?.[number]);
+          const practice = window.__CrateboundPractice?.enabled === true;
+          const unlocked = Math.max(1, Math.min(practice ? 60 : 30, Number(context?.save?.unlocked) || 1));
+          const locked = number > unlocked || (practice && number < 31);
+          const cleared = !practice && Boolean(context?.save?.cleared?.[number]);
           const chapterIndex = context?.chapterFor?.(number) ?? Math.floor(index / 5);
-          const chapter = context?.chapters?.[chapterIndex] || "";
+          const chapter = practice && number >= 31 ? window.WeightPlayCrateboundSortingCandidate.messages(localeKey())[0] : (context?.chapters?.[chapterIndex] || "");
           const [ready, lockedLabel, clearedLabel] = statusCopy[localeKey()] || statusCopy.en;
-          const objective = config.objective || config.pitch || "Dock every rune crate without trapping it.";
+          const objective = practice && number >= 31 ? window.WeightPlayCrateboundSortingCandidate.messages(localeKey())[1] : (config.objective || config.pitch || "Dock every rune crate without trapping it.");
           const details = [config.pitch, objective].filter(Boolean);
           return {
             id: number,
