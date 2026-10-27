@@ -2,6 +2,10 @@
 const $ = id => document.getElementById(id);
 const GAME_ID = 'animal-bounce-brawl';
 const POSTER = '/assets/interface7-redrawn/animal-bounce-brawl.webp';
+const localPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+let localPracticeAdapter=null,localPracticeAuthorized=false,localRelayLoaded=false;
+const relayActive=()=>RELAY_CHAPTER_READY||(localPracticeRequested&&localPracticeAuthorized&&localRelayLoaded);
+const localPracticeNoSave={en:'Practice only: progress and rewards are not saved.','zh-Hant':'僅供練習：不會保存進度或獎勵。','zh-Hans':'仅供练习：不会保存进度或奖励。',ja:'練習のみ：進行状況や報酬は保存されません。',ko:'연습 모드: 진행 상황과 보상은 저장되지 않습니다.',es:'Solo práctica: no se guardan el progreso ni las recompensas.','pt-BR':'Apenas treino: progresso e recompensas não são salvos.',fr:'Entraînement : la progression et les récompenses ne sont pas enregistrées.',de:'Nur Übung: Fortschritt und Belohnungen werden nicht gespeichert.',it:'Solo allenamento: progressi e ricompense non vengono salvati.',ru:'Тренировка: прогресс и награды не сохраняются.',hi:'केवल अभ्यास: प्रगति और पुरस्कार सहेजे नहीं जाते।',ar:'للتدريب فقط: لا يُحفظ التقدم أو المكافآت.'};
 let THREE, importFailure;
 const engineReady = import('/games/animal-skyspire-drop/vendor/three/three.module.min.js').then(module => { THREE = module; }).catch(error => { importFailure = error; });
 // Chapter 2 remains closed until its data, localization, save/reward contract,
@@ -9,8 +13,8 @@ const engineReady = import('/games/animal-skyspire-drop/vendor/three/three.modul
 const RELAY_CHAPTER_READY = false;
 let relayGateContact = null, relayGateHint = null, relayChapter = null, relayCandidatePromise = null;
 function prepareRelayCandidate(){
-  if(!RELAY_CHAPTER_READY)return Promise.resolve(false);
-  if(!relayCandidatePromise)relayCandidatePromise=import('./relay-chapter-candidate.mjs?v=20261027-bounce-relay-candidate3').then(module=>{relayGateContact=module.relayGateContact;relayGateHint=module.relayGateHint;relayChapter=module.RELAY_CHAPTER;return Array.isArray(relayChapter)&&relayChapter.length===30;}).catch(()=>false);
+  if(!RELAY_CHAPTER_READY&&!(localPracticeRequested&&localPracticeAuthorized))return Promise.resolve(false);
+  if(!relayCandidatePromise)relayCandidatePromise=import('./relay-chapter-candidate.mjs?v=20261027-bounce-relay-candidate4').then(module=>{relayGateContact=module.relayGateContact;relayGateHint=module.relayGateHint;relayChapter=module.RELAY_CHAPTER;return Array.isArray(relayChapter)&&relayChapter.length===30;}).catch(()=>false);
   return relayCandidatePromise;
 }
   const COPY = {
@@ -164,7 +168,7 @@ const kits = [
   {name:'SPRING',damage:13,force:9,cooldown:.64,range:2.6,symbol:'↟',color:0x71cfe5},
   {name:'PAD',damage:28,force:4,cooldown:.92,range:2.15,symbol:'▣',color:0xeab3cf}
 ];
-const CHAPTER_SIZE = RELAY_CHAPTER_READY ? 60 : 30;
+let CHAPTER_SIZE = RELAY_CHAPTER_READY ? 60 : 30;
 const CHAPTER_KEYS=['pulse','magnet','predict','shield','armor','phase','boss','charged','pulseHint','magnetHint','predictHint','shieldHint','phaseHint','boss5','boss10','boss15','boss20','boss25','boss30','chapter','complete'];
 const CHAPTER_COPY={
  en:['Pulse','Magnet','Forecast','Core shield','First armor','Phase','Boss','Core charged','A ring is coming. Dodge through it or move outside.','Magnetic pull! Dodge outward before the charge.','The lane predicts your movement. Change direction after it locks.','Take a cyan spring core, then hit to open the blue shield.','Phase 2: pulse, pull and shield. Watch each warning.','Twinwind','Bellwarden','Lodestar','Mirror Marshal','Coilgate','Clockwork Crown','Workshop Circuit','Chapter complete'],
@@ -186,7 +190,7 @@ const NAMES_EN=['Warm-up','Spring lanes','Moving bumpers','Tight corners','Twinw
 const NAMES_ZH=['熱身','彈簧通道','移動泡棉柱','狹窄轉角','雙簧隊長','初遇裝甲','脈衝初響','泡棉波道','蓄能漣漪','鈴波守衛','磁流試煉','轉角磁場','流動牽引','波流交錯','引星統領','預判追獵','交叉預判','預判波紋','掩體折返','鏡面元帥','核心護盾','護盾波流','蓄能脫離','流動盾道','簧核門將','場域工坊','裝甲預判','蓄能場域','終局前奏','時律王冠'];
 function stageName(index){const e=ENCOUNTERS[index];if(index>=30){const row=relayChapter?.[index-30];return locale==='en'&&row?.nameEn?row.nameEn:locale==='zh-Hant'&&row?.nameZh?row.nameZh:stageLabel(index);}if(e.boss)return chapterText(`boss${index+1}`);if(locale==='en')return NAMES_EN[index];if(locale==='zh-Hant')return NAMES_ZH[index];if(locale==='zh-Hans')return index<4?stageCopy.cards[index][1]:`${chapterText(e.type||'armor')} ${index+1}`;if(index<4)return stageCopy.cards[index][1];return `${chapterText(e.type||'armor')} ${index+1}`;}
 function stageLabel(index){return stageCopy.cards[0][0].replace(/1/,String(index+1));}
-function stageLesson(index){const e=ENCOUNTERS[index];if(index>=30)return relayGateHint?.(locale)||t('goal');return e.chargedShield?chapterText('shieldHint'):e.magnet?chapterText('magnetHint'):e.predict?chapterText('predictHint'):e.pulse?chapterText('pulseHint'):LESSON[Math.min(index,5)];}
+function stageLesson(index){const e=ENCOUNTERS[index];if(index>=30)return relayGateHint?.(locale,Boolean(e.chargedShield))||t('goal');return e.chargedShield?chapterText('shieldHint'):e.magnet?chapterText('magnetHint'):e.predict?chapterText('predictHint'):e.pulse?chapterText('pulseHint'):LESSON[Math.min(index,5)];}
 // Thirty authored records. Data drives the same fixed simulation at every viewport.
 const ENCOUNTERS = [
   {hp:80,speed:1.25,windup:1.15,recover:1.35,damage:9,color:0x60bca5},
@@ -267,19 +271,31 @@ const stageSummary=document.createElement('span');
 const stageGroup=window.WeightPlayScreenFrame.createGroup();stageGroup.add(stageSummary);frame.stageTopUI.add(stageGroup);
 const battleGroup=window.WeightPlayScreenFrame.createGroup();battleGroup.add($('arena-label')).add($('round-time'));frame.battleTopUI.add(battleGroup);
 const stageNavigation=frame.commonDownButton.element;stageNavigation.dataset.wpFrameStageNav='';stageNavigation.setAttribute('aria-label',stageCopy.nav);
-const practiceButton=document.createElement('button');practiceButton.type='button';practiceButton.id='practice-start';practiceButton.textContent=t('practice');practiceButton.addEventListener('click',()=>startArena(1,true));frame.commonDownButton.add(practiceButton);
+const practiceButton=document.createElement('button');practiceButton.type='button';practiceButton.id='practice-start';practiceButton.textContent=t('practice');practiceButton.addEventListener('click',()=>requestArena(1,true));frame.commonDownButton.add(practiceButton);
 const stagesTab=document.createElement('button');stagesTab.type='button';stagesTab.dataset.wpFrameAction='tab';stagesTab.dataset.wpFrameStageSlot='stages';stagesTab.textContent=stageCopy.tab;stagesTab.setAttribute('aria-current','page');stagesTab.setAttribute('aria-pressed','true');frame.commonDownButton.add(stagesTab);
 const stageConfig={gameId:GAME_ID,count:CHAPTER_SIZE,poster:POSTER,background:POSTER,stage(i){let rewardState='unknown';try{const saved=window.WeightPlayCastle?.read();if(saved)rewardState=saved.completions?.[`${GAME_ID}:stage-${i+1}`]?'collected':'not-collected';}catch{}return {id:i+1,kicker:`${stageLabel(i)} / ${CHAPTER_SIZE}${ENCOUNTERS[i].boss?' · '+chapterText('boss'):''}`,title:stageName(i),subtitle:stageLesson(i),status:progress.stars[i]?'★'.repeat(progress.stars[i]):`${i+1} / ${CHAPTER_SIZE}`,summary:stageLesson(i),details:[t('goal'),t('controls')],locked:i>=progress.unlocked,cleared:progress.stars[i]>0,poster:POSTER,rewardState};}};
 window.addEventListener('weightplay:castle-ready',()=>{if(state.screen==='stage')stageController?.refresh(selected);});
 
 // Shared analytics sees lifecycle only. No game-owned network, counters or timers.
 let roundKey=null,ended=false,outcome='complete',restarted=false;
-function observe(){try{window.WonderAnalytics?.game?.observeState(()=>({screen:state.practice&&state.screen==='battle'?null:state.screen==='result'?null:state.screen,roundKey:state.practice?null:roundKey,stageId:state.arena,started:!state.practice&&['playing','settling'].includes(state.mode),ended:!state.practice&&ended,outcome,restart:restarted,paused:state.paused,node:document.body,keyboardKeys:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' ','Shift'],activityMode:'input',idleSeconds:300}));}catch{}}
+function observe(){if(localPracticeRequested)return;try{window.WonderAnalytics?.game?.observeState(()=>({screen:state.practice&&state.screen==='battle'?null:state.screen==='result'?null:state.screen,roundKey:state.practice?null:roundKey,stageId:state.arena,started:!state.practice&&['playing','settling'].includes(state.mode),ended:!state.practice&&ended,outcome,restart:restarted,paused:state.paused,node:document.body,keyboardKeys:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s',' ','Shift'],activityMode:'input',idleSeconds:300}));}catch{}}
 window.addEventListener('weightplay:analytics-ready',observe);
 window.addEventListener('weightplay:castle-reward',event=>{const detail=event.detail;if(detail?.gameId===GAME_ID&&detail.completionId===`stage-${state.arena}`&&state.screen==='result'&&!state.practice)window.ShowResultGet?.(GAME_ID,true);});
 function clearInput(){state.keys.clear();state.held=false;joystick?.reset();document.querySelectorAll('.pressed').forEach(b=>b.classList.remove('pressed'));}
 function stopLoop(){cancelAnimationFrame(state.raf);state.raf=0;state.accumulator=0;clearInput();audio?.stop();}
 function updateProgress(){const n=progress.stars.filter(Boolean).length;$('main-progress').textContent=`${stageCopy.tab} ${progress.unlocked} / ${CHAPTER_SIZE} · ★ ${progress.stars.reduce((a,b)=>a+b,0)} / ${CHAPTER_SIZE*3}`;stageSummary.textContent=`${t('progress')} ${n} / ${CHAPTER_SIZE}`;}
+function placePracticeBadge(screen){
+  if(!localPracticeRequested)return;const badge=document.querySelector('[data-wp-local-practice]');if(!badge)return;
+  const clock=$('round-time');
+  stageGroup.remove(badge);battleGroup.remove(badge);
+  if(screen==='stage'){stageGroup.remove(stageSummary);stageSummary.removeAttribute('data-wp-frame-stat');stageSummary.removeAttribute('data-wp-frame-stat-text');stageSummary.hidden=true;$('stage-content').append(stageSummary);}
+  else if(stageSummary.parentElement!==stageGroup.element){stageSummary.hidden=false;stageGroup.add(stageSummary);}
+  if(screen==='battle'){battleGroup.remove(clock);clock.removeAttribute('data-wp-frame-stat');clock.removeAttribute('data-wp-frame-stat-text');clock.hidden=true;$('battle-content').append(clock);}
+  else if(clock.parentElement!==battleGroup.element){clock.hidden=false;battleGroup.add(clock);}
+  if(screen==='result'){document.body.append(badge);badge.style.cssText='position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:10000;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';return;}
+  badge.style.cssText='position:static;display:inline-block;background:#17243a;color:#f5c84c;padding:2px 6px;font:11px monospace;pointer-events:none;white-space:nowrap';
+  if(screen==='battle')battleGroup.add(badge);else if(screen==='stage')stageGroup.add(badge);else $('main-summary').before(badge);
+}
 function show(screen){
   stopLoop();state.screen=screen;state.paused=false;
   document.body.dataset.screen=screen==='result'?'battle':screen;
@@ -289,10 +305,11 @@ function show(screen){
   $('battle-content').inert=screen==='result';
   if(screen==='result')joystick?.setEnabled(false);
   frame.activate(screen==='result'?'battle':screen,{covered:screen==='result'});
+  placePracticeBadge(screen);
   if(screen!=='battle'&&screen!=='result'){state.generation++;joystick?.destroy();joystick=null;world?.dispose();world=null;$('hit-numbers').replaceChildren();}
   if(screen==='stage'){
     updateProgress();
-    if(!stageController)stageController=window.WeightPlayPlayUI.mountStage({page:$('stage-content'),rail:$('stage-list'),config:stageConfig,selected,onSelect:i=>{selected=i;},onStart:i=>startArena(i+1),isActive:()=>state.screen==='stage'});
+    if(!stageController)stageController=window.WeightPlayPlayUI.mountStage({page:$('stage-content'),rail:$('stage-list'),config:stageConfig,selected,onSelect:i=>{selected=i;},onStart:i=>requestArena(i+1),isActive:()=>state.screen==='stage'});
     else stageController.refresh(selected);
   }else stageController?.cancel();
   if(screen==='main')updateProgress();
@@ -300,13 +317,15 @@ function show(screen){
 }
 function notice(message,seconds=1.4){state.notice=message;state.noticeTime=seconds;}
 function actorState(x,z,hp){return {x,z,hp,max:hp,vx:0,vz:0,faceX:1,faceZ:0,cooldown:0,dodge:0,dodgeCD:0,swing:0,hitDone:false,hit:0,wallCD:0,wallCredit:0,padCD:0,boost:0,shieldBreak:0,sequence:0,finalPhase:false,pulseHits:[false,false],phase:'approach',phaseTime:2,chargeHit:false,chain:0};}
+function requestArena(arena,practice=false){if(localPracticeRequested)return localPracticeAdapter?.challenge(GAME_ID,String(arena));return startArena(arena,practice);}
 async function startArena(arena=1,practice=false){
   if(state.mode==='loading')return;
-  if(arena>30&&(!RELAY_CHAPTER_READY||!await prepareRelayCandidate()||!ENCOUNTERS[arena-1]?.relayGates))return;
-  show('battle');state.mode='loading';state.arena=arena;state.practice=practice;state.tool=0;state.elapsed=0;state.hits=0;state.attempts=0;state.damageTaken=0;state.combo=0;state.comboTimer=0;state.freeze=0;state.settle=0;state.pendingResult=null;state.coachStep=arena===1||practice?0:3;state.noticeTime=0;window.ShowResultGet?.(GAME_ID,false);
+  if(localPracticeRequested&&(!localPracticeAuthorized||!practice))return;
+  if(arena>30&&(!relayActive()||!await prepareRelayCandidate()||!ENCOUNTERS[arena-1]?.relayGates))return;
+  show('battle');state.mode='loading';state.arena=arena;state.practice=practice;state.tool=0;state.elapsed=0;state.hits=0;state.attempts=0;state.damageTaken=0;state.combo=0;state.comboTimer=0;state.freeze=0;state.settle=0;state.pendingResult=null;state.coachStep=arena===1?0:3;state.noticeTime=0;window.ShowResultGet?.(GAME_ID,false);
   $('render-error').hidden=true;$('battle-content').inert=false;
   $('hit-numbers').replaceChildren();$('tutorialPanel').getAnimations().forEach(animation=>animation.cancel());
-  $('arena-label').textContent=`${stageLabel(arena-1)} / ${CHAPTER_SIZE}`;
+  $('arena-label').textContent=localPracticeRequested?stageLabel(arena-1):`${stageLabel(arena-1)} / ${CHAPTER_SIZE}`;
   $('battle-status-copy').textContent=t('goal');$('tutorialPanel').textContent=t('coachMove');$('tutorialPanel').hidden=false;
   $('hero-tag').textContent=healthCopy.you;$('rival-tag').textContent=ENCOUNTERS[arena-1].boss?stageName(arena-1):healthCopy.rival;
   const generation=++state.generation;
@@ -399,7 +418,7 @@ function step(dt){
     a.x+=a.vx*dt;a.z+=a.vz*dt;a.shieldBreak=Math.max(0,a.shieldBreak-dt);
     a.cooldown=Math.max(0,a.cooldown-dt);a.dodge=Math.max(0,a.dodge-dt);a.dodgeCD=Math.max(0,a.dodgeCD-dt);a.hit=Math.max(0,a.hit-dt);a.wallCD=Math.max(0,a.wallCD-dt);a.wallCredit=Math.max(0,a.wallCredit-dt);a.padCD=Math.max(0,a.padCD-dt);a.boost=Math.max(0,a.boost-dt);
     const limit=e.bounds||3.9;let rebound=0;
-    const relayHit=RELAY_CHAPTER_READY&&a===r&&e.relayGates&&relayGateContact?relayGateContact({gates:e.relayGates,phase:r.phase,oldX,oldZ,newX:a.x,newZ:a.z,wall:limit}):null;
+    const relayHit=relayActive()&&a===r&&e.relayGates&&relayGateContact?relayGateContact({gates:e.relayGates,phase:r.phase,oldX,oldZ,newX:a.x,newZ:a.z,wall:limit}):null;
     if(Math.abs(a.x)>limit){a.x=clamp(a.x,-limit,limit);rebound=Math.abs(a.vx);a.vx*=-.6;}
     if(Math.abs(a.z)>4.45){a.z=clamp(a.z,-4.45,4.45);rebound=Math.max(rebound,Math.abs(a.vz));a.vz*=-.6;}
     if(relayHit){a.x=(relayHit.side==='L'?-1:1)*limit;a.z=relayHit.z;a.vx=0;a.vz=0;a.phase='recover';a.phaseTime=relayHit.recovery;a.chain=0;a.wallCredit=0;a.wallCD=.65;a.hp=Math.max(0,a.hp-relayHit.damage);if(e.chargedShield)a.shieldBreak=Math.max(a.shieldBreak,relayHit.shieldBreak);damageNumber(a,relayHit.damage,'');world.impact(a.x,.5,a.z,0x9ce9f3,8);sound('impact.soft');notice(t('opening'));}
@@ -422,12 +441,12 @@ function syncHUD(){
   $('round-time').textContent=state.practice?t('practice'):`${t('time')} ${Math.max(0,Math.ceil(75-state.elapsed))}s`;
   const ready=Math.hypot(p.x-r.x,p.z-r.z)<=kits[state.tool].range;
   const e=encounterRules(),nearWave=r.phase==='pulse'&&Array.from({length:e.pulseWaves||1},(_,i)=>{const age=1.6-r.phaseTime-i*.35;return age>=0&&Math.abs(Math.hypot(p.x-r.pulseX,p.z-r.pulseZ)-(.5+age*5.8))<1.4;}).some(Boolean);
-  const cue=nearWave?t('dodge'):p.cooldown>0?t('wait'):ready?t('ready'):t('coachHit');if($('approach-cue').textContent!==cue)$('approach-cue').textContent=cue;
+  const cue=nearWave?t('dodge'):p.cooldown>0?t('wait'):ready?t('ready'):relayActive()&&state.arena>30?t('move'):t('coachHit');if($('approach-cue').textContent!==cue)$('approach-cue').textContent=cue;
   $('strike-cooldown').style.setProperty('--cooldown',clamp(p.cooldown/kits[state.tool].cooldown,0,1));$('dodge-cooldown').style.setProperty('--cooldown',p.dodgeCD/1.4);
   $('strike-button').setAttribute('aria-label',`${t('attack')} · ${p.cooldown>0?t('wait'):ready?t('ready'):t('move')}`);
   $('combo-cue').textContent=p.boost>0?`⚡ ${chapterText('charged')}`:state.combo>=2&&state.comboTimer>0?`${state.combo} × ${t('combo')}`:'';
   const danger=['windup','charge','pulseWindup','pulse','magnet','phaseShift'].includes(r.phase);let coach=r.phase==='phaseShift'?chapterText('phaseHint'):r.phase.startsWith('pulse')?chapterText('pulseHint'):r.phase==='magnet'?chapterText('magnetHint'):danger?t('danger'):state.noticeTime>0?state.notice:r.phase==='recover'?t('opening'):state.coachStep===0?t('coachMove'):state.coachStep===1?t('coachHit'):state.coachStep<3?t('coachDodge'):stageLesson(state.arena-1);
-  if(RELAY_CHAPTER_READY&&e.relayGates&&relayGateHint&&r.phase==='approach'&&state.noticeTime<=0)coach=relayGateHint(locale);
+  if(relayActive()&&e.relayGates&&relayGateHint&&r.phase==='approach'&&state.noticeTime<=0)coach=relayGateHint(locale,Boolean(e.chargedShield));
   if($('tutorialPanel').textContent!==coach){$('tutorialPanel').textContent=coach;$('tutorialPanel').getAnimations().forEach(animation=>animation.cancel());$('tutorialPanel').animate([{opacity:.5},{opacity:1}],{duration:motionQuery.matches?80:140});}$('tutorialPanel').dataset.danger=String(danger);
 }
 function tick(now){
@@ -438,7 +457,7 @@ function tick(now){
   syncHUD();world?.render(delta);if(['playing','settling'].includes(state.mode))state.raf=requestAnimationFrame(tick);
 }
 function settle(win,timedOut=false){state.mode='settling';state.pendingResult=[win,timedOut];state.settle=motionQuery.matches?.18:.5;clearInput();joystick?.setEnabled(false);if(win)sound('enemy.defeat');}
-function save(){try{localStorage.setItem('wp-brawl-progress-v2',JSON.stringify({stars:progress.stars,unlocked:progress.unlocked}));localStorage.setItem('wp-brawl-best',String(Math.max(progress.legacy,...progress.stars.map((n,i)=>n?i+1:0))));}catch{storageOK=false;}}
+function save(){if(localPracticeRequested)return;try{localStorage.setItem('wp-brawl-progress-v2',JSON.stringify({stars:progress.stars,unlocked:progress.unlocked}));localStorage.setItem('wp-brawl-best',String(Math.max(progress.legacy,...progress.stars.map((n,i)=>n?i+1:0))));}catch{storageOK=false;}}
 function finish(win,timedOut=false){
   if(!['playing','settling'].includes(state.mode))return;state.mode='result';ended=true;outcome=win?'win':'lose';
   let stars=0;if(win&&!state.practice){stars=1+(state.player.hp>=65?1:0)+(state.elapsed<=35?1:0);progress.stars[state.arena-1]=Math.max(progress.stars[state.arena-1],stars);progress.unlocked=Math.max(progress.unlocked,Math.min(CHAPTER_SIZE,state.arena+1));save();}
@@ -447,7 +466,7 @@ function finish(win,timedOut=false){
   $('result-emblem').textContent=win?'★'.repeat(stars||1):'↻';
   $('result-copy').textContent=(win?result.winCopy:result.loseCopy).replace('{arena}',state.arena).replace('{energy}',Math.ceil(state.player.hp));
   $('result-stats').textContent=`${t('hit')} ${state.hits} · ${Math.ceil(state.elapsed)}s · ${healthCopy.you} ${Math.ceil(state.player.hp)}`;
-  $('result-tip').textContent=state.practice?t('practiceDone'):timedOut?`${t('time')} 0s · ${t('coachHit')}`:win?`${MASTERY_COPY[locale]||MASTERY_COPY.en} ${storageOK?t('saved'):t('storage')}`:stageLesson(state.arena-1);
+  $('result-tip').textContent=localPracticeRequested&&state.practice?(localPracticeNoSave[locale]||localPracticeNoSave.en):state.practice?t('practiceDone'):timedOut?`${t('time')} 0s · ${t('coachHit')}`:win?`${MASTERY_COPY[locale]||MASTERY_COPY.en} ${storageOK?t('saved'):t('storage')}`:stageLesson(state.arena-1);
   $('to-stages').textContent=t('stages');$('next').textContent=t('next');$('retry').textContent=t('replay');$('next').disabled=!win||state.arena===CHAPTER_SIZE||state.practice;
   $('result-screen').dataset.outcome=win?'success':'failure';$('result-screen').dataset.arena=state.arena;
   show('result');window.ShowResultGet?.(GAME_ID,false);world?.render(0);sound(win?'result.win':'result.lose');$('to-stages').focus();
@@ -502,7 +521,7 @@ class ArenaWorld{
     for(let i=-3;i<=3;i++){this.block(scene,[0xe9ac76,0x79c7c4,0xbd9bc8][(i+3)%3],i*2.4,3.3,-8.8,1.5,1.1,.18);this.block(scene,0x263b52,i*2.4,2.2,-8.9,.12,4.4,.12);}
     for(const x of [-7.7,7.7]){this.block(scene,0x223a56,x,1.2,-3,1.3,2.8,1.2);this.block(scene,e.color,x,2.7,-3,1.55,.22,1.45);this.block(scene,0xffe6ae,x,3,-3,.8,.35,.8);this.block(scene,0x1f354b,x,-1.9,2,1.8,.6,7);}
     (e.pads||[]).forEach(([x,z])=>{const group=new THREE.Group();group.position.set(x,.05,z);this.block(group,0x27798a,0,0,0,1.35,.12,1.35);this.block(group,0x9be7e5,0,.08,0,.9,.07,.9);this.block(group,0x285f75,0,.13,0,.14,.04,.7);this.block(group,0x285f75,0,.13,0,.7,.04,.14);scene.add(group);this.pads.push(group);});
-    if(RELAY_CHAPTER_READY&&Array.isArray(e.relayGates))for(const gate of e.relayGates){const side=gate.side==='L'?-1:1,x=side*(e.bounds||3.9);for(const z of [gate.z-.9,gate.z+.9])this.block(scene,0x21cac6,x,1,z,.3,1.8,.25);this.block(scene,0xffb83b,x,1.88,gate.z,.34,.22,2);this.block(scene,0x16c8ca,x-side*.55,.04,gate.z,1.1,.04,.24);this.block(scene,0x18566d,x-side*.05,.95,gate.z,.12,1.1,1.35);this.relayIndicators.push(this.block(scene,0xffb83b,x-side*.14,.95,gate.z,.14,.24,1.2));}
+    if(relayActive()&&Array.isArray(e.relayGates))for(const gate of e.relayGates){const side=gate.side==='L'?-1:1,x=side*(e.bounds||3.9);for(const z of [gate.z-.9,gate.z+.9])this.block(scene,0x21cac6,x,1,z,.3,1.8,.25);this.block(scene,0xffb83b,x,1.88,gate.z,.34,.22,2);this.block(scene,0x16c8ca,x-side*.55,.04,gate.z,1.1,.04,.24);this.block(scene,0x18566d,x-side*.05,.95,gate.z,.12,1.1,1.35);this.relayIndicators.push(this.block(scene,0xffb83b,x-side*.14,.95,gate.z,.14,.24,1.2));}
     [...(e.bumpers||[]),...(e.cover||[])].forEach(([x,z],i)=>{const group=new THREE.Group();group.position.set(x,0,z);group.userData={radius:e.cover?.length ? .8 : .65,baseX:x,baseZ:z,moving:!!e.bumpers,index:i};this.block(group,0x35485f,0,.15,0,1.5,.3,1.5);this.block(group,e.color,0,.8,0,1.2,1.2,1.2);this.block(group,0xe5dac8,0,1.43,0,1.3,.12,1.3);scene.add(group);this.obstacles.push(group);});
     if(e.bounds){for(const x of [-4.2,4.2])this.block(scene,0xe8ba80,x,.6,0,.4,1.2,9.5);}
   }
@@ -519,6 +538,7 @@ class ArenaWorld{
     return {root,body,left,right,glove};
   }
   clock(){
+    if(relayActive()&&this.encounter.boss>=35)return this.relayBoss();
     const root=new THREE.Group(),body=new THREE.Group();root.add(body);const b=(c,x,y,z,w,h,d)=>this.block(body,c,x,y,z,w,h,d);
     b(0xc98f42,0,1,0,1.1,1.25,.68);b(0xf3ca72,0,1.04,.1,1.17,1.1,.65);b(0xffedc8,0,1.08,.46,.91,.92,.08);
     for(const x of [-.23,.23]){b(0x3a4652,x,1.25,.515,.15,.2,.025);b(0xffffff,x-.02,1.3,.532,.045,.06,.01);}
@@ -534,6 +554,26 @@ class ArenaWorld{
     if(boss===20)b(0x32485e,0,1.35,.57,1.35,.25,.16);
     if(boss===25)for(const x of [-.8,.8])b(0x87e6dc,x,1.1,0,.15,2.3,.9);
     if(boss===30){this.crown=b(0xecb75d,0,2.12,0,1.4,.25,.7);this.phaseMat=this.mat(0xff9b88);for(const x of [-.55,0,.55])b(0xa7e8ec,x,2.43,0,.24,x===0?.7:.45,.35);}
+    return {root,body,left,right};
+  }
+  relayBoss(){
+    const boss=this.encounter.boss,root=new THREE.Group(),body=new THREE.Group();root.add(body);const b=(c,x,y,z,w,h,d)=>this.block(body,c,x,y,z,w,h,d);
+    // Distinct proportions and silhouettes, with a readable face on both sides
+    // because a rival naturally turns away from the fixed camera during play.
+    const shapes={35:[1.65,1.05,0xe7a450,0xf7d38a],40:[1.1,1.5,0x4e96be,0xd0edf0],45:[1.35,1.3,0x376aa5,0xc7e4e7],50:[1.15,1.55,0x695ba6,0xe0d8f5],55:[1.6,1.2,0x2f9997,0xc7eee0],60:[1.45,1.6,0xba8e3c,0xffe3a2]};
+    const [width,height,base,face]=shapes[boss]||shapes[35],middle=.75+height/2,depth=.85;
+    b(base,0,middle,0,width,height,depth);b(0x2c465d,0,.35,0,width*.8,.35,.65);
+    for(const z of [-1,1]){b(face,0,middle,z*(depth/2+.045),width*.76,height*.62,.09);for(const x of [-.25,.25])b(0x243b4d,x,middle+.08,z*(depth/2+.105),.14,.22,.06);b(0x477080,0,middle-.25,z*(depth/2+.11),.32,.08,.06);}
+    for(const x of [-.25,.25])b(0x243b4d,x,.79+height,.22,.14,.08,.17);
+    for(const x of [-.42,.42])b(base,x,.14,.05,.38,.28,.55);
+    const left=new THREE.Group(),right=new THREE.Group();left.position.set(-width/2-.25,middle-.15,.1);right.position.set(width/2+.25,middle-.15,.1);body.add(left,right);
+    for(const arm of [left,right])this.block(arm,base,0,0,0,.45,.45,.52);
+    if(boss===35){for(const arm of [left,right]){this.block(arm,0x2abbb6,0,0,.18,.6,.7,.6);this.block(arm,0xf17a45,0,0,.48,.84,.85,.45);}b(0xf4b45d,0,middle+height*.57,0,width*.7,.25,.7);}
+    if(boss===40){for(const x of [-.7,.7]){b(0x327cae,x,middle+height*.55,0,.22,.65,.3);b(0xe9b25e,x,middle+height*.88,0,.65,.48,.56);}b(0xe1c170,0,.65,0,1.5,.22,1);}
+    if(boss===45){for(const x of [-.9,.9]){b(0x3265a8,x,middle+height*.45,0,.48,1.15,.6);b(0xf16858,x,middle+height*.9,0,.5,.3,.64);}b(0x2cc4c6,0,.55,0,1.75,.22,1);}
+    if(boss===50){for(const x of [-1,1]){const wing=b(0x57c8d5,x,middle+.2,0,.6,1,.5);wing.rotation.z=x<0?-.35:.35;}const crest=b(0xffc348,0,middle+height*.65,0,.65,.65,.6);crest.rotation.z=Math.PI/4;b(0x30416e,0,.55,0,1.2,.25,1);}
+    if(boss===55){b(0xeeb343,-1.25,middle,0,.35,1.9,1.05);b(0x2cc3b8,-1.25,middle,-.58,.55,1.5,.18);b(0xf5d779,-1.25,middle+.88,0,.7,.2,1.1);b(0x235c77,0,.55,0,1.9,.25,1);}
+    if(boss===60){this.crown=b(0xf1b43e,0,middle+height*.58,0,1.75,.3,.9);this.phaseMat=this.mat(0xff9b88);for(const x of [-.65,0,.65])b(0x35cac1,x,middle+height*.8,0,.35,x===0?.8:.55,.5);for(const x of [-1,1])b(0xeab74c,x,middle+.4,0,.55,.4,.7);}
     return {root,body,left,right};
   }
   setTool(color){if(this.hero)this.hero.glove.material=this.mat(color);}
@@ -562,7 +602,7 @@ class ArenaWorld{
     this.pulseRings.forEach((mesh,i)=>{const warning=r.phase==='pulseWindup',age=1.6-r.phaseTime-i*.35;mesh.visible=state.mode==='playing'&&i<(e.pulseWaves||1)&&(warning||r.phase==='pulse'&&age>=0);const radius=warning?5:.5+Math.max(0,age)*5.8;mesh.scale.setScalar(radius/.69);mesh.position.set(warning?r.x:r.pulseX,.1,warning?r.z:r.pulseZ);mesh.material.opacity=warning?.24:.9;});
     this.pads.forEach((pad,i)=>{const point=this.project(pad.position.x,.35,pad.position.z),tag=this.padTags[i];tag.style.left=`${point.x}px`;tag.style.top=`${point.y}px`;});
     this.renderer.render(this.scene,this.camera);
-    const tags=[[state.player,'hero-tag'],[state.rival,'rival-tag']].map(([actor,id])=>({id,...this.project(actor.x,2.45,actor.z)}));
+    const tags=[[state.player,'hero-tag'],[state.rival,'rival-tag']].map(([actor,id])=>({id,...this.project(actor.x,id==='rival-tag'&&this.encounter.boss>=35?4.4:2.45,actor.z)}));
     // Close contact must never turn the two actor names into one unreadable tag.
     if(Math.abs(tags[0].x-tags[1].x)<68&&Math.abs(tags[0].y-tags[1].y)<27)tags[1].y=Math.min(tags[1].y,tags[0].y-28);
     for(const tag of tags){$(tag.id).style.left=`${clamp(tag.x,25,this.width-25)}px`;$(tag.id).style.top=`${clamp(tag.y,24,this.height-12)}px`;}
@@ -596,13 +636,25 @@ $('start-game').textContent=t('start');$('main-summary').textContent=t('goal');$
 document.querySelectorAll('[data-key^="Arrow"]').forEach(button=>button.setAttribute('aria-label',`${t('move')} ${button.textContent}`));
 $('start-game').addEventListener('click',()=>show('stage'));$('stage-back').addEventListener('click',()=>show('main'));$('battle-back').addEventListener('click',()=>{if(['result','loading','error'].includes(state.mode)){state.mode='idle';show('stage');}else pause();});
 $('battle-leave-continue').addEventListener('click',continueBattle);$('battle-leave-confirm').addEventListener('click',()=>{state.mode='idle';show('stage');});
-$('to-stages').addEventListener('click',()=>{state.mode='idle';show('stage');});$('next').addEventListener('click',()=>{if(!$('next').disabled)startArena(state.arena+1);});$('retry').addEventListener('click',()=>{restarted=true;startArena(state.arena,state.practice);});
-$('render-retry').addEventListener('click',()=>{if(importFailure){location.reload();return;}state.mode='idle';startArena(state.arena,state.practice);});$('render-back').addEventListener('click',()=>{state.mode='idle';show('stage');});
+$('to-stages').addEventListener('click',()=>{state.mode='idle';show('stage');});$('next').addEventListener('click',()=>{if(!$('next').disabled)requestArena(state.arena+1);});$('retry').addEventListener('click',()=>{restarted=true;requestArena(state.arena,state.practice);});
+$('render-retry').addEventListener('click',()=>{if(importFailure){location.reload();return;}state.mode='idle';requestArena(state.arena,state.practice);});$('render-back').addEventListener('click',()=>{state.mode='idle';show('stage');});
 document.addEventListener('keydown',event=>{const dialog=!$('battle-leave-dialog').hidden?$('battle-leave-dialog'):!$('result-screen').hidden?$('result-screen'):null;if(!dialog)return;if(event.key==='Escape'&&state.paused){event.preventDefault();continueBattle();return;}if(event.key!=='Tab')return;const buttons=[...dialog.querySelectorAll('button:not(:disabled)')],first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}else if(!dialog.contains(document.activeElement)){event.preventDefault();first.focus();}});
 document.addEventListener('visibilitychange',()=>{clearInput();if(document.hidden)pause();});window.addEventListener('blur',clearInput);
 // Shared settings remain the one settings owner; freeze simulation while open.
 window.addEventListener('weightplay:interaction-state',()=>{clearInput();const open=!!document.querySelector('#battle-screen .wp-frame-popover:not([hidden])');if(open&&['playing','settling'].includes(state.mode)&&!state.paused){state.paused=true;stopLoop();joystick?.setEnabled(false);}else if(!open&&state.paused&&$('battle-leave-dialog').hidden){state.paused=false;joystick?.setEnabled(state.mode==='playing');resumeLoop();}observe();});
-$('localeSelect').value=locale;$('localeSelect').addEventListener('change',()=>{const segments={'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'};const value=$('localeSelect').value;try{localStorage.setItem('weightPlayLocale',value);}catch{}location.href=`/${segments[value]||value}/games/${GAME_ID}/`;});
+$('localeSelect').value=locale;$('localeSelect').addEventListener('change',()=>{const segments={'zh-Hant':'zh-tw','zh-Hans':'zh-cn','pt-BR':'pt-br'};const value=$('localeSelect').value;if(!localPracticeRequested)try{localStorage.setItem('weightPlayLocale',value);}catch{}location.href=`/${segments[value]||value}/games/${GAME_ID}/`;});
 window.addEventListener('pagehide',()=>{state.generation++;stopLoop();joystick?.destroy();joystick=null;world?.dispose();world=null;});
 window.addEventListener('pageshow',event=>{if(event.persisted){state.mode='idle';show('main');}});
 updateProgress();show('main');
+
+function waitForPracticeEntryReady(){return new Promise(resolve=>{let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);function finish(value){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(value);}function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check();});}
+if(localPracticeRequested)void waitForPracticeEntryReady().then(async ready=>{
+  if(!ready)return;const {LocalPractice}=await import('../../src/game-local-practice.mjs');localPracticeAdapter=LocalPractice;
+  if(!await LocalPractice.ready)return;localPracticeAuthorized=true;
+  if(!await prepareRelayCandidate()){localPracticeAuthorized=false;return;}
+  // Stage 31 is the only new playable slice registered for this development
+  // entry. All changes here are in memory and never open the normal chapter.
+  const priorUnlocked=progress.unlocked,priorSelected=selected;
+  ENCOUNTERS.push(relayChapter[0].encounter);localRelayLoaded=true;CHAPTER_SIZE=31;stageConfig.count=31;progress.stars.push(0);progress.unlocked=31;selected=30;updateProgress();
+  await LocalPractice.register({gameId:GAME_ID,stageIds:Array.from({length:31},(_,i)=>i+1),enable(enabled){localPracticeAuthorized=enabled===true;if(enabled)placePracticeBadge(state.screen);else{localRelayLoaded=false;CHAPTER_SIZE=30;stageConfig.count=30;progress.unlocked=priorUnlocked;selected=priorSelected;stageController?.refresh(selected);updateProgress();}},async startStage(id){if(localPracticeAuthorized)await startArena(Number(id),true);}});
+}).catch(()=>{localPracticeAuthorized=false;});

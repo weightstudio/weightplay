@@ -43,7 +43,12 @@
     stageHeader.replaceChildren(stageBack, stageTitle);
 
     const battleBack = battleHeader.querySelector('[data-wp-return="battle"]');
-    const battleStats = [$("chapter"), $("stageName"), $("moves")];
+    // Keep chapter and waterway together in one shared stat slot so neither
+    // loses its number when the compact header has only two available slots.
+    const stageIdentity = document.createElement("span");
+    stageIdentity.dataset.bambooStageIdentity = "";
+    stageIdentity.append($("chapter"), $("stageName"));
+    const battleStats = [stageIdentity, $("moves")];
     const battleTitle = document.createElement("strong");
     battleTitle.hidden = true;
     battleTitle.dataset.wpFrameTitle = "";

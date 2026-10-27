@@ -380,7 +380,8 @@
     pendingWaveMs: null,
     resultOpen: false,
     manageFromResult: false,
-    chapterSignal: null
+    chapterSignal: null,
+    chapterFault: false
   };
 
   // Effects own presentation only. Cancellation never changes rewards or combat.
@@ -562,7 +563,7 @@
       closeModal();
     }
     syncFrameCoverage();
-    syncChapterOrders();
+    if (!syncChapterOrders() && !main && battle.chapterSignal) showChapterFault();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -584,6 +585,7 @@
 }
 
   function resumeCombat() {
+    if (battle.chapterFault) return;
     if (!$('#coach').classList.contains('is-hidden')) return;
     if (!battle.pausedAt) return;
     const pausedAt = battle.pausedAt, elapsed = Date.now() - pausedAt;
@@ -640,11 +642,30 @@
     return { key: `${side}-${data.id}-${index}`, id: data.id, data, side, maxHp: stats.hp, hp: stats.hp, atk: stats.atk, speed: stats.speed, cooldown: Math.random() * .45, attacks: 0, status: {} };
   }
 
-  function enemyPack() {
+  function chapterTwoReady() {
+    try {
+      const candidate = window.PEACH_OATH_CHAPTER2_CANDIDATE;
+      const names = window.PEACH_OATH_CHAPTER2_NAMES;
+      const dock = window.PEACH_OATH_ORDER_DOCK;
+      if (candidate?.ready !== true || typeof candidate.chapterTwoWave !== 'function' || typeof candidate.chapterTwoDesign !== 'function' || typeof candidate.createSignalCombat !== 'function' || typeof candidate.chapterTwoActor !== 'function' || typeof names?.chapterActorName !== 'function' || typeof dock?.createOrderDock !== 'function') return false;
+      return ['warden','medic','drummer','sapper','stone-bastion','red-lantern','thunder-signal','twin-seal','crossroads','oathmaster'].every(id => {
+        const label = names.chapterActorName(id, activeLocale());
+        return typeof label === 'string' && !!label.trim() && label !== id;
+      });
+    } catch { return false; }
+  }
+
+  function enemyPack(allowChapter = true) {
+    battle.chapterPackUsed = false;
     const candidate = window.PEACH_OATH_CHAPTER2_CANDIDATE;
-    if (candidate?.ready === true) {
-      const pack = candidate.chapterTwoWave(state.stage, state.wave, C, makeUnit);
-      if (pack) return pack;
+    if (allowChapter && chapterTwoReady()) {
+      try {
+        const pack = candidate.chapterTwoWave(state.stage, state.wave, C, makeUnit);
+        if (Array.isArray(pack) && pack.length && pack.every(unit => unit && typeof unit.key === 'string' && unit.data)) {
+          battle.chapterPackUsed = true;
+          return pack;
+        }
+      } catch { /* Preserve the existing campaign if the gated data fails. */ }
     }
     const boss = state.wave === C.bossEvery;
     if (boss) return [makeUnit(C.enemies[4], "enemy", 0)];
@@ -670,10 +691,19 @@
     if (state.wave > 1) battle.heroes.forEach(unit => { unit.attacks = charge.get(unit.id) || 0; });
     battle.enemies = enemyPack();
     const candidate = window.PEACH_OATH_CHAPTER2_CANDIDATE;
-    if (candidate?.ready === true && candidate.chapterTwoDesign(state.stage)) {
-      if (state.wave === 1 || !battle.chapterSignal) battle.chapterSignal = candidate.createSignalCombat(state.stage, battle.heroes, battle.enemies, (role, index, extra) => candidate.chapterTwoActor(role, C, makeUnit, index, extra));
-      else battle.chapterSignal.nextWave(battle.heroes, battle.enemies);
-    } else battle.chapterSignal = null;
+    try {
+      if (battle.chapterPackUsed && chapterTwoReady() && candidate.chapterTwoDesign(state.stage)) {
+        if (state.wave === 1 || !battle.chapterSignal) battle.chapterSignal = candidate.createSignalCombat(state.stage, battle.heroes, battle.enemies, (role, index, extra) => candidate.chapterTwoActor(role, C, makeUnit, index, extra));
+        else battle.chapterSignal.nextWave(battle.heroes, battle.enemies);
+        if (!battle.chapterSignal || ['tick','order','snapshot','nextWave','attack'].some(key => typeof battle.chapterSignal[key] !== 'function')) throw Error('INVALID_CHAPTER_SIGNAL');
+      } else {
+        if (battle.chapterPackUsed) battle.enemies = enemyPack(false);
+        battle.chapterSignal = null;
+      }
+    } catch {
+      battle.chapterSignal = null;
+      battle.enemies = enemyPack(false);
+    }
     (__wpNotifyMeasurement(), $("#resultPanel").classList.add("is-hidden"));
     syncFrameCoverage();
     if (returningFromResult) $("#autoBtn").focus({preventScroll: true});
@@ -681,7 +711,12 @@
     renderCampaignMilestone();
     renderUnits();
     renderCommands();
-    syncChapterOrders();
+    if (!syncChapterOrders() && battle.chapterSignal) {
+      battle.chapterSignal = null;
+      battle.enemies = enemyPack(false);
+      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove());
+      renderUnits();
+    }
     motion($('#enemyLane'), [{opacity:0,transform:'translateY(-18px)'},{opacity:1,transform:'translateY(0)'}], 320);
     motion($('#heroLane'), [{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}], 320);
     updateHud();
@@ -732,13 +767,14 @@
 
   let chapterOrderDock = null;
   function chapterOrdersAllowed() {
-    return !!battle.chapterSignal && $('#app').dataset.scene === 'battle' && !document.hidden && battle.running && !battle.pausedAt && !battle.resultOpen && $('#management').classList.contains('is-hidden') && $('#modalLayer').classList.contains('is-hidden') && $('#coach').classList.contains('is-hidden');
+    return !!battle.chapterSignal && !battle.chapterFault && $('#app').dataset.scene === 'battle' && !document.hidden && battle.running && !battle.pausedAt && !battle.resultOpen && $('#management').classList.contains('is-hidden') && $('#modalLayer').classList.contains('is-hidden') && $('#coach').classList.contains('is-hidden');
   }
   function syncChapterOrders() {
-    const visible = !!battle.chapterSignal && window.PEACH_OATH_CHAPTER2_CANDIDATE?.ready === true;
+    try {
+    const visible = !!battle.chapterSignal && chapterTwoReady();
     if (!chapterOrderDock && visible && window.PEACH_OATH_ORDER_DOCK) {
       const stateForDock = () => ({
-        locale: activeLocale(), visible: !!battle.chapterSignal && window.PEACH_OATH_CHAPTER2_CANDIDATE?.ready === true && $('#app').dataset.scene === 'battle' && !battle.resultOpen,
+        locale: activeLocale(), visible: !!battle.chapterSignal && chapterTwoReady() && $('#app').dataset.scene === 'battle' && !battle.resultOpen,
         active: chapterOrdersAllowed(), seals: battle.chapterSignal?.snapshot().seals ?? 0, signals: battle.chapterSignal?.snapshot() ?? null,
         enemies: battle.enemies.map((u, i) => ({key:u.key, hp:u.hp, role:u.data.chapterRole, name:`${battleUnitName(u)} (${i + 1})`})),
         heroes: battle.heroes.map((u, i) => ({key:u.key, hp:u.hp, name:`${localizedValue(u.data.name)} (${i + 1})`}))
@@ -746,9 +782,61 @@
       chapterOrderDock = window.PEACH_OATH_ORDER_DOCK.createOrderDock(document, $('#arena'), 'peach-oath-orders', stateForDock, (kind, key) => {
         if (!chapterOrdersAllowed()) return {ok:false, reason:'paused'};
         return battle.chapterSignal.order(kind, key);
-      });
+      }, showChapterFault);
+      if (!chapterOrderDock || typeof chapterOrderDock.sync !== 'function') throw Error('INVALID_CHAPTER_ORDER_DOCK');
     }
     chapterOrderDock?.sync();
+    return true;
+    } catch { chapterOrderDock = null; return false; }
+  }
+
+  const chapterFaultCopy = {
+    en:['Orders unavailable','Battle is paused. An order may already have used a Seal; it will not be repeated automatically. Check the remaining Seals after retrying.','Retry controls','Return to main'],
+    'zh-Hant':['指令暫時無法使用','戰鬥已暫停。剛才的指令可能已使用誓印，不會自動重送。重試後請確認剩餘誓印。','重試指令','返回主畫面'],
+    'zh-Hans':['指令暂时无法使用','战斗已暂停。刚才的指令可能已使用誓印，不会自动重送。重试后请确认剩余誓印。','重试指令','返回主界面'],
+    ja:['指令を使用できません','戦闘を一時停止しました。直前の指令で誓印を使った可能性があります。自動で再実行されません。再試行後に残数を確認してください。','指令を再試行','メインに戻る'],
+    ko:['명령을 사용할 수 없음','전투가 일시 정지되었습니다. 방금 명령이 인장을 사용했을 수 있으며 자동으로 재시도되지 않습니다. 다시 시도한 후 남은 인장을 확인하세요.','명령 다시 시도','메인으로 돌아가기'],
+    es:['Órdenes no disponibles','La batalla está en pausa. Una orden puede haber usado un sello; no se repetirá automáticamente. Comprueba los sellos restantes al reintentar.','Reintentar controles','Volver al inicio'],
+    'pt-BR':['Ordens indisponíveis','A batalha está pausada. Uma ordem pode ter usado um selo e não será repetida automaticamente. Confira os selos restantes após tentar novamente.','Tentar controles novamente','Voltar ao início'],
+    fr:['Ordres indisponibles','Le combat est en pause. Un ordre a peut-être utilisé un sceau ; il ne sera pas répété automatiquement. Vérifiez les sceaux restants après réessai.','Réessayer les commandes','Retour à l’accueil'],
+    de:['Befehle nicht verfügbar','Der Kampf ist pausiert. Ein Befehl könnte ein Siegel verbraucht haben und wird nicht automatisch wiederholt. Prüfe nach dem erneuten Versuch die übrigen Siegel.','Steuerung erneut versuchen','Zum Hauptmenü'],
+    it:['Ordini non disponibili','La battaglia è in pausa. Un ordine potrebbe aver usato un sigillo e non verrà ripetuto automaticamente. Controlla i sigilli rimasti dopo il nuovo tentativo.','Riprova i comandi','Torna al menu'],
+    ru:['Приказы недоступны','Бой приостановлен. Приказ мог потратить печать; он не будет повторён автоматически. После повтора проверьте оставшиеся печати.','Повторить настройку','Вернуться в меню'],
+    hi:['आदेश उपलब्ध नहीं हैं','युद्ध रुका है। किसी आदेश में मुहर खर्च हुई हो सकती है; उसे अपने आप दोहराया नहीं जाएगा। फिर कोशिश करने के बाद बची मुहरें जाँचें।','नियंत्रण फिर आज़माएँ','मुख्य पृष्ठ पर लौटें'],
+    ar:['الأوامر غير متاحة','المعركة متوقفة مؤقتًا. ربما استُخدم ختم للأمر، ولن يتكرر تلقائيًا. تحقق من الأختام المتبقية بعد إعادة المحاولة.','إعادة محاولة الأوامر','العودة للرئيسية']
+  };
+  let chapterFaultDialog = null;
+  function showChapterFault() {
+    if (!battle.chapterSignal || battle.chapterFault) return;
+    battle.chapterFault = true;
+    suspendCombat();
+    const copy = chapterFaultCopy[activeLocale()] || chapterFaultCopy.en;
+    const dialog = document.createElement('section'), title = document.createElement('h2'), message = document.createElement('p'), retry = document.createElement('button'), leave = document.createElement('button');
+    dialog.className = 'oath-recovery'; dialog.setAttribute('role','alertdialog'); dialog.setAttribute('aria-modal','true'); dialog.setAttribute('aria-labelledby','oath-recovery-title'); dialog.setAttribute('aria-describedby','oath-recovery-message');
+    title.id='oath-recovery-title'; title.textContent=copy[0]; message.id='oath-recovery-message'; message.textContent=copy[1]; retry.type=leave.type='button'; retry.textContent=copy[2]; leave.textContent=copy[3];
+    retry.addEventListener('click', () => {
+      if (!battle.chapterFault) return;
+      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove()); chapterOrderDock=null;
+      if (!syncChapterOrders()) return;
+      dialog.remove(); chapterFaultDialog=null; battle.chapterFault=false;
+      resumeCombat();
+      if (!syncChapterOrders()) { showChapterFault(); return; }
+      $('#arena .oath-orders select')?.focus({preventScroll:true});
+    });
+    leave.addEventListener('click', () => {
+      if (!battle.chapterFault) return;
+      dialog.remove(); chapterFaultDialog=null; battle.chapterFault=false;
+      $('#arena').querySelectorAll('.oath-orders').forEach(node => node.remove()); chapterOrderDock=null;
+      showScene('main');
+      $('#startBtn')?.focus({preventScroll:true});
+    });
+    dialog.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      event.preventDefault();
+      const next = document.activeElement === retry ? leave : retry;
+      next.focus({preventScroll:true});
+    });
+    dialog.append(title,message,retry,leave); $('#battleScene').append(dialog); chapterFaultDialog=dialog; retry.focus({preventScroll:true});
   }
 
   function renderCommands() {
@@ -788,7 +876,7 @@
   }
 
   function battleTick() {
-    syncChapterOrders();
+    if (!syncChapterOrders() && battle.chapterSignal) { showChapterFault(); return; }
     if ($("#app").dataset.scene !== "battle" || document.hidden || battle.pausedAt || !battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
     const dt = .26 * battle.speed;
     if (battle.chapterSignal) {

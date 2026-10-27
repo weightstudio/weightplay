@@ -1,7 +1,7 @@
 // Chapter 2 authored source candidate. Not imported by the v22 runtime: art,
 // localized cues, storage/reward integration and natural play remain gated.
 const rows = [
-  [31,'gate-lesson',[['L',0]],{}],
+  [31,'gate-lesson',[['L',0]],{chargedShield:true,pads:[[2,1.5]]}],
   [32,'crossing-choice',[['L',-2],['R',2]],{pads:[[0,0]]}],
   [33,'moving-approach',[['R',1]],{bumpers:[[0,0]]}],
   [34,'covered-corner',[['L',2]],{cover:[[-1,-2],[1,2]]}],
@@ -51,7 +51,8 @@ export const RELAY_CHAPTER=deepFreeze(rows.map(([stage,name,gates,rules],index)=
 }));
 
 const gateHints={en:'Lure the rival’s charge into the glowing gate.', 'zh-Hant':'引誘對手衝撞發光的閘門。','zh-Hans':'引诱对手冲撞发光的闸门。',ja:'相手の突進を光るゲートに誘導しよう。',ko:'상대의 돌진을 빛나는 문으로 유도하세요.',es:'Atrae la carga rival hacia la puerta brillante.','pt-BR':'Atraia a investida rival para o portão brilhante.',fr:'Attirez la charge adverse vers la porte lumineuse.',de:'Locke den Ansturm des Gegners ins leuchtende Tor.',it:'Attira la carica rivale verso il varco luminoso.',ru:'Заманите рывок соперника в светящиеся ворота.',hi:'प्रतिद्वंद्वी की टक्कर चमकते द्वार की ओर मोड़ें।',ar:'استدرج اندفاع الخصم إلى البوابة المضيئة.'};
-export const relayGateHint=locale=>gateHints[locale]||gateHints.en;
+const shieldHints={en:'Lure the charge into the gate, or use a spring core to open the shield.', 'zh-Hant':'引誘衝撞閘門，或用彈簧核心打開護盾。','zh-Hans':'引诱冲撞闸门，或用弹簧核心打开护盾。',ja:'突進をゲートに誘うか、スプリングコアで盾を開こう。',ko:'돌진을 문으로 유도하거나 스프링 코어로 방패를 여세요.',es:'Atrae la carga a la puerta o usa un núcleo de muelle para abrir el escudo.','pt-BR':'Atraia a investida ao portão ou use um núcleo de mola para abrir o escudo.',fr:'Attirez la charge vers la porte ou ouvrez le bouclier avec un noyau à ressort.',de:'Locke den Ansturm ins Tor oder öffne den Schild mit einem Federkern.',it:'Attira la carica nel varco o apri lo scudo con un nucleo a molla.',ru:'Заманите рывок в ворота или откройте щит пружинным ядром.',hi:'टक्कर द्वार पर लाएँ या स्प्रिंग कोर से ढाल खोलें।',ar:'استدرج الاندفاع إلى البوابة أو افتح الدرع بنواة النابض.'};
+export const relayGateHint=(locale,shield=false)=>{const hints=shield?shieldHints:gateHints;return hints[locale]||hints.en};
 
 // Detect the first actual charged wall crossing; runtime must apply the result
 // before its ordinary wall bounce, and mark the charge as consumed itself.

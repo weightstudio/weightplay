@@ -25,7 +25,7 @@ const SIGNAL_COPY = Object.freeze({
 
 // State and language are passed afresh on every sync. The two selects and
 // buttons are created once, so ordinary timer updates do not steal focus.
-function createOrderDock(document, mount, id, getState, order) {
+function createOrderDock(document, mount, id, getState, order, onFault=()=>{}) {
   if (!/^[a-z][a-z0-9-]*$/.test(id)) throw Error('INVALID_ID');
   const node=(tag,cls)=>{const x=document.createElement(tag);if(cls)x.className=cls;return x};
   const root=node('section','oath-orders'),title=node('h3'),remaining=node('p'),status=node('p'),signals=node('p');
@@ -58,9 +58,11 @@ function createOrderDock(document, mount, id, getState, order) {
     if(!s.visible)status.textContent='';
   }
   function perform(kind,select){
-    const s=getState(),t=COPY[s.locale]||COPY.en;if(!s.visible)return;
-    const result=order(kind,select.value);sync();
-    status.textContent=result.ok?t[7]:({ 'invalid-target':t[8],'not-ready':t[9],'no-seals':t[10],paused:t[11] }[result.reason]||t[8]);
+    try {
+      const s=getState(),t=COPY[s.locale]||COPY.en;if(!s.visible)return;
+      const result=order(kind,select.value);sync();
+      status.textContent=result.ok?t[7]:({ 'invalid-target':t[8],'not-ready':t[9],'no-seals':t[10],paused:t[11] }[result.reason]||t[8]);
+    } catch { onFault(); }
   }
   breakButton.addEventListener('click',()=>perform('break',interrupt));guardButton.addEventListener('click',()=>perform('guard',protect));
   sync();return Object.freeze({root,sync});

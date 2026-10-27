@@ -266,6 +266,7 @@
       const pair=run.aqueduct?.pairs.find(p=>p.a===index||p.b===index);
       if (pair) { pipe.dataset.aqueductPair=String(run.aqueduct.pairs.indexOf(pair)+1); pipe.dataset.aqueductMode=pair.mode; } else { delete pipe.dataset.aqueductPair; delete pipe.dataset.aqueductMode; }
       pipe.classList.toggle('aqueduct-receiver',Boolean(tile.receiver));pipe.classList.toggle('aqueduct-blocked',tile.shape==='blocked');
+      let receiverMark=pipe.querySelector('.aqueduct-end-mark');if(tile.receiver&&!receiverMark){receiverMark=document.createElement('span');receiverMark.className='aqueduct-end-mark';receiverMark.setAttribute('aria-hidden','true');pipe.append(receiverMark);}if(tile.receiver)receiverMark.textContent=isWet?'✓':'•';else receiverMark?.remove();
       let linkBadge=pipe.querySelector('.aqueduct-link-badge');if(pair&&!linkBadge){linkBadge=document.createElement('span');linkBadge.className='aqueduct-link-badge';linkBadge.setAttribute('aria-hidden','true');pipe.append(linkBadge);}if(pair)linkBadge.textContent=`${run.aqueduct.pairs.indexOf(pair)+1}${pair.mode==='S'?'↻':'↔'}`;else linkBadge?.remove();
       if (tile.target) pipe.classList.add("target");
       pipe.dataset.shape = tile.shape;
@@ -556,7 +557,7 @@
     event.preventDefault();
     event.stopImmediatePropagation();
   }, true);
-  $("start").onclick = () => show("stage");
+  $("start").onclick = () => { if (practiceRequested && !practiceActive) return; show("stage"); };
   document.querySelector("#stage [data-back]").onclick = () => show("main");
   document.addEventListener("click", event => {
     const control = event.target.closest?.('#battle [data-wp-return="battle"]');
@@ -640,13 +641,24 @@
     renderStages();
   }}
   if(practiceRequested){
-    $('start').disabled=true;
-    import('/src/game-local-practice.mjs').then(({LocalPractice})=>{
+    // The shared loader needs the real Main scene and enabled Start to settle.
+    // Start itself remains inert until the local practice session is authorized.
+    installAqueduct();
+    mountFrame();
+    const waitForEntryReady=()=>new Promise(resolve=>{
+      let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);
+      function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(ok);}
+      function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}
+      observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check();
+    });
+    waitForEntryReady().then(ready=>ready?import('/src/game-local-practice.mjs'):null).then(module=>{
+      if(!module)return false;
+      const {LocalPractice}=module;
       practiceAdapter=LocalPractice;
       return LocalPractice.register({gameId:'animal-bamboo-pipes',stageIds:Array.from({length:60},(_,i)=>i+1),
-        enable(enabled){practiceActive=enabled;if(enabled){installAqueduct();save.unlocked=60;$('start').disabled=false;mountFrame();}else{selected=0;$('start').disabled=true;show('main');}},
+        enable(enabled){practiceActive=enabled;if(enabled){save.unlocked=60;renderStages();}else{selected=0;show('main');}},
         startStage(id){if(practiceActive){selected=Number(id)-1;startStageInternal('practice');}}
       });
-    }).then(ok=>{if(!ok)mountFrame();}).catch(()=>{practiceActive=false;mountFrame();});
+    }).catch(()=>{practiceActive=false;});
   }else mountFrame();
 })();
