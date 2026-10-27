@@ -5,7 +5,7 @@ import {RELAY_DRAFT} from './relay-candidate.mjs';
 import {RELAY_COPY_LOCALES,relayCopy} from './relay-copy-candidate.mjs';
 
 const newKinds=['D','G','P','B35','B40','B45','B50','B55','B60'];
-const legacyIds={W:1,T:11,R:4};
+const legacyIds={W:1,T:11,R:14};
 const newIds={D:200,G:201,P:202,B35:210,B40:211,B45:212,B50:213,B55:214,B60:215};
 const modifiers={D:{atkMod:1.05,hpMod:.85},G:{atkMod:.8,hpMod:1.2},P:{atkMod:.9,hpMod:.9},
   B35:{atkMod:1.25,hpMod:3},B40:{atkMod:1.2,hpMod:3},B45:{atkMod:1.3,hpMod:3},

@@ -348,7 +348,7 @@ export function renderLocalizedRoute(sourceHtml, locale, titles) {
 
   // Route shells share the root game's actual files; no JS/CSS copies are made.
   const assetPath = value => {
-    if (!value || /^(?:[a-z][\w+.-]*:|\/\/|#)/i.test(value)) return value;
+    if (!value || /^(?:[a-z][\w+.-]*:|\/\/|#|\/)/i.test(value)) return value;
     const resolved = new URL(value, 'https://weightplay.com/games/bramble-rapids/');
     return `../../../${resolved.pathname.slice(1)}${resolved.search}${resolved.hash}`;
   };

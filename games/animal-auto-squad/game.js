@@ -65,6 +65,14 @@
     void loadRelayChapterCandidate().catch(() => {});
     combatLog(relayUnavailableText());
   }
+  function holdRelayCombat() {
+    // A missing or ambiguous signal application must not be retried as a
+    // normal attack or turned into a victory/reward.
+    state.combat.animating = false;
+    clearScheduledCombatTimers();
+    cancelAnimationFrame(animationId);
+    combatLog(relayUnavailableText());
+  }
   function validatePracticeAction(action) {
     if (!practiceRequested) { action(); return; }
     if (!practiceAdapter || !practiceAuthorized || practiceStartPending) return;
@@ -2453,6 +2461,7 @@
         ending: false,
         resolved: false,
         runId: 0,
+        relayBridge: null,
         timer: 0,
         hitStopFrames: 0,
         playerActiveIndex: 0,
@@ -4549,7 +4558,13 @@
     const target = squad.filter((unit) => unit.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0];
     if (!target) return;
     const synergyBoost = team === "player" ? Number(state.combat.synergy?.healBoost) || 0 : 0;
-    const total = Math.max(1, Math.round(amount) + synergyBoost);
+    let total = Math.max(1, Math.round(amount) + synergyBoost);
+    if (team === "player" && state.stage > 30 && state.combat.relayBridge) {
+      const adjustment = state.combat.relayBridge.adjustHealing(total);
+      if (!adjustment?.ok) { holdRelayCombat(); return; }
+      total = adjustment.adjusted;
+      if (total === 0) return;
+    }
     const restored = Math.min(total, Math.max(0, target.maxHp - target.hp));
     target.hp = Math.min(target.maxHp, target.hp + total);
     const idx = Math.max(0, squad.indexOf(target));
@@ -4568,6 +4583,16 @@
 
   function damageTarget(unit, amount, x, y) {
     if (!unit || amount <= 0) return;
+    if (state.stage > 30 && state.combat.relayBridge && state.combat.activeActor?.team === "player" && state.combat.enemySquad.includes(unit)) {
+      try {
+        const target = state.combat.relayBridge.firstStrike(unit);
+        if (target && target !== unit) {
+          unit = target;
+          const point = formationTargetPoint("enemy", state.combat.enemySquad, unit);
+          x = point.x; y = point.y;
+        }
+      } catch { holdRelayCombat(); return; }
+    }
     let damage = Math.max(0, Math.round(amount));
     const isPlayerTarget = (state.combat.playerSquad || []).includes(unit);
     if (isPlayerTarget && state.combat.tactic === "guard") {
@@ -5577,8 +5602,10 @@
     const playerUnit = unitAtFormationSlot(playerSquad, slot);
     const enemyUnit = unitAtFormationSlot(enemySquad, slot);
     if (playerUnit) actions.push(resolveUnitAbility(playerUnit, "player", Math.max(0, playerSquad.indexOf(playerUnit))));
+    if (state.stage > 30 && !state.combat.animating) return;
     const playerHpBeforeEnemyAction = new Map(playerSquad.map((unit) => [unit, Number(unit.hp) || 0]));
     const enemyAction = enemyUnit?.hp > 0 ? resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))) : "";
+    if (state.stage > 30 && !state.combat.animating) return;
     if (enemyAction) {
       recordEnemyDefeatEvents(playerSquad, playerHpBeforeEnemyAction, enemyAction);
       actions.push(enemyAction);
@@ -5687,7 +5714,17 @@
   }
 
   function resolveEnemySlotAction(unit, slot) {
-    if (unit.isBoss) return resolveBossAction(unit, slot);
+    if (state.stage > 30 && unit.ability === "relay") {
+      if (!state.combat.relayBridge) { holdRelayCombat(); return ""; }
+      const signal = state.combat.relayBridge.enemyAction(unit);
+      if (!signal?.ok) { holdRelayCombat(); return ""; }
+      if (signal.events.length) {
+        markActing("enemy", slot, "cast");
+        return `${combatUnitName(unit)} · ${localizedField(unit, "role")}`;
+      }
+      // On turns without a signal effect, use the existing ordinary attack.
+    }
+    if (unit.isBoss && unit.ability !== "relay") return resolveBossAction(unit, slot);
     const isGuardAction = !unit.abilityUsed && unit.ability === "guard";
     const isCastAction = isGuardAction || unit.ability === "row" || unit.ability === "heal";
     markActing("enemy", slot, isCastAction ? "cast" : "attack");
@@ -5845,11 +5882,12 @@
   function startNextWaveBattle(preparedWave = null) {
     // The prepared Chapter 2 roster must be the one shown to the player;
     // until dispatch and preparation are wired it is never accepted.
-    if (state.stage > 30 && (!RELAY_CHAPTER_READY || !preparedWave || preparedWave.stage !== state.stage || preparedWave.wave !== state.round || !Array.isArray(preparedWave.enemySquad))) return;
+    if (state.stage > 30 && (!RELAY_CHAPTER_READY || !preparedWave || preparedWave.stage !== state.stage || preparedWave.wave !== state.round || !Array.isArray(preparedWave.enemySquad) || preparedWave.bridge?.preview?.().phase !== "battle")) return;
     clearScheduledCombatTimers();
     (__wpNotifyMeasurement(), combatSuspendedForBackground = false);
     const runId = ++combatRunSequence;
     state.combat.enemySquad = state.stage > 30 ? preparedWave.enemySquad : generateEnemySquad(state.stage, state.round);
+    state.combat.relayBridge = state.stage > 30 ? preparedWave.bridge : null;
     state.combat.step = 0;
     state.combat.log = [];
     state.combat.status = "";

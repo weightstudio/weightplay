@@ -67,5 +67,5 @@ export function createRelayBridge({stage,wave,playerSquad,enemySquad,confirmedPr
     }catch{return halt('combat-side-effect-unconfirmed');}
   }
   function adjustHealing(amount){if(phase!=='battle')return {ok:false,reason:'not-in-battle'};try{return {ok:true,...relayAdjustHealing(layer,amount)};}catch{return halt('invalid-heal');}}
-  return Object.freeze({choose,start,firstStrike,enemyAction,adjustHealing,preview:()=>({marks:layer.marks.map(x=>({...x})),bossCues:layer.bossCues.map(x=>({actor:x.actor,signals:[...x.signals]})),wardTargets:[...layer.wardTargets],orders:[...layer.orders],phase})});
+  return Object.freeze({choose,start,firstStrike,enemyAction,adjustHealing,preview:()=>({actors:layer.actors.map(x=>({id:x.id,kind:x.kind,alive:x.alive})),marks:layer.marks.map(x=>({...x})),bossCues:layer.bossCues.map(x=>({actor:x.actor,signals:[...x.signals]})),wardTargets:[...layer.wardTargets],orders:[...layer.orders],phase})});
 }

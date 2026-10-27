@@ -11,7 +11,7 @@ function createBalanceSave(storage){
  function read(){
   try{
    const raw=storage.getItem(KEY),data=raw===null?{cleared:[],stars:{}}:JSON.parse(raw);
-   if(!record(data)||data.version!==undefined||!Array.isArray(data.cleared)||(data.stars!==undefined&&!record(data.stars))||data.cleared.some(n=>!validIndex(n)))return {ok:false,reason:'unsupported-or-invalid'};
+   if(!record(data)||data.version!==undefined||(data.schemaVersion!==undefined&&data.schemaVersion!==1)||!Array.isArray(data.cleared)||(data.stars!==undefined&&!record(data.stars))||data.cleared.some(n=>!validIndex(n)))return {ok:false,reason:'unsupported-or-invalid'};
    const cleared=[...new Set(data.cleared)].sort((a,b)=>a-b),stars={};
    for(const n of cleared){const value=data.stars?.[n],normalized=typeof value==='string'&&/^[1-3]$/.test(value)?Number(value):value;if(normalized!==undefined&&!validStars(normalized))return {ok:false,reason:'invalid-stars'};stars[n]=normalized===undefined?1:normalized;}
    return {ok:true,raw,data,cleared,stars,unlocked:Math.min(59,Math.max(2,...cleared.map(n=>n+1)))};
@@ -22,6 +22,10 @@ function createBalanceSave(storage){
  function begin(index,{sessionAllowed=false}={}){
   if(!validIndex(index))throw TypeError('invalid stage');const seen=read(),token=Object.freeze({});let legacyUnknown=false;
   if(seen.ok&&index<3)try{legacyUnknown=storage.getItem('weightplay-animal-balance-grove-best-v1')!==null;}catch{legacyUnknown=true;}
+  // An old generic completion receipt identifies no particular stage. Until
+  // the old chapter has a trustworthy per-stage record, fail closed on its
+  // rewards; the old implementation could already have credited any of them.
+  if(seen.ok&&index<30)try{const raw=storage.getItem('weightplayCastleV1');if(raw!==null){const castle=JSON.parse(raw);if(!record(castle)||!record(castle.completions)||Object.hasOwn(castle.completions,'animal-balance-grove:first-completion'))legacyUnknown=true;}}catch{legacyUnknown=true;}
   rounds.set(token,{index,eligible:seen.ok&&!seen.cleared.includes(index)&&!legacyUnknown,startAllowed:(seen.ok&&index<=seen.unlocked)||sessionAllowed===true,attempted:false,ended:false});return token;
  }
  function start(token){const r=rounds.get(token);return !r||r.ended?null:{roundKey:token,started:true,ended:false,stageId:r.index+1,stageIdAuthoritative:true,rewardEligible:r.eligible};}

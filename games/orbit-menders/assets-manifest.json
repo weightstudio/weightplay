@@ -74,10 +74,10 @@
   "sharedReferences": [
     {
       "file": "/assets/previews/orbit-menders-battle.webm",
-      "usage": "Actual D01 wave3/Boss lobby highlight from normal fresh-save Main/Stage play, native aimed continuous fire and midpoint blast; original renderer and rules",
+      "usage": "Actual v5 Block Animals D01 wave3/Boss: held mouse lane sweep, visible impacts and midpoint blast; ordinary first two waves and two power choices, no state/save injection.",
       "dimensions": "480x480,25fps,7.40s,VP8,yuv420p,muted/no audio stream",
-      "bytes": 189785,
-      "sha256": "b3e267d8427b154f82a5901812c7f66f2fcf50c559ea7d6bad3f570bd91ff527",
+      "bytes": 191731,
+      "sha256": "1d668a241983d49e9de96f417aeb9f7a2838fae27d7ae8e749acf797b2d5720f",
       "recorder": "scripts/record-orbit-menders-lobby-preview.mjs",
       "source": "Current project-owned3D assets and gameplay capture; no external game footage"
     },
