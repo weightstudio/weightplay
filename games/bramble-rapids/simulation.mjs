@@ -25,7 +25,7 @@ function racerState(id, boardId, pace = 1, x = 0, profile = 'nori') {
     anchorRemaining: 1, anchorUsed: false, anchored: false, anchorTime: 0, anchorBayId: null, gateWait: null,
     damageCooldown: 0, respawnProtection: 0, slowTime: 0, bumpCooldown: 0, checkpointIndex: 0, pose: 'idle',
     _jumpBuffer: 0, _jumpDown: false, _anchorDown: false, _lastRampId: null, _lastRampExit: -100,
-    _contactIds: [], _checkedRampIds: [], _rejectAt: -10, _recovering: false };
+    _contactIds: [], _checkedRampIds: [], _rejectAt: -10, _recovering: false, _bankSide: 0 };
   racer.lastCheckpoint = snapshot(racer, 0);
   return racer;
 }
@@ -114,7 +114,7 @@ function recover(race, racer, reason, { damage = false, fall = false } = {}) {
   racer.checkpointIndex = Math.max(0, race.stage.checkpoints.findIndex(point => point.s === saved.s));
   racer._jumpBuffer = 0; racer._lastRampId = null; racer._lastRampExit = -100;
   racer.gateWait = null; racer.slowTime = 0; racer.damageCooldown = PHYSICS.damageCooldown;
-  racer.respawnProtection = PHYSICS.recoveryProtection; racer._contactIds = [];
+  racer.respawnProtection = PHYSICS.recoveryProtection; racer._contactIds = []; racer._bankSide = 0;
   if (racer.anchored) endAnchor(race, racer, 'recovery');
   racer.pose = 'recover';
   emit(race, fall ? 'fall' : 'recover', racer, { reason, checkpointId: race.stage.checkpoints[racer.checkpointIndex]?.id, damage, penalty: racer.id === 'nori' ? PHYSICS.recoveryPenalty : 0 });
@@ -155,20 +155,37 @@ function rampInReach(race, racer) {
   return race.stage.ramps.find(feature => racer.s >= feature.launchStart && racer.s <= feature.launchEnd && onLane(racer.x, feature, race.activeTime, 0.06));
 }
 function tryJump(race, racer) {
-  if (!racer.grounded || racer._jumpBuffer <= 0 || racer.anchored || racer.gateWait) return false;
+  if (!racer.grounded || racer._jumpBuffer <= 0 || racer.anchored) return false;
   let feature = rampInReach(race, racer);
   if (!feature && race.activeTime - racer._lastRampExit <= PHYSICS.coyoteTime) feature = race.stage.ramps.find(item => item.id === racer._lastRampId);
-  if (!feature || racer.landedRampIds.includes(feature.id)) return false;
+  if (feature && racer.landedRampIds.includes(feature.id)) feature = null;
   racer.grounded = false; racer.airborne = true; racer.y = 0.035; racer.vy = PHYSICS.jumpImpulse;
-  racer.flight = { rampId: feature.id, startS: racer.s, startX: racer.x, forwardSpeed: racer.speed, time: 0 };
+  racer.flight = { rampId: feature?.id || null, startS: racer.s, startX: racer.x, forwardSpeed: racer.speed, time: 0 };
   racer._jumpBuffer = 0; racer.pose = 'jump';
-  emit(race, 'jump', racer, { featureId: feature.id }); return true;
+  emit(race, 'jump', racer, { featureId: feature?.id || null }); return true;
+}
+
+/** Banks are solid friction boundaries, not falls. One cue per contact episode;
+ * steady contact limits speed without multiplying a penalty every frame. */
+function touchBank(race, racer) {
+  if (Math.abs(racer.x) > PHYSICS.bankLimit) {
+    const side = Math.sign(racer.x);
+    racer.x = side * PHYSICS.bankLimit;
+    if (Math.sign(racer.vx) === side) racer.vx = 0;
+    if (racer._bankSide !== side) {
+      racer.speed *= PHYSICS.bankSpeedMultiplier;
+      if (racer.flight) racer.flight.forwardSpeed = Math.min(racer.flight.forwardSpeed, racer.speed);
+      emit(race, 'bank', racer, { side });
+    }
+    racer._bankSide = side;
+  } else if (Math.abs(racer.x) < PHYSICS.bankLimit - PHYSICS.bankReleaseInset) racer._bankSide = 0;
+  return racer._bankSide !== 0;
 }
 
 function land(race, racer) {
   const flight = racer.flight, feature = race.stage.ramps.find(item => item.id === flight?.rampId);
   const targets = feature ? (feature.targets || [feature.target]) : [];
-  const travelled = racer.s - (flight?.startS || racer.s);
+  const travelled = racer.s - (flight?.startS ?? racer.s);
   const target = targets.find(item => travelled >= item.minDistance && travelled <= item.maxDistance
     && racer.s >= item.sStart - 2.5 && racer.s <= item.sEnd + 3
     && Math.abs(racer.x - item.x) <= item.width / 2
@@ -179,7 +196,7 @@ function land(race, racer) {
     if (!racer.landedRampIds.includes(feature.id)) { racer.landedRampIds.push(feature.id); racer.landings = racer.landedRampIds.length; racer.score += 50; }
     racer.pose = 'land'; emit(race, 'land', racer, { featureId: feature.id, clean: true, distance: travelled });
   } else {
-    racer.pose = 'land'; emit(race, 'land', racer, { featureId: feature?.id || null, clean: false, distance: travelled });
+    racer.pose = 'land'; emit(race, 'land', racer, { featureId: feature?.id || null, clean: !feature, distance: travelled });
     if (feature?.required) recover(race, racer, 'landing-window', { damage: true, fall: true });
   }
 }
@@ -262,7 +279,7 @@ function moveRacer(race, racer, dt, input) {
   racer._anchorDown = Boolean(input.anchor);
   const heldByAnchor = handleAnchor(race, racer, Boolean(input.anchor), dt, anchorRising);
   const jumped = tryJump(race, racer);
-  if (input.jump && !jumped && racer._jumpBuffer > 0 && !rampFeature && race.activeTime - racer._lastRampExit > PHYSICS.coyoteTime && racer._jumpBuffer > PHYSICS.jumpBuffer - 0.025) reject(race, racer, 'jump-ramp');
+  if (input.jump && !jumped && racer.anchored && racer._jumpBuffer > PHYSICS.jumpBuffer - 0.025) reject(race, racer, 'jump-anchored');
   const halfWidth = trackWidth(racer.s, stage) / 2;
   const maxLateral = racer.airborne ? PHYSICS.airLateralSpeed * board.airMultiplier : PHYSICS.lateralSpeed;
   const steer = clamp(Number(input.steer) || 0, -1, 1);
@@ -270,8 +287,10 @@ function moveRacer(race, racer, dt, input) {
   racer.vx = approach(racer.vx, desiredVx, PHYSICS.lateralAcceleration * board.lateralMultiplier / halfWidth * dt);
   const push = racer.grounded ? current.force * board.crossCurrentMultiplier : 0;
   racer.x += (racer.vx + push) * dt;
+  const touchingBank = touchBank(race, racer);
   if (!heldByAnchor) {
-    const wantedSpeed = racer.airborne ? racer.flight.forwardSpeed : targetSpeedFor(racer, stage, race.activeTime) * (racer.slowTime > 0 ? 0.62 : 1);
+    const wantedSpeed = racer.airborne ? racer.flight.forwardSpeed : targetSpeedFor(racer, stage, race.activeTime)
+      * (racer.slowTime > 0 ? 0.62 : 1) * (touchingBank ? PHYSICS.bankSpeedMultiplier : 1);
     racer.speed = approach(racer.speed, wantedSpeed, PHYSICS.acceleration * dt);
     let nextS = racer.s + racer.speed * dt;
     const closedGate = stage.features.find(feature => feature.kind === 'gate' && racer.s <= feature.s - feature.waitingDistance

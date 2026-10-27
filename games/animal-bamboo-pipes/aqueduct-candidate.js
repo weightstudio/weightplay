@@ -1,5 +1,9 @@
 (() => {
 "use strict";
+// A localhost practice request is isolated even if authorization later fails.
+if(globalThis.location?.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(globalThis.location.hostname)&&new URLSearchParams(globalThis.location.search).get('practice')==='1'){
+ const analytics=globalThis.WONDER_SITE?.analytics;if(analytics){analytics.enabled=false;if(analytics.gaMeasurementId)globalThis[`ga-disable-${analytics.gaMeasurementId}`]=true;}
+}
 // Isolated 31–60 design. Not loaded by the game or an acceptance artifact.
 // Player actions use a shared 5x5 board; source/destination remain old shapes.
 const designs=[

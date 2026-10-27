@@ -1,0 +1,21 @@
+(() => {
+// Draft translated Chapter 2 names. Not imported by the game; native review is required.
+const IDS=['warden','medic','drummer','sapper','stone-bastion','red-lantern','thunder-signal','twin-seal','crossroads','oathmaster'];
+const NAMES={
+ en:['Warden','Medic','Drummer','Sapper','Stone Bastion','Red Lantern','Thunder Signal','Twin Seal','Crossroads','Oathmaster'],
+ 'zh-Hant':['守衛','軍醫','鼓手','伏兵','石門守將','紅燈軍醫','雷鼓斥候','雙印守帥','岔道伏將','盟誓軍師'],
+ 'zh-Hans':['守卫','军医','鼓手','伏兵','石门守将','红灯军医','雷鼓斥候','双印守帅','岔道伏将','盟誓军师'],
+ ja:['守衛','軍医','鼓手','伏兵','石門の守将','赤灯の軍医','雷鼓の斥候','双印の守将','岐路の伏将','誓いの軍師'],
+ ko:['수호병','군의관','북수','매복병','석문 수장','홍등 군의관','천둥북 정찰병','쌍인 수장','갈림길 매복장','맹세 군사'],
+ es:['Guardián','Médico','Tamborilero','Saboteador','Bastión de Piedra','Farol Rojo','Señal de Trueno','Doble Sello','Encrucijada','Maestro del Juramento'],
+ 'pt-BR':['Guardião','Médico','Tamborileiro','Sabotador','Bastião de Pedra','Lanterna Vermelha','Sinal do Trovão','Selo Duplo','Encruzilhada','Mestre do Juramento'],
+ fr:['Gardien','Médecin','Tambour','Saboteur','Bastion de pierre','Lanterne rouge','Signal du tonnerre','Double sceau','Carrefour','Maître du serment'],
+ de:['Wächter','Sanitäter','Trommler','Saboteur','Steinbastion','Rote Laterne','Donnersignal','Doppelsiegel','Wegkreuzung','Schwurmeister'],
+ it:['Guardiano','Medico','Tamburino','Sabotatore','Bastione di pietra','Lanterna rossa','Segnale del tuono','Doppio sigillo','Crocevia','Maestro del giuramento'],
+ ru:['Страж','Лекарь','Барабанщик','Диверсант','Каменный бастион','Красный фонарь','Громовой сигнал','Двойная печать','Перекрёсток','Хранитель клятвы'],
+ hi:['रक्षक','वैद्य','नगाड़ची','घातक','पत्थर का गढ़','लाल लालटेन','गर्जन संकेत','दोहरी मुहर','चौराहा','शपथ गुरु'],
+ ar:['الحارس','المسعف','قارِع الطبل','المتسلل','حصن الحجر','الفانوس الأحمر','إشارة الرعد','الختمان','مفترق الطرق','قائد القسم']
+};
+function chapterActorName(id,locale){const index=IDS.indexOf(id);return index<0?null:(NAMES[locale]||NAMES.en)[index]}
+window.PEACH_OATH_CHAPTER2_NAMES = Object.freeze({ chapterActorName });
+})();

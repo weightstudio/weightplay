@@ -316,7 +316,7 @@ function updateHUD(){
     $('targetCue').textContent=`${tr('jump')} · ${tr(bearing<-.18?'left':bearing>.18?'right':'aligned')} · ${Math.max(0,Math.ceil(ramp.s-p.s))}m`;
   }
   const jumpReady=!!ramp&&p.grounded&&p.s>=ramp.launchStart&&p.s<=ramp.launchEnd&&Math.abs(p.x-ramp.x)<=ramp.width/2;
-  $('jumpBtn').dataset.ready=String(jumpReady);
+  $('jumpBtn').dataset.ready=String(p.grounded&&!p.anchored);
   $('gateCue').textContent=gate?`${gateIsOpen(gate,race.activeTime)?tr('go'):tr('waiting')} · ${gateSecondsToChange(gate,race.activeTime).toFixed(1)}s`:ramp?jumpReady?`${tr('jump')}!`:`${tr('jump')} · ${Math.max(0,Math.ceil(ramp.s-p.s))}m`:'';
   const bay=race.stage.features.find(f=>f.kind==='bay'&&p.s>=f.s&&p.s<=f.s+f.length&&Math.abs(p.x-featureX(f,race.activeTime))<=f.width/2);
   const anchorReady=race.stage.anchorUnlocked&&!p.anchorUsed&&p.grounded&&!!bay;
@@ -333,19 +333,20 @@ function processEvents(){
     renderer?.respond(event);
     if(event.racerId!==race.player.id)continue;
     if(event.type==='fall'||event.type==='recover')recovery=event;
-    if(['jump','land','fall','flag','bonus','hit','bump'].includes(event.type))renderer?.burst(event.s,event.x,event.type==='hit'?1.5:.8);
+    if(['jump','land','fall','flag','bonus','hit','bump','bank'].includes(event.type))renderer?.burst(event.s,event.x,event.type==='hit'?1.5:event.type==='bank'?.35:.8);
     if(event.type==='start')audio('game.start');
     else if(event.type==='jump'){audio('movement.jump');flash('jump',.45);}
     else if(event.type==='land'){audio('water.splash');flash(event.clean===false?'landingMissed':'landing',.65);}
     else if(event.type==='hit'){audio(event.material==='stone'?'impact.stone':'impact.wood');pulseMotion($('stabilityValue'),race,'battle');}
     else if(event.type==='bump')audio('impact.soft');
+    else if(event.type==='bank'){audio('impact.soft');flash('bankSlow',.8);pulseMotion($('feedback'),race,'battle');}
     else if(event.type==='fall'){clearMotion('battle');audio('water.splash');pulseMotion($('stabilityValue'),race,'battle');}
     else if(event.type==='recover')clearMotion('battle');
     else if(event.type==='flag'){audio('game.checkpoint');collectMotion(event);}
     else if(event.type==='bonus'){audio('reward.collect');collectMotion(event);}
     else if(event.type==='anchor-start')audio('movement.hook');
     else if(event.type==='anchor-end')audio('movement.release');
-    else if(event.type==='reject')flash(event.reason?.includes('anchor')?'noAnchor':'cannotJump');
+    else if(event.type==='reject')flash(event.reason==='jump-anchored'?'jumpAnchored':event.reason?.includes('anchor')?'noAnchor':'cannotJump');
     else if(event.type==='gate-wait')flash('waiting',1);
     else if(event.type==='won'||event.type==='lost'){audio(event.type==='won'?'result.win':'result.lose');void finish();}
   }

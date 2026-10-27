@@ -34,5 +34,16 @@ $('importSave').addEventListener('change',async e=>{const file=e.target.files[0]
 document.addEventListener('keydown',e=>{const dialog=[el.pauseModal,el.resultModal,el.errorModal,el.upgradeModal].find(n=>!n.hidden);if(!dialog)return;if(e.key==='Tab'){const list=[...dialog.querySelectorAll('button:not(:disabled),input,select,summary')].filter(n=>n.getClientRects().length);if(!list.includes(document.activeElement)){e.preventDefault();list[0]?.focus({preventScroll:true});}else if(e.shiftKey&&document.activeElement===list[0]){e.preventDefault();list.at(-1)?.focus({preventScroll:true});}else if(!e.shiftKey&&document.activeElement===list.at(-1)){e.preventDefault();list[0]?.focus({preventScroll:true});}}if(e.key==='Escape'&&dialog===el.pauseModal){e.preventDefault();resume();}});
 window.addEventListener('weightplay:interaction-state',()=>{if(!view||view.finished||screen!=='battle')return;const opened=Boolean(el.battleScreen.querySelector('.wp-frame-popover:not([hidden]),.wp-shell-settings-popover:not([hidden])'));if(opened&&!view.paused){settingsSuspended=true;pauseFocus=el.battleBack;view.setPaused(true);}else if(!opened&&settingsSuspended){settingsSuspended=false;pause();}});
 window.addEventListener('pagehide',()=>{generation++;view?.dispose();selector?.dispose?.();});
-showScreen('main');if(mobile){$('deviceNotice').textContent=t('desktopOnly');$('start').textContent=t('desktopOnly');}else $('start').disabled=false;
-// Let the shared readiness bridge wait for the actual visible poster decode.
+showScreen('main');if(mobile){
+  $('deviceNotice').textContent=t('desktopOnly');$('start').textContent=t('desktopOnly');
+  // The auto bridge waits for an enabled Start. This device intentionally has
+  // no playable Start, so report this Main's actual readiness after its required
+  // document resources and poster finish. Keep the common failure/retry timer;
+  // a failed or stalled poster must never produce a false ready signal.
+  const documentLoaded=document.readyState==='complete'?Promise.resolve():new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));
+  documentLoaded.then(()=>$('poster').decode())
+    .then(()=>new Promise(resolve=>requestAnimationFrame(resolve)))
+    .then(()=>window.WeightPlayGameEntryLoader.ready())
+    .catch(()=>window.WeightPlayGameEntryLoader.fail());
+}else $('start').disabled=false;
+// Desktop readiness remains owned by the common enabled-Start/image bridge.

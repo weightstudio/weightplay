@@ -69,7 +69,7 @@ export function createRelaySaveSession({storage,key='animal_auto_squad_save',nor
     const receipt=Object.freeze({});receipts.set(receipt,{token,firstClear:result.firstClear});return {...result,receipt};
   }
   function settle(token,{win,receipt,knownSavedGate,knownRewardGate}={}){
-    const round=rounds.get(token);if(!round||round.ended)return null;round.ended=true;
+    const round=rounds.get(token);if(busy||!round||round.ended)return null;round.ended=true;
     const proof=receipts.get(receipt),saved=win===true&&proof?.token===token;
     const changed=saved&&round.eligible&&!proof.firstClear;
     return {stageIdAuthoritative:true,stageId:round.stage,ended:true,outcome:knownSavedGate===true&&knownRewardGate===true&&!changed?(win===true?'win':'lose'):'abandon',saveSucceeded:saved};

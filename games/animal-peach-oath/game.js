@@ -562,6 +562,7 @@
       closeModal();
     }
     syncFrameCoverage();
+    syncChapterOrders();
 
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[name] ?? null;
       if (["result"].includes(name) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
@@ -577,6 +578,7 @@
     clearTimeout(battle.nextWaveHandle); battle.nextWaveHandle = 0;
     clearCombatEffects();
     window.WeightPlayAudio?.stopAll({combatOnly:true});
+    syncChapterOrders();
 
     __wpNotifyMeasurement();
 }
@@ -597,6 +599,7 @@
     } else if (battle.running && !battle.resultOpen && !battle.tickHandle) {
       battle.tickHandle = window.setInterval(battleTick, 260);
     }
+    syncChapterOrders();
 
     __wpNotifyMeasurement();
 }
@@ -678,6 +681,7 @@
     renderCampaignMilestone();
     renderUnits();
     renderCommands();
+    syncChapterOrders();
     motion($('#enemyLane'), [{opacity:0,transform:'translateY(-18px)'},{opacity:1,transform:'translateY(0)'}], 320);
     motion($('#heroLane'), [{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}], 320);
     updateHud();
@@ -693,17 +697,58 @@
     const boss = battle.enemies.find((unit) => unit.data.boss);
     $("#bossBar").classList.toggle("is-hidden", !boss);
     if (boss) {
-      $("#bossName").textContent = localizedValue(boss.data.name);
+      $("#bossName").textContent = battleUnitName(boss);
       $("#bossHpFill").style.width = `${clamp(boss.hp / boss.maxHp * 100, 0, 100)}%`;
     }
   }
 
+  function battleUnitName(unit) {
+    const name = unit.side === 'enemy' && battle.chapterSignal ? window.PEACH_OATH_CHAPTER2_NAMES?.chapterActorName(unit.id, activeLocale()) : null;
+    return name || localizedValue(unit.data.name);
+  }
+
   function unitMarkup(unit) {
     const hp = clamp(unit.hp / unit.maxHp * 100, 0, 100);
+    const name = battleUnitName(unit);
     return `<div class="unit" data-unit="${unit.key}" ${unit.side === 'enemy' ? `data-focus="${unit.key}"` : ''}>
       <i class="hp"><b style="width:${hp}%"></b></i>${sprites.markup(unit.side, unit.data.visualId || unit.data.id, `battle-${unit.key}`)}
-      ${unit.side === 'enemy' ? `<button class="unit-name target-choice" data-focus="${unit.key}" aria-pressed="false" aria-label="${commandText(0)} · ${localizedValue(unit.data.name)}">${localizedValue(unit.data.name)}</button>` : `<span class="unit-name">${localizedValue(unit.data.name)}</span>`}<span class="status-badge is-hidden"></span>
+      ${unit.side === 'enemy' ? `<button class="unit-name target-choice" data-focus="${unit.key}" aria-pressed="false" aria-label="${commandText(0)} · ${name}">${name}</button>` : `<span class="unit-name">${name}</span>`}<span class="status-badge is-hidden"></span>
     </div>`;
+  }
+
+  // The gated Chapter 2 model can add a reinforcement during a live wave.
+  // Preserve existing nodes and keyboard focus rather than rebuilding the lane.
+  function renderChapterReinforcements() {
+    if (!battle.chapterSignal) return;
+    const lane = $('#enemyLane');
+    const present = new Set([...lane.querySelectorAll('[data-unit]')].map(node => node.dataset.unit));
+    battle.enemies.forEach(unit => {
+      if (!present.has(unit.key)) {
+        lane.insertAdjacentHTML('beforeend', unitMarkup(unit));
+        present.add(unit.key);
+      }
+    });
+  }
+
+  let chapterOrderDock = null;
+  function chapterOrdersAllowed() {
+    return !!battle.chapterSignal && $('#app').dataset.scene === 'battle' && !document.hidden && battle.running && !battle.pausedAt && !battle.resultOpen && $('#management').classList.contains('is-hidden') && $('#modalLayer').classList.contains('is-hidden') && $('#coach').classList.contains('is-hidden');
+  }
+  function syncChapterOrders() {
+    const visible = !!battle.chapterSignal && window.PEACH_OATH_CHAPTER2_CANDIDATE?.ready === true;
+    if (!chapterOrderDock && visible && window.PEACH_OATH_ORDER_DOCK) {
+      const stateForDock = () => ({
+        locale: activeLocale(), visible: !!battle.chapterSignal && window.PEACH_OATH_CHAPTER2_CANDIDATE?.ready === true && $('#app').dataset.scene === 'battle' && !battle.resultOpen,
+        active: chapterOrdersAllowed(), seals: battle.chapterSignal?.snapshot().seals ?? 0, signals: battle.chapterSignal?.snapshot() ?? null,
+        enemies: battle.enemies.map((u, i) => ({key:u.key, hp:u.hp, role:u.data.chapterRole, name:`${battleUnitName(u)} (${i + 1})`})),
+        heroes: battle.heroes.map((u, i) => ({key:u.key, hp:u.hp, name:`${localizedValue(u.data.name)} (${i + 1})`}))
+      });
+      chapterOrderDock = window.PEACH_OATH_ORDER_DOCK.createOrderDock(document, $('#arena'), 'peach-oath-orders', stateForDock, (kind, key) => {
+        if (!chapterOrdersAllowed()) return {ok:false, reason:'paused'};
+        return battle.chapterSignal.order(kind, key);
+      });
+    }
+    chapterOrderDock?.sync();
   }
 
   function renderCommands() {
@@ -743,9 +788,14 @@
   }
 
   function battleTick() {
+    syncChapterOrders();
     if ($("#app").dataset.scene !== "battle" || document.hidden || battle.pausedAt || !battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
     const dt = .26 * battle.speed;
-    if (battle.chapterSignal) for (let elapsed = 0; elapsed < dt;) { const step = Math.min(.26, dt - elapsed); battle.chapterSignal.tick(step); elapsed += step; }
+    if (battle.chapterSignal) {
+      for (let elapsed = 0; elapsed < dt;) { const step = Math.min(.26, dt - elapsed); battle.chapterSignal.tick(step); elapsed += step; }
+      renderChapterReinforcements();
+      syncChapterOrders();
+    }
     battle.heroes.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.enemies, dt));
     battle.enemies.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.heroes, dt));
     settleCombat();
@@ -866,6 +916,7 @@
   function waveVictory() {
     if (!battle.running) return;
     battle.running = false;
+    syncChapterOrders();
     state.stats.kills += battle.enemies.length;
     const reward = { coins: 70 + state.stage * 18 + state.wave * 12, materials: state.wave === C.bossEvery ? 3 : 1 };
     battle.pendingLoot.coins += reward.coins;
@@ -890,11 +941,13 @@
   function battleDefeat() {
     if (!battle.running) return;
     battle.running = false;
+    syncChapterOrders();
     openResult(false, {});
   }
 
   function openResult(win, reward) {
     battle.resultOpen = true;
+    syncChapterOrders();
     clearInterval(battle.tickHandle);
     (__wpNotifyMeasurement(), $("#resultPanel").classList.remove("is-hidden"));
     syncFrameCoverage();
@@ -1566,7 +1619,7 @@
       const target = button && battle.enemies.find(unit => unit.key === button.dataset.focus && unit.hp > 0);
       if (!target || !battle.running || battle.pausedAt) return;
       battle.focusKey = target.key;
-      $('#battleStatus').textContent = `${commandText(0)} · ${localizedValue(target.data.name)}`;
+      $('#battleStatus').textContent = `${commandText(0)} · ${battleUnitName(target)}`;
       effectAt(target, '◎', 'guard'); renderUnitHealth();
     });
     $("#startBtn").addEventListener("click", () => {

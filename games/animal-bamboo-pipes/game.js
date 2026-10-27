@@ -1,5 +1,7 @@
 (() => {
   "use strict";
+  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  let practiceActive=false,practiceAdapter=null,practicePending=false;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
@@ -8,7 +10,7 @@
     paused: Boolean(run?.paused || run?.suspended || leaveOpen), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { if(practiceRequested)return;try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -30,22 +32,23 @@
   const AQUEDUCT_READY = false;
   const AQUEDUCT = window.BambooAqueductCandidate;
   const LEVELS = window.BAMBOO_LEVELS.levels.slice();
-  if (AQUEDUCT_READY) {
+  function installAqueduct() {
     if (!AQUEDUCT || AQUEDUCT.CHAPTER2.length !== 30) throw Error('BAMBOO_AQUEDUCT_REQUIRED');
-    AQUEDUCT.CHAPTER2.forEach(cfg => LEVELS.push({aqueductId:cfg.id,checkpoint:cfg.checkpoint,sluices:Array(cfg.sluices),beacons:[]}));
+    if(LEVELS.length===30)AQUEDUCT.CHAPTER2.forEach(cfg => LEVELS.push({aqueductId:cfg.id,checkpoint:cfg.checkpoint,sluices:Array(cfg.sluices),beacons:[]}));
   }
+  if (AQUEDUCT_READY) installAqueduct();
   const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = ROUTE_LOCALES[routeSegment];
   let locale = routeLocale || localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0, hintedPipeIndex = -1;
   if (!CODES.includes(locale)) locale = "en";
-  if (routeLocale) {
+  if (routeLocale && !practiceRequested) {
     try {
       localStorage.setItem("weightPlayLocale", locale);
       localStorage.setItem("wp-locale", locale);
     } catch {}
   }
   let save = { unlocked: 1, done: {}, best: {} };
-  try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
+  if(!practiceRequested)try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
   if (!save.best || typeof save.best !== "object" || Array.isArray(save.best)) save.best = {};
   selected = Math.max(0, Math.min(29, Number(save.unlocked || 1) - 1));
   // Mark the authored game summary before the shared shell normalizes Main.
@@ -71,6 +74,9 @@
   };
   const aqText=(key,vars={})=>String((aqueductCopy[locale]||aqueductCopy.en)[key]).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??'');
   const aqueductIntro={en:'Linked pipes turn together. Pin the partner when needed; fill every marked receiver.', 'zh-Hant':'連動管會一起轉動；需要時固定另一端，並注滿所有標記的集水池。','zh-Hans':'联动管会一起转动；需要时固定另一端，并注满所有标记的集水池。',ja:'連動管は一緒に回ります。必要なら相手を固定し、印の水受けをすべて満たします。',ko:'연결된 관은 함께 돌아갑니다. 필요하면 상대를 고정하고 표시된 물받이를 모두 채우세요.',es:'Los tubos enlazados giran juntos. Fija su pareja cuando haga falta y llena todos los receptores.', 'pt-BR':'Tubos ligados giram juntos. Fixe o par quando precisar e encha todos os receptores.',fr:'Les tuyaux liés tournent ensemble. Bloquez le partenaire si besoin et remplissez tous les bassins.',de:'Verbundene Rohre drehen sich gemeinsam. Fixiere bei Bedarf den Partner und fülle alle markierten Becken.',it:'I tubi collegati ruotano insieme. Blocca il partner quando serve e riempi tutti i bacini.',ru:'Связанные трубы вращаются вместе. При необходимости закрепите пару и наполните все приёмники.',hi:'जुड़े पाइप साथ घूमते हैं। ज़रूरत पर साथी रोकें और सभी चिह्नित जलाशय भरें।',ar:'تدور الأنابيب المرتبطة معًا. ثبّت الشريك عند الحاجة واملأ كل الأحواض المحددة.'};
+  const aqueductTerminal={en:'A side receiver stops water; it does not pass it onward.','zh-Hant':'側集水池是終點，水不會從中流出。','zh-Hans':'侧集水池是终点，水不会从中流出。',ja:'水受けは終点で、水は先へ流れません。',ko:'물받이는 종점이며 물을 다시 내보내지 않습니다.',es:'Un receptor lateral detiene el agua; no la deja pasar.', 'pt-BR':'O receptor lateral encerra o fluxo; a água não passa adiante.',fr:'Un bassin latéral arrête l’eau ; elle ne ressort pas.',de:'Ein Seitenbecken beendet den Wasserfluss.',it:'Un bacino laterale ferma l’acqua; non la lascia passare.',ru:'Боковой приёмник останавливает воду и не пропускает её дальше.',hi:'किनारे का जलाशय पानी रोकता है; पानी आगे नहीं जाता।',ar:'الحوض الجانبي يوقف الماء ولا يمرره إلى الخارج.'};
+  const practiceCopy={en:'Practice only: progress and rewards are not saved.','zh-Hant':'僅供練習：不會保存進度或獎勵。','zh-Hans':'仅供练习：不会保存进度或奖励。',ja:'練習専用：進行や報酬は保存されません。',ko:'연습 전용: 진행과 보상은 저장되지 않습니다.',es:'Solo práctica: no se guardan el progreso ni las recompensas.','pt-BR':'Somente treino: progresso e recompensas não são salvos.',fr:'Entraînement : progression et récompenses ne sont pas enregistrées.',de:'Nur Übung: Fortschritt und Belohnungen werden nicht gespeichert.',it:'Solo allenamento: progressi e ricompense non vengono salvati.',ru:'Тренировка: прогресс и награды не сохраняются.',hi:'केवल अभ्यास: प्रगति और पुरस्कार सहेजे नहीं जाते।',ar:'للتدريب فقط: لا يُحفظ التقدم أو المكافآت.'};
+  const resultCopy=()=>`${text('resultText',{moves:run.moves,n:selected+1})}${practiceRequested?' '+(practiceCopy[locale]||practiceCopy.en):''}`;
   function beaconProgress(tiles, wet) {
     let got = 0, total = 0;
     tiles.forEach((tile, index) => {
@@ -94,6 +100,7 @@
   const DIRS = [[-1, 0, 0, 2], [0, 1, 1, 3], [1, 0, 2, 0], [0, -1, 3, 1]];
   function localRead(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function track(name, data = {}) {
+    if(practiceRequested)return;
     window.WonderAnalytics?.track?.(name, {
       game_id: "animal-bamboo-pipes",
       game_version: GAME_VERSION,
@@ -121,7 +128,7 @@
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
+  function persist() { if(practiceRequested)return;try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
     const level = LEVELS[index], target = targetIndex(level);
     return window.BAMBOO_LEVELS.createStageTiles(level, index, target);
@@ -138,7 +145,7 @@
   }
   function pipeAccessibleLabel(tile, index, isWet) {
     if (tile.shape === 'blocked') return aqText(6);
-    if (tile.receiver) return `${aqText(5)}, ${text(isWet ? 'pipeFlowing' : 'pipeDry')}`;
+    if (tile.receiver) return `${aqText(5)}, ${text(isWet ? 'pipeFlowing' : 'pipeDry')}. ${aqueductTerminal[locale]||aqueductTerminal.en}`;
     const name = tile.target ? text("basinLabel") : text("pipeLabel", { n: index + 1 });
     const shape = text(pipeShapeKey(tile));
     const flow = text(isWet ? "pipeFlowing" : "pipeDry");
@@ -307,7 +314,7 @@
     $("moves").textContent = text("moves", { n: run.moves });
     const bloom = beaconProgress(run.tiles, wet);
     const hasSluice = run.tiles.some(tile => tile.sluice);
-    $("cue").textContent = run.aqueduct ? (run.hintMessage || aqueductIntro[locale] || aqueductIntro.en) : hintedPipeIndex >= 0
+    $("cue").textContent = run.aqueduct ? (run.hintMessage || `${aqueductIntro[locale]||aqueductIntro.en}${run.aqueduct.receivers.length?' '+(aqueductTerminal[locale]||aqueductTerminal.en):''}`) : hintedPipeIndex >= 0
       ? text("hintRoute", { pipe: hintLabel(hintedPipeIndex), next: hintLabel(hintNeighborIndex) })
       : hasSluice && bloom.total ? text("mixedCue", bloom)
         : hasSluice ? text("sluiceCue")
@@ -317,9 +324,14 @@
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
   function startStage(entry = "stage") {
+    if(!practiceRequested)return startStageInternal(entry);
+    if(!practiceActive||!practiceAdapter||practicePending)return;
+    practicePending=true;void practiceAdapter.challenge('animal-bamboo-pipes',String(selected+1)).catch(()=>{}).finally(()=>{practicePending=false;});
+  }
+  function startStageInternal(entry = "stage") {
     cancelCompletionReveal();
     setResultOpen(false, false);
-    const aqueduct=selected>=30&&AQUEDUCT_READY?AQUEDUCT.createAqueduct(window.BAMBOO_LEVELS,selected+1):null;
+    const aqueduct=selected>=30&&(AQUEDUCT_READY||practiceActive)?AQUEDUCT.createAqueduct(window.BAMBOO_LEVELS,selected+1):null;
     run = { tiles: aqueduct?.tiles || stageData(selected), aqueduct, pinArmed:false, hintMessage:'', history: [], moves: 0, completed: false, hintUsed: false, undoUsed: false, flowDistance: [] };
     $('battle').dataset.bambooAqueduct=String(Boolean(aqueduct));if(pinButton)pinButton.hidden=!aqueduct;
     hintedPipeIndex = -1;
@@ -342,18 +354,18 @@
     save.best[selected] = Number.isFinite(previousBest) && previousBest >= 0
       ? Math.min(previousBest, run.moves)
       : run.moves;
-    save.unlocked = Math.max(save.unlocked, Math.min(30, selected + 2)); persist();
+    save.unlocked = Math.max(save.unlocked, Math.min(LEVELS.length, selected + 2)); persist();
     track("game_complete", { stage: selected + 1, turns: run.moves });
     track("waterway_restored", { turns: run.moves, hint_used: Boolean(run.hintUsed), undo_used: Boolean(run.undoUsed) });
     updateMainProgress();
-    $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+    $("resultText").textContent = resultCopy();
     $("resultMastery").textContent = masteryText();
     $("resultPreview").textContent = selected < LEVELS.length - 1
       ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
       : "";
     $("retry").disabled = false;
     $("resultStages").disabled = false;
-    $("next").disabled = selected >= 29;
+    $("next").disabled = selected >= LEVELS.length-1;
     [$("resultStages"), $("next"), $("retry")].forEach(button => button.classList.remove("primary"));
     const primaryAction = $("next").disabled ? $("resultStages") : $("next");
     primaryAction.classList.add("primary");
@@ -428,7 +440,7 @@
     if (syncFrame) sharedFrame?.activate("battle", {covered: open || !$('result').hidden});
   }
   function updateMainProgress() {
-    $("mainProgress").textContent = `${text("waterway", { n: Math.min(save.unlocked, 30) })} / 30`;
+    $("mainProgress").textContent = `${text("waterway", { n: Math.min(save.unlocked, LEVELS.length) })} / ${LEVELS.length}`;
   }
   function createFrameBridge() {
     const poster = "/assets/interface7-redrawn/animal-bamboo-pipes.webp";
@@ -506,7 +518,7 @@
     if (run) {
       $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
       $("stageName").textContent = text("waterway", { n: selected + 1 });
-      $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+      $("resultText").textContent = resultCopy();
       $("resultMastery").textContent = run.completed ? masteryText() : "";
       $("resultPreview").textContent = run?.completed && selected < LEVELS.length - 1
         ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
@@ -520,11 +532,11 @@
   function changeLocale(nextLocale) {
     if (!CODES.includes(nextLocale)) return;
     locale = nextLocale;
-    try {
+    if(!practiceRequested)try {
       localStorage.setItem("weightPlayLocale", locale);
       localStorage.setItem("wp-locale", locale);
     } catch {}
-    window.WonderI18n?.setLocale?.(locale);
+    if(!practiceRequested)window.WonderI18n?.setLocale?.(locale);
     applyLocale();
   }
   $("locale").onchange = event => changeLocale(event.target.value);
@@ -619,12 +631,22 @@
     renderBoard(hintedPipeIndex);
   };
   $("retry").onclick = () => { if (!claimResultAction()) return; track("result_replay", { from: "result" }); setResultOpen(false); __wpReplayStart(() => startStage("replay")); };
-  $("next").onclick = () => { if (selected >= 29 || !claimResultAction()) return; track("next_waterway_clicked", { from_waterway: selected + 1, to_waterway: selected + 2 }); setResultOpen(false); selected += 1; startStage("next"); };
+  $("next").onclick = () => { if (selected >= LEVELS.length-1 || !claimResultAction()) return; track("next_waterway_clicked", { from_waterway: selected + 1, to_waterway: selected + 2 }); setResultOpen(false); selected += 1; startStage("next"); };
   $("resultStages").onclick = () => { if (!claimResultAction()) return; track("return_to_waterways", { from: "result" }); setResultOpen(false); show("stage"); };
   applyLocale();
-  if ($("gameFrame") && window.mountBambooFrame) {
+  function mountFrame(){if (!sharedFrame && $("gameFrame") && window.mountBambooFrame) {
     sharedFrame = window.mountBambooFrame(createFrameBridge());
     stageUI = sharedFrame.stageUI;
     renderStages();
-  }
+  }}
+  if(practiceRequested){
+    $('start').disabled=true;
+    import('/src/game-local-practice.mjs').then(({LocalPractice})=>{
+      practiceAdapter=LocalPractice;
+      return LocalPractice.register({gameId:'animal-bamboo-pipes',stageIds:Array.from({length:60},(_,i)=>i+1),
+        enable(enabled){practiceActive=enabled;if(enabled){installAqueduct();save.unlocked=60;$('start').disabled=false;mountFrame();}else{selected=0;$('start').disabled=true;show('main');}},
+        startStage(id){if(practiceActive){selected=Number(id)-1;startStageInternal('practice');}}
+      });
+    }).then(ok=>{if(!ok)mountFrame();}).catch(()=>{practiceActive=false;mountFrame();});
+  }else mountFrame();
 })();

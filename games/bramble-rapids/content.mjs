@@ -5,6 +5,7 @@ export const PHYSICS = Object.freeze({
   waterSpeed: 12, currentSpeed: 15, acceleration: 5.5,
   lateralSpeed: 3.8, lateralAcceleration: 14, airLateralSpeed: 2.2,
   jumpImpulse: 6.2, gravity: 12, jumpBuffer: 0.18, coyoteTime: 0.14,
+  bankLimit: 0.96, bankReleaseInset: 0.06, bankSpeedMultiplier: 0.62,
   damageCooldown: 1.1, recoveryProtection: 1.3, recoveryPenalty: 3,
   maxEvents: 64, informationDistance: 42,
 });

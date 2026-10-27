@@ -4,6 +4,15 @@ const GAME_ID = 'animal-bounce-brawl';
 const POSTER = '/assets/interface7-redrawn/animal-bounce-brawl.webp';
 let THREE, importFailure;
 const engineReady = import('/games/animal-skyspire-drop/vendor/three/three.module.min.js').then(module => { THREE = module; }).catch(error => { importFailure = error; });
+// Chapter 2 remains closed until its data, localization, save/reward contract,
+// visual acceptance and real play have all been integrated and reviewed.
+const RELAY_CHAPTER_READY = false;
+let relayGateContact = null, relayGateHint = null, relayChapter = null, relayCandidatePromise = null;
+function prepareRelayCandidate(){
+  if(!RELAY_CHAPTER_READY)return Promise.resolve(false);
+  if(!relayCandidatePromise)relayCandidatePromise=import('./relay-chapter-candidate.mjs?v=20261027-bounce-relay-candidate3').then(module=>{relayGateContact=module.relayGateContact;relayGateHint=module.relayGateHint;relayChapter=module.RELAY_CHAPTER;return Array.isArray(relayChapter)&&relayChapter.length===30;}).catch(()=>false);
+  return relayCandidatePromise;
+}
   const COPY = {
     en: { hint: "Hold ◀/▶ to move closer, HOP to jump, then BOUNCE to strike.", help: "Battle help", tooFar: "Too far — move closer before the next bump.", approach: "Distance: {distance}px · {state}", ready: "BOUNCE ready", close: "Hold ◀/▶ to close", bestWins: "Best wins: {best}", selected: "Selected tool:", BUMP: "BUMP", SPRING: "SPRING", PAD: "PAD", HOP: "HOP", BOUNCE: "BOUNCE" },
     "zh-Hant": { hint: "按住 ◀/▶ 靠近對手，按「跳躍」起跳，再按「彈跳」撞擊。", help: "鬥場說明", tooFar: "距離太遠——請先靠近，再進行下一次撞擊。", approach: "距離：{distance}px・{state}", ready: "可以彈跳", close: "按住 ◀/▶ 靠近", bestWins: "最佳勝場：{best}", selected: "目前工具：", BUMP: "撞擊", SPRING: "彈簧", PAD: "泡棉墊", HOP: "跳躍", BOUNCE: "彈跳" },
@@ -155,7 +164,7 @@ const kits = [
   {name:'SPRING',damage:13,force:9,cooldown:.64,range:2.6,symbol:'↟',color:0x71cfe5},
   {name:'PAD',damage:28,force:4,cooldown:.92,range:2.15,symbol:'▣',color:0xeab3cf}
 ];
-const CHAPTER_SIZE = 30;
+const CHAPTER_SIZE = RELAY_CHAPTER_READY ? 60 : 30;
 const CHAPTER_KEYS=['pulse','magnet','predict','shield','armor','phase','boss','charged','pulseHint','magnetHint','predictHint','shieldHint','phaseHint','boss5','boss10','boss15','boss20','boss25','boss30','chapter','complete'];
 const CHAPTER_COPY={
  en:['Pulse','Magnet','Forecast','Core shield','First armor','Phase','Boss','Core charged','A ring is coming. Dodge through it or move outside.','Magnetic pull! Dodge outward before the charge.','The lane predicts your movement. Change direction after it locks.','Take a cyan spring core, then hit to open the blue shield.','Phase 2: pulse, pull and shield. Watch each warning.','Twinwind','Bellwarden','Lodestar','Mirror Marshal','Coilgate','Clockwork Crown','Workshop Circuit','Chapter complete'],
@@ -175,9 +184,9 @@ const CHAPTER_COPY={
 const chapterText=key=>(CHAPTER_COPY[locale]||CHAPTER_COPY.en)[CHAPTER_KEYS.indexOf(key)];
 const NAMES_EN=['Warm-up','Spring lanes','Moving bumpers','Tight corners','Twinwind','First armor','Pulse lesson','Bumper waves','Charged ripples','Bellwarden','Magnetic drift','Corner magnet','Moving attraction','Wave and pull','Lodestar','Lead pursuit','Crossing forecast','Predicted ripple','Covered reversal','Mirror Marshal','Core shield','Shield ripples','Charged escape','Moving shield lanes','Coilgate','Field workshop','Guarded forecast','Charged field','Last rehearsal','Clockwork Crown'];
 const NAMES_ZH=['熱身','彈簧通道','移動泡棉柱','狹窄轉角','雙簧隊長','初遇裝甲','脈衝初響','泡棉波道','蓄能漣漪','鈴波守衛','磁流試煉','轉角磁場','流動牽引','波流交錯','引星統領','預判追獵','交叉預判','預判波紋','掩體折返','鏡面元帥','核心護盾','護盾波流','蓄能脫離','流動盾道','簧核門將','場域工坊','裝甲預判','蓄能場域','終局前奏','時律王冠'];
-function stageName(index){const e=ENCOUNTERS[index];if(e.boss)return chapterText(`boss${index+1}`);if(locale==='en')return NAMES_EN[index];if(locale==='zh-Hant')return NAMES_ZH[index];if(locale==='zh-Hans')return index<4?stageCopy.cards[index][1]:`${chapterText(e.type||'armor')} ${index+1}`;if(index<4)return stageCopy.cards[index][1];return `${chapterText(e.type||'armor')} ${index+1}`;}
+function stageName(index){const e=ENCOUNTERS[index];if(index>=30){const row=relayChapter?.[index-30];return locale==='en'&&row?.nameEn?row.nameEn:locale==='zh-Hant'&&row?.nameZh?row.nameZh:stageLabel(index);}if(e.boss)return chapterText(`boss${index+1}`);if(locale==='en')return NAMES_EN[index];if(locale==='zh-Hant')return NAMES_ZH[index];if(locale==='zh-Hans')return index<4?stageCopy.cards[index][1]:`${chapterText(e.type||'armor')} ${index+1}`;if(index<4)return stageCopy.cards[index][1];return `${chapterText(e.type||'armor')} ${index+1}`;}
 function stageLabel(index){return stageCopy.cards[0][0].replace(/1/,String(index+1));}
-function stageLesson(index){const e=ENCOUNTERS[index];return e.chargedShield?chapterText('shieldHint'):e.magnet?chapterText('magnetHint'):e.predict?chapterText('predictHint'):e.pulse?chapterText('pulseHint'):LESSON[Math.min(index,5)];}
+function stageLesson(index){const e=ENCOUNTERS[index];if(index>=30)return relayGateHint?.(locale)||t('goal');return e.chargedShield?chapterText('shieldHint'):e.magnet?chapterText('magnetHint'):e.predict?chapterText('predictHint'):e.pulse?chapterText('pulseHint'):LESSON[Math.min(index,5)];}
 // Thirty authored records. Data drives the same fixed simulation at every viewport.
 const ENCOUNTERS = [
   {hp:80,speed:1.25,windup:1.15,recover:1.35,damage:9,color:0x60bca5},
@@ -211,6 +220,9 @@ const ENCOUNTERS = [
   {hp:185,speed:1.8,windup:1.1,recover:2,damage:13,predict:true,double:true,armored:true,type:'predict',pads:[[-2.6,0],[2.6,0]],cover:[[0,-2.4],[0,2.4]],color:0xcbb890},
   {hp:280,speed:1.6,windup:1.2,recover:2,damage:13,predict:true,armored:true,final:true,boss:30,type:'armor',pads:[[-2.6,-1.8],[2.6,1.8]],bumpers:[[0,0]],color:0xf1cd82}
 ];
+// This loader remains unreachable until all readiness gates are complete. It
+// consumes the authored records rather than manufacturing stage numbers.
+if(RELAY_CHAPTER_READY){if(!await prepareRelayCandidate())throw Error('RELAY_CHAPTER_UNAVAILABLE');ENCOUNTERS.push(...relayChapter.map(row=>row.encounter));}
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const safeRead=(key,fallback)=>{try{return localStorage.getItem(key)??fallback;}catch{return fallback;}};
 let storageOK=true;
@@ -290,6 +302,7 @@ function notice(message,seconds=1.4){state.notice=message;state.noticeTime=secon
 function actorState(x,z,hp){return {x,z,hp,max:hp,vx:0,vz:0,faceX:1,faceZ:0,cooldown:0,dodge:0,dodgeCD:0,swing:0,hitDone:false,hit:0,wallCD:0,wallCredit:0,padCD:0,boost:0,shieldBreak:0,sequence:0,finalPhase:false,pulseHits:[false,false],phase:'approach',phaseTime:2,chargeHit:false,chain:0};}
 async function startArena(arena=1,practice=false){
   if(state.mode==='loading')return;
+  if(arena>30&&(!RELAY_CHAPTER_READY||!await prepareRelayCandidate()||!ENCOUNTERS[arena-1]?.relayGates))return;
   show('battle');state.mode='loading';state.arena=arena;state.practice=practice;state.tool=0;state.elapsed=0;state.hits=0;state.attempts=0;state.damageTaken=0;state.combo=0;state.comboTimer=0;state.freeze=0;state.settle=0;state.pendingResult=null;state.coachStep=arena===1||practice?0:3;state.noticeTime=0;window.ShowResultGet?.(GAME_ID,false);
   $('render-error').hidden=true;$('battle-content').inert=false;
   $('hit-numbers').replaceChildren();$('tutorialPanel').getAnimations().forEach(animation=>animation.cancel());
@@ -333,7 +346,7 @@ function dodge(){
   let d=direction();if(Math.hypot(d.x,d.z)<.1){const r=state.rival,dist=Math.hypot(r.x-p.x,r.z-p.z)||1;d={x:-(r.z-p.z)/dist,z:(r.x-p.x)/dist};}
   p.vx=d.x*12;p.vz=d.z*12;p.dodge=.27;p.dodgeCD=1.4;p.swing=0;state.coachStep=Math.max(3,state.coachStep);sound('movement.dash');
 }
-function encounterRules(){const e=ENCOUNTERS[state.arena-1];return e.final&&state.rival.finalPhase?{...e,pulse:true,magnet:true,double:true,chargedShield:true,armored:false}:e;}
+function encounterRules(){const e=ENCOUNTERS[state.arena-1];return (e.final||e.relayFinal)&&state.rival.finalPhase?{...e,pulse:true,magnet:true,double:true,chargedShield:true,armored:false}:e;}
 function beginCharge(r,e,duration=e.windup){const p=state.player,lead=e.predict?.38:0,dx=p.x+p.vx*lead-r.x,dz=p.z+p.vz*lead-r.z,d=Math.hypot(dx,dz)||1;r.phase='windup';r.phaseTime=duration;r.aimX=dx/d;r.aimZ=dz/d;r.startX=r.x;r.startZ=r.z;r.vx=0;r.vz=0;}
 function contact(){
   const p=state.player,r=state.rival,kit=kits[state.tool],distance=Math.hypot(r.x-p.x,r.z-p.z);
@@ -357,7 +370,7 @@ function hurt(damage,dx,dz){
 function step(dt){
   if(state.mode==='settling'){state.settle=Math.max(0,state.settle-dt);world.update(dt);if(state.settle<=0)finish(...state.pendingResult);return;}
   const p=state.player,r=state.rival,e=encounterRules();
-  if(e.final&&!r.finalPhase&&r.hp<=r.max/2){r.finalPhase=true;r.phase='phaseShift';r.phaseTime=1.2;r.vx=0;r.vz=0;notice(chapterText('phaseHint'),2.5);world.impact(r.x,1,r.z,0xa7edee,30);}
+  if((e.final||e.relayFinal)&&!r.finalPhase&&r.hp<=r.max/2){r.finalPhase=true;r.phase='phaseShift';r.phaseTime=1.2;r.vx=0;r.vz=0;notice(chapterText('phaseHint'),2.5);world.impact(r.x,1,r.z,0xa7edee,30);}
   state.elapsed+=dt;state.comboTimer=Math.max(0,state.comboTimer-dt);state.noticeTime=Math.max(0,state.noticeTime-dt);
   if(state.held)attack();
   const d=direction();if(Math.hypot(d.x,d.z)>.2)state.coachStep=Math.max(1,state.coachStep);
@@ -382,12 +395,15 @@ function step(dt){
   if(r.phase!=='charge'){r.vx*=Math.exp(-5*dt);r.vz*=Math.exp(-5*dt);}
   // Fast charge motion is substepped at 120Hz; colliders and visible floor agree.
   for(const a of [p,r]){
+    const oldX=a.x,oldZ=a.z;
     a.x+=a.vx*dt;a.z+=a.vz*dt;a.shieldBreak=Math.max(0,a.shieldBreak-dt);
     a.cooldown=Math.max(0,a.cooldown-dt);a.dodge=Math.max(0,a.dodge-dt);a.dodgeCD=Math.max(0,a.dodgeCD-dt);a.hit=Math.max(0,a.hit-dt);a.wallCD=Math.max(0,a.wallCD-dt);a.wallCredit=Math.max(0,a.wallCredit-dt);a.padCD=Math.max(0,a.padCD-dt);a.boost=Math.max(0,a.boost-dt);
     const limit=e.bounds||3.9;let rebound=0;
+    const relayHit=RELAY_CHAPTER_READY&&a===r&&e.relayGates&&relayGateContact?relayGateContact({gates:e.relayGates,phase:r.phase,oldX,oldZ,newX:a.x,newZ:a.z,wall:limit}):null;
     if(Math.abs(a.x)>limit){a.x=clamp(a.x,-limit,limit);rebound=Math.abs(a.vx);a.vx*=-.6;}
     if(Math.abs(a.z)>4.45){a.z=clamp(a.z,-4.45,4.45);rebound=Math.max(rebound,Math.abs(a.vz));a.vz*=-.6;}
-    if(rebound>4&&a.wallCD<=0&&a.wallCredit>0){a.wallCD=.65;a.wallCredit=0;if(a===r){a.hp=Math.max(0,a.hp-7);damageNumber(a,7,'');world.impact(a.x,.5,a.z,0xf5dc97,8);sound('impact.soft');}else hurt(4,0,0);}
+    if(relayHit){a.x=(relayHit.side==='L'?-1:1)*limit;a.z=relayHit.z;a.vx=0;a.vz=0;a.phase='recover';a.phaseTime=relayHit.recovery;a.chain=0;a.wallCredit=0;a.wallCD=.65;a.hp=Math.max(0,a.hp-relayHit.damage);if(e.chargedShield)a.shieldBreak=Math.max(a.shieldBreak,relayHit.shieldBreak);damageNumber(a,relayHit.damage,'');world.impact(a.x,.5,a.z,0x9ce9f3,8);sound('impact.soft');notice(t('opening'));}
+    else if(rebound>4&&a.wallCD<=0&&a.wallCredit>0){a.wallCD=.65;a.wallCredit=0;if(a===r){a.hp=Math.max(0,a.hp-7);damageNumber(a,7,'');world.impact(a.x,.5,a.z,0xf5dc97,8);sound('impact.soft');}else hurt(4,0,0);}
     if(a===p)(e.pads||[]).forEach(([x,z])=>{if(Math.hypot(a.x-x,a.z-z)<.85&&a.padCD<=0){a.padCD=1.5;a.boost=2;world.impact(x,.2,z,0x9ce9f3,8);sound('movement.jump');}});
     for(const obstacle of world.obstacles){const ox=a.x-obstacle.position.x,oz=a.z-obstacle.position.z,dist=Math.hypot(ox,oz)||.01,min=obstacle.userData.radius+.6;if(dist<min){const nx=ox/dist,nz=oz/dist;a.x=obstacle.position.x+nx*min;a.z=obstacle.position.z+nz*min;a.vx+=nx*4*dt;a.vz+=nz*4*dt;}}
   }
@@ -411,6 +427,7 @@ function syncHUD(){
   $('strike-button').setAttribute('aria-label',`${t('attack')} · ${p.cooldown>0?t('wait'):ready?t('ready'):t('move')}`);
   $('combo-cue').textContent=p.boost>0?`⚡ ${chapterText('charged')}`:state.combo>=2&&state.comboTimer>0?`${state.combo} × ${t('combo')}`:'';
   const danger=['windup','charge','pulseWindup','pulse','magnet','phaseShift'].includes(r.phase);let coach=r.phase==='phaseShift'?chapterText('phaseHint'):r.phase.startsWith('pulse')?chapterText('pulseHint'):r.phase==='magnet'?chapterText('magnetHint'):danger?t('danger'):state.noticeTime>0?state.notice:r.phase==='recover'?t('opening'):state.coachStep===0?t('coachMove'):state.coachStep===1?t('coachHit'):state.coachStep<3?t('coachDodge'):stageLesson(state.arena-1);
+  if(RELAY_CHAPTER_READY&&e.relayGates&&relayGateHint&&r.phase==='approach'&&state.noticeTime<=0)coach=relayGateHint(locale);
   if($('tutorialPanel').textContent!==coach){$('tutorialPanel').textContent=coach;$('tutorialPanel').getAnimations().forEach(animation=>animation.cancel());$('tutorialPanel').animate([{opacity:.5},{opacity:1}],{duration:motionQuery.matches?80:140});}$('tutorialPanel').dataset.danger=String(danger);
 }
 function tick(now){
@@ -442,7 +459,7 @@ function damageNumber(actor,value,kind){if(!world)return;const element=document.
 /* REALTIME_3D — one scene owns every GPU object, observer and effect. */
 class ArenaWorld{
   constructor(canvas,encounter){
-    this.resources=new Set();this.materials=new Map();this.encounter=encounter;this.obstacles=[];this.pads=[];this.effects=[];this.time=0;this.disposed=false;
+    this.resources=new Set();this.materials=new Map();this.encounter=encounter;this.obstacles=[];this.pads=[];this.effects=[];this.relayIndicators=[];this.time=0;this.disposed=false;
     try{
       this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'low-power'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.15;
       this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -485,6 +502,7 @@ class ArenaWorld{
     for(let i=-3;i<=3;i++){this.block(scene,[0xe9ac76,0x79c7c4,0xbd9bc8][(i+3)%3],i*2.4,3.3,-8.8,1.5,1.1,.18);this.block(scene,0x263b52,i*2.4,2.2,-8.9,.12,4.4,.12);}
     for(const x of [-7.7,7.7]){this.block(scene,0x223a56,x,1.2,-3,1.3,2.8,1.2);this.block(scene,e.color,x,2.7,-3,1.55,.22,1.45);this.block(scene,0xffe6ae,x,3,-3,.8,.35,.8);this.block(scene,0x1f354b,x,-1.9,2,1.8,.6,7);}
     (e.pads||[]).forEach(([x,z])=>{const group=new THREE.Group();group.position.set(x,.05,z);this.block(group,0x27798a,0,0,0,1.35,.12,1.35);this.block(group,0x9be7e5,0,.08,0,.9,.07,.9);this.block(group,0x285f75,0,.13,0,.14,.04,.7);this.block(group,0x285f75,0,.13,0,.7,.04,.14);scene.add(group);this.pads.push(group);});
+    if(RELAY_CHAPTER_READY&&Array.isArray(e.relayGates))for(const gate of e.relayGates){const side=gate.side==='L'?-1:1,x=side*(e.bounds||3.9);for(const z of [gate.z-.9,gate.z+.9])this.block(scene,0x21cac6,x,1,z,.3,1.8,.25);this.block(scene,0xffb83b,x,1.88,gate.z,.34,.22,2);this.block(scene,0x16c8ca,x-side*.55,.04,gate.z,1.1,.04,.24);this.block(scene,0x18566d,x-side*.05,.95,gate.z,.12,1.1,1.35);this.relayIndicators.push(this.block(scene,0xffb83b,x-side*.14,.95,gate.z,.14,.24,1.2));}
     [...(e.bumpers||[]),...(e.cover||[])].forEach(([x,z],i)=>{const group=new THREE.Group();group.position.set(x,0,z);group.userData={radius:e.cover?.length ? .8 : .65,baseX:x,baseZ:z,moving:!!e.bumpers,index:i};this.block(group,0x35485f,0,.15,0,1.5,.3,1.5);this.block(group,e.color,0,.8,0,1.2,1.2,1.2);this.block(group,0xe5dac8,0,1.43,0,1.3,.12,1.3);scene.add(group);this.obstacles.push(group);});
     if(e.bounds){for(const x of [-4.2,4.2])this.block(scene,0xe8ba80,x,.6,0,.4,1.2,9.5);}
   }
@@ -537,6 +555,7 @@ class ArenaWorld{
     if(isHero){this.range.position.x=a.x;this.range.position.z=a.z;this.range.visible=state.mode==='playing'&&a.cooldown<=0;}
   }
   render(){if(this.disposed||!state.player)return;this.pose(this.hero,state.player,true);this.pose(this.rival,state.rival,false);const r=state.rival;
+    for(const signal of this.relayIndicators)signal.material=this.mat(r.phase==='windup'||r.phase==='charge'?0xffec78:0xffb83b);
     this.danger.visible=state.mode==='playing'&&(r.phase==='windup'||r.phase==='charge');if(this.danger.visible){const bx=this.encounter.bounds||3.9,sx=r.phase==='windup'?r.x:r.startX,sz=r.phase==='windup'?r.z:r.startZ;const edgeX=Math.abs(r.aimX)>.001?((r.aimX>0?bx:-bx)-sx)/r.aimX:99;const edgeZ=Math.abs(r.aimZ)>.001?((r.aimZ>0?4.45:-4.45)-sz)/r.aimZ:99;const length=Math.max(.2,Math.min(5.2,edgeX,edgeZ));this.danger.scale.z=length;this.danger.position.set(sx+r.aimX*length/2,.06,sz+r.aimZ*length/2);this.danger.rotation.y=Math.atan2(r.aimX,r.aimZ);this.dangerMat.opacity=r.phase==='charge'?.6:motionQuery.matches?.4:.28+(Math.sin(this.time*12)+1)*.08;}
     const e=encounterRules();if(this.crown)this.crown.material=r.finalPhase?this.phaseMat:this.mat(0xecb75d);this.shield.visible=state.mode==='playing'&&!!e.chargedShield&&r.shieldBreak<=0;this.shield.position.set(r.x,1.2,r.z);this.shield.rotation.y=this.time*.35;
     this.magnetRing.visible=r.phase==='magnet';this.magnetRing.position.set(r.x,.11,r.z);

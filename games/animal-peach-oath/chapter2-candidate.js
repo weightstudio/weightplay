@@ -68,9 +68,9 @@ function chapterTwoWave(stage,wave,C,makeUnit){
 function createSignalCombat(stage,heroes,enemies,spawnEnemy=null){
  if(!Number.isInteger(stage)||stage<31||stage>60)return null;
  if(!Array.isArray(heroes)||!Array.isArray(enemies))throw TypeError('INVALID_COMBAT_UNITS');
- let seals=3,time=0,units=heroes,foes=enemies,active=true,bossState=null;const channels=new Map(),links=new Map(),boosts=new Map(),guards=new Map(),events=[];
+ let seals=3,time=0,units=heroes,foes=enemies,active=true,bossState=null,eventSeq=0;const channels=new Map(),links=new Map(),boosts=new Map(),guards=new Map(),events=[];
  const living=u=>u&&u.hp>0,role=u=>u?.data?.chapterRole;
- const event=(type,actor,target)=>{events.push({type,actor:actor?.key||null,target:target?.key||null,time});if(events.length>256)events.shift();};
+ const event=(type,actor,target)=>{events.push({seq:++eventSeq,type,actor:actor?.key||null,target:target?.key||null,time});if(events.length>256)events.shift();};
  function add(roleName,extra={}){if(typeof spawnEnemy!=='function')throw TypeError('BOSS_SPAWN_ADAPTER_REQUIRED');const unit=spawnEnemy(roleName,foes.length,extra);if(!unit||!unit.key||foes.some(u=>u.key===unit.key))throw TypeError('INVALID_BOSS_SPAWN');foes.push(unit);if(['medic','drummer','sapper'].includes(role(unit)))channels.set(unit.key,{wait:2,target:null,remaining:0});event('spawn',unit,null);return unit;}
  function initialize(){
   channels.clear();links.clear();boosts.clear();guards.clear();bossState=null;for(const unit of foes)if(['medic','drummer','sapper'].includes(role(unit)))channels.set(unit.key,{wait:2,target:null,remaining:0});
@@ -121,7 +121,7 @@ function createSignalCombat(stage,heroes,enemies,spawnEnemy=null){
  }
  function attack(actor,target,amount){if(!active||!living(actor))return null;const multiplier=boosts.get(actor.key)||1;boosts.delete(actor.key);return hit(target,Math.round(amount*multiplier));}
  function nextWave(nextHeroes,nextEnemies){if(!Array.isArray(nextHeroes)||!Array.isArray(nextEnemies))throw TypeError('INVALID_COMBAT_UNITS');units=nextHeroes;foes=nextEnemies;initialize();}
- initialize();return Object.freeze({tick,order,attack,nextWave,setActive:value=>{active=Boolean(value)},snapshot:()=>({seals,time,active,events:events.map(x=>({...x})),channels:[...channels].map(([key,c])=>({key,wait:c.wait,target:c.target?.key||null,remaining:c.remaining}))})});
+ initialize();return Object.freeze({tick,order,attack,nextWave,setActive:value=>{active=Boolean(value)},snapshot:()=>({seals,time,active,events:events.map(x=>({...x})),channels:[...channels].map(([key,c])=>({key,wait:c.wait,target:c.target?.key||null,remaining:c.remaining})),wardLinks:wardens().map(w=>({key:w.key,target:wardTarget(w)?.key||null,active:time>=(links.get(w.key)||0)})),bossChannel:bossState?.channel?{key:bossState.boss.key,target:bossState.channel.target.key,kind:bossState.channel.kind,remaining:bossState.channel.remaining}:null})});
 }
 window.PEACH_OATH_CHAPTER2_CANDIDATE=Object.freeze({ready:false,chapterTwoDesign,chapterTwoActor,chapterTwoWave,createSignalCombat});
 })();

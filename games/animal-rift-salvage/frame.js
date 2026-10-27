@@ -55,7 +55,14 @@
 
     const battleDetails = document.createElement("div");
     battleDetails.className = "wp-rift-battle-details";
-    battleDetails.append(byId("zoneLabel").parentElement, byId("battleStatus"));
+    for (const label of byId("battleStatus").querySelectorAll("b")) {
+      const text = document.createElement("span");
+      for (const attribute of label.attributes) text.setAttribute(attribute.name, attribute.value);
+      text.textContent = label.textContent;
+      label.replaceWith(text);
+    }
+    battleDetails.append(byId("zoneLabel").parentElement, ...byId("battleStatus").children);
+    byId("battleLive").append(battleDetails);
 
     const frame = window.WeightPlayScreenFrame.mount({
       root,
@@ -68,14 +75,13 @@
           root: battle,
           header: battleHeader,
           content: byId("battleLive"),
+          headerInfo: battleDetails,
         },
       },
     });
 
     const stageGroup = window.WeightPlayScreenFrame.createGroup().add(stageMeta);
     frame.stageTopUI.clear().add(stageGroup);
-    const battleGroup = window.WeightPlayScreenFrame.createGroup().add(battleDetails);
-    frame.battleTopUI.clear().add(battleGroup);
 
     const tabs = [byId("zonesTab"), byId("observatoryTab")];
     for (const [index, button] of tabs.entries()) {
