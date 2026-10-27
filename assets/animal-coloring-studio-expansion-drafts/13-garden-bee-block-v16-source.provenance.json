@@ -1,0 +1,12 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17ba3-025e-7790-ba5d-2fe747e32112",
+  "created": "2026-10-27",
+  "method": "built-in image_gen precise-object-edit",
+  "file": "13-garden-bee-block-v16-source.png",
+  "sourceSha256": "7c8610a27acc603e30d83b73c211f932c29bf13f08440ac573e398954e05ee81",
+  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17ba3-025e-7790-ba5d-2fe747e32112/exec-d157eb2b-d49f-408b-92fa-48428ff76ebc.png",
+  "references": ["assets/animal-coloring-studio-expansion-drafts/13-garden-bee-block-v15-source.png", "assets/weightplay-character-boom-mane-lion-block-v1.webp"],
+  "prompt": "Use case: precise-object-edit. Create a revised original children's black-and-white coloring page from Image 1; Image 2 is the official WeightPlay block-animal geometric construction and character-expressiveness reference only, not a lion to copy. Maintain the same single friendly square-headed bee hovering above one single flower in a portrait rectangular page. Make three deliberate changes together: (1) make the bee abdomen read as a sequence of three distinct joined rectangular block segments with visible broad top and side planes and bold unmistakable black bee bands; keep wing and leg connections clearly readable; (2) give this bee a memorable gardener identity with one large simple outlined leaf-shaped badge placed fully INSIDE a large unstriped face of the abdomen, separated from every stripe, wing, leg and other outline by a generous white gap; the badge itself is one large closed colorable region, no small decorations; (3) shrink the bee and flower composition slightly and center it, leaving at least 8% of page width as clean white space between every part of either subject and the rectangular frame, including right wing and tail. Keep both separate antennae, the cuboid forelock, warm expressive eyes and smile, two broad wings and three distinct block feet; keep the single five-petal flower, broad petal interiors, stem and two leaves. Bold crisp continuous black contours on pure white, generous simple closed paintable areas; no grayscale, color, shading, hatching, texture, gradient, extra objects, text, logo, watermark, cropped anatomy or overlapping dangling accessories. Do not render a filled example; this is original line art for a children's coloring app.",
+  "remaining": "Independent source-specific Art review, border-distance measurement, semantic region decisions, exact 768x1152 production mask verification, mobile touch and in-game play."
+}

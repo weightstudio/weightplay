@@ -1,4 +1,8 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "orbit-menders": {
+    "en": "Orbit Menders",
+    "zh-Hant": "方塊星途：重力修復隊"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

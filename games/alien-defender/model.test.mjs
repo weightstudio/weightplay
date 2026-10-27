@@ -13,8 +13,8 @@ const skin=buySkin(store,legacy,wallet);assert(skin.ok);assert.equal(diamonds,5)
 assert.equal(buySkin(store,{...legacy,skin:false},wallet).reason,'funds');
 const throwing={read:()=>({diamonds:50}),spendDiamonds:()=>{throw Error('wallet quota');}};assert.equal(buySkin(store,legacy,throwing).ok,false);assert.equal(loadProgress(store).skin,false);
 store.setItem(SAVE_KEY,'{bad');assert.equal(loadProgress(store).unlocked,26);
-const w=createWorld(1);w.status='won';w.score=123;w.credits=25;const settled=settle(store,loadProgress(memory()),w);assert(settled.ok);assert.equal(settled.next.unlocked,2);assert.equal(settled.earned,113);assert.equal(settle(store,settled.next,w).reason,'duplicate');
-const loss=createWorld(7);loss.status='lost';loss.credits=15;assert.equal(settle(memory(),legacy,loss).next.unlocked,26);
+const resultStore=memory(),w=createWorld(1);w.status='won';w.score=123;w.credits=25;const settled=settle(resultStore,loadProgress(resultStore),w);assert(settled.ok);assert.equal(settled.next.unlocked,2);assert.equal(settled.earned,113);assert.equal(settle(resultStore,settled.next,w).reason,'duplicate');
+const lossStore=memory();assert(saveProgress(lossStore,legacy));const loss=createWorld(7);loss.status='lost';loss.credits=15;const lost=settle(lossStore,loadProgress(lossStore),loss);assert(lost.ok);assert.equal(lost.next.unlocked,26);
 const relay=createWorld(20);const boss=relay.enemies[0];const old=boss.hp;relay.pulse=6;assert(usePulse(relay));assert.equal(boss.hp,old);assert.equal(relay.pulse,0);assert.equal(usePulse(relay),false);
 for(const e of relay.enemies)if(e.kind==='relay')e.hp=0;relay.pulse=6;usePulse(relay);assert.equal(boss.hp,old-5);
 const damage=createWorld(1);damage.invulnerable=0;damage.hostile=[{x:50,y:.83,vx:0,vy:1}];step(damage,.03);assert.equal(damage.shield,0);assert.equal(damage.lives,4);damage.hostile=[{x:50,y:.83,vx:0,vy:1}];step(damage,.03);assert.equal(damage.lives,4);

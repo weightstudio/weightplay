@@ -1,0 +1,12 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17ba3-025e-7790-ba5d-2fe747e32112",
+  "created": "2026-10-27",
+  "method": "built-in image_gen precise-object-edit",
+  "file": "13-garden-bee-block-v14-source.png",
+  "sourceSha256": "0669936062a474073ff604132140f744124ca32b8ef1ac3c14f8f1bd269fb0e9",
+  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17ba3-025e-7790-ba5d-2fe747e32112/exec-95c51c8e-5483-4b2c-bdd0-1edae52d8886.png",
+  "references": ["assets/animal-coloring-studio-expansion-drafts/13-garden-bee-block-v13-source.png", "assets/weightplay-character-boom-mane-lion-block-v1.webp"],
+  "prompt": "Use case: precise-object-edit. Asset type: original children's coloring page, print-clean black ink on white, portrait. Image 1 is the exact edit target. Image 2 is solely the WeightPlay block-animal geometry and expressive-face style reference, not a character or composition to copy. In Image 1 make one targeted change: redesign the bee's forehead quiff as a recognizable asymmetrical two-step square fringe contained entirely inside the upper front face, below the top face boundary and above the eyebrows; keep generous white space between the fringe and each antenna, and do not let it touch either antenna or wing. Make the fringe one large enclosed shape rather than several tiny regions. Preserve everything else in Image 1: the square bee head, eye expression, two complete separate antennae, both angular wings, solid abdomen stripes, all three separated cuboid feet, the complete flower, layout, border, camera angle, proportions and margin. Closed broad black outlines around large white fillable areas, flat clean black and white only; no grey, hatch, shadow, texture, text, watermark or added props. Preserve clear white space between bee and flower and avoid accidental connected contours. This is an editable coloring page, not a filled illustration.",
+  "remaining": "Independent source-specific Art review, semantic region decisions, background exclusion, exact 768x1152 production mask verification, mobile touch and in-game play."
+}

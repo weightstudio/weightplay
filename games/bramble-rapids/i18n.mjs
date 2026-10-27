@@ -59,7 +59,7 @@ const rows = [
  ['replay','Replay','重玩','重玩','もう一度','다시 하기','Repetir','Jogar de novo','Rejouer','Wiederholen','Rigioca','Повторить','फिर खेलें','أعد اللعب'],
  ['backMain','Back to Main','返回主畫面','返回主画面','メインに戻る','메인으로','Volver al inicio','Voltar ao início','Retour à l’accueil','Zur Startseite','Torna all’inizio','На главный экран','मुख्य स्क्रीन पर','العودة للرئيسية'],
  ['backStages','Back to Stages','返回關卡','返回关卡','ステージに戻る','스테이지로','Volver a etapas','Voltar às fases','Retour aux étapes','Zu den Etappen','Torna alle tappe','К этапам','चरणों पर लौटें','العودة للمراحل'],
- ['help','How to Play','玩法說明','玩法说明','遊び方','게임 방법','Cómo jugar','Como jogar','Comment jouer','Spielanleitung','Come giocare','Как играть','कैसे खेलें','كيفية اللعب'],
+ ['help','How to Play','玩法說明','玩法说明','遊び方','게임 방법','Cómo jugar','Como jogar','Comment jouer','Hilfe','Come giocare','Как играть','कैसे खेलें','كيفية اللعب'],
  ['rank','Place','名次','名次','順位','순위','Puesto','Posição','Place','Platz','Posizione','Место','स्थान','المركز'],
  ['stability','Stability','穩定度','稳定度','安定度','안정도','Estabilidad','Estabilidade','Stabilité','Stabilität','Stabilità','Устойчивость','स्थिरता','الثبات'],
  ['time','Time','時間','时间','タイム','시간','Tiempo','Tempo','Temps','Zeit','Tempo','Время','समय','الوقت'],

@@ -2,7 +2,7 @@ import {COPY} from './locales.js';
 import {UPDATES} from './copy-updates.js';
 import {createWorld,step,stageConfig,TOTAL_STAGES} from './model.js';
 import {BattleScene} from './scene.js';
-import {loadProgress,buyUpgrade,buySkin,settle,UPGRADES,upgradeCost} from './progress.js';
+import {loadProgress,buyUpgrade,buySkin,settle,UPGRADES,upgradeCost} from './progress.js?v=20261027-alien-result-save-candidate2';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STORM_COPY} from './stormway-copy.js';
 import {driveBlocked} from './stormway.js';

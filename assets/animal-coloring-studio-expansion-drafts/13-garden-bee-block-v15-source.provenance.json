@@ -1,0 +1,12 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17ba3-025e-7790-ba5d-2fe747e32112",
+  "created": "2026-10-27",
+  "method": "built-in image_gen precise-object-edit",
+  "file": "13-garden-bee-block-v15-source.png",
+  "sourceSha256": "a62f33c9b670fecd252569267af8102d62daa3dae884c596963dbd6567aa32cb",
+  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17ba3-025e-7790-ba5d-2fe747e32112/exec-62a8e7ce-0e19-4ce9-a43c-de6db32aac5f.png",
+  "references": ["assets/animal-coloring-studio-expansion-drafts/13-garden-bee-block-v14-source.png", "assets/weightplay-character-boom-mane-lion-block-v1.webp"],
+  "prompt": "Use case: precise-object-edit. Edit Image 1, a portrait black-and-white coloring page; Image 2 is only the original WeightPlay block-animal geometry style anchor. Change only the bee's current flat white zigzag forehead patch: remove it and replace it with a clearly three-dimensional, side-swept single cuboid forelock, with one broad front face and one top face, joined to the upper head surface. Its entire silhouette must be cleanly separated by an obvious white gap from both antenna stalks, both antenna cubes, both wings, and both eyebrows; no touching or crossing any of those contours. The top/front edge of the bee head must stay continuously readable around the forelock. Keep the two antennae complete and do not move them. Preserve the square face and expression, both wings, dark body stripes, all three cubic feet, single flower, frame and existing composition. Flat white paper and bold clean black outlines, broad individually closed fill areas; no shadows, gray, shading, colors, texture, patterns, text, watermarks, or extra objects. This is an original block-bee coloring page, not a colored illustration.",
+  "remaining": "Independent source-specific Art review, semantic region decisions, background exclusion, exact 768x1152 production mask verification, mobile touch and in-game play."
+}

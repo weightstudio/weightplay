@@ -1,0 +1,55 @@
+{
+  "gameId": "orbit-menders",
+  "manifestVersion": 1,
+  "createdAt": "2026-10-27",
+  "milestone": "M1",
+  "status": "implemented-unverified",
+  "artDirection": "Original WeightPlay Block Animals; ceramic workshop engineering, layered pangolin armor, stepped silhouettes",
+  "coordinateConvention": { "up": "+Y", "forward": "+Z", "unit": "approximately one meter" },
+  "provenance": {
+    "type": "original-procedural-geometry",
+    "source": "Owner supplied Orbit Menders design document v1.0 dated 2026-10-27",
+    "implementationTool": "Codex code generation through apply_patch",
+    "externalArt": false,
+    "imageGeneration": false,
+    "licenseStatus": "Original project-authored geometry. No claim of exclusive rights or name clearance. Repository ownership and applicable service terms govern generated source.",
+    "termsReview": "No external art or music licensed in this module; image-generation terms do not apply. Broader release rights review remains pending."
+  },
+  "resources": [
+    { "file": "art.mjs", "export": "createPangolin", "usage": "Player geometry and named procedural animation pivots", "dimensions": "Approximately 1.25 units tall, origin at feet", "state": "M1 geometry; animation integration and rendered inspection pending" },
+    { "file": "art.mjs", "export": "createPlanet", "usage": "Moss workshop spherical field; inset panels, ceramic equator, block trees and workshop", "dimensions": "Radius supplied by level field", "state": "M1 representative environment; six final world kits not complete" },
+    { "file": "art.mjs", "export": "makeAnchor", "usage": "Forked diamond gravity anchor", "dimensions": "Approximately 1.3 by 1.7 by 0.95 units", "state": "Geometry exposes gate/core for state changes; four-state validation pending" },
+    { "file": "art.mjs", "export": "makeTerminal", "usage": "Repair console", "dimensions": "Approximately 0.76 by 1.15 by 0.7 units", "state": "M1 geometry" },
+    { "file": "art.mjs", "export": "makeCheckpoint", "usage": "Safe checkpoint outlined landing square and flag", "dimensions": "Approximately 1.1 units square", "state": "M1 geometry" },
+    { "file": "art.mjs", "export": "makeArchive", "usage": "Repair archive collectible", "dimensions": "Approximately 0.5 by 0.61 by 0.2 units", "state": "M1 geometry; permanent ID and pickup transaction belong to level/save modules" },
+    { "file": "art.mjs", "export": "makeBridge", "usage": "Moving ceramic deck and readable edge rails", "dimensions": "Default 4 by 2.2 units; length on local Z; deck top local Y=0", "state": "Parent must bind platform collision and authored mechanism state to the same transform" },
+    { "file": "art.mjs", "export": "createDrone", "usage": "Three-leaf tool drone KouKou", "dimensions": "Approximately 1 unit span", "state": "M1 geometry; docking and pointing integration pending" }
+  ],
+  "runtimeDependency": {
+    "import": "./vendor/three.module.min.js",
+    "engine": "three@0.180.0",
+    "license": "MIT",
+    "source": "Repository-pinned upstream Three.js distribution; parent owns vendoring and license copy",
+    "referenceStatus": "Named procedural exports ready for GameAdapter integration"
+  },
+  "resourceOwnership": {
+    "cache": "Three shared geometries and a bounded palette material Map; no cached scenes or renderers",
+    "scene": "Each invocation creates a new Group. Parent collects and disposes unique owned geometries/materials and InstancedMesh resources after scene exit.",
+    "collision": "Main planet sphere is solid. Inset panels, equatorial trim, trees and workshop are declared decorative for M1. Final scenery-blocking acceptance remains pending. Bridge exposes a box descriptor."
+  },
+  "measurements": {
+    "sourceBytes": null,
+    "compressedTransferBytes": null,
+    "visibleTriangles": null,
+    "drawCalls": null,
+    "status": "not-measured; no browser/render/hardware evidence produced by this task"
+  },
+  "missingFinalAssets": ["Final six enemy kits", "Six Boss kits", "Final six world kits and scripted changes", "Cover and lobby poster", "UI illustrations", "Music tracks", "Final blueprint models", "All required animation states and transitions"],
+  "verification": {
+    "syntax": "not-run",
+    "renderedSilhouette": "not-run",
+    "animation": "not-run",
+    "collisionAgreement": "not-run",
+    "resources": "not-run"
+  }
+}

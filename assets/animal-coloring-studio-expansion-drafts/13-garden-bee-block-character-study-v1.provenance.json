@@ -1,0 +1,12 @@
+{
+  "status": "CHARACTER_STUDY_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17ba3-025e-7790-ba5d-2fe747e32112",
+  "created": "2026-10-27",
+  "method": "built-in image_gen generation with official block-animal visual reference",
+  "file": "13-garden-bee-block-character-study-v1.png",
+  "sourceSha256": "bae97d04c8dfce12603fa0e2f02a7dc8497e8eea37448a545d85817189b5b8d7",
+  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17ba3-025e-7790-ba5d-2fe747e32112/exec-555edc25-359c-4b16-8e62-4080b1f677c6.png",
+  "references": ["assets/weightplay-character-boom-mane-lion-block-v1.webp"],
+  "prompt": "Use case: stylized-concept. Asset type: original children's game character reference, full-body transparent cutout, not a page, not a logo. Image 1 is the official WeightPlay Block Animals visual anchor for craftsmanship, dimensional cube construction and warm expressive eyes only: create a wholly original friendly gardener bee, not a lion and not a copy of its costume. The bee has a distinct square golden head with a small side-swept blocky hair tuft, expressive eyebrows and a kind delighted smile; six clearly separated chunky cuboid legs in a lively hovering stance; an abdomen constructed from three distinct joined broad box modules with alternating warm honey-yellow and charcoal bee bands and readable three-dimensional top and side faces; two broad gently translucent softly faceted block-built wings; two separated antennae with cubic tips. Give the bee one unique, large green leaf-shaped gardener badge on a small cream square cuboid satchel, positioned on the side of the body so the badge, antennae, wings, legs and head remain clearly separated and individually readable. Keep the full silhouette comfortably inside the image with large transparent margins, suitable for eventual simplification into a coloring page with broad closed areas. Premium friendly family-game 3D render with clean soft studio lighting, polished matte materials, simple large forms and no tiny details. No background, frame, floor, flower, extra props, small decorative particles, third-party characters, logos, words, letters, numbers, text or watermark.",
+  "remaining": "Independent source-specific character review before any line-art conversion; transparency integrity and eventual age-fit region and touch review."
+}

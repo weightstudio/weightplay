@@ -380,7 +380,7 @@ ${stageDetails(race.stage).join('\n')}${phaseTargets(race.stage).length?'\n'+tr(
 function renderResult(){
   if(!race?.result)return;const r=race.result,saving=savingRuns.has(race);
   $('resultStage').textContent=`${tr('stage')} ${r.stageId} · ${stageName(r.stageId,locale)}`;text('resultTitle',r.won?'won':'lost');
-  const resultArt=r.won&&r.stageId===60?5:6+(r.won?Math.max(0,r.stars-1):0);
+  const resultArt=r.won?(r.stageId===60?5:6+Math.max(0,r.stars-1)):Math.max(0,BOARDS.findIndex(board=>board.id===race.boardId));
   $('resultArt').style.setProperty('--kit-x',`${resultArt%3*50}%`);
   $('resultArt').style.setProperty('--kit-y',`${Math.floor(resultArt/3)*50}%`);
   const best=!practiceRun&&store.persistedSnapshot.records[r.stageId]?.bestTime;

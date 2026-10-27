@@ -11,13 +11,16 @@ try{save=normalizeSave(readSavedProgress());}catch{storageOK=false;}
 // Session-only reporting; the shared ledger remains the sole reward owner.
 const launchKey='weightplayCollectionLaunchV1',excludedLaunchKeys=['preview','practice','trial','qa','test','lobbyPreview','lobby-preview'];
 function generalLaunch(){try{const q=new URLSearchParams(location.search);if(excludedLaunchKeys.some(k=>q.has(k)))return false;const marker=JSON.parse(sessionStorage.getItem(launchKey)||'null'),age=Date.now()-Number(marker?.launchedAt),path=location.pathname.replace(/\/+$/,'')+'/';return marker?.version===1&&marker.domain==='general'&&marker.gameId===GAME&&marker.path===path&&Number.isFinite(age)&&age>=0&&age<=8*60*60*1000;}catch{return false;}}
-const pendingClears=[];let rewardRound=null,pendingCollector=null;
-function flushClears(){try{const game=window.WonderAnalytics?.game;if(game?.supportsRewardEligibility!==true||game?.supportsSavedCompletionGate!==true||typeof game.start!=='function'||typeof game.end!=='function')return;if(game!==pendingCollector){pendingCollector=game;for(const item of pendingClears)item.started=false;}
- while(pendingClears.length){const item=pendingClears[0];if(!item.started){if(game.start({roundKey:item.key,stageId:item.stage,rewardEligible:true})==null)return;item.started=true;}if(game.end('win',item.stage,{saveSucceeded:true})!==true)return;pendingClears.shift();}
- }catch{/* Collector is optional and may become ready later. */}}
+const pendingClears=[];let rewardRound=null,flushingClears=false;
+// Read-only acknowledgement: end() confirms a lifecycle, not a Castle write.
+function stageReceipt(stage){try{const raw=localStorage.getItem('weightplayCastleV1');if(raw===null)return false;const ledger=JSON.parse(raw);if(!ledger||typeof ledger!=='object'||Array.isArray(ledger)||![1,2,3].includes(ledger.version)||(ledger.worldSchema!=null&&ledger.worldSchema!==1)||(ledger.completions!=null&&(!ledger.completions||typeof ledger.completions!=='object'||Array.isArray(ledger.completions))))return null;return Boolean(ledger.completions?.[`${GAME}:stage-${stage}`]);}catch{return null;}}
+function flushClears(){if(flushingClears||!generalLaunch())return;flushingClears=true;try{const game=window.WonderAnalytics?.game;if(game?.supportsRewardEligibility!==true||game?.supportsSavedCompletionGate!==true||typeof game.start!=='function'||typeof game.end!=='function')return;
+ for(const item of [...pendingClears]){if(!generalLaunch())return;const receipt=stageReceipt(item.stage);if(receipt===null)return;if(receipt){pendingClears.splice(pendingClears.indexOf(item),1);continue;}if(item.attempted)continue;item.attempted=true;if(game.start({roundKey:item.key,stageId:item.stage,rewardEligible:true})==null){item.attempted=false;return;}if(!generalLaunch())return;if(game.end('win',item.stage,{saveSucceeded:true})!==true)return;if(stageReceipt(item.stage)===true)pendingClears.splice(pendingClears.indexOf(item),1);}
+ }catch{/* Collector is optional and may become ready later. */}finally{flushingClears=false;}}
 function beginRewardRound(stage){rewardRound={stage,eligible:generalLaunch()};flushClears();}
-function finishRewardRound(win,saved){const round=rewardRound;rewardRound=null;if(win&&saved&&round?.eligible&&generalLaunch()&&Number.isInteger(round.stage)&&round.stage>=1&&round.stage<=ROUTES.length&&!pendingClears.some(x=>x.stage===round.stage))pendingClears.push({stage:round.stage,key:{},started:false});flushClears();}
+function finishRewardRound(win,saved){const round=rewardRound;rewardRound=null;if(win&&saved&&round?.eligible&&generalLaunch()&&Number.isInteger(round.stage)&&round.stage>=1&&round.stage<=ROUTES.length){const previous=pendingClears.find(x=>x.stage===round.stage);if(!previous)pendingClears.push({stage:round.stage,key:{},attempted:false});else if(previous.attempted){previous.key={};previous.attempted=false;}}flushClears();}
 window.addEventListener('weightplay:analytics-ready',flushClears);
+window.addEventListener('weightplay:castle-ready',flushClears);
 let screen='main',state=null,scene=null,stageController=null,selected=0,paused=false,overlayKind='',last=0,accumulator=0,raf=0;
 let stageSelection=save.unlocked-1;
 let modalReturnFocus=null;

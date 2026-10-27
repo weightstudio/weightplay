@@ -314,6 +314,28 @@ export class RapidsRenderer{
     const age=time-(node.userData.phaseAt??-100),weight=age>=0&&age<.22?1-age/.22:0;
     indicator.scale.setScalar(this.reduce?1:1+.14*Math.sin(weight*Math.PI));indicator.children[2].visible=this.reduce&&weight>0;
   }
+  updateBridgeFeedback(node,time){
+    const f=node.userData.feature,low=f.tidal&&tideLabel(time)==='early';
+    node.userData.bridgeDeck.position.y=2.5+(low?f.lowClearance:f.clearance);
+    const indicator=node.userData.heightIndicator;if(!indicator)return;
+    if(node.userData.bridgeLow!==undefined&&node.userData.bridgeLow!==low)node.userData.bridgeChangedAt=time;
+    node.userData.bridgeLow=low;indicator.children[0].visible=!low;indicator.children[1].visible=low;
+    const age=time-(node.userData.bridgeChangedAt??-100),changing=age>=0&&age<.22;
+    const scale=this.reduce?1:1+(changing?.14*Math.sin(age/.22*Math.PI):0);
+    indicator.scale.set(scale/this.xSpread,scale,scale);indicator.children[2].visible=this.reduce&&changing;
+  }
+  updateCurrentFeedback(node,time){
+    const f=node.userData.feature;let direction=f.direction||0;
+    if(f.tidal&&tideLabel(time+(f.phase||0))==='late')direction*=-1;
+    if(f.tidal&&node.userData.flowDirection!==undefined&&node.userData.flowDirection!==direction)node.userData.flowChangedAt=time;
+    node.userData.flowDirection=direction;
+    const age=time-(node.userData.flowChangedAt??-100),changing=f.tidal&&age>=0&&age<.18;
+    const scale=this.reduce?1:1+(changing?.13*Math.sin(age/.18*Math.PI):0);
+    for(const arrow of node.userData.directionRoot.children){
+      arrow.rotation.y=direction>0?-Math.PI/2:direction<0?Math.PI/2:0;arrow.scale.setScalar(scale);
+      if(arrow.userData.tideEmphasis)arrow.userData.tideEmphasis.visible=this.reduce&&changing;
+    }
+  }
   resize(){if(this.disposed)return;const r=this.container.getBoundingClientRect();if(!r.width||!r.height)return;this.width=r.width;this.height=r.height;this.aspect=r.width/r.height;this.xSpread=clamp(this.aspect/.62,1,3.15);this.renderer.setSize(r.width,r.height,false);this.camera.aspect=this.aspect;this.camera.updateProjectionMatrix();if(this.lastRace&&this.stage)this.render(this.lastRace,0);}
   worldX(s,x=0){return (trackCenter(s,this.stage)+x*trackWidth(s,this.stage)/2)*this.xSpread;}
   featureWidth(s,width=1){return trackWidth(s,this.stage)*width/2;}
@@ -412,6 +434,14 @@ export class RapidsRenderer{
         for(let i=0;i<5;i++){const d=i*length/4,w=this.featureWidth(f.s+d,f.width||2),x=this.featureOffset(f,d);deckParts.push(part([w+.35,.24,.3],[x,0,-d],C.wood));}
         for(const side of [-1,1])deckParts.push(part([.16,.2,length],[side*this.featureWidth(f.s+length/2,f.width||2)/2,.06,-length/2],0xe6c27d));
         const deck=new THREE.Group();deck.add(sculpture(deckParts,this.material));deck.position.y=height;root.add(deck);root.userData.bridgeDeck=deck;
+        if(f.tidal){
+          // Neutral height-only arrows never imply that a jump route is safe.
+          const indicator=new THREE.Group();indicator.position.set(-this.featureWidth(f.s,f.width||2)/2-.35,height+1,0);
+          const arrowParts=[part([.76,.76,.1],[0,0,0],0x274552),part([.11,.43,.08],[0,-.03,.1],0xf7e8bd),part([.1,.31,.08],[-.085,.17,.1],0xf7e8bd,[0,0,-.7]),part([.1,.31,.08],[.085,.17,.1],0xf7e8bd,[0,0,.7])];
+          const up=sculpture(arrowParts,this.phaseMat),down=sculpture(arrowParts,this.phaseMat);down.rotation.z=Math.PI;
+          const emphasis=sculpture([part([.94,.06,.13],[0,.46,0],0xfff3cf),part([.94,.06,.13],[0,-.46,0],0xfff3cf),part([.06,.86,.13],[-.44,0,0],0xfff3cf),part([.06,.86,.13],[.44,0,0],0xfff3cf)],this.phaseMat);emphasis.visible=false;
+          indicator.add(up,down,emphasis);root.add(indicator);root.userData.heightIndicator=indicator;
+        }
       }else if(['current','flow'].includes(k)){
         const length=f.length||8,segments=Math.max(1,Math.ceil(length/6)),flowParts=[];
         for(let i=0;i<segments;i++){const d=(i+.5)*length/segments;flowParts.push(part([this.featureWidth(f.s+d,f.width||.55),.02,length/segments+.06],[this.featureOffset(f,d),.025,-d],f.speed<12?0xc9ac73:0x60dfcf));}
@@ -421,6 +451,10 @@ export class RapidsRenderer{
         for(let i=0;i<count;i++){
           const arrow=new THREE.Group(),d=(i+.5)*length/count;arrow.position.set(this.featureOffset(f,d),0,-d);
           arrow.add(sculpture([part([.13,.06,.83],[0,.08,.11],C.cream),part([.13,.06,.57],[-.16,.08,-.22],C.cream,[0,-.67,0]),part([.13,.06,.57],[.16,.08,-.22],C.cream,[0,.67,0])],this.material));
+          if(f.tidal){
+            const emphasis=sculpture([part([.06,.025,1.14],[-.4,.04,0],0xfff0c9),part([.06,.025,1.14],[.4,.04,0],0xfff0c9),part([.74,.025,.06],[0,.04,-.55],0xfff0c9),part([.74,.025,.06],[0,.04,.55],0xfff0c9)],this.phaseMat);
+            emphasis.visible=false;arrow.add(emphasis);arrow.userData.tideEmphasis=emphasis;
+          }
           directionRoot.add(arrow);
         }
       }else if(k==='fork'){
@@ -524,9 +558,9 @@ export class RapidsRenderer{
       if(node.userData.bankPost){this.bayBankPoint(f,clock,this.bankPoint);const post=node.userData.bankPost;post.position.set(this.bankPoint.x-node.position.x,0,this.bankPoint.z-node.position.z);post.visible=-this.bankPoint.z-s>=-12&&-this.bankPoint.z-s<=42;}
       this.updatePhaseMarker(node,clock);this.updateGateIndicator(node,clock);
       if(node.userData.barrier){node.userData.barrier.position.y=gateIsOpen(f,clock)?-node.userData.barrierHeight-.12:0;}
-      if(node.userData.bridgeDeck)node.userData.bridgeDeck.position.y=2.5+(f.tidal&&tideLabel(clock)==='early'?f.lowClearance:f.clearance);
+      if(node.userData.bridgeDeck)this.updateBridgeFeedback(node,clock);
       if(node.userData.rotor)node.userData.rotor.rotation.z=clock*Math.PI*2/(f.period||4.2);
-      if(node.userData.directionRoot){let direction=f.direction||0;if(f.tidal&&tideLabel(clock+(f.phase||0))==='late')direction*=-1;for(const arrow of node.userData.directionRoot.children)arrow.rotation.y=direction>0?-Math.PI/2:direction<0?Math.PI/2:0;}
+      if(node.userData.directionRoot)this.updateCurrentFeedback(node,clock);
       if(node.userData.inactiveMark)node.userData.inactiveMark.visible=tideLabel(clock)!==f.tidePhase;
     }
     const racers=[p,...(race.rivals||[])];

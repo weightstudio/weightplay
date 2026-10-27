@@ -208,7 +208,14 @@ export class DinerScene {
       this.camera.updateMatrixWorld();const inverse=this.camera.matrixWorldInverse;
       const projected=[];for(const x of [left,right])for(const y of [bottom,top])for(const z of [0,1.85])projected.push(new THREE.Vector3(x,y,z).applyMatrix4(inverse));
       const halfW=Math.max(...projected.map(p=>Math.abs(p.x)))+.04,halfH=Math.max(...projected.map(p=>Math.abs(p.y)))+.04;
-      const fit=Math.max(halfH,halfW/(width/height));this.camera.left=-fit*width/height;this.camera.right=fit*width/height;this.camera.top=fit;this.camera.bottom=-fit;this.camera.updateProjectionMatrix();
+      const fullFit=Math.max(halfH,halfW/(width/height));
+      // Fit every possible guest/stop first. A bounded close-up may crop only
+      // peripheral patio scenery instead of making the interactive road tiny.
+      const play=[];for(let node=0;node<this.stage.points.length;node++){
+        const p=this.position(node);for(const dx of [-.60,.60])for(const dy of [-.25,.65])for(const z of [.12,1.15])play.push(new THREE.Vector3(p.x+dx,p.y+dy,z).applyMatrix4(inverse));
+      }
+      const playW=Math.max(...play.map(p=>Math.abs(p.x)))+.16,playH=Math.max(...play.map(p=>Math.abs(p.y)))+.16;
+      const fit=Math.max(playH,playW/(width/height),fullFit/1.35);this.camera.left=-fit*width/height;this.camera.right=fit*width/height;this.camera.top=fit;this.camera.bottom=-fit;this.camera.updateProjectionMatrix();
     }
     this.draw();
   }
