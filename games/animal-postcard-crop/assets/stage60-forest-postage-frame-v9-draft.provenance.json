@@ -1,0 +1,10 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "taskId": "01a17716-e595-7c92-acb8-65902ae49027",
+  "created": "2026-10-27",
+  "method": "image_gen edit using the official WeightPlay block-lion image as style reference",
+  "reference": "assets/weightplay-character-boom-mane-lion-block-v1.webp",
+  "original": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-1bd36e5c-b886-41e4-9c2d-8ef65641dbab.png",
+  "prompt": "Create a single original 2D transparent PNG game asset for WeightPlay's Animal Postcard Crop optional permanent 'Forest Postage Frame'. Use the attached official block-lion art only as the stylistic reference for cheerful, crisp geometric block forms, warm accessible color and coherent simple shading; do not reproduce the lion or any character. Draw a perfectly straight-on, orthographic rectangular postcard/photo crop border, landscape 4:3 outer proportions, centered, with a large truly transparent empty center occupying at least 75% of the area so the underlying puzzle is fully visible. Make all four sides continuous, thin, richly readable postage-stamp perforations and tiny blocky leaf/postmark corner accents, warm cream and forest teal with a little copper; no icons protrude into the interior, no shadows outside outer boundary, no text, letters, numbers, brand names, hands, scenery, backdrop or extra objects. This is a functional game overlay asset rather than a mockup. Clean sharp edges, production-quality transparent background; no perspective.",
+  "remaining": "Inspect transparent pixels, scale and corner occlusion at actual game sizes and orientations; independent Art review and real wallet/UI integration are required."
+}

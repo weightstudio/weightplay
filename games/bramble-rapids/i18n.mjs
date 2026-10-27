@@ -25,6 +25,7 @@ export function resolveLocale(options = {}) {
 
 // Each row is authored in the required locale order, with no English fallback.
 const rows = [
+ ["landingMissed","Missed landing target","未落入指定落點","未落入指定落点","指定の着地点を外した","지정 착지점 빗나감","Aterrizaje fuera del objetivo","Errou o alvo de pouso","Cible d’atterrissage manquée","Landeziel verfehlt","Atterraggio fuori bersaglio","Мимо цели приземления","तय जगह पर नहीं उतरे","أخطأت هدف الهبوط"],
  ['start','Start Game','開始遊戲','开始游戏','ゲーム開始','게임 시작','Jugar','Jogar','Jouer','Spielen','Gioca','Играть','खेल शुरू करें','ابدأ اللعب'],
  ['stages','Stages','關卡','关卡','ステージ','스테이지','Etapas','Fases','Étapes','Etappen','Tappe','Этапы','चरण','المراحل'],
  ['boards','Boards','滑板','滑板','ボード','보드','Tablas','Pranchas','Planches','Boards','Tavole','Доски','बोर्ड','الألواح'],

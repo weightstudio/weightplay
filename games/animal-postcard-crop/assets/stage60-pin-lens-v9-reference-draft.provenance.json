@@ -1,0 +1,9 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
+  "generator": "built-in image_gen edit",
+  "file": "stage60-pin-lens-v9-reference-draft.png",
+  "input": "games/animal-postcard-crop/assets/stage60-pin-lens-v9-draft.png",
+  "styleReference": "assets/weightplay-character-boom-mane-lion-block-v1.webp",
+  "source": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-67678fe6-52f6-4c89-809d-0adb54b37f59.png",
+  "prompt": "Edit image 1, an original game tool atlas. Image 2 is the official block-animal visual reference for its geometric forms, color and material style only; do not include the lion. Keep the same two distinct tools: left a square-jewel memory pin, right a square camera lens selector. Maintain the bold block-built brass and blue-green glass design. Fit each tool entirely within its own exact half, with ample truly transparent empty space on every edge and the middle seam; remove all stray faint pixels outside the objects. No lettering, symbols, numbers, logos, shadows outside the objects, or extra objects. Transparent background."
+}

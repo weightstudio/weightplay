@@ -24,6 +24,21 @@
 .pc-controls button,.pc-result-actions button {white-space:normal;overflow-wrap:anywhere;min-width:0;}
 .pc-controls button:disabled {opacity:.4;cursor:default;}
 .pc-controls button:not(:disabled):active {transform:translateY(2px);}
+/* Chapter controls are contained over the workspace so showing a question or
+   pin choice does not move the scene or the familiar action buttons. */
+.pc-challenge:not([hidden]),.pc-pin-controls:not([hidden]) {position:absolute;z-index:10;inset-block-start:8px;inset-inline:8px;box-sizing:border-box;max-height:calc(100% - 16px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;display:flex;flex-wrap:wrap;align-content:start;gap:8px;padding:12px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);box-shadow:0 8px 24px #0008;}
+.pc-challenge p,.pc-pin-controls p {flex-basis:100%;margin:0;overflow-wrap:anywhere;font:600 14px/1.45 system-ui;}
+.pc-challenge p[role="status"] {color:#ffb5a5;}
+.pc-challenge button,.pc-pin-controls button,.pc-tool-extra {box-sizing:border-box;min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));min-height:calc(44px * var(--wp-battle-canvas-inverse-scale,1));padding:8px 12px;border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:inherit;font:700 calc(14px * var(--wp-battle-canvas-inverse-scale,1))/1.25 system-ui;white-space:normal;overflow-wrap:anywhere;cursor:pointer;}
+.pc-challenge button,.pc-pin-controls button {flex:1 1 100px;}
+.pc-controls .pc-tool-extra {min-width:calc(44px * var(--wp-battle-canvas-inverse-scale,1));}
+.pc-tool-extra[hidden] {display:none;}
+.pc-challenge button:focus-visible,.pc-pin-controls button:focus-visible,.pc-tool-extra:focus-visible {outline:3px solid #ffe2a0;outline-offset:2px;}
+.pc-challenge button:active,.pc-pin-controls button:active {background:var(--wp-ui-active);}
+/* Extra tools need a second row. Keep the board usable and allow the player
+   to scroll the play workspace on short screens rather than clipping actions. */
+.pc-workspace:has(.pc-tool-extra:not([hidden])) {grid-template-rows:auto minmax(160px,1fr) auto auto;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;}
+.pc-workspace:has(.pc-tool-extra:not([hidden])) .pc-tools {grid-template-columns:repeat(3,minmax(calc(44px * var(--wp-battle-canvas-inverse-scale,1)),1fr));}
 .pc-overlay {position:absolute;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:rgba(7,18,25,.9);box-sizing:border-box;}
 .pc-overlay[hidden] {display:none;}
 .pc-result-card {box-sizing:border-box;max-height:100%;overflow:auto;width:min(100%,480px);padding:16px;border:2px solid var(--wp-ui-line);background:var(--wp-ui-surface);border-radius:var(--wp-ui-radius);text-align:center;overscroll-behavior:contain;}
@@ -46,6 +61,8 @@
  .pc-controls [data-act="capture"] {font-size:12px;white-space:nowrap;overflow-wrap:normal;}
  .pc-result-card img {display:none;}
  .pc-result-card {max-width:560px;}
+ .pc-workspace:has(.pc-tool-extra:not([hidden])) {grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:auto minmax(42px,1fr) auto;}
+ .pc-workspace:has(.pc-tool-extra:not([hidden])) .pc-scene-track {min-height:160px;}
 }
 @media(prefers-reduced-motion:reduce) {
  .pc-frame,.pc-tile {transition:none;}

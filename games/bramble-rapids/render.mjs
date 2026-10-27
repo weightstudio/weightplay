@@ -44,35 +44,24 @@ function treeParts(kind){
 }
 
 const WATER_ROWS=77,WATER_COLUMNS=9;
-const RIDGE_PROFILE=[[0,0],[0,.32],[.22,.32],[.22,.65],[.5,.65],[.5,1],[1,1],[1.3,.95]];
-const ridgeHeight=(s,side)=>3.8+1.1*Math.sin(s*.036+side*.75)+.55*Math.sin(s*.083+side*2.2);
-const ridgeWidth=(s,side)=>12+2*Math.sin(s*.025+side*.9);
-const ridgeOffset=(s,side)=>11+1.25*Math.sin(s*.071+side*1.2)+.65*Math.sin(s*.133-side*.8);
-// Independent world-space contours break parallel shelf edges while retaining
-// at least 9.1m of bank clearance and strictly ordered terrace profiles.
-function ridgeStep(s,side,level){
-  if(level===0)return 0;
-  if(level===.22)return .22+.09*Math.sin(s*.117+side*.85)+.025*Math.sin(s*.31-side*.2);
-  if(level===.5)return .52+.12*Math.sin(s*.078-side*.7)+.03*Math.sin(s*.21+side);
-  const edge=1+.14*Math.sin(s*.054+side*.8)+.05*Math.sin(s*.143-side*.4);
-  return level===1?edge:edge+.31+.055*Math.sin(s*.087+side*1.5);
-}
-function ridgeLevel(s,side,level){
-  if(level===0)return 0;
-  const h=ridgeHeight(s,side);
-  if(level===.32)return h*(.28+.05*Math.sin(s*.13+side*.9))+.12*Math.sin(s*.29+side*1.2);
-  if(level===.65)return h*(.63+.09*Math.sin(s*.092+side*1.7+.4))+.16*Math.sin(s*.231-side*.6);
-  const top=h*(1+.13*Math.sin(s*.065-side*.8))+.17*Math.sin(s*.173+side);
-  return level===1?top:top*(.94+.03*Math.sin(s*.11-side*.8));
-}
-function ridgeShelfHeight(s,side,distance){
-  const q=(distance-ridgeOffset(s,side))/ridgeWidth(s,side);
-  if(q<0)return -.28;
-  if(q<ridgeStep(s,side,.22))return ridgeLevel(s,side,.32)-.55;
-  if(q<ridgeStep(s,side,.5))return ridgeLevel(s,side,.65)-.55;
-  const edge=ridgeStep(s,side,1),top=ridgeLevel(s,side,1);
-  if(q<edge)return top-.55;
-  return top+(ridgeLevel(s,side,.95)-top)*clamp((q-edge)/(ridgeStep(s,side,1.3)-edge),0,1)-.55;
+const LIMESTONE_SLOTS=96;
+const LIMESTONE_ANCHORS=[[-.04,1.3,-.08],[-.2,1.48,-.1],[.15,1.23,-.08]];
+// Three authored rock silhouettes have exposed limestone faces, ledges,
+// fissures and short moss caps. No continuous raised grass ribbon remains.
+function limestoneParts(kind){
+  if(kind===1)return [part([.95,.34,1],[0,.17,0],0x647c73),part([.5,.7,.62],[-.22,.66,-.05],0x96a692),
+    part([.38,.5,.5],[.22,.6,.13],0x819782),part([.4,.3,.49],[-.2,1.15,-.1],0xb9c5aa),
+    part([.25,.16,.32],[-.2,1.38,-.1],0xd0d7ba),part([.3,.2,.35],[.33,.94,.04],0xa4b198),
+    part([.18,.035,.2],[-.25,1.48,-.1],0x74a065),part([.2,.04,.19],[.27,.875,.14],0x688f59),
+    part([.03,.31,.035],[-.32,.69,.28],0x5a7265)];
+  if(kind===2)return [part([1.1,.32,.94],[0,.16,0],0x60796e),part([.82,.38,.8],[-.08,.5,.02],0x8fa18a),
+    part([.63,.36,.65],[.12,.84,-.06],0xa9b79a),part([.48,.18,.52],[.15,1.12,-.08],0xc7d1af),
+    part([.34,.22,.4],[-.41,.48,.12],0x7d9580),part([.27,.035,.28],[.15,1.23,-.08],0x7ba36a),
+    part([.21,.08,.19],[-.29,.72,.16],0x638c59),part([.04,.22,.035],[.18,.83,.275],0x6b8270)];
+  return [part([1,.38,.9],[0,.19,0],0x627b70),part([.72,.26,1],[-.12,.48,.05],0x889e89),
+    part([.7,.55,.68],[.02,.83,-.09],0xa9b8a0),part([.53,.2,.5],[-.04,1.18,-.08],0xc5d0b5),
+    part([.28,.18,.45],[.45,.47,.1],0x8da18a),part([.35,.035,.31],[-.12,1.3,-.05],0x6e9c5e),
+    part([.22,.13,.18],[-.3,1.2,.14],0x5d8957),part([.022,.4,.035],[-.19,.84,.27],0x6c8374)];
 }
 function stripGeometry(rows,columns,{hardEdges=false,reverse=false}={}){
   const stride=hardEdges?(columns-1)*2:columns,geometry=new THREE.BufferGeometry(),indices=[];
@@ -192,7 +181,7 @@ export class RapidsRenderer{
     this.waterColors=Array.from({length:WATER_COLUMNS},()=>new THREE.Color());
     this.waterDeep=new THREE.Color();this.waterEdge=new THREE.Color();
     this.ridgeMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.94});
-    this.ridgeColors=Array.from({length:RIDGE_PROFILE.length-1},()=>new THREE.Color());
+    this.ridgeSlots=Array.from({length:LIMESTONE_SLOTS},()=>({}));
     this.woodMat=new THREE.MeshStandardMaterial({color:C.wood,roughness:.8});
     this.bankMat=new THREE.MeshStandardMaterial({color:0xb5874a,roughness:.87});
     this.shoreMat=new THREE.MeshStandardMaterial({color:0xffffff,vertexColors:true,roughness:.92});
@@ -209,7 +198,7 @@ export class RapidsRenderer{
     // One shared surface has continuous lateral color and no overlapping
     // per-metre panels. Its top is the authoritative water contact plane y=0.
     this.water=new THREE.Mesh(stripGeometry(WATER_ROWS,WATER_COLUMNS),this.waterMat);this.water.frustumCulled=false;this.water.receiveShadow=true;this.scene.add(this.water);
-    this.ridges=[-1,1].map(side=>{const geometry=stripGeometry(WATER_ROWS,RIDGE_PROFILE.length,{hardEdges:true,reverse:side<0});geometry.attributes.normal.setUsage(THREE.DynamicDrawUsage);const mesh=new THREE.Mesh(geometry,this.ridgeMat);mesh.frustumCulled=false;mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData.side=side;this.scene.add(mesh);return mesh;});
+    this.ridges=Array.from({length:3},(_,kind)=>inst(LIMESTONE_SLOTS/3,this.ridgeMat,limestoneParts(kind)));
     this.banks=inst(152,this.bankMat);this.shores=inst(152,this.shoreMat);
     this.shores.geometry=sculpture([part([1,.51,1.04],[.5,-.14,0],0x6b6148),part([.96,.16,1.06],[.52,.04,0],0x9b8553),part([.85,.17,1.025],[.58,.2,0],0x688d51),part([.72,.09,1.015],[.64,.325,0],0x91b36b)],this.shoreMat).geometry;
     this.rocks=inst(64,this.shoreMat,[part([1,.55,1],[0,.27,0],0x65776b),part([.83,.32,.84],[.06,.7,-.03],0x91a28a),part([.51,.16,.64],[-.1,.94,.01],0xb2bda1),part([.5,.045,.42],[.2,.86,.18],0x578664)]);
@@ -224,7 +213,7 @@ export class RapidsRenderer{
     this.lanternPosts=inst(24,this.woodMat);this.lanternCaps=inst(24,this.bankMat);this.lanternLights=inst(24,new THREE.MeshBasicMaterial({color:0xffd785}));
     this.models=[makeRacer(this.material,'otter'),makeRacer(this.material,'fox'),makeRacer(this.material,'turtle'),makeRacer(this.material,'rabbit')];this.models.forEach(m=>this.scene.add(m.group));
     this.models.forEach(model=>model.group.traverse(node=>{if(node.isMesh){node.castShadow=true;node.receiveShadow=true;}}));
-    for(const mesh of [this.banks,this.shores,this.rocks,...this.trees,this.outerTrees]){mesh.castShadow=true;mesh.receiveShadow=true;}
+    for(const mesh of [this.banks,this.shores,this.rocks,...this.trees,...this.ridges,this.outerTrees]){mesh.castShadow=true;mesh.receiveShadow=true;}
     this.models.forEach((model,index)=>model.group.scale.setScalar(index===0?1.14:1.06));
     this.boardVariants=new Map();this.appearance={boardId:'brook',cosmetic:false};
     const originalBoard=this.models[0].board;this.models[0].group.remove(originalBoard);originalBoard.geometry.dispose();
@@ -250,19 +239,17 @@ export class RapidsRenderer{
       }
     }
     position.needsUpdate=true;color.needsUpdate=true;
-    for(const mesh of this.ridges){
-      const side=mesh.userData.side,geometry=mesh.geometry,p=geometry.attributes.position,c=geometry.attributes.color;
-      for(let row=0;row<WATER_ROWS;row++){
-        const at=first+row,x=this.worldX(at),half=trackWidth(at,this.stage)*this.xSpread/2,width=ridgeWidth(at,side),offset=ridgeOffset(at,side);
-        const light=.96+.035*Math.sin(at*.15+side)+.018*Math.sin(at*.39);
-        for(let face=0;face<RIDGE_PROFILE.length-1;face++)for(let endpoint=0;endpoint<2;endpoint++){
-          const index=(row*(RIDGE_PROFILE.length-1)+face)*2+endpoint,profile=RIDGE_PROFILE[face+endpoint],shade=this.ridgeColors[face];
-          p.setXYZ(index,x+side*(half+offset+ridgeStep(at,side,profile[0])*width),-.55+ridgeLevel(at,side,profile[1]),-at);
-          c.setXYZ(index,shade.r*light,shade.g*light,shade.b*light);
-        }
-      }
-      p.needsUpdate=true;c.needsUpdate=true;geometry.computeVertexNormals();
+    for(let i=0;i<LIMESTONE_SLOTS;i++){
+      const row=Math.floor(s/6)-2+Math.floor(i/8),side=i%8<4?-1:1,layer=i%4,seed=row*37+side*17+layer*53;
+      const slot=this.ridgeSlots[i],at=row*6+(hash(seed+1)-.5)*3.8,distance=15.8+layer*6.4+(hash(seed+2)-.5)*2.6;
+      slot.active=Math.sin(row*.84+side*1.6+layer*.71)+.6*Math.sin(row*1.39+layer*.45)>-.85&&hash(seed+7)>.12;
+      slot.at=at;slot.x=this.worldX(at)+side*(trackWidth(at,this.stage)*this.xSpread/2+distance);slot.side=side;slot.seed=seed;slot.kind=i%3;
+      slot.sx=3.2+hash(seed+3)*2.6;slot.sy=1.35+hash(seed+4)*2.15;slot.sz=3.5+hash(seed+5)*2;slot.rotation=(hash(seed+6)-.5)*.56;
+      const mesh=this.ridges[slot.kind],index=Math.floor(i/3);
+      this.matrix(mesh,index,[slot.x,-.55,-at],slot.active?[slot.sx,slot.sy,slot.sz]:[0,0,0],slot.rotation);
+      this.tint.setHex(this.stage.chapter===2?0xadc0cd:0xf3ecd9).multiplyScalar(.9+hash(seed+9)*.12);mesh.setColorAt(index,this.tint);
     }
+    for(const mesh of this.ridges){mesh.instanceMatrix.needsUpdate=true;mesh.instanceColor.needsUpdate=true;}
   }
   matrix(mesh,index,at,scale,rotY=0){const d=this.dummy;d.position.set(...at);d.scale.set(...scale);d.rotation.set(0,rotY,0);d.updateMatrix();mesh.setMatrixAt(index,d.matrix);}
   setAppearance(boardId='brook',cosmetic=false){
@@ -279,8 +266,6 @@ export class RapidsRenderer{
     const dusk=stage.chapter===2;this.scene.fog.color.setHex(dusk?0x8b94b6:0x9bcab9);this.renderer.setClearColor(dusk?0x8b94b6:0x9bcab9);
     this.waterDeep.setHex(dusk?0x1b7897:0x138e9c);this.waterEdge.setHex(dusk?0x63acb7:0x58bcb0);
     this.waterColors.forEach((color,column)=>color.lerpColors(this.waterDeep,this.waterEdge,Math.abs(column/(WATER_COLUMNS-1)*2-1)**2.2));
-    const ridgePalette=dusk?[0x627c83,0x5c8d7e,0x7b9298,0x729c85,0x91a6a7,0x86ad92,0x7fa68e]:[0x73816b,0x709655,0x919c7b,0x88a65f,0xa7af8a,0x9fbb73,0x91af69];
-    this.ridgeColors.forEach((color,index)=>color.setHex(ridgePalette[index]));
     this.bankMat.color.setHex(dusk?0x91a09b:0xb5874a);this.rockMat.color.setHex(dusk?0x60758a:0x7b8970);this.skyLight.color.setHex(dusk?0xb9d5ff:0xd9f5ff);this.sun.color.setHex(dusk?0xffce9c:0xffe2a0);
     this.ground.material.color.setHex(dusk?0x405b68:0x41664c);
     for(const f of stage.features||[]){const root=new THREE.Group();root.userData.feature=f;const k=f.kind;
@@ -393,15 +378,15 @@ export class RapidsRenderer{
       const row=Math.floor(s/4)-4+Math.floor(i/4),side=i%2?1:-1,layer=Math.floor(i%4/2),seed=row*11+side*19+layer*47;
       const at=row*4+(hash(seed+3)-.5)*2,w=trackWidth(at,this.stage)*this.xSpread,distance=3.6+layer*4.7+hash(seed+11)*2.8,treeX=this.worldX(at)+side*(w/2+distance);
       const size=.88+hash(seed+7)*.45,tree=this.trees[i%3],index=Math.floor(i/3);
-      this.matrix(tree,index,[treeX,ridgeShelfHeight(at,side,distance),-at],[size,1.06+hash(seed+9)*.45,size],(hash(seed+5)-.5)*.5);
+      this.matrix(tree,index,[treeX,-.28,-at],[size,1.06+hash(seed+9)*.45,size],(hash(seed+5)-.5)*.5);
       this.tint.setHex(this.stage.chapter===2?0x99b9c7:0xf4f4d4).multiplyScalar(.88+hash(seed+14)*.18);tree.setColorAt(index,this.tint);
     }
     for(let i=0;i<32;i++){
-      const row=Math.floor(s/8)-1+Math.floor(i/4),side=i%2?1:-1,layer=Math.floor(i%4/2),seed=row*19+side*31+layer*13,at=row*8+(hash(seed)-.5)*5.5+layer*1.7;
-      const fraction=clamp(.18+hash(seed+2)*.83,.1,ridgeStep(at,side,1)-.08),distance=ridgeOffset(at,side)+ridgeWidth(at,side)*fraction,x=this.worldX(at)+side*(trackWidth(at,this.stage)*this.xSpread/2+distance);
-      const cluster=Math.sin(row*.81+side*1.5)+.45*Math.sin(row*1.71-side*.6),active=cluster>(layer?-.1:-.8);
-      const size=active?.85+hash(seed+3)*.38:0;this.matrix(this.outerTrees,i,[x,ridgeShelfHeight(at,side,distance),-at],[size,active?1.0+hash(seed+4)*.3:0,size],(hash(seed+5)-.5)*.5);
-      this.tint.setHex(this.stage.chapter===2?0x8facb9:0xe5ebc8).multiplyScalar(.91+hash(seed+6)*.1);this.outerTrees.setColorAt(i,this.tint);
+      const slot=this.ridgeSlots[i*3],anchor=LIMESTONE_ANCHORS[slot.kind],active=slot.active&&hash(slot.seed+8)>.26;
+      const cos=Math.cos(slot.rotation),sin=Math.sin(slot.rotation),lx=anchor[0]*slot.sx,lz=anchor[2]*slot.sz;
+      const size=active?.7+hash(slot.seed+11)*.35:0;
+      this.matrix(this.outerTrees,i,[slot.x+cos*lx+sin*lz,-.29+anchor[1]*slot.sy,-slot.at-sin*lx+cos*lz],[size,active?1.0+hash(slot.seed+12)*.25:0,size],slot.rotation);
+      this.tint.setHex(this.stage.chapter===2?0x8facb9:0xe5ebc8).multiplyScalar(.91+hash(slot.seed+13)*.1);this.outerTrees.setColorAt(i,this.tint);
     }
     for(let i=0;i<72;i++){
       const row=Math.floor(s/3)-4+Math.floor(i/3),side=i%2?1:-1,seed=row*13+i%3*17,at=row*3+hash(seed)*1.2,w=trackWidth(at,this.stage)*this.xSpread;

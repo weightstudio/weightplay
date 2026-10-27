@@ -106,18 +106,42 @@ function stagePresentation(index){
   const s=STAGES[index],p=store.snapshot,durable=store.persistedSnapshot,r=durable.records[s.id],pending=!r?.cleared&&p.records[s.id]?.cleared,locked=!practice&&s.id>durable.unlocked;
   return {id:s.id,kicker:`${tr('chapter')} ${s.chapter}`,title:stageName(s.id,locale),subtitle:`${tr('stage')} ${s.id}`,locked,cleared:!!r?.cleared,status:locked?tr('locked'):pending?tr('notSaved'):r?.cleared?`${tr('stars')} ${r.stars}/3`:tr('ready'),rewardState:r?.cleared?'collected':'not-collected',summary:stageLesson(s,locale),details:stageDetails(s),poster:'/games/bramble-rapids/assets/scenes.webp',posterPosition:s.chapter===1?'center top':'center bottom'};
 }
-function stageDetails(s){
-  const c=s.clearConditions,details=[`${tr('flags')}: ${requiredFlags(s).length}`,`${tr('time')}: ${clock(s.timeLimit)}`];
-  if(c.minLandings)details.push(`${tr('landing')}: ≥ ${c.minLandings}`);
-  if(c.maxLandings!==undefined)details.push(`${tr('landing')}: ≤ ${c.maxLandings}`);
-  if(c.maxRank)details.push(`${tr('rank')}: ≤ ${c.maxRank}`);
-  if(c.minStability)details.push(`${tr('stability')}: ≥ ${c.minStability}`);
-  if(c.maxFalls!==undefined)details.push(`${tr('falls')}: ≤ ${c.maxFalls}`);
-  if(c.minCurrentZones)details.push(`${tr('currentZones')}: ≥ ${c.minCurrentZones}`);
-  if(c.minBonus)details.push(`${tr('bonus')}: ≥ ${c.minBonus}`);
-  if(c.maxBridgeHits!==undefined)details.push(`${tr('bridgeHits')}: ≤ ${c.maxBridgeHits}`);
-  if(c.maxHits!==undefined)details.push(`${tr('hits')}: ≤ ${c.maxHits}`);
+function conditionDetails(c){
+  const details=[];
+  if(c.minLandings)details.push(tr('landing')+' ≥ '+c.minLandings);
+  if(c.maxLandings!==undefined)details.push(tr('landing')+' ≤ '+c.maxLandings);
+  if(c.maxRank)details.push(tr('rank')+' ≤ '+c.maxRank);
+  if(c.minStability)details.push(tr('stability')+' ≥ '+c.minStability);
+  if(c.maxFalls!==undefined)details.push(tr('falls')+' ≤ '+c.maxFalls);
+  if(c.minCurrentZones)details.push(tr('currentZones')+' ≥ '+c.minCurrentZones);
+  if(c.minBonus)details.push(tr('bonus')+' ≥ '+c.minBonus);
+  if(c.maxBridgeHits!==undefined)details.push(tr('bridgeHits')+' ≤ '+c.maxBridgeHits);
+  if(c.maxHits!==undefined)details.push(tr('hits')+' ≤ '+c.maxHits);
   return details;
+}
+function starRules(s){
+  return [
+    tr('replay')+' · '+tr('stars')+' 2: '+conditionDetails(s.medalConditions).join(' · '),
+    tr('replay')+' · '+tr('stars')+' 3: '+tr('stars')+' 2 + '+tr('falls')+' = 0 · '+tr('time')+' ≤ '+clock(s.parTime),
+  ];
+}
+function stageDetails(s,withReplay=true){
+  const clear=[tr('flags')+': '+requiredFlags(s).length,tr('time')+': '+clock(s.timeLimit),...conditionDetails(s.clearConditions)];
+  if(!withReplay)return clear;
+  return [tr('stars')+' 1: '+clear.join(' · '),...starRules(s)];
+}
+function starReplayFeedback(s,result){
+  if(!result.won||result.stars>=3)return '';
+  const missed=[],medal=s.medalConditions;
+  if(result.stars<2){
+    if(medal.maxHits!==undefined&&result.hits>medal.maxHits)missed.push(tr('hits')+' '+result.hits+' > '+medal.maxHits);
+    if(medal.minStability!==undefined&&result.stability<medal.minStability)missed.push(tr('stability')+' '+result.stability+' < '+medal.minStability);
+  }else{
+    if(result.falls!==0)missed.push(tr('falls')+' '+result.falls+' > 0');
+    if(result.time>s.parTime)missed.push(tr('time')+' > '+clock(s.parTime));
+  }
+  const target=starRules(s)[result.stars<2?0:1];
+  return target+(missed.length?'\n'+missed.map(rule=>'✗ '+rule).join(' · '):'');
 }
 function makeKit(index){const d=document.createElement('div');d.className='kit-art';d.style.setProperty('--kit-x',`${(index%3)*50}%`);d.style.setProperty('--kit-y',`${Math.floor(index/3)*50}%`);return d;}
 function renderManagement(){
@@ -188,8 +212,9 @@ function processEvents(){
     if(['jump','land','fall','flag','bonus','hit','bump'].includes(event.type))renderer?.burst(event.s,event.x,event.type==='hit'?1.5:.8);
     if(event.type==='start')audio('game.start');
     else if(event.type==='jump'){audio('movement.jump');flash('jump',.45);}
-    else if(event.type==='land'){audio('water.splash');flash('landing',.65);}
+    else if(event.type==='land'){audio('water.splash');flash(event.clean===false?'landingMissed':'landing',.65);}
     else if(event.type==='hit')audio(event.material==='stone'?'impact.stone':'impact.wood');
+    else if(event.type==='bump')audio('impact.soft');
     else if(event.type==='fall')audio('water.splash');
     else if(event.type==='flag')audio('game.checkpoint');
     else if(event.type==='bonus')audio('reward.collect');
@@ -223,15 +248,20 @@ async function startStage(id,{practice:asPractice=practice,restart=false}={}){
   const newMechanicLesson=(id===6||id===31)&&!store.persistedSnapshot.records[id]?.cleared;
   if(!asPractice&&(!store.snapshot.tutorialComplete||newMechanicLesson))showHelp();else schedule();notify();
 }
-function showHelp(open=true){if(!race)return;$('helpStage').textContent=`${tr('stage')} ${race.stage.id} · ${stageName(race.stage.id,locale)}`;$('helpLesson').textContent=`${stageLesson(race.stage,locale)} ${stageDetails(race.stage).join(' · ')}`;$('helpBasics').textContent=`${tr('keyControls')} ${tr('touchControls')} ${tr('tutorialJump')} ${race.stage.chapter===2?tr('tutorialAnchor'):''}`;if(open)openModal('helpDialog');}
+function showHelp(open=true){if(!race)return;$('helpStage').textContent=`${tr('stage')} ${race.stage.id} · ${stageName(race.stage.id,locale)}`;$('helpLesson').textContent=`${stageLesson(race.stage,locale)}
+${stageDetails(race.stage).join('\n')}`;$('helpBasics').textContent=`${tr('keyControls')} ${tr('touchControls')} ${tr('tutorialJump')} ${race.stage.chapter===2?tr('tutorialAnchor'):''}`;if(open)openModal('helpDialog');}
 function renderResult(){
   if(!race?.result)return;const r=race.result,saving=savingRuns.has(race);
   $('resultStage').textContent=`${tr('stage')} ${r.stageId} · ${stageName(r.stageId,locale)}`;text('resultTitle',r.won?'won':'lost');
-  $('resultArt').style.setProperty('--kit-x',`${(r.won?Math.max(0,r.stars-1):0)*50}%`);
+  const resultArt=r.won&&r.stageId===60?5:6+(r.won?Math.max(0,r.stars-1):0);
+  $('resultArt').style.setProperty('--kit-x',`${resultArt%3*50}%`);
+  $('resultArt').style.setProperty('--kit-y',`${Math.floor(resultArt/3)*50}%`);
   const best=!practiceRun&&store.persistedSnapshot.records[r.stageId]?.bestTime;
   $('resultDetails').textContent=`${tr('rank')} ${r.rank}/${race.rivals.length+1} · ${tr('time')} ${clock(r.time)} · ${tr('stars')} ${r.stars}/3 · ${tr('landing')} ${r.landings}${Number.isFinite(best)?` · ${tr('bestTime')} ${clock(best)}`:''}`;
   const reason={timeout:'timeoutReason',stability:'stabilityReason',flags:'flagsReason',landings:'landingReason',rank:'rankReason',tide:'tideReason'};
-  $('resultReason').textContent=r.won?(!practiceRun&&!resultSaved?tr('notSaved'):r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'finishReason')} ${stageDetails(race.stage).join(' · ')}`;
+  const primaryReason=r.won?(!practiceRun&&!resultSaved?tr('notSaved'):r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'finishReason')} ${stageDetails(race.stage,false).join(' · ')}`;
+  const starFeedback=starReplayFeedback(race.stage,r);
+  $('resultReason').textContent=primaryReason+(starFeedback?'\n'+starFeedback:'');
   $('resultSaved').textContent=practiceRun?'LOCAL PRACTICE':r.won?tr(resultSaved?'progressSaved':saving?'recordPending':'saveFailed'):'';
   $('retrySave').hidden=!r.won||resultSaved||practiceRun||saving;
   $('resultNext').disabled=!r.won||r.stageId===60||(!practiceRun&&!resultSaved);

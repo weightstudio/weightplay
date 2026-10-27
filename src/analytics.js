@@ -23,6 +23,10 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
   const countKey = "wonderAnalyticsCounts";
   let lifecycleOwner = false;
   let roundClearReported = false;
+  // Optional lifecycle consumers may snapshot first-clear eligibility per run.
+  // Legacy consumers remain eligible unless they explicitly opt out.
+  let roundRewardEligible = true;
+  let roundEligibilitySnapshotActive = false;
   let activeStageId = null;
   let pendingStageId = null;
   const privacySafeKeys = new Set([
@@ -79,6 +83,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
   }
   function beginReportedRound(name, params = {}) {
     roundClearReported = false;
+    if (!roundEligibilitySnapshotActive && !params.tracking_version) roundRewardEligible = true;
     const stageId = reportedStageId(params);
     if ((typeof stageId === "string" || typeof stageId === "number") && String(stageId).trim()) rememberStageId(params);
     else if (name === "game_start" && !params.tracking_version) { activeStageId = null; pendingStageId = null; }
@@ -463,6 +468,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
   function awardCompletedRound(params = {}) {
     if (roundClearReported) return { credited: false, reason: "already-reported-this-round" };
     roundClearReported = true;
+    if (!roundRewardEligible) return { credited: false, reason: "round-reward-ineligible" };
     const gameId = String(params.game_id || params.gameId || window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "").trim();
     const routeGameId = window.WONDER_SITE?.gameIdFromPath?.() || location.pathname.match(/(?:^|\/)games\/([^/]+)/i)?.[1] || "";
     if (!routeGameId || gameId.toLowerCase() !== routeGameId.toLowerCase()) return { credited: false, reason: "route-game-mismatch" };
@@ -668,9 +674,12 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
       screenNode = options.node || null;
       enter(); schedule();
     }
-    function end(outcome = "abandon", completedStageId = null) {
+    function end(outcome = "abandon", completedStageId = null, options = {}) {
       if (round === null || destroyed) return false;
       flush();
+      // A consumer can report that the just-completed game save failed. Keep
+      // the successful outcome for measurement but do not grant its reward.
+      roundRewardEligible = roundRewardEligible && options.saveSucceeded !== false;
       if (isSuccessfulOutcome(outcome) && !roundClearReported) {
         const params = { game_id: gameId };
         const stageId = (typeof completedStageId === "string" || typeof completedStageId === "number") ? completedStageId : activeStageId;
@@ -678,7 +687,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
         awardCompletedRound(params);
       }
       send("game_end", { screen: "battle", outcome: privacySafeToken.test(outcome) ? outcome : "unknown" });
-      round = null; pauses.clear();
+      round = null; roundRewardEligible = true; roundEligibilitySnapshotActive = false; pauses.clear();
       return true;
     }
     function start(options = {}) {
@@ -689,6 +698,8 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
       flush();
       round = key ?? ++nextRound;
       roundClearReported = false;
+      roundRewardEligible = options.rewardEligible !== false;
+      roundEligibilitySnapshotActive = true;
       if (pendingStageId != null) activeStageId = pendingStageId;
       else if (options.stageId != null && (typeof options.stageId === "string" || typeof options.stageId === "number")) activeStageId = options.stageId;
       else activeStageId = null;
@@ -787,12 +798,12 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
             && value.reopenKey !== observedReopenKey;
           if (reopening) { observedReopenKey = value.reopenKey; observedEnded = false; }
           if (key !== null && value.started === true && !value.ended && !observedEnded && round === null) {
-            if (restartRequested || value.restart === true) restart({ roundKey: key });
-            else start({ roundKey: key, resumed: reopening || value.resumed === true });
+            if (restartRequested || value.restart === true) restart({ roundKey: key, rewardEligible: value.rewardEligible });
+            else start({ roundKey: key, resumed: reopening || value.resumed === true, rewardEligible: value.rewardEligible });
           }
           restartRequested = false;
           if (value.ended && key !== null) {
-            end(value.outcome || "complete", stateStageId);
+            end(value.outcome || "complete", stateStageId, { saveSucceeded: value.saveSucceeded });
             observedEnded = true;
           } else if (key === null || value.started === false) {
             end("abandon");
@@ -814,7 +825,7 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
     function collectionChanged() {
       // Drop unsubmitted time across consent/collection changes, never backfill it.
       visibleMs = 0; activeMs = 0; last = now(); lastInput = last;
-      if (!allowed()) { round = null; pauses.clear(); entered = null; entryPending = Boolean(screen); observedRound = null; observedEnded = false; restartRequested = false; observedReopenKey = null; }
+      if (!allowed()) { round = null; roundRewardEligible = true; roundEligibilitySnapshotActive = false; pauses.clear(); entered = null; entryPending = Boolean(screen); observedRound = null; observedEnded = false; restartRequested = false; observedReopenKey = null; }
       else if (stateReader) observeState(stateReader);
       enter(); schedule();
     }
@@ -871,10 +882,12 @@ if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCas
       setScreen(detail.screen, { node: detail.node, locale: detail.locale });
     });
     return Object.freeze({
+      supportsRewardEligibility: true,
+      supportsSavedCompletionGate: true,
       screen: setScreen, start, restart, pause, resume, end, activity, configure, flush, collectionChanged, observeState, markRestart,
       complete: () => end("complete"),
       snapshot: () => ({ gameId, screen, roundActive: round !== null, paused: pauses.size > 0, mode }),
-      destroy() { flush(); destroyed = true; abort.abort(); if (timer !== null) clearTimeout(timer); if (inputTask !== null) clearTimeout(inputTask); inputTask = null; timer = null; screenNode = null; screenOwner = null; round = null; stateReader = null; pauses.clear(); },
+      destroy() { flush(); destroyed = true; abort.abort(); if (timer !== null) clearTimeout(timer); if (inputTask !== null) clearTimeout(inputTask); inputTask = null; timer = null; screenNode = null; screenOwner = null; round = null; roundRewardEligible = true; roundEligibilitySnapshotActive = false; stateReader = null; pauses.clear(); },
     });
   }
 

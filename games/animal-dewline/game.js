@@ -35,14 +35,14 @@
   } catch (_) { extension = null; } finally { clearTimeout(loadTimer); }
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
-  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", stageId:null };
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", stageId:null, saveSucceeded:false };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
     stageIdAuthoritative: true, stageId: __wpMeasurement.stageId,
     paused: Boolean(state?.paused || state?.suspended || state?.leaveOpen || state?.resultOpen), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() { try { const game = window.WonderAnalytics?.game; if (game?.supportsSavedCompletionGate === true) game.observeState(__wpReadMeasurement); } catch { /* Optional telemetry; older collectors cannot safely gate rewards. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -502,7 +502,7 @@
     state.meadow = index; state.values = [0, 0, 0]; state.tries = 0; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(index + 1) ? 'pending' : null; state.checkpointChoice = null; state.hintUsed = false; state.hintedValve = -1; state.saveFailed = false;
     state.stage60Attempt = meadows[index].stage60 ? extension.rules.initialAttempt(meadows[index].stage60) : null;
     $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 });
-    __wpMeasurement.roundKey = {}; __wpMeasurement.stageId = index >= 12 ? index + 1 : null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.stageId = index + 1; __wpMeasurement.saveSucceeded = false; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
   };
   const changeValve = (index, delta) => {
     if (state.screen !== 'battle' || state.resultOpen || state.leaveOpen || !Number.isInteger(index) || index < 0 || index > 2 || ![-1,1].includes(delta)) return;
@@ -543,7 +543,7 @@
     renderBattle(); $('battleStatus').textContent = t('gardenHintMove', { valve:'ABC'[state.hintedValve], sign:nearest[state.hintedValve] > state.values[state.hintedValve] ? '+' : '−' }); sound('feedback.hint');
   };
   const resetValves = () => { if (state.resultOpen || state.leaveOpen) return; cancelHint(); state.values = [0, 0, 0]; state.moves = 0; state.history = []; state.checkpointStatus = checkpointStage(state.meadow + 1) ? 'pending' : null; state.checkpointChoice = null; state.hintUsed = false; state.hintedValve = -1; if (state.stage60Attempt) state.stage60Attempt = extension.rules.initialAttempt(meadows[state.meadow].stage60); renderBattle(); if (state.stage60Attempt) $('battleStatus').textContent = t('gardenTip'); track("reset", { meadow: state.meadow + 1 });
-    if (state.screen === "battle") { __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
+    if (state.screen === "battle") { __wpMeasurement.roundKey = {}; __wpMeasurement.saveSucceeded = false; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
   };
   const checkFlow = () => {
     if (state.resultOpen || state.leaveOpen) return;
@@ -559,12 +559,12 @@
     const minimum = meadow.stage60 ? extensionMinimums[state.meadow - 12] : solutions[state.meadow].reduce((sum,value) => sum+value,0);
     state.earnedStars = state.moves <= minimum && !state.hintUsed ? 3 : state.moves <= minimum+6 ? 2 : 1;
     progress[state.meadow] = Math.max(progress[state.meadow] || 0, state.earnedStars);
-    try { if (!canWriteProgress) throw new Error('PROGRESS_NOT_WRITABLE'); const merged = {...savedProgress,...progress}; localStorage.setItem(progressKey, JSON.stringify(merged)); savedProgress = merged; } catch (_) { state.saveFailed = true; }
+    try { if (!canWriteProgress) throw new Error('PROGRESS_NOT_WRITABLE'); const merged = {...savedProgress,...progress}, serialized = JSON.stringify(merged); localStorage.setItem(progressKey, serialized); if (localStorage.getItem(progressKey) !== serialized) throw new Error('PROGRESS_SAVE_UNCONFIRMED'); savedProgress = merged; } catch (_) { state.saveFailed = true; }
     state.sessionCleared.add(state.meadow);
     if ([...Array(12).keys()].every(index => state.sessionCleared.has(index))) writeBest(state.sessionTries12);
     if (meadows.length === 60 && state.sessionCleared.size === 60) { writeBest60(state.sessionTries); track("session_complete", { tries: state.sessionTries }); }
     sound('result.win');
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = 'complete'; setResultOpen(true); renderResult(); __wpNotifyMeasurement();
+    __wpMeasurement.saveSucceeded = !state.saveFailed; __wpMeasurement.ended = true; __wpMeasurement.outcome = 'complete'; setResultOpen(true); renderResult(); __wpNotifyMeasurement();
   };
 
   const battleHasProgress = () => state.tries > 0 || state.values.some((value) => value !== 0) || Boolean(state.stage60Attempt?.moves);

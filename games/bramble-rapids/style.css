@@ -11,3 +11,10 @@
 #resultSaved{margin-bottom:auto}
 #anchorBtn[data-ready="true"]{outline:3px solid var(--wp-ui-gold);outline-offset:-4px}
 #anchorBtn{flex-direction:column;gap:0}#anchorBtn::before{content:"";display:block;flex:none;width:21px;height:21px;background:url('assets/kit.webp') 0% 50%/300% 300% no-repeat}
+
+/* Keep optional medal copy in existing scroll bodies; feedback never reflows controls. */
+#helpLesson,#resultReason{white-space:pre-line}
+#feedback{height:48px;min-height:48px;max-height:48px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14px;line-height:20px;padding:4px 10px;overflow-wrap:anywhere}
+#feedback:not(:empty){padding:4px 10px}
+/* In shallow arenas, keep the bounded message above the near-camera racers. */
+@media(orientation:landscape){#feedback{bottom:30%}}
