@@ -8,10 +8,11 @@
   let run=createRun(1),screen='main',ended=false,won=false,roundKey=null,restart=false,preview=-1,terrain=null,closed=false;
   const audio=window.WeightPlayAudio?.createScope(),sfx=id=>audio?.play(id);
   window.WeightPlayAudio?.preload(['game.start','board.move','board.undo','feedback.error','feedback.hint','result.win','result.lose']);
-  const battle=$('battle-screen'),battleContent=$('battleContent'),controls=$('battle-controls'),result=$('result-screen');
+  const battle=$('battle-screen'),battleContent=$('battleContent'),controls=$('battle-controls')||document.createElement('div'),result=$('result-screen');
+  controls.id='battle-controls';
   // Result belongs directly to Battle, above both the terrain and native workspace.
   battleContent.append(result);
-  document.body.dataset.wpGameVersion='v17';document.body.dataset.wpInterfaceVersion='9';
+  document.body.dataset.wpGameVersion='v18';document.body.dataset.wpInterfaceVersion='9';
   const workspace=document.createElement('div');workspace.id='habitat-workspace';
   workspace.innerHTML=`<section id="habitatCoach" class="habitat-coach first-steps"><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="" aria-hidden="true"><div><strong id="habitat-goal"></strong><p id="habitat-instruction"></p></div></section><div id="habitat-needs" class="habitat-needs"></div><section class="habitat-board-area"><div class="habitat-board-surface"><canvas id="habitat-terrain" aria-hidden="true"></canvas><div id="habitat-grid" class="habitat-grid" role="group"></div></div><p id="habitat-preview" aria-live="polite"></p></section><section id="habitat-rules" class="habitat-rules"></section><div class="habitat-tools"><button type="button" data-action="undo" id="habitat-undo"></button><button type="button" data-action="hint" id="habitat-hint"></button><button type="button" data-action="reset" id="habitat-reset"></button></div>`;
   battleContent.append(workspace);workspace.append(controls,$('habitat-preview'));

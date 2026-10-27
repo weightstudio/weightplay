@@ -94,7 +94,9 @@ export function relayFirstStrikeTarget(state,defaultTarget){
 }
 function hitMarked(state,slot,amount,source){
   const ally=state.team[slot-1]?.hp>0?state.team[slot-1]:state.team.find(x=>x&&x.hp>0);
-  if(!ally)return {type:'no-target',source,slot};
+  // Keep the raw signal intent even when the draft clone has no target. The
+  // real combat bridge must resolve each strike against current live units.
+  if(!ally)return {type:'signal-hit',source,markedSlot:slot,targetSlot:null,amount,blocked:0,damage:0};
   const blocked=Math.min(ally.shield,amount),damage=Math.min(ally.hp,amount-blocked);ally.shield-=blocked;ally.hp-=damage;
   return {type:'signal-hit',source,markedSlot:slot,targetSlot:ally.slot,amount,blocked,damage};
 }
@@ -122,10 +124,14 @@ export function relayEnemyAction(state,id){
   if(actor.kind==='B60'&&actor.actions===3)events=[pulse(state,actor)];
   state.events.push(...events);return events;
 }
-export function relayHeal(state,slot,amount){
+export function relayAdjustHealing(state,amount){
   if(!state.started)throw new Error('wave-not-started');
+  if(!Number.isFinite(amount)||amount<0)throw new TypeError('invalid heal');
+  const jam=state.jams.shift()??null;return {jam,adjusted:Math.max(0,amount-(jam?4:0))};
+}
+export function relayHeal(state,slot,amount){
   if(!Number.isInteger(slot)||slot<1||slot>6||!Number.isFinite(amount)||amount<0)throw new TypeError('invalid heal');
   const ally=state.team[slot-1];if(!ally||ally.hp<=0)return {type:'heal-no-target',slot};
-  const jam=state.jams.shift()??null,adjusted=Math.max(0,amount-(jam?4:0)),healed=Math.min(ally.maxHp-ally.hp,adjusted);ally.hp+=healed;
+  const {jam,adjusted}=relayAdjustHealing(state,amount),healed=Math.min(ally.maxHp-ally.hp,adjusted);ally.hp+=healed;
   const event={type:'heal',slot,requested:amount,jam,healed};state.events.push(event);return event;
 }
