@@ -1,4 +1,16 @@
 import * as THREE from '/games/purrch-grove/vendor/three/three.module.min.js';
+import { estimateTrajectory } from './model.mjs';
+
+function createWoodTexture() {
+  // A single reusable, deterministic painted grain keeps the interactive
+  // planks closer to the workshop art without adding per-body draw calls.
+  const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;const c=canvas.getContext('2d');
+  c.fillStyle='#b96e3d';c.fillRect(0,0,128,128);
+  for(let i=0;i<16;i++){const x=i*8;c.fillStyle=i%3===0?'#a45d35':'#c47d47';c.fillRect(x,0,3+(i%2),128);}
+  for(let i=0;i<26;i++){const x=(i*37+13)%123,y=(i*61+7)%122;c.fillStyle=i%2?'#d28a51':'#95512e';c.fillRect(x,y,2+(i%3),6+(i%4)*4);}
+  c.fillStyle='#96512f';c.fillRect(31,37,9,15);c.fillStyle='#d28a51';c.fillRect(34,40,3,9);c.fillStyle='#96512f';c.fillRect(91,79,8,12);c.fillStyle='#d28a51';c.fillRect(94,81,2,7);
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;return texture;
+}
 
 function createLauncher() {
   const group=new THREE.Group(),metal=new THREE.MeshStandardMaterial({color:0x187e79,roughness:.5,metalness:.35}),brass=new THREE.MeshStandardMaterial({color:0xe6b544,roughness:.45,metalness:.5}),dark=new THREE.MeshStandardMaterial({color:0x31575b,roughness:.64,metalness:.3}),highlight=new THREE.MeshStandardMaterial({color:0x73c8b4,roughness:.5,metalness:.25});
@@ -59,14 +71,14 @@ export class SalvageView {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     host.append(this.renderer.domElement);
     this.aimUpdates=0;
-    if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){this.readStats=()=>({calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,aimUpdates:this.aimUpdates});host.__ruxRenderStats=this.readStats;}
+    if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){this.readStats=()=>({calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,aimUpdates:this.aimUpdates,aimHit:this.aimMarker?.visible?{x:this.aimMarker.position.x,y:800-this.aimMarker.position.y}:null});host.__ruxRenderStats=this.readStats;}
     this.renderer.domElement.tabIndex=0;this.renderer.domElement.setAttribute('aria-label',host.getAttribute('aria-label')||'');
     this.contextLost=false;
     this.onContextLost=event=>{event.preventDefault();this.contextLost=true;onContextLost();};
     this.renderer.domElement.addEventListener('webglcontextlost',this.onContextLost);
     this.scene.add(new THREE.HemisphereLight(0xfff1d1, 0x275e64, 2.2));
     const light = new THREE.DirectionalLight(0xffffff, 2); light.position.set(-200, 800, 1000); this.scene.add(light);
-    this.meshes = new Map();
+    this.meshes = new Map();this.woodTexture=createWoodTexture();
     this.bursts=[];this.recoil=0;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const launcher=createLauncher();this.launcher=launcher.group;this.launcherMaterial=launcher.metal;
     this.launcher.position.set(80,120,50);this.scene.add(this.launcher);
@@ -87,6 +99,7 @@ export class SalvageView {
     },undefined,error=>console.warn('RUX_CHARACTER_ASSET',error));
     this.aim = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({color:0xffe899, dashSize:18, gapSize:12}));
     this.scene.add(this.aim);
+    this.aimMarker=new THREE.Mesh(new THREE.RingGeometry(11,15,24),new THREE.MeshBasicMaterial({color:0xffef9c,side:THREE.DoubleSide,depthWrite:false}));this.aimMarker.visible=false;this.scene.add(this.aimMarker);
     this.aimDots=new THREE.InstancedMesh(new THREE.SphereGeometry(5,8,6),new THREE.MeshBasicMaterial({color:0xffef9c}),40);this.aimDots.count=0;this.scene.add(this.aimDots);this.dotTransform=new THREE.Object3D();
     this.link = new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffb5ec}));this.scene.add(this.link);
     this.focused = false;
@@ -125,7 +138,8 @@ export class SalvageView {
     // workshop without changing the collision shape or obscuring its face.
     if(['wood','metal','target'].includes(kind)){const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;box(w+7,h+7,5,0x183b3a,-39);}
     if(kind==='ground') { box(1200,40,80,0x846248); box(1200,8,86,0xd4a85c,5); }
-    if(kind==='wood') { block(70,80,70,0x9d5932);box(61,70,4,0xb96e3d,37);for(const x of [-20,0,20]){const grain=box(3,62,3,0x8b4b2b,40);grain.position.x=x;}box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
+    if(kind==='wood') { block(70,80,70,0x9d5932);const face=box(61,70,4,0xffffff,37);face.material.map=this.woodTexture;for(const x of [-20,0,20]){const grain=box(3,62,3,0x8b4b2b,40);grain.position.x=x;}box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
+    if(kind==='beam') {const w=body.plugin.width;block(w,20,70,0x794729);const face=box(w-8,14,4,0xffffff,37);face.material.map=this.woodTexture;box(w,4,6,0xd3a258,42);for(const x of [-w/2+15,w/2-15])bolt(x,0,46);}
     if(kind==='metal') {block(70,80,70,0x586f77,.5);box(61,70,4,0x829c9c,37,.5);box(70,10,6,0xdfb751,42,.5);box(10,72,6,0x465f6a,43,.5);studs(64,73,47);}
     if(kind==='guard') {box(25,body.plugin.height,70,0x435f70,0,.5);box(31,16,78,0xd0ad58,5,.5);}
     if(kind==='reflector') {box(25,160,70,0x62d3c0,0,.6);box(31,148,78,0xd9b657,5,.5);box(35,120,83,0x256d73,8,.4);}
@@ -150,13 +164,13 @@ export class SalvageView {
       for(const x of [-1,1])for(const y of [-1,1])for(const horizontal of [true,false]){transform.position.set(x*(w/2+(horizontal?-4:4)),y*(h/2+(horizontal?4:-4)),70);transform.scale.set(horizontal?18:5,horizontal?5:18,3);transform.updateMatrix();indicator.setMatrixAt(i++,transform.matrix);}
       indicator.visible=false;group.add(indicator);group.userData.clampIndicator=indicator;
     }
-    if(['wood','metal','guard','reflector','platform','target'].includes(kind))group.rotation.y=-.16;
+    if(['wood','beam','metal','guard','reflector','platform','target'].includes(kind))group.rotation.y=-.16;
     this.scene.add(group); return group;
   }
   effect(event) {
     if(event.type==='shot'){this.recoil=.16;return;}
     if(!['impact','break','recovered'].includes(event.type)||!Number.isFinite(event.x)||this.bursts.length>=8)return;
-    const count=event.type==='break'?10:6,color=event.type==='recovered'?0x8dff9c:event.type==='break'||event.material==='wood'?0xffcc70:0x8af5ed;
+    const count=event.type==='break'?10:6,color=event.type==='recovered'?0x8dff9c:event.type==='break'||event.material==='wood'||event.material==='beam'?0xffcc70:0x8af5ed;
     const group=new THREE.Group(),geometry=new THREE.BoxGeometry(event.type==='break'?9:6,event.type==='break'?5:6,6),material=new THREE.MeshBasicMaterial({color,transparent:true});
     for(let i=0;i<count;i++){const spark=new THREE.Mesh(geometry,material);spark.userData.angle=i*Math.PI*2/count;group.add(spark);}
     const ringGeometry=new THREE.RingGeometry(9,13,24),ringMaterial=new THREE.MeshBasicMaterial({color,transparent:true,side:THREE.DoubleSide,depthWrite:false});const ring=new THREE.Mesh(ringGeometry,ringMaterial);group.add(ring);
@@ -173,12 +187,11 @@ export class SalvageView {
       // is included even though Matter represents it as a static body.
       const moving=model.bodies.filter(body=>!body.isStatic||body===model.platform),key=`${angle}|${power}|${moving.map(body=>`${body.id}:${body.position.x.toFixed(2)}:${body.position.y.toFixed(2)}:${body.angle.toFixed(3)}`).join(';')}`;
       if(key!==this.aimKey){
-        this.aimKey=key;this.aimUpdates++;const speed=700+Math.max(0,Math.min(1,power))*500,points=[new THREE.Vector3(80,120,80)],obstacles=model.bodies.filter(body=>body!==model.ball);let previous={x:80,y:680};
-        for(let i=1;i<=80;i++){const t=i*.02,x=80+speed*Math.cos(angle)*t,y=680-speed*Math.sin(angle)*t+500*t*t;const point={x,y};points.push(new THREE.Vector3(x,800-y,80));if(model.M.Query.ray(obstacles,previous,point,44).length||x>1000||y>800||y<0)break;previous=point;}
+        this.aimKey=key;this.aimUpdates++;this.aimProbe??=model.M.Bodies.circle(80,680,22);const estimate=estimateTrajectory(model.M,model.bodies.filter(body=>body!==model.ball),angle,power,this.aimProbe),points=estimate.points.map(point=>new THREE.Vector3(point.x,800-point.y,80));this.aimHasImpact=Boolean(estimate.hit);if(estimate.hit)this.aimMarker.position.set(estimate.hit.x,800-estimate.hit.y,84);
         this.aim.geometry.setFromPoints(points);this.aim.computeLineDistances();let count=0;for(let i=2;i<points.length&&count<40;i+=2){this.dotTransform.position.copy(points[i]);this.dotTransform.updateMatrix();this.aimDots.setMatrixAt(count++,this.dotTransform.matrix);}this.aimDots.count=count;this.aimDots.instanceMatrix.needsUpdate=true;
       }
     }else this.aimKey=null;
-    this.aim.visible=model.state==='ready';this.aimDots.visible=this.aim.visible;this.launcher.rotation.z=angle;
+    this.aim.visible=model.state==='ready';this.aimDots.visible=this.aim.visible;this.aimMarker.visible=this.aim.visible&&this.aimHasImpact;this.launcher.rotation.z=angle;
     const linked=model.targets.filter(body=>body.plugin.linked&&model.bodies.includes(body));this.link.visible=linked.length===2;
     if(linked.length===2)this.link.geometry.setFromPoints(linked.map(body=>new THREE.Vector3(body.position.x,800-body.position.y,82)));
     for(const burst of this.bursts){burst.life+=dt;const distance=this.reducedMotion?10:burst.life*110;for(const spark of burst.group.children){if(spark===burst.ring)continue;spark.position.x=Math.cos(spark.userData.angle)*distance;spark.position.y=Math.sin(spark.userData.angle)*distance;spark.rotation.z=burst.life*5+spark.userData.angle;}burst.ring.scale.setScalar(this.reducedMotion?1:1+burst.life*4);burst.material.opacity=burst.ringMaterial.opacity=Math.max(0,1-burst.life/.3);}
@@ -186,7 +199,7 @@ export class SalvageView {
     this.renderer.render(this.scene,this.camera);
   }
   dispose() {
-    this.disposed=true;this.ruxTexture?.dispose();
+    this.disposed=true;this.ruxTexture?.dispose();this.woodTexture.dispose();
     if(this.host.__ruxRenderStats===this.readStats)delete this.host.__ruxRenderStats;
     this.observer.disconnect();this.renderer.domElement.removeEventListener('pointerdown',this.capture);this.renderer.domElement.removeEventListener('pointermove',this.pointer);this.renderer.domElement.removeEventListener('webglcontextlost',this.onContextLost);
     this.scene.traverse(n=>{if(n.isInstancedMesh)n.dispose();n.geometry?.dispose();n.material?.dispose();});this.renderer.dispose();this.renderer.domElement.remove();this.meshes.clear();

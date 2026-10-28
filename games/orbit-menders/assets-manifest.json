@@ -14,7 +14,7 @@
       0,
       0
     ],
-    "camera": "fixed perspective oblique; portrait (0,35,12), landscape (12,35,0), selected by actual arena aspect; uniform safe-area fit"
+    "camera": "fixed perspective oblique; portrait heading proportional to (0,35,12), landscape (12,35,0), selected by actual arena aspect; uniform safe-area fit"
   },
   "provenance": {
     "type": "original-procedural-geometry",

@@ -1,5 +1,16 @@
 // Authoritative planar physics for the first development slice. Matter.js 0.20.0.
 // Coordinates are pixels (100 pixels per metre), with positive y downward.
+export function estimateTrajectory(M,obstacles,angle,power,probe=M.Bodies.circle(80,680,22)) {
+  const speed=700+Math.max(0,Math.min(1,power))*500,points=[{x:80,y:680}];let previous=points[0],hit=null;
+  for(let i=1;i<=80;i++){
+    const t=i*.02,x=80+speed*Math.cos(angle)*t,y=680-speed*Math.sin(angle)*t+500*t*t,point={x,y};
+    const candidates=obstacles.filter(body=>body.bounds.max.x>=Math.min(previous.x,x)-22&&body.bounds.min.x<=Math.max(previous.x,x)+22&&body.bounds.max.y>=Math.min(previous.y,y)-22&&body.bounds.min.y<=Math.max(previous.y,y)+22);
+    if(candidates.length){const collides=fraction=>{M.Body.setPosition(probe,{x:previous.x+(x-previous.x)*fraction,y:previous.y+(y-previous.y)*fraction});return M.Query.collides(probe,candidates).length>0;};let low=0;for(const highSample of [.5,1]){if(collides(highSample)){let high=highSample;for(let step=0;step<5;step++){const mid=(low+high)/2;if(collides(mid))high=mid;else low=mid;}hit={x:previous.x+(x-previous.x)*high,y:previous.y+(y-previous.y)*high};break;}low=highSample;}}
+    if(hit){points.push(hit);break;}points.push(point);if(x>1000||y>800||y<0)break;previous=point;
+  }
+  return {points,hit};
+}
+
 export class SalvageSlice {
   constructor(Matter, { twoTargets = false, stage = null } = {}) {
     this.M = Matter;
@@ -43,13 +54,18 @@ export class SalvageSlice {
         const wood=add(Bodies.rectangle(x,760-80*k,70,80,{...surface,density:metal ? .002 : .001}),metal?'metal':'wood');
         wood.plugin.fragile=stage?.fragile?.[0]===column&&stage?.fragile?.[1]===k;wood.plugin.column=column;wood.plugin.level=k;
       }
-      if(height){
+      if(height&&!stage?.bridge){
         for(const targetX of twoTargets ? [x-28,x+28] : [x]) {
           const heavy=column===stage?.heavyColumn;
           const part=add(Bodies.rectangle(targetX,800-80*height-32.5,twoTargets?55:65,65,{...surface,density:heavy ? .0009 : .0006}),'target');
           part.plugin.column=column;part.plugin.heavy=heavy;part.plugin.first=column===stage?.firstColumn;part.plugin.last=column===stage?.lastColumn;part.plugin.clampRequired=column===stage?.clampColumn;part.plugin.linked=stage?.sameShot?.includes(column)||false;this.targets.push(part);
         }
       }
+    }
+    if(stage?.bridge){
+      const slope=stage.bridge==='slope',width=slope?390:230;
+      const beam=add(Bodies.rectangle(slope?662.4:580,slope?670.3:710,width,20,{...surface,density:.001,angle:slope?Math.atan2(80,320):0}),'beam');beam.plugin.width=width;
+      const part=add(Bodies.rectangle(slope?672.7:580,slope?629.1:667.5,65,65,{...surface,density:.0006}),'target');part.plugin.column=1;this.targets.push(part);
     }
     if(stage?.platform){
       const part=add(Bodies.rectangle(660,657.5,65,65,{...surface,density:.0006}),'target');

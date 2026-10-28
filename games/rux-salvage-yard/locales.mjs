@@ -440,6 +440,8 @@ const EXTRA={
  ar:['يثبّت المشبك هدفه لثلاث ثوانٍ.','يقدّر الخط المنقط المسار حتى أول اصطدام. قد تغيّر القطع المتحركة موضع الاصطدام؛ يوضح السهم اتجاه المنصة.']
 };
 for(const [locale,[clampTime,trajectory]] of Object.entries(EXTRA))Object.assign(CUSTOM[locale],{clampTime,trajectory});
+const CONTACT_MARK={en:'The ring marks the estimated ball position at first contact.','zh-Hant':'圓環標示第一次接觸時預估的球位置。','zh-Hans':'圆环标示第一次接触时预估的球位置。',ja:'輪は最初に当たるときの球の予想位置です。',ko:'원은 첫 충돌 때 예상되는 공의 위치입니다.',es:'El círculo marca la posición estimada de la bola al primer contacto.','pt-BR':'O círculo marca a posição estimada da bola no primeiro contato.',fr:'L’anneau indique la position estimée de la balle au premier contact.',de:'Der Ring zeigt die geschätzte Ballposition beim ersten Kontakt.',it:'L’anello indica la posizione prevista della palla al primo contatto.',ru:'Кольцо показывает примерное положение шара при первом касании.',hi:'घेरा पहले संपर्क पर गेंद की अनुमानित स्थिति दिखाता है।',ar:'توضح الحلقة موضع الكرة المتوقع عند الاصطدام الأول.'};
+for(const [locale,contactMark] of Object.entries(CONTACT_MARK)){CUSTOM[locale].contactMark=contactMark;CUSTOM[locale].trajectory+=` ${contactMark}`;}
 const REFLECTOR_TIP={
   en:'The angled reflector changes the ball’s direction; try bouncing toward a support.',
   'zh-Hant':'斜反彈板會改變球的方向；試著利用反彈擊中支架。',
@@ -472,6 +474,56 @@ const SPEED_TEXT={
   ar:['التسريع إلى الضعف','العودة للسرعة العادية','أثناء حركة القطع، اضغط 2× للتسريع؛ يتسارع مؤقت المشبك أيضًا.']
 };
 for(const [locale,[speedUp,speedNormal,speedHint]] of Object.entries(SPEED_TEXT))Object.assign(CUSTOM[locale],{speedUp,speedNormal,speedHint});
+const FINAL_FINISH={en:'Copper Dawn','zh-Hant':'晨光銅','zh-Hans':'晨光铜',ja:'朝焼けの銅',ko:'새벽 구리',es:'Cobre del alba','pt-BR':'Cobre da aurora',fr:'Cuivre de l’aube',de:'Morgenkupfer',it:'Rame dell’alba',ru:'Медь рассвета',hi:'सुबह का ताँबा',ar:'نحاس الفجر'};
+for(const [locale,item6] of Object.entries(FINAL_FINISH))CUSTOM[locale].item6=item6;
+const CLAMP_ADVICE={
+  en:'To hold a part during impact, aim first, then clamp just before firing.',
+  'zh-Hant':'若要在撞擊時固定零件，先瞄準，再於發射前夾住。',
+  'zh-Hans':'若要在撞击时固定零件，先瞄准，再于发射前夹住。',
+  ja:'衝突時に部品を固定するには、先に狙いを定めて発射直前にクランプします。',
+  ko:'충돌할 때 부품을 고정하려면 먼저 조준하고 발사 직전에 클램프를 사용하세요.',
+  es:'Para sujetar una pieza durante el impacto, apunta primero y usa la pinza justo antes de disparar.',
+  'pt-BR':'Para manter uma peça presa no impacto, mire primeiro e use a pinça pouco antes do disparo.',
+  fr:'Pour maintenir une pièce pendant l’impact, visez d’abord puis utilisez la pince juste avant de tirer.',
+  de:'Soll ein Teil beim Aufprall festgehalten werden, ziele zuerst und klammere direkt vor dem Schuss.',
+  it:'Per tenere fermo un pezzo durante l’impatto, mira prima e usa la pinza appena prima del tiro.',
+  ru:'Чтобы удержать деталь при ударе, сначала прицельтесь, затем зажмите её прямо перед выстрелом.',
+  hi:'टक्कर के समय पुर्जे को रोकने के लिए पहले निशाना लगाएँ, फिर गोली चलाने से ठीक पहले क्लैंप करें।',
+  ar:'لتثبيت قطعة أثناء الاصطدام، صوّب أولًا ثم استخدم المشبك قبل الإطلاق مباشرة.'
+};
+for(const [locale,clampAdvice] of Object.entries(CLAMP_ADVICE))CUSTOM[locale].clampAdvice=clampAdvice;
+const BRIDGE_TIP={
+  en:'A beam rests on two supports. Break the striped support to tip it.',
+  'zh-Hant':'橫樑架在兩座支架上；擊碎有條紋的支架，讓橫樑傾倒。',
+  'zh-Hans':'横梁架在两座支架上；击碎有条纹的支架，让横梁倾倒。',
+  ja:'横木は二つの支えに載っています。線のある支えを壊して傾けましょう。',
+  ko:'가로대가 두 지지대 위에 놓여 있습니다. 줄무늬 지지대를 부숴 기울여 보세요.',
+  es:'Una viga descansa sobre dos soportes. Rompe el soporte rayado para inclinarla.',
+  'pt-BR':'Uma viga repousa sobre dois suportes. Quebre o suporte listrado para incliná-la.',
+  fr:'Une poutre repose sur deux supports. Brisez le support rayé pour l’incliner.',
+  de:'Ein Balken liegt auf zwei Stützen. Zerbrich die gestreifte Stütze, um ihn zu kippen.',
+  it:'Una trave poggia su due supporti. Rompi quello a righe per inclinarla.',
+  ru:'Балка лежит на двух опорах. Разбейте полосатую опору, чтобы наклонить её.',
+  hi:'एक बीम दो सहारों पर टिकी है। धारीदार सहारा तोड़कर उसे झुकाएँ।',
+  ar:'ترتكز عارضة على دعامتين. اكسر الدعامة المخططة لإمالتها.'
+};
+for(const [locale,bridgeTip] of Object.entries(BRIDGE_TIP))CUSTOM[locale].bridgeTip=bridgeTip;
+const LEAVE_DETAILS={
+  en:'Leave Stage {n}? This attempt will restart; saved progress remains.',
+  'zh-Hant':'離開第 {n} 關？這次挑戰會重新開始，已保存的進度會保留。',
+  'zh-Hans':'离开第 {n} 关？本次挑战会重新开始，已保存的进度会保留。',
+  ja:'ステージ {n} を離れますか？今回の挑戦は最初からになり、保存済みの進行は残ります。',
+  ko:'스테이지 {n}을 떠날까요? 이번 도전은 다시 시작되며 저장된 진행은 유지됩니다.',
+  es:'¿Salir del nivel {n}? Este intento se reiniciará; el progreso guardado permanecerá.',
+  'pt-BR':'Sair da fase {n}? Esta tentativa será reiniciada; o progresso salvo permanece.',
+  fr:'Quitter le niveau {n} ? Cet essai recommencera ; la progression enregistrée sera conservée.',
+  de:'Stufe {n} verlassen? Dieser Versuch beginnt von vorn; gespeicherter Fortschritt bleibt erhalten.',
+  it:'Uscire dal livello {n}? Questo tentativo ricomincerà; i progressi salvati resteranno.',
+  ru:'Покинуть уровень {n}? Эта попытка начнётся заново, сохранённый прогресс останется.',
+  hi:'स्तर {n} छोड़ें? यह प्रयास फिर शुरू होगा; सहेजी हुई प्रगति बनी रहेगी।',
+  ar:'مغادرة المرحلة {n}؟ ستُعاد هذه المحاولة من البداية وسيبقى تقدمك المحفوظ.'
+};
+for(const [locale,leaveDetails] of Object.entries(LEAVE_DETAILS))CUSTOM[locale].leaveDetails=leaveDetails;
 const FINE_AIM={
   en:'Hold Shift with ↑ or ↓ for finer aim.',
   'zh-Hant':'按住 Shift 再按方向鍵上、下，可微調角度。',
