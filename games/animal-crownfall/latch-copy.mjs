@@ -70,6 +70,38 @@ const TWENTY_SIXTH_NAMES={en:'Seals over the spikes','zh-Hant':'尖刺上的印�
 for(const [locale,value] of Object.entries(TWENTY_SIXTH_NAMES))LATCH_NAMES[locale].push(value);
 const TWENTY_SEVENTH_NAMES={en:'Two pairs, three seals and spikes','zh-Hant':'雙鎖、三印記與尖刺','zh-Hans':'双锁、三印记与尖刺',ja:'二組の鍵、三つの印ととげ',ko:'두 쌍, 세 인장과 가시',es:'Dos pares, tres sellos y pinchos','pt-BR':'Dois pares, três selos e espinhos',fr:'Deux paires, trois sceaux et pointes',de:'Zwei Paare, drei Siegel und Stacheln',it:'Due coppie, tre sigilli e spuntoni',ru:'Две пары, три печати и шипы',hi:'दो जोड़े, तीन मुहरें और काँटे',ar:'زوجان وثلاثة أختام وأشواك'};
 for(const [locale,value] of Object.entries(TWENTY_SEVENTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_EIGHTH_NAMES={en:'The rune and the three seals','zh-Hant':'符文與三印記','zh-Hans':'符文与三印记',ja:'ルーンと三つの印',ko:'룬과 세 인장',es:'La runa y los tres sellos','pt-BR':'A runa e os três selos',fr:'La rune et les trois sceaux',de:'Die Rune und drei Siegel',it:'La runa e i tre sigilli',ru:'Руна и три печати',hi:'रून और तीन मुहरें',ar:'الرون والأختام الثلاثة'};
+for(const [locale,value] of Object.entries(TWENTY_EIGHTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_NINTH_NAMES={en:'The guardian facing right','zh-Hant':'右側進攻的守衛','zh-Hans':'右侧进攻的守卫',ja:'右から挑む守護者',ko:'오른쪽에서 맞서는 수호자',es:'El guardián del lado derecho','pt-BR':'O guardião do lado direito',fr:'Le gardien à aborder par la droite',de:'Der Wächter von rechts',it:'Il guardiano da destra',ru:'Страж: подойти справа',hi:'दाईं ओर से रक्षक',ar:'الحارس من اليمين'};
+for(const [locale,value] of Object.entries(TWENTY_NINTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_DIRECTION_RULE={
+ en:'Avoid spikes, match keys and locks, collect seals 1–3 in order and the sun rune. Approach the guardian from the right.',
+ 'zh-Hant':'避開尖刺、配對鑰匙與鎖；依序收集印記1–3及太陽符文，從右側接近守衛。',
+ 'zh-Hans':'避开尖刺、配对钥匙与锁；依序收集印记1–3和太阳符文，从右侧接近守卫。',
+ ja:'とげを避け鍵と錠を合わせ、印を1〜3の順と太陽のルーンを集め、右から守護者に近づこう。',
+ ko:'가시를 피하고 열쇠와 잠금을 맞추세요. 인장 1–3을 순서대로, 태양 룬을 모아 오른쪽에서 접근하세요.',
+ es:'Evita los pinchos, empareja llaves y candados, recoge los sellos 1–3 en orden y la runa solar. Acércate por la derecha.',
+ 'pt-BR':'Evite espinhos, combine chaves e travas, pegue os selos 1–3 em ordem e a runa solar. Aproxime-se pela direita.',
+ fr:'Évitez les pointes, associez clés et verrous, prenez les sceaux 1–3 dans l’ordre et la rune solaire. Approchez par la droite.',
+ de:'Meide Stacheln, ordne Schlüssel und Sperren zu, sammle Siegel 1–3 und Sonnenrune. Nähere dich von rechts.',
+ it:'Evita gli spuntoni, abbina chiavi e blocchi, raccogli i sigilli 1–3 in ordine e la runa solare. Avvicinati da destra.',
+ ru:'Избегайте шипов, сопоставьте ключи и замки, соберите печати 1–3 по порядку и руну солнца. Подойдите справа.',
+ hi:'काँटों से बचें, चाबियाँ और ताले मिलाएँ, मुहरें 1–3 क्रम से और सूर्य रून लें। रक्षक के दाईं ओर से आएँ।',
+ ar:'تجنب الأشواك وطابق المفاتيح والأقفال. اجمع الأختام 1–3 بالترتيب ورون الشمس، واقترب من الحارس من اليمين.'
+};
+export const LATCH_DUAL_SPIKE_SEALS_RUNE_RULE={
+ en:'Avoid spikes before the left key. Match pairs; seals 1, 2, 3 in order; ☀ rune breaks the shield.',
+ 'zh-Hant':'避尖刺再拆左鑰匙，配對兩鎖；印記依序1、2、3，☀符文破盾。','zh-Hans':'避尖刺再拆左钥匙，配对两锁；印记依序1、2、3，☀符文破盾。',
+ ja:'左の鍵を消す前にとげを避ける。二組を合わせ、印は1、2、3の順。☀のルーンで盾を解除。',ko:'왼쪽 열쇠를 없애기 전 가시를 피하세요. 두 쌍을 맞추고 인장 1, 2, 3 순서. ☀ 룬으로 방패를 푸세요.',
+ es:'Evita pinchos antes de la llave izquierda. Empareja; sellos 1, 2, 3 en orden; runa ☀ para el escudo.',
+ 'pt-BR':'Evite espinhos antes da chave esquerda. Combine pares; selos 1, 2, 3 em ordem; runa ☀ para o escudo.',
+ fr:'Évitez les pointes avant la clé gauche. Associez les paires ; sceaux 1, 2, 3 ; rune ☀ pour le bouclier.',
+ de:'Meide Stacheln vor dem linken Schlüssel. Paare zuordnen; Siegel 1, 2, 3; ☀-Rune für den Schild.',
+ it:'Evita gli spuntoni prima della chiave sinistra. Abbina le coppie; sigilli 1, 2, 3; runa ☀ per lo scudo.',
+ ru:'Избегайте шипов до левого ключа. Пары; печати 1, 2, 3 по порядку; руна ☀ для щита.',
+ hi:'बाईं चाबी से पहले काँटों से बचें। जोड़े मिलाएँ; मुहरें 1, 2, 3 क्रम से; ढाल के लिए ☀ रून लें।',
+ ar:'تجنب الأشواك قبل المفتاح الأيسر. طابق الزوجين؛ الأختام 1 و2 و3 بالترتيب ورون ☀ للدرع.'
+};
 export const LATCH_DUAL_SPIKE_SEALS_RULE={
  en:'Avoid spikes; reach safety before the left key. Match both pairs; collect seals 1, 2, 3 in order.',
  'zh-Hant':'避尖刺，先安全移動再拆左鑰匙；配對兩鎖，印記依序1、2、3。','zh-Hans':'避尖刺，先安全移动再拆左钥匙；配对两锁，印记依序1、2、3。',

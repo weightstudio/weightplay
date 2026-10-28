@@ -188,4 +188,18 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20}],required:['weak','last'],
   items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'}],sealOrder:['1','2','3'],
   latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[1,3],key:[3,1]}]
+},{
+  id:58,name:'The rune and the three seals',
+  decision:'Reach safety before the left key, match both pairs, collect seals in order and bring the sun rune to the shield.',
+  board:['.......','AABBBCC','.......','^BB.CCA','.......','AABBBBB','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun'}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'},{id:'rune',kind:'rune',x:1,y:0,link:'sun'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[1,3],key:[2,1]}]
+},{
+  id:59,name:'The guardian facing right',
+  decision:'Reach safety before the left key, match both pairs, collect three seals in order, and approach the shielded guardian from the right.',
+  board:['.......','AABBBCC','.......','^BB.CCA','.......','BBBAAAA','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun',direction:'right'}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'},{id:'rune',kind:'rune',x:1,y:0,link:'sun'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[1,3],key:[2,1]}]
 }];
