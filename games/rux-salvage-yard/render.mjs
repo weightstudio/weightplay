@@ -221,9 +221,11 @@ export class SalvageView {
       // Rebuild only when aim, power or a movable obstacle has changed.
       // Static scenery is immutable during a ready state; the moving platform
       // is included even though Matter represents it as a static body.
-      const moving=model.bodies.filter(body=>!body.isStatic||body===model.platform),key=`${angle}|${power}|${moving.map(body=>`${body.id}:${body.position.x.toFixed(2)}:${body.position.y.toFixed(2)}:${body.angle.toFixed(3)}`).join(';')}`;
+      const moving=model.bodies.filter(body=>!body.isStatic||body===model.platform),key=`${angle}|${power}|${model.platform?model.platformTime.toFixed(3):''}|${moving.map(body=>`${body.id}:${body.position.x.toFixed(2)}:${body.position.y.toFixed(2)}:${body.angle.toFixed(3)}`).join(';')}`;
       if(key!==this.aimKey){
-        this.aimKey=key;this.aimUpdates++;this.aimProbe??=model.M.Bodies.circle(80,680,22);const estimate=estimateTrajectory(model.M,model.bodies.filter(body=>body!==model.ball),angle,power,this.aimProbe),points=estimate.points.map(point=>new THREE.Vector3(point.x,800-point.y,80));this.aimHasImpact=Boolean(estimate.hit);if(estimate.hit)this.aimMarker.position.set(estimate.hit.x,800-estimate.hit.y,84);
+        this.aimKey=key;this.aimUpdates++;this.aimProbe??=model.M.Bodies.circle(80,680,22);let motion=null,carried=[];
+        if(model.platform){this.platformAimProxy??=model.M.Bodies.rectangle(0,0,120,20,{isStatic:true});this.targetAimProxies??=[];carried=model.targets.filter(body=>model.bodies.includes(body)&&!body.isStatic&&Math.abs(body.bounds.max.y-690)<5&&Math.abs(body.position.x-model.platform.position.x)<85);motion={platform:model.platform,time:model.platformTime,platformProxy:this.platformAimProxy,carried:carried.map((body,index)=>{this.targetAimProxies[index]??=model.M.Bodies.rectangle(0,0,65,65);return{body,proxy:this.targetAimProxies[index]};})};}
+        const estimate=estimateTrajectory(model.M,model.bodies.filter(body=>body!==model.ball&&body!==model.platform&&!carried.includes(body)),angle,power,this.aimProbe,motion),points=estimate.points.map(point=>new THREE.Vector3(point.x,800-point.y,80));this.aimHasImpact=Boolean(estimate.hit);if(estimate.hit)this.aimMarker.position.set(estimate.hit.x,800-estimate.hit.y,84);
         this.aim.geometry.setFromPoints(points);this.aim.computeLineDistances();let count=0;for(let i=2;i<points.length&&count<40;i+=2){this.dotTransform.position.copy(points[i]);this.dotTransform.updateMatrix();this.aimDots.setMatrixAt(count++,this.dotTransform.matrix);}this.aimDots.count=count;this.aimDots.instanceMatrix.needsUpdate=true;
       }
     }else this.aimKey=null;

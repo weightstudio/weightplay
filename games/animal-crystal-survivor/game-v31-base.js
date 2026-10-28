@@ -2308,9 +2308,9 @@
       hazard.warn -= dt;
       hazard.life -= dt;
       hazard.tick = Math.max(0, hazard.tick - dt);
-      // Local Stage 46/47 heat expires before collision; retain historical
+      // Local practice heat expires before collision; retain historical
       // ordering for every existing stage and other hazard.
-      if(__crystalPracticeRequested&&((state.stage===46&&hazard.beaconHeat)||(state.stage===47&&hazard.beaconDropHeat)||(state.stage===49&&hazard.beaconShelterHeat))&&hazard.life<=0)return false;
+      if(__crystalPracticeRequested&&((state.stage===46&&hazard.beaconHeat)||(state.stage===47&&hazard.beaconDropHeat)||(state.stage===49&&hazard.beaconShelterHeat)||(state.stage===50&&hazard.beaconKilnHeat))&&hazard.life<=0)return false;
       const active = hazard.warn <= 0;
       const previousX = hazard.x, previousY = hazard.y;
       if (hazard.kind === "ring" && active) hazard.r += hazard.growth * dt;
