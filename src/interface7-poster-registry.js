@@ -191,7 +191,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "zoo-helper-day": "/assets/zoo-helper-day/cover-block-v1.png",
   "puppy-haven": "/games/puppy-haven/assets/cover-block-v1.webp",
   "lantern-lasso":"/games/lantern-lasso/assets/cover.webp",
-  "dustwake-depot":"/games/dustwake-depot/art/poster.webp"
+  "dustwake-depot":"/games/dustwake-depot/art/poster.webp",
+  "rux-salvage-yard":"/games/rux-salvage-yard/art/poster.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/orbit-menders-poster-block-v1.webp": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp",
@@ -386,5 +387,6 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/interface7-redrawn/zoo-helper-day.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__zoo-helper-day.webp",
   "/games/puppy-haven/assets/cover-block-v1.webp": "/assets/lobby-thumbs/w480/games__puppy-haven__assets__cover-block-v1.webp",
   "/games/lantern-lasso/assets/cover.webp":"/games/lantern-lasso/assets/cover.webp",
-  "/games/dustwake-depot/art/poster.webp":"/games/dustwake-depot/art/poster.webp"
+  "/games/dustwake-depot/art/poster.webp":"/games/dustwake-depot/art/poster.webp",
+  "/games/rux-salvage-yard/art/poster.webp":"/games/rux-salvage-yard/art/poster.webp"
 });

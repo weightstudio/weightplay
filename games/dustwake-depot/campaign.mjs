@@ -18,6 +18,18 @@ const layouts = {
 };
 const GATES = { 1: [4, 3], 2: [4, 6], 3: [7, 2] };
 
+// Authored mastery goals, separate from the forgiving clear deadline. Initial
+// values use known legal Breeze witnesses (not optimal-play claims), with
+// first-play observations informing Stage 4's 22/34. Recalibrate through play.
+const STAR_SECONDS = [
+  [10,17],[12,20],[12,19],[22,34],[19,29],[13,20],[18,27],[23,34],[23,34],[21,32],
+  [21,32],[24,37],[23,35],[28,42],[26,39],[16,25],[29,44],[36,54],[30,45],[29,43],
+  [23,35],[25,38],[25,38],[30,45],[28,42],[25,38],[44,64],[27,41],[41,60],[40,58],
+  [18,28],[19,29],[22,34],[22,34],[25,38],[27,41],[25,38],[30,45],[26,38],[35,52],
+  [34,50],[27,40],[29,43],[30,45],[36,54],[30,44],[30,45],[30,45],[27,40],[32,47],
+  [30,45],[34,51],[29,43],[41,61],[29,44],[29,44],[30,45],[40,59],[39,57],[46,66],
+];
+
 // [name (English, Traditional Chinese), layout, authored piles, seconds, gate, pads, rules]
 const rows = [
   ['First Sweep', '苔徑初掃', 'O', 'G4 H4', 75],
@@ -90,7 +102,7 @@ function stageFromRow(row, i) {
     return { group: match[1], kind: match[2] ? 'wet' : 'dry', count: Number(match[3]) };
   });
   return Object.freeze({ id: i + 1, chapter: i < 30 ? 1 : 2, name, nameZh, nameKey: `stage-${i + 1}`, width: 10, height: 8, layout, dust,
-    seconds, checkpoint: (i + 1) % 5 === 0, seed: 0x44574400 + i + 1, rules: Object.freeze({ ...rules }),
+    seconds, starSeconds: Object.freeze([...STAR_SECONDS[i]]), checkpoint: (i + 1) % 5 === 0, seed: 0x44574400 + i + 1, rules: Object.freeze({ ...rules }),
     walls: layouts[layout].map(c => Object.freeze([...c])), depot: Object.freeze([1, 6]),
     gates: gate ? [{ x: GATES[gate][0], z: GATES[gate][1], openSeconds: rules.gateOpen || 3, closedSeconds: rules.gateClosed || 3, phase: 0 }] : [],
     pads: [...pads].map(p => Object.freeze([...PADS[p]])), target: dust.reduce((a, p) => a + p.count, 0),
@@ -103,10 +115,17 @@ export function getStage(id) {
   return STAGES[Number(id) - 1];
 }
 
+/** Grade an actual successful elapsed time; callers still own the win check. */
+export function starsForElapsed(stageId, elapsed) {
+  const stage = getStage(stageId);
+  if (!Number.isFinite(elapsed) || elapsed < 0 || elapsed > stage.seconds + 1e-6) return 0;
+  return elapsed <= stage.starSeconds[0] + 1e-6 ? 3 : elapsed <= stage.starSeconds[1] + 1e-6 ? 2 : 1;
+}
+
 /** Fresh mutable runtime data; immutable authoring records are never changed by a run. */
 export function buildStage(id) {
   const s = getStage(id);
-  return { ...s, dust: s.dust.map(d => ({ ...d })), walls: s.walls.map(p => [...p]), depot: [...s.depot],
+  return { ...s, starSeconds: [...s.starSeconds], dust: s.dust.map(d => ({ ...d })), walls: s.walls.map(p => [...p]), depot: [...s.depot],
     gates: s.gates.map(g => ({ ...g })), pads: s.pads.map(p => [...p]), rules: { ...s.rules, ...(s.rules.depotWindow ? { depotWindow: { ...s.rules.depotWindow } } : {}) },
     piles: s.dust.map(p => ({ id: `${s.id}:${p.group}`, group: p.group, x: GROUPS[p.group][0], z: GROUPS[p.group][1], kind: p.kind, remaining: p.count, max: p.count, collecting: 0 })),
   };

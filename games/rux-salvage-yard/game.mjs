@@ -48,7 +48,11 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
       try{localStorage.setItem(STORE,serialized);}catch(error){if(localStorage.getItem(STORE)!==serialized)throw error;}
       if(localStorage.getItem(STORE)!==serialized)throw Error('RUX_SAVE_UNCONFIRMED');
     };
-    try{if(navigator.locks?.request)await navigator.locks.request('weightplay-rux-salvage-yard-progress-v1',commit);else commit();$('saveWarning').hidden=true;return true;}catch{$('saveWarning').hidden=false;return false;}
+    try{
+      if(navigator.locks?.request){const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),5000);try{await navigator.locks.request('weightplay-rux-salvage-yard-progress-v1',{signal:controller.signal},commit);}finally{clearTimeout(timeout);}}
+      else commit();
+      $('saveWarning').hidden=true;return true;
+    }catch{$('saveWarning').hidden=false;return false;}
   };
   let screen='main',stageTab='stages',model=null,view=null,frame,selector,tutorial,tutorialFull=false,dialogMode='',dialogReturn=null,raf=0,last=0,accum=0,angle=.05,paused=false,fastForward=false,lastClampSeconds=0,slice=0,selected=progress.highestUnlocked-1,practice=false,previews=null,purchasePending=false,startPending=false,pageClosed=false,clampChoice=null;
   const ownsFinish=item=>item.id==='workshop'||(item.cost?Boolean(window.WeightPlayWallet?.owns(`rux-salvage-yard:${item.id}`)):Boolean(progress.cleared[item.unlock]));
@@ -123,7 +127,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
       const key=String(resultSlice+1),best=progress.cleared[key];progress.cleared[key]=best?Math.min(best,resultModel.shots):resultModel.shots;progress.highestUnlocked=Math.max(progress.highestUnlocked,Math.min(60,resultSlice+2));
       // Keep the result visible but its actions disabled until the serialized
       // save settles, so a delayed write cannot race navigation or rewards.
-      dialog(t('won'),`${t('winBody')} ${rating}${t('pending')}`,buttons.map(([label,fn])=>[label,fn,true]));
+      dialog(t('won'),`${t('winBody')} ${rating}${t('savingProgress')}`,buttons.map(([label,fn])=>[label,fn,true]));
       const persisted=await save();if(persisted){try{window.WonderAnalytics?.completeStage?.(resultSlice+1);}catch(error){console.warn('RUX_STAGE_REWARD',error);}}
       if(pageClosed||screen!=='battle'||model!==resultModel||dialogMode!=='result')return;
       $('dialogText').textContent=`${t('winBody')} ${rating}${persisted?t('saved'):t('saveError')}`;

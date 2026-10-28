@@ -1,4 +1,4 @@
-import {STAGES, TOOLS, getStage} from './campaign.mjs';
+import {STAGES, TOOLS, starsForElapsed} from './campaign.mjs';
 import {createRun} from './core.mjs';
 import {mountRenderer} from './render.mjs';
 import {LOCALES, ROUTES, text, title, stageCopy, notice, renderStaticGuide} from './copy.mjs';
@@ -102,6 +102,9 @@ function status(code, duration=2300) {
 }
 function closeOverlay({restore=true}={}) {
   if(!overlayOpen)return;
+  // Closing a foreground dialog is an explicit return to play, including after
+  // an OS interruption while the dialog was already open.
+  if(!document.hidden)backgroundPaused=false;
   overlayOpen=false;overlayCancel=null;overlayBusy=false;$('gameOverlay').hidden=true;
   $('stageWorkspace').inert=false;$('stageTabs').inert=false;$('battleLive').inert=resultShown;
   frame.activate(screen,{covered:resultShown});
@@ -177,7 +180,7 @@ function renderManagement() {
     if(!toolCards.has(id)) {
       const nodes=card($('toolList'),`icon-${id}`,t(nameKey),t(`${nameKey}Description`));
       nodes.button.id=`equip-${id}`;
-      listen(nodes.button,'click',()=>{if(!ownedTool(id))return;save.selectedTool=id;persist();renderManagement();play('reward.unlock');});
+      listen(nodes.button,'click',()=>{if(!ownedTool(id))return;save.selectedTool=id;persist();renderManagement();});
       toolCards.set(id,nodes);
     }
     const nodes=toolCards.get(id),owned=ownedTool(id);nodes.h.textContent=t(nameKey);nodes.p.textContent=t(`${nameKey}Description`);
@@ -210,7 +213,7 @@ function purchaseAmber() {
       let result;try{result=await window.WeightPlayWallet.purchasePermanent(SKU,5);}catch{result={ok:false};}
       purchasePending=false;overlayBusy=false;
       if(result?.ok&&ownsAmber()) {save.skin='amber';persist();closeOverlay();renderManagement();play('shop.purchase');}
-      else {button.disabled=false;const p=document.createElement('p');p.setAttribute('role','status');p.textContent=window.WeightPlayWallet.read().diamonds<5?t('insufficient'):t('purchaseError');$('modalBody').append(p);play('feedback.error');}
+      else {button.disabled=false;const p=document.createElement('p');p.setAttribute('role','status');p.textContent=result?.reason==='insufficient'?t('insufficient'):t('purchaseError');$('modalBody').append(p);play('feedback.error');}
     }}
   ],()=>{if(!purchasePending)closeOverlay();});
 }
@@ -223,7 +226,8 @@ function updateHUD() {
   $('modeButton').querySelector('[data-copy]').textContent=t(s.mode);
   $('modeButton').querySelector('.tool-icon').className=`tool-icon icon-${s.mode}`;
   $('modeButton').setAttribute('aria-pressed',String(s.mode==='brush'));
-  $('compressButton').querySelector('[data-copy]').textContent=`${t('compress')} ${s.compressionLeft}`;
+  $('compressButton').querySelector('[data-copy]').textContent=`${t('toolPress')} ${s.compressionLeft}`;
+  $('compressButton').setAttribute('aria-label',t('compressionCount',{n:s.compressionLeft}));
   $('compressButton').disabled=s.toolId!=='press'||!s.compressionLeft;
   $('deployButton').disabled=!s.stage.pads.length||!s.deploymentLeft;
   if(performance.now()>statusUntil)$('statusLine').textContent='';
@@ -234,7 +238,7 @@ function feedback(events) {
     else if(event.type==='deposit')play('feedback.success');
     else if(event.type==='reject'){status(event.code);play('feedback.error');}
     else if(event.type==='deploy')play('mechanism.unlock');
-    else if(event.type==='compress'){compressionStarted=null;play('reward.upgrade');}
+    else if(event.type==='compress'){compressionStarted=null;play('feedback.success');}
     else if(event.type==='gate'&&event.amount)play('mechanism.unlock');
   }
 }
@@ -251,10 +255,11 @@ function deployDialog() {
   buttons.push({label:t('cancel'),action:()=>closeOverlay()});
   showOverlay(t('choosePad'),[t('deployOnce'),...stageCopy(locale,run.state.stage).details.filter(line=>line!==t('seconds',{n:run.state.stage.seconds}))],buttons,()=>closeOverlay());
 }
-function starsFor(state) { const ratio=state.elapsed/state.stage.seconds;return ratio<=.65?3:ratio<=.85?2:1; }
+function starsFor(state) { return starsForElapsed(state.stage.id,state.elapsed); }
 function finishRound() {
   if(resultShown||!run)return;
   resultShown=true;stopInput();const state=run.state,won=state.status==='win',stars=won?starsFor(state):0;
+  const newTool=won&&!practiceSession&&!save.cleared.includes(state.stage.id)?Object.values(TOOLS).find(tool=>tool.unlockAfter===state.stage.id):null;
   if(won&&!practiceSession) {
     const next={...save,cleared:[...new Set([...save.cleared,state.stage.id])],bestStars:{...save.bestStars},bestTime:{...save.bestTime},tutorialSeen:{...save.tutorialSeen},highestUnlocked:Math.max(save.highestUnlocked,Math.min(60,state.stage.id+1))};
     next.bestStars[state.stage.id]=Math.max(next.bestStars[state.stage.id]||0,stars);
@@ -263,8 +268,10 @@ function finishRound() {
     if(saveSucceeded)window.WonderAnalytics?.completeStage?.(state.stage.id);
   }
   $('resultTitle').textContent=won?t('win'):state.notice==='time-up'?t('lose'):t('stageRule');
+  $('resultStars').dataset.outcome=won?'win':'lose';
   $('resultStars').textContent=won?`${t('stars')} ${stars} / 3`:notice(locale,state.notice);
-  $('resultStats').textContent=`${t('delivered')}: ${state.delivered} / ${state.stage.target} · ${t('time')}: ${state.elapsed.toFixed(1)}s · ${practiceSession?t('practice'):won?(saveSucceeded?t('saved'):t('saveError')):''}`;
+  const unlockCopy=newTool&&saveSucceeded?t('toolUnlocked',{tool:t(`tool${newTool.id[0].toUpperCase()+newTool.id.slice(1)}`)}):'';
+  $('resultStats').textContent=`${unlockCopy?unlockCopy+' ':''}${t('delivered')}: ${state.delivered} / ${state.stage.target} · ${t('seconds',{n:state.elapsed.toFixed(1)})} · ${t('starGoals',{three:state.stage.starSeconds[0],two:state.stage.starSeconds[1]})} · ${practiceSession?t('practice'):won?(saveSucceeded?t('saved'):t('saveError')):''}`;
   $('resultNext').disabled=!won||state.stage.id===60||(!practiceSession&&!saveSucceeded);
   $('resultPanel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});animate($('resultPanel'));
   $('resultStages').focus({preventScroll:true});play(won?'result.win':'result.lose');refreshStages();measurement();
@@ -303,9 +310,13 @@ function updateLocale() {
   for(const node of document.querySelectorAll('[data-copy-aria]'))node.setAttribute('aria-label',t(node.dataset.copyAria));
   for(const node of document.querySelectorAll('[data-copy-alt]'))node.setAttribute('alt',t(node.dataset.copyAlt));
   for(const node of document.querySelectorAll('[data-dustwake-stat-label]'))node.textContent=t(node.dataset.dustwakeStatLabel);
-  $('localeSelect').value=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
+  const localeSource=document.getElementById('localeSelect');if(localeSource)localeSource.value=locale;
+  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
   $('mainProgress').textContent=t('progress',{stage:save.highestUnlocked,total:60});
-  const next=document.createRange().createContextualFragment(renderStaticGuide(locale));$('gameGuide').replaceWith(next);$('gameGuide').hidden=screen!=='main';
+  if($('gameGuide').lang!==locale) {
+    const next=document.createRange().createContextualFragment(renderStaticGuide(locale));$('gameGuide').replaceWith(next);
+  }
+  $('gameGuide').hidden=screen!=='main';
   document.title=`${title(locale)} | WeightPlay`;renderManagement();refreshStages();updateHUD();
 }
 function loop(now) {
@@ -315,7 +326,10 @@ function loop(now) {
     if(!paused()&&run.state.status==='playing') {
       const x=(keys.has('ArrowRight')||keys.has('d')?1:0)-(keys.has('ArrowLeft')||keys.has('a')?1:0);
       const z=(keys.has('ArrowDown')||keys.has('s')?1:0)-(keys.has('ArrowUp')||keys.has('w')?1:0);
-      if(x||z)run.setTarget(run.state.player.x+x*.24,run.state.player.z+z*.24);
+      if(x||z) {
+        const direction=renderer.mapScreenDirection?.(x,z)??{x,z};
+        run.setTarget(run.state.player.x+direction.x*.24,run.state.player.z+direction.z*.24);
+      }
       run.update(dt);
     }
     const events=run.consumeEvents();feedback(events);
@@ -337,7 +351,10 @@ if(!preview&&!practiceSession) {
   window.WeightPlayGameEntryLoader?.ready?.();
 } else {
   $('comingSoon').hidden=true;$('appRoot').hidden=false;
-  frame=window.WeightPlayScreenFrame.mount({root:$('appRoot'),localeSelect:$('localeSelect'),playUI:true,scenes:{
+  // The shared Settings controller supplies its canonical language selector and
+  // owns availability checks and navigation. Retire the static source first.
+  $('localeSelect').closest('label').remove();
+  frame=window.WeightPlayScreenFrame.mount({root:$('appRoot'),playUI:true,scenes:{
     main:{root:roots.main,header:$('mainHeader'),content:$('mainHero')},
     stage:{root:roots.stage,header:$('stageHeader'),content:$('stageWorkspace')},
     battle:{root:roots.battle,header:$('battleHeader'),content:$('battleLive')}
@@ -353,7 +370,6 @@ if(!preview&&!practiceSession) {
   listen($('resultStages'),'click',()=>{setTab('stages');setScreen('stage');});
   listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)void startStage(selected+1);});
   listen($('resultReplay'),'click',()=>{window.WonderAnalytics?.game?.markRestart?.();void startStage(selected);});
-  listen($('localeSelect'),'change',()=>window.WonderI18n?.setLocale?.($('localeSelect').value,{navigate:!practiceSession}));
   listen(window,'wonder:locale-change',event=>{const next=event.detail?.locale;if(LOCALES.includes(next)){locale=next;updateLocale();frame.refresh();measurement();}});
   listen(window,'weightplay:wallet-change',renderManagement);
   listen(window,'weightplay:interaction-state',()=>{settingsPaused=Boolean(roots.battle.querySelector('.wp-frame-popover:not([hidden])'));if(settingsPaused)stopInput();measurement();});

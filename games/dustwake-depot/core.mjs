@@ -56,6 +56,20 @@ export function createRun(stageId, toolId = 'breeze') {
   function route(sx, sz, tx, tz) {
     const [startX, startZ] = cell(sx, sz), [endX, endZ] = cell(tx, tz);
     if (!validCell(startX, startZ) || !validCell(endX, endZ)) return null;
+    // Held steering sends a short continuous target every frame. Crossing two
+    // rounding boundaries must not insert an artificial L-shaped grid turn.
+    // This is deliberately local: long pointer routes retain their authored
+    // A* corridor and intermediate gate waypoints.
+    const length = Math.hypot(tx - sx, tz - sz);
+    if (length <= .5 + EPS && segmentClear(sx, sz, tx, tz)) {
+      const samples = Math.max(1, Math.ceil(length / .04));
+      let intermediateGate = false;
+      for (let i = 1; i < samples; i++) {
+        const [x, z] = cell(sx + (tx - sx) * i / samples, sz + (tz - sz) * i / samples);
+        if ((x !== startX || z !== startZ) && (x !== endX || z !== endZ) && gateIndex(x, z) >= 0) { intermediateGate = true; break; }
+      }
+      if (!intermediateGate) return [{ x: tx, z: tz }];
+    }
     const queue = [[startX, startZ]], previous = new Map([[key(startX, startZ), null]]);
     for (let n = 0; n < queue.length; n++) {
       const [x, z] = queue[n];
@@ -65,6 +79,14 @@ export function createRun(stageId, toolId = 'breeze') {
         while (c) { result.push({ x: c[0], z: c[1] }); c = previous.get(key(c[0], c[1])); }
         result.reverse();
         result.push({ x: tx, z: tz });
+        // A fractional goal belongs inside the final cell; its centre is not
+        // another player destination. Keep that centre only when the direct
+        // adjacent-cell segment needs it to clear the character's wall radius.
+        // Only this final centre is pruned, so intermediate gates stay in path.
+        if (result.length >= 3) {
+          const incoming = result[result.length - 3];
+          if (segmentClear(incoming.x, incoming.z, tx, tz)) result.splice(result.length - 2, 1);
+        }
         // Repeated drag updates keep their forward movement instead of returning
         // to a cell centre on every pointer event. A turn close to a wall keeps
         // the centre waypoint when the direct segment would clip the body.
@@ -205,6 +227,10 @@ export function createRun(stageId, toolId = 'breeze') {
       clearCollection(); state.player.moving = false; busy -= STEP;
       if (busy <= EPS) { busy = 0; const released = state.bagLoad - Math.ceil(state.bagLoad / 2); state.bagLoad -= released; lastCompressedCargo = state.bagCargo; emit('compress', { amount: released }); }
     } else { move(); collect(); unload(); }
+    // A final remainder smaller than the authored batch cannot ever be
+    // delivered. Explain the failed plan immediately instead of silently
+    // rejecting that same last bag until the generous deadline expires.
+    if (state.status === 'playing' && stage.rules.minLoad && state.bagCargo > 0 && state.bagCargo < stage.rules.minLoad && state.piles.every(p => p.remaining === 0)) finish('lose', 'minimum-load');
     // A final successful unload on the deadline takes precedence over expiry.
     if (state.status === 'playing' && state.timeLeft <= EPS) finish('lose', 'time-up');
   }

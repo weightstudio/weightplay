@@ -171,6 +171,12 @@ export class SalvageSlice {
     // Four substeps prevent a fast ball crossing the narrowest collision shape.
     for (let i = 0; i < 4; i++) {
       this.M.Engine.update(this.engine, seconds * 250);
+      if(this.pendingBreak.size){
+        // Sleeping pieces do not notice that a supporting body was removed.
+        // Wake the remaining dynamic bodies before removing a broken support
+        // so unsupported stacks fall and settle under the real physics.
+        for(const body of this.bodies)if(!body.isStatic&&body!==this.ball)this.M.Sleeping.set(body,false);
+      }
       for(const body of this.pendingBreak){this.M.Composite.remove(this.engine.world,body);const index=this.bodies.indexOf(body);if(index>=0)this.bodies.splice(index,1);}
       this.pendingBreak.clear();
       for(const body of this.pendingRemove){this.M.Composite.remove(this.engine.world,body);const index=this.bodies.indexOf(body);if(index>=0)this.bodies.splice(index,1);}

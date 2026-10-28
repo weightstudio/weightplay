@@ -478,6 +478,8 @@ const SPEED_TEXT={
 for(const [locale,[speedUp,speedNormal,speedHint]] of Object.entries(SPEED_TEXT))Object.assign(CUSTOM[locale],{speedUp,speedNormal,speedHint});
 const SPEED_INTRO={en:'While pieces move, tap 2× below.','zh-Hant':'零件移動時，按下方 2×。','zh-Hans':'零件移动时，按下方 2×。',ja:'部品が動く間、下の2×を押します。',ko:'부품이 움직일 때 아래 2×를 누르세요.',es:'En movimiento: 2× abajo.','pt-BR':'Enquanto se movem, toque em 2× abaixo.',fr:'Pendant le mouvement, appuyez sur 2× en bas.',de:'Während der Bewegung unten 2× drücken.',it:'Durante il movimento, premi 2× in basso.',ru:'Пока детали движутся, нажмите 2× внизу.',hi:'पुर्जों के चलते समय नीचे 2× दबाएँ।',ar:'أثناء حركة القطع، اضغط 2× في الأسفل.'};
 for(const [locale,speedIntro] of Object.entries(SPEED_INTRO))CUSTOM[locale].speedIntro=speedIntro;
+const SAVING_PROGRESS={en:'Saving progress…','zh-Hant':'正在儲存進度…','zh-Hans':'正在保存进度…',ja:'進行状況を保存中…',ko:'진행 상황 저장 중…',es:'Guardando progreso…','pt-BR':'Salvando progresso…',fr:'Enregistrement de la progression…',de:'Fortschritt wird gespeichert…',it:'Salvataggio progressi…',ru:'Сохранение прогресса…',hi:'प्रगति सहेजी जा रही है…',ar:'جارٍ حفظ التقدم…'};
+for(const [locale,savingProgress] of Object.entries(SAVING_PROGRESS))CUSTOM[locale].savingProgress=savingProgress;
 const FINAL_FINISH={en:'Copper Dawn','zh-Hant':'晨光銅','zh-Hans':'晨光铜',ja:'朝焼けの銅',ko:'새벽 구리',es:'Cobre del alba','pt-BR':'Cobre da aurora',fr:'Cuivre de l’aube',de:'Morgenkupfer',it:'Rame dell’alba',ru:'Медь рассвета',hi:'सुबह का ताँबा',ar:'نحاس الفجر'};
 for(const [locale,item6] of Object.entries(FINAL_FINISH))CUSTOM[locale].item6=item6;
 const CLAMP_ADVICE={
