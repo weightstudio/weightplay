@@ -159,6 +159,7 @@ function refreshStages() { selector?.setConfig(stageConfig(),selected); }
 function stageConfig() { return {gameId:GAME_ID,count:STAGES.length,poster:'/games/dustwake-depot/art/poster.webp',background:'/assets/lobby-block-atmosphere.svg',stage:stageRecord}; }
 function setTab(next) {
   tab=next;$('stagePage').hidden=next!=='stages';$('teamPanel').hidden=next!=='team';$('equipmentPanel').hidden=next!=='equipment';
+  $('stagePage').classList.toggle('hidden',next!=='stages');
   for(const [id,name] of [['tabTeam','team'],['tabStages','stages'],['tabEquipment','equipment']])$(id).setAttribute('aria-selected',String(name===next));
   const wallet=$('walletBalance').closest('.management-wallet');
   if(next!=='stages') { const panel=$(next==='team'?'teamPanel':'equipmentPanel');panel.querySelector('h2').after(wallet);renderManagement(); }
@@ -291,7 +292,7 @@ async function startStage(index) {
       if(point.phase==='cancel')stopInput();
       else if(point.phase==='down'||point.phase==='move')perform('setTarget',point.x,point.z);
     },onStatus:(state)=>{
-      if(state==='contextlost') {stopInput();showOverlay(t('graphicsError'),t('contextLost'),[
+      if(state==='contextlost'||state==='error') {stopInput();showOverlay(t('graphicsError'),t(state==='contextlost'?'contextLost':'graphicsError'),[
         {label:t('replay'),action:()=>{closeOverlay({restore:false});void startStage(selected);}},
         {label:t('stages'),action:()=>{closeOverlay({restore:false});setScreen('stage');}}
       ]);}

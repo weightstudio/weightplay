@@ -55,7 +55,23 @@ function chamferedCube() {
   return geometry;
 }
 
-function builder(source) {
+function softContactGeometry() {
+  const positions = [], colors = [], rings = [[0, .19], [.52, .16], [.82, .065], [1, 0]], segments = 32;
+  const tint = new THREE.Color(0x163b31);
+  const vertex = (radius, angle, alpha) => { positions.push(Math.cos(angle) * radius, Math.sin(angle) * radius, 0); colors.push(tint.r, tint.g, tint.b, alpha); };
+  for (let ring = 0; ring < rings.length - 1; ring++) for (let i = 0; i < segments; i++) {
+    const a = i / segments * Math.PI * 2, b = (i + 1) / segments * Math.PI * 2;
+    const [r0, alpha0] = rings[ring], [r1, alpha1] = rings[ring + 1];
+    vertex(r0, a, alpha0); vertex(r1, a, alpha1); vertex(r1, b, alpha1);
+    if (r0) { vertex(r0, a, alpha0); vertex(r1, b, alpha1); vertex(r0, b, alpha0); }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 4));
+  geometry.computeVertexNormals(); return geometry;
+}
+
+function builder(source, { bevel = 0 } = {}) {
   const position = [], normals = [], colors = [];
   const sourcePosition = source.getAttribute('position');
   const sourceNormal = source.getAttribute('normal');
@@ -63,10 +79,14 @@ function builder(source) {
     box(x, y, z, sx, sy, sz, tint, rotation = 0) {
       color.set(tint);
       quaternion.setFromAxisAngle(THREE.Object3D.DEFAULT_UP, rotation);
-      matrix.compose(v.set(x, y, z), quaternion, scale.set(sx, sy, sz));
+      matrix.compose(v.set(x, y, z), quaternion, scale.set(bevel ? 1 : sx, bevel ? 1 : sy, bevel ? 1 : sz));
       normalMatrix.getNormalMatrix(matrix);
+      const edge = Math.min(bevel, sx * .22, sy * .22, sz * .22);
+      const bevelCoordinate = (q, size) => Math.sign(q) * (Math.abs(q) > .49 ? size / 2 : size / 2 - edge);
       for (let i = 0; i < sourcePosition.count; i++) {
-        v.fromBufferAttribute(sourcePosition, i).applyMatrix4(matrix); position.push(v.x, v.y, v.z);
+        v.fromBufferAttribute(sourcePosition, i);
+        if (bevel) v.set(bevelCoordinate(v.x, sx), bevelCoordinate(v.y, sy), bevelCoordinate(v.z, sz));
+        v.applyMatrix4(matrix); position.push(v.x, v.y, v.z);
         v.fromBufferAttribute(sourceNormal, i).applyNormalMatrix(normalMatrix); normals.push(v.x, v.y, v.z);
         colors.push(color.r, color.g, color.b);
       }
@@ -77,6 +97,7 @@ function builder(source) {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
       geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
       geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      if (bevel) geometry.computeVertexNormals();
       geometry.computeBoundingSphere();
       return geometry;
     }
@@ -87,6 +108,8 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   if (!container?.appendChild) throw new TypeError('Dustwake renderer requires an arena container.');
   let renderer, scene, camera, disposed = false, lost = false, ready = false, renderFailed = false;
   let state = null, stageKey = '', stageGroup = null, frame = 0, previousFrameTime = 0;
+  let resizeWidth = -1, resizeHeight = -1, resizeDpr = -1, sizeGeneration = 0, drawSizeGeneration = -1;
+  let everReady = false, resizeDraws = 0, lastDraw = null;
   let recoveryAttempted = false, recoveryTimer = null, resolveRecovery = null;
   let activePointer = null, lastPointer = null, lastElapsed = 0, pendingRestored = false;
   const geometries = new Set(), materials = new Set(), stageGeometries = new Set(), listeners = [];
@@ -99,7 +122,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   const peaks = { calls: 0, triangles: 0, geometries: 0, textures: 0 };
   let compressionConfirm = 0;
   let floor, dryDust, wetDust, soilPatches, specks, hero, targetRing, targetStem, trail, heroShadow;
-  let keyLight, fillLight, hemiLight, cameraPortrait = false, cameraYaw = 0, cameraElevation = 0;
+  let keyLight, fillLight, hemiLight, cameraPortrait = false, cameraWideShort = false, cameraYaw = 0, cameraElevation = 0, hedgeTopGroup = null;
   const floorColors = Array.from({ length: 80 }, () => new THREE.Color());
   const raycaster = new THREE.Raycaster(), pointer = new THREE.Vector2();
   const ground = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit = new THREE.Vector3();
@@ -112,7 +135,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   const mesh = (geometry, material, parent = scene) => {
     const object = new THREE.Mesh(geometry, material); object.castShadow = true; object.receiveShadow = true; parent.add(object); return object;
   };
-  let block, plain, matte, glossy, waterMaterial, bronze, glow, closedLamp, warningLamp, ringMaterial, depotRingMaterial, particleMaterial, numberMaterial;
+  let block, plain, matte, stoneMaterial, glossy, copperMaterial, enamelMaterial, waterMaterial, bronze, glow, closedLamp, warningLamp, ringMaterial, depotRingMaterial, particleMaterial, numberMaterial;
 
   function markNavigation(root, target, persistent = false) {
     root.traverse(object => {
@@ -231,11 +254,11 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     const tool = new THREE.Group(); tool.position.set(.15, .09, .63); body.add(tool);
     const tube = build(); tube.box(.19, .19, -.22, .07, .09, .40, 0x7b6950).box(.19, .12, -.01, .085, .18, .085, 0xaa8c52)
       .box(.10, .06, .02, .28, .07, .10, 0xcfb37a);
-    groupFromBuild(tube, tool);
+    groupFromBuild(tube, tool, { material: copperMaterial });
     const vacuum = new THREE.Group(); tool.add(vacuum);
-    groupFromBuild(build().box(0, 0, .055, .38, .12, .20, 0x298e91).box(0, -.035, .16, .30, .045, .025, 0x273e3b)
-      .box(0, .065, .045, .28, .025, .12, 0xe1c67f).box(0, .072, .045, .18, .012, .07, 0xf8cb64)
-      .box(-.18, 0, .055, .035, .13, .21, 0xb98e4e).box(.18, 0, .055, .035, .13, .21, 0xb98e4e), vacuum);
+    groupFromBuild(build().box(0, 0, .055, .38, .12, .20, 0x298e91).box(0, -.035, .16, .30, .045, .025, 0x273e3b), vacuum, { material: enamelMaterial });
+    groupFromBuild(build().box(0, .065, .045, .28, .025, .12, 0xe1c67f).box(0, .072, .045, .18, .012, .07, 0xf8cb64)
+      .box(-.18, 0, .055, .035, .13, .21, 0xb98e4e).box(.18, 0, .055, .035, .13, .21, 0xb98e4e), vacuum, { material: copperMaterial });
     const brush = new THREE.Group(); tool.add(brush);
     const brushBuild = build(); brushBuild.box(0, .04, .06, .38, .07, .18, 0xe0c78e);
     for (let x = -.15; x <= .16; x += .06) for (const z of [0, .09]) brushBuild.box(x, -.02, z, .035, .08, .05, 0x4e8685);
@@ -262,22 +285,28 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     root.name = portable ? 'portable-depot' : 'base-depot';
     root.scale.setScalar(portable ? 1.04 : 1.12);
     root.rotation.y = cameraYaw;
-    const b = builder(plain);
+    const b = builder(block, { bevel: .018 }), coat = builder(plain), metal = builder(block, { bevel: .012 });
     b.box(0, .02, 0, .89, .07, .87, palette.edge).box(0, .063, .07, .74, .025, .62, palette.clean);
     // The receiver is deliberately behind the docking centre, with a low hood.
     // Taro now stands in front of it instead of inside a tall miniature house.
-    b.box(0, .19, -.51, .75, .30, .35, palette.metal).box(0, .36, -.51, .70, .055, .36, 0x2c8d91)
-      .box(0, .24, -.315, .48, .15, .025, 0x234e52).box(0, .19, -.27, .44, .035, .12, 0xe7bd68)
-      .box(-.35, .38, -.63, .085, .52, .11, palette.stone).box(.35, .38, -.63, .085, .52, .11, palette.stone)
-      .box(0, .65, -.63, .82, .085, .33, 0x278b90).box(0, .71, -.63, .87, .035, .36, palette.metal);
+    metal.box(0, .19, -.51, .75, .30, .35, palette.metal).box(0, .19, -.27, .44, .035, .12, 0xe7bd68)
+      .box(0, .71, -.63, .87, .035, .36, palette.metal);
+    coat.box(0, .36, -.51, .70, .055, .36, 0x2c8d91).box(0, .24, -.315, .48, .15, .025, 0x234e52)
+      .box(0, .65, -.63, .82, .085, .33, 0x278b90);
+    b.box(-.35, .38, -.63, .085, .52, .11, palette.stone).box(.35, .38, -.63, .085, .52, .11, palette.stone);
     for (const side of [-1, 1]) {
-      b.box(side * .30, .13, -.13, .055, .12, .35, 0x2c9392).box(side * .37, .24, -.49, .02, .13, .19, 0x2c666b);
-      b.box(side * .26, .115, .25, .07, .03, .10, 0xe3b559);
+      coat.box(side * .30, .13, -.13, .055, .12, .35, 0x2c9392).box(side * .37, .24, -.49, .02, .13, .19, 0x2c666b);
+      metal.box(side * .26, .115, .25, .07, .03, .10, 0xe3b559);
     }
-    b.box(-.34, .66, -.63, .04, .20, .04, 0xa37940).box(-.34, .81, -.63, .12, .12, .12, palette.light)
-      .box(-.34, .89, -.63, .16, .035, .16, palette.metal);
+    metal.box(-.34, .66, -.63, .04, .20, .04, 0xa37940).box(-.34, .89, -.63, .16, .035, .16, palette.metal);
+    coat.box(-.34, .81, -.63, .12, .12, .12, palette.light);
     if (portable) b.box(.29, .53, -.59, .045, .24, .045, palette.metal).box(.36, .64, -.59, .15, .09, .025, 0x61b96d);
-    groupFromBuild(b, root, { stage: true });
+    groupFromBuild(b, root, { stage: true, material: stoneMaterial });
+    groupFromBuild(coat, root, { stage: true, material: enamelMaterial });
+    const copperFrame = groupFromBuild(metal, root, { stage: true, material: copperMaterial });
+    // The stone supports and enamel casing already cast the receiver's main
+    // silhouette. Avoid a second shadow pass for the inset copper frame.
+    copperFrame.castShadow = false;
     const ring = mesh(keepGeometry(new THREE.TorusGeometry(.42, .035, 4, 32)), depotRingMaterial, root);
     stageGeometries.add(ring.geometry); ring.rotation.x = -Math.PI / 2; ring.position.y = .084;
     const lamp = mesh(block, glow, root); lamp.scale.set(.09, .07, .06); lamp.position.set(.22, .30, -.285);
@@ -319,17 +348,18 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   }
 
   function makeGardenSurround(palette, chapter) {
-    const terrain = builder(plain), planting = builder(plain), water = builder(plain);
+    const terrain = builder(plain), planting = builder(plain), water = builder(plain), flowerStones = builder(block, { bevel: .04 });
     const cold = chapter === 2;
     // Continuous, fully modelled terrace gardens occupy the unused camera
     // margin. They are scenery beyond the solid arena border, never new routes.
     terrain.box(4.5, -1.18, 3.5, 46, .32, 42, cold ? 0x385f69 : 0x496a49)
       .box(4.5, -.75, 3.5, 12.2, .28, 10.1, palette.edge)
       .box(4.5, -.56, 3.5, 11.2, .16, 9.1, palette.stone);
-    for (const [x, z, sx, sz] of [[-5.0, 3.0, 5.5, 16], [14, 4, 5.5, 16], [4.5, -5, 17, 5.5], [4, 12, 18, 5]]) {
-      terrain.box(x, -.98, z, sx, .10, sz, cold ? 0x578d89 : 0x72a252)
-        .box(x + .6, -.91, z - .5, sx * .74, .06, sz * .88, cold ? 0x75a79b : 0x8dbb67)
-        .box(x - sx * .36, -.94, z + .9, sx * .30, .09, sz * .65, cold ? 0x5b958d : 0x79aa50);
+    for (const [i, [x, z, sx, sz]] of [[-5.0, 3.0, 5.5, 16], [14, 4, 5.5, 16], [4.5, -5, 17, 5.5], [4, 12, 18, 5]].entries()) {
+      const turn = (i % 2 ? -.13 : .17);
+      terrain.box(x, -.98, z, sx, .10, sz, cold ? 0x578d89 : 0x72a252, turn)
+        .box(x + .6, -.91, z - .5, sx * .71, .06, sz * .63, cold ? 0x75a79b : 0x8dbb67, -turn * .7)
+        .box(x - sx * .30, -.94, z + .9, sx * .38, .09, sz * .48, cold ? 0x5b958d : 0x79aa50, turn * .8);
     }
     // Continuous borders replace the first slice's repeated square planters.
     for (const z of [-1.1, 8.1]) terrain.box(4.5, -.40, z, 14, .22, .70, palette.stone)
@@ -357,9 +387,19 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
         .box(x + .33, .39, z + .16, .44, .31, .43, cold ? 0x4c8f84 : 0x5f9a3b)
         .box(x - .36, .50, z + .22, .40, .30, .41, cold ? 0x659f89 : 0x82b849);
     }
-    water.box(4.5, -.67, -2.0, 16.5, .08, 1.2, cold ? 0x4fa8bd : 0x36a7b1)
-      .box(-2.0, -.67, 3.5, 1.2, .08, 13, cold ? 0x539eaf : 0x319ca5);
-    for (let i = -3; i < 13; i += 2) water.box(i, -.615, -2.0, .6, .012, .045, 0xa7eff1);
+    for (let i = 0; i < 7; i++) water.box(-2 + Math.sin(i * 1.2) * .17, -.67, -2 + i * 2.0, 1.2, .08, 2.15, cold ? 0x539eaf : 0x319ca5);
+    for (let i = -3; i < 13; i += 2) {
+      const bend = Math.sin(i * .65) * .22;
+      water.box(i, -.67, -2 + bend, 2.2, .08, 1.2, cold ? 0x4fa8bd : 0x36a7b1)
+        .box(i + .2, -.615, -2 + bend, .6, .012, .045, 0xa7eff1, .12);
+    }
+    for (const [i, [x, z]] of [[-3.1, -.3], [-2.8, 4.8], [11.7, 5.1], [6.8, 9.4]].entries()) {
+      flowerStones.box(x, -.63, z, .85, .43, .59, palette.stone, .17 + i * .23)
+        .box(x + .40, -.72, z + .26, .52, .30, .47, palette.clean, -.20 - i * .12);
+      const petal = cold ? (i % 2 ? 0xebc1df : 0xd9f1eb) : (i % 2 ? 0xf1b19d : 0xf7e5ac);
+      planting.box(x - .24, -.36, z + .12, .28, .06, .10, petal)
+        .box(x - .24, -.36, z + .12, .10, .06, .28, petal).box(x - .24, -.315, z + .12, .08, .04, .08, 0xe7bc46);
+    }
     for (const [x, z] of [[-3.6, -3.8], [12.6, -3.8], [-3.6, 10.8], [12.6, 10.8]]) {
       terrain.box(x, -.65, z, 2.3, .55, 2.3, palette.edge).box(x, -.15, z, 1.8, .45, 1.8, palette.stone)
         .box(x, .29, z, 1.25, .45, 1.25, palette.stone).box(x, .57, z, 1.48, .12, 1.48, palette.clean);
@@ -374,6 +414,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
         .box(x, .41, z, .27, .26, .27, palette.light).box(x, .57, z, .36, .06, .36, palette.metal);
     }
     for (const b of [terrain, planting]) { const object = groupFromBuild(b, stageGroup, { stage: true }); object.castShadow = false; }
+    const stoneClusters = groupFromBuild(flowerStones, stageGroup, { stage: true, material: stoneMaterial }); stoneClusters.castShadow = false;
     const waterMesh = groupFromBuild(water, stageGroup, { stage: true, material: waterMaterial }); waterMesh.castShadow = false;
   }
 
@@ -396,23 +437,24 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     const walls = new Set((next.stage?.walls || []).map(([x, z]) => cellKey(x, z)));
     for (let x = 0; x < 10; x++) { walls.add(cellKey(x, 0)); walls.add(cellKey(x, 7)); }
     for (let z = 0; z < 8; z++) { walls.add(cellKey(0, z)); walls.add(cellKey(9, z)); }
-    const architecture = builder(plain), vegetation = builder(plain);
-    architecture.box(4.5, -.35, 3.5, 10.15, .60, 8.16, palette.dark)
+    const architecture = builder(plain), coping = builder(block, { bevel: .025 }), vegetation = builder(plain);
+    const hedge = builder(plain), hedgeLeaves = builder(plain);
+    hedgeTopGroup = new THREE.Group(); hedgeTopGroup.position.y = .30;
+    hedgeTopGroup.scale.y = cameraWideShort ? .55 : 1; stageGroup.add(hedgeTopGroup);
+    architecture.box(4.5, -.22, 3.5, 10.15, .38, 8.16, palette.dark)
       .box(4.5, -.095, 3.5, 10.05, .12, 8.05, palette.edge);
     for (let x = 0; x < 10; x++) for (const z of [-.48, 7.48]) architecture.box(x, -.28, z, .88, .25, .08, palette.metal);
     for (let z = 0; z < 8; z++) for (const x of [-.48, 9.48]) architecture.box(x, -.28, z, .08, .25, .88, palette.metal);
-    for (const z of [0, 7]) architecture.box(4.5, .115, z, 10, .28, .92, palette.stone)
-      .box(4.5, .285, z, 10, .055, .96, palette.clean);
-    for (const x of [0, 9]) architecture.box(x, .115, 3.5, .92, .28, 6.08, palette.stone)
-      .box(x, .285, 3.5, .96, .055, 6.04, palette.clean);
+    for (const z of [0, 7]) { architecture.box(4.5, .115, z, 10, .28, .92, palette.stone); coping.box(4.5, .285, z, 10, .055, .96, palette.clean); }
+    for (const x of [0, 9]) { architecture.box(x, .115, 3.5, .92, .28, 6.08, palette.stone); coping.box(x, .285, 3.5, .96, .055, 6.04, palette.clean); }
     for (const key of walls) {
       const [x, z] = key.split(',').map(Number), border = x === 0 || x === 9 || z === 0 || z === 7;
       if (!border) {
-        architecture.box(x, .12, z, .96, .29, .96, palette.stone).box(x, .285, z, 1.00, .055, 1.00, palette.clean)
-          .box(x, .37, z, .78, .13, .73, palette.edge).box(x, .46, z, .80, .06, .75, palette.leaf);
-        if (walls.has(cellKey(x + 1, z))) architecture.box(x + .5, .42, z, .30, .12, .72, palette.leaf);
-        if (walls.has(cellKey(x, z + 1))) architecture.box(x, .42, z + .5, .72, .12, .30, palette.leaf);
-        for (const side of [-1, 1]) vegetation.box(x + side * .23, .54 + side * .02, z + side * .12, .22, .13, .20, side < 0 ? palette.leaf : chapter === 2 ? 0x70ac93 : 0x94bf4d);
+        architecture.box(x, .12, z, .96, .29, .96, palette.stone); coping.box(x, .285, z, 1.00, .055, 1.00, palette.clean);
+        hedge.box(x, .07, z, .78, .13, .73, palette.edge).box(x, .16, z, .80, .06, .75, palette.leaf);
+        if (walls.has(cellKey(x + 1, z))) hedge.box(x + .5, .12, z, .30, .12, .72, palette.leaf);
+        if (walls.has(cellKey(x, z + 1))) hedge.box(x, .12, z + .5, .72, .12, .30, palette.leaf);
+        for (const side of [-1, 1]) hedgeLeaves.box(x + side * .23, .24 + side * .02, z + side * .12, .22, .13, .20, side < 0 ? palette.leaf : chapter === 2 ? 0x70ac93 : 0x94bf4d);
       } else if ((x + z * 3) % 4 === 0 && !(x === 0 && z === 6)) {
         vegetation.box(x, .40, z, .17, .23, .17, 0x8c734b).box(x, .59, z, .48, .24, .42, palette.leaf)
           .box(x - .09, .75, z, .30, .16, .32, chapter === 2 ? 0x75aaa1 : 0x98bd53);
@@ -423,6 +465,9 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
         .box(x, .56, z, .20, .14, .20, palette.light).box(x, .65, z, .24, .04, .24, palette.edge);
     }
     stagePickBlockers.push(groupFromBuild(architecture, stageGroup, { stage: true }));
+    stagePickBlockers.push(groupFromBuild(coping, stageGroup, { stage: true, material: stoneMaterial }));
+    stagePickBlockers.push(groupFromBuild(hedge, hedgeTopGroup, { stage: true }));
+    stagePickBlockers.push(groupFromBuild(hedgeLeaves, hedgeTopGroup, { stage: true }));
     stagePickBlockers.push(groupFromBuild(vegetation, stageGroup, { stage: true }));
     const base = next.stage?.depot || [1, 6]; depotModels.push(makeDepot(base[0], base[1], false, palette));
     for (const [padIndex, [x, z]] of (next.stage?.pads || []).entries()) {
@@ -600,22 +645,62 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     if (renderer?.domElement.hasPointerCapture?.(id)) renderer.domElement.releasePointerCapture(id);
   }
 
+  function requiredFitPoints() {
+    const points = [];
+    const box = (x0, x1, y0, y1, z0, z1, cx = 0, cz = 0, yaw = 0) => {
+      for (const x of [x0, x1]) for (const y of [y0, y1]) for (const z of [z0, z1]) {
+        points.push(new THREE.Vector3(cx + x * Math.cos(yaw) + z * Math.sin(yaw), y, cz - x * Math.sin(yaw) + z * Math.cos(yaw)));
+      }
+    };
+    box(-.58, 9.58, -.42, .32, -.58, 7.58);
+    // Fixed envelopes cover every legal continuous position and every heading,
+    // including the taller flag/Amber/Press variants. They never follow Taro.
+    for (const x of [.75, 8.25]) for (const z of [.75, 6.25]) {
+      for (const [y, radius] of [[0, .82], [.12, 1.05], [.50, 1.05], [.95, .82], [1.34, .48]]) {
+        for (let i = 0; i < 16; i++) points.push(new THREE.Vector3(x + Math.sin(i * Math.PI / 8) * radius, y, z + Math.cos(i * Math.PI / 8) * radius));
+      }
+    }
+    for (const [x, z] of [[1, 6], [7, 6], [7, 1], [2, 2]]) box(-.55, .55, -.02, 1.03, -.94, .53, x, z, cameraYaw);
+    for (const [x, z] of [[4, 3], [4, 6], [7, 2]]) box(-.55, .55, -.02, .9, -.55, .55, x, z);
+    for (const x of [2, 5, 8]) for (const z of [1, 3, 5]) box(-.48, .48, -.01, .32, -.48, .48, x, z);
+    const perimeter = new Set();
+    for (let x = 0; x < 10; x++) { perimeter.add(cellKey(x, 0)); perimeter.add(cellKey(x, 7)); }
+    for (let z = 1; z < 7; z++) { perimeter.add(cellKey(0, z)); perimeter.add(cellKey(9, z)); }
+    for (const cell of perimeter) {
+      const [x, z] = cell.split(',').map(Number);
+      if ((x + z * 3) % 4 === 0 && !(x === 0 && z === 6)) box(-.25, .25, .3, .85, -.22, .22, x, z);
+      if ((x * 3 + z) % 9 === 0) box(-.13, .13, .3, .68, -.13, .13, x, z);
+    }
+    return points;
+  }
+
   function resize() {
     if (!renderer || disposed) return;
     const rect = container.getBoundingClientRect(), width = Math.max(1, rect.width), height = Math.max(1, rect.height);
     const dpr = Math.min(1.5, globalThis.devicePixelRatio || 1);
+    const bufferWidth = Math.floor(width * dpr), bufferHeight = Math.floor(height * dpr);
+    const canvas = renderer.domElement;
+    if (resizeWidth === width && resizeHeight === height && resizeDpr === dpr && canvas.width === bufferWidth && canvas.height === bufferHeight) return;
+    ready = false; sizeGeneration++;
     if (renderer.getPixelRatio() !== dpr) renderer.setPixelRatio(dpr);
-    renderer.setSize(width, height, false);
+    // setSize writes canvas.width/height and therefore clears its drawing
+    // buffer, including when called redundantly. Leave equal buffers intact.
+    if (canvas.width !== bufferWidth || canvas.height !== bufferHeight) renderer.setSize(width, height, false);
+    else renderer.setViewport(0, 0, width, height);
+    resizeWidth = width; resizeHeight = height; resizeDpr = dpr;
     const aspect = width / height, center = new THREE.Vector3(4.5, .15, 3.5);
     cameraPortrait = aspect < 1;
+    cameraWideShort = aspect > 2;
     cameraYaw = cameraPortrait ? THREE.MathUtils.degToRad(78) : THREE.MathUtils.degToRad(10);
-    cameraElevation = THREE.MathUtils.degToRad(cameraPortrait ? 49 : 45);
+    cameraElevation = THREE.MathUtils.degToRad(cameraWideShort ? 40 : cameraPortrait ? 49 : 45);
     const radius = 20, horizontal = Math.cos(cameraElevation) * radius;
     camera.position.set(center.x + Math.sin(cameraYaw) * horizontal, center.y + Math.sin(cameraElevation) * radius, center.z + Math.cos(cameraYaw) * horizontal);
     camera.up.set(0, 1, 0); camera.lookAt(center); camera.updateMatrixWorld(true);
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (const x of [WORLD.left, WORLD.right]) for (const z of [WORLD.top, WORLD.bottom]) for (const y of [-.65, 1.45]) {
-      v.set(x, y, z).applyMatrix4(camera.matrixWorldInverse);
+    const fitPoints = cameraWideShort ? requiredFitPoints() : [];
+    if (!cameraWideShort) for (const x of [WORLD.left, WORLD.right]) for (const z of [WORLD.top, WORLD.bottom]) for (const y of [-.65, 1.45]) fitPoints.push(new THREE.Vector3(x, y, z));
+    for (const point of fitPoints) {
+      v.copy(point).applyMatrix4(camera.matrixWorldInverse);
       minX = Math.min(minX, v.x); maxX = Math.max(maxX, v.x); minY = Math.min(minY, v.y); maxY = Math.max(maxY, v.y);
     }
     const viewWidth = Math.max(maxX - minX, (maxY - minY) * aspect) * 1.015;
@@ -624,6 +709,41 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     camera.top = offsetY + viewHeight / 2; camera.bottom = offsetY - viewHeight / 2; camera.updateProjectionMatrix();
     for (const pad of padModels) pad.label.rotation.set(-Math.PI / 2, 0, cameraYaw);
     for (const depot of depotModels) depot.root.rotation.y = cameraYaw;
+    if (hedgeTopGroup) hedgeTopGroup.scale.y = cameraWideShort ? .55 : 1;
+    // ResizeObserver may run after the caller's last animation frame (for
+    // example while a modal closes). Present the existing scene immediately;
+    // this path does not update core, effects, events, animation, or timers.
+    if (state && stageGroup && frame > 0 && !lost && !renderFailed) drawScene('resize');
+  }
+
+  function drawScene(reason) {
+    if (disposed || !renderer || lost || renderFailed) return false;
+    try {
+      const now = performance.now();
+      const interval = reason === 'state' && previousFrameTime ? now - previousFrameTime : 0;
+      if (reason === 'state') previousFrameTime = now;
+      const start = performance.now(); renderer.render(scene, camera); const renderMs = performance.now() - start;
+      frame++; if (reason === 'resize') resizeDraws++;
+      if (reason === 'state' && frame > 30 && interval > 0 && interval < 250) {
+        frameTimes.push(interval); renderTimes.push(renderMs);
+        if (frameTimes.length > 240) { frameTimes.shift(); renderTimes.shift(); }
+      }
+      const info = renderer.info;
+      peaks.calls = Math.max(peaks.calls, info.render.calls); peaks.triangles = Math.max(peaks.triangles, info.render.triangles);
+      peaks.geometries = Math.max(peaks.geometries, info.memory.geometries); peaks.textures = Math.max(peaks.textures, info.memory.textures);
+      drawSizeGeneration = sizeGeneration;
+      lastDraw = { at: performance.now(), reason, width: renderer.domElement.width, height: renderer.domElement.height, sizeGeneration };
+      ready = true;
+      if (!everReady || pendingRestored) {
+        const restored = pendingRestored; everReady = true; pendingRestored = false;
+        status(restored ? 'restored' : 'ready', { stageId: state?.stage?.id, frame, width: renderer.domElement.clientWidth, height: renderer.domElement.clientHeight });
+        if (resolveRecovery) { resolveRecovery(true); resolveRecovery = null; clearTimeout(recoveryTimer); recoveryTimer = null; }
+      }
+      return true;
+    } catch (error) {
+      renderFailed = true; ready = false; cancelPointer();
+      status('error', { message: String(error?.message || error), stageId: state?.stage?.id }); return false;
+    }
   }
 
   function mapScreenDirection(dx, dz) {
@@ -702,20 +822,9 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
         gate.lamp.material = warning ? warningLamp : open ? glow : closedLamp;
         gate.lamp.scale.x = warning && !reducedMotion ? .12 + Math.sin(t * 9) * .025 : .12;
       }
-      const now = performance.now(), interval = previousFrameTime ? now - previousFrameTime : 0; previousFrameTime = now;
       const visualDt = clamp(finite(dt, 0), 0, .08);
       updateEffects(next, visualDt); updateCompression(next, visualDt);
-      const start = performance.now(); renderer.render(scene, camera); const renderMs = performance.now() - start;
-      frame++;
-      if (frame > 30 && interval > 0 && interval < 250) { frameTimes.push(interval); renderTimes.push(renderMs); if (frameTimes.length > 240) { frameTimes.shift(); renderTimes.shift(); } }
-      const info = renderer.info;
-      peaks.calls = Math.max(peaks.calls, info.render.calls); peaks.triangles = Math.max(peaks.triangles, info.render.triangles);
-      peaks.geometries = Math.max(peaks.geometries, info.memory.geometries); peaks.textures = Math.max(peaks.textures, info.memory.textures);
-      if (!ready || pendingRestored) {
-        const restored = pendingRestored; ready = true; pendingRestored = false;
-        status(restored ? 'restored' : 'ready', { stageId: next.stage.id, frame, width: renderer.domElement.clientWidth, height: renderer.domElement.clientHeight });
-        if (resolveRecovery) { resolveRecovery(true); resolveRecovery = null; clearTimeout(recoveryTimer); recoveryTimer = null; }
-      }
+      drawScene('state');
     } catch (error) { renderFailed = true; ready = false; cancelPointer(); status('error', { message: String(error?.message || error), stageId: next?.stage?.id }); }
   }
 
@@ -727,15 +836,17 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
 
   function getMetrics() {
     const info = renderer?.info;
-    return { revision: THREE.REVISION, ready, disposed, renderFailed, contextLost: lost, recoveryAttempted, stageId: state?.stage?.id ?? null,
+    const freshDraw = ready && drawSizeGeneration === sizeGeneration && lastDraw?.width === renderer?.domElement.width && lastDraw?.height === renderer?.domElement.height;
+    return { revision: THREE.REVISION, ready: !!freshDraw, disposed, renderFailed, contextLost: lost, recoveryAttempted, stageId: state?.stage?.id ?? null,
       frames: frame, warmupFrames: 30, frameSamples: summary(frameTimes), renderSamples: summary(renderTimes),
+      resizeDraws, pendingResizeDraw: !disposed && drawSizeGeneration !== sizeGeneration, lastDraw: lastDraw ? { ...lastDraw } : null,
       calls: info?.render.calls ?? 0, triangles: info?.render.triangles ?? 0, geometries: info?.memory.geometries ?? 0,
       textures: info?.memory.textures ?? 0, ownedGeometries: geometries.size, ownedMaterials: materials.size,
       ownedTextures: textures.size,
       particles: particles.filter(p => p.active).length, particleLimit: PARTICLE_LIMIT, peaks: { ...peaks },
       pixelRatio: renderer?.getPixelRatio() || 0, buffer: renderer ? { width: renderer.domElement.width, height: renderer.domElement.height } : null,
       viewport: renderer ? { width: renderer.domElement.clientWidth, height: renderer.domElement.clientHeight } : null,
-      cameraLayout: { orientation: cameraPortrait ? 'portrait-world-x-vertical' : 'landscape-world-x-horizontal', yaw: cameraYaw, elevationDegrees: THREE.MathUtils.radToDeg(cameraElevation), boardBoundsCss: boardProjection() },
+      cameraLayout: { orientation: cameraPortrait ? 'portrait-world-x-vertical' : 'landscape-world-x-horizontal', wideShort: cameraWideShort, fit: cameraWideShort ? 'fixed-required-play-hulls' : 'full-world-prism', yaw: cameraYaw, elevationDegrees: THREE.MathUtils.radToDeg(cameraElevation), boardBoundsCss: boardProjection() },
       renderer: renderer?.getContext()?.getParameter(renderer.getContext().RENDERER) || null,
       scope: 'Actual active WebGL renderer counters and bounded render intervals; no physical-device FPS claim.' };
   }
@@ -787,16 +898,19 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     container.appendChild(canvas);
     scene = new THREE.Scene(); scene.background = new THREE.Color(WARM.sky);
     camera = new THREE.OrthographicCamera(-6, 6, 5, -5, .1, 70);
-    hemiLight = new THREE.HemisphereLight(0xcbe9f1, 0x3b5635, 1.2); scene.add(hemiLight);
-    const key = keyLight = new THREE.DirectionalLight(0xffd195, 3.6); key.position.set(-2, 12, 8); key.castShadow = true;
+    hemiLight = new THREE.HemisphereLight(0xcbe9f1, 0x3b5635, 1.7); scene.add(hemiLight);
+    const key = keyLight = new THREE.DirectionalLight(0xffd195, 2.8); key.position.set(-2, 12, 8); key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024); key.shadow.camera.left = -8; key.shadow.camera.right = 8;
     key.shadow.camera.top = 8; key.shadow.camera.bottom = -8; key.shadow.camera.near = .1; key.shadow.camera.far = 30;
     key.shadow.bias = -.0008; key.shadow.normalBias = .035; key.target.position.set(4.5, 0, 3.5); scene.add(key, key.target);
-    fillLight = new THREE.DirectionalLight(0x83d2d7, .9); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
+    fillLight = new THREE.DirectionalLight(0xa8dce6, 1.1); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
     block = keepGeometry(chamferedCube());
     const indexedBox = new THREE.BoxGeometry(1, 1, 1);
     plain = keepGeometry(indexedBox.toNonIndexed()); indexedBox.dispose();
     matte = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .82, metalness: .03 }));
+    stoneMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .70, metalness: .02 }));
+    copperMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .34, metalness: .48 }));
+    enamelMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .32, metalness: .16 }));
     glossy = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .38, metalness: .15 }));
     waterMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .22, metalness: .16, emissive: 0x126d80, emissiveIntensity: .30 }));
     bronze = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xb89b5e, roughness: .5, metalness: .35 }));
@@ -809,7 +923,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     particleMaterial = keepMaterial(new THREE.MeshBasicMaterial({ vertexColors: true }));
     const floorMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .92, metalness: 0 }));
     floor = new THREE.InstancedMesh(plain, floorMaterial, 80); floor.receiveShadow = true; floor.frustumCulled = false; scene.add(floor);
-    const dryMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .90, metalness: .03 }));
+    const dryMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .65, metalness: .12 }));
     const wetMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .24, metalness: .20 }));
     dryDust = new THREE.InstancedMesh(block, dryMaterial, 256); wetDust = new THREE.InstancedMesh(block, wetMaterial, 192);
     for (const object of [dryDust, wetDust]) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = false; object.count = 0; scene.add(object); }
@@ -817,7 +931,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     soilPatches = new THREE.InstancedMesh(plain, keepMaterial(new THREE.MeshStandardMaterial({ roughness: .98, metalness: 0 })), 16);
     soilPatches.count = 0; soilPatches.receiveShadow = true; soilPatches.frustumCulled = false; scene.add(soilPatches);
     hero = makeTaro(); scene.add(hero.root); markNavigation(hero.root, { player: true }, true);
-    heroShadow = mesh(keepGeometry(new THREE.CircleGeometry(1, 24)), keepMaterial(new THREE.MeshBasicMaterial({ color: 0x1b382c, transparent: true, opacity: .22, depthWrite: false })));
+    heroShadow = mesh(keepGeometry(softContactGeometry()), keepMaterial(new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false })));
     heroShadow.rotation.x = -Math.PI / 2; heroShadow.scale.set(.46, .55, 1); heroShadow.castShadow = false; heroShadow.receiveShadow = false;
     targetRing = mesh(keepGeometry(new THREE.TorusGeometry(.22, .025, 4, 28)), ringMaterial); targetRing.rotation.x = -Math.PI / 2;
     targetRing.castShadow = false; targetRing.receiveShadow = false; targetRing.visible = false;

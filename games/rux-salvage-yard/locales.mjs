@@ -443,7 +443,23 @@ for(const [locale,[clampTime,trajectory]] of Object.entries(EXTRA))Object.assign
 const CONTACT_MARK={en:'Aim the ring near the target; it predicts the ball’s first contact.','zh-Hant':'圓環預測球首次接觸位置；讓它靠近目標。','zh-Hans':'圆环预测球首次接触位置；让它靠近目标。',ja:'輪は球の最初の接触予測位置です。狙う物の近くに合わせましょう。',ko:'원은 공의 예상 첫 충돌 위치입니다. 목표 가까이에 맞추세요.',es:'Acerca el círculo al objetivo: indica el primer contacto previsto de la bola.','pt-BR':'Aproxime o círculo do alvo: ele prevê o primeiro contato da bola.',fr:'Placez l’anneau près de la cible : il prévoit le premier contact de la balle.',de:'Der Ring zeigt den geschätzten Erstkontakt des Balls. Ziele nahe an das Objekt.',it:'Avvicina l’anello al bersaglio: stima il primo contatto della palla.',ru:'Подведите кольцо к цели: оно показывает примерное первое касание шара.',hi:'घेरे को लक्ष्य के पास लाएँ; यह गेंद का पहला अनुमानित संपर्क दिखाता है।',ar:'قرّب الحلقة من الهدف؛ فهي تتوقع موضع الكرة عند الاصطدام الأول.'};
 for(const [locale,contactMark] of Object.entries(CONTACT_MARK)){CUSTOM[locale].contactMark=contactMark;CUSTOM[locale].trajectory+=` ${contactMark}`;}
 const PLATFORM_ESTIMATE={en:'The estimate accounts for the moving platform and parts it carries.','zh-Hant':'預估會計入移動平台及其承載零件的位置。','zh-Hans':'预估会计入移动平台及其承载零件的位置。',ja:'予測には移動台とその上の部品の動きが含まれます。',ko:'예상 경로에는 움직이는 발판과 그 위 부품의 이동이 반영됩니다.',es:'La estimación tiene en cuenta la plataforma móvil y las piezas que transporta.','pt-BR':'A estimativa considera a plataforma móvel e as peças que ela carrega.',fr:'L’estimation tient compte de la plateforme mobile et des pièces qu’elle porte.',de:'Die Schätzung berücksichtigt die bewegliche Plattform und ihre Teile.',it:'La stima considera la piattaforma mobile e i pezzi che trasporta.',ru:'Расчёт учитывает движущуюся платформу и детали на ней.',hi:'अनुमान में चलने वाले मंच और उस पर रखे पुर्ज़ों की गति शामिल है।',ar:'يراعي التقدير حركة المنصة والقطع التي تحملها.'};
-for(const [locale,platformEstimate] of Object.entries(PLATFORM_ESTIMATE))CUSTOM[locale].trajectory+=` ${platformEstimate}`;
+for(const [locale,platformEstimate] of Object.entries(PLATFORM_ESTIMATE)){CUSTOM[locale].platformEstimate=platformEstimate;CUSTOM[locale].trajectory+=` ${platformEstimate}`;}
+const PLATFORM_TIP={
+  en:'Watch the arrow: the platform carries its part back and forth.',
+  'zh-Hant':'觀察箭頭：平台會帶著零件來回移動。',
+  'zh-Hans':'观察箭头：平台会带着零件来回移动。',
+  ja:'矢印を見よう。台は部品を載せて往復します。',
+  ko:'화살표를 보세요. 발판이 부품을 싣고 오갑니다.',
+  es:'Mira la flecha: la plataforma mueve la pieza de un lado a otro.',
+  'pt-BR':'Veja a seta: a plataforma leva a peça de um lado ao outro.',
+  fr:'Suivez la flèche : la plateforme transporte la pièce de part et d’autre.',
+  de:'Der Pfeil zeigt: Die Plattform bewegt das Teil hin und her.',
+  it:'Guarda la freccia: la piattaforma sposta il pezzo avanti e indietro.',
+  ru:'Смотрите на стрелку: платформа возит деталь туда и обратно.',
+  hi:'तीर देखें: मंच पुर्ज़े को आगे-पीछे ले जाता है।',
+  ar:'راقب السهم: تحمل المنصة القطعة ذهابًا وإيابًا.'
+};
+for(const [locale,platformTip] of Object.entries(PLATFORM_TIP))CUSTOM[locale].platformTip=platformTip;
 const REFLECTOR_TIP={
   en:'The angled reflector changes the ball’s direction; try bouncing toward a support.',
   'zh-Hant':'斜反彈板會改變球的方向；試著利用反彈擊中支架。',

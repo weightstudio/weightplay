@@ -6,7 +6,7 @@ export function mergeProgress(current,saved,stages,finishIds,selectionChanged=fa
   const cleared={...current.cleared};
   for(const [key,value] of Object.entries(saved.cleared)){const id=Number(key);if(!/^[1-9]\d*$/.test(key)||!stages[id-1]||!Number.isSafeInteger(value)||value<1)continue;cleared[key]=cleared[key]?Math.min(cleared[key],value):value;}
   const savedFinish=typeof saved.selectedFinish==='string'&&finishIds.includes(saved.selectedFinish)?saved.selectedFinish:current.selectedFinish;
-  return {...current,highestUnlocked:Math.max(current.highestUnlocked,saved.highestUnlocked),cleared,selectedFinish:selectionChanged?current.selectedFinish:savedFinish,tutorialDone:current.tutorialDone===true||saved.tutorialDone===true,clampIntroDone:current.clampIntroDone===true||saved.clampIntroDone===true};
+  return {...current,highestUnlocked:Math.max(current.highestUnlocked,saved.highestUnlocked),cleared,selectedFinish:selectionChanged?current.selectedFinish:savedFinish,tutorialDone:current.tutorialDone===true||saved.tutorialDone===true,clampIntroDone:current.clampIntroDone===true||saved.clampIntroDone===true,platformIntroDone:current.platformIntroDone===true||saved.platformIntroDone===true};
 }
 export function estimateTrajectory(M,obstacles,angle,power,probe=M.Bodies.circle(80,680,22),motion=null) {
   const speed=700+Math.max(0,Math.min(1,power))*500,points=[{x:80,y:680}];let previous=points[0],hit=null;
@@ -46,6 +46,7 @@ export class SalvageSlice {
     this.elapsed = 0;
     this.quiet = 0;
     this.ballRetireQuiet = 0;
+    this.settlementRechecked = new Set();
     this.bodies = [];
     const add = (body, kind) => {
       body.plugin.salvageKind = kind;
@@ -143,6 +144,7 @@ export class SalvageSlice {
     this.elapsed = 0;
     this.quiet = 0;
     this.ballRetireQuiet = 0;
+    this.settlementRechecked.clear();
     this.ball = Bodies.circle(80, 680, 22, { density: .002, restitution: .2, frictionAir: 0, label: 'ball' });
     this.ball.plugin.salvageKind = 'ball';
     this.bodies.push(this.ball);
@@ -206,11 +208,25 @@ export class SalvageSlice {
     const moving = this.clamped.length>0 || this.bodies.some(b => !b.isStatic && !b.isSleeping && (b.speed > .08 || Math.abs(b.angularSpeed) > .004));
     this.quiet = moving ? 0 : this.quiet + seconds;
     if (this.elapsed > .4 && this.quiet >= .5) {
+      // Retire the spent ball before checking support: it may itself be
+      // holding a sleeping target up, and is removed at this boundary anyway.
+      if(this.ball){this.M.Composite.remove(this.engine.world,this.ball);const index=this.bodies.indexOf(this.ball);if(index>=0)this.bodies.splice(index,1);this.ball=null;}
+      // A gently displaced support can leave a sleeping target suspended
+      // without a collision to wake it. At settlement, give each apparently
+      // unsupported target one physics recheck per shot. The bounded recheck
+      // avoids repeatedly waking pieces resting against sloped geometry.
+      let recheck=false;
+      for(const target of this.targets){
+        if(!this.bodies.includes(target)||!target.isSleeping||this.recoveredTargets.has(target)||this.settlementRechecked.has(target)||(target.plugin.linked&&this.linkConstraint))continue;
+        const others=this.bodies.filter(body=>body!==target&&body!==this.ball);
+        const supported=target.vertices.some(vertex=>this.M.Query.ray(others,{x:vertex.x,y:vertex.y-3},{x:vertex.x,y:vertex.y+7},2).length>0);
+        if(!supported){this.settlementRechecked.add(target);this.M.Sleeping.set(target,false);recheck=true;}
+      }
+      if(recheck){this.quiet=0;return;}
       const linked=this.stage?.sameShot;
       if(linked?.some(column=>this.recoveryShot.get(column)===this.shots)&&!linked.every(column=>this.recoveryShot.get(column)===this.shots)){
         this.state='lost';this.events.push({type:'wrongLink'},{type:'lose'});return;
       }
-      if(this.ball){this.M.Composite.remove(this.engine.world,this.ball);const index=this.bodies.indexOf(this.ball);if(index>=0)this.bodies.splice(index,1);this.ball=null;}
       this.state = this.shots >= this.limit ? 'lost' : 'ready';
       this.events.push({ type: this.state === 'lost' ? 'lose' : 'ready' });
     }
