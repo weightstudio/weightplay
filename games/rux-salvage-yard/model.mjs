@@ -1,5 +1,13 @@
 // Authoritative planar physics for the first development slice. Matter.js 0.20.0.
 // Coordinates are pixels (100 pixels per metre), with positive y downward.
+// Campaign progress only increases; cosmetic selection changes only on equip.
+export function mergeProgress(current,saved,stages,finishIds,selectionChanged=false) {
+  if(!saved||saved.version!==1||!Number.isInteger(saved.highestUnlocked)||saved.highestUnlocked<1||saved.highestUnlocked>stages.length||!saved.cleared||typeof saved.cleared!=='object'||Array.isArray(saved.cleared))return current;
+  const cleared={...current.cleared};
+  for(const [key,value] of Object.entries(saved.cleared)){const id=Number(key);if(!/^[1-9]\d*$/.test(key)||!stages[id-1]||!Number.isSafeInteger(value)||value<1)continue;cleared[key]=cleared[key]?Math.min(cleared[key],value):value;}
+  const savedFinish=typeof saved.selectedFinish==='string'&&finishIds.includes(saved.selectedFinish)?saved.selectedFinish:current.selectedFinish;
+  return {...current,highestUnlocked:Math.max(current.highestUnlocked,saved.highestUnlocked),cleared,selectedFinish:selectionChanged?current.selectedFinish:savedFinish,tutorialDone:current.tutorialDone===true||saved.tutorialDone===true,clampIntroDone:current.clampIntroDone===true||saved.clampIntroDone===true};
+}
 export function estimateTrajectory(M,obstacles,angle,power,probe=M.Bodies.circle(80,680,22),motion=null) {
   const speed=700+Math.max(0,Math.min(1,power))*500,points=[{x:80,y:680}];let previous=points[0],hit=null;
   const platformX=time=>{const phase=((motion.time+time)*50+50)%200;return 610+(phase<=100?phase:200-phase);};

@@ -53,7 +53,10 @@ body:has(.wpb-toast) #dialog{padding-bottom:64px}
 #angleFine:disabled .angle-fine-mark{visibility:hidden}
 #angleFine #status{display:flex;align-items:center;flex:1;min-width:0;height:100%;padding:0;background:transparent}
 .angle-fine-mark{flex:none;font-size:16px}
+#angleFine[data-action="speed"] .angle-fine-mark{min-width:48px;padding:8px;border:1px solid var(--wp-ui-line);border-radius:4px;background:#e8ba50;color:#24251e;text-align:center;font-weight:800}
+#angleFine[data-action="speed"]:disabled .angle-fine-mark{visibility:visible;opacity:.45}
 #fire{flex:0 0 calc(80 * var(--wp-play-unit,1px));min-width:0;padding:0 3px;font-size:calc(13 * var(--wp-play-unit,1px));line-height:1.1;overflow-wrap:anywhere}
+#fire:disabled{opacity:.45;cursor:default}
 #clampTrigger,#zoomView,#help{flex:0 0 var(--wp-frame-control-size,48px);min-width:var(--wp-frame-control-size,48px)}
 #clampTrigger{position:relative;display:grid;place-items:center;padding:4px}
 #clampTrigger svg{width:25px;height:25px;fill:currentColor}

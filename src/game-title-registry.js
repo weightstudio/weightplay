@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "dustwake-depot": {
+    "__localizedExact": true,
+    "en": "Dustwake Depot",
+    "zh-Hant": "塵光回收站",
+    "zh-Hans": "尘光回收站",
+    "ja": "ダストウェイク回収所",
+    "ko": "더스트웨이크 회수소",
+    "es": "Estación Destello",
+    "pt-BR": "Estação Brilho",
+    "fr": "Dépôt Éclat",
+    "de": "Staubglanz-Depot",
+    "it": "Deposito Splendente",
+    "ru": "Станция Пылесвет",
+    "hi": "धूलकिरण केंद्र",
+    "ar": "محطة بريق الغبار"
+  },
   "rux-salvage-yard": {
     "__localizedExact": true,
     "en": "Rux Salvage Yard",

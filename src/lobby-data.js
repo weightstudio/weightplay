@@ -22,6 +22,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "dustwake-depot",
       "rux-salvage-yard",
       "lantern-stride",
       "orbit-menders",
@@ -86,6 +87,17 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "dustwake-depot", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "/games/dustwake-depot/index.html?preview=1", href: "games/dustwake-depot/",
+      title: { __localizedExact: true, en: "Dustwake Depot", "zh-Hant": "塵光回收站", "zh-Hans": "尘光回收站", ja: "ダストウェイク回収所", ko: "더스트웨이크 회수소", es: "Estación Destello", "pt-BR": "Estação Brilho", fr: "Dépôt Éclat", de: "Staubglanz-Depot", it: "Deposito Splendente", ru: "Станция Пылесвет", hi: "धूलकिरण केंद्र", ar: "محطة بريق الغبار" },
+      type: { en: "Cleaning Strategy", "zh-Hant": "清掃策略", "zh-Hans": "清扫策略", ja: "お掃除戦略", ko: "청소 전략", es: "Estrategia de limpieza", "pt-BR": "Estratégia de limpeza", fr: "Stratégie de nettoyage", de: "Reinigungsstrategie", it: "Strategia di pulizia", ru: "Стратегия уборки", hi: "सफाई रणनीति", ar: "استراتيجية التنظيف" },
+      description: { en: "Guide Taro, sweep dust and plan each trip back to a depot across 60 stages.", "zh-Hant": "帶領塔羅清理園區，安排背包與返運路線，完成兩章60關。", "zh-Hans": "带领塔罗清理园区，安排背包与返运路线，完成两章60关。", ja: "タロと園内のほこりを集め、荷物と帰り道を考えながら全60ステージを進もう。", ko: "타로와 정원을 청소하고 적재량과 회수 경로를 계획하며 60개 스테이지에 도전하세요.", es: "Guía a Taro, recoge polvo y planea cada viaje al depósito en 60 niveles.", "pt-BR": "Guie Taro, recolha poeira e planeje cada viagem ao depósito em 60 fases.", fr: "Guidez Taro, ramassez la poussière et planifiez les retours au dépôt dans 60 niveaux.", de: "Führe Taro durch 60 Level, sammle Staub und plane jede Rückfahrt zum Depot.", it: "Guida Taro, raccogli la polvere e pianifica ogni ritorno al deposito in 60 livelli.", ru: "Управляйте Таро, собирайте пыль и планируйте путь к станции на 60 уровнях.", hi: "टारो के साथ धूल साफ करें और 60 चरणों में हर वापसी का रास्ता बनाएँ।", ar: "وجّه تارو واجمع الغبار وخطّط لكل رحلة إلى المحطة عبر 60 مرحلة." },
+      categories: ["Simulation", "Puzzle", "Animal Games"], skills: ["Focus", "Logic", "Hand-eye Coordination"], ages: ["9", "family"],
+      ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
+      art: { kind: "image", background: "/games/dustwake-depot/art/poster.webp", hideHero: true },
+      meta: { en: ["60 stages", "Route planning", "Permanent diamond looks"], "zh-Hant": ["60關", "返運規劃", "鑽石永久外觀"] }
+    },
     {
       id: "rux-salvage-yard", audience: "general", status: "planned", internalOnly: true,
       internalTrial: "/games/rux-salvage-yard/index.html?preview=1", href: "games/rux-salvage-yard/",

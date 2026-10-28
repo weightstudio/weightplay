@@ -80,7 +80,7 @@ export class SalvageView {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     host.append(this.renderer.domElement);
     this.aimUpdates=0;
-    if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){this.readStats=()=>({calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,aimUpdates:this.aimUpdates,aimHit:this.aimMarker?.visible?{x:this.aimMarker.position.x,y:800-this.aimMarker.position.y}:null});host.__ruxRenderStats=this.readStats;}
+    if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){this.readStats=()=>({calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,aimUpdates:this.aimUpdates,aimHit:this.aimMarker?.visible?{x:this.aimMarker.position.x,y:800-this.aimMarker.position.y}:null,character:this.rux?{y:this.rux.position.y,rotation:this.rux.rotation.z}:null});host.__ruxRenderStats=this.readStats;}
     this.renderer.domElement.tabIndex=0;this.renderer.domElement.setAttribute('aria-label',host.getAttribute('aria-label')||'');
     this.contextLost=false;
     this.onContextLost=event=>{event.preventDefault();this.contextLost=true;onContextLost();};
@@ -88,7 +88,7 @@ export class SalvageView {
     this.scene.add(new THREE.HemisphereLight(0xfff1d1, 0x275e64, 2.2));
     const light = new THREE.DirectionalLight(0xffffff, 2); light.position.set(-200, 800, 1000); this.scene.add(light);
     this.meshes = new Map();this.woodTexture=createWoodTexture();this.enamelTexture=createEnamelTexture();
-    this.bursts=[];this.recoil=0;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.bursts=[];this.recoil=0;this.celebration=0;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const launcher=createLauncher();this.launcher=launcher.group;this.launcherMaterial=launcher.metal;
     this.launcher.position.set(80,120,50);this.scene.add(this.launcher);
     const stand=new THREE.Group();const standBody=new THREE.Mesh(new THREE.BoxGeometry(180,58,50),new THREE.MeshStandardMaterial({color:0x855133,roughness:.8}));standBody.position.y=29;stand.add(standBody);const standTop=new THREE.Mesh(new THREE.BoxGeometry(186,9,56),new THREE.MeshStandardMaterial({color:0xc69753,roughness:.7}));standTop.position.y=58;stand.add(standTop);
@@ -213,7 +213,9 @@ export class SalvageView {
   }
   effect(event) {
     if(event.type==='shot'){this.recoil=.16;return;}
-    if(!['impact','break','recovered'].includes(event.type)||!Number.isFinite(event.x)||this.bursts.length>=8)return;
+    if(!['impact','break','recovered'].includes(event.type)||!Number.isFinite(event.x))return;
+    if(event.type==='recovered')this.celebration=.55;
+    if(this.bursts.length>=8)return;
     const count=event.type==='break'?10:6,color=event.type==='recovered'?0x8dff9c:event.type==='break'||event.material==='wood'||event.material==='beam'?0xffcc70:0x8af5ed;
     const group=new THREE.Group(),geometry=new THREE.BoxGeometry(event.type==='break'?9:6,event.type==='break'?5:6,6),material=new THREE.MeshBasicMaterial({color});
     // All sparks in one burst share geometry and material, so draw them as
@@ -223,7 +225,7 @@ export class SalvageView {
     group.position.set(event.x,800-event.y,100);this.scene.add(group);this.bursts.push({group,geometry,material,sparks,transform,count,ring,ringGeometry,ringMaterial,life:0});
   }
   sync(model,angle,dt=0,power=.6) {
-    this.recoil=Math.max(0,this.recoil-dt);const kick=this.reducedMotion?0:this.recoil/.16;this.launcher.position.x=80-kick*10;this.rux.rotation.z=kick*.08;
+    this.recoil=Math.max(0,this.recoil-dt);this.celebration=Math.max(0,this.celebration-dt);const kick=this.reducedMotion?0:this.recoil/.16,joy=this.reducedMotion?0:Math.sin(Math.PI*(1-this.celebration/.55))*(this.celebration>0?1:0);this.launcher.position.x=80-kick*10;this.rux.position.y=62+joy*22;this.rux.rotation.z=kick*.08+joy*.12;
     const active=new Set(model.bodies);
     for(const [body,mesh] of this.meshes) if(!active.has(body)){this.scene.remove(mesh);mesh.traverse(n=>{if(n.isInstancedMesh)n.dispose();n.geometry?.dispose();n.material?.dispose();});this.meshes.delete(body);}
     for(const body of model.bodies){let mesh=this.meshes.get(body);if(!mesh){mesh=this.make(body);this.meshes.set(body,mesh);}mesh.position.set(body.position.x,800-body.position.y,0);mesh.rotation.z=-body.angle;if(mesh.userData.direction)mesh.userData.direction.scale.x=(model.platformTime*50+50)%200<100?1:-1;const held=model.clamped.some(item=>item.body===body),recovered=Boolean(body.plugin.recovered);
