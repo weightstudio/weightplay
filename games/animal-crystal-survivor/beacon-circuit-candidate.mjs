@@ -1,5 +1,5 @@
-// Unconnected chapter-two design model. The public game does not import this
-// file: actual movement, combat, persistence and rewards remain authoritative.
+// Chapter-two model used by authenticated local practice. Formal movement,
+// combat, persistence and rewards remain authoritative in the ordinary game.
 const A = Object.freeze({ id: 'A', x: 256, y: 560 });
 const B = Object.freeze({ id: 'B', x: 768, y: 560 });
 const C = Object.freeze({ id: 'C', x: 512, y: 1180 });

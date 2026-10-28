@@ -1520,6 +1520,7 @@
   }
 
   function objectiveComplete() {
+    if(__crystalPracticeRequested&&state.stage===37&&state.beaconRound)return state.beaconRound.completed===2&&state.waveCleared>=state.stageConfig.waveGoal;
     if(__crystalPracticeRequested&&state.stage===36&&state.beaconRound&&__crystalPrismModel)return __crystalPrismModel.prismWaveObjective({pulses:state.beaconRound.pulses,chosen:state.beaconPrism?.chosen,waveCleared:state.waveCleared,waveGoal:state.stageConfig.waveGoal});
     if(__crystalPracticeRequested&&state.beaconRound)return state.stage===35?state.beaconRound.completed===1&&state.bossDefeated:state.timeLeft<=0&&state.beaconRound.completed===1&&(state.stage!==33||state.beaconLaneResolved===true);
     return state.stageConfig.mode === "waves" ? state.waveCleared >= state.stageConfig.waveGoal
@@ -2428,25 +2429,34 @@
     if (p.shotTimer <= 0) shootNearest();
   }
 
+  function beaconNeedsMore() {
+    return Boolean(state.beaconRound&&(state.stage===37?state.beaconRound.completed<2:!state.beaconRound.completed));
+  }
+
   function spawnEnemies(dt) {
     const config = state.stageConfig || stages[0];
     if (config.mode === "waves") {
       if (state.waveRemaining === 0 && state.enemies.length === 0) {
         state.waveCleared = state.wave;
-        if (state.waveCleared >= config.waveGoal) return;
-        state.waveBreak -= dt;
-        if (state.waveBreak > 0) return;
-        state.wave += 1;
-        state.waveRemaining = 3 + config.region + state.wave * 2;
-        state.waveBreak = 4;
-        state.spawnTimer = 0;
-        addFloater(`${modeLabels()[1]} ${state.wave}/${config.waveGoal}`, state.player.x, state.player.y - 90, "#ffe6a1");
+        if (state.waveCleared >= config.waveGoal) {
+          // A lost or expired final charge must remain recoverable after waves.
+          if(state.stage!==37||!beaconNeedsMore()||state.beaconRound.charge||state.beaconDrop)return;
+          state.waveRemaining=1;state.spawnTimer=0;
+        } else {
+          state.waveBreak -= dt;
+          if (state.waveBreak > 0) return;
+          state.wave += 1;
+          state.waveRemaining = 3 + config.region + state.wave * 2;
+          state.waveBreak = 4;
+          state.spawnTimer = 0;
+          addFloater(`${modeLabels()[1]} ${state.wave}/${config.waveGoal}`, state.player.x, state.player.y - 90, "#ffe6a1");
+        }
       }
       if (state.waveRemaining <= 0) return;
     }
     state.spawnTimer -= dt;
     if (state.spawnTimer > 0) return;
-    if (state.enemies.length >= (state.beaconRound&&!state.beaconRound.completed?5:18)) {
+    if (state.enemies.length >= (beaconNeedsMore()?5:18)) {
       state.spawnTimer = 0.6;
       return;
     }
@@ -2463,7 +2473,7 @@
     if (state.stage >= 3 && state.spawnCount % (state.stage >= 11 ? 4 : 5) === 1 && state.enemies.filter(e => e.role === "archer").length < Math.min(5, 1 + Math.floor(state.stage / 5))) {
       type = "archer"; role = "archer";
     } else if (state.stage >= 4 && state.spawnCount % 6 === 3) { type = "runner"; role = "charger"; }
-    if(state.beaconRound&&!state.beaconRound.completed){type='basic';role='melee'}
+    if(beaconNeedsMore()){type='basic';role='melee'}
     const edge = Math.floor(Math.random() * 4);
     const pos = randomPoint(0);
     if (edge === 0) pos.y = -54;
@@ -2481,10 +2491,10 @@
         pos.y = state.player.y + inwardY / distance * 450;
       }
     }
-    const needsCarrier=Boolean(state.beaconRound&&!state.beaconRound.completed&&!state.beaconRound.charge&&!state.beaconDrop&&!state.enemies.some(enemy=>enemy.beaconCarrier));
-    if(needsCarrier){pos.x=Math.max(60,Math.min(W-60,state.player.x+(state.stage===32?360:240)));pos.y=Math.max(60,Math.min(H-60,state.player.y-(state.stage===32?180:80)));}
-    if(needsCarrier&&state.stage===32){type='runner';role='charger';}
-    const stageHp = state.beaconRound&&!state.beaconRound.completed ? 1 : 1 + Math.min(1.2, (state.stage - 1) * .04);
+    const needsCarrier=Boolean(beaconNeedsMore()&&!state.beaconRound.charge&&!state.beaconDrop&&!state.enemies.some(enemy=>enemy.beaconCarrier));
+    if(needsCarrier){const offset=state.stage===37&&state.beaconRound.completed>0?-240:state.stage===32?360:240;pos.x=Math.max(60,Math.min(W-60,state.player.x+offset));pos.y=Math.max(60,Math.min(H-60,state.player.y-(state.stage===32?180:80)));}
+    if(needsCarrier&&(state.stage===32||state.stage===37)){type='runner';role='charger';}
+    const stageHp = beaconNeedsMore() ? 1 : 1 + Math.min(1.2, (state.stage - 1) * .04);
     const stats = {
       basic: { hp: combatBalance.enemy.basic.hp, speed: 112, size: 62, damage: combatBalance.enemy.basic.damage, image: "basic" },
       runner: { hp: combatBalance.enemy.runner.hp, speed: 162, size: 58, damage: combatBalance.enemy.runner.damage, image: "runner" },
@@ -2492,13 +2502,13 @@
       archer: { hp: combatBalance.enemy.archer.hp, speed: 100, size: 64, damage: combatBalance.enemy.archer.damage, image: "archer" },
     }[type];
     state.spawnCount += 1;
-    const hp = needsCarrier&&state.stage===32 ? 60 : Math.round(stats.hp * stageHp);
+    const hp = needsCarrier&&(state.stage===32||state.stage===37) ? 60 : Math.round(stats.hp * stageHp);
     const shielded = ["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0;
-    const stageDamage = state.beaconRound&&!state.beaconRound.completed ? 1 : state.stage === 1 ? .8 : 1 + config.region * .08 + (state.stage - 1) % 5 * .015;
+    const stageDamage = beaconNeedsMore() ? 1 : state.stage === 1 ? .8 : 1 + config.region * .08 + (state.stage - 1) % 5 * .015;
     const damage = integerDamage(stats.damage * stageDamage);
     stats.speed*=1+Math.min(.22,(state.stage-1)*.008);
     const beaconCarrier=needsCarrier;
-    state.enemies.push({ ...pos, ...stats, role, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 18 + config.region * 5 : 0, chargeTimer: needsCarrier&&state.stage===32?1:Math.random() * 2 + 1.2, shotTimer: 1.2, ...(beaconCarrier?{beaconCarrier:true}:{}) });
+    state.enemies.push({ ...pos, ...stats, role, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 18 + config.region * 5 : 0, chargeTimer: needsCarrier&&(state.stage===32||state.stage===37)?1:Math.random() * 2 + 1.2, shotTimer: 1.2, ...(beaconCarrier?{beaconCarrier:true}:{}) });
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
     if (config.mode === "waves") { state.waveRemaining -= 1; state.spawnTimer = .85; }
     if (config.mode === "boss") state.spawnTimer = 4.5;
@@ -2721,7 +2731,7 @@
     addSpark(enemy.x, enemy.y, "#f5e6c6", { kind: "voxelDeath", life: .7, duration: .7,
       height: (enemy.size || 64) / 64 * .7, boss: !!enemy.isBoss, punch: enemy.isBoss ? .16 : 0 });
     state.calmed += 1;
-    if(enemy.beaconCarrier&&state.beaconRound&&!state.beaconRound.charge&&!state.beaconRound.completed&&!state.beaconDrop)state.beaconDrop={x:enemy.x,y:enemy.y};
+    if(enemy.beaconCarrier&&beaconNeedsMore()&&!state.beaconRound.charge&&!state.beaconDrop)state.beaconDrop={x:enemy.x,y:enemy.y};
     const harvest = state.player.talents.harvest;
     if (harvest && state.calmed % (harvest === 2 ? 4 : 6) === 0) {
       state.xpDrops.filter(drop => Math.hypot(drop.x - state.player.x, drop.y - state.player.y) < 500)
@@ -3951,7 +3961,7 @@
       if(window.__CrystalPracticeGuardReady!==true||window.WONDER_SITE?.analytics?.enabled!==false)throw Error('PRACTICE_GUARD_UNAVAILABLE');
       const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy]=await Promise.all([
         import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon6'),
-        import('./beacon-circuit-candidate.mjs?v=20261028-beacon2'),import('./beacon-circuit-copy.mjs?v=20261028-beacon8'),
+        import('./beacon-circuit-candidate.mjs?v=20261028-beacon3'),import('./beacon-circuit-copy.mjs?v=20261028-beacon8'),
         import('./beacon-art-candidate.mjs?v=20261028-beacon2'),import('../animal-skyspire-drop/vendor/three/three.module.min.js'),
         import('./beacon-lanes-candidate.mjs?v=20261028-beacon1'),import('./beacon-lanes-adapter-candidate.mjs?v=20261028-beacon1'),
         import('./beacon-warden-art-candidate.mjs?v=20261028-warden3'),
@@ -3966,7 +3976,7 @@
           for(const number of [31,32,33,34,35,36]){
             const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:copy.beaconStageCopy(key,number))[0]]));
             const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:copy.beaconStageCopy(key,number))[1]]));
-            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':null,mode:number===35?'boss':number===36?'waves':'survival',waveGoal:number===36?3:0,duration:number===31?45:number===34?55:number===35?75:number===36?90:50,targetKeys:0});
+            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':null,mode:number===35?'boss':number===36?'waves':'survival',waveGoal:number===36?3:0,duration:number===31?45:number===34?55:number===35||number===36?75:50,targetKeys:0});
           }
           STAGE_COUNT=36;save=JSON.parse(JSON.stringify(save));save.unlockedStage=36;save.selectedStage=31;
         }

@@ -62,6 +62,21 @@ const TWENTY_SECOND_NAMES={en:'Two pairs above the spikes','zh-Hant':'尖刺上�
 for(const [locale,value] of Object.entries(TWENTY_SECOND_NAMES))LATCH_NAMES[locale].push(value);
 const TWENTY_THIRD_NAMES={en:'The shield beyond the spikes','zh-Hant':'尖刺後的護盾','zh-Hans':'尖刺后的护盾',ja:'とげの先の盾',ko:'가시 너머의 방패',es:'El escudo tras los pinchos','pt-BR':'O escudo após os espinhos',fr:'Le bouclier après les pointes',de:'Der Schild hinter den Stacheln',it:'Lo scudo oltre gli spuntoni',ru:'Щит за шипами',hi:'काँटों के पार ढाल',ar:'الدرع خلف الأشواك'};
 for(const [locale,value] of Object.entries(TWENTY_THIRD_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_FOURTH_NAMES={en:'Paired locks and the spike shield','zh-Hant':'雙鎖與尖刺護盾','zh-Hans':'双锁与尖刺护盾',ja:'二組の鍵ととげの盾',ko:'두 잠금과 가시 방패',es:'Pares y escudo entre pinchos','pt-BR':'Pares e escudo nos espinhos',fr:'Paires et bouclier aux pointes',de:'Paare und Schild bei den Stacheln',it:'Coppie e scudo tra gli spuntoni',ru:'Пары и щит у шипов',hi:'जोड़े, काँटे और ढाल',ar:'زوجان ودرع الأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_FOURTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_DUAL_SPIKE_RUNE_RULE={
+ en:'Move Fia to safety before the left key; match both pairs. Take the sun rune for the shield; avoid spikes.',
+ 'zh-Hant':'先讓菲亞安全移動再拆左鑰匙，配對兩組鎖；太陽符文破盾，避開尖刺。','zh-Hans':'先让菲娅安全移动再拆左钥匙，配对两组锁；太阳符文破盾，避开尖刺。',
+ ja:'フィアが安全になるまで左の鍵を残し、二組を合わせる。太陽のルーンで盾を解除し、とげを避ける。',ko:'피아가 안전해진 뒤 왼쪽 열쇠를 없애고 두 쌍을 맞추세요. 태양 룬으로 방패를 풀고 가시를 피하세요.',
+ es:'Pon a Fia a salvo antes de la llave izquierda; empareja ambos pares. Runa solar para el escudo; evita los pinchos.',
+ 'pt-BR':'Leve Fia à segurança antes da chave esquerda; combine os pares. Runa solar para o escudo; evite espinhos.',
+ fr:'Mettez Fia en sécurité avant la clé gauche ; associez les paires. Rune solaire pour le bouclier ; évitez les pointes.',
+ de:'Bring Fia vor dem linken Schlüssel in Sicherheit; ordne beide Paare zu. Sonnenrune für den Schild; meide Stacheln.',
+ it:'Metti Fia al sicuro prima della chiave sinistra; abbina le coppie. Runa solare per lo scudo; evita gli spuntoni.',
+ ru:'Сначала отведите Фию в безопасность; сопоставьте обе пары. Руна солнца для щита; избегайте шипов.',
+ hi:'बाईं चाबी से पहले फ़िया को सुरक्षित करें; दोनों जोड़े मिलाएँ। ढाल के लिए सूर्य रून लें और काँटों से बचें।',
+ ar:'أمّن فيا قبل المفتاح الأيسر، وطابق الزوجين. خذ رون الشمس للدرع وتجنب الأشواك.'
+};
 export const LATCH_SPIKE_RUNE_RULE={
  en:'Move Fia to safety before removing the left key; take the sun rune for the shield. Spikes cause defeat.',
  'zh-Hant':'先讓菲亞安全移動再拆左鑰匙；太陽符文可破盾。落到尖刺會失敗。','zh-Hans':'先让菲娅安全移动再拆左钥匙；太阳符文可破盾。落到尖刺会失败。',

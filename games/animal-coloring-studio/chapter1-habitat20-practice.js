@@ -1,0 +1,40 @@
+// Unreviewed localhost-only checkpoint; not a campaign page.
+(() => {
+  const points=[[602,298],[289,385],[408,392],[435,422],[262,429],[313,548],[623,466],[452,446],[240,455],[101,570],[228,647],[631,868],[357,623],[258,900],[71,824],[199,825],[322,839]];
+  const titles={en:'Forest Deer','zh-Hant':'林間小鹿','zh-Hans':'林间小鹿',ja:'森のシカ',ko:'숲속 사슴',es:'Ciervo del bosque','pt-BR':'Cervo da floresta',fr:'Cerf en forêt',de:'Waldhirsch',it:'Cervo nel bosco',ru:'Олень в лесу',hi:'वन का हिरन',ar:'غزال الغابة'};
+  const areaNames={
+    en:['Tree crown','Left antler','Right antler','Right ear edge','Left ear edge','Face','Tree trunk','Right inner ear','Left inner ear','Tail','Coat and legs','Path','Chest','Meadow','Left hoof','Middle hoof','Right hoof'],
+    'zh-Hant':['樹冠','左鹿角','右鹿角','右耳側面','左耳側面','臉','樹幹','右耳內側','左耳內側','尾巴','毛皮與腿','小徑','胸口','草地','左蹄','中間的蹄','右蹄'],
+    'zh-Hans':['树冠','左鹿角','右鹿角','右耳侧面','左耳侧面','脸','树干','右耳内侧','左耳内侧','尾巴','毛皮与腿','小径','胸口','草地','左蹄','中间的蹄','右蹄'],
+    ja:['木の葉','左の角','右の角','右耳の側面','左耳の側面','顔','木の幹','右耳の内側','左耳の内側','しっぽ','体と足','小道','胸','草地','左のひづめ','真ん中のひづめ','右のひづめ'],
+    ko:['나무 잎','왼쪽 뿔','오른쪽 뿔','오른쪽 귀 옆','왼쪽 귀 옆','얼굴','나무줄기','오른쪽 귀 안','왼쪽 귀 안','꼬리','몸과 다리','오솔길','가슴','풀밭','왼쪽 발굽','가운데 발굽','오른쪽 발굽'],
+    es:['Copa','Asta izquierda','Asta derecha','Borde oreja derecha','Borde oreja izquierda','Cara','Tronco','Interior oreja derecha','Interior oreja izquierda','Cola','Pelaje y patas','Sendero','Pecho','Pradera','Pezuña izquierda','Pezuña central','Pezuña derecha'],
+    'pt-BR':['Copa','Chifre esquerdo','Chifre direito','Lado orelha direita','Lado orelha esquerda','Rosto','Tronco','Dentro orelha direita','Dentro orelha esquerda','Cauda','Corpo e pernas','Caminho','Peito','Gramado','Casco esquerdo','Casco central','Casco direito'],
+    fr:['Feuillage','Bois gauche','Bois droit','Bord oreille droite','Bord oreille gauche','Visage','Tronc','Intérieur oreille droite','Intérieur oreille gauche','Queue','Corps et pattes','Sentier','Poitrine','Prairie','Sabot gauche','Sabot central','Sabot droit'],
+    de:['Baumkrone','Linkes Geweih','Rechtes Geweih','Rechter Ohrrand','Linker Ohrrand','Gesicht','Baumstamm','Rechtes Innenohr','Linkes Innenohr','Schwanz','Fell und Beine','Weg','Brust','Wiese','Linker Huf','Mittlerer Huf','Rechter Huf'],
+    it:['Chioma','Corno sinistro','Corno destro','Bordo orecchio destro','Bordo orecchio sinistro','Muso','Tronco','Interno orecchio destro','Interno orecchio sinistro','Coda','Corpo e zampe','Sentiero','Petto','Prato','Zoccolo sinistro','Zoccolo centrale','Zoccolo destro'],
+    ru:['Крона','Левый рог','Правый рог','Край правого уха','Край левого уха','Мордочка','Ствол','Внутри правого уха','Внутри левого уха','Хвост','Тело и ноги','Тропинка','Грудка','Лужайка','Левое копыто','Среднее копыто','Правое копыто'],
+    hi:['पेड़ के पत्ते','बायाँ सींग','दायाँ सींग','दाएँ कान का किनारा','बाएँ कान का किनारा','चेहरा','पेड़ का तना','दाएँ कान के भीतर','बाएँ कान के भीतर','पूँछ','शरीर और पैर','रास्ता','छाती','घास का मैदान','बायाँ खुर','बीच का खुर','दायाँ खुर'],
+    ar:['تاج الشجرة','القرن الأيسر','القرن الأيمن','جانب الأذن اليمنى','جانب الأذن اليسرى','الوجه','جذع الشجرة','داخل الأذن اليمنى','داخل الأذن اليسرى','الذيل','الجسم والساقان','الممر','الصدر','العشب','الحافر الأيسر','الحافر الأوسط','الحافر الأيمن']
+  };
+  const goalCopy={
+    en:['Give two of the coat, trunk and meadow the same pattern; color the third solid.','Checkpoint complete: two matching patterns and one solid!'],
+    'zh-Hant':['毛皮、樹幹、草地選兩個相同圖案，另一個用實色。','挑戰完成：兩個相同圖案，一個實色！'],
+    'zh-Hans':['毛皮、树干、草地选两个相同图案，另一个用纯色。','挑战完成：两个相同图案，一个纯色！'],
+    ja:['体、幹、草地の二つを同じ模様にし、残りを単色にしよう。','達成！二つが同じ模様、一つが単色！'],
+    ko:['몸, 줄기, 풀밭 중 둘은 같은 무늬로, 하나는 단색으로 칠해요.','완료! 같은 무늬 둘과 단색 하나!'],
+    es:['En cuerpo, tronco y pradera usa el mismo patrón en dos y color liso en uno.','¡Reto completado: dos patrones iguales y uno liso!'],
+    'pt-BR':['No corpo, tronco e gramado, use o mesmo padrão em dois e cor lisa no outro.','Desafio concluído: dois padrões iguais e um liso!'],
+    fr:['Sur le corps, le tronc et la prairie, mets le même motif sur deux et une couleur unie sur le troisième.','Défi réussi : deux motifs identiques et une couleur unie !'],
+    de:['Gib zwei von Fell, Stamm und Wiese dasselbe Muster und male das dritte einfarbig.','Geschafft: zwei gleiche Muster und einmal einfarbig!'],
+    it:['Tra corpo, tronco e prato usa lo stesso motivo su due e un colore pieno sul terzo.','Sfida completata: due motivi uguali e un colore pieno!'],
+    ru:['На теле, стволе и лужайке сделай два одинаковых узора, а третью область закрась одним цветом.','Готово: два одинаковых узора и одна область без узора!'],
+    hi:['शरीर, तने और मैदान में दो पर एक जैसा पैटर्न और तीसरे पर सादा रंग भरें।','चुनौती पूरी: दो एक जैसे पैटर्न और एक सादा रंग!'],
+    ar:['اختر نمطًا متشابهًا لمنطقتين من الجسم والجذع والعشب، ولونًا سادة للثالثة.','اكتمل التحدي: نمطان متشابهان ولون سادة!']
+  };
+  function goalComplete(fills){const values=['11,173,81','7,173,81','14,173,81'].map(key=>fills.get(key)),patterned=values.filter(value=>value&&typeof value==='object'&&['dots','stripes'].includes(value.pattern)),solid=values.filter(value=>typeof value==='string');return patterned.length===2&&solid.length===1&&patterned[0].pattern===patterned[1].pattern}
+  window.AnimalColoringHabitat20Practice=Object.freeze({ready:false,id:'forest-deer-practice',titles,areaNames,goalCopy,goalComplete,
+    art:'/docs/game-build-handoffs/animal-coloring-studio-habitat-art/stage20-source-v6.png',mask:'/docs/game-build-handoffs/animal-coloring-studio-habitat-art/UNREVIEWED-stage20-v6-mask.png',
+    anchors:Object.freeze(points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`})))
+  });
+})();

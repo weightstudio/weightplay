@@ -160,4 +160,11 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun'}],required:['weak','last'],
   items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:2,y:0,link:'sun'}],sealOrder:[],
   latches:[{id:'sun',lock:[2,1],key:[0,1]}]
+},{
+  id:54,name:'Paired locks and the spike shield',
+  decision:'Move Fia to safety before the left key falls; open both matched pairs and take the sun rune for the shield.',
+  board:['.......','AAABBCC','.......','^BBB.CC','.......','AABBBBB','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun'}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:2,y:0,link:'sun'}],sealOrder:[],
+  latches:[{id:'sun',lock:[1,3],key:[0,1]},{id:'moon',lock:[0,5],key:[3,1]}]
 }];
