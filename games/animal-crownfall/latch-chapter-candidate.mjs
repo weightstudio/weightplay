@@ -174,4 +174,18 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun',boss:true,open:'1',next:{x:0,y:8,power:65,shield:'moon'}}],required:['weak','last'],
   items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'rune',kind:'rune',x:2,y:0,link:'sun'},{id:'boost',kind:'power',x:2,y:4,amount:24},{id:'moonRune',kind:'rune',x:4,y:8,link:'moon'},{id:'crown',kind:'crown',x:6,y:8}],sealOrder:[],
   latches:[{id:'sun',lock:[1,3],key:[0,1]},{id:'moon',lock:[2,5],key:[3,1]}]
+},{
+  id:56,name:'Seals over the spikes',
+  decision:'Reach safety before removing the left key, then collect the three seals in order without falling onto spikes.',
+  board:['.......','AABBBCC','.......','^BB.CCA','.......','AAABBBB','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[1,3],key:[0,1]}]
+},{
+  id:57,name:'Two pairs, three seals and spikes',
+  decision:'Reach safety before the left key, open both matched pairs, and collect the three seals in order.',
+  board:['.......','AAABBCC','.......','^BBB.CC','.......','AABBBBB','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[1,3],key:[3,1]}]
 }];

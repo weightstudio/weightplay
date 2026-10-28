@@ -1,5 +1,6 @@
 // Isolated Stage 38 hazard design; not connected to gameplay or rewards.
-const circles=Object.freeze({A:Object.freeze({x:256,y:1180,r:180}),B:Object.freeze({x:768,y:1180,r:180})});
+// Each centre blocks the middle approach while leaving the mirrored flank open.
+const circles=Object.freeze({A:Object.freeze({x:392,y:1020,r:145}),B:Object.freeze({x:632,y:1020,r:145})});
 export function mirrorStart(first='A'){
   if(!circles[first])throw new RangeError('Unknown mirror side');
   return {side:first,warn:2,life:4,cycle:1};

@@ -70,7 +70,7 @@ export class CrownScene {
       const m=this.box(this.terrain,gx,gy,0,.95,.95,.85,marked.has(`${x},${y}`)?0xffdf85:PALETTE[c],c==='1'||c==='2');
       if(/^[ABC]$/.test(c)){m.userData.cell=[x,y];this.hitTargets.push(m);const rune=this.box(this.terrain,gx,gy,.46,c==='A'?.28:.35,c==='B'?.1:.3,.055,0xffffff);rune.rotation.z=c==='C'?Math.PI/4:0;if(c==='A')this.box(this.terrain,gx,gy,.46,.1,.4,.06,0xffe5ee);}
       else if(c==='1'||c==='2'){for(const dx of [-.27,0,.27])this.box(this.terrain,gx+dx,gy,.46,.07,.78,.07,0xffdf8a,true);}
-      else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.terrain,gx+dx,gy+.2,[51,52,53,54,55].includes(state.level)?.51:.27,.16,.55,.16,[51,52,53,54,55].includes(state.level)?0xffd27b:0xd4e0e6,true);spike.rotation.z=.18;}}
+      else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.terrain,gx+dx,gy+.2,[51,52,53,54,55,56,57].includes(state.level)?.51:.27,.16,.55,.16,[51,52,53,54,55,56,57].includes(state.level)?0xffd27b:0xd4e0e6,true);spike.rotation.z=.18;}}
       const mark=state.latches?.find(l=>l.key[0]===x&&l.key[1]===y||l.lock[0]===x&&l.lock[1]===y);
       if(mark){const key=mark.key[0]===x&&mark.key[1]===y,locked=/^[ABC]$/.test(state.board[mark.key[1]]?.[mark.key[0]]||'');
         // Raised, distinct key and lock silhouettes use the existing scene's
@@ -83,7 +83,7 @@ export class CrownScene {
     }
     }
     if((state.latches?.length||0)>1)state.latches.forEach((latch,index)=>{for(const pos of [latch.key,latch.lock]){const [x,y]=pos;if(!/^[ABC]$/.test(state.board[y]?.[x]||''))continue;const badge=document.createElement('span');badge.className='latch-tag';badge.textContent=String(index+1);badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}});
-    if([51,52,53,54,55].includes(state.level))state.board.forEach((row,y)=>row.forEach((cell,x)=>{if(cell!=='^')return;const badge=document.createElement('span');badge.className='spike-tag';badge.textContent='▲▲▲';badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}));
+    if([51,52,53,54,55,56,57].includes(state.level))state.board.forEach((row,y)=>row.forEach((cell,x)=>{if(cell!=='^')return;const badge=document.createElement('span');badge.className='spike-tag';badge.textContent='▲▲▲';badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}));
     const alive=new Set();
     const add=(a,kind)=>{
       const id=a.id||'hero',signature=JSON.stringify(kind==='hero'?[a.armed]:[a.kind,a.shield,a.boss,a.buff]);alive.add(id);
@@ -169,7 +169,7 @@ export class CrownScene {
     };
     // Stage 49 reserves each pairing number near its tile before laying out longer actor labels.
     if([54,55].includes(this.state?.level))placeLatchLabels(e=>e.classList.contains('latch-tag'));
-    else if([49,50,52].includes(this.state?.level))placeLatchLabels();
+    else if([49,50,52,57].includes(this.state?.level))placeLatchLabels();
     for(const l of labels){
       if(!l.visible)continue;
       const w=l.element.offsetWidth,h=l.element.offsetHeight;
@@ -185,7 +185,7 @@ export class CrownScene {
     }
     // For earlier stages preserve the established actor-first layout.
     if([54,55].includes(this.state?.level))placeLatchLabels(e=>e.classList.contains('spike-tag'));
-    else if(![49,50,52].includes(this.state?.level))placeLatchLabels();
+    else if(![49,50,52,57].includes(this.state?.level))placeLatchLabels();
   }
   async animate(event,previous,isPaused=()=>false) {
     if(this.disposed)return;

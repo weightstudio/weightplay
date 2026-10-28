@@ -2,3 +2,9 @@
 .result>div{color:#20344b;box-shadow:0 16px 45px #06132499}.result h2,.result p{color:#20344b}.result .actions{justify-content:center}.result .actions button{min-width:120px}#shopDialog{max-width:min(90vw,430px);border:0;border-radius:20px;padding:24px;color:#20344b;background:#fff}#shopDialog::backdrop{background:#061324bb}#shopDialog button img{vertical-align:middle}
 .battle-tools button{min-height:44px}
 @media(max-width:600px){.battle-tools{flex-wrap:wrap;gap:8px}.battle-tools p{flex:0 0 100%;margin:0;min-height:2.4em;text-align:center}.battle-tools button{flex:1 1 auto}}
+#helpDialog{max-width:min(90vw,520px);max-height:80vh;overflow:auto;border:0;border-radius:20px;padding:24px;color:#20344b;background:#fff;line-height:1.5}#helpDialog::backdrop{background:#061324bb}
+#arena{background:linear-gradient(#0b1835df,#0b1835e8),url('assets/cover.webp') center/cover no-repeat}
+#shopDialog{max-height:80vh;overflow:auto}.collection-art{width:92px;aspect-ratio:1;object-fit:cover;border-radius:12px}.rope-options{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px}.rope-options button{min-height:44px}.result>div.star-frame{border:5px solid #d0a84c;box-shadow:0 0 0 4px #1b3765,0 0 0 7px #efcb6e,0 16px 45px #06132499}
+.lasso-reward-flight{position:fixed;z-index:20000;color:#ffe58b;text-shadow:0 0 8px #ffd15c;font-size:22px;pointer-events:none;line-height:1}
+.battle-tools p{height:4.2em;min-height:4.2em;margin:0;overflow:auto}
+@media(max-width:600px){.battle-tools p{height:4.2em;min-height:4.2em}}

@@ -66,6 +66,36 @@ const TWENTY_FOURTH_NAMES={en:'Paired locks and the spike shield','zh-Hant':'雙
 for(const [locale,value] of Object.entries(TWENTY_FOURTH_NAMES))LATCH_NAMES[locale].push(value);
 const TWENTY_FIFTH_NAMES={en:'The spike-bridge guardian','zh-Hant':'尖刺橋守衛','zh-Hans':'尖刺桥守卫',ja:'とげの橋の守護者',ko:'가시 다리 수호자',es:'El guardián del puente de pinchos','pt-BR':'O guardião da ponte de espinhos',fr:'Le gardien du pont aux pointes',de:'Der Wächter der Stachelbrücke',it:'Il guardiano del ponte di spuntoni',ru:'Страж моста с шипами',hi:'काँटों के पुल का रक्षक',ar:'حارس جسر الأشواك'};
 for(const [locale,value] of Object.entries(TWENTY_FIFTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_SIXTH_NAMES={en:'Seals over the spikes','zh-Hant':'尖刺上的印記','zh-Hans':'尖刺上的印记',ja:'とげの上の印',ko:'가시 위의 인장',es:'Sellos sobre los pinchos','pt-BR':'Selos sobre os espinhos',fr:'Sceaux au-dessus des pointes',de:'Siegel über den Stacheln',it:'Sigilli sopra gli spuntoni',ru:'Печати над шипами',hi:'काँटों के ऊपर मुहरें',ar:'أختام فوق الأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_SIXTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_SEVENTH_NAMES={en:'Two pairs, three seals and spikes','zh-Hant':'雙鎖、三印記與尖刺','zh-Hans':'双锁、三印记与尖刺',ja:'二組の鍵、三つの印ととげ',ko:'두 쌍, 세 인장과 가시',es:'Dos pares, tres sellos y pinchos','pt-BR':'Dois pares, três selos e espinhos',fr:'Deux paires, trois sceaux et pointes',de:'Zwei Paare, drei Siegel und Stacheln',it:'Due coppie, tre sigilli e spuntoni',ru:'Две пары, три печати и шипы',hi:'दो जोड़े, तीन मुहरें और काँटे',ar:'زوجان وثلاثة أختام وأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_SEVENTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_DUAL_SPIKE_SEALS_RULE={
+ en:'Avoid spikes; reach safety before the left key. Match both pairs; collect seals 1, 2, 3 in order.',
+ 'zh-Hant':'避尖刺，先安全移動再拆左鑰匙；配對兩鎖，印記依序1、2、3。','zh-Hans':'避尖刺，先安全移动再拆左钥匙；配对两锁，印记依序1、2、3。',
+ ja:'とげを避け安全になってから左の鍵を消す。二組を合わせ、印は1、2、3の順。',ko:'가시를 피하고 안전해진 뒤 왼쪽 열쇠를 없애세요. 두 쌍을 맞추고 인장 1, 2, 3을 차례로 모으세요.',
+ es:'Evita pinchos antes de la llave izquierda. Empareja ambos pares; sellos 1, 2, 3 en orden.',
+ 'pt-BR':'Evite espinhos antes da chave esquerda. Combine os pares; selos 1, 2, 3 em ordem.',
+ fr:'Évitez les pointes avant la clé gauche. Associez les paires ; sceaux 1, 2, 3 dans l’ordre.',
+ de:'Meide Stacheln vor dem linken Schlüssel. Ordne beide Paare zu; Siegel 1, 2, 3 in Reihenfolge.',
+ it:'Evita gli spuntoni prima della chiave sinistra. Abbina le coppie; sigilli 1, 2, 3 in ordine.',
+ ru:'Избегайте шипов до левого ключа. Сопоставьте пары; печати 1, 2, 3 по порядку.',
+ hi:'बाईं चाबी से पहले काँटों से बचें। दोनों जोड़े मिलाएँ; मुहरें 1, 2, 3 क्रम से लें।',
+ ar:'تجنب الأشواك قبل المفتاح الأيسر. طابق الزوجين واجمع الأختام 1 و2 و3 بالترتيب.'
+};
+export const LATCH_SPIKE_SEALS_RULE={
+ en:'Avoid spikes; reach safety before the left key. Collect seals 1, 2, 3 in order.',
+ 'zh-Hant':'避開尖刺，先安全移動再拆左鑰匙；印記依序收集1、2、3。','zh-Hans':'避开尖刺，先安全移动再拆左钥匙；印记依序收集1、2、3。',
+ ja:'とげを避け、安全になってから左の鍵を消す。印を1、2、3の順に取る。',ko:'가시를 피하고 안전해진 뒤 왼쪽 열쇠를 없애세요. 인장 1, 2, 3을 차례로 모으세요.',
+ es:'Evita los pinchos y ponte a salvo antes de la llave izquierda. Recoge los sellos 1, 2, 3 en orden.',
+ 'pt-BR':'Evite espinhos e fique em segurança antes da chave esquerda. Pegue os selos 1, 2, 3 em ordem.',
+ fr:'Évitez les pointes avant la clé gauche. Prenez les sceaux 1, 2, 3 dans l’ordre.',
+ de:'Meide Stacheln vor dem linken Schlüssel. Sammle Siegel 1, 2, 3 in Reihenfolge.',
+ it:'Evita gli spuntoni prima della chiave sinistra. Raccogli i sigilli 1, 2, 3 in ordine.',
+ ru:'Избегайте шипов до левого ключа. Соберите печати 1, 2, 3 по порядку.',
+ hi:'काँटों से बचकर बाईं चाबी हटाएँ। मुहरें 1, 2, 3 क्रम से लें।',
+ ar:'تجنب الأشواك قبل المفتاح الأيسر. اجمع الأختام 1 و2 و3 بالترتيب.'
+};
 export const LATCH_SPIKE_TWO_RUNES_RULE={
  en:'Avoid spikes; reach safety before the left key. Match both pairs; use ☀ then ☾ runes for the shields.',
  'zh-Hant':'先安全移動再拆左鑰匙，配對兩鎖、避尖刺；兩階盾依序用☀、☾符文。','zh-Hans':'先安全移动再拆左钥匙，配对两锁、避尖刺；两阶段盾依序用☀、☾符文。',
