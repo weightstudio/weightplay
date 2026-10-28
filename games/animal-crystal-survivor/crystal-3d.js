@@ -678,7 +678,7 @@ export class Crystal3D {
       }, 1);
     }
     const chargingStage = ['charge', 'chargeRoots', 'briar', 'convergence'].includes(state.stageConfig?.modifier);
-    const charging = state.enemies.filter(e => (state.stage===42&&e.beaconChargeCue?.phase==='warning') || (e.chargeAim && e.chargeTimer > 0 && (e.isBoss ? e.image === 'bossBriar' : e.role !== 'archer' && (chargingStage || e.role === 'charger'))));
+    const charging = state.enemies.filter(e => (state.stage===42&&e.beaconChargeCue?.phase==='warning') || (state.stage===45&&e.beaconRamCue?.phase==='warning') || (e.chargeAim && e.chargeTimer > 0 && (e.isBoss ? e.image === 'bossBriar' : e.role !== 'archer' && (chargingStage || e.role === 'charger'))));
     this.pool('chargeCues', charging.length, () => {
       const cue = new THREE.Group();
       this.mesh('fineRing', 'danger', cue).rotation.x = -Math.PI / 2;
@@ -686,7 +686,7 @@ export class Crystal3D {
       return cue;
     }, (cue, i) => {
       const enemy = charging[i];
-      const committed=state.stage===42&&enemy.beaconChargeCue?.phase==='warning'?enemy.beaconChargeCue:null;
+      const committed=state.stage===42&&enemy.beaconChargeCue?.phase==='warning'?enemy.beaconChargeCue:state.stage===45&&enemy.beaconRamCue?.phase==='warning'?enemy.beaconRamCue:null;
       this.setPosition(cue, enemy, .06);
       cue.children[0].material = enemy.chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
       cue.children[0].scale.setScalar(enemy.size / UNIT * .7);

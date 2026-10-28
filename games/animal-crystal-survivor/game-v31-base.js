@@ -27,7 +27,7 @@
   const __crystalPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
   let __crystalPracticeActive=false;
   let __crystalPracticeIsActive=()=>false;
-  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalSecondBeaconMesh=null, __crystalFragmentMesh=null, __crystalLaneModel=null, __crystalLaneAdapter=null, __crystalWardenArt=null, __crystalWardenMesh=null, __crystalPrismModel=null, __crystalPrismAdapter=null, __crystalSequenceCopy=null, __crystalMirrorAdapter=null, __crystalMirrorCopy=null, __crystalFerrymanAdapter=null, __crystalFerrymanArt=null, __crystalFerrymanCopy=null, __crystalFerrymanVolley=null, __crystalFerrymanMesh=null, __crystalLinkModel=null, __crystalLinkCopy=null, __crystalChargeRunner=null, __crystalChargeAdapter=null, __crystalChargeCopy=null, __crystalJunctionModel=null, __crystalJunctionCopy=null;
+  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalSecondBeaconMesh=null, __crystalFragmentMesh=null, __crystalLaneModel=null, __crystalLaneAdapter=null, __crystalWardenArt=null, __crystalWardenMesh=null, __crystalPrismModel=null, __crystalPrismAdapter=null, __crystalSequenceCopy=null, __crystalMirrorAdapter=null, __crystalMirrorCopy=null, __crystalFerrymanAdapter=null, __crystalFerrymanArt=null, __crystalFerrymanCopy=null, __crystalFerrymanVolley=null, __crystalFerrymanMesh=null, __crystalLinkModel=null, __crystalLinkCopy=null, __crystalChargeRunner=null, __crystalChargeAdapter=null, __crystalChargeCopy=null, __crystalJunctionModel=null, __crystalJunctionCopy=null, __crystalLitOrderModel=null, __crystalLitOrderCopy=null, __crystalRamModel=null, __crystalRamArt=null, __crystalRamCopy=null, __crystalRamMesh=null;
   const __crystalPracticeText=()=>__crystalBeaconCopy.beaconCopy(window.WonderI18n?.actualLocale?.()||locale);
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -57,7 +57,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v50";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20261028-beacon-charge2", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20261028-beacon-ram1", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -91,7 +91,7 @@
     upgradeReady = false;
     upgradePointerChoice = null;
     rendererRequest += 1;
-    __crystalBeaconMesh?.dispose();__crystalBeaconMesh=null;__crystalSecondBeaconMesh?.dispose();__crystalSecondBeaconMesh=null;__crystalFragmentMesh?.dispose();__crystalFragmentMesh=null;__crystalWardenMesh?.dispose();__crystalWardenMesh=null;__crystalFerrymanMesh?.dispose();__crystalFerrymanMesh=null;
+    __crystalBeaconMesh?.dispose();__crystalBeaconMesh=null;__crystalSecondBeaconMesh?.dispose();__crystalSecondBeaconMesh=null;__crystalFragmentMesh?.dispose();__crystalFragmentMesh=null;__crystalWardenMesh?.dispose();__crystalWardenMesh=null;__crystalFerrymanMesh?.dispose();__crystalFerrymanMesh=null;__crystalRamMesh?.dispose();__crystalRamMesh=null;
     crystal3D?.dispose();
     crystal3D = null;
     (__wpNotifyMeasurement(), rendererDialog?.remove());
@@ -1520,8 +1520,9 @@
   }
 
   function objectiveComplete() {
-    if(__crystalPracticeRequested&&(state.stage===37||state.stage===39||state.stage===41||state.stage===43)&&state.beaconRound)return state.beaconRound.completed===2&&state.waveCleared>=state.stageConfig.waveGoal;
+    if(__crystalPracticeRequested&&(state.stage===37||state.stage===39||state.stage===41||state.stage===43||state.stage===44)&&state.beaconRound)return state.beaconRound.completed===2&&state.waveCleared>=state.stageConfig.waveGoal;
     if(__crystalPracticeRequested&&state.stage===40&&state.beaconRound)return state.beaconRound.completed===2&&state.bossDefeated;
+    if(__crystalPracticeRequested&&state.stage===45&&state.beaconRound)return state.beaconRound.completed===2&&state.bossDefeated;
     if(__crystalPracticeRequested&&state.stage===36&&state.beaconRound&&__crystalPrismModel)return __crystalPrismModel.prismWaveObjective({pulses:state.beaconRound.pulses,chosen:state.beaconPrism?.chosen,waveCleared:state.waveCleared,waveGoal:state.stageConfig.waveGoal});
     if(__crystalPracticeRequested&&state.beaconRound)return state.stage===35?state.beaconRound.completed===1&&state.bossDefeated:state.timeLeft<=0&&state.beaconRound.completed===1&&(state.stage!==33||state.beaconLaneResolved===true);
     return state.stageConfig.mode === "waves" ? state.waveCleared >= state.stageConfig.waveGoal
@@ -2071,7 +2072,7 @@
     state = makeState();
     state.stage = save.selectedStage;
     state.stageConfig = stages[state.stage - 1];
-    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=43&&__crystalBeaconModel){
+    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=45&&__crystalBeaconModel){
       state.beaconRound=__crystalBeaconModel.makeBeaconRound(state.stage);state.beaconDrop=null;state.beaconGuardSpawned=false;
       if(state.stage===41)state.beaconLinkRemaining=0;
       __crystalBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);
@@ -2081,10 +2082,11 @@
         __crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);
       }
       if(state.stage===36){state.beaconPrism=null;__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
-      if(state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===43){__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
+      if(state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===43||state.stage===44||state.stage===45){__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
       if(state.stage===38)state.beaconMirror=null;
       if(state.stage===35){__crystalWardenMesh=__crystalWardenArt.makeWardenArt(__crystalBeaconThree);__crystalWardenMesh.group.visible=false;crystal3D.scene.add(__crystalWardenMesh.group);}
       if(state.stage===40){__crystalFerrymanMesh=__crystalFerrymanArt.makeFerrymanArt(__crystalBeaconThree);__crystalFerrymanMesh.group.visible=false;crystal3D.scene.add(__crystalFerrymanMesh.group);}
+      if(state.stage===45){__crystalRamMesh=__crystalRamArt.makeRamArt(__crystalBeaconThree);__crystalRamMesh.group.visible=false;crystal3D.scene.add(__crystalRamMesh.group);}
       __crystalFragmentMesh=__crystalBeaconArt.makeBeaconFragmentArt(__crystalBeaconThree);
       crystal3D.scene.add(__crystalFragmentMesh.group);
     }
@@ -2205,6 +2207,10 @@
       try{const boss=state.enemies.find(enemy=>enemy.image==='bossFerryman'&&enemy.isBoss);const applied=__crystalFerrymanAdapter.pulseFerrymanLane(boss,state.hazards,before.completed,step.state.lastPulse);Object.assign(boss,applied.boss);state.hazards=applied.hazards;}
       catch{state.beaconRound={...before,dwell:0};}
     }
+    if(state.stage===45&&step.events.includes('beacon-pulsed')){
+      try{const boss=state.enemies.find(enemy=>enemy.image==='bossCircuitRam'&&enemy.isBoss);Object.assign(boss,__crystalRamModel.applyRamPulse(boss,before,step.state,step.events));}
+      catch{state.beaconRound={...before,dwell:0};}
+    }
     if(state.stage===36&&step.events.includes('beacon-pulsed')){
       try{const applied=__crystalPrismAdapter.pulsePrismHazard(state.beaconPrism,state.hazards,step.state.lastPulse);if(!applied.events.includes(`lane-cancelled:${step.state.lastPulse}`))throw Error('PRISM_PULSE_NOT_APPLIED');state.beaconPrism=applied.state;state.hazards=applied.hazards;}
       catch{state.beaconRound={...before,dwell:0};}
@@ -2245,8 +2251,8 @@
     const edge = config.modifier === "tempest" ? 0 : 1;
     const hp = 264 + state.stage * 15;
     state.enemies.push({
-      x: ['bossWarden','bossFerryman'].includes(config.bossImage)?Math.max(90,Math.min(W-90,state.player.x+210)):edge ? W + 120 : W / 2,
-      y: ['bossWarden','bossFerryman'].includes(config.bossImage)?Math.max(90,Math.min(H-90,state.player.y-100)):edge ? H * 0.34 : -120,
+      x: ['bossWarden','bossFerryman','bossCircuitRam'].includes(config.bossImage)?Math.max(90,Math.min(W-90,state.player.x+210)):edge ? W + 120 : W / 2,
+      y: ['bossWarden','bossFerryman','bossCircuitRam'].includes(config.bossImage)?Math.max(90,Math.min(H-90,state.player.y-100)):edge ? H * 0.34 : -120,
       hp,
       maxHp: hp,
       speed: 34 + config.region * 3,
@@ -2257,7 +2263,7 @@
       hit: 0,
       touch: 0,
       isBoss: true,
-      shielded: config.bossImage === 'bossFerryman' ? true : config.bossImage === 'bossWarden' ? !state.beaconRound?.completed : config.modifier === "prism",
+      shielded: ['bossFerryman','bossCircuitRam'].includes(config.bossImage) ? true : config.bossImage === 'bossWarden' ? !state.beaconRound?.completed : config.modifier === "prism",
       ...(config.bossImage==='bossFerryman'?{ferrymanPhase:0}:{}),
       abilityTimer: 2.2,
       chargeTimer: 2.8,
@@ -2382,6 +2388,7 @@
   function bossLesson(config) {
     if(__crystalPracticeRequested&&config.number===35&&__crystalBeaconCopy)return __crystalBeaconCopy.beaconStageCopy(window.WonderI18n?.actualLocale?.()||locale,35)[1];
     if(__crystalPracticeRequested&&config.number===40&&__crystalFerrymanCopy)return (__crystalFerrymanCopy.ferrymanCopy[window.WonderI18n?.actualLocale?.()||locale]||__crystalFerrymanCopy.ferrymanCopy.en)[1];
+    if(__crystalPracticeRequested&&config.number===45&&__crystalRamCopy)return (__crystalRamCopy.ramCopy[window.WonderI18n?.actualLocale?.()||locale]||__crystalRamCopy.ramCopy.en)[1];
     return talentData.combat(locale).bosses[config.region];
   }
 
@@ -2390,7 +2397,8 @@
     if (!boss) return;
     boss.abilityTimer -= dt;
     boss.castTime = Math.max(0, (boss.castTime || 0) - dt);
-    if(boss.image!=='bossWarden'&&boss.image!=='bossFerryman')boss.shielded = boss.image === "bossPrism" && boss.castTime > 0;
+    if(boss.image!=='bossWarden'&&boss.image!=='bossFerryman'&&boss.image!=='bossCircuitRam')boss.shielded = boss.image === "bossPrism" && boss.castTime > 0;
+    if(__crystalPracticeRequested&&state.stage===45&&boss.image==='bossCircuitRam'&&boss.beaconRamCue)return;
     if (boss.chargeAim) {
       boss.chargeTimer -= dt;
       boss.speed = boss.chargeTimer > 0 ? 0 : 590;
@@ -2404,7 +2412,10 @@
     boss.castCount = (boss.castCount || 0) + 1;
     boss.abilityTimer = skill === "bossRoot" ? 6.2 : 5.5;
     const hazard = (kind, options) => addHazard(kind, { bossSkill: skill, ...options });
-    if (skill === 'bossWarden') {
+    if (skill === 'bossCircuitRam'&&__crystalPracticeRequested&&__crystalRamModel){
+      const target=Math.hypot(p.x-boss.x,p.y-boss.y)<1?{x:boss.x+1,y:boss.y}:p;
+      boss.beaconRamCue=__crystalRamModel.makeRamCharge(`ram-${boss.castCount}`,boss,target);
+    } else if (skill === 'bossWarden') {
       hazard('sweep',{x:boss.x,y:boss.y,vx:Math.cos(aim),vy:Math.sin(aim),width:120,height:600,warn:1.5,life:2.5,damage:12,color:'#f97316'});
     } else if (skill === 'bossFerryman'&&__crystalPracticeRequested&&__crystalFerrymanVolley) {
       const target=Math.hypot(p.x-boss.x,p.y-boss.y)<1?{x:boss.x+1,y:boss.y}:p;
@@ -2471,7 +2482,7 @@
   }
 
   function beaconNeedsMore() {
-    return Boolean(state.beaconRound&&([37,39,40,41,43].includes(state.stage)?state.beaconRound.completed<2:!state.beaconRound.completed));
+    return Boolean(state.beaconRound&&([37,39,40,41,43,44,45].includes(state.stage)?state.beaconRound.completed<2:!state.beaconRound.completed));
   }
 
   function spawnEnemies(dt) {
@@ -2483,7 +2494,7 @@
         state.waveCleared = state.wave;
         if (state.waveCleared >= config.waveGoal) {
           // A lost or expired final charge must remain recoverable after waves.
-          if(![37,39,41,43].includes(state.stage)||!beaconNeedsMore()||state.beaconRound.charge||state.beaconDrop)return;
+          if(![37,39,41,43,44].includes(state.stage)||!beaconNeedsMore()||state.beaconRound.charge||state.beaconDrop)return;
           state.waveRemaining=1;state.spawnTimer=0;
         } else {
           state.waveBreak -= dt;
@@ -2492,7 +2503,7 @@
           state.waveRemaining = 3 + config.region + state.wave * 2;
           state.waveBreak = 4;
           state.spawnTimer = 0;
-          if(__crystalPracticeRequested&&state.stage===43)state.beaconWaveNoticeUntil=performance.now()+1200;
+          if(__crystalPracticeRequested&&(state.stage===43||state.stage===44))state.beaconWaveNoticeUntil=performance.now()+1200;
           else addFloater(`${modeLabels()[1]} ${state.wave}/${config.waveGoal}`, state.player.x, state.player.y - 90, "#ffe6a1");
         }
       }
@@ -2536,7 +2547,9 @@
       }
     }
     const secondFacetReady=state.stage!==40||state.beaconRound?.completed!==1||state.enemies.some(enemy=>enemy.image==='bossFerryman'&&enemy.isBoss&&enemy.ferrymanPhase===1&&enemy.shielded);
-    const needsCarrier=Boolean(beaconNeedsMore()&&secondFacetReady&&!state.beaconRound.charge&&!state.beaconDrop&&!state.enemies.some(enemy=>enemy.beaconCarrier));
+    if(__crystalPracticeRequested&&state.stage===44&&state.beaconRound&&!__crystalLitOrderModel)throw Error('LIT_ORDER_PRACTICE_UNAVAILABLE');
+    const litPolicy=__crystalPracticeRequested&&state.stage===44&&state.beaconRound?__crystalLitOrderModel.carrierPolicy(state.beaconRound,state.wave):null;
+    const needsCarrier=Boolean(beaconNeedsMore()&&secondFacetReady&&(!litPolicy||litPolicy.allowed)&&!state.beaconRound.charge&&!state.beaconDrop&&!state.enemies.some(enemy=>enemy.beaconCarrier));
     if(needsCarrier){pos.x=[37,41].includes(state.stage)&&state.beaconRound.completed>0?(state.player.x<W/2?W*.75:W*.25):Math.max(60,Math.min(W-60,state.player.x+(state.stage===32?360:240)));pos.y=Math.max(60,Math.min(H-60,state.player.y-(state.stage===32?180:80)));}
     let junctionPath=null;
     if(__crystalPracticeRequested&&state.stage===43&&needsCarrier){if(!__crystalJunctionModel)throw Error('JUNCTION_PRACTICE_UNAVAILABLE');junctionPath=__crystalJunctionModel.makeJunctionPath(`junction-${state.beaconJunctionSerial=(state.beaconJunctionSerial||0)+1}`);const start=__crystalJunctionModel.stepJunctionPath(junctionPath,0);pos.x=start.x;pos.y=start.y;type='tank';role='melee';}
@@ -2550,7 +2563,7 @@
     }[type];
     state.spawnCount += 1;
     const hp = needsCarrier&&(state.stage===32||state.stage===37||state.stage===38) ? 60 : Math.round(stats.hp * stageHp);
-    const shielded = Boolean(junctionPath) || (["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0);
+    const shielded = Boolean(junctionPath) || (litPolicy&&needsCarrier ? litPolicy.shielded : (["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0));
     const stageDamage = beaconNeedsMore() ? 1 : state.stage === 1 ? .8 : 1 + config.region * .08 + (state.stage - 1) % 5 * .015;
     const damage = integerDamage(stats.damage * stageDamage);
     stats.speed*=1+Math.min(.22,(state.stage-1)*.008);
@@ -2575,6 +2588,8 @@
       const committedStep=committed?__crystalChargeRunner.stepCommittedRunner(enemy.beaconChargeCue,dt):null;
       const junction=__crystalPracticeRequested&&state.stage===43&&enemy.beaconJunctionPath&&__crystalJunctionModel;
       const junctionStep=junction?__crystalJunctionModel.stepJunctionPath(enemy.beaconJunctionPath,dt):null;
+      const ram=__crystalPracticeRequested&&state.stage===45&&enemy.isBoss&&enemy.image==='bossCircuitRam'&&enemy.beaconRamCue&&__crystalRamModel;
+      const ramStep=ram?__crystalRamModel.stepRamCharge(enemy.beaconRamCue,dt):null;
       const canCharge = !committed && !junction && !enemy.isBoss && enemy.role !== "archer" && (chargingEnemies || enemy.role === "charger");
       if (canCharge) {
         enemy.chargeTimer -= dt;
@@ -2610,6 +2625,7 @@
       }
       if(committedStep){enemy.x=committedStep.x;enemy.y=committedStep.y;enemy.beaconChargeCue=committedStep.cue.phase==='done'?null:committedStep.cue;}
       else if(junctionStep){enemy.x=junctionStep.x;enemy.y=junctionStep.y;enemy.beaconJunctionPath=junctionStep.path;}
+      else if(ramStep){enemy.x=ramStep.x;enemy.y=ramStep.y;enemy.beaconRamCue=ramStep.cue.phase==='done'?null:ramStep.cue;}
       else{enemy.x += moveX * enemy.speed * chillSpeed * dt;enemy.y += moveY * enemy.speed * chillSpeed * dt;}
       if (chargingAim) {
         enemy.x = Math.max(24, Math.min(W - 24, enemy.x));
@@ -2870,7 +2886,7 @@
         enemy.shieldHp = Math.max(0, enemy.shieldHp - appliedDamage);
         if (enemy.shieldHp <= 0) enemy.shielded = false;
       }
-      addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : locale === "es" ? "ESCUDO" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
+      if(!(__crystalPracticeRequested&&state.stage===44&&enemy.beaconCarrier))addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : locale === "es" ? "ESCUDO" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
       return { blocked: true, damage: 0, hp: enemy.hp };
     }
     if(__crystalPracticeRequested&&state.stage===40&&enemy.image==='bossFerryman'&&enemy.ferrymanPhase===0){
@@ -3252,6 +3268,7 @@
           castCount: enemy.castCount || 0, castTime: enemy.castTime || 0,
           chargeAim: enemy.chargeAim ? {...enemy.chargeAim} : null, chargeTimer: enemy.chargeTimer,
           beaconChargeCue:enemy.beaconChargeCue?{...enemy.beaconChargeCue}:null,beaconChargeInterrupted:Boolean(enemy.beaconChargeInterrupted),
+          beaconRamCue:enemy.beaconRamCue?{...enemy.beaconRamCue}:null,
           shielded: Boolean(enemy.shielded),
           ferrymanPhase: enemy.ferrymanPhase ?? null,
           beaconCarrier: Boolean(enemy.beaconCarrier),
@@ -3470,8 +3487,11 @@
       const chargePhase=state.stage===42&&state.beaconRound?(state.beaconRound.completed?'stopped':state.beaconRound.charge?(state.enemies.some(enemy=>enemy.beaconChargeCue?.phase==='warning')?'warning':'ready'):null):null;
       const junctionRatio=value=>{const ratio=`${value} / ${config.waveGoal}`;return (window.WonderI18n?.actualLocale?.()||locale)==='ar'?`\u2066${ratio}\u2069`:ratio;};
       const junctionNotice=state.stage===43&&state.beaconRound?(state.beaconRound.completed===2?`${modeLabels()[1]} ${junctionRatio(Math.min(state.waveCleared,config.waveGoal))}`:state.beaconRound.charge?__crystalJunctionCopy.junctionHold(window.WonderI18n?.actualLocale?.()||locale,state.beaconRound.completed):null):null;
-      const junctionWaveNotice=state.stage===43&&state.beaconWaveNoticeUntil>performance.now()?`${modeLabels()[1]} ${junctionRatio(state.wave)}`:null;
-      writeHudValue("modeText", modeText, junctionWaveNotice || (linkCompleteNotice ? __crystalLinkCopy.linkCompleted(window.WonderI18n?.actualLocale?.()||locale) : chargePhase ? __crystalChargeCopy.chargeStatus(window.WonderI18n?.actualLocale?.()||locale,chargePhase) : junctionNotice||objective));
+      const litNotice=state.stage===44&&state.beaconRound?(state.beaconRound.completed===2?`${modeLabels()[1]} ${junctionRatio(Math.min(state.waveCleared,config.waveGoal))}`:state.beaconRound.charge?__crystalLitOrderCopy.litHold(window.WonderI18n?.actualLocale?.()||locale,state.beaconRound.completed):state.beaconRound.completed===1&&state.wave<2?__crystalLitOrderCopy.litWait(window.WonderI18n?.actualLocale?.()||locale):null):null;
+      const ramBoss=state.stage===45?state.enemies.find(enemy=>enemy.isBoss&&enemy.image==='bossCircuitRam'):null;
+      const ramPhase=state.stage===45&&state.beaconRound?(ramBoss?.beaconRamCue?.phase==='warning'?'warning':ramBoss?.beaconRamCue?.phase==='active'?'active':state.beaconRound.completed===2?'open':state.beaconRound.charge?(state.beaconRound.completed===0?'first':'second'):null):null;
+      const junctionWaveNotice=(state.stage===43||state.stage===44)&&state.beaconWaveNoticeUntil>performance.now()?`${modeLabels()[1]} ${junctionRatio(state.wave)}`:null;
+      writeHudValue("modeText", modeText, junctionWaveNotice || (linkCompleteNotice ? __crystalLinkCopy.linkCompleted(window.WonderI18n?.actualLocale?.()||locale) : chargePhase ? __crystalChargeCopy.chargeStatus(window.WonderI18n?.actualLocale?.()||locale,chargePhase) : ramPhase ? __crystalRamCopy.ramStatus(window.WonderI18n?.actualLocale?.()||locale,ramPhase) : litNotice||junctionNotice||objective));
       writeHudValue("modeProgress", modeFill.style, `${Math.round(Math.max(0, Math.min(1, progress)) * 100)}%`, "width");
     }
     const time = formatTime(state.timeLeft);
@@ -3601,8 +3621,8 @@
       // Measure the displayed arena; allocate only when its pixel size changes.
       syncCanvasBackingStore();
       if(state.beaconRound&&__crystalBeaconMesh&&__crystalFragmentMesh){
-        const beacons=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons,beacon=beacons[0];crystal3D.setPosition(__crystalBeaconMesh.group,beacon,.075);__crystalBeaconMesh.setCharged([41,43].includes(state.stage)?state.beaconRound.completed===0:state.beaconRound.lastPulse===beacon.id);
-        if(__crystalSecondBeaconMesh&&beacons[1]){crystal3D.setPosition(__crystalSecondBeaconMesh.group,beacons[1],.075);__crystalSecondBeaconMesh.setCharged([41,43].includes(state.stage)?state.beaconRound.completed===1:state.beaconRound.lastPulse===beacons[1].id);}
+        const beacons=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons,beacon=beacons[0];crystal3D.setPosition(__crystalBeaconMesh.group,beacon,.075);__crystalBeaconMesh.setCharged([41,43,44,45].includes(state.stage)?state.beaconRound.completed===0:state.beaconRound.lastPulse===beacon.id);
+        if(__crystalSecondBeaconMesh&&beacons[1]){crystal3D.setPosition(__crystalSecondBeaconMesh.group,beacons[1],.075);__crystalSecondBeaconMesh.setCharged([41,43,44,45].includes(state.stage)?state.beaconRound.completed===1:state.beaconRound.lastPulse===beacons[1].id);}
         const carrier=state.enemies.find(enemy=>enemy.beaconCarrier),marker=state.beaconRound.charge?state.player:state.beaconDrop||carrier;
         __crystalFragmentMesh.group.visible=Boolean(marker);if(marker)crystal3D.setPosition(__crystalFragmentMesh.group,marker,carrier&&!state.beaconDrop&&!state.beaconRound.charge?1.7:state.beaconRound.charge?1.5:.1);
       }
@@ -3613,6 +3633,10 @@
       if(__crystalFerrymanMesh){
         const boss=state.enemies.find(enemy=>enemy.isBoss&&enemy.image==='bossFerryman');__crystalFerrymanMesh.group.visible=Boolean(boss);
         if(boss){crystal3D.setPosition(__crystalFerrymanMesh.group,boss);__crystalFerrymanMesh.group.scale.setScalar(boss.size/64);__crystalFerrymanMesh.rig.rotation.y=crystal3D.azimuth||0;__crystalFerrymanMesh.setFacet(boss.ferrymanPhase,boss.shielded);}
+      }
+      if(__crystalRamMesh){
+        const boss=state.enemies.find(enemy=>enemy.isBoss&&enemy.image==='bossCircuitRam');__crystalRamMesh.group.visible=Boolean(boss);
+        if(boss){crystal3D.setPosition(__crystalRamMesh.group,boss);__crystalRamMesh.group.scale.setScalar(boss.size/64);__crystalRamMesh.rig.rotation.y=crystal3D.azimuth||0;__crystalRamMesh.setShielded(boss.shielded);}
       }
       if (!crystal3D.render(state, renderCanvas.width, renderCanvas.height, performance.now())) return;
       displayCtx.drawImage(crystal3D.canvas, 0, 0);
@@ -3675,15 +3699,20 @@
     };
     ctx.save();
     ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
-    if((state.stage===33||state.stage===36||state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===42||state.stage===43)&&state.beaconRound){
+    if((state.stage===33||state.stage===36||state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===42||state.stage===43||state.stage===44||state.stage===45)&&state.beaconRound){
       ctx.save();
       for(const station of __crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons){
         if(!crystal3D.inView(station.x,station.y))continue;
-        const marker=point(station.x,station.y,4.5);ctx.fillStyle='#10222e';ctx.strokeStyle='#f3d284';ctx.lineWidth=1.5;
+        const marker=point(station.x,station.y,4.5),lit=state.stage===44&&station.id===__crystalLitOrderModel.litStation(state.beaconRound);ctx.fillStyle=lit?'#ffe29a':'#10222e';ctx.strokeStyle='#f3d284';ctx.lineWidth=1.5;
         ctx.beginPath();ctx.roundRect(marker.x-10,marker.y-10,20,20,4);ctx.fill();ctx.stroke();
-        ctx.fillStyle='#fff4ca';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(station.id,marker.x,marker.y);
+        ctx.fillStyle=lit?'#10222e':'#fff4ca';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(station.id,marker.x,marker.y);
+        if(lit){ctx.beginPath();ctx.moveTo(marker.x-5,marker.y-12);ctx.lineTo(marker.x+5,marker.y-12);ctx.lineTo(marker.x,marker.y-17);ctx.closePath();ctx.fillStyle='#ffe29a';ctx.fill();}
       }
       ctx.restore();
+    }
+    if(state.stage===44&&state.beaconRound){
+      const carrier=state.enemies.find(enemy=>enemy.beaconCarrier&&enemy.shielded);
+      if(carrier&&crystal3D.inView(carrier.x,carrier.y)){const marker=point(carrier.x,carrier.y,3.5),x=Math.max(12,Math.min(renderCanvas.width/annotationScale-12,marker.x+42)),y=Math.max(12,Math.min(renderCanvas.height/annotationScale-12,marker.y-25));ctx.save();ctx.strokeStyle='#fff0b5';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(marker.x,marker.y);ctx.lineTo(x,y);ctx.stroke();ctx.fillStyle='#112536';ctx.beginPath();ctx.moveTo(x-8,y-7);ctx.lineTo(x+8,y-7);ctx.lineTo(x+6,y+3);ctx.lineTo(x,y+9);ctx.lineTo(x-6,y+3);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();}
     }
     if(state.stage===43&&state.beaconRound){
       const carrier=state.enemies.find(enemy=>enemy.beaconCarrier&&enemy.beaconJunctionPath);
@@ -4087,8 +4116,8 @@
     };
     try{
       if(window.__CrystalPracticeGuardReady!==true||window.WONDER_SITE?.analytics?.enabled!==false)throw Error('PRACTICE_GUARD_UNAVAILABLE');
-      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy,sequenceCopy,mirrorAdapter,mirrorCopy,shieldCopy,ferrymanAdapter,ferrymanArt,ferrymanCopy,ferrymanVolley,linkModel,linkCopy,chargeRunner,chargeAdapter,chargeCopy,junctionModel,junctionCopy]=await Promise.all([
-        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon13'),
+      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy,sequenceCopy,mirrorAdapter,mirrorCopy,shieldCopy,ferrymanAdapter,ferrymanArt,ferrymanCopy,ferrymanVolley,linkModel,linkCopy,chargeRunner,chargeAdapter,chargeCopy,junctionModel,junctionCopy,litOrderModel,litOrderCopy,ramModel,ramArt,ramCopy]=await Promise.all([
+        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon15'),
         import('./beacon-circuit-candidate.mjs?v=20261028-beacon3'),import('./beacon-circuit-copy.mjs?v=20261028-beacon8'),
         import('./beacon-art-candidate.mjs?v=20261028-beacon2'),import('../animal-skyspire-drop/vendor/three/three.module.min.js'),
         import('./beacon-lanes-candidate.mjs?v=20261028-beacon1'),import('./beacon-lanes-adapter-candidate.mjs?v=20261028-beacon1'),
@@ -4110,18 +4139,23 @@
         import('./beacon-charge-copy-candidate.mjs?v=20261028-charge1'),
         import('./beacon-junction-candidate.mjs?v=20261028-junction2'),
         import('./beacon-junction-copy-candidate.mjs?v=20261028-junction1'),
+        import('./beacon-lit-order-candidate.mjs?v=20261028-lit1'),
+        import('./beacon-lit-order-copy-candidate.mjs?v=20261028-lit1'),
+        import('./beacon-ram-candidate.mjs?v=20261028-ram1'),
+        import('./beacon-ram-art-candidate.mjs?v=20261028-ram3'),
+        import('./beacon-ram-copy-candidate.mjs?v=20261028-ram1'),
       ]);
-      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;__crystalWardenArt=wardenArt;__crystalPrismModel=prismModel;__crystalPrismAdapter=prismAdapter;__crystalSequenceCopy=sequenceCopy;__crystalMirrorAdapter=mirrorAdapter;__crystalMirrorCopy=mirrorCopy;__crystalFerrymanAdapter=ferrymanAdapter;__crystalFerrymanArt=ferrymanArt;__crystalFerrymanCopy=ferrymanCopy;__crystalFerrymanVolley=ferrymanVolley;__crystalLinkModel=linkModel;__crystalLinkCopy=linkCopy;__crystalChargeRunner=chargeRunner;__crystalChargeAdapter=chargeAdapter;__crystalChargeCopy=chargeCopy;__crystalJunctionModel=junctionModel;__crystalJunctionCopy=junctionCopy;
+      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;__crystalWardenArt=wardenArt;__crystalPrismModel=prismModel;__crystalPrismAdapter=prismAdapter;__crystalSequenceCopy=sequenceCopy;__crystalMirrorAdapter=mirrorAdapter;__crystalMirrorCopy=mirrorCopy;__crystalFerrymanAdapter=ferrymanAdapter;__crystalFerrymanArt=ferrymanArt;__crystalFerrymanCopy=ferrymanCopy;__crystalFerrymanVolley=ferrymanVolley;__crystalLinkModel=linkModel;__crystalLinkCopy=linkCopy;__crystalChargeRunner=chargeRunner;__crystalChargeAdapter=chargeAdapter;__crystalChargeCopy=chargeCopy;__crystalJunctionModel=junctionModel;__crystalJunctionCopy=junctionCopy;__crystalLitOrderModel=litOrderModel;__crystalLitOrderCopy=litOrderCopy;__crystalRamModel=ramModel;__crystalRamArt=ramArt;__crystalRamCopy=ramCopy;
       const enable=value=>{
         __crystalPracticeActive=value;
         if(value)__crystalPracticeIsActive=()=>LocalPractice.dynamicEnabled;
         if(value&&STAGE_COUNT===30){
-          for(const number of [31,32,33,34,35,36,37,38,39,40,41,42,43]){
-            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:copy.beaconStageCopy(key,number))[0]]));
-            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:copy.beaconStageCopy(key,number))[1]]));
-            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':number===40?'bossFerryman':null,mode:number===35||number===40?'boss':number===36||number===37||number===39||number===41||number===43?'waves':'survival',waveGoal:number===36||number===37||number===39||number===41||number===43?3:0,duration:number===43?90:number===42?60:number===41?90:number===40?110:number===31?45:number===34?55:(number>=35&&number<=37)||number===39?75:50,targetKeys:0});
+          for(const number of [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45]){
+            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:number===44?litOrderCopy.litOrderCopy[key]:number===45?ramCopy.ramCopy[key]:copy.beaconStageCopy(key,number))[0]]));
+            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:number===44?litOrderCopy.litOrderCopy[key]:number===45?ramCopy.ramCopy[key]:copy.beaconStageCopy(key,number))[1]]));
+            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':number===40?'bossFerryman':number===45?'bossCircuitRam':null,mode:number===35||number===40||number===45?'boss':number===36||number===37||number===39||number===41||number===43||number===44?'waves':'survival',waveGoal:number===36||number===37||number===39||number===41||number===43||number===44?3:0,duration:number===45?120:number===44?90:number===43?90:number===42?60:number===41?90:number===40?110:number===31?45:number===34?55:(number>=35&&number<=37)||number===39?75:50,targetKeys:0});
           }
-          STAGE_COUNT=43;save=JSON.parse(JSON.stringify(save));save.unlockedStage=43;save.selectedStage=31;
+          STAGE_COUNT=45;save=JSON.parse(JSON.stringify(save));save.unlockedStage=45;save.selectedStage=31;
         }
       };
       const start=async(stage,isActive)=>{

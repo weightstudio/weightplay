@@ -478,6 +478,23 @@
     for (const [key, replacement] of Object.entries(vars)) value = value.replaceAll(`{${key}}`, String(replacement));
     return value;
   };
+  // The shared HUD expects a short label and a value in separate lines.
+  // Keep the existing full locale sentence as the group's accessible name.
+  const groveHudLabels = Object.freeze({en:'Grove','zh-Hant':'林地','zh-Hans':'林地',ja:'森',ko:'숲',es:'Bosque','pt-BR':'Bosque',fr:'Bosquet',de:'Hain',it:'Bosco',ru:'Лес',hi:'वन',ar:'الغابة'});
+  function renderRoundHud(index, total) {
+    const group = $('roundLabel');
+    let label = group.querySelector('[data-balance-hud-label]'), value = group.querySelector('[data-balance-hud-value]');
+    if (!label || !value) {
+      label = document.createElement('span'); label.dataset.balanceHudLabel = ''; label.setAttribute('aria-hidden', 'true');
+      value = document.createElement('b'); value.dataset.balanceHudValue = ''; value.dir = 'ltr'; value.setAttribute('aria-hidden', 'true');
+      group.replaceChildren(label, value);
+      group.dispatchEvent(new Event('weightplay:group-change', { bubbles: true }));
+    }
+    group.setAttribute('role', 'group');
+    group.setAttribute('aria-label', t('round', { n: index, total }));
+    label.textContent = groveHudLabels[state.locale] || groveHudLabels.en;
+    value.textContent = `${index} / ${total}`;
+  }
   const stageName = index => `${stages[index].chapter2 ? t2(0) : t("arc" + stages[index].arc)} · ${index + 1}`;
   const ruleText = stage => [
     t("target", { n: stage.target }),
@@ -584,7 +601,7 @@
     const evaluated = stage.chapter2 && state.counterweight !== null ? chapter2.evaluate(stage.chapter2, values, state.counterweight) : null;
     const total = values.reduce((sum,value)=>sum+value,0);
     const outcome = stage.chapter2 ? {total,remaining:target-total,valid:Boolean(evaluated?.valid),state:!values.length?'empty':state.counterweight===null?'rule':evaluated.valid?'balanced':total>target?'heavy':total<target?'light':'rule'} : window.BalanceGroveRules.evaluate(values, stage.target, stage);
-    $("roundLabel").textContent = t("round", { n: state.stage + 1, total: stages.length });
+    renderRoundHud(state.stage + 1, stages.length);
     $("battleHint").textContent = ruleText(stage);
     $("leftGoal").textContent = t("target", { n: target });
     $("rightGoal").textContent = values.length ? `${values.join(" + ")} = ${outcome.total}` : t("tapInstruction");

@@ -161,7 +161,7 @@ export function createArena(){
     for(let i=0;i<4;i++){const a=i*Math.PI/2,mark=soft(root,0xa3d39b,side*6.7+Math.sin(a)*.65,.052,2.2+Math.cos(a)*.65,.12,.025,.24);mark.rotation.y=a;}
   }
   for(const side of [-1,1]){banner(root,side*5.9,10.3,-side);soft(root,0xf0dec1,side*8.9,.52,11.3,4,.9,1.6);soft(root,0xe68179,side*8.9,1.05,11.3,4.2,.18,1.8);for(let i=0;i<4;i++)soft(root,0xf6e8cf,side*(7.5+i*.9),1.29,11.3,.54,.55,1.15);}
-  bake(root);root.userData.playBounds={minX:-11,maxX:11,minZ:-10,maxZ:7};root.userData.assetType='finished_procedural_original';return root;
+  bake(root);root.scale.set(.58,1,1.3);root.userData.playBounds={minX:-8,maxX:8,minZ:-16,maxZ:16};root.userData.assetType='finished_procedural_original';return root;
 }
 
 export function createTower(){
@@ -178,9 +178,9 @@ export function createTower(){
     for(let i=0;i<3;i++)soft(root,0xffebc6,side*(.96+i*.55),1.88,-1.48,.32,.4,.38);
   }
   // Teal reliquary is a narrative main tower target; lion stands in front.
-  soft(root,0x4a8992,2.15,1.88,.05,1.22,.9,1.2);soft(root,0xf5cc73,2.15,2.33,.05,1.44,.16,1.42);
-  const crystal=add(root,crystalGeometry,0x61e8e0,2.15,2.89,.05,.48,.7,.48,true);crystal.rotation.y=Math.PI/4;crystal.name='tower_crystal';surface(crystal,'metal',false,false);
-  const halo=add(root,ringGeometry,0xffd777,2.15,2.8,.05,.68,.68,.68,true);halo.rotation.x=.15;halo.name='tower_halo';surface(halo,'metal',false,false);
+  soft(root,0x4a8992,-2.15,1.88,.05,1.22,.9,1.2);soft(root,0xf5cc73,-2.15,2.33,.05,1.44,.16,1.42);
+  const crystal=add(root,crystalGeometry,0x61e8e0,-2.15,2.89,.05,.48,.7,.48,true);crystal.rotation.y=Math.PI/4;crystal.name='tower_crystal';surface(crystal,'metal',false,false);
+  const halo=add(root,ringGeometry,0xffd777,-2.15,2.8,.05,.68,.68,.68,true);halo.rotation.x=.15;halo.name='tower_halo';surface(halo,'metal',false,false);
   soft(root,0xdc756e,0,.91,1.71,1.1,.84,.06);soft(root,0xfbe0a2,0,.96,1.75,.1,.52,.025);ball(root,0xffd977,0,1.09,1.78,.12,.12,.04);
   // Recessed arch, stone courses and embossed guardian seal give the tower
   // authored depth at the fixed camera, while the platform origin stays1.48.
@@ -276,8 +276,8 @@ export function createDefender(){
  const pivots=[];hero.traverse(n=>{if(n.isGroup)pivots.push(n);});for(const pivot of pivots.reverse())bake(pivot,true);
  hero.rotation.y=Math.PI;hero.userData.forward='-Z';return hero;
 }
-export function aimDefender(hero,{recoil=0,time=0,reduced=false}={}){
- const p=hero.userData.parts;hero.rotation.y=Math.PI;
+export function aimDefender(hero,{recoil=0,time=0,reduced=false,operatorYaw=Math.PI}={}){
+ const p=hero.userData.parts;hero.rotation.y=operatorYaw;
  p.head.rotation.set(-.04,0,0);p.body.rotation.set(0,0,0);
  p.arms[0].rotation.set(-1.05,0,-.1);p.arms[1].rotation.set(-1.05,0,.1);
  if(p.mane)p.mane.rotation.z=reduced?0:Math.sin(time*2)*.009;
@@ -366,9 +366,19 @@ function buildZombie(type){
   bake(body);bake(head);root.userData.type=type;root.userData.baseScale=p.scale;
   return root;
 }
-export function createZombie(type='walker'){
+export function createZombie(type='walker',bossMode='rally'){
   if(!PALETTES[type])type='walker';if(!templates.has(type))templates.set(type,buildZombie(type));
   const root=templates.get(type).clone(true);const parts={body:root.getObjectByName('body'),head:root.getObjectByName('head'),arms:[root.getObjectByName('arm_-1'),root.getObjectByName('arm_1')],legs:[root.getObjectByName('leg_-1'),root.getObjectByName('leg_1')],fuse:root.getObjectByName('fuse_spark')};
+  if(type==='boss'){
+    const gear=surface(group(root,'boss_'+bossMode+'_equipment',0,1.6,-.05),'metal');
+    if(bossMode==='rally')for(const side of[-1,1]){soft(gear,0xf1ba64,side*.75,.12,0,.18,1.2,.17);soft(gear,0xe98575,side*.75,.55,0,.6,.4,.12);}
+    if(bossMode==='bulwark')for(const side of[-1,1]){soft(gear,0x477eaf,side*.64,-.5,.6,.52,1.5,.25);soft(gear,0x8cf2ef,side*.64,-.5,.76,.38,1.25,.05,true);}
+    if(bossMode==='medic')for(const side of[-1,1]){soft(gear,0x3f9e88,side*.6,-.4,-.42,.42,1.25,.5);soft(gear,0xb4ffd1,side*.6,-.3,-.7,.22,.7,.08,true);}
+    if(bossMode==='artillery')for(const side of[-1,1]){soft(gear,0x536a9a,side*.58,-.35,.4,.4,.4,1.6);soft(gear,0xd6a8f4,side*.58,-.35,1.22,.3,.31,.1,true);}
+    if(bossMode==='brood')for(let i=0;i<3;i++){soft(gear,0xc384a2,(i-1)*.48,-.25,-.55,.43,.9,.6);soft(gear,0xf4d292,(i-1)*.48,-.25,-.9,.08,.7,.06);}
+    if(bossMode==='commander')for(const side of[-1,0,1]){const wing=soft(gear,0x7056a4,side*.65,.1,-.45,.42,.9,.2);wing.rotation.z=-side*.3;add(gear,crystalGeometry,0xffd16b,side*.65,.7,-.45,.15,.2,.15,true);}
+    bake(gear);root.userData.bossMode=bossMode;
+  }
   if(parts.fuse)parts.fuse.userData.originalScale=parts.fuse.scale.clone();
   const shadow=new THREE.Mesh(shadowGeometry,shadowMaterial);shadow.name='contact_shadow';surface(shadow,'paint',false,true);shadow.rotation.x=-Math.PI/2;shadow.position.y=.04;shadow.scale.set(.48,.3,1);root.add(shadow);
   root.userData.parts=parts;root.userData.type=type;root.userData.groundOrigin=true;root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root);root.userData.height=bounds.max.y;root.userData.bounds={min:bounds.min.toArray(),max:bounds.max.toArray()};root.userData.originalScale=root.scale.clone();return root;
@@ -399,7 +409,34 @@ export function createDefenseArt(){
     const copy=sourceMaterial=>{if(!sceneMaterials.has(sourceMaterial.uuid))sceneMaterials.set(sourceMaterial.uuid,sourceMaterial.clone());return sceneMaterials.get(sourceMaterial.uuid);};
     node.material=Array.isArray(node.material)?node.material.map(copy):copy(node.material);
   });return root;}
-  return {createArena:()=>owned(createArena()),createTower:()=>owned(createTower()),createDefender:()=>owned(createDefender()),createTurret:()=>owned(createTurret()),aimTurret,createZombie:type=>owned(createZombie(type)),animateZombie,aimDefender,
+  return {createArena:()=>owned(createArena()),createTower:()=>owned(createTower()),createDefender:()=>owned(createDefender()),createTurret:()=>owned(createTurret()),createSupportDrone:()=>owned(createUpgradeModel('drone')),aimTurret,createZombie:(type,mode)=>owned(createZombie(type,mode)),animateZombie,aimDefender,
     dispose(){for(const geometry of geometries.values())geometry.dispose();for(const mat of sceneMaterials.values())mat.dispose();geometries.clear();sceneMaterials.clear();},
     get resources(){return {geometries:geometries.size,materials:sceneMaterials.size};}};
+}
+// Offline production thumbnail models; same authored block materials as gameplay.
+export function createUpgradeModel(id){
+ const root=surface(new THREE.Group(),'metal');root.name='upgrade_'+id;
+ const gem=(color,x,y,z,scale=.4)=>add(root,crystalGeometry,color,x,y,z,scale,scale,scale,true);
+ if(['power','rapid','spread','aurora'].includes(id)){
+  soft(root,id==='aurora'?0x765ac7:0x3284a1,0,0,0,1.3,.8,1.6);soft(root,0xf8c55b,0,-.25,-.4,1.4,.2,.6);
+  const barrels=id==='spread'?[-.6,0,.6]:id==='rapid'?[-.36,.36]:[0];
+  for(const x of barrels){soft(root,0x27526e,x,0,.9,.4,.45,1.3);soft(root,0xf9d072,x,0,1.55,.55,.58,.17);soft(root,id==='aurora'?0xc3a2ff:0x8bf3f5,x,0,1.66,.3,.31,.04,true);}if(id==='power')gem(0xffd571,0,.6,0,.3);
+ }else if(id==='repair'){
+  soft(root,0x54ad9c,0,-.3,0,.38,1.4,.3);for(const side of[-1,1]){const jaw=soft(root,0xf4d898,side*.38,.55,0,.38,.9,.4);jaw.rotation.z=-side*.35;}soft(root,0xf8c363,0,-.7,0,.57,.27,.45);
+ }else if(id==='pierce'){
+  for(const z of[-.6,.25]){soft(root,0x5792a4,0,0,z,1.8,1.4,.14);soft(root,0x153e57,0,0,z+.085,.48,.5,.035);}soft(root,0xffd061,0,0,.8,.3,.32,2.5);gem(0xffffc7,0,0,2.05,.32);
+ }else if(id==='frost'){
+  for(let i=0;i<3;i++){const g=soft(root,0x8ce7ff,0,0,0,.18,2.2,.22,true);g.rotation.z=i*Math.PI/3;for(const sign of[-1,1]){const arm=soft(root,0x4da4d4,Math.sin(i*Math.PI/3)*sign*.7,Math.cos(i*Math.PI/3)*sign*.7,0,.3,.35,.33);arm.rotation.z=i*Math.PI/3;}}gem(0xd8ffff,0,0,.22,.4);
+ }else if(id==='chain'){
+  for(let i=0;i<5;i++){const x=(i%2?-.22:.22),bar=soft(root,0x8ed7ff,x,.9-i*.42,0,.55,.61,.25,true);bar.rotation.z=.6;}for(const sign of[-1,1])gem(0xf7d579,sign*.9,sign*.5,0,.26);
+ }else if(id==='explosive'||id==='blast'){
+  soft(root,0xd77b69,0,0,0,1.15,1.35,.9);for(const y of[-.45,.45])soft(root,0xf8c85d,0,y,0,1.3,.16,1);soft(root,0x325a77,0,.85,0,.14,.5,.15);gem(0xffe7a2,.18,1.15,0,.26);
+ }else if(id==='drone'){
+  soft(root,0x3b899f,0,0,0,.95,.55,.8);soft(root,0x83f8eb,0,0,.43,.5,.2,.06,true);for(let i=0;i<3;i++){const a=i*Math.PI*2/3,arm=soft(root,0xf3c66b,Math.sin(a)*.75,.1,Math.cos(a)*.75,.3,.12,1.1);arm.rotation.y=a;}
+ }else if(id==='shield'||id==='hull'){
+  soft(root,0x2b6185,0,0,0,1.65,1.9,.35);soft(root,0x78dbdb,0,0,.2,1.37,1.62,.16);soft(root,0xf4ce6c,0,0,.31,.2,1.4,.08);soft(root,0xf4ce6c,0,0,.31,1.15,.2,.08);if(id==='hull')for(const x of[-.65,0,.65])soft(root,0xeee0b7,x,1,0,.4,.45,.5);
+ }else if(id==='gears'){
+  const rim=add(root,ringGeometry,0xefbc59,0,0,0,.75,.75,.75);for(let i=0;i<8;i++){const a=i*Math.PI/4,tooth=soft(root,0xffd382,Math.sin(a)*.9,Math.cos(a)*.9,0,.42,.42,.35);tooth.rotation.z=-a;}soft(root,0x3c6e84,0,0,-.1,.45,.45,.22);
+ }
+ bake(root);return root;
 }

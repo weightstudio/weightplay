@@ -1,5 +1,5 @@
 // Orbit Menders save schema. Keep this namespace through any title change.
-import {TALENTS,talentSpent} from './defense.mjs?v=orbit-v10-campaign';
+import {TALENTS,talentSpent} from './defense.mjs?v=orbit-v10-central-cannon-final';
 export const SAVE_KEY = 'weightplay:orbit-menders:v1';
 export const BACKUP_KEY = `${SAVE_KEY}:backup`;
 export const MAX_SAVE_BYTES = 256 * 1024;

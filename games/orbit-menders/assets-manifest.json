@@ -1,7 +1,7 @@
 {
   "gameId": "orbit-menders",
-  "manifestVersion": 7,
-  "gameVersion": "v9",
+  "manifestVersion": 8,
+  "gameVersion": "v10",
   "createdAt": "2026-10-27",
   "status": "已實作未驗證",
   "artDirection": "Owner2026-10-27 explicitly selects uniform WeightPlay Block Animals. Block-afro Leo, square muzzle/paws/red cape/blue cannon; designed cuboid zombies, ivory/coral tower, stepped mint courtyard, bounded cyan/gold energy effects.",
@@ -177,5 +177,77 @@
     "locales": 13,
     "messagesPerLocale": 88,
     "status": "Implemented; source contract tested, rendered verification in current handoff; no specialist approval inferred."
+  },
+  "centralTurretExpansion": {
+    "date": "2026-10-28",
+    "source": "Original procedural Three.js models rendered locally by scripts/render-orbit-upgrade-icons.mjs",
+    "iconSize": [
+      256,
+      256
+    ],
+    "icons": [
+      {
+        "path": "icons/aurora.webp",
+        "bytes": 3146
+      },
+      {
+        "path": "icons/blast.webp",
+        "bytes": 4684
+      },
+      {
+        "path": "icons/chain.webp",
+        "bytes": 3270
+      },
+      {
+        "path": "icons/drone.webp",
+        "bytes": 2778
+      },
+      {
+        "path": "icons/explosive.webp",
+        "bytes": 4684
+      },
+      {
+        "path": "icons/frost.webp",
+        "bytes": 4518
+      },
+      {
+        "path": "icons/gears.webp",
+        "bytes": 5456
+      },
+      {
+        "path": "icons/hull.webp",
+        "bytes": 4280
+      },
+      {
+        "path": "icons/pierce.webp",
+        "bytes": 2996
+      },
+      {
+        "path": "icons/power.webp",
+        "bytes": 3552
+      },
+      {
+        "path": "icons/rapid.webp",
+        "bytes": 4144
+      },
+      {
+        "path": "icons/repair.webp",
+        "bytes": 3582
+      },
+      {
+        "path": "icons/shield.webp",
+        "bytes": 3984
+      },
+      {
+        "path": "icons/spread.webp",
+        "bytes": 4402
+      }
+    ],
+    "runtime": [
+      "central cannon with shared muzzle coordinates",
+      "fixed rear-facing lion",
+      "shield/healer/splitter and six boss accessories"
+    ],
+    "status": "implemented; rendered acceptance in progress"
   }
 }

@@ -58,7 +58,8 @@ export class SalvageView {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     host.append(this.renderer.domElement);
-    if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){this.readStats=()=>({calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures});host.__ruxRenderStats=this.readStats;}
+    this.aimUpdates=0;
+    if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){this.readStats=()=>({calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,aimUpdates:this.aimUpdates});host.__ruxRenderStats=this.readStats;}
     this.renderer.domElement.tabIndex=0;this.renderer.domElement.setAttribute('aria-label',host.getAttribute('aria-label')||'');
     this.contextLost=false;
     this.onContextLost=event=>{event.preventDefault();this.contextLost=true;onContextLost();};
@@ -138,6 +139,14 @@ export class SalvageView {
       studs(w-9,54,45);if(body.plugin.first){const bar=box(38,9,9,0xfff0c1,55);bar.rotation.z=-Math.PI/4;const bar2=box(38,9,9,0xfff0c1,56);bar2.rotation.z=Math.PI/4;}if(body.plugin.last){box(30,8,9,0xfff0c1,56);const base=box(8,30,9,0xfff0c1,57);base.position.y=-10;}if(body.plugin.linked){const band=box(w-6,7,9,0xf7a8e8,57);band.position.y=25;}if(body.plugin.clampRequired){const band=box(7,60,9,0xa8f8ff,58);band.position.x=-w/2+4;}
     }
     if(kind==='ball') { const ball=new THREE.Mesh(new THREE.SphereGeometry(22,24,16),mat(0x14a8a0,.2));group.add(ball); }
+    if(['wood','metal','target'].includes(kind)) {
+      // A held body gets four bright corner brackets. The indicator follows
+      // the same body transform as the physics mesh and uses a single draw.
+      const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;
+      const indicator=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial({color:0x9bffff}),8),transform=new THREE.Object3D();let i=0;
+      for(const x of [-1,1])for(const y of [-1,1])for(const horizontal of [true,false]){transform.position.set(x*(w/2+(horizontal?-4:4)),y*(h/2+(horizontal?4:-4)),70);transform.scale.set(horizontal?18:5,horizontal?5:18,3);transform.updateMatrix();indicator.setMatrixAt(i++,transform.matrix);}
+      indicator.visible=false;group.add(indicator);group.userData.clampIndicator=indicator;
+    }
     if(['wood','metal','guard','reflector','platform','target'].includes(kind))group.rotation.y=-.16;
     this.scene.add(group); return group;
   }
@@ -154,12 +163,18 @@ export class SalvageView {
     this.recoil=Math.max(0,this.recoil-dt);const kick=this.reducedMotion?0:this.recoil/.16;this.launcher.position.x=80-kick*10;this.rux.rotation.z=kick*.08;
     const active=new Set(model.bodies);
     for(const [body,mesh] of this.meshes) if(!active.has(body)){this.scene.remove(mesh);mesh.traverse(n=>{n.geometry?.dispose();n.material?.dispose();});this.meshes.delete(body);}
-    for(const body of model.bodies){let mesh=this.meshes.get(body);if(!mesh){mesh=this.make(body);this.meshes.set(body,mesh);}mesh.position.set(body.position.x,800-body.position.y,0);mesh.rotation.z=-body.angle;if(mesh.userData.direction)mesh.userData.direction.scale.x=(model.platformTime*50+50)%200<100?1:-1;const held=model.clamped.some(item=>item.body===body);mesh.traverse(node=>{if(node.material?.emissive)node.material.emissive.setHex(held?0x196a72:0);if(node.material){node.material.transparent=Boolean(body.plugin.recovered);node.material.opacity=body.plugin.recovered ? .35 : 1;}});}
+    for(const body of model.bodies){let mesh=this.meshes.get(body);if(!mesh){mesh=this.make(body);this.meshes.set(body,mesh);}mesh.position.set(body.position.x,800-body.position.y,0);mesh.rotation.z=-body.angle;if(mesh.userData.direction)mesh.userData.direction.scale.x=(model.platformTime*50+50)%200<100?1:-1;const held=model.clamped.some(item=>item.body===body);if(mesh.userData.clampIndicator)mesh.userData.clampIndicator.visible=held;mesh.traverse(node=>{if(node.material?.emissive)node.material.emissive.setHex(held?0x196a72:0);if(node.material){node.material.transparent=Boolean(body.plugin.recovered);node.material.opacity=body.plugin.recovered ? .35 : 1;}});}
     if(model.state==='ready'){
-      const speed=700+Math.max(0,Math.min(1,power))*500,points=[new THREE.Vector3(80,120,80)],obstacles=model.bodies.filter(body=>body!==model.ball);let previous={x:80,y:680};
-      for(let i=1;i<=80;i++){const t=i*.02,x=80+speed*Math.cos(angle)*t,y=680-speed*Math.sin(angle)*t+500*t*t;const point={x,y};points.push(new THREE.Vector3(x,800-y,80));if(model.M.Query.ray(obstacles,previous,point,44).length||x>1000||y>800||y<0)break;previous=point;}
-      this.aim.geometry.setFromPoints(points);this.aim.computeLineDistances();let count=0;for(let i=2;i<points.length&&count<40;i+=2){this.dotTransform.position.copy(points[i]);this.dotTransform.updateMatrix();this.aimDots.setMatrixAt(count++,this.dotTransform.matrix);}this.aimDots.count=count;this.aimDots.instanceMatrix.needsUpdate=true;
-    }
+      // Rebuild only when aim, power or a movable obstacle has changed.
+      // Static scenery is immutable during a ready state; the moving platform
+      // is included even though Matter represents it as a static body.
+      const moving=model.bodies.filter(body=>!body.isStatic||body===model.platform),key=`${angle}|${power}|${moving.map(body=>`${body.id}:${body.position.x.toFixed(2)}:${body.position.y.toFixed(2)}:${body.angle.toFixed(3)}`).join(';')}`;
+      if(key!==this.aimKey){
+        this.aimKey=key;this.aimUpdates++;const speed=700+Math.max(0,Math.min(1,power))*500,points=[new THREE.Vector3(80,120,80)],obstacles=model.bodies.filter(body=>body!==model.ball);let previous={x:80,y:680};
+        for(let i=1;i<=80;i++){const t=i*.02,x=80+speed*Math.cos(angle)*t,y=680-speed*Math.sin(angle)*t+500*t*t;const point={x,y};points.push(new THREE.Vector3(x,800-y,80));if(model.M.Query.ray(obstacles,previous,point,44).length||x>1000||y>800||y<0)break;previous=point;}
+        this.aim.geometry.setFromPoints(points);this.aim.computeLineDistances();let count=0;for(let i=2;i<points.length&&count<40;i+=2){this.dotTransform.position.copy(points[i]);this.dotTransform.updateMatrix();this.aimDots.setMatrixAt(count++,this.dotTransform.matrix);}this.aimDots.count=count;this.aimDots.instanceMatrix.needsUpdate=true;
+      }
+    }else this.aimKey=null;
     this.aim.visible=model.state==='ready';this.aimDots.visible=this.aim.visible;this.launcher.rotation.z=angle;
     const linked=model.targets.filter(body=>body.plugin.linked&&model.bodies.includes(body));this.link.visible=linked.length===2;
     if(linked.length===2)this.link.geometry.setFromPoints(linked.map(body=>new THREE.Vector3(body.position.x,800-body.position.y,82)));

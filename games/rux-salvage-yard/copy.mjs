@@ -89,4 +89,19 @@ export function localizeShell(source,locale){
 }
 const ZH_TW_NAMES=['首次回收','近處支架','遠處支架','兩座支架','重件優先','易碎底座','近處高塔','遠處高塔','高低支架','高塔先行','金屬底座','木材與金屬','遠端重底','上層弱點','連結回收','繞過遮板','受掩護的支架','遮板後的重件','高處通道','遠側優先','反彈板','鏡向反彈','金屬與反彈','遠側弱點','雙路回收','近處重塔','遮板與弱點','中央重塔','遮板後的重塔','工坊總整理','認識夾具','固定與釋放','固定重底','兩種選擇','夾住遠件','移動平台','等待平台','移動與易碎','移動與重件','平台優先','平台與弱點','重塔時機','兩個夾具','反彈與平台','雙岸連結','夾住金屬','反彈與釋放','雙夾與金屬','鏡向時機','固定中央','唯一夾具','遮板平台','重塔與平台','遠端弱點與平台','遠件最後','打開通道','遠側重底','鏡向平台','分配夾具','最終回收'];
 const ZH_CN_NAMES=['首次回收','近处支架','远处支架','两座支架','重件优先','易碎底座','近处高塔','远处高塔','高低支架','高塔先行','金属底座','木材与金属','远端重底','上层弱点','连接回收','绕过挡板','受遮挡的支架','挡板后的重件','高处通道','远侧优先','反弹板','镜向反弹','金属与反弹','远侧弱点','双路回收','近处重塔','挡板与弱点','中央重塔','挡板后的重塔','工坊总整理','认识夹具','固定与释放','固定重底','两种选择','夹住远件','移动平台','等待平台','移动与易碎','移动与重件','平台优先','平台与弱点','重塔时机','两个夹具','反弹与平台','双岸连接','夹住金属','反弹与释放','双夹与金属','镜向时机','固定中央','唯一夹具','挡板平台','重塔与平台','远端弱点与平台','远件最后','打开通道','远侧重底','镜向平台','分配夹具','最终回收'];
-export function stageTitle(locale,stage){if(locale==='en')return stage.title;if(locale==='zh-Hant')return ZH_TW_NAMES[stage.id-1];if(locale==='zh-Hans')return ZH_CN_NAMES[stage.id-1];const key=stage.platform?'chapter2':stage.metalColumn!==undefined?'metal':stage.fragile?'wood':'workshop';return `${text(locale,key)} · ${stage.id}`;}
+// Concise, localized descriptions reflect the mechanics of each authored
+// board; the shared stage card displays the stage number separately.
+const STAGE_FEATURES={
+  ja:['連結回収','先に回収','最後に回収','指定クランプ','移動台','反射板','遮へい','クランプ','金属の支え','壊れる支え','高い塔','支えを崩す'],
+  ko:['연결 회수','먼저 회수','마지막 회수','지정 클램프','이동 발판','반사판','가림막','클램프','금속 지지대','부서지는 지지대','높은 탑','지지대 무너뜨리기'],
+  es:['Piezas unidas','Primero','Recuperar al final','Pinza obligatoria','Plataforma móvil','Rebote','Protección','Pinza','Soporte metálico','Soporte frágil','Torre alta','Derriba soporte'],
+  'pt-BR':['Peças ligadas','Primeiro','Por último','Pinça obrigatória','Plataforma móvel','Rebote','Proteção','Pinça','Suporte metálico','Suporte frágil','Torre alta','Derrube o suporte'],
+  fr:['Récupération liée','En premier','En dernier','Pince obligatoire','Plateforme mobile','Rebond','Protection','Pince','Support en métal','Support fragile','Tour haute','Renverser support'],
+  de:['Verbundene Teile','Zuerst bergen','Zuletzt bergen','Pflichtklammer','Mobile Plattform','Abpraller','Deckung','Klammer','Metallstütze','Brüchige Stütze','Hoher Turm','Stütze umwerfen'],
+  it:['Pezzi collegati','Per primo','Per ultimo','Pinza obbligatoria','Piattaforma','Rimbalzo','Riparo','Pinza','Base metallica','Supporto fragile','Torre alta','Abbatti supporto'],
+  ru:['Связка деталей','Сначала забрать','Забрать в конце','Нужен зажим','Подвижный стол','Отражение','Преграда','Зажим','Опора: металл','Хрупкая опора','Высокая башня','Сбить опору'],
+  hi:['जुड़े पुर्ज़ों की वसूली','पहले वसूलें','अंत में वसूलें','ज़रूरी क्लैंप','चलता मंच','प्रतिक्षेप','आड़','क्लैंप','धातु का सहारा','नाज़ुक सहारा','ऊँचा टावर','सहारा गिराएँ'],
+  ar:['استعادة مترابطة','استعد أولاً','استعد أخيراً','مشبك إلزامي','منصة متحركة','ارتداد','حاجز','مشبك','دعامة معدنية','دعامة هشة','برج مرتفع','أسقط الدعامة']
+};
+export function stageTitle(locale,stage){if(locale==='en')return stage.title;if(locale==='zh-Hant')return ZH_TW_NAMES[stage.id-1];if(locale==='zh-Hans')return ZH_CN_NAMES[stage.id-1];const labels=STAGE_FEATURES[locale];if(!labels)return stage.title;const index=stage.sameShot?0:stage.firstColumn!==undefined?1:stage.lastColumn!==undefined?2:stage.clampColumn!==undefined?3:stage.platform?4:stage.reflector?5:stage.guard?6:stage.clamps?7:stage.metalColumn!==undefined?8:stage.fragile?9:Math.max(...stage.columns)>=2?10:11;return labels[index];}
+export function stageChapter(locale,id){if(locale==='ru')return id<=30?'Дерево':'Механика';if(locale==='it'&&id>30)return 'Officina';return text(locale,id<=30?'chapter1':'chapter2');}
