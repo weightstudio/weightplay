@@ -130,8 +130,12 @@ function initScene(){
   block(owl,1.2,.12,.88,0,1.53,0,blue);block(owl,.75,.28,.55,0,1.72,0,blue);block(owl,.56,.10,.48,0,1.91,0,blue);
   for(const side of [-1,1]){block(owl,.28,.32,.07,side*.24,1.1,.35,gold);block(owl,.20,.24,.08,side*.24,1.1,.40,white);block(owl,.09,.14,.09,side*.24,1.1,.45,black);block(owl,.035,.04,.025,side*.24-.02,1.14,.51,white);block(owl,.25,.24,.2,side*.4,1.42,0,brown);block(owl,.2,.1,.3,side*.25,.07,.05,gold);const wing=new THREE.Group();wing.position.set(side*.44,.75,0);wing.userData.side=side;owl.add(wing);wings.push(wing);block(wing,.25,.55,.24,side*.08,-.27,0,blue);block(wing,.14,.035,.035,side*.08,-.17,.135,gold);block(wing,.035,.14,.035,side*.08,-.17,.135,gold);const feathers=new THREE.InstancedMesh(new THREE.BoxGeometry(.09,.11,.06),cream,3);for(let n=0;n<3;n++)feathers.setMatrixAt(n,new THREE.Matrix4().makeTranslation(side*(.01+n*.075),-.43+n*.035,.13));wing.add(feathers);}
   block(owl,.15,.17,.16,0,.94,.42,gold);
+  // A faceted beak and small cap tassel keep the reference character readable
+  // from the elevated puzzle camera without expanding the collision model.
+  const beak=new THREE.Mesh(new THREE.ConeGeometry(.105,.17,4),gold);beak.rotation.z=Math.PI;beak.position.set(0,.91,.52);owl.add(beak);
+  block(owl,.035,.28,.04,.60,1.38,.12,gold);block(owl,.11,.09,.10,.60,1.20,.12,gold);block(owl,.10,.12,.10,.60,1.10,.12,blue);
   // Layered feather tips and brows preserve the owl's silhouette at board scale.
-  for(const side of [-1,1]){block(owl,.24,.08,.09,side*.24,1.29,.40,blue);block(owl,.12,.16,.14,side*.31,1.63,.12,blue);for(let row=0;row<2;row++)block(owl,.10,.06,.06,side*(.10+row*.10),.56-row*.11,.31,cream);}
+  for(const side of [-1,1]){block(owl,.24,.08,.09,side*.24,1.29,.40,brown);block(owl,.12,.16,.14,side*.31,1.63,.12,blue);for(let row=0;row<2;row++)block(owl,.10,.06,.06,side*(.10+row*.10),.56-row*.11,.31,cream);}
   // The cap band, glasses bridge, satchel strap and gemstone clasp echo the
   // observatory outfit instead of relying on the poster to identify the owl.
   block(owl,1.02,.035,.06,0,1.51,.45,gold);block(owl,.14,.045,.06,0,1.12,.48,gold);

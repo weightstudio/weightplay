@@ -111,6 +111,7 @@ export class Crystal3D {
       }
       this.shadow = this.own(new THREE.MeshBasicMaterial({ color: 0x102f30, transparent: true, opacity: .25, depthWrite: false }));
       this.warning = this.own(new THREE.MeshBasicMaterial({ color: 0xff735d, transparent: true, opacity: .3, depthWrite: false, side: THREE.DoubleSide }));
+      this.chargeWarning = this.own(this.warning.clone());this.chargeWarning.color.setHex(0xffa44f);this.chargeWarning.opacity=.58;
       this.activeHazard = this.own(new THREE.MeshBasicMaterial({ color: 0xff482c, transparent: true, opacity: .65, depthWrite: false, side: THREE.DoubleSide }));
       this.hazardPalette = new Map(['#60a5fa', '#65a30d', '#c084fc', '#a78bfa', '#f97316', '#fb923c', '#84cc16', '#f59e0b'].map(color => [color, [.4, .7, 1].map(opacity => this.own(new THREE.MeshBasicMaterial({ color, transparent: true, opacity, toneMapped:false, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: this.viewPlanes })))]));
       this.buildGarden(Boolean(floorImage?.complete && floorImage.naturalWidth));
@@ -677,7 +678,7 @@ export class Crystal3D {
       }, 1);
     }
     const chargingStage = ['charge', 'chargeRoots', 'briar', 'convergence'].includes(state.stageConfig?.modifier);
-    const charging = state.enemies.filter(e => e.chargeAim && e.chargeTimer > 0 && (e.isBoss ? e.image === 'bossBriar' : e.role !== 'archer' && (chargingStage || e.role === 'charger')));
+    const charging = state.enemies.filter(e => (state.stage===42&&e.beaconChargeCue?.phase==='warning') || (e.chargeAim && e.chargeTimer > 0 && (e.isBoss ? e.image === 'bossBriar' : e.role !== 'archer' && (chargingStage || e.role === 'charger'))));
     this.pool('chargeCues', charging.length, () => {
       const cue = new THREE.Group();
       this.mesh('fineRing', 'danger', cue).rotation.x = -Math.PI / 2;
@@ -685,19 +686,20 @@ export class Crystal3D {
       return cue;
     }, (cue, i) => {
       const enemy = charging[i];
+      const committed=state.stage===42&&enemy.beaconChargeCue?.phase==='warning'?enemy.beaconChargeCue:null;
       this.setPosition(cue, enemy, .06);
       cue.children[0].material = enemy.chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
       cue.children[0].scale.setScalar(enemy.size / UNIT * .7);
-      cue.children[1].visible = Boolean(enemy.chargeAim);
+      cue.children[1].visible = Boolean(enemy.chargeAim||committed);
       // The new practice charger uses a broad, longer ground lane; all legacy
       // enemies retain their existing cue. Its length follows the actual dash.
       const chapterCharger=state.stage===32&&enemy.beaconCarrier;
-      const chargeLength = enemy.isBoss ? 6 : chapterCharger ? 4.75 : 3.2;
-      cue.children[1].material=chapterCharger?this.warning:this.groundGlow;
-      cue.children[1].scale.x=chapterCharger ? .45 : .18;
+      const chargeLength = committed ? Math.hypot(committed.x2-committed.x1,committed.y2-committed.y1)/UNIT : enemy.isBoss ? 6 : chapterCharger ? 4.75 : 3.2;
+      cue.children[1].material=committed?this.chargeWarning:chapterCharger?this.warning:this.groundGlow;
+      cue.children[1].scale.x=committed ? committed.width/UNIT : chapterCharger ? .45 : .18;
       cue.children[1].scale.z = chargeLength;
       cue.children[1].position.z = chargeLength / 2;
-      cue.rotation.y = enemy.chargeAim ? Math.atan2(enemy.chargeAim.x, enemy.chargeAim.y) : 0;
+      cue.rotation.y = committed ? Math.atan2(committed.x2-committed.x1,committed.y2-committed.y1) : enemy.chargeAim ? Math.atan2(enemy.chargeAim.x, enemy.chargeAim.y) : 0;
     }, 19);
     const archers = state.enemies.filter(e => e.bowAim);
     this.pool('bowCues', archers.length, () => {

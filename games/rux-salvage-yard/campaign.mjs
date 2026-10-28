@@ -1,5 +1,5 @@
-// Authored opening configurations. Later stages remain in the design document
-// until their mechanics and physical solutions are implemented and checked.
+// Authored campaign configurations. Physical witness tests cover all 60;
+// representative local play and full acceptance remain separate work.
 export const OPENING = Object.freeze([
   { id:1, columns:[0,1,0], shots:3, title:'First recovery' },
   { id:2, columns:[1,0,0], shots:3, title:'Near support' },

@@ -1,10 +1,17 @@
 import * as THREE from '/games/purrch-grove/vendor/three/three.module.min.js';
 
 function createLauncher() {
-  const group=new THREE.Group(),metal=new THREE.MeshStandardMaterial({color:0x187e79,roughness:.5,metalness:.35}),brass=new THREE.MeshStandardMaterial({color:0xe6b544,roughness:.45,metalness:.5});
+  const group=new THREE.Group(),metal=new THREE.MeshStandardMaterial({color:0x187e79,roughness:.5,metalness:.35}),brass=new THREE.MeshStandardMaterial({color:0xe6b544,roughness:.45,metalness:.5}),dark=new THREE.MeshStandardMaterial({color:0x31575b,roughness:.64,metalness:.3}),highlight=new THREE.MeshStandardMaterial({color:0x73c8b4,roughness:.5,metalness:.25});
   const barrel=new THREE.Mesh(new THREE.BoxGeometry(105,38,52),metal);barrel.position.x=38;group.add(barrel);
   const rim=new THREE.Mesh(new THREE.BoxGeometry(14,48,60),brass);rim.position.x=85;group.add(rim);
-  const base=new THREE.Mesh(new THREE.CylinderGeometry(26,30,16,16),brass);base.rotation.x=Math.PI/2;group.add(base);
+  const muzzle=new THREE.Mesh(new THREE.BoxGeometry(4,32,46),dark);muzzle.position.set(94,0,0);group.add(muzzle);
+  const rail=new THREE.Mesh(new THREE.BoxGeometry(75,5,5),highlight);rail.position.set(38,14,29);group.add(rail);
+  const bandGeometry=new THREE.BoxGeometry(8,42,57);for(const x of [2,59]){const band=new THREE.Mesh(bandGeometry,brass);band.position.x=x;group.add(band);}
+  const side=new THREE.Mesh(new THREE.BoxGeometry(47,16,4),dark);side.position.set(34,-3,30);group.add(side);
+  const sideInset=new THREE.Mesh(new THREE.BoxGeometry(39,8,4),highlight);sideInset.position.set(34,-3,33);group.add(sideInset);
+  const boltGeometry=new THREE.CylinderGeometry(3,3,4,8);for(const x of [9,58,83]){const bolt=new THREE.Mesh(boltGeometry,brass);bolt.rotation.x=Math.PI/2;bolt.position.set(x,-3,36);group.add(bolt);}
+  const base=new THREE.Mesh(new THREE.CylinderGeometry(26,30,16,12),brass);base.rotation.x=Math.PI/2;group.add(base);
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(13,13,5,12),dark);hub.rotation.x=Math.PI/2;hub.position.z=11;group.add(hub);
   return {group,metal};
 }
 function createRux() {

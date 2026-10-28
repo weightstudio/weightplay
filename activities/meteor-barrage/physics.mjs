@@ -1,4 +1,7 @@
+// Durable run schema stays compatible across presentation-only revisions.
 export const VERSION = 'meteor-barrage-1';
+export const ACTIVITY_VERSION = 'meteor-barrage-2';
+export const BLAST_RADIUS = 100;
 export const WORLD = Object.freeze({ width: 360, height: 480, launchX: 180, launchY: 38, floor: 68 });
 export const STEP = 1 / 120;
 export const safeBlocks = n => Number.isSafeInteger(n) && n >= 0 ? n : 0;
@@ -25,16 +28,16 @@ export function fire(run,angle,power=1) {
   run.shot={x:180,y:38,vx:Math.cos(angle)*440,vy:Math.sin(angle)*440,power,life:0,bounces:0,lastId:null,cooldown:0};
   return true;
 }
-function strike(run,t,power,events,chain=false,front=true) {
+function strike(run,t,power,events,chain=false,front=true,source) {
   if(t.hp<=0)return;
-  if(t.armor&&!chain&&front){t.armor=0;t.flash=.2;events.push({kind:'armor',x:t.x,y:t.y});return;}
+  if(t.armor&&!chain&&front){t.armor=0;t.flash=.2;events.push({kind:'armor',targetId:t.id,x:t.x,y:t.y});return;}
   const damage=Math.min(t.hp,power);t.hp-=damage;t.flash=.18;run.combo++;run.score+=damage*10+Math.min(5,run.combo-1)*5;
-  events.push({kind:'hit',x:t.x,y:t.y,damage,combo:run.combo});
+  events.push({kind:'hit',targetId:t.id,x:t.x,y:t.y,damage,combo:run.combo,source});
   if(t.hp>0)return;
-  run.score+=t.type==='core'?200:40;events.push({kind:t.type==='core'?'core':'destroy',x:t.x,y:t.y});
+  run.score+=t.type==='core'?200:40;events.push({kind:t.type==='core'?'core':'destroy',targetId:t.id,x:t.x,y:t.y,source});
   if(t.type==='blast'){
-    events.push({kind:'blast',x:t.x,y:t.y});
-    for(const other of run.targets) if(other.hp>0&&Math.hypot(t.x-other.x,t.y-other.y)<100)strike(run,other,2,events,true);
+    events.push({kind:'blast',targetId:t.id,x:t.x,y:t.y,radius:BLAST_RADIUS});
+    for(const other of run.targets) if(other.hp>0&&Math.hypot(t.x-other.x,t.y-other.y)<BLAST_RADIUS)strike(run,other,2,events,true,true,{id:t.id,x:t.x,y:t.y});
   }
 }
 function reflect(p,x,y,r) {
@@ -46,7 +49,9 @@ function reflect(p,x,y,r) {
 function settle(run,events) {
   run.shot=null;
   if(run.targets.every(t=>t.hp<=0)){run.status=run.wave===2?'won':'wave-clear';events.push({kind:run.status});return;}
-  for(const t of run.targets)if(t.hp>0){t.y-=22;if(t.y-t.r<WORLD.floor){t.hp=0;run.hull=t.type==='core'?0:Math.max(0,run.hull-1);events.push({kind:'breach',x:t.x,y:WORLD.floor});}}
+  const targets=[];
+  for(const t of run.targets)if(t.hp>0){const fromY=t.y;t.y-=22;const breached=t.y-t.r<WORLD.floor;targets.push({id:t.id,x:t.x,fromY,toY:t.y,breached});if(breached){t.hp=0;run.hull=t.type==='core'?0:Math.max(0,run.hull-1);events.push({kind:'breach',targetId:t.id,x:t.x,y:WORLD.floor});}}
+  events.push({kind:'descent',targets});
   if(run.hull<=0){run.hull=0;run.status='lost';events.push({kind:'lost',reason:'breach'});}
   else if(run.targets.every(t=>t.hp<=0)){run.status='lost';events.push({kind:'lost',reason:'breach'});}
   else if(run.ammo<=0){run.status='lost';events.push({kind:'lost',reason:'empty'});}

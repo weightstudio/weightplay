@@ -1,0 +1,20 @@
+// Stage 42 local-practice drafts; native and visual review still required.
+export const chargeCopy=Object.freeze({
+ en:['Charge Intercept','Carry a fragment to B. Hold at B while a charge is warned across it to stop the runner, then survive. Damage loses a carried fragment.'],
+ 'zh-Hant':['衝刺攔截','帶碎片前往 B。當衝刺預告穿過 B 時停留以中斷敵人，然後存活至結束；受傷會失去碎片。'],
+ 'zh-Hans':['冲刺拦截','带碎片前往 B。当冲刺预告穿过 B 时停留以中断敌人，然后存活至结束；受伤会失去碎片。'],
+ ja:['突進を止める','欠片を B に運び、突進予告が B を通る間そこに留まって止め、生き残る。被弾すると欠片を失う。'],
+ ko:['돌진 차단','조각을 B로 옮기고 돌진 예고가 B를 지나는 동안 머물러 차단한 뒤 살아남으세요. 피해를 받으면 조각을 잃습니다.'],
+ es:['Intercepción de carga','Lleva un fragmento a B y permanece allí mientras la carga anunciada cruza B para detenerla; después sobrevive. El daño hace perder el fragmento.'],
+ 'pt-BR':['Interceptar investida','Leve um fragmento a B e fique lá enquanto a investida anunciada cruza B para detê-la; depois sobreviva. Dano faz perder o fragmento.'],
+ fr:['Intercepter la charge','Portez un fragment à B et restez-y pendant que la charge annoncée traverse B pour l’arrêter ; survivez ensuite. Un coup fait perdre le fragment.'],
+ de:['Ansturm abfangen','Bringe ein Fragment zu B und bleibe dort, während der angekündigte Ansturm B kreuzt, um ihn zu stoppen. Überlebe danach. Schaden lässt das Fragment fallen.'],
+ it:['Intercetta la carica','Porta un frammento a B e resta lì mentre la carica annunciata attraversa B per fermarla, poi sopravvivi. I danni fanno perdere il frammento.'],
+ ru:['Перехват рывка','Отнесите осколок к B и оставайтесь там во время предупреждения о рывке через B, чтобы остановить врага. Затем выживите. Урон лишает осколка.'],
+ hi:['धावा रोकें','टुकड़ा B तक ले जाएँ। जब धावे की चेतावनी B से गुज़रे तो वहीं रुककर उसे रोकें, फिर जीवित रहें। चोट से टुकड़ा खोता है।'],
+ ar:['اعتراض الاندفاع','احمل شظية إلى B وابقَ عندها أثناء مرور تحذير الاندفاع عبرها لإيقاف العدو، ثم ابقَ حياً. الإصابة تفقدك الشظية.'],
+});
+const hold={en:'Charge warning · hold at B','zh-Hant':'衝刺預告 · 在 B 停留','zh-Hans':'冲刺预告 · 在 B 停留',ja:'突進予告 · Bに留まる',ko:'돌진 예고 · B에서 머무르기',es:'Carga anunciada · permanece en B','pt-BR':'Investida anunciada · fique em B',fr:'Charge annoncée · restez à B',de:'Ansturm angekündigt · bei B bleiben',it:'Carica annunciata · resta a B',ru:'Предупреждение о рывке · стойте у B',hi:'धावे की चेतावनी · B पर रुकें',ar:'تحذير اندفاع · ابقَ عند B'};
+const ready={en:'Carry fragment to B','zh-Hant':'帶碎片前往 B','zh-Hans':'带碎片前往 B',ja:'欠片を B に運ぶ',ko:'조각을 B로 옮기기',es:'Lleva el fragmento a B','pt-BR':'Leve o fragmento a B',fr:'Apportez le fragment à B',de:'Fragment zu B bringen',it:'Porta il frammento a B',ru:'Отнесите осколок к B',hi:'टुकड़ा B तक ले जाएँ',ar:'احمل الشظية إلى B'};
+const stopped={en:'Charge stopped · survive','zh-Hant':'衝刺已中斷 · 存活至結束','zh-Hans':'冲刺已中断 · 存活至结束',ja:'突進を止めた · 生き残る',ko:'돌진 차단 · 살아남기',es:'Carga detenida · sobrevive','pt-BR':'Investida detida · sobreviva',fr:'Charge arrêtée · survivez',de:'Ansturm gestoppt · überlebe',it:'Carica fermata · sopravvivi',ru:'Рывок остановлен · выживите',hi:'धावा रुक गया · जीवित रहें',ar:'توقف الاندفاع · ابقَ حياً'};
+export function chargeStatus(locale,phase){const table=phase==='warning'?hold:phase==='stopped'?stopped:ready;return table[locale]||table.en}

@@ -124,6 +124,11 @@ body.relic-stage-select .stage-workspace {
   overflow: hidden;
 }
 
+/* Hidden setup tabs must not leave the shared Stage rail over training or equipment. */
+html:has(#stageTabTeam[aria-selected="true"], #stageTabEquipment[aria-selected="true"]) :is(#expeditionRail, .wp-stage-i9-briefing) {
+  display: none !important;
+}
+
 body.relic-stage-select .stage-view {
   display: none;
   position: absolute;

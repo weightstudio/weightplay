@@ -14,6 +14,7 @@
 #arena canvas:focus-visible{outline:3px solid #ffdb70;outline-offset:-3px}
 #battleLive,#controls,#clampTools{min-width:0}
 #arena{background-image:linear-gradient(rgba(13,42,49,.16),rgba(13,42,49,.16)),url('/games/rux-salvage-yard/art/background.webp')}
+#arena.chapter-two{background-image:linear-gradient(rgba(13,38,67,.24),rgba(17,61,65,.2)),url('/games/rux-salvage-yard/art/background.webp')}
 #clampTools label>span{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 #clampTools select{flex:1;width:100%;min-width:0}
 @media (orientation:portrait){
@@ -30,4 +31,11 @@
   #controls label{grid-column:1/-1;width:100%}
   #fire{min-width:0;font-size:clamp(11px,1.8vw,16px)}
   #status{grid-area:status}
+  body[data-screen=battle] .wpb-toast{padding:4px 8px;font-size:12px}
+  body[data-screen=battle] .wpb-toast img{width:24px}
+  body:has(.wpb-toast) #dialog{padding-bottom:64px}
+  #dialog .card{padding:8px 12px}
+  #dialogTitle{margin:4px 0;font-size:18px}
+  #dialogText{font-size:14px;line-height:1.25}
+  #dialog .card button{margin:2px;padding:4px 10px}
 }
