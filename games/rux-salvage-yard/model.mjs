@@ -147,6 +147,7 @@ export class SalvageSlice {
     this.elapsed = 0;
     this.quiet = 0;
     this.ballRetireQuiet = 0;
+    this.settlementLinkReleased = false;
     this.settlementRechecked.clear();
     this.ball = Bodies.circle(80, 680, 22, { density: .002, restitution: .2, frictionAir: 0, label: 'ball' });
     this.ball.plugin.salvageKind = 'ball';
@@ -233,7 +234,16 @@ export class SalvageSlice {
       this.state = this.shots >= this.limit ? 'lost' : 'ready';
       this.events.push({ type: this.state === 'lost' ? 'lose' : 'ready' });
     }
-    if (this.elapsed > 15 && this.state === 'flight') {
+    // If a recovered linked endpoint keeps the other end oscillating until
+    // the normal timeout, remove only the already-recovered endpoint and
+    // let the remaining part settle under physics. The same-shot rule still
+    // requires that part to touch the real ground in this shot.
+    if(this.elapsed>15&&!this.settlementLinkReleased&&this.linkConstraint&&this.targets.some(target=>target.plugin.linked&&this.recoveredTargets.has(target))&&(!this.ball||this.ball.speed<=.08)){
+      this.M.Composite.remove(this.engine.world,this.linkConstraint);this.linkConstraint=null;
+      for(const target of this.targets)if(target.plugin.linked&&this.recoveredTargets.has(target))this.pendingRemove.add(target);
+      this.settlementLinkReleased=true;this.quiet=0;
+    }
+    if (this.elapsed > (this.settlementLinkReleased?20:15) && this.state === 'flight') {
       this.state = 'stalled';
       this.events.push({ type: 'stalled' });
     }

@@ -319,7 +319,10 @@ async function startStage(index) {
         {label:t('stages'),action:()=>{closeOverlay({restore:false});setScreen('stage');}}
       ]);}
     }});rendererCreates++;
-    renderer.render(run.state,0);updateHUD();play('game.start');tutorial();$('arena').focus({preventScroll:true});
+    renderer.render(run.state,0);updateHUD();
+    if(renderer.getMetrics().ready) {
+      play('game.start');tutorial();$('arena').focus({preventScroll:true});
+    }
   } catch {
     disposeRenderer();showOverlay(t('graphicsError'),t('graphicsError'),[
       {label:t('replay'),action:()=>{closeOverlay({restore:false});void startStage(selected);}},
@@ -397,12 +400,14 @@ if(!preview&&!practiceSession) {
   listen(window,'weightplay:wallet-change',renderManagement);
   listen(window,'weightplay:interaction-state',()=>{settingsPaused=Boolean(roots.battle.querySelector('.wp-frame-popover:not([hidden])'));if(settingsPaused)stopInput();measurement();});
   listen(document,'keydown',event=>{
+    if(event.defaultPrevented)return;
     const panel=overlayOpen?$('gameOverlay'):resultShown?$('resultPanel'):null;
     if(panel&&!panel.hidden) {
       if(event.key==='Escape'&&overlayOpen&&overlayCancel&&!overlayBusy){event.preventDefault();overlayCancel();return;}
       if(event.key==='Tab'){const nodes=[...panel.querySelectorAll('button:not([disabled]),a[href],select')].filter(n=>n.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}return;
     }
     if(screen!=='battle'||!run||event.ctrlKey||event.metaKey||event.altKey||event.target.closest('input,textarea,select'))return;
+    if((event.key===' '||event.key==='Enter')&&event.target.closest('button,a[href]'))return;
     const key=event.key.length===1?event.key.toLowerCase():event.key;
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d'].includes(key)){event.preventDefault();if(!paused())keys.add(key);}
     else if(key===' '&&!event.repeat){event.preventDefault();perform('setMode',run.state.mode==='vacuum'?'brush':'vacuum');}

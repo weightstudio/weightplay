@@ -471,15 +471,16 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     const pad=builder(block,{bevel:.014});pad.box(0,.02,0,.89,.07,.87,0x287778).box(0,.063,.07,.74,.025,.62,0x84bbb0);
     groupFromBuild(pad,root,{stage:true,material:enamelMaterial});
     const receiver=new THREE.Group();receiver.name='depot-receiver';receiver.position.set(portable?-.4:-.69,portable?.035:.27,portable?.08:-.03);receiver.scale.set(portable?.64:1,portable?.78:1,portable?.86:1);root.add(receiver);
-    const coat=builder(block,{bevel:.015}),metal=builder(block,{bevel:.009}),recess=builder(plain),foundation=builder(block,{bevel:.014});
+    const coat=builder(block,{bevel:.035}),metal=builder(block,{bevel:.025}),recess=builder(plain),foundation=builder(block,{bevel:.014});
     foundation.box(0,.015,-.50,.82,.065,.50,palette.stone);
-    coat.box(0,.21,-.50,.72,.34,.32,0x147984).box(0,.43,-.53,.78,.08,.36,0x21999d)
-      .box(-.29,.24,-.29,.055,.22,.07,0x2b9da0).box(.29,.24,-.29,.055,.22,.07,0x2b9da0);
-    recess.box(0,.24,-.323,.50,.195,.020,0x102f38);
+    coat.box(0,.26,-.50,.72,.44,.32,0x147984).box(0,.50,-.53,.78,.10,.26,0x21999d)
+      .box(-.30,.27,-.29,.075,.29,.08,0x2b9da0).box(.30,.27,-.29,.075,.29,.08,0x2b9da0);
+    recess.box(0,.27,-.323,.54,.272,.020,0x102f38);
     const beaconZ=portable?-.05:-.54;
-    metal.box(0,.35,-.285,.61,.035,.08,0xd3a44c).box(0,.125,-.285,.61,.035,.08,0xb9863e)
+    metal.box(0,.42,-.285,.63,.075,.085,0xd8a34c).box(0,.128,-.285,.63,.055,.085,0xb9863e)
       .box(-.35,.23,-.50,.035,.30,.34,0xc99a48).box(.35,.23,-.50,.035,.30,.34,0xc99a48)
-      .box(0,.485,-.54,.79,.035,.37,0xd0a552)
+      .box(0,.54,-.67,.84,.08,.08,0xd0a552).box(0,.54,-.39,.84,.08,.08,0xd0a552)
+      .box(-.38,.54,-.53,.08,.08,.20,0xc49548).box(.38,.54,-.53,.08,.08,.20,0xc49548)
       .box(-.25,.55,beaconZ,.045,.14,.045,0xbb8d45).box(-.25,.67,beaconZ,.16,.025,.14,0xbc8c41);
     if(portable)metal.box(.26,.54,-.53,.035,.19,.035,0xc99749);
     groupFromBuild(foundation,receiver,{stage:true,material:stoneMaterial});
@@ -1075,6 +1076,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       calls: info?.render.calls ?? 0, triangles: info?.render.triangles ?? 0, geometries: info?.memory.geometries ?? 0,
       textures: info?.memory.textures ?? 0, ownedGeometries: geometries.size, ownedMaterials: materials.size,
       ownedTextures: textures.size,
+      shadow: { type:renderer?.shadowMap.type ?? null,radius:keyLight?.shadow.radius ?? null,width:keyLight?.shadow.mapSize.x ?? null,height:keyLight?.shadow.mapSize.y ?? null },
       materialImages: { stone: stoneMap ? { width: stoneMap.image.width, height: stoneMap.image.height } : null, moss: mossMap ? { width: mossMap.image.width, height: mossMap.image.height } : null },
       materialTextures: Object.fromEntries([['stone',stoneMap],['moss',mossMap]].map(([name,texture])=>[name,texture ? { width:texture.image.width,height:texture.image.height,flipY:texture.flipY,colorSpace:texture.colorSpace,wrapS:texture.wrapS,wrapT:texture.wrapT,version:texture.version } : null])),
       environmentReady: !!scene?.environment && !!freshDraw && !lost && !renderFailed,
@@ -1134,7 +1136,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .88;
-    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
     const canvas = renderer.domElement; canvas.dataset.dustwakeRenderer = 'three-r180'; canvas.setAttribute('aria-hidden', 'true');
     canvas.style.display = 'block'; canvas.style.width = '100%'; canvas.style.height = '100%'; canvas.style.touchAction = 'none';
     container.appendChild(canvas);
@@ -1144,7 +1146,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     const key = keyLight = new THREE.DirectionalLight(0xffe9cb, 2.45); key.position.set(-2, 12, 8); key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024); key.shadow.camera.left = -8; key.shadow.camera.right = 8;
     key.shadow.camera.top = 8; key.shadow.camera.bottom = -8; key.shadow.camera.near = .1; key.shadow.camera.far = 30;
-    key.shadow.bias = -.0008; key.shadow.normalBias = .035; key.target.position.set(4.5, 0, 3.5); scene.add(key, key.target);
+    key.shadow.bias = -.0008; key.shadow.normalBias = .035;key.shadow.radius=2.5; key.target.position.set(4.5, 0, 3.5); scene.add(key, key.target);
     fillLight = new THREE.DirectionalLight(0xa8dce6, .36); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
     stoneMap = makeSurfaceTexture(materialImages?.stone, 'stone'); mossMap = makeSurfaceTexture(materialImages?.moss, 'moss');
     mossMap.repeat.set(.26,.26);
