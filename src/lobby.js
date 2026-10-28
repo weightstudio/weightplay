@@ -2,6 +2,154 @@ const lobby = window.WONDER_LOBBY;
 const gameGenres = window.WeightPlayGameGenres;
 if (!gameGenres) throw new Error("Lobby gameplay registry is missing");
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
+// BEGIN GENERATED METEOR ACTIVITY ENTRY
+// Updated by scripts/build-meteor-barrage-locales.mjs from activity-owned copy.
+const meteorActivityCopy = {
+  "en": {
+    "title": "Meteor Barrage",
+    "label": "Block activity",
+    "line": "One block. A chain of impacts.",
+    "body": "Defend the outpost through three waves. Bounce blocks off the walls, shatter meteors and strike the core through its orbiting shield. Each collected block gives 1 challenge ammo at the start of the run.",
+    "blocks": "Collected blocks",
+    "schedule": "Replay whenever you like",
+    "reward": "Training provides 24 virtual ammo. Training scores do not unlock the violet launcher.",
+    "start": "Start",
+    "path": "/activities/meteor-barrage/en/"
+  },
+  "zh-Hant": {
+    "title": "星隕防線",
+    "label": "方塊活動",
+    "line": "一顆方塊，連鎖擊破。",
+    "body": "守住前哨站，迎戰三波星隕。讓方塊沿牆彈射、擊碎隕石，穿過旋轉護盾直擊核心。收藏挑戰開始時，1 個已收藏方塊＝1 點本場彈藥。",
+    "blocks": "已收藏方塊",
+    "schedule": "隨時重玩挑戰",
+    "reward": "練習提供 24 點虛擬彈藥；練習成績不會解鎖紫色發射器。",
+    "start": "開始",
+    "path": "/activities/meteor-barrage/zh-tw/"
+  },
+  "zh-Hans": {
+    "title": "星陨防线",
+    "label": "方块活动",
+    "line": "一颗方块，连锁击破。",
+    "body": "守住前哨站，迎战三波星陨。让方块沿墙弹射、击碎陨石，穿过旋转护盾直击核心。收藏挑战开始时，1 个已收藏方块＝1 点本场弹药。",
+    "blocks": "已收藏方块",
+    "schedule": "随时重玩挑战",
+    "reward": "练习提供 24 点虚拟弹药；练习成绩不会解锁紫色发射器。",
+    "start": "开始",
+    "path": "/activities/meteor-barrage/zh-cn/"
+  },
+  "ja": {
+    "title": "流星防衛線",
+    "label": "ブロックイベント",
+    "line": "ひとつのブロックで、連鎖撃破。",
+    "body": "3回の襲来から前哨基地を守ろう。壁でブロックを反射させて隕石を砕き、回転するシールドの隙間からコアを狙おう。挑戦開始時、収集済みブロック1個につき今回の弾薬1を得ます。",
+    "blocks": "収集済みブロック",
+    "schedule": "何度でも挑戦",
+    "reward": "練習では仮の弾薬24を使えます。練習の成績では紫の発射機は解放されません。",
+    "start": "開始",
+    "path": "/activities/meteor-barrage/ja/"
+  },
+  "ko": {
+    "title": "유성 방어선",
+    "label": "블록 이벤트",
+    "line": "블록 하나로 연쇄 격파.",
+    "body": "세 차례의 유성 공격으로부터 전초 기지를 지키세요. 벽에 블록을 튕겨 운석을 부수고 회전 방패 사이로 핵을 맞히세요. 도전 시작 시 수집한 블록 1개당 이번 판 탄약 1개를 받습니다.",
+    "blocks": "수집한 블록",
+    "schedule": "언제든 다시 도전",
+    "reward": "연습에서는 가상 탄약 24개를 제공합니다. 연습 기록으로는 보라색 발사기를 해제할 수 없습니다.",
+    "start": "시작",
+    "path": "/activities/meteor-barrage/ko/"
+  },
+  "es": {
+    "title": "Barrera de meteoros",
+    "label": "Evento de bloques",
+    "line": "Un bloque. Una cadena de impactos.",
+    "body": "Defiende el puesto durante tres oleadas. Haz rebotar los bloques en las paredes, rompe meteoros y alcanza el núcleo entre sus escudos giratorios. Al iniciar el reto, cada bloque recogido aporta 1 unidad de munición.",
+    "blocks": "Bloques recogidos",
+    "schedule": "Repite cuando quieras",
+    "reward": "El entrenamiento ofrece 24 unidades de munición virtual. Sus resultados no desbloquean el lanzador violeta.",
+    "start": "Empezar",
+    "path": "/activities/meteor-barrage/es/"
+  },
+  "pt-BR": {
+    "title": "Barreira de meteoros",
+    "label": "Evento de blocos",
+    "line": "Um bloco. Uma sequência de impactos.",
+    "body": "Defenda o posto por três ondas. Faça os blocos ricochetearem nas paredes, destrua meteoros e atinja o núcleo pelas brechas do escudo giratório. Ao iniciar o desafio, cada bloco coletado fornece 1 unidade de munição.",
+    "blocks": "Blocos coletados",
+    "schedule": "Jogue de novo quando quiser",
+    "reward": "O treino oferece 24 unidades de munição virtual. Os resultados do treino não desbloqueiam o lançador violeta.",
+    "start": "Começar",
+    "path": "/activities/meteor-barrage/pt-br/"
+  },
+  "fr": {
+    "title": "Barrage de météores",
+    "label": "Événement de blocs",
+    "line": "Un bloc. Des impacts en chaîne.",
+    "body": "Défendez le poste avancé pendant trois vagues. Faites ricocher les blocs sur les murs, brisez les météores et touchez le noyau entre ses boucliers tournants. Au début du défi, chaque bloc collecté fournit 1 munition.",
+    "blocks": "Blocs collectés",
+    "schedule": "Rejouez à volonté",
+    "reward": "L’entraînement fournit 24 munitions virtuelles. Ses résultats ne débloquent pas le lanceur violet.",
+    "start": "Commencer",
+    "path": "/activities/meteor-barrage/fr/"
+  },
+  "de": {
+    "title": "Meteoritenabwehr",
+    "label": "Block-Event",
+    "line": "Ein Block. Eine Kette von Treffern.",
+    "body": "Verteidige den Außenposten gegen drei Wellen. Lass Blöcke von den Wänden abprallen, zertrümmere Meteoriten und triff den Kern durch die Lücken seiner kreisenden Schilde. Beim Start der Herausforderung gibt jeder gesammelte Block 1 Munitionseinheit.",
+    "blocks": "Gesammelte Blöcke",
+    "schedule": "Jederzeit erneut spielen",
+    "reward": "Im Training erhältst du 24 virtuelle Munitionseinheiten. Trainingsergebnisse schalten den violetten Werfer nicht frei.",
+    "start": "Starten",
+    "path": "/activities/meteor-barrage/de/"
+  },
+  "it": {
+    "title": "Barriera di meteore",
+    "label": "Evento di blocchi",
+    "line": "Un blocco. Una catena di impatti.",
+    "body": "Difendi l’avamposto per tre ondate. Fai rimbalzare i blocchi sulle pareti, distruggi le meteore e colpisci il nucleo attraverso gli scudi rotanti. All’inizio della sfida, ogni blocco raccolto fornisce 1 munizione.",
+    "blocks": "Blocchi raccolti",
+    "schedule": "Rigioca quando vuoi",
+    "reward": "L’allenamento offre 24 munizioni virtuali. I suoi risultati non sbloccano il lanciatore viola.",
+    "start": "Inizia",
+    "path": "/activities/meteor-barrage/it/"
+  },
+  "ru": {
+    "title": "Метеоритный заслон",
+    "label": "Блочное событие",
+    "line": "Один блок. Цепь попаданий.",
+    "body": "Защитите аванпост от трёх волн. Отражайте блоки от стен, разбивайте метеориты и поражайте ядро через промежутки между вращающимися щитами. В начале испытания каждый собранный блок даёт 1 боеприпас.",
+    "blocks": "Собранные блоки",
+    "schedule": "Играйте снова в любое время",
+    "reward": "В тренировке доступно 24 виртуальных боеприпаса. Её результаты не открывают фиолетовую установку.",
+    "start": "Начать",
+    "path": "/activities/meteor-barrage/ru/"
+  },
+  "hi": {
+    "title": "उल्का रक्षा पंक्ति",
+    "label": "ब्लॉक इवेंट",
+    "line": "एक ब्लॉक। लगातार कई वार।",
+    "body": "तीन हमलों से चौकी की रक्षा करें। ब्लॉक को दीवारों से उछालें, उल्काएँ तोड़ें और घूमती ढाल के बीच से केंद्र पर निशाना लगाएँ। चुनौती की शुरुआत में हर एकत्रित ब्लॉक से 1 गोला मिलता है।",
+    "blocks": "एकत्रित ब्लॉक",
+    "schedule": "जब चाहें दोबारा खेलें",
+    "reward": "अभ्यास में 24 आभासी गोले मिलते हैं। अभ्यास के परिणाम से बैंगनी प्रक्षेपक नहीं खुलता।",
+    "start": "शुरू करें",
+    "path": "/activities/meteor-barrage/hi/"
+  },
+  "ar": {
+    "title": "خط دفاع الشهب",
+    "label": "فعالية المكعبات",
+    "line": "مكعب واحد. سلسلة من الإصابات.",
+    "body": "دافع عن الموقع خلال ثلاث موجات. اجعل المكعبات ترتد عن الجدران، وحطّم الشهب، وأصب النواة عبر فتحات درعها الدوّار. عند بدء التحدي، يمنح كل مكعب مجموع وحدة ذخيرة واحدة.",
+    "blocks": "المكعبات المجموعة",
+    "schedule": "أعد اللعب متى شئت",
+    "reward": "يوفر التدريب 24 وحدة ذخيرة افتراضية. نتائج التدريب لا تفتح القاذف البنفسجي.",
+    "start": "ابدأ",
+    "path": "/activities/meteor-barrage/ar/"
+  }
+};
+// END GENERATED METEOR ACTIVITY ENTRY
 lobby.games.forEach((game) => {
   // Editorial/theme tags are not gameplay genres. Retain them separately for
   // the existing Featured shortcut and leave hall membership to its registry.
@@ -425,12 +573,18 @@ function createDemonEventPreview() {
   section.hidden = true;
   section.dataset.runtimeLocalize = "off";
   section.setAttribute("aria-label", strings.title);
+  const meteor = meteorActivityCopy[locale] || meteorActivityCopy.en;
   const events = [{
     id: "demon-assault", title: strings.title,
     image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1",
     details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: daily[1], reward: strings.reward },
     entry: { kind: "activity", path: "/activities/demon-assault/", label: daily[0] },
     renderer: "demon-assault",
+  }, {
+    id: "meteor-barrage", title: meteor.title, label: meteor.label,
+    image: "/activities/meteor-barrage/poster.webp", showBlocks: true,
+    details: { line: meteor.line, body: meteor.body, blocks: meteor.blocks, schedule: meteor.schedule, reward: meteor.reward },
+    entry: { kind: "activity", path: meteor.path, label: meteor.start }, renderer: null,
   }];
   // Local-only fixtures let the carousel behavior be exercised without publishing placeholder events.
   const fixtureCount = location.hostname === "localhost" || location.hostname === "127.0.0.1"
@@ -724,22 +878,8 @@ function createDemonEventPreview() {
   const onPageShow = () => { updateMotion(); scheduleCarousel(); };
   window.addEventListener("pagehide", onPageHide);
   window.addEventListener("pageshow", onPageShow);
-  // Standalone activities keep their localized copy with their public payload.
-  import("/activities/meteor-barrage/copy.mjs").then(({ COPY, getLocale, lobbyPath }) => {
-    if (artDisposed) return;
-    const copy = COPY[getLocale(locale)];
-    const event = {
-      id: "meteor-barrage", title: copy.title, label: copy.eventLabel,
-      image: "/activities/meteor-barrage/poster.webp", showBlocks: true,
-      details: { line: copy.tagline, body: copy.intro, blocks: copy.collection, schedule: copy.schedule, reward: copy.trainingNote },
-      entry: { kind: "activity", path: `/activities/meteor-barrage${lobbyPath(locale)}`, label: copy.start }, renderer: null,
-    };
-    events.push(event);
-    openButtons.push(appendEventCard(event, events.length - 1));
-    controls.hidden = false;
-    position.textContent = `${activeIndex + 1} / ${events.length}`;
-    scheduleCarousel();
-  }).catch(error => console.warn("Activity unavailable", error));
+  // Both public entries are part of the initial lobby render. Optional artwork
+  // or activity-module loading cannot silently remove an entry on mobile.
   return section;
 }
 

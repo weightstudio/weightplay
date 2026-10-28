@@ -1,4 +1,4 @@
-import {stepShelterChoice} from './beacon-shelter-choice-candidate.mjs';
+import {stepShelterChoice} from './beacon-shelter-choice-candidate.mjs?v=20261028-shelter1';
 // Isolated atomic proposal. Arrays and enemy objects are copied only when an
 // effect occurs; host must commit all returned fields together.
 export function stepShelterWorld(round,{enemies,hazards},input={}){

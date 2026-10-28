@@ -4,7 +4,7 @@
 @media(max-width:600px){.battle-tools{flex-wrap:wrap;gap:8px}.battle-tools p{flex:0 0 100%;margin:0;min-height:2.4em;text-align:center}.battle-tools button{flex:1 1 auto}}
 #helpDialog{max-width:min(90vw,520px);max-height:80vh;overflow:hidden;border:0;border-radius:20px;padding:24px;color:#20344b;background:#fff;line-height:1.5}#helpDialog[open]{display:flex;flex-direction:column}#helpDialog::backdrop{background:#061324bb}
 #helpDialog h2{flex:none;margin:0 0 12px}#helpDialog .help-body{min-height:0;overflow-y:auto}#helpClose{flex:none;align-self:flex-start;margin-top:12px}
-#arena{background:linear-gradient(#0b18359e,#0b1835b8),url('assets/cover.webp') center/cover no-repeat}
+#arena{background:linear-gradient(#0b183566,#0b183588),url('assets/cover.webp') center/cover no-repeat}
 #shopDialog{max-height:80vh;overflow:auto}.collection-art{width:92px;aspect-ratio:1;object-fit:cover;border-radius:12px}.rope-options{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px}.rope-options button{min-height:44px}.result>div.star-frame{border:5px solid #d0a84c;box-shadow:0 0 0 4px #1b3765,0 0 0 7px #efcb6e,0 16px 45px #06132499}
 .lasso-reward-flight{position:fixed;z-index:20000;color:#ffe58b;text-shadow:0 0 8px #ffd15c;font-size:22px;pointer-events:none;line-height:1}
 .battle-tools p{height:7em;min-height:7em;margin:0;overflow:auto}

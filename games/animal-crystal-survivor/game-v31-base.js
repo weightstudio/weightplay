@@ -25,7 +25,7 @@
   // authorization and the Stage 31 adapter are being established. The public
   // game and ordinary local routes do not enter this branch.
   const __crystalPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
-  let __crystalHeatModel=null, __crystalHeatCopy=null, __crystalDropHeatModel=null, __crystalDropHeatCopy=null, __crystalRevealModel=null, __crystalRevealCopy=null;
+  let __crystalHeatModel=null, __crystalHeatCopy=null, __crystalDropHeatModel=null, __crystalDropHeatCopy=null, __crystalRevealModel=null, __crystalRevealCopy=null, __crystalShelterModel=null, __crystalShelterAdapter=null, __crystalShelterCopy=null;
   let __crystalPracticeActive=false;
   let __crystalPracticeIsActive=()=>false;
   let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalSecondBeaconMesh=null, __crystalFragmentMesh=null, __crystalLaneModel=null, __crystalLaneAdapter=null, __crystalWardenArt=null, __crystalWardenMesh=null, __crystalPrismModel=null, __crystalPrismAdapter=null, __crystalSequenceCopy=null, __crystalMirrorAdapter=null, __crystalMirrorCopy=null, __crystalFerrymanAdapter=null, __crystalFerrymanArt=null, __crystalFerrymanCopy=null, __crystalFerrymanVolley=null, __crystalFerrymanMesh=null, __crystalLinkModel=null, __crystalLinkCopy=null, __crystalChargeRunner=null, __crystalChargeAdapter=null, __crystalChargeCopy=null, __crystalJunctionModel=null, __crystalJunctionCopy=null, __crystalLitOrderModel=null, __crystalLitOrderCopy=null, __crystalRamModel=null, __crystalRamArt=null, __crystalRamCopy=null, __crystalRamMesh=null;
@@ -2075,8 +2075,8 @@
     state = makeState();
     state.stage = save.selectedStage;
     state.stageConfig = stages[state.stage - 1];
-    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=48&&__crystalBeaconModel){
-      state.beaconRound=__crystalBeaconModel.makeBeaconRound(state.stage);state.beaconDrop=null;state.beaconGuardSpawned=false;
+    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=49&&__crystalBeaconModel){
+      state.beaconRound=state.stage===49?__crystalShelterModel.makeShelterChoice():__crystalBeaconModel.makeBeaconRound(state.stage);state.beaconDrop=null;state.beaconGuardSpawned=false;
       if(state.stage===41)state.beaconLinkRemaining=0;
       __crystalBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);
       crystal3D.scene.add(__crystalBeaconMesh.group);
@@ -2087,6 +2087,7 @@
       if(state.stage===36){state.beaconPrism=null;__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
       if(state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===43||state.stage===44||state.stage===45){__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
       if(state.stage===48){__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);__crystalSecondBeaconMesh.group.visible=false;crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
+      if(state.stage===49){__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
       if(state.stage===38)state.beaconMirror=null;
       if(state.stage===35){__crystalWardenMesh=__crystalWardenArt.makeWardenArt(__crystalBeaconThree);__crystalWardenMesh.group.visible=false;crystal3D.scene.add(__crystalWardenMesh.group);}
       if(state.stage===40){__crystalFerrymanMesh=__crystalFerrymanArt.makeFerrymanArt(__crystalBeaconThree);__crystalFerrymanMesh.group.visible=false;crystal3D.scene.add(__crystalFerrymanMesh.group);}
@@ -2186,11 +2187,23 @@
     let step;
     if(state.stage===41){const linked=__crystalLinkModel.stepLinkRound({beacon:before,linkRemaining:state.beaconLinkRemaining},{dt,pickup,nearBeacon});state.beaconLinkRemaining=linked.state.linkRemaining;step={state:linked.state.beacon,events:linked.events};}
     else if(state.stage===42&&__crystalPracticeRequested){if(!__crystalChargeAdapter||!__crystalChargeRunner)throw Error('CHARGE_PRACTICE_UNAVAILABLE');const applied=__crystalChargeAdapter.stepLiveChargeRound(before,{dt,pickup,nearBeacon},state.enemies);state.enemies=applied.enemies;step={state:applied.state,events:applied.events};}
+    else if(state.stage===49&&__crystalPracticeRequested){
+      if(!__crystalShelterAdapter||!__crystalShelterModel)throw Error('SHELTER_PRACTICE_UNAVAILABLE');
+      const applied=__crystalShelterAdapter.stepShelterWorld(before,{enemies:state.enemies,hazards:state.hazards},{dt,pickup,nearBeacon});
+      // Preserve the live enemy identity used by existing in-flight shots.
+      if(applied.events.includes('shield-pulse')){const old=state.enemies.find(enemy=>enemy.beaconShelterGuard&&enemy.hp>0&&enemy.shielded&&enemy.shieldHp>0),next=applied.enemies.find(enemy=>enemy.beaconShelterGuard&&enemy.hp>0&&!enemy.shielded);if(!old||!next)throw Error('SHELTER_GUARD_CHANGED');old.shielded=next.shielded;old.shieldHp=next.shieldHp;}
+      else state.enemies=applied.enemies;
+      state.hazards=applied.hazards;step={state:applied.round,events:applied.events};
+    }
     else step=__crystalBeaconModel.stepBeaconRound(before,{dt,pickup,nearBeacon});
     state.beaconRound=step.state;
     if(__crystalPracticeRequested&&state.stage===46&&step.events.includes('charge-picked-up')&&!state.hazards.some(hazard=>hazard.beaconHeat)){
       if(!__crystalHeatModel)throw Error('HEAT_PRACTICE_UNAVAILABLE');
       state.hazards.push(__crystalHeatModel.makeHeatLane());
+    }
+    if(__crystalPracticeRequested&&state.stage===49&&step.events.includes('charge-picked-up')){
+      if(!state.enemies.some(enemy=>enemy.beaconShelterGuard&&enemy.hp>0))state.enemies.push({x:player.x<W/2?W*.75:W*.25,y:Math.max(60,Math.min(H-60,player.y-80)),hp:60,maxHp:60,speed:112,baseSpeed:112,size:62,damage:integerDamage(combatBalance.enemy.basic.damage),image:'basic',role:'melee',hit:0,touch:0,shielded:true,shieldHp:20,beaconShelterGuard:true,chargeTimer:3});
+      if(!state.hazards.some(hazard=>hazard.beaconShelterHeat&&hazard.life>0))state.hazards.push(__crystalShelterModel.makeShelterHeat());
     }
     if(state.stage===41&&step.events.includes('link-expired'))state.beaconLinkExpiredUntil=performance.now()+2500;
     if(state.stage===41&&step.events.includes('link-started'))state.beaconLinkExpiredUntil=0;
@@ -2297,7 +2310,7 @@
       hazard.tick = Math.max(0, hazard.tick - dt);
       // Local Stage 46/47 heat expires before collision; retain historical
       // ordering for every existing stage and other hazard.
-      if(__crystalPracticeRequested&&((state.stage===46&&hazard.beaconHeat)||(state.stage===47&&hazard.beaconDropHeat))&&hazard.life<=0)return false;
+      if(__crystalPracticeRequested&&((state.stage===46&&hazard.beaconHeat)||(state.stage===47&&hazard.beaconDropHeat)||(state.stage===49&&hazard.beaconShelterHeat))&&hazard.life<=0)return false;
       const active = hazard.warn <= 0;
       const previousX = hazard.x, previousY = hazard.y;
       if (hazard.kind === "ring" && active) hazard.r += hazard.growth * dt;
@@ -2686,7 +2699,7 @@
     p.hp=Math.max(0,p.hp-integerDamage(damage));
     if(p.hp<=0&&p.talents.phoenix&&!p.phoenixUsed){p.phoenixUsed=true;p.reviveGrace=1.2;p.hp=combatBalance.reviveHp[p.talents.phoenix];runePulse(p.x,p.y,220,1.2);}
     const received=Math.max(0,before-p.hp);
-    if(received&&state.beaconRound){const step=__crystalBeaconModel.stepBeaconRound(state.beaconRound,{damaged:true});state.beaconRound=step.state;if(step.events.includes('charge-lost'))state.beaconLossUntil=performance.now()+2500;}
+    if(received&&state.beaconRound){const step=__crystalPracticeRequested&&state.stage===49?__crystalShelterModel.stepShelterChoice(state.beaconRound,{damaged:true}):__crystalBeaconModel.stepBeaconRound(state.beaconRound,{damaged:true});state.beaconRound=step.state;if(step.events.includes('charge-lost'))state.beaconLossUntil=performance.now()+2500;}
     return received;
   }
   function updateAdvancedTalents(dt){
@@ -2899,6 +2912,7 @@
       addFloater(locale === "zh-Hant" ? "護盾" : locale === "es" ? "ESCUDO" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
       return {blocked:true,damage:0,hp:enemy.hp};
     }
+    if(__crystalPracticeRequested&&state.stage===49&&enemy.beaconShelterGuard&&enemy.shielded)return {blocked:true,damage:0,hp:enemy.hp};
     if (enemy.shielded && (enemy.shieldHp > 0 || enemy.isBoss)) {
       if (!enemy.isBoss) {
         enemy.shieldHp = Math.max(0, enemy.shieldHp - appliedDamage);
@@ -3293,6 +3307,7 @@
           beaconCarrier: Boolean(enemy.beaconCarrier),
           beaconJunctionPath:enemy.beaconJunctionPath?{...enemy.beaconJunctionPath}:null,
           beaconShieldGuard: Boolean(enemy.beaconShieldGuard),
+          beaconShelterGuard: Boolean(enemy.beaconShelterGuard), shieldHp:enemy.shieldHp,
           chill: enemy.chill || 0,
           role: enemy.role, bowAim: enemy.bowAim ? { ...enemy.bowAim } : null, bowWindup: enemy.bowWindup,
           danger: Math.hypot(enemy.x - state.player.x, enemy.y - state.player.y) <= 170,
@@ -3513,8 +3528,9 @@
       const heatNotice=heat?(state.stage===47?__crystalDropHeatCopy.dropHeatStatus(window.WonderI18n?.actualLocale?.()||locale,heat.warn>0?'warning':'active'):__crystalHeatCopy.heatStatus(window.WonderI18n?.actualLocale?.()||locale,heat.warn>0?'warning':'active')):null;
       const dropHeatWaves=state.stage===47&&state.beaconRound?.completed?`${modeLabels()[1]} ${junctionRatio(Math.min(state.waveCleared,config.waveGoal))}`:null;
       const revealNotice=state.stage===48&&state.beaconRound?(state.beaconRound.completed===2?`${modeLabels()[1]} ${junctionRatio(Math.min(state.waveCleared,config.waveGoal))}`:__crystalRevealCopy.revealStatus(window.WonderI18n?.actualLocale?.()||locale,state.beaconRound.completed,Boolean(state.beaconRound.charge))):null;
+      const shelterNotice=state.stage===49&&state.beaconRound?__crystalShelterCopy.shelterStatus(window.WonderI18n?.actualLocale?.()||locale,state.beaconRound,state.enemies.filter(enemy=>enemy.beaconShelterGuard&&enemy.hp>0&&enemy.shielded&&enemy.shieldHp>0).length===1,state.hazards.filter(hazard=>hazard.beaconShelterHeat&&hazard.life>0).length===1):null;
       const junctionWaveNotice=(state.stage===43||state.stage===44||state.stage===47||state.stage===48)&&!(state.stage===47&&heat)&&state.beaconWaveNoticeUntil>performance.now()?`${modeLabels()[1]} ${junctionRatio(state.wave)}`:null;
-      writeHudValue("modeText", modeText, junctionWaveNotice || (linkCompleteNotice ? __crystalLinkCopy.linkCompleted(window.WonderI18n?.actualLocale?.()||locale) : chargePhase ? __crystalChargeCopy.chargeStatus(window.WonderI18n?.actualLocale?.()||locale,chargePhase) : ramPhase ? __crystalRamCopy.ramStatus(window.WonderI18n?.actualLocale?.()||locale,ramPhase) : heatNotice||revealNotice||dropHeatWaves||litNotice||junctionNotice||objective));
+      writeHudValue("modeText", modeText, junctionWaveNotice || (linkCompleteNotice ? __crystalLinkCopy.linkCompleted(window.WonderI18n?.actualLocale?.()||locale) : chargePhase ? __crystalChargeCopy.chargeStatus(window.WonderI18n?.actualLocale?.()||locale,chargePhase) : ramPhase ? __crystalRamCopy.ramStatus(window.WonderI18n?.actualLocale?.()||locale,ramPhase) : shelterNotice||heatNotice||revealNotice||dropHeatWaves||litNotice||junctionNotice||objective));
       writeHudValue("modeProgress", modeFill.style, `${Math.round(Math.max(0, Math.min(1, progress)) * 100)}%`, "width");
     }
     const time = formatTime(state.timeLeft);
@@ -3722,27 +3738,27 @@
     };
     ctx.save();
     ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
-    if((state.stage===33||state.stage===36||state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===42||state.stage===43||state.stage===44||state.stage===45||state.stage===46||state.stage===47||state.stage===48)&&state.beaconRound){
+    if((state.stage===33||state.stage===36||state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===42||state.stage===43||state.stage===44||state.stage===45||state.stage===46||state.stage===47||state.stage===48||state.stage===49)&&state.beaconRound){
       ctx.save();
       for(const station of __crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons){
         if(state.stage===48&&!__crystalRevealModel.isRevealStationVisible(state.beaconRound,station.id))continue;
         if(!crystal3D.inView(station.x,station.y))continue;
         const marker=point(station.x,station.y,state.stage===46?1.8:4.5),lit=state.stage===44&&station.id===__crystalLitOrderModel.litStation(state.beaconRound);ctx.fillStyle=lit?'#ffe29a':'#10222e';ctx.strokeStyle='#f3d284';ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.roundRect(marker.x-10,marker.y-10,20,20,4);ctx.fill();ctx.stroke();
-        ctx.fillStyle=lit?'#10222e':'#fff4ca';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(station.id,marker.x,marker.y);
+        const width=state.stage===49?36:20;ctx.beginPath();ctx.roundRect(marker.x-width/2,marker.y-10,width,20,4);ctx.fill();ctx.stroke();
+        ctx.fillStyle=lit?'#10222e':'#fff4ca';ctx.font=state.stage===49?'bold 12px system-ui':'bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(state.stage===49?`${station.id} ${station.id==='A'?'◆':'≋'}`:station.id,marker.x,marker.y);
         if(lit){ctx.beginPath();ctx.moveTo(marker.x-5,marker.y-12);ctx.lineTo(marker.x+5,marker.y-12);ctx.lineTo(marker.x,marker.y-17);ctx.closePath();ctx.fillStyle='#ffe29a';ctx.fill();}
       }
       ctx.restore();
     }
-    if((state.stage===46||state.stage===47)&&state.beaconRound){
-      for(const heat of state.hazards.filter(hazard=>hazard.beaconHeat||hazard.beaconDropHeat)){
+    if((state.stage===46||state.stage===47||state.stage===49)&&state.beaconRound){
+      for(const heat of state.hazards.filter(hazard=>hazard.beaconHeat||hazard.beaconDropHeat||hazard.beaconShelterHeat)){
         if(!crystal3D.inView(heat.x,heat.y))continue;
         const marker=point(heat.x,heat.y,1.6),x=Math.max(15,Math.min(renderCanvas.width/annotationScale-15,marker.x)),y=Math.max(15,Math.min(renderCanvas.height/annotationScale-15,marker.y));
         ctx.save();ctx.fillStyle='#30170f';ctx.strokeStyle='#fff1c6';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(x-10,y-10,20,20,4);ctx.fill();ctx.stroke();ctx.fillStyle='#fff1c6';ctx.font='bold 16px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(heat.warn>0?'!':'×',x,y);ctx.restore();
       }
     }
-    if(state.stage===44&&state.beaconRound){
-      const carrier=state.enemies.find(enemy=>enemy.beaconCarrier&&enemy.shielded);
+    if((state.stage===44||state.stage===49)&&state.beaconRound){
+      const carrier=state.enemies.find(enemy=>(state.stage===49?enemy.beaconShelterGuard:enemy.beaconCarrier)&&enemy.shielded);
       if(carrier&&crystal3D.inView(carrier.x,carrier.y)){const marker=point(carrier.x,carrier.y,3.5),x=Math.max(12,Math.min(renderCanvas.width/annotationScale-12,marker.x+42)),y=Math.max(12,Math.min(renderCanvas.height/annotationScale-12,marker.y-25));ctx.save();ctx.strokeStyle='#fff0b5';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(marker.x,marker.y);ctx.lineTo(x,y);ctx.stroke();ctx.fillStyle='#112536';ctx.beginPath();ctx.moveTo(x-8,y-7);ctx.lineTo(x+8,y-7);ctx.lineTo(x+6,y+3);ctx.lineTo(x,y+9);ctx.lineTo(x-6,y+3);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();}
     }
     if(state.stage===43&&state.beaconRound){
@@ -4147,8 +4163,8 @@
     };
     try{
       if(window.__CrystalPracticeGuardReady!==true||window.WONDER_SITE?.analytics?.enabled!==false)throw Error('PRACTICE_GUARD_UNAVAILABLE');
-      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy,sequenceCopy,mirrorAdapter,mirrorCopy,shieldCopy,ferrymanAdapter,ferrymanArt,ferrymanCopy,ferrymanVolley,linkModel,linkCopy,chargeRunner,chargeAdapter,chargeCopy,junctionModel,junctionCopy,litOrderModel,litOrderCopy,ramModel,ramArt,ramCopy,heatModel,heatCopy,dropHeatModel,dropHeatCopy,revealModel,revealCopy]=await Promise.all([
-        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon18'),
+      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy,sequenceCopy,mirrorAdapter,mirrorCopy,shieldCopy,ferrymanAdapter,ferrymanArt,ferrymanCopy,ferrymanVolley,linkModel,linkCopy,chargeRunner,chargeAdapter,chargeCopy,junctionModel,junctionCopy,litOrderModel,litOrderCopy,ramModel,ramArt,ramCopy,heatModel,heatCopy,dropHeatModel,dropHeatCopy,revealModel,revealCopy,shelterModel,shelterAdapter,shelterCopy]=await Promise.all([
+        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon19'),
         import('./beacon-circuit-candidate.mjs?v=20261028-beacon3'),import('./beacon-circuit-copy.mjs?v=20261028-beacon8'),
         import('./beacon-art-candidate.mjs?v=20261028-beacon2'),import('../animal-skyspire-drop/vendor/three/three.module.min.js'),
         import('./beacon-lanes-candidate.mjs?v=20261028-beacon1'),import('./beacon-lanes-adapter-candidate.mjs?v=20261028-beacon1'),
@@ -4181,21 +4197,25 @@
         import('./beacon-drop-heat-copy-candidate.mjs?v=20261028-dropheat1'),
         import('./beacon-reveal-candidate.mjs?v=20261028-reveal1'),
         import('./beacon-reveal-copy-candidate.mjs?v=20261028-reveal1'),
+        import('./beacon-shelter-choice-candidate.mjs?v=20261028-shelter1'),
+        import('./beacon-shelter-adapter-candidate.mjs?v=20261028-shelter1'),
+        import('./beacon-shelter-copy-candidate.mjs?v=20261028-shelter1'),
       ]);
       __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;__crystalWardenArt=wardenArt;__crystalPrismModel=prismModel;__crystalPrismAdapter=prismAdapter;__crystalSequenceCopy=sequenceCopy;__crystalMirrorAdapter=mirrorAdapter;__crystalMirrorCopy=mirrorCopy;__crystalFerrymanAdapter=ferrymanAdapter;__crystalFerrymanArt=ferrymanArt;__crystalFerrymanCopy=ferrymanCopy;__crystalFerrymanVolley=ferrymanVolley;__crystalLinkModel=linkModel;__crystalLinkCopy=linkCopy;__crystalChargeRunner=chargeRunner;__crystalChargeAdapter=chargeAdapter;__crystalChargeCopy=chargeCopy;__crystalJunctionModel=junctionModel;__crystalJunctionCopy=junctionCopy;__crystalLitOrderModel=litOrderModel;__crystalLitOrderCopy=litOrderCopy;__crystalRamModel=ramModel;__crystalRamArt=ramArt;__crystalRamCopy=ramCopy;
       __crystalHeatModel=heatModel;__crystalHeatCopy=heatCopy;
       __crystalDropHeatModel=dropHeatModel;__crystalDropHeatCopy=dropHeatCopy;
       __crystalRevealModel=revealModel;__crystalRevealCopy=revealCopy;
+      __crystalShelterModel=shelterModel;__crystalShelterAdapter=shelterAdapter;__crystalShelterCopy=shelterCopy;
       const enable=value=>{
         __crystalPracticeActive=value;
         if(value)__crystalPracticeIsActive=()=>LocalPractice.dynamicEnabled;
         if(value&&STAGE_COUNT===30){
-          for(const number of [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48]){
-            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:number===44?litOrderCopy.litOrderCopy[key]:number===45?ramCopy.ramCopy[key]:number===46?heatCopy.heatCopy[key]:number===47?dropHeatCopy.dropHeatCopy[key]:number===48?revealCopy.revealCopy[key]:copy.beaconStageCopy(key,number))[0]]));
-            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:number===44?litOrderCopy.litOrderCopy[key]:number===45?ramCopy.ramCopy[key]:number===46?heatCopy.heatCopy[key]:number===47?dropHeatCopy.dropHeatCopy[key]:number===48?revealCopy.revealCopy[key]:copy.beaconStageCopy(key,number))[1]]));
-            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':number===40?'bossFerryman':number===45?'bossCircuitRam':null,mode:number===35||number===40||number===45?'boss':number===36||number===37||number===39||number===41||number===43||number===44||number===47||number===48?'waves':'survival',waveGoal:number===36||number===37||number===39||number===41||number===43||number===44||number===47||number===48?3:0,duration:number===48?90:number===47?90:number===45?120:number===44?90:number===43?90:number===42?60:number===41?90:number===40?110:number===31?45:number===34?55:(number>=35&&number<=37)||number===39?75:50,targetKeys:0});
+          for(const number of [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]){
+            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:number===44?litOrderCopy.litOrderCopy[key]:number===45?ramCopy.ramCopy[key]:number===46?heatCopy.heatCopy[key]:number===47?dropHeatCopy.dropHeatCopy[key]:number===48?revealCopy.revealCopy[key]:number===49?shelterCopy.shelterCopy[key]:copy.beaconStageCopy(key,number))[0]]));
+            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:number===38?mirrorCopy.mirrorCopy[key]:number===39?shieldCopy.shieldCopy[key]:number===40?ferrymanCopy.ferrymanCopy[key]:number===41?linkCopy.linkCopy[key]:number===42?chargeCopy.chargeCopy[key]:number===43?junctionCopy.junctionCopy[key]:number===44?litOrderCopy.litOrderCopy[key]:number===45?ramCopy.ramCopy[key]:number===46?heatCopy.heatCopy[key]:number===47?dropHeatCopy.dropHeatCopy[key]:number===48?revealCopy.revealCopy[key]:number===49?shelterCopy.shelterCopy[key]:copy.beaconStageCopy(key,number))[1]]));
+            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':number===40?'bossFerryman':number===45?'bossCircuitRam':null,mode:number===35||number===40||number===45?'boss':number===36||number===37||number===39||number===41||number===43||number===44||number===47||number===48?'waves':'survival',waveGoal:number===36||number===37||number===39||number===41||number===43||number===44||number===47||number===48?3:0,duration:number===49?75:number===48?90:number===47?90:number===45?120:number===44?90:number===43?90:number===42?60:number===41?90:number===40?110:number===31?45:number===34?55:(number>=35&&number<=37)||number===39?75:50,targetKeys:0});
           }
-          STAGE_COUNT=48;save=JSON.parse(JSON.stringify(save));save.unlockedStage=48;save.selectedStage=31;
+          STAGE_COUNT=49;save=JSON.parse(JSON.stringify(save));save.unlockedStage=49;save.selectedStage=31;
         }
       };
       const start=async(stage,isActive)=>{

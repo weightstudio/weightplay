@@ -182,10 +182,10 @@ export class SalvageView {
       studs(w-9,54,45);if(body.plugin.first){const bar=box(38,9,9,0xfff0c1,55);bar.rotation.z=-Math.PI/4;const bar2=box(38,9,9,0xfff0c1,56);bar2.rotation.z=Math.PI/4;}if(body.plugin.last){box(30,8,9,0xfff0c1,56);const base=box(8,30,9,0xfff0c1,57);base.position.y=-10;}if(body.plugin.linked){const band=box(w-6,7,9,0xf7a8e8,57);band.position.y=25;}if(body.plugin.clampRequired){const band=box(7,60,9,0xa8f8ff,58);band.position.x=-w/2+4;}
     }
     if(kind==='ball') { const ball=new THREE.Mesh(new THREE.SphereGeometry(22,24,16),mat(0x14a8a0,.2));group.add(ball); }
-    if(['wood','metal','target'].includes(kind)) {
+    if(['wood','beam','metal','target'].includes(kind)) {
       // A held body gets four bright corner brackets. The indicator follows
       // the same body transform as the physics mesh and uses a single draw.
-      const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;
+      const w=kind==='beam'?body.plugin.width:kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='beam'?20:kind==='target'?65:80;
       const indicator=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial({color:0x9bffff}),8),transform=new THREE.Object3D();let i=0;
       for(const x of [-1,1])for(const y of [-1,1])for(const horizontal of [true,false]){transform.position.set(x*(w/2+(horizontal?-4:4)),y*(h/2+(horizontal?4:-4)),70);transform.scale.set(horizontal?18:5,horizontal?5:18,3);transform.updateMatrix();indicator.setMatrixAt(i++,transform.matrix);}
       indicator.visible=false;group.add(indicator);group.userData.clampIndicator=indicator;

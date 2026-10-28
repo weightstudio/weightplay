@@ -500,6 +500,26 @@ const HEAVY_HINT={en:'Copper frames with two silver braces mark heavier parts.',
 for(const [locale,heavyHint] of Object.entries(HEAVY_HINT))CUSTOM[locale].heavyHint=heavyHint;
 const CAP_BEAM_TIP={en:'A beam rests across both parts. Knock out the supports to bring them down.','zh-Hant':'橫樑壓在兩個零件上；拆掉支架讓它們落下。','zh-Hans':'横梁压在两个零件上；拆掉支架让它们落下。',ja:'横木は二つの部品に載っています。支えを倒して落としましょう。',ko:'가로대가 두 부품 위에 놓여 있습니다. 지지대를 무너뜨려 부품을 떨어뜨리세요.',es:'Una viga descansa sobre ambas piezas. Derriba los soportes para hacerlas caer.','pt-BR':'Uma viga repousa sobre as duas peças. Derrube os suportes para fazê-las cair.',fr:'Une poutre repose sur les deux pièces. Faites tomber les supports pour les récupérer.',de:'Ein Balken liegt auf beiden Teilen. Stoße die Stützen um, damit sie fallen.',it:'Una trave poggia su entrambi i pezzi. Abbatti i supporti per farli cadere.',ru:'Балка лежит на обеих деталях. Сбейте опоры, чтобы они упали.',hi:'एक बीम दोनों पुर्ज़ों पर टिकी है। सहारे गिराकर पुर्ज़ों को नीचे लाएँ।',ar:'ترتكز عارضة على القطعتين. أسقط الدعامات لإنزالهما.'};
 for(const [locale,capBeamTip] of Object.entries(CAP_BEAM_TIP))CUSTOM[locale].capBeamTip=capBeamTip;
+const BEAM_LABEL={en:'beam','zh-Hant':'橫樑','zh-Hans':'横梁',ja:'横木',ko:'가로대',es:'viga','pt-BR':'viga',fr:'poutre',de:'Balken',it:'trave',ru:'балка',hi:'बीम',ar:'عارضة'};
+for(const [locale,beam] of Object.entries(BEAM_LABEL))CUSTOM[locale].beam=beam;
+const POWER_FINE={
+  en:['Fine power','Decrease power','Increase power','Tap the percentage for one-percent power adjustments.'],
+  'zh-Hant':['精確調整力度','降低力度','增加力度','點選力度百分比，可逐 1% 微調。'],
+  'zh-Hans':['精确调整力度','降低力度','增加力度','点击力度百分比，可逐 1% 微调。'],
+  ja:['強さを細かく調整','強さを下げる','強さを上げる','強さの％を押すと、1％ずつ調整できます。'],
+  ko:['힘 미세 조절','힘 줄이기','힘 늘리기','힘 백분율을 눌러 1%씩 조절하세요.'],
+  es:['Ajustar potencia','Reducir potencia','Aumentar potencia','Toca el porcentaje para ajustar la potencia de 1 % en 1 %.'],
+  'pt-BR':['Ajustar força','Diminuir força','Aumentar força','Toque na porcentagem para ajustar a força de 1% em 1%.'],
+  fr:['Régler la puissance','Réduire la puissance','Augmenter la puissance','Touchez le pourcentage pour régler la puissance par pas de 1 %.'],
+  de:['Stärke fein einstellen','Stärke verringern','Stärke erhöhen','Tippe auf den Prozentwert, um die Stärke in 1-%-Schritten einzustellen.'],
+  it:['Regola la potenza','Riduci la potenza','Aumenta la potenza','Tocca la percentuale per regolare la potenza dell’1% alla volta.'],
+  ru:['Точная настройка силы','Уменьшить силу','Увеличить силу','Нажмите на процент, чтобы менять силу с шагом 1%.'],
+  hi:['बल को बारीकी से बदलें','बल घटाएँ','बल बढ़ाएँ','बल को 1% के चरणों में बदलने के लिए प्रतिशत पर टैप करें।'],
+  ar:['ضبط القوة بدقة','تقليل القوة','زيادة القوة','اضغط النسبة لضبط القوة بمقدار ١٪ في كل مرة.']
+};
+for(const [locale,[finePower,lessPower,morePower,finePowerHelp]] of Object.entries(POWER_FINE))Object.assign(CUSTOM[locale],{finePower,lessPower,morePower,finePowerHelp});
+const POWER_STEP={en:'Use − and + to adjust by 1%.','zh-Hant':'按 − 或 + 每次調整 1%。','zh-Hans':'按 − 或 + 每次调整 1%。',ja:'− と＋で 1％ずつ調整します。',ko:'−와 +로 1%씩 조절합니다.',es:'Usa − y + para ajustar un 1 % cada vez.','pt-BR':'Use − e + para ajustar 1% por vez.',fr:'Utilisez − et + pour ajuster de 1 % à chaque fois.',de:'Mit − und + in 1-%-Schritten einstellen.',it:'Usa − e + per regolare dell’1% alla volta.',ru:'Используйте − и + для настройки с шагом 1%.',hi:'− और + से हर बार 1% बदलें।',ar:'استخدم − و+ للضبط بمقدار ١٪ كل مرة.'};
+for(const [locale,finePowerStep] of Object.entries(POWER_STEP))CUSTOM[locale].finePowerStep=finePowerStep;
 const BRIDGE_TIP={
   en:'A beam rests on two supports. Break the striped support to tip it.',
   'zh-Hant':'橫樑架在兩座支架上；擊碎有條紋的支架，讓橫樑傾倒。',
