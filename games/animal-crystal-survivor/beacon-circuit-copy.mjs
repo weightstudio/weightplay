@@ -64,7 +64,22 @@ const fourthStage={
   hi:['बीकन की जड़ें','टुकड़ा लें, जड़ों के चेतावनी घेरे से बचें और बीकन पर 1.2 सेकंड रुकें। चोट लगने पर टुकड़ा खोता है।'],
   ar:['جذور عند المنارة','اجمع الشظية وتجنب دائرة الجذور المحذّرة، ثم ابقَ عند المنارة ١٫٢ ثانية. الإصابة تفقدك الشظية.'],
 };
-export function beaconStageCopy(locale,stage){if(stage===34)return fourthStage[locale]||fourthStage.en;if(stage===33)return thirdStage[locale]||thirdStage.en;return stage===32?(secondStage[locale]||secondStage.en):beaconCopy(locale).slice(0,2)}
+const fifthStage={
+  en:['Root Lantern Warden','Collect the marked fragment and activate the beacon to open the Warden’s shield. Dodge its warned root sweep, then defeat it.'],
+  'zh-Hant':['根燈守衛','拾取標記碎片並啟動信標打開守衛護盾；閃避預告的根掃，再擊敗守衛。'],
+  'zh-Hans':['根灯守卫','拾取标记碎片并启动信标打开守卫护盾；躲避预告的根扫，再击败守卫。'],
+  ja:['根灯の守護者','印の欠片でビーコンを起動し盾を開く。予告される根の薙ぎ払いを避けて倒そう。'],
+  ko:['뿌리 등불 수호자','표시된 조각으로 신호기를 작동해 방패를 열고, 예고된 뿌리 휩쓸기를 피하며 처치하세요.'],
+  es:['Guardián del farol de raíces','Recoge el fragmento y activa la baliza para abrir el escudo. Esquiva el barrido anunciado y vence al guardián.'],
+  'pt-BR':['Guardião da lanterna de raízes','Pegue o fragmento e ative o sinalizador para abrir o escudo. Desvie da varredura avisada e vença o guardião.'],
+  fr:['Gardien de la lanterne racine','Prenez le fragment et activez la balise pour ouvrir le bouclier. Esquivez le balayage annoncé et battez le gardien.'],
+  de:['Wächter der Wurzellaterne','Sammle das Fragment und aktiviere das Leuchtfeuer für den Schild. Weiche dem angekündigten Wurzelschlag aus und besiege den Wächter.'],
+  it:['Guardiano della lanterna di radici','Raccogli il frammento e attiva il faro per aprire lo scudo. Evita la spazzata annunciata e sconfiggi il guardiano.'],
+  ru:['Хранитель корневого фонаря','Подберите осколок и включите маяк, чтобы открыть щит. Уклонитесь от обозначенного удара корней и победите хранителя.'],
+  hi:['जड़-लालटेन रक्षक','चिह्नित टुकड़े से बीकन चालू कर ढाल खोलें। जड़ों के चेतावनी वार से बचें और रक्षक को हराएँ।'],
+  ar:['حارس فانوس الجذور','اجمع الشظية وشغّل المنارة لفتح درع الحارس. تجنب ضربة الجذور المحذّرة ثم اهزمه.'],
+};
+export function beaconStageCopy(locale,stage){if(stage===35)return fifthStage[locale]||fifthStage.en;if(stage===34)return fourthStage[locale]||fourthStage.en;if(stage===33)return thirdStage[locale]||thirdStage.en;return stage===32?(secondStage[locale]||secondStage.en):beaconCopy(locale).slice(0,2)}
 
 // Short, persistent Battle objectives. These drafts still require native
 // language review; the full rule remains on the Stage card.
@@ -99,11 +114,21 @@ const laneObjectives={
   hi:['A या B चुनें · 1.2 सेकंड रुकें','अगला मार्ग रद्द होने की प्रतीक्षा','चुना मार्ग रद्द · जीवित रहें'],
   ar:['اختر A أو B وابقَ ١٫٢ ثانية','بانتظار إلغاء المسار التالي','أُلغي المسار المختار · اصمد'],
 };
-const rootObjective={en:'Dodge roots · hold at beacon 1.2s','zh-Hant':'閃避根圈 · 信標停留 1.2 秒','zh-Hans':'躲避根圈 · 信标停留 1.2 秒',ja:'根を避けビーコンに1.2秒留まる',ko:'뿌리를 피해 신호기에 1.2초 머무르기',es:'Esquiva raíces · baliza 1,2 s','pt-BR':'Desvie das raízes · sinalizador 1,2 s',fr:'Évitez les racines · balise 1,2 s',de:'Wurzeln ausweichen · 1,2 s bleiben',it:'Evita le radici · faro 1,2 s',ru:'Уклонитесь от корней · у маяка 1,2 с',hi:'जड़ों से बचें · बीकन पर 1.2 सेकंड',ar:'تجنب الجذور وابقَ عند المنارة ١٫٢ ثانية'};
-export function beaconObjective(locale,phase,stage=31,resolved=true){
+const rootObjectives={
+  en:['Root warning · stay outside','Root active · stay outside'], 'zh-Hant':['根圈預告 · 離開範圍','根圈生效 · 遠離範圍'],
+  'zh-Hans':['根圈预告 · 离开范围','根圈生效 · 远离范围'], ja:['根の予告 · 範囲外へ','根が発動中 · 範囲外へ'],
+  ko:['뿌리 예고 · 범위 밖으로','뿌리 발동 · 범위 밖으로'], es:['Raíces avisadas · sal del círculo','Raíces activas · mantente fuera'],
+  'pt-BR':['Raízes à vista · saia do círculo','Raízes ativas · fique fora'], fr:['Racines annoncées · sortez du cercle','Racines actives · restez dehors'],
+  de:['Wurzeln angekündigt · Kreis verlassen','Wurzeln aktiv · draußen bleiben'], it:['Radici in arrivo · esci dal cerchio','Radici attive · resta fuori'],
+  ru:['Корни близко · выйдите из круга','Корни активны · оставайтесь снаружи'], hi:['जड़ों की चेतावनी · घेरे से बाहर जाएँ','जड़ें सक्रिय · बाहर रहें'],
+  ar:['تحذير جذور · اخرج من الدائرة','الجذور نشطة · ابقَ خارجها'],
+};
+const wardenObjective={en:'Shield open · defeat the Warden','zh-Hant':'護盾已開 · 擊敗守衛','zh-Hans':'护盾已开 · 击败守卫',ja:'盾が開いた · 守護者を倒す',ko:'방패 개방 · 수호자 처치',es:'Escudo abierto · vence al guardián','pt-BR':'Escudo aberto · vença o guardião',fr:'Bouclier ouvert · battez le gardien',de:'Schild offen · besiege den Wächter',it:'Scudo aperto · sconfiggi il guardiano',ru:'Щит открыт · победите хранителя',hi:'ढाल खुली · रक्षक को हराएँ',ar:'الدرع مفتوح · اهزم الحارس'};
+export function beaconObjective(locale,phase,stage=31,resolved=true,rootState=null){
   if(stage===32&&phase===0)return chargerObjective[locale]||chargerObjective.en;
   if(stage===33&&(phase===2||phase===3))return (laneObjectives[locale]||laneObjectives.en)[phase===2?0:resolved?2:1];
-  if(stage===34&&phase===2)return rootObjective[locale]||rootObjective.en;
+  if(stage===34&&phase===2&&rootState)return (rootObjectives[locale]||rootObjectives.en)[rootState==='warn'?0:1];
+  if(stage===35&&phase===3)return wardenObjective[locale]||wardenObjective.en;
   return (objectives[locale]||objectives.en)[phase]||objectives.en[0];
 }
 

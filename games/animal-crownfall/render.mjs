@@ -99,7 +99,7 @@ export class CrownScene {
       node.userData.labelLift=kind==='item'?(occupied?.45:0)+Math.max(0,rank)*.42:0;
       const at=this.point(a.x,a.y);if(!preserve||!oldPosition)node.position.set(at.x+node.userData.cellOffset,at.y+node.userData.groundOffset,.65);
       if(!preserve){node.rotation.set(0,kind==='hero'?.28:kind==='enemy'?-.28:['crown','sword'].includes(a.kind)?.2:0,0);node.visible=true;node.scale.setScalar(a.boss?.81:kind==='item'?1:.75);}
-      const label=document.createElement('span');label.className=`actor-tag ${kind}`;if([45,48,49].includes(state.level)&&kind==='item'&&a.kind==='rune')label.classList.add('phase-rune');if([45,48,49].includes(state.level)&&kind==='enemy'&&a.shield)label.classList.add('phase-shield');const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',this.accessibleLabel(a,kind,state)||fullLabel);if(state.level===49&&(label.classList.contains("phase-rune")||label.classList.contains("phase-shield")))label.classList.add("stage49");this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
+      const label=document.createElement('span');label.className=`actor-tag ${kind}`;if([45,48,49,50].includes(state.level)&&kind==='item'&&a.kind==='rune')label.classList.add('phase-rune');if([45,48,49,50].includes(state.level)&&kind==='enemy'&&a.shield)label.classList.add('phase-shield');const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',this.accessibleLabel(a,kind,state)||fullLabel);if(([49,50].includes(state.level))&&(label.classList.contains("phase-rune")||label.classList.contains("phase-shield")))label.classList.add("stage49");this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
     };
     add(state.hero,'hero');state.enemies.filter(e=>e.alive).forEach(e=>add(e,'enemy'));state.items.filter(i=>i.alive).forEach(i=>add(i,'item'));
     for(const [id,node] of this.actorNodes)if(!alive.has(id)){this.world.remove(node);this.actorNodes.delete(id);}
@@ -155,6 +155,18 @@ export class CrownScene {
     if(this.effectAnchor&&!this.effect.hidden){const p=this.effectAnchor.clone().project(this.camera);this.effect.style.left=`${(p.x+1)*50}%`;this.effect.style.top=`${(1-p.y)*50}%`;}
     const width=this.host.clientWidth,height=this.host.clientHeight,placed=[];
     const labels=(this.labelNodes||[]).map(l=>{const p=l.node.position.clone();p.y+=.77+(l.node.userData.labelLift||0);p.project(this.camera);const visible=l.node.visible&&p.x>=-.97&&p.x<=.97&&p.y>=-.95&&p.y<=.97;l.element.hidden=!visible;return {...l,visible,x:(p.x+1)*width/2,y:(1-p.y)*height/2};}).sort((a,b)=>a.y-b.y);
+    const placeLatchLabels=()=>{
+      for(const badge of this.latchLabels||[]){
+        const p=new THREE.Vector3(badge.x,-badge.y,.85).project(this.camera),visible=Math.abs(p.x)<.96&&Math.abs(p.y)<.96;badge.element.hidden=!visible;if(!visible)continue;
+        const x=(p.x+1)*width/2,y=(1-p.y)*height/2,w=badge.element.offsetWidth,h=badge.element.offsetHeight;
+        const candidates=[[x+2,y+2],[x-w-2,y+2],[x+2,y-h-2],[x-w-2,y-h-2],[x-w/2,y+h],[x-w/2,y-2*h]];
+        const choices=candidates.map(([a,b])=>({left:Math.max(2,Math.min(width-w-2,a)),top:Math.max(2,Math.min(height-h-2,b))}));
+        const good=choices.find(c=>!placed.some(r=>c.left<r.right+1&&c.left+w>r.left-1&&c.top<r.bottom+1&&c.top+h>r.top-1))||choices[0];
+        badge.element.style.left=`${good.left}px`;badge.element.style.top=`${good.top}px`;placed.push({left:good.left,right:good.left+w,top:good.top,bottom:good.top+h});
+      }
+    };
+    // Stage 49 reserves each pairing number near its tile before laying out longer actor labels.
+    if([49,50].includes(this.state?.level))placeLatchLabels();
     for(const l of labels){
       if(!l.visible)continue;
       const w=l.element.offsetWidth,h=l.element.offsetHeight;
@@ -165,15 +177,8 @@ export class CrownScene {
       top=Math.min(height-h-2,top);placed.push({left,right:left+w,top,bottom:top+h});
       l.element.style.left=`${left+w/2}px`;l.element.style.top=`${top+h}px`;
     }
-    // Keep the matching number close to its tile, but out of actor value tags.
-    for(const badge of this.latchLabels||[]){
-      const p=new THREE.Vector3(badge.x,-badge.y,.85).project(this.camera),visible=Math.abs(p.x)<.96&&Math.abs(p.y)<.96;badge.element.hidden=!visible;if(!visible)continue;
-      const x=(p.x+1)*width/2,y=(1-p.y)*height/2,w=badge.element.offsetWidth,h=badge.element.offsetHeight;
-      const candidates=[[x+2,y+2],[x-w-2,y+2],[x+2,y-h-2],[x-w-2,y-h-2],[x-w/2,y+h],[x-w/2,y-2*h]];
-      const choices=candidates.map(([a,b])=>({left:Math.max(2,Math.min(width-w-2,a)),top:Math.max(2,Math.min(height-h-2,b))}));
-      const good=choices.find(c=>!placed.some(r=>c.left<r.right+1&&c.left+w>r.left-1&&c.top<r.bottom+1&&c.top+h>r.top-1))||choices[0];
-      badge.element.style.left=`${good.left}px`;badge.element.style.top=`${good.top}px`;placed.push({left:good.left,right:good.left+w,top:good.top,bottom:good.top+h});
-    }
+    // For earlier stages preserve the established actor-first layout.
+    if(![49,50].includes(this.state?.level))placeLatchLabels();
   }
   async animate(event,previous,isPaused=()=>false) {
     if(this.disposed)return;

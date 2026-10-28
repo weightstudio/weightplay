@@ -34,11 +34,14 @@ export function createRenderer(container, onContextLost = () => {}) {
     arrow.rotation.x=headwind?-Math.PI/2:Math.PI/2;arrow.position.set(x,2.12,z+(headwind?-.6:.6));parent.add(arrow);
   }
   function tree(parent,x,z,variant) {
-    const g=new THREE.Group(); g.position.set(x,0,z); g.scale.setScalar(variant ? 1.2 : .95); parent.add(g);
+    const palette=[['#285c4a','#3f8060','#6ea572','#9dbd73'],['#335b48','#568465','#8cad72','#c0c17c'],['#214e52','#3b736e','#74a491','#a9c5a2']][variant%3];
+    const g=new THREE.Group(); g.position.set(x,0,z); g.scale.setScalar([.95,1.2,1.08][variant%3]); parent.add(g);
     box(g,.45,2.7,.45,0,1.35,0,0x745137);box(g,.12,2.2,.08,.14,1.2,.25,0xa77848);box(g,.8,.18,.3,.34,1.95,0,0x795333);
-    box(g,1.8,.7,1.5,0,2.5,0,0x285c4a); box(g,1.45,.7,1.25,.1,3.1,0,0x3f8060);
-    box(g,.9,.65,.9,-.12,3.65,0,0x6ea572); box(g,.55,.3,.55,.05,4.12,0,0x9dbd73);
+    box(g,1.8,.7,1.5,0,2.5,0,palette[0]); box(g,1.45,.7,1.25,.1,3.1,0,palette[1]);
+    box(g,.9,.65,.9,-.12,3.65,0,palette[2]); box(g,.55,.3,.55,.05,4.12,0,palette[3]);
     box(g,.48,.22,.5,-.64,2.84,.52,0x78a96d);box(g,.35,.2,.4,.52,3.3,.38,0x91b77a);
+    if(variant%3===1)box(g,.55,.32,.48,.75,2.68,-.35,palette[1]);
+    if(variant%3===2)box(g,.45,.38,.48,-.7,3.08,-.28,palette[2]);
   }
   const world=new THREE.Group(); scene.add(world);
   box(world,40,.25,160,0,-.54,70,0x38563b);box(world,8,.25,150,0,-.2,68,0x8c5c3d); box(world,7.4,.08,150,0,-.04,68,0x8e866b);
@@ -46,7 +49,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     const z=i*5-5; box(world,7.1,.025,.08,0,.01,z,0xdec889);
     if(i%2===0){light(world,-4.5,z);light(world,4.5,z);}
     if(i%4===0){for(const side of [-1,1]){box(world,7,4,7,side*16,1.6,z+15,0x597d6d);box(world,5,2.6,5,side*16.5,4.5,z+15,0x779c83);box(world,3,1.7,3,side*16,6.6,z+15,0x9bb8a0);}}
-    tree(world,-7-(i%3),z+2,i%2); tree(world,7+(i%2),z+4,(i+1)%2);
+    tree(world,-7-(i%3),z+2,i%3); tree(world,7+(i%2),z+4,(i+1)%3);
     // Repeated scenery is baked with the track below: no per-frame allocations.
     if(i%2===0){
       box(world,.8,.35,.7,-5.3,.17,z+2,0x4f8157);box(world,.5,.3,.55,-5.55,.42,z+2,0x77a76a);box(world,.7,.22,.55,5.5,.11,z+3,0x758878);
@@ -142,6 +145,10 @@ export function createRenderer(container, onContextLost = () => {}) {
     const bit=box(contact,size,.1,size,x,.13,z,0xffe884);bit.material.transparent=true;bit.material.depthWrite=false;contactBits.push(bit);
   }
   const trail=new THREE.Group();fia.add(trail);for(const [x,z,size] of [[-.55,-1.45,.17],[.44,-1.7,.13],[0,-2,.1]])box(trail,size,.04,size,x,.08,z,0xffdf65);trail.visible=false;
+  const speedWake=new THREE.Group();fia.add(speedWake);speedWake.visible=false;
+  for(const [x,z,length] of [[-.55,-.9,.7],[.5,-1.25,1.0],[-.25,-1.6,.55]]){
+    const streak=box(speedWake,.07,.06,length,x,.16,z,0x9eeaf2);streak.material.transparent=true;streak.material.opacity=.7;streak.material.depthWrite=false;
+  }
   let stageId=null, markerMeshes=[], visualLane=0;
   function configure(stage) {
     if(stageId===stage.id)return; stageId=stage.id;
@@ -212,6 +219,8 @@ export function createRenderer(container, onContextLost = () => {}) {
     legs[0].rotation.x=(race.lastFoot==='left'?1:-1)*amplitude; legs[1].rotation.x=-legs[0].rotation.x;
     arms[0].rotation.x=-legs[0].rotation.x*.7;arms[1].rotation.x=-legs[1].rotation.x*.7;
     scarf.rotation.y=reducedMotion||race.speed<.2?0:Math.sin(race.elapsed*4)*.13;
+    speedWake.visible=race.combo>=12&&race.speed>2&&!reducedMotion;
+    speedWake.position.z=speedWake.visible?-.16*(.5+.5*Math.sin(race.elapsed*9)):0;
     fia.rotation.z=reducedMotion?0:(race.balance<30?.12:0);
     markerMeshes.forEach((m,i)=>{
       if(m.gate)m.gate.visible=z<=m.start+.5;

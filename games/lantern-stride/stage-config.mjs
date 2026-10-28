@@ -5,7 +5,7 @@ const designs = [
   ['plain,slow,plain', 'finish', 70, 60], ['plain,fast,plain', 'finish', 70, 55], ['left', 'finish', 80, 60], ['fast,left', 'stumble2', 80, 60], ['slow,right', 'balance35', 90, 65],
   ['headwind,plain', 'finish', 75, 60], ['tailwind,slow', 'finish', 80, 60], ['headfast,plain', 'finish', 80, 65], ['slow,tailwind', 'finish', 85, 60], ['tailwind,headwind,slow', 'stumble2', 90, 70],
   ['left,headwind', 'gates', 70, 60], ['right,tailwind', 'gates', 70, 60], ['left,slow', 'gates', 80, 65], ['right,headwind', 'gates', 80, 65], ['left,right', 'gates', 90, 70],
-  ['fast,left', 'gates', 85, 65], ['slow,right', 'gates', 85, 70], ['headwind,right,left', 'gates', 95, 75], ['tailwind,right,slow', 'gates', 95, 70], ['slow,left,fast,right', 'balance30', 100, 80],
+  ['fast,left,tailwind', 'gates', 85, 65], ['slow,right,headwind', 'gates', 85, 70], ['headwind,right,left', 'gates', 95, 75], ['tailwind,right,slow', 'gates', 95, 70], ['slow,left,fast,right', 'balance30', 100, 80],
   ['headwind,tailwind,headwind', 'finish', 100, 80], ['fast,plain,slow,fast', 'finish', 100, 80], ['right,left,right', 'gates', 100, 85], ['slow,headwind,fast,tailwind', 'finish', 105, 85], ['left,fast,headwind,right,slow', 'stumble2', 110, 90],
   ['plain,bridge', 'finish', 70, 80], ['bridge,slow', 'finish', 80, 80], ['slow,bridge', 'finish', 80, 85], ['bridge,plain,bridge', 'finish', 85, 90], ['slow,bridge,fast', 'stumble2', 90, 90],
   ['bridge,left', 'gates', 85, 90], ['right,bridge', 'gates', 85, 90], ['headwind,bridge', 'finish', 90, 95], ['bridge,right,bridge', 'gates', 95, 100], ['left,bridge,right', 'gates', 100, 100],

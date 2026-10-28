@@ -54,6 +54,21 @@ const EIGHTEENTH_NAMES={en:'Three seals and the shield','zh-Hant':'三印記與�
 for(const [locale,value] of Object.entries(EIGHTEENTH_NAMES))LATCH_NAMES[locale].push(value);
 const NINETEENTH_NAMES={en:'Paired locks and sun shield','zh-Hant':'雙鎖與太陽盾','zh-Hans':'双锁与太阳盾',ja:'二つの錠と太陽の盾',ko:'두 잠금과 태양 방패',es:'Dos candados y escudo solar','pt-BR':'Duas travas e escudo solar',fr:'Deux verrous et bouclier solaire',de:'Zwei Sperren und Sonnenschild',it:'Due blocchi e scudo solare',ru:'Два замка и солнечный щит',hi:'दो ताले और सूर्य ढाल',ar:'قفلان ودرع الشمس'};
 for(const [locale,value] of Object.entries(NINETEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTIETH_NAMES={en:'The three-seal guardian','zh-Hant':'三印記守衛','zh-Hans':'三印记守卫',ja:'三つの印の守護者',ko:'세 인장의 수호자',es:'El guardián de tres sellos','pt-BR':'O guardião dos três selos',fr:'Le gardien aux trois sceaux',de:'Der Wächter der drei Siegel',it:'Il guardiano dei tre sigilli',ru:'Страж трёх печатей',hi:'तीन मुहरों का रक्षक',ar:'حارس الأختام الثلاثة'};
+for(const [locale,value] of Object.entries(TWENTIETH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_THREE_SEALS_TWO_RUNES_RULE={
+ en:'Match both pairs; seals 1, 2, 3 in order. Use ☀ then ☾ runes for the two shields.',
+ 'zh-Hant':'配對兩組鑰匙與鎖，印記依序1、2、3；兩階護盾依序用☀、☾符文。','zh-Hans':'配对两组钥匙与锁，印记依序1、2、3；两阶段护盾依序用☀、☾符文。',
+ ja:'二組の鍵を合わせ、印は1、2、3の順。二つの盾に☀、☾のルーン。',ko:'두 열쇠 쌍을 맞추고 인장 1, 2, 3 순서. 두 방패에는 ☀, ☾ 룬을 차례로 쓰세요.',
+ es:'Empareja ambos pares; sellos 1, 2, 3 en orden. Usa runas ☀ y ☾ para los dos escudos.',
+ 'pt-BR':'Combine os dois pares; selos 1, 2, 3 em ordem. Use runas ☀ e ☾ nos dois escudos.',
+ fr:'Associez les deux paires ; sceaux 1, 2, 3 dans l’ordre. Utilisez les runes ☀ puis ☾ pour les deux boucliers.',
+ de:'Ordne beide Paare zu; Siegel 1, 2, 3 in Reihenfolge. Nutze ☀ und dann ☾ für die zwei Schilde.',
+ it:'Abbina entrambe le coppie; sigilli 1, 2, 3 in ordine. Usa le rune ☀ e ☾ per i due scudi.',
+ ru:'Сопоставьте обе пары; печати 1, 2, 3 по порядку. Руны ☀ и ☾ для двух щитов.',
+ hi:'दोनों जोड़े मिलाएँ; मुहरें 1, 2, 3 क्रम से। दोनों ढालों के लिए पहले ☀, फिर ☾ रून लें।',
+ ar:'طابق الزوجين؛ الأختام 1 و2 و3 بالترتيب. استخدم رون ☀ ثم ☾ للدرعين.'
+};
 export const LATCH_DUAL_THREE_SHIELD_RULE={
  en:'Match both key pairs; seals 1, 2, 3 in order. Take the sun rune for the shield; use arrows to find items.',
  'zh-Hant':'配對兩組鑰匙與鎖；印記依序1、2、3。收集太陽符文破盾，用箭頭找物件。','zh-Hans':'配对两组钥匙与锁；印记依序1、2、3。收集太阳符文破盾，用箭头找物件。',
