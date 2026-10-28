@@ -124,6 +124,7 @@
   const saveProgress = () => { if(practiceRequested)return;try { localStorage.setItem(PROGRESS_KEY, String(state.completed)); } catch (_) {} };
   const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind;placePracticeBadge();stellar.enter(node); };
   const mirrorText=()=>mirrorCopy?.[state.locale]||mirrorCopy?.en;
+  const renderCheckCount=()=>{const full=t('checksLabel',{count:state.mapChecks}),short={es:'Intentos: {count}','pt-BR':'Tentativas: {count}',fr:'Essais : {count}',ar:'فحوص: {count}'};const node=$('checkCount');node.textContent=practiceEnabled&&short[state.locale]?short[state.locale].replace('{count}',String(state.mapChecks)):full;node.setAttribute('aria-label',full);};
   const describeRelation = ([subject, relation, object]) => {const index=mirrorRelations?.indexOf(relation)??-1;if(practiceEnabled&&index>=0)return mirrorText()[4][index].replaceAll('{a}',t(subject)).replaceAll('{b}',t(object));return t(`relation${relation[0].toUpperCase()}${relation.slice(1)}`, { subject: t(subject), object: t(object) });};
   const lensButton=document.createElement('button');lensButton.type='button';lensButton.id='ckMirrorLens';lensButton.hidden=true;
   const lensHelp=document.createElement('p');lensHelp.id='ckMirrorLensHelp';lensHelp.hidden=true;document.querySelector('.rule-card').append(lensHelp);
@@ -247,7 +248,7 @@
       button.dataset.verdict = evaluation ? evaluation[index] ? "pass" : "fail" : "idle";
       button.setAttribute("aria-label", `${text.textContent} ${evaluation ? evaluation[index] ? t("rulePass") : t("ruleFail") : t("traceClue")}`);
     });
-    $("checkCount").textContent = t("checksLabel", { count: state.mapChecks });
+    renderCheckCount();
     const grid = $("choiceGrid");
     const renderKey = `${state.map}:${state.locale}`;
     if (grid.dataset.renderKey !== renderKey) {
@@ -332,6 +333,7 @@
     const current = maps[state.map]; const option = current.options.find(item => item.id === state.selected);
     if (!option) return;
     state.checks++; state.sessionChecks++; state.mapChecks++;
+    renderCheckCount();
     const evaluation = practiceEnabled&&state.map>=30?mirrorAssess(current, option):puzzle.assess(current, option); state.evaluations[option.id] = evaluation;
     if (!evaluation.every(Boolean)) {
       state.clue = evaluation.indexOf(false); state.streak = 0; renderBattle();
@@ -391,6 +393,12 @@
     if(!ready)return;const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs'),import('./mirror-observatory-candidate.mjs?v=20261027-mirror1'),import('./mirror-observatory-locales.mjs?v=20261028-mirror2')]);if(!await LocalPractice.ready)return;
     const data=chapter.createMirrorMaps();if(data.length!==30||data.some((m,i)=>m.number!==31+i))return;practiceAdapter=LocalPractice;mirrorAssess=chapter.assess;mirrorCopy=locale.MIRROR_COPY;mirrorShort=locale.MIRROR_SHORT;mirrorGuide=locale.MIRROR_GUIDE;mirrorRelations=locale.MIRROR_RELATIONS;originalCompleted=state.completed;
     const style=document.createElement('style');style.textContent='body[data-wp-constellation-mirror] .battle-actions{grid-template-columns:repeat(3,minmax(0,1fr));position:relative;z-index:3}body[data-wp-constellation-mirror] .battle-actions button{min-width:0}body[data-wp-constellation-mirror] #ckMirrorLens{display:inline-flex;gap:4px;align-items:center;justify-content:center}body[data-wp-constellation-mirror] #ckMirrorLens[hidden]{display:none}body[data-wp-constellation-mirror] .ck-lens-eliminated{opacity:.35}body[data-wp-constellation-mirror] .battle-info-field:has(#mapName){display:none}@media (orientation:landscape) and (max-height:590px){html[data-wp-shared-interface] body[data-wp-constellation-mirror] #resultScreen .result-card{display:grid!important;grid-template-columns:minmax(120px,32%) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;align-items:center;justify-content:normal;min-height:0;max-height:100%;overflow:auto;padding:8px}body[data-wp-constellation-mirror] #ckResultReward{grid-column:1;grid-row:1 / 5}body[data-wp-constellation-mirror] #ckResultReward .star-board{width:120px;height:120px}body[data-wp-constellation-mirror] #ckResultReward .ck-animal{width:28px;height:28px}body[data-wp-constellation-mirror] #ckResultReward .ck-rating{font-size:22px;margin:2px}body[data-wp-constellation-mirror] #resultTitle,body[data-wp-constellation-mirror] #resultText,body[data-wp-constellation-mirror] #resultScreen [data-wp-local-practice],body[data-wp-constellation-mirror] #resultScreen .result-actions{grid-column:2}body[data-wp-constellation-mirror] #resultScreen .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0}body[data-wp-constellation-mirror] #resultScreen .result-actions button{min-width:0;min-height:44px}}';document.head.append(style);
+    // The portrait Canvas is 390 logical pixels wide. At 320px viewport width,
+    // its 52px action row becomes 42.7px; 56 logical pixels leaves it above 44.
+    style.textContent+='@media (max-width:390px) and (orientation:portrait){body[data-wp-constellation-mirror] .battle-actions{height:56px;min-height:56px}body[data-wp-constellation-mirror] .battle-actions button{height:56px;min-height:56px}}';
+    // The hidden original map-name field must not reserve a third equal-width
+    // slot; the remaining map number and check count need the available width.
+    style.textContent+='body.wp-frame-battle-active[data-wp-constellation-mirror] [data-wp-frame-info]{--wp-frame-stat-count:2!important}';
     await LocalPractice.register({gameId:'animal-constellation-keeper',stageIds:Array.from({length:30},(_,i)=>String(i+31)),enable(enabled){practiceEnabled=enabled===true;const nameField=$('mapName').closest('.battle-info-field'),completionField=$('stageCompletionValue').closest('.stage-info-field');if(practiceEnabled){document.body.dataset.wpConstellationMirror='';battleRoot.dataset.wpBattleLandscapeWidth='760';battleRoot.dataset.wpBattleLandscapeHeight='334';nameField?.style.setProperty('display','none','important');completionField?.style.setProperty('display','none','important');if(maps.length===30)maps.push(...puzzle.assignBalancedAnswerSlots(data));state.completed=59;stageSelectionIndex=30;}else{delete document.body.dataset.wpConstellationMirror;delete battleRoot.dataset.wpBattleLandscapeWidth;delete battleRoot.dataset.wpBattleLandscapeHeight;nameField?.style.removeProperty('display');completionField?.style.removeProperty('display');maps.length=30;mastery.length=30;state.completed=originalCompleted;stageSelectionIndex=Math.min(state.completed,29);show('main');}applyLocale();if(state.screen==='stage')renderStages();placePracticeBadge();window.WeightPlayBattleCanvas?.sync?.();},async startStage(id){const n=Number(id);if(practiceEnabled&&Number.isInteger(n)&&n>=31&&n<=60)startMap(n-1)}});
   }
 })();

@@ -67,6 +67,7 @@ export class SalvageSlice {
       const beam=add(Bodies.rectangle(slope?662.4:580,slope?670.3:710,width,20,{...surface,density:.001,angle:slope?Math.atan2(80,320):0}),'beam');beam.plugin.width=width;
       const part=add(Bodies.rectangle(slope?672.7:580,slope?629.1:667.5,65,65,{...surface,density:.0006}),'target');part.plugin.column=1;this.targets.push(part);
     }
+    if(stage?.capBeam){const beam=add(Bodies.rectangle(580,645,230,20,{...surface,density:.001}),'beam');beam.plugin.width=230;}
     if(stage?.platform){
       const part=add(Bodies.rectangle(660,657.5,65,65,{...surface,density:.0006}),'target');
       Object.assign(part.plugin,{column:1,first:stage.firstColumn===1,last:stage.lastColumn===1,clampRequired:stage.clampColumn===1,linked:stage.sameShot?.includes(1)||false});this.targets.push(part);
@@ -177,7 +178,10 @@ export class SalvageSlice {
       this.ballRetireQuiet=safe?this.ballRetireQuiet+seconds:0;
       if(this.ballRetireQuiet>=.5){this.M.Composite.remove(this.engine.world,ball);const index=this.bodies.indexOf(ball);if(index>=0)this.bodies.splice(index,1);this.ball=null;}
     }
-    const moving = this.bodies.some(b => !b.isStatic && !b.isSleeping && (b.speed > .08 || Math.abs(b.angularSpeed) > .004));
+    // A held body can move again as soon as its timer releases it. Keep the
+    // current shot open until that release and the resulting motion settle,
+    // so a linked recovery is evaluated against the correct shot.
+    const moving = this.clamped.length>0 || this.bodies.some(b => !b.isStatic && !b.isSleeping && (b.speed > .08 || Math.abs(b.angularSpeed) > .004));
     this.quiet = moving ? 0 : this.quiet + seconds;
     if (this.elapsed > .4 && this.quiet >= .5) {
       const linked=this.stage?.sameShot;

@@ -108,7 +108,10 @@ export class SalvageView {
       const scale = this.focused ? 1.5 : 1;
       const width = Math.max(1000, 520 * aspect) / scale, height = Math.max(520, 1000 / aspect) / scale;
       const center = this.focused ? 630 : 500;
-      this.camera.position.set(center,260,1200);this.camera.lookAt(center,260,0);this.camera.updateMatrixWorld();
+      // In a short zoomed viewport keep the recovery floor in view. The
+      // unprojected pointer follows this same camera, so aiming stays aligned.
+      const centerY=this.focused&&height<520?height/2-10:260;
+      this.camera.position.set(center,centerY,1200);this.camera.lookAt(center,centerY,0);this.camera.updateMatrixWorld();
       this.camera.left=-width/2; this.camera.right=width/2; this.camera.top=height/2; this.camera.bottom=-height/2;
       this.camera.updateProjectionMatrix(); this.renderer.setSize(w,h,false);
     };
@@ -137,12 +140,34 @@ export class SalvageView {
     // A slim dark backplate separates playable shapes from the richly detailed
     // workshop without changing the collision shape or obscuring its face.
     if(['wood','metal','target'].includes(kind)){const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;box(w+7,h+7,5,0x183b3a,-39);}
-    if(kind==='ground') { box(1200,40,80,0x846248); box(1200,8,86,0xd4a85c,5); }
+    if(kind==='ground') {
+      box(1200,40,80,0x674b39);
+      // Repeated timber panels and fasteners tie the playable floor to the
+      // workshop while keeping the physical ground a single rectangle.
+      const planks=new THREE.InstancedMesh(new THREE.BoxGeometry(57,31,3),new THREE.MeshStandardMaterial({color:0xffffff,map:this.woodTexture,roughness:.84}),20);
+      const fasteners=new THREE.InstancedMesh(new THREE.BoxGeometry(4,4,2),mat(0xe7bc70,.45),40),transform=new THREE.Object3D();
+      for(let i=0;i<20;i++){
+        const x=-570+i*60;transform.position.set(x,0,41);transform.updateMatrix();planks.setMatrixAt(i,transform.matrix);
+        planks.setColorAt(i,new THREE.Color(i%3===0?0xf3d0a1:i%3===1?0xe7b77f:0xffdbac));
+        for(let j=0;j<2;j++){transform.position.set(x+(j?22:-22),0,44);transform.updateMatrix();fasteners.setMatrixAt(i*2+j,transform.matrix);}
+      }
+      group.add(planks,fasteners);box(1200,6,86,0xd4a85c,5);
+    }
     if(kind==='wood') { block(70,80,70,0x9d5932);const face=box(61,70,4,0xffffff,37);face.material.map=this.woodTexture;for(const x of [-20,0,20]){const grain=box(3,62,3,0x8b4b2b,40);grain.position.x=x;}box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
     if(kind==='beam') {const w=body.plugin.width;block(w,20,70,0x794729);const face=box(w-8,14,4,0xffffff,37);face.material.map=this.woodTexture;box(w,4,6,0xd3a258,42);for(const x of [-w/2+15,w/2-15])bolt(x,0,46);}
     if(kind==='metal') {block(70,80,70,0x586f77,.5);box(61,70,4,0x829c9c,37,.5);box(70,10,6,0xdfb751,42,.5);box(10,72,6,0x465f6a,43,.5);studs(64,73,47);}
-    if(kind==='guard') {box(25,body.plugin.height,70,0x435f70,0,.5);box(31,16,78,0xd0ad58,5,.5);}
-    if(kind==='reflector') {box(25,160,70,0x62d3c0,0,.6);box(31,148,78,0xd9b657,5,.5);box(35,120,83,0x256d73,8,.4);}
+    if(kind==='guard') {
+      const h=body.plugin.height;block(25,h,70,0x435f70,.5);
+      box(20,h-12,4,0x284851,37,.45);box(25,12,6,0xd0ad58,41,.5);
+      for(const y of [-h/2+12,h/2-12]){const plate=box(25,8,6,0xd0ad58,41,.5);plate.position.y=y;bolt(0,y,46);}
+      for(const y of [-h/4,h/4]){const marking=box(15,5,6,0x8ec6bb,42,.3);marking.position.y=y;}
+    }
+    if(kind==='reflector') {
+      block(25,160,70,0x439b95,.6);box(31,148,78,0xd9b657,5,.5);box(35,120,83,0x256d73,8,.4);
+      box(25,108,4,0x45968f,52,.45);
+      for(const x of [-12,12]){const rail=box(4,110,5,0xd8b75e,55,.55);rail.position.x=x;}
+      for(const y of [-44,0,44]){const strap=box(24,5,5,0x9ed8c7,56,.35);strap.position.y=y;bolt(0,y,60);}
+    }
     if(kind==='platform') {
       box(120,20,70,0x54868a,0,.6);box(114,6,78,0xe3bc61,6,.5);
       // The chevron tracks the real platform direction, making its timing
@@ -151,7 +176,8 @@ export class SalvageView {
       tipA.position.set(10,4,0);tipA.rotation.z=-Math.PI/4;tipB.position.set(10,-4,0);tipB.rotation.z=Math.PI/4;direction.add(shaft,tipA,tipB);direction.position.z=43;group.add(direction);group.userData.direction=direction;
     }
     if(kind==='target') {
-      const w=body.bounds.max.x-body.bounds.min.x;block(w,65,65,0x137f80,.2);box(w-6,57,6,0xe8b847,35,.4);box(w-17,46,7,0x249fa0,40);box(w-27,36,7,0x126a70,44,.2);
+      const w=body.bounds.max.x-body.bounds.min.x;block(w,65,65,body.plugin.heavy?0x4a5960:0x137f80,.2);box(w-6,57,6,body.plugin.heavy?0xb97a42:0xe8b847,35,.4);box(w-17,46,7,0x249fa0,40);box(w-27,36,7,0x126a70,44,.2);
+      if(body.plugin.heavy){for(const x of [-w/2+7,w/2-7]){const brace=box(5,49,7,0xd6e0d4,47,.5);brace.position.x=x;}}
       const gear=new THREE.Shape();for(let i=0;i<32;i++){const a=i*Math.PI/16,r=(i%4===1||i%4===2)?16:13;const x=Math.cos(a)*r,y=Math.sin(a)*r;if(i===0)gear.moveTo(x,y);else gear.lineTo(x,y);}gear.closePath();const hole=new THREE.Path();hole.absellipse(0,0,7,7,0,Math.PI*2,true);gear.holes.push(hole);const cog=new THREE.Mesh(new THREE.ExtrudeGeometry(gear,{depth:3,bevelEnabled:false,curveSegments:12}),mat(0xffd36c,.55));cog.position.z=48;group.add(cog);
       studs(w-9,54,45);if(body.plugin.first){const bar=box(38,9,9,0xfff0c1,55);bar.rotation.z=-Math.PI/4;const bar2=box(38,9,9,0xfff0c1,56);bar2.rotation.z=Math.PI/4;}if(body.plugin.last){box(30,8,9,0xfff0c1,56);const base=box(8,30,9,0xfff0c1,57);base.position.y=-10;}if(body.plugin.linked){const band=box(w-6,7,9,0xf7a8e8,57);band.position.y=25;}if(body.plugin.clampRequired){const band=box(7,60,9,0xa8f8ff,58);band.position.x=-w/2+4;}
     }

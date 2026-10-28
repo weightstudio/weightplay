@@ -8,12 +8,12 @@ export async function mountBeaconPractice({localPractice,enable,start,halt,host=
   let ok;
   try {ok=await localPractice.register({
     gameId:'animal-crystal-survivor',
-    // Register only wired local slices; 48–60 remain design candidates.
-    acceptStage:id=>id==='31'||id==='32'||id==='33'||id==='34'||id==='35'||id==='36'||id==='37'||id==='38'||id==='39'||id==='40'||id==='41'||id==='42'||id==='43'||id==='44'||id==='45'||id==='46'||id==='47',
+    // Register only wired local slices; 49–60 remain design candidates.
+    acceptStage:id=>id==='31'||id==='32'||id==='33'||id==='34'||id==='35'||id==='36'||id==='37'||id==='38'||id==='39'||id==='40'||id==='41'||id==='42'||id==='43'||id==='44'||id==='45'||id==='46'||id==='47'||id==='48',
     enable:value=>{if(!value)revoke();else if(!closed)enable(true)},
     // The engine must check isActive again after every await before exposing
     // or resuming a round; the bridge cannot cancel an arbitrary engine await.
-    startStage:async id=>{if(closed||!['31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47'].includes(id))return false;const result=await start(Number(id),()=>!closed&&localPractice.dynamicEnabled===true);if(closed){halt();return false}return result},
+    startStage:async id=>{if(closed||!['31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48'].includes(id))return false;const result=await start(Number(id),()=>!closed&&localPractice.dynamicEnabled===true);if(closed){halt();return false}return result},
   })}catch{revoke();return {ok:false,close:revoke}}
   if(!ok||closed||localPractice.dynamicEnabled!==true){revoke();return {ok:false,close:revoke}}
   try {timer=host.setInterval(async()=>{

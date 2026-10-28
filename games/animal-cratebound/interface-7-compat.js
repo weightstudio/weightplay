@@ -256,10 +256,12 @@
   }
   function addSortingSeal(root, seal, y, side) {
     if (!window.__CrateboundPractice?.enabled || !['sun', 'moon'].includes(seal)) return;
-    const key=`sorting-seal-${seal}`;
+    // Cargo and destination need different silhouettes in addition to the
+    // sun/moon glyphs, particularly when an incorrect pair occupies one cell.
+    const key=`sorting-seal-${side}-${seal}`;
     if(!materials.has(key)){
       const canvas=document.createElement('canvas');canvas.width=canvas.height=96;const c=canvas.getContext('2d');
-      c.fillStyle='#102333';c.strokeStyle='#fff';c.lineWidth=4;c.beginPath();c.arc(48,48,43,0,Math.PI*2);c.fill();c.stroke();
+      c.fillStyle='#102333';c.strokeStyle='#fff';c.lineWidth=4;c.beginPath();if(side==='dock')c.rect(5,5,86,86);else c.arc(48,48,43,0,Math.PI*2);c.fill();c.stroke();
       c.fillStyle='#ffe391';c.strokeStyle='#ffe391';c.lineWidth=5;c.lineCap='round';
       if(seal==='sun'){c.beginPath();c.arc(48,48,16,0,Math.PI*2);c.fill();for(let i=0;i<8;i++){const a=i*Math.PI/4;c.beginPath();c.moveTo(48+Math.cos(a)*23,48+Math.sin(a)*23);c.lineTo(48+Math.cos(a)*32,48+Math.sin(a)*32);c.stroke();}}
       else{c.beginPath();c.arc(48,48,25,0,Math.PI*2);c.arc(59,39,21,0,Math.PI*2,true);c.fill('evenodd');}

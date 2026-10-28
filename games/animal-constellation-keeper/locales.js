@@ -34,7 +34,17 @@
     ar: { map4: "تقاطع النجوم", map4Intro: "يفتح التقاطع عندما يتشارك جاران زاوية واحدة.", clue4a: "الأرنب يقع مباشرة إلى يسار البومة.", clue4b: "الدب يقع مباشرة أسفل الأرنب.", map4A: "الأرنب غرباً", map4B: "البومة غرباً", map4C: "الدب غرباً" }
   };
   window.ANIMAL_CONSTELLATION_KEEPER_LOCALES = Object.fromEntries(keys.map((key) => [key, { ...english, ...(variants[key] || {}), ...(map4Translations[key] || {}) }]));
+  // Result controls use singular "map", while the existing locale records
+  // supply the same destination as "maps". Avoid falling back to English.
+  const resultHeadings = {
+    'zh-Hans':['地图已修复','夜空完整了'], ja:['マップを修復しました','夜空が完成しました'], ko:['지도를 복원했어요','밤하늘이 완성됐어요'],
+    es:['Mapa restaurado','El cielo está completo'], 'pt-BR':['Mapa restaurado','O céu está completo'], fr:['Carte restaurée','Le ciel est complet'],
+    de:['Karte wiederhergestellt','Der Himmel ist vollständig'], it:['Mappa ripristinata','Il cielo è completo'], ru:['Карта восстановлена','Небо восстановлено'],
+    hi:['मानचित्र बहाल हुआ','आकाश पूरा हुआ']
+  };
+  for(const key of keys){const item=window.ANIMAL_CONSTELLATION_KEEPER_LOCALES[key],original=variants[key];if(original?.maps&&!original.map)item.map=original.maps;if(resultHeadings[key]){[item.resultPartial,item.resultTitle]=resultHeadings[key]}}
 })();
+
 
 // Text Growth 1.4.0: keep the Guide complete and locale-owned in both the
 // initial route HTML and the runtime dictionary used after language changes.
@@ -594,4 +604,22 @@
   for (const [locale, values] of Object.entries(copy)) {
     Object.assign(window.ANIMAL_CONSTELLATION_KEEPER_LOCALES[locale], Object.fromEntries(keys.map((key, index) => [key, values[index]])), { resultText: progress[locale] });
   }
+})();
+
+// Fill battle prompts after the legacy default overlay; keep existing Chinese
+// traditional and Arabic ownership intact.
+(function () {
+  const copy = {
+    'zh-Hans':['星图 {slot}','先选一张星图，再进行检查。','已选择星图，准备好就检查吧。'],
+    ja:['星図 {slot}','星図を一つ選んで確認しましょう。','星図を選びました。確認しましょう。'],
+    ko:['별지도 {slot}','별지도 하나를 고른 뒤 확인하세요.','별지도를 골랐어요. 확인해 보세요.'],
+    es:['Mapa {slot}','Elige un mapa estelar y compruébalo.','Mapa elegido. Compruébalo cuando quieras.'],
+    'pt-BR':['Mapa {slot}','Escolha um mapa estelar e confira.','Mapa escolhido. Confira quando quiser.'],
+    fr:['Carte {slot}','Choisissez une carte céleste, puis vérifiez-la.','Carte choisie. Vérifiez-la quand vous voulez.'],
+    de:['Karte {slot}','Wähle eine Sternkarte und prüfe sie.','Karte gewählt. Prüfe sie, wenn du bereit bist.'],
+    it:['Mappa {slot}','Scegli una mappa stellare e controllala.','Mappa scelta. Controllala quando vuoi.'],
+    ru:['Карта {slot}','Выберите звёздную карту и проверьте её.','Карта выбрана. Проверьте её, когда будете готовы.'],
+    hi:['मानचित्र {slot}','एक तारामंडल मानचित्र चुनें और जाँचें।','मानचित्र चुना गया। तैयार होने पर जाँचें।']
+  };
+  for (const [locale, [boardOption, waiting, selected]] of Object.entries(copy)) Object.assign(window.ANIMAL_CONSTELLATION_KEEPER_LOCALES[locale], {boardOption, waiting, selected});
 })();
