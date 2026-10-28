@@ -193,7 +193,7 @@ export class SalvageView {
       }
       group.add(planks,fasteners);box(2000,6,86,0xd4a85c,5);
     }
-    if(kind==='wood') { block(70,80,70,0x9d5932);const face=box(61,70,4,0xffffff,37);face.material.map=this.woodTexture;for(const x of [-20,0,20]){const grain=box(3,62,3,0x8b4b2b,40);grain.position.x=x;}box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
+    if(kind==='wood') { block(70,80,70,0x9d5932);const face=new THREE.InstancedMesh(new THREE.BoxGeometry(19,68,7),new THREE.MeshStandardMaterial({color:0xffffff,map:this.woodTexture,roughness:.78}),3),transform=new THREE.Object3D();for(let i=0;i<3;i++){transform.position.set((i-1)*20,0,38);transform.updateMatrix();face.setMatrixAt(i,transform.matrix);face.setColorAt(i,new THREE.Color([0xf4d4af,0xffffff,0xe7be97][i]));}group.add(face);box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
     if(kind==='beam') {const w=body.plugin.width;block(w,20,70,0x794729);const face=box(w-8,14,4,0xffffff,37);face.material.map=this.woodTexture;box(w,4,6,0xd3a258,42);for(const x of [-w/2+15,w/2-15])bolt(x,0,46);}
     if(kind==='metal') {block(70,80,70,0x586f77,.5);enamel(box(61,70,4,0x829c9c,37,.5));box(70,10,6,0xdfb751,42,.5);box(10,72,6,0x465f6a,43,.5);studs(64,73,47);}
     if(kind==='guard') {

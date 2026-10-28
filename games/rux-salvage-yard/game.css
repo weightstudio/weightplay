@@ -24,6 +24,7 @@
 #dialogText::-webkit-scrollbar-track{background:#214853}
 #dialogText::-webkit-scrollbar-thumb{background:#e8ba50;border-radius:4px}
 #dialogText:focus-visible{outline:2px solid #ffdb70;outline-offset:-2px}
+.rux-help-scroll-cue{flex:none;align-self:center;color:#ffdb70;font-size:18px;font-weight:800;line-height:18px;pointer-events:none}
 #dialogText .clamp-intro-icon{display:inline-block;width:1.4em;height:1.4em;margin-inline-end:.35em;vertical-align:middle;fill:currentColor}
 #dialogActions{background:var(--wp-ui-surface);padding:4px}
 #dialog[data-mode="result"] #dialogActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
@@ -41,6 +42,7 @@ body:has(.wpb-toast) #dialog{padding-bottom:64px}
 #dialog .card{padding:8px 12px}
 #dialogTitle{margin:4px 0;font-size:18px}
 #dialogText{font-size:14px;line-height:1.25}
+#dialog[data-mode="help"] #dialogText{text-align:start;line-height:1.4}
 #dialog .card button{margin:2px;padding:4px 10px}
 #battleLive,#battleLive.has-clamp{--wp-play-unit:1px;--wp-frame-control-size:48px;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) calc(52 * var(--wp-play-unit,1px)) calc(52 * var(--wp-play-unit,1px));grid-template-areas:none}
 #dialog{--wp-play-unit:1px;--wp-frame-control-size:48px}
@@ -70,6 +72,7 @@ body:has(.wpb-toast) #dialog{padding-bottom:64px}
 #dialog[data-mode="clamp"] #clampTarget{width:100%;min-width:0}
 #dialog .power-fine-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-block:8px}
 #dialog .power-fine-row button{min-width:48px;font-size:22px}
+#dialog .power-fine-row input{flex:1;min-width:60px;max-width:180px;height:48px;accent-color:#4ed0bd}
 #dialog .power-fine-row output{min-width:52px;font-size:18px;font-weight:700}
 
 /* Keep the result and its actions in their final positions while the last

@@ -113,9 +113,10 @@ function setScreen(next) {
   frame.activate(next,{covered:overlayOpen||resultShown});
   if(next==='stage')selector.refresh(selected);
   if(next==='main')$('mainProgress').textContent=t('progress',{stage:save.highestUnlocked,total:60});
-  animate(roots[next]);measurement();
+  measurement();
 }
 function status(code, duration=2300) {
+  lastNotice=code||'';
   $('statusLine').textContent=code?notice(locale,code):'';statusUntil=performance.now()+duration;
 }
 function closeOverlay({restore=true}={}) {
@@ -145,7 +146,7 @@ function showOverlay(heading, body, actions, cancel=null) {
   }
   overlay.hidden=false;$('battleLive').inert=true;
   if(screen==='stage') { $('stageWorkspace').inert=true;$('stageTabs').inert=true; }
-  frame.activate(screen,{covered:true});animate(overlay);$('modalActions').querySelector('button')?.focus({preventScroll:true});measurement();
+  frame.activate(screen,{covered:true});animate(overlay.querySelector('.modal-card'));$('modalActions').querySelector('button')?.focus({preventScroll:true});measurement();
 }
 function pauseDialog() {
   if(!run||run.state.status!=='playing'||overlayOpen)return;
@@ -232,7 +233,7 @@ function purchaseAmber() {
       let result;try{result=await window.WeightPlayWallet.purchasePermanent(SKU,5);}catch{result={ok:false};}
       purchasePending=false;overlayBusy=false;
       if(result?.ok&&ownsAmber()) {save.skin='amber';persist();closeOverlay();renderManagement();play('shop.purchase');}
-      else {button.disabled=false;const p=document.createElement('p');p.setAttribute('role','status');p.textContent=result?.reason==='insufficient'?t('insufficient'):t('purchaseError');$('modalBody').append(p);play('feedback.error');}
+      else {button.disabled=false;const p=document.createElement('p');p.setAttribute('role','status');p.textContent=result?.reason==='insufficient'?t('insufficient'):t('purchaseError');$('modalBody').append(p);button.focus({preventScroll:true});play('feedback.error');}
     }}
   ],()=>{if(!purchasePending)closeOverlay();});
 }
@@ -250,6 +251,7 @@ function updateHUD() {
   $('compressButton').disabled=s.toolId!=='press'||!s.compressionLeft;
   $('deployButton').disabled=!s.stage.pads.length||!s.deploymentLeft;
   if(performance.now()>statusUntil) {
+    lastNotice='';
     const carried=s.toolId==='press'?`${t('bag')} · ${t('total')}: ${s.bagCargo}`:'';
     if($('statusLine').textContent!==carried)$('statusLine').textContent=carried;
   }
@@ -257,7 +259,10 @@ function updateHUD() {
 function feedback(events) {
   for(const event of events) {
     if(event.type==='collect'||event.type==='brush')play('reward.collect');
-    else if(event.type==='deposit')play('feedback.success');
+    else if(event.type==='deposit') {
+      if(lastNotice==='depot-closed'){lastNotice='';statusUntil=0;}
+      play('feedback.success');
+    }
     else if(event.type==='reject'){status(event.code);play('feedback.error');}
     else if(event.type==='deploy')play('mechanism.unlock');
     else if(event.type==='compress'){compressionStarted=null;play('feedback.success');}
@@ -266,7 +271,7 @@ function feedback(events) {
 }
 function perform(method,...args) {
   if(screen!=='battle'||!run||paused()||run.state.status!=='playing')return;
-  lastNotice='';const result=run[method](...args);
+  const result=run[method](...args);
   if(result?.ok===false&&result.code&&result.code!=='ended')status(result.code);
   if(method==='compress'&&result?.ok)compressionStarted=run.state.elapsed;
   updateHUD();
@@ -291,11 +296,13 @@ function finishRound() {
   }
   $('resultTitle').textContent=won?t('win'):state.notice==='time-up'?t('lose'):t('stageRule');
   $('resultStars').dataset.outcome=won?'win':'lose';
-  $('resultStars').textContent=won?`${t('stars')} ${stars} / 3`:notice(locale,state.notice);
+  $('resultStars').textContent=won?`${t('stars')} ${stars} / 3`:state.notice==='minimum-load'
+    ?t('strandedLoadRetry',{have:state.bagCargo,need:state.stage.rules.minLoad})
+    :notice(locale,state.notice);
   const unlockCopy=newTool&&saveSucceeded?t('toolUnlocked',{tool:t(`tool${newTool.id[0].toUpperCase()+newTool.id.slice(1)}`)}):'';
   $('resultStats').textContent=`${unlockCopy?unlockCopy+' ':''}${t('delivered')}: ${state.delivered} / ${state.stage.target} · ${t('seconds',{n:state.elapsed.toFixed(1)})} · ${t('starGoals',{three:state.stage.starSeconds[0],two:state.stage.starSeconds[1]})} · ${practiceSession?t('practice'):won?(saveSucceeded?t('saved'):t('saveError')):''}`;
   $('resultNext').disabled=!won||state.stage.id===60||(!practiceSession&&!saveSucceeded);
-  $('resultPanel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});animate($('resultPanel'));
+  $('resultPanel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});animate($('resultPanel').querySelector('.modal-card'));
   $('resultStages').focus({preventScroll:true});play(won?'result.win':'result.lose');refreshStages();measurement();
 }
 async function startStage(index) {
@@ -304,7 +311,7 @@ async function startStage(index) {
   if(attempt!==serial||disposed)return;
   const stage=STAGES[index];if(!stage||(!practiceSession&&stage.id>save.highestUnlocked))return;
   if(overlayOpen)closeOverlay({restore:false});disposeRenderer();stopInput();
-  selected=index;saveSucceeded=false;resultShown=false;compressionStarted=null;backgroundPaused=false;settingsPaused=false;statusUntil=0;
+  selected=index;saveSucceeded=false;resultShown=false;compressionStarted=null;backgroundPaused=false;settingsPaused=false;statusUntil=0;lastNotice='';
   $('statusLine').textContent='';
   $('resultPanel').hidden=true;$('battleLive').inert=false;
   run=createRun(stage.id,ownedTool(save.selectedTool)?save.selectedTool:'breeze');run.state.skin=ownsAmber()&&save.skin==='amber'?'amber':'moss';
