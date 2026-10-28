@@ -109,7 +109,7 @@ export function createArena(){
   // Five gentle converging routes communicate the incoming pressure at once.
   // They are paint/stone insets on the flat ground, never collision geometry.
   for(let lane=-2;lane<=2;lane++){
-    const start=new THREE.Vector3(lane*4,0,-10.5),end=new THREE.Vector3(lane*.55,0,6.6),delta=end.clone().sub(start),mid=start.clone().add(end).multiplyScalar(.5);
+    const start=new THREE.Vector3(lane*4,0,-10.5),end=new THREE.Vector3(lane*.22,0,-2.2),delta=end.clone().sub(start),mid=start.clone().add(end).multiplyScalar(.5);
     const road=soft(root,lane%2?0x8ecb89:0x9bd18b,mid.x,.018,mid.z,1.58,.022,delta.length());road.rotation.y=Math.atan2(delta.x,delta.z);
     for(let dash=0;dash<5;dash++){const t=(dash+.5)/5,point=start.clone().lerp(end,t);const mark=soft(root,0x63b798,point.x,.042,point.z,.54,.025,.12);mark.rotation.y=road.rotation.y;}
   }
@@ -154,7 +154,7 @@ export function createArena(){
   for(let i=0;i<5;i++){const x=(i-2)*3.75;soft(root,0xf4d58e,x,.035,-10.8,1.5,.06,.25);soft(root,0xffedbe,x,.035,-10.45,.7,.06,.16);}
   // Fortress forecourt frames the protected area without covering targets.
   const forecourt=surface(group(root,'fortress_stone_terrace'),'stone',false,true);
-  soft(forecourt,0x719b84,0,.09,9.1,10.9,.22,6.2);soft(forecourt,0xe6c995,0,.23,9.1,9.7,.14,5.4);
+  soft(forecourt,0x719b84,0,.09,0,7.3,.22,6.2);soft(forecourt,0xe6c995,0,.23,0,6.9,.14,5.4);
   for(const side of [-1,1]){
     // Flush guardian-yard inlays add authored detail while targets stay clear.
     const inlay=add(root,ringGeometry,0x62ae8c,side*6.7,.045,2.2,.94,.94,.94);inlay.rotation.x=-Math.PI/2;
@@ -178,9 +178,9 @@ export function createTower(){
     for(let i=0;i<3;i++)soft(root,0xffebc6,side*(.96+i*.55),1.88,-1.48,.32,.4,.38);
   }
   // Teal reliquary is a narrative main tower target; lion stands in front.
-  soft(root,0x4a8992,0,1.88,-.73,1.22,.9,1.2);soft(root,0xf5cc73,0,2.33,-.73,1.44,.16,1.42);
-  const crystal=add(root,crystalGeometry,0x61e8e0,0,2.89,-.73,.48,.7,.48,true);crystal.rotation.y=Math.PI/4;crystal.name='tower_crystal';surface(crystal,'metal',false,false);
-  const halo=add(root,ringGeometry,0xffd777,0,2.8,-.73,.68,.68,.68,true);halo.rotation.x=.15;halo.name='tower_halo';surface(halo,'metal',false,false);
+  soft(root,0x4a8992,2.15,1.88,.05,1.22,.9,1.2);soft(root,0xf5cc73,2.15,2.33,.05,1.44,.16,1.42);
+  const crystal=add(root,crystalGeometry,0x61e8e0,2.15,2.89,.05,.48,.7,.48,true);crystal.rotation.y=Math.PI/4;crystal.name='tower_crystal';surface(crystal,'metal',false,false);
+  const halo=add(root,ringGeometry,0xffd777,2.15,2.8,.05,.68,.68,.68,true);halo.rotation.x=.15;halo.name='tower_halo';surface(halo,'metal',false,false);
   soft(root,0xdc756e,0,.91,1.71,1.1,.84,.06);soft(root,0xfbe0a2,0,.96,1.75,.1,.52,.025);ball(root,0xffd977,0,1.09,1.78,.12,.12,.04);
   // Recessed arch, stone courses and embossed guardian seal give the tower
   // authored depth at the fixed camera, while the platform origin stays1.48.
@@ -268,44 +268,34 @@ function createBlockLion(){
 }
 
 export function createDefender(){
-  const hero=createBlockLion();hero.name='Boom_Mane_Leo_block_sunheart_guard';
-  const parts=hero.userData.parts;
-  parts.head.scale.setScalar(1.12);
-  // Keep Leo's authored identity intact. The independent gun pivot can track
-  // aim immediately while body/head follow with a small, bounded lag.
-  // A shoulder-height swivelling mount lets Leo keep his expressive face
-  // towards the fixed player camera without twisting his neck through180°.
-  const mount=surface(group(hero,'defender_cannon_mount',.53,.18,.025),'metal');
-  cylinder(mount,0x347f8d,0,.07,0,.24,.12);cylinder(mount,0xe9b45b,0,.16,0,.18,.09);cylinder(mount,0x38677d,0,.32,0,.085,.3);ball(mount,0x68d6d4,0,.48,0,.18,.13,.18);
-  const gun=surface(group(hero,'defender_cannon',.53,.68,.025),'metal');
-  soft(gun,0x24667e,0,0,.18,.35,.37,.63);soft(gun,0x58ccda,0,.025,.36,.43,.31,.5);soft(gun,0xffcd62,0,.02,.55,.48,.34,.12);
-  const barrel=cylinder(gun,0x274f70,0,.03,.71,.145,.44);barrel.rotation.x=Math.PI/2;
-  barrel.material=polishedBlue;barrel.userData.noBake=true;
-  const muzzle=group(gun,'defender_muzzle',0,.03,.95);const rim=add(gun,ringGeometry,0xffd56c,0,.03,.936,.165,.165,.165);rim.scale.z=.5;
-  rim.material=polishedGold;rim.userData.noBake=true;
-  ball(gun,0x74f3ed,0,.03,.945,.105,.105,.025);
-  for(const side of [-1,1])soft(gun,0xc4fff3,side*.222,.04,.32,.032,.17,.27);
-  soft(gun,0x3685a3,0,-.23,.08,.15,.32,.18);ball(gun,0xffebae,0,.23,.23,.067);
-  gun.scale.setScalar(1.22);bake(gun);parts.gun=gun;parts.muzzle=muzzle;parts.barrel=barrel;parts.mount=mount;
-  const contact=new THREE.Mesh(shadowGeometry,heroShadowMaterial);contact.name='Leo_contact_shadow';surface(contact,'paint',false,true);contact.rotation.x=-Math.PI/2;contact.position.y=.012;contact.scale.set(.51,.31,1);hero.add(contact);
-  // Preserve every authored animation pivot while collapsing its direct
-  // static meshes/instances across colours. No limb or mane identity is lost.
-  const heroPivots=[];hero.traverse(node=>{if(node.isGroup&&node!==gun)heroPivots.push(node);});for(const pivot of heroPivots.reverse())bake(pivot,true);
-  hero.userData.forward='+Z';hero.userData.weapon='original_cyan_guard_cannon';return hero;
+ const hero=createBlockLion(),parts=hero.userData.parts;
+ hero.name='Boom_Mane_Leo_fixed_rear_operator';parts.head.scale.setScalar(1.12);
+ const controls=surface(group(hero,'two_hand_turret_controls',0,.58,.35),'metal');
+ soft(controls,0x245a74,0,0,0,.65,.13,.25);
+ for(const side of[-1,1]){soft(controls,0xf8c35a,side*.22,.13,0,.065,.24,.065);soft(controls,0x7ff4e9,side*.22,.25,0,.13,.07,.15);}
+ const pivots=[];hero.traverse(n=>{if(n.isGroup)pivots.push(n);});for(const pivot of pivots.reverse())bake(pivot,true);
+ hero.rotation.y=Math.PI;hero.userData.forward='-Z';return hero;
 }
-
-// Input is the authoritative world-yaw of the shot, atan2(dx,dz). This is a
-// visual rig only: it never snaps targets, changes collisions or delays fire.
-export function aimDefender(hero,{angle=Math.PI,recoil=0,time=0,reduced=false}={}){
-  const p=hero.userData.parts;if(!p?.gun)return;const yaw=Number.isFinite(angle)?angle:Math.PI,hit=Math.min(1,Math.max(0,recoil));
-  hero.rotation.y=Math.sin(yaw)*.24;const localYaw=yaw-hero.rotation.y;
-  p.gun.rotation.y=localYaw;p.gun.position.set(.53-Math.sin(localYaw)*hit*.075,.68,.025-Math.cos(localYaw)*hit*.075);
-  p.body.rotation.x=-hit*.025;p.head.rotation.y=Math.sin(yaw)*.065;p.head.rotation.x=-.045-hit*.018;
-  p.arms[1].rotation.set(-.75,.1,-.35);p.arms[0].rotation.set(-.15,0,.1);
-  if(p.mane)p.mane.rotation.z=reduced?0:Math.sin(time*2)*.012;
-  if(p.cape)p.cape.rotation.x=reduced?0:Math.sin(time*3)*.035;
-  if(p.tail)p.tail.rotation.y=reduced?0:Math.sin(time*2.4)*.08;
+export function aimDefender(hero,{recoil=0,time=0,reduced=false}={}){
+ const p=hero.userData.parts;hero.rotation.y=Math.PI;
+ p.head.rotation.set(-.04,0,0);p.body.rotation.set(0,0,0);
+ p.arms[0].rotation.set(-1.05,0,-.1);p.arms[1].rotation.set(-1.05,0,.1);
+ if(p.mane)p.mane.rotation.z=reduced?0:Math.sin(time*2)*.009;
+ if(p.cape)p.cape.rotation.x=reduced?0:Math.sin(time*3)*.025;
 }
+// Shared dimensions with defense.mjs: pivot(0,2.42,0), muzzle at local+Z2.18.
+export function createTurret(){
+ const root=surface(new THREE.Group(),'metal');root.name='central_swivel_guardian_cannon';
+ cylinder(root,0x25536e,0,1.64,0,.85,.25);cylinder(root,0xf2c35e,0,1.82,0,.67,.12);
+ const pivot=group(root,'turret_yaw',0,2.42,0),slide=group(pivot,'turret_barrel'),breech=group(pivot,'turret_recoil');
+ soft(breech,0x2d6785,0,0,.35,1.0,.7,1.2);soft(slide,0x5ec9d5,0,.05,.7,.9,.58,.7);
+ soft(slide,0x25465f,0,0,1.37,.58,.5,1.12);soft(slide,0xf7cb67,0,0,1.95,.78,.7,.23);
+ soft(slide,0x183b55,0,0,2.085,.55,.49,.05);soft(slide,0x81fff4,0,0,2.13,.31,.28,.035,true);
+ for(const side of[-1,1]){soft(slide,0xe3e9cf,side*.53,0,.2,.15,.38,.65);for(let n=0;n<3;n++)soft(slide,0x9cf4e4,side*.47,.1,.45+n*.22,.055,.2,.12,true);}
+ const muzzle=group(slide,'turret_true_muzzle',0,0,2.18);bake(slide);bake(root,true);
+ bake(breech);root.userData.parts={pivot,slide,breech,muzzle};return root;
+}
+export function aimTurret(root,{angle=Math.PI,recoil=0,aurora=false}={}){const p=root.userData.parts;p.pivot.rotation.y=angle;p.breech.position.z=-recoil*.13;root.userData.aurora=aurora;}
 
 const PALETTES={
   walker:{skin:0x9bd49a,light:0xc0e9ae,shirt:0x618fc1,pants:0x36546e,hair:0x377c73,scale:1},
@@ -313,6 +303,9 @@ const PALETTES={
   brute:{skin:0xb2a0d3,light:0xd1bde8,shirt:0x6a5a92,pants:0x454768,hair:0x574778,scale:1.42},
   bomber:{skin:0xb0d790,light:0xdae9a3,shirt:0xd7756a,pants:0x745865,hair:0x518664,scale:1.06},
   spitter:{skin:0x7fc6a7,light:0xbae4b3,shirt:0x9c74b8,pants:0x475d77,hair:0x376c6b,scale:1.08},
+  shield:{skin:0x8fc4cd,light:0xc7eeec,shirt:0x405b98,pants:0x344969,hair:0x254e6d,scale:1.12},
+  healer:{skin:0x9dd0b5,light:0xe2f4d2,shirt:0xe6dfb5,pants:0x517e79,hair:0x2a8e80,scale:1.02},
+  splitter:{skin:0xdcb18c,light:0xf6d59e,shirt:0xa86c80,pants:0x6c5368,hair:0x6c456b,scale:1.16},
   boss:{skin:0xa394ce,light:0xccb5df,shirt:0x484b80,pants:0x303b63,hair:0x403d6c,scale:2.35},
 };
 const templates=new Map();
@@ -348,6 +341,17 @@ function buildZombie(type){
   if(type==='spitter'){
     for(const side of [-1,1]){ball(head,0xc6a1d3,side*.23,-.13,.24,.15,.15,.11);ball(body,0x91bf84,side*.17,.14,-.26,.19,.24,.15);}
     ball(head,0x698e69,.02,-.14,.33,.11,.11,.07);ball(head,0xd5e899,.02,-.14,.39,.071,.071,.014);
+  }
+  if(type==='shield'){
+    const shield=group(body,'front_energy_shield',0,.05,.39);soft(shield,0x315a90,0,0,0,.9,1.02,.18);soft(shield,0x6fe4eb,0,0,.11,.71,.83,.065);soft(shield,0xf6dd85,0,0,.16,.13,.68,.03);soft(shield,0xf6dd85,0,0,.16,.55,.13,.03);
+  }
+  if(type==='healer'){
+    soft(head,0xffefd2,0,.32,0,.72,.19,.55);soft(head,0x52b99b,0,.34,.29,.12,.16,.04);soft(head,0x52b99b,0,.34,.29,.34,.065,.04);
+    soft(body,0x3f8d86,0,.08,-.34,.48,.66,.24);for(const side of[-1,1])soft(body,0x95ffd6,side*.22,.16,-.49,.11,.38,.09,true);
+  }
+  if(type==='splitter'){
+    for(const side of[-1,1]){soft(body,0x845294,side*.28,.17,-.19,.36,.62,.4);soft(body,0xf7c18b,side*.28,.17,-.42,.075,.49,.035);}
+    soft(head,0xffdb95,0,.26,.06,.12,.58,.55);
   }
   const legs=[],arms=[];
   for(const side of [-1,1]){
@@ -395,7 +399,7 @@ export function createDefenseArt(){
     const copy=sourceMaterial=>{if(!sceneMaterials.has(sourceMaterial.uuid))sceneMaterials.set(sourceMaterial.uuid,sourceMaterial.clone());return sceneMaterials.get(sourceMaterial.uuid);};
     node.material=Array.isArray(node.material)?node.material.map(copy):copy(node.material);
   });return root;}
-  return {createArena:()=>owned(createArena()),createTower:()=>owned(createTower()),createDefender:()=>owned(createDefender()),createZombie:type=>owned(createZombie(type)),animateZombie,aimDefender,
+  return {createArena:()=>owned(createArena()),createTower:()=>owned(createTower()),createDefender:()=>owned(createDefender()),createTurret:()=>owned(createTurret()),aimTurret,createZombie:type=>owned(createZombie(type)),animateZombie,aimDefender,
     dispose(){for(const geometry of geometries.values())geometry.dispose();for(const mat of sceneMaterials.values())mat.dispose();geometries.clear();sceneMaterials.clear();},
     get resources(){return {geometries:geometries.size,materials:sceneMaterials.size};}};
 }

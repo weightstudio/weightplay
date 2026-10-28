@@ -1,4 +1,5 @@
 // Orbit Menders save schema. Keep this namespace through any title change.
+import {TALENTS,talentSpent} from './defense.mjs?v=orbit-v10-campaign';
 export const SAVE_KEY = 'weightplay:orbit-menders:v1';
 export const BACKUP_KEY = `${SAVE_KEY}:backup`;
 export const MAX_SAVE_BYTES = 256 * 1024;
@@ -36,13 +37,13 @@ function idSet(value, pattern, maximum, label) {
 
 export function freshSave() {
   return {
-    schemaVersion: 1, gameVersion: '0.9.0', updatedAt: new Date().toISOString(),
+    schemaVersion: 1, gameVersion: '0.10.0', updatedAt: new Date().toISOString(),
     completed: [], archives: [], blueprints: [], badges: {},
     cosmetics: { equipped: 'workshop', unlocked: ['workshop'] },
     best: { standard: {}, assist: {} },
     preferences: { sensitivity: 1, invertY: false, reduceMotion: false, cameraShake: false, quality: 'medium', mode: 'standard', keyMap: {} },
     checkpoint: null,
-    defense: { revision: 1, completed: [], best: {} },
+    defense: { revision: 2, completed: [], best: {}, training: {gears:0,earned:0,ranks:{power:0,rapid:0,hull:0,blast:0,control:0,support:0},stance:'pierce',receipts:[]} },
   };
 }
 
@@ -58,12 +59,21 @@ export function validateSave(value) {
   // Additive v3 migration keeps the existing namespace and all legacy progress.
   const defense = value.defense ?? { revision: 1, completed: [], best: {} };
   assertPlain(defense, 'defense');
-  assertKeys(defense, new Set(['revision', 'completed', 'best']), 'defense');
-  if (defense.revision !== 1) fail('defense revision');
-  result.defense = { revision: 1, completed: idSet(defense.completed, /^D0[1-6]$/, 6, 'defense completed'), best: {} };
+  assertKeys(defense, new Set(['revision', 'completed', 'best','training']), 'defense');
+  if (![1,2].includes(defense.revision)) fail('defense revision');
+  const stage=/^D(?:0[1-9]|[12][0-9]|30)$/;
+  result.defense = { revision: 2, completed: idSet(defense.completed, stage, 30, 'defense completed'), best: {} };
+  const legacyGrant=result.defense.completed.length*40;
+  const training=defense.training??{gears:legacyGrant,earned:legacyGrant,ranks:{power:0,rapid:0,hull:0,blast:0,control:0,support:0},stance:'pierce',receipts:[]};
+  assertPlain(training,'training');assertKeys(training,new Set(['gears','earned','ranks','stance','receipts']),'training');
+  for(const key of ['gears','earned']){assertFinite(training[key],0,1e7,`training ${key}`);if(!Number.isSafeInteger(training[key]))fail('training integer');}
+  assertPlain(training.ranks,'training ranks');assertKeys(training.ranks,new Set(Object.keys(TALENTS)),'training ranks');
+  for(const [id,rule]of Object.entries(TALENTS))if(!Number.isInteger(training.ranks[id])||training.ranks[id]<0||training.ranks[id]>rule.max)fail('training rank');
+  if(!['pierce','frost','chain'].includes(training.stance)||training.gears+talentSpent(training.ranks)!==training.earned)fail('training allocation');
+  result.defense.training={...clone(training),receipts:idSet(training.receipts,/^[A-Za-z0-9-]{1,96}$/,128,'training receipts')};
   assertPlain(defense.best, 'defense best');
   for (const [id, record] of Object.entries(defense.best)) {
-    if (!/^D0[1-6]$/.test(id)) fail('defense best id');
+    if (!stage.test(id)) fail('defense best id');
     assertPlain(record, 'defense record');
     assertKeys(record, new Set(['score', 'health', 'time']), 'defense record');
     assertFinite(record.score, 0, 1e7, 'defense score');
@@ -181,7 +191,7 @@ export function createSaveAdapter(storage) {
       if (typeof update !== 'function') throw new TypeError('Save commit requires a function');
       const draft = clone(data);
       update(draft);
-      draft.gameVersion = '0.9.0';
+      draft.gameVersion = '0.10.0';
       draft.updatedAt = new Date().toISOString();
       return persist(validateSave(draft));
     },

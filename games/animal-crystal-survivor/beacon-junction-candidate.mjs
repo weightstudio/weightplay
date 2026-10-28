@@ -1,6 +1,7 @@
 // Stage 43 source-only candidate; the host owns combat, drops and persistence.
 // The armoured carrier patrols across the junction between C and A.
 const left=192,right=832,y=870,speed=128,span=right-left;
+export const junctionRoute=Object.freeze({left,right,y});
 export function makeJunctionPath(id){
   if(typeof id!=='string'||!id)throw new TypeError('INVALID_JUNCTION_ID');
   return {id,phase:0};

@@ -1,0 +1,18 @@
+// Stage 43 local-practice drafts; native and visual review still required.
+export const junctionCopy=Object.freeze({
+ en:['Armoured Junction','Defeat the armoured carriers crossing the junction. Carry one fragment to C, then another to A, and clear the waves. Damage loses a carried fragment.'],
+ 'zh-Hant':['裝甲路口','擊敗穿越路口的裝甲攜帶者，先帶一枚碎片到 C，再帶另一枚到 A，並清除波次。受傷會失去碎片。'],
+ 'zh-Hans':['装甲路口','击败穿越路口的装甲携带者，先带一枚碎片到 C，再带另一枚到 A，并清除波次。受伤会失去碎片。'],
+ ja:['装甲の交差路','交差路を進む装甲の運び手を倒し、欠片を C、次に A へ運んで波を倒す。被弾すると欠片を失う。'],
+ ko:['장갑 교차로','교차로를 지나는 장갑 운반자를 물리치고 조각을 C, 다음은 A로 옮긴 뒤 파도를 물리치세요. 피해를 받으면 조각을 잃습니다.'],
+ es:['Cruce blindado','Derrota a los portadores blindados que cruzan el cruce, lleva un fragmento a C y otro a A y supera las oleadas. El daño hace perder el fragmento.'],
+ 'pt-BR':['Cruzamento blindado','Derrote os portadores blindados que cruzam o caminho, leve um fragmento a C e outro a A e vença as ondas. Dano faz perder o fragmento.'],
+ fr:['Croisement blindé','Battez les porteurs blindés qui traversent le croisement, apportez un fragment à C puis un autre à A et terminez les vagues. Un coup fait perdre le fragment.'],
+ de:['Gepanzerte Kreuzung','Besiege gepanzerte Träger an der Kreuzung, bringe ein Fragment zu C und das nächste zu A und besiege die Wellen. Schaden lässt das Fragment fallen.'],
+ it:['Incrocio corazzato','Sconfiggi i portatori corazzati che attraversano l’incrocio, porta un frammento a C e un altro a A e supera le ondate. I danni fanno perdere il frammento.'],
+ ru:['Бронированный перекрёсток','Победите бронированных носителей на перекрёстке, отнесите осколок к C, затем другой к A и победите волны. Урон лишает осколка.'],
+ hi:['बख़्तरबंद चौराहा','चौराहा पार करने वाले बख़्तरबंद वाहकों को हराएँ, एक टुकड़ा C और दूसरा A तक ले जाकर लहरें साफ़ करें। चोट से टुकड़ा खोता है।'],
+ ar:['المفترق المدرع','اهزم الحاملين المدرعين الذين يعبرون المفترق، واحمل شظية إلى C ثم أخرى إلى A واهزم الموجات. الإصابة تفقدك الشظية.'],
+});
+const hold={en:['Hold at C for 1.2s','Hold at A for 1.2s'],'zh-Hant':['在 C 停留 1.2 秒','在 A 停留 1.2 秒'],'zh-Hans':['在 C 停留 1.2 秒','在 A 停留 1.2 秒'],ja:['Cに1.2秒留まる','Aに1.2秒留まる'],ko:['C에서 1.2초 머무르기','A에서 1.2초 머무르기'],es:['Permanece 1,2 s en C','Permanece 1,2 s en A'],'pt-BR':['Fique 1,2 s em C','Fique 1,2 s em A'],fr:['Restez 1,2 s à C','Restez 1,2 s à A'],de:['Bleibe 1,2 s bei C','Bleibe 1,2 s bei A'],it:['Resta 1,2 s in C','Resta 1,2 s in A'],ru:['Стойте у C 1,2 с','Стойте у A 1,2 с'],hi:['C पर 1.2 सेकंड रुकें','A पर 1.2 सेकंड रुकें'],ar:['ابقَ عند C لمدة ١٫٢ ثانية','ابقَ عند A لمدة ١٫٢ ثانية']};
+export function junctionHold(locale,completed){return (hold[locale]||hold.en)[completed>0?1:0]}

@@ -24,6 +24,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   const audio=window.WeightPlayAudio?.createScope();
   const sound=id=>audio?.play(id);
   const zoomButton=document.createElement('button');zoomButton.type='button';zoomButton.id='zoomView';zoomButton.textContent='+';zoomButton.setAttribute('aria-label',t('zoomIn'));zoomButton.setAttribute('aria-pressed','false');$('controls').insertBefore(zoomButton,$('help'));
+  const recoveryNotice=document.createElement('div');recoveryNotice.id='recoveryNotice';recoveryNotice.hidden=true;recoveryNotice.setAttribute('role','status');recoveryNotice.setAttribute('aria-live','polite');$('arena').append(recoveryNotice);let recoveryTime=0;
   const resetZoom=()=>{zoomButton.textContent='+';zoomButton.setAttribute('aria-label',t('zoomIn'));zoomButton.setAttribute('aria-pressed','false');};
   const FINISHES=[{id:'workshop',color:0x187e79,unlock:0},{id:'moss',color:0x659657,unlock:5},{id:'ocean',color:0x428eb8,unlock:15},{id:'brass',color:0xd79c37,unlock:30},{id:'dusk',color:0x926ab0,unlock:45},{id:'moon-enamel',color:0xdce9f5,unlock:5,cost:12}].map((item,i)=>({...item,name:t(`item${i}`)}));
   const STORE='weightplay-rux-salvage-yard-v1';
@@ -70,10 +71,10 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     refreshClampCount();$('clamp').disabled=!model.clampsRemaining||!select.options.length;
   };
   const dialog=(title,text,buttons,mode='result')=>{
-    dialogReturn=document.activeElement;dialogMode=mode;paused=true;$('battleLive').inert=true;$('dialogTitle').textContent=title;$('dialogText').textContent=text;
+    dialogReturn=document.activeElement;dialogMode=mode;paused=true;$('battleLive').inert=true;$('dialog').dataset.mode=mode;$('dialogTitle').textContent=title;$('dialogText').textContent=text;$('dialogText').tabIndex=mode==='help'?0:-1;
     const actions=$('dialogActions');actions.replaceChildren();
-    for(const [label,fn] of buttons){const b=document.createElement('button');b.textContent=label;b.addEventListener('click',fn,{once:true});actions.append(b);}
-    $('dialog').hidden=false;frame.activate('battle',{covered:true});actions.querySelector('button')?.focus();
+    for(const [label,fn,disabled=false] of buttons){const b=document.createElement('button');b.textContent=label;b.disabled=disabled;b.addEventListener('click',fn,{once:true});actions.append(b);}
+    $('dialog').hidden=false;frame.activate('battle',{covered:true});actions.querySelector('button:not(:disabled)')?.focus();
   };
   const start=async(index=slice)=>{
     if(startPending||pageClosed||index<0||index>=OPENING.length||(!practice&&index+1>progress.highestUnlocked))return;
@@ -88,9 +89,9 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     $('dialog').hidden=true;$('battleLive').inert=false;paused=false;frame.activate('battle');model=new SalvageSlice(window.Matter,slice===AVAILABLE ? {twoTargets:true} : {stage:OPENING[slice]});angle=.05;accum=0;$('power').value='60';$('powerValue').textContent='60%';
     // Match the checked initial rest state before accepting a player's first shot.
     for(let i=0;i<120;i++)model.step();
-    clampChoice=null;$('arena').classList.toggle('chapter-two',slice>=30);$('clampTools').hidden=!model.stage?.clamps;$('battleLive').classList.toggle('has-clamp',Boolean(model.stage?.clamps));if(model.stage?.clamps)refreshClampOptions();
-    try {view=new SalvageView($('arena'),a=>{if(!paused&&(model.state==='ready'||model.state==='flight'))angle=a;},()=>{if(screen==='battle'){audio?.stop();dialog(t('graphics'),t('reload'),[[t('reload'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]]);}});view.setFinish(equippedFinish().color);resetZoom();}
-    catch(e){console.error('RUX_GRAPHICS',e);dialog(t('graphics'),t('reload'),[[t('stages'),()=>setScreen('stage')]]);return;}
+    clampChoice=null;recoveryTime=0;recoveryNotice.hidden=true;$('arena').classList.toggle('chapter-two',slice>=30);$('clampTools').hidden=!model.stage?.clamps;$('battleLive').classList.toggle('has-clamp',Boolean(model.stage?.clamps));if(model.stage?.clamps)refreshClampOptions();
+    try {view=new SalvageView($('arena'),a=>{if(!paused&&(model.state==='ready'||model.state==='flight'))angle=a;},()=>{if(screen==='battle'){audio?.stop();dialog(t('graphics'),t('reload'),[[t('reload'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'error');}});view.setFinish(equippedFinish().color);resetZoom();}
+    catch(e){console.error('RUX_GRAPHICS',e);dialog(t('graphics'),t('reload'),[[t('stages'),()=>setScreen('stage')]],'error');return;}
     view.renderer.domElement.focus({preventScroll:true});sound('game.start');last=performance.now();raf=requestAnimationFrame(tick);if(slice===0){tutorialFull=false;tutorial.show();}else if(slice===30&&!progress.clampIntroDone){dialog(t('target'),t('clampIntro'),[[t('continue'),()=>{if(!practice){progress.clampIntroDone=true;save();}closeDialog();}]],'help');}
     } finally {startPending=false;}
   };
@@ -98,8 +99,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     let note='';
     if(won&&!practice){const key=String(slice+1),best=progress.cleared[key];progress.cleared[key]=best?Math.min(best,model.shots):model.shots;progress.highestUnlocked=Math.max(progress.highestUnlocked,Math.min(60,slice+2));const persisted=save();note=persisted?t('saved'):t('saveError');if(persisted)window.WonderAnalytics?.completeStage?.(slice+1);}
     if(won&&practice)note=t('practice');
-    const buttons=[[t('replay'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]];
-    if(won&&slice<59)buttons.unshift([t('next'),()=>start(slice+1)]);
+    const buttons=[[t('stages'),()=>{closeDialog();setScreen('stage');}],[t('next'),()=>start(slice+1),!won||slice>=59],[t('replay'),()=>start()]];
     const rating=won?`${t('mastery')}: ${'★'.repeat(stars(model.shots,model.limit))} (${model.shots}/${model.limit} ${t('ball')}). `:'';
     dialog(won?t('won'):reason?t('wrong'):t('lost'),won?`${t('winBody')} ${rating}${note}`:reason==='wrongOrder'?t('first'):reason==='wrongLast'?t('last'):reason==='wrongLink'?t('linked'):reason==='missingClamp'?t('clampRule'):t('lossText'),buttons);
   };
@@ -109,6 +109,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     const settingsOpen=Boolean(document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'));
     if(!paused&&!document.hidden&&!settingsOpen){accum+=dt;while(accum>=1/60){model.step();accum-=1/60;}
       const events=model.drain(),reason=events.find(event=>['wrongOrder','wrongLink','wrongLast','missingClamp'].includes(event.type))?.type;
+      const collected=events.filter(event=>event.type==='recovered').length;if(collected){recoveryNotice.textContent=`✦ +${collected}`;recoveryNotice.setAttribute('aria-label',`${t('part')} ${model.recovered}/${model.targets.length}`);recoveryNotice.hidden=false;recoveryTime=1;}
       for(const event of events){
         view.effect(event);
         if(event.type==='impact')sound(event.material==='wood'?'impact.wood':event.material==='target'||event.material==='metal'?'impact.metal':'impact.soft');
@@ -116,18 +117,19 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
         if(event.type==='clamp')sound('mechanism.screw');if(event.type==='release')sound('mechanism.unlock');
         if(model.stage?.clamps&&['break','release','recovered','ready'].includes(event.type))refreshClampOptions();
         if(event.type==='win'){sound('result.win');showResult(true);}if(event.type==='lose'){sound('result.lose');showResult(false,reason);}
-        if(event.type==='stalled')dialog(t('stalled'),t('stalledBody'),[[t('replay'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]]);
+        if(event.type==='stalled')dialog(t('stalled'),t('stalledBody'),[[t('replay'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'error');
       }
     }
     // The physics stays stopped under every dialog, while a final recovery
     // burst may finish behind a result instead of freezing on its first frame.
     const visualDt=document.hidden||settingsOpen||(paused&&dialogMode!=='result')?0:dt;
+    if(recoveryTime>0){recoveryTime=Math.max(0,recoveryTime-visualDt);if(!recoveryTime)recoveryNotice.hidden=true;}
     if(!view.contextLost)view.sync(model,angle,visualDt,Number($('power').value)/100);if(model.stage?.clamps)refreshClampCount();$('fire').disabled=paused||settingsOpen||model.state!=='ready';$('stageStat').textContent=String(slice+1);$('ballStat').textContent=String(model.limit-model.shots);$('partStat').textContent=`${model.recovered}/${model.targets.length}`;const objectives=[];if(model.stage?.firstColumn!==undefined&&model.recovered===0)objectives.push(t('first'));if(model.stage?.lastColumn!==undefined&&model.targets.some(body=>body.plugin.last&&!model.recoveredTargets.has(body)))objectives.push(t('last'));if(model.stage?.sameShot&&model.targets.some(body=>body.plugin.linked&&!model.recoveredTargets.has(body)))objectives.push(t('linked'));if(model.stage?.clampColumn!==undefined&&model.targets.some(body=>body.plugin.clampRequired&&!body.plugin.wasClamped&&!model.recoveredTargets.has(body)))objectives.push(t('clampRule'));const status=model.state==='flight'?t('settling'):[`${(angle*180/Math.PI).toFixed(1)}°`,...objectives].join(' · ');if($('status').textContent!==status)$('status').textContent=status;
     raf=requestAnimationFrame(tick);
   };
   const fire=()=>{if(!paused&&!document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])')&&model?.shoot(angle,Number($('power').value)/100))sound('projectile.launch');};
   frame=window.WeightPlayScreenFrame.mount({root:$('gameFrame'),localeSelect:$('localeSource'),playUI:true,scenes:{main:{root:$('mainScreen'),header:$('mainScreen').querySelector('header'),content:$('mainScreen').querySelector('.main-hero')},stage:{root:$('stageScreen'),header:$('stageScreen').querySelector('header'),content:$('stageWorkspace')},battle:{root:$('battleScreen'),header:$('battleScreen').querySelector('header'),content:$('battleLive')}}});
-  const openHelp=()=>{dialog(t('howHeading'),'',[[t('continue'),()=>{tutorial.complete();closeDialog();}]],'help');const steps=tutorialFull?[t('goal'),t('how'),`${t('rules')} ${t('trajectory')} ${t('clampTime')} ${t('zoomHint')}`,t('medalHint')]:[t('goal'),`${t('aim')} · ${t('how')}`,`${t('trajectory')} ${t('zoomHint')}`];tutorial.render($('dialogText'),steps,tutorialFull?[t('first'),t('last'),t('linked'),t('clampRule')].join(' '):'');};
+  const openHelp=()=>{dialog(t('howHeading'),'',[[t('continue'),()=>{tutorial.complete();closeDialog();}]],'help');const steps=tutorialFull?[t('goal'),t('how'),`${t('rules')} ${t('fineAim')} ${t('trajectory')} ${t('clampTime')} ${t('zoomHint')} ${t('medalHint')}`]:[t('goal'),`${t('aim')} · ${t('how')}`,`${t('trajectory')} ${t('zoomHint')}`];tutorial.render($('dialogText'),steps,tutorialFull?[t('first'),t('last'),t('linked'),t('clampRule')].join(' '):'');};
   tutorial=window.WeightPlayTutorial.createEmbedded({gameId:'rux-salvage-yard',open:openHelp,isSeen:()=>Boolean(progress.tutorialDone),onComplete(){if(!practice){progress.tutorialDone=true;save();}},canPersist:()=>!practice});
   const stat=(id,label)=>{const node=document.createElement('div'),caption=document.createElement('span'),value=document.createElement('strong');caption.textContent=label;value.id=id;value.textContent='0';node.append(caption,value);return node;};
   frame.battleTopUI.add(window.WeightPlayScreenFrame.createGroup().add(stat('stageStat',t('stage'))).add(stat('ballStat',t('ball'))).add(stat('partStat',t('part'))));
@@ -146,7 +148,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   $('clampTarget').addEventListener('change',()=>{clampChoice=$('clampTarget').value;});
   $('clampTarget').addEventListener('keydown',event=>{const select=event.currentTarget;if(!select.options.length||!['ArrowUp','ArrowDown','Home','End'].includes(event.key))return;const next=event.key==='Home'?0:event.key==='End'?select.options.length-1:Math.max(0,Math.min(select.options.length-1,select.selectedIndex+(event.key==='ArrowUp'?-1:1)));event.preventDefault();if(next!==select.selectedIndex){select.selectedIndex=next;select.dispatchEvent(new Event('change',{bubbles:true}));}});
   $('clamp').addEventListener('click',()=>{const body=model?.bodies.find(item=>String(item.id)===$('clampTarget').value);if(!paused&&model?.clampBody(body)){clampChoice=String(body.id);refreshClampOptions();}else sound('feedback.error');});
-  document.addEventListener('keydown',e=>{const modal=!$('stageDialog').hidden?$('stageDialog'):!$('dialog').hidden?$('dialog'):null;if(modal){if(e.key==='Escape'){if(modal===$('stageDialog')&&!purchasePending)closePurchase();else if(dialogMode==='help'){tutorial.complete();closeDialog();}else if(dialogMode==='pause')closeDialog();e.preventDefault();}if(e.key==='Tab'){const focus=[...modal.querySelectorAll('button,select,input,a')].filter(node=>!node.disabled&&node.getClientRects().length);if(focus.length){const first=focus[0],last=focus.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}return;}if(screen!=='battle'||paused||document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'))return;if(e.key==='Escape'){e.preventDefault();$('battleBack').click();return;}if(e.target.matches('input,select'))return;if(e.key==='ArrowUp'){angle=Math.min(1.1,angle+.03);e.preventDefault();}if(e.key==='ArrowDown'){angle=Math.max(-.1,angle-.03);e.preventDefault();}if(e.code==='Space'&&!e.target.matches('button')){e.preventDefault();fire();}});
+  document.addEventListener('keydown',e=>{const modal=!$('stageDialog').hidden?$('stageDialog'):!$('dialog').hidden?$('dialog'):null;if(modal){if(e.key==='Escape'){if(modal===$('stageDialog')&&!purchasePending)closePurchase();else if(dialogMode==='help'){tutorial.complete();closeDialog();}else if(dialogMode==='pause')closeDialog();e.preventDefault();}if(e.key==='Tab'){const focus=[...modal.querySelectorAll('button,select,input,a,[tabindex="0"]')].filter(node=>!node.disabled&&node.getClientRects().length);if(focus.length){const first=focus[0],last=focus.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}return;}if(screen!=='battle'||paused||document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'))return;if(e.key==='Escape'){e.preventDefault();$('battleBack').click();return;}if(e.target.matches('input,select'))return;const increment=e.shiftKey ? .005 : .03;if(e.key==='ArrowUp'){angle=Math.min(1.1,angle+increment);e.preventDefault();}if(e.key==='ArrowDown'){angle=Math.max(-.1,angle-increment);e.preventDefault();}if(e.code==='Space'&&!e.target.matches('button')){e.preventDefault();fire();}});
   document.addEventListener('visibilitychange',()=>{last=performance.now();if(document.hidden&&screen==='battle'&&!paused)dialog(t('pause'),t('leaveQuestion'),[[t('continue'),closeDialog],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'pause');});
   window.addEventListener('pagehide',()=>{pageClosed=true;cancelAnimationFrame(raf);view?.dispose();model?.dispose();selector.destroy();frame.destroy();audio?.dispose();tutorial.destroy();},{once:true});
   LocalPractice.register({gameId:'rux-salvage-yard',stageIds:OPENING.map(d=>d.id),enable(value){practice=value;selector.refresh(selected);},startStage:id=>start(Number(id)-1)});

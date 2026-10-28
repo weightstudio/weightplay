@@ -12,6 +12,18 @@
 #zoomView,#help{min-width:var(--wp-frame-control-size,48px)}
 #zoomView{font-size:22px;font-weight:700}
 #arena canvas:focus-visible{outline:3px solid #ffdb70;outline-offset:-3px}
+#arena{position:relative}
+#recoveryNotice{position:absolute;inset-block-start:10px;left:50%;transform:translateX(-50%);z-index:1;pointer-events:none;padding:4px 12px;border:1px solid #dfffd5;border-radius:999px;background:#145f51e8;color:#f0ffcf;font-size:18px;font-weight:800;line-height:1.2;box-shadow:0 3px 12px #052c2999}
+#dialog .card{display:flex;flex-direction:column}
+#dialogTitle,#dialogActions{flex:none}
+#dialogText{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#e8ba50 #214853}
+#dialogText::-webkit-scrollbar{width:8px}
+#dialogText::-webkit-scrollbar-track{background:#214853}
+#dialogText::-webkit-scrollbar-thumb{background:#e8ba50;border-radius:4px}
+#dialogText:focus-visible{outline:2px solid #ffdb70;outline-offset:-2px}
+#dialogActions{background:var(--wp-ui-surface);padding:4px}
+#dialog[data-mode="result"] #dialogActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#dialog[data-mode="result"] #dialogActions button{width:100%;min-width:0;margin:0;padding-inline:4px;overflow-wrap:anywhere}
 #battleLive,#controls,#clampTools{min-width:0}
 #arena{background-image:linear-gradient(rgba(13,42,49,.16),rgba(13,42,49,.16)),url('/games/rux-salvage-yard/art/background.webp')}
 #arena.chapter-two{background-image:linear-gradient(rgba(13,38,67,.24),rgba(17,61,65,.2)),url('/games/rux-salvage-yard/art/background.webp')}

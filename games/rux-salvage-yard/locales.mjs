@@ -440,6 +440,22 @@ const EXTRA={
  ar:['يثبّت المشبك هدفه لثلاث ثوانٍ.','يقدّر الخط المنقط المسار حتى أول اصطدام. قد تغيّر القطع المتحركة موضع الاصطدام؛ يوضح السهم اتجاه المنصة.']
 };
 for(const [locale,[clampTime,trajectory]] of Object.entries(EXTRA))Object.assign(CUSTOM[locale],{clampTime,trajectory});
+const FINE_AIM={
+  en:'Hold Shift with ↑ or ↓ for finer aim.',
+  'zh-Hant':'按住 Shift 再按方向鍵上、下，可微調角度。',
+  'zh-Hans':'按住 Shift 再按方向键上、下，可微调角度。',
+  ja:'Shiftを押しながら上下キーで角度を微調整できます。',
+  ko:'Shift를 누른 채 위·아래 방향키로 각도를 미세 조정할 수 있습니다.',
+  es:'Mantén Shift y pulsa ↑ o ↓ para ajustar mejor la puntería.',
+  'pt-BR':'Segure Shift e use ↑ ou ↓ para ajustar a mira com precisão.',
+  fr:'Maintenez Maj et utilisez ↑ ou ↓ pour affiner la visée.',
+  de:'Halte Umschalt und drücke ↑ oder ↓, um feiner zu zielen.',
+  it:'Tieni premuto Maiusc e usa ↑ o ↓ per regolare meglio la mira.',
+  ru:'Удерживайте Shift и нажимайте ↑ или ↓ для точной наводки.',
+  hi:'बारीक निशाने के लिए Shift दबाकर ↑ या ↓ दबाएँ।',
+  ar:'اضغط Shift مع ↑ أو ↓ لضبط التصويب بدقة.'
+};
+for(const [locale,fineAim] of Object.entries(FINE_AIM))Object.assign(CUSTOM[locale],{fineAim});
 const VIEW_COPY={
   en:['Zoom in on structures','Show the full field','Use + to enlarge the structures and − to return to the full field.'],
   'zh-Hant':['放大支架','顯示完整場地','按 + 放大支架，按 − 返回完整場地。'],

@@ -2142,6 +2142,13 @@
       view.classList.toggle("is-active", active);
       view.hidden = !active;
     });
+    // The shared rail has an important display rule, so hide it explicitly
+    // while a management tab owns the Stage workspace.
+    for (const element of [nodes.expeditionRail, nodes.stageMapPage.querySelector('.wp-stage-i9-briefing')]) {
+      if (!element) continue;
+      if (tabName === 'stages') element.style.removeProperty('display');
+      else element.style.setProperty('display', 'none', 'important');
+    }
     if (tabName === "stages") {
       requestAnimationFrame(() => {
         renderExpeditionStage(false);
