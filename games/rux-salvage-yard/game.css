@@ -34,6 +34,8 @@
 body[data-screen=battle] .wpb-toast{padding:4px 8px;font-size:12px}
 body[data-screen=battle] .wpb-toast img{width:24px}
 body:has(.wpb-toast) #dialog{padding-bottom:64px}
+/* Keep result actions in place when the first-clear reward toast disappears. */
+#dialog[data-mode="result"]{padding-bottom:64px}
 #dialog .card{padding:8px 12px}
 #dialogTitle{margin:4px 0;font-size:18px}
 #dialogText{font-size:14px;line-height:1.25}
