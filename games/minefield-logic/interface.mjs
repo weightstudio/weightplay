@@ -1,11 +1,13 @@
 import { Minefield, LEVELS } from './engine.mjs?v=19';
 import { CAMPAIGN_STAGES } from './campaign.mjs?v=19';
 import { COPY, LOCALES, ROUTES, LANGUAGES, previewRouteSuffix } from './copy.mjs?v=20';
-import { createMinefieldStageConfig } from './stage-config.mjs?v=19';
+import { createMinefieldStageConfig } from './stage-config.mjs?v=22';
 
 export function mountMinefield() {
+  const practiceRequested = location.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) && new URLSearchParams(location.search).get('practice') === '1';
+  let practiceAdapter = null, practiceActive = false, practiceSerial = 0;
   const root = document.querySelector('#logicApp');
-  if (!root || root.dataset.mfMounted === '21') return;
+  if (!root || root.dataset.mfMounted === '22') return;
   const segment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
   const locale = LOCALES[ROUTES.indexOf(segment)] || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : 'en');
   const copy = COPY[locale];
@@ -29,7 +31,7 @@ export function mountMinefield() {
       records.campaign.unlockedStage = Math.max(records.campaign.unlockedStage, impliedUnlock);
     }
   } catch { /* Storage is optional. */ }
-  const persist = () => { try { localStorage.setItem(storageKey, JSON.stringify(records)); } catch { /* Play remains available. */ } };
+  const persist = () => { if (practiceRequested) return; try { localStorage.setItem(storageKey, JSON.stringify(records)); } catch { /* Play remains available. */ } };
   const el = (tag, className = '', text) => {
     const node = document.createElement(tag); if (className) node.className = className;
     if (text !== undefined) node.textContent = text; return node;
@@ -42,10 +44,10 @@ export function mountMinefield() {
   const formatTime = seconds => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`;
   const applyTemplate = (value, data) => value.replace(/\{(\w+)\}/g, (_, key) => String(data[key] ?? ''));
   document.documentElement.lang = locale; document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
-  document.body.dataset.logicGame = 'minefield-logic'; document.body.dataset.gameVersion = 'v21';
+  document.body.dataset.logicGame = 'minefield-logic'; document.body.dataset.gameVersion = 'v22';
   document.body.dataset.runtimeLocalize = 'off';
   document.body.dataset.wpGameId = 'minefield-logic';
-  root.dataset.wpFrameRoot = ''; root.dataset.wpPlayUi = '1'; root.dataset.mfNative = ''; root.dataset.mfMounted = '21';
+  root.dataset.wpFrameRoot = ''; root.dataset.wpPlayUi = '1'; root.dataset.mfNative = ''; root.dataset.mfMounted = '22';
   root.setAttribute('data-runtime-localize', 'off');
   document.body.querySelector(':scope > h1')?.remove();
   root.replaceChildren();
@@ -124,7 +126,7 @@ export function mountMinefield() {
   localeSelect.value = locale;
   localeSelect.addEventListener('change', () => {
     const next = LOCALES.indexOf(localeSelect.value); if (next < 0) return;
-    try { localStorage.setItem('weightPlayLocale', localeSelect.value); } catch { /* Route still selects the locale. */ }
+    if (!practiceRequested) try { localStorage.setItem('weightPlayLocale', localeSelect.value); } catch { /* Route still selects the locale. */ }
     location.assign(`/${ROUTES[next]}/games/minefield-logic/${previewRouteSuffix(location.search)}`);
   });
   root.append(main, stageScreen, battle, localeSelect);
@@ -146,7 +148,7 @@ export function mountMinefield() {
   const stageInfoGroup = window.WeightPlayScreenFrame.createGroup();
   stageInfoGroup.add(stageProgress);
   frame.stageTopUI.add(stageInfoGroup);
-  const stageConfig = createMinefieldStageConfig({ copy, records });
+  const stageConfig = createMinefieldStageConfig({ copy, records, isPractice: () => practiceActive });
   stageSelector = window.WeightPlayPlayUI.mountStage({
     page: stageContent,
     rail: stageList,
@@ -160,13 +162,13 @@ export function mountMinefield() {
   frame.commonDownButton.add(stageQuick);
   frame.battleTopUI.add(hudGroup);
   const readMeasurement = () => ({ ...measurement, screen: measurement.ended ? null : screen, node: battle, paused: runningSince === null, activityMode: 'input', idleSeconds: 300 });
-  const notify = () => { try { window.WonderAnalytics?.game?.observeState?.(readMeasurement); } catch { /* Optional telemetry. */ } };
+  const notify = () => { if (practiceRequested) return; try { window.WonderAnalytics?.game?.observeState?.(readMeasurement); } catch { /* Optional telemetry. */ } };
   const nowSeconds = () => Math.floor((elapsed + (runningSince === null ? 0 : performance.now() - runningSince)) / 1000);
   function updateCampaignProgress() {
     const completed = new Set(records.campaign.completedStages);
     const stage = CAMPAIGN_STAGES[selectedStageId - 1];
     const stageState = completed.has(selectedStageId) ? copy.campaign.cleared
-      : selectedStageId <= records.campaign.unlockedStage ? copy.campaign.unlocked : copy.campaign.locked;
+      : practiceActive || selectedStageId <= records.campaign.unlockedStage ? copy.campaign.unlocked : copy.campaign.locked;
     stageProgress.textContent = `${applyTemplate(copy.campaign.battle, { n: stage.id, mines: stage.mines.length })} · ${stageState}`;
     mainProgress.textContent = applyTemplate(copy.campaign.mainProgress, {
       cleared: completed.size, unlocked: records.campaign.unlockedStage,
@@ -208,9 +210,16 @@ export function mountMinefield() {
   }
   stageHome.addEventListener('click', event => { event.preventDefault(); showMain(); });
   function newRound(difficulty, restart = false) {
+    if (practiceRequested) return;
     startRound(difficulty, restart, null);
   }
-  function startStage(stage, restart = false) {
+  function startStage(stage, restart = false, practiceValidated = false) {
+    if (!stage) return;
+    if (practiceRequested && !practiceValidated) {
+      if (practiceActive && practiceAdapter) void practiceAdapter.challenge('minefield-logic', stage.id);
+      return;
+    }
+    if (practiceRequested && !practiceActive) return;
     selectedStageId = stage.id;
     stageSelector.refresh(stage.id - 1);
     startRound('easy', restart, stage);
@@ -281,12 +290,12 @@ export function mountMinefield() {
     render();
     if (['won', 'lost'].includes(game.status)) {
       measurement.ended = true; measurement.outcome = game.status === 'won' ? 'win' : 'lose';
-      if (game.status === 'won' && currentStage) {
+      if (game.status === 'won' && currentStage && !practiceRequested) {
         records.campaign.completedStages = [...new Set([...records.campaign.completedStages, currentStage.id])].sort((a, b) => a - b);
         records.campaign.unlockedStage = Math.min(CAMPAIGN_STAGES.length, Math.max(records.campaign.unlockedStage, currentStage.id + 1));
         persist();
       }
-      if (game.status === 'won' && !game.assisted && !currentStage) {
+      if (game.status === 'won' && !game.assisted && !currentStage && !practiceRequested) {
         const seconds = nowSeconds(), best = records.best[game.level];
         if (best === undefined || seconds < best) { records.best[game.level] = seconds; persist(); }
       }
@@ -352,7 +361,9 @@ export function mountMinefield() {
     const summary = `${copy.safe}: ${view.safe}/${game.rows * game.cols - game.total} · ${copy.time}: ${formatTime(nowSeconds())} · ${game.assisted ? copy.assisted : copy.clean}`;
     if (currentStage) {
       const stageMessage = won
-        ? currentStage.id === CAMPAIGN_STAGES.length
+        ? practiceRequested
+          ? `Stage ${currentStage.id} cleared. Local practice: no progress or rewards are saved.`
+          : currentStage.id === CAMPAIGN_STAGES.length
           ? copy.campaign.finale
           : applyTemplate(copy.campaign.won, { n: currentStage.id, next: currentStage.id + 1 })
         : applyTemplate(copy.campaign.lost, { n: currentStage.id });
@@ -380,7 +391,23 @@ export function mountMinefield() {
   window.addEventListener('weightplay:interaction-state', () => { syncClock(); notify(); });
   window.addEventListener('weightplay:analytics-ready', notify);
   document.addEventListener('visibilitychange', () => { syncClock(); notify(); });
-  window.addEventListener('pagehide', () => { pageAway = true; syncClock(); notify(); });
+  window.addEventListener('pagehide', () => { ++practiceSerial; pageAway = true; syncClock(); notify(); });
   window.addEventListener('pageshow', () => { pageAway = false; syncClock(); notify(); });
   updateBest(); activate('main');
+  if (practiceRequested && window.__minefieldPracticeAnalyticsSafe === true) {
+    void import('/src/game-local-practice.mjs').then(async ({ LocalPractice }) => {
+      if (pageAway) return;
+      practiceAdapter = LocalPractice;
+      await LocalPractice.register({
+        gameId: 'minefield-logic', stageIds: CAMPAIGN_STAGES.map(stage => stage.id),
+        enable: enabled => { practiceActive = enabled; if (!enabled) ++practiceSerial; stageSelector.refresh(selectedStageId - 1); updateCampaignProgress(); },
+        startStage: async id => {
+          const ticket = ++practiceSerial;
+          const stage = CAMPAIGN_STAGES.find(item => String(item.id) === id);
+          if (!stage || !await LocalPractice.validate() || ticket !== practiceSerial || pageAway || !practiceActive) return;
+          startStage(stage, Boolean(game), true);
+        },
+      });
+    }).catch(error => console.error('Minefield local practice failed', error));
+  }
 }

@@ -4,7 +4,7 @@ const POSTER = '/assets/interface7-redrawn/minefield-logic.webp';
 const fill = (value, data) => value.replace(/\{(\w+)\}/g, (_, key) => String(data[key] ?? ''));
 
 /** Minefield owns the authored campaign facts; shared Play UI owns their presentation. */
-export function createMinefieldStageConfig({ copy, records }) {
+export function createMinefieldStageConfig({ copy, records, isPractice = () => false }) {
   if (!copy?.campaign || !records?.campaign) throw new TypeError('MINEFIELD_STAGE_CONFIG_REQUIRED');
   return Object.freeze({
     gameId: 'minefield-logic',
@@ -16,7 +16,7 @@ export function createMinefieldStageConfig({ copy, records }) {
       if (!stage) throw new RangeError(`MINEFIELD_STAGE_INDEX:${index}`);
       const campaign = copy.campaign;
       const cleared = records.campaign.completedStages.includes(stage.id);
-      const locked = stage.id > records.campaign.unlockedStage;
+      const locked = !isPractice() && stage.id > records.campaign.unlockedStage;
       const state = cleared ? campaign.cleared : locked ? campaign.locked : campaign.unlocked;
       const stageTitle = fill(campaign.stage, { n: stage.id });
       const arc = fill(campaign.arc, { n: stage.arc });

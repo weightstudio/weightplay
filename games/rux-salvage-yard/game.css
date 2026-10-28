@@ -46,6 +46,11 @@ body:has(.wpb-toast) #dialog{padding-bottom:64px}
 #powerFine{position:relative;flex:0 0 48px;min-width:48px;padding:0 2px;font-size:12px}
 #powerFine>span{position:absolute;inset-inline-end:2px;inset-block-end:0;font-size:10px;line-height:1}
 #power{flex:1;min-width:44px}
+#angleFine{display:flex;align-items:center;gap:8px;width:100%;min-height:48px;height:48px;padding:5px 12px;border:0;background:var(--wp-ui-surface);color:var(--wp-ui-text);text-align:start;font-size:12px}
+#angleFine:disabled{opacity:1}
+#angleFine:disabled .angle-fine-mark{visibility:hidden}
+#angleFine #status{display:flex;align-items:center;flex:1;min-width:0;height:100%;padding:0;background:transparent}
+.angle-fine-mark{flex:none;font-size:16px}
 #fire{flex:0 0 calc(80 * var(--wp-play-unit,1px));min-width:0;padding:0 3px;font-size:calc(13 * var(--wp-play-unit,1px));line-height:1.1;overflow-wrap:anywhere}
 #clampTrigger,#zoomView,#help{flex:0 0 var(--wp-frame-control-size,48px);min-width:var(--wp-frame-control-size,48px)}
 #clampTrigger{position:relative;display:grid;place-items:center;padding:4px}
@@ -59,4 +64,7 @@ body:has(.wpb-toast) #dialog{padding-bottom:64px}
 #dialog .power-fine-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-block:8px}
 #dialog .power-fine-row button{min-width:48px;font-size:22px}
 #dialog .power-fine-row output{min-width:52px;font-size:18px;font-weight:700}
+#dialog .angle-fine-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-block:8px}
+#dialog .angle-fine-row button{min-width:48px;font-size:22px}
+#dialog .angle-fine-row output{min-width:65px;font-size:18px;font-weight:700}
 .rux-sr-only{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}

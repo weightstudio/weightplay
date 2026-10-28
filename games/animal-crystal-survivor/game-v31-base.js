@@ -3271,6 +3271,7 @@
         facet:state.stage===40?{hazards:state.hazards.filter(h=>h.beaconFacet).map(h=>({side:h.beaconFacet,phase:h.facetPhase,warn:h.warn,life:h.life}))}:null,
         link:state.stage===41?{remaining:state.beaconLinkRemaining,expiredNotice:state.beaconLinkExpiredUntil>performance.now()}:null,
         reveal:state.stage===48?{firstVisible:Boolean(__crystalBeaconMesh?.group.visible),secondVisible:Boolean(__crystalSecondBeaconMesh?.group.visible)}:null,
+        shelterAnnotations:state.stage===49?(state.shelterAnnotations||[]).map(item=>({...item})):null,
         beacon: state.beaconRound ? {round:{...state.beaconRound},drop:state.beaconDrop?{...state.beaconDrop}:null,station:{...__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0]},stations:__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons.map(point=>({...point})),laneChoice:state.beaconChoice?{...state.beaconChoice,lanes:state.beaconChoice.lanes.map(lane=>({...lane}))}:null,laneResolved:Boolean(state.beaconLaneResolved),hazardSides:state.hazards.filter(hazard=>hazard.beaconLane).map(hazard=>({side:hazard.beaconLane,warn:hazard.warn})),rootWindows:state.hazards.filter(hazard=>hazard.beaconRoot).map(hazard=>({x:hazard.x,y:hazard.y,r:hazard.r,warn:hazard.warn,life:hazard.life})),wardenSweeps:state.hazards.filter(hazard=>hazard.kind==='sweep'&&hazard.bossSkill==='bossWarden').map(hazard=>({x:hazard.x,y:hazard.y,vx:hazard.vx,vy:hazard.vy,warn:hazard.warn,life:hazard.life,width:hazard.width,height:hazard.height}))} : null,
         firstKeyCue: firstKeyCueVisible(),
         keys: state.keys,
@@ -3738,12 +3739,15 @@
     };
     ctx.save();
     ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
+    if(state.stage===49)state.shelterAnnotations=[];
     if((state.stage===33||state.stage===36||state.stage===37||state.stage===39||state.stage===40||state.stage===41||state.stage===42||state.stage===43||state.stage===44||state.stage===45||state.stage===46||state.stage===47||state.stage===48||state.stage===49)&&state.beaconRound){
       ctx.save();
       for(const station of __crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons){
         if(state.stage===48&&!__crystalRevealModel.isRevealStationVisible(state.beaconRound,station.id))continue;
         if(!crystal3D.inView(station.x,station.y))continue;
-        const marker=point(station.x,station.y,state.stage===46?1.8:4.5),lit=state.stage===44&&station.id===__crystalLitOrderModel.litStation(state.beaconRound);ctx.fillStyle=lit?'#ffe29a':'#10222e';ctx.strokeStyle='#f3d284';ctx.lineWidth=1.5;
+        const marker=point(station.x,station.y,state.stage===46?1.8:4.5),lit=state.stage===44&&station.id===__crystalLitOrderModel.litStation(state.beaconRound);
+        if(state.stage===49){const anchor=point(station.x,station.y,.2),head=crystal3D.playerHeadPosition(),playerX=Number.isFinite(head.x)?head.x*renderCanvas.width/annotationScale:renderCanvas.width/annotationScale/2,rect=canvas.getBoundingClientRect(),panel=nodes.gamePanel.getBoundingClientRect(),left=Math.max(0,rect.left,panel.left)-rect.left,right=Math.min(window.innerWidth,rect.right,panel.right)-rect.left,top=Math.max(0,rect.top,panel.top)-rect.top,bottom=Math.min(window.innerHeight,rect.bottom,panel.bottom)-rect.top;marker.x=Math.max(left+30,Math.min(right-30,marker.x+(marker.x<=playerX?-38:38)));marker.y=Math.max(top+20,Math.min(bottom-20,marker.y-25));state.shelterAnnotations.push({id:station.id,left:rect.left+marker.x-18,right:rect.left+marker.x+18,top:rect.top+marker.y-10,bottom:rect.top+marker.y+10,anchorX:rect.left+anchor.x,anchorY:rect.top+anchor.y,clipLeft:rect.left+left,clipRight:rect.left+right,clipTop:rect.top+top,clipBottom:rect.top+bottom});ctx.strokeStyle='#fff0b5';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(anchor.x,anchor.y);ctx.lineTo(marker.x,marker.y);ctx.stroke();}
+        ctx.fillStyle=lit?'#ffe29a':'#10222e';ctx.strokeStyle='#f3d284';ctx.lineWidth=1.5;
         const width=state.stage===49?36:20;ctx.beginPath();ctx.roundRect(marker.x-width/2,marker.y-10,width,20,4);ctx.fill();ctx.stroke();
         ctx.fillStyle=lit?'#10222e':'#fff4ca';ctx.font=state.stage===49?'bold 12px system-ui':'bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(state.stage===49?`${station.id} ${station.id==='A'?'◆':'≋'}`:station.id,marker.x,marker.y);
         if(lit){ctx.beginPath();ctx.moveTo(marker.x-5,marker.y-12);ctx.lineTo(marker.x+5,marker.y-12);ctx.lineTo(marker.x,marker.y-17);ctx.closePath();ctx.fillStyle='#ffe29a';ctx.fill();}

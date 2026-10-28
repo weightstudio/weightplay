@@ -11,6 +11,15 @@ function createWoodTexture() {
   c.fillStyle='#96512f';c.fillRect(31,37,9,15);c.fillStyle='#d28a51';c.fillRect(34,40,3,9);c.fillStyle='#96512f';c.fillRect(91,79,8,12);c.fillStyle='#d28a51';c.fillRect(94,81,2,7);
   const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;return texture;
 }
+function createEnamelTexture() {
+  // Neutral painted wear is shared by the metal faces; the material colour
+  // still determines whether the face is a support, reflector or target.
+  const canvas=document.createElement('canvas');canvas.width=128;canvas.height=128;const c=canvas.getContext('2d');
+  c.fillStyle='#f4f6f0';c.fillRect(0,0,128,128);
+  for(let i=0;i<90;i++){const x=(i*47+11)%126,y=(i*71+23)%126;c.fillStyle=i%4===0?'#cbd6d0':'#e3eae3';c.fillRect(x,y,2+(i%3),1+(i%2));}
+  for(let i=0;i<12;i++){const x=(i*29+7)%110,y=(i*37+19)%122;c.fillStyle=i%2?'#d5dfd9':'#fffdf1';c.fillRect(x,y,8+(i%4)*3,2);}
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;return texture;
+}
 
 function createLauncher() {
   const group=new THREE.Group(),metal=new THREE.MeshStandardMaterial({color:0x187e79,roughness:.5,metalness:.35}),brass=new THREE.MeshStandardMaterial({color:0xe6b544,roughness:.45,metalness:.5}),dark=new THREE.MeshStandardMaterial({color:0x31575b,roughness:.64,metalness:.3}),highlight=new THREE.MeshStandardMaterial({color:0x73c8b4,roughness:.5,metalness:.25});
@@ -78,7 +87,7 @@ export class SalvageView {
     this.renderer.domElement.addEventListener('webglcontextlost',this.onContextLost);
     this.scene.add(new THREE.HemisphereLight(0xfff1d1, 0x275e64, 2.2));
     const light = new THREE.DirectionalLight(0xffffff, 2); light.position.set(-200, 800, 1000); this.scene.add(light);
-    this.meshes = new Map();this.woodTexture=createWoodTexture();
+    this.meshes = new Map();this.woodTexture=createWoodTexture();this.enamelTexture=createEnamelTexture();
     this.bursts=[];this.recoil=0;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const launcher=createLauncher();this.launcher=launcher.group;this.launcherMaterial=launcher.metal;
     this.launcher.position.set(80,120,50);this.scene.add(this.launcher);
@@ -134,6 +143,7 @@ export class SalvageView {
     const group=new THREE.Group();
     const mat=(color,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness:.65,metalness});
     const box=(w,h,d,color,z=0,metalness=0)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color,metalness));m.position.z=z;group.add(m);return m;};
+    const enamel=mesh=>{mesh.material.map=this.enamelTexture;return mesh;};
     const block=(w,h,d,color,metalness=0)=>{const r=Math.min(3,w/8,h/8,d/8),shape=new THREE.Shape();shape.moveTo(-w/2+r,-h/2+r);shape.lineTo(w/2-r,-h/2+r);shape.lineTo(w/2-r,h/2-r);shape.lineTo(-w/2+r,h/2-r);shape.closePath();const depth=d-2*r,geometry=new THREE.ExtrudeGeometry(shape,{depth,steps:1,bevelEnabled:true,bevelSize:r,bevelThickness:r,bevelSegments:1,curveSegments:1});geometry.translate(0,0,-depth/2);const m=new THREE.Mesh(geometry,mat(color,metalness));group.add(m);return m;};
     const bolt=(x,y,z,color=0xf7d278)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(3,3,3,8),mat(color,.6));m.rotation.x=Math.PI/2;m.position.set(x,y,z);group.add(m);};
     const studs=(w,h,z)=>{for(const x of [-w/2+9,w/2-9])for(const y of [-h/2+9,h/2-9])bolt(x,y,z);};
@@ -155,7 +165,7 @@ export class SalvageView {
     }
     if(kind==='wood') { block(70,80,70,0x9d5932);const face=box(61,70,4,0xffffff,37);face.material.map=this.woodTexture;for(const x of [-20,0,20]){const grain=box(3,62,3,0x8b4b2b,40);grain.position.x=x;}box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
     if(kind==='beam') {const w=body.plugin.width;block(w,20,70,0x794729);const face=box(w-8,14,4,0xffffff,37);face.material.map=this.woodTexture;box(w,4,6,0xd3a258,42);for(const x of [-w/2+15,w/2-15])bolt(x,0,46);}
-    if(kind==='metal') {block(70,80,70,0x586f77,.5);box(61,70,4,0x829c9c,37,.5);box(70,10,6,0xdfb751,42,.5);box(10,72,6,0x465f6a,43,.5);studs(64,73,47);}
+    if(kind==='metal') {block(70,80,70,0x586f77,.5);enamel(box(61,70,4,0x829c9c,37,.5));box(70,10,6,0xdfb751,42,.5);box(10,72,6,0x465f6a,43,.5);studs(64,73,47);}
     if(kind==='guard') {
       const h=body.plugin.height;block(25,h,70,0x435f70,.5);
       box(20,h-12,4,0x284851,37,.45);box(25,12,6,0xd0ad58,41,.5);
@@ -164,7 +174,7 @@ export class SalvageView {
     }
     if(kind==='reflector') {
       block(25,160,70,0x439b95,.6);box(31,148,78,0xd9b657,5,.5);box(35,120,83,0x256d73,8,.4);
-      box(25,108,4,0x45968f,52,.45);
+      enamel(box(25,108,4,0x45968f,52,.45));
       for(const x of [-12,12]){const rail=box(4,110,5,0xd8b75e,55,.55);rail.position.x=x;}
       for(const y of [-44,0,44]){const strap=box(24,5,5,0x9ed8c7,56,.35);strap.position.y=y;bolt(0,y,60);}
     }
@@ -176,7 +186,7 @@ export class SalvageView {
       tipA.position.set(10,4,0);tipA.rotation.z=-Math.PI/4;tipB.position.set(10,-4,0);tipB.rotation.z=Math.PI/4;direction.add(shaft,tipA,tipB);direction.position.z=43;group.add(direction);group.userData.direction=direction;
     }
     if(kind==='target') {
-      const w=body.bounds.max.x-body.bounds.min.x;block(w,65,65,body.plugin.heavy?0x4a5960:0x137f80,.2);box(w-6,57,6,body.plugin.heavy?0xb97a42:0xe8b847,35,.4);box(w-17,46,7,0x249fa0,40);box(w-27,36,7,0x126a70,44,.2);
+      const w=body.bounds.max.x-body.bounds.min.x;block(w,65,65,body.plugin.heavy?0x4a5960:0x137f80,.2);box(w-6,57,6,body.plugin.heavy?0xb97a42:0xe8b847,35,.4);enamel(box(w-17,46,7,0x249fa0,40));enamel(box(w-27,36,7,0x126a70,44,.2));
       if(body.plugin.heavy){for(const x of [-w/2+7,w/2-7]){const brace=box(5,49,7,0xd6e0d4,47,.5);brace.position.x=x;}}
       const gear=new THREE.Shape();for(let i=0;i<32;i++){const a=i*Math.PI/16,r=(i%4===1||i%4===2)?16:13;const x=Math.cos(a)*r,y=Math.sin(a)*r;if(i===0)gear.moveTo(x,y);else gear.lineTo(x,y);}gear.closePath();const hole=new THREE.Path();hole.absellipse(0,0,7,7,0,Math.PI*2,true);gear.holes.push(hole);const cog=new THREE.Mesh(new THREE.ExtrudeGeometry(gear,{depth:3,bevelEnabled:false,curveSegments:12}),mat(0xffd36c,.55));cog.position.z=48;group.add(cog);
       studs(w-9,54,45);if(body.plugin.first){const bar=box(38,9,9,0xfff0c1,55);bar.rotation.z=-Math.PI/4;const bar2=box(38,9,9,0xfff0c1,56);bar2.rotation.z=Math.PI/4;}if(body.plugin.last){box(30,8,9,0xfff0c1,56);const base=box(8,30,9,0xfff0c1,57);base.position.y=-10;}if(body.plugin.linked){const band=box(w-6,7,9,0xf7a8e8,57);band.position.y=25;}if(body.plugin.clampRequired){const band=box(7,60,9,0xa8f8ff,58);band.position.x=-w/2+4;}
@@ -225,7 +235,7 @@ export class SalvageView {
     this.renderer.render(this.scene,this.camera);
   }
   dispose() {
-    this.disposed=true;this.ruxTexture?.dispose();this.woodTexture.dispose();
+    this.disposed=true;this.ruxTexture?.dispose();this.woodTexture.dispose();this.enamelTexture.dispose();
     if(this.host.__ruxRenderStats===this.readStats)delete this.host.__ruxRenderStats;
     this.observer.disconnect();this.renderer.domElement.removeEventListener('pointerdown',this.capture);this.renderer.domElement.removeEventListener('pointermove',this.pointer);this.renderer.domElement.removeEventListener('webglcontextlost',this.onContextLost);
     this.scene.traverse(n=>{if(n.isInstancedMesh)n.dispose();n.geometry?.dispose();n.material?.dispose();});this.renderer.dispose();this.renderer.domElement.remove();this.meshes.clear();

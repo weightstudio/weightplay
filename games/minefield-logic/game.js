@@ -1,14 +1,14 @@
-/* Minefield v21: authored campaign data in the shared I9 Stage and screen frame. */
+/* Minefield v22: authored campaign data in the shared I9 Stage and screen frame. */
 (() => {
   'use strict';
   const root = document.querySelector('#logicApp');
   if (!root || root.dataset.mfBooting) return;
-  root.dataset.mfBooting = '21';
+  root.dataset.mfBooting = '22';
   // Claim declared slots synchronously: the shared bootstrap must not start its
   // legacy DOM-discovery controller while the module graph is loading.
   root.setAttribute('data-wp-frame-root', '');
   const base = new URL('.', document.currentScript.src);
-  const version = '20261023-minefield-v21-i9-1-battle-status-readable';
+  const version = '20261028-minefield-v22-local-practice';
   const asset = name => new URL(`/src/${name}`, location.origin).href;
   document.querySelectorAll('link[rel="stylesheet"][href*="classic-logic-lab.css"]').forEach(link => link.remove());
   function style(url) {

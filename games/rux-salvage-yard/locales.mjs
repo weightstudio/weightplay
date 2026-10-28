@@ -520,6 +520,22 @@ const POWER_FINE={
 for(const [locale,[finePower,lessPower,morePower,finePowerHelp]] of Object.entries(POWER_FINE))Object.assign(CUSTOM[locale],{finePower,lessPower,morePower,finePowerHelp});
 const POWER_STEP={en:'Use − and + to adjust by 1%.','zh-Hant':'按 − 或 + 每次調整 1%。','zh-Hans':'按 − 或 + 每次调整 1%。',ja:'− と＋で 1％ずつ調整します。',ko:'−와 +로 1%씩 조절합니다.',es:'Usa − y + para ajustar un 1 % cada vez.','pt-BR':'Use − e + para ajustar 1% por vez.',fr:'Utilisez − et + pour ajuster de 1 % à chaque fois.',de:'Mit − und + in 1-%-Schritten einstellen.',it:'Usa − e + per regolare dell’1% alla volta.',ru:'Используйте − и + для настройки с шагом 1%.',hi:'− और + से हर बार 1% बदलें।',ar:'استخدم − و+ للضبط بمقدار ١٪ كل مرة.'};
 for(const [locale,finePowerStep] of Object.entries(POWER_STEP))CUSTOM[locale].finePowerStep=finePowerStep;
+const ANGLE_FINE={
+  en:['Fine angle','Lower angle','Raise angle','Tap the angle line to fine-tune aim.','Use − and + to adjust by 0.1°.'],
+  'zh-Hant':['精確調整角度','降低角度','提高角度','點選角度列可微調瞄準。','按 − 或 + 每次調整 0.1°。'],
+  'zh-Hans':['精确调整角度','降低角度','提高角度','点击角度栏可微调瞄准。','按 − 或 + 每次调整 0.1°。'],
+  ja:['角度を細かく調整','角度を下げる','角度を上げる','角度欄を押して狙いを微調整できます。','− と＋で 0.1°ずつ調整します。'],
+  ko:['각도 미세 조절','각도 낮추기','각도 높이기','각도 표시를 눌러 조준을 미세 조절하세요.','−와 +로 0.1°씩 조절합니다.'],
+  es:['Ajustar ángulo','Bajar ángulo','Subir ángulo','Toca la línea del ángulo para afinar la puntería.','Usa − y + para ajustar 0,1° cada vez.'],
+  'pt-BR':['Ajustar ângulo','Diminuir ângulo','Aumentar ângulo','Toque na linha do ângulo para ajustar a mira.','Use − e + para ajustar 0,1° por vez.'],
+  fr:['Régler l’angle','Baisser l’angle','Augmenter l’angle','Touchez la ligne de l’angle pour affiner la visée.','Utilisez − et + pour ajuster de 0,1° à chaque fois.'],
+  de:['Winkel fein einstellen','Winkel verringern','Winkel erhöhen','Tippe auf die Winkelzeile, um genauer zu zielen.','Mit − und + in 0,1°-Schritten einstellen.'],
+  it:['Regola l’angolo','Riduci l’angolo','Aumenta l’angolo','Tocca la riga dell’angolo per affinare la mira.','Usa − e + per regolare di 0,1° alla volta.'],
+  ru:['Точная настройка угла','Уменьшить угол','Увеличить угол','Нажмите на строку угла для точного прицеливания.','Используйте − и + для настройки с шагом 0,1°.'],
+  hi:['कोण को बारीकी से बदलें','कोण घटाएँ','कोण बढ़ाएँ','निशाना बारीकी से बदलने के लिए कोण की पंक्ति पर टैप करें।','− और + से हर बार 0.1° बदलें।'],
+  ar:['ضبط الزاوية بدقة','تقليل الزاوية','زيادة الزاوية','اضغط سطر الزاوية لضبط التصويب بدقة.','استخدم − و+ للضبط بمقدار ٠٫١° كل مرة.']
+};
+for(const [locale,[fineAngle,lessAngle,moreAngle,fineAngleHelp,fineAngleStep]] of Object.entries(ANGLE_FINE))Object.assign(CUSTOM[locale],{fineAngle,lessAngle,moreAngle,fineAngleHelp,fineAngleStep});
 const BRIDGE_TIP={
   en:'A beam rests on two supports. Break the striped support to tip it.',
   'zh-Hant':'橫樑架在兩座支架上；擊碎有條紋的支架，讓橫樑傾倒。',
