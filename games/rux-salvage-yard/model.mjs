@@ -46,7 +46,9 @@ export class SalvageSlice {
       return body;
     };
     const surface = { friction: .55, restitution: .08, frictionAir: .001 };
-    this.ground = add(Bodies.rectangle(500, 820, 1200, 40, { isStatic: true }), 'ground');
+    // The floor continues outside the visible field: a part knocked beyond
+    // the camera still has to collide with the real ground to be recovered.
+    this.ground = add(Bodies.rectangle(500, 820, 10000, 40, { isStatic: true }), 'ground');
     this.stage = stage;
     if(stage?.platform){this.platform=add(Bodies.rectangle(660,700,120,20,{isStatic:true,friction:.8}),'platform');}
     if(stage?.guard){const height=stage.guardHeight??160;const guard=add(Bodies.rectangle(320,800-height/2,25,height,{isStatic:true,restitution:.08}),'guard');guard.plugin.height=height;}

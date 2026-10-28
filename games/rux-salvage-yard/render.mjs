@@ -116,7 +116,9 @@ export class SalvageView {
       const w = host.clientWidth || 1, h = host.clientHeight || 1, aspect = w / h;
       const scale = this.focused ? 1.5 : 1;
       const width = Math.max(1000, 520 * aspect) / scale, height = Math.max(520, 1000 / aspect) / scale;
-      const center = this.focused ? 630 : 500;
+      // Keep the near guard and the predicted first contact in the focused
+      // view while retaining the far tower at its starting position.
+      const center = this.focused ? 600 : 500;
       // In a short zoomed viewport keep the recovery floor in view. The
       // unprojected pointer follows this same camera, so aiming stays aligned.
       const centerY=this.focused&&height<520?height/2-10:260;
