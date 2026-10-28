@@ -76,18 +76,44 @@ export function createRenderer(container, onContextLost = () => {}) {
   const baked=new THREE.BufferGeometry();baked.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));baked.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));baked.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
   const worldMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(baked);materials.add(worldMat);
   const scenery=new THREE.Mesh(baked,worldMat);scenery.castShadow=true;scenery.receiveShadow=true;world.add(scenery);
+  // Clouds keep their pale silhouette in backlight and share a single draw call.
+  const cloudGeometry=new THREE.BoxGeometry(1,1,1),cloudMaterial=new THREE.MeshBasicMaterial({color:0xfff7de});
+  geometries.add(cloudGeometry);materials.add(cloudMaterial);
+  const clouds=new THREE.InstancedMesh(cloudGeometry,cloudMaterial,12),cloudMatrix=new THREE.Matrix4();
+  let cloudIndex=0;
+  for(let i=0;i<4;i++){
+    const side=i%2?-1:1,x=side*12,z=i*38+25;
+    for(const [dx,y,w,h] of [[0,9.3,3,.72],[side*.15,9.95,1.55,.7],[-side*1.5,9.25,1.05,.52]]){
+      cloudMatrix.compose(new THREE.Vector3(x+dx,y,z),new THREE.Quaternion(),new THREE.Vector3(w,h,1.1));
+      clouds.setMatrixAt(cloudIndex++,cloudMatrix);
+    }
+  }
+  clouds.computeBoundingSphere();scene.add(clouds);
+  // Luminous lantern faces share one instanced material and follow existing posts.
+  const lampGeometry=new THREE.BoxGeometry(1,1,1),lampMaterial=new THREE.MeshStandardMaterial({color:0xffd982,emissive:0xffaa40,emissiveIntensity:.65,roughness:.65});
+  geometries.add(lampGeometry);materials.add(lampMaterial);
+  const lampFaces=new THREE.InstancedMesh(lampGeometry,lampMaterial,32),lampMatrix=new THREE.Matrix4();let lampIndex=0;
+  for(let i=0;i<31;i+=2)for(const x of [-4.5,4.5]){
+    lampMatrix.compose(new THREE.Vector3(x,1.8,i*5-5),new THREE.Quaternion(),new THREE.Vector3(.46,.46,.54));
+    lampFaces.setMatrixAt(lampIndex++,lampMatrix);
+  }
+  lampFaces.computeBoundingSphere();scene.add(lampFaces);
   // Original flag artwork is a shared atlas-backed billboard, placed within the 3D scene.
   const flagTexture=new THREE.TextureLoader().load(new URL('assets/props.webp',import.meta.url).href,texture=>{if(disposed)texture.dispose();});
   flagTexture.colorSpace=THREE.SRGBColorSpace;flagTexture.repeat.set(1/3,1/3);flagTexture.offset.set(0,0);textures.add(flagTexture);
+  const earthTexture=new THREE.TextureLoader().load(new URL('assets/track-earth.webp',import.meta.url).href,texture=>{if(disposed)texture.dispose();});
+  earthTexture.colorSpace=THREE.SRGBColorSpace;earthTexture.wrapS=earthTexture.wrapT=THREE.RepeatWrapping;earthTexture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());textures.add(earthTexture);
   const flagMaterial=new THREE.SpriteMaterial({map:flagTexture,transparent:true,depthWrite:false});materials.add(flagMaterial);
   const flags=new THREE.Group();scene.add(flags);
-  for(let i=1;i<12;i++){const flag=new THREE.Sprite(flagMaterial);flag.position.set(i%2?-4.0:4.0,1.2,i*11+6);flag.scale.set(2.4,2.4,1);flags.add(flag);}
+  for(let i=1;i<12;i++){const flag=new THREE.Sprite(flagMaterial);flag.position.set(i%2?-4.0:4.0,1.05,i*11+6);flag.scale.set(1.8,1.8,1);flags.add(flag);}
   const markers=new THREE.Group(); scene.add(markers);
   const fia=new THREE.Group(); scene.add(fia);
   // Deliberately designed block-animal silhouette with jointed independent legs.
   box(fia,.9,1.0,.56,0,1.33,0,0xd87427); box(fia,.56,.7,.08,0,1.31,.33,0xffe5ae);box(fia,.3,.08,.62,0,.93,0,0x9b4f20);
-  const head=new THREE.Group();fia.add(head);head.rotation.y=1.55;
+  const head=new THREE.Group();fia.add(head);head.rotation.y=1.95;
   box(head,1.15,.93,.8,0,2.15,0,0xe98224); box(head,.78,.28,.34,0,1.98,.5,0xffe7ba);
+  box(head,.16,.20,.11,-.53,1.98,.38,0xffd9a1);box(head,.16,.20,.11,.53,1.98,.38,0xffd9a1);
+  box(head,.34,.08,.06,-.32,2.51,.44,0x974820);box(head,.34,.08,.06,.32,2.51,.44,0x974820);
   box(head,.2,.13,.15,0,2.08,.7,0x38291f);
   const arms=[];
   for(const x of [-.32,.32]){
@@ -96,14 +122,19 @@ export function createRenderer(container, onContextLost = () => {}) {
     const arm=new THREE.Group();arm.position.set(x*1.9,1.7,0);fia.add(arm);
     box(arm,.22,.62,.25,0,-.3,0,0xe1842e);box(arm,.3,.22,.32,0,-.6,.04,0x4c3527);box(arm,.2,.1,.36,0,-.55,.08,0xffd15d);arms.push(arm);
   }
-  box(head,.18,.4,.06,0,2.59,.42,0xf8d74b);box(head,.27,.12,.08,-.05,2.48,.48,0xf8d74b);box(head,.27,.12,.08,.05,2.68,.48,0xf8d74b);
+  const boltShape=new THREE.Shape();boltShape.moveTo(.02,2.70);boltShape.lineTo(-.13,2.46);boltShape.lineTo(-.02,2.46);boltShape.lineTo(-.09,2.30);boltShape.lineTo(.15,2.53);boltShape.lineTo(.04,2.53);boltShape.closePath();
+  const boltGeometry=new THREE.ExtrudeGeometry(boltShape,{depth:.045,bevelEnabled:false}),boltMaterial=new THREE.MeshStandardMaterial({color:0xffdc4f,roughness:.65});
+  geometries.add(boltGeometry);materials.add(boltMaterial);const bolt=new THREE.Mesh(boltGeometry,boltMaterial);bolt.position.z=.43;head.add(bolt);
+  box(head,.22,.045,.04,.28,1.90,.64,0x513225);box(head,.06,.08,.04,.40,1.94,.64,0x513225);
   box(fia,1.02,.19,.7,0,1.72,0,0x1689bd); box(fia,.28,.22,.1,.29,1.72,.42,0xffd554);
-  box(fia,.28,.3,.28,.15,1.55,-.5,0x128bd5); box(fia,.3,.3,.3,.42,1.42,-.72,0x14a9e8);
-  box(fia,.35,.3,.35,.7,1.29,-.9,0x1b8fcd); box(fia,.22,.25,.22,.91,1.22,-1.03,0xffd446);
-  box(fia,.6,.45,.9,0,1.1,-.72,0xd66d25); box(fia,.5,.4,.47,0,1.15,-1.34,0xffe0a4);
+  const scarf=new THREE.Group();scarf.position.set(0,1.72,0);fia.add(scarf);
+  box(scarf,.28,.3,.28,.15,-.17,-.5,0x128bd5); box(scarf,.3,.3,.3,.42,-.30,-.72,0x14a9e8);
+  box(scarf,.35,.3,.35,.7,-.43,-.9,0x1b8fcd); box(scarf,.22,.25,.22,.91,-.50,-1.03,0xffd446);
+  box(fia,.7,.55,.9,0,1.1,-.72,0xd66d25);box(fia,.48,.13,.2,.12,1.4,-.83,0xf8ce4c);
+  box(fia,.55,.44,.52,0,1.15,-1.34,0xffe0a4);
   const legs=[];
   for(const x of [-.29,.29]) {const pivot=new THREE.Group();pivot.position.set(x,.98,0);fia.add(pivot);
-    box(pivot,.3,.68,.32,0,-.32,0,0xdc7726);box(pivot,.4,.25,.55,0,-.67,.14,0x44352a);box(pivot,.25,.12,.13,0,-.67,.44,0xffe5ba);legs.push(pivot);}
+    box(pivot,.3,.68,.32,0,-.32,0,0xdc7726);box(pivot,.4,.25,.55,0,-.67,.14,0x44352a);box(pivot,.11,.12,.13,-.07,-.67,.44,0xffe5ba);box(pivot,.11,.12,.13,.07,-.67,.44,0xffe5ba);legs.push(pivot);}
   // One reusable foot-contact burst; it only appears after an accepted step.
   const contact=new THREE.Group();scene.add(contact);contact.visible=false;
   const contactBits=[];
@@ -114,12 +145,20 @@ export function createRenderer(container, onContextLost = () => {}) {
   let stageId=null, markerMeshes=[], visualLane=0;
   function configure(stage) {
     if(stageId===stage.id)return; stageId=stage.id;
+    const evening=stage.chapter===2;
+    scene.background.setHex(evening?0x5b8ca5:0x80bfd0);scene.fog.color.copy(scene.background);
+    ambient.color.setHex(evening?0xa3d7ef:0xbbeaff);ambient.intensity=evening?1.9:2.1;
+    sun.color.setHex(evening?0xffbc72:0xffcf82);sun.intensity=evening?2.0:2.3;
     for(const child of [...markers.children]) {child.traverse(node=>{if(node.isMesh){node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material);}});markers.remove(child);}
     markerMeshes=[];
     for(let i=0;i<stage.route.length;i++) {
       const rule=stage.route[i], start=stage.distance*i/stage.route.length, length=stage.distance/stage.route.length;
       const color=rule==='slow'?0x65a7b7:rule==='fast'||rule==='headfast'?0xf0b85a:rule==='bridge'?0x5c9ca2:rule.startsWith('fork')?0x8a78ad:0x9b9074;
-      const surface=box(markers,6.8,.04,Math.max(.2,length-.12),0,.03,start+length/2,color); const marker={surface,rule,leftLane:null,rightLane:null};markerMeshes.push(marker);
+      const surface=box(markers,6.8,.04,Math.max(.2,length-.12),0,.03,start+length/2,color); const marker={surface,rule,start,gate:null,leftLane:null,rightLane:null};markerMeshes.push(marker);
+      if(['plain','headwind','tailwind','left','right'].includes(rule)) {
+        const uv=surface.geometry.getAttribute('uv');for(let v=0;v<uv.count;v++)uv.setXY(v,uv.getX(v)*1.1,uv.getY(v)*length/6);
+        uv.needsUpdate=true;surface.material.map=earthTexture;surface.material.needsUpdate=true;
+      }
       // Repeated inlays distinguish surfaces at a glance without covering the live bridge light.
       if(rule==='bridge') {
         for(const x of [-3.16,3.16])box(markers,.16,.1,Math.max(.2,length-.35),x,.10,start+length/2,0xd4b576);
@@ -141,10 +180,11 @@ export function createRenderer(container, onContextLost = () => {}) {
         marker.rightLane=box(markers,3.05,.05,Math.max(.2,length-.3),1.72,.08,start+length/2,0x78a8b5);
       }
       if(rule==='left'||rule==='right'||rule.startsWith('fork')) {
-        box(markers,.2,2.2,.2,-3.2,1.1,start+2,0x885d35); box(markers,.2,2.2,.2,3.2,1.1,start+2,0x885d35);
-        box(markers,6.4,.18,.2,0,2.2,start+2,0xd9af64);
-        if(rule.startsWith('fork')) {box(markers,.85,.5,.12,-1.7,1.65,start+1.88,0xf4d972);box(markers,.85,.5,.12,1.7,1.65,start+1.88,0x92d2e4);}
-        else {box(markers,.85,.5,.12,rule==='left'?-1.7:1.7,1.65,start+1.88,0xf4d972);}
+        const gate=new THREE.Group();markers.add(gate);marker.gate=gate;
+        box(gate,.2,2.2,.2,-3.2,1.1,start,0x885d35); box(gate,.2,2.2,.2,3.2,1.1,start,0x885d35);
+        box(gate,6.4,.18,.2,0,2.2,start,0xd9af64);
+        if(rule.startsWith('fork')) {box(gate,.85,.5,.12,-1.7,1.65,start-.12,0xf4d972);box(gate,.85,.5,.12,1.7,1.65,start-.12,0x92d2e4);}
+        else {box(gate,.85,.5,.12,rule==='left'?-1.7:1.7,1.65,start-.12,0xf4d972);}
       }
     }
     box(markers,.2,3,.2,-3.3,1.5,stage.distance,0xb17748); box(markers,.2,3,.2,3.3,1.5,stage.distance,0xb17748);
@@ -162,7 +202,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     const contactVisible=race.lastStep!==null&&phase<1;
     contact.visible=contactVisible;
     if(contactVisible){
-      const clean=race.lastFeedback==='steady',strength=clean&&race.combo>=3?1.3:1;
+      const clean=race.lastFeedback==='steady',strength=clean&&race.combo>=12?1.6:clean&&race.combo>=3?1.3:1;
       contact.position.set(lane+(race.lastFoot==='left'?-.3:.3),0,race.lastContactDistance);
       contact.scale.setScalar(reducedMotion?1:strength*(.7+phase*.8));
       for(const bit of contactBits){bit.material.opacity=reducedMotion?.8:Math.max(0,1-phase);bit.material.color.setHex(clean?0xffd873:0xe7a29a);}
@@ -171,8 +211,10 @@ export function createRenderer(container, onContextLost = () => {}) {
 
     legs[0].rotation.x=(race.lastFoot==='left'?1:-1)*amplitude; legs[1].rotation.x=-legs[0].rotation.x;
     arms[0].rotation.x=-legs[0].rotation.x*.7;arms[1].rotation.x=-legs[1].rotation.x*.7;
+    scarf.rotation.y=reducedMotion||race.speed<.2?0:Math.sin(race.elapsed*4)*.13;
     fia.rotation.z=reducedMotion?0:(race.balance<30?.12:0);
     markerMeshes.forEach((m,i)=>{
+      if(m.gate)m.gate.visible=z<=m.start+.5;
       if(m.rule==='bridge')m.surface.material.color.setHex(i===part.index&&bridgeOpen(race)?0x96e5bf:0x3e777b);
       if(m.leftLane&&m.rightLane){
         const activeBridge=i===part.index&&part.rule==='bridge',glow=activeBridge&&bridgeOpen(race)?0x96e5bf:0x3e777b;
@@ -182,6 +224,6 @@ export function createRenderer(container, onContextLost = () => {}) {
     });
     renderer.render(scene,camera);
   }
-  function dispose(){if(disposed)return;disposed=true;renderer.setAnimationLoop(null);for(const g of geometries)g.dispose();for(const m of materials)m.dispose();for(const t of textures)t.dispose();sun.shadow.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}
+  function dispose(){if(disposed)return;disposed=true;renderer.setAnimationLoop(null);clouds.dispose();lampFaces.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();for(const t of textures)t.dispose();sun.shadow.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}
   resize(); return {draw,resize,dispose,setTrail:enabled=>{trail.visible=!!enabled;},info:()=>({threeRevision:THREE.REVISION,pixelRatio:renderer.getPixelRatio(),calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures})};
 }

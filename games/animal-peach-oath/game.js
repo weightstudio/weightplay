@@ -904,6 +904,7 @@
       const outcome = battle.chapterSignal.attack(unit, target, damage);
       if (!outcome) return;
       const actual = [...battle.heroes, ...battle.enemies].find(item => item.key === outcome.target) || target;
+      if(outcome.applied===0&&battle.chapterSignal.snapshot().phaseShield?.key===actual.key){effectAt(actual,'⬡','guard');tone('combat.block');return;}
       animateAttack(unit, actual, outcome.applied, crit, skill);
     } else {
       const applied = Math.min(target.hp, damage);

@@ -50,6 +50,36 @@ const SIXTEENTH_NAMES={en:'Three seals in order','zh-Hant':'三枚印記的順�
 for(const [locale,value] of Object.entries(SIXTEENTH_NAMES))LATCH_NAMES[locale].push(value);
 const SEVENTEENTH_NAMES={en:'Three seals, two pairs','zh-Hant':'三印記、兩組配對','zh-Hans':'三印记、两组配对',ja:'三つの印と二組の鍵',ko:'세 인장과 두 쌍',es:'Tres sellos, dos pares','pt-BR':'Três selos, dois pares',fr:'Trois sceaux, deux paires',de:'Drei Siegel, zwei Paare',it:'Tre sigilli, due coppie',ru:'Три печати, две пары',hi:'तीन मुहरें, दो जोड़े',ar:'ثلاثة أختام وزوجان'};
 for(const [locale,value] of Object.entries(SEVENTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const EIGHTEENTH_NAMES={en:'Three seals and the shield','zh-Hant':'三印記與護盾','zh-Hans':'三印记与护盾',ja:'三つの印と盾',ko:'세 인장과 방패',es:'Tres sellos y el escudo','pt-BR':'Três selos e o escudo',fr:'Trois sceaux et le bouclier',de:'Drei Siegel und der Schild',it:'Tre sigilli e lo scudo',ru:'Три печати и щит',hi:'तीन मुहरें और ढाल',ar:'الأختام الثلاثة والدرع'};
+for(const [locale,value] of Object.entries(EIGHTEENTH_NAMES))LATCH_NAMES[locale].push(value);
+const NINETEENTH_NAMES={en:'Paired locks and sun shield','zh-Hant':'雙鎖與太陽盾','zh-Hans':'双锁与太阳盾',ja:'二つの錠と太陽の盾',ko:'두 잠금과 태양 방패',es:'Dos candados y escudo solar','pt-BR':'Duas travas e escudo solar',fr:'Deux verrous et bouclier solaire',de:'Zwei Sperren und Sonnenschild',it:'Due blocchi e scudo solare',ru:'Два замка и солнечный щит',hi:'दो ताले और सूर्य ढाल',ar:'قفلان ودرع الشمس'};
+for(const [locale,value] of Object.entries(NINETEENTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_DUAL_THREE_SHIELD_RULE={
+ en:'Match both key pairs; seals 1, 2, 3 in order. Take the sun rune for the shield; use arrows to find items.',
+ 'zh-Hant':'配對兩組鑰匙與鎖；印記依序1、2、3。收集太陽符文破盾，用箭頭找物件。','zh-Hans':'配对两组钥匙与锁；印记依序1、2、3。收集太阳符文破盾，用箭头找物件。',
+ ja:'二組の鍵を合わせ、印は1、2、3の順。太陽のルーンで盾を解除。矢印で探そう。',ko:'두 열쇠 쌍을 맞추고 인장 1, 2, 3을 차례로 모으세요. 태양 룬으로 방패를 풀고 화살표로 찾으세요.',
+ es:'Empareja las dos llaves; sellos 1, 2, 3 en orden. Toma la runa solar para el escudo; busca con flechas.',
+ 'pt-BR':'Combine os dois pares; selos 1, 2, 3 em ordem. Pegue a runa solar para o escudo; procure com as setas.',
+ fr:'Associez les deux paires ; sceaux 1, 2, 3 dans l’ordre. Prenez la rune solaire pour le bouclier ; cherchez avec les flèches.',
+ de:'Ordne beide Schlüsselpaare zu; Siegel 1, 2, 3 in Reihenfolge. Nimm die Sonnenrune für den Schild; suche mit Pfeilen.',
+ it:'Abbina le due coppie; sigilli 1, 2, 3 in ordine. Prendi la runa solare per lo scudo; cerca con le frecce.',
+ ru:'Сопоставьте обе пары; печати 1, 2, 3 по порядку. Возьмите руну солнца против щита; ищите стрелками.',
+ hi:'दोनों चाबी जोड़े मिलाएँ; मुहरें 1, 2, 3 क्रम से। ढाल के लिए सूर्य रून लें; तीरों से खोजें।',
+ ar:'طابق زوجي المفاتيح؛ الأختام 1 و2 و3 بالترتيب. خذ رون الشمس للدرع وابحث بالأسهم.'
+};
+export const LATCH_THREE_SEAL_SHIELD_RULE={
+ en:'Key before lock; seals 1, 2, 3 in order. Take the sun rune for the shield; use arrows to find items.',
+ 'zh-Hant':'鑰匙先於鎖；印記依序1、2、3。收集太陽符文破盾，用箭頭找物件。','zh-Hans':'钥匙先于锁；印记依序1、2、3。收集太阳符文破盾，用箭头找物件。',
+ ja:'鍵を錠より先に消し、印は1、2、3の順。太陽のルーンで盾を解除。矢印で探そう。',ko:'열쇠를 잠금보다 먼저, 인장은 1, 2, 3 순서로 모으세요. 태양 룬으로 방패를 풀고 화살표로 찾으세요.',
+ es:'Llave antes del candado; sellos 1, 2, 3 en orden. Toma la runa solar para el escudo; busca con flechas.',
+ 'pt-BR':'Chave antes da trava; selos 1, 2, 3 em ordem. Pegue a runa solar para o escudo; procure com as setas.',
+ fr:'Clé avant verrou ; sceaux 1, 2, 3 dans l’ordre. Prenez la rune solaire pour le bouclier ; cherchez avec les flèches.',
+ de:'Schlüssel vor Sperre; Siegel 1, 2, 3 in Reihenfolge. Nimm die Sonnenrune für den Schild; suche mit Pfeilen.',
+ it:'Chiave prima del blocco; sigilli 1, 2, 3 in ordine. Prendi la runa solare per lo scudo; cerca con le frecce.',
+ ru:'Ключ до замка; печати 1, 2, 3 по порядку. Возьмите руну солнца против щита; ищите стрелками.',
+ hi:'ताले से पहले चाबी; मुहरें 1, 2, 3 क्रम से। ढाल के लिए सूर्य रून लें; तीरों से खोजें।',
+ ar:'المفتاح قبل القفل؛ الأختام 1 و2 و3 بالترتيب. خذ رون الشمس للدرع وابحث بالأسهم.'
+};
 export const LATCH_DUAL_THREE_SEALS_RULE={
  en:'Match numbered keys and locks. Collect seals 1, 2 and 3 in order; use arrows to find items.',
  'zh-Hant':'依編號配對鑰匙與鎖，印記依序收集1、2、3；用箭頭找物件。','zh-Hans':'按编号配对钥匙与锁，印记依序收集1、2、3；用箭头找物件。',

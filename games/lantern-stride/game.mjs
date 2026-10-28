@@ -1,7 +1,7 @@
 import {resolveLocale,translate,guideExtras} from './i18n.mjs';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STAGES} from './stage-config.mjs';
-import {createRace,advance,step,segmentFor,useFeather,bridgeOpen,rhythmRange} from './simulation.mjs';
+import {createRace,advance,step,segmentFor,useFeather,bridgeOpen,rhythmRange,starTimeLimit} from './simulation.mjs';
 import {createStore,highestUnlocked} from './save.mjs';
 import {createRenderer} from './render.mjs';
 
@@ -30,7 +30,7 @@ const audio=id=>W.WeightPlayAudio?.play(id);
 const settingsOpen=()=>!!document.querySelector('#wp-frame-battle-settings:not([hidden])');
 const config=()=>({gameId:'lantern-stride',count:STAGES.length,poster:'/games/lantern-stride/assets/cover.webp',background:'/assets/lobby-block-atmosphere.svg',stage:index=>{
   const s=STAGES[index],r=store.progress.records[s.id],locked=!practice&&s.id>highestUnlocked(store.progress);
-  return {id:s.id,kicker:tr('chapter',{n:s.chapter}),title:tr('stage',{n:s.id}),subtitle:tr(s.checkpoint?'festival':'forest'),status:locked?tr('locked'):r?tr('stars',{n:r.stars}):tr('ready'),locked,cleared:!!r,rewardState:r?'collected':'not-collected',summary:tr(s.id===55?'goalChosen':goals[s.objective]),details:[`${s.distance} m · ${s.limit} s`,s.route.map(x=>tr(labels[x])).join(' → '),tr('starGoals',{n:s.limit*.8})],poster:'/games/lantern-stride/assets/cover.webp'};
+  return {id:s.id,kicker:tr('chapter',{n:s.chapter}),title:tr('stage',{n:s.id}),subtitle:tr(s.checkpoint?'festival':'forest'),status:locked?tr('locked'):r?tr('stars',{n:r.stars}):tr('ready'),locked,cleared:!!r,rewardState:r?'collected':'not-collected',summary:tr(s.id===55?'goalChosen':goals[s.objective]),details:[`${s.distance} m · ${s.limit} s`,s.route.map(x=>tr(labels[x])).join(' → '),tr('starGoals',{n:starTimeLimit(s)})],poster:'/games/lantern-stride/assets/cover.webp'};
 }});
 function setModalInert(area,value){
   if(area==='battle'){ $('battleLive').inert=value;$('battleScreen').querySelector('header').inert=value; }
@@ -74,18 +74,25 @@ function update(){
   $('time').textContent=`${Math.max(0,race.stage.limit-race.elapsed).toFixed(1)} s`;
   const bridge=part.rule==='bridge'?` · ${tr(bridgeOpen(race)?'go':'wait')}`:'';
   const extras=[part.pace,part.wind].filter(Boolean).map(value=>tr(labels[value])).join(' · ');
-  $('routeCue').textContent=`${tr(race.stage.id===55?'goalChosen':goals[race.stage.objective])} · ${extras?extras+' · ':''}${tr(labels[part.choice?part.rule:part.original]||'plain')}${bridge}`;
-  const elapsed=race.lastStep===null?null:race.elapsed-race.lastStep;const [min,max]=rhythmRange(part.pace||part.rule);
-  const timing=part.rule==='bridge'&&!bridgeOpen(race)?'wait':elapsed===null?'ready':elapsed<min?'wait':elapsed<=max||part.rule==='bridge'?'stepNow':'late';
-  $('rhythmCue').textContent=`${tr(race.lastFoot==='left'?'rightFoot':race.lastFoot==='right'?'leftFoot':'either')} · ${tr(timing)}`;
+  const nextRule=race.stage.route[part.index+1],nextStart=race.stage.distance*(part.index+1)/race.stage.route.length;
+  const upcoming=nextRule&&nextStart-race.distance<=6&&(['left','right','bridge'].includes(nextRule)||nextRule.startsWith('fork'))?` → ${tr(labels[nextRule])}`:'';
+  $('routeCue').textContent=`${tr(race.stage.id===55?'goalChosen':goals[race.stage.objective])} · ${extras?extras+' · ':''}${tr(labels[part.choice?part.rule:part.original]||'plain')}${bridge}${upcoming}`;
+  const choosing=part.original.startsWith('fork')&&!part.choice;
+  const enteringGate=(part.rule==='left'||part.rule==='right')&&race.lastGateIndex!==part.index;
+  const specialEntry=choosing||enteringGate;
+  const elapsed=race.lastStep===null?null:race.elapsed-race.lastStep;const [ruleMin,max]=rhythmRange(part.pace||part.rule);const min=choosing?Math.max(ruleMin,.42):ruleMin;
+  const required=enteringGate?part.rule:choosing?(['forkleft','forkfast'].includes(part.original)?'left':['forkright','forkslow'].includes(part.original)?'right':null):null;
+  const foot=required?`${required}Foot`:choosing?'either':race.lastFoot==='left'?'rightFoot':race.lastFoot==='right'?'leftFoot':'either';
+  const timing=part.rule==='bridge'&&!bridgeOpen(race)?'wait':elapsed===null?'ready':elapsed<min?'wait':elapsed<=max||part.rule==='bridge'||specialEntry?'stepNow':'late';
+  $('rhythmCue').textContent=`${tr(foot)} · ${tr(timing)}`;
   $('rhythmCue').dataset.timing=timing==='stepNow'?'ready':timing==='late'?'late':'wait';
-  $('feedback').textContent=race.elapsed<race.feedbackUntil&&feedback[race.lastFeedback]?tr(feedback[race.lastFeedback])+(race.lastFeedback==='steady'&&race.combo>=3?` ×${race.combo}`:''):'';
+  $('feedback').textContent=race.elapsed<race.feedbackUntil&&feedback[race.lastFeedback]?tr(feedback[race.lastFeedback])+(race.lastFeedback==='steady'&&race.combo>=3?` ×${race.combo}${race.combo>=12?' ⚡':''}`:''):'';
   $('featherBtn').disabled=race.feather<=0||part.rule!=='bridge';
 }
 function tick(now){raf=0;if(screen!=='battle'||!race||modal||document.hidden||settingsOpen())return;const dt=last?Math.min(.05,(now-last)/1000):0;last=now;advance(race,dt);renderer.draw(race,matchMedia('(prefers-reduced-motion: reduce)').matches);update();if(race.status==='finished')void finish();else schedule();}
-function action(foot){if(screen!=='battle'||!race||modal||document.hidden||settingsOpen())return;const out=step(race,foot);if(out.accepted)audio(out.clean?'movement.step':'feedback.error');update();}
+function action(foot){if(screen!=='battle'||!race||modal||document.hidden||settingsOpen())return;const out=step(race,foot);if(out.accepted)audio(out.clean?(race.combo===12?'feedback.success':'movement.step'):'feedback.error');update();}
 async function persist(){if(!pending||pending.busy)return;const item=pending;item.busy=true;$('resultStages').disabled=true;$('resultReplay').disabled=true;const result=await store.complete(item.id,item.outcome);item.busy=false;if(result.ok){W.WonderAnalytics?.completeStage?.(`stage-${item.id}`);if(pending===item)pending=null;}if(item.owner!==race||screen!=='battle'||modal!=='resultPanel')return;$('resultStages').disabled=false;$('resultReplay').disabled=false;saved=result.ok;$('saveStatus').textContent=tr(saved?'progressSaved':'saveFailed');$('retrySave').hidden=saved;$('resultNext').disabled=!saved||item.id>=60;}
-function renderResult(){if(!race?.result)return;const r=race.result;$('resultArt').hidden=!r.won;$('resultStarGuide').textContent=tr('starGoals',{n:race.stage.limit*.8});$('resultStars').textContent=r.won?'★'.repeat(r.stars)+'☆'.repeat(3-r.stars):'';$('resultTitle').textContent=tr(r.won?'complete':'tryAgain');const reason=r.reason==='timeout'?'reasonTimeout':r.reason==='missed-gate'?'reasonGate':r.reason==='finish'?'reasonFinish':'reasonObjective';$('resultDetails').textContent=`${r.elapsed.toFixed(1)} s · ${tr('stars',{n:r.stars})} · ${tr(reason)}`;}
+function renderResult(){if(!race?.result)return;const r=race.result;$('resultArt').hidden=!r.won;$('resultStarGuide').textContent=tr('starGoals',{n:starTimeLimit(race.stage)});$('resultStars').textContent=r.won?'★'.repeat(r.stars)+'☆'.repeat(3-r.stars):'';$('resultTitle').textContent=tr(r.won?'complete':'tryAgain');const reason=r.reason==='timeout'?'reasonTimeout':r.reason==='missed-gate'?'reasonGate':r.reason==='finish'?'reasonFinish':'reasonObjective';$('resultDetails').textContent=`${r.elapsed.toFixed(1)} s · ${tr('stars',{n:r.stars})} · ${tr(reason)}`;}
 async function finish(){
   audio(race.result.won?'result.win':'result.lose');saved=practiceRun&&race.result.won;pending=race.result.won&&!practiceRun?{id:selected,owner:race,outcome:{...race.result},busy:false}:null;
   renderResult();
@@ -127,7 +134,7 @@ function bind(){
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&screen==='battle'&&race?.status==='running'&&!modal)openModal('leavePanel');});
   W.addEventListener('weightplay:interaction-state',()=>{if(settingsOpen()){cancelAnimationFrame(raf);raf=0;last=0;}else{last=0;schedule();}});
   W.addEventListener('wonder:locale-change',()=>{locale=resolveLocale({pathname:'',search:'',storage:null,documentLanguage:W.WonderI18n?.actualLocale?.()||document.documentElement.lang});localize();});
-  W.addEventListener('resize',()=>renderer?.resize());W.addEventListener('storage',()=>{store.refresh();if(screen==='stage')rail.refresh(selected-1);});
+  W.addEventListener('resize',()=>{if(renderer){renderer.resize();if(screen==='battle'&&race)renderer.draw(race,matchMedia('(prefers-reduced-motion: reduce)').matches);}});W.addEventListener('storage',()=>{store.refresh();if(screen==='stage')rail.refresh(selected-1);});
   W.addEventListener('pagehide',()=>{++startSerial;++purchaseSerial;cancelAnimationFrame(raf);renderer?.dispose();renderer=null;});
 }
 async function boot(){

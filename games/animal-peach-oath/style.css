@@ -419,3 +419,21 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .unit > .sprite, .hp b, .command-dock b { transition: none; }
   .unit.is-winding > .sprite { translate: none; }
 }
+
+/* Chapter 2 practice boss HUD: preserve a compact global bar and reserve cue space. */
+@media (max-width:699px) and (orientation:portrait) {
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .boss-bar { top:31px; left:4px; right:auto; width:72px; transform:none; }
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .boss-bar span { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:9px; line-height:11px; background:#102632eb; }
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .boss-bar i { height:7px; }
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .wave-hud { top:0; left:4px; right:auto; transform:none; gap:5px; padding-inline:7px; }
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .oath-orders { top:2px; left:auto; right:56px; width:112px; }
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .oath-orders > p { position:absolute; top:47px; right:-52px; width:calc(100vw - 116px); box-sizing:border-box; }
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .enemy-line .unit { height:calc(100% - 18px); max-height:182px; }
+  html[dir="rtl"] .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .wave-hud { left:auto; right:4px; }
+  html[dir="rtl"] .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .boss-bar { left:auto; right:4px; }
+  html[dir="rtl"] .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .oath-orders { right:auto; left:56px; }
+  html[dir="rtl"] .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .oath-orders > p { right:auto; left:-48px; }
+}
+@media (max-width:359px) and (orientation:portrait) {
+  .arena-wrap:has(.oath-orders:not([hidden])):has(.boss-bar:not(.is-hidden)) .oath-orders > p { width:calc(100vw - 104px); }
+}

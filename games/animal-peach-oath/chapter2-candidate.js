@@ -90,7 +90,7 @@ function createSignalCombat(stage,heroes,enemies,spawnEnemy=null){
   if(foes.includes(target))actual=guardedBy(target)||target;
   let absorbed=0;const guard=guards.get(actual.key);
   if(guard&&time<guard.expires){absorbed=Math.min(amount,guard.amount);guards.delete(actual.key);event('guard-used',actual,actual);}
-  const applied=Math.min(actual.hp,Math.max(0,Math.round(amount-absorbed)));actual.hp-=applied;event(actual===target?'hit':'redirected-hit',actual,target);return {target:actual.key,applied,absorbed};
+  const floor=actual===bossState?.boss&&actual.id==='oathmaster'&&bossState.phase<2?Math.max(1,Math.floor(actual.maxHp*(bossState.phase===0?.7:.35))):0;const applied=Math.min(Math.max(0,actual.hp-floor),Math.max(0,Math.round(amount-absorbed)));actual.hp-=applied;event(actual===target?'hit':'redirected-hit',actual,target);return {target:actual.key,applied,absorbed};
  }
  function tick(seconds){
   if(!Number.isFinite(seconds)||seconds<0||seconds>.26)throw TypeError('INVALID_ACTIVE_STEP');if(!active)return;time+=seconds;
@@ -104,7 +104,7 @@ function createSignalCombat(stage,heroes,enemies,spawnEnemy=null){
   }
   const b=bossState;if(!b||!living(b.boss))return;const boss=b.boss;
   if(boss.id==='red-lantern'&&b.spawned<2){if(b.medic&&!living(b.medic)){b.medic=null;b.wait=10;}if(!b.medic){b.wait-=seconds;if(b.wait<=0){b.medic=add('medic');b.spawned++;}}}
-  if(boss.id==='oathmaster'&&(!b.add||!living(b.add))){if(b.phase===0&&boss.hp/boss.maxHp<=.7){b.phase=1;b.add=add('medic');event('boss-phase',boss,b.add);}else if(b.phase===1&&boss.hp/boss.maxHp<=.35){b.phase=2;b.add=add('sapper');event('boss-phase',boss,b.add);}}
+  if(boss.id==='oathmaster'&&(!b.add||!living(b.add))){if(b.phase===0&&boss.hp<=Math.max(1,Math.floor(boss.maxHp*.7))){b.phase=1;b.add=add('medic');event('boss-phase',boss,b.add);}else if(b.phase===1&&boss.hp<=Math.max(1,Math.floor(boss.maxHp*.35))){b.phase=2;b.add=add('sapper');event('boss-phase',boss,b.add);}}
   if(boss.id==='thunder-signal'||boss.id==='crossroads'){
    if(b.channel&&!living(b.channel.target)){b.channel=null;b.wait=boss.id==='thunder-signal'?12:8;event('boss-cancelled',boss,null);}
    if(b.channel){b.channel.remaining-=seconds;if(b.channel.remaining<=0){const {kind,target}=b.channel;b.channel=null;b.wait=boss.id==='thunder-signal'?12:8;if(kind==='sapper'){hit(target,Math.round(boss.atk*(boss.id==='thunder-signal'?1.25:1)));event('boss-strike',boss,target);}else{boosts.set(target.key,1.25);event('boss-prepared',boss,target);}}}
@@ -121,7 +121,7 @@ function createSignalCombat(stage,heroes,enemies,spawnEnemy=null){
  }
  function attack(actor,target,amount){if(!active||!living(actor))return null;const multiplier=boosts.get(actor.key)||1;boosts.delete(actor.key);return hit(target,Math.round(amount*multiplier));}
  function nextWave(nextHeroes,nextEnemies){if(!Array.isArray(nextHeroes)||!Array.isArray(nextEnemies))throw TypeError('INVALID_COMBAT_UNITS');units=nextHeroes;foes=nextEnemies;initialize();}
- initialize();return Object.freeze({tick,order,attack,nextWave,setActive:value=>{active=Boolean(value)},snapshot:()=>({seals,time,active,events:events.map(x=>({...x})),channels:[...channels].map(([key,c])=>({key,wait:c.wait,target:c.target?.key||null,remaining:c.remaining})),wardLinks:wardens().map(w=>({key:w.key,target:wardTarget(w)?.key||null,active:time>=(links.get(w.key)||0)})),bossChannel:bossState?.channel?{key:bossState.boss.key,target:bossState.channel.target.key,kind:bossState.channel.kind,remaining:bossState.channel.remaining}:null})});
+ initialize();return Object.freeze({tick,order,attack,nextWave,setActive:value=>{active=Boolean(value)},snapshot:()=>({seals,time,active,events:events.map(x=>({...x})),channels:[...channels].map(([key,c])=>({key,wait:c.wait,target:c.target?.key||null,remaining:c.remaining})),wardLinks:wardens().map(w=>({key:w.key,target:wardTarget(w)?.key||null,active:time>=(links.get(w.key)||0)})),phaseShield:bossState?.boss?.id==='oathmaster'&&bossState.phase<2&&living(bossState.boss)&&living(bossState.add)&&bossState.boss.hp<=Math.max(1,Math.floor(bossState.boss.maxHp*(bossState.phase===0?.7:.35)))?{key:bossState.boss.key,add:bossState.add.key}:null,bossChannel:bossState?.channel?{key:bossState.boss.key,target:bossState.channel.target.key,kind:bossState.channel.kind,remaining:bossState.channel.remaining}:null})});
 }
 window.PEACH_OATH_CHAPTER2_CANDIDATE=Object.freeze({ready:false,chapterTwoDesign,chapterTwoActor,chapterTwoWave,createSignalCombat});
 })();

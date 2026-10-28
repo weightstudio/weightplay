@@ -118,4 +118,18 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48}],required:['weak','last'],
   items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'},{id:'seal3',kind:'seal',x:3,y:4,link:'3'}],sealOrder:['1','2','3'],
   latches:[{id:'sun',lock:[0,1],key:[3,1]},{id:'moon',lock:[4,1],key:[0,3]}]
+},{
+  id:48,name:'Three seals and the shield',
+  decision:'Release the key before its lock, collect the three seals in order, and bring the sun rune to the shielded guard.',
+  board:['.......','AA.BCCC','.......','BBB.CCC','.......','AAACCCC','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun'}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'},{id:'seal3',kind:'seal',x:3,y:4,link:'3'},{id:'rune',kind:'rune',x:2,y:0,link:'sun'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[0,1],key:[3,1]}]
+},{
+  id:49,name:'Paired locks and sun shield',
+  decision:'Match both pairs, take the three seals in order, and bring the sun rune to the shielded guard.',
+  board:['.......','AAA.BCC','.......','BB.CCCA','.......','CCCAAAA','.......','#######'],
+  hero:{x:1,y:0,power:10},enemies:[{id:'weak',x:2,y:2,power:6},{id:'last',x:4,y:6,power:48,shield:'sun'}],required:['weak','last'],
+  items:[{id:'charge',kind:'multiply',x:5,y:2,amount:2},{id:'fruit',kind:'power',x:2,y:4,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:0,y:0,link:'1'},{id:'seal2',kind:'seal',x:3,y:0,link:'2'},{id:'seal3',kind:'seal',x:3,y:4,link:'3'},{id:'rune',kind:'rune',x:2,y:0,link:'sun'}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[0,1],key:[4,1]},{id:'moon',lock:[3,3],key:[5,1]}]
 }];

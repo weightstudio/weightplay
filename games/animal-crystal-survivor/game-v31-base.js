@@ -27,7 +27,7 @@
   const __crystalPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
   let __crystalPracticeActive=false;
   let __crystalPracticeIsActive=()=>false;
-  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalFragmentMesh=null;
+  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalSecondBeaconMesh=null, __crystalFragmentMesh=null, __crystalLaneModel=null, __crystalLaneAdapter=null;
   const __crystalPracticeText=()=>__crystalBeaconCopy.beaconCopy(window.WonderI18n?.actualLocale?.()||locale);
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -91,7 +91,7 @@
     upgradeReady = false;
     upgradePointerChoice = null;
     rendererRequest += 1;
-    __crystalBeaconMesh?.dispose();__crystalBeaconMesh=null;__crystalFragmentMesh?.dispose();__crystalFragmentMesh=null;
+    __crystalBeaconMesh?.dispose();__crystalBeaconMesh=null;__crystalSecondBeaconMesh?.dispose();__crystalSecondBeaconMesh=null;__crystalFragmentMesh?.dispose();__crystalFragmentMesh=null;
     crystal3D?.dispose();
     crystal3D = null;
     (__wpNotifyMeasurement(), rendererDialog?.remove());
@@ -1520,7 +1520,7 @@
   }
 
   function objectiveComplete() {
-    if(__crystalPracticeRequested&&state.beaconRound)return state.timeLeft<=0&&state.beaconRound.completed===1;
+    if(__crystalPracticeRequested&&state.beaconRound)return state.timeLeft<=0&&state.beaconRound.completed===1&&(state.stage!==33||state.beaconLaneResolved===true);
     return state.stageConfig.mode === "waves" ? state.waveCleared >= state.stageConfig.waveGoal
       : state.stageConfig.mode === "boss" ? state.bossDefeated : state.timeLeft <= 0;
   }
@@ -2010,7 +2010,7 @@
     const config = window.DungeonVentureStageConfig({
       stages, save: () => save, text: t, stageName, stageRule, enemyLesson, modeObjective,
       regionName(item) {
-        if(__crystalPracticeRequested&&item.number>=31&&item.number<=32&&__crystalBeaconCopy)return __crystalBeaconCopy.beaconStageCopy(window.WonderI18n?.actualLocale?.()||locale,item.number)[0];
+        if(__crystalPracticeRequested&&item.number>=31&&item.number<=34&&__crystalBeaconCopy)return __crystalBeaconCopy.beaconStageCopy(window.WonderI18n?.actualLocale?.()||locale,item.number)[0];
         const region = regions[item.region];
         return localeRegionNames[locale]?.[item.region] || (locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : locale === "ar" ? region.ar : region.en);
       },
@@ -2068,10 +2068,14 @@
     state = makeState();
     state.stage = save.selectedStage;
     state.stageConfig = stages[state.stage - 1];
-    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=32&&__crystalBeaconModel){
+    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=34&&__crystalBeaconModel){
       state.beaconRound=__crystalBeaconModel.makeBeaconRound(state.stage);state.beaconDrop=null;
       __crystalBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);
       crystal3D.scene.add(__crystalBeaconMesh.group);
+      if(state.stage===33){
+        state.beaconChoice=__crystalLaneModel.makeLaneChoice();state.beaconLaneDelay=4;state.beaconLaneResolved=false;
+        __crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);
+      }
       __crystalFragmentMesh=__crystalBeaconArt.makeBeaconFragmentArt(__crystalBeaconThree);
       crystal3D.scene.add(__crystalFragmentMesh.group);
     }
@@ -2153,11 +2157,18 @@
 
   function updateBeaconPractice(dt){
     if(!state.beaconRound||!__crystalBeaconModel)return;
-    const station=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0],player=state.player;
+    const stations=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons,player=state.player;
     const pickup=Boolean(state.beaconDrop&&Math.hypot(state.beaconDrop.x-player.x,state.beaconDrop.y-player.y)<=player.pickup);
     if(pickup)state.beaconDrop=null;
-    const nearBeacon=Math.hypot(station.x-player.x,station.y-player.y)<=95?station.id:null;
-    const step=__crystalBeaconModel.stepBeaconRound(state.beaconRound,{dt,pickup,nearBeacon});state.beaconRound=step.state;
+    const nearBeacon=stations.find(station=>Math.hypot(station.x-player.x,station.y-player.y)<=95)?.id||null;
+    const before=state.beaconRound,step=__crystalBeaconModel.stepBeaconRound(before,{dt,pickup,nearBeacon});state.beaconRound=step.state;
+    if(state.stage===34&&step.events.includes('charge-picked-up')&&!state.hazards.some(hazard=>hazard.beaconRoot)){
+      const station=stations[0];addHazard('circle',{x:station.x,y:station.y,r:130,warn:1,life:2.2,damage:12,color:'#65a30d'});state.hazards[state.hazards.length-1].beaconRoot=true;
+    }
+    if(state.stage===33&&step.events.includes('beacon-pulsed')){
+      try{const applied=__crystalLaneAdapter.pulseBeaconLane(state.beaconChoice,state.hazards,step.state.lastPulse);state.beaconChoice=applied.choice;state.hazards=applied.hazards;if(applied.events.some(event=>event.startsWith('lane-cancelled:')))state.beaconLaneResolved=true;}
+      catch{state.beaconRound={...before,charge:0,dwell:0};}
+    }
     if(step.events.includes('charge-expired'))state.beaconLossUntil=performance.now()+2500;
     // The current objective persists in the Battle HUD. Floating text here
     // covered the player's health at exactly the moment of activation.
@@ -2248,6 +2259,14 @@
       }
       return hazard.life > 0;
     });
+    if(state.stage===33&&state.beaconChoice){
+      state.beaconChoice=__crystalLaneModel.tickLaneChoice(state.beaconChoice,dt);
+      state.beaconLaneDelay-=dt;
+      if(state.beaconLaneDelay<=0&&state.beaconChoice.lanes.length===0&&!state.hazards.some(hazard=>hazard.beaconLane)){
+        try{const next=__crystalLaneAdapter.beginBeaconLanes(state.beaconChoice,state.hazards);state.beaconChoice=next.choice;state.hazards=next.hazards;state.beaconLaneDelay=10;if(next.events.some(event=>event.startsWith('lane-cancelled:')))state.beaconLaneResolved=true;}
+        catch{state.beaconLaneDelay=1;}
+      }
+    }
     if (state.safeZone) {
       state.safeZone.angle += dt * 0.42;
       state.safeZone.x = W / 2 + Math.cos(state.safeZone.angle) * 190;
@@ -2994,13 +3013,16 @@
       const practiceResult=__crystalBeaconCopy.beaconResult(window.WonderI18n?.actualLocale?.()||locale,state.calmed,state.level,Math.round(state.survived));
       nodes.resultText.textContent=practiceResult.stats;
       nodes.resultRankText.textContent=practiceResult.label;
-      nodes.resultPlanText.textContent=__crystalPracticeText()[6];nodes.resultProgressText.textContent=__crystalPracticeText()[6];nodes.nextStageBtn.disabled=true;
+      nodes.resultPlanText.textContent=__crystalPracticeText()[6];nodes.resultProgressText.textContent=__crystalPracticeText()[6];
+      const practiceNext=stageCleared&&state.stage===31&&__crystalPracticeIsActive();
+      nodes.nextStageBtn.disabled=!practiceNext;
+      nodes.resultNextStageText.textContent=practiceNext?`${t('nextStage')} · ${stageName(stages[31])}`:'';
     }
     resultActionClaimed = false;
     resultReadyAt = performance.now() + 450;
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
-    const primaryAction = __crystalPracticeRequested ? nodes.resultMenuBtn : stageCleared && state.stage < STAGE_COUNT
+    const primaryAction = __crystalPracticeRequested ? (!nodes.nextStageBtn.disabled ? nodes.nextStageBtn : nodes.resultMenuBtn) : stageCleared && state.stage < STAGE_COUNT
       ? nodes.nextStageBtn
       : stageCleared
         ? nodes.resultMenuBtn
@@ -3103,7 +3125,7 @@
         stage: state.stage,
         stageName: stageName(state.stageConfig),
         stageModifier: state.stageConfig.modifier,
-        beacon: state.beaconRound ? {round:{...state.beaconRound},drop:state.beaconDrop?{...state.beaconDrop}:null,station:{...__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0]}} : null,
+        beacon: state.beaconRound ? {round:{...state.beaconRound},drop:state.beaconDrop?{...state.beaconDrop}:null,station:{...__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0]},stations:__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons.map(point=>({...point})),laneChoice:state.beaconChoice?{...state.beaconChoice,lanes:state.beaconChoice.lanes.map(lane=>({...lane}))}:null,laneResolved:Boolean(state.beaconLaneResolved),hazardSides:state.hazards.filter(hazard=>hazard.beaconLane).map(hazard=>({side:hazard.beaconLane,warn:hazard.warn})),rootWindows:state.hazards.filter(hazard=>hazard.beaconRoot).map(hazard=>({x:hazard.x,y:hazard.y,r:hazard.r,warn:hazard.warn,life:hazard.life}))} : null,
         firstKeyCue: firstKeyCueVisible(),
         keys: state.keys,
         key: null,
@@ -3335,7 +3357,7 @@
       const boss = state.enemies.find(enemy => enemy.isBoss);
       const progress = config.mode === "waves" ? state.waveCleared / config.waveGoal : config.mode === "boss" ? (state.bossDefeated ? 1 : boss ? 1 - boss.hp / boss.maxHp : 0) : state.survived / state.duration;
       const beaconPhase=state.beaconRound?.completed?3:state.beaconRound?.charge?2:state.beaconDrop?1:0;
-      const objective=state.beaconRound&&__crystalBeaconCopy ? (state.beaconLossUntil>performance.now()&&!state.beaconRound.charge&&!state.beaconRound.completed ? __crystalPracticeText()[4] : __crystalBeaconCopy.beaconObjective(window.WonderI18n?.actualLocale?.()||locale,beaconPhase,state.stage))
+      const objective=state.beaconRound&&__crystalBeaconCopy ? (state.beaconLossUntil>performance.now()&&!state.beaconRound.charge&&!state.beaconRound.completed ? __crystalPracticeText()[4] : __crystalBeaconCopy.beaconObjective(window.WonderI18n?.actualLocale?.()||locale,beaconPhase,state.stage,state.beaconLaneResolved))
         : config.mode === "waves" ? `${modeLabels()[1]} ${Math.min(config.waveGoal, state.wave || 1)} / ${config.waveGoal} · ${state.enemies.length + state.waveRemaining} ◈` : modeObjective(config);
       if(state.beaconRound){modeText.setAttribute('role','status');modeText.setAttribute('aria-live','polite');}
       writeHudValue("modeText", modeText, objective);
@@ -3468,7 +3490,8 @@
       // Measure the displayed arena; allocate only when its pixel size changes.
       syncCanvasBackingStore();
       if(state.beaconRound&&__crystalBeaconMesh&&__crystalFragmentMesh){
-        const beacon=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons[0];crystal3D.setPosition(__crystalBeaconMesh.group,beacon,.075);__crystalBeaconMesh.setCharged(Boolean(state.beaconRound.completed));
+        const beacons=__crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons,beacon=beacons[0];crystal3D.setPosition(__crystalBeaconMesh.group,beacon,.075);__crystalBeaconMesh.setCharged(state.beaconRound.lastPulse===beacon.id);
+        if(__crystalSecondBeaconMesh&&beacons[1]){crystal3D.setPosition(__crystalSecondBeaconMesh.group,beacons[1],.075);__crystalSecondBeaconMesh.setCharged(state.beaconRound.lastPulse===beacons[1].id);}
         const carrier=state.enemies.find(enemy=>enemy.beaconCarrier),marker=state.beaconRound.charge?state.player:state.beaconDrop||carrier;
         __crystalFragmentMesh.group.visible=Boolean(marker);if(marker)crystal3D.setPosition(__crystalFragmentMesh.group,marker,carrier&&!state.beaconDrop&&!state.beaconRound.charge?1.7:state.beaconRound.charge?1.5:.1);
       }
@@ -3533,6 +3556,16 @@
     };
     ctx.save();
     ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
+    if(state.stage===33&&state.beaconRound){
+      ctx.save();
+      for(const station of __crystalBeaconModel.beaconCircuitStages[2].beacons){
+        if(!crystal3D.inView(station.x,station.y))continue;
+        const marker=point(station.x,station.y,4.5);ctx.fillStyle='#10222e';ctx.strokeStyle='#f3d284';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.roundRect(marker.x-10,marker.y-10,20,20,4);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#fff4ca';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(station.id,marker.x,marker.y);
+      }
+      ctx.restore();
+    }
     state.enemies.forEach(enemy => {
       if (!crystal3D.inView(enemy.x, enemy.y)) return;
       if (!enemy.isBoss && enemy.hp >= enemy.maxHp) return;
@@ -3857,7 +3890,7 @@
   preload();
 
   // Local practice is an authenticated temporary view, never a campaign
-  // migration. Only the two implemented local-practice slices are registered.
+  // migration. Only explicitly wired local-practice slices are registered.
   if(__crystalPracticeRequested)void (async()=>{
     let notice=null;
     const showPracticeNotice=message=>{
@@ -3871,22 +3904,23 @@
     };
     try{
       if(window.__CrystalPracticeGuardReady!==true||window.WONDER_SITE?.analytics?.enabled!==false)throw Error('PRACTICE_GUARD_UNAVAILABLE');
-      const [{LocalPractice},bridge,model,copy,art,three]=await Promise.all([
-        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon2'),
-        import('./beacon-circuit-candidate.mjs?v=20261028-beacon1'),import('./beacon-circuit-copy.mjs?v=20261028-beacon4'),
+      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter]=await Promise.all([
+        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon4'),
+        import('./beacon-circuit-candidate.mjs?v=20261028-beacon1'),import('./beacon-circuit-copy.mjs?v=20261028-beacon6'),
         import('./beacon-art-candidate.mjs?v=20261028-beacon2'),import('../animal-skyspire-drop/vendor/three/three.module.min.js'),
+        import('./beacon-lanes-candidate.mjs?v=20261028-beacon1'),import('./beacon-lanes-adapter-candidate.mjs?v=20261028-beacon1'),
       ]);
-      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;
+      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;
       const enable=value=>{
         __crystalPracticeActive=value;
         if(value)__crystalPracticeIsActive=()=>LocalPractice.dynamicEnabled;
         if(value&&STAGE_COUNT===30){
-          for(const number of [31,32]){
+          for(const number of [31,32,33,34]){
             const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,copy.beaconStageCopy(key,number)[0]]));
             const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,copy.beaconStageCopy(key,number)[1]]));
-            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:null,mode:'survival',waveGoal:0,duration:number===31?45:50,targetKeys:0});
+            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:null,mode:'survival',waveGoal:0,duration:number===31?45:number===34?55:50,targetKeys:0});
           }
-          STAGE_COUNT=32;save=JSON.parse(JSON.stringify(save));save.unlockedStage=32;save.selectedStage=31;
+          STAGE_COUNT=34;save=JSON.parse(JSON.stringify(save));save.unlockedStage=34;save.selectedStage=31;
         }
       };
       const start=async(stage,isActive)=>{

@@ -22,7 +22,15 @@ const SIGNAL_COPY = Object.freeze({
  en:['Protecting','Preparing to heal','Preparing a boost for','Preparing to strike'], 'zh-Hant':['保護中','準備治療','準備強化','準備攻擊'], 'zh-Hans':['保护中','准备治疗','准备强化','准备攻击'], ja:['守護中','回復準備','強化準備','攻撃準備'], ko:['보호 중','치유 준비','강화 준비','공격 준비'],
  es:['Protege a','Prepara curación para','Prepara mejora para','Prepara ataque contra'], 'pt-BR':['Protege','Prepara cura para','Prepara reforço para','Prepara ataque contra'], fr:['Protège','Prépare des soins pour','Prépare un renfort pour','Prépare une attaque contre'], de:['Schützt','Bereitet Heilung vor für','Bereitet Verstärkung vor für','Bereitet Angriff vor gegen'], it:['Protegge','Prepara cure per','Prepara un potenziamento per','Prepara un attacco contro'], ru:['Защищает','Готовит лечение для','Готовит усиление для','Готовит удар по'], hi:['रक्षा कर रहा है','उपचार की तैयारी','मजबूत करने की तैयारी','हमले की तैयारी'], ar:['يحمي','يستعد لعلاج','يستعد لتعزيز','يستعد لمهاجمة']
 });
-const PANEL_COPY = Object.freeze({
+const PHASE_CUE=Object.freeze({
+    en:'Boss protected: target and defeat {add}', 'zh-Hant':'首領受保護：點選並擊敗{add}', 'zh-Hans':'首领受保护：点选并击败{add}',
+    ja:'ボスは保護中：{add}を狙って倒そう', ko:'보스 보호 중: {add}을 선택해 처치하세요',
+    es:'Jefe protegido: selecciona y derrota a {add}', 'pt-BR':'Chefe protegido: selecione e derrote {add}',
+    fr:'Boss protégé : ciblez et battez {add}', de:'Boss geschützt: Wähle und besiege {add}',
+    it:'Boss protetto: seleziona e sconfiggi {add}', ru:'Босс защищён: выберите и победите {add}',
+    hi:'बॉस सुरक्षित है: {add} को चुनकर हराएँ', ar:'الزعيم محمي: استهدف واهزم {add}'
+  });
+  const PANEL_COPY = Object.freeze({
  en:['Close orders','Battle paused while orders are open'], 'zh-Hant':['關閉指令','指令開啟期間戰鬥暫停'], 'zh-Hans':['关闭指令','指令开启期间战斗暂停'], ja:['指令を閉じる','指令表示中は戦闘を一時停止'], ko:['명령 닫기','명령을 여는 동안 전투 일시 정지'], es:['Cerrar órdenes','La batalla se pausa mientras las órdenes están abiertas'], 'pt-BR':['Fechar ordens','A batalha fica pausada enquanto as ordens estão abertas'], fr:['Fermer les ordres','Le combat est en pause pendant les ordres'], de:['Befehle schließen','Der Kampf pausiert, solange Befehle geöffnet sind'], it:['Chiudi ordini','La battaglia è in pausa mentre gli ordini sono aperti'], ru:['Закрыть приказы','Бой приостановлен, пока открыты приказы'], hi:['आदेश बंद करें','आदेश खुले रहने पर युद्ध रुका रहेगा'], ar:['إغلاق الأوامر','تتوقف المعركة مؤقتًا أثناء فتح الأوامر']
 });
 
@@ -73,6 +81,7 @@ function createOrderDock(document, mount, id, getState, order, onFault=()=>{}, o
     const role=new Map(s.enemies.map(unit=>[unit.key,unit.role]));
     for(const channel of s.signals?.channels||[])if(channel.target){const kind=role.get(channel.key),index=kind==='medic'?1:kind==='drummer'?2:3;urgent.push(`${name(channel.key)}: ${words[index]} ${name(channel.target)}`)}
     if(s.signals?.bossChannel?.target){const c=s.signals.bossChannel,index=c.kind==='drummer'?2:3;urgent.push(`${name(c.key)}: ${words[index]} ${name(c.target)}`)}
+    if(s.signals?.phaseShield?.add)urgent.unshift((PHASE_CUE[s.locale]||PHASE_CUE.en).replace('{add}',name(s.signals.phaseShield.add)));
     const cues=[...urgent,...lines];
     const allCue=s.visible?cues.join(' · '):'',cue=s.visible&&cues.length?`${cues[0]}${cues.length>1?` (+${cues.length-1})`:''}`:'';
     if(signals.textContent!==cue)signals.textContent=cue;if(allSignals.textContent!==allCue)allSignals.textContent=allCue;

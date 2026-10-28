@@ -34,7 +34,37 @@ const secondStage={
   hi:['बीकन पर धावा','चिह्नित हमलावर से बचें, टुकड़ा लें और दाएँ बीकन पर 1.2 सेकंड रुकें। जीवित रहें।'],
   ar:['اندفاع عند المنارة','تجنب المهاجم المحدد، واجمع الشظية، وابقَ عند المنارة اليمنى ١٫٢ ثانية، ثم اصمد.'],
 };
-export function beaconStageCopy(locale,stage){return stage===32?(secondStage[locale]||secondStage.en):beaconCopy(locale).slice(0,2)}
+const thirdStage={
+  en:['Two Beacon Lanes','Collect the marked fragment; hold at A or B to cancel that lane once. The other lane remains dangerous.'],
+  'zh-Hant':['雙信標路線','拾取標記碎片，在 A 或 B 停留以取消一次對應路線；另一條仍有危險。'],
+  'zh-Hans':['双信标路线','拾取标记碎片，在 A 或 B 停留以取消一次对应路线；另一条仍有危险。'],
+  ja:['二つのビーコン','印の欠片を拾い A か B に留まるとその通路を解除。もう一方は危険。'],
+  ko:['두 신호기 길','표시된 조각을 모아 A 또는 B에 머물면 해당 길이 취소됩니다. 다른 길은 위험합니다.'],
+  es:['Dos rutas de balizas','Recoge el fragmento y permanece en A o B para cancelar esa ruta; la otra sigue peligrosa.'],
+  'pt-BR':['Duas rotas de sinalização','Pegue o fragmento e fique em A ou B para cancelar essa rota; a outra continua perigosa.'],
+  fr:['Deux voies balisées','Prenez le fragment et restez en A ou B pour annuler cette voie ; l’autre reste dangereuse.'],
+  de:['Zwei Leuchtfeuerbahnen','Sammle das Fragment und bleibe bei A oder B, um diese Bahn abzubrechen; die andere bleibt gefährlich.'],
+  it:['Due corsie dei fari','Raccogli il frammento e resta in A o B per annullare quella corsia; l’altra resta pericolosa.'],
+  ru:['Два пути маяков','Подберите осколок и задержитесь у A или B, чтобы отменить этот путь; другой остаётся опасным.'],
+  hi:['दो बीकन मार्ग','टुकड़ा लें और A या B पर रुकें; चुना मार्ग रद्द होगा, दूसरा खतरनाक रहेगा।'],
+  ar:['مسارا المنارتين','اجمع الشظية وابقَ عند A أو B لإلغاء مساره؛ يبقى المسار الآخر خطرًا.'],
+};
+const fourthStage={
+  en:['Roots at the Beacon','Collect the marked fragment. Dodge the warned root circle, then hold at the beacon for 1.2 seconds and survive. Damage loses the fragment.'],
+  'zh-Hant':['信標根圈','拾取標記碎片，閃避預告的根圈，再於信標停留 1.2 秒並生存；受傷會失去碎片。'],
+  'zh-Hans':['信标根圈','拾取标记碎片，躲避预告的根圈，再于信标停留 1.2 秒并生存；受伤会失去碎片。'],
+  ja:['ビーコンの根','印の欠片を拾い、予告された根を避けて1.2秒留まり生き残る。被弾で欠片を失う。'],
+  ko:['신호기의 뿌리','표시된 조각을 모으고 예고된 뿌리를 피한 뒤 신호기에 1.2초 머물러 생존하세요. 피해를 받으면 조각을 잃습니다.'],
+  es:['Raíces en la baliza','Recoge el fragmento, esquiva el círculo de raíces y permanece 1,2 s en la baliza. El daño pierde el fragmento.'],
+  'pt-BR':['Raízes no sinalizador','Pegue o fragmento, desvie do círculo de raízes e fique 1,2 s no sinalizador. Sofrer dano perde o fragmento.'],
+  fr:['Racines à la balise','Prenez le fragment, évitez le cercle de racines puis restez 1,2 s à la balise. Un coup fait perdre le fragment.'],
+  de:['Wurzeln am Leuchtfeuer','Sammle das Fragment, weiche dem Wurzelkreis aus und bleibe 1,2 s am Leuchtfeuer. Schaden verliert das Fragment.'],
+  it:['Radici al faro','Raccogli il frammento, evita il cerchio di radici e resta 1,2 s al faro. I danni fanno perdere il frammento.'],
+  ru:['Корни у маяка','Подберите осколок, уклонитесь от круга корней и стойте у маяка 1,2 с. Урон лишает осколка.'],
+  hi:['बीकन की जड़ें','टुकड़ा लें, जड़ों के चेतावनी घेरे से बचें और बीकन पर 1.2 सेकंड रुकें। चोट लगने पर टुकड़ा खोता है।'],
+  ar:['جذور عند المنارة','اجمع الشظية وتجنب دائرة الجذور المحذّرة، ثم ابقَ عند المنارة ١٫٢ ثانية. الإصابة تفقدك الشظية.'],
+};
+export function beaconStageCopy(locale,stage){if(stage===34)return fourthStage[locale]||fourthStage.en;if(stage===33)return thirdStage[locale]||thirdStage.en;return stage===32?(secondStage[locale]||secondStage.en):beaconCopy(locale).slice(0,2)}
 
 // Short, persistent Battle objectives. These drafts still require native
 // language review; the full rule remains on the Stage card.
@@ -54,7 +84,28 @@ const objectives={
   ar:['اهزم العدو المحدد','اجمع الشظية','ابقَ عند المنارة ١٫٢ ثانية','المنارة مفعّلة · اصمد'],
 };
 const chargerObjective={en:'Dodge and defeat the marked charger','zh-Hant':'閃避並擊敗標記衝刺者','zh-Hans':'躲避并击败标记冲刺者',ja:'印の突進兵を避けて倒す',ko:'표시된 돌진자를 피하고 처치',es:'Esquiva y derrota al cargador marcado','pt-BR':'Desvie e derrote o atacante marcado',fr:'Esquivez et battez le chargeur marqué',de:'Weiche dem markierten Angreifer aus und besiege ihn',it:'Evita e sconfiggi il nemico segnato',ru:'Уклонитесь и победите отмеченного врага',hi:'चिह्नित हमलावर से बचकर उसे हराएँ',ar:'تجنب المهاجم المحدد واهزمه'};
-export function beaconObjective(locale, phase, stage=31){if(stage===32&&phase===0)return chargerObjective[locale]||chargerObjective.en;return (objectives[locale]||objectives.en)[phase]||objectives.en[0]}
+const laneObjectives={
+  en:['Choose A or B · hold 1.2s','Waiting to cancel next lane','Chosen lane cancelled · survive'],
+  'zh-Hant':['選 A 或 B · 停留 1.2 秒','等待取消下一條路線','所選路線已取消 · 生存'],
+  'zh-Hans':['选 A 或 B · 停留 1.2 秒','等待取消下一条路线','所选路线已取消 · 生存'],
+  ja:['AかBを選び1.2秒留まる','次の通路解除を待つ','選んだ通路を解除 · 生存'],
+  ko:['A 또는 B에서 1.2초 머무르기','다음 길 취소 대기','선택한 길 취소 · 생존'],
+  es:['Elige A o B · espera 1,2 s','Esperando cancelar la siguiente ruta','Ruta elegida cancelada · sobrevive'],
+  'pt-BR':['Escolha A ou B · fique 1,2 s','Aguardando cancelar a próxima rota','Rota escolhida cancelada · sobreviva'],
+  fr:['Choisissez A ou B · restez 1,2 s','Annulation de la prochaine voie en attente','Voie choisie annulée · survivez'],
+  de:['A oder B wählen · 1,2 s bleiben','Nächste Bahn wird abgebrochen','Gewählte Bahn abgebrochen · überleben'],
+  it:['Scegli A o B · resta 1,2 s','Attendi l’annullamento della corsia','Corsia scelta annullata · sopravvivi'],
+  ru:['Выберите A или B · стойте 1,2 с','Ожидание отмены следующего пути','Выбранный путь отменён · выживите'],
+  hi:['A या B चुनें · 1.2 सेकंड रुकें','अगला मार्ग रद्द होने की प्रतीक्षा','चुना मार्ग रद्द · जीवित रहें'],
+  ar:['اختر A أو B وابقَ ١٫٢ ثانية','بانتظار إلغاء المسار التالي','أُلغي المسار المختار · اصمد'],
+};
+const rootObjective={en:'Dodge roots · hold at beacon 1.2s','zh-Hant':'閃避根圈 · 信標停留 1.2 秒','zh-Hans':'躲避根圈 · 信标停留 1.2 秒',ja:'根を避けビーコンに1.2秒留まる',ko:'뿌리를 피해 신호기에 1.2초 머무르기',es:'Esquiva raíces · baliza 1,2 s','pt-BR':'Desvie das raízes · sinalizador 1,2 s',fr:'Évitez les racines · balise 1,2 s',de:'Wurzeln ausweichen · 1,2 s bleiben',it:'Evita le radici · faro 1,2 s',ru:'Уклонитесь от корней · у маяка 1,2 с',hi:'जड़ों से बचें · बीकन पर 1.2 सेकंड',ar:'تجنب الجذور وابقَ عند المنارة ١٫٢ ثانية'};
+export function beaconObjective(locale,phase,stage=31,resolved=true){
+  if(stage===32&&phase===0)return chargerObjective[locale]||chargerObjective.en;
+  if(stage===33&&(phase===2||phase===3))return (laneObjectives[locale]||laneObjectives.en)[phase===2?0:resolved?2:1];
+  if(stage===34&&phase===2)return rootObjective[locale]||rootObjective.en;
+  return (objectives[locale]||objectives.en)[phase]||objectives.en[0];
+}
 
 const resultLabels={
   en:['Defeated','Level','s','Practice only'], 'zh-Hant':['擊敗','等級','秒','僅供練習'],

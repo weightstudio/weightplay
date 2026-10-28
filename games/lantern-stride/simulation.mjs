@@ -28,6 +28,11 @@ export function segmentFor(race) {
 export function rhythmRange(rule) {
   return rule === 'slow' ? [.42, .75] : rule === 'fast' || rule === 'headfast' ? [.23, .43] : [.28, .55];
 }
+export function starTimeLimit(stage) { return Number((stage.limit*.55).toFixed(1)); }
+function speedLimit(segment, combo) {
+  const base=segment.wind==='headwind'||segment.rule==='headwind'||segment.rule==='headfast'?2.6:segment.rule==='tailwind'?3.8:3.2;
+  return base+(combo>=12?.35:0);
+}
 
 // The visible flashing bridge and accepted input use this same time authority.
 export function bridgeOpen(race) { return race.elapsed < race.featherUntil || race.elapsed % 2.4 < 1.2; }
@@ -44,6 +49,7 @@ function failRace(race,reason) {
 export function step(race, foot) {
   if (race.status !== 'running' || !['left', 'right'].includes(foot)) return { accepted: false, reason: 'inactive' };
   let segment = segmentFor(race);
+  const choosing = segment.original.startsWith('fork') && !segment.choice;
   if (segment.original.startsWith('fork') && !segment.choice) {
     race.branches[segment.index] = foot;
     if (segment.original === 'forkleft' && foot !== 'left' || segment.original === 'forkright' && foot !== 'right' ||
@@ -53,11 +59,14 @@ export function step(race, foot) {
   const { index, rule } = segment;
   const interval = race.lastStep == null ? .42 : race.elapsed - race.lastStep;
   const range = rhythmRange(segment.pace || rule);
-  const alternating = race.lastFoot !== foot;
+  // The first marked step is a decision, even if it repeats the preceding foot.
+  const enteringGate = (rule === 'left' || rule === 'right') && race.lastGateIndex !== index && foot === rule;
+  const specialEntry = choosing || enteringGate;
+  const alternating = race.lastFoot !== foot || specialEntry;
   const bridge = rule !== 'bridge' || bridgeOpen(race);
-  const timed = race.lastStep == null || interval >= range[0] && (interval <= range[1] || rule === 'bridge' && bridge);
+  const timed = race.lastStep == null || interval >= range[0] && (interval <= range[1] || rule === 'bridge' && bridge || specialEntry);
   const clean = alternating && timed && bridge;
-  const speedCap=segment.wind==='headwind'||rule==='headwind'||rule==='headfast'?2.6:rule==='tailwind'?3.8:3.2;
+  const speedCap=speedLimit(segment,race.combo+1);
   race.lastFoot = foot; race.lastStep = race.elapsed; race.lastContactDistance = race.distance;
   if (clean) {
     race.combo++; race.steadySteps++; race.bestCombo = Math.max(race.bestCombo, race.combo);
@@ -85,7 +94,7 @@ export function advance(race, delta) {
   const before = segmentFor(race);
   race.elapsed += dt;
   const drag = before.wind === 'headwind' || before.rule === 'headwind' || before.rule === 'headfast' ? .52 : before.rule === 'tailwind' ? .12 : .28;
-  const speedCap=before.wind==='headwind'||before.rule==='headwind'||before.rule==='headfast'?2.6:before.rule==='tailwind'?3.8:3.2;
+  const speedCap=speedLimit(before,race.combo);
   race.speed = clamp(race.speed - drag * dt, 0, speedCap);
   race.distance = Math.min(race.stage.distance, race.distance + race.speed * dt);
   const after = segmentFor(race);
@@ -110,6 +119,6 @@ function settle(race) {
   const gates = race.gateMisses.length === 0;
   const won = race.distance >= race.stage.distance && !!conditions[objective] && gates;
   race.result = { won, reason: race.distance < race.stage.distance ? 'timeout' : !gates ? 'missed-gate' : !conditions[objective] ? objective : 'finish',
-    elapsed: race.elapsed, stumbles: race.stumbles, balance: race.balance, stars: won ? 1 + Number(race.elapsed <= race.stage.limit * .8) + Number(race.stumbles === 0) : 0 };
+    elapsed: race.elapsed, stumbles: race.stumbles, balance: race.balance, stars: won ? 1 + Number(race.elapsed <= starTimeLimit(race.stage)) + Number(race.stumbles === 0) : 0 };
   race.status = 'finished';
 }

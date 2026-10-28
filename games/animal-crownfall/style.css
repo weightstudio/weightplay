@@ -174,16 +174,29 @@ body[data-screen="stage"] .wp-tutorial-button{display:none}
 /* Distinguish the two practice-only phase runes at overview scale. */
 .actor-tag.item.phase-rune{font-size:14px;line-height:1.15}
 .actor-tag.enemy.phase-shield{font-size:14px;line-height:1.15}
+/* In stage 49 distinguish the named rune and shield from nearby stats. */
+.actor-tag.item.phase-rune.stage49{background:#664317;border-color:#ffe183;color:#fff8d6}
+.actor-tag.enemy.phase-shield.stage49{background:#294568;border-color:#ffe183;color:#fff8d6}
 /* Keep the practice badge and progress readable without a horizontal scrollbar. */
 body[data-crown-latch-practice="true"] #side{grid-template-rows:60px 16px 34px}
 body[data-crown-latch-practice="true"] #objective{max-height:60px}
 body[data-crown-latch-practice="true"] #feedback{max-height:16px;line-height:16px}
 body[data-crown-latch-practice="true"] #legend{white-space:normal;overflow-wrap:anywhere;overflow:hidden}
+@media(max-aspect-ratio:1.4499){
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 48px 110px calc(46px * var(--wp-battle-canvas-inverse-scale,1)) calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #choice{height:100%}
+  @layer wp-frame-contract {
+    body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #choice button,
+    body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) .tools button{height:100%!important;min-height:calc(46px * var(--wp-battle-canvas-inverse-scale,1))!important;max-height:none!important}
+  }
+}
 @media(min-aspect-ratio:1.45){
   body[data-crown-latch-practice="true"] #battleContent:has(#choice[hidden]){grid-template-rows:minmax(0,1fr) 94px 124px 0 48px}
   body[data-crown-latch-practice="true"] #side{height:124px;grid-template-rows:60px 32px 32px}
   body[data-crown-latch-practice="true"] #feedback{max-height:32px;line-height:16px;white-space:normal;overflow-wrap:anywhere;overflow:hidden}
-  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 94px 120px 48px 48px}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 94px 120px 0 48px}
   body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #side{height:120px;grid-template-rows:56px 32px 32px}
   body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #objective{max-height:56px}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) #choice{grid-column:2;grid-row:5}
+  body[data-crown-latch-practice="true"] #battleContent:has(#choice:not([hidden])) .tools{grid-column:1;grid-row:5}
 }
