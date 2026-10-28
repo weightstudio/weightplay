@@ -4,8 +4,8 @@ import * as THREE from '../purrch-grove/vendor/three/three.module.min.js';
 // stay in core.mjs. Three r180 is the repository-pinned MIT runtime.
 const PARTICLE_LIMIT = 48;
 const WORLD = { left: -0.6, right: 9.6, top: -0.65, bottom: 7.65 };
-const WARM = { sky: 0x8fc6ca, floor: 0xe6c88f, clean: 0xf5e1af, stone: 0xdbc49a, edge: 0x428a78, leaf: 0x62ac38, dark: 0x264e50, metal: 0xc08b3e, light: 0xffda75 };
-const COOL = { sky: 0x7dbaca, floor: 0x8bbac7, clean: 0xc8e5e3, stone: 0xb5d3d7, edge: 0x368898, leaf: 0x48957d, dark: 0x244957, metal: 0xc59a53, light: 0x8decf3 };
+const WARM = { sky: 0x8fc6ca, floor: 0xf4e5c7, clean: 0xfff4da, stone: 0xf0e3c9, edge: 0x407f75, leaf: 0x80ae69, dark: 0x264e50, metal: 0xc08b3e, light: 0xffda75 };
+const COOL = { sky: 0x7dbaca, floor: 0xd1e5e1, clean: 0xf0f8ed, stone: 0xd3e4e2, edge: 0x368898, leaf: 0x6da797, dark: 0x244957, metal: 0xc59a53, light: 0x8decf3 };
 const clamp = (value, lo, hi) => Math.max(lo, Math.min(hi, value));
 const finite = (value, fallback = 0) => Number.isFinite(value) ? value : fallback;
 const cellKey = (x, z) => `${Math.round(x)},${Math.round(z)}`;
@@ -72,7 +72,7 @@ function softContactGeometry() {
 }
 
 function builder(source, { bevel = 0 } = {}) {
-  const position = [], normals = [], colors = [];
+  const position = [], normals = [], colors = [], uvs = [];
   const sourcePosition = source.getAttribute('position');
   const sourceNormal = source.getAttribute('normal');
   return {
@@ -88,7 +88,32 @@ function builder(source, { bevel = 0 } = {}) {
         if (bevel) v.set(bevelCoordinate(v.x, sx), bevelCoordinate(v.y, sy), bevelCoordinate(v.z, sz));
         v.applyMatrix4(matrix); position.push(v.x, v.y, v.z);
         v.fromBufferAttribute(sourceNormal, i).applyNormalMatrix(normalMatrix); normals.push(v.x, v.y, v.z);
+        // Planar world-unit UVs preserve one material density on merged boxes,
+        // including bevel faces. No illustrated surface is drawn by this code.
+        const px = position[position.length - 3], py = position[position.length - 2], pz = position[position.length - 1];
+        if (Math.abs(v.y) >= Math.max(Math.abs(v.x), Math.abs(v.z))) uvs.push(px, pz);
+        else if (Math.abs(v.x) >= Math.abs(v.z)) uvs.push(pz, py);
+        else uvs.push(px, py);
         colors.push(color.r, color.g, color.b);
+      }
+      return this;
+    },
+    terrace(points, top, depth, tint) {
+      color.set(tint);
+      const polygon = points.map(([x,z]) => new THREE.Vector2(x,z));
+      const triangles = THREE.ShapeUtils.triangulateShape(polygon, []);
+      const vertex = (x,y,z,nx,ny,nz) => { position.push(x,y,z); normals.push(nx,ny,nz); colors.push(color.r,color.g,color.b); uvs.push(x,z); };
+      for (const triangle of triangles) {
+        const [a,b,c] = triangle.map(i => points[i]);
+        const winding = (b[1]-a[1])*(c[0]-a[0])-(b[0]-a[0])*(c[1]-a[1]);
+        for (const p of winding > 0 ? [a,b,c] : [a,c,b]) vertex(p[0],top,p[1],0,1,0);
+      }
+      const area = THREE.ShapeUtils.area(polygon), sign = area > 0 ? 1 : -1;
+      for (let i=0;i<points.length;i++) {
+        const a=points[i], b=points[(i+1)%points.length], dx=b[0]-a[0], dz=b[1]-a[1], length=Math.hypot(dx,dz);
+        const nx=sign*dz/length, nz=-sign*dx/length;
+        const strip = [[a[0],top,a[1]],[a[0],top-depth,a[1]],[b[0],top-depth,b[1]],[b[0],top,b[1]]];
+        for (const ids of (sign>0 ? [[0,2,1],[0,3,2]] : [[0,1,2],[0,2,3]])) for(const j of ids) vertex(...strip[j],nx,0,nz);
       }
       return this;
     },
@@ -97,6 +122,7 @@ function builder(source, { bevel = 0 } = {}) {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
       geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
       geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
       if (bevel) geometry.computeVertexNormals();
       geometry.computeBoundingSphere();
       return geometry;
@@ -104,7 +130,7 @@ function builder(source, { bevel = 0 } = {}) {
   };
 }
 
-export function mountRenderer({ container, onPointer = () => {}, onStatus = () => {}, reducedMotion = false }) {
+export function mountRenderer({ container, onPointer = () => {}, onStatus = () => {}, reducedMotion = false, materialImages }) {
   if (!container?.appendChild) throw new TypeError('Dustwake renderer requires an arena container.');
   let renderer, scene, camera, disposed = false, lost = false, ready = false, renderFailed = false;
   let state = null, stageKey = '', stageGroup = null, frame = 0, previousFrameTime = 0;
@@ -114,6 +140,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   let activePointer = null, lastPointer = null, lastElapsed = 0, pendingRestored = false;
   const geometries = new Set(), materials = new Set(), stageGeometries = new Set(), listeners = [];
   const textures = new Set();
+  let environmentTarget = null, environmentBuilds = 0, stoneMap = null, mossMap = null;
   const frameTimes = [], renderTimes = [], seenEvents = new Set(), initialPiles = new Map();
   const particles = Array.from({ length: PARTICLE_LIMIT }, () => ({ active: false, age: 0, duration: 0.3 }));
   const gates = [], depotModels = [], padModels = [];
@@ -135,7 +162,50 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   const mesh = (geometry, material, parent = scene) => {
     const object = new THREE.Mesh(geometry, material); object.castShadow = true; object.receiveShadow = true; parent.add(object); return object;
   };
-  let block, plain, matte, stoneMaterial, glossy, copperMaterial, enamelMaterial, waterMaterial, bronze, glow, closedLamp, warningLamp, ringMaterial, depotRingMaterial, particleMaterial, numberMaterial;
+  let block, plain, matte, stoneMaterial, mossMaterial, glossy, copperMaterial, enamelMaterial, waterMaterial, bronze, glow, closedLamp, warningLamp, ringMaterial, depotRingMaterial, particleMaterial, numberMaterial;
+
+  function makeSurfaceTexture(bitmap, name) {
+    if (!bitmap || !(bitmap.width > 0) || !(bitmap.height > 0)) throw new TypeError(`Dustwake ${name} material bitmap is unavailable.`);
+    // Loader crops the atlas and supplies an already flipY-oriented ImageBitmap.
+    // The caller retains ownership for replay and context restoration.
+    const texture = new THREE.Texture(bitmap); texture.name = `dustwake-${name}-albedo`;
+    texture.flipY = false; texture.colorSpace = THREE.SRGBColorSpace;
+    texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
+    texture.minFilter = THREE.LinearMipmapLinearFilter; texture.magFilter = THREE.LinearFilter;
+    texture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+    texture.needsUpdate = true; textures.add(texture); return texture;
+  }
+
+  function releaseEnvironment() {
+    if (!environmentTarget) return;
+    if (scene) scene.environment = null;
+    textures.delete(environmentTarget.texture); environmentTarget.dispose(); environmentTarget = null;
+  }
+
+  function buildStudioEnvironment() {
+    releaseEnvironment();
+    const studio = new THREE.Scene(), panelGeometry = new THREE.PlaneGeometry(1, 1), panelMaterials = [];
+    studio.background = new THREE.Color(0x293940);
+    const panel = (x, y, z, width, height, tint, strength) => {
+      const material = new THREE.MeshBasicMaterial({ color: new THREE.Color(tint).multiplyScalar(strength), side: THREE.DoubleSide });
+      panelMaterials.push(material);
+      const object = new THREE.Mesh(panelGeometry, material); object.position.set(x, y, z); object.scale.set(width, height, 1); object.lookAt(0, 0, 0); studio.add(object);
+    };
+    // Broad luminous cards create smooth, differently colored reflection bands
+    // on enamel and bronze. This is lighting only, never a bitmap backdrop.
+    panel(-5, 7, 4, 8, 6, 0xffeed7, 5.2);
+    panel(7, 3, -4, 3.5, 7, 0xb5e4f6, 3.1);
+    panel(1, 9, -1, 7, 6, 0xf3fcf8, 2.1);
+    panel(0, -6, 0, 18, 18, 0x697d69, .45);
+    const generator = new THREE.PMREMGenerator(renderer);
+    try {
+      environmentTarget = generator.fromScene(studio, .055, .1, 40, { size: 128 });
+      environmentTarget.texture.name = 'dustwake-studio-ibl-128'; textures.add(environmentTarget.texture);
+      scene.environment = environmentTarget.texture; scene.environmentIntensity = .78; environmentBuilds++;
+    } finally {
+      generator.dispose(); panelGeometry.dispose(); panelMaterials.forEach(material => material.dispose()); studio.clear();
+    }
+  }
 
   function markNavigation(root, target, persistent = false) {
     root.traverse(object => {
@@ -348,36 +418,48 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   }
 
   function makeGardenSurround(palette, chapter) {
-    const terrain = builder(plain), planting = builder(plain), water = builder(plain), flowerStones = builder(block, { bevel: .04 });
+    const terrain = builder(plain), meadow = builder(plain), planting = builder(plain), water = builder(plain), flowerStones = builder(block, { bevel: .04 });
     const cold = chapter === 2;
     // Continuous, fully modelled terrace gardens occupy the unused camera
     // margin. They are scenery beyond the solid arena border, never new routes.
-    terrain.box(4.5, -1.18, 3.5, 46, .32, 42, cold ? 0x385f69 : 0x496a49)
-      .box(4.5, -.75, 3.5, 12.2, .28, 10.1, palette.edge)
+    meadow.box(4.5, -1.18, 3.5, 46, .32, 42, cold ? 0x759e9a : 0xb8cba5);
+    terrain.box(4.5, -.75, 3.5, 12.2, .28, 10.1, palette.edge)
       .box(4.5, -.56, 3.5, 11.2, .16, 9.1, palette.stone);
-    for (const [i, [x, z, sx, sz]] of [[-5.0, 3.0, 5.5, 16], [14, 4, 5.5, 16], [4.5, -5, 17, 5.5], [4, 12, 18, 5]].entries()) {
-      const turn = (i % 2 ? -.13 : .17);
-      terrain.box(x, -.98, z, sx, .10, sz, cold ? 0x578d89 : 0x72a252, turn)
-        .box(x + .6, -.91, z - .5, sx * .71, .06, sz * .63, cold ? 0x75a79b : 0x8dbb67, -turn * .7)
-        .box(x - sx * .30, -.94, z + .9, sx * .38, .09, sz * .48, cold ? 0x5b958d : 0x79aa50, turn * .8);
+    const shores = [
+      [[-7,-4],[-3.3,-4],[-2.5,-2.4],[-1.7,-.7],[-1.6,1.5],[-2.2,2.3],[-1.7,4.4],[-1.8,7.4],[-3.4,10.2],[-7,11]],
+      [[11.0,-3],[15,-4],[17,2],[16,9],[13,12],[11,9],[10.8,6.1],[11.5,4.6],[10.8,2.0]],
+      [[-1.3,-6],[11,-6],[12,-3.4],[8,-2.6],[5,-3.1],[2,-2.5],[-1,-3.3]],
+      [[-1,10.2],[2,9.4],[4.7,10.1],[8.1,9.4],[11.3,10.6],[11,15],[-1,15]]
+    ];
+    for (const [i,points] of shores.entries()) {
+      meadow.terrace(points,-.94,.16,cold ? (i%2 ? 0xb1c8ba : 0x8fb6ad) : (i%2 ? 0xe0e3bd : 0xc6d7b1));
     }
-    // Continuous borders replace the first slice's repeated square planters.
-    for (const z of [-1.1, 8.1]) terrain.box(4.5, -.40, z, 14, .22, .70, palette.stone)
-      .box(4.5, -.255, z, 13.9, .08, .61, cold ? 0x385d59 : 0x5d5d37);
-    for (let x = -2; x <= 11; x++) for (const z of [-1.1, 8.1]) {
-      planting.box(x - .15, -.12, z, .34, .20, .38, palette.leaf).box(x + .15, -.075, z + .06, .26, .24, .30, cold ? 0x6aa991 : 0x8bb342);
-      if ((x + 4) % 2 === 0) for (const sx of [-.16, .13]) {
-        const blossom = cold ? ((x + 4) % 4 ? 0xb6dddc : 0xdca7bb) : ((x + 4) % 4 ? 0xf0d680 : 0xe7a287);
-        planting.box(x + sx, .09, z, .23, .05, .085, blossom).box(x + sx, .09, z, .085, .05, .23, blossom)
-          .box(x + sx, .13, z, .075, .045, .075, 0xffcd51);
+    // Two stepped pools break the former long, flat green bands at the portrait
+    // ends. Their physical shoreline and stone shelves remain pure scenery.
+    for (const [i,[cx,cz]] of [[-3.35,3.0],[12.4,4.4]].entries()) {
+      const outline=[[-1.8,-1.1],[-.4,-1.65],[1.1,-1.2],[1.5,-.1],[1.05,.95],[-.15,1.35],[-1.55,.8]];
+      const shore=outline.map(([x,z])=>[cx+x,cz+z]);
+      terrain.terrace(shore,-.81,.14,cold ? 0xc1d7d0 : 0xe4debf);
+      water.terrace(outline.map(([x,z])=>[cx+x*.87,cz+z*.87]),-.785,.035,cold ? 0x66b5bd : 0x4baeb1);
+      meadow.terrace([[cx-1.8,cz+.8],[cx-.65,cz+.65],[cx+.1,cz+1.2],[cx-.5,cz+2.1],[cx-1.8,cz+1.8]],-.74,.12,cold ? 0x9cbfae : 0xc4d7a7);
+      flowerStones.box(cx+1.4,-.64,cz-.8,.85,.30,.65,palette.stone,.25+i*.4)
+        .box(cx+1.1,-.51,cz-.96,.54,.25,.47,palette.clean,-.22);
+    }
+    // Unequal garden clusters leave deliberate breathing spaces between cream
+    // stone, moss and water. They stay below the arena rim and outside routes.
+    const beds = [[.6,-1.15,2.5,.70,-.04],[5.2,-1.18,3.6,.82,.02],[9.4,-1.18,1.8,.64,-.06],
+      [1.4,8.12,3.5,.75,.03],[6.9,8.22,2.7,.86,-.035],[-1.18,1.25,.72,2.4,-.04],
+      [-1.2,5.7,.82,2.1,.06],[10.2,3.9,.76,3.9,.025]];
+    for (const [index, [x,z,sx,sz,turn]] of beds.entries()) {
+      terrain.box(x,-.43,z,sx,.18,sz,palette.stone,turn);
+      meadow.box(x,-.29,z,sx*.92,.10,sz*.89,cold ? 0xb4cfc0 : 0xdbdfb2,turn)
+        .box(x-sx*.16,-.20,z+sz*.09,sx*.49,.10,sz*.58,cold ? 0x8bb4a3 : 0xb9d29d,-turn);
+      for (let i=0;i<3;i++) {
+        const along=(i-1)*.27, fx=x+(sx>sz?along*sx:.08*(i-1)), fz=z+(sx>sz?.1*(i%2):along*sz);
+        const petal=cold ? (index%2 ? 0xe7bcd4 : 0xbddfda) : (index%2 ? 0xe7afa1 : 0xf6e0aa);
+        planting.box(fx,-.095,fz,.24,.055,.09,petal).box(fx,-.095,fz,.09,.055,.24,petal)
+          .box(fx,-.055,fz,.07,.03,.07,0xecc765);
       }
-    }
-    for (const x of [-1.1, 10.1]) terrain.box(x, -.40, 3.5, .70, .22, 8, palette.stone)
-      .box(x, -.25, 3.5, .61, .08, 7.9, palette.leaf);
-    for (let z = 0; z <= 7; z++) for (const x of [-1.1, 10.1]) {
-      planting.box(x, -.12, z - .18, .27, .23, .25, palette.leaf).box(x + .05, -.08, z + .18, .32, .26, .29, cold ? 0x6ba69d : 0x93b44c);
-      if (z % 2 === 0) planting.box(x, .10, z, .25, .06, .09, cold ? 0xf4c4dd : 0xf0a5a4)
-        .box(x, .10, z, .09, .06, .25, cold ? 0xf4c4dd : 0xf0a5a4).box(x, .14, z, .075, .04, .075, 0xffd472);
     }
     for (const [x, z] of [[-2.9, .3], [-2.4, 6.3], [11.6, .5], [12, 6.8], [1.4, -2.8], [7.6, -3.2], [1.1, 9.8], [7.2, 10.4]]) {
       terrain.box(x, -.64, z, 1.24, .43, .86, palette.stone).box(x - .24, -.49, z + .20, .82, .32, .90, palette.edge)
@@ -413,7 +495,9 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       terrain.box(x, -.16, z, .32, .69, .32, palette.stone).box(x, .22, z, .20, .14, .20, palette.metal)
         .box(x, .41, z, .27, .26, .27, palette.light).box(x, .57, z, .36, .06, .36, palette.metal);
     }
-    for (const b of [terrain, planting]) { const object = groupFromBuild(b, stageGroup, { stage: true }); object.castShadow = false; }
+    const gardenStone = groupFromBuild(terrain, stageGroup, { stage: true, material: stoneMaterial }); gardenStone.castShadow = false;
+    const gardenMoss = groupFromBuild(meadow, stageGroup, { stage: true, material: mossMaterial }); gardenMoss.castShadow = false;
+    const flowers = groupFromBuild(planting, stageGroup, { stage: true }); flowers.castShadow = false;
     const stoneClusters = groupFromBuild(flowerStones, stageGroup, { stage: true, material: stoneMaterial }); stoneClusters.castShadow = false;
     const waterMesh = groupFromBuild(water, stageGroup, { stage: true, material: waterMaterial }); waterMesh.castShadow = false;
   }
@@ -430,8 +514,8 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     const palette = chapter === 2 ? COOL : WARM;
     scene.background.set(palette.sky);
     scene.fog = new THREE.Fog(palette.sky, 24, 58);
-    keyLight.color.set(chapter === 2 ? 0xc6e7f6 : 0xffd195);
-    fillLight.color.set(chapter === 2 ? 0x8cbedc : 0x83d2d7);
+    keyLight.color.set(chapter === 2 ? 0xd5edf5 : 0xffdfb4);
+    fillLight.color.set(chapter === 2 ? 0xa6d5e4 : 0xc1e5e4);
     hemiLight.groundColor.set(chapter === 2 ? 0x345669 : 0x3b5635);
     makeGardenSurround(palette, chapter);
     const walls = new Set((next.stage?.walls || []).map(([x, z]) => cellKey(x, z)));
@@ -466,8 +550,8 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     }
     stagePickBlockers.push(groupFromBuild(architecture, stageGroup, { stage: true }));
     stagePickBlockers.push(groupFromBuild(coping, stageGroup, { stage: true, material: stoneMaterial }));
-    stagePickBlockers.push(groupFromBuild(hedge, hedgeTopGroup, { stage: true }));
-    stagePickBlockers.push(groupFromBuild(hedgeLeaves, hedgeTopGroup, { stage: true }));
+    stagePickBlockers.push(groupFromBuild(hedge, hedgeTopGroup, { stage: true, material: mossMaterial }));
+    stagePickBlockers.push(groupFromBuild(hedgeLeaves, hedgeTopGroup, { stage: true, material: mossMaterial }));
     stagePickBlockers.push(groupFromBuild(vegetation, stageGroup, { stage: true }));
     const base = next.stage?.depot || [1, 6]; depotModels.push(makeDepot(base[0], base[1], false, palette));
     for (const [padIndex, [x, z]] of (next.stage?.pads || []).entries()) {
@@ -843,6 +927,15 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       calls: info?.render.calls ?? 0, triangles: info?.render.triangles ?? 0, geometries: info?.memory.geometries ?? 0,
       textures: info?.memory.textures ?? 0, ownedGeometries: geometries.size, ownedMaterials: materials.size,
       ownedTextures: textures.size,
+      materialImages: { stone: stoneMap ? { width: stoneMap.image.width, height: stoneMap.image.height } : null, moss: mossMap ? { width: mossMap.image.width, height: mossMap.image.height } : null },
+      materialTextures: Object.fromEntries([['stone',stoneMap],['moss',mossMap]].map(([name,texture])=>[name,texture ? { width:texture.image.width,height:texture.image.height,flipY:texture.flipY,colorSpace:texture.colorSpace,wrapS:texture.wrapS,wrapT:texture.wrapT,version:texture.version } : null])),
+      environmentReady: !!scene?.environment && !!freshDraw && !lost && !renderFailed,
+      environmentMap: environmentTarget ? { width:environmentTarget.width,height:environmentTarget.height,type:environmentTarget.texture.type,mapping:environmentTarget.texture.mapping,version:environmentTarget.texture.version } : null,
+      environment: { type: 'PMREM-studio', size: 128, builds: environmentBuilds, active: !!scene?.environment },
+      ownedTextureDecodedBytes: [...textures].reduce((sum, texture) => {
+        const image = texture.image; if (!image?.width || !image?.height) return sum;
+        return sum + Math.ceil(image.width * image.height * (texture.type === THREE.HalfFloatType ? 8 : 4) * (texture.generateMipmaps ? 4 / 3 : 1));
+      }, 0),
       particles: particles.filter(p => p.active).length, particleLimit: PARTICLE_LIMIT, peaks: { ...peaks },
       pixelRatio: renderer?.getPixelRatio() || 0, buffer: renderer ? { width: renderer.domElement.width, height: renderer.domElement.height } : null,
       viewport: renderer ? { width: renderer.domElement.clientWidth, height: renderer.domElement.clientHeight } : null,
@@ -874,6 +967,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     dryPickTargets.length = 0; wetPickTargets.length = 0; soilPickTargets.length = 0;
     for (const geometry of geometries) geometry.dispose();
     for (const material of materials) material.dispose();
+    releaseEnvironment();
     for (const texture of textures) texture.dispose();
     scene?.traverse(object => {
       if (object.isInstancedMesh) object.dispose();
@@ -898,19 +992,22 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     container.appendChild(canvas);
     scene = new THREE.Scene(); scene.background = new THREE.Color(WARM.sky);
     camera = new THREE.OrthographicCamera(-6, 6, 5, -5, .1, 70);
-    hemiLight = new THREE.HemisphereLight(0xcbe9f1, 0x3b5635, 1.7); scene.add(hemiLight);
-    const key = keyLight = new THREE.DirectionalLight(0xffd195, 2.8); key.position.set(-2, 12, 8); key.castShadow = true;
+    hemiLight = new THREE.HemisphereLight(0xcbe9f1, 0x3b5635, .95); scene.add(hemiLight);
+    const key = keyLight = new THREE.DirectionalLight(0xffdfb4, 2.7); key.position.set(-2, 12, 8); key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024); key.shadow.camera.left = -8; key.shadow.camera.right = 8;
     key.shadow.camera.top = 8; key.shadow.camera.bottom = -8; key.shadow.camera.near = .1; key.shadow.camera.far = 30;
     key.shadow.bias = -.0008; key.shadow.normalBias = .035; key.target.position.set(4.5, 0, 3.5); scene.add(key, key.target);
-    fillLight = new THREE.DirectionalLight(0xa8dce6, 1.1); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
+    fillLight = new THREE.DirectionalLight(0xa8dce6, .55); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
+    stoneMap = makeSurfaceTexture(materialImages?.stone, 'stone'); mossMap = makeSurfaceTexture(materialImages?.moss, 'moss');
+    buildStudioEnvironment();
     block = keepGeometry(chamferedCube());
     const indexedBox = new THREE.BoxGeometry(1, 1, 1);
     plain = keepGeometry(indexedBox.toNonIndexed()); indexedBox.dispose();
     matte = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .82, metalness: .03 }));
-    stoneMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .70, metalness: .02 }));
-    copperMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .34, metalness: .48 }));
-    enamelMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .32, metalness: .16 }));
+    stoneMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, map: stoneMap, bumpMap: stoneMap, bumpScale: .016, roughness: .78, metalness: 0, envMapIntensity: .55 }));
+    mossMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, map: mossMap, bumpMap: mossMap, bumpScale: .022, roughness: .96, metalness: 0, envMapIntensity: .25 }));
+    copperMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .29, metalness: .82, envMapIntensity: 1.1 }));
+    enamelMaterial = keepMaterial(new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: .29, metalness: .12, clearcoat: .65, clearcoatRoughness: .22, envMapIntensity: .95 }));
     glossy = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .38, metalness: .15 }));
     waterMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .22, metalness: .16, emissive: 0x126d80, emissiveIntensity: .30 }));
     bronze = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xb89b5e, roughness: .5, metalness: .35 }));
@@ -921,7 +1018,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     ringMaterial = keepMaterial(new THREE.MeshBasicMaterial({ color: 0xeff8c1, transparent: true, opacity: .78, depthWrite: false }));
     depotRingMaterial = keepMaterial(new THREE.MeshBasicMaterial({ color: 0x30dec9, transparent: true, opacity: .9, depthWrite: false }));
     particleMaterial = keepMaterial(new THREE.MeshBasicMaterial({ vertexColors: true }));
-    const floorMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .92, metalness: 0 }));
+    const floorMaterial = keepMaterial(new THREE.MeshStandardMaterial({ map: stoneMap, bumpMap: stoneMap, bumpScale: .012, roughness: .84, metalness: 0, envMapIntensity: .4 }));
     floor = new THREE.InstancedMesh(plain, floorMaterial, 80); floor.receiveShadow = true; floor.frustumCulled = false; scene.add(floor);
     const dryMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .65, metalness: .12 }));
     const wetMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .24, metalness: .20 }));
@@ -955,7 +1052,21 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     });
     listen(canvas, 'pointercancel', cancelPointer); listen(canvas, 'lostpointercapture', cancelPointer); listen(globalThis, 'blur', cancelPointer);
     listen(canvas, 'webglcontextlost', event => { event.preventDefault(); lost = true; ready = false; cancelPointer(); status('contextlost', { stageId: state?.stage?.id }); });
-    listen(canvas, 'webglcontextrestored', () => { lost = false; pendingRestored = true; resize(); if (state) render(state, 0); });
+    listen(canvas, 'webglcontextrestored', () => {
+      lost = false; pendingRestored = true;
+      try {
+        // A PMREM render target has no CPU pixels to upload after context loss.
+        // Regenerate it once before the restored scene is marked freshly drawn.
+        buildStudioEnvironment();
+        for (const texture of textures) if (texture !== environmentTarget?.texture) texture.needsUpdate = true;
+        resize(); if (state) render(state, 0);
+      } catch (error) {
+        renderFailed = true; ready = false; pendingRestored = false;
+        if (recoveryTimer) clearTimeout(recoveryTimer); recoveryTimer = null;
+        if (resolveRecovery) resolveRecovery(false); resolveRecovery = null;
+        status('error', { message: String(error?.message || error), capability: 'WebGL2-environment-restoration' });
+      }
+    });
     if (typeof ResizeObserver !== 'undefined') { resizeObserver = new ResizeObserver(resize); resizeObserver.observe(container); }
     listen(globalThis, 'resize', resize); resize();
   } catch (error) {

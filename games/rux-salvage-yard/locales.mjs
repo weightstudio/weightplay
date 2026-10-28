@@ -476,6 +476,22 @@ const REFLECTOR_TIP={
   ar:'يغيّر العاكس المائل اتجاه الكرة؛ جرّب ارتدادها نحو دعامة.'
 };
 for(const [locale,reboundTip] of Object.entries(REFLECTOR_TIP))CUSTOM[locale].reboundTip=reboundTip;
+const REBOUND_CONTACT={
+  en:'The ring shows the first contact, not the later bounce.',
+  'zh-Hant':'圓環顯示首次接觸位置，不預測後續反彈。',
+  'zh-Hans':'圆环显示首次接触位置，不预测后续反弹。',
+  ja:'輪は最初の接触位置で、反射後の軌道は示しません。',
+  ko:'원은 첫 충돌 위치이며 이후 반사 경로는 보여주지 않습니다.',
+  es:'El círculo muestra el primer contacto, no el rebote posterior.',
+  'pt-BR':'O círculo mostra o primeiro contato, não o rebote depois dele.',
+  fr:'L’anneau indique le premier contact, pas le rebond suivant.',
+  de:'Der Ring zeigt den ersten Kontakt, nicht den anschließenden Abpraller.',
+  it:'L’anello mostra il primo contatto, non il rimbalzo successivo.',
+  ru:'Кольцо показывает первое касание, но не последующий отскок.',
+  hi:'घेरा पहला संपर्क दिखाता है, उसके बाद का उछाल नहीं।',
+  ar:'تُظهر الحلقة الاصطدام الأول، لا الارتداد الذي يليه.'
+};
+for(const [locale,reboundContact] of Object.entries(REBOUND_CONTACT))CUSTOM[locale].reboundContact=reboundContact;
 const SPEED_TEXT={
   en:['Speed up to twice normal speed','Return to normal speed','While pieces settle, press 2× to speed up time; clamp timers speed up too.'],
   'zh-Hant':['加速至兩倍','恢復正常速度','零件移動時可按 2× 加速；夾具倒數也會加快。'],

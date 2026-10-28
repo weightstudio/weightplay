@@ -51,6 +51,24 @@ let screen='main', tab='stages', selected=save.highestUnlocked-1, run=null, rend
 let serial=0, resultShown=false, saveSucceeded=false, overlayOpen=false, overlayCancel=null, overlayBusy=false, previousFocus=null;
 let backgroundPaused=false, settingsPaused=false, lastFrame=performance.now(), raf=0, disposed=false, statusUntil=0, lastNotice='';
 let compressionStarted=null, purchasePending=false, rendererCreates=0, rendererDisposals=0;
+let materialImages=null, materialBitmapsCreated=0, materialBitmapsClosed=0;
+const pendingMaterialBitmaps=new Set();
+function registerLoadingMaterialBitmap(bitmap) {
+  materialBitmapsCreated++;
+  if(disposed) { bitmap.close();materialBitmapsClosed++;throw Error('DUSTWAKE_ENTRY_DISPOSED'); }
+  pendingMaterialBitmaps.add(bitmap);return bitmap;
+}
+function closeMaterialBitmaps(includeCached=false) {
+  const bitmaps=new Set(pendingMaterialBitmaps);
+  if(includeCached&&materialImages)for(const bitmap of Object.values(materialImages))bitmaps.add(bitmap);
+  for(const bitmap of bitmaps) { bitmap.close();materialBitmapsClosed++; }
+  pendingMaterialBitmaps.clear();if(includeCached)materialImages=null;
+}
+function materialBitmapSnapshot() {
+  return {ready:Boolean(materialImages),cachedCount:materialImages?2:0,pendingCount:pendingMaterialBitmaps.size,
+    created:materialBitmapsCreated,closed:materialBitmapsClosed,
+    dimensions:materialImages?{stone:[materialImages.stone.width,materialImages.stone.height],moss:[materialImages.moss.width,materialImages.moss.height]}:null};
+}
 const keys=new Set(), renderHistory=[], animations=new Set(), toolCards=new Map(), skinCards=new Map();
 const sound = window.WeightPlayAudio?.createScope?.();
 function play(id) { sound?.play(id); }
@@ -288,7 +306,7 @@ async function startStage(index) {
   run=createRun(stage.id,ownedTool(save.selectedTool)?save.selectedTool:'breeze');run.state.skin=ownsAmber()&&save.skin==='amber'?'amber':'moss';
   setScreen('battle');
   try {
-    renderer=mountRenderer({container:$('arena'),reducedMotion:reduced.matches,onPointer:point=>{
+    renderer=mountRenderer({container:$('arena'),reducedMotion:reduced.matches,materialImages,onPointer:point=>{
       if(point.phase==='cancel')stopInput();
       else if(point.phase==='down'||point.phase==='move')perform('setTarget',point.x,point.z);
     },onStatus:(state)=>{
@@ -341,7 +359,7 @@ function loop(now) {
   raf=requestAnimationFrame(loop);
 }
 function cleanup() {
-  if(disposed)return;disposed=true;serial++;cancelAnimationFrame(raf);stopInput();disposeRenderer();
+  if(disposed)return;disposed=true;serial++;cancelAnimationFrame(raf);stopInput();disposeRenderer();closeMaterialBitmaps(true);
   for(const a of animations)a.cancel();animations.clear();selector?.destroy();frame?.destroy();sound?.dispose();abort.abort();
 }
 
@@ -393,16 +411,37 @@ if(!preview&&!practiceSession) {
   listen(window,'focus',()=>{if(backgroundPaused&&screen==='battle'&&run?.state.status==='playing'&&!overlayOpen)pauseDialog();});
   listen(window,'pagehide',event=>{if(!event.persisted)cleanup();else{backgroundPaused=true;stopInput();}});
   listen(window,'pageshow',event=>{if(event.persisted&&screen==='battle'&&run?.state.status==='playing')pauseDialog();});
-  Object.defineProperty(window,'DustwakeMetrics',{configurable:true,value:()=>({current:renderer?.getMetrics()??null,rendererCreates,rendererDisposals,history:[...renderHistory],activeLoops:disposed?0:1})});
+  Object.defineProperty(window,'DustwakeMetrics',{configurable:true,value:()=>({current:renderer?.getMetrics()??null,rendererCreates,rendererDisposals,history:[...renderHistory],materialBitmapCache:materialBitmapSnapshot(),activeLoops:!disposed&&raf?1:0})});
   setScreen('main');
   const loader=window.WeightPlayGameEntryLoader;
-  loader?.begin?.(2);
+  loader?.begin?.(4);
+  let entryAssetsReady=false;
   try {
-    const poster=$('mainHero').querySelector('img');await poster.decode();loader?.assetProgress?.(1,2);
-    const atlas=new Image();atlas.src='/games/dustwake-depot/art/tool-atlas.webp';await atlas.decode();loader?.assetProgress?.(2,2);
-    $('startGame').disabled=false;loader?.ready?.();
-  } catch {loader?.fail?.(t('loadingError'),()=>location.reload());}
-  await LocalPractice.register({gameId:GAME_ID,stageIds:STAGES.map(s=>s.id),enable:enabled=>{refreshStages();if(practiceSession&&!enabled&&run?.state.status==='playing'){backgroundPaused=true;stopInput();}},startStage:id=>startStage(Number(id)-1)});
-  if(!writable)$('saveWarning').hidden=false;
-  lastFrame=performance.now();raf=requestAnimationFrame(loop);
+    const poster=$('mainHero').querySelector('img');await poster.decode();
+    if(disposed)throw Error('DUSTWAKE_ENTRY_DISPOSED');
+    loader?.assetProgress?.(1,4);
+    const atlas=new Image();atlas.src='/games/dustwake-depot/art/tool-atlas.webp';await atlas.decode();
+    if(disposed)throw Error('DUSTWAKE_ENTRY_DISPOSED');
+    if(atlas.naturalWidth!==atlas.naturalHeight||atlas.naturalWidth%3!==0)throw Error('DUSTWAKE_ATLAS_GRID_INVALID');
+    const cell=atlas.naturalWidth/3,inset=4,materialSide=cell-2*inset;
+    if(materialSide<1)throw Error('DUSTWAKE_ATLAS_CROP_INVALID');
+    loader?.assetProgress?.(2,4);
+    const options={imageOrientation:'flipY',premultiplyAlpha:'none',colorSpaceConversion:'default'};
+    const stone=registerLoadingMaterialBitmap(await createImageBitmap(atlas,inset,2*cell+inset,materialSide,materialSide,options));
+    loader?.assetProgress?.(3,4);
+    const moss=registerLoadingMaterialBitmap(await createImageBitmap(atlas,cell+inset,2*cell+inset,materialSide,materialSide,options));
+    loader?.assetProgress?.(4,4);
+    materialImages=Object.freeze({stone,moss});pendingMaterialBitmaps.clear();
+    entryAssetsReady=true;$('startGame').disabled=false;loader?.ready?.();
+  } catch {
+    closeMaterialBitmaps();
+    if(!disposed) { $('startGame').disabled=true;loader?.fail?.(t('loadingError'),()=>location.reload()); }
+  }
+  if(entryAssetsReady&&!disposed) {
+    await LocalPractice.register({gameId:GAME_ID,stageIds:STAGES.map(s=>s.id),enable:enabled=>{if(disposed)return;refreshStages();if(practiceSession&&!enabled&&run?.state.status==='playing'){backgroundPaused=true;stopInput();}},startStage:id=>startStage(Number(id)-1)});
+    if(!disposed) {
+      if(!writable)$('saveWarning').hidden=false;
+      lastFrame=performance.now();raf=requestAnimationFrame(loop);
+    }
+  }
 }

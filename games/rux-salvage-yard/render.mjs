@@ -111,20 +111,27 @@ export class SalvageView {
     this.aimMarker=new THREE.Mesh(new THREE.RingGeometry(11,15,24),new THREE.MeshBasicMaterial({color:0xffef9c,side:THREE.DoubleSide,depthWrite:false}));this.aimMarker.visible=false;this.scene.add(this.aimMarker);
     this.aimDots=new THREE.InstancedMesh(new THREE.SphereGeometry(5,8,6),new THREE.MeshBasicMaterial({color:0xffef9c}),40);this.aimDots.count=0;this.scene.add(this.aimDots);this.dotTransform=new THREE.Object3D();
     this.link = new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffb5ec}));this.scene.add(this.link);
-    this.focused = false;
-    this.resize = () => {
+    this.focused = false;this.autoWidth=0;this.baseHeight=520;
+    this.updateCamera = () => {
       const w = host.clientWidth || 1, h = host.clientHeight || 1, aspect = w / h;
-      const scale = this.focused ? 1.5 : 1;
-      const width = Math.max(1000, 520 * aspect) / scale, height = Math.max(520, 1000 / aspect) / scale;
+      const baseWidth=Math.max(1000,this.baseHeight*aspect),baseLeft=500-baseWidth/2;
+      const width=this.focused?baseWidth/1.5:Math.max(baseWidth,this.autoWidth),height=width/aspect;
       // Keep the near guard and the predicted first contact in the focused
       // view while retaining the far tower at its starting position.
-      const center = this.focused ? 600 : 500;
-      // In a short zoomed viewport keep the recovery floor in view. The
+      const center = this.focused ? 600 : baseLeft+width/2;
+      // In a short viewport keep the recovery floor in view. The
       // unprojected pointer follows this same camera, so aiming stays aligned.
-      const centerY=this.focused&&height<520?height/2-10:260;
+      const centerY=height<520?height/2-10:260;
       this.camera.position.set(center,centerY,1200);this.camera.lookAt(center,centerY,0);this.camera.updateMatrixWorld();
       this.camera.left=-width/2; this.camera.right=width/2; this.camera.top=height/2; this.camera.bottom=-height/2;
-      this.camera.updateProjectionMatrix(); this.renderer.setSize(w,h,false);
+      this.camera.updateProjectionMatrix();
+    };
+    this.resize = () => {
+      const width=host.clientWidth||1,height=host.clientHeight||1;
+      // A retained flight width belongs to the old aspect ratio. Recompute
+      // it on the next sync after an orientation or viewport change.
+      if(width!==this.lastWidth||height!==this.lastHeight){this.autoWidth=0;this.lastWidth=width;this.lastHeight=height;}
+      this.updateCamera();this.renderer.setSize(width,height,false);
     };
     this.observer = new ResizeObserver(this.resize); this.observer.observe(host); this.resize();
     this.pointer = event => {
@@ -137,6 +144,14 @@ export class SalvageView {
     this.capture = event => { this.renderer.domElement.focus({preventScroll:true});this.renderer.domElement.setPointerCapture(event.pointerId); this.pointer(event); };
     this.renderer.domElement.addEventListener('pointerdown', this.capture);
     this.renderer.domElement.addEventListener('pointermove', this.pointer);
+  }
+  setStage(model){
+    // Short landscape fields can frame low structures more closely while
+    // still leaving room for Rux and every starting obstacle. Reduced motion
+    // keeps the original fixed field rather than a camera that expands.
+    const top=Math.max(282,...model.bodies.filter(body=>body!==model.ground).map(body=>800-body.bounds.min.y));
+    this.baseHeight=this.reducedMotion?520:Math.max(360,Math.ceil((top+45)/20)*20);
+    this.resize();
   }
   setFocused(value){this.focused=Boolean(value);this.resize();}
   setFinish(color){this.launcherMaterial.color.setHex(color);}
@@ -159,17 +174,17 @@ export class SalvageView {
     // workshop without changing the collision shape or obscuring its face.
     if(['wood','metal','target'].includes(kind)){const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;box(w+7,h+7,5,0x183b3a,-39);}
     if(kind==='ground') {
-      box(1200,40,80,0x674b39);
+      box(2000,40,80,0x674b39);
       // Repeated timber panels and fasteners tie the playable floor to the
       // workshop while keeping the physical ground a single rectangle.
-      const planks=new THREE.InstancedMesh(new THREE.BoxGeometry(57,31,3),new THREE.MeshStandardMaterial({color:0xffffff,map:this.woodTexture,roughness:.84}),20);
-      const fasteners=new THREE.InstancedMesh(new THREE.BoxGeometry(4,4,2),mat(0xe7bc70,.45),40),transform=new THREE.Object3D();
-      for(let i=0;i<20;i++){
-        const x=-570+i*60;transform.position.set(x,0,41);transform.updateMatrix();planks.setMatrixAt(i,transform.matrix);
+      const planks=new THREE.InstancedMesh(new THREE.BoxGeometry(57,31,3),new THREE.MeshStandardMaterial({color:0xffffff,map:this.woodTexture,roughness:.84}),32);
+      const fasteners=new THREE.InstancedMesh(new THREE.BoxGeometry(4,4,2),mat(0xe7bc70,.45),64),transform=new THREE.Object3D();
+      for(let i=0;i<32;i++){
+        const x=-930+i*60;transform.position.set(x,0,41);transform.updateMatrix();planks.setMatrixAt(i,transform.matrix);
         planks.setColorAt(i,new THREE.Color(i%3===0?0xf3d0a1:i%3===1?0xe7b77f:0xffdbac));
         for(let j=0;j<2;j++){transform.position.set(x+(j?22:-22),0,44);transform.updateMatrix();fasteners.setMatrixAt(i*2+j,transform.matrix);}
       }
-      group.add(planks,fasteners);box(1200,6,86,0xd4a85c,5);
+      group.add(planks,fasteners);box(2000,6,86,0xd4a85c,5);
     }
     if(kind==='wood') { block(70,80,70,0x9d5932);const face=box(61,70,4,0xffffff,37);face.material.map=this.woodTexture;for(const x of [-20,0,20]){const grain=box(3,62,3,0x8b4b2b,40);grain.position.x=x;}box(70,10,6,0xd3a258,42);const strip=box(10,75,6,0x724126,42);strip.position.x=23;studs(65,73,46);if(body.plugin.fragile){const crack=box(7,50,5,0xffdf87,47);crack.rotation.z=.45;} }
     if(kind==='beam') {const w=body.plugin.width;block(w,20,70,0x794729);const face=box(w-8,14,4,0xffffff,37);face.material.map=this.woodTexture;box(w,4,6,0xd3a258,42);for(const x of [-w/2+15,w/2-15])bolt(x,0,46);}
@@ -253,6 +268,20 @@ export class SalvageView {
     if(linked.length===2)this.link.geometry.setFromPoints(linked.map(body=>new THREE.Vector3(body.position.x,800-body.position.y,82)));
     for(const burst of this.bursts){burst.life+=dt;const distance=this.reducedMotion?10:burst.life*110,fade=this.reducedMotion?1:Math.min(1,Math.max(0,(.3-burst.life)/.1));for(let i=0;i<burst.count;i++){const angle=i*Math.PI*2/burst.count;burst.transform.position.set(Math.cos(angle)*distance,Math.sin(angle)*distance,0);burst.transform.rotation.z=this.reducedMotion?angle:burst.life*5+angle;burst.transform.scale.setScalar(fade);burst.transform.updateMatrix();burst.sparks.setMatrixAt(i,burst.transform.matrix);}burst.sparks.instanceMatrix.needsUpdate=true;burst.ring.scale.setScalar(this.reducedMotion?1:(1+burst.life*4)*fade);}
     for(let i=this.bursts.length-1;i>=0;i--)if(this.bursts[i].life>=.3){const burst=this.bursts.splice(i,1)[0];this.scene.remove(burst.group);burst.sparks.dispose();burst.geometry.dispose();burst.material.dispose();burst.ringGeometry.dispose();burst.ringMaterial.dispose();}
+    // In full view, expand for a far part or a high-moving ball/part. Keep
+    // the expansion monotonic during a shot and retain any space still
+    // needed by an unrecovered part once the shot settles.
+    if(!this.focused&&!this.reducedMotion){
+      const aspect=(this.host.clientWidth||1)/(this.host.clientHeight||1),baseWidth=Math.max(1000,this.baseHeight*aspect),baseLeft=500-baseWidth/2;
+      const active=model.targets.filter(body=>model.bodies.includes(body)&&!model.recoveredTargets.has(body));
+      const right=Math.max(...active.map(body=>body.bounds.max.x+50),500+baseWidth/2);
+      const visible=model.ball?[...active,model.ball]:active;
+      const top=Math.max(0,...visible.map(body=>800-body.bounds.min.y));
+      const verticalWidth=Math.min(520,Math.max(this.baseHeight,top+60))*aspect;
+      const desired=Math.min(Math.max(baseWidth+400,520*aspect),Math.max(baseWidth,right-baseLeft,verticalWidth));
+      const next=model.state==='flight'?Math.max(desired,this.autoWidth):desired;
+      if(Math.abs(next-Math.max(baseWidth,this.autoWidth))>.5){this.autoWidth=next;this.updateCamera();}
+    }else if(model.state!=='flight'&&this.autoWidth){this.autoWidth=0;this.updateCamera();}
     this.renderer.render(this.scene,this.camera);
   }
   dispose() {
