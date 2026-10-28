@@ -87,7 +87,7 @@ export class SalvageSlice {
       const beam=add(Bodies.rectangle(slope?662.4:580,slope?670.3:710,width,20,{...surface,density:.001,angle:slope?Math.atan2(80,320):0}),'beam');beam.plugin.width=width;
       const part=add(Bodies.rectangle(slope?672.7:580,slope?629.1:667.5,65,65,{...surface,density:.0006}),'target');part.plugin.column=1;this.targets.push(part);
     }
-    if(stage?.capBeam){const beam=add(Bodies.rectangle(580,645,230,20,{...surface,density:.001}),'beam');beam.plugin.width=230;}
+    if(stage?.capBeam){const beam=add(Bodies.rectangle(stage.capBeam==='far'?740:580,645,230,20,{...surface,density:.001}),'beam');beam.plugin.width=230;}
     if(stage?.platform){
       const part=add(Bodies.rectangle(660,657.5,65,65,{...surface,density:.0006}),'target');
       Object.assign(part.plugin,{column:1,first:stage.firstColumn===1,last:stage.lastColumn===1,clampRequired:stage.clampColumn===1,linked:stage.sameShot?.includes(1)||false});this.targets.push(part);
@@ -148,6 +148,7 @@ export class SalvageSlice {
     this.quiet = 0;
     this.ballRetireQuiet = 0;
     this.settlementLinkReleased = false;
+    this.settlementBallExtended = false;
     this.settlementRechecked.clear();
     this.ball = Bodies.circle(80, 680, 22, { density: .002, restitution: .2, frictionAir: 0, label: 'ball' });
     this.ball.plugin.salvageKind = 'ball';
@@ -238,12 +239,16 @@ export class SalvageSlice {
     // the normal timeout, remove only the already-recovered endpoint and
     // let the remaining part settle under physics. The same-shot rule still
     // requires that part to touch the real ground in this shot.
-    if(this.elapsed>15&&!this.settlementLinkReleased&&this.linkConstraint&&this.targets.some(target=>target.plugin.linked&&this.recoveredTargets.has(target))&&(!this.ball||this.ball.speed<=.08)){
+    if(this.state==='flight'&&this.elapsed>15&&!this.settlementLinkReleased&&this.linkConstraint&&this.targets.some(target=>target.plugin.linked&&this.recoveredTargets.has(target))){
       this.M.Composite.remove(this.engine.world,this.linkConstraint);this.linkConstraint=null;
       for(const target of this.targets)if(target.plugin.linked&&this.recoveredTargets.has(target))this.pendingRemove.add(target);
       this.settlementLinkReleased=true;this.quiet=0;
     }
-    if (this.elapsed > (this.settlementLinkReleased?20:15) && this.state === 'flight') {
+    // A slow ball on the floor may naturally stop or roll clear shortly
+    // after the normal deadline. Give it a bounded extension only while all
+    // other dynamic bodies and clamps are already quiet; keep it physical.
+    if(this.state==='flight'&&this.elapsed>15&&!this.settlementBallExtended&&this.ball&&this.ball.position.y>750&&Math.abs(this.ball.velocity.y)<.2&&this.ball.speed<1&&!this.clamped.length&&this.bodies.every(body=>body===this.ball||body.isStatic||body.isSleeping||(body.speed<=.08&&Math.abs(body.angularSpeed)<=.004)))this.settlementBallExtended=true;
+    if (this.elapsed > (this.settlementLinkReleased||this.settlementBallExtended?20:15) && this.state === 'flight') {
       this.state = 'stalled';
       this.events.push({ type: 'stalled' });
     }

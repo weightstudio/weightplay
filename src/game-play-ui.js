@@ -136,11 +136,15 @@
       resizeFrame=0; if(closed || !page.getClientRects().length || !page.offsetWidth)return;
       const box=page.getBoundingClientRect(), scale=box.width/page.offsetWidth, inverse=1/Math.max(.01,scale);
       // One common physical composition, inverse-scaled into each owning Canvas.
-      // Keep the poster's 292:372 ratio even in short landscape.
+      // Fit the common portrait card. Very short stages retain shared minimum
+      // dimensions where the workspace permits, so text remains usable; the
+      // poster is covered without distortion and every card has equal geometry.
       const fit=Math.max(.15,Math.min(1,(box.width-64)/292,(box.height-116)/372));
       // Card scale is a unitless ratio; lengths use the inverse Canvas unit.
       scene.style.setProperty('--wp-play-card-scale',String(fit));
-      const values={'card-width':292*fit,'card-height':372*fit,'gap':18,'briefing-height':68};
+      const cardWidth=Math.max(292*fit,Math.min(130,Math.max(0,box.width-64)));
+      const cardHeight=Math.max(372*fit,Math.min(108,Math.max(0,box.height-100)));
+      const values={'card-width':cardWidth,'card-height':cardHeight,'gap':18,'briefing-height':68};
       for(const [name,value] of Object.entries(values))scene.style.setProperty(`--wp-play-${name}`,`${value*inverse}px`);
       position(current);
     }

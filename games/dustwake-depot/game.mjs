@@ -8,6 +8,9 @@ const GAME_ID = 'dustwake-depot';
 const SAVE_KEY = 'weightplay:dustwake-depot:v1';
 const SKU = 'dustwake-depot:amber-garden';
 const $ = id => { const node = document.getElementById(id); if (!node) throw Error(`DUSTWAKE_NODE:${id}`); return node; };
+const saveWarning = $('saveWarning');
+const statusMessage = document.createElement('span');
+$('statusLine').append(statusMessage);
 const params = new URLSearchParams(location.search);
 const local = ['localhost','127.0.0.1','[::1]'].includes(location.hostname);
 const practiceSession = local && params.get('practice') === '1';
@@ -72,15 +75,32 @@ function materialBitmapSnapshot() {
 const keys=new Set(), renderHistory=[], animations=new Set(), toolCards=new Map(), skinCards=new Map();
 const sound = window.WeightPlayAudio?.createScope?.();
 function play(id) { sound?.play(id); }
+function placeSaveWarning() {
+  const stageSlot=frame?.stageTopUI;
+  const owner=!saveWarning.hidden&&screen==='stage'?'stage':!saveWarning.hidden&&screen==='battle'&&!resultShown?'battle':screen==='battle'?'result':'main';
+  const target=owner==='stage'?stageSlot?.element:owner==='battle'?$('statusLine'):document.body;
+  if(!target)return;
+  const wasStage=saveWarning.parentElement===stageSlot?.element;
+  saveWarning.dataset.wpWarningOwner=owner;
+  saveWarning.title=saveWarning.textContent;
+  if(wasStage&&owner!=='stage') {
+    saveWarning.removeAttribute('data-wp-frame-stat');
+    saveWarning.removeAttribute('data-wp-frame-stat-text');
+  }
+  if(saveWarning.parentElement!==target) {
+    if(owner==='stage')stageSlot.add(saveWarning);
+    else {target.append(saveWarning);if(wasStage)stageSlot.refresh();}
+  } else if(owner==='stage')stageSlot.refresh();
+}
 function persist(next=save) {
   if (practiceSession) return false;
-  if (!writable) { $('saveWarning').hidden=false; return false; }
+  if (!writable) { saveWarning.hidden=false;placeSaveWarning();return false; }
   try {
     const serialized=JSON.stringify(next);
     localStorage.setItem(SAVE_KEY,serialized);
     if(localStorage.getItem(SAVE_KEY)!==serialized)throw Error('SAVE_UNCONFIRMED');
-    save=next; $('saveWarning').hidden=true; return true;
-  } catch { $('saveWarning').hidden=false; return false; }
+    save=next;saveWarning.hidden=true;placeSaveWarning();return true;
+  } catch { saveWarning.hidden=false;placeSaveWarning();return false; }
 }
 function paused() { return overlayOpen||resultShown||backgroundPaused||settingsPaused||document.hidden; }
 function measurement() {
@@ -111,13 +131,14 @@ function setScreen(next) {
   for(const [name,node] of Object.entries(roots))node.hidden=name!==next;
   $('gameGuide').hidden=next!=='main';
   frame.activate(next,{covered:overlayOpen||resultShown});
+  placeSaveWarning();
   if(next==='stage')selector.refresh(selected);
   if(next==='main')$('mainProgress').textContent=t('progress',{stage:save.highestUnlocked,total:60});
   measurement();
 }
 function status(code, duration=2300) {
   lastNotice=code||'';
-  $('statusLine').textContent=code?notice(locale,code):'';statusUntil=performance.now()+duration;
+  statusMessage.textContent=code?notice(locale,code):'';statusUntil=performance.now()+duration;
 }
 function closeOverlay({restore=true}={}) {
   if(!overlayOpen)return;
@@ -253,7 +274,7 @@ function updateHUD() {
   if(performance.now()>statusUntil) {
     lastNotice='';
     const carried=s.toolId==='press'?`${t('bag')} · ${t('total')}: ${s.bagCargo}`:'';
-    if($('statusLine').textContent!==carried)$('statusLine').textContent=carried;
+    if(statusMessage.textContent!==carried)statusMessage.textContent=carried;
   }
 }
 function feedback(events) {
@@ -303,6 +324,7 @@ function finishRound() {
   $('resultStats').textContent=`${unlockCopy?unlockCopy+' ':''}${t('delivered')}: ${state.delivered} / ${state.stage.target} · ${t('seconds',{n:state.elapsed.toFixed(1)})} · ${t('starGoals',{three:state.stage.starSeconds[0],two:state.stage.starSeconds[1]})} · ${practiceSession?t('practice'):won?(saveSucceeded?t('saved'):t('saveError')):''}`;
   $('resultNext').disabled=!won||state.stage.id===60||(!practiceSession&&!saveSucceeded);
   $('resultPanel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});animate($('resultPanel').querySelector('.modal-card'));
+  placeSaveWarning();
   $('resultStages').focus({preventScroll:true});play(won?'result.win':'result.lose');refreshStages();measurement();
 }
 async function startStage(index) {
@@ -312,7 +334,7 @@ async function startStage(index) {
   const stage=STAGES[index];if(!stage||(!practiceSession&&stage.id>save.highestUnlocked))return;
   if(overlayOpen)closeOverlay({restore:false});disposeRenderer();stopInput();
   selected=index;saveSucceeded=false;resultShown=false;compressionStarted=null;backgroundPaused=false;settingsPaused=false;statusUntil=0;lastNotice='';
-  $('statusLine').textContent='';
+  statusMessage.textContent='';
   $('resultPanel').hidden=true;$('battleLive').inert=false;
   run=createRun(stage.id,ownedTool(save.selectedTool)?save.selectedTool:'breeze');run.state.skin=ownsAmber()&&save.skin==='amber'?'amber':'moss';
   setScreen('battle');
@@ -350,7 +372,7 @@ function updateLocale() {
     const next=document.createRange().createContextualFragment(renderStaticGuide(locale));$('gameGuide').replaceWith(next);
   }
   $('gameGuide').hidden=screen!=='main';
-  document.title=`${title(locale)} | WeightPlay`;renderManagement();refreshStages();updateHUD();
+  document.title=`${title(locale)} | WeightPlay`;renderManagement();refreshStages();updateHUD();placeSaveWarning();
 }
 function loop(now) {
   if(disposed)return;

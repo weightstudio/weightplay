@@ -51,7 +51,7 @@ export const OPENING = Object.freeze([
   { id:48, columns:[0,2,1], shots:6, title:'Clamps and metal', clamps:2, reflector:-1, metalColumn:2 },
   { id:49, columns:[2,0,1], shots:6, title:'Mirrored timing', clamps:1, platform:true, reflector:-1 },
   { id:50, columns:[1,2,1], shots:7, title:'Hold the center', clamps:2, guard:true, reflector:1, fragile:[1,0], clampColumn:1 },
-  { id:51, columns:[2,1,1], shots:6, title:'One clamp choice', clamps:1, metalColumn:0, fragile:[1,0] },
+  { id:51, columns:[2,1,1], shots:6, title:'One clamp choice', clamps:1, metalColumn:0, fragile:[1,0], capBeam:'far' },
   { id:52, columns:[1,1,2], shots:6, title:'Covered platform', clamps:1, platform:true, guard:true },
   { id:53, columns:[2,2,0], shots:6, title:'Heavy tower', clamps:2, platform:true, metalColumn:0 },
   { id:54, columns:[0,2,2], shots:6, title:'Far weak point', clamps:1, platform:true, reflector:1, fragile:[2,0] },

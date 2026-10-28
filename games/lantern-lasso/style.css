@@ -23,7 +23,7 @@
 #helpDialog,#leaveDialog,.result>div{background:linear-gradient(160deg,#fffdf8,#f8f1e2)}#helpDialog,#leaveDialog{box-shadow:inset 0 0 0 2px #dec48d,0 18px 48px #020d1b99}.result>div:not(.star-frame){box-shadow:inset 0 0 0 2px #dec48d,0 16px 45px #06132499}
 @keyframes lasso-result-arrival{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .result:not([hidden])>div{animation:lasso-result-arrival .22s ease-out both}
-@media(prefers-reduced-motion:reduce){.result:not([hidden])>div{animation:none}}
+@media(prefers-reduced-motion:reduce){.result:not([hidden])>div{animation:lasso-enter .08s ease-out both}}
 /* Keep the shared frame geometry and hit targets fixed while scenes and local
    dialogs enter; reopening a scene starts a fresh, short opacity transition. */
 @keyframes lasso-enter{from{opacity:.55}to{opacity:1}}

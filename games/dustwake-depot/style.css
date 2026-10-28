@@ -40,7 +40,7 @@ button:focus-visible,a:focus-visible,select:focus-visible,#arena:focus-visible {
 #battleControls button:disabled { opacity:.46; }
 #battleControls button[aria-pressed="true"] { border-color:var(--wp-ui-accent); background:#46613c; }
 #helpButton { font-size:calc(22 * var(--wp-play-unit,1px)) !important; }
-#statusLine { height:calc(36 * var(--wp-play-unit,1px)); min-height:calc(36 * var(--wp-play-unit,1px)); max-height:calc(36 * var(--wp-play-unit,1px)); overflow:hidden; margin:0; padding:calc(3 * var(--wp-play-unit,1px)) calc(12 * var(--wp-play-unit,1px)); background:var(--wp-ui-surface,#11333c); color:var(--wp-ui-text,#f0f7f6); font-size:calc(12 * var(--wp-play-unit,1px)); line-height:1.25; }
+#statusLine { height:calc(36 * var(--wp-play-unit,1px)); min-height:calc(36 * var(--wp-play-unit,1px)); max-height:calc(36 * var(--wp-play-unit,1px)); overflow:auto; overscroll-behavior:contain; margin:0; padding:calc(3 * var(--wp-play-unit,1px)) calc(12 * var(--wp-play-unit,1px)); background:var(--wp-ui-surface,#11333c); color:var(--wp-ui-text,#f0f7f6); font-size:calc(12 * var(--wp-play-unit,1px)); line-height:1.25; }
 .tool-icon { display:inline-block; flex:none; width:calc(28 * var(--wp-play-unit,1px)); height:calc(28 * var(--wp-play-unit,1px)); background-image:url('/games/dustwake-depot/art/tool-atlas.webp'); background-repeat:no-repeat; background-size:500% 500%; }
 .icon-breeze { background-position:8.3333333% 8.3333333%; }
 .icon-cargo { background-position:50% 8.3333333%; }
@@ -67,6 +67,11 @@ button:focus-visible,a:focus-visible,select:focus-visible,#arena:focus-visible {
 #resultStats { flex:none; height:calc(72 * var(--wp-play-unit,1px)); min-height:calc(72 * var(--wp-play-unit,1px)); overflow:auto; overscroll-behavior:contain; font-size:calc(15 * var(--wp-play-unit,1px)); line-height:1.4; }
 #resultStars { flex:none; height:calc(52 * var(--wp-play-unit,1px)); min-height:calc(52 * var(--wp-play-unit,1px)); overflow:auto; overscroll-behavior:contain; color:#f4c75c; font-size:calc(16 * var(--wp-play-unit,1px)); line-height:1.35; letter-spacing:normal; }
 #saveWarning { position:fixed; z-index:100; inset-inline:12px; bottom:12px; width:min(calc(100% - 24px),560px); margin:0 auto; padding:10px 14px; border:1px solid #efbb71; border-radius:10px; background:#483019; color:#fff4db; font-size:14px; line-height:1.35; }
+#saveWarning[hidden] { display:none !important; }
+#saveWarning[data-wp-warning-owner="stage"],#saveWarning[data-wp-warning-owner="battle"] { position:static; inset:auto; width:auto; min-width:0; max-width:100%; margin:0; padding:0; border:0; border-radius:0; background:transparent; color:#efbb71; overflow-wrap:anywhere; }
+#saveWarning[data-wp-warning-owner="stage"] { display:block; max-height:calc(44 * var(--wp-play-unit,1px)); overflow:auto; font-size:calc(12 * var(--wp-play-unit,1px)); line-height:1.25; text-align:start; }
+#saveWarning[data-wp-warning-owner="battle"] { display:inline; font-size:inherit; line-height:inherit; }
+#statusLine #saveWarning::before { content:' · '; }
 @media (min-width:700px) and (max-height:500px) {
   #battleLive { grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:minmax(0,1fr) calc(62 * var(--wp-play-unit,1px)); }
   #arena { grid-column:1/-1; grid-row:1; }
