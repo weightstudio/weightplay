@@ -32,7 +32,7 @@ function loadSave(){
  return fresh();
 }
 let save=loadSave();
-function persist(){if(practiceRun)return;try{localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}catch{say('loadError','error');}}
+function persist(){if(practiceRun)return false;try{const serialized=JSON.stringify(save);localStorage.setItem(backupKey,serialized);localStorage.setItem(saveKey,serialized);return localStorage.getItem(saveKey)===serialized;}catch{say('loadError','error');return false;}}
 const t=(key,args={})=>Object.entries(args).reduce((s,[k,v])=>s.replaceAll(`{${k}}`,v), (LESSON_COPY[locale]?.[key]||OPTIMIZATION_COPY[locale]?.[key]||REBUILD_COPY[locale]?.[key]||GAME_COPY[locale]?.[key]||GAME_COPY.en[key]||key));
 const shopCost=12,shopItem='berry-grove-board',purchaseKey=`${saveKey}:purchase-pending`;
 function recoverPendingPurchase(){if(new URLSearchParams(location.search).get('practice')==='1')return;try{const pending=JSON.parse(localStorage.getItem(purchaseKey)||'null');if(!pending)return;const balance=Number(window.WeightPlayWallet?.read?.()?.diamonds)||0;if(pending.item===shopItem&&Number.isFinite(pending.before)&&balance<=pending.before-shopCost){save.ownedItems=[...new Set([...(save.ownedItems||[]),shopItem])];save.boardStyle='berry-grove';localStorage.setItem(backupKey,JSON.stringify(save));localStorage.setItem(saveKey,JSON.stringify(save));}localStorage.removeItem(purchaseKey);}catch{}}
@@ -140,7 +140,7 @@ async function startStage(id){
  if(request!==startRequest)return;
  cancelEffects();run++;practiceRun=LocalPractice.enabled;selectedStageIndex=id-1;stage=normalizeStage(CAMPAIGN_STAGES[id-1]);state=createInitialState(stage);battleEntryState=JSON.stringify(state);undoStack=[];selectedGuest=null;candidates=[];paused=false;
  for(const id of ['result-panel','help-panel','orders-panel','leave-panel','render-error'])$('#'+id).hidden=true;
- if(!practiceRun){save.lastStage=stage.id;persist();}
+ if(!practiceRun){save.lastStage=stage.id;persist();window.WonderAnalytics?.track('stage_start',{stage_id:stage.id});}
  enter('battle');if(!ensureRenderer())return;renderer.setStage(stage,save.boardStyle,earnedMilestones(save).length);$('#order-dock').dataset.hasGates=String(stage.gates.length>0);updateUI();say(stage.lesson==='yield'?'lessonYield':stage.lesson==='reserve'?'lessonReserve':stage.id===1?'firstPlay':'experience');audio('game.start');$('#board-canvas').focus({preventScroll:true});
 }
 function renderFailure(){cancelEffects();paused=true;$('#render-error').hidden=false;}
@@ -230,7 +230,7 @@ function action(request){
 function finish(){
  const stars=state.moves<=stage.targetMoves?3:state.moves<=stage.par?2:1,finale=stage.id===CAMPAIGN_STAGES.length;
  let unlocked=[];
- if(!practiceRun){unlocked=recordClear(save,stage,state.moves,stars).newMilestones;save.unlocked=Math.max(save.unlocked,Math.min(CAMPAIGN_STAGES.length,stage.id+1));persist();if(unlocked.length)refreshTheme();}
+ if(!practiceRun){unlocked=recordClear(save,stage,state.moves,stars).newMilestones;save.unlocked=Math.max(save.unlocked,Math.min(CAMPAIGN_STAGES.length,stage.id+1));const saved=persist();if(saved)window.WonderAnalytics?.completeStage(stage.id);if(unlocked.length)refreshTheme();}
  $('#result-title').textContent=finale?t('finaleTitle'):stage.id%5===0?t('arcComplete',{n:stage.arc}):t('clear');$('#result-copy').textContent=t('starTargets',{moves:state.moves,three:stage.targetMoves,two:stage.par});$('#result-stars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);$('#result-stars').setAttribute('aria-label',`${stars} / 3`);$('#result-best').textContent=practiceRun?t('practice'):t('mastery',{n:totalStars()});
  $('#result-record').textContent=practiceRun?t('practiceNoProgress'):t('routeBest',{n:currentBest(save,stage).moves});
  $('#result-reward').textContent=unlocked.length?t('milestoneReward',{name:OPTIMIZATION_COPY[locale].milestoneNames[MILESTONE_STAGES.indexOf(unlocked[0])]}):finale&&!practiceRun?t('finaleCopy'):'';$('#result-reward').hidden=!$('#result-reward').textContent;

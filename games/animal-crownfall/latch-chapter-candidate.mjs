@@ -167,4 +167,11 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun'}],required:['weak','last'],
   items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'rune',kind:'rune',x:2,y:0,link:'sun'}],sealOrder:[],
   latches:[{id:'sun',lock:[1,3],key:[0,1]},{id:'moon',lock:[0,5],key:[3,1]}]
+},{
+  id:55,name:'The spike-bridge guardian',
+  decision:'Move safely past the spikes, match both pairs, and use the sun then moon rune for the guardian’s two shields.',
+  board:['.......','AAABBCC','.......','^BBB.CC','.......','AABBBBB','.......','1111111','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun',boss:true,open:'1',next:{x:0,y:8,power:65,shield:'moon'}}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'rune',kind:'rune',x:2,y:0,link:'sun'},{id:'boost',kind:'power',x:2,y:4,amount:24},{id:'moonRune',kind:'rune',x:4,y:8,link:'moon'},{id:'crown',kind:'crown',x:6,y:8}],sealOrder:[],
+  latches:[{id:'sun',lock:[1,3],key:[0,1]},{id:'moon',lock:[2,5],key:[3,1]}]
 }];

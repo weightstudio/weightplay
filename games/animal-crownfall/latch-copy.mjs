@@ -64,6 +64,21 @@ const TWENTY_THIRD_NAMES={en:'The shield beyond the spikes','zh-Hant':'尖刺後
 for(const [locale,value] of Object.entries(TWENTY_THIRD_NAMES))LATCH_NAMES[locale].push(value);
 const TWENTY_FOURTH_NAMES={en:'Paired locks and the spike shield','zh-Hant':'雙鎖與尖刺護盾','zh-Hans':'双锁与尖刺护盾',ja:'二組の鍵ととげの盾',ko:'두 잠금과 가시 방패',es:'Pares y escudo entre pinchos','pt-BR':'Pares e escudo nos espinhos',fr:'Paires et bouclier aux pointes',de:'Paare und Schild bei den Stacheln',it:'Coppie e scudo tra gli spuntoni',ru:'Пары и щит у шипов',hi:'जोड़े, काँटे और ढाल',ar:'زوجان ودرع الأشواك'};
 for(const [locale,value] of Object.entries(TWENTY_FOURTH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_FIFTH_NAMES={en:'The spike-bridge guardian','zh-Hant':'尖刺橋守衛','zh-Hans':'尖刺桥守卫',ja:'とげの橋の守護者',ko:'가시 다리 수호자',es:'El guardián del puente de pinchos','pt-BR':'O guardião da ponte de espinhos',fr:'Le gardien du pont aux pointes',de:'Der Wächter der Stachelbrücke',it:'Il guardiano del ponte di spuntoni',ru:'Страж моста с шипами',hi:'काँटों के पुल का रक्षक',ar:'حارس جسر الأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_FIFTH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_SPIKE_TWO_RUNES_RULE={
+ en:'Avoid spikes; reach safety before the left key. Match both pairs; use ☀ then ☾ runes for the shields.',
+ 'zh-Hant':'先安全移動再拆左鑰匙，配對兩鎖、避尖刺；兩階盾依序用☀、☾符文。','zh-Hans':'先安全移动再拆左钥匙，配对两锁、避尖刺；两阶段盾依序用☀、☾符文。',
+ ja:'とげを避け安全になってから左の鍵を消す。二組を合わせ、盾に☀、☾のルーン。',ko:'가시를 피하고 안전해진 뒤 왼쪽 열쇠를 없애세요. 두 쌍을 맞추고 방패에 ☀, ☾ 룬을 쓰세요.',
+ es:'Evita pinchos y ponte a salvo antes de la llave izquierda; empareja ambas. Usa ☀ y ☾ en los escudos.',
+ 'pt-BR':'Evite espinhos e fique em segurança antes da chave esquerda; combine os pares. Use ☀ e ☾ nos escudos.',
+ fr:'Évitez les pointes avant la clé gauche ; associez les paires. Utilisez ☀ puis ☾ pour les boucliers.',
+ de:'Meide Stacheln vor dem linken Schlüssel; ordne beide Paare zu. Nutze ☀ und dann ☾ für die Schilde.',
+ it:'Evita gli spuntoni prima della chiave sinistra; abbina le coppie. Usa ☀ e ☾ per gli scudi.',
+ ru:'Избегайте шипов до левого ключа; сопоставьте пары. Руны ☀ и ☾ для щитов.',
+ hi:'काँटों से बचकर बाईं चाबी हटाएँ; दोनों जोड़े मिलाएँ। ढालों के लिए ☀, फिर ☾ रून लें।',
+ ar:'تجنب الأشواك قبل المفتاح الأيسر وطابق الزوجين. استخدم رون ☀ ثم ☾ للدرعين.'
+};
 export const LATCH_DUAL_SPIKE_RUNE_RULE={
  en:'Move Fia to safety before the left key; match both pairs. Take the sun rune for the shield; avoid spikes.',
  'zh-Hant':'先讓菲亞安全移動再拆左鑰匙，配對兩組鎖；太陽符文破盾，避開尖刺。','zh-Hans':'先让菲娅安全移动再拆左钥匙，配对两组锁；太阳符文破盾，避开尖刺。',

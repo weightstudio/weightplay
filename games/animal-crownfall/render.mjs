@@ -70,7 +70,7 @@ export class CrownScene {
       const m=this.box(this.terrain,gx,gy,0,.95,.95,.85,marked.has(`${x},${y}`)?0xffdf85:PALETTE[c],c==='1'||c==='2');
       if(/^[ABC]$/.test(c)){m.userData.cell=[x,y];this.hitTargets.push(m);const rune=this.box(this.terrain,gx,gy,.46,c==='A'?.28:.35,c==='B'?.1:.3,.055,0xffffff);rune.rotation.z=c==='C'?Math.PI/4:0;if(c==='A')this.box(this.terrain,gx,gy,.46,.1,.4,.06,0xffe5ee);}
       else if(c==='1'||c==='2'){for(const dx of [-.27,0,.27])this.box(this.terrain,gx+dx,gy,.46,.07,.78,.07,0xffdf8a,true);}
-      else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.terrain,gx+dx,gy+.2,[51,52,53,54].includes(state.level)?.51:.27,.16,.55,.16,[51,52,53,54].includes(state.level)?0xffd27b:0xd4e0e6,true);spike.rotation.z=.18;}}
+      else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.terrain,gx+dx,gy+.2,[51,52,53,54,55].includes(state.level)?.51:.27,.16,.55,.16,[51,52,53,54,55].includes(state.level)?0xffd27b:0xd4e0e6,true);spike.rotation.z=.18;}}
       const mark=state.latches?.find(l=>l.key[0]===x&&l.key[1]===y||l.lock[0]===x&&l.lock[1]===y);
       if(mark){const key=mark.key[0]===x&&mark.key[1]===y,locked=/^[ABC]$/.test(state.board[mark.key[1]]?.[mark.key[0]]||'');
         // Raised, distinct key and lock silhouettes use the existing scene's
@@ -83,7 +83,7 @@ export class CrownScene {
     }
     }
     if((state.latches?.length||0)>1)state.latches.forEach((latch,index)=>{for(const pos of [latch.key,latch.lock]){const [x,y]=pos;if(!/^[ABC]$/.test(state.board[y]?.[x]||''))continue;const badge=document.createElement('span');badge.className='latch-tag';badge.textContent=String(index+1);badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}});
-    if([51,52,53,54].includes(state.level))state.board.forEach((row,y)=>row.forEach((cell,x)=>{if(cell!=='^')return;const badge=document.createElement('span');badge.className='spike-tag';badge.textContent='▲▲▲';badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}));
+    if([51,52,53,54,55].includes(state.level))state.board.forEach((row,y)=>row.forEach((cell,x)=>{if(cell!=='^')return;const badge=document.createElement('span');badge.className='spike-tag';badge.textContent='▲▲▲';badge.setAttribute('aria-hidden','true');this.labels.append(badge);this.latchLabels.push({element:badge,x,y})}));
     const alive=new Set();
     const add=(a,kind)=>{
       const id=a.id||'hero',signature=JSON.stringify(kind==='hero'?[a.armed]:[a.kind,a.shield,a.boss,a.buff]);alive.add(id);
@@ -100,7 +100,7 @@ export class CrownScene {
       node.userData.labelLift=kind==='item'?(occupied?.45:0)+Math.max(0,rank)*.42:0;
       const at=this.point(a.x,a.y);if(!preserve||!oldPosition)node.position.set(at.x+node.userData.cellOffset,at.y+node.userData.groundOffset,.65);
       if(!preserve){node.rotation.set(0,kind==='hero'?.28:kind==='enemy'?-.28:['crown','sword'].includes(a.kind)?.2:0,0);node.visible=true;node.scale.setScalar(a.boss?.81:kind==='item'?1:.75);}
-      const label=document.createElement('span');label.className=`actor-tag ${kind}`;if([45,48,49,50,53,54].includes(state.level)&&kind==='item'&&a.kind==='rune')label.classList.add('phase-rune');if([45,48,49,50,53,54].includes(state.level)&&kind==='enemy'&&a.shield)label.classList.add('phase-shield');const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',this.accessibleLabel(a,kind,state)||fullLabel);if(([49,50,53,54].includes(state.level))&&(label.classList.contains("phase-rune")||label.classList.contains("phase-shield")))label.classList.add("stage49");this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
+      const label=document.createElement('span');label.className=`actor-tag ${kind}`;if([45,48,49,50,53,54,55].includes(state.level)&&kind==='item'&&a.kind==='rune')label.classList.add('phase-rune');if([45,48,49,50,53,54,55].includes(state.level)&&kind==='enemy'&&a.shield)label.classList.add('phase-shield');const fullLabel=this.label(a,kind,state),symbol={sword:'⚔',power:'ϟ',multiply:'×'}[a.kind];label.textContent=kind==='item'&&symbol?`${a.kind==='multiply'?'':symbol} ${a.kind==='multiply'?`×${a.amount}`:`+${a.amount||0}`}`:fullLabel;label.setAttribute('aria-label',this.accessibleLabel(a,kind,state)||fullLabel);if(([49,50,53,54,55].includes(state.level))&&(label.classList.contains("phase-rune")||label.classList.contains("phase-shield")))label.classList.add("stage49");this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind,node});
     };
     add(state.hero,'hero');state.enemies.filter(e=>e.alive).forEach(e=>add(e,'enemy'));state.items.filter(i=>i.alive).forEach(i=>add(i,'item'));
     for(const [id,node] of this.actorNodes)if(!alive.has(id)){this.world.remove(node);this.actorNodes.delete(id);}
@@ -168,7 +168,7 @@ export class CrownScene {
       }
     };
     // Stage 49 reserves each pairing number near its tile before laying out longer actor labels.
-    if(this.state?.level===54)placeLatchLabels(e=>e.classList.contains('latch-tag'));
+    if([54,55].includes(this.state?.level))placeLatchLabels(e=>e.classList.contains('latch-tag'));
     else if([49,50,52].includes(this.state?.level))placeLatchLabels();
     for(const l of labels){
       if(!l.visible)continue;
@@ -177,14 +177,14 @@ export class CrownScene {
       let top=Math.max(24,Math.min(height-h-2,l.y-h));
       // Put the long shield name beside the guard, in the empty actor row,
       // instead of covering its head or the marked support above it.
-      if(this.state?.level===54&&l.element.classList.contains('phase-shield')){left=Math.max(2,Math.min(width-w-2,l.x+40));top=Math.max(2,Math.min(height-h-2,l.y+2));}
+      if([54,55].includes(this.state?.level)&&l.element.classList.contains('phase-shield')){left=Math.max(2,Math.min(width-w-2,l.x+40));top=Math.max(2,Math.min(height-h-2,l.y+2));}
       // Preserve readable operators even on stacked pickups at the folded top edge.
-      for(let pass=0;pass<=placed.length;pass++){const collision=placed.find(r=>left<r.right+2&&left+w>r.left-2&&top<r.bottom+2&&top+h>r.top-2);if(!collision)break;top=this.state?.level===54&&l.element.classList.contains('phase-shield')?collision.top-h-2:collision.bottom+2;}
+      for(let pass=0;pass<=placed.length;pass++){const collision=placed.find(r=>left<r.right+2&&left+w>r.left-2&&top<r.bottom+2&&top+h>r.top-2);if(!collision)break;top=[54,55].includes(this.state?.level)&&l.element.classList.contains('phase-shield')?collision.top-h-2:collision.bottom+2;}
       top=Math.max(2,Math.min(height-h-2,top));placed.push({left,right:left+w,top,bottom:top+h});
       l.element.style.left=`${left+w/2}px`;l.element.style.top=`${top+h}px`;
     }
     // For earlier stages preserve the established actor-first layout.
-    if(this.state?.level===54)placeLatchLabels(e=>e.classList.contains('spike-tag'));
+    if([54,55].includes(this.state?.level))placeLatchLabels(e=>e.classList.contains('spike-tag'));
     else if(![49,50,52].includes(this.state?.level))placeLatchLabels();
   }
   async animate(event,previous,isPaused=()=>false) {

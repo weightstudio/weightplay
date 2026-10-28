@@ -27,7 +27,7 @@
   const __crystalPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
   let __crystalPracticeActive=false;
   let __crystalPracticeIsActive=()=>false;
-  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalSecondBeaconMesh=null, __crystalFragmentMesh=null, __crystalLaneModel=null, __crystalLaneAdapter=null, __crystalWardenArt=null, __crystalWardenMesh=null, __crystalPrismModel=null, __crystalPrismAdapter=null;
+  let __crystalBeaconModel=null, __crystalBeaconCopy=null, __crystalBeaconArt=null, __crystalBeaconThree=null, __crystalBeaconMesh=null, __crystalSecondBeaconMesh=null, __crystalFragmentMesh=null, __crystalLaneModel=null, __crystalLaneAdapter=null, __crystalWardenArt=null, __crystalWardenMesh=null, __crystalPrismModel=null, __crystalPrismAdapter=null, __crystalSequenceCopy=null;
   const __crystalPracticeText=()=>__crystalBeaconCopy.beaconCopy(window.WonderI18n?.actualLocale?.()||locale);
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -2070,7 +2070,7 @@
     state = makeState();
     state.stage = save.selectedStage;
     state.stageConfig = stages[state.stage - 1];
-    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=36&&__crystalBeaconModel){
+    if(__crystalPracticeRequested&&state.stage>=31&&state.stage<=37&&__crystalBeaconModel){
       state.beaconRound=__crystalBeaconModel.makeBeaconRound(state.stage);state.beaconDrop=null;
       __crystalBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);
       crystal3D.scene.add(__crystalBeaconMesh.group);
@@ -2079,6 +2079,7 @@
         __crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);
       }
       if(state.stage===36){state.beaconPrism=null;__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
+      if(state.stage===37){__crystalSecondBeaconMesh=__crystalBeaconArt.makeBeaconArt(__crystalBeaconThree);crystal3D.scene.add(__crystalSecondBeaconMesh.group);}
       if(state.stage===35){__crystalWardenMesh=__crystalWardenArt.makeWardenArt(__crystalBeaconThree);__crystalWardenMesh.group.visible=false;crystal3D.scene.add(__crystalWardenMesh.group);}
       __crystalFragmentMesh=__crystalBeaconArt.makeBeaconFragmentArt(__crystalBeaconThree);
       crystal3D.scene.add(__crystalFragmentMesh.group);
@@ -2492,7 +2493,7 @@
       }
     }
     const needsCarrier=Boolean(beaconNeedsMore()&&!state.beaconRound.charge&&!state.beaconDrop&&!state.enemies.some(enemy=>enemy.beaconCarrier));
-    if(needsCarrier){const offset=state.stage===37&&state.beaconRound.completed>0?-240:state.stage===32?360:240;pos.x=Math.max(60,Math.min(W-60,state.player.x+offset));pos.y=Math.max(60,Math.min(H-60,state.player.y-(state.stage===32?180:80)));}
+    if(needsCarrier){pos.x=state.stage===37&&state.beaconRound.completed>0?(state.player.x<W/2?W*.75:W*.25):Math.max(60,Math.min(W-60,state.player.x+(state.stage===32?360:240)));pos.y=Math.max(60,Math.min(H-60,state.player.y-(state.stage===32?180:80)));}
     if(needsCarrier&&(state.stage===32||state.stage===37)){type='runner';role='charger';}
     const stageHp = beaconNeedsMore() ? 1 : 1 + Math.min(1.2, (state.stage - 1) * .04);
     const stats = {
@@ -3389,10 +3390,10 @@
       const config = state.stageConfig;
       const boss = state.enemies.find(enemy => enemy.isBoss);
       const progress = config.mode === "waves" ? state.waveCleared / config.waveGoal : config.mode === "boss" ? (state.bossDefeated ? 1 : boss ? 1 - boss.hp / boss.maxHp : 0) : state.survived / state.duration;
-      const beaconPhase=state.beaconRound?.completed?3:state.beaconRound?.charge?2:state.beaconDrop?1:0;
+      const beaconPhase=state.beaconRound&&!beaconNeedsMore()?3:state.beaconRound?.charge?2:state.beaconDrop?1:0;
       const root=state.stage===34?state.hazards.find(hazard=>hazard.beaconRoot):null;
       const rootState=root?(root.warn>0?'warn':'active'):null;
-      const objective=state.beaconRound&&__crystalBeaconCopy ? (state.beaconLossUntil>performance.now()&&!state.beaconRound.charge&&!state.beaconRound.completed ? __crystalPracticeText()[4] : state.stage===36&&beaconPhase===3 ? `${modeLabels()[1]} ${Math.min(state.waveCleared,config.waveGoal)} / ${config.waveGoal}` : __crystalBeaconCopy.beaconObjective(window.WonderI18n?.actualLocale?.()||locale,beaconPhase,state.stage===36&&beaconPhase===2?33:state.stage,state.beaconLaneResolved,rootState))
+      const objective=state.beaconRound&&__crystalBeaconCopy ? (state.beaconLossUntil>performance.now()&&!state.beaconRound.charge&&beaconNeedsMore() ? __crystalPracticeText()[4] : (state.stage===36||state.stage===37)&&beaconPhase===3 ? `${modeLabels()[1]} ${Math.min(state.waveCleared,config.waveGoal)} / ${config.waveGoal}` : state.stage===37&&beaconPhase===2 ? __crystalSequenceCopy.sequenceHold(window.WonderI18n?.actualLocale?.()||locale,state.beaconRound.completed) : __crystalBeaconCopy.beaconObjective(window.WonderI18n?.actualLocale?.()||locale,beaconPhase,state.stage===36&&beaconPhase===2?33:state.stage,state.beaconLaneResolved,rootState))
         : config.mode === "waves" ? `${modeLabels()[1]} ${Math.min(config.waveGoal, state.wave || 1)} / ${config.waveGoal} · ${state.enemies.length + state.waveRemaining} ◈` : modeObjective(config);
       if(state.beaconRound){modeText.setAttribute('role','status');modeText.setAttribute('aria-live','polite');}
       writeHudValue("modeText", modeText, objective);
@@ -3435,7 +3436,7 @@
     }
     const boss = state.enemies.find(enemy => enemy.isBoss);
     if (boss) { writeBattleBriefing(bossLesson(state.stageConfig)); return; }
-    if(state.beaconRound&&__crystalBeaconCopy){const copy=__crystalPracticeText();writeBattleBriefing(state.beaconRound.completed?copy[5]:state.beaconRound.charge?copy[3]:copy[1]);return;}
+    if(state.beaconRound&&__crystalBeaconCopy){const copy=__crystalPracticeText();writeBattleBriefing(!beaconNeedsMore()?copy[5]:state.beaconRound.charge?copy[3]:copy[1]);return;}
     const hasCloseEnemy = state.enemies.some(enemy => Math.hypot(enemy.x - p.x, enemy.y - p.y) <= p.range);
     const nextHint = state.xpNeed - state.xp <= 1 && state.xpDrops.length ? "hintUpgradeSoon"
       : state.xpDrops.length ? "hintCrystal" : hasCloseEnemy ? "hintCombat" : "playHint";
@@ -3595,7 +3596,7 @@
     };
     ctx.save();
     ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
-    if((state.stage===33||state.stage===36)&&state.beaconRound){
+    if((state.stage===33||state.stage===36||state.stage===37)&&state.beaconRound){
       ctx.save();
       for(const station of __crystalBeaconModel.beaconCircuitStages[state.stage-31].beacons){
         if(!crystal3D.inView(station.x,station.y))continue;
@@ -3959,26 +3960,27 @@
     };
     try{
       if(window.__CrystalPracticeGuardReady!==true||window.WONDER_SITE?.analytics?.enabled!==false)throw Error('PRACTICE_GUARD_UNAVAILABLE');
-      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy]=await Promise.all([
-        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon6'),
+      const [{LocalPractice},bridge,model,copy,art,three,laneModel,laneAdapter,wardenArt,prismModel,prismAdapter,prismCopy,sequenceCopy]=await Promise.all([
+        import('/src/game-local-practice.mjs'),import('./beacon-practice-bridge.mjs?v=20261028-beacon7'),
         import('./beacon-circuit-candidate.mjs?v=20261028-beacon3'),import('./beacon-circuit-copy.mjs?v=20261028-beacon8'),
         import('./beacon-art-candidate.mjs?v=20261028-beacon2'),import('../animal-skyspire-drop/vendor/three/three.module.min.js'),
         import('./beacon-lanes-candidate.mjs?v=20261028-beacon1'),import('./beacon-lanes-adapter-candidate.mjs?v=20261028-beacon1'),
         import('./beacon-warden-art-candidate.mjs?v=20261028-warden3'),
         import('./beacon-prism-candidate.mjs?v=20261028-prism2'),import('./beacon-prism-adapter-candidate.mjs?v=20261028-prism3'),
         import('./beacon-prism-copy-candidate.mjs?v=20261028-prism2'),
+        import('./beacon-sequence-copy-candidate.mjs?v=20261028-sequence1'),
       ]);
-      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;__crystalWardenArt=wardenArt;__crystalPrismModel=prismModel;__crystalPrismAdapter=prismAdapter;
+      __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;__crystalWardenArt=wardenArt;__crystalPrismModel=prismModel;__crystalPrismAdapter=prismAdapter;__crystalSequenceCopy=sequenceCopy;
       const enable=value=>{
         __crystalPracticeActive=value;
         if(value)__crystalPracticeIsActive=()=>LocalPractice.dynamicEnabled;
         if(value&&STAGE_COUNT===30){
-          for(const number of [31,32,33,34,35,36]){
-            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:copy.beaconStageCopy(key,number))[0]]));
-            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:copy.beaconStageCopy(key,number))[1]]));
-            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':null,mode:number===35?'boss':number===36?'waves':'survival',waveGoal:number===36?3:0,duration:number===31?45:number===34?55:number===35||number===36?75:50,targetKeys:0});
+          for(const number of [31,32,33,34,35,36,37]){
+            const names=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:copy.beaconStageCopy(key,number))[0]]));
+            const rules=Object.fromEntries(Object.keys(copy.beaconLocales).map(key=>[key,(number===36?prismCopy.prismCopy[key]:number===37?sequenceCopy.sequenceCopy[key]:copy.beaconStageCopy(key,number))[1]]));
+            stages.push({number,region:5,nameEn:names.en,nameZh:names['zh-Hant'],nameEs:names.es,ruleEn:rules.en,ruleZh:rules['zh-Hant'],ruleEs:rules.es,nameLocaleOwned:names,ruleLocaleOwned:rules,modifier:'basic',bossImage:number===35?'bossWarden':null,mode:number===35?'boss':number===36||number===37?'waves':'survival',waveGoal:number===36||number===37?3:0,duration:number===31?45:number===34?55:number>=35?75:50,targetKeys:0});
           }
-          STAGE_COUNT=36;save=JSON.parse(JSON.stringify(save));save.unlockedStage=36;save.selectedStage=31;
+          STAGE_COUNT=37;save=JSON.parse(JSON.stringify(save));save.unlockedStage=37;save.selectedStage=31;
         }
       };
       const start=async(stage,isActive)=>{

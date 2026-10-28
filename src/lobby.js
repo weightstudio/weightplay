@@ -454,7 +454,7 @@ function createDemonEventPreview() {
   trackElement.className = "demon-event-track";
   trackElement.setAttribute("role", "group");
   trackElement.setAttribute("aria-label", strings.title);
-  for (const [index, event] of events.entries()) {
+  const appendEventCard = (event, index) => {
     const card = document.createElement("button");
     card.className = "demon-event-card";
     card.type = "button";
@@ -477,7 +477,7 @@ function createDemonEventPreview() {
     copy.className = "demon-event-card-copy";
     const label = document.createElement("span");
     label.className = "demon-event-label";
-    label.textContent = ({en:"Daily event","zh-Hant":"每日活動","zh-Hans":"每日活动",ja:"デイリーイベント",ko:"일일 이벤트",es:"Evento diario","pt-BR":"Evento diário",fr:"Événement quotidien",de:"Tägliches Event",it:"Evento giornaliero",ru:"Ежедневное событие",hi:"दैनिक इवेंट",ar:"فعالية يومية"})[locale] || "Daily event";
+    label.textContent = event.label || ({en:"Daily event","zh-Hant":"每日活動","zh-Hans":"每日活动",ja:"デイリーイベント",ko:"일일 이벤트",es:"Evento diario","pt-BR":"Evento diário",fr:"Événement quotidien",de:"Tägliches Event",it:"Evento giornaliero",ru:"Ежедневное событие",hi:"दैनिक इवेंट",ar:"فعالية يومية"})[locale] || "Daily event";
     const schedule = document.createElement("span");
     schedule.className = "demon-event-card-schedule";
     schedule.textContent = event.details.schedule;
@@ -489,7 +489,9 @@ function createDemonEventPreview() {
     art.append(image);
     card.append(art, copy, arrow);
     trackElement.append(card);
-  }
+    return card;
+  };
+  events.forEach(appendEventCard);
   const controls = document.createElement("div");
   controls.className = "demon-event-carousel-controls";
   controls.hidden = events.length < 2;
@@ -545,7 +547,7 @@ function createDemonEventPreview() {
     dialog.querySelector(".demon-event-dialog-schedule").textContent = selected.details.schedule;
     dialog.querySelector(".demon-event-dialog-reward").textContent = selected.details.reward;
     if (launchButton) launchButton.textContent = selected.entry.label;
-    dialog.querySelector(".demon-event-count").hidden = selected.id !== "demon-assault";
+    dialog.querySelector(".demon-event-count").hidden = selected.id !== "demon-assault" && !selected.showBlocks;
   };
   const goTo = index => {
     const previousArt = openButtons[activeIndex]?.querySelector(".demon-event-art");
@@ -567,7 +569,9 @@ function createDemonEventPreview() {
     if (events.length < 2 || isPaused() || section.hidden || document.hidden || dialog.open || motionPreference?.matches) return;
     carouselTimer = window.setTimeout(() => { goTo(activeIndex + 1); scheduleCarousel(); }, 5000);
   };
-  for (const button of openButtons) button.addEventListener("click", event => {
+  track.addEventListener("click", event => {
+    const button = event.target.closest(".demon-event-card");
+    if (!button || !track.contains(button)) return;
     if (suppressCardClick) { event.preventDefault(); event.stopPropagation(); suppressCardClick = false; return; }
     goTo(Number(button.dataset.eventIndex));
     updateDialog();
@@ -715,6 +719,23 @@ function createDemonEventPreview() {
   const onPageShow = () => { updateMotion(); scheduleCarousel(); };
   window.addEventListener("pagehide", onPageHide);
   window.addEventListener("pageshow", onPageShow);
+  // The owner-preview activity uses its own full locale dictionary. Public
+  // lobbies do not request the candidate payload or change their event list.
+  if (ownerPreviewMode) import("/activities/meteor-barrage/copy.mjs").then(({ COPY, getLocale, lobbyPath }) => {
+    if (artDisposed) return;
+    const copy = COPY[getLocale(locale)];
+    const event = {
+      id: "meteor-barrage", title: copy.title, label: copy.eventLabel,
+      image: "/activities/meteor-barrage/poster.webp", showBlocks: true,
+      details: { line: copy.tagline, body: copy.intro, blocks: copy.collection, schedule: copy.schedule, reward: copy.trainingNote },
+      entry: { kind: "activity", path: `/activities/meteor-barrage${lobbyPath(locale)}`, label: copy.start }, renderer: null,
+    };
+    events.push(event);
+    openButtons.push(appendEventCard(event, events.length - 1));
+    controls.hidden = false;
+    position.textContent = `${activeIndex + 1} / ${events.length}`;
+    scheduleCarousel();
+  }).catch(error => console.warn("Activity preview unavailable", error));
   return section;
 }
 

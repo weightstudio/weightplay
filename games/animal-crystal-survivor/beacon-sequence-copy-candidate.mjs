@@ -1,4 +1,4 @@
-// Unconnected Stage 37 drafts; native and rendered review are required.
+// Stage 37 local-practice drafts; native and rendered review are required.
 export const sequenceCopy=Object.freeze({
   en:['Two-Beacon Relay','Defeat marked carriers, bring one fragment to A and then another to B; clear the waves. Damage loses a carried fragment.'],
   'zh-Hant':['雙信標接力','擊敗標記攜帶者，先帶一枚碎片到 A，再帶另一枚到 B；清除波次。受傷會失去攜帶的碎片。'],
@@ -14,3 +14,10 @@ export const sequenceCopy=Object.freeze({
   hi:['दो बीकन रिले','चिह्नित वाहकों को हराएँ, एक टुकड़ा A और दूसरा B तक ले जाएँ और लहरें साफ़ करें। चोट लगने पर टुकड़ा खोता है।'],
   ar:['تتابع المنارتين','اهزم الحاملين المحددين، واحمل شظية إلى A ثم أخرى إلى B، واهزم الموجات. الإصابة تفقدك الشظية المحمولة.'],
 });
+const holdCopy=Object.freeze({
+  en:['Hold at A for 1.2s','Hold at B for 1.2s'], 'zh-Hant':['在 A 停留 1.2 秒','在 B 停留 1.2 秒'], 'zh-Hans':['在 A 停留 1.2 秒','在 B 停留 1.2 秒'],
+  ja:['Aに1.2秒留まる','Bに1.2秒留まる'],ko:['A에서 1.2초 머무르기','B에서 1.2초 머무르기'],es:['Permanece 1,2 s en A','Permanece 1,2 s en B'],
+  'pt-BR':['Fique 1,2 s em A','Fique 1,2 s em B'],fr:['Restez 1,2 s à A','Restez 1,2 s à B'],de:['Bleibe 1,2 s bei A','Bleibe 1,2 s bei B'],
+  it:['Resta 1,2 s in A','Resta 1,2 s in B'],ru:['Стойте у A 1,2 с','Стойте у B 1,2 с'],hi:['A पर 1.2 सेकंड रुकें','B पर 1.2 सेकंड रुकें'],ar:['ابقَ عند A لمدة ١٫٢ ثانية','ابقَ عند B لمدة ١٫٢ ثانية'],
+});
+export function sequenceHold(locale,completed){return (holdCopy[locale]||holdCopy.en)[completed>0?1:0]}

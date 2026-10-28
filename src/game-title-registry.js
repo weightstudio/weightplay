@@ -3168,3 +3168,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ar": "حياة في لحظات"
   }
 };
+
+window.WEIGHTPLAY_GAME_TITLES['lantern-lasso'] = {__localizedExact:true, en:'Lantern Lasso', 'zh-Hant':'星燈牽引', 'zh-Hans':'星灯牵引', ja:'星灯りの投げ縄', ko:'별빛 올가미', es:'Lazo de faroles', 'pt-BR':'Laço das lanternas', fr:'Lasso des lanternes', de:'Laternen-Lasso', it:'Lazo delle lanterne', ru:'Лассо фонарей', hi:'लालटेन लासो', ar:'حبل الفوانيس'};

@@ -8106,3 +8106,22 @@ window.WONDER_LOBBY.games.push({
   art: { kind: "image", background: "/games/smallwood-lives/assets/cover-v2.webp?v=20261025-life-v2", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
+
+// Lantern Lasso is a new General production candidate; public play awaits approval.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = values => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const game = {
+    id: "lantern-lasso", audience: "general", status: "planned",
+    title: localize(["Lantern Lasso", "星燈牽引", "星灯牵引", "星灯りの投げ縄", "별빛 올가미", "Lazo de faroles", "Laço das lanternas", "Lasso des lanternes", "Laternen-Lasso", "Lazo delle lanterne", "Лассо фонарей", "लालटेन लासो", "حبل الفوانيس"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريباً"]),
+    type: localize(["Angle puzzle", "角度益智", "角度益智", "角度パズル", "각도 퍼즐", "Puzle de ángulos", "Quebra-cabeça de ângulos", "Énigme d'angles", "Winkelrätsel", "Enigma degli angoli", "Головоломка с углами", "कोण पहेली", "لغز الزوايا"]),
+    description: localize(["Aim a line, open gates and guide lost lights home.", "瞄準牽引線，打開閘門，引領迷途星燈回家。", "瞄准牵引线，打开闸门，引领迷途星灯回家。", "ロープを狙って門を開き、迷った灯りを家へ導こう。", "줄을 조준해 문을 열고 길 잃은 빛을 집으로 이끌어요.", "Apunta la cuerda, abre puertas y guía las luces a casa.", "Mire a corda, abra portões e guie as luzes para casa.", "Visez avec la corde, ouvrez les portes et ramenez les lumières.", "Ziele mit dem Seil, öffne Tore und führe Lichter nach Hause.", "Mira con la corda, apri i cancelli e guida le luci a casa.", "Направляйте трос, открывайте ворота и возвращайте огни домой.", "रस्सी साधें, द्वार खोलें और रोशनी को घर पहुँचाएँ।", "صوّب الحبل وافتح البوابات وأعد الأضواء إلى موطنها."]),
+    meta: localize([["60 stages", "Aim and reflect"], ["60 關", "瞄準反射"], ["60 关", "瞄准反射"], ["全60面", "狙いと反射"], ["60개 스테이지", "조준과 반사"], ["60 niveles", "Apunta y rebota"], ["60 fases", "Mire e reflita"], ["60 niveaux", "Visée et rebond"], ["60 Level", "Zielen und abprallen"], ["60 livelli", "Mira e rimbalza"], ["60 уровней", "Прицел и отскок"], ["60 स्तर", "निशाना और उछाल"], ["60 مرحلة", "تصويب وارتداد"]]),
+    categories: ["Animal Games", "Puzzle", "Family"], skills: ["Spatial Planning", "Timing", "Focus"], ages: ["6", "family"], ageLabel: localize(Array(13).fill("6+")),
+    href: "games/lantern-lasso/", internalTrial: "index.html?preview=1", art: { kind: "image", background: "games/lantern-lasso/assets/cover.webp", hideHero: true }
+  };
+  for (const key of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(game[key], "__localizedExact", { value: true, enumerable: false });
+  window.WONDER_LOBBY.games.push(game);
+  window.WONDER_LOBBY.audiences.generalGameIds.push(game.id);
+})();
