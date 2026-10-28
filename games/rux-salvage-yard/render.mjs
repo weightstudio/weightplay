@@ -114,7 +114,10 @@ export class SalvageView {
     this.focused = false;this.autoWidth=0;this.baseHeight=520;
     this.updateCamera = () => {
       const w = host.clientWidth || 1, h = host.clientHeight || 1, aspect = w / h;
-      const baseWidth=Math.max(1000,this.baseHeight*aspect),baseLeft=500-baseWidth/2;
+      // A modestly tighter full view makes parts easier to read on narrow
+      // screens while keeping Rux and every starting structure in frame.
+      // Focused and reduced-motion views retain their established framing.
+      const baseWidth=Math.max(this.focused||this.reducedMotion?1000:920,this.baseHeight*aspect),baseLeft=(baseWidth<1000?450:500)-baseWidth/2;
       const width=this.focused?baseWidth/1.5:Math.max(baseWidth,this.autoWidth),height=width/aspect;
       // Keep the near guard and the predicted first contact in the focused
       // view while retaining the far tower at its starting position.
@@ -155,6 +158,10 @@ export class SalvageView {
   }
   setFocused(value){this.focused=Boolean(value);this.resize();}
   setFinish(color){this.launcherMaterial.color.setHex(color);}
+  screenPoint(x,y){
+    const point=new THREE.Vector3(x,800-y,100).project(this.camera),rect=this.renderer.domElement.getBoundingClientRect();
+    return {x:Math.max(rect.left,Math.min(rect.right,rect.left+(point.x+1)*rect.width/2)),y:Math.max(rect.top,Math.min(rect.bottom,rect.top+(1-point.y)*rect.height/2))};
+  }
   make(body) {
     const kind=body.plugin.salvageKind;
     const group=new THREE.Group();
@@ -272,9 +279,9 @@ export class SalvageView {
     // the expansion monotonic during a shot and retain any space still
     // needed by an unrecovered part once the shot settles.
     if(!this.focused&&!this.reducedMotion){
-      const aspect=(this.host.clientWidth||1)/(this.host.clientHeight||1),baseWidth=Math.max(1000,this.baseHeight*aspect),baseLeft=500-baseWidth/2;
+      const aspect=(this.host.clientWidth||1)/(this.host.clientHeight||1),baseWidth=Math.max(920,this.baseHeight*aspect),baseLeft=(baseWidth<1000?450:500)-baseWidth/2;
       const active=model.targets.filter(body=>model.bodies.includes(body)&&!model.recoveredTargets.has(body));
-      const right=Math.max(...active.map(body=>body.bounds.max.x+50),500+baseWidth/2);
+      const right=Math.max(...active.map(body=>body.bounds.max.x+50),baseLeft+baseWidth);
       const visible=model.ball?[...active,model.ball]:active;
       const top=Math.max(0,...visible.map(body=>800-body.bounds.min.y));
       const verticalWidth=Math.min(520,Math.max(this.baseHeight,top+60))*aspect;

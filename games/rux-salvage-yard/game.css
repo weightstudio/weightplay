@@ -69,6 +69,13 @@ body:has(.wpb-toast) #dialog{padding-bottom:64px}
 #dialog .power-fine-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-block:8px}
 #dialog .power-fine-row button{min-width:48px;font-size:22px}
 #dialog .power-fine-row output{min-width:52px;font-size:18px;font-weight:700}
+
+/* Keep the result and its actions in their final positions while the last
+   recovery remains briefly visible beneath the arriving overlay. */
+@keyframes rux-overlay-enter{from{opacity:.2}to{opacity:1}}
+.overlay:not([hidden]){animation:rux-overlay-enter 240ms ease-out both}
+.rux-recovery-token{position:absolute;z-index:1;display:grid;place-items:center;width:18px;height:18px;border:1px solid #e6ffd1;border-radius:50%;background:#157564;color:#f1ffd0;font-size:13px;font-weight:800;line-height:1;pointer-events:none}
+.rux-count-highlight{outline:2px solid #dfffd5;outline-offset:2px}
 #dialog .angle-fine-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-block:8px}
 #dialog .angle-fine-row button{min-width:48px;font-size:22px}
 #dialog .angle-fine-row output{min-width:65px;font-size:18px;font-weight:700}

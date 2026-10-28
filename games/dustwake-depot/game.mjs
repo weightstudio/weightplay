@@ -161,7 +161,7 @@ function tutorial(force=false) {
   if((force||!save.tutorialSeen.wet)&&s.dust.some(p=>p.kind==='wet'))pending.push(['wet',t('tutorialWet')]);
   if((force||!save.tutorialSeen.gate)&&s.gates.length)pending.push(['gate',t('tutorialGate')]);
   if((force||!save.tutorialSeen.portable)&&s.pads.length)pending.push(['portable',t('tutorialPortable')]);
-  if((force||!save.tutorialSeen.press)&&run.state.toolId==='press')pending.push(['press',t('tutorialPress')]);
+  if((force||!save.tutorialSeen.press)&&run.state.toolId==='press')pending.push(['press',t('tutorialPress'),t('compressionRule')]);
   if(force||(s.checkpoint&&!save.tutorialSeen[`rule${s.id}`]))pending.push([`rule${s.id}`,...stageCopy(locale,s).details]);
   if(!pending.length)return;
   const finish=()=>{ for(const [key] of pending)save.tutorialSeen[key]=true;persist();closeOverlay();$('arena').focus({preventScroll:true}); };
@@ -249,7 +249,10 @@ function updateHUD() {
   $('compressButton').setAttribute('aria-label',t('compressionCount',{n:s.compressionLeft}));
   $('compressButton').disabled=s.toolId!=='press'||!s.compressionLeft;
   $('deployButton').disabled=!s.stage.pads.length||!s.deploymentLeft;
-  if(performance.now()>statusUntil)$('statusLine').textContent='';
+  if(performance.now()>statusUntil) {
+    const carried=s.toolId==='press'?`${t('bag')} · ${t('total')}: ${s.bagCargo}`:'';
+    if($('statusLine').textContent!==carried)$('statusLine').textContent=carried;
+  }
 }
 function feedback(events) {
   for(const event of events) {
@@ -301,7 +304,8 @@ async function startStage(index) {
   if(attempt!==serial||disposed)return;
   const stage=STAGES[index];if(!stage||(!practiceSession&&stage.id>save.highestUnlocked))return;
   if(overlayOpen)closeOverlay({restore:false});disposeRenderer();stopInput();
-  selected=index;saveSucceeded=false;resultShown=false;compressionStarted=null;backgroundPaused=false;settingsPaused=false;
+  selected=index;saveSucceeded=false;resultShown=false;compressionStarted=null;backgroundPaused=false;settingsPaused=false;statusUntil=0;
+  $('statusLine').textContent='';
   $('resultPanel').hidden=true;$('battleLive').inert=false;
   run=createRun(stage.id,ownedTool(save.selectedTool)?save.selectedTool:'breeze');run.state.skin=ownsAmber()&&save.skin==='amber'?'amber':'moss';
   setScreen('battle');

@@ -4,8 +4,8 @@ import * as THREE from '../purrch-grove/vendor/three/three.module.min.js';
 // stay in core.mjs. Three r180 is the repository-pinned MIT runtime.
 const PARTICLE_LIMIT = 48;
 const WORLD = { left: -0.6, right: 9.6, top: -0.65, bottom: 7.65 };
-const WARM = { sky: 0x8fc6ca, floor: 0xf4e5c7, clean: 0xfff4da, stone: 0xf0e3c9, edge: 0x407f75, leaf: 0x80ae69, dark: 0x264e50, metal: 0xc08b3e, light: 0xffda75 };
-const COOL = { sky: 0x7dbaca, floor: 0xd1e5e1, clean: 0xf0f8ed, stone: 0xd3e4e2, edge: 0x368898, leaf: 0x6da797, dark: 0x244957, metal: 0xc59a53, light: 0x8decf3 };
+const WARM = { sky: 0x8fc6ca, floor: 0xcdbc99, clean: 0xe6d6b0, stone: 0xd0c6ac, edge: 0x39796e, leaf: 0x76a368, dark: 0x264e50, metal: 0xc08b3e, light: 0xffda75 };
+const COOL = { sky: 0x7dbaca, floor: 0x9ebfbc, clean: 0xc3dbd0, stone: 0xb0c7c2, edge: 0x367e8e, leaf: 0x6c9c8d, dark: 0x244957, metal: 0xc59a53, light: 0x8decf3 };
 const clamp = (value, lo, hi) => Math.max(lo, Math.min(hi, value));
 const finite = (value, fallback = 0) => Number.isFinite(value) ? value : fallback;
 const cellKey = (x, z) => `${Math.round(x)},${Math.round(z)}`;
@@ -55,6 +55,30 @@ function chamferedCube() {
   return geometry;
 }
 
+function debrisGeometry(kind) {
+  const positions=[];
+  const face=(points,up=false)=>{
+    const center=new THREE.Vector3();for(const p of points)center.add(new THREE.Vector3(...p));center.divideScalar(points.length);
+    for(let i=1;i<points.length-1;i++){
+      const a=new THREE.Vector3(...points[0]),b=new THREE.Vector3(...points[i]),c=new THREE.Vector3(...points[i+1]);
+      const normal=new THREE.Vector3().crossVectors(b.clone().sub(a),c.clone().sub(a));
+      if(normal.dot(up?new THREE.Vector3(0,1,0):center)<0)positions.push(...a,...c,...b);else positions.push(...a,...b,...c);
+    }
+  };
+  if(kind==='paper'){
+    face([[-.5,0,-.4],[-.5,0,.4],[0,.12,.4],[0,.12,-.4]],true);
+    face([[0,.12,-.4],[0,.12,.4],[.5,0,.4],[.5,0,-.4]],true);
+  }else if(kind==='wet'){
+    const base=[[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5]],middle=base.map(([x,,z])=>[x,.18,z]),top=base.map(([x,,z])=>[x*.80,.5,z*.80]);
+    face(base);face(top);for(let i=0;i<4;i++){const j=(i+1)%4;face([base[i],base[j],middle[j],middle[i]]);face([middle[i],middle[j],top[j],top[i]]);}
+  }else{
+    const outline=[[-.5,-.30],[-.34,-.49],[.30,-.47],[.48,-.22],[.49,.27],[.27,.48],[-.26,.49],[-.48,.22]];
+    const base=outline.map(([x,z])=>[x,-.45,z]),shoulder=outline.map(([x,z],i)=>[x*.72+.035,.09+(i%3)*.035,z*.72-.025]);
+    face(base);for(let i=0;i<8;i++){const j=(i+1)%8;face([base[i],base[j],shoulder[j],shoulder[i]]);face([shoulder[i],shoulder[j],[.06,.43,-.04]]);}
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.computeVertexNormals();geometry.computeBoundingSphere();return geometry;
+}
+
 function softContactGeometry() {
   const positions = [], colors = [], rings = [[0, .19], [.52, .16], [.82, .065], [1, 0]], segments = 32;
   const tint = new THREE.Color(0x163b31);
@@ -76,9 +100,10 @@ function builder(source, { bevel = 0 } = {}) {
   const sourcePosition = source.getAttribute('position');
   const sourceNormal = source.getAttribute('normal');
   return {
-    box(x, y, z, sx, sy, sz, tint, rotation = 0) {
+    box(x, y, z, sx, sy, sz, tint, rotation = 0, tilt = 0) {
       color.set(tint);
       quaternion.setFromAxisAngle(THREE.Object3D.DEFAULT_UP, rotation);
+      if (tilt) quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), tilt));
       matrix.compose(v.set(x, y, z), quaternion, scale.set(bevel ? 1 : sx, bevel ? 1 : sy, bevel ? 1 : sz));
       normalMatrix.getNormalMatrix(matrix);
       const edge = Math.min(bevel, sx * .22, sy * .22, sz * .22);
@@ -102,7 +127,11 @@ function builder(source, { bevel = 0 } = {}) {
       color.set(tint);
       const polygon = points.map(([x,z]) => new THREE.Vector2(x,z));
       const triangles = THREE.ShapeUtils.triangulateShape(polygon, []);
-      const vertex = (x,y,z,nx,ny,nz) => { position.push(x,y,z); normals.push(nx,ny,nz); colors.push(color.r,color.g,color.b); uvs.push(x,z); };
+      const vertex = (x,y,z,nx,ny,nz) => {
+        position.push(x,y,z); normals.push(nx,ny,nz); colors.push(color.r,color.g,color.b);
+        if (Math.abs(ny) > .5) uvs.push(x,z);
+        else uvs.push(Math.abs(nx) > Math.abs(nz) ? z : x,y);
+      };
       for (const triangle of triangles) {
         const [a,b,c] = triangle.map(i => points[i]);
         const winding = (b[1]-a[1])*(c[0]-a[0])-(b[0]-a[0])*(c[1]-a[1]);
@@ -114,6 +143,67 @@ function builder(source, { bevel = 0 } = {}) {
         const nx=sign*dz/length, nz=-sign*dx/length;
         const strip = [[a[0],top,a[1]],[a[0],top-depth,a[1]],[b[0],top-depth,b[1]],[b[0],top,b[1]]];
         for (const ids of (sign>0 ? [[0,2,1],[0,3,2]] : [[0,1,2],[0,2,3]])) for(const j of ids) vertex(...strip[j],nx,0,nz);
+      }
+      return this;
+    },
+    ring(outer,inner,top,depth,tint) {
+      color.set(tint);
+      const emit=(a,b,c,nx,ny,nz)=>{
+        const ab=new THREE.Vector3(...b).sub(new THREE.Vector3(...a)),ac=new THREE.Vector3(...c).sub(new THREE.Vector3(...a));
+        const cross=new THREE.Vector3().crossVectors(ab,ac),n=new THREE.Vector3(nx,ny,nz);
+        for(const p of cross.dot(n)>=0?[a,b,c]:[a,c,b]){
+          position.push(...p);normals.push(nx,ny,nz);colors.push(color.r,color.g,color.b);
+          uvs.push(Math.abs(ny)>.5?p[0]:Math.abs(nx)>Math.abs(nz)?p[2]:p[0],Math.abs(ny)>.5?p[2]:p[1]);
+        }
+      };
+      const sign=THREE.ShapeUtils.area(outer.map(([x,z])=>new THREE.Vector2(x,z)))>0?1:-1;
+      for(let i=0;i<outer.length;i++){
+        const j=(i+1)%outer.length,a=outer[i],b=outer[j],c=inner[i],d=inner[j];
+        emit([a[0],top,a[1]],[b[0],top,b[1]],[d[0],top,d[1]],0,1,0);
+        emit([a[0],top,a[1]],[d[0],top,d[1]],[c[0],top,c[1]],0,1,0);
+        for(const [p,q,normalSign] of [[a,b,sign],[c,d,-sign]]){
+          const dx=q[0]-p[0],dz=q[1]-p[1],len=Math.hypot(dx,dz),nx=normalSign*dz/len,nz=-normalSign*dx/len;
+          emit([p[0],top,p[1]],[p[0],top-depth,p[1]],[q[0],top-depth,q[1]],nx,0,nz);
+          emit([p[0],top,p[1]],[q[0],top-depth,q[1]],[q[0],top,q[1]],nx,0,nz);
+        }
+      }
+      return this;
+    },
+    waterGrid(cx,cz,sx,sz,top,columns,rows,rimTint,deepTint) {
+      const rim=new THREE.Color(rimTint),deep=new THREE.Color(deepTint),acrossX=sx<sz;
+      const vertex=(u,w)=>{
+        const x=cx+(u-.5)*sx,z=cz+(w-.5)*sz,t=acrossX?u:w,bend=Math.sin(t*Math.PI)**2;
+        const y=top+.012*Math.sin(x*1.7+z*.65)+.006*Math.cos(z*2.1-x*.25)-.018*bend;
+        let dx=.0204*Math.cos(x*1.7+z*.65)+.0015*Math.sin(z*2.1-x*.25),dz=.0078*Math.cos(x*1.7+z*.65)-.0126*Math.sin(z*2.1-x*.25);
+        if(acrossX)dx-=.018*Math.PI*Math.sin(t*2*Math.PI)/sx;else dz-=.018*Math.PI*Math.sin(t*2*Math.PI)/sz;
+        v.set(-dx,1,-dz).normalize();position.push(x,y,z);normals.push(v.x,v.y,v.z);uvs.push(x,z);
+        color.copy(deep).lerp(rim,1-bend*.82);colors.push(color.r,color.g,color.b);
+      };
+      for(let z=0;z<rows;z++)for(let x=0;x<columns;x++){
+        const a=[x/columns,z/rows],b=[(x+1)/columns,z/rows],c=[x/columns,(z+1)/rows],d=[(x+1)/columns,(z+1)/rows];
+        for(const p of [a,c,b,b,c,d])vertex(...p);
+      }
+      return this;
+    },
+    waterSurface(points, top, rimTint, deepTint) {
+      const cx = points.reduce((sum,p)=>sum+p[0],0)/points.length, cz = points.reduce((sum,p)=>sum+p[1],0)/points.length;
+      const rim = new THREE.Color(rimTint), deep = new THREE.Color(deepTint);
+      const vertex = (x,z,radius) => {
+        const wave=.024*Math.sin(x*1.7+z*.65)+.012*Math.cos(z*2.1-x*.25);
+        const y=top+wave-.024*(1-radius);
+        const dx=.0408*Math.cos(x*1.7+z*.65)+.003*Math.sin(z*2.1-x*.25);
+        const dz=.0156*Math.cos(x*1.7+z*.65)-.0252*Math.sin(z*2.1-x*.25);
+        v.set(-dx,1,-dz).normalize(); position.push(x,y,z); normals.push(v.x,v.y,v.z);
+        color.copy(deep).lerp(rim,radius*radius); colors.push(color.r,color.g,color.b); uvs.push(x,z);
+      };
+      const ring=points.map(([x,z])=>[cx+(x-cx)*.52,cz+(z-cz)*.52]);
+      const triangle=(a,b,c)=>{
+        const cross=(b[1]-a[1])*(c[0]-a[0])-(b[0]-a[0])*(c[1]-a[1]);
+        for(const p of cross>0?[a,b,c]:[a,c,b])vertex(p[0],p[1],p[2]);
+      };
+      for(let i=0;i<points.length;i++){
+        const j=(i+1)%points.length, a=[...ring[i],.52],b=[...ring[j],.52],c=[...points[i],1],d=[...points[j],1];
+        triangle([cx,cz,0],a,b);triangle(a,c,d);triangle(a,d,b);
       }
       return this;
     },
@@ -145,10 +235,10 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   const particles = Array.from({ length: PARTICLE_LIMIT }, () => ({ active: false, age: 0, duration: 0.3 }));
   const gates = [], depotModels = [], padModels = [];
   const persistentPickMeshes = [], stagePickMeshes = [], stagePickBlockers = [];
-  const dryPickTargets = [], wetPickTargets = [], soilPickTargets = [];
+  const dryPickTargets = [], wetPickTargets = [], paperPickTargets = [], soilPickTargets = [];
   const peaks = { calls: 0, triangles: 0, geometries: 0, textures: 0 };
   let compressionConfirm = 0;
-  let floor, dryDust, wetDust, soilPatches, specks, hero, targetRing, targetStem, trail, heroShadow;
+  let floor, dryDust, wetDust, paperScraps, soilPatches, specks, hero, targetRing, targetStem, trail, heroShadow, contactGeometry, contactMaterial;
   let keyLight, fillLight, hemiLight, cameraPortrait = false, cameraWideShort = false, cameraYaw = 0, cameraElevation = 0, hedgeTopGroup = null;
   const floorColors = Array.from({ length: 80 }, () => new THREE.Color());
   const raycaster = new THREE.Raycaster(), pointer = new THREE.Vector2();
@@ -162,7 +252,19 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   const mesh = (geometry, material, parent = scene) => {
     const object = new THREE.Mesh(geometry, material); object.castShadow = true; object.receiveShadow = true; parent.add(object); return object;
   };
-  let block, plain, matte, stoneMaterial, mossMaterial, glossy, copperMaterial, enamelMaterial, waterMaterial, bronze, glow, closedLamp, warningLamp, ringMaterial, depotRingMaterial, particleMaterial, numberMaterial;
+  let block, plain, matte, skinMaterial, shellMossMaterial, stoneMaterial, mossMaterial, glossy, copperMaterial, enamelMaterial, waterMaterial, bronze, glow, depotLampMaterial, closedLamp, warningLamp, ringMaterial, depotRingMaterial, particleMaterial, numberMaterial;
+
+  function mapStrength(material, strength, anchor = 0xffffff) {
+    // THREE.Color(hex) converts the sRGB identity swatch to linear working RGB.
+    // A green anchor lowers moss contrast without bleaching its mean color.
+    const base=new THREE.Color(anchor),linear=`vec3(${base.r.toFixed(6)},${base.g.toFixed(6)},${base.b.toFixed(6)})`;
+    material.onBeforeCompile = shader => {
+      const chunk=THREE.ShaderChunk.map_fragment.replace('diffuseColor *= sampledDiffuseColor;', `sampledDiffuseColor.rgb=mix(${linear},sampledDiffuseColor.rgb,${strength.toFixed(3)});\n diffuseColor*=sampledDiffuseColor;`);
+      shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',chunk);
+    };
+    material.customProgramCacheKey=()=>`dustwake-surface-strength-${strength}-${anchor}`;
+    return material;
+  }
 
   function makeSurfaceTexture(bitmap, name) {
     if (!bitmap || !(bitmap.width > 0) || !(bitmap.height > 0)) throw new TypeError(`Dustwake ${name} material bitmap is unavailable.`);
@@ -201,7 +303,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     try {
       environmentTarget = generator.fromScene(studio, .055, .1, 40, { size: 128 });
       environmentTarget.texture.name = 'dustwake-studio-ibl-128'; textures.add(environmentTarget.texture);
-      scene.environment = environmentTarget.texture; scene.environmentIntensity = .78; environmentBuilds++;
+      scene.environment = environmentTarget.texture; scene.environmentIntensity = .58; environmentBuilds++;
     } finally {
       generator.dispose(); panelGeometry.dispose(); panelMaterials.forEach(material => material.dispose()); studio.clear();
     }
@@ -255,31 +357,34 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     torso.box(0, .26, -.02, .51, .23, .64, 0xd4c46c).box(0, .32, .24, .43, .22, .22, 0xded189)
       .box(0, .37, .38, .50, .09, .14, 0x347c41).box(-.09, .25, .39, .11, .25, .055, 0x3d9b47)
       .box(.08, .29, .40, .12, .18, .06, 0x4dba53);
-    groupFromBuild(torso, body);
+    groupFromBuild(torso, body,{material:skinMaterial});
     const shellRoot = new THREE.Group(); shellRoot.name = 'taro-fortress-shell'; body.add(shellRoot);
-    const shell = build();
-    shell.box(0, .43, -.08, .72, .23, .77, 0x87703b).box(0, .55, -.08, .68, .15, .73, 0x76a93d)
+    const shell = builder(block,{bevel:.014}), shellStone=builder(block,{bevel:.012}), shellDetails=builder(plain),shellWater=builder(plain);
+    shellDetails.box(0,.43,-.08,.72,.23,.77,0x87703b);
+    shell.box(0, .55, -.08, .68, .15, .73, 0x76a93d)
       .box(0, .64, -.12, .51, .12, .51, 0x9bc64a).box(0, .73, -.16, .30, .12, .32, 0x6c9c39);
     for (const x of [-.28, .28]) for (const z of [-.32, -.10, .12]) {
-      shell.box(x, .58, z, .15, .14, .19, 0xd5d5b6).box(x * .82, .68, z - .01, .13, .07, .16, 0x8cbd39);
+      shellStone.box(x, .58, z, .15, .14, .19, 0xc8c6ac);shell.box(x * .82, .68, z - .01, .13, .07, .16, 0x8cbd39);
     }
-    for (const x of [-.17, .17]) shell.box(x, .74, .06, .12, .18, .13, 0xd9d9bc);
-    shell.box(0, .85, .05, .30, .08, .14, 0xe5e1c5).box(0, .73, .136, .17, .17, .025, 0x765034)
+    for (const x of [-.17, .17]) shellStone.box(x, .74, .06, .12, .18, .13, 0xcdcdb5);
+    shellStone.box(0, .85, .05, .30, .08, .14, 0xd8d3b7);
+    shellDetails.box(0, .73, .136, .17, .17, .025, 0x765034)
       .box(.025, .72, .154, .025, .03, .012, 0xf9ce64);
-    for (let i = 0; i < 3; i++) shell.box(0, .59 + i * .035, .29 - i * .06, .22, .035, .10, 0xe4dfc1);
+    for (let i = 0; i < 3; i++) shellStone.box(0, .59 + i * .035, .29 - i * .06, .22, .035, .10, 0xd4cfaf);
     for (const [x, z] of [[-.22, -.27], [.23, -.25]]) {
-      shell.box(x, .76, z, .045, .17, .045, 0x947344).box(x, .87, z, .19, .15, .18, 0x64a332)
+      shellDetails.box(x, .76, z, .045, .17, .045, 0x947344);shell.box(x, .87, z, .19, .15, .18, 0x64a332)
         .box(x - .025, .95, z, .14, .08, .14, 0x9bd13d);
     }
-    shell.box(.105, .96, -.21, .03, .29, .03, 0xa87c40).box(.20, 1.035, -.21, .20, .13, .028, 0x569c37)
+    shellDetails.box(.105, .96, -.21, .03, .29, .03, 0xa87c40).box(.20, 1.035, -.21, .20, .13, .028, 0x569c37)
       .box(.20, 1.025, -.19, .018, .045, .009, 0xe3dc67).box(.174, 1.048, -.19, .039, .024, .009, 0xe3dc67)
       .box(.22, 1.060, -.19, .040, .024, .009, 0xe3dc67);
-    shell.box(-.26, .64, .23, .075, .04, .10, 0x37c1d2).box(-.27, .60, .31, .095, .03, .13, 0x80e5e3);
+    shellWater.box(-.26, .64, .23, .075, .04, .10, 0x2796b0).box(-.27, .60, .31, .095, .03, .13, 0x71d3dd);
     for (const [x, z] of [[-.21, .12], [.21, .10]]) {
-      shell.box(x, .72, z, .025, .025, .025, 0xf6c751).box(x, .72, z, .065, .018, .025, 0xfff3ce)
+      shellDetails.box(x, .72, z, .025, .025, .025, 0xf6c751).box(x, .72, z, .065, .018, .025, 0xfff3ce)
         .box(x, .72, z, .025, .018, .065, 0xfff3ce);
     }
-    groupFromBuild(shell, shellRoot);
+    groupFromBuild(shell, shellRoot,{material:shellMossMaterial});groupFromBuild(shellStone,shellRoot,{material:stoneMaterial});
+    groupFromBuild(shellDetails,shellRoot);groupFromBuild(shellWater,shellRoot,{material:waterMaterial});
     const amber = new THREE.Group(); shellRoot.add(amber);
     const amberBuild = build();
     for (const [x, z] of [[-.3, -.25], [.3, -.25], [.3, .23]]) {
@@ -290,43 +395,51 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     groupFromBuild(amberBuild, amber, { material: glossy });
     const head = new THREE.Group(); head.name = 'taro-head'; head.position.set(0, .50, .50); head.scale.set(1.50, 1.60, 1.25); body.add(head);
     const face = build();
-    face.box(0, .035, 0, .39, .31, .30, 0x73aa3a).box(0, .18, -.015, .42, .09, .31, 0x9d8a4f)
-      .box(0, .235, -.025, .30, .055, .24, 0xc6a967).box(-.15, -.045, .12, .12, .15, .12, 0xb1c95c)
-      .box(.15, -.045, .12, .12, .15, .12, 0xb1c95c).box(0, -.005, .175, .24, .10, .13, 0xc2d56c)
+    face.box(0, .035, 0, .39, .31, .30, 0x80b842).box(0, .18, -.015, .42, .09, .31, 0x9d8a4f)
+      .box(0, .235, -.025, .30, .055, .24, 0xc6a967).box(-.15, -.045, .12, .12, .15, .12, 0xc5d872)
+      .box(.15, -.045, .12, .12, .15, .12, 0xc5d872).box(0, -.005, .175, .24, .10, .13, 0xd2de7a)
       .box(-.065, .015, .247, .025, .025, .008, 0x6f9141).box(.065, .015, .247, .025, .025, .008, 0x6f9141)
       .box(0, -.09, .17, .15, .045, .03, 0x743d2e).box(0, -.105, .19, .10, .02, .025, 0xea8a62);
+    const eyes=new THREE.Group();eyes.name='taro-eyes';eyes.position.y=.065;head.add(eyes);const eyeBuild=build();
     for (const x of [-.13, .13]) {
-      face.box(x, .065, .159, .10, .14, .024, 0xf5f4d8).box(x + .007, .06, .176, .059, .105, .013, 0x273a27)
-        .box(x - .006, .088, .185, .025, .035, .008, 0xffffff).box(x, .145, .17, .12, .03, .04, 0x477f33);
+      eyeBuild.box(x,0,.159,.105,.145,.024,0xfff3db).box(x+.007,-.005,.176,.061,.108,.013,0x352519)
+        .box(x+.007,-.033,.184,.053,.035,.006,0x9d5f27).box(x-.006,.025,.190,.025,.035,.008,0xffffff);
+      face.box(x, .145, .17, .12, .03, .04, 0x477f33);
     }
+    groupFromBuild(eyeBuild,eyes,{material:skinMaterial});
     face.box(0, .21, .133, .12, .09, .027, 0x3e7f35).box(0, .20, .151, .012, .04, .012, 0xd7d76b)
       .box(-.017, .22, .151, .028, .018, .012, 0xe0dd78).box(.017, .23, .151, .028, .018, .012, 0xe0dd78);
-    groupFromBuild(face, head);
+    groupFromBuild(face, head,{material:skinMaterial});
+    const crown=builder(block,{bevel:.008});for(const x of [-.15,0,.15])crown.box(x,.15,.15,.135,.055,.025,0xc9c6a9);
+    groupFromBuild(crown,head,{material:stoneMaterial});
     const legs = [];
     for (const x of [-.30, .30]) for (const z of [-.31, .27]) {
       const leg = new THREE.Group(); leg.position.set(x, .25, z); body.add(leg);
       leg.name = `taro-leg-${x < 0 ? 'left' : 'right'}-${z < 0 ? 'rear' : 'front'}`;
       const limb = build(); limb.box(0, -.07, 0, .19, .29, .20, 0x62a538).box(0, -.205, .05, .23, .08, .25, 0x8ac648);
       for (const toe of [-.07, 0, .07]) limb.box(toe, -.217, .175, .060, .065, .075, 0xf2e9c9);
-      groupFromBuild(limb, leg); legs.push(leg);
+      groupFromBuild(limb, leg,{material:skinMaterial}); legs.push(leg);
     }
     const bags = new THREE.Group(); body.add(bags);
-    const bagBuild = build();
-    for (const x of [-.37, .37]) bagBuild.box(x, .30, -.12, .14, .20, .26, 0x2d8d88)
-      .box(x, .405, -.12, .16, .035, .27, 0xc4984d).box(x * 1.20, .31, -.02, .025, .06, .07, 0xf5cf70);
-    bagBuild.box(-.37, .49, -.10, .04, .16, .04, 0xeee2b8).box(-.43, .48, -.10, .04, .14, .04, 0xd8cba6)
-      .box(-.43, .32, .025, .13, .20, .045, 0x318a87).box(-.43, .32, .052, .075, .12, .018, 0xf4c95f)
-      .box(-.43, .425, .025, .15, .025, .065, 0xc69c52).box(-.43, .215, .025, .15, .025, .065, 0xc69c52);
-    groupFromBuild(bagBuild, bags);
+    const bagBuild=builder(block,{bevel:.010}),bagMetal=builder(block,{bevel:.006}),papers=builder(plain);
+    for (const x of [-.37, .37]) {
+      bagBuild.box(x,.30,-.12,.14,.20,.26,0x158b98);
+      bagMetal.box(x,.405,-.12,.16,.035,.27,0xc48b48).box(x*1.20,.31,-.02,.025,.06,.07,0xf5cf70);
+    }
+    papers.box(-.37,.49,-.10,.04,.16,.04,0xeee2b8).box(-.43,.48,-.10,.04,.14,.04,0xd8cba6);
+    bagBuild.box(-.43,.32,.025,.13,.20,.045,0x318a87);
+    bagMetal.box(-.43,.32,.052,.075,.12,.018,0xf4c95f).box(-.43,.425,.025,.15,.025,.065,0xc69c52).box(-.43,.215,.025,.15,.025,.065,0xc69c52);
+    groupFromBuild(bagBuild,bags,{material:enamelMaterial});groupFromBuild(bagMetal,bags,{material:copperMaterial});groupFromBuild(papers,bags);
     const cargo = new THREE.Group(); bags.add(cargo);
     const fill = build(); fill.box(-.37, .53, -.08, .12, .10, .16, 0xe1ad4b).box(.37, .53, -.08, .12, .10, .16, 0xe1ad4b);
     groupFromBuild(fill, cargo);
     const tool = new THREE.Group(); tool.position.set(.15, .09, .63); body.add(tool);
-    const tube = build(); tube.box(.19, .19, -.22, .07, .09, .40, 0x7b6950).box(.19, .12, -.01, .085, .18, .085, 0xaa8c52)
-      .box(.10, .06, .02, .28, .07, .10, 0xcfb37a);
+    const rubber=builder(block,{bevel:.008});rubber.box(.19,.19,-.22,.07,.09,.40,0x293d41);
+    groupFromBuild(rubber,tool);
+    const tube = build(); tube.box(.19, .12, -.01, .085, .18, .085, 0xaa8c52).box(.10, .06, .02, .28, .07, .10, 0xcfb37a);
     groupFromBuild(tube, tool, { material: copperMaterial });
     const vacuum = new THREE.Group(); tool.add(vacuum);
-    groupFromBuild(build().box(0, 0, .055, .38, .12, .20, 0x298e91).box(0, -.035, .16, .30, .045, .025, 0x273e3b), vacuum, { material: enamelMaterial });
+    groupFromBuild(build().box(0, 0, .055, .38, .12, .20, 0x1a919d).box(0, -.035, .16, .30, .045, .025, 0x273e3b), vacuum, { material: enamelMaterial });
     groupFromBuild(build().box(0, .065, .045, .28, .025, .12, 0xe1c67f).box(0, .072, .045, .18, .012, .07, 0xf8cb64)
       .box(-.18, 0, .055, .035, .13, .21, 0xb98e4e).box(.18, 0, .055, .035, .13, .21, 0xb98e4e), vacuum, { material: copperMaterial });
     const brush = new THREE.Group(); tool.add(brush);
@@ -334,20 +447,20 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     for (let x = -.15; x <= .16; x += .06) for (const z of [0, .09]) brushBuild.box(x, -.02, z, .035, .08, .05, 0x4e8685);
     groupFromBuild(brushBuild, brush);
     const press = new THREE.Group(); shellRoot.add(press);
-    groupFromBuild(build().box(.40, .35, -.02, .24, .045, .27, 0x716b59)
-      .box(.515, .51, -.06, .035, .30, .035, 0xc0a569).box(.285, .51, -.06, .035, .30, .035, 0xc0a569)
-      .box(.40, .67, -.06, .27, .05, .12, 0xd4aa57), press);
+    groupFromBuild(build().box(.40, .35, -.02, .24, .045, .27, 0x3d519d)
+      .box(.515, .51, -.06, .035, .30, .035, 0x4b5db2).box(.285, .51, -.06, .035, .30, .035, 0x4b5db2)
+      .box(.40, .67, -.06, .27, .05, .12, 0x5965b6), press,{material:enamelMaterial});
     const pressPlaten = new THREE.Group(); press.add(pressPlaten);
     pressPlaten.name = 'taro-compression-platen';
     groupFromBuild(build().box(.40, .58, -.02, .23, .055, .25, 0xd4aa57)
-      .box(.40, .625, -.06, .04, .07, .04, 0x788989), pressPlaten);
+      .box(.40, .625, -.06, .04, .07, .04, 0x788989), pressPlaten,{material:copperMaterial});
     const pressSignalMaterial = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xffd28b, emissive: 0xe3a33e, emissiveIntensity: .12, roughness: .4 }));
     const pressSignal = mesh(block, pressSignalMaterial, press);
     pressSignal.scale.set(.16, .025, .025); pressSignal.position.set(.40, .67, .01);
     // The authored anatomy is deliberately larger than the first slice. The
     // contact patch remains centred on core's point; no collision is resized.
     root.scale.setScalar(1.15);
-    return { root, body, head, shellRoot, legs, amber, bags, cargo, tool, vacuum, brush, press, pressPlaten, pressSignalMaterial };
+    return { root, body, head, eyes, shellRoot, legs, amber, bags, cargo, tool, vacuum, brush, press, pressPlaten, pressSignalMaterial };
   }
 
   function makeDepot(x, z, portable, palette) {
@@ -355,35 +468,43 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     root.name = portable ? 'portable-depot' : 'base-depot';
     root.scale.setScalar(portable ? 1.04 : 1.12);
     root.rotation.y = cameraYaw;
-    const b = builder(block, { bevel: .018 }), coat = builder(plain), metal = builder(block, { bevel: .012 });
-    b.box(0, .02, 0, .89, .07, .87, palette.edge).box(0, .063, .07, .74, .025, .62, palette.clean);
-    // The receiver is deliberately behind the docking centre, with a low hood.
-    // Taro now stands in front of it instead of inside a tall miniature house.
-    metal.box(0, .19, -.51, .75, .30, .35, palette.metal).box(0, .19, -.27, .44, .035, .12, 0xe7bd68)
-      .box(0, .71, -.63, .87, .035, .36, palette.metal);
-    coat.box(0, .36, -.51, .70, .055, .36, 0x2c8d91).box(0, .24, -.315, .48, .15, .025, 0x234e52)
-      .box(0, .65, -.63, .82, .085, .33, 0x278b90);
-    b.box(-.35, .38, -.63, .085, .52, .11, palette.stone).box(.35, .38, -.63, .085, .52, .11, palette.stone);
-    for (const side of [-1, 1]) {
-      coat.box(side * .30, .13, -.13, .055, .12, .35, 0x2c9392).box(side * .37, .24, -.49, .02, .13, .19, 0x2c666b);
-      metal.box(side * .26, .115, .25, .07, .03, .10, 0xe3b559);
+    const pad=builder(block,{bevel:.014});pad.box(0,.02,0,.89,.07,.87,0x287778).box(0,.063,.07,.74,.025,.62,0x84bbb0);
+    groupFromBuild(pad,root,{stage:true,material:enamelMaterial});
+    const receiver=new THREE.Group();receiver.name='depot-receiver';receiver.position.set(portable?-.4:-.69,portable?.035:.27,portable?.08:-.03);receiver.scale.set(portable?.64:1,portable?.78:1,portable?.86:1);root.add(receiver);
+    const coat=builder(block,{bevel:.015}),metal=builder(block,{bevel:.009}),recess=builder(plain),foundation=builder(block,{bevel:.014});
+    foundation.box(0,.015,-.50,.82,.065,.50,palette.stone);
+    coat.box(0,.21,-.50,.72,.34,.32,0x147984).box(0,.43,-.53,.78,.08,.36,0x21999d)
+      .box(-.29,.24,-.29,.055,.22,.07,0x2b9da0).box(.29,.24,-.29,.055,.22,.07,0x2b9da0);
+    recess.box(0,.24,-.323,.50,.195,.020,0x102f38);
+    const beaconZ=portable?-.05:-.54;
+    metal.box(0,.35,-.285,.61,.035,.08,0xd3a44c).box(0,.125,-.285,.61,.035,.08,0xb9863e)
+      .box(-.35,.23,-.50,.035,.30,.34,0xc99a48).box(.35,.23,-.50,.035,.30,.34,0xc99a48)
+      .box(0,.485,-.54,.79,.035,.37,0xd0a552)
+      .box(-.25,.55,beaconZ,.045,.14,.045,0xbb8d45).box(-.25,.67,beaconZ,.16,.025,.14,0xbc8c41);
+    if(portable)metal.box(.26,.54,-.53,.035,.19,.035,0xc99749);
+    groupFromBuild(foundation,receiver,{stage:true,material:stoneMaterial});
+    groupFromBuild(coat,receiver,{stage:true,material:enamelMaterial});
+    groupFromBuild(recess,receiver,{stage:true});
+    const copperFrame=groupFromBuild(metal,receiver,{stage:true,material:copperMaterial});copperFrame.castShadow=false;
+    const belt=builder(block,{bevel:.008}),rails=builder(block,{bevel:.006});
+    if(portable){
+      const yaw=Math.atan2(-.4,-.178),length=.438,cx=-.2,cz=-.089;
+      belt.box(cx,.13,cz,.23,.035,length,0x258c91,yaw,-.36);
+      for(const side of [-1,1])rails.box(cx+Math.cos(yaw)*side*.135,.14,cz-Math.sin(yaw)*side*.135,.025,.05,length,0xc89949,yaw,-.36);
+    }else{
+      const yaw=Math.atan2(-.69,-.34),length=.84,cx=-.345,cz=-.17;
+      belt.box(cx,.24,cz,.25,.035,length,0x258c91,yaw,-.48);
+      for(const side of [-1,1])rails.box(cx+Math.cos(yaw)*side*.15,.25,cz-Math.sin(yaw)*side*.15,.025,.055,length,0xc89949,yaw,-.48);
     }
-    metal.box(-.34, .66, -.63, .04, .20, .04, 0xa37940).box(-.34, .89, -.63, .16, .035, .16, palette.metal);
-    coat.box(-.34, .81, -.63, .12, .12, .12, palette.light);
-    if (portable) b.box(.29, .53, -.59, .045, .24, .045, palette.metal).box(.36, .64, -.59, .15, .09, .025, 0x61b96d);
-    groupFromBuild(b, root, { stage: true, material: stoneMaterial });
-    groupFromBuild(coat, root, { stage: true, material: enamelMaterial });
-    const copperFrame = groupFromBuild(metal, root, { stage: true, material: copperMaterial });
-    // The stone supports and enamel casing already cast the receiver's main
-    // silhouette. Avoid a second shadow pass for the inset copper frame.
-    copperFrame.castShadow = false;
+    groupFromBuild(belt,root,{stage:true,material:enamelMaterial});const railMesh=groupFromBuild(rails,root,{stage:true,material:copperMaterial});railMesh.castShadow=false;
     const ring = mesh(keepGeometry(new THREE.TorusGeometry(.42, .035, 4, 32)), depotRingMaterial, root);
     stageGeometries.add(ring.geometry); ring.rotation.x = -Math.PI / 2; ring.position.y = .084;
-    const lamp = mesh(block, glow, root); lamp.scale.set(.09, .07, .06); lamp.position.set(.22, .30, -.285);
+    const lamp = mesh(block, depotLampMaterial, receiver); lamp.scale.set(.12,.09,.11);lamp.position.set(-.25,.60,beaconZ);
     const arrow = mesh(keepGeometry(new THREE.ConeGeometry(.095, .17, 3)), bronze, root); stageGeometries.add(arrow.geometry);
     arrow.rotation.x = -Math.PI / 2; arrow.position.set(0, .10, .24); arrow.castShadow = false;
+    const contact=mesh(contactGeometry,contactMaterial,root);contact.rotation.x=-Math.PI/2;contact.position.set(0,.012,-.22);contact.scale.set(.59,.58,1);contact.castShadow=false;contact.receiveShadow=false;
     markNavigation(root, { x, z });
-    return { root, ring, lamp, x, z, portable };
+    return { root, receiver, ring, lamp, x, z, portable };
   }
 
   function makeGate(definition, index, palette, walls) {
@@ -438,12 +559,14 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     // ends. Their physical shoreline and stone shelves remain pure scenery.
     for (const [i,[cx,cz]] of [[-3.35,3.0],[12.4,4.4]].entries()) {
       const outline=[[-1.8,-1.1],[-.4,-1.65],[1.1,-1.2],[1.5,-.1],[1.05,.95],[-.15,1.35],[-1.55,.8]];
-      const shore=outline.map(([x,z])=>[cx+x,cz+z]);
-      terrain.terrace(shore,-.81,.14,cold ? 0xc1d7d0 : 0xe4debf);
-      water.terrace(outline.map(([x,z])=>[cx+x*.87,cz+z*.87]),-.785,.035,cold ? 0x66b5bd : 0x4baeb1);
+      const shore=outline.map(([x,z])=>[cx+x,cz+z]),inner=outline.map(([x,z])=>[cx+x*.87,cz+z*.87]);
+      // The shore is an annulus, not a filled polygon lid over the water.
+      terrain.ring(shore,inner,-.72,.20,cold ? 0xb5c9c2 : 0xcfc8ae)
+        .terrace(inner,-.96,.08,0x547a81);
+      water.waterSurface(inner,-.78,cold ? 0x78c2d3 : 0x6ab9c5,cold ? 0x315e91 : 0x326c96);
       meadow.terrace([[cx-1.8,cz+.8],[cx-.65,cz+.65],[cx+.1,cz+1.2],[cx-.5,cz+2.1],[cx-1.8,cz+1.8]],-.74,.12,cold ? 0x9cbfae : 0xc4d7a7);
-      flowerStones.box(cx+1.4,-.64,cz-.8,.85,.30,.65,palette.stone,.25+i*.4)
-        .box(cx+1.1,-.51,cz-.96,.54,.25,.47,palette.clean,-.22);
+      flowerStones.box(cx+1.72,-.64,cz-1.12,.85,.30,.65,palette.stone,.25+i*.4)
+        .box(cx+1.48,-.51,cz-1.25,.54,.25,.47,palette.clean,-.22);
     }
     // Unequal garden clusters leave deliberate breathing spaces between cream
     // stone, moss and water. They stay below the arena rim and outside routes.
@@ -461,7 +584,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
           .box(fx,-.055,fz,.07,.03,.07,0xecc765);
       }
     }
-    for (const [x, z] of [[-2.9, .3], [-2.4, 6.3], [11.6, .5], [12, 6.8], [1.4, -2.8], [7.6, -3.2], [1.1, 9.8], [7.2, 10.4]]) {
+    for (const [x, z] of [[-2.9, .3], [-2.4, 6.3], [11.6, .5], [13.2, 2.0], [1.4, -2.8], [7.6, -3.2], [1.1, 9.8], [7.2, 10.4]]) {
       terrain.box(x, -.64, z, 1.24, .43, .86, palette.stone).box(x - .24, -.49, z + .20, .82, .32, .90, palette.edge)
         .box(x + .32, -.37, z - .10, .58, .20, .66, palette.leaf);
       planting.box(x, .24, z, .19, .58, .18, 0x795c3b).box(x, .55, z, .92, .43, .78, palette.leaf)
@@ -469,13 +592,20 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
         .box(x + .33, .39, z + .16, .44, .31, .43, cold ? 0x4c8f84 : 0x5f9a3b)
         .box(x - .36, .50, z + .22, .40, .30, .41, cold ? 0x659f89 : 0x82b849);
     }
-    for (let i = 0; i < 7; i++) water.box(-2 + Math.sin(i * 1.2) * .17, -.67, -2 + i * 2.0, 1.2, .08, 2.15, cold ? 0x539eaf : 0x319ca5);
-    for (let i = -3; i < 13; i += 2) {
-      const bend = Math.sin(i * .65) * .22;
-      water.box(i, -.67, -2 + bend, 2.2, .08, 1.2, cold ? 0x4fa8bd : 0x36a7b1)
-        .box(i + .2, -.615, -2 + bend, .6, .012, .045, 0xa7eff1, .12);
-    }
-    for (const [i, [x, z]] of [[-3.1, -.3], [-2.8, 4.8], [11.7, 5.1], [6.8, 9.4]].entries()) {
+    // River surfaces sit inside low stone channels rather than floating over
+    // the meadow; the channel banks remain below the playable arena rim.
+    const canalTint=cold ? 0x7a9d9f : 0x8aab98;
+    terrain.box(-2,-.94,4.0,1.55,.18,14.3,canalTint)
+      .box(-2.73,-.83,4.0,.10,.25,14.3,canalTint).box(-1.27,-.83,4.0,.10,.25,14.3,canalTint)
+      .box(4.0,-.94,-2,16.4,.18,1.8,canalTint)
+      .box(4.0,-.83,-2.85,16.4,.25,.10,canalTint).box(4.0,-.83,-1.15,16.4,.25,.10,canalTint);
+    const riverRim=cold ? 0x70bbd0 : 0x65b5bf,riverDeep=cold ? 0x326c95 : 0x327087;
+    // Uniform grids produce smooth cross-channel depth. The three surfaces
+    // meet at their edge and never overlap into fan-shaped highlight seams.
+    water.waterGrid(-2,4,1.2,14.15,-.82,4,28,riverRim,riverDeep)
+      .waterGrid(-3.35,-2,1.5,1.2,-.82,4,4,riverRim,riverDeep)
+      .waterGrid(5.35,-2,13.5,1.2,-.82,28,4,riverRim,riverDeep);
+    for (const [i, [x, z]] of [[-3.1, -.3], [-2.8, 4.8], [11.2, 6.0], [6.8, 9.4]].entries()) {
       flowerStones.box(x, -.63, z, .85, .43, .59, palette.stone, .17 + i * .23)
         .box(x + .40, -.72, z + .26, .52, .30, .47, palette.clean, -.20 - i * .12);
       const petal = cold ? (i % 2 ? 0xebc1df : 0xd9f1eb) : (i % 2 ? 0xf1b19d : 0xf7e5ac);
@@ -495,11 +625,11 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       terrain.box(x, -.16, z, .32, .69, .32, palette.stone).box(x, .22, z, .20, .14, .20, palette.metal)
         .box(x, .41, z, .27, .26, .27, palette.light).box(x, .57, z, .36, .06, .36, palette.metal);
     }
-    const gardenStone = groupFromBuild(terrain, stageGroup, { stage: true, material: stoneMaterial }); gardenStone.castShadow = false;
-    const gardenMoss = groupFromBuild(meadow, stageGroup, { stage: true, material: mossMaterial }); gardenMoss.castShadow = false;
+    const gardenStone = groupFromBuild(terrain, stageGroup, { stage: true, material: stoneMaterial }); gardenStone.name='garden-stone';gardenStone.castShadow = false;
+    const gardenMoss = groupFromBuild(meadow, stageGroup, { stage: true, material: mossMaterial }); gardenMoss.name='garden-moss';gardenMoss.castShadow = false;
     const flowers = groupFromBuild(planting, stageGroup, { stage: true }); flowers.castShadow = false;
     const stoneClusters = groupFromBuild(flowerStones, stageGroup, { stage: true, material: stoneMaterial }); stoneClusters.castShadow = false;
-    const waterMesh = groupFromBuild(water, stageGroup, { stage: true, material: waterMaterial }); waterMesh.castShadow = false;
+    const waterMesh = groupFromBuild(water, stageGroup, { stage: true, material: waterMaterial }); waterMesh.name='garden-water';waterMesh.castShadow = false;
   }
 
   function rebuildStage(next) {
@@ -514,8 +644,8 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     const palette = chapter === 2 ? COOL : WARM;
     scene.background.set(palette.sky);
     scene.fog = new THREE.Fog(palette.sky, 24, 58);
-    keyLight.color.set(chapter === 2 ? 0xd5edf5 : 0xffdfb4);
-    fillLight.color.set(chapter === 2 ? 0xa6d5e4 : 0xc1e5e4);
+    keyLight.color.set(chapter === 2 ? 0xe0eff5 : 0xffe8ca);
+    fillLight.color.set(chapter === 2 ? 0xa6d5e4 : 0xb9dfe4);
     hemiLight.groundColor.set(chapter === 2 ? 0x345669 : 0x3b5635);
     makeGardenSurround(palette, chapter);
     const walls = new Set((next.stage?.walls || []).map(([x, z]) => cellKey(x, z)));
@@ -588,15 +718,15 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       const window = next.stage?.rules?.depotWindow;
       const available = !window || (typeof window === 'number' ? t % 6 < window : (window === 'gate' || window === 'gates') ? next.gateStates?.every(Boolean) : t % ((window.openSeconds || 3) + (window.closedSeconds || 3)) < (window.openSeconds || 3));
       depot.lamp.scale.y = available ? .07 : .025;
-      depot.lamp.material = available ? glow : closedLamp;
+      depot.lamp.material = available ? depotLampMaterial : closedLamp;
       depot.ring.scale.setScalar(reducedMotion ? 1 : 1 + Math.sin(t * 2.2) * .035);
       depot.ring.visible = available;
     }
   }
 
   function updatePiles(next) {
-    let dryIndex = 0, wetIndex = 0, patchIndex = 0;
-    dryPickTargets.length = 0; wetPickTargets.length = 0; soilPickTargets.length = 0;
+    let dryIndex = 0, wetIndex = 0, paperIndex = 0, patchIndex = 0;
+    dryPickTargets.length = 0; wetPickTargets.length = 0; paperPickTargets.length = 0; soilPickTargets.length = 0;
     const totals = new Map(), remaining = new Map();
     for (const item of initialPiles.values()) {
       const key = cellKey(item.x, item.z); totals.set(key, (totals.get(key) || 0) + item.max);
@@ -615,7 +745,8 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       // A group is one core hit region, but each remaining cargo unit retains a
       // separate, countable mound. Completed units disappear one at a time.
       const units = Math.min(4, Math.ceil(amount));
-      for (let unit = 0; unit < units; unit++) for (let j = 0; j < (wet ? 2 : 3); j++) {
+      for (let unit = 0; unit < units; unit++) {
+       for (let j = 0; j < 2; j++) {
         const object = wet ? wetDust : dryDust, index = wet ? wetIndex++ : dryIndex++;
         if (index >= object.instanceMatrix.count) break;
         (wet ? wetPickTargets : dryPickTargets)[index] = { x: pile.x, z: pile.z };
@@ -625,16 +756,25 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
         const z = pile.z + (unit < 2 ? -.18 : .18) + (j === 2 ? .03 : -.02);
         const size = (wet ? .24 : .19) * (1 - active * .18);
         quaternion.setFromAxisAngle(THREE.Object3D.DEFAULT_UP, (j * .7 + finite(pile.x)) % 1.5);
-        matrix.compose(v.set(x, wet ? .045 + j * .016 : .09 + (j === 2 ? .08 : 0), z), quaternion,
+        matrix.compose(v.set(x, wet ? .045 + j * .016 : .09 + j * .035, z), quaternion,
           scale.set(size * (wet ? 1.2 : 1), wet ? .065 : size, size));
         object.setMatrixAt(index, matrix);
-        color.set(wet ? (j % 2 ? 0x547d8d : 0x365b70) : (j % 2 ? 0xd6a457 : 0xf0c77b));
+        color.set(wet ? (j % 2 ? 0x547d8d : 0x365b70) : (j % 2 ? 0xc89f72 : 0xdfc39d));
         object.setColorAt(index, color);
+       }
+       if(!wet&&paperIndex<paperScraps.instanceMatrix.count){
+        const active=unit===units-1?collection:0,size=.15*(1-active*.18);
+        quaternion.setFromAxisAngle(THREE.Object3D.DEFAULT_UP,.4+unit*.7+pile.x*.4);
+        matrix.compose(v.set(pile.x+(unit%2?.18:-.18)+.035,.012,pile.z+(unit<2?-.18:.18)+.08),quaternion,scale.set(size,size*(1-active*.15),size*.8));
+        paperScraps.setMatrixAt(paperIndex,matrix);paperScraps.setColorAt(paperIndex,new THREE.Color(unit%2?0xeee5cb:0xf7edd7));
+        paperPickTargets[paperIndex++]={x:pile.x,z:pile.z};
+       }
       }
     }
     dryDust.count = Math.min(dryIndex, dryDust.instanceMatrix.count); wetDust.count = Math.min(wetIndex, wetDust.instanceMatrix.count);
+    paperScraps.count=paperIndex;
     soilPatches.count = patchIndex; soilPatches.instanceMatrix.needsUpdate = true; if (soilPatches.instanceColor) soilPatches.instanceColor.needsUpdate = true;
-    for (const object of [dryDust, wetDust, soilPatches]) {
+    for (const object of [dryDust, wetDust, paperScraps, soilPatches]) {
       object.instanceMatrix.needsUpdate = true; if (object.instanceColor) object.instanceColor.needsUpdate = true;
       // Instanced raycast bounds must follow both stage changes and consumed
       // piles. They are recomputed lazily on the next actual pointer action.
@@ -705,12 +845,13 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
     const visible = (object) => { for (let node = object; node; node = node.parent) if (!node.visible) return false; return true; };
-    const candidates = [...persistentPickMeshes, ...stagePickMeshes, ...stagePickBlockers, dryDust, wetDust, soilPatches].filter(object => object && visible(object));
+    const candidates = [...persistentPickMeshes, ...stagePickMeshes, ...stagePickBlockers, dryDust, wetDust, paperScraps, soilPatches].filter(object => object && visible(object));
     const first = raycaster.intersectObjects(candidates, false)[0];
     if (first) {
       let target = first.object.userData.dustwakeNavigation;
       if (first.object === dryDust) target = dryPickTargets[first.instanceId];
       else if (first.object === wetDust) target = wetPickTargets[first.instanceId];
+      else if (first.object === paperScraps) target = paperPickTargets[first.instanceId];
       else if (first.object === soilPatches) target = soilPickTargets[first.instanceId];
       if (target?.player) target = state?.player;
       if (target && Number.isFinite(target.x) && Number.isFinite(target.z)) return { x: target.x, z: target.z };
@@ -776,6 +917,12 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     cameraPortrait = aspect < 1;
     cameraWideShort = aspect > 2;
     cameraYaw = cameraPortrait ? THREE.MathUtils.degToRad(78) : THREE.MathUtils.degToRad(10);
+    // The single shadow key and softbox environment stay at the same visual
+    // front-left in each layout. Camera projection and world rules stay fixed.
+    const sunRight=Math.cos(cameraYaw),sunForward=Math.sin(cameraYaw);
+    keyLight.position.set(4.5-sunRight*5+sunForward*6,12,3.5+sunForward*5+sunRight*6);
+    fillLight.position.set(4.5+sunRight*6-sunForward*3,6,3.5-sunForward*6-sunRight*3);
+    scene.environmentRotation.y=cameraYaw;
     cameraElevation = THREE.MathUtils.degToRad(cameraWideShort ? 40 : cameraPortrait ? 49 : 45);
     const radius = 20, horizontal = Math.cos(cameraElevation) * radius;
     camera.position.set(center.x + Math.sin(cameraYaw) * horizontal, center.y + Math.sin(cameraElevation) * radius, center.z + Math.cos(cameraYaw) * horizontal);
@@ -870,10 +1017,11 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       hero.head.rotation.x = -.26 + (!reducedMotion && brushing ? Math.sin(t * 22) * .018 : 0);
       const headToCamera = Math.atan2(Math.sin(cameraYaw + .10 - hero.root.rotation.y), Math.cos(cameraYaw + .10 - hero.root.rotation.y));
       hero.head.rotation.y = clamp(headToCamera, moving ? -.22 : -.45, moving ? .22 : .45);
+      const eyePhase=t%4.8;hero.eyes.scale.y=reducedMotion||eyePhase<4.62?1:Math.max(.08,Math.abs(eyePhase-4.71)/.09);
       hero.tool.position.x = .15 + (!reducedMotion && brushing ? Math.sin(t * 23) * .045 : 0);
       hero.brush.visible = next.mode === 'brush'; hero.vacuum.visible = !hero.brush.visible;
       hero.press.visible = next.toolId === 'press'; hero.amber.visible = next.skin === 'amber';
-      hero.bags.scale.set(next.toolId === 'cargo' ? 1.12 : 1, 1, next.toolId === 'cargo' ? 1.1 : 1);
+      hero.bags.scale.set(next.toolId === 'cargo' ? 1.12 : 1, next.toolId==='cargo'?1.10:1, next.toolId === 'cargo' ? 1.1 : 1);
       const load = finite(next.bagLoad ?? next.bagWeight ?? next.bagCargo), capacity = next.capacity || (next.toolId === 'cargo' ? 12 : 8);
       hero.cargo.visible = load > 0; hero.cargo.scale.y = .25 + clamp(load / capacity, 0, 1);
       targetRing.visible = !!next.target && next.status === 'playing'; targetStem.visible = targetRing.visible;
@@ -964,7 +1112,7 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     resolveRecovery = null; recoveryTimer = null;
     particles.forEach(p => { p.active = false; }); seenEvents.clear(); initialPiles.clear();
     persistentPickMeshes.length = 0; stagePickMeshes.length = 0; stagePickBlockers.length = 0;
-    dryPickTargets.length = 0; wetPickTargets.length = 0; soilPickTargets.length = 0;
+    dryPickTargets.length = 0; wetPickTargets.length = 0; paperPickTargets.length = 0; soilPickTargets.length = 0;
     for (const geometry of geometries) geometry.dispose();
     for (const material of materials) material.dispose();
     releaseEnvironment();
@@ -985,50 +1133,57 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
   const api = { render, resize, mapScreenDirection, getMetrics, recover, dispose };
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
-    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .94;
+    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .88;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     const canvas = renderer.domElement; canvas.dataset.dustwakeRenderer = 'three-r180'; canvas.setAttribute('aria-hidden', 'true');
     canvas.style.display = 'block'; canvas.style.width = '100%'; canvas.style.height = '100%'; canvas.style.touchAction = 'none';
     container.appendChild(canvas);
     scene = new THREE.Scene(); scene.background = new THREE.Color(WARM.sky);
     camera = new THREE.OrthographicCamera(-6, 6, 5, -5, .1, 70);
-    hemiLight = new THREE.HemisphereLight(0xcbe9f1, 0x3b5635, .95); scene.add(hemiLight);
-    const key = keyLight = new THREE.DirectionalLight(0xffdfb4, 2.7); key.position.set(-2, 12, 8); key.castShadow = true;
+    hemiLight = new THREE.HemisphereLight(0xcbe9f1, 0x3b5635, .65); scene.add(hemiLight);
+    const key = keyLight = new THREE.DirectionalLight(0xffe9cb, 2.45); key.position.set(-2, 12, 8); key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024); key.shadow.camera.left = -8; key.shadow.camera.right = 8;
     key.shadow.camera.top = 8; key.shadow.camera.bottom = -8; key.shadow.camera.near = .1; key.shadow.camera.far = 30;
     key.shadow.bias = -.0008; key.shadow.normalBias = .035; key.target.position.set(4.5, 0, 3.5); scene.add(key, key.target);
-    fillLight = new THREE.DirectionalLight(0xa8dce6, .55); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
+    fillLight = new THREE.DirectionalLight(0xa8dce6, .36); fillLight.position.set(12, 6, -5); fillLight.target.position.set(4.5, 0, 3.5); scene.add(fillLight, fillLight.target);
     stoneMap = makeSurfaceTexture(materialImages?.stone, 'stone'); mossMap = makeSurfaceTexture(materialImages?.moss, 'moss');
+    mossMap.repeat.set(.26,.26);
     buildStudioEnvironment();
     block = keepGeometry(chamferedCube());
     const indexedBox = new THREE.BoxGeometry(1, 1, 1);
     plain = keepGeometry(indexedBox.toNonIndexed()); indexedBox.dispose();
     matte = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .82, metalness: .03 }));
-    stoneMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, map: stoneMap, bumpMap: stoneMap, bumpScale: .016, roughness: .78, metalness: 0, envMapIntensity: .55 }));
-    mossMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, map: mossMap, bumpMap: mossMap, bumpScale: .022, roughness: .96, metalness: 0, envMapIntensity: .25 }));
+    skinMaterial = keepMaterial(new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.59,metalness:0,clearcoat:.12,clearcoatRoughness:.55,envMapIntensity:.65}));
+    stoneMaterial = keepMaterial(mapStrength(new THREE.MeshStandardMaterial({ vertexColors: true, map: stoneMap, bumpMap: stoneMap, bumpScale: .008, roughness: .80, metalness: 0, envMapIntensity: .45 }),.66));
+    mossMaterial = keepMaterial(mapStrength(new THREE.MeshStandardMaterial({ vertexColors: true, map: mossMap, bumpMap: mossMap, bumpScale: .006, roughness: .98, metalness: 0, envMapIntensity: .18 }),.32,0x82ad67));
+    shellMossMaterial = keepMaterial(mapStrength(new THREE.MeshStandardMaterial({vertexColors:true,map:mossMap,roughness:.88,metalness:0,envMapIntensity:.35}),.16));
     copperMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .29, metalness: .82, envMapIntensity: 1.1 }));
     enamelMaterial = keepMaterial(new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: .29, metalness: .12, clearcoat: .65, clearcoatRoughness: .22, envMapIntensity: .95 }));
     glossy = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .38, metalness: .15 }));
-    waterMaterial = keepMaterial(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .22, metalness: .16, emissive: 0x126d80, emissiveIntensity: .30 }));
+    waterMaterial = keepMaterial(new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: .17, metalness: .16, clearcoat:1,clearcoatRoughness:.12,envMapIntensity:1.4 }));
     bronze = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xb89b5e, roughness: .5, metalness: .35 }));
     glow = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xbef2ad, emissive: 0x4ba04f, emissiveIntensity: .45, roughness: .45 }));
+    depotLampMaterial=keepMaterial(new THREE.MeshStandardMaterial({color:0xffc35b,emissive:0xc58130,emissiveIntensity:.24,roughness:.34,metalness:.05}));
     closedLamp = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xe9a58f, emissive: 0xa34829, emissiveIntensity: .45, roughness: .45 }));
     warningLamp = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xffda8b, emissive: 0xca8e2d, emissiveIntensity: .45, roughness: .45 }));
     numberMaterial = makeNumberAtlas();
     ringMaterial = keepMaterial(new THREE.MeshBasicMaterial({ color: 0xeff8c1, transparent: true, opacity: .78, depthWrite: false }));
     depotRingMaterial = keepMaterial(new THREE.MeshBasicMaterial({ color: 0x30dec9, transparent: true, opacity: .9, depthWrite: false }));
     particleMaterial = keepMaterial(new THREE.MeshBasicMaterial({ vertexColors: true }));
-    const floorMaterial = keepMaterial(new THREE.MeshStandardMaterial({ map: stoneMap, bumpMap: stoneMap, bumpScale: .012, roughness: .84, metalness: 0, envMapIntensity: .4 }));
+    const floorMaterial = keepMaterial(mapStrength(new THREE.MeshStandardMaterial({ map: stoneMap, bumpMap: stoneMap, bumpScale: .006, roughness: .86, metalness: 0, envMapIntensity: .35 }),.66));
     floor = new THREE.InstancedMesh(plain, floorMaterial, 80); floor.receiveShadow = true; floor.frustumCulled = false; scene.add(floor);
-    const dryMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .65, metalness: .12 }));
+    const dryMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .96, metalness: 0 }));
     const wetMaterial = keepMaterial(new THREE.MeshStandardMaterial({ roughness: .24, metalness: .20 }));
-    dryDust = new THREE.InstancedMesh(block, dryMaterial, 256); wetDust = new THREE.InstancedMesh(block, wetMaterial, 192);
+    dryDust = new THREE.InstancedMesh(keepGeometry(debrisGeometry('dry')), dryMaterial, 256); wetDust = new THREE.InstancedMesh(keepGeometry(debrisGeometry('wet')), wetMaterial, 192);
+    dryDust.name='dry-dust-mounds';wetDust.name='wet-dust-caps';
     for (const object of [dryDust, wetDust]) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = false; object.count = 0; scene.add(object); }
+    paperScraps=new THREE.InstancedMesh(keepGeometry(debrisGeometry('paper')),keepMaterial(new THREE.MeshStandardMaterial({roughness:.94,metalness:0,side:THREE.DoubleSide})),64);paperScraps.name='recyclable-paper-scraps';paperScraps.count=0;paperScraps.castShadow=false;paperScraps.receiveShadow=true;paperScraps.frustumCulled=false;scene.add(paperScraps);
     specks = new THREE.InstancedMesh(plain, particleMaterial, PARTICLE_LIMIT); specks.count = 0; specks.frustumCulled = false; scene.add(specks);
     soilPatches = new THREE.InstancedMesh(plain, keepMaterial(new THREE.MeshStandardMaterial({ roughness: .98, metalness: 0 })), 16);
     soilPatches.count = 0; soilPatches.receiveShadow = true; soilPatches.frustumCulled = false; scene.add(soilPatches);
     hero = makeTaro(); scene.add(hero.root); markNavigation(hero.root, { player: true }, true);
-    heroShadow = mesh(keepGeometry(softContactGeometry()), keepMaterial(new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false })));
+    contactGeometry = keepGeometry(softContactGeometry());contactMaterial=keepMaterial(new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,depthWrite:false}));
+    heroShadow = mesh(contactGeometry,contactMaterial);
     heroShadow.rotation.x = -Math.PI / 2; heroShadow.scale.set(.46, .55, 1); heroShadow.castShadow = false; heroShadow.receiveShadow = false;
     targetRing = mesh(keepGeometry(new THREE.TorusGeometry(.22, .025, 4, 28)), ringMaterial); targetRing.rotation.x = -Math.PI / 2;
     targetRing.castShadow = false; targetRing.receiveShadow = false; targetRing.visible = false;

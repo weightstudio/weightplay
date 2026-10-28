@@ -17,6 +17,7 @@ for(const node of document.querySelectorAll('[data-lobby-link]'))node.href=`/${R
 const guide=$('guide');if(guide)guide.outerHTML=renderStaticGuide(locale);
 $('localeSource').value=locale;
 const AVAILABLE=60;
+const localPracticeRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
 const stars=(shots,limit)=>shots<=Math.max(1,Math.floor(limit/2))?3:shots<=Math.floor(limit*3/4)?2:1;
 if (new URLSearchParams(location.search).get('preview') !== '1') {
   $('gameFrame').hidden=true; $('guide').hidden=true; $('comingSoon').hidden=false;
@@ -34,8 +35,11 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   const resetZoom=()=>{zoomButton.textContent='+';zoomButton.setAttribute('aria-label',t('zoomIn'));zoomButton.setAttribute('aria-pressed','false');};
   const FINISHES=[{id:'workshop',color:0x187e79,unlock:0},{id:'moss',color:0x659657,unlock:5},{id:'ocean',color:0x428eb8,unlock:15},{id:'brass',color:0xd79c37,unlock:30},{id:'dusk',color:0x926ab0,unlock:45},{id:'moon-enamel',color:0xdce9f5,unlock:5,cost:12},{id:'copper-dawn',color:0xc66947,unlock:60}].map((item,i)=>({...item,name:t(`item${i}`)}));
   const STORE='weightplay-rux-salvage-yard-v1';
-  let progress={version:1,highestUnlocked:1,cleared:{},selectedFinish:'workshop'},saveWarning=false;
-  try{const raw=localStorage.getItem(STORE);if(raw){const saved=JSON.parse(raw);if(saved.version!==1||!Number.isInteger(saved.highestUnlocked)||saved.highestUnlocked<1||saved.highestUnlocked>60||!saved.cleared||typeof saved.cleared!=='object'||Array.isArray(saved.cleared))throw Error('invalid save');const cleared={};for(const [key,value] of Object.entries(saved.cleared)){const id=Number(key),stage=OPENING[id-1];if(!/^[1-9]\d*$/.test(key)||!stage||!Number.isSafeInteger(value)||value<1){saveWarning=true;continue;}cleared[key]=value;}progress={...progress,...saved,cleared};if(typeof progress.selectedFinish!=='string'||!FINISHES.some(item=>item.id===progress.selectedFinish)){progress.selectedFinish='workshop';saveWarning=true;}for(const flag of ['tutorialDone','clampIntroDone','platformIntroDone','reflectorIntroDone'])if(progress[flag]!==undefined&&typeof progress[flag]!=='boolean'){progress[flag]=false;saveWarning=true;}}}catch{saveWarning=true;}
+  let progress={version:1,highestUnlocked:1,cleared:{},selectedFinish:'workshop'},saveWarning=false,legacyRewardMigration=false;
+  try{const raw=localStorage.getItem(STORE);if(raw){const saved=JSON.parse(raw);if(saved.version!==1||!Number.isInteger(saved.highestUnlocked)||saved.highestUnlocked<1||saved.highestUnlocked>60||!saved.cleared||typeof saved.cleared!=='object'||Array.isArray(saved.cleared))throw Error('invalid save');const cleared={};for(const [key,value] of Object.entries(saved.cleared)){const id=Number(key),stage=OPENING[id-1];if(!/^[1-9]\d*$/.test(key)||!stage||!Number.isSafeInteger(value)||value<1){saveWarning=true;continue;}cleared[key]=value;}legacyRewardMigration=!Object.hasOwn(saved,'rewardPending')&&!Object.hasOwn(saved,'rewardDelivered')&&Object.keys(cleared).length>0;progress={...progress,...saved,cleared};if(typeof progress.selectedFinish!=='string'||!FINISHES.some(item=>item.id===progress.selectedFinish)){progress.selectedFinish='workshop';saveWarning=true;}for(const flag of ['tutorialDone','clampIntroDone','platformIntroDone','reflectorIntroDone'])if(progress[flag]!==undefined&&typeof progress[flag]!=='boolean'){progress[flag]=false;saveWarning=true;}}}catch{saveWarning=true;}
+  for(const field of ['rewardPending','rewardDelivered']){const value=progress[field],valid={};if(value&&typeof value==='object'&&!Array.isArray(value))for(const [key,flag] of Object.entries(value))if(/^[1-9]\d*$/.test(key)&&OPENING[Number(key)-1]&&progress.cleared[key]&&flag===true)valid[key]=true;progress[field]=valid;}
+  for(const key of Object.keys(progress.rewardDelivered))delete progress.rewardPending[key];
+  if(legacyRewardMigration&&!saveWarning)for(const key of Object.keys(progress.cleared))progress.rewardPending[key]=true;
   // Merge monotonic campaign progress inside one cross-tab lock. Cosmetic
   // selection is last-writer-wins only for an explicit equip action.
   const save=async({selectionChanged=false}={})=>{
@@ -59,6 +63,47 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     }catch{$('saveWarning').hidden=false;return false;}
   };
   let screen='main',stageTab='stages',model=null,view=null,frame,selector,tutorial,tutorialFull=false,dialogMode='',dialogReturn=null,raf=0,last=0,accum=0,angle=.05,paused=false,fastForward=false,lastClampSeconds=0,slice=0,selected=progress.highestUnlocked-1,practice=false,previews=null,purchasePending=false,startPending=false,pageClosed=false,clampChoice=null;
+  let roundSequence=0,roundStarted=false,roundEnded=false,roundOutcome='',roundSaved=true,roundRestart=false;
+  const measurementState=()=>({screen:pageClosed||(screen==='battle'&&!$('dialog').hidden)||(screen==='stage'&&!$('stageDialog').hidden)?null:screen,roundKey:screen==='battle'&&roundStarted?roundSequence:null,started:screen==='battle'&&roundStarted,ended:roundEnded,paused:paused||Boolean(document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])')),outcome:roundOutcome,restart:roundRestart,stageId:screen==='battle'&&roundStarted?slice+1:null,stageIdAuthoritative:true,saveSucceeded:roundSaved,rewardEligible:!practice,locale,node:screen==='battle'?$('battleScreen'):screen==='stage'?$('stageScreen'):$('mainScreen'),activityMode:'input',idleSeconds:300,keyboardKeys:['ArrowUp','ArrowDown','Space']});
+  const notifyMeasurement=()=>{try{window.WonderAnalytics?.game?.observeState(measurementState);}catch(error){console.warn('RUX_MEASUREMENT',error);}};
+  window.addEventListener('weightplay:analytics-ready',notifyMeasurement);
+  const markRewardDelivered=key=>{progress.rewardDelivered={...progress.rewardDelivered,[key]:true};progress.rewardPending={...progress.rewardPending};delete progress.rewardPending[key];};
+  let rewardFlushRunning=false;
+  const flushPendingRewards=()=>{
+    if(practice||localPracticeRequested||pageClosed||rewardFlushRunning||!window.WeightPlayCastle?.creditFirstClear)return;
+    let saved;try{saved=JSON.parse(localStorage.getItem(STORE)||'null');}catch{return;}
+    if(!saved||saved.version!==1||!saved.rewardPending||typeof saved.rewardPending!=='object'||Array.isArray(saved.rewardPending))return;
+    progress=mergeProgress(progress,saved,OPENING,FINISHES.map(item=>item.id));let changed=false;
+    for(const [key,pending] of Object.entries(saved.rewardPending)){
+      if(pending===true&&progress.rewardDelivered[key]){changed=true;continue;}
+      if(pending!==true||!progress.rewardPending[key]||!progress.cleared[key]||!/^[1-9]\d*$/.test(key)||!OPENING[Number(key)-1])continue;
+      try{const result=window.WeightPlayCastle.creditFirstClear('rux-salvage-yard',`stage-${key}`);if(result?.credited||result?.reason==='already-claimed'){markRewardDelivered(key);changed=true;}}catch(error){console.warn('RUX_PENDING_REWARD',error);}
+    }
+    if(changed){rewardFlushRunning=true;save().then(ok=>{rewardFlushRunning=false;if(ok)flushPendingRewards();});}
+  };
+  window.addEventListener('weightplay:analytics-ready',flushPendingRewards);
+  window.addEventListener('weightplay:castle-ready',flushPendingRewards);
+  window.addEventListener('focus',flushPendingRewards);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)flushPendingRewards();});
+  const recoveryTokens=new Set();let recoveryHighlightTimer=0;
+  const clearRecoveryFeedback=()=>{for(const token of recoveryTokens){token.getAnimations().forEach(animation=>animation.cancel());token.remove();}recoveryTokens.clear();clearTimeout(recoveryHighlightTimer);recoveryHighlightTimer=0;$('partStat')?.classList.remove('rux-count-highlight');};
+  const showRecoveryTransfer=event=>{
+    // The Result overlay covers the HUD on the final recovery; its result
+    // text and existing recovery burst remain the visible confirmation.
+    if(!view||model.state!=='flight'||recoveryTokens.size>=3)return;
+    const counter=$('partStat');if(!counter?.getClientRects().length)return;
+    if(view.reducedMotion||typeof Element.prototype.animate!=='function'){counter.classList.add('rux-count-highlight');clearTimeout(recoveryHighlightTimer);recoveryHighlightTimer=setTimeout(()=>counter.classList.remove('rux-count-highlight'),220);return;}
+    const root=$('battleScreen'),rootRect=root.getBoundingClientRect(),target=counter.getBoundingClientRect(),origin=view.screenPoint(event.x,event.y);
+    if(!rootRect.width||!rootRect.height||!target.width||!target.height)return;
+    const sx=root.clientWidth/rootRect.width,sy=root.clientHeight/rootRect.height;
+    const fromX=(origin.x-rootRect.left)*sx,fromY=(origin.y-rootRect.top)*sy,toX=(target.left+target.width/2-rootRect.left)*sx,toY=(target.top+target.height/2-rootRect.top)*sy;
+    const token=document.createElement('span');token.className='rux-recovery-token';token.setAttribute('aria-hidden','true');token.textContent='✦';token.style.left=`${fromX-9}px`;token.style.top=`${fromY-9}px`;root.append(token);recoveryTokens.add(token);
+    const animation=token.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${toX-fromX}px,${toY-fromY}px)`,opacity:.8}],{duration:420,easing:'ease-in-out'});
+    animation.onfinish=()=>{token.remove();recoveryTokens.delete(token);};
+  };
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearRecoveryFeedback();});
+  window.addEventListener('resize',clearRecoveryFeedback);
+  const recoveryResizeObserver=new ResizeObserver(clearRecoveryFeedback);recoveryResizeObserver.observe($('battleScreen'));
   const ownsFinish=item=>item.id==='workshop'||(item.cost?Boolean(window.WeightPlayWallet?.owns(`rux-salvage-yard:${item.id}`)):Boolean(progress.cleared[item.unlock]));
   const equippedFinish=()=>FINISHES.find(item=>item.id===progress.selectedFinish&&ownsFinish(item))||FINISHES[0];
   const renderCollection=()=>{
@@ -75,14 +120,15 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   };
   const showStageTab=next=>{stageTab=next;$('stagePage').hidden=next!=='stages';$('stagePage').classList.toggle('hidden',next!=='stages');$('collectionPage').hidden=next!=='collection';$('stagePage').inert=next!=='stages';$('collectionPage').inert=next!=='collection';$('stagesTab').setAttribute('aria-selected',String(next==='stages'));$('collectionTab').setAttribute('aria-selected',String(next==='collection'));if(next==='collection')renderCollection();else selector?.refresh(selected);};
   let purchaseItem=null,purchaseReturn=null;
-  const openPurchase=item=>{if(purchasePending||practice)return;purchaseItem=item;purchaseReturn=document.activeElement;$('purchaseText').textContent=`${item.name} · ${t('permanent')} · ${t('samePhysics')} · ${t('price',{n:item.cost})} · ${t('balance')}: ${window.WeightPlayWallet.read().diamonds}`;$('purchaseMessage').textContent='';$('stageDialog').hidden=false;$('stageWorkspace').inert=true;$('stageScreen').querySelector('nav').inert=true;frame.activate('stage',{covered:true});$('purchaseCancel').focus();};
-  const closePurchase=()=>{if(purchasePending)return;$('stageDialog').hidden=true;$('stageWorkspace').inert=false;$('stageScreen').querySelector('nav').inert=false;frame.activate('stage');purchaseItem=null;if(purchaseReturn?.isConnected)purchaseReturn.focus();};
+  const openPurchase=item=>{if(purchasePending||practice)return;purchaseItem=item;purchaseReturn=document.activeElement;$('purchaseText').textContent=`${item.name} · ${t('permanent')} · ${t('samePhysics')} · ${t('price',{n:item.cost})} · ${t('balance')}: ${window.WeightPlayWallet.read().diamonds}`;$('purchaseMessage').textContent='';$('stageDialog').hidden=false;$('stageWorkspace').inert=true;$('stageScreen').querySelector('nav').inert=true;frame.activate('stage',{covered:true});notifyMeasurement();$('purchaseCancel').focus();};
+  const closePurchase=()=>{if(purchasePending)return;$('stageDialog').hidden=true;$('stageWorkspace').inert=false;$('stageScreen').querySelector('nav').inert=false;frame.activate('stage');notifyMeasurement();purchaseItem=null;if(purchaseReturn?.isConnected)purchaseReturn.focus();};
   const setScreen=next=>{
-    if(screen==='battle'&&next!=='battle'){cancelAnimationFrame(raf);view?.dispose();model?.dispose();view=model=null;audio?.stop();}
+    if(screen==='battle'&&next!=='battle'){clearRecoveryFeedback();cancelAnimationFrame(raf);view?.dispose();model?.dispose();view=model=null;audio?.stop();}
     screen=next;document.body.dataset.screen=next;
     for(const n of ['main','stage','battle']){$(n+'Screen').hidden=n!==next;$(n+'Screen').inert=n!==next;}
     $('guide').hidden=next!=='main';frame.activate(next);if(next==='stage')showStageTab('stages');
     $('mainProgress').textContent=`${t('stage')} ${progress.highestUnlocked} / 60`;
+    notifyMeasurement();
   };
   // The shared rail captures pointer events before they bubble. Wait for
   // its own gesture and easing flags to clear before refreshing its cards.
@@ -102,10 +148,11 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
       if(screen==='main'&&selected===previousUnlock-1&&progress.highestUnlocked>previousUnlock)selected=progress.highestUnlocked-1;
       $('mainProgress').textContent=`${t('stage')} ${progress.highestUnlocked} / 60`;
       if(screen==='stage'&&stageTab==='stages'){stageRefreshPending=true;if(!stageRefreshFrame)stageRefreshFrame=requestAnimationFrame(flushStageRefresh);}
+      flushPendingRewards();
     }catch{}
   });
   const restoreClampTools=()=>{if($('clampTools').parentElement===$('dialogText')){$('clampTools').hidden=true;$('battleScreen').append($('clampTools'));}};
-  const closeDialog=()=>{restoreClampTools();$('dialog').hidden=true;$('battleLive').inert=false;paused=false;dialogMode='';last=performance.now();frame.activate('battle');if(dialogReturn?.isConnected&&dialogReturn.getClientRects().length&&!dialogReturn.disabled)dialogReturn.focus({preventScroll:true});else view?.renderer.domElement.focus({preventScroll:true});};
+  const closeDialog=()=>{restoreClampTools();$('dialog').hidden=true;$('battleLive').inert=false;paused=false;dialogMode='';last=performance.now();frame.activate('battle');notifyMeasurement();if(dialogReturn?.isConnected&&dialogReturn.getClientRects().length&&!dialogReturn.disabled)dialogReturn.focus({preventScroll:true});else view?.renderer.domElement.focus({preventScroll:true});};
   const finishMechanicIntro=flag=>{if(!practice){progress[flag]=true;save();}closeDialog();};
   const refreshClampCount=()=>{const seconds=Math.ceil(Math.max(0,...model.clamped.map(item=>item.remaining)));const message=`${model.clampsRemaining} ${t('remaining')}${seconds?` · ${seconds} s`:''}`,badge=seconds?`${seconds}s`:String(model.clampsRemaining),label=`${t('target')} · ${message}`,announcement=seconds?label:lastClampSeconds?t('clampReleased'):clampStatus.textContent;lastClampSeconds=seconds;if($('clampCount').textContent!==message)$('clampCount').textContent=message;if(clampStatus.textContent!==announcement)clampStatus.textContent=announcement;if(clampTrigger.lastElementChild.textContent!==badge)clampTrigger.lastElementChild.textContent=badge;if(clampTrigger.getAttribute('aria-label')!==label){clampTrigger.setAttribute('aria-label',label);clampTrigger.title=label;}clampTrigger.disabled=!model.clampsRemaining;};
   const refreshClampOptions=()=>{
@@ -120,10 +167,10 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     refreshClampCount();$('clamp').disabled=!model.clampsRemaining||!select.options.length;
   };
   const dialog=(title,text,buttons,mode='result')=>{
-    restoreClampTools();dialogReturn=document.activeElement;dialogMode=mode;paused=true;$('battleLive').inert=true;$('dialog').dataset.mode=mode;$('dialogTitle').textContent=title;$('dialogText').textContent=text;$('dialogText').tabIndex=mode==='help'?0:-1;
+    clearRecoveryFeedback();restoreClampTools();dialogReturn=document.activeElement;dialogMode=mode;paused=true;$('battleLive').inert=true;$('dialog').dataset.mode=mode;$('dialogTitle').textContent=title;$('dialogText').textContent=text;$('dialogText').tabIndex=mode==='help'?0:-1;
     const actions=$('dialogActions');actions.replaceChildren();
     for(const [label,fn,disabled=false] of buttons){const b=document.createElement('button');b.textContent=label;b.disabled=disabled;b.addEventListener('click',fn,{once:true});actions.append(b);}
-    $('dialog').hidden=false;frame.activate('battle',{covered:true});actions.querySelector('button:not(:disabled)')?.focus();
+    $('dialog').hidden=false;frame.activate('battle',{covered:true});notifyMeasurement();actions.querySelector('button:not(:disabled)')?.focus();
   };
   const start=async(index=slice)=>{
     if(startPending||pageClosed||index<0||index>=OPENING.length||(!practice&&index+1>progress.highestUnlocked))return;
@@ -131,9 +178,9 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     try {
     if(practice&&!await LocalPractice.validate())return;
     if(pageClosed||screen!==originScreen)return;
-    slice=index;
+    roundRestart=originScreen==='battle'&&index===slice;roundSequence++;roundStarted=false;roundEnded=false;roundOutcome='';roundSaved=true;slice=index;
     selected=index;
-    if(screen==='battle'){view?.dispose();model?.dispose();cancelAnimationFrame(raf);}
+    if(screen==='battle'){clearRecoveryFeedback();view?.dispose();model?.dispose();cancelAnimationFrame(raf);}
     else setScreen('battle');
     $('dialog').hidden=true;$('battleLive').inert=false;paused=false;fastForward=false;frame.activate('battle');model=new SalvageSlice(window.Matter,slice===AVAILABLE ? {twoTargets:true} : {stage:OPENING[slice]});angle=.05;accum=0;$('power').value='60';updatePower();
     // Match the checked initial rest state before accepting a player's first shot.
@@ -141,7 +188,8 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     clampChoice=null;recoveryTime=0;recoveryNotice.hidden=true;clampStatus.textContent='';lastClampSeconds=0;$('arena').classList.toggle('chapter-two',slice>=30);$('clampTools').hidden=true;clampTrigger.hidden=!model.stage?.clamps;$('battleLive').classList.toggle('has-clamp',Boolean(model.stage?.clamps));if(model.stage?.clamps)refreshClampOptions();
     try {view=new SalvageView($('arena'),a=>{if(!paused&&(model.state==='ready'||model.state==='flight'))angle=a;},()=>{if(screen==='battle'){audio?.stop();dialog(t('graphics'),t('reload'),[[t('reload'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'error');}});view.setStage(model);view.setFinish(equippedFinish().color);resetZoom();}
     catch(e){console.error('RUX_GRAPHICS',e);dialog(t('graphics'),t('reload'),[[t('stages'),()=>setScreen('stage')]],'error');return;}
-    view.renderer.domElement.focus({preventScroll:true});sound('game.start');last=performance.now();raf=requestAnimationFrame(tick);if(slice===0){tutorialFull=false;tutorial.show();}else if(slice===20&&!progress.reflectorIntroDone){dialog(stageTitle(locale,OPENING[slice]),`${t('reboundTip')} ${t('reboundContact')}`,[[t('continue'),()=>finishMechanicIntro('reflectorIntroDone')]],'reflectorIntro');}else if(slice===30&&!progress.clampIntroDone){dialog(t('target'),`${t('clampMenuHint')} ${t('clampIntro')} ${t('clampAdvice')}`,[[t('continue'),()=>finishMechanicIntro('clampIntroDone')]],'clampIntro');const icon=clampTrigger.querySelector('svg').cloneNode(true);icon.classList.add('clamp-intro-icon');$('dialogText').prepend(icon);}else if(slice===35&&!progress.platformIntroDone){dialog(stageTitle(locale,OPENING[slice]),`${t('platformTip')} ${t('contactMark')} ${t('platformEstimate')}`,[[t('continue'),()=>finishMechanicIntro('platformIntroDone')]],'platformIntro');}
+    roundStarted=true;if(!practice){try{window.WonderAnalytics?.track?.('stage_start',{stage_id:slice+1});}catch(error){console.warn('RUX_STAGE_START',error);}}
+    view.renderer.domElement.focus({preventScroll:true});sound('game.start');last=performance.now();raf=requestAnimationFrame(tick);if(slice===0){tutorialFull=false;tutorial.show();}else if(slice===20&&!progress.reflectorIntroDone){dialog(stageTitle(locale,OPENING[slice]),`${t('reboundTip')} ${t('reboundContact')}`,[[t('continue'),()=>finishMechanicIntro('reflectorIntroDone')]],'reflectorIntro');}else if(slice===30&&!progress.clampIntroDone){dialog(t('target'),`${t('clampMenuHint')} ${t('clampIntro')} ${t('clampAdvice')}`,[[t('continue'),()=>finishMechanicIntro('clampIntroDone')]],'clampIntro');const icon=clampTrigger.querySelector('svg').cloneNode(true);icon.classList.add('clamp-intro-icon');$('dialogText').prepend(icon);}else if(slice===35&&!progress.platformIntroDone){dialog(stageTitle(locale,OPENING[slice]),`${t('platformTip')} ${t('contactMark')} ${t('platformEstimate')}`,[[t('continue'),()=>finishMechanicIntro('platformIntroDone')]],'platformIntro');}notifyMeasurement();
     } finally {startPending=false;}
   };
   const showResult=async(won,reason)=>{
@@ -149,16 +197,18 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     const buttons=[[t('stages'),()=>{closeDialog();setScreen('stage');}],[t('next'),()=>start(resultSlice+1),!won||resultSlice>=59],[t('replay'),()=>start()]];
     const rating=won?`${t('mastery')}: ${'★'.repeat(stars(resultModel.shots,resultModel.limit))} (${resultModel.shots}/${resultModel.limit} ${t('ball')}). `:'';
     if(won&&!practice){
-      const key=String(resultSlice+1),best=progress.cleared[key];progress.cleared[key]=best?Math.min(best,resultModel.shots):resultModel.shots;progress.highestUnlocked=Math.max(progress.highestUnlocked,Math.min(60,resultSlice+2));
+      const key=String(resultSlice+1),best=progress.cleared[key];progress.cleared[key]=best?Math.min(best,resultModel.shots):resultModel.shots;progress.highestUnlocked=Math.max(progress.highestUnlocked,Math.min(60,resultSlice+2));if(!progress.rewardDelivered[key])progress.rewardPending={...progress.rewardPending,[key]:true};
       // Keep the result visible but its actions disabled until the serialized
       // save settles, so a delayed write cannot race navigation or rewards.
       dialog(t('won'),`${t('winBody')} ${rating}${t('savingProgress')}`,buttons.map(([label,fn])=>[label,fn,true]));
-      const persisted=await save();if(persisted){try{window.WonderAnalytics?.completeStage?.(resultSlice+1);}catch(error){console.warn('RUX_STAGE_REWARD',error);}}
+      const persisted=await save();if(persisted){try{const reward=window.WonderAnalytics?.completeStage?.(resultSlice+1);if(reward?.credited||reward?.reason==='already-claimed'){markRewardDelivered(key);save();}else flushPendingRewards();}catch(error){console.warn('RUX_STAGE_REWARD',error);flushPendingRewards();}}
       if(pageClosed||screen!=='battle'||model!==resultModel||dialogMode!=='result')return;
+      roundEnded=true;roundOutcome='win';roundSaved=persisted;notifyMeasurement();
       $('dialogText').textContent=`${t('winBody')} ${rating}${persisted?t('saved'):t('saveError')}`;
       [...$('dialogActions').children].forEach((button,index)=>{button.disabled=Boolean(buttons[index][2]);});$('dialogActions').querySelector('button:not(:disabled)')?.focus();return;
     }
     const note=won&&practice?t('practice'):'';
+    roundEnded=true;roundOutcome=won?'win':'lose';roundSaved=!practice;notifyMeasurement();
     dialog(won?t('won'):reason?t('wrong'):t('lost'),won?`${t('winBody')} ${rating}${note}`:reason==='wrongOrder'?t('first'):reason==='wrongLast'?t('last'):reason==='wrongLink'?t('linked'):reason==='missingClamp'?t('clampRule'):t('lossText'),buttons);
   };
   const tick=now=>{
@@ -171,7 +221,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
       for(const event of events){
         view.effect(event);
         if(event.type==='impact')sound(event.material==='wood'||event.material==='beam'?'impact.wood':event.material==='target'||event.material==='metal'?'impact.metal':'impact.soft');
-        if(event.type==='recovered')sound('reward.collect');
+        if(event.type==='recovered'){showRecoveryTransfer(event);sound('reward.collect');}
         if(event.type==='clamp')sound('mechanism.screw');if(event.type==='release')sound('mechanism.unlock');
         if(model.stage?.clamps&&['break','release','recovered','ready'].includes(event.type))refreshClampOptions();
         if(event.type==='win'){sound('result.win');showResult(true);}if(event.type==='lose'){sound('result.lose');showResult(false,reason);}
@@ -211,12 +261,12 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   $('clamp').addEventListener('click',()=>{const body=model?.bodies.find(item=>String(item.id)===$('clampTarget').value);if(dialogMode==='clamp'&&model?.clampBody(body)){clampChoice=String(body.id);refreshClampOptions();closeDialog();}else sound('feedback.error');});
   document.addEventListener('keydown',e=>{const modal=!$('stageDialog').hidden?$('stageDialog'):!$('dialog').hidden?$('dialog'):null;if(modal){if(e.key==='Escape'){if(modal===$('stageDialog')&&!purchasePending)closePurchase();else if(dialogMode==='help'){tutorial.complete();closeDialog();}else if(dialogMode==='platformIntro')finishMechanicIntro('platformIntroDone');else if(dialogMode==='reflectorIntro')finishMechanicIntro('reflectorIntroDone');else if(dialogMode==='clampIntro')finishMechanicIntro('clampIntroDone');else if(dialogMode==='pause'||dialogMode==='clamp'||dialogMode==='power'||dialogMode==='angle')closeDialog();e.preventDefault();}if(e.key==='Tab'){const focus=[...modal.querySelectorAll('button,select,input,a,[tabindex="0"]')].filter(node=>!node.disabled&&node.getClientRects().length);if(focus.length){const first=focus[0],last=focus.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}return;}if(screen!=='battle'||paused||document.querySelector('[data-wp-preferences] .wp-frame-popover:not([hidden])'))return;if(e.key==='Escape'){e.preventDefault();$('battleBack').click();return;}if(e.target.matches('input,select'))return;const increment=e.shiftKey ? .005 : .03;if(e.key==='ArrowUp'){angle=Math.min(1.1,angle+increment);e.preventDefault();}if(e.key==='ArrowDown'){angle=Math.max(-.1,angle-increment);e.preventDefault();}if(e.code==='Space'&&!e.target.matches('button')){e.preventDefault();fire();}});
   document.addEventListener('visibilitychange',()=>{last=performance.now();if(document.hidden&&screen==='battle'&&!paused)dialog(t('pause'),t('leaveDetails',{n:slice+1}),[[t('continue'),closeDialog],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'pause');});
-  window.addEventListener('pagehide',()=>{pageClosed=true;cancelAnimationFrame(raf);cancelAnimationFrame(stageRefreshFrame);view?.dispose();model?.dispose();selector.destroy();frame.destroy();audio?.dispose();tutorial.destroy();},{once:true});
+  window.addEventListener('pagehide',()=>{pageClosed=true;clearRecoveryFeedback();recoveryResizeObserver.disconnect();cancelAnimationFrame(raf);cancelAnimationFrame(stageRefreshFrame);view?.dispose();model?.dispose();selector.destroy();frame.destroy();audio?.dispose();tutorial.destroy();},{once:true});
   LocalPractice.register({gameId:'rux-salvage-yard',stageIds:OPENING.map(d=>d.id),enable(value){practice=value;selector.refresh(selected);},startStage:id=>start(Number(id)-1)});
   const poster=document.querySelector('[data-wp-frame-poster]');
   window.WeightPlayAudio?.preload?.(['feedback.error','game.start','impact.metal','impact.soft','impact.wood','mechanism.screw','mechanism.unlock','projectile.launch','result.lose','result.win','reward.collect','shop.purchase']);
   const ready=()=>{if(poster.naturalWidth){$('startBtn').disabled=false;window.WeightPlayGameEntryLoader?.ready();}else window.WeightPlayGameEntryLoader?.fail();};
   if(poster.complete)ready();else{poster.addEventListener('load',ready,{once:true});poster.addEventListener('error',ready,{once:true});}
   $('localeSource').addEventListener('change',()=>window.WonderI18n?.setLocale?.($('localeSource').value));
-  if(saveWarning)$('saveWarning').hidden=false;$('mainProgress').textContent=`${t('stage')} ${progress.highestUnlocked} / 60`;frame.activate('main');
+  if(saveWarning)$('saveWarning').hidden=false;$('mainProgress').textContent=`${t('stage')} ${progress.highestUnlocked} / 60`;frame.activate('main');notifyMeasurement();if(legacyRewardMigration&&!saveWarning&&!localPracticeRequested)save().then(ok=>{if(ok)flushPendingRewards();});else flushPendingRewards();
 }

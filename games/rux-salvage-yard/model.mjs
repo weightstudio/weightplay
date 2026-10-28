@@ -5,8 +5,11 @@ export function mergeProgress(current,saved,stages,finishIds,selectionChanged=fa
   if(!saved||saved.version!==1||!Number.isInteger(saved.highestUnlocked)||saved.highestUnlocked<1||saved.highestUnlocked>stages.length||!saved.cleared||typeof saved.cleared!=='object'||Array.isArray(saved.cleared))return current;
   const cleared={...current.cleared};
   for(const [key,value] of Object.entries(saved.cleared)){const id=Number(key);if(!/^[1-9]\d*$/.test(key)||!stages[id-1]||!Number.isSafeInteger(value)||value<1)continue;cleared[key]=cleared[key]?Math.min(cleared[key],value):value;}
+  const flags=(...sources)=>{const result={};for(const source of sources)if(source&&typeof source==='object'&&!Array.isArray(source))for(const [key,value] of Object.entries(source))if(/^[1-9]\d*$/.test(key)&&stages[Number(key)-1]&&cleared[key]&&value===true)result[key]=true;return result;};
+  const rewardDelivered=flags(current.rewardDelivered,saved.rewardDelivered),rewardPending=flags(current.rewardPending,saved.rewardPending);
+  for(const key of Object.keys(rewardDelivered))delete rewardPending[key];
   const savedFinish=typeof saved.selectedFinish==='string'&&finishIds.includes(saved.selectedFinish)?saved.selectedFinish:current.selectedFinish;
-  return {...current,highestUnlocked:Math.max(current.highestUnlocked,saved.highestUnlocked),cleared,selectedFinish:selectionChanged?current.selectedFinish:savedFinish,tutorialDone:current.tutorialDone===true||saved.tutorialDone===true,clampIntroDone:current.clampIntroDone===true||saved.clampIntroDone===true,platformIntroDone:current.platformIntroDone===true||saved.platformIntroDone===true,reflectorIntroDone:current.reflectorIntroDone===true||saved.reflectorIntroDone===true};
+  return {...current,highestUnlocked:Math.max(current.highestUnlocked,saved.highestUnlocked),cleared,rewardPending,rewardDelivered,selectedFinish:selectionChanged?current.selectedFinish:savedFinish,tutorialDone:current.tutorialDone===true||saved.tutorialDone===true,clampIntroDone:current.clampIntroDone===true||saved.clampIntroDone===true,platformIntroDone:current.platformIntroDone===true||saved.platformIntroDone===true,reflectorIntroDone:current.reflectorIntroDone===true||saved.reflectorIntroDone===true};
 }
 export function estimateTrajectory(M,obstacles,angle,power,probe=M.Bodies.circle(80,680,22),motion=null) {
   const speed=700+Math.max(0,Math.min(1,power))*500,points=[{x:80,y:680}];let previous=points[0],hit=null;
