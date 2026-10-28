@@ -425,18 +425,68 @@ export const QUESTIONS={
   ar:['لماذا انتهت المرحلة قبل نفاد الكرات؟','هل يغيّر المظهر قوة الطلقة؟','أين يُحفظ التقدم؟']
 };
 const EXTRA={
- en:['A clamp holds its target for three seconds.','The dotted arc previews the path to the first contact.'],
- 'zh-Hant':['夾具會固定目標三秒。','點線顯示碰到第一個物件之前的預估路徑。'],
- 'zh-Hans':['夹具会固定目标三秒。','点线显示碰到第一个物体之前的预估路径。'],
- ja:['クランプは対象を3秒間固定します。','点線は最初の接触までの予想軌道です。'],
- ko:['클램프는 대상을 3초 동안 고정합니다.','점선은 첫 충돌까지의 예상 궤적입니다.'],
- es:['La pinza fija el objetivo durante tres segundos.','La línea de puntos muestra la trayectoria prevista hasta el primer contacto.'],
- 'pt-BR':['A pinça prende o alvo por três segundos.','A linha pontilhada prevê a trajetória até o primeiro contato.'],
- fr:['La pince maintient sa cible pendant trois secondes.','La ligne pointillée indique la trajectoire prévue jusqu’au premier contact.'],
- de:['Die Klammer hält ihr Ziel drei Sekunden lang fest.','Die gepunktete Linie zeigt die erwartete Bahn bis zum ersten Kontakt.'],
- it:['La pinza fissa il bersaglio per tre secondi.','La linea tratteggiata mostra la traiettoria prevista fino al primo contatto.'],
- ru:['Зажим удерживает цель три секунды.','Пунктир показывает предполагаемую траекторию до первого касания.'],
- hi:['क्लैंप लक्ष्य को तीन सेकंड तक रोकता है।','बिंदुओं की रेखा पहले संपर्क तक अनुमानित रास्ता दिखाती है।'],
- ar:['يثبّت المشبك هدفه لثلاث ثوانٍ.','يعرض الخط المنقط المسار المتوقع حتى أول اصطدام.']
+ en:['A clamp holds its target for three seconds.','The dotted arc estimates the path to first contact. Moving parts may shift before impact; the arrow shows the platform direction.'],
+ 'zh-Hant':['夾具會固定目標三秒。','點線預估碰到第一個物件前的路徑。移動中的零件可能改變接觸位置；箭頭顯示平台方向。'],
+ 'zh-Hans':['夹具会固定目标三秒。','点线预估碰到第一个物体前的路径。移动中的零件可能改变接触位置；箭头显示平台方向。'],
+ ja:['クランプは対象を3秒間固定します。','点線は最初の接触までの予想軌道です。動く部品は接触位置が変わります。矢印は台の移動方向を示します。'],
+ ko:['클램프는 대상을 3초 동안 고정합니다.','점선은 첫 충돌까지의 예상 궤적입니다. 움직이는 부품은 충돌 위치가 달라질 수 있으며 화살표는 발판의 방향을 나타냅니다.'],
+ es:['La pinza fija el objetivo durante tres segundos.','La línea de puntos estima la trayectoria hasta el primer contacto. Las piezas móviles pueden cambiar el impacto; la flecha indica la dirección de la plataforma.'],
+ 'pt-BR':['A pinça prende o alvo por três segundos.','A linha pontilhada estima a trajetória até o primeiro contato. Peças móveis podem mudar o impacto; a seta indica a direção da plataforma.'],
+ fr:['La pince maintient sa cible pendant trois secondes.','La ligne pointillée estime la trajectoire jusqu’au premier contact. Les pièces mobiles peuvent modifier l’impact ; la flèche indique le sens de la plateforme.'],
+ de:['Die Klammer hält ihr Ziel drei Sekunden lang fest.','Die gepunktete Linie schätzt die Bahn bis zum ersten Kontakt. Bewegliche Teile können den Treffer ändern; der Pfeil zeigt die Richtung der Plattform.'],
+ it:['La pinza fissa il bersaglio per tre secondi.','La linea tratteggiata stima la traiettoria fino al primo contatto. I pezzi mobili possono cambiare l’impatto; la freccia indica la direzione della piattaforma.'],
+ ru:['Зажим удерживает цель три секунды.','Пунктир показывает примерную траекторию до первого касания. Движущиеся детали могут изменить удар; стрелка указывает направление платформы.'],
+ hi:['क्लैंप लक्ष्य को तीन सेकंड तक रोकता है।','बिंदीदार रेखा पहले संपर्क तक का अनुमानित रास्ता दिखाती है। चलते पुर्ज़ों से टक्कर बदल सकती है; तीर मंच की दिशा दिखाता है।'],
+ ar:['يثبّت المشبك هدفه لثلاث ثوانٍ.','يقدّر الخط المنقط المسار حتى أول اصطدام. قد تغيّر القطع المتحركة موضع الاصطدام؛ يوضح السهم اتجاه المنصة.']
 };
 for(const [locale,[clampTime,trajectory]] of Object.entries(EXTRA))Object.assign(CUSTOM[locale],{clampTime,trajectory});
+const VIEW_COPY={
+  en:['Zoom in on structures','Show the full field','Use + to enlarge the structures and − to return to the full field.'],
+  'zh-Hant':['放大支架','顯示完整場地','按 + 放大支架，按 − 返回完整場地。'],
+  'zh-Hans':['放大支架','显示完整场地','按 + 放大支架，按 − 返回完整场地。'],
+  ja:['構造物を拡大','全体を表示','＋で構造物を拡大し、−で全体に戻ります。'],
+  ko:['구조물 확대','전체 보기','+로 구조물을 확대하고 −로 전체 화면으로 돌아갑니다.'],
+  es:['Ampliar estructuras','Mostrar todo el campo','Usa + para ampliar las estructuras y − para volver al campo completo.'],
+  'pt-BR':['Ampliar estruturas','Mostrar todo o campo','Use + para ampliar as estruturas e − para voltar ao campo inteiro.'],
+  fr:['Agrandir les structures','Afficher tout le terrain','Utilisez + pour agrandir les structures et − pour revenir au terrain entier.'],
+  de:['Aufbauten vergrößern','Gesamtes Spielfeld anzeigen','Mit + die Aufbauten vergrößern und mit − das ganze Feld anzeigen.'],
+  it:['Ingrandisci le strutture','Mostra tutto il campo','Usa + per ingrandire le strutture e − per tornare al campo intero.'],
+  ru:['Увеличить конструкции','Показать всё поле','Нажмите +, чтобы увеличить конструкции, и −, чтобы вернуться ко всему полю.'],
+  hi:['ढाँचों को बड़ा करें','पूरा मैदान दिखाएँ','ढाँचे बड़े करने के लिए + और पूरा मैदान दिखाने के लिए − दबाएँ।'],
+  ar:['تكبير الهياكل','إظهار الساحة كاملة','استخدم + لتكبير الهياكل و− للعودة إلى الساحة كاملة.']
+};
+for(const [locale,[zoomIn,zoomOut,zoomHint]] of Object.entries(VIEW_COPY))Object.assign(CUSTOM[locale],{zoomIn,zoomOut,zoomHint});
+const SETTLING={en:'Waiting for the pieces to settle…','zh-Hant':'等待零件停穩…','zh-Hans':'等待零件停稳…',ja:'部品が止まるまで待っています…',ko:'부품이 멈추기를 기다리는 중…',es:'Esperando a que las piezas se detengan…','pt-BR':'Aguardando as peças pararem…',fr:'Attente de l’immobilisation des pièces…',de:'Warte, bis die Teile stillstehen…',it:'Attendi che i pezzi si fermino…',ru:'Ожидание остановки деталей…',hi:'पुर्ज़ों के रुकने की प्रतीक्षा…',ar:'انتظار استقرار القطع…'};
+for(const [locale,settling] of Object.entries(SETTLING))Object.assign(CUSTOM[locale],{settling});
+const CLAMP_INTRO={
+  en:'Choose a part or support from the list, then press Clamp to hold it for three seconds. Clamps are limited each stage.',
+  'zh-Hant':'從清單選擇零件或支架，再按夾住固定三秒。每關夾具數量有限。',
+  'zh-Hans':'从列表选择零件或支架，再按夹住固定三秒。每关夹具数量有限。',
+  ja:'一覧から部品か支柱を選び、固定ボタンで3秒間固定します。各ステージで使える回数は限られています。',
+  ko:'목록에서 부품이나 지지대를 고른 뒤 고정 버튼으로 3초 동안 고정하세요. 각 단계의 사용 횟수는 제한됩니다.',
+  es:'Elige una pieza o soporte de la lista y pulsa Sujetar para fijarlo tres segundos. Las pinzas son limitadas en cada etapa.',
+  'pt-BR':'Escolha uma peça ou suporte na lista e pressione Prender para fixá-lo por três segundos. As presilhas são limitadas em cada fase.',
+  fr:'Choisissez une pièce ou un support dans la liste, puis appuyez sur Fixer pour le maintenir trois secondes. Les pinces sont limitées à chaque niveau.',
+  de:'Wähle ein Teil oder eine Stütze aus der Liste und klemme es drei Sekunden lang fest. Pro Stufe gibt es nur begrenzt Klemmen.',
+  it:'Scegli un pezzo o un supporto dalla lista e premi Blocca per fermarlo per tre secondi. Le pinze sono limitate in ogni livello.',
+  ru:'Выберите деталь или опору в списке и нажмите кнопку зажима, чтобы удержать её на три секунды. Число зажимов на каждом этапе ограничено.',
+  hi:'सूची से पुर्ज़ा या सहारा चुनें और उसे तीन सेकंड रोकने के लिए क्लैंप दबाएँ। हर चरण में क्लैंप सीमित हैं।',
+  ar:'اختر قطعة أو دعامة من القائمة، ثم اضغط التثبيت لإمساكها ثلاث ثوانٍ. عدد المشابك محدود في كل مرحلة.'
+};
+for(const [locale,clampIntro] of Object.entries(CLAMP_INTRO))Object.assign(CUSTOM[locale],{clampIntro});
+const MEDAL_COPY={
+  en:['Shot mastery','Earn three stars using at most half the balls, two using at most three quarters, otherwise one.'],
+  'zh-Hant':['節彈評價','使用不超過一半球數得三顆星，不超過四分之三得兩顆星，其餘一顆星。'],
+  'zh-Hans':['节球评价','使用不超过一半球数得三颗星，不超过四分之三得两颗星，其余一颗星。'],
+  ja:['ショット評価','球数の半分以内なら3つ星、4分の3以内なら2つ星、それ以外は1つ星です。'],
+  ko:['공 절약 평가','공을 절반 이하로 쓰면 별 3개, 4분의 3 이하면 2개, 그 외에는 1개를 받습니다.'],
+  es:['Dominio de tiros','Consigue tres estrellas usando como máximo la mitad de las bolas, dos usando hasta tres cuartos y una en los demás casos.'],
+  'pt-BR':['Domínio dos disparos','Ganhe três estrelas usando até metade das bolas, duas usando até três quartos e uma nos demais casos.'],
+  fr:['Maîtrise des tirs','Obtenez trois étoiles avec au plus la moitié des balles, deux avec au plus les trois quarts et une sinon.'],
+  de:['Schusswertung','Bis zur Hälfte der Kugeln gibt es drei Sterne, bis zu drei Vierteln zwei, sonst einen.'],
+  it:['Padronanza dei tiri','Ottieni tre stelle usando al massimo metà delle sfere, due fino a tre quarti e una negli altri casi.'],
+  ru:['Мастерство бросков','За расход не более половины шаров дают три звезды, не более трёх четвертей — две, иначе одну.'],
+  hi:['शॉट दक्षता','आधी या कम गेंदों पर तीन तारे, तीन-चौथाई या कम पर दो और अन्यथा एक तारा मिलता है।'],
+  ar:['إتقان الإطلاق','تحصل على ثلاث نجوم باستخدام نصف الكرات على الأكثر، ونجمتين باستخدام ثلاثة أرباعها على الأكثر، ونجمة فيما عدا ذلك.']
+};
+for(const [locale,[mastery,medalHint]] of Object.entries(MEDAL_COPY))Object.assign(CUSTOM[locale],{mastery,medalHint});

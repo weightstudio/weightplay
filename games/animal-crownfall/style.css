@@ -218,8 +218,8 @@ body[data-crown-latch-practice="true"] #legend{white-space:normal;overflow-wrap:
 }
 /* Stage 60 has a longer instruction; reserve its full height on narrow screens. */
 @media(max-aspect-ratio:1.4499){
-  body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent{grid-template-rows:minmax(0,1fr) 48px 130px 48px 48px}
-  body[data-crown-latch-practice="true"][data-crown-stage="60"] #side{grid-template-rows:80px 16px 34px}
-  body[data-crown-latch-practice="true"][data-crown-stage="60"] #objective{max-height:80px}
-  body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 48px 130px calc(46px * var(--wp-battle-canvas-inverse-scale,1)) calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
+  body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent{grid-template-rows:minmax(0,1fr) 48px 134px 48px 48px}
+  body[data-crown-latch-practice="true"][data-crown-stage="60"] #side{grid-template-rows:84px 16px 34px}
+  body[data-crown-latch-practice="true"][data-crown-stage="60"] #objective{max-height:84px}
+  body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 48px 134px calc(46px * var(--wp-battle-canvas-inverse-scale,1)) calc(46px * var(--wp-battle-canvas-inverse-scale,1))}
 }

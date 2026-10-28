@@ -8,3 +8,26 @@
 #controls label{grid-template-rows:calc(20 * var(--wp-play-unit,1px)) var(--wp-frame-control-size,48px)}#controls label>span{display:flex;justify-content:space-between;align-items:center;gap:8px}
 #controls{padding-block:calc(3 * var(--wp-play-unit,1px))}
 #clamp{min-width:var(--wp-frame-control-size,48px)}
+#controls{grid-template-columns:minmax(0,1fr) calc(100 * var(--wp-play-unit,1px)) var(--wp-frame-control-size,48px) var(--wp-frame-control-size,48px)}
+#zoomView,#help{min-width:var(--wp-frame-control-size,48px)}
+#zoomView{font-size:22px;font-weight:700}
+#arena canvas:focus-visible{outline:3px solid #ffdb70;outline-offset:-3px}
+#battleLive,#controls,#clampTools{min-width:0}
+#arena{background-image:linear-gradient(rgba(13,42,49,.16),rgba(13,42,49,.16)),url('/games/rux-salvage-yard/art/background.webp')}
+#clampTools label>span{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#clampTools select{flex:1;width:100%;min-width:0}
+@media (orientation:portrait){
+  #battleLive{grid-template-rows:minmax(0,1fr) calc(72 * var(--wp-play-unit,1px)) calc(52 * var(--wp-play-unit,1px))}
+  #battleLive.has-clamp{grid-template-rows:minmax(0,1fr) calc(48 * var(--wp-play-unit,1px)) calc(72 * var(--wp-play-unit,1px)) calc(52 * var(--wp-play-unit,1px))}
+}
+@media (orientation:landscape) and (max-height:500px){
+  #battleLive,#battleLive.has-clamp{grid-template-columns:minmax(0,1fr) min(210px,28%);grid-template-rows:auto minmax(0,1fr) calc(34 * var(--wp-play-unit,1px));grid-template-areas:'arena clamp' 'arena controls' 'status status'}
+  #arena{grid-area:arena}
+  #clampTools{grid-area:clamp;flex-wrap:wrap;padding:4px 8px}
+  #clampTools label{flex-basis:100%;display:grid;gap:2px}
+  #clampTarget{width:100%}
+  #controls{grid-area:controls;display:grid;grid-template-columns:minmax(0,1fr) var(--wp-frame-control-size,48px) var(--wp-frame-control-size,48px);grid-template-rows:auto var(--wp-frame-control-size,48px);align-content:center;padding:4px 8px}
+  #controls label{grid-column:1/-1;width:100%}
+  #fire{min-width:0;font-size:clamp(11px,1.8vw,16px)}
+  #status{grid-area:status}
+}

@@ -209,6 +209,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .reward-row > span { padding: 8px 12px; border: 1px solid var(--wp-ui-gold); border-radius: var(--wp-ui-radius); color: var(--wp-ui-text); background: var(--wp-ui-background); font-weight: 900; }
 .result-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: center; align-self: end; gap: 8px; width: min(100%,520px); margin: 6px auto 0; }
 .result-actions button { min-width: 0; overflow-wrap: anywhere; }
+.result-actions button:disabled { opacity: .4; filter: grayscale(.8); cursor: not-allowed; }
 .coach { z-index: 80; pointer-events: none; color: var(--wp-ui-text); background: var(--wp-ui-surface); }
 .coach span { color: var(--wp-ui-muted); font-weight: 900; }
 .coach h2 { font-size: clamp(26px,6vw,42px); }

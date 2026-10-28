@@ -29,8 +29,8 @@ export const OPENING = Object.freeze([
   { id:26, columns:[2,1,1], shots:6, title:'Heavy near tower', metalColumn:0, fragile:[1,0] },
   { id:27, columns:[1,1,2], shots:6, title:'Covered weak point', guard:true, guardHeight:120, fragile:[2,0] },
   { id:28, columns:[2,2,1], shots:6, title:'Heavy central tower', reflector:-1, metalColumn:1 },
-  { id:29, columns:[1,2,2], shots:6, title:'Covered heavy tower', guard:true, fragile:[0,0], metalColumn:2 },
-  { id:30, columns:[2,2,2], shots:7, title:'Workshop finale', reflector:1, guard:true, metalColumn:1, fragile:[0,0], lastColumn:1 },
+  { id:29, columns:[1,3,2], shots:6, title:'Covered heavy tower', guard:true, fragile:[0,0], metalColumn:2 },
+  { id:30, columns:[2,3,2], shots:7, title:'Workshop finale', reflector:1, guard:true, metalColumn:1, fragile:[0,0], lastColumn:1 },
   { id:31, columns:[1,0,0], shots:3, title:'Clamp introduction', clamps:1 },
   { id:32, columns:[0,1,0], shots:3, title:'Hold and release', clamps:1, fragile:[1,0] },
   { id:33, columns:[0,0,1], shots:4, title:'Held heavy footing', clamps:1, metalColumn:2 },
@@ -57,8 +57,8 @@ export const OPENING = Object.freeze([
   { id:54, columns:[0,2,2], shots:6, title:'Far weak point and platform', clamps:1, platform:true, reflector:1, fragile:[2,0] },
   { id:55, columns:[2,1,2], shots:7, title:'Far part last', clamps:2, platform:true, guard:true, metalColumn:2, lastColumn:2 },
   { id:56, columns:[2,2,1], shots:7, title:'Open the lane', clamps:1, reflector:1, fragile:[0,0] },
-  { id:57, columns:[1,2,2], shots:7, title:'Heavy far support', clamps:2, guard:true, guardHeight:120, metalColumn:2 },
+  { id:57, columns:[1,3,2], shots:7, title:'Heavy far support', clamps:2, guard:true, guardHeight:120, metalColumn:2 },
   { id:58, columns:[2,1,2], shots:7, title:'Mirrored platform', clamps:1, platform:true, reflector:-1 },
-  { id:59, columns:[2,2,1], shots:7, title:'Clamp allocation', clamps:2, platform:true, guard:true, fragile:[0,0] },
-  { id:60, columns:[2,2,2], shots:8, title:'Final salvage', clamps:2, platform:true, guard:true, reflector:1, metalColumn:2, fragile:[0,0], firstColumn:1, clampColumn:2 }
+  { id:59, columns:[3,2,1], shots:7, title:'Clamp allocation', clamps:2, platform:true, guard:true, fragile:[0,0] },
+  { id:60, columns:[3,2,2], shots:8, title:'Final salvage', clamps:2, platform:true, guard:true, guardHeight:100, reflector:1, metalColumn:2, fragile:[0,0], firstColumn:0, clampColumn:2 }
 ]);

@@ -3,6 +3,7 @@
    navigation geometry. No target permutation is displayed or checked. */
 (() => {
   'use strict';
+  const practiceRequested = location.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) && new URLSearchParams(location.search).get('practice') === '1';
   const gameURL = document.currentScript.src;
   const revision = '20261023-layer-v17';
   const root = document.body;
@@ -54,7 +55,7 @@
     const levels = E.levels, symbols = ['▲', '●', '◆', '✚', '★'];
     const saveKey = 'weightplay-animal-layer-grove-occlusion-v1';
     let record = { schema: 1, completed: 0, best: {}, stars: {} };
-    try {
+    if (!practiceRequested) try {
       const saved = JSON.parse(localStorage.getItem(saveKey));
       if (saved?.schema === 1) {
         if (Number.isInteger(saved.completed)) record.completed = Math.max(0, Math.min(levels.length, saved.completed));
@@ -74,6 +75,7 @@
     let generation = 0, focusFrame = 0, leaveOpen = false, history = [], inspected = false, checked = null, hintCells = [];
     let clueFocus = -1;
     let stageController = null, entering = false;
+    let practiceAdapter = null, practiceActive = false, practiceSerial = 0;
     const main = $('mainScreen'), stage = $('stageScreen'), battle = $('battleScreen');
     const stageCanvas = stage.querySelector('.stage-canvas'), canvas = battle.querySelector('.battle-canvas');
     const header = battle.querySelector('.panel-head'), content = battle.querySelector('.battle-content');
@@ -93,7 +95,7 @@
       if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
       window.dispatchEvent(new CustomEvent('weightplay:analytics', { detail: { game: 'animal-layer-grove', event, scene: state.scene + 1, revision: 'occlusion-v1', ...detail } }));
     };
-    const save = () => { try { localStorage.setItem(saveKey, JSON.stringify(record)); } catch { /* Session progress survives unavailable storage. */ } };
+    const save = () => { if (practiceRequested) return; try { localStorage.setItem(saveKey, JSON.stringify(record)); } catch { /* Session progress survives unavailable storage. */ } };
     const feedback = (text, kind = '') => { $('battleStatus').textContent = text; $('battleStatus').dataset.kind = kind; };
     const description = rule => {
       const [type, subject, value] = rule;
@@ -137,7 +139,7 @@
         battle: {root: canvas, header, content, headerInfo: battleInfo},
       },
     });
-    const stageConfig = window.LayerGroveStageConfig({levels, text:t, getLocale:()=>state.locale, getRecord:()=>record, catalogs});
+    const stageConfig = window.LayerGroveStageConfig({levels, text:t, getLocale:()=>state.locale, getRecord:()=>practiceActive ? {...record, completed: levels.length - 1} : record, catalogs});
     const leave = document.createElement('section');
     leave.id = 'leavePanel'; leave.className = 'leave-panel'; leave.hidden = true; leave.inert = true;
     leave.setAttribute('role', 'dialog'); leave.setAttribute('aria-modal', 'true'); leave.setAttribute('aria-labelledby', 'leaveTitle'); leave.setAttribute('aria-describedby', 'leaveText');
@@ -302,6 +304,7 @@
     function renderResult(stars) {
       $('resultTitle').textContent = t('resultTitle');
       $('resultText').textContent = t('resultText', { moves: state.moves, hints: state.hints, best: record.best[state.scene] });
+      if (practiceRequested) $('resultText').textContent += ' Local practice: progress and rewards are not saved.';
       const earned = stars ?? (state.hints ? 1 : state.moves <= current().par + 2 ? 3 : 2);
       medal.setAttribute('aria-label', `${t('grade', { stars: earned })} · ★★★ ≤ ${current().par + 2}`);
       medal.replaceChildren(...Array.from({ length: 3 }, (_, index) => {
@@ -317,7 +320,15 @@
       $('resultHomeBtn').textContent = t('replay');
     }
     function startScene(index) {
-      if (!Number.isInteger(index) || index < 0 || index >= levels.length || index > record.completed) return;
+      if (practiceRequested) {
+        if (!practiceActive || !practiceAdapter || !levels[index]) return;
+        void practiceAdapter.challenge('animal-layer-grove', levels[index].id);
+        return;
+      }
+      beginScene(index, false);
+    }
+    function beginScene(index, practiceValidated) {
+      if (!Number.isInteger(index) || index < 0 || index >= levels.length || (practiceRequested ? !practiceValidated || !practiceActive : index > record.completed)) return;
       selectedStage = index;
       state.scene = index; state.puzzle = E.initial(current()); state.moves = 0; state.hints = 0; state.selected = state.puzzle.order[0];
       history = []; inspected = false; checked = null; hintCells = []; clueFocus = -1;
@@ -353,6 +364,7 @@
       } catch (error) { return Promise.reject(error); }
     }
     async function openStage() {
+      if (practiceRequested && !practiceActive) return;
       if (entering) return; entering = true; const ticket = generation; $('startBtn').disabled = true;
       selectedStage = frontier();
       try {
@@ -401,7 +413,7 @@
     listen($('resultHomeBtn'), 'click', () => { if (state.screen === 'result') startScene(state.scene); });
     listen($('checkBtn'), 'click', checkWindow); listen($('undoBtn'), 'click', undo); listen($('hintBtn'), 'click', hint); listen($('resetBtn'), 'click', resetLayers);
     listen(document, 'keydown', event => { if (leaveOpen) { if (event.key === 'Escape') { event.preventDefault(); continuePlaying(); } else trap(event, leave); } else if (state.screen === 'result') trap(event, result); });
-    listen($('localeSelect'), 'change', event => { if (!catalogs[event.target.value]) return; state.locale = event.target.value; try { localStorage.setItem('weightPlayLocale', state.locale); } catch { /* Session locale still changes. */ } applyLocale(); syncShared(); });
+    listen($('localeSelect'), 'change', event => { if (!catalogs[event.target.value]) return; state.locale = event.target.value; if (!practiceRequested) try { localStorage.setItem('weightPlayLocale', state.locale); } catch { /* Session locale still changes. */ } applyLocale(); syncShared(); });
     listen(window, 'weightplay:audio-volume-change', () => frame.refresh());
     listen($('soundBtn'), 'click', () => window.WeightPlayAudio?.setMuted?.(!window.WeightPlayAudio.isMuted()));
     listen(document, 'visibilitychange', () => { if (document.hidden) motion.clear(); });
@@ -418,6 +430,7 @@
       });
     });
     listen(window, 'pagehide', event => {
+      ++practiceSerial;
       ++generation; cancelAnimationFrame(focusFrame); motion.clear();
       if (event.persisted) return;
       stageController?.destroy(); frame.destroy(); motion.destroy(); abort.abort();
@@ -427,6 +440,22 @@
     // the first journey and subsequent returns have the same writer owners.
     return getStageController().then(() => {
       applyLocale(); show('main'); $('startBtn').disabled = false;
+      if (practiceRequested && window.__layerPracticeAnalyticsSafe === true) {
+        void import('/src/game-local-practice.mjs').then(async ({LocalPractice}) => {
+          if (abort.signal.aborted) return;
+          practiceAdapter = LocalPractice;
+          await LocalPractice.register({
+            gameId: 'animal-layer-grove', stageIds: levels.map(level => level.id),
+            enable: enabled => { practiceActive = enabled; if (!enabled) ++practiceSerial; stageController?.refresh(selectedStage); },
+            startStage: async id => {
+              const ticket = ++practiceSerial;
+              const index = levels.findIndex(level => level.id === id);
+              if (!await LocalPractice.validate() || ticket !== practiceSerial || abort.signal.aborted || !practiceActive) return;
+              beginScene(index, true);
+            },
+          });
+        }).catch(error => console.error('Layer Grove local practice failed', error));
+      }
       window.__ANIMAL_LAYER_GROVE_TEST__ = Object.freeze({
       levels, startScene, motionCount: () => motion.size, moveLayer: (index, direction) => change({ type: 'swap', index, direction }), rotateLayer: index => change({ type: 'rotate', index }), resetLayers, undo, checkWindow,
       getState: () => ({ locale: state.locale, screen: state.screen, scene: state.scene, moves: state.moves, hints: state.hints, clueFocus, leaveOpen, completed: record.completed, historyLength: history.length, order: [...state.puzzle.order], turns: [...state.puzzle.turns] }),

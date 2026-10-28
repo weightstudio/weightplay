@@ -858,6 +858,13 @@ export class Crystal3D {
       const { circle, lane, outline, arrow, aimLine, laneEdges } = object.userData;
       const sweep=hazard.kind==='sweep';object.rotation.y=sweep?Math.atan2(hazard.vx,hazard.vy):0;
       arrow.visible = hazard.kind === 'arrow';
+      // The Ferryman's projectiles need a distinct visible body after the
+      // warning line disappears. Reset pooled objects for ordinary arrows.
+      const bossVolley=hazard.kind==='arrow'&&hazard.bossSkill==='bossFerryman';
+      arrow.children[0].scale.set(bossVolley ? .14 : .035,bossVolley ? 1.25 : .7,bossVolley ? .14 : .035);
+      arrow.children[1].scale.set(bossVolley ? .28 : .09,bossVolley ? .14 : .05,bossVolley ? .46 : .18);
+      arrow.children[0].material=bossVolley?this.mat.danger:this.mat.gold;
+      arrow.children[1].material=bossVolley?this.mat.danger:this.magicImpact;
       aimLine.visible = hazard.warn > 0;
       arrow.rotation.y = Math.atan2(hazard.vx || 0, hazard.vy || 0);
       circle.visible = hazard.kind !== 'lane' && !sweep && !arrow.visible;

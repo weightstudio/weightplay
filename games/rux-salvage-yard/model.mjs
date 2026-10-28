@@ -86,7 +86,7 @@ export class SalvageSlice {
           const contact=pair.collision.supports[0] || this.ball.position;
           this.events.push({ type: 'impact', material: other.plugin.salvageKind, x:contact.x, y:contact.y });
           if(other.plugin.fragile && this.ball.speed > 1.8 && !this.pendingBreak.has(other)) {
-            this.pendingBreak.add(other);this.events.push({type:'break'});
+            this.pendingBreak.add(other);this.events.push({type:'break',x:contact.x,y:contact.y});
           }
         }
       }

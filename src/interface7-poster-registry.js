@@ -189,7 +189,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "yukon-solitaire": "/assets/interface7-redrawn/yukon-solitaire.webp",
   "zhao-yun-a-dou": "/assets/interface7-redrawn/zhao-yun-a-dou.webp",
   "zoo-helper-day": "/assets/zoo-helper-day/cover-block-v1.png",
-  "puppy-haven": "/games/puppy-haven/assets/cover-block-v1.webp"
+  "puppy-haven": "/games/puppy-haven/assets/cover-block-v1.webp",
+  "lantern-lasso":"/games/lantern-lasso/assets/cover.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/orbit-menders-poster-block-v1.webp": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp",
@@ -382,5 +383,6 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/interface7-redrawn/yukon-solitaire.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__yukon-solitaire.webp",
   "/assets/interface7-redrawn/zhao-yun-a-dou.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__zhao-yun-a-dou.webp",
   "/assets/interface7-redrawn/zoo-helper-day.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__zoo-helper-day.webp",
-  "/games/puppy-haven/assets/cover-block-v1.webp": "/assets/lobby-thumbs/w480/games__puppy-haven__assets__cover-block-v1.webp"
+  "/games/puppy-haven/assets/cover-block-v1.webp": "/assets/lobby-thumbs/w480/games__puppy-haven__assets__cover-block-v1.webp",
+  "/games/lantern-lasso/assets/cover.webp":"/games/lantern-lasso/assets/cover.webp"
 });

@@ -21,3 +21,10 @@ const phaseCopy=Object.freeze({
  it:['Riduci la vita del traghettatore a metà','Scudo aperto · sconfiggi il traghettatore'],ru:['Уменьшите здоровье перевозчика наполовину','Щит открыт · победите перевозчика'],hi:['नाविक का जीवन आधा करें','ढाल खुली · नाविक को हराएँ'],ar:['أنقص صحة الملاح إلى النصف','الدرع مفتوح · اهزم الملاح'],
 });
 export function ferrymanObjective(locale,final=false){return (phaseCopy[locale]||phaseCopy.en)[final?1:0]}
+const volleyCopy=Object.freeze({
+ en:['! Volley warning · dodge','× Volley active · keep moving'], 'zh-Hant':['! 箭雨預告 · 閃避','× 箭雨生效 · 持續移動'], 'zh-Hans':['! 箭雨预告 · 闪避','× 箭雨生效 · 持续移动'],
+ ja:['! 矢の予告 · 回避','× 矢が発射 · 移動を続ける'],ko:['! 화살 예고 · 피하기','× 화살 발사 · 계속 이동'],es:['! Aviso de flechas · esquiva','× Flechas activas · sigue moviéndote'],
+ 'pt-BR':['! Aviso de flechas · desvie','× Flechas ativas · continue se movendo'],fr:['! Flèches annoncées · esquivez','× Flèches actives · continuez à bouger'],de:['! Pfeilwarnung · ausweichen','× Pfeile aktiv · bleib in Bewegung'],
+ it:['! Frecce in arrivo · schiva','× Frecce attive · continua a muoverti'],ru:['! Залп готовится · уклоняйтесь','× Залп активен · двигайтесь'],hi:['! तीरों की चेतावनी · बचें','× तीर चल रहे हैं · चलते रहें'],ar:['! تحذير سهام · تجنّب','× السهام نشطة · واصل الحركة'],
+});
+export function ferrymanVolleyStatus(locale,active=false){return (volleyCopy[locale]||volleyCopy.en)[active?1:0]}

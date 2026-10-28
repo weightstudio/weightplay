@@ -6,6 +6,7 @@ import {layoutLabels} from './label-layout.js?v=20261014-wildwood-label-layout-v
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {createWildwoodStageConfig} from './stage-config.js?v=20261021-wildwood-interface9-v48';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
 let save=load(),practiceSaveBaseline=null;
 const growthActor=crypto.randomUUID(),unitLabels=new Map();let storageBlocked=false,practiceMode=false,practiceRun=false;
 let screen='main',selected=save.highestUnlocked,sim=null,world=null,World=null,raf=0,last=0,acc=0,generation=0,modal='',stageSelector=null,tab='stages',keys=new Set(),joystick=null,audio=null,notice='',noticeUntil=0,lastHp=100,settled=false,hitStopRemaining=0,modalToken=0,modalAnimation=null,screenTransitionToken=0,screenInitialized=false,battleBooting=false;
@@ -26,7 +27,7 @@ const statNumber=value=>new Intl.NumberFormat(select.value,{maximumFractionDigit
 function persist(){if(practiceRun){storageBlocked=false;return true;}storageBlocked=!store(save);if(storageBlocked){notice=t('storage');noticeUntil=Infinity;}return !storageBlocked;}
 function beginPracticeRun(){if(!practiceSaveBaseline)practiceSaveBaseline=save;save=structuredClone(practiceSaveBaseline);practiceRun=true;}
 function restorePracticeSave(){if(!practiceSaveBaseline)return;save=practiceSaveBaseline;practiceSaveBaseline=null;}
-function setPracticeMode(enabled){practiceMode=enabled;if(enabled)void show('stage');else void show('main');}
+function setPracticeMode(enabled){practiceMode=enabled;if(enabled&&new URLSearchParams(location.search).has('practiceStage'))return;if(enabled)void show('stage');else void show('main');}
 function resetInput(){keys.clear();joystick?.reset();}
 function stop(){cancelAnimationFrame(raf);raf=0;resetInput();}
 function acknowledge(target){if(!target)return;clearTimeout(acknowledgementTimers.get(target));target.classList.remove('arrival-ack');void target.offsetWidth;target.classList.add('arrival-ack');acknowledgementTimers.set(target,setTimeout(()=>{target.classList.remove('arrival-ack');acknowledgementTimers.delete(target);},matchMedia('(prefers-reduced-motion: reduce)').matches?150:240));}
@@ -77,7 +78,8 @@ async function startRun(stageId=selected,forcePractice=practiceMode){
  if(screen==='stage')$('#stageProgress').textContent=t('loading');else $('#objective').textContent=t('loading');
  let timer;
  try{World||=(await Promise.race([import('./world.js?v=20261019-wildwood-stumpback-dodge-v47'),new Promise((_,reject)=>timer=setTimeout(()=>reject(new Error('timeout')),15000))])).WildwoodWorld;if(token!==generation)return;await show('battle');if(token!==generation)return;
-  sim=new Simulation(selected,save.loadout,save.growth,save.ownedTools);world=new World($('#arena'),sim);world.render();buttons();if(token!==generation)return;hud();queueBattleStart();
+  const loadout=usingPractice?save.loadout.filter(id=>{const tool=TOOLS.find(entry=>entry.id===id);return tool&&(tool.unlock<=save.highestUnlocked||save.ownedTools.includes(id));}):save.loadout;
+  sim=new Simulation(selected,loadout,save.growth,save.ownedTools);world=new World($('#arena'),sim);world.render();buttons();if(token!==generation)return;hud();queueBattleStart();
  }catch(error){if(token!==generation)return;await show('battle');if(token!==generation)return;clearTimeout(tutorialStartTimer);tutorialStartTimer=0;tutorialPending=false;tutorialOpen=false;world?.dispose();world=null;dialog(t('error'),'',[[t('retry'),startRun],[t('stages'),()=>show('stage')]],'error');console.warn('Wildwood:',error.message);}finally{clearTimeout(timer);battleBooting=false;if(screen==='stage')$('#stageProgress').textContent=save.highestUnlocked+' / 30';}
 }
 function beginBattleRun(){clearTimeout(tutorialStartTimer);tutorialStartTimer=0;tutorialPending=false;if(screen!=='battle'||!sim||modal||tutorialOpen)return;syncJoystickAvailability();start();}
@@ -127,7 +129,7 @@ function healthLabels(dt){
 }
 function finish(){if(settled)return;settled=true;stop();if(sim.won){save.highestUnlocked=Math.max(save.highestUnlocked,Math.min(30,selected+1));save.best[selected]=Math.max(save.best[selected]||0,Math.ceil(sim.hero.hp/sim.hero.maxHp*100));persist();}
  const win=sim.won,damage=sim.lastDamage,source=damage?.sourceKind==='boss'?guardianName(damage.source):t(`combatant_${damage?.source||'unknown'}`),attack=t(`attack_${damage?.attack||'unknown'}`),damageLine=damage?t(damage.target==='friend'?'lastHitFriend':'lastHitHero').replace('{source}',source).replace('{attack}',attack).replace('{damage}',statNumber(damage.amount)):t(sim.protectedHp<=0?'lastHitUnknownFriend':'lastHitUnknownHero');
- const resultText=[`${objective(sim.stage,sim.tally)} · ${t('hp')} ${Math.ceil(sim.hero.hp)} / ${sim.hero.maxHp}`,!win?damageLine:'',!win?t('savedProgress'):'',`${t('permanent')}: ${t('hp')} +${save.growth.health}, ${t('power')} +${save.growth.attack}, ${t('regen')} +${statNumber(save.growth.regen)}`].filter(Boolean).join('\n');
+ const resultText=[`${objective(sim.stage,sim.tally)} · ${t('hp')} ${Math.ceil(sim.hero.hp)} / ${sim.hero.maxHp}`,!win?damageLine:'',!win&&!practiceRun?t('savedProgress'):'',practiceRun?'LOCAL PRACTICE — progress and rewards are not saved.':`${t('permanent')}: ${t('hp')} +${save.growth.health}, ${t('power')} +${save.growth.attack}, ${t('regen')} +${statNumber(save.growth.regen)}`].filter(Boolean).join('\n');
  dialog(win?(selected===30?t('complete'):t('clear')):t('fail'),resultText,
  [[t('stages'),()=>show('stage')],[t('next'),()=>{selected++;startRun();},!win||selected===30],[t('retry'),startRun]],'result');
 }
@@ -147,4 +149,5 @@ addEventListener('storage',e=>{if(e.key===KEY){if(practiceRun)return;store(save)
 addEventListener('pagehide',()=>{screenTransitionToken++;delete document.documentElement.dataset.wildwoodTransition;joystick?.destroy();joystick=null;dispose();practiceRun=false;restorePracticeSave();audio?.close();audio=null;});addEventListener('pageshow',e=>{if(e.persisted){createJoystick();show('main');}});
 localize();show('main');
 if(['localhost','127.0.0.1','::1'].includes(location.hostname))Object.defineProperty(window,'WildwoodDiagnostics',{value:Object.freeze({snapshot:()=>({screen,modal,selected,unlocked:save.highestUnlocked,raf:!!raf,world:world?.metrics()||null,state:sim?.snapshot()||null,heroPoint:sim&&world?world.project(sim.hero.x,sim.hero.z,2.55):null,points:sim&&world?sim.alive().map(e=>({uid:e.uid,...world.project(e.x,e.z)})):[]}),model:()=>sim?structuredClone(sim):null})});
-LocalPractice.register({gameId:'animal-wildwood-raid',stageIds:STAGES.map(stage=>stage.id),enable:setPracticeMode,startStage:id=>startRun(Number(id),true)}).catch(error=>console.error('Local practice setup failed',error));
+function waitForPracticeEntry(){return new Promise(resolve=>{let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();removeEventListener('pagehide',cancel);resolve(ok);}function cancel(){finish(false);}function check(){const root=document.documentElement;if(root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});addEventListener('pagehide',cancel,{once:true});check();});}
+if(practiceRequested)void waitForPracticeEntry().then(ready=>ready&&LocalPractice.register({gameId:'animal-wildwood-raid',stageIds:STAGES.map(stage=>stage.id),enable:setPracticeMode,startStage:id=>startRun(Number(id),true)})).catch(error=>console.error('Local practice setup failed',error));
