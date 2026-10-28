@@ -4142,7 +4142,7 @@
         import('./beacon-lit-order-candidate.mjs?v=20261028-lit1'),
         import('./beacon-lit-order-copy-candidate.mjs?v=20261028-lit1'),
         import('./beacon-ram-candidate.mjs?v=20261028-ram1'),
-        import('./beacon-ram-art-candidate.mjs?v=20261028-ram3'),
+        import('./beacon-ram-art-candidate.mjs?v=20261028-ram4'),
         import('./beacon-ram-copy-candidate.mjs?v=20261028-ram1'),
       ]);
       __crystalBeaconModel=model;__crystalBeaconCopy=copy;__crystalBeaconArt=art;__crystalBeaconThree=three;__crystalLaneModel=laneModel;__crystalLaneAdapter=laneAdapter;__crystalWardenArt=wardenArt;__crystalPrismModel=prismModel;__crystalPrismAdapter=prismAdapter;__crystalSequenceCopy=sequenceCopy;__crystalMirrorAdapter=mirrorAdapter;__crystalMirrorCopy=mirrorCopy;__crystalFerrymanAdapter=ferrymanAdapter;__crystalFerrymanArt=ferrymanArt;__crystalFerrymanCopy=ferrymanCopy;__crystalFerrymanVolley=ferrymanVolley;__crystalLinkModel=linkModel;__crystalLinkCopy=linkCopy;__crystalChargeRunner=chargeRunner;__crystalChargeAdapter=chargeAdapter;__crystalChargeCopy=chargeCopy;__crystalJunctionModel=junctionModel;__crystalJunctionCopy=junctionCopy;__crystalLitOrderModel=litOrderModel;__crystalLitOrderCopy=litOrderCopy;__crystalRamModel=ramModel;__crystalRamArt=ramArt;__crystalRamCopy=ramCopy;

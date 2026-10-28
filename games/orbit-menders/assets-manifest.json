@@ -188,59 +188,73 @@
     "icons": [
       {
         "path": "icons/aurora.webp",
-        "bytes": 3146
+        "bytes": 3146,
+        "sha256": "ae7c3dbf735ef5c6965395f4108ecfdebb4a2a6f74a6478d072c124bc05b1541"
       },
       {
         "path": "icons/blast.webp",
-        "bytes": 4684
+        "bytes": 4684,
+        "sha256": "fceb7f81cf5094d5f1ed9e5439f6dcd01520b855805a7a480737a5ed6e227f18"
       },
       {
         "path": "icons/chain.webp",
-        "bytes": 3270
+        "bytes": 3270,
+        "sha256": "42c6c1e99f4d9ccae50bf2b238211ecfc12cb77688744696e2a5e7fc83d136fe"
       },
       {
         "path": "icons/drone.webp",
-        "bytes": 2778
+        "bytes": 2778,
+        "sha256": "7ccbc92ce288ea8865a86fef44224fc72a86eb6e6d7179da4639b3cf8286a5b2"
       },
       {
         "path": "icons/explosive.webp",
-        "bytes": 4684
+        "bytes": 4684,
+        "sha256": "fceb7f81cf5094d5f1ed9e5439f6dcd01520b855805a7a480737a5ed6e227f18"
       },
       {
         "path": "icons/frost.webp",
-        "bytes": 4518
+        "bytes": 4518,
+        "sha256": "7bd8034b4d0579c422521c154578cc0018891b185fb64124da9795eb1b2c7b77"
       },
       {
         "path": "icons/gears.webp",
-        "bytes": 5456
+        "bytes": 5456,
+        "sha256": "a7e72d50f1b98893786de94abdde2542fcaae90118d55b52899c3d3bf88ac867"
       },
       {
         "path": "icons/hull.webp",
-        "bytes": 4280
+        "bytes": 4280,
+        "sha256": "6e54a0b75f2682b0bfe477ad1a331e3058561b4fb4a6873bde98f7412d5a1b51"
       },
       {
         "path": "icons/pierce.webp",
-        "bytes": 2996
+        "bytes": 2996,
+        "sha256": "5bbbd54bc6149c885b88ed830c8fdbbbb0eb9ab1f2d1f050b14c464c3c66cc3b"
       },
       {
         "path": "icons/power.webp",
-        "bytes": 3552
+        "bytes": 3552,
+        "sha256": "6ba9ad8b0daa920495b73d0f96d7a8c3d0eae46956db9eab74b030090ffcda48"
       },
       {
         "path": "icons/rapid.webp",
-        "bytes": 4144
+        "bytes": 4144,
+        "sha256": "b0244e4f09419043ed557a32fc593f48c7e7bcfad96dc9b63a059fe7f9932d2d"
       },
       {
         "path": "icons/repair.webp",
-        "bytes": 3582
+        "bytes": 3582,
+        "sha256": "5f5d56f3e19458a0c75ee8963b54fce7b9434897ce929b3f77993b4c421e0bc6"
       },
       {
         "path": "icons/shield.webp",
-        "bytes": 3984
+        "bytes": 3984,
+        "sha256": "21173c9cb84177341d7bcd71a94e458fc918d7f9a8639c28ac0416bd2227a27f"
       },
       {
         "path": "icons/spread.webp",
-        "bytes": 4402
+        "bytes": 4402,
+        "sha256": "3496681a58ad64c6685f1ad1b00f5a4aaad19699c475b3869881eb151be3e7cf"
       }
     ],
     "runtime": [
@@ -248,6 +262,22 @@
       "fixed rear-facing lion",
       "shield/healer/splitter and six boss accessories"
     ],
-    "status": "implemented; rendered acceptance in progress"
+    "status": "Focused source/render/input verification complete; full Art9/I9 not claimed",
+    "sourceSha256": {
+      "defense.mjs": "0d06def863df73666dcb995ca252baac47943d23e86b8814770ae5d81e80a3d2",
+      "game.mjs": "2b315d1b29643675f31ca5dbd58144cd414273a3247b1251294130375bb773ae",
+      "save.mjs": "6d05b2368d16ffa2a289c56a025272cbaecb88501b84acc13f644144bfa81093",
+      "defense-reward.mjs": "9c02a506cab5b2b670d58c4152ed9cafbcade27792f5c25c5314538cd761a67d",
+      "defense-view.mjs": "65813901d21bdf5df60a1ec7183fa7993563b3f71072409f90a8f8dfef29635e",
+      "defense-art.mjs": "4c2270542308502b902e8b5de59c62cc1780b31bede2281eb996de341c539596",
+      "ui-copy.mjs": "7e43348bcd518c230efb6b9e7970ccb910ffcda23a44418f237cb19a35a9df53",
+      "style.css": "68e720dd6217927e1d77352380dc2752bddcb1882b0d2c56a52f05aa0638cbc0"
+    },
+    "boundedEffects": {
+      "particles": 280,
+      "rings": 16,
+      "arcs": 24
+    },
+    "runtimeCopyKeys": 151
   }
 }
