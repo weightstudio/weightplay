@@ -456,10 +456,38 @@
     }, 0);
   }
 
+  // The two 30-stage chapter labels are limited to authenticated local practice.
+  // Original campaign labels and all stages beyond 60 keep their existing form.
+  const practiceChapterNames = Object.freeze({
+    en:'Oathbound Signal Line', 'zh-Hant':'盟誓烽線', 'zh-Hans':'盟誓烽线', ja:'盟誓の烽火線', ko:'맹세의 봉화선',
+    es:'Línea de señales del juramento', 'pt-BR':'Linha de sinais do juramento', fr:'Ligne des signaux du serment',
+    de:'Schwur-Signallinie', it:'Linea dei segnali del giuramento', ru:'Сигнальная линия клятвы',
+    hi:'शपथ संकेत पंक्ति', ar:'خط إشارات القسم'
+  });
+  const practiceChapterShortNames = Object.freeze({
+    en:['Peach Garden','Oath Signals'], 'zh-Hant':['桃園起兵','結義信號'], 'zh-Hans':['桃园起兵','结义信号'],
+    ja:['桃園の誓い','誓いの信号'], ko:['도원 결의','결의 신호'], es:['Jardín del pacto','Señales del pacto'],
+    'pt-BR':['Jardim do pacto','Sinais do pacto'], fr:['Jardin du serment','Signaux du serment'],
+    de:['Pfirsichgarten','Schwur-Signale'], it:['Giardino del patto','Segnali del patto'],
+    ru:['Персиковый сад','Сигналы клятвы'], hi:['आड़ू उपवन','शपथ संकेत'], ar:['بستان الخوخ','إشارات القسم']
+  });
+  function practiceChapterShortName() {
+    const names = practiceChapterShortNames[activeLocale()] || practiceChapterShortNames.en;
+    return names[practiceChapterActive() ? 1 : 0];
+  }
+  function practiceChapterActive() {
+    return practiceRequested && practiceAuthorized && practiceAdapter?.dynamicEnabled === true && state.stage >= 31 && state.stage <= 60 && chapterTwoReady();
+  }
+  function practiceFirstChapterActive() {
+    return practiceRequested && practiceAuthorized && practiceAdapter?.dynamicEnabled === true && state.stage >= 1 && state.stage <= 30;
+  }
   function chapterIndex() { return clamp(Math.floor((state.stage - 1) / C.chapterSize), 0, C.chapters.length - 1); }
-  function stageCode() { return `${chapterIndex() + 1}-${((state.stage - 1) % C.chapterSize) + 1}`; }
+  function displayChapterName() { return practiceChapterActive() ? (practiceChapterNames[activeLocale()] || practiceChapterNames.en) : localizedValue(C.chapters[practiceFirstChapterActive() ? 0 : chapterIndex()]); }
+  function stageCode() { return practiceFirstChapterActive() ? `1-${state.stage}` : practiceChapterActive() ? `2-${state.stage - 30}` : `${chapterIndex() + 1}-${((state.stage - 1) % C.chapterSize) + 1}`; }
 
   function campaignMilestoneText() {
+    if (practiceFirstChapterActive()) return `${displayChapterName()} · \u2066${state.stage}/30\u2069`;
+    if (practiceChapterActive()) return `${displayChapterName()} · \u2066${state.stage}/60\u2069`;
     const chapter = chapterIndex();
     const chapterEnd = Math.min((chapter + 1) * C.chapterSize, C.chapters.length * C.chapterSize);
     const nextChapter = C.chapters[chapter + 1];
@@ -500,9 +528,12 @@
   function updateHud() {
     $("#playerLevel").textContent = `Lv.${state.player.level}`;
     $("#playerPower").textContent = `${copy("power")} ${fmt(totalPower())}`;
-    $("#chapterName").textContent = localizedValue(C.chapters[chapterIndex()]);
+    $("#chapterName").textContent = practiceChapterActive() || practiceFirstChapterActive() ? practiceChapterShortName() : displayChapterName();
+    $("#chapterName").classList.toggle("practice-chapter-name", practiceChapterActive() || practiceFirstChapterActive());
+    if (practiceChapterActive() || practiceFirstChapterActive()) $("#chapterName").setAttribute("title", displayChapterName()); else $("#chapterName").removeAttribute("title");
     $("#stageLabel").textContent = stageCode();
-    $("#mainProgress").textContent = `${state.stage} · ${localizedValue(C.chapters[chapterIndex()])}`;
+    if (practiceChapterActive() || practiceFirstChapterActive()) $("#stageLabel").setAttribute('dir', 'ltr'); else $("#stageLabel").removeAttribute('dir');
+    $("#mainProgress").textContent = `${state.stage} · ${displayChapterName()}`;
     $("#coinValue").textContent = fmt(state.resources.coins);
     $("#ingotValue").textContent = fmt(state.resources.ingots);
     $("#foodValue").textContent = fmt(state.resources.food);
@@ -1053,7 +1084,7 @@
     clearInterval(battle.tickHandle);
     (__wpNotifyMeasurement(), $("#resultPanel").classList.remove("is-hidden"));
     syncFrameCoverage();
-    $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: localizedValue(C.chapters[chapterIndex()]), stage: stageCode() }) : copy("defeatKicker");
+    $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: displayChapterName(), stage: practiceChapterActive() || practiceFirstChapterActive() ? `\u2066${stageCode()}\u2069` : stageCode() }) : copy("defeatKicker");
     $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
     $("#resultCopy").textContent = practiceRequested ? (practiceResultCopy[activeLocale()] || practiceResultCopy.en) : win ? copy("victoryCopy") : copy("defeatCopy");
     $("#resultRewards").innerHTML = win && !practiceRequested ? resourceChip('xp', `+${35 + state.stage * 6}`) + resourceChip('materials', `+${reward.materials || 3}`) : "";

@@ -87,7 +87,7 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "lantern-stride", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "index.html?preview=1", href: "games/lantern-stride/",
+      internalTrial: "/games/lantern-stride/index.html?preview=1", href: "games/lantern-stride/",
       title: { __localizedExact: true, en: "Lantern Stride", "zh-Hant": "燈徑疾步", "zh-Hans": "灯径疾步", ja: "灯りの駆け道", ko: "등불 달리기", es: "Carrera de Faroles", "pt-BR": "Corrida das Lanternas", fr: "Course des lanternes", de: "Laternenlauf", it: "Corsa delle lanterne", ru: "Бег фонарей", hi: "लालटेन दौड़", ar: "سباق الفوانيس" },
       type: { en: "Rhythm Racing", "zh-Hant": "節奏競跑" },
       description: { en: "Alternate your steps and find your rhythm on a forest racecourse.", "zh-Hant": "交替踏步，在森林跑道上找到自己的節奏。" },

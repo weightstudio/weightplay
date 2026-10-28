@@ -19,6 +19,7 @@ html body[data-wp-game-id="animal-crownfall"] #battleInfo [data-t="moveTarget"]{
 #legend{min-width:0;font-size:10px;line-height:12px;white-space:nowrap;overflow:auto;text-align:center}
 #legend:empty{display:none}
 .latch-tag{position:absolute;z-index:3;display:grid;place-items:center;width:calc(18px * var(--wp-battle-canvas-inverse-scale,1));height:calc(18px * var(--wp-battle-canvas-inverse-scale,1));border:2px solid #fff;border-radius:3px;background:#122433;color:#fff;font:bold calc(12px * var(--wp-battle-canvas-inverse-scale,1))/1 system-ui;box-shadow:0 1px 3px #000;pointer-events:none}
+.spike-tag{position:absolute;z-index:3;display:grid;place-items:center;width:calc(36px * var(--wp-battle-canvas-inverse-scale,1));height:calc(18px * var(--wp-battle-canvas-inverse-scale,1));border:2px solid #fff;border-radius:3px;background:#492820;color:#fff;font:bold calc(12px * var(--wp-battle-canvas-inverse-scale,1))/1 system-ui;box-shadow:0 1px 3px #000;pointer-events:none}
 /* Local chapter slice: keep the new instruction readable without overlaying
    the shared header. The normal campaign retains its existing layout. */
 body[data-crown-latch-practice="true"] #battleContent{grid-template-rows:minmax(0,1fr) 48px 110px 48px 48px}

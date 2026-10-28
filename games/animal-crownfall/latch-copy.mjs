@@ -56,6 +56,51 @@ const NINETEENTH_NAMES={en:'Paired locks and sun shield','zh-Hant':'雙鎖與太
 for(const [locale,value] of Object.entries(NINETEENTH_NAMES))LATCH_NAMES[locale].push(value);
 const TWENTIETH_NAMES={en:'The three-seal guardian','zh-Hant':'三印記守衛','zh-Hans':'三印记守卫',ja:'三つの印の守護者',ko:'세 인장의 수호자',es:'El guardián de tres sellos','pt-BR':'O guardião dos três selos',fr:'Le gardien aux trois sceaux',de:'Der Wächter der drei Siegel',it:'Il guardiano dei tre sigilli',ru:'Страж трёх печатей',hi:'तीन मुहरों का रक्षक',ar:'حارس الأختام الثلاثة'};
 for(const [locale,value] of Object.entries(TWENTIETH_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_FIRST_NAMES={en:'The spike bridge','zh-Hant':'尖刺橋','zh-Hans':'尖刺桥',ja:'とげの橋',ko:'가시 다리',es:'El puente de pinchos','pt-BR':'A ponte de espinhos',fr:'Le pont aux pointes',de:'Die Stachelbrücke',it:'Il ponte di spuntoni',ru:'Мост с шипами',hi:'काँटों का पुल',ar:'جسر الأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_FIRST_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_SECOND_NAMES={en:'Two pairs above the spikes','zh-Hant':'尖刺上的兩組配對','zh-Hans':'尖刺上的两组配对',ja:'とげの上の二組の鍵',ko:'가시 위의 두 쌍',es:'Dos pares sobre los pinchos','pt-BR':'Dois pares sobre espinhos',fr:'Deux paires au-dessus des pointes',de:'Zwei Paare über den Stacheln',it:'Due coppie sopra gli spuntoni',ru:'Две пары над шипами',hi:'काँटों के ऊपर दो जोड़े',ar:'زوجان فوق الأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_SECOND_NAMES))LATCH_NAMES[locale].push(value);
+const TWENTY_THIRD_NAMES={en:'The shield beyond the spikes','zh-Hant':'尖刺後的護盾','zh-Hans':'尖刺后的护盾',ja:'とげの先の盾',ko:'가시 너머의 방패',es:'El escudo tras los pinchos','pt-BR':'O escudo após os espinhos',fr:'Le bouclier après les pointes',de:'Der Schild hinter den Stacheln',it:'Lo scudo oltre gli spuntoni',ru:'Щит за шипами',hi:'काँटों के पार ढाल',ar:'الدرع خلف الأشواك'};
+for(const [locale,value] of Object.entries(TWENTY_THIRD_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_SPIKE_RUNE_RULE={
+ en:'Move Fia to safety before removing the left key; take the sun rune for the shield. Spikes cause defeat.',
+ 'zh-Hant':'先讓菲亞安全移動再拆左鑰匙；太陽符文可破盾。落到尖刺會失敗。','zh-Hans':'先让菲娅安全移动再拆左钥匙；太阳符文可破盾。落到尖刺会失败。',
+ ja:'フィアが安全になるまで左の鍵を残す。太陽のルーンで盾を解除。とげに落ちると失敗。',ko:'피아가 안전해진 뒤 왼쪽 열쇠를 없애세요. 태양 룬으로 방패를 풀고 가시를 피하세요.',
+ es:'Pon a Fia a salvo antes de quitar la llave izquierda; toma la runa solar para el escudo. Evita los pinchos.',
+ 'pt-BR':'Leve Fia à segurança antes de tirar a chave esquerda; pegue a runa solar para o escudo. Evite os espinhos.',
+ fr:'Mettez Fia en sécurité avant la clé gauche ; prenez la rune solaire pour le bouclier. Évitez les pointes.',
+ de:'Bring Fia vor dem linken Schlüssel in Sicherheit; nimm die Sonnenrune für den Schild. Meide Stacheln.',
+ it:'Metti Fia al sicuro prima della chiave sinistra; prendi la runa solare per lo scudo. Evita gli spuntoni.',
+ ru:'Сначала отведите Фию в безопасность; возьмите руну солнца против щита. Избегайте шипов.',
+ hi:'बाईं चाबी से पहले फ़िया को सुरक्षित करें; ढाल के लिए सूर्य रून लें। काँटों से बचें।',
+ ar:'أمّن فيا قبل إزالة المفتاح يسارًا؛ خذ رون الشمس للدرع وتجنب الأشواك.'
+};
+export const LATCH_DUAL_SPIKE_RULE={
+ en:'Move Fia to safety before removing the left key. Match both pairs; spikes cause defeat.',
+ 'zh-Hant':'先讓菲亞移到安全處再拆左鑰匙，配對兩組鎖；落到尖刺會失敗。','zh-Hans':'先让菲娅移到安全处再拆左钥匙，配对两组锁；落到尖刺会失败。',
+ ja:'フィアが安全になるまで左の鍵を残し、二組の鍵を合わせる。とげに落ちると失敗。',ko:'피아가 안전해진 뒤 왼쪽 열쇠를 없애고 두 쌍을 맞추세요. 가시에 떨어지면 실패합니다.',
+ es:'Pon a Fia a salvo antes de quitar la llave izquierda. Empareja ambos pares; los pinchos hacen perder.',
+ 'pt-BR':'Leve Fia à segurança antes de tirar a chave esquerda. Combine os dois pares; espinhos causam derrota.',
+ fr:'Mettez Fia en sécurité avant de retirer la clé gauche. Associez les deux paires ; les pointes font perdre.',
+ de:'Bring Fia in Sicherheit, bevor du den linken Schlüssel entfernst. Ordne beide Paare zu; Stacheln führen zur Niederlage.',
+ it:'Porta Fia al sicuro prima di togliere la chiave sinistra. Abbina entrambe le coppie; gli spuntoni fanno perdere.',
+ ru:'Сначала отведите Фию в безопасное место, затем уберите левый ключ. Сопоставьте обе пары; шипы ведут к поражению.',
+ hi:'बाईं चाबी हटाने से पहले फ़िया को सुरक्षित करें। दोनों जोड़े मिलाएँ; काँटों से हार होगी।',
+ ar:'أزل المفتاح يسارًا بعد أمان فيا، وطابق الزوجين. السقوط على الأشواك هزيمة.'
+};
+export const LATCH_SPIKE_BRIDGE_RULE={
+ en:'Keep the left support until Fia reaches safety; key before lock. Falling on spikes loses.',
+ 'zh-Hant':'先讓菲亞移到安全處再拆左支撐；鑰匙先於鎖。落到尖刺會失敗。','zh-Hans':'先让菲娅移到安全处再拆左支撑；钥匙先于锁。落到尖刺会失败。',
+ ja:'フィアが安全な場所へ移るまで左の足場を残す。鍵は錠より先。とげに落ちると失敗。',ko:'피아가 안전한 곳에 갈 때까지 왼쪽 발판을 남기세요. 열쇠는 잠금보다 먼저. 가시에 떨어지면 실패합니다.',
+ es:'Conserva el apoyo izquierdo hasta que Fia esté a salvo; llave antes del candado. Caer en pinchos hace perder.',
+ 'pt-BR':'Mantenha o apoio esquerdo até Fia chegar à segurança; chave antes da trava. Cair nos espinhos causa derrota.',
+ fr:'Gardez le support gauche jusqu’à ce que Fia soit en sécurité ; clé avant verrou. Tomber sur les pointes fait perdre.',
+ de:'Lass die linke Stütze stehen, bis Fia sicher ist; Schlüssel vor Sperre. Ein Sturz auf Stacheln beendet den Versuch.',
+ it:'Tieni il supporto sinistro finché Fia non è al sicuro; chiave prima del blocco. Cadere sugli spuntoni fa perdere.',
+ ru:'Сохраните левую опору, пока Фия не окажется в безопасности; ключ до замка. Падение на шипы ведёт к поражению.',
+ hi:'फ़िया के सुरक्षित पहुँचने तक बायाँ सहारा रखें; ताले से पहले चाबी। काँटों पर गिरने से हार होगी।',
+ ar:'أزل المفتاح يسارًا بعد أمان فيا، ثم القفل. السقوط على الأشواك هزيمة.'
+};
 export const LATCH_THREE_SEALS_TWO_RUNES_RULE={
  en:'Match both pairs; seals 1, 2, 3 in order. Use ☀ then ☾ runes for the two shields.',
  'zh-Hant':'配對兩組鑰匙與鎖，印記依序1、2、3；兩階護盾依序用☀、☾符文。','zh-Hans':'配对两组钥匙与锁，印记依序1、2、3；两阶段护盾依序用☀、☾符文。',

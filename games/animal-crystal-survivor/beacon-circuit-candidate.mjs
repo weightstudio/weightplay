@@ -38,7 +38,7 @@ const rows = [
 const points = {A, B, C};
 export const beaconCircuitStages = Object.freeze(rows.map(([stage,mode,order,carrier,hazard,boss]) => Object.freeze({
   stage, mode, order: Object.freeze([...order]), carrier, hazard, boss,
-  beacons: Object.freeze((stage === 33 ? ['A','B'] : order).map(id => points[id])),
+  beacons: Object.freeze(([33,36].includes(stage) ? ['A','B'] : order).map(id => points[id])),
   lamp: Object.freeze({capacity:1, lifetime:18, dwell:1.2, radius:95}),
 })));
 
@@ -63,7 +63,7 @@ export function stepBeaconRound(previous, {dt=0, pickup=false, damaged=false, ne
     next.charge=plan.lamp.lifetime; events.push('charge-picked-up');
   }
   const target=plan.order[next.completed];
-  const matches=plan.stage===33&&next.completed===0 ? ['A','B'].includes(nearBeacon) : nearBeacon===target;
+  const matches=[33,36].includes(plan.stage)&&next.completed===0 ? ['A','B'].includes(nearBeacon) : nearBeacon===target;
   if (next.charge && matches) {
     next.dwell+=dt;
     if (next.dwell + 1e-9 >= plan.lamp.dwell) {

@@ -33,6 +33,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .player-chip, .stage-chip { min-width: 0; display: grid; text-align: center; }
 .player-chip span, .stage-chip span { overflow: hidden; color: var(--wp-ui-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .player-chip strong, .stage-chip strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.stage-chip span.practice-chapter-name { white-space: normal; overflow-wrap: anywhere; line-height: 13px; max-height: 26px; text-overflow: clip; }
 .auto-chip { display: flex; align-items: center; justify-content: center; gap: 5px; height: 44px; padding: 0 8px; border: 1px solid var(--wp-ui-line); border-radius: 14px; color: #fff; background: #34465f; font-size: 12px; font-weight: 800; }
 .auto-chip i { width: 9px; height: 9px; border-radius: 50%; background: #8290a4; }
 .auto-chip.is-on i { background: #63e6be; box-shadow: 0 0 9px #63e6be; }

@@ -1,6 +1,5 @@
-// Unconnected local-practice bridge candidate. The current v50 entry does not
-// import this file; the future engine caller must supply the listed hooks and
-// install its collector/storage guards before calling it.
+// Authenticated local-practice bridge; the caller installs collector/storage
+// guards and checks authorization around asynchronous engine startup.
 export async function mountBeaconPractice({localPractice,enable,start,halt,host=globalThis}) {
   if (!localPractice || typeof enable!=='function' || typeof start!=='function' || typeof halt!=='function') throw new TypeError('Invalid practice hooks');
   let closed=false,checking=false,timer=null;
@@ -9,12 +8,12 @@ export async function mountBeaconPractice({localPractice,enable,start,halt,host=
   let ok;
   try {ok=await localPractice.register({
     gameId:'animal-crystal-survivor',
-    // Register only wired local slices; 36–60 are still design candidates.
-    acceptStage:id=>id==='31'||id==='32'||id==='33'||id==='34'||id==='35',
+    // Register only wired local slices; 37–60 remain design candidates.
+    acceptStage:id=>id==='31'||id==='32'||id==='33'||id==='34'||id==='35'||id==='36',
     enable:value=>{if(!value)revoke();else if(!closed)enable(true)},
     // The engine must check isActive again after every await before exposing
     // or resuming a round; the bridge cannot cancel an arbitrary engine await.
-    startStage:async id=>{if(closed||!['31','32','33','34','35'].includes(id))return false;const result=await start(Number(id),()=>!closed&&localPractice.dynamicEnabled===true);if(closed){halt();return false}return result},
+    startStage:async id=>{if(closed||!['31','32','33','34','35','36'].includes(id))return false;const result=await start(Number(id),()=>!closed&&localPractice.dynamicEnabled===true);if(closed){halt();return false}return result},
   })}catch{revoke();return {ok:false,close:revoke}}
   if(!ok||closed||localPractice.dynamicEnabled!==true){revoke();return {ok:false,close:revoke}}
   try {timer=host.setInterval(async()=>{

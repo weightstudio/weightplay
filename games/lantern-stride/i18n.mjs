@@ -144,6 +144,7 @@ export function resolveLocale(options={}) {
   if(parts[0]==='weightplay')parts.shift();
   if(aliases[parts[0]?.toLowerCase()])return aliases[parts[0].toLowerCase()];
   try {const query=new URLSearchParams(options.search ?? globalThis.location?.search ?? '');const candidate=(query.get('lang')||query.get('locale')||'').toLowerCase();if(aliases[candidate])return aliases[candidate];}catch{}
+  try {const referrer=Object.hasOwn(options,'referrer')?options.referrer:Object.keys(options).length===0?globalThis.document?.referrer:'';const url=new URL(referrer);if(url.origin===globalThis.location?.origin){const segment=url.pathname.split('/').filter(Boolean)[0]?.toLowerCase();if(aliases[segment])return aliases[segment];}}catch{}
   try {const storage=Object.hasOwn(options,'storage')?options.storage:globalThis.localStorage;const stored=(storage?.getItem('weightPlayLocale')||'').toLowerCase();if(aliases[stored])return aliases[stored];}catch{}
   return aliases[String(options.documentLanguage ?? globalThis.document?.documentElement?.lang ?? 'en').toLowerCase()]||'en';
 }
