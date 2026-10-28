@@ -40,3 +40,5 @@
 @media (min-width:1000px) and (min-height:481px){#battleContent[data-wide=true] #commands .courier-button{padding-inline:2px}#battleContent[data-wide=true] #commands .courier-top{gap:2px}#battleContent[data-wide=true] #commands .courier-top img{width:28px;height:28px;flex:0 0 28px}#battleContent[data-wide=true] #commands .courier-top b{font-size:14px;white-space:nowrap}}
 #gameGuide .game-info-section > dl,
 #gameGuide .game-info-section > dl > dd { margin: 0; }
+/* Keep the local-only marker between the Battle rule and belt labels. */
+body[data-wp-game-id="pawflow"][data-screen="battle"] [data-wp-local-practice] { top: 82px !important; left: auto !important; right: 8px; transform: none !important; }

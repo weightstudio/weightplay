@@ -97,14 +97,14 @@ export class SalvageView {
     const braceMaterial=new THREE.MeshStandardMaterial({color:0x604533,roughness:.7}),braceGeometry=new THREE.BoxGeometry(164,6,4);
     for(const y of [12,43]){const brace=new THREE.Mesh(braceGeometry,braceMaterial);brace.position.set(0,y,30);stand.add(brace);}
     stand.rotation.y=-.12;stand.position.set(95,0,-45);this.scene.add(stand);
-    this.rux=new THREE.Group();this.rux.position.set(95,62,-15);this.scene.add(this.rux);
+    this.rux=new THREE.Group();this.rux.position.set(110,62,-15);this.scene.add(this.rux);
     const fallbackRux=createRux();this.rux.add(fallbackRux);
     this.disposed=false;
     new THREE.TextureLoader().load('/assets/weightplay-character-gear-horn-rhino-block-v1.webp',texture=>{
       if(this.disposed){texture.dispose();return;}
       texture.colorSpace=THREE.SRGBColorSpace;this.ruxTexture=texture;
-      const artwork=new THREE.Mesh(new THREE.PlaneGeometry(180,180),new THREE.MeshBasicMaterial({map:texture,transparent:true,depthWrite:false}));
-      artwork.position.set(0,90,0);this.rux.add(artwork);fallbackRux.visible=false;
+      const artwork=new THREE.Mesh(new THREE.PlaneGeometry(220,220),new THREE.MeshBasicMaterial({map:texture,transparent:true,depthWrite:false}));
+      artwork.position.set(0,110,0);this.rux.add(artwork);fallbackRux.visible=false;
     },undefined,error=>console.warn('RUX_CHARACTER_ASSET',error));
     this.aim = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({color:0xffe899, dashSize:18, gapSize:12}));
     this.scene.add(this.aim);
@@ -146,7 +146,13 @@ export class SalvageView {
     const enamel=mesh=>{mesh.material.map=this.enamelTexture;return mesh;};
     const block=(w,h,d,color,metalness=0)=>{const r=Math.min(3,w/8,h/8,d/8),shape=new THREE.Shape();shape.moveTo(-w/2+r,-h/2+r);shape.lineTo(w/2-r,-h/2+r);shape.lineTo(w/2-r,h/2-r);shape.lineTo(-w/2+r,h/2-r);shape.closePath();const depth=d-2*r,geometry=new THREE.ExtrudeGeometry(shape,{depth,steps:1,bevelEnabled:true,bevelSize:r,bevelThickness:r,bevelSegments:1,curveSegments:1});geometry.translate(0,0,-depth/2);const m=new THREE.Mesh(geometry,mat(color,metalness));group.add(m);return m;};
     const bolt=(x,y,z,color=0xf7d278)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(3,3,3,8),mat(color,.6));m.rotation.x=Math.PI/2;m.position.set(x,y,z);group.add(m);};
-    const studs=(w,h,z)=>{for(const x of [-w/2+9,w/2-9])for(const y of [-h/2+9,h/2-9])bolt(x,y,z);};
+    const studs=(w,h,z)=>{
+      // The four identical fasteners are one draw while preserving their
+      // positions and orientation on the individual moving body.
+      const fasteners=new THREE.InstancedMesh(new THREE.CylinderGeometry(3,3,3,8),mat(0xf7d278,.6),4),transform=new THREE.Object3D();let index=0;
+      transform.rotation.x=Math.PI/2;for(const x of [-w/2+9,w/2-9])for(const y of [-h/2+9,h/2-9]){transform.position.set(x,y,z);transform.updateMatrix();fasteners.setMatrixAt(index++,transform.matrix);}
+      group.add(fasteners);
+    };
     // A slim dark backplate separates playable shapes from the richly detailed
     // workshop without changing the collision shape or obscuring its face.
     if(['wood','metal','target'].includes(kind)){const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;box(w+7,h+7,5,0x183b3a,-39);}
@@ -182,8 +188,8 @@ export class SalvageView {
       box(120,20,70,0x54868a,0,.6);box(114,6,78,0xe3bc61,6,.5);
       // The chevron tracks the real platform direction, making its timing
       // legible without adding a second simulated motion or obscuring parts.
-      const direction=new THREE.Group(),shaft=new THREE.Mesh(new THREE.BoxGeometry(28,3,3),mat(0xffefb0)),tipA=new THREE.Mesh(new THREE.BoxGeometry(12,3,3),mat(0xffefb0)),tipB=new THREE.Mesh(new THREE.BoxGeometry(12,3,3),mat(0xffefb0));
-      tipA.position.set(10,4,0);tipA.rotation.z=-Math.PI/4;tipB.position.set(10,-4,0);tipB.rotation.z=Math.PI/4;direction.add(shaft,tipA,tipB);direction.position.z=43;group.add(direction);group.userData.direction=direction;
+      const direction=new THREE.Group(),shaft=new THREE.Mesh(new THREE.BoxGeometry(44,4,3),mat(0xffefb0)),tipA=new THREE.Mesh(new THREE.BoxGeometry(16,4,3),mat(0xffefb0)),tipB=new THREE.Mesh(new THREE.BoxGeometry(16,4,3),mat(0xffefb0));
+      tipA.position.set(16,5,0);tipA.rotation.z=-Math.PI/4;tipB.position.set(16,-5,0);tipB.rotation.z=Math.PI/4;direction.add(shaft,tipA,tipB);direction.position.z=43;group.add(direction);group.userData.direction=direction;
     }
     if(kind==='target') {
       const w=body.bounds.max.x-body.bounds.min.x;block(w,65,65,body.plugin.heavy?0x4a5960:0x137f80,.2);box(w-6,57,6,body.plugin.heavy?0xb97a42:0xe8b847,35,.4);enamel(box(w-17,46,7,0x249fa0,40));enamel(box(w-27,36,7,0x126a70,44,.2));
@@ -207,16 +213,25 @@ export class SalvageView {
     if(event.type==='shot'){this.recoil=.16;return;}
     if(!['impact','break','recovered'].includes(event.type)||!Number.isFinite(event.x)||this.bursts.length>=8)return;
     const count=event.type==='break'?10:6,color=event.type==='recovered'?0x8dff9c:event.type==='break'||event.material==='wood'||event.material==='beam'?0xffcc70:0x8af5ed;
-    const group=new THREE.Group(),geometry=new THREE.BoxGeometry(event.type==='break'?9:6,event.type==='break'?5:6,6),material=new THREE.MeshBasicMaterial({color,transparent:true});
-    for(let i=0;i<count;i++){const spark=new THREE.Mesh(geometry,material);spark.userData.angle=i*Math.PI*2/count;group.add(spark);}
-    const ringGeometry=new THREE.RingGeometry(9,13,24),ringMaterial=new THREE.MeshBasicMaterial({color,transparent:true,side:THREE.DoubleSide,depthWrite:false});const ring=new THREE.Mesh(ringGeometry,ringMaterial);group.add(ring);
-    group.position.set(event.x,800-event.y,100);this.scene.add(group);this.bursts.push({group,geometry,material,ring,ringGeometry,ringMaterial,life:0});
+    const group=new THREE.Group(),geometry=new THREE.BoxGeometry(event.type==='break'?9:6,event.type==='break'?5:6,6),material=new THREE.MeshBasicMaterial({color});
+    // All sparks in one burst share geometry and material, so draw them as
+    // instances while retaining their individual positions and rotations.
+    const sparks=new THREE.InstancedMesh(geometry,material,count),transform=new THREE.Object3D();group.add(sparks);
+    const ringGeometry=new THREE.RingGeometry(9,13,24),ringMaterial=new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,depthWrite:false});const ring=new THREE.Mesh(ringGeometry,ringMaterial);group.add(ring);
+    group.position.set(event.x,800-event.y,100);this.scene.add(group);this.bursts.push({group,geometry,material,sparks,transform,count,ring,ringGeometry,ringMaterial,life:0});
   }
   sync(model,angle,dt=0,power=.6) {
     this.recoil=Math.max(0,this.recoil-dt);const kick=this.reducedMotion?0:this.recoil/.16;this.launcher.position.x=80-kick*10;this.rux.rotation.z=kick*.08;
     const active=new Set(model.bodies);
     for(const [body,mesh] of this.meshes) if(!active.has(body)){this.scene.remove(mesh);mesh.traverse(n=>{if(n.isInstancedMesh)n.dispose();n.geometry?.dispose();n.material?.dispose();});this.meshes.delete(body);}
-    for(const body of model.bodies){let mesh=this.meshes.get(body);if(!mesh){mesh=this.make(body);this.meshes.set(body,mesh);}mesh.position.set(body.position.x,800-body.position.y,0);mesh.rotation.z=-body.angle;if(mesh.userData.direction)mesh.userData.direction.scale.x=(model.platformTime*50+50)%200<100?1:-1;const held=model.clamped.some(item=>item.body===body);if(mesh.userData.clampIndicator)mesh.userData.clampIndicator.visible=held;mesh.traverse(node=>{if(node.material?.emissive)node.material.emissive.setHex(held?0x196a72:0);if(node.material){node.material.transparent=Boolean(body.plugin.recovered);node.material.opacity=body.plugin.recovered ? .35 : 1;}});}
+    for(const body of model.bodies){let mesh=this.meshes.get(body);if(!mesh){mesh=this.make(body);this.meshes.set(body,mesh);}mesh.position.set(body.position.x,800-body.position.y,0);mesh.rotation.z=-body.angle;if(mesh.userData.direction)mesh.userData.direction.scale.x=(model.platformTime*50+50)%200<100?1:-1;const held=model.clamped.some(item=>item.body===body),recovered=Boolean(body.plugin.recovered);
+      // Materials only change when a body is held, released or recovered.
+      // Avoid walking every detailed prop on every animation frame.
+      if(mesh.userData.lastHeld!==held||mesh.userData.lastRecovered!==recovered){
+        mesh.userData.lastHeld=held;mesh.userData.lastRecovered=recovered;if(mesh.userData.clampIndicator)mesh.userData.clampIndicator.visible=held;
+        mesh.traverse(node=>{if(node.material?.emissive)node.material.emissive.setHex(held?0x196a72:0);if(node.material){if(node.material.transparent!==recovered){node.material.transparent=recovered;node.material.needsUpdate=true;}node.material.opacity=recovered ? .35 : 1;}});
+      }
+    }
     if(model.state==='ready'){
       // Rebuild only when aim, power or a movable obstacle has changed.
       // Static scenery is immutable during a ready state; the moving platform
@@ -232,8 +247,8 @@ export class SalvageView {
     this.aim.visible=model.state==='ready';this.aimDots.visible=this.aim.visible;this.aimMarker.visible=this.aim.visible&&this.aimHasImpact;this.launcher.rotation.z=angle;
     const linked=model.targets.filter(body=>body.plugin.linked&&model.bodies.includes(body));this.link.visible=linked.length===2;
     if(linked.length===2)this.link.geometry.setFromPoints(linked.map(body=>new THREE.Vector3(body.position.x,800-body.position.y,82)));
-    for(const burst of this.bursts){burst.life+=dt;const distance=this.reducedMotion?10:burst.life*110;for(const spark of burst.group.children){if(spark===burst.ring)continue;spark.position.x=Math.cos(spark.userData.angle)*distance;spark.position.y=Math.sin(spark.userData.angle)*distance;spark.rotation.z=burst.life*5+spark.userData.angle;}burst.ring.scale.setScalar(this.reducedMotion?1:1+burst.life*4);burst.material.opacity=burst.ringMaterial.opacity=Math.max(0,1-burst.life/.3);}
-    for(let i=this.bursts.length-1;i>=0;i--)if(this.bursts[i].life>=.3){const burst=this.bursts.splice(i,1)[0];this.scene.remove(burst.group);burst.geometry.dispose();burst.material.dispose();burst.ringGeometry.dispose();burst.ringMaterial.dispose();}
+    for(const burst of this.bursts){burst.life+=dt;const distance=this.reducedMotion?10:burst.life*110,fade=this.reducedMotion?1:Math.min(1,Math.max(0,(.3-burst.life)/.1));for(let i=0;i<burst.count;i++){const angle=i*Math.PI*2/burst.count;burst.transform.position.set(Math.cos(angle)*distance,Math.sin(angle)*distance,0);burst.transform.rotation.z=this.reducedMotion?angle:burst.life*5+angle;burst.transform.scale.setScalar(fade);burst.transform.updateMatrix();burst.sparks.setMatrixAt(i,burst.transform.matrix);}burst.sparks.instanceMatrix.needsUpdate=true;burst.ring.scale.setScalar(this.reducedMotion?1:(1+burst.life*4)*fade);}
+    for(let i=this.bursts.length-1;i>=0;i--)if(this.bursts[i].life>=.3){const burst=this.bursts.splice(i,1)[0];this.scene.remove(burst.group);burst.sparks.dispose();burst.geometry.dispose();burst.material.dispose();burst.ringGeometry.dispose();burst.ringMaterial.dispose();}
     this.renderer.render(this.scene,this.camera);
   }
   dispose() {

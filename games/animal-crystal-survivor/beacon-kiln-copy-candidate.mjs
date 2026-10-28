@@ -1,0 +1,22 @@
+// Draft local-practice copy. Native-language and rendered review are pending.
+export const kilnCopy=Object.freeze({
+ en:['Cinder Kiln Panther','After each landing, pulse C then B while heat remains; defeat the panther. Damage loses the fragment.','Wait for landing','Heat active · hold at {station}','Shield open · defeat the panther'],
+ 'zh-Hant':['餘燼窯豹','每次落地後趁熱區仍在，依序啟動 C、B；擊敗窯豹。受傷會失去碎片。','等待落地','熱區生效 · 在 {station} 停留','護盾已開 · 擊敗窯豹'],
+ 'zh-Hans':['余烬窑豹','每次落地后趁热区仍在，依次启动 C、B；击败窑豹。受伤会失去碎片。','等待落地','热区生效 · 在 {station} 停留','护盾已开 · 击败窑豹'],
+ ja:['残火の窯豹','着地後、熱が残る間に C、B の順に起動し、豹を倒す。被弾で欠片を失う。','着地を待つ','熱が有効 · {station} で待つ','盾が開いた · 豹を倒す'],
+ ko:['잿불 가마 표범','착지 후 열기가 남은 동안 C, B 순서로 작동하고 표범을 물리치세요. 피해를 받으면 조각을 잃습니다.','착지 대기','열기 활성 · {station}에서 대기','방패 개방 · 표범 처치'],
+ es:['Pantera del horno','Tras cada aterrizaje, activa C y luego B mientras quede calor; derrota a la pantera. El daño hace perder el fragmento.','Espera el aterrizaje','Calor activo · espera en {station}','Escudo abierto · derrota a la pantera'],
+ 'pt-BR':['Pantera da fornalha','Após cada aterrissagem, ative C e depois B enquanto houver calor; derrote a pantera. Dano faz perder o fragmento.','Aguarde a aterrissagem','Calor ativo · espere em {station}','Escudo aberto · derrote a pantera'],
+ fr:['Panthère du brasier','Après chaque atterrissage, activez C puis B tant que la chaleur reste ; battez la panthère. Un coup fait perdre le fragment.','Attendez l’atterrissage','Chaleur active · restez à {station}','Bouclier ouvert · battez la panthère'],
+ de:['Glutofen-Panther','Nach jeder Landung C und dann B aktivieren, solange Hitze bleibt; besiege den Panther. Schaden kostet das Fragment.','Auf Landung warten','Hitze aktiv · bei {station} bleiben','Schild offen · Panther besiegen'],
+ it:['Pantera della fornace','Dopo ogni atterraggio, attiva C poi B finché resta il calore; sconfiggi la pantera. I danni fanno perdere il frammento.','Attendi l’atterraggio','Calore attivo · resta su {station}','Scudo aperto · sconfiggi la pantera'],
+ ru:['Пантера жаркой печи','После каждого приземления включите C, затем B, пока действует жар; победите пантеру. Урон лишает осколка.','Ждите приземления','Жар действует · стойте у {station}','Щит открыт · победите пантеру'],
+ hi:['अंगार भट्ठी पैंथर','हर लैंडिंग के बाद गर्मी रहते C फिर B सक्रिय करें; पैंथर को हराएँ। चोट से टुकड़ा खोता है।','लैंडिंग की प्रतीक्षा','गर्मी सक्रिय · {station} पर रुकें','ढाल खुली · पैंथर को हराएँ'],
+ ar:['فهد الفرن المتوهج','بعد كل هبوط، فعّل C ثم B ما دامت الحرارة قائمة؛ اهزم الفهد. الإصابة تفقدك الشظية.','انتظر الهبوط','الحرارة قائمة · اثبت عند {station}','الدرع مفتوح · اهزم الفهد'],
+});
+export function kilnStatus(locale,round,heatReady){
+ const words=kilnCopy[locale]||kilnCopy.en;
+ if(round?.completed===2)return words[4];
+ if(!round?.charge)return null;
+ return heatReady?words[3].replace('{station}',round.completed===0?'C':'B'):words[2];
+}
