@@ -202,4 +202,11 @@ export const LATCH_CHAPTER_CANDIDATES=[{
   hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun',direction:'right'}],required:['weak','last'],
   items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'crown',kind:'crown',x:6,y:6},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'},{id:'rune',kind:'rune',x:1,y:0,link:'sun'}],sealOrder:['1','2','3'],
   latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[1,3],key:[2,1]}]
+},{
+  id:60,name:'The guardian of sun and moon',
+  decision:'Avoid spikes, match the two pairs, collect the three seals in order and approach the sun shield from the right before meeting its moon form.',
+  board:['.......','AABBBCC','.......','^BB.CCA','.......','BBBAAAA','.......','1111111','.......','#######'],
+  hero:{x:0,y:0,power:10},enemies:[{id:'weak',x:4,y:0,power:6},{id:'last',x:1,y:4,power:20,shield:'sun',direction:'right',boss:true,open:'1',next:{x:0,y:8,power:65,shield:'moon',direction:null}}],required:['weak','last'],
+  items:[{id:'fruit',kind:'power',x:4,y:2,amount:10},{id:'seal1',kind:'seal',x:2,y:0,link:'1'},{id:'seal2',kind:'seal',x:6,y:0,link:'2'},{id:'seal3',kind:'seal',x:1,y:2,link:'3'},{id:'rune',kind:'rune',x:1,y:0,link:'sun'},{id:'boost',kind:'power',x:6,y:4,amount:24},{id:'moonRune',kind:'rune',x:4,y:8,link:'moon'},{id:'crown',kind:'crown',x:6,y:8}],sealOrder:['1','2','3'],
+  latches:[{id:'sun',lock:[5,1],key:[0,1]},{id:'moon',lock:[1,3],key:[2,1]}]
 }];

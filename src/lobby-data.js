@@ -22,6 +22,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "rux-salvage-yard",
       "lantern-stride",
       "orbit-menders",
       "bramble-rapids",
@@ -85,6 +86,16 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "rux-salvage-yard", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "/games/rux-salvage-yard/index.html?preview=1", href: "games/rux-salvage-yard/",
+      title: { __localizedExact: true, en: "Rux Salvage Yard", "zh-Hant": "Rux 回收工坊", "zh-Hans": "Rux 回收工坊", ja: "ルックスのリサイクル工房", ko: "럭스의 재활용 작업장", es: "Taller de reciclaje de Rux", "pt-BR": "Oficina de Reciclagem de Rux", fr: "L'atelier de recyclage de Rux", de: "Rux' Recyclingwerkstatt", it: "L'officina di riciclo di Rux", ru: "Мастерская переработки Рукса", hi: "रक्स की रीसाइक्लिंग कार्यशाला", ar: "ورشة روكس لإعادة التدوير" },
+      type: { en: "Physics Puzzle", "zh-Hant": "物理益智" },
+      description: { en: "Aim at supports and recover the pieces as workshop structures fall.", "zh-Hant": "瞄準支點，讓工坊結構倒下並回收零件。" },
+      categories: ["Puzzle", "Physics", "Animal Games"], skills: ["Aiming", "Spatial Planning"], ages: ["9", "family"],
+      ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
+      art: { kind: "image", background: "/games/rux-salvage-yard/art/poster.webp", hideHero: true }
+    },
     {
       id: "lantern-stride", audience: "general", status: "planned", internalOnly: true,
       internalTrial: "/games/lantern-stride/index.html?preview=1", href: "games/lantern-stride/",

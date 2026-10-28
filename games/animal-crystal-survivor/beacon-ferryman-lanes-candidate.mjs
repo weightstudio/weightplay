@@ -1,5 +1,5 @@
 // Unconnected Stage 40 warning geometry. The actual engine must own its clocks.
-import {pulseFerryman} from './beacon-ferryman-candidate.mjs';
+import {pulseFerryman} from './beacon-ferryman-candidate.mjs?v=20261028-facet1';
 export function makeFacetLanes(phase){
   if(phase!==0&&phase!==1)throw new RangeError('INVALID_FACET_PHASE');
   return {phase,required:phase===0?'A':'B',lanes:{

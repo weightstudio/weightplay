@@ -48,6 +48,21 @@ body[data-crown-latch-practice="true"] #legend{font-size:12px;line-height:16px}
   #legend{font-size:9px}
   #feedback{font-size:10px}
 }
+/* Allow the Arabic stage 59 rule its full line height in both control states. */
+@media(min-aspect-ratio:1.45){
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="59"] #battleContent:has(#choice[hidden]){grid-template-rows:minmax(0,1fr) 94px 132px 0 48px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="59"] #side{height:132px;grid-template-rows:68px 32px 32px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="59"] #objective{max-height:68px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="59"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 94px 128px 0 48px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="59"] #battleContent:has(#choice:not([hidden])) #side{height:128px;grid-template-rows:64px 32px 32px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="59"] #battleContent:has(#choice:not([hidden])) #objective{max-height:64px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent:has(#choice[hidden]){grid-template-rows:minmax(0,1fr) 94px 144px 0 48px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="60"] #side{height:144px;grid-template-rows:80px 32px 32px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="60"] #objective{max-height:80px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent:has(#choice:not([hidden])){grid-template-rows:minmax(0,1fr) 94px 140px 0 48px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent:has(#choice:not([hidden])) #side{height:140px;grid-template-rows:76px 32px 32px}
+  html[lang="ar"] body[data-crown-latch-practice="true"][data-crown-stage="60"] #battleContent:has(#choice:not([hidden])) #objective{max-height:76px}
+}
 @media(min-aspect-ratio:1.45){
  body[data-crown-latch-practice="true"] #battleContent{grid-template-columns:minmax(0,1fr) 180px;grid-template-rows:minmax(0,1fr) 94px 60px 48px 48px}
  body[data-crown-latch-practice="true"] #battleContent:has(#choice[hidden]){grid-template-rows:minmax(0,1fr) 94px 106px 0 48px}

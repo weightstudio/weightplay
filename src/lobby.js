@@ -719,9 +719,8 @@ function createDemonEventPreview() {
   const onPageShow = () => { updateMotion(); scheduleCarousel(); };
   window.addEventListener("pagehide", onPageHide);
   window.addEventListener("pageshow", onPageShow);
-  // The owner-preview activity uses its own full locale dictionary. Public
-  // lobbies do not request the candidate payload or change their event list.
-  if (ownerPreviewMode) import("/activities/meteor-barrage/copy.mjs").then(({ COPY, getLocale, lobbyPath }) => {
+  // Standalone activities keep their localized copy with their public payload.
+  import("/activities/meteor-barrage/copy.mjs").then(({ COPY, getLocale, lobbyPath }) => {
     if (artDisposed) return;
     const copy = COPY[getLocale(locale)];
     const event = {
@@ -735,7 +734,7 @@ function createDemonEventPreview() {
     controls.hidden = false;
     position.textContent = `${activeIndex + 1} / ${events.length}`;
     scheduleCarousel();
-  }).catch(error => console.warn("Activity preview unavailable", error));
+  }).catch(error => console.warn("Activity unavailable", error));
   return section;
 }
 

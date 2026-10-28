@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "rux-salvage-yard": {
+    "__localizedExact": true,
+    "en": "Rux Salvage Yard",
+    "zh-Hant": "Rux 回收工坊",
+    "zh-Hans": "Rux 回收工坊",
+    "ja": "ルックスのリサイクル工房",
+    "ko": "럭스의 재활용 작업장",
+    "es": "Taller de reciclaje de Rux",
+    "pt-BR": "Oficina de Reciclagem de Rux",
+    "fr": "L'atelier de recyclage de Rux",
+    "de": "Rux' Recyclingwerkstatt",
+    "it": "L'officina di riciclo di Rux",
+    "ru": "Мастерская переработки Рукса",
+    "hi": "रक्स की रीसाइक्लिंग कार्यशाला",
+    "ar": "ورشة روكس لإعادة التدوير"
+  },
   "lantern-stride": {
     "__localizedExact": true,
     "en": "Lantern Stride",

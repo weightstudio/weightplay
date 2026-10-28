@@ -74,6 +74,23 @@ const TWENTY_EIGHTH_NAMES={en:'The rune and the three seals','zh-Hant':'符文�
 for(const [locale,value] of Object.entries(TWENTY_EIGHTH_NAMES))LATCH_NAMES[locale].push(value);
 const TWENTY_NINTH_NAMES={en:'The guardian facing right','zh-Hant':'右側進攻的守衛','zh-Hans':'右侧进攻的守卫',ja:'右から挑む守護者',ko:'오른쪽에서 맞서는 수호자',es:'El guardián del lado derecho','pt-BR':'O guardião do lado direito',fr:'Le gardien à aborder par la droite',de:'Der Wächter von rechts',it:'Il guardiano da destra',ru:'Страж: подойти справа',hi:'दाईं ओर से रक्षक',ar:'الحارس من اليمين'};
 for(const [locale,value] of Object.entries(TWENTY_NINTH_NAMES))LATCH_NAMES[locale].push(value);
+const THIRTIETH_NAMES={en:'The guardian of sun and moon','zh-Hant':'日月守衛','zh-Hans':'日月守卫',ja:'太陽と月の守護者',ko:'태양과 달의 수호자',es:'El guardián del sol y la luna','pt-BR':'O guardião do sol e da lua',fr:'Le gardien du soleil et de la lune',de:'Der Wächter von Sonne und Mond',it:'Il guardiano del sole e della luna',ru:'Страж солнца и луны',hi:'सूर्य और चंद्र रक्षक',ar:'حارس الشمس والقمر'};
+for(const [locale,value] of Object.entries(THIRTIETH_NAMES))LATCH_NAMES[locale].push(value);
+export const LATCH_FINAL_RULE={
+ en:'Avoid spikes; match keys and locks. Collect seals 1–3 in order, both runes and supply. Approach the sun guardian from the right.',
+ 'zh-Hant':'避尖刺、配對鑰匙與鎖；依序收集印記1–3、日月符文與補給，從右側接近日盾守衛。',
+ 'zh-Hans':'避尖刺、配对钥匙与锁；依序收集印记1–3、日月符文与补给，从右侧接近日盾守卫。',
+ ja:'とげを避け鍵と錠を合わせ、印1〜3を順に、日月のルーンと補給を集め、太陽の守護者に右から近づこう。',
+ ko:'가시를 피하고 열쇠와 잠금을 맞추세요. 인장 1–3을 순서대로, 해와 달 룬과 보급품을 모아 오른쪽에서 접근하세요.',
+ es:'Evita pinchos y empareja llaves y candados. Reúne sellos 1–3 en orden, ambas runas y el suministro. Acércate al guardián solar por la derecha.',
+ 'pt-BR':'Evite espinhos e combine chaves e travas. Pegue selos 1–3 em ordem, as duas runas e o suprimento. Aproxime-se do guardião solar pela direita.',
+ fr:'Évitez les pointes, associez clés et verrous. Prenez les sceaux 1–3 dans l’ordre, les deux runes et la réserve. Approchez le gardien solaire par la droite.',
+ de:'Meide Stacheln, ordne Schlüssel und Sperren zu. Sammle Siegel 1–3, beide Runen und Vorrat. Nähere dich dem Sonnenwächter von rechts.',
+ it:'Evita gli spuntoni e abbina chiavi e blocchi. Raccogli i sigilli 1–3 in ordine, entrambe le rune e la scorta. Avvicina il guardiano solare da destra.',
+ ru:'Избегайте шипов, сопоставьте ключи и замки. Соберите печати 1–3 по порядку, обе руны и припас. Подойдите к солнечному стражу справа.',
+ hi:'काँटों से बचें और चाबी-ताले मिलाएँ। मुहरें 1–3 क्रम से, दोनों रून और सामग्री लें। सूर्य रक्षक के दाईं ओर से आएँ।',
+ ar:'تجنب الأشواك وطابق المفاتيح والأقفال. اجمع الأختام \u20661–3\u2069 بالترتيب والرونين والإمداد. اقترب من حارس الشمس من اليمين.'
+};
 export const LATCH_DIRECTION_RULE={
  en:'Avoid spikes, match keys and locks, collect seals 1–3 in order and the sun rune. Approach the guardian from the right.',
  'zh-Hant':'避開尖刺、配對鑰匙與鎖；依序收集印記1–3及太陽符文，從右側接近守衛。',
@@ -87,7 +104,7 @@ export const LATCH_DIRECTION_RULE={
  it:'Evita gli spuntoni, abbina chiavi e blocchi, raccogli i sigilli 1–3 in ordine e la runa solare. Avvicinati da destra.',
  ru:'Избегайте шипов, сопоставьте ключи и замки, соберите печати 1–3 по порядку и руну солнца. Подойдите справа.',
  hi:'काँटों से बचें, चाबियाँ और ताले मिलाएँ, मुहरें 1–3 क्रम से और सूर्य रून लें। रक्षक के दाईं ओर से आएँ।',
- ar:'تجنب الأشواك وطابق المفاتيح والأقفال. اجمع الأختام 1–3 بالترتيب ورون الشمس، واقترب من الحارس من اليمين.'
+ ar:'تجنب الأشواك وطابق المفاتيح والأقفال. اجمع الأختام \u20661–3\u2069 بالترتيب ورون الشمس، واقترب من الحارس من اليمين.'
 };
 export const LATCH_DUAL_SPIKE_SEALS_RUNE_RULE={
  en:'Avoid spikes before the left key. Match pairs; seals 1, 2, 3 in order; ☀ rune breaks the shield.',
