@@ -440,6 +440,38 @@ const EXTRA={
  ar:['يثبّت المشبك هدفه لثلاث ثوانٍ.','يقدّر الخط المنقط المسار حتى أول اصطدام. قد تغيّر القطع المتحركة موضع الاصطدام؛ يوضح السهم اتجاه المنصة.']
 };
 for(const [locale,[clampTime,trajectory]] of Object.entries(EXTRA))Object.assign(CUSTOM[locale],{clampTime,trajectory});
+const REFLECTOR_TIP={
+  en:'The angled reflector changes the ball’s direction; try bouncing toward a support.',
+  'zh-Hant':'斜反彈板會改變球的方向；試著利用反彈擊中支架。',
+  'zh-Hans':'斜反弹板会改变球的方向；试着利用反弹击中支架。',
+  ja:'斜めの反射板で球の向きが変わります。跳ね返して支えを狙ってみましょう。',
+  ko:'기울어진 반사판은 공의 방향을 바꿉니다. 튕겨서 지지대를 맞혀 보세요.',
+  es:'El reflector inclinado cambia la dirección de la bola; prueba a rebotarla hacia un soporte.',
+  'pt-BR':'O refletor inclinado muda a direção da bola; tente rebatê-la contra um suporte.',
+  fr:'Le réflecteur incliné change la direction de la balle ; faites-la rebondir vers un support.',
+  de:'Der schräge Reflektor ändert die Flugrichtung; versuche, eine Stütze über den Abpraller zu treffen.',
+  it:'Il riflettore inclinato cambia la direzione della palla; falla rimbalzare verso un supporto.',
+  ru:'Наклонный отражатель меняет направление шара. Попробуйте направить его к опоре.',
+  hi:'तिरछा परावर्तक गेंद की दिशा बदलता है; गेंद को उछालकर सहारे पर मारें।',
+  ar:'يغيّر العاكس المائل اتجاه الكرة؛ جرّب ارتدادها نحو دعامة.'
+};
+for(const [locale,reboundTip] of Object.entries(REFLECTOR_TIP))CUSTOM[locale].reboundTip=reboundTip;
+const SPEED_TEXT={
+  en:['Speed up to twice normal speed','Return to normal speed','While pieces settle, press 2× to speed up time; clamp timers speed up too.'],
+  'zh-Hant':['加速至兩倍','恢復正常速度','零件移動時可按 2× 加速；夾具倒數也會加快。'],
+  'zh-Hans':['加速至两倍','恢复正常速度','零件移动时可按 2× 加速；夹具倒计时也会加快。'],
+  ja:['2倍速にする','通常速度に戻す','部品が動いている間は2×で加速できます。クランプの残り時間も速く進みます。'],
+  ko:['두 배로 빨리','일반 속도로 돌아가기','부품이 움직이는 동안 2×를 누르면 시간이 빨라지고 클램프 시간도 빨리 줄어듭니다.'],
+  es:['Acelerar al doble','Volver a velocidad normal','Mientras las piezas se mueven, pulsa 2× para acelerar; el tiempo de la pinza también avanza más rápido.'],
+  'pt-BR':['Acelerar para o dobro','Voltar à velocidade normal','Enquanto as peças se movem, toque em 2× para acelerar; o tempo da pinça também passa mais rápido.'],
+  fr:['Passer en vitesse double','Revenir à la vitesse normale','Pendant que les pièces bougent, appuyez sur 2× pour accélérer ; la durée de la pince accélère aussi.'],
+  de:['Auf doppelte Geschwindigkeit','Zur normalen Geschwindigkeit','Drücke 2×, während Teile sich bewegen. Auch die Klammerzeit läuft dann schneller.'],
+  it:['Accelera al doppio','Torna alla velocità normale','Mentre i pezzi si muovono, premi 2× per accelerare; anche il tempo della pinza scorre più veloce.'],
+  ru:['Ускорить вдвое','Вернуть обычную скорость','Пока детали движутся, нажмите 2× для ускорения; таймер зажима тоже пойдёт быстрее.'],
+  hi:['दो गुनी गति करें','सामान्य गति पर लौटें','पुर्जों के चलते समय 2× दबाकर गति बढ़ाएँ; क्लैंप का समय भी तेज़ चलेगा।'],
+  ar:['التسريع إلى الضعف','العودة للسرعة العادية','أثناء حركة القطع، اضغط 2× للتسريع؛ يتسارع مؤقت المشبك أيضًا.']
+};
+for(const [locale,[speedUp,speedNormal,speedHint]] of Object.entries(SPEED_TEXT))Object.assign(CUSTOM[locale],{speedUp,speedNormal,speedHint});
 const FINE_AIM={
   en:'Hold Shift with ↑ or ↓ for finer aim.',
   'zh-Hant':'按住 Shift 再按方向鍵上、下，可微調角度。',

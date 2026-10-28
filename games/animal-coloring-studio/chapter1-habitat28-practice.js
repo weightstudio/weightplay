@@ -1,0 +1,22 @@
+// Unreviewed localhost-only creative page; not a campaign page.
+(() => {
+  const points=[[573,528],[480,285],[400,348],[310,473],[165,397],[647,472],[499,576],[335,546],[148,660],[315,754],[251,662],[413,908]];
+  const titles={en:'Panda and Bamboo','zh-Hant':'熊貓與竹子','zh-Hans':'熊猫与竹子',ja:'パンダと竹',ko:'판다와 대나무',es:'Panda y bambú','pt-BR':'Panda e bambu',fr:'Panda et bambou',de:'Panda und Bambus',it:'Panda e bambù',ru:'Панда и бамбук',hi:'पांडा और बाँस',ar:'الباندا والخيزران'};
+  const areaNames={
+    en:['Bamboo stalk','Upper leaf','Right ear','Head','Left ear','Right leaf','Reaching arm','Mouth','Backpack','Body and leg','Near arm','Ground'],
+    'zh-Hant':['竹幹','上方葉','右耳','頭','左耳','右側葉','伸出手臂','嘴','背包','身體與腿','近側手臂','地面'],
+    'zh-Hans':['竹竿','上方叶','右耳','头','左耳','右侧叶','伸出手臂','嘴','背包','身体与腿','近侧手臂','地面'],
+    ja:['竹の茎','上の葉','右耳','頭','左耳','右の葉','伸ばした腕','口','リュック','体と足','手前の腕','地面'],
+    ko:['대나무 줄기','위 잎','오른쪽 귀','머리','왼쪽 귀','오른쪽 잎','뻗은 팔','입','배낭','몸과 다리','가까운 팔','땅'],
+    es:['Tallo de bambú','Hoja superior','Oreja derecha','Cabeza','Oreja izquierda','Hoja derecha','Brazo extendido','Boca','Mochila','Cuerpo y pata','Brazo cercano','Suelo'],
+    'pt-BR':['Caule de bambu','Folha superior','Orelha direita','Cabeça','Orelha esquerda','Folha direita','Braço estendido','Boca','Mochila','Corpo e perna','Braço próximo','Chão'],
+    fr:['Tige de bambou','Feuille du haut','Oreille droite','Tête','Oreille gauche','Feuille droite','Bras tendu','Bouche','Sac à dos','Corps et patte','Bras proche','Sol'],
+    de:['Bambusstamm','Oberes Blatt','Rechtes Ohr','Kopf','Linkes Ohr','Rechtes Blatt','Ausgestreckter Arm','Mund','Rucksack','Körper und Bein','Naher Arm','Boden'],
+    it:['Canna di bambù','Foglia superiore','Orecchio destro','Testa','Orecchio sinistro','Foglia destra','Braccio teso','Bocca','Zaino','Corpo e zampa','Braccio vicino','Terra'],
+    ru:['Стебель бамбука','Верхний лист','Правое ухо','Голова','Левое ухо','Правый лист','Вытянутая лапа','Рот','Рюкзак','Тело и нога','Ближняя лапа','Земля'],
+    hi:['बाँस का तना','ऊपरी पत्ता','दायाँ कान','सिर','बायाँ कान','दायाँ पत्ता','फैला हाथ','मुँह','बैग','शरीर और पैर','पास का हाथ','ज़मीन'],
+    ar:['ساق الخيزران','الورقة العليا','الأذن اليمنى','الرأس','الأذن اليسرى','الورقة اليمنى','الذراع الممدودة','الفم','حقيبة الظهر','الجسم والساق','الذراع القريبة','الأرض']
+  };
+  const prompts={en:'Give the bamboo, leaves and backpack matching or different patterns.','zh-Hant':'為竹幹、葉子和背包選相同或不同圖案。','zh-Hans':'为竹竿、叶子和背包选相同或不同图案。',ja:'竹、葉、リュックを同じ模様か違う模様にしよう。',ko:'대나무, 잎, 배낭에 같은 무늬나 다른 무늬를 골라요.',es:'Elige patrones iguales o distintos para el bambú, las hojas y la mochila.','pt-BR':'Escolha padrões iguais ou diferentes para o bambu, as folhas e a mochila.',fr:'Choisis des motifs identiques ou différents pour le bambou, les feuilles et le sac.',de:'Wähle gleiche oder unterschiedliche Muster für Bambus, Blätter und Rucksack.',it:'Scegli motivi uguali o diversi per bambù, foglie e zaino.',ru:'Выбери одинаковые или разные узоры для бамбука, листьев и рюкзака.',hi:'बाँस, पत्तों और बैग पर एक जैसे या अलग पैटर्न चुनें।',ar:'اختر أنماطًا متشابهة أو مختلفة للخيزران والأوراق والحقيبة.'};
+  window.AnimalColoringHabitat28Practice=Object.freeze({ready:false,art:'/docs/game-build-handoffs/animal-coloring-studio-habitat-art/stage28-source-v3.png',mask:'/docs/game-build-handoffs/animal-coloring-studio-habitat-art/UNREVIEWED-stage28-v3-mask.png',anchors:points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`})),titles,areaNames,prompts});
+})();

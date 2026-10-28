@@ -33,7 +33,7 @@ export class SalvageSlice {
     this.stage = stage;
     if(stage?.platform){this.platform=add(Bodies.rectangle(660,700,120,20,{isStatic:true,friction:.8}),'platform');}
     if(stage?.guard){const height=stage.guardHeight??160;const guard=add(Bodies.rectangle(320,800-height/2,25,height,{isStatic:true,restitution:.08}),'guard');guard.plugin.height=height;}
-    if(stage?.reflector)add(Bodies.rectangle(400,400,25,160,{isStatic:true,restitution:.85,angle:stage.reflector*Math.PI/4}),'reflector');
+    if(stage?.reflector)add(Bodies.rectangle(400,stage.reflectorY??400,25,160,{isStatic:true,restitution:.85,angle:stage.reflector*Math.PI/4}),'reflector');
     const columns = stage?.columns ?? [0,1,0];
     this.targets=[];
     for (let column=0; column<3; column++) {
