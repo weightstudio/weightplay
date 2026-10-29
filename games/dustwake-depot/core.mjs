@@ -102,7 +102,7 @@ export function createRun(stageId, toolId = 'breeze') {
     }
     return null;
   }
-  function setTarget(x, z) {
+  function setTarget(x, z, dustKind = null) {
     if (state.status !== 'playing') return { ok: false, code: 'ended' };
     if (busy > 0) return reject('busy');
     if (!Number.isFinite(x) || !Number.isFinite(z) || !pointClear(x, z)) return reject('unreachable');
@@ -110,6 +110,9 @@ export function createRun(stageId, toolId = 'breeze') {
     if (!next) return reject('unreachable');
     path = next;
     state.target = { x, z };
+    // An explicit tap on dust chooses its matching tool. Ground/keyboard
+    // movement keeps the player's manually selected mode.
+    if (dustKind === 'dry' || dustKind === 'wet') setMode(dustKind === 'wet' ? 'brush' : 'vacuum');
     state.notice = '';
     return { ok: true };
   }
@@ -117,7 +120,7 @@ export function createRun(stageId, toolId = 'breeze') {
     if (state.status !== 'playing') return { ok: false, code: 'ended' };
     if (busy > 0) return reject('busy');
     if (mode !== 'vacuum' && mode !== 'brush') return reject('wrong-mode');
-    if (state.mode !== mode) { progress = 0; currentPile = null; }
+    if (state.mode !== mode) clearCollection();
     state.mode = mode; state.notice = '';
     return { ok: true };
   }

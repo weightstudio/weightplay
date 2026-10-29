@@ -17,6 +17,19 @@ const quaternion = new THREE.Quaternion();
 const scale = new THREE.Vector3();
 const identity = new THREE.Quaternion();
 
+// Touch targets retain at least a 44 CSS-pixel diameter, but cannot capture
+// another row or an off-board gesture. Exact mesh hits are handled first.
+export function snapDustTarget(piles, groundPoint, pointerPoint, project) {
+  let closest = null, best = Infinity;
+  for (const pile of piles) {
+    if (pile.remaining <= 0 || Math.hypot(pile.x-groundPoint.x,pile.z-groundPoint.z)>1.1) continue;
+    const p = project(pile);
+    const distance = Math.hypot(pointerPoint.x-p.x,pointerPoint.y-p.y);
+    if (distance <= Math.max(22,p.radius) && distance < best) { closest=pile;best=distance; }
+  }
+  return closest ? {x:closest.x,z:closest.z,dustKind:closest.kind} : null;
+}
+
 // Chamfered, flat-faced cuboids retain the approved stepped Block Animals
 // silhouette. Faces, twelve edge bevels and eight corner facets are authored.
 function chamferedCube() {
@@ -857,20 +870,40 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     raycaster.setFromCamera(pointer, camera);
     const visible = (object) => { for (let node = object; node; node = node.parent) if (!node.visible) return false; return true; };
     const candidates = [...persistentPickMeshes, ...stagePickMeshes, ...stagePickBlockers, dryDust, wetDust, paperScraps, soilPatches].filter(object => object && visible(object));
-    const first = raycaster.intersectObjects(candidates, false)[0];
+    // The opaque floor covers the structural plinth. That plinth shares the
+    // wall mesh, so its below-floor hit must not masquerade as an occluding wall.
+    const first = raycaster.intersectObjects(candidates, false).find(intersection => intersection.point.y >= -.01);
+    let playerHit = false;
+    const dustTarget = target => {
+      const pile = state?.piles.find(p => p.remaining > 0 && p.x === target.x && p.z === target.z);
+      return {...target,...(pile ? {dustKind:pile.kind} : {})};
+    };
     if (first) {
       let target = first.object.userData.dustwakeNavigation;
       if (first.object === dryDust) target = dryPickTargets[first.instanceId];
       else if (first.object === wetDust) target = wetPickTargets[first.instanceId];
       else if (first.object === paperScraps) target = paperPickTargets[first.instanceId];
       else if (first.object === soilPatches) target = soilPickTargets[first.instanceId];
-      if (target?.player) target = state?.player;
-      if (target && Number.isFinite(target.x) && Number.isFinite(target.z)) return { x: target.x, z: target.z };
+      playerHit = Boolean(target?.player);
+      if (!playerHit && target && Number.isFinite(target.x) && Number.isFinite(target.z)) return dustTarget(target);
       // An opaque wall hit blocks semantic objects behind it. Fall through to
       // the ordinary ground command, which core may reject as unreachable.
     }
     if (!raycaster.ray.intersectPlane(ground, hit)) return null;
     if (!clampOutside && (hit.x < -.45 || hit.x > 9.45 || hit.z < -.45 || hit.z > 7.45)) return null;
+    // Opaque walls retain precedence. Taro's tall shell must not steal a tap
+    // intended for the dust beside the character.
+    if (!first || playerHit) {
+      const snapped = snapDustTarget(state?.piles || [],hit,{x:event.clientX,y:event.clientY},pile=>{
+        v.set(pile.x,.04,pile.z).project(camera);
+        const x=rect.left+(v.x+1)*rect.width/2,y=rect.top+(1-v.y)*rect.height/2;
+        v.set(pile.x+.65,.04,pile.z).project(camera);
+        const radius=Math.hypot(rect.left+(v.x+1)*rect.width/2-x,rect.top+(1-v.y)*rect.height/2-y);
+        return {x,y,radius};
+      });
+      if (snapped) return snapped;
+    }
+    if (playerHit) return {x:state.player.x,z:state.player.z};
     return { x: clamp(hit.x, 0, 9), z: clamp(hit.z, 0, 7) };
   }
 
@@ -1037,10 +1070,12 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       const load = finite(next.bagLoad ?? next.bagWeight ?? next.bagCargo), capacity = next.capacity || (next.toolId === 'cargo' ? 12 : 8);
       hero.cargo.visible = load > 0 && next.toolId !== 'press'; hero.cargo.scale.y = .25 + clamp(load / capacity, 0, 1);
       hero.pressCargo.visible = load > 0; hero.pressCargo.scale.y = .20 + .80 * clamp(load / capacity, 0, 1);
-      targetRing.visible = !!next.target && next.status === 'playing'; targetStem.visible = targetRing.visible;
+      const cleaning = next.piles.find(p => p.remaining > 0 && p.collecting > 0);
+      const marked = cleaning || next.target;
+      targetRing.visible = !!marked && next.status === 'playing'; targetStem.visible = !!next.target && targetRing.visible;
       if (targetRing.visible) {
-        targetRing.position.set(next.target.x, .035, next.target.z); targetStem.position.set(next.target.x, .045, next.target.z);
-        targetRing.scale.setScalar(reducedMotion ? 1 : .95 + Math.sin(t * 5) * .06);
+        targetRing.position.set(marked.x, .035, marked.z); targetStem.position.set(marked.x, .045, marked.z);
+        targetRing.scale.setScalar((cleaning ? 2.2 : 1) * (reducedMotion ? 1 : .95 + Math.sin(t * 5) * .06));
       }
       trail.visible = !!next.target && next.status === 'playing';
       if (trail.visible) {

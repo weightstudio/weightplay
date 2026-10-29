@@ -179,8 +179,8 @@ function pauseDialog() {
 }
 function tutorial(force=false) {
   const s=run.state.stage, pending=[];
-  if(force||!save.tutorialSeen.basic)pending.push(['basic',t('tutorialMove'),t('tutorialBag')]);
-  if((force||!save.tutorialSeen.wet)&&s.dust.some(p=>p.kind==='wet'))pending.push(['wet',t('tutorialWet')]);
+  if(force||!save.tutorialSeen.basic)pending.push(['basic',t('tapClean'),t('cleanLegend'),t('tutorialMove'),t('tutorialBag')]);
+  if((force||!save.tutorialSeen.wet)&&s.dust.some(p=>p.kind==='wet'))pending.push(['wet',t('tapClean'),t('tutorialWet')]);
   if((force||!save.tutorialSeen.gate)&&s.gates.length)pending.push(['gate',t('tutorialGate')]);
   if((force||!save.tutorialSeen.portable)&&s.pads.length)pending.push(['portable',t('tutorialPortable')]);
   if((force||!save.tutorialSeen.press)&&run.state.toolId==='press')pending.push(['press',t('tutorialPress'),t('compressionRule')]);
@@ -264,16 +264,17 @@ function updateHUD() {
   $('deliveredStat').querySelector('[data-stat-value]').textContent=`${s.delivered} / ${s.stage.target}`;
   $('bagStat').querySelector('[data-stat-value]').textContent=`${s.bagLoad} / ${s.capacity}`;
   $('timeStat').querySelector('[data-stat-value]').textContent=String(Math.ceil(s.timeLeft));
-  $('modeButton').querySelector('[data-copy]').textContent=t(s.mode);
+  $('modeButton').querySelector('[data-copy]').textContent=t(s.mode==='brush'?'brushWet':'vacuumDry');
   $('modeButton').querySelector('.tool-icon').className=`tool-icon icon-${s.mode}`;
   $('modeButton').setAttribute('aria-pressed',String(s.mode==='brush'));
+  $('modeButton').setAttribute('aria-label',`${t('mode')}: ${t(s.mode)}. ${t('cleanLegend')}`);
   $('compressButton').querySelector('[data-copy]').textContent=`${t('toolPress')} ${s.compressionLeft}`;
   $('compressButton').setAttribute('aria-label',t('compressionCount',{n:s.compressionLeft}));
   $('compressButton').disabled=s.toolId!=='press'||!s.compressionLeft;
   $('deployButton').disabled=!s.stage.pads.length||!s.deploymentLeft;
   if(performance.now()>statusUntil) {
     lastNotice='';
-    const carried=s.toolId==='press'?`${t('bag')} · ${t('total')}: ${s.bagCargo}`:'';
+    const carried=s.toolId==='press'?`${t('bag')} · ${t('total')}: ${s.bagCargo} · ${t('cleanLegend')}`:t('cleanLegend');
     if(statusMessage.textContent!==carried)statusMessage.textContent=carried;
   }
 }
@@ -341,7 +342,7 @@ async function startStage(index) {
   try {
     renderer=mountRenderer({container:$('arena'),reducedMotion:reduced.matches,materialImages,onPointer:point=>{
       if(point.phase==='cancel')stopInput();
-      else if(point.phase==='down'||point.phase==='move')perform('setTarget',point.x,point.z);
+      else if(point.phase==='down'||point.phase==='move')perform('setTarget',point.x,point.z,point.dustKind);
     },onStatus:(state)=>{
       if(state==='contextlost'||state==='error') {stopInput();showOverlay(t('graphicsError'),t(state==='contextlost'?'contextLost':'graphicsError'),[
         {label:t('replay'),action:()=>{closeOverlay({restore:false});void startStage(selected);}},
