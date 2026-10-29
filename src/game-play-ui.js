@@ -22,6 +22,8 @@
     page.dataset.wpStageSelector = '1';
     header.dataset.wpStageI9Header = 'true';
     Object.assign(rail.dataset, {wpStageRail:'true', wpStageCenterObserver:'manual', wpStageVirtualized:'bounded-recycle', wpStageTotal:String(config.count)});
+    rail.setAttribute('role','group');
+    rail.tabIndex = -1;
     // Permanent authored explanatory nodes may still be updated by game code.
     // Keep them inert outside the common presentation instead of observing them.
     const source = document.createElement('div'); source.hidden = true; source.dataset.wpStageSource = '';
@@ -36,6 +38,7 @@
     toggle.setAttribute('aria-controls',details.id); briefing.append(toggle,copy,details); page.append(briefing);
     listen(toggle,'click',() => { details.hidden = !details.hidden; toggle.setAttribute('aria-expanded',String(!details.hidden)); });
     let current = clamp(Math.round(selected),config.count-1), start = 0, closed = false, resizeFrame = 0, observing = true;
+    let logicalPosition = current;
     let poolSize = Math.min(9,config.count);
     const cards = [];
     const desiredStart = index => clamp(Math.round(index)-Math.floor(poolSize/2),config.count-poolSize);
@@ -43,7 +46,6 @@
       const item = config.stage(index);
       const active = index === current;
       card.dataset.stage = String(item.id ?? index+1); card.dataset.stageIndex = String(index);
-      card.setAttribute('aria-posinset',String(index+1)); card.setAttribute('aria-setsize',String(config.count));
       card.setAttribute('aria-disabled',String(Boolean(item.locked))); card.tabIndex = active ? 0 : -1;
       card.classList.toggle('is-selected',active); card.classList.toggle('selected',active); card.classList.toggle('wp-stage-centered',active);
       card.classList.toggle('is-cleared',Boolean(item.cleared)); card.classList.toggle('locked',Boolean(item.locked));
@@ -52,10 +54,17 @@
       [item.kicker,item.title,item.subtitle,item.status].forEach((value,i) => {fields[i].textContent = value || '';fields[i].hidden = !value;});
       const art = card.querySelector('.wp-stage-i9-card-art');
       art.style.backgroundImage = assetUrl(item.poster || config.poster); art.style.backgroundPosition = item.posterPosition || 'center';
-      card.setAttribute('aria-label',[item.kicker,item.title,item.subtitle,item.status,item.summary].filter(Boolean).join('. '));
+      // Native buttons do not support aria-posinset/setsize. Expose the full
+      // logical position in their name even though only nine choices exist.
+      const numbers = new Intl.NumberFormat(document.documentElement.lang || undefined);
+      const ordinal = `${numbers.format(index+1)} / ${numbers.format(config.count)}`;
+      card.setAttribute('aria-label',[item.kicker,item.title,item.subtitle,item.status,item.summary,ordinal].filter(Boolean).join('. '));
       if (config.gameId && item.rewardState) {
         Object.assign(card.dataset,{wpGetGameId:config.gameId,wpGetIndex:String(index),wpGetState:item.rewardState});
         window.WeightPlayScreenFrame.showGet(config.gameId,index);
+      } else {
+        for (const key of ['wpGetGameId','wpGetIndex','wpGetState','wpGetAnchor','wpGetAnchorChecked']) delete card.dataset[key];
+        card.querySelector(':scope > img[data-wp-get-icon]')?.remove();
       }
     }
     function updateBriefing() {
@@ -77,8 +86,9 @@
     }
     function moveWindow(index) {
       const target = desiredStart(index); let recycled = 0;
-      while (start < target) {const card=rail.firstElementChild;start++;rail.append(card);bind(card,start+poolSize-1);recycled++;}
-      while (start > target) {const card=rail.lastElementChild;start--;rail.prepend(card);bind(card,start);recycled++;}
+      const parkFocus = card => {if(card.contains(document.activeElement))rail.focus({preventScroll:true});};
+      while (start < target) {const card=rail.firstElementChild;parkFocus(card);start++;rail.append(card);bind(card,start+poolSize-1);recycled++;}
+      while (start > target) {const card=rail.lastElementChild;parkFocus(card);start--;rail.prepend(card);bind(card,start);recycled++;}
       rail.dataset.wpStageWindowStart=String(start); rail.dataset.wpStageWindowEnd=String(start+poolSize-1);
       if (recycled) {
         updateVirtualPadding();
@@ -96,6 +106,7 @@
       const card=rail.querySelector(`[data-stage-index="${index}"]`), g=geometry(), box=card.getBoundingClientRect();
       rail.scrollLeft += (box.left+box.width/2-g.center+(logical-index)*g.pitch*g.direction)/g.scale;
       rail.dataset.wpStageDragLogical=logical.toFixed(4);
+      logicalPosition = logical;
       return logical;
     }
     function readPosition() {
@@ -104,10 +115,11 @@
       return nearest ? clamp(nearest.index+nearest.delta/(g.pitch*g.direction),config.count-1) : current;
     }
     function select(index,{center=true,focus=false,notify=true,source='programmatic'}={}) {
+      const restoreFocus = focus || rail.contains(document.activeElement);
       current=clamp(Math.round(index),config.count-1); moveWindow(current); sync();
       if(center)position(current);
+      if(restoreFocus && isActive())rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
       if(notify)onSelect(current,{locked:Boolean(config.stage(current).locked),source});
-      if(focus)rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
     }
     function createCard(index) {
       const card=document.createElement('button');card.type='button';card.className='stage-card';card.dataset.wpStagePoolNode=String(index+1);
@@ -118,16 +130,23 @@
       return card;
     }
     function rebuildPool() {
-      const reusable = cards.length === poolSize ? [...rail.children] : [];
+      const restoreFocus = rail.contains(document.activeElement);
       poolSize = Math.min(9,config.count);
-      const reusableCards = reusable.length === poolSize ? reusable : [];
-      rail.replaceChildren(); cards.length=0; start=desiredStart(current);
+      // Only our mounted pool is reusable; authored legacy rail children do
+      // not have the shared card structure and are replaced on first mount.
+      if(!cards.length)rail.replaceChildren();
+      // Rebind existing slots in place. Detaching every button loses native
+      // focus even when the pool and logical selection have not changed.
+      while(rail.children.length>poolSize)rail.lastElementChild.remove();
+      while(rail.children.length<poolSize)rail.append(createCard(rail.children.length));
+      cards.length=0; start=desiredStart(current);
       for(let i=0;i<poolSize;i++) {
-        const card=reusableCards[i] || createCard(i);card.dataset.wpStagePoolNode=String(i+1);
-        bind(card,start+i);rail.append(card);cards.push(card);
+        const card=rail.children[i];card.dataset.wpStagePoolNode=String(i+1);
+        bind(card,start+i);cards.push(card);
       }
       updateVirtualPadding();
       Object.assign(rail.dataset,{wpStagePoolSize:String(poolSize),wpStageTotal:String(config.count),wpStageWindowStart:String(start),wpStageWindowEnd:String(start+poolSize-1),wpStageRecycleCount:'0'});
+      if(restoreFocus && isActive())rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
     }
     function startStage(index,event) { select(index,{source:'activation'}); if (!config.stage(index).locked) onStart(index,event); }
     rebuildPool();
@@ -158,7 +177,9 @@
       const cardHeight=Math.max(372*fit,Math.min(108,Math.max(0,box.height-100)));
       const values={'card-width':cardWidth,'card-height':cardHeight,'gap':18,'briefing-height':68};
       for(const [name,value] of Object.entries(values))scene.style.setProperty(`--wp-play-${name}`,`${value*inverse}px`);
-      position(current);
+      // Geometry may change mid-drag or mid-settle. Refit the last fractional
+      // position; the existing gesture/animation remains its sole motion owner.
+      position(logicalPosition);
     }
     function scheduleLayout(){if(!closed&&observing&&!resizeFrame)resizeFrame=requestAnimationFrame(layout);}
     const resize = new ResizeObserver(scheduleLayout);resize.observe(page);resize.observe(scene);
@@ -170,13 +191,16 @@
         drag.cancel();
         config=nextConfig;
         current=clamp(Math.round(index),config.count-1);
+        logicalPosition=current;
         rebuildPool();sync();
         if(page.getClientRects().length&&page.offsetWidth){if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;layout();}
         else scheduleLayout();
         return current;
       }, refresh(index=current){
+        const restoreFocus=rail.contains(document.activeElement);
         drag.cancel();
         current=clamp(Math.round(index),config.count-1);
+        logicalPosition=current;
         moveWindow(current);
         sync();
         // Scene activation can reveal a Stage whose first layout is still the
@@ -187,6 +211,7 @@
           resizeFrame=0;
           layout();
         }else scheduleLayout();
+        if(restoreFocus && isActive())rail.querySelector('[aria-current="true"]')?.focus({preventScroll:true});
       },
       // Adapters with synchronous scene ownership may suspend observation
       // without destroying the pooled cards or their navigation identities.

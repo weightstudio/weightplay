@@ -386,8 +386,8 @@ function renderResult(){
   $('resultArt').style.setProperty('--kit-y',`${Math.floor(resultArt/3)*50}%`);
   const best=!practiceRun&&store.persistedSnapshot.records[r.stageId]?.bestTime;
   $('resultDetails').textContent=`${tr('rank')} ${r.rank}/${race.rivals.length+1} · ${tr('time')} ${recordClock(r.time)} · ${tr('stars')} ${r.stars}/3 · ${tr('landing')} ${r.landings}${Number.isFinite(best)?` · ${tr('bestTime')} ${recordClock(best)}`:''}`;
-  const reason={timeout:'timeoutReason',stability:'stabilityReason',flags:'flagsReason',landings:'landingReason',rank:'rankReason',tide:'tideReason'};
-  const primaryReason=r.won?(!practiceRun&&!resultSaved?tr('notSaved'):r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'finishReason')} ${stageDetails(race.stage,false).join(' · ')}`;
+  const reason={time:'timeoutReason',timeout:'timeoutReason',stability:'stabilityReason',flags:'flagsReason',landings:'landingReason',rank:'rankReason',tide:'tideReason',current:'objectiveCurrent'};
+  const primaryReason=r.won?(!practiceRun&&!resultSaved?tr('notSaved'):r.stageId===60?tr('final'):practiceRun?stageLesson(race.stage,locale):tr('winUnlock')):`${tr(reason[r.reason]||'lost')} ${stageDetails(race.stage,false).join(' · ')}`;
   const starFeedback=starReplayFeedback(race.stage,r);
   $('resultReason').textContent=primaryReason+(starFeedback?'\n'+starFeedback:'');
   $('resultSaved').textContent=practiceRun?'LOCAL PRACTICE':r.won?tr(resultSaved?'progressSaved':saving?'recordPending':'saveFailed'):'';
