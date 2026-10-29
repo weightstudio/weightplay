@@ -402,10 +402,7 @@ function cleanup() {
 
 updateLocale();
 if(practiceSession)window.WonderAnalytics?.setEnabled?.(false);
-if(!preview&&!practiceSession) {
-  $('comingSoon').hidden=false;$('appRoot').hidden=true;$('gameGuide').hidden=true;
-  window.WeightPlayGameEntryLoader?.ready?.();
-} else {
+{
   $('comingSoon').hidden=true;$('appRoot').hidden=false;
   // The shared Settings controller supplies its canonical language selector and
   // owns availability checks and navigation. Retire the static source first.

@@ -88,8 +88,8 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "dustwake-depot", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "/games/dustwake-depot/index.html?preview=1", href: "games/dustwake-depot/",
+      id: "dustwake-depot", audience: "general", status: "playable",
+      previewVideo: "assets/previews/dustwake-depot-battle.webm", href: "games/dustwake-depot/",
       title: { __localizedExact: true, en: "Dustwake Depot", "zh-Hant": "塵光回收站", "zh-Hans": "尘光回收站", ja: "ダストウェイク回収所", ko: "더스트웨이크 회수소", es: "Estación Destello", "pt-BR": "Estação Brilho", fr: "Dépôt Éclat", de: "Staubglanz-Depot", it: "Deposito Splendente", ru: "Станция Пылесвет", hi: "धूलकिरण केंद्र", ar: "محطة بريق الغبار" },
       type: { en: "Cleaning Strategy", "zh-Hant": "清掃策略", "zh-Hans": "清扫策略", ja: "お掃除戦略", ko: "청소 전략", es: "Estrategia de limpieza", "pt-BR": "Estratégia de limpeza", fr: "Stratégie de nettoyage", de: "Reinigungsstrategie", it: "Strategia di pulizia", ru: "Стратегия уборки", hi: "सफाई रणनीति", ar: "استراتيجية التنظيف" },
       description: { en: "Guide Taro, sweep dust and plan each trip back to a depot across 60 stages.", "zh-Hant": "帶領塔羅清理園區，安排背包與返運路線，完成兩章60關。", "zh-Hans": "带领塔罗清理园区，安排背包与返运路线，完成两章60关。", ja: "タロと園内のほこりを集め、荷物と帰り道を考えながら全60ステージを進もう。", ko: "타로와 정원을 청소하고 적재량과 회수 경로를 계획하며 60개 스테이지에 도전하세요.", es: "Guía a Taro, recoge polvo y planea cada viaje al depósito en 60 niveles.", "pt-BR": "Guie Taro, recolha poeira e planeje cada viagem ao depósito em 60 fases.", fr: "Guidez Taro, ramassez la poussière et planifiez les retours au dépôt dans 60 niveaux.", de: "Führe Taro durch 60 Level, sammle Staub und plane jede Rückfahrt zum Depot.", it: "Guida Taro, raccogli la polvere e pianifica ogni ritorno al deposito in 60 livelli.", ru: "Управляйте Таро, собирайте пыль и планируйте путь к станции на 60 уровнях.", hi: "टारो के साथ धूल साफ करें और 60 चरणों में हर वापसी का रास्ता बनाएँ।", ar: "وجّه تارو واجمع الغبار وخطّط لكل رحلة إلى المحطة عبر 60 مرحلة." },
@@ -7740,8 +7740,8 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("puppy-haven");
 
 // Owner-requested new-game identity; gameplay stays in the Coming Soon preview.
 window.WONDER_LOBBY.games.push({
-  id: "purrch-grove", audience: "general", status: "planned", internalOnly: true,
-  internalTrial: "index.html?preview=1", href: "games/purrch-grove/",
+  id: "purrch-grove", audience: "general", status: "playable",
+  previewVideo: "assets/previews/purrch-grove-battle.webm", href: "games/purrch-grove/",
   title: { en: "Purrch Grove", "zh-Hant": "呼嚕小築", "zh-Hans": "呼噜小筑", ja: "ゴロゴロの小屋", ko: "골골 작은 집", es: "Rincón Ronroneo", "pt-BR": "Recanto Ronrom", fr: "Le refuge ronron", de: "Schnurrnest", it: "Il rifugio delle fusa", ru: "Мурчащий домик", hi: "म्याऊँ का आशियाना", ar: "بيت الخرخرة", __localizedExact: true },
   type: {"en":"Cats · Growth","zh-Hant":"貓咪 · 成長","zh-Hans":"猫咪 · 成长","ja":"ねこ · 成長","ko":"고양이 · 성장","es":"Gatos · Crecimiento","pt-BR":"Gatos · Crescimento","fr":"Chats · Croissance","de":"Katzen · Wachstum","it":"Gatti · Crescita","ru":"Кошки · Рост","hi":"बिल्लियाँ · विकास","ar":"القطط · نمو"},
   description: {"__localizedExact":true,"en":"Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.","zh-Hant":"觀察貓咪偏好的遊戲，培養信任，布置舒服的攀爬小屋。","zh-Hans":"观察猫咪偏好的游戏，培养信任，布置舒服的攀爬小屋。","ja":"ねこの好みを見つけ、信頼を育て、登って休める家を作ろう。","ko":"고양이가 좋아하는 놀이를 찾고 신뢰를 쌓아 편안한 집을 꾸미세요.","es":"Descubre el juego favorito de cada gato y crea un hogar para trepar y descansar.","pt-BR":"Descubra a brincadeira favorita de cada gato e crie um lar para subir e descansar.","fr":"Découvrez le jeu préféré de chaque chat et créez un foyer pour grimper et se reposer.","de":"Entdecke das Lieblingsspiel jeder Katze und baue ein gemütliches Kletterheim.","it":"Scopri il gioco preferito di ogni gatto e crea una casa comoda per arrampicarsi.","ru":"Узнайте любимую игру каждой кошки и создайте уютный дом для игр и отдыха.","hi":"हर बिल्ली का पसंदीदा खेल जानें और चढ़ने व आराम करने का घर बनाएँ।","ar":"اكتشف لعبة كل قطة المفضلة وابنِ بيتًا مريحًا للتسلق والراحة."},

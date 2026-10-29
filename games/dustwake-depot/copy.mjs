@@ -393,5 +393,7 @@ export function localizeShell(source,locale){
   html=html.replace(/(<meta\b[^>]*property="og:url"[^>]*content=")[^"]*(")/i,(_all,before,after)=>before+url+after);
   html=html.replace(/(<link\b[^>]*rel="canonical"[^>]*href=")[^"]*(")/i,(_all,before,after)=>before+url+after);
   html=html.replace(/<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/i,()=>`<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"VideoGame",name:official,url,image:`https://weightplay.com/games/${GAME_ID}/art/poster.webp`,description:text(locale,'summary'),inLanguage:locale,operatingSystem:'Web browser',applicationCategory:'Game',isAccessibleForFree:true,publisher:{'@type':'Organization',name:'WeightStudio'}}).replaceAll('<','\\u003c')}</script>`);
+  if(!html.includes('<base ')) html=html.replace('<head>','<head>\n  <base href="/games/dustwake-depot/">');
+  if(locale==='ja'&&!html.includes('/src/i18n-ja.js')) html=html.replace('</head>','<script src="/src/i18n-ja.js?v=20260719-ja1"></script>\n</head>');
   return html;
 }

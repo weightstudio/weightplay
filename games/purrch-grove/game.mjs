@@ -1,7 +1,7 @@
 import {Grove,STORE,GOALS,ACTIONS,PERSONALITIES,FURNITURE,ADOPTION,preferred} from './model.mjs';
 import {Room} from './room.mjs';
 import {Motion} from './motion.mjs';
-import {COPY,LOCALES,LABELS,ROUTES,guideSections} from './locales.mjs';
+import {COPY,LOCALES,LABELS,ROUTES,guideSections,guideFaq} from './locales.mjs';
 import {buyCushion,recoverCushion} from './cushion-purchase.mjs';
 const $=id=>document.getElementById(id),make=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const read=key=>{try{return localStorage.getItem(key);}catch{return null;}};let raw;try{raw=JSON.parse(read(STORE));}catch{}
@@ -62,6 +62,7 @@ function copy(){document.documentElement.lang=locale;document.documentElement.di
  document.querySelectorAll('[data-copy]').forEach(n=>{n.textContent=t(n.dataset.copy);n.dataset.runtimeLocalize='off';});$('stageBack').ariaLabel=t('leave');$('battleBack').ariaLabel=t('pause');$('closePanel').ariaLabel=t('close');$('localeSelect').ariaLabel=LABELS[LOCALES.indexOf(locale)];
  $('needs').replaceChildren();for(const key of ['food','joy','energy','clean']){const label=make('label',t(key)),m=make('meter'),v=make('output');m.id='need-'+key;m.min=0;m.max=100;m.ariaLabel=t(key);v.id='value-'+key;label.append(m,v);$('needs').append(label);}
  const sections=document.querySelector('#mainGuide .game-info-sections');sections.replaceChildren();for(const item of guideSections(locale)){const section=make('section');section.append(make('h3',item.title),make('p',item.text));sections.append(section);}
+ const faq=document.querySelector('#mainGuide .game-info-faq'),list=make('dl');for(const item of guideFaq(locale))list.append(make('dt',item.question),make('dd',item.answer));faq.replaceChildren(list);
  frame?.refresh();selector?.refresh(selectedGoal);if(screen==='stage'&&tab!=='goals')renderManage();update();}
 function stageTab(next){tab=next;const hidden=next!=='goals';$('goalsWorkspace').hidden=hidden;$('goalsWorkspace').classList.toggle('hidden',hidden);$('goalsWorkspace').inert=hidden;$('management').hidden=!hidden;for(const [id,key]of [['catsTab','cats'],['goalsTab','goals'],['shopTab','shop']])$(id).setAttribute('aria-selected',String(next===key));if(hidden){renderManage();motion.enter($('management'));}else selector?.refresh(selectedGoal);}
 function renderManage(){manageAbort.abort();manageAbort=new AbortController();const content=$('manageContent');content.replaceChildren();$('manageSummary').replaceChildren(price(grove.s.coins));
@@ -86,7 +87,6 @@ function openPanel(type){if(screen!=='battle'&&type!=='cushion')return;panelAbor
 function closePanel(){panelAbort.abort();motion.exit($('panel').querySelector('.panel-card'));panel='';$('panel').hidden=true;$('battleLive').inert=false;frame.activate(screen);last=performance.now();if(focusReturn?.isConnected&&focusReturn.getClientRects().length)focusReturn.focus({preventScroll:true});update();}
 function showResult(e){result=e;$('resultPanel').hidden=false;$('battleLive').inert=true;frame.activate('battle',{covered:true});$('resultGoal').textContent=goalTitle(GOALS[e.id-1]);$('resultReward').replaceChildren(make('span',e.reward?t('reward'):t('noReward')),price(e.reward));$('resultBalance').replaceChildren(make('span',t('balance')),price(grove.s.coins));$('nextBtn').hidden=false;$('nextBtn').disabled=e.id>=GOALS.length;motion.enter($('resultPanel').querySelector('.result-card'));sound('result.win');rewardFly(e.reward,$('resultReward'),$('resultBalance'));$('nextBtn').disabled?$('replayBtn').focus():$('nextBtn').focus();}
 function boot(){
- if(!new URLSearchParams(location.search).has('preview')){$('gameFrame').hidden=true;$('mainGuide').hidden=true;$('comingSoon').hidden=false;return;}
  // Mount the Result content and fixed action track once. All locale entries
  // use the same owned composition without moving scene roots on settlement.
  const resultCard=$('resultPanel').querySelector('.result-card'),resultBody=make('div',undefined,'result-body'),resultActions=make('div',undefined,'result-actions');

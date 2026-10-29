@@ -1,4 +1,4 @@
-import { createWorld, requestMove, advance, signalState, readJourney, saveJourney, readBest, buyAurora, COST, readCampaign, recordClear, CAMPAIGN_KEY, missingCargo, useSignal } from './model.mjs?v=23';
+import { createWorld, requestMove, advance, signalState, readJourney, saveJourney, readBest, buyAurora, COST, readCampaign, commitCampaignClear, missingCargo, useSignal } from './model.mjs?v=25';
 import { createRenderer } from './renderer.mjs?v=23';
 import { EXTRA } from './copy.mjs?v=20261026-road-i9-7e1f8597a631';
 import { LEVELS } from './levels.mjs?v=23';
@@ -23,7 +23,7 @@ let journey = readJourney(storage), best = readBest(storage), screen = 'main', p
 let campaign = readCampaign(storage), selector, practiceMode = false, practiceRun = false, starting = false;
 let selectedStage = campaign.unlocked - 1, resultActionClaimed = false;
 let world = null, total = 0, runLanterns = 0, raf = 0, last = 0, paused = true, renderer, gesture, generation = 0;
-let purchaseBusy = false, transient = 0, committedRoute = false, resultDone = false, focusReturn;
+let purchaseBusy = false, transient = 0, committedRoute = false, resultDone = false, resultReward = false, focusReturn;
 const effects = new Set();
 const canvas = $('gameCanvas');
 const main = $('mainScreen'), stage = $('stageScreen'), battle = $('battleScreen'), stageContent = battle.querySelector('.battle-stage');
@@ -164,8 +164,10 @@ async function start(id=world?.stage||1, {practice=false}={}) {
     if(ticket!==generation||lifetime.signal.aborted)return;
     practiceRun=requestedPractice;
     selectedStage=id-1;
-    total=0;runLanterns=0;world=createWorld(id);committedRoute=false;resultDone=false;
-    setScreen('battle');updateHud();notice(t(world.level.hint),4);play('game.start');
+    total=0;runLanterns=0;world=createWorld(id);committedRoute=false;resultDone=false;resultReward=false;
+    setScreen('battle');updateHud();notice(t(world.level.hint),4);
+    if (!practiceRun) window.WonderAnalytics?.track?.('stage_start', { stage_id: String(id) });
+    play('game.start');
   } finally { starting=false; }
 }
 function move(direction) {
@@ -194,9 +196,12 @@ function consumeEvents() {
     if (event.type === 'checkpoint' && !committedRoute) {
       committedRoute = true;
       if(!practiceMode&&!practiceRun){
-        recordClear(campaign,world);
-        try { storage.setItem(CAMPAIGN_KEY,JSON.stringify(campaign)); }
-        catch { notice(t('storage'),4); }
+        try {
+          const result = commitCampaignClear(storage, campaign, world,
+            id => window.WonderAnalytics?.completeStage?.(id));
+          campaign = result.campaign;
+          resultReward = result.reward;
+        } catch { notice(t('storage'),4); }
       }
       notice(`${t('roadGoal')} · ${world.stage}/30`, 3); play('game.checkpoint');
       animate($('stageValue'), [{ opacity: .4 }, { opacity: 1 }], 220);
@@ -224,7 +229,10 @@ function finish(win) {
   $('resultRoute').textContent = `${route} / 30 · ${stageName(world.level,locale)}`;
   const mask=win?(1|(world.lanterns===3?2:0)|((world.level.charge?world.charges===1:world.moves<=world.level.budget)?4:0)):0;
   $('resultMedals').textContent=[1,2,4].map(bit=>mask&bit?'★':'☆').join(' ');
-  $('resultScreen').dataset.outcome = win ? 'win' : 'lose'; play(win ? 'result.win' : 'result.lose');
+  $('resultScreen').dataset.outcome = win ? 'win' : 'lose';
+  const rewardIcon = window.ShowResultGet?.('road-crosser', win && resultReward);
+  if (rewardIcon?.isConnected) window.WeightPlayCastle?.dismissRewardNotice?.('road-crosser');
+  play(win ? 'result.win' : 'result.lose');
 }
 function loop(now) {
   if (paused || isBlocked() || !world) return;

@@ -20,3 +20,19 @@ export const COPY=Object.fromEntries(LOCALES.map(l=>{const values=rows[l].split(
 export const ROUTES={en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
 const guideTitles={en:'Goal|How to play|Controls and rules|Finishing and feedback','zh-Hant':'遊戲目標|玩法|操作與規則|完成與回饋','zh-Hans':'游戏目标|玩法|操作与规则|完成与反馈',ja:'目標|遊び方|操作とルール|達成と結果',ko:'목표|플레이 방법|조작과 규칙|완료와 피드백',es:'Objetivo|Cómo jugar|Controles y reglas|Final y resultados','pt-BR':'Objetivo|Como jogar|Controles e regras|Conclusão e resultados',fr:'Objectif|Comment jouer|Commandes et règles|Réussite et résultats',de:'Ziel|Spielablauf|Steuerung und Regeln|Abschluss und Rückmeldung',it:'Obiettivo|Come giocare|Comandi e regole|Conclusione e risultati',ru:'Цель|Как играть|Управление и правила|Завершение и результаты',hi:'लक्ष्य|कैसे खेलें|नियंत्रण और नियम|समापन और प्रतिक्रिया',ar:'الهدف|طريقة اللعب|التحكم والقواعد|الإنجاز والنتائج'};
 export function guideSections(locale){const c=COPY[locale],titles=guideTitles[locale].split('|');return [c.summary,c.guide,`${c.choose}: ${c.feed} / ${c.groom} / ${c.feather} / ${c.scratch} / ${c.rest}. ${c.routine}: ${c.feed} → ${c.groom} → ${c.rest} · 9 ${c.seconds}. ${c.preferred}: ${c.trust} +6. ${c.adult}: ${c.growth} 100%.`,`${c.finish} → ${c.next}. ${c.saved}`].map((text,i)=>({title:titles[i],text}));}
+const faqQuestions={
+ en:['How do I care for the cats?','Is my progress saved?'],
+ 'zh-Hant':['如何照顧貓咪？','進度會保存嗎？'],
+ 'zh-Hans':['如何照顾猫咪？','进度会保存吗？'],
+ ja:['ねこのお世話はどうしますか？','進行状況は保存されますか？'],
+ ko:['고양이는 어떻게 돌보나요?','진행 상황이 저장되나요?'],
+ es:['¿Cómo cuido a los gatos?','¿Se guarda mi progreso?'],
+ 'pt-BR':['Como cuido dos gatos?','Meu progresso é salvo?'],
+ fr:['Comment prendre soin des chats ?','Ma progression est-elle enregistrée ?'],
+ de:['Wie kümmere ich mich um die Katzen?','Wird mein Fortschritt gespeichert?'],
+ it:['Come mi prendo cura dei gatti?','I miei progressi vengono salvati?'],
+ ru:['Как заботиться о кошках?','Сохраняется ли прогресс?'],
+ hi:['बिल्लियों की देखभाल कैसे करूँ?','क्या मेरी प्रगति सहेजी जाती है?'],
+ ar:['كيف أعتني بالقطط؟','هل يُحفظ تقدمي؟']
+};
+export function guideFaq(locale){const c=COPY[locale],q=faqQuestions[locale];return [{question:q[0],answer:c.guide},{question:q[1],answer:c.saved}];}

@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import {COPY,LOCALES,LABELS,ROUTES,guideSections} from './locales.mjs';
+import {COPY,LOCALES,LABELS,ROUTES,guideSections,guideFaq} from './locales.mjs';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderPurrchGroveRoute(locale,source=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8')){
  if(!LOCALES.includes(locale))throw Error('Unsupported locale');const c=COPY[locale],url=`https://weightplay.com/${ROUTES[locale]}/games/purrch-grove/`,image='https://weightplay.com/games/purrch-grove/assets/cover-block-v1.webp';
@@ -17,5 +17,7 @@ export function renderPurrchGroveRoute(locale,source=fs.readFileSync(new URL('./
  const schema={'@context':'https://schema.org','@type':'VideoGame',name:c.title,description:c.summary,url,image,inLanguage:locale,applicationCategory:'Game',genre:['Simulation'],operatingSystem:'Web browser',isAccessibleForFree:true,softwareVersion:productVersion,publisher:{'@type':'Organization',name:'WeightPlay'}};
  const metadata=`<link rel="canonical" href="${url}">\n${alternate}\n<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/purrch-grove/">\n<meta data-purrch-meta property="og:title" content="${esc(c.title)}"><meta data-purrch-meta property="og:description" content="${esc(c.summary)}"><meta data-purrch-meta property="og:url" content="${url}"><meta data-purrch-meta property="og:image" content="${image}"><meta data-purrch-meta name="twitter:card" content="summary_large_image"><script id="purrch-schema" type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script>`;
  html=html.replace(/<div class="game-info-sections">[\s\S]*?<\/div>/,`<div class="game-info-sections">${guideSections(locale).map(s=>`<section><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></section>`).join('')}</div>`);
+ html=html.replace(/<div class="game-info-faq">[\s\S]*?<\/div>/,`<div class="game-info-faq"><dl>${guideFaq(locale).map(item=>`<dt>${esc(item.question)}</dt><dd>${esc(item.answer)}</dd>`).join('')}</dl></div>`);
+ if(locale==='ja' && !html.includes('src="/src/i18n-ja.js?v=20260719-ja1"'))html=html.replace('</head>','<script src="/src/i18n-ja.js?v=20260719-ja1"></script>\n</head>');
  return html.replace('</head>',metadata+'\n</head>');
 }

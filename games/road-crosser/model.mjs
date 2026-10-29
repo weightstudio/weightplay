@@ -64,6 +64,18 @@ export function recordClear(campaign, world) {
   while (campaign.unlocked < 30 && (campaign.medals[campaign.unlocked - 1] & 1)) campaign.unlocked++;
   return medals;
 }
+// A reward must follow a confirmed campaign write, including on replays of
+// clears made before the shared reward was introduced.
+export function commitCampaignClear(storage, campaign, world, award) {
+  const next = { ...campaign, medals: [...campaign.medals], best: [...campaign.best] };
+  if (!recordClear(next, world)) throw Error('Route has not been cleared');
+  const serialized = JSON.stringify(next);
+  storage.setItem(CAMPAIGN_KEY, serialized);
+  if (storage.getItem(CAMPAIGN_KEY) !== serialized) throw Error('Campaign save not confirmed');
+  let reward = false;
+  try { reward = award?.(String(world.stage))?.credited === true; } catch { /* Saved progress remains valid. */ }
+  return { campaign: next, reward };
+}
 export function createWorld(stage = 1) {
   const level = levelById(stage), traffic = [], logs = [];
   level.terrain.forEach((kind, row) => {

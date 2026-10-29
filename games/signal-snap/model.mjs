@@ -64,6 +64,13 @@ export function resume(r,now){if(r.pausedAt!==null){const delta=Math.max(0,now-r
 export function summary(r){return {outcome:r.outcome,hits:r.hits,held:r.held,errors:r.errors,bestStreak:r.bestStreak,score:r.score,perfect:r.perfect,median:r.reactions.length?[...r.reactions].sort((a,b)=>a-b)[Math.floor(r.reactions.length/2)]:null,stars:r.outcome==='success'?Math.max(1,3-r.errors):0};}
 export function normalizeSave(s){const int=(n,max)=>Number.isInteger(n)?Math.max(0,Math.min(max,n)):0;const best=Array.from({length:30},(_,i)=>int(s?.best?.[i],3));const gold=best.reduce((a,b)=>a+b,0)>=15;const violet=s?.violet===true;return {version:2,unlocked:Math.max(1,int(s?.unlocked,30),Math.min(30,best.findLastIndex(v=>v>0)+2)),best,records:Array.from({length:30},(_,i)=>int(s?.records?.[i],99999)),violet,skin:s?.skin==='violet'&&violet?'violet':s?.skin==='gold'&&gold?'gold':'cyan'};}
 export function recordClear(save,index,result){const next=normalizeSave(save);if(result.outcome!=='success'||!Number.isInteger(index)||index<0||index>=30)return next;next.best[index]=Math.max(next.best[index],Math.max(0,Math.min(3,result.stars||0)));next.records[index]=Math.max(next.records[index],result.score||0);next.unlocked=Math.max(next.unlocked,Math.min(30,index+2));return next;}
+export function commitClear(storage,key,save,index,result,award){
+ if(result.outcome!=='success'||!Number.isInteger(index)||index<0||index>=STAGES.length)throw Error('Stage not cleared');
+ const next=recordClear(save,index,result),bytes=JSON.stringify(next);storage.setItem(key,bytes);
+ if(storage.getItem(key)!==bytes)throw Error('Save not confirmed');
+ let reward=false;try{reward=award?.(String(STAGES[index].id))?.credited===true;}catch{/* A saved run remains valid. */}
+ return {save:next,reward};
+}
 
 // Both writes are synchronous. Save delivery first so a failed game-save can never
 // debit the shared wallet; compensate delivery if the wallet refuses or throws.

@@ -549,6 +549,10 @@
       "date": "2026-10-24T07:27:34.088Z",
       "evidence": "canonical-public-catalog"
     },
+    "dustwake-depot": {
+      "date": "2026-10-29T10:31:36.367Z",
+      "evidence": "canonical-public-catalog"
+    },
     "fia-hightrail": {
       "date": "2026-10-26T05:06:10.101Z",
       "evidence": "canonical-public-catalog"
@@ -663,6 +667,10 @@
     },
     "puppy-haven": {
       "date": "2026-10-21T16:15:31.180Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "purrch-grove": {
+      "date": "2026-10-29T10:29:39.765Z",
       "evidence": "canonical-public-catalog"
     },
     "pyramid-solitaire": {

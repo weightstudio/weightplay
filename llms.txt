@@ -295,3 +295,5 @@ WeightPlay should not be represented as:
 WeightPlay is a family-friendly animal browser game platform where players can enjoy free mobile web games, discover games by age and skill, and practice memory, focus, logic, reaction, color recognition, hand-eye coordination, problem solving, and animal knowledge through short playful sessions.
 - Raindrop Catcher: https://weightplay.com/en/games/animal-rain-roost/ — Guide Nori through 30 rain-catching stages, read wind and gold routes, earn stars and unlock nest equipment.
 - Layer Order Puzzles: https://weightplay.com/en/games/animal-layer-grove/
+- Purrch Grove: https://weightplay.com/en/games/purrch-grove/
+- Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {LEVELS} from './levels.mjs';
 import {CAMPAIGN_COPY} from './campaign-copy.mjs';
-import {createWorld,requestMove,advance,useSignal,readCampaign,recordClear,readJourney,SAVE_KEY,CAMPAIGN_KEY} from './model.mjs';
+import {createWorld,requestMove,advance,useSignal,readCampaign,recordClear,commitCampaignClear,readJourney,SAVE_KEY,CAMPAIGN_KEY} from './model.mjs';
 const tick=(w,t)=>{for(let elapsed=0;elapsed<t-1e-8;elapsed+=.02)advance(w,Math.min(.02,t-elapsed));};
 test('30 authored levels, six checkpoints, valid terrain, objects, exits and translated rules',()=>{
  assert.deepEqual(LEVELS.map(l=>l.id),Array.from({length:30},(_,i)=>i+1));
@@ -33,4 +33,21 @@ test('all 30 clears unlock, medals and best never downgrade, corrupted unlock ca
  for(const level of LEVELS){assert.equal(c.unlocked,level.id);const w=createWorld(level.id);w.state='arriving';w.lanterns=3;w.score=239;assert.equal(recordClear(c,w),7);w.lanterns=0;w.charges=0;w.moves=99;w.score=164;recordClear(c,w);assert.equal(c.medals[level.id-1],7);assert.equal(c.best[level.id-1],239);}
  storage.setItem(CAMPAIGN_KEY,JSON.stringify(c));assert.deepEqual(readCampaign(storage),c);assert.equal(storage.getItem(SAVE_KEY),legacy);assert.equal(readJourney(storage).aurora,true);
  storage.setItem(CAMPAIGN_KEY,JSON.stringify({unlocked:999,medals:[2,4,0]}));assert.equal(readCampaign(storage).unlocked,1);
+});
+test('stage rewards follow confirmed campaign saves, including previously cleared stages',()=>{
+ const data=new Map(),storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};
+ const original=readCampaign(storage),w=createWorld(1),awards=[];
+ w.state='arriving';w.score=100;
+ const first=commitCampaignClear(storage,original,w,id=>{awards.push(id);return {credited:true};});
+ assert.deepEqual(awards,['1']);assert.equal(first.reward,true);assert.equal(first.campaign.unlocked,2);
+ assert.equal(original.unlocked,1);assert.equal(readCampaign(storage).unlocked,2);
+ const repeat=commitCampaignClear(storage,first.campaign,w,id=>{awards.push(id);return {credited:false,reason:'already-claimed'};});
+ assert.equal(repeat.reward,false);assert.deepEqual(awards,['1','1']);
+ const denied={getItem:storage.getItem,setItem(){throw Error('quota');}};
+ assert.throws(()=>commitCampaignClear(denied,first.campaign,w,()=>{throw Error('reward must not be called');}),/quota/);
+ const unconfirmed={getItem:()=>null,setItem(){}};
+ assert.throws(()=>commitCampaignClear(unconfirmed,first.campaign,w,()=>{throw Error('reward must not be called');}),/not confirmed/);
+ const playing=createWorld(2);
+ assert.throws(()=>commitCampaignClear(storage,first.campaign,playing,()=>{throw Error('reward must not be called');}),/not been cleared/);
+ assert.deepEqual(awards,['1','1']);assert.equal(first.campaign.unlocked,2);
 });

@@ -1,4 +1,4 @@
-import {STAGES,createRun,begin,tick,press,pause,resume,summary,normalizeSave,recordClear,purchaseViolet} from './model.mjs?v=signal-v3';
+import {STAGES,createRun,begin,tick,press,pause,resume,summary,normalizeSave,commitClear,purchaseViolet} from './model.mjs?v=signal-v4';
 import {COPY,locale} from './copy.mjs?v=signal-v3';
 import {createScene} from './scene.mjs?v=signal-v3';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
@@ -18,7 +18,7 @@ const progress=document.createElement('p');progress.dataset.wpFrameProgress='';m
 const frame=window.WeightPlayScreenFrame.mount({root:$('app'),scenes,localeSelect:$('localeSource'),playUI:true});
 for(const [index,name]of ['main','stage','battle'].entries())scenes[name].header.querySelector('[data-wp-return]').setAttribute('aria-label',c.back[index]);
 $('left').textContent='← '+c.left;$('right').textContent=c.right+' →';$('help').textContent='?';$('help').setAttribute('aria-label',c.help);$('help').title=c.help;
-const resultLayer=document.createElement('section');resultLayer.id='signalResult';resultLayer.className='signal-result result-panel';resultLayer.hidden=true;
+const resultLayer=document.createElement('section');resultLayer.id='signalResult';resultLayer.className='signal-result result-panel';resultLayer.dataset.wpResultScreen='';resultLayer.hidden=true;
 resultLayer.innerHTML='<div id="signalResultCard" class="signal-dialog result-card" data-wp-frame-result-card role="dialog" aria-modal="true" aria-labelledby="signalResultTitle" tabindex="-1"><div id="resultStars" aria-hidden="true"></div><h2 id="signalResultTitle"></h2><p id="signalResultText"></p><div id="signalResultActions" class="logic-result-actions"><button id="resultStages" data-wp-frame-action="primary"></button><button id="resultNext" data-wp-frame-action="primary"></button><button id="resultReplay" data-wp-frame-action="primary"></button></div></div>';
 $('battleContent').append(resultLayer);
 $('resultStages').textContent=c.stages;$('resultNext').textContent=c.next;$('resultReplay').textContent=c.replay;
@@ -125,11 +125,13 @@ listen(document,'visibilitychange',()=>{if(document.hidden&&active==='battle'&&r
 const settingsObserver=new MutationObserver(()=>{if(active!=='battle'||!run||run.phase==='ended'||$('overlay').open)return;const open=[...$('battleScene').querySelectorAll('.wp-frame-popover')].some(n=>!n.hidden&&n.getClientRects().length);if(open&&!settingsPaused){pause(run,performance.now());scene?.pause(true);settingsPaused=true;}else if(!open&&settingsPaused){settingsPaused=false;resumeRun();}});
 settingsObserver.observe($('battleScene').querySelector('header'),{attributes:true,childList:true,subtree:true,attributeFilter:['hidden','class']});
 function result(){
- endedShown=true;const r=summary(run);if(!practice){save=recordClear(save,selected,r);if(r.outcome==='success')persist();}
+ endedShown=true;const r=summary(run);let obtained=false;
+ if(!practice&&r.outcome==='success')try{const committed=commitClear(localStorage,KEY,save,selected,r,id=>window.WonderAnalytics?.completeStage?.(id));save=committed.save;obtained=committed.reward;}catch{storageOkay=false;notify(c.storage);}
  audio(r.outcome==='success'?'result.win':'result.lose');scene?.outcome(r.outcome);$('signalResultTitle').textContent=r.outcome==='success'?c.success:c.failure;$('resultStars').textContent=r.outcome==='success'?'★'.repeat(r.stars)+'☆'.repeat(3-r.stars):'◇';
  $('signalResultText').textContent=c.score+': '+r.score+'\n'+c.errors+': '+r.errors+' / 3\n'+c.chain+': '+r.bestStreak+' · '+c.reaction+': '+(r.median??'—')+' ms';
  $('resultNext').disabled=r.outcome!=='success'||selected>=STAGES.length-1||!practice&&selected+1>=save.unlocked;
- $('battleContent').dataset.resultOpen='';for(const child of $('battleContent').children)if(child!==resultLayer)child.inert=true;resultLayer.hidden=false;frame.activate('battle',{covered:true});$('signalResultCard').scrollTop=0;$('resultStages').focus({preventScroll:true});
+ $('battleContent').dataset.resultOpen='';for(const child of $('battleContent').children)if(child!==resultLayer)child.inert=true;resultLayer.hidden=false;frame.activate('battle',{covered:true});$('signalResultCard').scrollTop=0;
+ const icon=window.ShowResultGet?.('signal-snap',obtained);if(icon?.isConnected)window.WeightPlayCastle?.dismissRewardNotice?.('signal-snap');$('resultStages').focus({preventScroll:true});
 }
 function animate(now){
  if(active!=='battle'||!run)return;
@@ -166,6 +168,7 @@ async function start(index){
  cancelAnimationFrame(raf);closeModal();hideResult();disposeScene();selected=index;run=createRun(index,++seed);endedShown=false;settingsPaused=false;lastCountdown=-1;show('battle');
  $('signalStatus').textContent=ruleText(run.stage);delete $('arena').dataset.feedback;combo.textContent='';meter.replaceChildren(...Array.from({length:run.stage.count},()=>document.createElement('i')));
  try{scene=createScene($('arena'),{skin:save.skin});}catch(error){run=null;modal(c.failure,c.retry,[[c.retry,()=>void start(selected)],[c.leave,leave]]);console.error(error);return;}
+ if(!practice)window.WonderAnalytics?.track?.('stage_start',{stage_id:String(run.stage.id)});
  audio('game.start');warmupEnd=performance.now()+1800;$('left').focus({preventScroll:true});raf=requestAnimationFrame(animate);
 }
 listen($('arena'),'signal-renderer-lost',()=>{if(run){pause(run,performance.now());scene?.pause(true);modal(c.failure,c.retry,[[c.retry,()=>void start(selected)],[c.leave,leave]]);}});
