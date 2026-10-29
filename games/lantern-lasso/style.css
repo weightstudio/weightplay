@@ -24,6 +24,16 @@
   .battle-tools{width:220px;flex-shrink:0;display:grid;gap:8px}
   .battle-tools p{flex:none;min-height:7em;text-align:start}
 }
+@media(orientation:portrait) and (min-width:601px) and (max-width:900px){
+  .battle-content{flex-direction:column}
+  #arena{width:min(100%,calc(var(--wp-battle-logical-height,100dvh) - var(--wp-frame-header-height,56px) - 210px))}
+  .battle-tools{width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px}
+  .battle-tools p{flex:0 0 100%;height:7em;min-height:7em;margin:0;font-size:.8rem;text-align:center}
+  .battle-tools button{flex:1 1 auto}
+}
+/* The shared canvas can scale down, so preserve physical touch target size. */
+.battle-tools button{min-height:max(44px,calc(45px / var(--wp-battle-canvas-scale,1)))}
+@media(max-height:500px){.battle-tools p{height:auto;min-height:2.5em;max-height:5em;font-size:max(.8rem,calc(12px / var(--wp-battle-canvas-scale,1)));line-height:1.2}}
 
 .result{inset:var(--wp-frame-header-height,56px) 0 0;overflow-y:auto;padding:12px;align-items:safe center}.result>div{width:min(100%,470px);max-width:100%;position:relative}.result .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.result .actions button{min-width:0;min-height:48px;padding:.55em .3em;overflow-wrap:anywhere}.leave-dialog{width:min(90vw,440px);max-height:90vh;overflow:auto;border:0;border-radius:20px;padding:24px;background:#fff;color:#20344b;line-height:1.5}.leave-dialog::backdrop{background:#061324bb}.leave-actions{display:flex;gap:8px;flex-wrap:wrap}.leave-actions button{min-height:44px;flex:1 1 130px}@media(max-height:500px){.result{align-items:start}.result>div>img:not([data-wp-result-get-icon]){width:72px}.result>div{padding:12px}.result h2,.result p{margin:.35em 0}}
 /* Match local help, leave and result surfaces to the collection's paper. */
