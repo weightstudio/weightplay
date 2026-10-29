@@ -147,6 +147,16 @@ export class SalvageView {
     this.capture = event => { this.renderer.domElement.focus({preventScroll:true});this.renderer.domElement.setPointerCapture(event.pointerId); this.pointer(event); };
     this.renderer.domElement.addEventListener('pointerdown', this.capture);
     this.renderer.domElement.addEventListener('pointermove', this.pointer);
+    // Reuse and prewarm the small effect geometries/materials before play, so
+    // the first collision does not compile and upload them during a shot.
+    const effectColors=[0x8dff9c,0xffcc70,0x8af5ed];
+    this.effectCache={spark:new THREE.BoxGeometry(6,6,6),broken:new THREE.BoxGeometry(9,5,6),ring:new THREE.RingGeometry(9,13,24),sparkMaterials:effectColors.map(color=>new THREE.MeshBasicMaterial({color})),ringMaterials:effectColors.map(color=>new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,depthWrite:false}))};
+    const warmScene=new THREE.Scene(),warmInstances=[];
+    for(let i=0;i<effectColors.length;i++){
+      for(const geometry of [this.effectCache.spark,this.effectCache.broken]){const mesh=new THREE.InstancedMesh(geometry,this.effectCache.sparkMaterials[i],1);mesh.position.set(0,0,-10000);mesh.frustumCulled=false;warmScene.add(mesh);warmInstances.push(mesh);}
+      const ring=new THREE.Mesh(this.effectCache.ring,this.effectCache.ringMaterials[i]);ring.position.set(0,0,-10000);ring.frustumCulled=false;warmScene.add(ring);
+    }
+    this.renderer.render(warmScene,this.camera);for(const mesh of warmInstances)mesh.dispose();
   }
   setStage(model){
     // Short landscape fields can frame low structures more closely while
@@ -238,12 +248,9 @@ export class SalvageView {
     if(!['impact','break','recovered'].includes(event.type)||!Number.isFinite(event.x))return;
     if(event.type==='recovered')this.celebration=.55;
     if(this.bursts.length>=8)return;
-    const count=event.type==='break'?10:6,color=event.type==='recovered'?0x8dff9c:event.type==='break'||event.material==='wood'||event.material==='beam'?0xffcc70:0x8af5ed;
-    const group=new THREE.Group(),geometry=new THREE.BoxGeometry(event.type==='break'?9:6,event.type==='break'?5:6,6),material=new THREE.MeshBasicMaterial({color});
-    // All sparks in one burst share geometry and material, so draw them as
-    // instances while retaining their individual positions and rotations.
-    const sparks=new THREE.InstancedMesh(geometry,material,count),transform=new THREE.Object3D();group.add(sparks);
-    const ringGeometry=new THREE.RingGeometry(9,13,24),ringMaterial=new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,depthWrite:false});const ring=new THREE.Mesh(ringGeometry,ringMaterial);group.add(ring);
+    const count=event.type==='break'?10:6,index=event.type==='recovered'?0:event.type==='break'||event.material==='wood'||event.material==='beam'?1:2,geometry=event.type==='break'?this.effectCache.broken:this.effectCache.spark,material=this.effectCache.sparkMaterials[index];
+    const group=new THREE.Group(),sparks=new THREE.InstancedMesh(geometry,material,count),transform=new THREE.Object3D();sparks.userData.sharedEffect=true;group.add(sparks);
+    const ringGeometry=this.effectCache.ring,ringMaterial=this.effectCache.ringMaterials[index],ring=new THREE.Mesh(ringGeometry,ringMaterial);ring.userData.sharedEffect=true;group.add(ring);
     group.position.set(event.x,800-event.y,100);this.scene.add(group);this.bursts.push({group,geometry,material,sparks,transform,count,ring,ringGeometry,ringMaterial,life:0});
   }
   sync(model,angle,dt=0,power=.6) {
@@ -274,7 +281,7 @@ export class SalvageView {
     const linked=model.targets.filter(body=>body.plugin.linked&&model.bodies.includes(body));this.link.visible=linked.length===2;
     if(linked.length===2)this.link.geometry.setFromPoints(linked.map(body=>new THREE.Vector3(body.position.x,800-body.position.y,82)));
     for(const burst of this.bursts){burst.life+=dt;const distance=this.reducedMotion?10:burst.life*110,fade=this.reducedMotion?1:Math.min(1,Math.max(0,(.3-burst.life)/.1));for(let i=0;i<burst.count;i++){const angle=i*Math.PI*2/burst.count;burst.transform.position.set(Math.cos(angle)*distance,Math.sin(angle)*distance,0);burst.transform.rotation.z=this.reducedMotion?angle:burst.life*5+angle;burst.transform.scale.setScalar(fade);burst.transform.updateMatrix();burst.sparks.setMatrixAt(i,burst.transform.matrix);}burst.sparks.instanceMatrix.needsUpdate=true;burst.ring.scale.setScalar(this.reducedMotion?1:(1+burst.life*4)*fade);}
-    for(let i=this.bursts.length-1;i>=0;i--)if(this.bursts[i].life>=.3){const burst=this.bursts.splice(i,1)[0];this.scene.remove(burst.group);burst.sparks.dispose();burst.geometry.dispose();burst.material.dispose();burst.ringGeometry.dispose();burst.ringMaterial.dispose();}
+    for(let i=this.bursts.length-1;i>=0;i--)if(this.bursts[i].life>=.3){const burst=this.bursts.splice(i,1)[0];this.scene.remove(burst.group);burst.sparks.dispose();}
     // In full view, expand for a far part or a high-moving ball/part. Keep
     // the expansion monotonic during a shot and retain any space still
     // needed by an unrecovered part once the shot settles.
@@ -295,6 +302,7 @@ export class SalvageView {
     this.disposed=true;this.ruxTexture?.dispose();this.woodTexture.dispose();this.enamelTexture.dispose();
     if(this.host.__ruxRenderStats===this.readStats)delete this.host.__ruxRenderStats;
     this.observer.disconnect();this.renderer.domElement.removeEventListener('pointerdown',this.capture);this.renderer.domElement.removeEventListener('pointermove',this.pointer);this.renderer.domElement.removeEventListener('webglcontextlost',this.onContextLost);
-    this.scene.traverse(n=>{if(n.isInstancedMesh)n.dispose();n.geometry?.dispose();n.material?.dispose();});this.renderer.dispose();this.renderer.domElement.remove();this.meshes.clear();
+    this.scene.traverse(n=>{if(n.isInstancedMesh)n.dispose();if(!n.userData.sharedEffect){n.geometry?.dispose();n.material?.dispose();}});
+    this.effectCache.spark.dispose();this.effectCache.broken.dispose();this.effectCache.ring.dispose();for(const material of [...this.effectCache.sparkMaterials,...this.effectCache.ringMaterials])material.dispose();this.renderer.dispose();this.renderer.domElement.remove();this.meshes.clear();
   }
 }

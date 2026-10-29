@@ -122,6 +122,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   const recoveryResizeObserver=new ResizeObserver(clearRecoveryFeedback);recoveryResizeObserver.observe($('battleScreen'));
   const ownsFinish=item=>item.id==='workshop'||(item.cost?Boolean(window.WeightPlayWallet?.owns(`rux-salvage-yard:${item.id}`)):Boolean(progress.cleared[item.unlock]));
   const equippedFinish=()=>FINISHES.find(item=>item.id===progress.selectedFinish&&ownsFinish(item))||FINISHES[0];
+  let selectionPending=false,unsavedFinish=null;
   const renderCollection=()=>{
     if(!previews){try{previews=finishPreviews(FINISHES);}catch(error){console.warn('RUX_FINISH_PREVIEW',error.message);previews={};}}
     const wallet=window.WeightPlayWallet?.read?.()||{available:false,diamonds:0};$('diamondBalance').textContent=wallet.available?`${t('balance')}: ${wallet.diamonds}`:t('purchaseError');
@@ -129,10 +130,11 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     for(const item of FINISHES){
       const owned=ownsFinish(item),ready=item.unlock===0||Boolean(progress.cleared[item.unlock]),card=document.createElement('section');card.className='finish-card';
       const image=document.createElement('img');image.src=previews[item.id]||'/games/rux-salvage-yard/art/poster.webp';image.alt=`${item.name} · ${t('appearance')}`;const copy=document.createElement('div'),name=document.createElement('strong'),description=document.createElement('p');name.textContent=item.name;description.textContent=`${t('permanent')} · ${t('samePhysics')}`;copy.append(name,description);
-      const button=document.createElement('button');button.type='button';button.textContent=owned?(equippedFinish().id===item.id?t('equipped'):t('equip')):!ready?t('unlock',{n:item.unlock}):item.cost?`${t('buy')} · ${t('price',{n:item.cost})}`:t('locked');button.disabled=purchasePending||(owned&&equippedFinish().id===item.id)||(!owned&&(!ready||!item.cost||!wallet.available||practice));
-      button.addEventListener('click',async()=>{if(owned){progress.selectedFinish=item.id;await save({selectionChanged:true});renderCollection();}else openPurchase(item);});card.append(image,copy,button);grid.append(card);
+      const selected=owned&&equippedFinish().id===item.id,retry=selected&&unsavedFinish===item.id;
+      const button=document.createElement('button');button.type='button';button.textContent=owned?(retry?t('reload'):selected?t('equipped'):t('equip')):!ready?t('unlock',{n:item.unlock}):item.cost?`${t('buy')} · ${t('price',{n:item.cost})}`:t('locked');button.disabled=selectionPending||purchasePending||(selected&&!retry)||(!owned&&(!ready||!item.cost||!wallet.available||practice));
+      button.addEventListener('click',async()=>{if(owned){selectionPending=true;progress.selectedFinish=item.id;renderCollection();const saved=await save({selectionChanged:true});unsavedFinish=!practice&&!saved?item.id:null;selectionPending=false;renderCollection();}else openPurchase(item);});card.append(image,copy,button);grid.append(card);
     }
-    $('collectionMessage').textContent=practice?t('practiceNoPurchase'):'';
+    $('collectionMessage').textContent=selectionPending&&!practice?t('savingProgress'):practice?t('practiceNoPurchase'):'';
   };
   const showStageTab=next=>{stageTab=next;$('stagePage').hidden=next!=='stages';$('stagePage').classList.toggle('hidden',next!=='stages');$('collectionPage').hidden=next!=='collection';$('stagePage').inert=next!=='stages';$('collectionPage').inert=next!=='collection';$('stagesTab').setAttribute('aria-selected',String(next==='stages'));$('collectionTab').setAttribute('aria-selected',String(next==='collection'));if(next==='collection')renderCollection();else selector?.refresh(selected);};
   let purchaseItem=null,purchaseReturn=null;
@@ -207,7 +209,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     for(let i=0;i<120;i++)model.step();
     clampChoice=null;recoveryTime=0;recoveredBeforeShot=0;missHintShown=false;ballEdge.hidden=true;recoveryNotice.hidden=true;recoveryNotice.classList.remove('is-hint');clampStatus.textContent='';lastClampSeconds=0;$('arena').classList.toggle('chapter-two',slice>=30);$('clampTools').hidden=true;clampTrigger.hidden=!model.stage?.clamps;$('battleLive').classList.toggle('has-clamp',Boolean(model.stage?.clamps));if(model.stage?.clamps)refreshClampOptions();
     try {view=new SalvageView($('arena'),a=>{if(!paused&&(model.state==='ready'||model.state==='flight'))angle=a;},()=>{if(screen==='battle'){audio?.stop();dialog(t('graphics'),t('reload'),[[t('reload'),()=>start()],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'error');}});view.setStage(model);view.setFinish(equippedFinish().color);resetZoom();}
-    catch(e){console.error('RUX_GRAPHICS',e);dialog(t('graphics'),t('reload'),[[t('stages'),()=>setScreen('stage')]],'error');return;}
+    catch(e){console.error('RUX_GRAPHICS',e);dialog(t('graphics'),t('reload'),[[t('reload'),()=>start()],[t('stages'),()=>setScreen('stage')]],'error');return;}
     roundStarted=true;if(!practice){try{window.WonderAnalytics?.track?.('stage_start',{stage_id:slice+1});}catch(error){console.warn('RUX_STAGE_START',error);}}
     view.renderer.domElement.focus({preventScroll:true});sound('game.start');last=performance.now();raf=requestAnimationFrame(tick);if(slice===0){tutorialFull=false;tutorial.show();}else if(slice===20&&!progress.reflectorIntroDone){dialog(stageTitle(locale,OPENING[slice]),`${t('reboundTip')} ${t('reboundContact')}`,[[t('continue'),()=>finishMechanicIntro('reflectorIntroDone')]],'reflectorIntro');}else if(slice===30&&!progress.clampIntroDone){dialog(t('target'),`${t('clampMenuHint')} ${t('clampIntro')} ${t('clampAdvice')}`,[[t('continue'),()=>finishMechanicIntro('clampIntroDone')]],'clampIntro');const icon=clampTrigger.querySelector('svg').cloneNode(true);icon.classList.add('clamp-intro-icon');$('dialogText').prepend(icon);}else if(slice===35&&!progress.platformIntroDone){dialog(stageTitle(locale,OPENING[slice]),`${t('platformTip')} ${t('contactMark')} ${t('platformEstimate')}`,[[t('continue'),()=>finishMechanicIntro('platformIntroDone')]],'platformIntro');}notifyMeasurement();
     } finally {startPending=false;}
@@ -271,7 +273,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   $('stagesTab').addEventListener('click',()=>showStageTab('stages'));$('collectionTab').addEventListener('click',()=>showStageTab('collection'));$('purchaseCancel').addEventListener('click',closePurchase);
   $('purchaseConfirm').addEventListener('click',async()=>{
     if(purchasePending||!purchaseItem||practice)return;const item=purchaseItem;purchasePending=true;$('purchaseConfirm').disabled=true;$('purchaseCancel').disabled=true;$('purchaseMessage').textContent=t('pending');
-    try{const result=await window.WeightPlayWallet.purchasePermanent(`rux-salvage-yard:${item.id}`,item.cost);if(result.ok&&window.WeightPlayWallet.owns(`rux-salvage-yard:${item.id}`)){progress.selectedFinish=item.id;await save({selectionChanged:true});sound('shop.purchase');purchasePending=false;closePurchase();renderCollection();}else{$('purchaseMessage').textContent=t(result.reason==='insufficient'?'insufficient':'purchaseError');sound('feedback.error');}}
+    try{const result=await window.WeightPlayWallet.purchasePermanent(`rux-salvage-yard:${item.id}`,item.cost);if(result.ok&&window.WeightPlayWallet.owns(`rux-salvage-yard:${item.id}`)){progress.selectedFinish=item.id;const saved=await save({selectionChanged:true});unsavedFinish=saved?null:item.id;sound('shop.purchase');purchasePending=false;closePurchase();renderCollection();}else{$('purchaseMessage').textContent=t(result.reason==='insufficient'?'insufficient':'purchaseError');sound('feedback.error');}}
     catch{$('purchaseMessage').textContent=t('purchaseError');sound('feedback.error');}finally{purchasePending=false;$('purchaseConfirm').disabled=false;$('purchaseCancel').disabled=false;}
   });
   $('battleBack').addEventListener('click',()=>dialog(t('pause'),t('leaveDetails',{n:slice+1}), [[t('continue'),closeDialog],[t('stages'),()=>{closeDialog();setScreen('stage');}]],'pause'));
