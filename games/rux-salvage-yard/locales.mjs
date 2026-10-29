@@ -444,6 +444,38 @@ const EXTRA={
 for(const [locale,[clampTime,trajectory]] of Object.entries(EXTRA))Object.assign(CUSTOM[locale],{clampTime,trajectory});
 const CONTACT_MARK={en:'Aim the ring near the target; it predicts the ball’s first contact.','zh-Hant':'圓環預測球首次接觸位置；讓它靠近目標。','zh-Hans':'圆环预测球首次接触位置；让它靠近目标。',ja:'輪は球の最初の接触予測位置です。狙う物の近くに合わせましょう。',ko:'원은 공의 예상 첫 충돌 위치입니다. 목표 가까이에 맞추세요.',es:'Acerca el círculo al objetivo: indica el primer contacto previsto de la bola.','pt-BR':'Aproxime o círculo do alvo: ele prevê o primeiro contato da bola.',fr:'Placez l’anneau près de la cible : il prévoit le premier contact de la balle.',de:'Der Ring zeigt den geschätzten Erstkontakt des Balls. Ziele nahe an das Objekt.',it:'Avvicina l’anello al bersaglio: stima il primo contatto della palla.',ru:'Подведите кольцо к цели: оно показывает примерное первое касание шара.',hi:'घेरे को लक्ष्य के पास लाएँ; यह गेंद का पहला अनुमानित संपर्क दिखाता है।',ar:'قرّب الحلقة من الهدف؛ فهي تتوقع موضع الكرة عند الاصطدام الأول.'};
 for(const [locale,contactMark] of Object.entries(CONTACT_MARK)){CUSTOM[locale].contactMark=contactMark;CUSTOM[locale].trajectory+=` ${contactMark}`;}
+const PLATFORM_MISS_TIP={
+  en:'Try more power or aim at a support.',
+  'zh-Hant':'試試加強力度，或瞄準支架。',
+  'zh-Hans':'试试加大力度，或瞄准支架。',
+  ja:'威力を上げるか、支えを狙ってみましょう。',
+  ko:'힘을 높이거나 지지대를 조준해 보세요.',
+  es:'Prueba más fuerza o apunta a un soporte.',
+  'pt-BR':'Tente mais força ou mire em um suporte.',
+  fr:'Augmentez la force ou visez un support.',
+  de:'Versuche mehr Kraft oder ziele auf eine Stütze.',
+  it:'Aumenta la forza o mira a un supporto.',
+  ru:'Усильте выстрел или цельтесь в опору.',
+  hi:'ज़्यादा ताकत आज़माएँ या सहारे पर निशाना लगाएँ।',
+  ar:'جرّب قوة أكبر أو صوّب نحو دعامة.'
+};
+for(const [locale,platformMissTip] of Object.entries(PLATFORM_MISS_TIP))CUSTOM[locale].platformMissTip=platformMissTip;
+const PLATFORM_MAX_POWER_TIP={
+  en:'Aim at a support or try another angle.',
+  'zh-Hant':'試著瞄準支架，或換個角度。',
+  'zh-Hans':'试着瞄准支架，或换个角度。',
+  ja:'支えを狙うか、角度を変えてみましょう。',
+  ko:'지지대를 조준하거나 각도를 바꿔 보세요.',
+  es:'Apunta a un soporte o prueba otro ángulo.',
+  'pt-BR':'Mire em um suporte ou tente outro ângulo.',
+  fr:'Visez un support ou essayez un autre angle.',
+  de:'Ziele auf eine Stütze oder ändere den Winkel.',
+  it:'Mira a un supporto o prova un altro angolo.',
+  ru:'Цельтесь в опору или попробуйте другой угол.',
+  hi:'सहारे पर निशाना लगाएँ या दूसरा कोण आज़माएँ।',
+  ar:'صوّب نحو دعامة أو جرّب زاوية أخرى.'
+};
+for(const [locale,platformMaxPowerTip] of Object.entries(PLATFORM_MAX_POWER_TIP))CUSTOM[locale].platformMaxPowerTip=platformMaxPowerTip;
 const PLATFORM_ESTIMATE={en:'The estimate accounts for the moving platform and parts it carries.','zh-Hant':'預估會計入移動平台及其承載零件的位置。','zh-Hans':'预估会计入移动平台及其承载零件的位置。',ja:'予測には移動台とその上の部品の動きが含まれます。',ko:'예상 경로에는 움직이는 발판과 그 위 부품의 이동이 반영됩니다.',es:'La estimación tiene en cuenta la plataforma móvil y las piezas que transporta.','pt-BR':'A estimativa considera a plataforma móvel e as peças que ela carrega.',fr:'L’estimation tient compte de la plateforme mobile et des pièces qu’elle porte.',de:'Die Schätzung berücksichtigt die bewegliche Plattform und ihre Teile.',it:'La stima considera la piattaforma mobile e i pezzi che trasporta.',ru:'Расчёт учитывает движущуюся платформу и детали на ней.',hi:'अनुमान में चलने वाले मंच और उस पर रखे पुर्ज़ों की गति शामिल है।',ar:'يراعي التقدير حركة المنصة والقطع التي تحملها.'};
 for(const [locale,platformEstimate] of Object.entries(PLATFORM_ESTIMATE)){CUSTOM[locale].platformEstimate=platformEstimate;CUSTOM[locale].trajectory+=` ${platformEstimate}`;}
 const PLATFORM_TIP={

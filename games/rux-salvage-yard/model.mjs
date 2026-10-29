@@ -17,7 +17,10 @@ export function estimateTrajectory(M,obstacles,angle,power,probe=M.Bodies.circle
   if(motion)for(const {body,proxy} of motion.carried)M.Body.setAngle(proxy,body.angle);
   const movingSources=motion?[{body:motion.platform,proxy:motion.platformProxy},...motion.carried]:[];
   for(let i=1;i<=80;i++){
-    const t=i*.02,x=80+speed*Math.cos(angle)*t,y=680-speed*Math.sin(angle)*t+500*t*t,point={x,y};
+    // Matter advances gravity in four 1/240 s substeps per normal frame.
+    // Its semi-implicit integration adds half a substep of fall to the
+    // continuous parabola; this matters when the ball grazes a block edge.
+    const t=i*.02,x=80+speed*Math.cos(angle)*t,y=680-speed*Math.sin(angle)*t+500*t*(t+1/240),point={x,y};
     const candidates=obstacles.filter(body=>body.bounds.max.x>=Math.min(previous.x,x)-22&&body.bounds.min.x<=Math.max(previous.x,x)+22&&body.bounds.max.y>=Math.min(previous.y,y)-22&&body.bounds.min.y<=Math.max(previous.y,y)+22);
     const moving=[];
     if(motion){const start=platformX((i-1)*.02)-motion.platform.position.x,mid=platformX((i-.5)*.02)-motion.platform.position.x,end=platformX(t)-motion.platform.position.x,min=Math.min(start,mid,end)-1,max=Math.max(start,mid,end)+1;

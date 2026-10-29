@@ -23,7 +23,7 @@ export const OPENING = Object.freeze([
   { id:20, columns:[1,1,2], shots:6, title:'Far side first', guard:true, metalColumn:2, fragile:[1,0], firstColumn:2 },
   { id:21, columns:[1,0,1], shots:5, title:'Reflector', reflector:1, reflectorY:480, guard:true },
   { id:22, columns:[0,1,1], shots:5, title:'Mirrored reflector', reflector:-1, fragile:[1,0] },
-  { id:23, columns:[2,1,0], shots:6, title:'Metal rebound', reflector:1, metalColumn:0 },
+  { id:23, columns:[2,1,0], shots:6, title:'Metal rebound', reflector:1, reflectorY:480, metalColumn:0 },
   { id:24, columns:[0,1,2], shots:6, title:'Far weak point', reflector:-1, fragile:[2,0] },
   { id:25, columns:[1,2,1], shots:6, title:'Two routes', reflector:1, guard:true, fragile:[1,0], sameShot:[0,2] },
   { id:26, columns:[2,1,1], shots:6, title:'Heavy near tower', metalColumn:0, fragile:[1,0] },
