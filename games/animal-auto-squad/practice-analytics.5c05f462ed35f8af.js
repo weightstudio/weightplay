@@ -1,1 +1,0 @@
-(function(){if(location.protocol!=="http:"||!["localhost","127.0.0.1","[::1]"].includes(location.hostname)||new URLSearchParams(location.search).get("practice")!=="1")return;const a=window.WONDER_SITE?.analytics;a&&(a.enabled=!1,a.gaMeasurementId&&(window[`ga-disable-${a.gaMeasurementId}`]=!0))})();
