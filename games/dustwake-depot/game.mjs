@@ -192,7 +192,7 @@ function tutorial(force=false) {
 function stageRecord(index) {
   const stage=STAGES[index],c=stageCopy(locale,stage),cleared=save.cleared.includes(stage.id);
   const locked=stage.id>save.highestUnlocked&&!LocalPractice.enabled;
-  return {id:stage.id,kicker:`${t('chapter')} ${stage.chapter} · ${t('stage')} ${stage.id}`,title:c.title,subtitle:c.summary,
+  return {id:stage.id,kicker:`${t('stage')} ${stage.id} · ${t('chapter')} ${stage.chapter}`,title:c.title,subtitle:c.summary,
     summary:c.chapter,details:c.details,status:cleared?t('cleared'):locked?t('locked'):t('ready'),locked,cleared};
 }
 function refreshStages() { selector?.setConfig(stageConfig(),selected); }

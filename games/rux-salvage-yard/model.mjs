@@ -85,11 +85,9 @@ export class SalvageSlice {
     if(stage?.bridge){
       const slope=stage.bridge==='slope',width=slope?390:190;
       const beam=add(Bodies.rectangle(slope?662.4:580,slope?670.3:710,width,20,{...surface,density:.001,angle:slope?Math.atan2(80,320):0}),'beam');beam.plugin.width=width;
-      // Start the sloped load aligned with the beam near its settled pose,
-      // instead of visibly sliding during the first seconds of aiming.
-      const part=add(Bodies.rectangle(slope?689.44:580,slope?625.46:667.5,65,65,{...surface,density:.0006,angle:slope?Math.atan2(80,320):0}),'target');part.plugin.renderWidth=65;part.plugin.column=1;this.targets.push(part);
+      const part=add(Bodies.rectangle(slope?672.7:580,slope?629.1:667.5,65,65,{...surface,density:.0006}),'target');part.plugin.renderWidth=65;part.plugin.column=1;this.targets.push(part);
     }
-    if(stage?.capBeam){const beam=add(Bodies.rectangle(stage.capBeam==='far'?740:580,stage.capBeam==='high'?565:645,230,20,{...surface,density:.001}),'beam');beam.plugin.width=230;}
+    if(stage?.capBeam){const diagonal=stage.capBeam==='diagonal',width=diagonal?200:230;const beam=add(Bodies.rectangle(diagonal?740:stage.capBeam==='far'?740:580,diagonal?525:stage.capBeam==='high'?565:645,width,20,{...surface,density:.001,angle:diagonal?Math.atan2(80,160):0}),'beam');beam.plugin.width=width;}
     if(stage?.platform){
       const part=add(Bodies.rectangle(660,657.5,65,65,{...surface,density:.0006}),'target');
       Object.assign(part.plugin,{renderWidth:65,column:1,first:stage.firstColumn===1,last:stage.lastColumn===1,clampRequired:stage.clampColumn===1,linked:stage.sameShot?.includes(1)||false});this.targets.push(part);
