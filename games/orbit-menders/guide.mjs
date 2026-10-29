@@ -1,12 +1,1 @@
-import { getPublicationCopy } from './publication-copy.mjs';
-
-const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-
-// Pure renderer for the shared source-owned Guide contract. No DOM, timers,
-// storage, game boot, English fallback or gameplay-state mutation.
-export function renderGuide(locale) {
-  const c = getPublicationCopy(locale);
-  const section = (heading, body, level = 3) => `<div class="game-info-section"><h${level}>${escape(heading)}</h${level}><p>${escape(body)}</p></div>`;
-  const faq = c.faqs.map(([question, answer]) => `<dt>${escape(question)}</dt><dd>${escape(answer)}</dd>`).join('');
-  return `<section id="guide" class="game-page-info game-page-info-static" lang="${escape(locale)}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" data-runtime-localize="off" data-wp-guide-locale="${escape(locale)}" data-wp-guide-locales="./publication-copy.mjs#publicationCopy" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="${escape(c.guideAria)}">${section(c.introTitle, c.intro, 2)}${section(c.controlsTitle, c.controls)}${section(c.saveTitle, c.save)}<div class="game-info-section"><h3>${escape(c.faqTitle)}</h3><dl>${faq}</dl></div></section>`;
-}
+var c=Object.defineProperty;var t=(i,e)=>c(i,"name",{value:e,configurable:!0});import{getPublicationCopy as s}from"./publication-copy.mjs";const a=t(i=>String(i).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;"),"escape");export function renderGuide(i){const e=s(i),l=t((o,n,d=3)=>`<div class="game-info-section"><h${d}>${a(o)}</h${d}><p>${a(n)}</p></div>`,"section"),r=e.faqs.map(([o,n])=>`<dt>${a(o)}</dt><dd>${a(n)}</dd>`).join("");return`<section id="guide" class="game-page-info game-page-info-static" lang="${a(i)}" dir="${i==="ar"?"rtl":"ltr"}" data-runtime-localize="off" data-wp-guide-locale="${a(i)}" data-wp-guide-locales="./publication-copy.mjs#publicationCopy" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="${a(e.guideAria)}">${l(e.introTitle,e.intro,2)}${l(e.controlsTitle,e.controls)}${l(e.saveTitle,e.save)}<div class="game-info-section"><h3>${a(e.faqTitle)}</h3><dl>${r}</dl></div></section>`}t(renderGuide,"renderGuide");

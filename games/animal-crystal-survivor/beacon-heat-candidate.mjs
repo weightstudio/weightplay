@@ -1,12 +1,1 @@
-// Unconnected Stage 46 draft. The host must apply its real hazard and damage
-// lifecycle; these functions do not save, move, damage or start a round.
-const lane=Object.freeze({x:512,y:1000,width:560,height:140,warn:1.8,life:6.2,damage:8,color:'#ec7734',beaconHeat:true});
-export function makeHeatLane(){return {kind:'lane',tick:0,...lane}}
-export function insideHeatLane(point,heat=lane){
-  if(!Number.isFinite(point?.x)||!Number.isFinite(point?.y))throw new TypeError('finite point required');
-  return Math.abs(point.x-heat.x)<=heat.width/2&&Math.abs(point.y-heat.y)<=heat.height/2;
-}
-export function heatPhase(elapsed,heat=lane){
-  if(!Number.isFinite(elapsed)||elapsed<0)throw new RangeError('invalid heat time');
-  return elapsed<heat.warn?'warning':elapsed<heat.life?'active':'cooled';
-}
+var t=Object.defineProperty;var r=(e,i)=>t(e,"name",{value:i,configurable:!0});const n=Object.freeze({x:512,y:1e3,width:560,height:140,warn:1.8,life:6.2,damage:8,color:"#ec7734",beaconHeat:!0});export function makeHeatLane(){return{kind:"lane",tick:0,...n}}r(makeHeatLane,"makeHeatLane");export function insideHeatLane(e,i=n){if(!Number.isFinite(e?.x)||!Number.isFinite(e?.y))throw new TypeError("finite point required");return Math.abs(e.x-i.x)<=i.width/2&&Math.abs(e.y-i.y)<=i.height/2}r(insideHeatLane,"insideHeatLane");export function heatPhase(e,i=n){if(!Number.isFinite(e)||e<0)throw new RangeError("invalid heat time");return e<i.warn?"warning":e<i.life?"active":"cooled"}r(heatPhase,"heatPhase");

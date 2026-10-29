@@ -1,15 +1,1 @@
-// Local-only, early collector guard candidate. Not yet included by the entry.
-(() => {
-  'use strict';
-  const local=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname);
-  if(!local||new URLSearchParams(location.search).get('practice')!=='1')return;
-  window.__CrystalPracticeRequested=true;
-  try{
-    const analytics=window.WONDER_SITE?.analytics;
-    if(!analytics)throw Error('ANALYTICS_CONFIG_UNAVAILABLE');
-    analytics.enabled=false;
-    if(analytics.enabled!==false)throw Error('ANALYTICS_DISABLE_UNCONFIRMED');
-    if(analytics.gaMeasurementId)window[`ga-disable-${analytics.gaMeasurementId}`]=true;
-    window.__CrystalPracticeGuardReady=true;
-  }catch{window.__CrystalPracticeGuardReady=false}
-})();
+(()=>{"use strict";if(!(!(location.protocol==="http:"&&["localhost","127.0.0.1","[::1]"].includes(location.hostname))||new URLSearchParams(location.search).get("practice")!=="1")){window.__CrystalPracticeRequested=!0;try{const analytics=window.WONDER_SITE?.analytics;if(!analytics)throw Error("ANALYTICS_CONFIG_UNAVAILABLE");if(analytics.enabled=!1,analytics.enabled!==!1)throw Error("ANALYTICS_DISABLE_UNCONFIRMED");analytics.gaMeasurementId&&(window[`ga-disable-${analytics.gaMeasurementId}`]=!0),window.__CrystalPracticeGuardReady=!0}catch{window.__CrystalPracticeGuardReady=!1}}})();

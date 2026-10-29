@@ -1,9 +1,4 @@
-/* Rune Tactics native UI source. Column order is validated; placeholders remain game-owned. */
-(() => {
-  'use strict';
-  const locales = ['ja', 'ko', 'fr', 'de', 'it', 'ru', 'hi'];
-  const data = Object.fromEntries(locales.map(code => [code, {}]));
-  const rows = `
+(()=>{"use strict";const locales=["ja","ko","fr","de","it","ru","hi"],data=Object.fromEntries(locales.map(code=>[code,{}])),rows=`
 language|言語|언어|Langue|Sprache|Lingua|Язык|भाषा
 backToLobby|ロビーへ戻る|로비로 돌아가기|Retour à l’accueil|Zur Spielauswahl|Torna alla raccolta|К списку игр|खेल सूची पर लौटें
 backToMenu|ミッションへ戻る|임무로 돌아가기|Retour aux missions|Zu den Missionen|Torna alle missioni|К заданиям|मिशन पर लौटें
@@ -249,15 +244,5 @@ runeChainHint|{enemy}を集中攻撃：次の味方の一撃はダメージ+{bon
 runeChainReady|1体を集中攻撃してルーン連鎖を開始。|한 적에 집중해 룬 연계를 시작하세요.|Concentrez les attaques pour lancer une chaîne runique.|Starte eine Runenkette durch konzentrierte Angriffe.|Concentra gli attacchi per avviare una catena runica.|Начните цепь рун, сосредоточившись на одном враге.|एक दुश्मन पर ध्यान देकर रूण शृंखला शुरू करें।
 battlePreview|ミッション説明|임무 브리핑|Briefing de mission|Missionsbesprechung|Briefing della missione|Описание задания|मिशन विवरण
 squadRule|部隊のルール|분대 규칙|Règle de l’escouade|Truppregel|Regola della squadra|Правило отряда|दस्ते का नियम
-`.trim();
-  const seen = new Set();
-  for (const line of rows.split('\n')) {
-    const [rawKey, ...values] = line.split('|');
-    const key = rawKey.trim();
-    if (!key || seen.has(key) || values.length !== locales.length || values.some(v => !v.trim())) throw new Error(`Invalid Rune locale row: ${key}`);
-    seen.add(key);
-    locales.forEach((code, i) => { data[code][key] = values[i]; });
-  }
-  Object.assign(data, {"es": {"battleDetails": "Detalles de la batalla"}, "pt-BR": {"resultWin": "Missão {mission} concluída. Você ganhou {xp} de experiência e {runes} Runas.", "resultLose": "A equipe caiu na missão {mission}. Mantenha a tartaruga perto da linha de frente.", "planWin": "Mantenha posições seguras, concentre os ataques e escolha uma recompensa adequada ao próximo inimigo.", "planLose": "Defenda antes do turno inimigo, mantenha a tartaruga na frente e concentre os ataques em um alvo.", "rewardReviveDesc": "Guarde um token de reviver. Um herói caído revive automaticamente em um combate futuro.", "rewardFocusDesc": "+1 de energia inicial na próxima missão.", "missionTactic1": "Aprenda o posicionamento básico contra dois lobos.", "missionTactic2": "Proteja a coruja de um corvo que ataca à distância.", "missionTactic3": "Elimine os guardas antes de concentrar os ataques no cervo chefe.", "missionTactic4": "Use a defesa da tartaruga antes que dois corvos ataquem.", "missionTactic5": "Combate longo: administre a energia e concentre os ataques.", "missionTactic6": "Pressão dos chefes: sobreviva a dois cervos e aos ataques do corvo.", "wolfPackHit": "Presa da matilha: {enemy} causou +1 de dano.", "ravenWeakHit": "Visão da fraqueza: {enemy} atacou o herói mais fraco.", "stagArmorHit": "Pele de pedra reduziu em 1 o dano de {hero}."}});
-  window.WeightPlayRuneTacticsNativeCopy = Object.freeze(Object.fromEntries(Object.entries(data).map(([code, copy]) => [code, Object.freeze(copy)])));
-})();
+`.trim(),seen=new Set;for(const line of rows.split(`
+`)){const[rawKey,...values]=line.split("|"),key=rawKey.trim();if(!key||seen.has(key)||values.length!==locales.length||values.some(v=>!v.trim()))throw new Error(`Invalid Rune locale row: ${key}`);seen.add(key),locales.forEach((code,i)=>{data[code][key]=values[i]})}Object.assign(data,{es:{battleDetails:"Detalles de la batalla"},"pt-BR":{resultWin:"Missão {mission} concluída. Você ganhou {xp} de experiência e {runes} Runas.",resultLose:"A equipe caiu na missão {mission}. Mantenha a tartaruga perto da linha de frente.",planWin:"Mantenha posições seguras, concentre os ataques e escolha uma recompensa adequada ao próximo inimigo.",planLose:"Defenda antes do turno inimigo, mantenha a tartaruga na frente e concentre os ataques em um alvo.",rewardReviveDesc:"Guarde um token de reviver. Um herói caído revive automaticamente em um combate futuro.",rewardFocusDesc:"+1 de energia inicial na próxima missão.",missionTactic1:"Aprenda o posicionamento básico contra dois lobos.",missionTactic2:"Proteja a coruja de um corvo que ataca à distância.",missionTactic3:"Elimine os guardas antes de concentrar os ataques no cervo chefe.",missionTactic4:"Use a defesa da tartaruga antes que dois corvos ataquem.",missionTactic5:"Combate longo: administre a energia e concentre os ataques.",missionTactic6:"Pressão dos chefes: sobreviva a dois cervos e aos ataques do corvo.",wolfPackHit:"Presa da matilha: {enemy} causou +1 de dano.",ravenWeakHit:"Visão da fraqueza: {enemy} atacou o herói mais fraco.",stagArmorHit:"Pele de pedra reduziu em 1 o dano de {hero}."}}),window.WeightPlayRuneTacticsNativeCopy=Object.freeze(Object.fromEntries(Object.entries(data).map(([code,copy])=>[code,Object.freeze(copy)])))})();

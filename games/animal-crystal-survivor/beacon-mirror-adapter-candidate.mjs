@@ -1,12 +1,1 @@
-// Unconnected adapter for real engine-shaped circular hazards.
-import {mirrorStart,mirrorZones} from './beacon-mirror-candidate.mjs?v=20261028-mirror1';
-function create(side,cycle,hazards){
-  if(!Array.isArray(hazards)||hazards.some(h=>h.beaconMirror))throw new Error('MIRROR_HAZARD_UNSETTLED');
-  const state={...mirrorStart(side),cycle},zone=mirrorZones[side];
-  return {state,hazards:[...hazards,{kind:'circle',beaconMirror:side,x:zone.x,y:zone.y,r:zone.r,warn:state.warn,life:state.life,damage:10,color:side==='A'?'#f97316':'#f59e0b',tick:0,vx:0,vy:0,growth:0,bossSkill:null}]};
-}
-export function beginMirrorHazard(hazards){return create('A',1,hazards)}
-export function nextMirrorHazard(previous,hazards){
-  if(!previous||!['A','B'].includes(previous.side)||!Number.isInteger(previous.cycle)||previous.cycle<1)throw new TypeError('INVALID_MIRROR_STATE');
-  return create(previous.side==='A'?'B':'A',previous.cycle+1,hazards);
-}
+var l=Object.defineProperty;var n=(r,e)=>l(r,"name",{value:e,configurable:!0});import{mirrorStart as A,mirrorZones as f}from"./beacon-mirror-candidate.mjs?v=20261028-mirror1";function i(r,e,o){if(!Array.isArray(o)||o.some(a=>a.beaconMirror))throw new Error("MIRROR_HAZARD_UNSETTLED");const t={...A(r),cycle:e},c=f[r];return{state:t,hazards:[...o,{kind:"circle",beaconMirror:r,x:c.x,y:c.y,r:c.r,warn:t.warn,life:t.life,damage:10,color:r==="A"?"#f97316":"#f59e0b",tick:0,vx:0,vy:0,growth:0,bossSkill:null}]}}n(i,"create");export function beginMirrorHazard(r){return i("A",1,r)}n(beginMirrorHazard,"beginMirrorHazard");export function nextMirrorHazard(r,e){if(!r||!["A","B"].includes(r.side)||!Number.isInteger(r.cycle)||r.cycle<1)throw new TypeError("INVALID_MIRROR_STATE");return i(r.side==="A"?"B":"A",r.cycle+1,e)}n(nextMirrorHazard,"nextMirrorHazard");

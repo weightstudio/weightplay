@@ -1,11 +1,1 @@
-// Keep the shared collector disabled from the first config assignment in local practice.
-(() => {
-  if(location.protocol!=='http:'||!['localhost','127.0.0.1','[::1]'].includes(location.hostname)||new URLSearchParams(location.search).get('practice')!=='1')return;
-  const disable=site=>{if(!site?.analytics||typeof site.analytics!=='object')throw Error('PRACTICE_ANALYTICS_CONFIG_INVALID');site.analytics.enabled=false;if(site.analytics.gaMeasurementId)window[`ga-disable-${site.analytics.gaMeasurementId}`]=true;return site;};
-  try{
-    const descriptor=Object.getOwnPropertyDescriptor(window,'WONDER_SITE');if(descriptor&&!descriptor.configurable)throw Error('PRACTICE_ANALYTICS_GUARD_UNAVAILABLE');
-    let current=window.WONDER_SITE?disable(window.WONDER_SITE):undefined;
-    Object.defineProperty(window,'WONDER_SITE',{configurable:true,enumerable:true,get(){return current;},set(value){try{current=disable(value);}catch{window.__carnivalPracticeAnalyticsSafe=false;current={analytics:{enabled:false}};}}});
-    window.__carnivalPracticeAnalyticsSafe=true;
-  }catch{window.__carnivalPracticeAnalyticsSafe=false;}
-})();
+(()=>{if(location.protocol!=="http:"||!["localhost","127.0.0.1","[::1]"].includes(location.hostname)||new URLSearchParams(location.search).get("practice")!=="1")return;const disable=site=>{if(!site?.analytics||typeof site.analytics!="object")throw Error("PRACTICE_ANALYTICS_CONFIG_INVALID");return site.analytics.enabled=!1,site.analytics.gaMeasurementId&&(window[`ga-disable-${site.analytics.gaMeasurementId}`]=!0),site};try{const descriptor=Object.getOwnPropertyDescriptor(window,"WONDER_SITE");if(descriptor&&!descriptor.configurable)throw Error("PRACTICE_ANALYTICS_GUARD_UNAVAILABLE");let current=window.WONDER_SITE?disable(window.WONDER_SITE):void 0;Object.defineProperty(window,"WONDER_SITE",{configurable:!0,enumerable:!0,get(){return current},set(value){try{current=disable(value)}catch{window.__carnivalPracticeAnalyticsSafe=!1,current={analytics:{enabled:!1}}}}}),window.__carnivalPracticeAnalyticsSafe=!0}catch{window.__carnivalPracticeAnalyticsSafe=!1}})();

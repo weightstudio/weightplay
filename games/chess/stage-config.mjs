@@ -1,11 +1,1 @@
-import {challenges,unlockChallenge} from './challenges.mjs';
-import {stageLocales} from './stage-locales.mjs';
-
-// Authored content only. Shared Play UI owns cards, fitting, pooling and input.
-export function createChessStageConfig({locale,progress,kindLabel}) {
- const copy=stageLocales[locale];
- return {count:challenges.length,poster:'/assets/interface7-redrawn/chess.webp',background:'/assets/lobby-block-atmosphere.svg',stage(index){
-  const challenge=challenges[index],cleared=progress.cleared.includes(challenge.id),unlocked=unlockChallenge(progress,challenge.id),state=cleared?'cleared':unlocked?'ready':'locked';
-  return {id:challenge.id,kicker:`${copy.stage} ${challenge.id}`,title:kindLabel(challenge.kind),status:copy[state],summary:copy.challengeSummary,details:[copy.challengeDetails],locked:!unlocked,cleared};
- }};
-}
+var g=Object.defineProperty;var n=(l,t)=>g(l,"name",{value:t,configurable:!0});import{challenges as r,unlockChallenge as u}from"./challenges.mjs";import{stageLocales as h}from"./stage-locales.mjs";export function createChessStageConfig({locale:l,progress:t,kindLabel:o}){const a=h[l];return{count:r.length,poster:"/assets/interface7-redrawn/chess.webp",background:"/assets/lobby-block-atmosphere.svg",stage(d){const e=r[d],s=t.cleared.includes(e.id),c=u(t,e.id),i=s?"cleared":c?"ready":"locked";return{id:e.id,kicker:`${a.stage} ${e.id}`,title:o(e.kind),status:a[i],summary:a.challengeSummary,details:[a.challengeDetails],locked:!c,cleared:s}}}}n(createChessStageConfig,"createChessStageConfig");

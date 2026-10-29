@@ -1,13 +1,1 @@
-(() => {
-  const base = document.currentScript.src;
-   import(new URL('campaign-entry.mjs?v=20261022-mahjong-v16-i9-battle-lifecycle',base).href).then(({mountMahjongEntry}) => {
-    const container=document.querySelector('#mahjongCampaign'),placeholder=container?.querySelector('[data-mjc-static]');
-    if(!container||!placeholder)throw new Error('Campaign locale shell missing');
-    let storage;try{storage=window.localStorage}catch{storage={getItem(){throw Error('Unavailable')},setItem(){throw Error('Unavailable')}}}
-    const fragment=document.createDocumentFragment();fragment.append(placeholder);
-    try{mountMahjongEntry({container,locale:document.documentElement.lang,storage,titles:window.WEIGHTPLAY_GAME_TITLES['mahjong-solitaire']});document.body.dataset.campaignReady='true';}
-    catch(error){container.replaceChildren(fragment);throw error;}
-  }).catch(error => {
-    document.body.dataset.campaignReady='failed';console.error('Mahjong campaign initialization failed',error);
-  });
-})();
+(()=>{const base=document.currentScript.src;import(new URL("campaign-entry.mjs?v=20261022-mahjong-v16-i9-battle-lifecycle",base).href).then(({mountMahjongEntry})=>{const container=document.querySelector("#mahjongCampaign"),placeholder=container?.querySelector("[data-mjc-static]");if(!container||!placeholder)throw new Error("Campaign locale shell missing");let storage;try{storage=window.localStorage}catch{storage={getItem(){throw Error("Unavailable")},setItem(){throw Error("Unavailable")}}}const fragment=document.createDocumentFragment();fragment.append(placeholder);try{mountMahjongEntry({container,locale:document.documentElement.lang,storage,titles:window.WEIGHTPLAY_GAME_TITLES["mahjong-solitaire"]}),document.body.dataset.campaignReady="true"}catch(error){throw container.replaceChildren(fragment),error}}).catch(error=>{document.body.dataset.campaignReady="failed",console.error("Mahjong campaign initialization failed",error)})})();

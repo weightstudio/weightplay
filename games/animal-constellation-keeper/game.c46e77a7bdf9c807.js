@@ -1,0 +1,1 @@
+(()=>{"use strict";const c=document.currentScript,t=(s,r)=>{const e=document.createElement("script");e.src=s,e.async=!1,r&&e.addEventListener("load",r,{once:!0}),c.after(e)};t("answer-slot-deck.js?v=20261018-v11-i9",()=>{t("stellar-presentation.js?v=20261018-v11-i9",()=>{t("game-engine.js?v=20261028-mirror-practice11")})})})();

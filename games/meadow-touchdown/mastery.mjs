@@ -1,11 +1,1 @@
-// Optional records never participate in stage-clear or medal rules.
-export function tacticalChallenge(number,result=null,save=null){
-  if(number!==6&&number!==15)return null;
-  const passGoal=number===6,id=`meadow-${String(number).padStart(2,'0')}`;
-  const value=result?.[passGoal?'forwardPasses':'receiversCaught'];
-  const current=Number.isSafeInteger(value)&&value>=1&&value<=(passGoal?512:3)?value:null;
-  const best=save?.[passGoal?'bestForwardPassesByStage':'bestReceiversByStage']?.[id]??null;
-  return {goal:passGoal?'challenge6':'challenge15',currentKey:passGoal?'runPasses':'runReceivers',bestKey:passGoal?'bestPasses':'bestReceivers',current,best,
-    reached:result?.won===true&&current!==null&&(passGoal?current===1:current===3),
-    completed:save?.completedStageIds?.includes(id)===true&&best!==null&&(passGoal?best===1:best===3)};
-}
+var o=Object.defineProperty;var u=(s,t)=>o(s,"name",{value:t,configurable:!0});export function tacticalChallenge(s,t=null,r=null){if(s!==6&&s!==15)return null;const e=s===6,c=`meadow-${String(s).padStart(2,"0")}`,l=t?.[e?"forwardPasses":"receiversCaught"],a=Number.isSafeInteger(l)&&l>=1&&l<=(e?512:3)?l:null,n=r?.[e?"bestForwardPassesByStage":"bestReceiversByStage"]?.[c]??null;return{goal:e?"challenge6":"challenge15",currentKey:e?"runPasses":"runReceivers",bestKey:e?"bestPasses":"bestReceivers",current:a,best:n,reached:t?.won===!0&&a!==null&&(e?a===1:a===3),completed:r?.completedStageIds?.includes(c)===!0&&n!==null&&(e?n===1:n===3)}}u(tacticalChallenge,"tacticalChallenge");

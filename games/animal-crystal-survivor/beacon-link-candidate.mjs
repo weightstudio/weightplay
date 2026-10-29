@@ -1,14 +1,1 @@
-// Unconnected Stage 41 circuit draft; no persistence, reward or runtime access.
-import {makeBeaconRound,stepBeaconRound} from './beacon-circuit-candidate.mjs?v=20261028-beacon3';
-export function makeLinkRound(){return {beacon:makeBeaconRound(41),linkRemaining:0};}
-export function stepLinkRound(previous,action={}){
-  const dt=action.dt??0;if(!Number.isFinite(dt)||dt<0||dt>.25)throw new RangeError('INVALID_LINK_STEP');
-  let beacon={...previous.beacon},remaining=previous.linkRemaining,events=[];
-  if(beacon.completed===1){remaining=Math.max(0,remaining-dt);if(remaining<=1e-9){remaining=0;beacon={...beacon,charge:0,dwell:0,completed:0,lastPulse:null};events.push('link-expired')}}
-  const stepped=stepBeaconRound(beacon,{dt,pickup:Boolean(action.pickup),damaged:Boolean(action.damaged),nearBeacon:action.nearBeacon??null});
-  beacon=stepped.state;events.push(...stepped.events);
-  if(stepped.events.includes('beacon-pulsed')&&beacon.completed===1){remaining=20;events.push('link-started')}
-  if(beacon.completed===2)remaining=0;
-  return {state:{beacon,linkRemaining:remaining},events};
-}
-export function linkObjective(state,waves,goal){return state.beacon.completed===2&&Number.isInteger(waves)&&Number.isInteger(goal)&&goal>0&&waves>=goal}
+var u=Object.defineProperty;var r=(o,e)=>u(o,"name",{value:e,configurable:!0});import{makeBeaconRound as c,stepBeaconRound as d}from"./beacon-circuit-candidate.mjs?v=20261028-beacon3";export function makeLinkRound(){return{beacon:c(41),linkRemaining:0}}r(makeLinkRound,"makeLinkRound");export function stepLinkRound(o,e={}){const n=e.dt??0;if(!Number.isFinite(n)||n<0||n>.25)throw new RangeError("INVALID_LINK_STEP");let t={...o.beacon},i=o.linkRemaining,a=[];t.completed===1&&(i=Math.max(0,i-n),i<=1e-9&&(i=0,t={...t,charge:0,dwell:0,completed:0,lastPulse:null},a.push("link-expired")));const l=d(t,{dt:n,pickup:!!e.pickup,damaged:!!e.damaged,nearBeacon:e.nearBeacon??null});return t=l.state,a.push(...l.events),l.events.includes("beacon-pulsed")&&t.completed===1&&(i=20,a.push("link-started")),t.completed===2&&(i=0),{state:{beacon:t,linkRemaining:i},events:a}}r(stepLinkRound,"stepLinkRound");export function linkObjective(o,e,n){return o.beacon.completed===2&&Number.isInteger(e)&&Number.isInteger(n)&&n>0&&e>=n}r(linkObjective,"linkObjective");

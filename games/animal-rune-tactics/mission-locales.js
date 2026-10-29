@@ -1,8 +1,4 @@
-/* Authored mission labels and tactics. Rows correspond exactly to persistent mission IDs 1–30. */
-(() => {
-  'use strict';
-  const languages = ['ja','ko','fr','de','it','ru','hi'];
-  const rows = `
+(()=>{"use strict";const languages=["ja","ko","fr","de","it","ru","hi"],rows=`
 最初の足跡~オオカミ同士を引き離してから、1体に攻撃を集中しましょう。|첫 발자국~늑대들이 서로 붙어 있지 않게 한 뒤 한 대상에 집중하세요.|Premières empreintes~Séparez les loups avant de concentrer vos attaques sur une cible.|Erste Tatzen~Trenne die Wölfe, bevor du deine Angriffe auf ein Ziel konzentrierst.|Prime impronte~Separa i lupi prima di concentrare gli attacchi su un bersaglio.|Первые следы~Разделите волков, затем сосредоточьте атаки на одной цели.|पहले पदचिह्न~भेड़ियों को अलग करें, फिर एक लक्ष्य पर हमला केंद्रित करें।
 カラスの視線~最も体力が低い仲間をカラスの射程から離しましょう。|까마귀의 시선~체력이 가장 낮은 영웅을 까마귀의 사거리 밖에 두세요.|Ligne de mire~Gardez le héros le plus faible hors de portée du corbeau.|Rabenblick~Halte den Helden mit dem wenigsten Leben außerhalb der Rabenreichweite.|Linea del corvo~Tieni l’eroe con meno salute fuori dalla portata del corvo.|Взгляд ворона~Выведите героя с наименьшим здоровьем из зоны атаки ворона.|कौए की दृष्टि~सबसे कम स्वास्थ्य वाले नायक को कौए की पहुँच से बाहर रखें।
 崩れたルーン橋~橋の瓦礫を避けて進攻路を選びましょう。|무너진 룬 다리~다리의 잔해를 피해 진입 경로를 고르세요.|Pont runique brisé~Choisissez un passage autour des débris du pont.|Gebrochene Runenbrücke~Wähle einen Weg um die Trümmer der Brücke.|Ponte runico spezzato~Scegli un percorso attorno alle macerie del ponte.|Разрушенный мост рун~Выберите путь в обход обломков моста.|टूटा रूणी पुल~पुल के मलबे से बचकर आगे बढ़ने का रास्ता चुनें।
@@ -33,17 +29,5 @@
 六つの封印~3人をつながった封印マスに置いて、敵の守りを解除しましょう。|여섯 룬 봉쇄~세 영웅을 이어진 봉인 칸에 놓아 적의 보호를 해제하세요.|Verrous des six runes~Placez trois héros sur des sceaux reliés pour supprimer la protection ennemie.|Sechs Runensperren~Besetze verbundene Siegelfelder mit drei Helden, um den Gegnerschutz zu lösen.|Serrature delle sei rune~Posiziona tre eroi su sigilli collegati per rimuovere la protezione nemica.|Замки шести рун~Поставьте трёх героев на связанные печати, чтобы снять защиту врага.|छह रूण ताले~तीन नायक जुड़े मुहर खानों पर रखें ताकि दुश्मन की रक्षा हटे।
 王冠への連戦~これまでの5種類の仕組みに対応しながら、陣形を維持しましょう。|왕관의 연전~이전의 다섯 가지 기믹에 대응하며 진형을 유지하세요.|Épreuve de la couronne~Répondez à cinq mécaniques précédentes sans perdre votre formation.|Kronenprüfung~Bewältige fünf frühere Mechaniken, ohne die Formation aufzugeben.|Prova della corona~Affronta cinque meccaniche precedenti mantenendo la formazione.|Испытание короны~Справьтесь с пятью прежними механиками, сохраняя построение.|मुकुट की परीक्षा~पाँच पिछली चुनौतियों का सामना करते हुए संरचना बनाए रखें।
 ルーン王冠のキマイラ~表示されたボスの段階で盤面のルールが変わるたびに、作戦を調整しましょう。|룬 왕관 키메라~표시된 보스 단계가 보드 규칙을 바꿀 때마다 계획을 조정하세요.|Chimère à couronne runique~Adaptez le plan chaque fois que la phase affichée du boss change les règles du plateau.|Runenkronenchimäre~Passe den Plan an, sobald die angezeigte Bossphase die Brettregel ändert.|Chimera della corona runica~Adatta il piano ogni volta che la fase mostrata del boss cambia le regole.|Химера рунической короны~Меняйте план, когда показанная фаза босса меняет правила поля.|रूणी मुकुट काइमेरा~बॉस के दिखाए चरण से बोर्ड का नियम बदले तो योजना बदलें।
-`.trim().split('\n');
-  if (rows.length !== 30) throw new Error('Rune mission copy must cover all thirty missions');
-  const data = Object.fromEntries(languages.map(code => [code, []]));
-  rows.forEach((line, index) => {
-    const columns = line.split('|');
-    if (columns.length !== languages.length) throw new Error(`Incomplete Rune mission ${index + 1}`);
-    columns.forEach((column, i) => {
-      const [name,tactic,...extra] = column.split('~');
-      if (!name || !tactic || extra.length) throw new Error(`Invalid Rune mission ${index + 1}`);
-      data[languages[i]].push(Object.freeze({name,tactic}));
-    });
-  });
-  window.WeightPlayRuneTacticsMissionCopy = Object.freeze(Object.fromEntries(Object.entries(data).map(([code, rows]) => [code, Object.freeze(rows)])));
-})();
+`.trim().split(`
+`);if(rows.length!==30)throw new Error("Rune mission copy must cover all thirty missions");const data=Object.fromEntries(languages.map(code=>[code,[]]));rows.forEach((line,index)=>{const columns=line.split("|");if(columns.length!==languages.length)throw new Error(`Incomplete Rune mission ${index+1}`);columns.forEach((column,i)=>{const[name,tactic,...extra]=column.split("~");if(!name||!tactic||extra.length)throw new Error(`Invalid Rune mission ${index+1}`);data[languages[i]].push(Object.freeze({name,tactic}))})}),window.WeightPlayRuneTacticsMissionCopy=Object.freeze(Object.fromEntries(Object.entries(data).map(([code,rows2])=>[code,Object.freeze(rows2)])))})();

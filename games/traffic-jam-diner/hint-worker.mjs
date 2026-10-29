@@ -1,7 +1,1 @@
-import {normalizeStage,solveStage} from './engine.mjs?v=20261027-diner-opt-v25';
-self.onmessage=({data})=>{
-  try{
-    const proof=solveStage(normalizeStage(data.stage),{startState:data.state,maxStates:80000});
-    self.postMessage({request:data.request,action:proof.witness[0]||null,solvable:proof.solvable,overflow:proof.overflow});
-  }catch{self.postMessage({request:data.request,error:true});}
-};
+import{normalizeStage as t,solveStage as o}from"./engine.mjs?v=20261027-diner-opt-v25";self.onmessage=({data:e})=>{try{const s=o(t(e.stage),{startState:e.state,maxStates:8e4});self.postMessage({request:e.request,action:s.witness[0]||null,solvable:s.solvable,overflow:s.overflow})}catch{self.postMessage({request:e.request,error:!0})}};

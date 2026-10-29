@@ -1,18 +1,1 @@
-import fs from 'node:fs';
-import vm from 'node:vm';
-const root=new URL('./',import.meta.url),context={window:{}};
-for(const file of ['locales.js','garden-copy.js'])vm.runInNewContext(fs.readFileSync(new URL(file,root),'utf8'),context);
-const escape=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-const segments={en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
-export function renderMeadowRoute(locale){
-  const c=context.window.MEADOW_FIND_LOCALES[locale];if(!c)throw new Error('MEADOW_ROUTE_LOCALE');
-  return fs.readFileSync(new URL('index.html',root),'utf8')
-    .replace(/<script data-wp-locale-route>[\s\S]*?<\/script>/,'')
-    .replace(/<html[^>]*>/,`<html lang="${locale}" dir="${locale==='ar'?'rtl':'ltr'}" data-wp-official-name>`)
-    .replace(/<title>.*?<\/title>/,`<title>${escape(c.title)} | WeightPlay</title>`)
-    .replace(/(<meta name="description" content=")[^"]*(">)/,`$1${escape(c.subtitle)}$2`)
-    .replace(/(<link rel="canonical" href=")[^"]*("\s*\/>)/,`$1https://weightplay.com/${segments[locale]}/games/animal-meadow-difference/$2`)
-    .replace(/(<([\w-]+)\b[^>]*data-copy="([^"]+)"[^>]*>)[^<]*(<\/\2>)/g,(all,open,tag,key,close)=>typeof c[key]==='string'?`${open}${escape(c[key].replace(/\{total\}/g,'3'))}${close}`:all)
-    .replace('aria-label="Back to WeightPlay"',`aria-label="${escape(c.backToLobby)}"`)
-    .replace('aria-label="Meadow Find game information"',`aria-label="${escape(c.title)}"`);
-}
+var m=Object.defineProperty;var r=(e,t)=>m(e,"name",{value:t,configurable:!0});import i from"node:fs";import d from"node:vm";const n=new URL("./",import.meta.url),o={window:{}};for(const e of["locales.js","garden-copy.js"])d.runInNewContext(i.readFileSync(new URL(e,n),"utf8"),o);const a=r(e=>String(e).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"),"escape"),f={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};export function renderMeadowRoute(e){const t=o.window.MEADOW_FIND_LOCALES[e];if(!t)throw new Error("MEADOW_ROUTE_LOCALE");return i.readFileSync(new URL("index.html",n),"utf8").replace(/<script data-wp-locale-route>[\s\S]*?<\/script>/,"").replace(/<html[^>]*>/,`<html lang="${e}" dir="${e==="ar"?"rtl":"ltr"}" data-wp-official-name>`).replace(/<title>.*?<\/title>/,`<title>${a(t.title)} | WeightPlay</title>`).replace(/(<meta name="description" content=")[^"]*(">)/,`$1${a(t.subtitle)}$2`).replace(/(<link rel="canonical" href=")[^"]*("\s*\/>)/,`$1https://weightplay.com/${f[e]}/games/animal-meadow-difference/$2`).replace(/(<([\w-]+)\b[^>]*data-copy="([^"]+)"[^>]*>)[^<]*(<\/\2>)/g,(c,p,w,l,s)=>typeof t[l]=="string"?`${p}${a(t[l].replace(/\{total\}/g,"3"))}${s}`:c).replace('aria-label="Back to WeightPlay"',`aria-label="${a(t.backToLobby)}"`).replace('aria-label="Meadow Find game information"',`aria-label="${a(t.title)}"`)}r(renderMeadowRoute,"renderMeadowRoute");

@@ -1,5 +1,1 @@
-/* Stage geometry, cards, gestures, focus and snap are owned by the shared
-   WeightPlayPlayUI and shared I9 rail styles. */
-.mjc-stage[hidden]{display:none!important}
-.mjc-stage{min-width:0;min-height:0;color:var(--wp-ui-text);font-family:system-ui}
-.mjc-stage-workspace{position:relative;min-width:0;min-height:0;overflow:hidden}
+.mjc-stage[hidden]{display:none!important}.mjc-stage{min-width:0;min-height:0;color:var(--wp-ui-text);font-family:system-ui}.mjc-stage-workspace{position:relative;min-width:0;min-height:0;overflow:hidden}

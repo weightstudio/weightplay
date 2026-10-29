@@ -1,13 +1,1 @@
-import {stepShelterChoice} from './beacon-shelter-choice-candidate.mjs?v=20261028-shelter1';
-// Isolated atomic proposal. Arrays and enemy objects are copied only when an
-// effect occurs; host must commit all returned fields together.
-export function stepShelterWorld(round,{enemies,hazards},input={}){
-  if(!Array.isArray(enemies)||!Array.isArray(hazards))throw new TypeError('invalid choice world');
-  const guards=enemies.filter(e=>e?.beaconShelterGuard&&e.hp>0&&e.shielded&&e.shieldHp>0);
-  const heat=hazards.filter(h=>h?.beaconShelterHeat&&h.life>0);
-  const step=stepShelterChoice(round,{...input,shieldReady:guards.length===1,heatReady:heat.length===1});
-  let nextEnemies=enemies,nextHazards=hazards;
-  if(step.events.includes('shield-pulse'))nextEnemies=enemies.map(e=>e===guards[0]?{...e,shielded:false,shieldHp:0}:e);
-  if(step.events.includes('heat-pulse'))nextHazards=hazards.filter(h=>h!==heat[0]);
-  return {round:step.state,enemies:nextEnemies,hazards:nextHazards,events:step.events};
-}
+var p=Object.defineProperty;var h=(s,t)=>p(s,"name",{value:t,configurable:!0});import{stepShelterChoice as c}from"./beacon-shelter-choice-candidate.mjs?v=20261028-shelter1";export function stepShelterWorld(s,{enemies:t,hazards:r},o={}){if(!Array.isArray(t)||!Array.isArray(r))throw new TypeError("invalid choice world");const i=t.filter(e=>e?.beaconShelterGuard&&e.hp>0&&e.shielded&&e.shieldHp>0),n=r.filter(e=>e?.beaconShelterHeat&&e.life>0),l=c(s,{...o,shieldReady:i.length===1,heatReady:n.length===1});let d=t,a=r;return l.events.includes("shield-pulse")&&(d=t.map(e=>e===i[0]?{...e,shielded:!1,shieldHp:0}:e)),l.events.includes("heat-pulse")&&(a=r.filter(e=>e!==n[0])),{round:l.state,enemies:d,hazards:a,events:l.events}}h(stepShelterWorld,"stepShelterWorld");

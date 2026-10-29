@@ -1,11 +1,1 @@
-export function purchaseAurora({read,write,wallet}) {
-    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("breakout:progress.mjs:purchaseAurora", () => purchaseAurora(...arguments));
-
-  const previous=read();if(previous.aurora)return {ok:true,save:previous,charged:0};
-  if(!wallet)return {ok:false,reason:'wallet'};
-  const next={...previous,aurora:true,finish:'aurora'};
-  try{write(previous);}catch{return {ok:false,reason:'save'};}
-  let spent=false;
-  try {spent=wallet.spendDiamonds(15);if(!spent)return {ok:false,reason:'funds'};write(next);return {ok:true,save:next,charged:15};}
-  catch(error){if(spent)wallet.addDiamonds(15);return {ok:false,reason:'save'};}
-}
+var u=Object.defineProperty;var t=(s,a)=>u(s,"name",{value:a,configurable:!0});export function purchaseAurora({read:s,write:a,wallet:r}){if(r?.withTransaction&&!r.inTransaction())return r.withTransaction("breakout:progress.mjs:purchaseAurora",()=>purchaseAurora(...arguments));const e=s();if(e.aurora)return{ok:!0,save:e,charged:0};if(!r)return{ok:!1,reason:"wallet"};const o={...e,aurora:!0,finish:"aurora"};try{a(e)}catch{return{ok:!1,reason:"save"}}let n=!1;try{return n=r.spendDiamonds(15),n?(a(o),{ok:!0,save:o,charged:15}):{ok:!1,reason:"funds"}}catch{return n&&r.addDiamonds(15),{ok:!1,reason:"save"}}}t(purchaseAurora,"purchaseAurora");

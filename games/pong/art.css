@@ -1,10 +1,1 @@
-body.pong-realtime .pw-canvas {
-  background:
-    linear-gradient(145deg, rgba(7, 25, 36, .56), rgba(4, 15, 29, .8)),
-    url("assets/pong-board-block-v1.png") center / cover no-repeat;
-}
-
-body.pong-realtime #court {
-  opacity: 1;
-  box-shadow: 0 10px 30px #020c1c66, 0 0 0 1px #8ce9df33;
-}
+body.pong-realtime .pw-canvas{background:linear-gradient(145deg,#0719248f,#040f1dcc),url(assets/pong-board-block-v1.png) center / cover no-repeat}body.pong-realtime #court{opacity:1;box-shadow:0 10px 30px #020c1c66,0 0 0 1px #8ce9df33}

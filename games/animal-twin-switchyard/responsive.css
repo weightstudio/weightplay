@@ -1,5 +1,1 @@
-/* Responsive rules only shape Twin-owned content inside the shared I9 frame. */
-@media (max-height: 520px) and (orientation: landscape) {
-  #mainScreen .main-grid { align-items: center; }
-  #mainScreen .guide { display: none; }
-}
+@media(max-height:520px)and (orientation:landscape){#mainScreen .main-grid{align-items:center}#mainScreen .guide{display:none}}

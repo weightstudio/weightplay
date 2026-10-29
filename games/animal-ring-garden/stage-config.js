@@ -1,18 +1,1 @@
-/* Ring Garden owns localized Stage content and its authored artwork paths.
-   Shared Play UI owns card markup, sizing, selection, and all gestures. */
-(() => {
-  "use strict";
-
-  const game = () => window.AnimalRingGardenGame;
-  window.AnimalRingGardenStageConfig = Object.freeze({
-    gameId: 'animal-ring-garden',
-    get count() { return game()?.stageCount || 30; },
-    poster: "/assets/interface7-redrawn/animal-ring-garden.webp",
-    background: "/assets/lobby-block-atmosphere.svg",
-    stage(index) {
-      const owner = game();
-      if (!owner) throw new Error("RING_GARDEN_GAME_DATA_REQUIRED");
-      return owner.stageRecord(index);
-    },
-  });
-})();
+(()=>{"use strict";const game=()=>window.AnimalRingGardenGame;window.AnimalRingGardenStageConfig=Object.freeze({gameId:"animal-ring-garden",get count(){return game()?.stageCount||30},poster:"/assets/interface7-redrawn/animal-ring-garden.webp",background:"/assets/lobby-block-atmosphere.svg",stage(index){const owner=game();if(!owner)throw new Error("RING_GARDEN_GAME_DATA_REQUIRED");return owner.stageRecord(index)}})})();

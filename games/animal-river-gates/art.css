@@ -1,5 +1,1 @@
-/* Registered square block-animal poster. Battle artwork is the authored r180
-   river diorama; shared screens own their backdrop. */
-.main-poster,.station-art,.result-art{object-fit:cover;aspect-ratio:1}
-.battle-play-workspace[data-theme=lantern] .river-goals{background:#172f4b}
-.battle-play-workspace[data-theme=lantern] .control-deck{border-top-color:#e4b975}
+.main-poster,.station-art,.result-art{object-fit:cover;aspect-ratio:1}.battle-play-workspace[data-theme=lantern] .river-goals{background:#172f4b}.battle-play-workspace[data-theme=lantern] .control-deck{border-top-color:#e4b975}

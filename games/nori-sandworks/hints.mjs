@@ -1,18 +1,1 @@
-import {act,createState,stateKey,solve,complete} from './simulation.mjs';
-import {MASTER_ROUTES} from './mastery.mjs';
-
-// Cache complete, replay-validated routes; a suggested move always has a known continuation.
-export function routeIndex(level,actions,initial=createState(level)){
- const result=[],seen=new Set();let state=initial;
- for(let i=0;i<actions.length;i++){const hash=stateKey(state);if(!seen.has(hash)){result.push([hash,actions.slice(i)]);seen.add(hash);}const next=act(level,state,actions[i]);if(!next.ok)return [];state=next.state;}
- return complete(state)?result:[];
-}
-export function referenceHint(level,state){
- const key=stateKey(state);
- for(const route of [MASTER_ROUTES[level.id],level.witness].filter(Boolean)){const match=routeIndex(level,route).find(([hash])=>hash===key);if(match)return match[1];}
- return null;
-}
-export function searchHint(level,state,limits={}){
- const result=solve(level,state,{budget:3000,maxMs:2400,parkingAll:true,...limits});
- return result.actions&&routeIndex(level,result.actions,state).length?result.actions:null;
-}
+var l=Object.defineProperty;var i=(t,e)=>l(t,"name",{value:e,configurable:!0});import{act as h,createState as p,stateKey as f,solve as m,complete as d}from"./simulation.mjs";import{MASTER_ROUTES as x}from"./mastery.mjs";export function routeIndex(t,e,o=p(t)){const n=[],s=new Set;let r=o;for(let c=0;c<e.length;c++){const u=f(r);s.has(u)||(n.push([u,e.slice(c)]),s.add(u));const a=h(t,r,e[c]);if(!a.ok)return[];r=a.state}return d(r)?n:[]}i(routeIndex,"routeIndex");export function referenceHint(t,e){const o=f(e);for(const n of[x[t.id],t.witness].filter(Boolean)){const s=routeIndex(t,n).find(([r])=>r===o);if(s)return s[1]}return null}i(referenceHint,"referenceHint");export function searchHint(t,e,o={}){const n=m(t,e,{budget:3e3,maxMs:2400,parkingAll:!0,...o});return n.actions&&routeIndex(t,n.actions,e).length?n.actions:null}i(searchHint,"searchHint");

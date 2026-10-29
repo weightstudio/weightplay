@@ -1,14 +1,1 @@
-/* Production artwork only. Layout, headers, controls, Guide and Stage card
-   geometry must not be overridden here. */
-#battleScreen .battle-canvas{background:linear-gradient(180deg,#132523b8,#172d3bd9),url("assets/animal-layer-grove-background.png") center/cover}
-#battleScreen .layer-art:is(.layer-art-fern,.layer-art-pond,.layer-art-moon,.layer-art-reeds,.layer-art-amber,.layer-art-creek,.layer-art-owl,.layer-art-frost,.layer-art-pine){background-image:url("assets/animal-layer-grove-layer-atlas.png");background-repeat:no-repeat;background-size:300% 300%;background-color:var(--wp-ui-background);color:transparent;overflow:hidden;font-size:0}
-#battleScreen .layer-art-fern{background-position:0 0}
-#battleScreen .layer-art-pond{background-position:50% 0}
-#battleScreen .layer-art-moon{background-position:100% 0}
-#battleScreen .layer-art-reeds{background-position:0 50%}
-#battleScreen .layer-art-amber{background-position:50% 50%}
-#battleScreen .layer-art-creek{background-position:100% 50%}
-#battleScreen .layer-art-owl{background-position:0 100%}
-#battleScreen .layer-art-frost{background-position:50% 100%}
-#battleScreen .layer-art-pine{background-position:100% 100%}
-#battleScreen .keeper-result{display:block;width:120px;height:144px;margin:0 auto;object-fit:contain}
+#battleScreen .battle-canvas{background:linear-gradient(180deg,#132523b8,#172d3bd9),url(assets/animal-layer-grove-background.png) center/cover}#battleScreen .layer-art:is(.layer-art-fern,.layer-art-pond,.layer-art-moon,.layer-art-reeds,.layer-art-amber,.layer-art-creek,.layer-art-owl,.layer-art-frost,.layer-art-pine){background-image:url(assets/animal-layer-grove-layer-atlas.png);background-repeat:no-repeat;background-size:300% 300%;background-color:var(--wp-ui-background);color:transparent;overflow:hidden;font-size:0}#battleScreen .layer-art-fern{background-position:0 0}#battleScreen .layer-art-pond{background-position:50% 0}#battleScreen .layer-art-moon{background-position:100% 0}#battleScreen .layer-art-reeds{background-position:0 50%}#battleScreen .layer-art-amber{background-position:50% 50%}#battleScreen .layer-art-creek{background-position:100% 50%}#battleScreen .layer-art-owl{background-position:0 100%}#battleScreen .layer-art-frost{background-position:50% 100%}#battleScreen .layer-art-pine{background-position:100% 100%}#battleScreen .keeper-result{display:block;width:120px;height:144px;margin:0 auto;object-fit:contain}

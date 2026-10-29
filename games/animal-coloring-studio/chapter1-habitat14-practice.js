@@ -1,10 +1,1 @@
-// Unreviewed localhost-only candidate; never a formal campaign page.
-(() => {
-  // Maximal interior clearance avoids putting keyboard/picker anchors on a line edge.
-  const points=[[372,186],[192,275],[539,294],[187,436],[348,414],[327,484],[233,574],[158,528],[338,649],[224,652],[421,627],[130,648],[272,766],[472,741],[97,764],[565,896],[638,674],[586,709],[695,709],[638,733],[588,764],[678,765]];
-  window.AnimalColoringHabitat14Practice=Object.freeze({ready:false,id:'pond-frog-practice',
-    art:'/docs/game-build-handoffs/animal-coloring-studio-habitat-art/stage14-source-v8.png',
-    mask:'/docs/game-build-handoffs/animal-coloring-studio-habitat-art/UNREVIEWED-stage14-v8-mask.png',
-    anchors:Object.freeze(points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`})))
-  });
-})();
+(()=>{const points=[[372,186],[192,275],[539,294],[187,436],[348,414],[327,484],[233,574],[158,528],[338,649],[224,652],[421,627],[130,648],[272,766],[472,741],[97,764],[565,896],[638,674],[586,709],[695,709],[638,733],[588,764],[678,765]];window.AnimalColoringHabitat14Practice=Object.freeze({ready:!1,id:"pond-frog-practice",art:"/docs/game-build-handoffs/animal-coloring-studio-habitat-art/stage14-source-v8.png",mask:"/docs/game-build-handoffs/animal-coloring-studio-habitat-art/UNREVIEWED-stage14-v8-mask.png",anchors:Object.freeze(points.map(([x,y],index)=>Object.freeze({x,y,key:`${index+1},173,81`})))})})();

@@ -1,0 +1,1 @@
+(()=>{"use strict";const source=document.currentScript?.src||location.href,base=new URL("./locales-v5-base.js?v=20261003-textgrowth140",source).href,canonical=new URL("./interface-copy-v7.js?v=20260922-interface7-review-2",source).href;document.write(`<script src="${base}"><\/script><script src="${canonical}"><\/script>`)})();

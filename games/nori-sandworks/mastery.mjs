@@ -1,17 +1,1 @@
-// Optional, demonstrably achievable targets. Existing stars and save records are unchanged.
-const move=(id,dx,dy)=>({type:'move',id,dx,dy}),gate=()=>({type:'switch'}),rotate=id=>({type:'rotate',id});
-export const MASTER_ROUTES={
- 4:[move('B1',-4,0),move('A1',0,-2),move('A1',-4,0),move('B1',0,-1),move('C1',0,5),move('C1',1,0)],
- 16:[move('C1',0,1),rotate('C1'),move('C1',0,1),move('C1',2,0),move('B1',2,0),move('B1',0,-2),move('B1',2,0),move('A1',0,-5),move('A1',-2,0)],
- 22:[move('D1',0,4),move('D1',5,0),move('C1',0,1),move('C1',-3,0),move('A1',0,-2),move('A1',-1,0),move('A1',4,0),move('B1',0,-3),move('B1',-4,0),move('B1',0,-1),gate()],
- 28:[move('C2',0,-2),gate(),move('A1',0,-2),move('B1',0,-2),move('D1',0,1),move('D1',4,0),move('C1',0,2),move('B1',-1,0),move('A1',0,-1),rotate('B1'),rotate('B1'),rotate('B1'),move('B1',0,-1),move('B1',2,0),gate(),move('C1',0,-3),move('A1',0,4),move('A1',-2,0),move('A1',0,1),move('A1',-1,0),gate(),move('C1',-1,0),gate()]
-};
-export const masteryTarget=level=>(MASTER_ROUTES[level.id]||level.witness).length;
-export const mastered=(level,moves)=>moves!=null&&moves<=masteryTarget(level);
-export function coastMastered(levels,best,chapter){const coast=levels.map((level,index)=>({level,best:best[index]})).filter(row=>row.level.chapter===chapter);return coast.length===5&&coast.every(row=>mastered(row.level,row.best));}
-export function masteryProgress(level,best){const target=masteryTarget(level);return {target,complete:mastered(level,best),gap:best==null?null:Math.max(0,best-target)};}
-export function coastChallenge(levels,best,chapter){
- const coast=levels.map((level,index)=>({level,index,...masteryProgress(level,best[index])})).filter(row=>row.level.chapter===chapter);
- if(coast.length!==5||coast.some(row=>row.gap===null))return null;
- return coast.filter(row=>row.gap>0).sort((a,b)=>a.gap-b.gap||a.index-b.index)[0]||null;
-}
+var B=Object.defineProperty;var o=(r,n)=>B(r,"name",{value:n,configurable:!0});const t=o((r,n,a)=>({type:"move",id:r,dx:n,dy:a}),"move"),p=o(()=>({type:"switch"}),"gate"),c=o(r=>({type:"rotate",id:r}),"rotate");export const MASTER_ROUTES={4:[t("B1",-4,0),t("A1",0,-2),t("A1",-4,0),t("B1",0,-1),t("C1",0,5),t("C1",1,0)],16:[t("C1",0,1),c("C1"),t("C1",0,1),t("C1",2,0),t("B1",2,0),t("B1",0,-2),t("B1",2,0),t("A1",0,-5),t("A1",-2,0)],22:[t("D1",0,4),t("D1",5,0),t("C1",0,1),t("C1",-3,0),t("A1",0,-2),t("A1",-1,0),t("A1",4,0),t("B1",0,-3),t("B1",-4,0),t("B1",0,-1),p()],28:[t("C2",0,-2),p(),t("A1",0,-2),t("B1",0,-2),t("D1",0,1),t("D1",4,0),t("C1",0,2),t("B1",-1,0),t("A1",0,-1),c("B1"),c("B1"),c("B1"),t("B1",0,-1),t("B1",2,0),p(),t("C1",0,-3),t("A1",0,4),t("A1",-2,0),t("A1",0,1),t("A1",-1,0),p(),t("C1",-1,0),p()]},masteryTarget=o(r=>(MASTER_ROUTES[r.id]||r.witness).length,"masteryTarget"),mastered=o((r,n)=>n!=null&&n<=masteryTarget(r),"mastered");export function coastMastered(r,n,a){const s=r.map((e,l)=>({level:e,best:n[l]})).filter(e=>e.level.chapter===a);return s.length===5&&s.every(e=>mastered(e.level,e.best))}o(coastMastered,"coastMastered");export function masteryProgress(r,n){const a=masteryTarget(r);return{target:a,complete:mastered(r,n),gap:n==null?null:Math.max(0,n-a)}}o(masteryProgress,"masteryProgress");export function coastChallenge(r,n,a){const s=r.map((e,l)=>({level:e,index:l,...masteryProgress(e,n[l])})).filter(e=>e.level.chapter===a);return s.length!==5||s.some(e=>e.gap===null)?null:s.filter(e=>e.gap>0).sort((e,l)=>e.gap-l.gap||e.index-l.index)[0]||null}o(coastChallenge,"coastChallenge");

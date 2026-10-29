@@ -1,15 +1,1 @@
-import {clone,newState,step} from './core.mjs';
-import {LEVELS} from './levels.mjs';
-export const SAVE_KEY='weightplay-crownfall-v1';
-export function normalize(raw) {
- const result={schema:3,campaign:5,unlocked:1,badges:{},best:{},run:null,reduced:false};
- if(!raw||typeof raw!=='object')return result;
- result.unlocked=Number.isInteger(raw.unlocked)?Math.min(30,Math.max(1,raw.unlocked)):1;
- result.reduced=raw.reduced===true;
- for(let n=1;n<=30;n++){if(Array.isArray(raw.badges?.[n]))result.badges[n]=[0,1,2].map(i=>(i===0||raw.campaign===5)&&raw.badges[n][i]===true);if(raw.campaign===5&&Number.isInteger(raw.best?.[n])&&raw.best[n]>0&&raw.best[n]<1000)result.best[n]=raw.best[n];if(result.badges[n]?.[0])result.unlocked=Math.max(result.unlocked,Math.min(30,n+1));}
- // Resume is reconstructed from legal actions, never trusted arbitrary actor power.
- const r=raw.run;
- if(r&&Number.isInteger(r.level)&&r.level>=1&&r.level<=30&&(r.practice===true||r.level<=result.unlocked)&&Array.isArray(r.actions)&&r.actions.length<=128){let state=newState(LEVELS[r.level-1]),valid=true;const actions=r.campaign===5?r.actions:[];for(const a of actions){if(!Array.isArray(a)||a.length!==2||!a.every(Number.isInteger)){valid=false;break;}const next=step(state,...a,{trace:false});if(!next.valid){valid=false;break;}state=next.state;}if(valid&&state.status==='playing')result.run={level:r.level,actions:clone(actions),usedHint:r.campaign===5&&r.usedHint===true,campaign:5,practice:r.practice===true};}
- return result;
-}
-export function award(save,level,moves,usedHint,par){save.unlocked=Math.max(save.unlocked,Math.min(30,level+1));const next=[true,!usedHint,moves<=par];save.badges[level]=next.map((v,i)=>v||!!save.badges[level]?.[i]);save.best[level]=Math.min(save.best[level]||Infinity,moves);save.run=null;return save;}
+var o=Object.defineProperty;var u=(e,t)=>o(e,"name",{value:t,configurable:!0});import{clone as l,newState as d,step as m}from"./core.mjs";import{LEVELS as b}from"./levels.mjs";export const SAVE_KEY="weightplay-crownfall-v1";export function normalize(e){const t={schema:3,campaign:5,unlocked:1,badges:{},best:{},run:null,reduced:!1};if(!e||typeof e!="object")return t;t.unlocked=Number.isInteger(e.unlocked)?Math.min(30,Math.max(1,e.unlocked)):1,t.reduced=e.reduced===!0;for(let r=1;r<=30;r++)Array.isArray(e.badges?.[r])&&(t.badges[r]=[0,1,2].map(a=>(a===0||e.campaign===5)&&e.badges[r][a]===!0)),e.campaign===5&&Number.isInteger(e.best?.[r])&&e.best[r]>0&&e.best[r]<1e3&&(t.best[r]=e.best[r]),t.badges[r]?.[0]&&(t.unlocked=Math.max(t.unlocked,Math.min(30,r+1)));const n=e.run;if(n&&Number.isInteger(n.level)&&n.level>=1&&n.level<=30&&(n.practice===!0||n.level<=t.unlocked)&&Array.isArray(n.actions)&&n.actions.length<=128){let r=d(b[n.level-1]),a=!0;const c=n.campaign===5?n.actions:[];for(const i of c){if(!Array.isArray(i)||i.length!==2||!i.every(Number.isInteger)){a=!1;break}const s=m(r,...i,{trace:!1});if(!s.valid){a=!1;break}r=s.state}a&&r.status==="playing"&&(t.run={level:n.level,actions:l(c),usedHint:n.campaign===5&&n.usedHint===!0,campaign:5,practice:n.practice===!0})}return t}u(normalize,"normalize");export function award(e,t,n,r,a){e.unlocked=Math.max(e.unlocked,Math.min(30,t+1));const c=[!0,!r,n<=a];return e.badges[t]=c.map((i,s)=>i||!!e.badges[t]?.[s]),e.best[t]=Math.min(e.best[t]||1/0,n),e.run=null,e}u(award,"award");

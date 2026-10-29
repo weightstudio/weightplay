@@ -1,4 +1,1 @@
-import('./app.mjs?v=20261023-v7').catch(error => {
-  console.error('Flying Tram could not start', error);
-  window.WeightPlayGameEntryLoader?.fail?.('Unable to load the sky line. Please reload.', () => location.reload());
-});
+import("./app.mjs?v=20261023-v7").catch(error=>{console.error("Flying Tram could not start",error),window.WeightPlayGameEntryLoader?.fail?.("Unable to load the sky line. Please reload.",()=>location.reload())});

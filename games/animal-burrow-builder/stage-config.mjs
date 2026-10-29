@@ -1,16 +1,1 @@
-import {LEVELS} from './levels.mjs';
-import {COPY,levelName} from './copy.mjs';
-import {HILLSIDE_COPY} from './hillside-copy.mjs?v=20261027-hillside-candidate2';
-import {unlocked} from './core.mjs';
-export function stageConfig({locale,save,practice,levels=LEVELS}) {
-  const c=COPY[locale];
-  const h=HILLSIDE_COPY[locale]||HILLSIDE_COPY.en;
-  return {gameId:'animal-burrow-builder',poster:'/assets/interface7-redrawn/animal-burrow-builder.webp',background:'/assets/lobby-block-atmosphere.svg',count:levels.length,
-    stage(index){const l=levels[index],record=save.records[index],locked=!practice&&index>unlocked(save);return {
-      id:l.id,kicker:`${c.chapter} ${l.chapter+1} · ${l.hillside?h.chapter:c.chapters[l.chapter]}`,title:`${String(index+1).padStart(2,'0')} · ${levelName(l,locale)}`,
-      subtitle:`${c.timber} ${l.budget} · ${c.mastery} ≤ ${l.par}`,
-      status:locked?c.locked:record?`${'★'.repeat(record.stars)}${'☆'.repeat(3-record.stars)} · ${c.cleared}`:c.ready,
-      summary:Object.entries(l.goals).map(([k,n])=>`${k==='food'?c.food:k==='aired'?h.aired:k==='reinforced'?h.reinforced:c.tools[['hall','bed','pantry','garden','bridge','nursery'].indexOf(k)]} ${n}`).join(' · '),
-      details:[...c.rules,...(l.hillside?[h.rules]:[]),`${c.efficient}: ${l.par} · ${c.relic}`],locked,cleared:Boolean(record),
-    };}};
-}
+var $=Object.defineProperty;var l=(t,a)=>$(t,"name",{value:a,configurable:!0});import{LEVELS as b}from"./levels.mjs";import{COPY as f,levelName as g}from"./copy.mjs";import{HILLSIDE_COPY as p}from"./hillside-copy.mjs?v=20261027-hillside-candidate2";import{unlocked as h}from"./core.mjs";export function stageConfig({locale:t,save:a,practice:m,levels:c=b}){const r=f[t],o=p[t]||p.en;return{gameId:"animal-burrow-builder",poster:"/assets/interface7-redrawn/animal-burrow-builder.webp",background:"/assets/lobby-block-atmosphere.svg",count:c.length,stage(s){const e=c[s],i=a.records[s],n=!m&&s>h(a);return{id:e.id,kicker:`${r.chapter} ${e.chapter+1} · ${e.hillside?o.chapter:r.chapters[e.chapter]}`,title:`${String(s+1).padStart(2,"0")} · ${g(e,t)}`,subtitle:`${r.timber} ${e.budget} · ${r.mastery} ≤ ${e.par}`,status:n?r.locked:i?`${"★".repeat(i.stars)}${"☆".repeat(3-i.stars)} · ${r.cleared}`:r.ready,summary:Object.entries(e.goals).map(([d,u])=>`${d==="food"?r.food:d==="aired"?o.aired:d==="reinforced"?o.reinforced:r.tools[["hall","bed","pantry","garden","bridge","nursery"].indexOf(d)]} ${u}`).join(" · "),details:[...r.rules,...e.hillside?[o.rules]:[],`${r.efficient}: ${e.par} · ${r.relic}`],locked:n,cleared:!!i}}}}l(stageConfig,"stageConfig");

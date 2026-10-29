@@ -1,16 +1,1 @@
-// Keep the 46px controls and their captions apart without changing world rules.
-export function layoutHolds(points,width,height){
- const placed=[],clamp=(value,min,max)=>Math.max(min,Math.min(max,value)),short=height<260&&width>620;
- const maxX=short?width-370:width-60,maxY=short?height-50:height-140,gapY=short?74:90,footprintY=short?73:84;
- for(const point of points){
-  const base={x:clamp(point.x,60,maxX),y:short?clamp(64+Math.round((clamp(point.y,64,maxY)-64)/gapY)*gapY,64,maxY):clamp(point.y,64,maxY)},candidates=[];
-  for(let row=-4;row<=4;row++)for(let col=-4;col<=4;col++){
-   const x=clamp(base.x+col*120,60,maxX),y=clamp(base.y+row*gapY,64,maxY);
-   candidates.push({x,y,distance:(x-point.x)**2+(y-point.y)**2});
-  }
-  candidates.sort((a,b)=>a.distance-b.distance);
-  const position=candidates.find(p=>placed.every(q=>Math.abs(p.x-q.x)>=116||Math.abs(p.y-q.y)>=footprintY));
-  placed.push(position||base);
- }
- return placed;
-}
+var Y=Object.defineProperty;var i=(y,s)=>Y(y,"name",{value:s,configurable:!0});export function layoutHolds(y,s,p){const d=[],n=i((a,r,x)=>Math.max(r,Math.min(x,a)),"clamp"),c=p<260&&s>620,l=c?s-370:s-60,e=c?p-50:p-140,f=c?74:90,M=c?73:84;for(const a of y){const r={x:n(a.x,60,l),y:n(c?64+Math.round((n(a.y,64,e)-64)/f)*f:a.y,64,e)},x=[];for(let o=-4;o<=4;o++)for(let t=-4;t<=4;t++){const u=n(r.x+t*120,60,l),m=n(r.y+o*f,64,e);x.push({x:u,y:m,distance:(u-a.x)**2+(m-a.y)**2})}x.sort((o,t)=>o.distance-t.distance);const b=x.find(o=>d.every(t=>Math.abs(o.x-t.x)>=116||Math.abs(o.y-t.y)>=M));d.push(b||r)}return d}i(layoutHolds,"layoutHolds");

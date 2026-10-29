@@ -1,6 +1,1 @@
-/* Square, distortion-free atlas windows. Source pixels remain unchanged. */
-.scout-sprite{display:block;background-image:url('assets/scout-field-atlas-v10.webp');background-repeat:no-repeat;background-size:391.875% 391.875%;background-position:calc(var(--sx,0) / 934 * 100%) calc(var(--sy,24) / 934 * 100%);flex-shrink:0}
-.sprite-fox{--sx:0}.sprite-owl{--sx:318}.sprite-rabbit{--sx:637}.sprite-hare{--sx:934}
-.sprite-badger{--sx:0;--sy:352}.sprite-finch{--sx:318;--sy:352}.sprite-duck{--sx:637;--sy:352}.sprite-deer{--sx:934;--sy:352}
-.sprite-mole{--sx:0;--sy:650}.sprite-otter{--sx:318;--sy:650}.sprite-bear{--sx:637;--sy:650}.sprite-cat{--sx:934;--sy:650}
-.sprite-binoculars{--sx:0;--sy:934}.sprite-journal{--sx:318;--sy:934}.sprite-lantern{--sx:637;--sy:934}.sprite-sparkle{--sx:934;--sy:934}
+.scout-sprite{display:block;background-image:url(assets/scout-field-atlas-v10.webp);background-repeat:no-repeat;background-size:391.875% 391.875%;background-position:calc(var(--sx,0) / 934 * 100%) calc(var(--sy,24) / 934 * 100%);flex-shrink:0}.sprite-fox{--sx:0}.sprite-owl{--sx:318}.sprite-rabbit{--sx:637}.sprite-hare{--sx:934}.sprite-badger{--sx:0;--sy:352}.sprite-finch{--sx:318;--sy:352}.sprite-duck{--sx:637;--sy:352}.sprite-deer{--sx:934;--sy:352}.sprite-mole{--sx:0;--sy:650}.sprite-otter{--sx:318;--sy:650}.sprite-bear{--sx:637;--sy:650}.sprite-cat{--sx:934;--sy:650}.sprite-binoculars{--sx:0;--sy:934}.sprite-journal{--sx:318;--sy:934}.sprite-lantern{--sx:637;--sy:934}.sprite-sparkle{--sx:934;--sy:934}

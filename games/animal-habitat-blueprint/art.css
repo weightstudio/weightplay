@@ -1,9 +1,1 @@
-/* Art stays within the gameplay and Result content slots. */
-.habitat-canvas { position:absolute; inset:0; width:100%; height:100%; z-index:1; pointer-events:none; }
-.result-guide-art { object-fit:contain; filter:drop-shadow(0 12px 12px #0005); }
-.habitat-tile .tile-number { position:absolute; top:7px; inset-inline-start:9px; font-size:.75rem; color:#d5e1ce; z-index:2; }
-.tile-caption { position:relative; z-index:2; display:grid; min-height:35px; align-content:center; grid-row:2; }
-.tile-caption strong { font-weight:750; }
-.tile-caption small:empty { display:none; }
-.render-fallback .habitat-tile { align-content:center; }
-.render-fallback .habitat-canvas { display:none; }
+.habitat-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}.result-guide-art{object-fit:contain;filter:drop-shadow(0 12px 12px #0005)}.habitat-tile .tile-number{position:absolute;top:7px;inset-inline-start:9px;font-size:.75rem;color:#d5e1ce;z-index:2}.tile-caption{position:relative;z-index:2;display:grid;min-height:35px;align-content:center;grid-row:2}.tile-caption strong{font-weight:750}.tile-caption small:empty{display:none}.render-fallback .habitat-tile{align-content:center}.render-fallback .habitat-canvas{display:none}

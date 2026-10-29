@@ -1,3 +1,1 @@
-/* Game-specific Battle art stays inside the Battle content. The shared I9
-   scene background remains visible around the playfield and throughout Stage. */
-body[data-game-id="alien-defender"] .battle-stage { background: #081225; }
+body[data-game-id=alien-defender] .battle-stage{background:#081225}

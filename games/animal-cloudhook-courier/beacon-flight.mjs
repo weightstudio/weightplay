@@ -1,17 +1,1 @@
-// Chapter-only wrapper around the unchanged v23 flight engine. Never opens the campaign gate.
-export function createBeaconFlight(F,cfg){const state=F.create(cfg);state.beacons=cfg.beacons.map(()=>false);state.signals=cfg.pulseUses;return state;}
-export function signalBeacon(F,state,cfg,axis=0){
- if(!state||state.done||state.phase!=='flight'||state.signals<=0||!Number.isFinite(axis))return {used:false,activated:false};
- state.signals--;const index=cfg.beacons.findIndex((b,i)=>!state.beacons[i]&&b.flight===state.node+1&&F.distance(state,b)<=b.r);
- if(index>=0)state.beacons[index]=true;
- state.vx+=Math.max(-1,Math.min(1,axis))*60;
- state.events.push({type:index>=0?'beacon':'signalMiss',x:state.x,y:state.y,index});
- return {used:true,activated:index>=0,index};
-}
-export function stepBeaconFlight(F,state,cfg,dt,input){
- F.step(state,cfg,dt,input);
- if(state.done&&state.success&&state.beacons.some(v=>!v)){
-  state.success=false;state.reason='beaconMissing';state.score=state.collected.length*100;
-  state.events=state.events.filter(e=>e.type!=='win');state.events.push({type:'lose',x:state.x,y:state.y});
- }
-}
+var u=Object.defineProperty;var l=(i,n)=>u(i,"name",{value:n,configurable:!0});export function createBeaconFlight(i,n){const o=i.create(n);return o.beacons=n.beacons.map(()=>!1),o.signals=n.pulseUses,o}l(createBeaconFlight,"createBeaconFlight");export function signalBeacon(i,n,o,s=0){if(!n||n.done||n.phase!=="flight"||n.signals<=0||!Number.isFinite(s))return{used:!1,activated:!1};n.signals--;const e=o.beacons.findIndex((c,r)=>!n.beacons[r]&&c.flight===n.node+1&&i.distance(n,c)<=c.r);return e>=0&&(n.beacons[e]=!0),n.vx+=Math.max(-1,Math.min(1,s))*60,n.events.push({type:e>=0?"beacon":"signalMiss",x:n.x,y:n.y,index:e}),{used:!0,activated:e>=0,index:e}}l(signalBeacon,"signalBeacon");export function stepBeaconFlight(i,n,o,s,e){i.step(n,o,s,e),n.done&&n.success&&n.beacons.some(c=>!c)&&(n.success=!1,n.reason="beaconMissing",n.score=n.collected.length*100,n.events=n.events.filter(c=>c.type!=="win"),n.events.push({type:"lose",x:n.x,y:n.y}))}l(stepBeaconFlight,"stepBeaconFlight");

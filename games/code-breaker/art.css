@@ -1,4 +1,1 @@
-/* Game-owned voxel scenery; the code slots remain DOM-rendered for readability. */
-body[data-logic-game="code-breaker"] .logic-board-panel {
-  background: linear-gradient(160deg, rgba(17, 50, 92, .7), rgba(8, 23, 46, .82)), url("assets/code-breaker-board-block-v1.png") center / cover no-repeat;
-}
+body[data-logic-game=code-breaker] .logic-board-panel{background:linear-gradient(160deg,#11325cb3,#08172ed1),url(assets/code-breaker-board-block-v1.png) center / cover no-repeat}

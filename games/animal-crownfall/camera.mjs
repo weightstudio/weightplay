@@ -1,13 +1,1 @@
-// Camera bounds are independent of gameplay and authored map dimensions.
-export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-export function frameSize(aspect,columns,rows,overview=false){
- const height=overview?Math.max(rows+2.5,(columns+2.3)/aspect):Math.min(7.8,8.4/aspect);
- return {width:height*aspect,height};
-}
-export function boundView(x,y,width,height,columns,rows){
- const left=-1.15,right=columns+.15,top=1.65,bottom=-rows+.1;
- return {x:width>=right-left?(columns-1)/2:clamp(x,left+width/2,right-width/2),
- y:height>=top-bottom?(top+bottom)/2:clamp(y,bottom+height/2,top-height/2),width,height};
-}
-// Short landscape windows need head/tag room before downward look-ahead.
-export const followView=(hero,width,height,columns,rows)=>boundView(hero.x,hero.y-Math.min(1.35,Math.max(0,height/2-1.4)),width,height,columns,rows);
+var M=Object.defineProperty;var x=(t,n)=>M(t,"name",{value:n,configurable:!0});export const clamp=x((t,n,o)=>Math.max(n,Math.min(o,t)),"clamp");export function frameSize(t,n,o,a=!1){const r=a?Math.max(o+2.5,(n+2.3)/t):Math.min(7.8,8.4/t);return{width:r*t,height:r}}x(frameSize,"frameSize");export function boundView(t,n,o,a,r,l){const m=r+.15,e=1.65,f=-l+.1;return{x:o>=m- -1.15?(r-1)/2:clamp(t,-1.15+o/2,m-o/2),y:a>=e-f?(e+f)/2:clamp(n,f+a/2,e-a/2),width:o,height:a}}x(boundView,"boundView");export const followView=x((t,n,o,a,r)=>boundView(t.x,t.y-Math.min(1.35,Math.max(0,o/2-1.4)),n,o,a,r),"followView");

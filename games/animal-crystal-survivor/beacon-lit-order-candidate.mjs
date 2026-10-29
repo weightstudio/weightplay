@@ -1,13 +1,1 @@
-// Stage 44 isolated rules; the caller must provide real pickup and position.
-import {makeBeaconRound,stepBeaconRound} from './beacon-circuit-candidate.mjs?v=20261028-beacon3';
-export function makeLitOrder(){return makeBeaconRound(44)}
-function valid(state){return state?.stage===44&&Number.isInteger(state.completed)&&state.completed>=0&&state.completed<=2}
-export function litStation(state){if(!valid(state))throw new RangeError('INVALID_LIT_ORDER');return state.completed===0?'B':state.completed===1?'C':null}
-export function carrierPolicy(state,wave){
-  if(!valid(state)||!Number.isInteger(wave)||wave<1)throw new RangeError('INVALID_LIT_WAVE');
-  if(state.completed===0)return {allowed:true,shielded:true};
-  if(state.completed===1)return {allowed:wave>=2,shielded:false};
-  return {allowed:false,shielded:false};
-}
-export function stepLitOrder(previous,action={}){return stepBeaconRound(previous,action)}
-export function litOrderObjective(state,waveCleared,goal){return state.stage===44&&state.completed===2&&Number.isInteger(waveCleared)&&Number.isInteger(goal)&&goal>0&&waveCleared>=goal}
+var i=Object.defineProperty;var n=(e,r)=>i(e,"name",{value:r,configurable:!0});import{makeBeaconRound as l,stepBeaconRound as u}from"./beacon-circuit-candidate.mjs?v=20261028-beacon3";export function makeLitOrder(){return l(44)}n(makeLitOrder,"makeLitOrder");function t(e){return e?.stage===44&&Number.isInteger(e.completed)&&e.completed>=0&&e.completed<=2}n(t,"valid");export function litStation(e){if(!t(e))throw new RangeError("INVALID_LIT_ORDER");return e.completed===0?"B":e.completed===1?"C":null}n(litStation,"litStation");export function carrierPolicy(e,r){if(!t(e)||!Number.isInteger(r)||r<1)throw new RangeError("INVALID_LIT_WAVE");return e.completed===0?{allowed:!0,shielded:!0}:e.completed===1?{allowed:r>=2,shielded:!1}:{allowed:!1,shielded:!1}}n(carrierPolicy,"carrierPolicy");export function stepLitOrder(e,r={}){return u(e,r)}n(stepLitOrder,"stepLitOrder");export function litOrderObjective(e,r,o){return e.stage===44&&e.completed===2&&Number.isInteger(r)&&Number.isInteger(o)&&o>0&&r>=o}n(litOrderObjective,"litOrderObjective");

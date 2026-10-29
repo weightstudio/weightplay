@@ -1,15 +1,1 @@
-/* Triple Match supplies its localized 30-stage records; shared Play UI owns cards, sizing and gestures. */
-(() => {
-  'use strict';
-  const poster = '/assets/interface7-redrawn/animal-triple-match.webp';
-  window.createAnimalTripleMatchStageConfig = function createAnimalTripleMatchStageConfig(game) {
-    if (!game || typeof game.stageDisplayAt !== 'function') throw new TypeError('TRIPLE_MATCH_STAGE_CONFIG_REQUIRED');
-    return {
-      gameId: 'animal-triple-match',
-      poster,
-      background: '/assets/lobby-block-atmosphere.svg',
-      count: 30,
-      stage: index => game.stageDisplayAt(index),
-    };
-  };
-})();
+(()=>{"use strict";const poster="/assets/interface7-redrawn/animal-triple-match.webp";window.createAnimalTripleMatchStageConfig=function(game){if(!game||typeof game.stageDisplayAt!="function")throw new TypeError("TRIPLE_MATCH_STAGE_CONFIG_REQUIRED");return{gameId:"animal-triple-match",poster,background:"/assets/lobby-block-atmosphere.svg",count:30,stage:index=>game.stageDisplayAt(index)}}})();

@@ -1,7 +1,1 @@
-export function normalizeProgress(rawBest,rawRecords,total){
- const value=Number(rawBest),best=Number.isFinite(value)?Math.max(0,Math.min(total,Math.floor(value))):0,records={};
- let parsed=rawRecords;try{if(typeof parsed==='string')parsed=JSON.parse(parsed);}catch{parsed={};}
- if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))for(const [key,raw]of Object.entries(parsed)){const n=Number(key),score=Number(raw);if(/^\d+$/.test(key)&&Number.isInteger(n)&&n>=1&&n<=total&&Number.isFinite(score)&&score>=1)records[n]=Math.floor(score);}
- return {best,records};
-}
-export function mergeProgress(a,b){const records={...a.records};for(const [n,value]of Object.entries(b.records))records[n]=records[n]===undefined?value:Math.min(records[n],value);return {best:Math.max(a.best,b.best),records};}
+var m=Object.defineProperty;var a=(t,s)=>m(t,"name",{value:s,configurable:!0});export function normalizeProgress(t,s,r){const o=Number(t),n=Number.isFinite(o)?Math.max(0,Math.min(r,Math.floor(o))):0,f={};let e=s;try{typeof e=="string"&&(e=JSON.parse(e))}catch{e={}}if(e&&typeof e=="object"&&!Array.isArray(e))for(const[u,b]of Object.entries(e)){const i=Number(u),c=Number(b);/^\d+$/.test(u)&&Number.isInteger(i)&&i>=1&&i<=r&&Number.isFinite(c)&&c>=1&&(f[i]=Math.floor(c))}return{best:n,records:f}}a(normalizeProgress,"normalizeProgress");export function mergeProgress(t,s){const r={...t.records};for(const[o,n]of Object.entries(s.records))r[o]=r[o]===void 0?n:Math.min(r[o],n);return{best:Math.max(t.best,s.best),records:r}}a(mergeProgress,"mergeProgress");

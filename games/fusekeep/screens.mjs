@@ -1,14 +1,4 @@
-import {DICT} from './locales.mjs';
-import {COPY} from './copy.mjs';
-import {BUTTONS} from './compact-copy.mjs';
-/** Persistent gameplay roots. Shared frame owns all chrome and its three tracks. */
-export function mountPlayScreens(){
- if(document.getElementById('stageScreen'))return;
- const app=document.getElementById('app');if(!app)throw Error('FUSEKEEP_MAIN_REQUIRED');
- const locale=Object.hasOwn(DICT,document.documentElement.lang)?document.documentElement.lang:'en';
- const d=DICT[locale],copy=COPY[locale],buttons=BUTTONS[locale];
- const fragment=document.createElement('template');
- fragment.innerHTML=`
+var p=Object.defineProperty;var s=(a,d)=>p(a,"name",{value:d,configurable:!0});import{DICT as l}from"./locales.mjs";import{COPY as c}from"./copy.mjs";import{BUTTONS as b}from"./compact-copy.mjs";export function mountPlayScreens(){if(document.getElementById("stageScreen"))return;const a=document.getElementById("app");if(!a)throw Error("FUSEKEEP_MAIN_REQUIRED");const d=Object.hasOwn(l,document.documentElement.lang)?document.documentElement.lang:"en",o=l[d],i=c[d],r=b[d],n=document.createElement("template");n.innerHTML=`
  <section id="stageScreen" data-wp-stage-workspace hidden>
  <div id="stageCanvas">
    <header id="stageHeader"><button type="button" data-wp-return="stage" data-t-aria="back"></button><h2 data-wp-frame-title hidden></h2></header>
@@ -51,13 +41,4 @@ export function mountPlayScreens(){
  </dialog>
  <dialog id="gachaDialog" class="game-dialog" aria-labelledby="gachaTitle">
   <div class="game-dialog-card"><h2 id="gachaTitle"></h2><p id="gachaExplain"></p><p id="gachaBalance"></p><p id="gachaResult" role="status" aria-live="polite"></p><div class="game-dialog-actions"><button id="gachaClose" type="button" data-wp-frame-action="secondary"></button><button id="goldDraw" type="button" data-wp-frame-action="primary"></button><button id="diamondDraw" type="button" data-wp-frame-action="primary"></button></div></div>
- </dialog>`;
- app.append(fragment.content);
- const recruit=document.createElement('button');
- recruit.id='openGacha';recruit.type='button';recruit.dataset.wpFrameAction='secondary';
- recruit.dataset.t='gachaOpen';recruit.textContent=copy.gachaOpen;
- document.querySelector('#mainContent [data-wp-frame-copy]')?.append(recruit);
- app.querySelector('[data-wave-label]').textContent=buttons.waveLabel;
- for(const node of app.querySelectorAll('[data-t]'))node.textContent=copy[node.dataset.t]??d[node.dataset.t]??'';
- for(const node of app.querySelectorAll('[data-t-aria]'))node.setAttribute('aria-label',copy[node.dataset.tAria]??d[node.dataset.tAria]??'');
-}
+ </dialog>`,a.append(n.content);const e=document.createElement("button");e.id="openGacha",e.type="button",e.dataset.wpFrameAction="secondary",e.dataset.t="gachaOpen",e.textContent=i.gachaOpen,document.querySelector("#mainContent [data-wp-frame-copy]")?.append(e),a.querySelector("[data-wave-label]").textContent=r.waveLabel;for(const t of a.querySelectorAll("[data-t]"))t.textContent=i[t.dataset.t]??o[t.dataset.t]??"";for(const t of a.querySelectorAll("[data-t-aria]"))t.setAttribute("aria-label",i[t.dataset.tAria]??o[t.dataset.tAria]??"")}s(mountPlayScreens,"mountPlayScreens");

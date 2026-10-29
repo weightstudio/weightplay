@@ -3202,3 +3202,5 @@ window.WEIGHTPLAY_GAME_TITLES = {
 };
 
 window.WEIGHTPLAY_GAME_TITLES['lantern-lasso'] = {__localizedExact:true, en:'Lantern Lasso', 'zh-Hant':'星燈牽引', 'zh-Hans':'星灯牵引', ja:'星灯りの投げ縄', ko:'별빛 올가미', es:'Lazo de faroles', 'pt-BR':'Laço das lanternas', fr:'Lasso des lanternes', de:'Laternen-Lasso', it:'Lazo delle lanterne', ru:'Лассо фонарей', hi:'लालटेन लासो', ar:'حبل الفوانيس'};
+
+window.WEIGHTPLAY_GAME_TITLES["mossfold"] = {"en": "Mossfold", "zh-Hant": "苔徑翻方", "zh-Hans": "苔径翻方", "ja": "苔のころがり道", "ko": "이끼 구름길", "es": "Giro de musgo", "pt-BR": "Giro de Musgo", "fr": "Roule-mousse", "de": "Mooswende", "it": "Giro di muschio", "ru": "Мшистый переворот", "hi": "काई का पलटा", "ar": "درب الطحلب", "__localizedExact": true};

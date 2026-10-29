@@ -1,11 +1,1 @@
-// Isolated post-collision exit proposal, not used by the game. The host must
-// set beaconInterceptorResolved only after the final swept collision has run.
-// Retiring an interceptor gives no XP, loot, clear, progress or reward.
-export function retireResolvedInterceptor(enemies, {practice,stage} = {}) {
-  if (!Array.isArray(enemies)) throw new TypeError('INVALID_ENEMIES');
-  if (practice!==true || stage!==51) return enemies;
-  const resolved=enemies.filter(enemy=>enemy?.beaconInterceptorResolved===true);
-  if (resolved.some(enemy=>enemy.beaconInterceptor!==true || typeof enemy.beaconInterceptorId!=='string' || !enemy.beaconInterceptorId))
-    throw new Error('INVALID_INTERCEPTOR_EXIT');
-  return resolved.length ? enemies.filter(enemy=>!resolved.includes(enemy)) : enemies;
-}
+var c=Object.defineProperty;var I=(r,e)=>c(r,"name",{value:e,configurable:!0});export function retireResolvedInterceptor(r,{practice:e,stage:n}={}){if(!Array.isArray(r))throw new TypeError("INVALID_ENEMIES");if(e!==!0||n!==51)return r;const o=r.filter(t=>t?.beaconInterceptorResolved===!0);if(o.some(t=>t.beaconInterceptor!==!0||typeof t.beaconInterceptorId!="string"||!t.beaconInterceptorId))throw new Error("INVALID_INTERCEPTOR_EXIT");return o.length?r.filter(t=>!o.includes(t)):r}I(retireResolvedInterceptor,"retireResolvedInterceptor");

@@ -1,17 +1,1 @@
-// Synchronous delivery under the caller's cross-tab Web Lock. Shared wallet
-// methods own currency storage; this module owns only the permanent skin.
-export function purchaseAurora(storage,wallet,key){
-    if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-canopy-compass:purchase.mjs:purchaseAurora", () => purchaseAurora(...arguments));
-
-  let saved;
-  try{saved=JSON.parse(storage.getItem(key)||'{}');}catch(error){if(error instanceof SyntaxError)saved={};else throw error;}
-  const next={owned:true,theme:'aurora'};
-  if(saved?.owned===true){storage.setItem(key,JSON.stringify(next));return {status:'equipped',appearance:next};}
-  if(!wallet||wallet.read().diamonds<12)return {status:'insufficient'};
-  // Reserve more space than delivery needs before any currency is spent.
-  storage.setItem(key,JSON.stringify({owned:false,theme:'classic',reserved:'................................'}));
-  if(!wallet.spendDiamonds(12))return {status:'insufficient'};
-  try{storage.setItem(key,JSON.stringify(next));}
-  catch(error){wallet.addDiamonds(12);throw error;}
-  return {status:'purchased',appearance:next};
-}
+var u=Object.defineProperty;var i=(t,r)=>u(t,"name",{value:r,configurable:!0});export function purchaseAurora(t,r,e){if(r?.withTransaction&&!r.inTransaction())return r.withTransaction("animal-canopy-compass:purchase.mjs:purchaseAurora",()=>purchaseAurora(...arguments));let a;try{a=JSON.parse(t.getItem(e)||"{}")}catch(s){if(s instanceof SyntaxError)a={};else throw s}const n={owned:!0,theme:"aurora"};if(a?.owned===!0)return t.setItem(e,JSON.stringify(n)),{status:"equipped",appearance:n};if(!r||r.read().diamonds<12)return{status:"insufficient"};if(t.setItem(e,JSON.stringify({owned:!1,theme:"classic",reserved:"................................"})),!r.spendDiamonds(12))return{status:"insufficient"};try{t.setItem(e,JSON.stringify(n))}catch(s){throw r.addDiamonds(12),s}return{status:"purchased",appearance:n}}i(purchaseAurora,"purchaseAurora");

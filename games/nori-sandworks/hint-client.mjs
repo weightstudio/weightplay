@@ -1,18 +1,1 @@
-import {stateKey} from './simulation.mjs';
-import {routeIndex} from './hints.mjs';
-
-export class HintClient{
- constructor(factory=()=>new Worker(new URL('./hint-worker.mjs',import.meta.url),{type:'module'})){this.factory=factory;this.cache=new Map();this.pending=null;}
- cancel(){this.pending?.();}
- continuation(level,state){return (this.cache.get(level.id+':'+stateKey(state))||[]).map(action=>({...action}));}
- request(level,state){
-  this.cancel();const cacheKey=level.id+':'+stateKey(state);
-  if(this.cache.has(cacheKey))return Promise.resolve(this.cache.get(cacheKey)[0]);
-  return new Promise(resolve=>{
-   let worker,timer,done=false;
-   const finish=actions=>{if(done)return;done=true;clearTimeout(timer);worker?.terminate();this.pending=null;const entries=Array.isArray(actions)?routeIndex(level,actions,state):[];for(const [key,route]of entries){this.cache.set(level.id+':'+key,route);while(this.cache.size>512)this.cache.delete(this.cache.keys().next().value);}resolve(entries.length?actions[0]:null);};
-   this.pending=()=>finish(null);
-   try{worker=this.factory();worker.onmessage=e=>finish(e.data.actions);worker.onerror=()=>finish(null);timer=setTimeout(()=>finish(null),3200);worker.postMessage({level,state});}catch{finish(null);}
-  });
- }
-}
+var f=Object.defineProperty;var c=(o,e)=>f(o,"name",{value:e,configurable:!0});import{stateKey as u}from"./simulation.mjs";import{routeIndex as y}from"./hints.mjs";export class HintClient{static{c(this,"HintClient")}constructor(e=()=>new Worker(new URL("./hint-worker.mjs",import.meta.url),{type:"module"})){this.factory=e,this.cache=new Map,this.pending=null}cancel(){this.pending?.()}continuation(e,t){return(this.cache.get(e.id+":"+u(t))||[]).map(s=>({...s}))}request(e,t){this.cancel();const s=e.id+":"+u(t);return this.cache.has(s)?Promise.resolve(this.cache.get(s)[0]):new Promise(m=>{let r,h,a=!1;const n=c(i=>{if(a)return;a=!0,clearTimeout(h),r?.terminate(),this.pending=null;const l=Array.isArray(i)?y(e,i,t):[];for(const[d,p]of l)for(this.cache.set(e.id+":"+d,p);this.cache.size>512;)this.cache.delete(this.cache.keys().next().value);m(l.length?i[0]:null)},"finish");this.pending=()=>n(null);try{r=this.factory(),r.onmessage=i=>n(i.data.actions),r.onerror=()=>n(null),h=setTimeout(()=>n(null),3200),r.postMessage({level:e,state:t})}catch{n(null)}})}}

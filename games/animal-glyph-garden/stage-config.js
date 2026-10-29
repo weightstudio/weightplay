@@ -1,10 +1,1 @@
-(() => {
-  "use strict";
-
-  window.GLYPH_GARDEN_STAGE_CONFIG = Object.freeze({
-    gameId: "animal-glyph-garden",
-    count: 30,
-    poster: "/assets/interface7-redrawn/animal-glyph-garden.webp",
-    background: "/assets/lobby-block-atmosphere.svg",
-  });
-})();
+(()=>{"use strict";window.GLYPH_GARDEN_STAGE_CONFIG=Object.freeze({gameId:"animal-glyph-garden",count:30,poster:"/assets/interface7-redrawn/animal-glyph-garden.webp",background:"/assets/lobby-block-atmosphere.svg"})})();

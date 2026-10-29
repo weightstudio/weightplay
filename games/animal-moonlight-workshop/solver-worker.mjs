@@ -1,2 +1,1 @@
-import {solve} from './rules.mjs';
-self.onmessage=({data})=>{try{self.postMessage({requestId:data.requestId,route:solve(data.state,data.profile)});}catch(error){self.postMessage({requestId:data.requestId,error:String(error.message)});}};
+import{solve as r}from"./rules.mjs";self.onmessage=({data:e})=>{try{self.postMessage({requestId:e.requestId,route:r(e.state,e.profile)})}catch(s){self.postMessage({requestId:e.requestId,error:String(s.message)})}};

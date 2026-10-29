@@ -1,16 +1,1 @@
-// Unconnected Stage 36 copy drafts; native and rendered review are required.
-export const prismCopy=Object.freeze({
-  en:['Prism Crossroads','Clear the waves. Carry the fragment to A or B; its pulse cancels that lane. The lanes activate at different times.'],
-  'zh-Hant':['稜鏡岔路','清除波次。將碎片帶到 A 或 B，脈衝取消該路線；兩條路線在不同時間生效。'],
-  'zh-Hans':['棱镜岔路','清除波次。将碎片带到 A 或 B，脉冲取消该路线；两条路线在不同时间生效。'],
-  ja:['プリズムの分岐','敵の波を倒そう。欠片を A または B に運ぶとその道が消える。二つの道は異なる時刻に作動する。'],
-  ko:['프리즘 갈림길','적의 파도를 물리치세요. 조각을 A 또는 B로 가져가면 그 경로가 취소됩니다. 두 경로는 서로 다른 때 작동합니다.'],
-  es:['Cruce prismático','Supera las oleadas. Lleva el fragmento a A o B para cancelar ese carril. Los carriles se activan en momentos distintos.'],
-  'pt-BR':['Encruzilhada prismática','Vença as ondas. Leve o fragmento a A ou B para cancelar essa faixa. As faixas ativam em tempos diferentes.'],
-  fr:['Carrefour prismatique','Terminez les vagues. Portez le fragment à A ou B pour annuler cette voie. Les voies s’activent à des moments différents.'],
-  de:['Prismen-Kreuzung','Besiege die Wellen. Bring das Fragment zu A oder B, um diese Bahn abzubrechen. Die Bahnen werden zeitversetzt aktiv.'],
-  it:['Bivio prismatico','Supera le ondate. Porta il frammento ad A o B per annullare quella corsia. Le corsie si attivano in momenti diversi.'],
-  ru:['Призматический перекрёсток','Победите волны. Отнесите осколок к A или B, чтобы отменить этот путь. Пути активируются в разное время.'],
-  hi:['प्रिज़्म चौराहा','लहरें साफ़ करें। टुकड़ा A या B तक ले जाएँ; पल्स उसी मार्ग को रद्द करेगा। दोनों मार्ग अलग समय पर सक्रिय होते हैं।'],
-  ar:['مفترق المنشور','اهزم الموجات. احمل الشظية إلى A أو B لإلغاء مساره. ينشط المساران في وقتين مختلفين.'],
-});
+export const prismCopy=Object.freeze({en:["Prism Crossroads","Clear the waves. Carry the fragment to A or B; its pulse cancels that lane. The lanes activate at different times."],"zh-Hant":["稜鏡岔路","清除波次。將碎片帶到 A 或 B，脈衝取消該路線；兩條路線在不同時間生效。"],"zh-Hans":["棱镜岔路","清除波次。将碎片带到 A 或 B，脉冲取消该路线；两条路线在不同时间生效。"],ja:["プリズムの分岐","敵の波を倒そう。欠片を A または B に運ぶとその道が消える。二つの道は異なる時刻に作動する。"],ko:["프리즘 갈림길","적의 파도를 물리치세요. 조각을 A 또는 B로 가져가면 그 경로가 취소됩니다. 두 경로는 서로 다른 때 작동합니다."],es:["Cruce prismático","Supera las oleadas. Lleva el fragmento a A o B para cancelar ese carril. Los carriles se activan en momentos distintos."],"pt-BR":["Encruzilhada prismática","Vença as ondas. Leve o fragmento a A ou B para cancelar essa faixa. As faixas ativam em tempos diferentes."],fr:["Carrefour prismatique","Terminez les vagues. Portez le fragment à A ou B pour annuler cette voie. Les voies s’activent à des moments différents."],de:["Prismen-Kreuzung","Besiege die Wellen. Bring das Fragment zu A oder B, um diese Bahn abzubrechen. Die Bahnen werden zeitversetzt aktiv."],it:["Bivio prismatico","Supera le ondate. Porta il frammento ad A o B per annullare quella corsia. Le corsie si attivano in momenti diversi."],ru:["Призматический перекрёсток","Победите волны. Отнесите осколок к A или B, чтобы отменить этот путь. Пути активируются в разное время."],hi:["प्रिज़्म चौराहा","लहरें साफ़ करें। टुकड़ा A या B तक ले जाएँ; पल्स उसी मार्ग को रद्द करेगा। दोनों मार्ग अलग समय पर सक्रिय होते हैं।"],ar:["مفترق المنشور","اهزم الموجات. احمل الشظية إلى A أو B لإلغاء مساره. ينشط المساران في وقتين مختلفين."]});

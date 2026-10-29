@@ -1,10 +1,1 @@
-// Unconnected Stage 47 draft: a defeated carrier leaves a warned hot patch
-// around its fragment. Does not itself move, damage, save or reward anything.
-export function makeDropHeat(drop){
-  if(!Number.isFinite(drop?.x)||!Number.isFinite(drop?.y)||drop.x<0||drop.x>1024||drop.y<0||drop.y>1760)throw new RangeError('invalid in-arena fragment');
-  return {kind:'lane',x:drop.x,y:drop.y,width:200,height:180,warn:1.8,life:6.2,damage:8,tick:0,color:'#ec7734',beaconDropHeat:true};
-}
-export function insideDropHeat(point,heat){
-  if(!Number.isFinite(point?.x)||!Number.isFinite(point?.y))throw new TypeError('finite point required');
-  return Math.abs(point.x-heat.x)<=heat.width/2&&Math.abs(point.y-heat.y)<=heat.height/2;
-}
+var r=Object.defineProperty;var n=(e,i)=>r(e,"name",{value:i,configurable:!0});export function makeDropHeat(e){if(!Number.isFinite(e?.x)||!Number.isFinite(e?.y)||e.x<0||e.x>1024||e.y<0||e.y>1760)throw new RangeError("invalid in-arena fragment");return{kind:"lane",x:e.x,y:e.y,width:200,height:180,warn:1.8,life:6.2,damage:8,tick:0,color:"#ec7734",beaconDropHeat:!0}}n(makeDropHeat,"makeDropHeat");export function insideDropHeat(e,i){if(!Number.isFinite(e?.x)||!Number.isFinite(e?.y))throw new TypeError("finite point required");return Math.abs(e.x-i.x)<=i.width/2&&Math.abs(e.y-i.y)<=i.height/2}n(insideDropHeat,"insideDropHeat");

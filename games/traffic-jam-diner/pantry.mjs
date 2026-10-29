@@ -1,16 +1,1 @@
-// Order feasibility is tiny and deterministic (at most nine remaining slots).
-// It explains a consequence after an accepted choice; it does not choose food.
-export function pantryWarning(stage,state){
- const slots=[];
- stage.queue.forEach(guest=>{if(state.positions[guest]<0)return;stage.guests[guest].order.slice(state.filled[guest]).forEach(slot=>slots.push({guest,choices:Array.isArray(slot)?slot:[slot]}));});
- const ordered=[...slots].sort((a,b)=>a.choices.length-b.choices.length),stock={...state.stock},failed=new Set();
- function cover(index){
-  if(index===ordered.length)return true;
-  const key=index+'|'+Object.keys(stock).sort().map(key=>stock[key]).join(',');if(failed.has(key))return false;
-  for(const snack of ordered[index].choices)if(stock[snack]>0){stock[snack]--;const possible=cover(index+1);stock[snack]++;if(possible)return true;}
-  failed.add(key);return false;
- }
- if(cover(0))return null;
- const counts={};for(const slot of slots)if(slot.choices.length===1){const snack=slot.choices[0];counts[snack]=(counts[snack]||0)+1;if(counts[snack]>(state.stock[snack]||0))return {guest:slot.guest,snack};}
- return {};
-}
+var k=Object.defineProperty;var f=(s,c)=>k(s,"name",{value:c,configurable:!0});export function pantryWarning(s,c){const t=[];s.queue.forEach(o=>{c.positions[o]<0||s.guests[o].order.slice(c.filled[o]).forEach(r=>t.push({guest:o,choices:Array.isArray(r)?r:[r]}))});const u=[...t].sort((o,r)=>o.choices.length-r.choices.length),e={...c.stock},h=new Set;function l(o){if(o===u.length)return!0;const r=o+"|"+Object.keys(e).sort().map(n=>e[n]).join(",");if(h.has(r))return!1;for(const n of u[o].choices)if(e[n]>0){e[n]--;const a=l(o+1);if(e[n]++,a)return!0}return h.add(r),!1}if(f(l,"cover"),l(0))return null;const i={};for(const o of t)if(o.choices.length===1){const r=o.choices[0];if(i[r]=(i[r]||0)+1,i[r]>(c.stock[r]||0))return{guest:o.guest,snack:r}}return{}}f(pantryWarning,"pantryWarning");

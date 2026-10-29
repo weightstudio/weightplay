@@ -1,14 +1,1 @@
-// Unconnected fixed-aim attack draft; actual rendering and balance unverified.
-export function makeFerrymanVolley(origin,target){
-  const dx=target.x-origin.x,dy=target.y-origin.y,dist=Math.hypot(dx,dy);
-  if(!Number.isFinite(dist)||dist<1)throw new RangeError('INVALID_VOLLEY_AIM');
-  const angle=Math.atan2(dy,dx);
-  return [-.42,0,.42].map(offset=>({kind:'arrow',bossSkill:'bossFerryman',x:origin.x,y:origin.y,
-    vx:Math.cos(angle+offset)*245,vy:Math.sin(angle+offset)*245,r:22,warn:1.4,life:4.4,damage:10,color:'#c084fc'}));
-}
-export function volleySegmentHits(arrow,point,dt){
-  if(!Number.isFinite(dt)||dt<0||dt>.25)throw new RangeError('INVALID_VOLLEY_STEP');
-  if(arrow.warn>0||arrow.life<=0)return false;
-  const dx=arrow.vx*dt,dy=arrow.vy*dt,t=Math.max(0,Math.min(1,((point.x-arrow.x)*dx+(point.y-arrow.y)*dy)/(dx*dx+dy*dy||1)));
-  return Math.hypot(point.x-arrow.x-dx*t,point.y-arrow.y-dy*t)<=arrow.r+18;
-}
+var l=Object.defineProperty;var s=(e,n)=>l(e,"name",{value:n,configurable:!0});export function makeFerrymanVolley(e,n){const t=n.x-e.x,y=n.y-e.y,x=Math.hypot(t,y);if(!Number.isFinite(x)||x<1)throw new RangeError("INVALID_VOLLEY_AIM");const a=Math.atan2(y,t);return[-.42,0,.42].map(h=>({kind:"arrow",bossSkill:"bossFerryman",x:e.x,y:e.y,vx:Math.cos(a+h)*245,vy:Math.sin(a+h)*245,r:22,warn:1.4,life:4.4,damage:10,color:"#c084fc"}))}s(makeFerrymanVolley,"makeFerrymanVolley");export function volleySegmentHits(e,n,t){if(!Number.isFinite(t)||t<0||t>.25)throw new RangeError("INVALID_VOLLEY_STEP");if(e.warn>0||e.life<=0)return!1;const y=e.vx*t,x=e.vy*t,a=Math.max(0,Math.min(1,((n.x-e.x)*y+(n.y-e.y)*x)/(y*y+x*x||1)));return Math.hypot(n.x-e.x-y*a,n.y-e.y-x*a)<=e.r+18}s(volleySegmentHits,"volleySegmentHits");

@@ -1,15 +1,1 @@
-import { LEVELS } from './levels.mjs?v=23';
-import { CAMPAIGN_COPY, stageName } from './campaign-copy.mjs?v=20261026-road-i9-d59d45a61fcb';
-export function createStageConfig({locale,getSave,isPractice}) {
-  const c=CAMPAIGN_COPY[locale]||CAMPAIGN_COPY.en;
-  return {gameId:'road-crosser',count:LEVELS.length,
-    poster:'/assets/interface7-redrawn/road-crosser.webp',background:'/assets/lobby-block-atmosphere.svg',
-    stage(index) {
-      const level=LEVELS[index],save=getSave(),mask=save.medals[index],locked=!isPractice()&&level.id>save.unlocked;
-      return {id:level.id,kicker:`${c.stages} ${level.id} / 30`,title:stageName(level,locale),
-        subtitle:level.checkpoint?c.checkpoint:c.arcs[level.arc],
-        status:locked?c.locked:mask?[1,2,4].map(bit=>mask&bit?'★':'☆').join(' '):c.goal,
-        summary:c[level.hint],details:[c.goal,c[level.hint],`${c.medalRules}${level.charge?'':` ≤ ${level.budget}`}`],
-        locked,cleared:Boolean(mask&1)};
-    }};
-}
+var u=Object.defineProperty;var i=(a,s)=>u(a,"name",{value:s,configurable:!0});import{LEVELS as d}from"./levels.mjs?v=23";import{CAMPAIGN_COPY as l,stageName as k}from"./campaign-copy.mjs?v=20261026-road-i9-d59d45a61fcb";export function createStageConfig({locale:a,getSave:s,isPractice:g}){const t=l[a]||l.en;return{gameId:"road-crosser",count:d.length,poster:"/assets/interface7-redrawn/road-crosser.webp",background:"/assets/lobby-block-atmosphere.svg",stage(r){const e=d[r],c=s(),o=c.medals[r],n=!g()&&e.id>c.unlocked;return{id:e.id,kicker:`${t.stages} ${e.id} / 30`,title:k(e,a),subtitle:e.checkpoint?t.checkpoint:t.arcs[e.arc],status:n?t.locked:o?[1,2,4].map(m=>o&m?"★":"☆").join(" "):t.goal,summary:t[e.hint],details:[t.goal,t[e.hint],`${t.medalRules}${e.charge?"":` ≤ ${e.budget}`}`],locked:n,cleared:!!(o&1)}}}}i(createStageConfig,"createStageConfig");
