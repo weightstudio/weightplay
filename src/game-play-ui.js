@@ -35,7 +35,7 @@
     const details = document.createElement('div'); details.className = 'wp-stage-i9-briefing-details'; details.id = `${rail.id}-shared-details`; details.hidden = true; details.setAttribute('role','region');
     toggle.setAttribute('aria-controls',details.id); briefing.append(toggle,copy,details); page.append(briefing);
     listen(toggle,'click',() => { details.hidden = !details.hidden; toggle.setAttribute('aria-expanded',String(!details.hidden)); });
-    let current = clamp(Math.round(selected),config.count-1), start = 0, closed = false, resizeFrame = 0;
+    let current = clamp(Math.round(selected),config.count-1), start = 0, closed = false, resizeFrame = 0, observing = true;
     let poolSize = Math.min(9,config.count);
     const cards = [];
     const desiredStart = index => clamp(Math.round(index)-Math.floor(poolSize/2),config.count-poolSize);
@@ -160,7 +160,7 @@
       for(const [name,value] of Object.entries(values))scene.style.setProperty(`--wp-play-${name}`,`${value*inverse}px`);
       position(current);
     }
-    function scheduleLayout(){if(!closed&&!resizeFrame)resizeFrame=requestAnimationFrame(layout);}
+    function scheduleLayout(){if(!closed&&observing&&!resizeFrame)resizeFrame=requestAnimationFrame(layout);}
     const resize = new ResizeObserver(scheduleLayout);resize.observe(page);resize.observe(scene);
     listen(window,'resize',scheduleLayout);listen(window,'weightplay:stage-sync',scheduleLayout);
     listen(window,'weightplay:play-actions-change',scheduleLayout);
@@ -187,6 +187,14 @@
           resizeFrame=0;
           layout();
         }else scheduleLayout();
+      },
+      // Adapters with synchronous scene ownership may suspend observation
+      // without destroying the pooled cards or their navigation identities.
+      setActive(active){
+        if(closed || observing===Boolean(active))return;
+        observing=Boolean(active);
+        if(observing){resize.observe(page);resize.observe(scene);scheduleLayout();}
+        else{drag.cancel();resize.disconnect();if(resizeFrame)cancelAnimationFrame(resizeFrame);resizeFrame=0;}
       },cancel:drag.cancel,
       get selected(){return current;},get pool(){return cards;},
       destroy(){if(closed)return;closed=true;drag.dispose();resize.disconnect();abort.abort();cancelAnimationFrame(resizeFrame);rail.style.removeProperty('--wp-virtual-before');rail.style.removeProperty('--wp-virtual-after');mounted.delete(rail);},
