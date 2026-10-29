@@ -72,6 +72,14 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   align-items:center!important;justify-content:flex-start!important;overscroll-behavior:contain!important;
   scrollbar-width:none!important;
 }
+/* Offscreen recycled cards retain their logical rail space. Negative margins
+   cancel the flex gaps beside these spacers, including when their width is 0. */
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] > [data-wp-stage-rail]::before {
+  content:"";display:block;flex:0 0 var(--wp-virtual-before,0px);margin-inline-end:calc(-1 * var(--wp-play-gap,18px));
+}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] > [data-wp-stage-rail]::after {
+  content:"";display:block;flex:0 0 var(--wp-virtual-after,0px);margin-inline-start:calc(-1 * var(--wp-play-gap,18px));
+}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] .stage-card {
   box-sizing:border-box!important;position:relative!important;display:block!important;isolation:isolate!important;
   flex:0 0 var(--wp-play-card-width,292px)!important;

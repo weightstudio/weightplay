@@ -67,12 +67,23 @@
       lines.forEach((line,i) => {if (!details.children[i]) details.append(document.createElement('p'));details.children[i].textContent=line;});
     }
     function sync() { cards.forEach(card => bind(card,Number(card.dataset.stageIndex))); updateBriefing(); }
+    // Preserve the full rail's logical extent while keeping a bounded pool.
+    // Without these spacers, recycling a card changes scrollLeft by one pitch
+    // during a continuous drag even when the rendered cards appear stationary.
+    function updateVirtualPadding() {
+      const pitch = '(var(--wp-play-card-width,292px) + var(--wp-play-gap,18px))';
+      rail.style.setProperty('--wp-virtual-before', `calc(${start} * ${pitch})`);
+      rail.style.setProperty('--wp-virtual-after', `calc(${Math.max(0,config.count-poolSize-start)} * ${pitch})`);
+    }
     function moveWindow(index) {
       const target = desiredStart(index); let recycled = 0;
       while (start < target) {const card=rail.firstElementChild;start++;rail.append(card);bind(card,start+poolSize-1);recycled++;}
       while (start > target) {const card=rail.lastElementChild;start--;rail.prepend(card);bind(card,start);recycled++;}
       rail.dataset.wpStageWindowStart=String(start); rail.dataset.wpStageWindowEnd=String(start+poolSize-1);
-      if (recycled) rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);
+      if (recycled) {
+        updateVirtualPadding();
+        rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);
+      }
     }
     function geometry() {
       const box=rail.getBoundingClientRect(), a=rail.children[0]?.getBoundingClientRect(), b=rail.children[1]?.getBoundingClientRect();
@@ -115,6 +126,7 @@
         const card=reusableCards[i] || createCard(i);card.dataset.wpStagePoolNode=String(i+1);
         bind(card,start+i);rail.append(card);cards.push(card);
       }
+      updateVirtualPadding();
       Object.assign(rail.dataset,{wpStagePoolSize:String(poolSize),wpStageTotal:String(config.count),wpStageWindowStart:String(start),wpStageWindowEnd:String(start+poolSize-1),wpStageRecycleCount:'0'});
     }
     function startStage(index,event) { select(index,{source:'activation'}); if (!config.stage(index).locked) onStart(index,event); }
@@ -177,7 +189,7 @@
         }else scheduleLayout();
       },cancel:drag.cancel,
       get selected(){return current;},get pool(){return cards;},
-      destroy(){if(closed)return;closed=true;drag.dispose();resize.disconnect();abort.abort();cancelAnimationFrame(resizeFrame);mounted.delete(rail);},
+      destroy(){if(closed)return;closed=true;drag.dispose();resize.disconnect();abort.abort();cancelAnimationFrame(resizeFrame);rail.style.removeProperty('--wp-virtual-before');rail.style.removeProperty('--wp-virtual-after');mounted.delete(rail);},
     });
     listen(window,'pagehide',event=>{if(!event.persisted)api.destroy();});
     mounted.set(rail,api);sync();
