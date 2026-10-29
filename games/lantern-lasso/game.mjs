@@ -243,10 +243,24 @@ function renderBeam(blocked,changed){
   if(beamGroup){clearGroup(beamGroup);root.remove(beamGroup);}
   beamGroup=new THREE.Group();root.add(beamGroup);beamTransition=null;
   const surface=blocked?mat(0xb85864):mat(0x77d4b6,{transparent:true,opacity:.35});
-  if(blocked)block(beamGroup,9,.34,.3,4.5,.3,6.15,surface);else block(beamGroup,9,.05,.08,4.5,.06,6.15,surface);
+  if(blocked){
+    // Luminous rails retain the hazard's footprint while translucent glass
+    // lets nearby lanterns remain visible through the closed beam.
+    surface.transparent=true;surface.opacity=.72;surface.emissive.setHex(0x7a1724);surface.emissiveIntensity=.3;
+    block(beamGroup,9,.34,.3,4.5,.3,6.15,surface);
+    const rim=mat(0xff8c82,{emissive:0xe63330,emissiveIntensity:.3,roughness:.35});
+    block(beamGroup,9,.035,.045,4.5,.47,6.30,rim);
+    block(beamGroup,9,.035,.045,4.5,.13,6.30,rim);
+    const core=mat(0xffc3a1,{emissive:0xff6250,emissiveIntensity:.4,roughness:.35});
+    block(beamGroup,9,.055,.03,4.5,.30,6.32,core);
+  }else{
+    block(beamGroup,9,.05,.08,4.5,.06,6.15,surface);
+    const guide=mat(0x9ff5d8,{emissive:0x3d9d83,emissiveIntensity:.25,transparent:true,opacity:.7});
+    block(beamGroup,9,.02,.04,4.5,.09,6.15,guide);
+  }
   const clamp=mat(state.locked?0xf6cb63:state.clipUsed?0x66717f:0x66c6ce,{metalness:.35,roughness:.4});
   block(beamGroup,.48,.1,.72,.4,.12,6.15,clamp);for(const side of [-1,1])block(beamGroup,.11,.42,.12,.4,.33,6.15+side*.28,clamp);block(beamGroup,.48,.1,.12,.4,.57,6.15,clamp);
-  if(changed){const duration=matchMedia('(prefers-reduced-motion: reduce)').matches?.08:.2,materials=[surface,clamp];for(const material of materials){material.emissive.setHex(blocked?0xff7979:0x6ed9b1);material.emissiveIntensity=.5;}beamTransition={materials,remaining:duration,duration};}
+  if(changed){const duration=matchMedia('(prefers-reduced-motion: reduce)').matches?.08:.2,materials=[surface,clamp].map(material=>({material,color:material.emissive.clone(),intensity:material.emissiveIntensity})),pulse=new THREE.Color(blocked?0xff7979:0x6ed9b1);for(const entry of materials){entry.material.emissive.copy(pulse);entry.material.emissiveIntensity=.5;}beamTransition={materials,pulse,remaining:duration,duration};}
 }
 // A narrow, flat strip stays readable on mobile WebGL implementations that
 // render every LineBasicMaterial at one pixel. Segments follow the exact trace.
@@ -312,7 +326,7 @@ function loop(t){
     }
     if(cast.elapsed>=.5){const hit=cast.hit;cast=null;poseOwl(0);finishShot(hit);}
   }else if(LEVELS[stage].rotor&&!state.locked){elapsed+=dt;const tick=Math.floor(elapsed/.5)%4;if(tick!==state.tick){const changed=(state.tick<2)!==(tick<2);state.tick=tick;if(changed){beamPhase=tick<2;renderBeam(beamPhase,true);$('clip').disabled=state.clipUsed||beamPhase;const hit=drawAim();if(aimActive)showPreview(hit);}}}
-  if(beamTransition){beamTransition.remaining=Math.max(0,beamTransition.remaining-dt);for(const material of beamTransition.materials)material.emissiveIntensity=.5*beamTransition.remaining/beamTransition.duration;if(!beamTransition.remaining)beamTransition=null;}
+  if(beamTransition){beamTransition.remaining=Math.max(0,beamTransition.remaining-dt);const fraction=beamTransition.remaining/beamTransition.duration;for(const entry of beamTransition.materials){entry.material.emissive.copy(entry.color).lerp(beamTransition.pulse,fraction);entry.material.emissiveIntensity=entry.intensity+(.5-entry.intensity)*fraction;}if(!beamTransition.remaining)beamTransition=null;}
   renderer.info.reset();renderer.render(scene,camera);if(t-lastStats>=500){lastStats=t;const d=renderer.domElement.dataset;d.renderCalls=String(renderer.info.render.calls);d.triangles=String(renderer.info.render.triangles);d.geometries=String(renderer.info.memory.geometries);d.textures=String(renderer.info.memory.textures);}
 }
 function activate(name){stageController?.setActive?.(name==='stage');if(screen==='battle'&&name!=='battle')audio?.stop();++launchSerial;effects.forEach(effect=>effect.cancel());effects.clear();screen=name;drag=false;cast=null;for(const n of ['main','stage','battle'])$(n+'Screen').hidden=n!==name;$('guideScreen').hidden=name!=='main';document.body.dataset.screen=name;frame.activate(name);if(name==='battle'){arenaObserver?.observe(arena);resize();const serial=launchSerial;requestAnimationFrame(()=>{if(screen==='battle'&&serial===launchSerial)resize();});last=performance.now();}else arenaObserver?.disconnect();updateHUD();}
