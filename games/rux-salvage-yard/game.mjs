@@ -83,6 +83,10 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   let rewardFlushRunning=false;
   const flushPendingRewards=()=>{
     if(practice||localPracticeRequested||pageClosed||rewardFlushRunning||!window.WeightPlayCastle?.creditFirstClear)return;
+    // A late storage recovery can otherwise display the shared reward notice
+    // over live Battle or Stage controls. Preserve the pending receipt and
+    // deliver it on Main or an already-open result instead.
+    if(screen!=='main'&&!(screen==='battle'&&dialogMode==='result'&&!$('dialog').hidden))return;
     let saved;try{saved=JSON.parse(localStorage.getItem(STORE)||'null');}catch{return;}
     if(!saved||saved.version!==1||!saved.rewardPending||typeof saved.rewardPending!=='object'||Array.isArray(saved.rewardPending))return;
     progress=mergeProgress(progress,saved,OPENING,FINISHES.map(item=>item.id));let changed=false;
@@ -135,12 +139,13 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
   const openPurchase=item=>{if(purchasePending||practice)return;purchaseItem=item;purchaseReturn=document.activeElement;$('purchaseText').textContent=`${item.name} · ${t('permanent')} · ${t('samePhysics')} · ${t('price',{n:item.cost})} · ${t('balance')}: ${window.WeightPlayWallet.read().diamonds}`;$('purchaseMessage').textContent='';$('stageDialog').hidden=false;$('stageWorkspace').inert=true;$('stageScreen').querySelector('nav').inert=true;frame.activate('stage',{covered:true});notifyMeasurement();$('purchaseCancel').focus();};
   const closePurchase=()=>{if(purchasePending)return;$('stageDialog').hidden=true;$('stageWorkspace').inert=false;$('stageScreen').querySelector('nav').inert=false;frame.activate('stage');notifyMeasurement();purchaseItem=null;if(purchaseReturn?.isConnected)purchaseReturn.focus();};
   const setScreen=next=>{
+    if(screen!==next)window.WeightPlayCastle?.dismissRewardNotice?.('rux-salvage-yard');
     if(screen==='battle'&&next!=='battle'){clearRecoveryFeedback();cancelAnimationFrame(raf);view?.dispose();model?.dispose();view=model=null;audio?.stop();}
     screen=next;document.body.dataset.screen=next;
     for(const n of ['main','stage','battle']){$(n+'Screen').hidden=n!==next;$(n+'Screen').inert=n!==next;}
     $('guide').hidden=next!=='main';frame.activate(next);if(next==='stage')showStageTab('stages');
     $('mainProgress').textContent=`${t('stage')} ${progress.highestUnlocked} / 60`;
-    notifyMeasurement();
+    notifyMeasurement();if(next==='main')flushPendingRewards();
   };
   // The shared rail captures pointer events before they bubble. Wait for
   // its own gesture and easing flags to clear before refreshing its cards.
@@ -190,11 +195,14 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     try {
     if(practice&&!await LocalPractice.validate())return;
     if(pageClosed||screen!==originScreen)return;
+    // The previous result's reward notice must not cover the next board's
+    // controls after the player chooses Next or Replay.
+    window.WeightPlayCastle?.dismissRewardNotice?.('rux-salvage-yard');
     roundRestart=originScreen==='battle'&&index===slice;roundSequence++;roundStarted=false;roundEnded=false;roundOutcome='';roundSaved=true;slice=index;
     selected=index;
     if(screen==='battle'){clearRecoveryFeedback();view?.dispose();model?.dispose();cancelAnimationFrame(raf);}
     else setScreen('battle');
-    $('dialog').hidden=true;$('battleLive').inert=false;paused=false;fastForward=false;frame.activate('battle');model=new SalvageSlice(window.Matter,slice===AVAILABLE ? {twoTargets:true} : {stage:OPENING[slice]});angle=.05;accum=0;$('power').value='60';updatePower();
+    $('dialog').hidden=true;dialogMode='';$('battleLive').inert=false;paused=false;fastForward=false;frame.activate('battle');model=new SalvageSlice(window.Matter,slice===AVAILABLE ? {twoTargets:true} : {stage:OPENING[slice]});angle=.05;accum=0;$('power').value='60';updatePower();
     // Match the checked initial rest state before accepting a player's first shot.
     for(let i=0;i<120;i++)model.step();
     clampChoice=null;recoveryTime=0;recoveredBeforeShot=0;missHintShown=false;ballEdge.hidden=true;recoveryNotice.hidden=true;recoveryNotice.classList.remove('is-hint');clampStatus.textContent='';lastClampSeconds=0;$('arena').classList.toggle('chapter-two',slice>=30);$('clampTools').hidden=true;clampTrigger.hidden=!model.stage?.clamps;$('battleLive').classList.toggle('has-clamp',Boolean(model.stage?.clamps));if(model.stage?.clamps)refreshClampOptions();
@@ -213,6 +221,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
       // Keep the result visible but its actions disabled until the serialized
       // save settles, so a delayed write cannot race navigation or rewards.
       dialog(t('won'),`${t('winBody')} ${rating}${t('savingProgress')}`,buttons.map(([label,fn])=>[label,fn,true]));
+      flushPendingRewards();
       const persisted=await save();if(persisted){try{const reward=window.WonderAnalytics?.completeStage?.(resultSlice+1);if(reward?.credited||reward?.reason==='already-claimed'){markRewardDelivered(key);save();}else flushPendingRewards();}catch(error){console.warn('RUX_STAGE_REWARD',error);flushPendingRewards();}}
       if(pageClosed||screen!=='battle'||model!==resultModel||dialogMode!=='result')return;
       roundEnded=true;roundOutcome='win';roundSaved=persisted;notifyMeasurement();
@@ -222,6 +231,7 @@ if (new URLSearchParams(location.search).get('preview') !== '1') {
     const note=won&&practice?t('practice'):'';
     roundEnded=true;roundOutcome=won?'win':'lose';roundSaved=!practice;notifyMeasurement();
     dialog(won?t('won'):reason?t('wrong'):t('lost'),won?`${t('winBody')} ${rating}${note}`:reason==='wrongOrder'?t('first'):reason==='wrongLast'?t('last'):reason==='wrongLink'?t('linked'):reason==='missingClamp'?t('clampRule'):t('lossText'),buttons);
+    flushPendingRewards();
   };
   const tick=now=>{
     if(screen!=='battle'||!model)return;

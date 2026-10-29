@@ -442,25 +442,35 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     groupFromBuild(build().box(0, 0, .055, .38, .12, .20, 0x1a919d).box(0, -.035, .16, .30, .045, .025, 0x273e3b), vacuum, { material: enamelMaterial });
     groupFromBuild(build().box(0, .065, .045, .28, .025, .12, 0xe1c67f).box(0, .072, .045, .18, .012, .07, 0xf8cb64)
       .box(-.18, 0, .055, .035, .13, .21, 0xb98e4e).box(.18, 0, .055, .035, .13, .21, 0xb98e4e), vacuum, { material: copperMaterial });
-    const brush = new THREE.Group(); tool.add(brush);
-    const brushBuild = build(); brushBuild.box(0, .04, .06, .38, .07, .18, 0xe0c78e);
-    for (let x = -.15; x <= .16; x += .06) for (const z of [0, .09]) brushBuild.box(x, -.02, z, .035, .08, .05, 0x4e8685);
+    const brush = new THREE.Group(); brush.name = 'taro-ground-brush'; brush.position.z = .17; tool.add(brush);
+    // A broad amber shoe and dark contact bristles read below the face instead
+    // of disappearing inside the green shell/nozzle silhouette at phone scale.
+    const brushBuild = build(); brushBuild.box(.05, .07, -.08, .09, .06, .20, 0xb58b4d).box(0, .04, .075, .47, .075, .20, 0xd7a651)
+      .box(0, .085, .075, .35, .025, .13, 0x68bfc7);
+    for (let x = -.20; x <= .201; x += .08) for (const z of [.015, .115]) brushBuild.box(x, -.018, z, .05, .085, .055, 0x294555);
     groupFromBuild(brushBuild, brush);
-    const press = new THREE.Group(); shellRoot.add(press);
-    groupFromBuild(build().box(.40, .35, -.02, .24, .045, .27, 0x3d519d)
-      .box(.515, .51, -.06, .035, .30, .035, 0x4b5db2).box(.285, .51, -.06, .035, .30, .035, 0x4b5db2)
-      .box(.40, .67, -.06, .27, .05, .12, 0x5965b6), press,{material:enamelMaterial});
+    const press = new THREE.Group(); press.name = 'taro-visible-press'; press.position.set(-.55, 0, .045); shellRoot.add(press);
+    // The idle camera sees local -X. The old +X press was behind the fortress.
+    // A near-side open chamber gives the moving copper platen a dark gap and
+    // visible cargo, without changing Taro's face, contact point or core rules.
+    groupFromBuild(build().box(0, .35, .015, .34, .07, .33, 0x3d519d)
+      .box(-.155, .64, -.075, .045, .52, .045, 0x5365b7).box(.155, .64, -.075, .045, .52, .045, 0x5365b7)
+      .box(0, .925, -.015, .37, .075, .32, 0x6476bd), press,{material:enamelMaterial});
+    groupFromBuild(build().box(0, .64, -.13, .265, .48, .035, 0x18333f), press);
+    const pressCargo = new THREE.Group(); pressCargo.name = 'taro-press-cargo'; pressCargo.position.y = .39; press.add(pressCargo);
+    groupFromBuild(build().box(0, .12, .025, .245, .24, .23, 0xd5a35a)
+      .box(-.065, .19, .06, .085, .065, .16, 0xf0dbad).box(.065, .18, .04, .08, .055, .15, 0xb47b42), pressCargo);
     const pressPlaten = new THREE.Group(); press.add(pressPlaten);
     pressPlaten.name = 'taro-compression-platen';
-    groupFromBuild(build().box(.40, .58, -.02, .23, .055, .25, 0xd4aa57)
-      .box(.40, .625, -.06, .04, .07, .04, 0x788989), pressPlaten,{material:copperMaterial});
+    groupFromBuild(build().box(0, .82, .025, .30, .075, .31, 0xedb45f)
+      .box(0, .89, -.025, .065, .10, .065, 0x879da1), pressPlaten,{material:copperMaterial});
     const pressSignalMaterial = keepMaterial(new THREE.MeshStandardMaterial({ color: 0xffd28b, emissive: 0xe3a33e, emissiveIntensity: .12, roughness: .4 }));
     const pressSignal = mesh(block, pressSignalMaterial, press);
-    pressSignal.scale.set(.16, .025, .025); pressSignal.position.set(.40, .67, .01);
+    pressSignal.scale.set(.20, .045, .025); pressSignal.position.set(0, .925, .16);
     // The authored anatomy is deliberately larger than the first slice. The
     // contact patch remains centred on core's point; no collision is resized.
     root.scale.setScalar(1.15);
-    return { root, body, head, eyes, shellRoot, legs, amber, bags, cargo, tool, vacuum, brush, press, pressPlaten, pressSignalMaterial };
+    return { root, body, head, eyes, shellRoot, legs, amber, bags, cargo, tool, vacuum, brush, press, pressCargo, pressPlaten, pressSignalMaterial };
   }
 
   function makeDepot(x, z, portable, palette) {
@@ -833,9 +843,9 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
     // The platen follows the read-only render proxy through the whole one-second
     // action; it never completes or charges a compression transaction itself.
     if (reducedMotion) hero.pressPlaten.position.y = 0;
-    else if (next.compressing) hero.pressPlaten.position.y = -.16 * eased;
-    else hero.pressPlaten.position.y = Math.min(0, hero.pressPlaten.position.y + dt * .8);
-    if (next.compressing && !reducedMotion) hero.cargo.scale.y *= 1 - eased * .34;
+    else if (next.compressing) hero.pressPlaten.position.y = -.25 * eased;
+    else hero.pressPlaten.position.y = Math.min(0, hero.pressPlaten.position.y + dt * 1.1);
+    if (next.compressing && !reducedMotion) hero.pressCargo.scale.y *= 1 - eased * .40;
     compressionConfirm = Math.max(0, compressionConfirm - dt);
     hero.pressSignalMaterial.emissiveIntensity = .12 + (next.compressing ? .55 * eased : compressionConfirm * 1.9);
   }
@@ -1019,12 +1029,14 @@ export function mountRenderer({ container, onPointer = () => {}, onStatus = () =
       const headToCamera = Math.atan2(Math.sin(cameraYaw + .10 - hero.root.rotation.y), Math.cos(cameraYaw + .10 - hero.root.rotation.y));
       hero.head.rotation.y = clamp(headToCamera, moving ? -.22 : -.45, moving ? .22 : .45);
       const eyePhase=t%4.8;hero.eyes.scale.y=reducedMotion||eyePhase<4.62?1:Math.max(.08,Math.abs(eyePhase-4.71)/.09);
-      hero.tool.position.x = .15 + (!reducedMotion && brushing ? Math.sin(t * 23) * .045 : 0);
+      hero.tool.position.x = .15 + (!reducedMotion && brushing ? Math.sin(t * 18) * .09 : 0);
+      hero.brush.rotation.y = !reducedMotion && brushing ? Math.sin(t * 18) * .16 : 0;
       hero.brush.visible = next.mode === 'brush'; hero.vacuum.visible = !hero.brush.visible;
       hero.press.visible = next.toolId === 'press'; hero.amber.visible = next.skin === 'amber';
       hero.bags.scale.set(next.toolId === 'cargo' ? 1.12 : 1, next.toolId==='cargo'?1.10:1, next.toolId === 'cargo' ? 1.1 : 1);
       const load = finite(next.bagLoad ?? next.bagWeight ?? next.bagCargo), capacity = next.capacity || (next.toolId === 'cargo' ? 12 : 8);
-      hero.cargo.visible = load > 0; hero.cargo.scale.y = .25 + clamp(load / capacity, 0, 1);
+      hero.cargo.visible = load > 0 && next.toolId !== 'press'; hero.cargo.scale.y = .25 + clamp(load / capacity, 0, 1);
+      hero.pressCargo.visible = load > 0; hero.pressCargo.scale.y = .20 + .80 * clamp(load / capacity, 0, 1);
       targetRing.visible = !!next.target && next.status === 'playing'; targetStem.visible = targetRing.visible;
       if (targetRing.visible) {
         targetRing.position.set(next.target.x, .035, next.target.z); targetStem.position.set(next.target.x, .045, next.target.z);

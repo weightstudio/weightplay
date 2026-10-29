@@ -78,19 +78,21 @@ export class SalvageSlice {
         for(const targetX of twoTargets ? [x-28,x+28] : [x]) {
           const heavy=column===stage?.heavyColumn;
           const part=add(Bodies.rectangle(targetX,800-80*height-32.5,twoTargets?55:65,65,{...surface,density:heavy ? .0009 : .0006}),'target');
-          part.plugin.column=column;part.plugin.heavy=heavy;part.plugin.first=column===stage?.firstColumn;part.plugin.last=column===stage?.lastColumn;part.plugin.clampRequired=column===stage?.clampColumn;part.plugin.linked=stage?.sameShot?.includes(column)||false;this.targets.push(part);
+          part.plugin.renderWidth=twoTargets?55:65;part.plugin.column=column;part.plugin.heavy=heavy;part.plugin.first=column===stage?.firstColumn;part.plugin.last=column===stage?.lastColumn;part.plugin.clampRequired=column===stage?.clampColumn;part.plugin.linked=stage?.sameShot?.includes(column)||false;this.targets.push(part);
         }
       }
     }
     if(stage?.bridge){
       const slope=stage.bridge==='slope',width=slope?390:190;
       const beam=add(Bodies.rectangle(slope?662.4:580,slope?670.3:710,width,20,{...surface,density:.001,angle:slope?Math.atan2(80,320):0}),'beam');beam.plugin.width=width;
-      const part=add(Bodies.rectangle(slope?672.7:580,slope?629.1:667.5,65,65,{...surface,density:.0006}),'target');part.plugin.column=1;this.targets.push(part);
+      // Start the sloped load aligned with the beam near its settled pose,
+      // instead of visibly sliding during the first seconds of aiming.
+      const part=add(Bodies.rectangle(slope?689.44:580,slope?625.46:667.5,65,65,{...surface,density:.0006,angle:slope?Math.atan2(80,320):0}),'target');part.plugin.renderWidth=65;part.plugin.column=1;this.targets.push(part);
     }
-    if(stage?.capBeam){const beam=add(Bodies.rectangle(stage.capBeam==='far'?740:580,645,230,20,{...surface,density:.001}),'beam');beam.plugin.width=230;}
+    if(stage?.capBeam){const beam=add(Bodies.rectangle(stage.capBeam==='far'?740:580,stage.capBeam==='high'?565:645,230,20,{...surface,density:.001}),'beam');beam.plugin.width=230;}
     if(stage?.platform){
       const part=add(Bodies.rectangle(660,657.5,65,65,{...surface,density:.0006}),'target');
-      Object.assign(part.plugin,{column:1,first:stage.firstColumn===1,last:stage.lastColumn===1,clampRequired:stage.clampColumn===1,linked:stage.sameShot?.includes(1)||false});this.targets.push(part);
+      Object.assign(part.plugin,{renderWidth:65,column:1,first:stage.firstColumn===1,last:stage.lastColumn===1,clampRequired:stage.clampColumn===1,linked:stage.sameShot?.includes(1)||false});this.targets.push(part);
     }
     this.recoveredTargets = new Set();
     if (stage?.sameShot) {
@@ -184,7 +186,12 @@ export class SalvageSlice {
         // so unsupported stacks fall and settle under the real physics.
         for(const body of this.bodies)if(!body.isStatic&&body!==this.ball)this.M.Sleeping.set(body,false);
       }
-      for(const body of this.pendingBreak){this.M.Composite.remove(this.engine.world,body);const index=this.bodies.indexOf(body);if(index>=0)this.bodies.splice(index,1);}
+      for(const body of this.pendingBreak){
+        // A shattered held support no longer exists to keep the clamp active.
+        // Remove only its hold; any other clamp continues its own timer.
+        this.clamped=this.clamped.filter(held=>held.body!==body);
+        this.M.Composite.remove(this.engine.world,body);const index=this.bodies.indexOf(body);if(index>=0)this.bodies.splice(index,1);
+      }
       this.pendingBreak.clear();
       for(const body of this.pendingRemove){this.M.Composite.remove(this.engine.world,body);const index=this.bodies.indexOf(body);if(index>=0)this.bodies.splice(index,1);}
       this.pendingRemove.clear();

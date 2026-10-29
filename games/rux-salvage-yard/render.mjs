@@ -179,7 +179,7 @@ export class SalvageView {
     };
     // A slim dark backplate separates playable shapes from the richly detailed
     // workshop without changing the collision shape or obscuring its face.
-    if(['wood','metal','target'].includes(kind)){const w=kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='target'?65:80;box(w+7,h+7,5,0x183b3a,-39);}
+    if(['wood','metal','target'].includes(kind)){const w=kind==='target'?body.plugin.renderWidth:70,h=kind==='target'?65:80;box(w+7,h+7,5,0x183b3a,-39);}
     if(kind==='ground') {
       box(2000,40,80,0x674b39);
       // Repeated timber panels and fasteners tie the playable floor to the
@@ -216,7 +216,7 @@ export class SalvageView {
       tipA.position.set(16,5,0);tipA.rotation.z=-Math.PI/4;tipB.position.set(16,-5,0);tipB.rotation.z=Math.PI/4;direction.add(shaft,tipA,tipB);direction.position.z=43;group.add(direction);group.userData.direction=direction;
     }
     if(kind==='target') {
-      const w=body.bounds.max.x-body.bounds.min.x;block(w,65,65,body.plugin.heavy?0x4a5960:0x137f80,.2);box(w-6,57,6,body.plugin.heavy?0xb97a42:0xe8b847,35,.4);enamel(box(w-17,46,7,0x249fa0,40));enamel(box(w-27,36,7,0x126a70,44,.2));
+      const w=body.plugin.renderWidth;block(w,65,65,body.plugin.heavy?0x4a5960:0x137f80,.2);box(w-6,57,6,body.plugin.heavy?0xb97a42:0xe8b847,35,.4);enamel(box(w-17,46,7,0x249fa0,40));enamel(box(w-27,36,7,0x126a70,44,.2));
       if(body.plugin.heavy){for(const x of [-w/2+7,w/2-7]){const brace=box(5,49,7,0xd6e0d4,47,.5);brace.position.x=x;}}
       const gear=new THREE.Shape();for(let i=0;i<32;i++){const a=i*Math.PI/16,r=(i%4===1||i%4===2)?16:13;const x=Math.cos(a)*r,y=Math.sin(a)*r;if(i===0)gear.moveTo(x,y);else gear.lineTo(x,y);}gear.closePath();const hole=new THREE.Path();hole.absellipse(0,0,7,7,0,Math.PI*2,true);gear.holes.push(hole);const cog=new THREE.Mesh(new THREE.ExtrudeGeometry(gear,{depth:3,bevelEnabled:false,curveSegments:12}),mat(0xffd36c,.55));cog.position.z=48;group.add(cog);
       studs(w-9,54,45);if(body.plugin.first){const bar=box(38,9,9,0xfff0c1,55);bar.rotation.z=-Math.PI/4;const bar2=box(38,9,9,0xfff0c1,56);bar2.rotation.z=Math.PI/4;}if(body.plugin.last){box(30,8,9,0xfff0c1,56);const base=box(8,30,9,0xfff0c1,57);base.position.y=-10;}if(body.plugin.linked){const band=box(w-6,7,9,0xf7a8e8,57);band.position.y=25;}if(body.plugin.clampRequired){const band=box(7,60,9,0xa8f8ff,58);band.position.x=-w/2+4;}
@@ -225,7 +225,7 @@ export class SalvageView {
     if(['wood','beam','metal','target'].includes(kind)) {
       // A held body gets four bright corner brackets. The indicator follows
       // the same body transform as the physics mesh and uses a single draw.
-      const w=kind==='beam'?body.plugin.width:kind==='target'?body.bounds.max.x-body.bounds.min.x:70,h=kind==='beam'?20:kind==='target'?65:80;
+      const w=kind==='beam'?body.plugin.width:kind==='target'?body.plugin.renderWidth:70,h=kind==='beam'?20:kind==='target'?65:80;
       const indicator=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial({color:0x9bffff}),8),transform=new THREE.Object3D();let i=0;
       for(const x of [-1,1])for(const y of [-1,1])for(const horizontal of [true,false]){transform.position.set(x*(w/2+(horizontal?-4:4)),y*(h/2+(horizontal?4:-4)),70);transform.scale.set(horizontal?18:5,horizontal?5:18,3);transform.updateMatrix();indicator.setMatrixAt(i++,transform.matrix);}
       indicator.visible=false;group.add(indicator);group.userData.clampIndicator=indicator;

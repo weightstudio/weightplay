@@ -56,7 +56,7 @@ export const OPENING = Object.freeze([
   { id:53, columns:[2,2,0], shots:6, title:'Heavy tower', clamps:2, platform:true, metalColumn:0 },
   { id:54, columns:[0,2,2], shots:6, title:'Far weak point', clamps:1, platform:true, reflector:1, fragile:[2,0] },
   { id:55, columns:[2,1,2], shots:7, title:'Far part last', clamps:2, platform:true, guard:true, metalColumn:2, lastColumn:2 },
-  { id:56, columns:[2,2,1], shots:7, title:'Open the lane', clamps:1, reflector:1, fragile:[0,0] },
+  { id:56, columns:[2,2,1], shots:7, title:'Open the lane', clamps:1, reflector:1, fragile:[0,0], capBeam:'high' },
   { id:57, columns:[1,3,2], shots:7, title:'Heavy far support', clamps:2, guard:true, guardHeight:120, metalColumn:2 },
   { id:58, columns:[2,1,2], shots:7, title:'Mirrored platform', clamps:1, platform:true, reflector:-1 },
   { id:59, columns:[3,2,1], shots:7, title:'Clamp allocation', clamps:2, platform:true, guard:true, fragile:[0,0] },
