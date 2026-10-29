@@ -386,7 +386,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/interface7-redrawn/zhao-yun-a-dou.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__zhao-yun-a-dou.webp",
   "/assets/interface7-redrawn/zoo-helper-day.webp": "/assets/lobby-thumbs/w480/assets__interface7-redrawn__zoo-helper-day.webp",
   "/games/puppy-haven/assets/cover-block-v1.webp": "/assets/lobby-thumbs/w480/games__puppy-haven__assets__cover-block-v1.webp",
-  "/games/lantern-lasso/assets/cover.webp":"/games/lantern-lasso/assets/cover.webp",
+  "/games/lantern-lasso/assets/cover.webp":"/assets/lobby-thumbs/w480/games__lantern-lasso__assets__cover.webp",
   "/games/dustwake-depot/art/poster.webp":"/games/dustwake-depot/art/poster.webp",
   "/games/rux-salvage-yard/art/poster.webp":"/games/rux-salvage-yard/art/poster.webp"
 });

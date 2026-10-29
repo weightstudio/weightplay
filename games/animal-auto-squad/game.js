@@ -6,7 +6,7 @@
   let practiceStartPending = false, practiceBattleValidated = false;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
-  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", stageIdAuthoritative: true, stageId: null, rewardEligible: false, saveSucceeded: false };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
     paused: Boolean(combatSuspendedForBackground || !state.combat.animating), node: nodes.gamePanel,
@@ -26,7 +26,7 @@
   document.body.dataset.wpCombinedSound = "true";
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v43";
+  const GAME_VERSION = "v44";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -2014,8 +2014,8 @@
           awardTeamXp(4 + clearedStage * 2 + round);
           awardTrainingCoins(6 + clearedStage * 2 + round);
         }
-        completeStageClear(clearedStage);
-        openResultScreen(true);
+        const clearProof = completeStageClear(clearedStage);
+        openResultScreen(true, clearProof);
         return { save: normalizeSave(save), earnedTeamXp: state.earnedTeamXp, earnedTrainingCoins: state.earnedTrainingCoins };
       },
       openReviveDecision: () => {
@@ -2409,8 +2409,20 @@
   }
 
   function saveSave() {
-    if (practiceRequested) { practiceMemory = normalizeSave(save); return; }
-    writeStorage(saveKey, JSON.stringify(save));
+    if (practiceRequested) { practiceMemory = normalizeSave(save); return true; }
+    const bytes = JSON.stringify(save);
+    return writeStorage(saveKey, bytes) && readStorage(saveKey) === bytes;
+  }
+
+  // Unknown or unreadable campaign data cannot establish first-clear eligibility.
+  function firstClearEligible(stage) {
+    try {
+      const bytes = readStorage(saveKey);
+      if (bytes === null) return false;
+      const stored = JSON.parse(bytes);
+      if (!stored || typeof stored !== "object" || Array.isArray(stored) || !Array.isArray(stored.completedStages)) return false;
+      return !stored.completedStages.some((id) => Number(id) === stage);
+    } catch { return false; }
   }
 
   // Commander tools use the existing owned roster and save transaction. They
@@ -3732,6 +3744,7 @@
     setResultOwnership(false);
     state = makeState();
     state.stage = normalizeSave(save).selectedStage;
+    state.stageRewardEligible = !practiceRequested && firstClearEligible(state.stage);
     updateHUD();
     state.backpack = createBackpackCards();
     restoreSavedFormation();
@@ -3745,8 +3758,9 @@
     showTeamPreparationView();
     startRoundPrep();
     trackGame("expedition_start", { game_id: GAME_ID, stage: state.stage });
+    trackGame("stage_start", { game_id: GAME_ID, stage_id: state.stage });
 
-    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = false; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpNotifyMeasurement();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = false; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.stageId = state.stage; __wpMeasurement.rewardEligible = state.stageRewardEligible; __wpMeasurement.saveSucceeded = false; __wpNotifyMeasurement();
 }
 
   // Round Setup and Shop Drafting
@@ -5963,6 +5977,7 @@
 
   // End Battle results
   function completeStageClear(clearedStage) {
+    const firstClear = !practiceRequested && firstClearEligible(clearedStage);
     state.activeRun = false;
     save = normalizeSave(save);
     save.clearedRuns++;
@@ -5971,7 +5986,7 @@
     save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, clearedStage + 1));
     save.selectedStage = save.unlockedStage;
     awardTeamXp(12 + clearedStage * 3);
-    saveSave();
+    return { confirmed: saveSave(), firstClear };
   }
 
   function startNextWaveBattle(preparedWave = null) {
@@ -6043,8 +6058,8 @@
       state.gold += 4 + Math.floor((state.stage + state.round) / 2);
       if (state.round >= WAVES_PER_STAGE) {
         const clearedStage = state.stage;
-        completeStageClear(clearedStage);
-        openResultScreen(true);
+        const clearProof = completeStageClear(clearedStage);
+        openResultScreen(true, clearProof);
       } else {
         state.round++;
         if (state.round > save.bestRound) {
@@ -6305,10 +6320,11 @@
     return true;
   }
 
-  function openResultScreen(isWin) {
+  function openResultScreen(isWin, clearProof = null) {
     resultDecisionCommitted = false;
-    const isFinalVictory = isWin && state.stage >= STAGE_COUNT;
-    const canAdvance = isWin && state.stage < STAGE_COUNT;
+    const savedClear = isWin && clearProof?.confirmed === true;
+    const isFinalVictory = savedClear && state.stage >= STAGE_COUNT;
+    const canAdvance = savedClear && state.stage < STAGE_COUNT;
     const primaryAction = canAdvance ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn;
     ensureResultActions();
     nodes.gamePanel.classList.remove("is-hidden");
@@ -6316,12 +6332,16 @@
     (__wpNotifyMeasurement(), nodes.resultPanel.classList.remove("is-hidden"));
 
     nodes.resultTitle.textContent = isWin ? t("expeditionClear") : t("expeditionFail");
+    const savedProgressLabel = nodes.resultPanel.querySelector('[data-ui="savedProgress"]');
+    if (savedProgressLabel) savedProgressLabel.textContent = isWin && !savedClear && !practiceRequested
+      ? localizedPhrase("Progress not saved", "進度未儲存", "Progreso no guardado") : t("savedProgress");
     if (nodes.resultDecisionText) {
       nodes.resultDecisionText.textContent = canAdvance
         ? `${t("nextStage")} · ${stageLabel(state.stage + 1)}`
         : isFinalVictory ? t("backToStages") : t("retry");
     }
-    nodes.resultText.textContent = practiceRequested ? practiceNoSaveText() : isWin
+    nodes.resultText.textContent = practiceRequested ? practiceNoSaveText() : isWin && !savedClear
+      ? localizedPhrase("Progress could not be saved. Retry when storage is available.", "進度無法儲存。儲存空間可用時請重試。", "No se pudo guardar el progreso. Vuelve a intentarlo cuando haya almacenamiento disponible.") : isWin
       ? state.stage < STAGE_COUNT
         ? t("stageClearText", { stage: state.stage, next: state.stage + 1 })
         : t("allStagesClearText")
@@ -6336,7 +6356,7 @@
     nodes.resultGoldText.textContent = practiceRequested ? "" : t("resultGoldEarned", { earned: state.earnedTrainingCoins || 0, total: save.coins });
     const stagePreview = canAdvance ? nextStagePreview(state.stage) : "";
     nodes.resultStageText.textContent = [
-      practiceRequested ? practiceNoSaveText() : t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT }),
+      practiceRequested ? practiceNoSaveText() : isWin && !savedClear ? "" : t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT }),
       stagePreview,
     ].filter(Boolean).join(". ");
     nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
@@ -6357,7 +6377,11 @@
     playSynth(isWin ? "result.win" : "result.lose");
     trackGame("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });
 
-    __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
+    const rewardAllowed = savedClear && state.stageRewardEligible === true && clearProof.firstClear === true && !practiceRequested;
+    const reward = rewardAllowed ? window.WonderAnalytics?.completeStage?.(state.stage) : null;
+    window.ShowResultGet?.(GAME_ID, reward?.credited === true);
+    if (reward?.credited === true) window.WeightPlayCastle?.dismissRewardNotice?.(GAME_ID);
+    __wpMeasurement.saveSucceeded = rewardAllowed; __wpMeasurement.ended = true; __wpMeasurement.outcome = isWin ? "win" : "lose"; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
 
   function openQuitDecision() {
