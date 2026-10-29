@@ -1,0 +1,1 @@
+(()=>{"use strict";const c=document.currentScript?.src||location.href,e=new URL("./locales-v5-base.js?v=20261003-textgrowth140",c).href,r=new URL("./interface-copy-v7.js?v=20260922-interface7-review-2",c).href;document.write(`<script src="${e}"><\/script><script src="${r}"><\/script>`)})();
