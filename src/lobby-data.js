@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   audiences: {
     generalGameIds: [
       "dustwake-depot",
+      "hearthloop",
       "rux-salvage-yard",
       "lantern-stride",
       "orbit-menders",
@@ -87,6 +88,16 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "hearthloop", audience: "general", status: "planned", internalOnly: true,
+      href: "games/hearthloop/", internalTrial: "games/hearthloop/?preview=1",
+      title: { __localizedExact: true, en: "Hearthloop", "zh-Hant": "歸巢環遊", "zh-Hans": "归巢环游", ja: "おかえりループ", ko: "집으로 한 바퀴", es: "Vuelta al hogar", "pt-BR": "Volta ao lar", fr: "La boucle du foyer", de: "Heimatrunde", it: "Giro verso casa", ru: "Круг к дому", hi: "घर की परिक्रमा", ar: "دورة إلى الديار" },
+      type: { en: "Dice Race Strategy", "zh-Hant": "擲骰競速棋" },
+      description: { en: "Choose which companion moves, find safe stops and bring both friends home through 60 tactical races.", "zh-Hant": "分配骰點、停靠安全驛站，帶兩位夥伴闖過60關戰術競速棋。" },
+      categories: ["Strategy", "Board Games", "Animal Games"], skills: ["Logic", "Planning", "Focus"], ages: ["9+", "Family"],
+      meta: { en: ["60 Stages", "Permanent board · 5 diamonds"], "zh-Hant": ["60關", "永久棋盤外觀 · 5鑽石"] },
+      art: { kind: "image", background: "games/hearthloop/assets/cover.webp", hideHero: true }
+    },
     {
       id: "dustwake-depot", audience: "general", status: "playable",
       previewVideo: "assets/previews/dustwake-depot-battle.webm", href: "games/dustwake-depot/",

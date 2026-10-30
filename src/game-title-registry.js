@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "hearthloop": { "__localizedExact": true, "en": "Hearthloop", "zh-Hant": "歸巢環遊", "zh-Hans": "归巢环游", "ja": "おかえりループ", "ko": "집으로 한 바퀴", "es": "Vuelta al hogar", "pt-BR": "Volta ao lar", "fr": "La boucle du foyer", "de": "Heimatrunde", "it": "Giro verso casa", "ru": "Круг к дому", "hi": "घर की परिक्रमा", "ar": "دورة إلى الديار" },
   "dustwake-depot": {
     "__localizedExact": true,
     "en": "Dustwake Depot",
