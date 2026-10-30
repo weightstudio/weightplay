@@ -585,11 +585,6 @@ html[dir="rtl"] body.general-lobby-page .lobby-hero > .lobby-hero-copy {
   text-align: right !important;
 }
 
-html[dir="rtl"] body.general-lobby-page .lobby-hero > #spotlightGameSection {
-  right: auto !important;
-  left: 20px !important;
-}
-
 html[dir="rtl"] body.general-lobby-page .lobby-hero > .weightplay-version-badge {
   right: 16px !important;
   left: auto !important;
@@ -599,10 +594,6 @@ html[dir="rtl"] body.general-lobby-page .lobby-hero > .weightplay-version-badge 
   html[dir="rtl"] body.general-lobby-page .lobby-hero > .lobby-hero-copy {
     left: auto !important;
     right: 16px !important;
-  }
-
-  html[dir="rtl"] body.general-lobby-page .lobby-hero > #spotlightGameSection {
-    left: 10px !important;
   }
 }
 

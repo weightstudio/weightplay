@@ -45,7 +45,7 @@
   html[dir='rtl'] body.general-lobby-page .game-hall-switch button { padding-inline: 30px 5px; }
 
   body.general-lobby-page .lobby-hero {
-    order: -1; box-sizing: border-box; height: 210px !important; margin: 0 0 10px;
+    order: -1; box-sizing: border-box; height: 210px !important; min-height: 0 !important; margin: 0 0 10px;
     border: 1px solid #698d9f99; border-radius: 9px; box-shadow: 0 6px 20px #020e1855;
   }
   body.general-lobby-page .lobby-hero.has-spotlight > :is(.general-hero-scene, .lobby-hero-copy) { display: none !important; }
@@ -56,7 +56,7 @@
   body.general-lobby-page .spotlight-game {
     position: relative; isolation: isolate; box-sizing: border-box; display: grid;
     grid-template-columns: minmax(0, 1fr) 42%; align-items: center;
-    min-height: 208px; gap: 10px; padding: 18px; border: 0; border-radius: 8px;
+    height: 100%; min-height: 0; gap: 10px; padding: 18px; border: 0; border-radius: 8px;
     background: #092536; box-shadow: none; overflow: hidden;
   }
   body.general-lobby-page .spotlight-game > img {
@@ -111,17 +111,17 @@
   }
   body.general-lobby-page .demon-event-card,
   body.general-lobby-page .demon-event-card + .demon-event-card {
-    position: relative; isolation: isolate; grid-template-columns: 40px minmax(0, 1fr);
-    align-items: center; gap: 8px; min-height: 80px; padding: 9px;
+    position: relative; isolation: isolate; grid-template-columns: 64px minmax(0, 1fr);
+    align-items: center; gap: 8px; min-height: 80px; padding: 6px;
     border: 1px solid #62829688; border-radius: 7px; background: #102b3bdd; overflow: hidden;
   }
   body.general-lobby-page .demon-event-card::before {
     content: ''; position: absolute; z-index: -1; inset: 0;
     background: linear-gradient(90deg, #081b29dd, #081b29aa), var(--activity-art) center / cover;
   }
-  body.general-lobby-page .demon-event-card .demon-event-art { width: 40px; height: 40px; border-radius: 4px; }
+  body.general-lobby-page .demon-event-card .demon-event-art { width: 64px; height: 64px; border-radius: 4px; }
   body.general-lobby-page .demon-event-card-copy { gap: 4px; padding: 0; }
-  body.general-lobby-page .demon-event-label { font-size: 9px; letter-spacing: 0; }
+  body.general-lobby-page .demon-event-label { min-width: 0; font-size: 9px; letter-spacing: 0; overflow-wrap: anywhere; }
   body.general-lobby-page .demon-event-title { font-size: 14px; line-height: 1.25; }
   body.general-lobby-page .demon-event-card-schedule { display: none; }
   body.general-lobby-page .demon-event-chevron,
@@ -167,11 +167,8 @@
 @media (min-width: 721px) and (max-width: 1119px) {
   body.general-lobby-page .lobby-shell { width: calc(100% - 40px); }
   body.general-lobby-page .lobby-hero { height: 260px !important; }
-  body.general-lobby-page .spotlight-game { min-height: 258px; padding: 24px 30px; }
+  body.general-lobby-page .spotlight-game { padding: 24px 30px; }
   body.general-lobby-page .spotlight-game--scene > div { width: 48%; }
   body.general-lobby-page .spotlight-game h3 { font-size: 38px; }
-  body.general-lobby-page .demon-event-card,
-  body.general-lobby-page .demon-event-card + .demon-event-card { grid-template-columns: 54px minmax(0, 1fr); }
-  body.general-lobby-page .demon-event-card .demon-event-art { width: 54px; height: 54px; }
   body.general-lobby-page .demon-event-card-schedule { display: block; }
 }

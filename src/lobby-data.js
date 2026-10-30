@@ -89,8 +89,8 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "hearthloop", audience: "general", status: "planned", internalOnly: true,
-      href: "games/hearthloop/", internalTrial: "?preview=1",
+      id: "hearthloop", audience: "general", status: "playable",
+      href: "games/hearthloop/", previewVideo: "assets/previews/hearthloop-battle.webm",
       title: { __localizedExact: true, en: "Hearthloop", "zh-Hant": "歸巢環遊", "zh-Hans": "归巢环游", ja: "おかえりループ", ko: "집으로 한 바퀴", es: "Vuelta al hogar", "pt-BR": "Volta ao lar", fr: "La boucle du foyer", de: "Heimatrunde", it: "Giro verso casa", ru: "Круг к дому", hi: "घर की परिक्रमा", ar: "دورة إلى الديار" },
       type: {"en":"Property strategy","zh-Hant":"地產經營棋","zh-Hans":"地产经营棋","ja":"土地経営ゲーム","ko":"부동산 경영","es":"Estrategia inmobiliaria","pt-BR":"Estratégia imobiliária","fr":"Stratégie immobilière","de":"Immobilienstrategie","it":"Strategia immobiliare","ru":"Стратегия недвижимости","hi":"जमीन प्रबंधन","ar":"استراتيجية العقارات"},
       description: {"en":"Roll, buy streets and grow your forest-town fortune.","zh-Hant":"擲骰買地、建屋收租，經營你的森林小鎮。","zh-Hans":"掷骰买地、建屋收租，经营你的森林小镇。","ja":"サイコロで進み、土地を買い、森の街を育てよう。","ko":"주사위로 이동하고 땅을 사서 숲속 마을을 키워요.","es":"Tira, compra terrenos y haz crecer tu pueblo del bosque.","pt-BR":"Role, compre terrenos e desenvolva sua vila na floresta.","fr":"Lancez les dés, achetez et développez votre village forestier.","de":"Würfle, kaufe Grundstücke und baue dein Walddorf auf.","it":"Tira, compra terreni e fai crescere il tuo villaggio nel bosco.","ru":"Бросайте кубик, покупайте землю и развивайте лесной город.","hi":"पासा फेंकें, जमीन खरीदें और वन नगर बसाएँ।","ar":"ارم النرد واشتر الأراضي وطوّر بلدتك في الغابة."},

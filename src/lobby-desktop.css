@@ -182,9 +182,13 @@
     grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; height: 100%;
   }
   body.general-lobby-page[data-desktop-lobby] .desktop-lobby-stage .demon-event-card {
-    position: relative; isolation: isolate; grid-template-columns: 76px minmax(0, 1fr) 14px; gap: 10px;
-    min-height: 0; padding: 12px; border: 1px solid #567b9099; border-radius: 6px;
+    --activity-icon-size: clamp(88px, 8vw, 128px);
+    position: relative; isolation: isolate; grid-template-columns: var(--activity-icon-size) minmax(0, 1fr) 14px; gap: 10px;
+    min-height: 0; padding: 6px; border: 1px solid #567b9099; border-radius: 6px;
     background: #102639; overflow: hidden;
+  }
+  body.general-lobby-page[data-desktop-lobby] .desktop-lobby-stage .demon-event-art {
+    width: var(--activity-icon-size); height: var(--activity-icon-size);
   }
   body.general-lobby-page[data-desktop-lobby] .demon-event-card::before {
     content: ''; position: absolute; z-index: -1; inset: 0;

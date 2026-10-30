@@ -299,3 +299,4 @@ WeightPlay is a family-friendly animal browser game platform where players can e
 - Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/
 - Mossfold: https://weightplay.com/en/games/mossfold/
 - A Life in Moments: https://weightplay.com/en/games/smallwood-lives/
+- Hearthloop: https://weightplay.com/en/games/hearthloop/
