@@ -7,6 +7,7 @@
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
   const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", saveSucceeded: null };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
+    ...(window.BlockTrilogyConfig?.id === "animal-mosaic-clues" ? { stageId: __wpMeasurement.mosaicStageId ?? null, stageIdAuthoritative: true, rewardEligible: __wpMeasurement.mosaicRewardEligible !== false } : {}),
     keyboardKeys: engine.kind === "crate" ? ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d"] : engine.kind === "breaker" ? ["ArrowLeft","ArrowRight","a","d"," "] : [],
     screen: ((({main:"main",stage:"stage",battle:"battle",})[screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
     paused: Boolean(!E.help.hidden || !E.leave.hidden), node: E.battle,
@@ -28,7 +29,7 @@ const cratePracticeCopy=()=>window.WeightPlayCrateboundSortingCandidate?.message
 const playPrismCue=id=>{if(C.id==="animal-prism-breakers")window.WeightPlayAudio?.play(id)};
 const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],localeLabels={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
 const storageKey=`${C.id}SaveV1`;let save={unlocked:1,cleared:{},best:{}},__crateSaveBaseline=null,__crateSaveTrusted=false;
-try{const raw=localStorage.getItem(storageKey),data=JSON.parse(raw===null?"{}":raw);if(C.id==="animal-cratebound"){
+try{const raw=localStorage.getItem(storageKey),data=JSON.parse(raw===null?"{}":raw);if(C.id==="animal-cratebound"||C.id==="animal-mosaic-clues"){
   const plain=value=>value&&typeof value==='object'&&!Array.isArray(value);
   const validStageKey=key=>/^(?:[1-9]|[12][0-9]|30)$/.test(key);
   const validMap=(value,check)=>plain(value)&&Object.entries(value).every(([key,entry])=>validStageKey(key)&&check(entry));
@@ -62,15 +63,17 @@ E.stageRail.addEventListener("scroll",()=>{if(E.stageRail.dataset.wpStageCenterO
 function resizeCanvas(){if(screen!=="battle")return;const crate=C.id==="animal-cratebound",r=(crate?E.canvas:E.arenaWrap).getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2),w=Math.max(crate?1:280,Math.round(r.width)),h=Math.max(crate?1:260,Math.round(r.height));if(E.canvas.width!==Math.round(w*d)||E.canvas.height!==Math.round(h*d)){E.canvas.width=Math.round(w*d);E.canvas.height=Math.round(h*d);view={w,h,dpr:d,...(crate?{scale:E.canvas.clientWidth>0?r.width/E.canvas.clientWidth:1}:{})};ctx.setTransform(d,0,0,d,0,0);if(C.kind!=="breaker")draw()}}
 function enterStage(n){if(!__cratePracticeRequested)return startStage(n);if(!__cratePracticeActive||!__cratePracticeAdapter||__crateLaunchBusy||!Number.isInteger(n)||n<31||n>60)return false;__crateLaunchBusy=true;void __cratePracticeAdapter.challenge('animal-cratebound',String(n)).finally(()=>{__crateLaunchBusy=false});return true}
 function startStage(n, practiceAuthorized=false){if(__cratePracticeRequested&&(!__cratePracticeActive||!practiceAuthorized||n<31||n>60))return false;selected=n;text(E.stageLabel,localCopy("stage","Stage {n}",{n}));text(E.goalValue,__cratePracticeActive?cratePracticeCopy()[0]:C.chapters[chapterFor(n)]);if(__cratePracticeActive){text(E.objective,cratePracticeCopy()[1]);text(E.helpText,`${cratePracticeCopy()[1]} ${C.help}`);}show("battle");initEngine(n);playPrismCue("game.start");running=true;last=performance.now();resizeCanvas();loop(last)
+    if(C.id==="animal-mosaic-clues"){__wpMeasurement.mosaicStageId=n;__wpMeasurement.mosaicRewardEligible=!save.cleared[n]}
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.saveSucceeded = null; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 function stopLoop(){running=false;cancelAnimationFrame(raf)}function loop(now){if(!running)return;const dt=Math.min(.033,(now-last)/1000||0);last=now;if(!document.hidden){update(dt);draw()}raf=requestAnimationFrame(loop)}
 function complete(stats={}){if(!running)return;running=false;playPrismCue("result.win");
   const nextSave={...save,cleared:{...save.cleared,[selected]:true},unlocked:Math.max(save.unlocked,Math.min(__crateStageCount(),selected+1)),best:{...save.best,[selected]:Math.max(Number(save.best[selected])||0,Number(stats.score)||0)}};
-  const checked=C.id==="animal-cratebound"&&!__cratePracticeRequested;
+  const checked=(C.id==="animal-cratebound"||C.id==="animal-mosaic-clues")&&!__cratePracticeRequested;
   const saved=!checked||commitCrateSave(nextSave);
   if(saved){if(checked)save=nextSave;else{save.cleared[selected]=true;save.unlocked=nextSave.unlocked;save.best[selected]=nextSave.best[selected];persist()}}
   if(C.id==="animal-cratebound")E.result.dataset.wpCrateSaveUnconfirmed=String(checked&&!saved);
+  if(C.id==="animal-mosaic-clues")E.result.dataset.wpMosaicSaveUnconfirmed=String(checked&&!saved);
   const crateArabic=C.id==="animal-cratebound"&&(window.WonderI18n?.actualLocale?.()||document.documentElement.lang)==="ar";
   updateProgress();text(E.resultTitle,!saved?crateSaveFailureTitle():__cratePracticeActive?cratePracticeCopy()[3]:crateArabic?"اكتملت المرحلة":(C.resultTitle||localCopy("resultTitle","Stage Complete")));text(E.resultText,__cratePracticeActive?cratePracticeCopy()[2]:saved?C.win:crateSaveFailureCopy());text(E.resultA,stats.a??"✓");text(E.resultB,stats.b??"★");text(E.resultC,stats.c??"Ready");E.next.hidden=!saved||selected>=__crateStageCount();E.next.classList.toggle("primary",saved&&selected<__crateStageCount());(__wpNotifyMeasurement(), E.resultStage.classList.toggle("primary",!saved||selected>=__crateStageCount()));const generation=sceneGeneration;clearTimeout(resultFocusTimer);const revealResult=()=>{if(screen!=="battle"||generation!==sceneGeneration)return;(__wpNotifyMeasurement(), E.result.hidden=false);resultFocusTimer=setTimeout(()=>{if(screen==="battle"&&generation===sceneGeneration&&!E.result.hidden)(!saved||selected>=__crateStageCount()?E.resultStage:E.next).focus()},20)};if(C.id==="animal-mosaic-clues")requestAnimationFrame(revealResult);else revealResult()
     __wpMeasurement.ended = true; __wpMeasurement.outcome = saved?"win":"save_failed"; __wpMeasurement.saveSucceeded = saved; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();

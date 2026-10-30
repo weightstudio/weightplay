@@ -390,7 +390,7 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/games/puppy-haven/assets/cover-block-v1.webp": "/assets/lobby-thumbs/w480/games__puppy-haven__assets__cover-block-v1.webp",
   "/games/lantern-lasso/assets/cover.webp":"/assets/lobby-thumbs/w480/games__lantern-lasso__assets__cover.webp",
   "/games/dustwake-depot/art/poster.webp":"/games/dustwake-depot/art/poster.webp",
-  "/games/rux-salvage-yard/art/poster.webp":"/games/rux-salvage-yard/art/poster.webp",
+  "/games/rux-salvage-yard/art/poster.webp":"/assets/lobby-thumbs/w480/games__rux-salvage-yard__art__poster.webp",
   "/games/mossfold/assets/cover.webp":"/games/mossfold/assets/cover.webp",
   "/games/hearthloop/assets/cover.webp":"/games/hearthloop/assets/cover.webp"
 });
