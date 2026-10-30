@@ -1,3 +1,5 @@
+import {activityDailyCopy} from '../../src/activity-daily-copy.mjs?v=1';
+import {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1';
 // Activity-owned copy. Every supported locale supplies the entire dictionary.
 export const LOCALES = Object.freeze(['en', 'zh-Hant', 'zh-Hans', 'ja', 'ko', 'es', 'pt-BR', 'fr', 'de', 'it', 'ru', 'hi', 'ar']);
 const keys = 'title tagline eventLabel schedule intro guide collection challenge training trainingNote noBlocks start resume retry back help close pause paused continue fire aim ammo hull wave score best combo nextWave waveClear victory defeat empty breach resultCopy saved saveError loadError reload sound soundOn soundOff language power standard violet skinLocked skinUnlocked appearance ready shooting advancing hit blocked blast waveNames preview leave confirmLeave cancel keyboard launchLabel tipArmor tipBlast tipBoss'.split(' ');
@@ -193,7 +195,7 @@ export const COPY = Object.freeze(Object.fromEntries(LOCALES.map(locale => {
   const values = rows[locale];
   if (!values || values.length !== keys.length) throw new Error(`Incomplete activity copy: ${locale}`);
   if (!sceneErrors[locale]) throw new Error(`Missing scene recovery copy: ${locale}`);
-  return [locale, Object.freeze({...Object.fromEntries(keys.map((key, index) => [key, values[index]])), sceneError: sceneErrors[locale]})];
+  return [locale, Object.freeze({...Object.fromEntries(keys.map((key, index) => [key, values[index]])), ...activityDailyCopy(locale,'meteor-barrage'), rewardInfo:rewardCopy(locale).info(), sceneError: sceneErrors[locale]})];
 })));
 const routes = Object.freeze({ en: 'en', 'zh-Hant': 'zh-tw', 'zh-Hans': 'zh-cn', ja: 'ja', ko: 'ko', es: 'es', 'pt-BR': 'pt-br', fr: 'fr', de: 'de', it: 'it', ru: 'ru', hi: 'hi', ar: 'ar' });
 export function getLocale(value) {

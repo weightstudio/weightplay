@@ -11,8 +11,8 @@ const meteorActivityCopy = {
     "line": "One block. A chain of impacts.",
     "body": "Defend the outpost through three waves. Bounce blocks off the walls, shatter meteors and strike the core through its orbiting shield. Each collected block gives 1 challenge ammo at the start of the run.",
     "blocks": "Collected blocks",
-    "schedule": "Replay whenever you like",
-    "reward": "Training provides 24 virtual ammo. Training scores do not unlock the violet launcher.",
+    "schedule": "Tue, Thu, Sat, Sun · Once daily",
+    "reward": "Clear the three stages for 3, 5 and 8 diamonds, up to 16 daily. Rewards go straight to your shared wallet.",
     "start": "Start",
     "path": "/activities/meteor-barrage/en/"
   },
@@ -22,8 +22,8 @@ const meteorActivityCopy = {
     "line": "一顆方塊，連鎖擊破。",
     "body": "守住前哨站，迎戰三波星隕。讓方塊沿牆彈射、擊碎隕石，穿過旋轉護盾直擊核心。收藏挑戰開始時，1 個已收藏方塊＝1 點本場彈藥。",
     "blocks": "已收藏方塊",
-    "schedule": "隨時重玩挑戰",
-    "reward": "練習提供 24 點虛擬彈藥；練習成績不會解鎖紫色發射器。",
+    "schedule": "週二、四、六、日 · 每日一次",
+    "reward": "擊敗三階段可依序獲得 3、5、8 顆鑽石，每日最多 16 顆。獎勵自動存入共用錢包。",
     "start": "開始",
     "path": "/activities/meteor-barrage/zh-tw/"
   },
@@ -33,8 +33,8 @@ const meteorActivityCopy = {
     "line": "一颗方块，连锁击破。",
     "body": "守住前哨站，迎战三波星陨。让方块沿墙弹射、击碎陨石，穿过旋转护盾直击核心。收藏挑战开始时，1 个已收藏方块＝1 点本场弹药。",
     "blocks": "已收藏方块",
-    "schedule": "随时重玩挑战",
-    "reward": "练习提供 24 点虚拟弹药；练习成绩不会解锁紫色发射器。",
+    "schedule": "周二、四、六、日 · 每日一次",
+    "reward": "击败三阶段可依次获得 3、5、8 颗钻石，每日最多 16 颗。奖励自动存入共用钱包。",
     "start": "开始",
     "path": "/activities/meteor-barrage/zh-cn/"
   },
@@ -44,8 +44,8 @@ const meteorActivityCopy = {
     "line": "ひとつのブロックで、連鎖撃破。",
     "body": "3回の襲来から前哨基地を守ろう。壁でブロックを反射させて隕石を砕き、回転するシールドの隙間からコアを狙おう。挑戦開始時、収集済みブロック1個につき今回の弾薬1を得ます。",
     "blocks": "収集済みブロック",
-    "schedule": "何度でも挑戦",
-    "reward": "練習では仮の弾薬24を使えます。練習の成績では紫の発射機は解放されません。",
+    "schedule": "火・木・土・日 · 1日1回",
+    "reward": "3段階のクリアで順にダイヤ3・5・8個、1日最大16個。共通ウォレットへ自動で入ります。",
     "start": "開始",
     "path": "/activities/meteor-barrage/ja/"
   },
@@ -55,8 +55,8 @@ const meteorActivityCopy = {
     "line": "블록 하나로 연쇄 격파.",
     "body": "세 차례의 유성 공격으로부터 전초 기지를 지키세요. 벽에 블록을 튕겨 운석을 부수고 회전 방패 사이로 핵을 맞히세요. 도전 시작 시 수집한 블록 1개당 이번 판 탄약 1개를 받습니다.",
     "blocks": "수집한 블록",
-    "schedule": "언제든 다시 도전",
-    "reward": "연습에서는 가상 탄약 24개를 제공합니다. 연습 기록으로는 보라색 발사기를 해제할 수 없습니다.",
+    "schedule": "화·목·토·일 · 하루 한 번",
+    "reward": "세 단계를 완료하면 다이아 3, 5, 8개를 차례로 얻습니다. 하루 최대 16개가 공용 지갑에 자동 지급됩니다.",
     "start": "시작",
     "path": "/activities/meteor-barrage/ko/"
   },
@@ -66,8 +66,8 @@ const meteorActivityCopy = {
     "line": "Un bloque. Una cadena de impactos.",
     "body": "Defiende el puesto durante tres oleadas. Haz rebotar los bloques en las paredes, rompe meteoros y alcanza el núcleo entre sus escudos giratorios. Al iniciar el reto, cada bloque recogido aporta 1 unidad de munición.",
     "blocks": "Bloques recogidos",
-    "schedule": "Repite cuando quieras",
-    "reward": "El entrenamiento ofrece 24 unidades de munición virtual. Sus resultados no desbloquean el lanzador violeta.",
+    "schedule": "Mar, jue, sáb, dom · Una vez al día",
+    "reward": "Supera las tres fases para ganar 3, 5 y 8 diamantes: hasta 16 al día, abonados automáticamente al monedero común.",
     "start": "Empezar",
     "path": "/activities/meteor-barrage/es/"
   },
@@ -77,8 +77,8 @@ const meteorActivityCopy = {
     "line": "Um bloco. Uma sequência de impactos.",
     "body": "Defenda o posto por três ondas. Faça os blocos ricochetearem nas paredes, destrua meteoros e atinja o núcleo pelas brechas do escudo giratório. Ao iniciar o desafio, cada bloco coletado fornece 1 unidade de munição.",
     "blocks": "Blocos coletados",
-    "schedule": "Jogue de novo quando quiser",
-    "reward": "O treino oferece 24 unidades de munição virtual. Os resultados do treino não desbloqueiam o lançador violeta.",
+    "schedule": "Ter, qui, sáb, dom · Uma vez por dia",
+    "reward": "Vença as três fases para ganhar 3, 5 e 8 diamantes: até 16 por dia, creditados automaticamente na carteira compartilhada.",
     "start": "Começar",
     "path": "/activities/meteor-barrage/pt-br/"
   },
@@ -88,8 +88,8 @@ const meteorActivityCopy = {
     "line": "Un bloc. Des impacts en chaîne.",
     "body": "Défendez le poste avancé pendant trois vagues. Faites ricocher les blocs sur les murs, brisez les météores et touchez le noyau entre ses boucliers tournants. Au début du défi, chaque bloc collecté fournit 1 munition.",
     "blocks": "Blocs collectés",
-    "schedule": "Rejouez à volonté",
-    "reward": "L’entraînement fournit 24 munitions virtuelles. Ses résultats ne débloquent pas le lanceur violet.",
+    "schedule": "Mar, jeu, sam, dim · Une fois par jour",
+    "reward": "Terminez les trois étapes pour recevoir 3, 5 et 8 diamants, soit 16 par jour au maximum, versés au portefeuille commun.",
     "start": "Commencer",
     "path": "/activities/meteor-barrage/fr/"
   },
@@ -99,8 +99,8 @@ const meteorActivityCopy = {
     "line": "Ein Block. Eine Kette von Treffern.",
     "body": "Verteidige den Außenposten gegen drei Wellen. Lass Blöcke von den Wänden abprallen, zertrümmere Meteoriten und triff den Kern durch die Lücken seiner kreisenden Schilde. Beim Start der Herausforderung gibt jeder gesammelte Block 1 Munitionseinheit.",
     "blocks": "Gesammelte Blöcke",
-    "schedule": "Jederzeit erneut spielen",
-    "reward": "Im Training erhältst du 24 virtuelle Munitionseinheiten. Trainingsergebnisse schalten den violetten Werfer nicht frei.",
+    "schedule": "Di, Do, Sa, So · Einmal täglich",
+    "reward": "Schließe die drei Phasen für 3, 5 und 8 Diamanten ab: täglich bis zu 16, automatisch im gemeinsamen Guthaben.",
     "start": "Starten",
     "path": "/activities/meteor-barrage/de/"
   },
@@ -110,8 +110,8 @@ const meteorActivityCopy = {
     "line": "Un blocco. Una catena di impatti.",
     "body": "Difendi l’avamposto per tre ondate. Fai rimbalzare i blocchi sulle pareti, distruggi le meteore e colpisci il nucleo attraverso gli scudi rotanti. All’inizio della sfida, ogni blocco raccolto fornisce 1 munizione.",
     "blocks": "Blocchi raccolti",
-    "schedule": "Rigioca quando vuoi",
-    "reward": "L’allenamento offre 24 munizioni virtuali. I suoi risultati non sbloccano il lanciatore viola.",
+    "schedule": "Mar, gio, sab, dom · Una volta al giorno",
+    "reward": "Supera le tre fasi per ottenere 3, 5 e 8 diamanti: fino a 16 al giorno, accreditati automaticamente nel portafoglio comune.",
     "start": "Inizia",
     "path": "/activities/meteor-barrage/it/"
   },
@@ -121,8 +121,8 @@ const meteorActivityCopy = {
     "line": "Один блок. Цепь попаданий.",
     "body": "Защитите аванпост от трёх волн. Отражайте блоки от стен, разбивайте метеориты и поражайте ядро через промежутки между вращающимися щитами. В начале испытания каждый собранный блок даёт 1 боеприпас.",
     "blocks": "Собранные блоки",
-    "schedule": "Играйте снова в любое время",
-    "reward": "В тренировке доступно 24 виртуальных боеприпаса. Её результаты не открывают фиолетовую установку.",
+    "schedule": "Вт, чт, сб, вс · Один раз в день",
+    "reward": "Пройдите три этапа и получите 3, 5 и 8 алмазов: до 16 в день, автоматически в общий кошелёк.",
     "start": "Начать",
     "path": "/activities/meteor-barrage/ru/"
   },
@@ -132,8 +132,8 @@ const meteorActivityCopy = {
     "line": "एक ब्लॉक। लगातार कई वार।",
     "body": "तीन हमलों से चौकी की रक्षा करें। ब्लॉक को दीवारों से उछालें, उल्काएँ तोड़ें और घूमती ढाल के बीच से केंद्र पर निशाना लगाएँ। चुनौती की शुरुआत में हर एकत्रित ब्लॉक से 1 गोला मिलता है।",
     "blocks": "एकत्रित ब्लॉक",
-    "schedule": "जब चाहें दोबारा खेलें",
-    "reward": "अभ्यास में 24 आभासी गोले मिलते हैं। अभ्यास के परिणाम से बैंगनी प्रक्षेपक नहीं खुलता।",
+    "schedule": "मंगल, गुरु, शनि, रवि · रोज़ एक बार",
+    "reward": "तीनों चरण पूरे करने पर क्रमशः 3, 5 और 8 हीरे पाएँ। रोज़ अधिकतम 16 हीरे साझा वॉलेट में अपने आप जुड़ते हैं।",
     "start": "शुरू करें",
     "path": "/activities/meteor-barrage/hi/"
   },
@@ -143,11 +143,26 @@ const meteorActivityCopy = {
     "line": "مكعب واحد. سلسلة من الإصابات.",
     "body": "دافع عن الموقع خلال ثلاث موجات. اجعل المكعبات ترتد عن الجدران، وحطّم الشهب، وأصب النواة عبر فتحات درعها الدوّار. عند بدء التحدي، يمنح كل مكعب مجموع وحدة ذخيرة واحدة.",
     "blocks": "المكعبات المجموعة",
-    "schedule": "أعد اللعب متى شئت",
-    "reward": "يوفر التدريب 24 وحدة ذخيرة افتراضية. نتائج التدريب لا تفتح القاذف البنفسجي.",
+    "schedule": "الثلاثاء والخميس والسبت والأحد · مرة يومياً",
+    "reward": "أكمل المراحل الثلاث لتحصل على 3 و5 و8 ألماسات، بحد أقصى 16 يومياً، تُضاف تلقائياً إلى محفظتك المشتركة.",
     "start": "ابدأ",
     "path": "/activities/meteor-barrage/ar/"
   }
+};
+const activityScheduleCopy = {
+  "en": "Mon, Wed, Fri, Sun · Once daily",
+  "zh-Hant": "週一、三、五、日 · 每日一次",
+  "zh-Hans": "周一、三、五、日 · 每日一次",
+  "ja": "月・水・金・日 · 1日1回",
+  "ko": "월·수·금·일 · 하루 한 번",
+  "es": "Lun, mié, vie, dom · Una vez al día",
+  "pt-BR": "Seg, qua, sex, dom · Uma vez por dia",
+  "fr": "Lun, mer, ven, dim · Une fois par jour",
+  "de": "Mo, Mi, Fr, So · Einmal täglich",
+  "it": "Lun, mer, ven, dom · Una volta al giorno",
+  "ru": "Пн, ср, пт, вс · Один раз в день",
+  "hi": "सोम, बुध, शुक्र, रवि · रोज़ एक बार",
+  "ar": "الاثنين والأربعاء والجمعة والأحد · مرة يومياً"
 };
 // END GENERATED METEOR ACTIVITY ENTRY
 lobby.games.forEach((game) => {
@@ -306,11 +321,14 @@ function renderSpotlight() {
   if (isKidsLobby) return;
   const game = lobby.games.find(item => item.id === lobby.featuredGameId);
   if (!game || !gameMatchesHall(game)) {
+    document.querySelector(".lobby-hero")?.classList.remove("has-spotlight");
     spotlightSection.hidden = true;
     spotlightSection.replaceChildren();
     return;
   }
   spotlightSection.hidden = false;
+  document.querySelector(".lobby-hero")?.classList.add("has-spotlight");
+  spotlightSection.style.setProperty("--spotlight-art", `url(${JSON.stringify(new URL(lobbyThumbnail(primaryArt(game)), document.baseURI).href)})`);
   spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">
     <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
     <div><small>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
@@ -577,7 +595,7 @@ function createDemonEventPreview() {
   const events = [{
     id: "demon-assault", title: strings.title,
     image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1",
-    details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: daily[1], reward: strings.reward },
+    details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: activityScheduleCopy[locale] || activityScheduleCopy.en, reward: strings.reward },
     entry: { kind: "activity", path: "/activities/demon-assault/", label: daily[0] },
     renderer: "demon-assault",
   }, {
@@ -612,6 +630,7 @@ function createDemonEventPreview() {
   const appendEventCard = (event, index) => {
     const card = document.createElement("button");
     card.className = "demon-event-card";
+    card.style.setProperty("--activity-art", `url(${JSON.stringify(new URL(event.image, document.baseURI).href)})`);
     card.type = "button";
     card.dataset.eventIndex = String(index);
     card.setAttribute("aria-label", event.title);
@@ -684,6 +703,8 @@ function createDemonEventPreview() {
     if (target?.isConnected && !target.hidden) target.focus({ preventScroll: true });
   }
   const track = section.querySelector(".demon-event-track");
+  // List layouts expose every entry; never auto-scroll the page as a carousel.
+  const isActivityList = () => getComputedStyle(track).display === "grid";
   const position = section.querySelector(".demon-event-position");
   let activeIndex = 0;
   let carouselTimer = 0;
@@ -709,7 +730,7 @@ function createDemonEventPreview() {
     activeIndex = (index + events.length) % events.length;
     const card = openButtons[activeIndex];
     const nextArt = card?.querySelector(".demon-event-art");
-    if (!compactActivityList?.matches) card.scrollIntoView({ behavior: motionPreference?.matches ? "auto" : "smooth", block: "nearest", inline: "center" });
+    if (!isActivityList()) card.scrollIntoView({ behavior: motionPreference?.matches ? "auto" : "smooth", block: "nearest", inline: "center" });
     if (position) position.textContent = `${activeIndex + 1} / ${events.length}`;
     if (previousArt !== nextArt) {
       if (previousArt) visibilityObserver?.unobserve(previousArt);
@@ -721,7 +742,7 @@ function createDemonEventPreview() {
   const stopCarousel = () => { window.clearTimeout(carouselTimer); carouselTimer = 0; };
   const scheduleCarousel = () => {
     stopCarousel();
-    if (compactActivityList?.matches || events.length < 2 || isPaused() || section.hidden || document.hidden || dialog.open || motionPreference?.matches) return;
+    if (isActivityList() || events.length < 2 || isPaused() || section.hidden || document.hidden || dialog.open || motionPreference?.matches) return;
     carouselTimer = window.setTimeout(() => { goTo(activeIndex + 1); scheduleCarousel(); }, 5000);
   };
   track.addEventListener("click", event => {
@@ -739,7 +760,7 @@ function createDemonEventPreview() {
   });
   section.querySelectorAll(".demon-event-step").forEach(button => button.addEventListener("click", () => { goTo(activeIndex + Number(button.dataset.step)); scheduleCarousel(); }));
   track.addEventListener("pointerdown", event => {
-    if (compactActivityList?.matches) return;
+    if (isActivityList()) return;
     lastPointerType = event.pointerType || "mouse";
     dragStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
     stopCarousel();
@@ -3314,6 +3335,66 @@ gameSearch?.addEventListener("input", () => {
 
 quickPickBtn?.addEventListener("click", () => { settleHallMotion(); openQuickPick(); });
 
+function setupDesktopLobbyPresentation() {
+  if (isKidsLobby) return;
+  const shell = document.querySelector(".lobby-shell");
+  const topbar = shell?.querySelector(".lobby-topbar");
+  const hero = shell?.querySelector(".lobby-hero");
+  const search = shell?.querySelector(".lobby-search-row");
+  const library = shell?.querySelector(":scope > .library-tabs");
+  const rail = shell?.querySelector(".desktop-filter-rail");
+  if (!topbar || !hero || !search || !library || !rail || !gameHallSwitch) return;
+  const query = window.matchMedia("(min-width: 1120px)");
+  const stage = document.createElement("div");
+  stage.className = "desktop-lobby-stage";
+  // Move the original controls, never clone their IDs, input state or listeners.
+  // Inert home markers restore the exact phone DOM order on a breakpoint change.
+  const homes = new Map([gameHallSwitch, search, hero, demonEventPreview, library].filter(Boolean).map(node => {
+    const home = document.createComment("desktop lobby home");
+    node.before(home);
+    return [node, home];
+  }));
+  let stylesheet = null;
+  let styleReady = false;
+  const apply = () => {
+    if (query.matches && !styleReady) {
+      if (!stylesheet) {
+        stylesheet = document.createElement("link");
+        stylesheet.rel = "stylesheet";
+        stylesheet.href = "/src/lobby-desktop.css";
+        stylesheet.media = "(min-width: 1120px)";
+        stylesheet.dataset.lobbyDesktopStyle = "true";
+        stylesheet.addEventListener("load", () => { styleReady = true; apply(); }, { once: true });
+        document.head.append(stylesheet);
+      }
+      return;
+    }
+    const wasDesktop = document.body.hasAttribute("data-desktop-lobby");
+    if (wasDesktop === query.matches) return;
+    settleHallMotion();
+    const focused = document.activeElement;
+    if (query.matches) {
+      const preferences = topbar.querySelector(".lobby-preferences, .language-picker");
+      topbar.insertBefore(gameHallSwitch, preferences);
+      topbar.insertBefore(search, preferences);
+      homes.get(hero).before(stage);
+      stage.append(hero);
+      if (demonEventPreview) stage.append(demonEventPreview);
+      rail.append(library);
+      library.classList.add("desktop-library");
+      document.body.dataset.desktopLobby = "true";
+    } else {
+      for (const [node, home] of homes) home.after(node);
+      library.classList.remove("desktop-library");
+      stage.remove();
+      delete document.body.dataset.desktopLobby;
+    }
+    if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+  };
+  query.addEventListener("change", apply);
+  apply();
+}
+
 function setupKidsLobbyPresentation() {
   if (!isKidsLobby) return;
   const shell = document.querySelector(".lobby-shell");
@@ -3439,6 +3520,7 @@ window.addEventListener("pageshow", (event) => {
   renderLobbyContent();
 });
 setupKidsLobbyPresentation();
+setupDesktopLobbyPresentation();
 renderLobby();
 loadGameStats();
 if (!document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {

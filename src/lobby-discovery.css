@@ -1004,6 +1004,21 @@ body.general-lobby-page .demon-event-step { display: inline-grid; width: 44px; h
 body.general-lobby-page .demon-event-step:focus-visible { outline: 3px solid #ffe29a; outline-offset: 2px; }
 body.general-lobby-page .demon-event-position { min-width: 48px; color: #d5e0dd; font-size: 12px; font-variant-numeric: tabular-nums; text-align: center; }
 body.general-lobby-page .demon-event-dialog .demon-event-count { margin: 0; color: #e8d8ad; font-size: 13px; }
+/* Desktop shows both activity entries in one compact row. */
+@media (min-width: 721px) {
+  body.general-lobby-page .demon-event-track {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+    overflow: visible; scroll-snap-type: none;
+  }
+  body.general-lobby-page .demon-event-card {
+    grid-template-columns: 76px minmax(0, 1fr) 20px; gap: 12px;
+    min-height: 92px; padding: 8px;
+    background: #10263066;
+  }
+  body.general-lobby-page .demon-event-card:only-child { grid-column: 1 / -1; }
+  body.general-lobby-page .demon-event-card .demon-event-art { width: 76px; height: 76px; }
+  body.general-lobby-page .demon-event-carousel-controls { display: none; }
+}
 /* Keep every activity discoverable on phones without waiting for a carousel. */
 @media (max-width: 720px) {
   body.general-lobby-page .demon-event-track { display: grid; gap: 8px; overflow: visible; scroll-snap-type: none; }

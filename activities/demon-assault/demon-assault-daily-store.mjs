@@ -1,30 +1,13 @@
-import {REWARD_CAMPAIGN,rewardKey,validRewards} from './demon-assault-rewards.mjs?v=20261025-rewards-1';
+import {validTimeZone,deviceTimeZone,dayKey,nextMidnight,firstDateAfter,isActivityOpen,nextOpening,openingAtOrAfter} from '../../src/activity-calendar.mjs?v=1';
+export {validTimeZone,deviceTimeZone,dayKey,nextMidnight} from '../../src/activity-calendar.mjs?v=1';
+import {REWARD_CAMPAIGN,rewardKey,validRewards} from './demon-assault-rewards.mjs?v=20261030-weekdays-1';
 import {VERSION as LEGACY_VERSION,STAGES,ammoLimit,AMMO_POLICY} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1';
 import {validSave as validLegacy,freshRun,nextStage,settle,launchShot,SAVE_KEY as LEGACY_KEY} from './demon-assault-v4-store.mjs?v=20261014-ammo-exact-1';
 export {freshRun,nextStage,settle,launchShot};
 export const VERSION='demon-assault-daily-play-1';
 export const SAVE_KEY='weightplayDemonAssaultDailyV1';
-export const DAILY_REVISION='device-midnight-2';
-const LOCK=SAVE_KEY+':transaction',DAY=86400000,formatters=new Map(),midnights=new Map(),zones=new Map();
-export function validTimeZone(zone){if(typeof zone!=='string'||zone.length>100)return false;if(zones.has(zone))return zones.get(zone);let valid=false;try{valid=!!new Intl.DateTimeFormat('en',{timeZone:zone}).resolvedOptions().timeZone;}catch{}if(zones.size>128)zones.clear();zones.set(zone,valid);return valid;}
-export function deviceTimeZone(){try{const zone=Intl.DateTimeFormat().resolvedOptions().timeZone;return validTimeZone(zone)?zone:'UTC';}catch{return 'UTC';}}
-export function dayKey(now,zone=deviceTimeZone()){
- if(!validTimeZone(zone)||!Number.isFinite(now))throw Error('CLOCK_INVALID');
- let formatter=formatters.get(zone);if(!formatter){formatter=new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'});formatters.set(zone,formatter);}
- const parts=Object.fromEntries(formatter.formatToParts(now).map(p=>[p.type,p.value]));return `${parts.year}-${parts.month}-${parts.day}`;
-}
-// Search the first instant of the next civil date. This follows IANA DST rules,
-// including 23/25-hour days and zones whose midnight is skipped by a transition.
-export function nextMidnight(now,zone=deviceTimeZone()){
- return firstDateAfter(dayKey(now,zone),zone);
-}
-function firstDateAfter(today,zone){
- const key=zone+':'+today;if(midnights.has(key))return midnights.get(key);
- const seed=Date.parse(today+'T00:00:00Z');if(!Number.isFinite(seed))throw Error('CLOCK_INVALID');
- let lo=seed-36*3600000,hi=seed+60*3600000;
- while(hi-lo>1){const middle=Math.floor((lo+hi)/2);if(dayKey(middle,zone)<=today)lo=middle;else hi=middle;}
- if(midnights.size>64)midnights.clear();midnights.set(key,hi);return hi;
-}
+export const DAILY_REVISION='weekly-open-days-3';
+const LOCK=SAVE_KEY+':transaction',DAY=86400000;
 export const finished=d=>!!d&&(d.run.status==='empty'||(d.run.status==='cleared'&&d.run.stage===STAGES.length-1));
 function normalize(d,stamp,zone){
  if(!d)return null;const next={...d},safeStamp=Math.max(stamp,d.lastSeenAt);
@@ -44,9 +27,10 @@ function normalize(d,stamp,zone){
  return next;
 }
 export function dailyStatus(raw,now=Date.now(),zone=deviceTimeZone()){
- const d=normalize(raw,now,zone),rollback=!!d&&now<d.lastSeenAt-2000,today=dayKey(now,zone),inProgress=!!d?.dayKey&&!finished(d),fence=d?.lastQualifiedDay?Math.max(d.nextEligibleAt,firstDateAfter(d.lastQualifiedDay,zone)):0,eligible=now>=fence;
- return{revision:DAILY_REVISION,today,dayKey:d?.dayKey||null,timeZone:zone,runTimeZone:d?.runTimeZone||null,clockBlocked:rollback,state:rollback?'clock':inProgress?'progress':eligible?'ready':'done',canStart:!rollback&&!inProgress&&eligible,canFire:!rollback&&!finished(d)&&(!!d?.dayKey||eligible),nextAt:eligible?nextMidnight(Math.max(now,d?.lastSeenAt||0),zone):fence,afterCurrentRun:inProgress&&eligible,localOnly:true};
+ const d=normalize(raw,now,zone),rollback=!!d&&now<d.lastSeenAt-2000,today=dayKey(now,zone),inProgress=!!d?.dayKey&&!finished(d),fence=d?.lastQualifiedDay?Math.max(d.nextEligibleAt,firstDateAfter(d.lastQualifiedDay,zone)):0,eligible=now>=fence,open=isActivityOpen('demon-assault',now,zone);
+ return{revision:DAILY_REVISION,today,dayKey:d?.dayKey||null,timeZone:zone,runTimeZone:d?.runTimeZone||null,clockBlocked:rollback,open,state:rollback?'clock':inProgress?'progress':!open?'closed':eligible?'ready':'done',canStart:!rollback&&!inProgress&&eligible&&open,canFire:!rollback&&!finished(d)&&(!!d?.dayKey||(eligible&&open)),nextAt:openingAtOrAfter('demon-assault',Math.max(nextMidnight(Math.max(now,d?.lastSeenAt||0),zone),fence),zone),afterCurrentRun:inProgress&&eligible&&open,localOnly:true};
 }
+
 function valid(d){
  const common=[1,2].includes(d?.schemaVersion)&&d.version===VERSION&&Number.isFinite(d.lastSeenAt)&&d.lastSeenAt>=0&&(d.dayKey===null||/^\d{4}-\d{2}-\d{2}$/.test(d.dayKey))&&(d.lastQualifiedDay===null||/^\d{4}-\d{2}-\d{2}$/.test(d.lastQualifiedDay))&&(d.dayKey===null?d.run?.shots===0:d.dayKey===d.lastQualifiedDay)&&validLegacy({...d,version:LEGACY_VERSION},{allowLegacyCapacity:true});
  return common&&validRewards(d.rewards)&&(d.run.rewardCampaign===undefined||d.run.rewardCampaign===REWARD_CAMPAIGN)&&(d.schemaVersion===1||(validTimeZone(d.calendarTimeZone)&&(d.dayKey?validTimeZone(d.runTimeZone):d.runTimeZone===null)&&Number.isFinite(d.nextEligibleAt)&&d.nextEligibleAt>=0&&(d.lastQualifiedAt===null||Number.isFinite(d.lastQualifiedAt))));
@@ -68,7 +52,7 @@ export function makeDailyStore({storage,locks,now=Date.now,timeZone=deviceTimeZo
    if(fire&&oldStatus.clockBlocked)throw Error('CLOCK_ROLLBACK');
    if(fire&&old&&(!Number.isSafeInteger(next.run.pending?.power)||next.run.pending.power<1||next.run.pending.power>old.run.ammo||old.run.pending||next.run.shots!==old.run.shots+1||next.run.ammo!==old.run.ammo-next.run.pending.power))throw Error('INVALID_SHOT_COST');
    if(fire&&finished(old))throw Error('DAILY_RUN_FINISHED');
-   if(fire&&!old?.dayKey&&!oldStatus.canStart)throw Error('DAILY_RUN_ALREADY_USED');
+   if(fire&&!old?.dayKey&&!oldStatus.canStart)throw Error(oldStatus.open?'DAILY_RUN_ALREADY_USED':'ACTIVITY_CLOSED');
    next.schemaVersion=2;next.version=VERSION;next.revision=(old?.revision||0)+1;next.lastSeenAt=Math.max(stamp,old?.lastSeenAt||0);
    next.calendarTimeZone=old?.calendarTimeZone||tz;next.runTimeZone=newRun?null:(old?.runTimeZone||null);
    next.dayKey=newRun?null:(old?.dayKey||null);next.lastQualifiedDay=old?.lastQualifiedDay||null;next.lastQualifiedAt=old?.lastQualifiedAt||null;next.nextEligibleAt=old?.nextEligibleAt||0;

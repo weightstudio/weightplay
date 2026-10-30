@@ -1,6 +1,6 @@
 // Durable run schema stays compatible across presentation-only revisions.
 export const VERSION = 'meteor-barrage-1';
-export const ACTIVITY_VERSION = 'meteor-barrage-2';
+export const ACTIVITY_VERSION = 'meteor-barrage-3';
 export const BLAST_RADIUS = 100;
 export const WORLD = Object.freeze({ width: 360, height: 480, launchX: 180, launchY: 38, floor: 68 });
 export const STEP = 1 / 120;
