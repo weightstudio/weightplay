@@ -71,7 +71,7 @@
     }
   ],
   "runtimeDependency": {
-    "import": "./vendor/three.module.min.js",
+    "import": "../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js",
     "engine": "three@0.180.0",
     "license": "MIT",
     "source": "Copied repository-pinned three@0.180.0 distribution from games/animal-skyspire-drop/vendor/three; local vendor/LICENSE and vendor/README.md retained",

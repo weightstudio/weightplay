@@ -1,7 +1,7 @@
 import {panelElement,reconcilePanel} from './panel-view.js?v=15';
 import {REWARD_TRACKS,normalizeRewards,rewardOffer,claimReward,normalizeOperatingFlow,netProfitPerMinute,decorationTraffic} from './rewards-profit.js?v=15';
 import {canClaimOwner,takeNavigationHandoff,leaveNavigationHandoff} from './ownership.mjs?v=17';
-import * as THREE from './vendor/three/three.module.min.js';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
 import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,visitorCapacity,visitorRenderLimit,shopDemandMultiplier,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,

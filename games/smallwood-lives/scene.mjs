@@ -1,4 +1,4 @@
-import * as THREE from './vendor/three.module.min.js';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
 import {seededRandom} from './content.mjs';
 import {weather} from './model.mjs';
 

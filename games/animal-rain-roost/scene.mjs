@@ -1,4 +1,4 @@
-import * as T from './vendor/three/three.module.min.js';
+import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
 import {dropPosition} from './stages.mjs?v=6';
 
 // Finished procedural assets: the model, seams, accessories and rig live here.

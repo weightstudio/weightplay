@@ -1,5 +1,5 @@
 // Pinned repository Three.js r180 (MIT); this module never modifies its vendor source.
-import * as THREE from '../block-apex/vendor/three/three.module.min.js';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
 import { BOARDS, getBoard, trackCenter, trackWidth, featureX, gateIsOpen, tideLabel } from './content.mjs';
 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js";
 
 const heading = { up: 0, right: -Math.PI / 2, down: Math.PI, left: Math.PI / 2 };
 const point = (cell) => new THREE.Vector3(cell % 10 - 4.5, 0, Math.floor(cell / 10) - 4.5);

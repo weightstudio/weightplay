@@ -2,13 +2,20 @@
   "use strict";
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
-  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", stageId: null, saveSucceeded: false };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(false), node: document.body,
+    paused: Boolean(false), node: document.body, stageIdAuthoritative: true, stageId: __wpMeasurement.stageId,
     activityMode: "input", idleSeconds: 300
   });
-  function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
+  function __wpNotifyMeasurement() {
+    try {
+      const analytics = window.WonderAnalytics;
+      if (analytics?.game?.supportsSavedCompletionGate !== true) return;
+      analytics.game.observeState(__wpReadMeasurement);
+      if (__wpMeasurement.ended && __wpMeasurement.saveSucceeded && __wpMeasurement.stageId != null) analytics.completeStage?.(__wpMeasurement.stageId);
+    } catch { /* Optional telemetry must never interrupt play. */ }
+  }
   // Explicit authored replay actions count only when a new round was actually created.
   function __wpReplayStart(action) {
     const previous = __wpMeasurement.roundKey, value = action();
@@ -57,6 +64,62 @@
   let unlockedThrough = Math.max(1, Math.min(groves.length, Number(localStorage.getItem("weightplay-echo-orchard-unlocked-v2") || 1) || 1));
   let solved = new Set();
   try { solved = new Set(JSON.parse(localStorage.getItem("weightplay-echo-orchard-solved-v2") || "[]").filter((value) => Number.isInteger(value) && value >= 0 && value < groves.length)); } catch { solved = new Set(); }
+  const solvedKey = "weightplay-echo-orchard-solved-v2";
+  const confirmedPrefix = "weightplay-echo-orchard-confirmed-stage-v1:";
+  const pendingSavedStages = new Set();
+  let lastSaveSucceeded = false;
+  const saveFailureCopy = {
+    en: "Progress could not be saved. Replay this stage when storage is available.",
+    "zh-Hant": "無法儲存進度，儲存空間可用時請重玩此關。",
+    "zh-Hans": "无法保存进度，存储空间可用时请重玩此关。",
+    ja: "進行状況を保存できませんでした。保存可能になったらこのステージを再プレイしてください。",
+    ko: "진행 상황을 저장하지 못했어요. 저장할 수 있을 때 이 스테이지를 다시 플레이해 주세요.",
+    es: "No se pudo guardar el progreso. Repite la etapa cuando haya almacenamiento disponible.",
+    "pt-BR": "Não foi possível salvar o progresso. Jogue a fase novamente quando houver armazenamento disponível.",
+    fr: "Impossible de sauvegarder la progression. Rejouez cette étape lorsque le stockage sera disponible.",
+    de: "Der Fortschritt konnte nicht gespeichert werden. Spiele diese Stufe erneut, sobald Speicher verfügbar ist.",
+    it: "Impossibile salvare i progressi. Rigioca il livello quando lo spazio sarà disponibile.",
+    ru: "Не удалось сохранить прогресс. Повторите этап, когда хранилище станет доступно.",
+    hi: "प्रगति सहेजी नहीं जा सकी। संग्रहण उपलब्ध होने पर यह चरण फिर खेलें।",
+    ar: "تعذر حفظ التقدم. أعد المرحلة عندما تتوفر مساحة التخزين."
+  };
+  const validSolved = value => Array.isArray(value) && value.every(index => Number.isInteger(index) && index >= 0 && index < groves.length);
+  function restoreConfirmedStages() {
+    try {
+      const raw = localStorage.getItem(solvedKey), saved = raw === null ? [] : JSON.parse(raw);
+      if (!validSolved(saved)) return;
+      const merged = new Set(saved);
+      for (let id = 1; id <= groves.length; id++) {
+        if (localStorage.getItem(confirmedPrefix + id) === "1") { merged.add(id - 1); pendingSavedStages.add(id); }
+      }
+      const bytes = JSON.stringify([...merged].sort((a, b) => a - b));
+      if ([...merged].some(index => !saved.includes(index))) localStorage.setItem(solvedKey, bytes);
+      const verified = JSON.parse(localStorage.getItem(solvedKey) || "[]");
+      if (!validSolved(verified) || [...merged].some(index => !verified.includes(index))) return;
+      solved = new Set(verified);
+      for (const index of solved) unlockedThrough = Math.max(unlockedThrough, Math.min(groves.length, index + 2));
+    } catch { /* Preserve unreadable or unwritable progress. */ }
+  }
+  function rememberSolvedStage(id) {
+    pendingSavedStages.add(id);
+    try { localStorage.setItem(confirmedPrefix + id, "1"); } catch { /* Keep the in-page queue. */ }
+  }
+  function flushSavedStageRewards() {
+    const castle = window.WeightPlayCastle;
+    if (!castle?.read) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem(solvedKey) || "[]");
+      if (!validSolved(saved)) return;
+      for (const id of pendingSavedStages) {
+        if (!saved.includes(id - 1)) continue;
+        const receipt = `animal-echo-orchard:stage-${id}`;
+        if (!Object.hasOwn(castle.read()?.completions || {}, receipt)) window.dispatchEvent(new CustomEvent("weightplay:game-completed", { detail: { gameId: "animal-echo-orchard", stageId: id, outcome: "win" } }));
+        if (Object.hasOwn(castle.read()?.completions || {}, receipt)) pendingSavedStages.delete(id);
+      }
+    } catch { /* Retry on a later visit or collector readiness. */ }
+  }
+  window.addEventListener("weightplay:castle-ready", flushSavedStageRewards);
+  restoreConfirmedStages(); flushSavedStageRewards();
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const campaign = () => stageCopy[locale] || stageCopy.en;
   const stageTitle = (index) => `${campaign().arcs[groves[index].arc - 1]} · ${campaign().stage} ${groves[index].id}`;
@@ -81,7 +144,25 @@
     };
   };
   const stageSummary = () => `${copy("groves")}: ${solved.size} / ${groves.length}`;
-  const saveProgress = () => { localStorage.setItem("weightplay-echo-orchard-unlocked-v2", String(unlockedThrough)); localStorage.setItem("weightplay-echo-orchard-solved-v2", JSON.stringify([...solved].sort((a, b) => a - b))); };
+  const saveProgress = index => {
+    try {
+      const raw = localStorage.getItem(solvedKey), saved = raw === null ? [] : JSON.parse(raw);
+      if (!validSolved(saved)) return false;
+      const merged = [...new Set([...saved, index])].sort((a, b) => a - b);
+      if (!saved.includes(index)) {
+        const bytes = JSON.stringify(merged);
+        localStorage.setItem(solvedKey, bytes);
+        if (localStorage.getItem(solvedKey) !== bytes) return false;
+      }
+      solved = new Set(merged);
+      unlockedThrough = Math.max(unlockedThrough, Math.min(groves.length, index + 2));
+      try {
+        const oldUnlocked = Number(localStorage.getItem("weightplay-echo-orchard-unlocked-v2")) || 1;
+        localStorage.setItem("weightplay-echo-orchard-unlocked-v2", String(Math.max(oldUnlocked, unlockedThrough)));
+      } catch { /* Solved stages recover the unlock on the next visit. */ }
+      return true;
+    } catch { return false; }
+  };
   const bestValue = () => Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0) || "—";
   const fruitName = (fruit) => copy(`fruit${fruit[0].toUpperCase()}${fruit.slice(1)}`);
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `echo_orchard_${name}`, grove: groveIndex + 1, attempts, ...data }); };
@@ -157,6 +238,7 @@
     clearTimer(); groveIndex = index; entered = []; attempts = 0; feedback = "ready"; watchStep = 0;
     if (index === 0 || fromStage) { sessionAttempts = 0; runSolved = new Set(); }
     show("battle"); phase = "ready"; renderBattle(); announce("start");
+    lastSaveSucceeded = false; __wpMeasurement.stageId = index + 1; __wpMeasurement.saveSucceeded = false;
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true;
     __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
   }
@@ -247,8 +329,10 @@
     }
     entered = [...entered, fruit]; feedback = "selection"; announce("tap", {fruit, position: position + 1});
     if (entered.length === pattern.length) {
-      clearTimer(false); solved.add(groveIndex); runSolved.add(groveIndex); unlockedThrough = Math.max(unlockedThrough, Math.min(groves.length, groveIndex + 2));
-      saveProgress(); feedback = "correct"; phase = "complete"; announce("complete"); renderBattle();
+      clearTimer(false); lastSaveSucceeded = saveProgress(groveIndex);
+      if (lastSaveSucceeded) { runSolved.add(groveIndex); rememberSolvedStage(groveIndex + 1); flushSavedStageRewards(); }
+      __wpMeasurement.saveSucceeded = lastSaveSucceeded;
+      feedback = "correct"; phase = "complete"; announce("complete"); renderBattle();
       timer = setTimeout(() => { show("result"); renderResult(); }, 750);
     } else renderBattle();
   }
@@ -261,8 +345,9 @@
       : campaign().result.replaceAll("{count}", String(solved.size)).replaceAll("{total}", String(groves.length)).replaceAll("{attempts}", String(attempts));
     $("resultMapBtn").hidden = false;
     $("nextBtn").hidden = false;
-    $("nextBtn").disabled = complete;
-    $("nextBtn").setAttribute("aria-disabled", String(complete));
+    if (!lastSaveSucceeded) $("resultText").textContent = saveFailureCopy[locale] || saveFailureCopy.en;
+    $("nextBtn").disabled = complete || !lastSaveSucceeded;
+    $("nextBtn").setAttribute("aria-disabled", String(complete || !lastSaveSucceeded));
     $("resultReplayBtn").hidden = false;
     __wpNotifyMeasurement();
     if (complete && phase === "result" && runSolved.size === groves.length) {
