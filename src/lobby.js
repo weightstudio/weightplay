@@ -341,7 +341,7 @@ function syncSpotlightArtwork() {
   const game = lobby.games.find(item => item.id === lobby.featuredGameId);
   if (!image || !game) return;
   // A scene is optional artwork for any spotlight; square catalog posters stay intact.
-  const scene = document.body.hasAttribute("data-desktop-lobby") && game.art?.lobbyScene;
+  const scene = !window.matchMedia("(min-width: 1120px)").matches && game.art?.lobbyScene;
   const source = scene ? new URL(scene, document.baseURI).href : new URL(lobbyThumbnail(primaryArt(game)), document.baseURI).href;
   image.closest(".spotlight-game").classList.toggle("spotlight-game--scene", Boolean(scene));
   if (image.src !== source) {
@@ -3351,8 +3351,14 @@ gameSearch?.addEventListener("input", () => {
 
 quickPickBtn?.addEventListener("click", () => { settleHallMotion(); openQuickPick(); });
 
-function setupDesktopLobbyPresentation() {
+function setupResponsiveLobbyPresentation() {
   if (isKidsLobby) return;
+  const mobileStylesheet = document.createElement("link");
+  mobileStylesheet.rel = "stylesheet";
+  mobileStylesheet.href = "/src/lobby-mobile.css";
+  mobileStylesheet.media = "(max-width: 1119px)";
+  mobileStylesheet.dataset.lobbyMobileStyle = "true";
+  document.head.append(mobileStylesheet);
   const shell = document.querySelector(".lobby-shell");
   const topbar = shell?.querySelector(".lobby-topbar");
   const hero = shell?.querySelector(".lobby-hero");
@@ -3360,11 +3366,13 @@ function setupDesktopLobbyPresentation() {
   const library = shell?.querySelector(":scope > .library-tabs");
   const rail = shell?.querySelector(".desktop-filter-rail");
   if (!topbar || !hero || !search || !library || !rail || !gameHallSwitch) return;
+  // Narrow-screen visual and keyboard order both start with hall selection.
+  hero.before(gameHallSwitch);
   const query = window.matchMedia("(min-width: 1120px)");
   const stage = document.createElement("div");
   stage.className = "desktop-lobby-stage";
   // Move the original controls, never clone their IDs, input state or listeners.
-  // Inert home markers restore the exact phone DOM order on a breakpoint change.
+  // Inert home markers restore the touch layout's DOM order at a breakpoint.
   const homes = new Map([gameHallSwitch, search, hero, demonEventPreview, library].filter(Boolean).map(node => {
     const home = document.createComment("desktop lobby home");
     node.before(home);
@@ -3537,7 +3545,7 @@ window.addEventListener("pageshow", (event) => {
   renderLobbyContent();
 });
 setupKidsLobbyPresentation();
-setupDesktopLobbyPresentation();
+setupResponsiveLobbyPresentation();
 renderLobby();
 loadGameStats();
 if (!document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {

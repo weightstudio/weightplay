@@ -1,0 +1,179 @@
+/* The same adventure lobby, composed for touch and narrow screens.
+   General only; game screens, Kids and the desktop composition stay independent. */
+@media (max-width: 1119px) {
+  body.general-lobby-page {
+    --lobby-ink: #e5efed;
+    --lobby-muted: #adc6ce;
+    --lobby-line: #51788b70;
+    --lobby-paper: #0d2939;
+    color-scheme: dark;
+    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp') center top / auto 900px no-repeat;
+  }
+  body.general-lobby-page::before {
+    background: linear-gradient(#111d4c99, #0a1e36cc), url('../assets/lobby-adventure-desktop-v1.webp') center top / auto 900px no-repeat;
+  }
+  body.general-lobby-page .lobby-shell { width: calc(100% - 28px); padding-bottom: 24px; }
+  body.general-lobby-page .lobby-topbar {
+    order: -3; direction: inherit; min-height: 64px; margin-bottom: 10px; gap: 12px;
+    border-bottom: 1px solid #7193a344; background: none;
+  }
+  body.general-lobby-page .lobby-topbar .brand-lockup { gap: 8px; }
+  body.general-lobby-page .lobby-topbar h1 { font-size: 23px; text-shadow: none; letter-spacing: -.5px; }
+  body.general-lobby-page .lobby-topbar .brand-logo { width: 30px; height: 30px; }
+  body.general-lobby-page .lobby-topbar .brand-byline { margin-top: 4px; font-size: 7px; color: #a5bec6; }
+  body.general-lobby-page .lobby-topbar .lobby-preferences { flex-basis: 44px; margin-inline: auto 0; }
+  body.general-lobby-page .lobby-settings-button {
+    width: 44px; height: 44px; border: 1px solid #658b9d88; border-radius: 6px;
+    background: #102b3be6; box-shadow: none;
+  }
+
+  body.general-lobby-page .game-hall-switch { order: -2; gap: 6px; margin: 0 0 12px; }
+  body.general-lobby-page .game-hall-switch button {
+    min-width: 0; min-height: 48px; padding: 8px 5px 8px 30px;
+    border: 1px solid #50738880; border-radius: 6px; background: #102939cc;
+    box-shadow: none; text-align: center;
+  }
+  body.general-lobby-page .game-hall-switch button.active {
+    border-color: var(--hall-selected-edge, #ecd28f); background: #235357cc;
+    box-shadow: inset 0 2px 0 #edd08c; color: #fff2cb;
+  }
+  body.general-lobby-page .game-hall-switch button:active { transform: none; }
+  body.general-lobby-page .game-hall-switch .hall-tab-icon { inset-inline-start: 7px; width: 20px; height: 20px; }
+  body.general-lobby-page .game-hall-switch span { font-size: 12px; line-height: 1.3; overflow-wrap: anywhere; }
+  body.general-lobby-page .game-hall-switch small { display: none; }
+  html[dir='rtl'] body.general-lobby-page .game-hall-switch button { padding-inline: 30px 5px; }
+
+  body.general-lobby-page .lobby-hero {
+    order: -1; box-sizing: border-box; height: 210px !important; margin: 0 0 10px;
+    border: 1px solid #698d9f99; border-radius: 9px; box-shadow: 0 6px 20px #020e1855;
+  }
+  body.general-lobby-page .lobby-hero.has-spotlight > :is(.general-hero-scene, .lobby-hero-copy) { display: none !important; }
+  body.general-lobby-page .lobby-hero.has-spotlight::after { display: none; }
+  body.general-lobby-page .lobby-hero > #spotlightGameSection {
+    inset: 0 !important; width: 100% !important; max-width: none !important;
+  }
+  body.general-lobby-page .spotlight-game {
+    position: relative; isolation: isolate; box-sizing: border-box; display: grid;
+    grid-template-columns: minmax(0, 1fr) 42%; align-items: center;
+    min-height: 208px; gap: 10px; padding: 18px; border: 0; border-radius: 8px;
+    background: #092536; box-shadow: none; overflow: hidden;
+  }
+  body.general-lobby-page .spotlight-game > img {
+    grid-column: 2; grid-row: 1; width: 100%; height: auto; border-radius: 5px;
+  }
+  body.general-lobby-page .spotlight-game > div { grid-column: 1; grid-row: 1; min-width: 0; }
+  body.general-lobby-page .spotlight-game--scene { display: flex; }
+  body.general-lobby-page .spotlight-game--scene > div { width: 57%; }
+  body.general-lobby-page .spotlight-game--scene > img {
+    position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%;
+    max-height: none; object-fit: cover; object-position: 62% center; border-radius: 0;
+  }
+  body.general-lobby-page .spotlight-game--scene::before {
+    content: ''; position: absolute; z-index: -1; inset: 0;
+    background: linear-gradient(90deg, #061c2be8, #071e2d88 45%, #071e2d00 85%);
+  }
+  /* Override the legacy square-poster transform reset for this scene only. */
+  html[dir='rtl'] body.general-lobby-page .spotlight-game--scene > img { transform: scaleX(-1) !important; }
+  html[dir='rtl'] body.general-lobby-page .spotlight-game--scene::before {
+    background: linear-gradient(270deg, #061c2be8, #071e2d88 45%, #071e2d00 85%);
+  }
+  body.general-lobby-page .spotlight-game small { color: #f1d28b; font-size: 9px; letter-spacing: .08em; }
+  body.general-lobby-page .spotlight-game h3 {
+    margin: 9px 0 14px; font-size: clamp(23px, 5.8vw, 34px); line-height: 1.15;
+    color: #fff4d8; overflow-wrap: anywhere; text-wrap: balance;
+  }
+  body.general-lobby-page .spotlight-game p { display: none; }
+  body.general-lobby-page .spotlight-game span {
+    display: inline-flex; box-sizing: border-box; align-items: center; justify-content: center;
+    min-height: 44px; max-width: 100%; padding: 9px 15px; border: 1px solid #ffe09b;
+    border-radius: 5px; background: linear-gradient(#f4d17e, #dda748); color: #302919;
+    font-size: 12px; font-weight: 800; line-height: 1.3;
+  }
+  body.general-lobby-page .lobby-hero > .weightplay-version-badge {
+    inset: auto 8px 6px auto !important; color: #abc4ce; background: #071d2bbf; font-size: 9px;
+  }
+  html[dir='rtl'] body.general-lobby-page .lobby-hero > .weightplay-version-badge { inset: auto auto 6px 8px !important; }
+  body.general-lobby-page .lobby-hero > .lobby-hero-copy {
+    inset: 20px auto auto 18px !important; width: 70% !important; max-width: 430px !important;
+  }
+  html[dir='rtl'] body.general-lobby-page .lobby-hero > .lobby-hero-copy { inset: 20px 18px auto auto !important; }
+  body.general-lobby-page .lobby-hero-copy .hero-eyebrow { margin-bottom: 9px; font-size: 9px; }
+  body.general-lobby-page .lobby-hero-copy h2 { font-size: clamp(21px, 5.5vw, 32px); line-height: 1.14; text-wrap: balance; }
+  body.general-lobby-page .lobby-hero-copy .lobby-subtitle { display: none; }
+
+  body.general-lobby-page .demon-event-preview {
+    order: 0; padding: 0; margin: 0 0 12px; border: 0; background: none; box-shadow: none;
+  }
+  body.general-lobby-page .demon-event-track {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+    overflow: visible; scroll-snap-type: none;
+  }
+  body.general-lobby-page .demon-event-card,
+  body.general-lobby-page .demon-event-card + .demon-event-card {
+    position: relative; isolation: isolate; grid-template-columns: 40px minmax(0, 1fr);
+    align-items: center; gap: 8px; min-height: 80px; padding: 9px;
+    border: 1px solid #62829688; border-radius: 7px; background: #102b3bdd; overflow: hidden;
+  }
+  body.general-lobby-page .demon-event-card::before {
+    content: ''; position: absolute; z-index: -1; inset: 0;
+    background: linear-gradient(90deg, #081b29dd, #081b29aa), var(--activity-art) center / cover;
+  }
+  body.general-lobby-page .demon-event-card .demon-event-art { width: 40px; height: 40px; border-radius: 4px; }
+  body.general-lobby-page .demon-event-card-copy { gap: 4px; padding: 0; }
+  body.general-lobby-page .demon-event-label { font-size: 9px; letter-spacing: 0; }
+  body.general-lobby-page .demon-event-title { font-size: 14px; line-height: 1.25; }
+  body.general-lobby-page .demon-event-card-schedule { display: none; }
+  body.general-lobby-page .demon-event-chevron,
+  body.general-lobby-page .demon-event-carousel-controls { display: none; }
+  /* Schedule and reward details remain in the existing accessible activity dialog. */
+
+  body.general-lobby-page .lobby-search-row { order: 1; grid-template-columns: minmax(0, 1fr) 44px; gap: 8px; margin: 0 0 10px; }
+  body.general-lobby-page .lobby-search input {
+    height: 44px; min-height: 44px; padding-inline: 12px; border: 1px solid #658b9d88;
+    border-radius: 6px; background: #092333ed; box-shadow: none; font-size: 13px;
+  }
+  body.general-lobby-page .quick-pick-btn {
+    min-width: 44px; min-height: 44px; padding: 0; border: 1px solid #b89d63bb;
+    border-radius: 6px; background: #233e45; color: #f3da99; font-size: 0; box-shadow: none;
+  }
+  body.general-lobby-page .quick-pick-btn::after { content: '⚄'; font-size: 26px; line-height: 1; }
+  body.general-lobby-page .lobby-shell > .library-tabs {
+    order: 2; gap: 4px; padding: 3px; margin: 0 0 8px;
+    border: 1px solid #50778a66; border-radius: 7px; background: #092333c9; box-shadow: none;
+  }
+  body.general-lobby-page .lobby-shell > .library-tabs button {
+    min-height: 44px; padding: 7px 5px; border: 1px solid transparent; border-radius: 4px;
+    background: transparent; color: #b9ced4; box-shadow: none; font-size: 12px;
+  }
+  body.general-lobby-page .lobby-shell > .library-tabs button.active {
+    border-color: #668e9a80; background: #25515ec9; color: #fff0c9; box-shadow: none;
+  }
+  body.general-lobby-page .vibe-strip { order: 3; margin-bottom: 8px; }
+  body.general-lobby-page .vibe-options { gap: 6px; padding-block: 2px 5px; }
+  body.general-lobby-page .vibe-options button {
+    min-height: 44px; padding: 8px 12px; border: 1px solid #5e829866; border-radius: 5px;
+    background: #0f2a3ad9; color: #bfd2d9; box-shadow: none; font-size: 12px;
+  }
+  body.general-lobby-page .vibe-options button.active { border-color: #d5bc80; background: #324947; color: #ffe6ac; box-shadow: none; }
+  /* The board hall's old gold-button ink cannot inherit onto dark touch tabs. */
+  body.general-lobby-page:is([data-game-hall='tabletop']:not([data-hall-transition-target='games']), [data-hall-transition-target='tabletop']) :is(.game-hall-switch, .library-tabs, .vibe-options) button.active {
+    border-color: #d5bc80; background: #25515e; color: #fff0c9; box-shadow: none;
+  }
+  body.general-lobby-page :is(.hero-game-card, .game-card) { border-width: 1px; border-color: #52748788; border-radius: 6px; background: #102a3b; box-shadow: none; }
+  body.general-lobby-page :is(.hero-game-copy, .game-card-body) { border-top: 1px solid #52748755; background: #102a3b; }
+  body.general-lobby-page .section-heading { border: 0; margin-bottom: 10px; }
+  body.general-lobby-page .section-heading h2 { font-size: 20px; text-shadow: none; }
+  body.general-lobby-page :is(#latestGamesSection, #heroGamesSection, #continuePlayingSection) { margin: 8px 0 14px; }
+  body.general-lobby-page .continue-playing-card { border: 1px solid #52748788; border-radius: 6px; background: #102a3bdd; box-shadow: none; }
+}
+@media (min-width: 721px) and (max-width: 1119px) {
+  body.general-lobby-page .lobby-shell { width: calc(100% - 40px); }
+  body.general-lobby-page .lobby-hero { height: 260px !important; }
+  body.general-lobby-page .spotlight-game { min-height: 258px; padding: 24px 30px; }
+  body.general-lobby-page .spotlight-game--scene > div { width: 48%; }
+  body.general-lobby-page .spotlight-game h3 { font-size: 38px; }
+  body.general-lobby-page .demon-event-card,
+  body.general-lobby-page .demon-event-card + .demon-event-card { grid-template-columns: 54px minmax(0, 1fr); }
+  body.general-lobby-page .demon-event-card .demon-event-art { width: 54px; height: 54px; }
+  body.general-lobby-page .demon-event-card-schedule { display: block; }
+}
