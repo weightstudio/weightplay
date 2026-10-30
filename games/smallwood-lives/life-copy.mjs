@@ -14,9 +14,28 @@ export const normalizeLocale=value=>LOCALES.find(l=>l.toLowerCase()===String(val
 export const format=(value,args={})=>String(value).replace(/\{(\w+)\}/g,(_,k)=>args[k]??'');
 export const escape=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
 export const SOURCE_LINKS=[['UN · World Population Prospects 2024','https://population.un.org/wpp/'],['WHO · Global Health Estimates 2023','https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-leading-causes-of-death'],['World Bank · 2023','https://data.worldbank.org/']];
+export const FAQ_QUESTIONS = [
+ ['How does a life unfold?','How is a birthplace chosen?'],
+ ['人生如何展開？','出生地如何抽選？'],
+ ['人生如何展开？','出生地如何抽选？'],
+ ['人生はどのように進みますか？','出生地はどう選ばれますか？'],
+ ['삶은 어떻게 진행되나요?','출생지는 어떻게 정해지나요?'],
+ ['¿Cómo transcurre una vida?','¿Cómo se elige el lugar de nacimiento?'],
+ ['Como uma vida se desenrola?','Como o local de nascimento é escolhido?'],
+ ['Comment une vie se déroule-t-elle ?','Comment le lieu de naissance est-il choisi ?'],
+ ['Wie verläuft ein Leben?','Wie wird der Geburtsort gewählt?'],
+ ['Come si svolge una vita?','Come viene scelto il luogo di nascita?'],
+ ['Как проходит жизнь?','Как выбирается место рождения?'],
+ ['जीवन कैसे आगे बढ़ता है?','जन्मस्थान कैसे चुना जाता है?'],
+ ['كيف تتقدم الحياة؟','كيف يُختار مكان الميلاد؟']
+];
+export function renderFaq(locale='en') {
+ const l=normalizeLocale(locale), c=COPY[l], [q1,q2]=FAQ_QUESTIONS[LOCALES.indexOf(l)];
+ return `<div class="game-info-faq"><dl><dt>${escape(q1)}</dt><dd>${escape(c.howText||c.howDescription||c.how)}</dd><dt>${escape(q2)}</dt><dd>${escape(c.model)}</dd></dl></div>`;
+}
 export function renderGuide(locale='en'){
  const l=normalizeLocale(locale),c=COPY[l],route=ROUTES[LOCALES.indexOf(l)];
- return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="life-copy.mjs#renderGuide" data-wp-guide-locale="${l}" aria-label="${escape(c.how)}"><div class="game-info-hero"><div class="game-info-title"><h2>${escape(c.title)}</h2><p>${escape(c.intro)}</p></div></div><div class="game-info-sections">${[[c.how,c.howText||c.howDescription||c.how],[c.sources,c.model],[c.cause,c.causeModel],[c.environment,c.environmentNote],[c.context,c.fiction],[c.history,c.historyLimit+' '+c.legacyNote],[c.themes,c.themeNote],[c.inspiration,c.inspirationNote]].map(([title,body])=>`<article class="game-info-section"><h3>${escape(title)}</h3><p>${escape(body)}</p></article>`).join('')}<article class="game-info-section"><h3>${escape(c.sources)}</h3><ul>${SOURCE_LINKS.map(([name,url],i)=>`<li>${c[["sourceUN","sourceWHO","sourceWB"][i]]}</li>`).join('')}</ul></article></div><div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(c.related)}</h3><div class="game-info-related">${['animal-peach-oath','animal-carnival-claw'].map(id=>`<a class="game-info-related-card" data-game-id="${id}" href="/${route}/games/${id}/"><strong>${id}</strong></a>`).join('')}</div></div></section>`;
+ return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="life-copy.mjs#renderGuide" data-wp-guide-locale="${l}" aria-label="${escape(c.how)}"><div class="game-info-hero"><div class="game-info-title"><h2>${escape(c.title)}</h2><p>${escape(c.intro)}</p></div></div><div class="game-info-sections">${[[c.how,c.howText||c.howDescription||c.how],[c.sources,c.model],[c.cause,c.causeModel],[c.environment,c.environmentNote],[c.context,c.fiction],[c.history,c.historyLimit+' '+c.legacyNote],[c.themes,c.themeNote],[c.inspiration,c.inspirationNote]].map(([title,body])=>`<article class="game-info-section"><h3>${escape(title)}</h3><p>${escape(body)}</p></article>`).join('')}<article class="game-info-section"><h3>${escape(c.sources)}</h3><ul>${SOURCE_LINKS.map(([name,url],i)=>`<li>${c[["sourceUN","sourceWHO","sourceWB"][i]]}</li>`).join('')}</ul></article></div>${renderFaq(l)}<div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(c.related)}</h3><div class="game-info-related">${['animal-peach-oath','animal-carnival-claw'].map(id=>`<a class="game-info-related-card" data-game-id="${id}" href="/${route}/games/${id}/"><strong>${id}</strong></a>`).join('')}</div></div></section>`;
 }
 // Initial HTML carries every game-owned string without waiting for JS.
 export function localizeShell(html,locale='en'){
