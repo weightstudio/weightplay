@@ -8,6 +8,11 @@ const $=id=>document.getElementById(id),GAME='animal-rain-roost';
 let locale=detectLocale(),save=readSave(localStorage),screen='main',tab='journey',selected=0,run=null,raf=0,last=0,settling=0;
 let scene,frame,rail,modal=null,previousFocus=null,settingsPaused=false,tutorialPaused=false,suspended=false,starting=false,buying=false,practice=false,everPractice=false,disposed=false;
 let tutorialTrigger=null,feedbackUntil=0,keyboard=new Set(),pointer=null,generation=0,saveFailed=false;
+const measurement={screen:'main',roundKey:null,started:false,ended:false,outcome:'abandon',stageId:null,stageIdAuthoritative:true,rewardEligible:false,saveSucceeded:false};
+const readMeasurement=()=>({...measurement,paused:document.hidden||!!modal||settingsPaused||tutorialPaused||suspended,node:document.body,activityMode:'input',idleSeconds:300});
+function notifyMeasurement(){try{window.WonderAnalytics?.game?.observeState(readMeasurement)}catch{/* Optional shared telemetry. */}}
+window.addEventListener('weightplay:analytics-ready',notifyMeasurement);notifyMeasurement();
+function storedStageCleared(index){try{const raw=localStorage.getItem(SAVE_KEY);if(raw===null)return false;const value=JSON.parse(raw);if(!value||!Array.isArray(value.stars))return null;return Boolean(value.stars[index]);}catch{return null;}}
 const abort=new AbortController(),flights=new Set(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const listen=(node,type,fn,options={})=>node.addEventListener(type,fn,{...options,signal:abort.signal});
 const t=key=>COPY[locale][key];
@@ -63,6 +68,8 @@ function setInert(){
   $('stageScreen').querySelector('nav')?.toggleAttribute('inert',modal===$('purchaseView'));
 }
 function showScreen(next){
+  if(next!=='battle'&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome='abandon';measurement.saveSucceeded=false;}
+  measurement.screen=next;notifyMeasurement();
   generation++;cancelAnimationFrame(raf);raf=0;last=0;resetInputs();cancelEffects();hideModals();
   screen=next;suspended=false;settingsPaused=false;tutorialPaused=false;
   document.body.dataset.screen=next;
@@ -148,20 +155,24 @@ async function startBattle(index){
     if(stamp!==generation)return;
     if(!practice&&index+1>save.unlocked){play('feedback.error');return;}
     selected=Math.max(0,Math.min(29,index));run=createRun(selected+1,save.equipment);scene.reset();settling=0;
-    showScreen('battle');renderHUD();feedback(t('ready'));play('game.start');
+    showScreen('battle');
+    const stored=storedStageCleared(selected);window.WeightPlayCastle?.dismissRewardNotice?.(GAME);
+    Object.assign(measurement,{screen:'battle',roundKey:{},started:true,ended:false,outcome:'abandon',stageId:selected+1,rewardEligible:!everPractice&&!save.stars[selected]&&stored===false,saveSucceeded:false});notifyMeasurement();
+    renderHUD();feedback(t('ready'));play('game.start');
     $('rainCanvas').focus({preventScroll:true});
     window.dispatchEvent(new CustomEvent('weightplay:battle-open',{detail:{gameId:GAME}}));
   }finally{starting=false;}
 }
 function finish(result){
   resetInputs();settling=.7;
-  const wasCleared=cleared();saveFailed=false;
+  const wasCleared=cleared(),prior=storedStageCleared(selected);saveFailed=false;
   if(result.win&&!everPractice){
     try{save=commitResult(localStorage,save,run)}
     catch{
       saveFailed=true;const next=normalizeSave(save);next.stars[selected]=Math.max(next.stars[selected],result.stars);next.bests[selected]=Math.max(next.bests[selected],result.score);next.legacyBest=Math.max(next.legacyBest,run.caught);save=normalizeSave(next);
     }
   }
+  Object.assign(measurement,{ended:true,outcome:result.win?'win':'lose',saveSucceeded:Boolean(result.win&&!everPractice&&!saveFailed&&prior===false&&storedStageCleared(selected)===true)});notifyMeasurement();
   play(result.win?'result.win':'result.lose');
   if(result.win&&!everPractice&&cleared()>wasCleared&&[5,10].includes(cleared()))play('reward.unlock');
   $('resultTitle').textContent=result.win?(selected===29?t('finale'):t('win')):t('fail');
