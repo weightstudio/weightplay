@@ -1,9 +1,0 @@
-{
-  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
-  "generator": "built-in image_gen edit",
-  "file": "13-garden-bee-block-v7-source.png",
-  "input": "assets/animal-coloring-studio-expansion-drafts/13-garden-bee-block-v6-source.png",
-  "styleReference": "assets/weightplay-character-boom-mane-lion-block-v1.webp",
-  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-616d90af-d452-46f2-9e0f-28f4286a6839.png",
-  "prompt": "Edit image 1, a portrait children's coloring page. Image 2 is ONLY a style reference for the simple, separated block-built character anatomy; do not include a lion or copy its costume. Keep the friendly original cuboid bee, two angular wings and five-petaled flower. Make the bee unmistakable in uncolored line art: draw two broad, complete outlined stripe bands across the abdomen, each a large closed white region for a child to color, no black filled bars, no tiny slivers. Add a few clear stepped block edges to the bee without small fill areas. Flatten the flower center into a single circle with no thin rim. Shrink and reposition the full flower, stem and both leaves so every outline stays well inside the rectangular page border with clear white margin. Big separate rounded-polygon petals. Symmetrical simple eyes. Strong continuous black outlines and white interiors only, no gray, shading, text, watermark, new characters or extra objects."
-}

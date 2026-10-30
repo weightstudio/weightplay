@@ -1,8 +1,0 @@
-{
-  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
-  "tool": "built-in image_gen",
-  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-8b13e14c-1475-41ec-becc-6ccab7f3973a.png",
-  "transparentBackgroundRequested": true,
-  "prompt": "Use case: stylized-concept. Asset type: one original transparent sprite sheet for a preschool coloring game's reusable picture stamps. Draw eight distinct friendly WeightPlay Block Animals world props in a precise 4-column by 2-row grid: flower, leaf, sun, cloud, water drop, shell, star, acorn, in that order. Each prop is built from clear square and rectangular-prism shapes with simple bold silhouettes and soft cheerful colors; preserve large gaps between cells so each sprite can be selected independently. Every icon is centered within its own equal cell with generous transparent padding. Fully transparent background, no border, no text, no labels, no logos, no watermark and no third-party style or recognizable franchise design.",
-  "remaining": "Independent Art review, alpha/cell bounds and icon recognition, rendering and accessibility verification, playable integration and local testing are pending."
-}

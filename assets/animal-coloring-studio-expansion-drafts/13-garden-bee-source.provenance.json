@@ -1,8 +1,0 @@
-{
-  "status": "DRAFT_NOT_APPROVED_NOT_IN_GAME",
-  "tool": "built-in image_gen",
-  "generatedSource": "/Users/kuoyu/.codex/generated_images/01a17716-e595-7c92-acb8-65902ae49027/exec-8182950b-73b0-41b2-be90-ebee2b83bb1f.png",
-  "styleReference": "assets/animal-coloring-studio-safari-pages/lion.webp",
-  "prompt": "Use case: illustration-story. Asset type: an original portrait-format coloring page for a child-friendly animal creativity game. Reference image: the supplied lion page is only a reference for line weight, rounded cartoon proportions, white paper, simple large enclosed coloring regions, and restrained background; create a completely new composition. Draw one cheerful, gentle bee hovering beside one large flower in a simple garden, with large separate petals, flower center, bee body, wings, leaves and ground. Solid dark outlines, clearly closed shapes, abundant white interiors and no shading; practical broad regions for a preschool child to tap and color. One finished single page, vertical 2:3 composition, rounded border. No color, gray shading, words, labels, watermark, tiny clutter or extra panels.",
-  "remaining": "Independent art assessment, region closure and mask verification, 768x1152 production derivative, playable integration and local testing are pending."
-}
