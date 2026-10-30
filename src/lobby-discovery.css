@@ -3,6 +3,12 @@ body.general-lobby-page .lobby-topbar {direction:ltr;}
 /* General lobby storefront. Loaded only by General entrypoints; gameplay and
    Kids retain the shared stylesheet. See specialist-lobby-discovery.md. */
 body.general-lobby-page {
+  --lobby-skin-panel: #061c29c9;
+  --lobby-skin-control: #0e2c3b;
+  --lobby-skin-selected: #1b514f80;
+  --lobby-skin-line: #5d899b88;
+  --lobby-skin-poster: #0c2332;
+  --lobby-scene-tint: #08233322;
   --lobby-ink: #173b32;
   --lobby-muted: #62766c;
   --lobby-line: #dce3d9;
@@ -135,13 +141,7 @@ body.general-lobby-page #heroGamesSection { order: 8; }
 body.general-lobby-page .general-hero-scene { width: 100%; height: 100%; object-fit: cover; }
 body.general-lobby-page[data-game-hall="topics"] .general-hero-scene { object-position: 66% center; }
 body.general-lobby-page [data-topic-filter][hidden] { display: none !important; }
-body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .lobby-hero-copy { top: 26px !important; width: min(60%, 720px) !important; max-width: min(60%, 720px) !important; }
-body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .weightplay-version-badge { top: 12px !important; right: 16px !important; bottom: auto !important; left: auto !important; }
 body.general-lobby-page[data-game-hall="topics"] .game-hall-switch button[data-hall-tab="topics"] small { display: none; }
-@media (max-width: 720px) {
-  body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .lobby-hero-copy { width: min(66%, 440px) !important; max-width: min(66%, 440px) !important; }
-}
-html[dir="rtl"] body.general-lobby-page[data-game-hall="topics"] .lobby-hero > .weightplay-version-badge { right: auto !important; left: 16px !important; }
 body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top: 12px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGamesSection .section-heading { margin-bottom: 8px; }
 body.general-lobby-page[data-game-hall="topics"] #heroGames { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
@@ -161,25 +161,6 @@ body.general-lobby-page[data-game-hall="topics"] #heroGames .hero-game-art { asp
 
 @media (max-width:720px) {
   body.general-lobby-page .game-hall-switch .hall-tab-icon { inset-inline-start:8px; width:22px; height:22px; }
-}
-
-/* The tabletop library controls keep a clear filled face in every state. */
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-shell > .library-tabs button {
-  border-color:#657594;
-  background:linear-gradient(180deg,#34445f,#26344b);
-  color:#e8edff;
-  box-shadow:inset 0 2px 0 #ffffff18,0 3px 0 #111a2a;
-}
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-shell > .library-tabs button:is(:hover,:focus-visible) {
-  border-color:#b9b2ff;
-  background:linear-gradient(180deg,#435777,#2f4262);
-  color:#ffffff;
-}
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-shell > .library-tabs button.active {
-  border-color:#d3b7ff;
-  background:linear-gradient(135deg,#765ccc,#445fa7);
-  color:#ffffff;
-  box-shadow:inset 0 2px 0 #ffffff36,0 3px 0 #16192e,0 0 0 1px #c6a7ff40;
 }
 
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
@@ -673,9 +654,12 @@ body.general-lobby-page #lobbyToast.hall-motion-toast:not(.hidden) {
 /* Blue/indigo with warm-gold selection semantics. Unset in Block World so its existing
    authored colors remain exact; destination intent starts the shared fade. */
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) {
+  --lobby-skin-panel:#111b39d9; --lobby-skin-control:#1a2a4b;
+  --lobby-skin-selected:#384c8f88; --lobby-skin-line:#8198ce88;
+  --lobby-skin-poster:#14253e; --lobby-scene-tint:#19275b99;
   --hall-text:#edf3ff; --hall-muted:#bbc9ed; --hall-accent:#ffda8f;
   --hall-border:#6d85d7; --hall-surface:#203a72; --hall-surface-deep:#101b3b;
-  --hall-selected:#deb564; --hall-selected-edge:#ffdc92; --hall-selected-ink:#182342;
+  --hall-selected:#384c8f; --hall-selected-edge:#c4b8f5; --hall-selected-ink:#f1edff;
   --hall-shadow:#070d25; --hall-edge:#637dde; --hall-action:#f5c76d;
   --hall-hover:#304d8e; --hall-icon-contrast:#223668;
   --lobby-ink:var(--hall-text); --lobby-muted:var(--hall-muted);
@@ -708,13 +692,6 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
 
 body.general-lobby-page #catalogPagination button { color:var(--hall-action-ink,#302717); }
 
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .desktop-filter-rail :is(.library-tabs,.topic-filter,.skill-filter,.availability-filter) button {
-  background:var(--hall-surface); border-color:var(--hall-border); color:var(--hall-text);
-}
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .desktop-filter-rail :is(.library-tabs,.topic-filter,.skill-filter,.availability-filter) button:is(.active,:hover,:focus-visible) {
-  background:var(--hall-selected); border-color:var(--hall-selected-edge); color:var(--hall-text);
-}
-
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .favorite-toggle { color:var(--hall-text); }
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .favorite-toggle::before { background-color:var(--hall-surface-deep); border-color:var(--hall-border); }
 body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .favorite-toggle.active { color:var(--hall-action-ink); }
@@ -723,14 +700,11 @@ body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition
 body.general-lobby-page .game-hall-switch button { transition:transform 120ms ease,background-color 1s cubic-bezier(.4,0,.2,1),border-color 1s cubic-bezier(.4,0,.2,1),color 1s cubic-bezier(.4,0,.2,1),box-shadow 1s cubic-bezier(.4,0,.2,1); }
 @media (prefers-reduced-motion:reduce) { body.general-lobby-page .game-hall-switch button { transition:none; } }
 
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .game-hall-switch button.active {
-  background:var(--hall-selected); border-color:var(--hall-selected-edge); color:var(--hall-text);
-}
-body.general-lobby-page[data-hall-transition-target="games"] .game-hall-switch button.active { background:var(--lobby-arcade-active); border-color:#8ef0b7; }
-
-/* Hot Topics has its own bright, editorial playroom while sharing the same
-   lobby structure and card motion. Gradients keep it asset-free and calm. */
+/* Hall themes provide colors; responsive skins own the common geometry. */
 body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) {
+  --lobby-skin-panel:#281d32d9; --lobby-skin-control:#3c2843;
+  --lobby-skin-selected:#6c385e88; --lobby-skin-line:#b485a788;
+  --lobby-skin-poster:#302237; --lobby-scene-tint:#53204499;
   --hall-text:#fff3f7; --hall-muted:#e5b8ca; --hall-accent:#ffd0a1;
   --hall-border:#a65079; --hall-surface:#51264c; --hall-surface-deep:#28172f;
   --hall-selected:#a84172; --hall-selected-edge:#ffb6ce; --hall-selected-ink:#fff7ec;
@@ -755,31 +729,10 @@ body.general-lobby-page::after {
   opacity:0; transition:opacity 1s cubic-bezier(.4,0,.2,1);
 }
 body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"])::after { opacity:1; }
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .lobby-hero::before {
-  opacity:1;
-  background:radial-gradient(circle at 76% 26%,#ffcb9b28 0 1.5px,transparent 2.5px),radial-gradient(circle at 88% 65%,#f49cbd32 0 3px,transparent 4px),linear-gradient(115deg,#231429e8 0%,#36203c9c 35%,#46263f42 62%,#4a2a490c 100%);
-  background-size:58px 58px,94px 94px,cover;
-}
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .lobby-hero::after { opacity:0; }
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .game-hall-switch button.active {
-  background:var(--hall-selected); border-color:var(--hall-selected-edge); color:var(--hall-text);
-}
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .game-hall-switch button:not(.active) {
-  background:#392941; border-color:#a877a0; color:#fff4fa; box-shadow:0 3px 0 #1c1323;
-}
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .game-hall-switch button:not(.active):is(:hover,:focus-visible) {
-  background:linear-gradient(180deg,#765074,#58385d); border-color:#f1b6d1; color:#fffaff; box-shadow:inset 0 1px 0 #ffffff36,0 3px 0 #211628;
-}
 body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .game-card-body {
   background:var(--hall-surface); border-color:var(--hall-border);
 }
 body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .game-card :is(h2,.game-description) { color:var(--hall-text); }
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .desktop-filter-rail :is(.library-tabs,.topic-filter,.skill-filter,.availability-filter) button {
-  background:var(--hall-surface); border-color:var(--hall-border); color:var(--hall-text);
-}
-body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .desktop-filter-rail :is(.library-tabs,.topic-filter,.skill-filter,.availability-filter) button:is(.active,:hover,:focus-visible) {
-  background:var(--hall-selected); border-color:var(--hall-selected-edge); color:var(--hall-text);
-}
 body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) :is(#weightplayCastle,#dailyReward) { display:none!important; }
 body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-target]),[data-hall-transition-target="topics"]) .lobby-kids-gateway { display:none!important; }
 @media (prefers-reduced-motion:reduce) {
@@ -787,7 +740,6 @@ body.general-lobby-page:is([data-game-hall="topics"]:not([data-hall-transition-t
   body.general-lobby-page .lobby-hero::before { transition:none; }
 }
 
-body.general-lobby-page:is([data-game-hall="tabletop"]:not([data-hall-transition-target="games"]),[data-hall-transition-target="tabletop"]) .lobby-hero::after { opacity:0; }
 body.general-lobby-page :is(.lobby-topbar h1,.hero-eyebrow,.lobby-hero-copy h2,.lobby-subtitle,.section-heading h2,.section-heading span,.catalog-heading h2,.hero-game-copy strong,.hero-game-copy small,.game-hall-switch small) { transition:color 1s cubic-bezier(.4,0,.2,1); }
 @media (prefers-reduced-motion:reduce) {
   body.general-lobby-page .lobby-hero::after,
@@ -1040,6 +992,28 @@ body.general-lobby-page .demon-event-dialog .demon-event-count { margin: 0; colo
 }
 
 /* One genre list per responsive surface; long catalogs keep the rail usable. */
+body.general-lobby-page .lobby-hero::before { content: none; }
+body.general-lobby-page .lobby-hero::after {
+  background: linear-gradient(90deg, var(--lobby-skin-panel), transparent 80%);
+}
+/* General collection launchers share the lobby skin; their inline defaults
+   continue to belong to the independent Kids/collection modules. */
+body.general-lobby-page [data-weightplay-collection-entry] { margin: 0 0 12px !important; }
+body.general-lobby-page [data-weightplay-collection-entry] > button {
+  min-height: 52px !important; padding: 9px 12px !important; gap: 10px !important;
+  border: 1px solid var(--lobby-skin-line) !important; border-radius: 6px !important;
+  background: var(--lobby-skin-panel) !important; color: var(--hall-text, #e5efed) !important;
+  box-shadow: none !important; font: 650 13px/1.3 system-ui, sans-serif !important;
+}
+body.general-lobby-page [data-weightplay-collection-entry] > button > span:first-child {
+  flex-basis: 32px !important; height: 32px !important; border-radius: 4px !important;
+  background: var(--lobby-skin-selected) !important; color: var(--hall-accent, #f3da99) !important;
+  box-shadow: none !important; transform: none !important; font-size: 20px !important;
+}
+body.general-lobby-page [data-weightplay-collection-entry] > button > span:last-child {
+  flex-basis: 24px !important; height: 32px !important; border-radius: 0 !important;
+  background: transparent !important; color: var(--hall-muted, #adc6ce) !important;
+}
 @media (min-width: 721px) {
   body.general-lobby-page .desktop-filter-rail {
     max-height: calc(100dvh - 118px);

@@ -4,13 +4,14 @@
   body.general-lobby-page {
     --lobby-ink: #e5efed;
     --lobby-muted: #adc6ce;
-    --lobby-line: #51788b70;
-    --lobby-paper: #0d2939;
+    --lobby-line: var(--lobby-skin-line);
+    --lobby-paper: var(--lobby-skin-poster);
     color-scheme: dark;
     background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp') center top / auto 900px no-repeat;
   }
-  body.general-lobby-page::before {
-    background: linear-gradient(#111d4c99, #0a1e36cc), url('../assets/lobby-adventure-desktop-v1.webp') center top / auto 900px no-repeat;
+  body.general-lobby-page::before,
+  body.general-lobby-page::after {
+    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp') center top / auto 900px no-repeat;
   }
   body.general-lobby-page .lobby-shell { width: calc(100% - 28px); padding-bottom: 24px; }
   body.general-lobby-page .lobby-topbar {
@@ -23,18 +24,18 @@
   body.general-lobby-page .lobby-topbar .brand-byline { margin-top: 4px; font-size: 7px; color: #a5bec6; }
   body.general-lobby-page .lobby-topbar .lobby-preferences { flex-basis: 44px; margin-inline: auto 0; }
   body.general-lobby-page .lobby-settings-button {
-    width: 44px; height: 44px; border: 1px solid #658b9d88; border-radius: 6px;
-    background: #102b3be6; box-shadow: none;
+    width: 44px; height: 44px; border: 1px solid var(--lobby-skin-line); border-radius: 6px;
+    background: var(--lobby-skin-control); box-shadow: none;
   }
 
   body.general-lobby-page .game-hall-switch { order: -2; gap: 6px; margin: 0 0 12px; }
   body.general-lobby-page .game-hall-switch button {
     min-width: 0; min-height: 48px; padding: 8px 5px 8px 30px;
-    border: 1px solid #50738880; border-radius: 6px; background: #102939cc;
+    border: 1px solid var(--lobby-skin-line); border-radius: 6px; background: var(--lobby-skin-panel);
     box-shadow: none; text-align: center;
   }
   body.general-lobby-page .game-hall-switch button.active {
-    border-color: var(--hall-selected-edge, #ecd28f); background: #235357cc;
+    border-color: var(--hall-selected-edge, #ecd28f); background: var(--lobby-skin-selected);
     box-shadow: inset 0 2px 0 #edd08c; color: #fff2cb;
   }
   body.general-lobby-page .game-hall-switch button:active { transform: none; }
@@ -129,42 +130,39 @@
 
   body.general-lobby-page .lobby-search-row { order: 1; grid-template-columns: minmax(0, 1fr) 44px; gap: 8px; margin: 0 0 10px; }
   body.general-lobby-page .lobby-search input {
-    height: 44px; min-height: 44px; padding-inline: 12px; border: 1px solid #658b9d88;
-    border-radius: 6px; background: #092333ed; box-shadow: none; font-size: 13px;
+    height: 44px; min-height: 44px; padding-inline: 12px; border: 1px solid var(--lobby-skin-line);
+    border-radius: 6px; background: var(--lobby-skin-panel); box-shadow: none; font-size: 13px;
   }
   body.general-lobby-page .quick-pick-btn {
     min-width: 44px; min-height: 44px; padding: 0; border: 1px solid #b89d63bb;
-    border-radius: 6px; background: #233e45; color: #f3da99; font-size: 0; box-shadow: none;
+    border-radius: 6px; background: var(--lobby-skin-control); color: var(--hall-accent, #f3da99); font-size: 0; box-shadow: none;
   }
   body.general-lobby-page .quick-pick-btn::after { content: '⚄'; font-size: 26px; line-height: 1; }
   body.general-lobby-page .lobby-shell > .library-tabs {
     order: 2; gap: 4px; padding: 3px; margin: 0 0 8px;
-    border: 1px solid #50778a66; border-radius: 7px; background: #092333c9; box-shadow: none;
+    border: 1px solid var(--lobby-skin-line); border-radius: 7px; background: var(--lobby-skin-panel); box-shadow: none;
   }
   body.general-lobby-page .lobby-shell > .library-tabs button {
     min-height: 44px; padding: 7px 5px; border: 1px solid transparent; border-radius: 4px;
     background: transparent; color: #b9ced4; box-shadow: none; font-size: 12px;
   }
   body.general-lobby-page .lobby-shell > .library-tabs button.active {
-    border-color: #668e9a80; background: #25515ec9; color: #fff0c9; box-shadow: none;
+    border-color: var(--lobby-skin-line); background: var(--lobby-skin-selected); color: var(--hall-text, #fff0c9); box-shadow: none;
   }
   body.general-lobby-page .vibe-strip { order: 3; margin-bottom: 8px; }
   body.general-lobby-page .vibe-options { gap: 6px; padding-block: 2px 5px; }
   body.general-lobby-page .vibe-options button {
-    min-height: 44px; padding: 8px 12px; border: 1px solid #5e829866; border-radius: 5px;
-    background: #0f2a3ad9; color: #bfd2d9; box-shadow: none; font-size: 12px;
+    min-height: 44px; padding: 8px 12px; border: 1px solid var(--lobby-skin-line); border-radius: 5px;
+    background: var(--lobby-skin-panel); color: var(--hall-muted, #bfd2d9); box-shadow: none; font-size: 12px;
   }
-  body.general-lobby-page .vibe-options button.active { border-color: #d5bc80; background: #324947; color: #ffe6ac; box-shadow: none; }
-  /* The board hall's old gold-button ink cannot inherit onto dark touch tabs. */
-  body.general-lobby-page:is([data-game-hall='tabletop']:not([data-hall-transition-target='games']), [data-hall-transition-target='tabletop']) :is(.game-hall-switch, .library-tabs, .vibe-options) button.active {
-    border-color: #d5bc80; background: #25515e; color: #fff0c9; box-shadow: none;
-  }
-  body.general-lobby-page :is(.hero-game-card, .game-card) { border-width: 1px; border-color: #52748788; border-radius: 6px; background: #102a3b; box-shadow: none; }
-  body.general-lobby-page :is(.hero-game-copy, .game-card-body) { border-top: 1px solid #52748755; background: #102a3b; }
+  body.general-lobby-page .vibe-options button.active { border-color: var(--hall-selected-edge, #d5bc80); background: var(--lobby-skin-selected); color: var(--hall-text, #ffe6ac); box-shadow: none; }
+  body.general-lobby-page :is(#latestGames, #heroGames) .hero-game-card,
+  body.general-lobby-page #gameGrid .game-card { border-width: 1px; border-color: var(--lobby-skin-line); border-radius: 6px; background: var(--lobby-skin-poster); box-shadow: none; }
+  body.general-lobby-page :is(.hero-game-copy, .game-card-body) { border-top: 1px solid var(--lobby-skin-line); background: var(--lobby-skin-poster); }
   body.general-lobby-page .section-heading { border: 0; margin-bottom: 10px; }
   body.general-lobby-page .section-heading h2 { font-size: 20px; text-shadow: none; }
   body.general-lobby-page :is(#latestGamesSection, #heroGamesSection, #continuePlayingSection) { margin: 8px 0 14px; }
-  body.general-lobby-page .continue-playing-card { border: 1px solid #52748788; border-radius: 6px; background: #102a3bdd; box-shadow: none; }
+  body.general-lobby-page .continue-playing-card { border: 1px solid var(--lobby-skin-line); border-radius: 6px; background: var(--lobby-skin-poster); box-shadow: none; }
 }
 @media (min-width: 721px) and (max-width: 1119px) {
   body.general-lobby-page .lobby-shell { width: calc(100% - 40px); }

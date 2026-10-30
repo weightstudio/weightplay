@@ -341,7 +341,7 @@ function syncSpotlightArtwork() {
   const game = lobby.games.find(item => item.id === lobby.featuredGameId);
   if (!image || !game) return;
   // A scene is optional artwork for any spotlight; square catalog posters stay intact.
-  const scene = !window.matchMedia("(min-width: 1120px)").matches && game.art?.lobbyScene;
+  const scene = game.art?.lobbyScene;
   const source = scene ? new URL(scene, document.baseURI).href : new URL(lobbyThumbnail(primaryArt(game)), document.baseURI).href;
   image.closest(".spotlight-game").classList.toggle("spotlight-game--scene", Boolean(scene));
   if (image.src !== source) {
@@ -1077,6 +1077,7 @@ function syncHallPresentation() {
   // Notify only a real change; catalog/locale refreshes need no extra scene work.
   if (document.body.dataset.gameHall !== activeHall) {
     document.body.dataset.gameHall = activeHall;
+    document.querySelectorAll('.desktop-filter-group').forEach(group => { group.scrollTop = 0; });
     window.dispatchEvent(new Event("weightplay:hall-change"));
   }
   gameHallSwitch?.setAttribute("aria-label", i18n.t("hall.label"));

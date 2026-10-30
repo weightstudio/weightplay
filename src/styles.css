@@ -4952,12 +4952,6 @@ body.general-lobby-page {
   box-shadow: 0 0 0 1px rgba(154, 137, 255, 0.18), 0 8px 22px rgba(76, 65, 176, 0.36);
 }
 
-.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.active {
-  border-color: #ffd776;
-  background: linear-gradient(135deg, #9a5a22, #c2832f);
-  box-shadow: 0 0 0 1px rgba(255, 215, 118, 0.2), 0 8px 22px rgba(151, 91, 26, 0.34);
-}
-
 .general-lobby-page .game-hall-switch span {
   overflow-wrap: anywhere;
   font-size: 17px;
