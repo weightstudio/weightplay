@@ -11740,8 +11740,8 @@
   }
 
   function enhanceStaticRelatedGuide(section) {
-    if (!section) return;
-    ensureRelatedRegistries().then((loaded) => {
+    if (!section) return Promise.resolve();
+    return ensureRelatedRegistries().then((loaded) => {
       section.dataset.wpRelatedGuideReady = "true";
       if (!loaded) {
         section.querySelectorAll(".game-info-related-section").forEach((node) => node.remove());
@@ -15788,6 +15788,7 @@
   }
 
   window.WeightPlayGameInfo = {
+    refreshStaticRelatedGuide: enhanceStaticRelatedGuide,
     applyTwinV19GuideCorrections,
     render,
     get(gameId) {

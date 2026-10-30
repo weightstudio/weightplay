@@ -333,6 +333,22 @@ function renderSpotlight() {
     <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
     <div><small>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
   revealDecodedImage(spotlightSection.querySelector(".spotlight-game > img"));
+  syncSpotlightArtwork();
+}
+
+function syncSpotlightArtwork() {
+  const image = spotlightSection.querySelector(".spotlight-game > img");
+  const game = lobby.games.find(item => item.id === lobby.featuredGameId);
+  if (!image || !game) return;
+  // A scene is optional artwork for any spotlight; square catalog posters stay intact.
+  const scene = document.body.hasAttribute("data-desktop-lobby") && game.art?.lobbyScene;
+  const source = scene ? new URL(scene, document.baseURI).href : new URL(lobbyThumbnail(primaryArt(game)), document.baseURI).href;
+  image.closest(".spotlight-game").classList.toggle("spotlight-game--scene", Boolean(scene));
+  if (image.src !== source) {
+    image.classList.remove("is-decoded");
+    image.src = source;
+    revealDecodedImage(image);
+  }
 }
 
 let firstPublicDates = {};
@@ -3390,6 +3406,7 @@ function setupDesktopLobbyPresentation() {
       delete document.body.dataset.desktopLobby;
     }
     if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+    syncSpotlightArtwork();
   };
   query.addEventListener("change", apply);
   apply();

@@ -1329,6 +1329,7 @@ window.WONDER_LOBBY = {
       art: {
         kind: "image",
         background: "assets/animal-crystal-survivor-otter-cover-v26.webp",
+        lobbyScene: "assets/animal-crystal-survivor-lobby-scene-v1.webp",
         hideHero: true,
       },
     },
