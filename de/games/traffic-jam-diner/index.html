@@ -9,7 +9,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#163b49" />
-  <meta name="weightplay-game-version" content="v26" />
+  <meta name="weightplay-game-version" content="v27" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="robots" content="index,follow" />
   <meta name="description" content="Führe tierische Nachbarn durch Einbahnspuren, halte einen Warteplatz frei und stelle die Bestellungen der Reihe nach zusammen." />
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Stau-Diner | WeightPlay" />
   <meta property="og:description" content="Führe tierische Nachbarn durch Einbahnspuren, halte einen Warteplatz frei und stelle die Bestellungen der Reihe nach zusammen." />
-  <meta property="og:image" content="https://weightplay.com/Assets/traffic-jam-diner-cover-v3.png" />
+  <meta property="og:image" content="https://weightplay.com/assets/traffic-jam-diner-cover-v3.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <title>Stau-Diner | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/de/games/traffic-jam-diner/" />
@@ -52,13 +52,13 @@
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
   <script data-wp-entry-required src="/src/stage-rail-i9.js?v=20261016-shared-play1" defer></script>
   <script data-wp-entry-required src="/src/game-play-ui.js?v=20261017-shared-play-spacing1" defer></script>
-  <script type="module" src="./app.mjs?v=20261028-topic-story-v1&amp;wp-build=f6ff5041f1543979"></script>
+  <script type="module" src="./app.mjs?v=20261028-topic-story-v1&amp;wp-build=9d144fb8121e24d3"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta property="og:url" content="https://weightplay.com/de/games/traffic-jam-diner/" />
     <meta name="twitter:title" content="Stau-Diner | WeightPlay" />
     <meta name="twitter:description" content="Führe tierische Nachbarn durch Einbahnspuren, halte einen Warteplatz frei und stelle die Bestellungen der Reihe nach zusammen." />
-    <meta name="twitter:image" content="https://weightplay.com/Assets/traffic-jam-diner-cover-v3.png" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/traffic-jam-diner-cover-v3.png" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -66,7 +66,7 @@
   "name": "Stau-Diner",
   "alternateName": "Traffic Jam Diner",
   "url": "https://weightplay.com/de/games/traffic-jam-diner/",
-  "image": "https://weightplay.com/Assets/traffic-jam-diner-cover-v3.png",
+  "image": "https://weightplay.com/assets/traffic-jam-diner-cover-v3.png",
   "description": "Führe tierische Nachbarn durch Einbahnspuren, halte einen Warteplatz frei und stelle die Bestellungen der Reihe nach zusammen.",
   "publisher": {
     "@type": "Organization",
@@ -88,19 +88,19 @@
 }
     </script>
   </head>
-<body data-wp-play-ui="1" data-wp-interface-version="9" data-wp-guide-related-interface="9" data-wp-game-owned-guide data-wp-game-id="traffic-jam-diner" data-wp-game-version="v26" data-runtime-localize="off" data-screen="main">
+<body data-wp-play-ui="1" data-wp-interface-version="9" data-wp-guide-related-interface="9" data-wp-game-owned-guide data-wp-game-id="traffic-jam-diner" data-wp-game-version="v27" data-runtime-localize="off" data-screen="main">
   <main id="app" data-wp-frame-root data-game="traffic-jam-diner" data-audience="general">
     <section id="main-screen" class="screen main-screen" data-screen="main">
       <header id="main-header" class="screen-header wp-main-shell-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 data-wp-frame-title>Stau-Diner</h1><label class="locale-picker" hidden><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
       <div id="main-content" class="main-content">
-        <img data-wp-frame-poster class="main-poster" src="../../Assets/traffic-jam-diner-cover-v3.png" alt="" aria-hidden="true" />
+        <img data-wp-frame-poster class="main-poster" src="../../assets/traffic-jam-diner-cover-v3.png" alt="" aria-hidden="true" />
         <div data-wp-frame-copy class="main-copy"><p class="lede" data-wp-frame-summary id="main-summary">Route neighbors through one-way lanes, save waiting bays, and serve snack orders.</p><p id="main-progress" class="main-progress" data-wp-frame-progress data-wp-main-progress>Stage 1 ready</p><button id="shop-open" type="button" data-copy="shopOpen">Diner Decor</button><button id="start-game" type="button" class="primary" data-wp-frame-action="primary" data-wp-main-start disabled>Start</button></div>
       </div>
       <section id="shop-dialog" class="shop-overlay" role="dialog" aria-modal="true" aria-labelledby="shop-title" hidden>
         <div class="shop-card"><section class="milestone-section"><h3 id="milestone-title"></h3><p id="milestone-progress"></p><ul id="milestone-list"></ul></section><h2 id="shop-title" data-copy="shopTitle">Berry Grove Board</h2><p id="shop-description" data-copy="shopDescription">Unlock a permanent lavender road finish for every route board.</p><img id="shop-board-preview" class="shop-swatch" width="192" height="192" alt=""><p id="shop-price" data-copy="shopPrice">12 diamonds · Permanent</p><p id="shop-effect" data-copy="shopEffect">Changes route tile colors; lane rules and difficulty stay the same.</p><p class="shop-balance"><img src="../../assets/weightplay-diamond.svg" alt="" /><span data-copy="shopBalance">Your balance</span><strong id="shop-balance">0</strong></p><p id="shop-status" class="shop-status" role="status" aria-live="polite"></p><button id="shop-classic" type="button" data-copy="classic">Classic diner</button><div class="shop-actions"><button id="shop-cancel" type="button" data-copy="shopCancel">Cancel</button><button id="shop-confirm" type="button" class="primary" data-copy="shopConfirm">Unlock for 12</button></div></div>
       </section>
     </section>
-    <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-art="/Assets/traffic-jam-diner-cover-v3.png">
+    <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-frame-logical-header="stage" data-wp-canvas-max-width="920" data-wp-stage-art="/assets/traffic-jam-diner-cover-v3.png">
       <header id="stage-header" class="screen-header wp-stage-shell-header"><button class="back" data-wp-return="stage" type="button" aria-label="Back to Main">←</button><h2 data-wp-frame-title>Choose a Route</h2></header>
       <div id="stage-content"><p id="stage-progress" class="stage-progress" aria-live="polite"></p><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div></div>
       <nav id="stage-tabs" data-wp-frame-stage-nav data-wp-frame-nav class="stage-tabs" aria-label="Campaign sections"><button data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" type="button" aria-current="page">Stages</button></nav>
