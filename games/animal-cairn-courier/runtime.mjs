@@ -17,6 +17,11 @@ try{saved=practiceRequested?normalize({}):normalize(JSON.parse(localStorage.getI
 const solved=new Set(saved.solved);
 const state={locale:window.__WEIGHTPLAY_ROUTE_LOCALE__||'en',screen:'main',round:0,stack:[],picks:0,mistakes:0,edits:0,settled:false,status:''};
 state.route='outbound';state.pinUses=2;
+// World credit belongs to saved campaign rounds, never local practice.
+const measurement={screen:'main',roundKey:null,started:false,ended:false,outcome:'abandon',stageId:null,stageIdAuthoritative:true,rewardEligible:false,saveSucceeded:false};
+const readMeasurement=()=>({...measurement,paused:document.hidden,node:document.body,activityMode:'input',idleSeconds:300});
+function notifyMeasurement(){try{window.WonderAnalytics?.game?.observeState(readMeasurement);}catch{/* Optional shared telemetry. */}}
+window.addEventListener('weightplay:analytics-ready',notifyMeasurement);notifyMeasurement();
 const contract=(p,stack)=>p.id>30?passContract(p,stack,state.route):originalContract(p,stack);
 const validate=(p,stack)=>p.id>30?passValidate(p,stack,state.route):originalValidate(p,stack);
 if(!window.__WEIGHTPLAY_ROUTE_LOCALE__)try{const locale=localStorage.getItem('weightplayLocale');if(dictionaries[locale])state.locale=locale;}catch{}
@@ -79,6 +84,8 @@ function setModal(id,open){
   if(open)flash($(id).querySelector('.dialog-card'));
 }
 function show(screen){
+  if(screen!=='battle'&&screen!=='result'&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome='abandon';measurement.saveSucceeded=false;}
+  measurement.screen=screen==='result'?null:screen;notifyMeasurement();
   cancelMotion();audio?.stop();if(screen!=='stage')selector?.cancel();
   setModal('finishPanel',false);setModal('leaveConfirm',false);
   state.screen=screen;document.body.dataset.screen=screen;
@@ -151,6 +158,7 @@ async function startRound(index){
   if(starting||!Number.isInteger(index)||!STAGES[index]||(practiceRequested&&(!practice||window.__cairnPracticeAnalyticsSafe!==true)))return false;
   if(practiceRequested){starting=true;try{if(!await LocalPractice.validate()||!practice)return false;}finally{starting=false;}}
   else if(index>0&&!solved.has(STAGES[index-1].id))return false;
+  Object.assign(measurement,{roundKey:{},started:true,ended:false,outcome:'abandon',stageId:STAGES[index].id,rewardEligible:!practiceRequested&&!solved.has(STAGES[index].id),saveSucceeded:false});
   state.round=index;selectedStage=index;state.stack=[];state.picks=state.mistakes=state.edits=0;state.status='';state.settled=false;state.route='outbound';state.pinUses=2;
   show('battle');buildBattle();cue('game.start');buttons.values().next().value?.focus({preventScroll:true});
   return true;
@@ -177,6 +185,8 @@ function check(){
   saved.best[plan().id]=Math.min(saved.best[plan().id]||Infinity,state.picks);
   if(solved.size>=10&&!saved.finishes.includes('alpine'))saved.finishes.push('alpine');
   let persisted=true;try{persist();}catch{persisted=false;}
+  let savedClear=false;try{savedClear=!practiceRequested&&persisted&&normalize(JSON.parse(localStorage.getItem(STORE)||'{}')).solved.includes(plan().id);}catch{}
+  Object.assign(measurement,{ended:true,outcome:'win',saveSucceeded:savedClear});
   // Outcome ownership is synchronous; effects never grant progress or repeat rewards.
   show('result');updateBattle(true);cue('result.win');
   $('resultTitle').textContent=text(seals===3?'perfect':seals===2?'clean':'settled');
