@@ -1205,6 +1205,7 @@ function startLevel(levelIndex) {
   menuTabs.classList.add("hidden");
   overlay.classList.remove("settlement-screen", "equipment-screen");
   overlay.removeAttribute("data-wp-result-screen");
+  overlay.removeAttribute("role");
   overlay.classList.add("hidden");
   window.WonderCrashFrame?.activate("battle");
   hudElapsed = 0;
@@ -1213,7 +1214,7 @@ function startLevel(levelIndex) {
   requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
   window.WeightPlayAudio?.play("game.start");
 
-    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+    __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.stageId = levelIndex + 1; __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.rewardEligible = levelIndex + 1 === highestUnlocked; __wpMeasurement.saveSucceeded = false; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
 
 window.addEventListener("keydown", (event) => {
@@ -1757,6 +1758,7 @@ function loseLevel() {
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
   overlay.setAttribute("data-wp-result-screen", "");
+  overlay.setAttribute("role", "dialog");
   bankRunCoins();
   state.running = false;
   syncPassiveAccessibility();
@@ -1793,6 +1795,7 @@ async function winLevel() {
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
   overlay.setAttribute("data-wp-result-screen", "");
+  overlay.setAttribute("role", "dialog");
   bankRunCoins();
   const wasChallenge = state.level.id === highestUnlocked;
   const drops = rollLevelDrops();
@@ -1806,6 +1809,7 @@ async function winLevel() {
   state.score += state.wallHp;
   highestUnlocked = Math.max(highestUnlocked, Math.min(LEVELS.length + 1, state.levelIndex + 2));
   saveHighestUnlocked();
+  try { __wpMeasurement.saveSucceeded = Number(localStorage.getItem(SAVE_KEY)) >= state.levelIndex + 2; } catch { __wpMeasurement.saveSucceeded = false; }
   overlay.querySelector("h1").textContent = wasChallenge ? t("victory_challenge_success") : t("victory_stage_clear");
   overlayText.textContent = buildWinText(drops, wasChallenge);
   startBtn.classList.add("hidden");
@@ -2662,6 +2666,7 @@ function showMainMenu(tab = activeMenuTab) {
   setBattleShellActive(false);
   window.WonderCrashFrame?.moveOverlay("stage");
   overlay.removeAttribute("data-wp-result-screen");
+  overlay.removeAttribute("role");
   wonderMain.classList.add("hidden");
   wonderStageBack.classList.remove("hidden");
   document.body.classList.remove("wonder-tutorial-hidden");
@@ -2907,6 +2912,7 @@ function showUpgradeChoices() {
   window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen", "settlement-screen");
   overlay.removeAttribute("data-wp-result-screen");
+  overlay.removeAttribute("role");
   state.running = false;
   syncPassiveAccessibility();
   document.body.classList.add("wonder-tutorial-hidden");
@@ -2949,6 +2955,7 @@ function chooseUpgrade(id) {
   upgradeGrid.classList.add("hidden");
   overlay.classList.add("hidden");
   overlay.removeAttribute("data-wp-result-screen");
+  overlay.removeAttribute("role");
   state.running = true;
   window.WonderCrashFrame?.activate("battle");
   setBattleShellActive(true);
@@ -2969,6 +2976,7 @@ function showPauseMenu(returnIntent = false) {
   window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen", "settlement-screen");
   overlay.removeAttribute("data-wp-result-screen");
+  overlay.removeAttribute("role");
   state.running = false;
   syncPassiveAccessibility();
   document.body.classList.add("wonder-tutorial-hidden");
@@ -3000,6 +3008,7 @@ function resumeBattle() {
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   overlay.classList.add("hidden");
   overlay.removeAttribute("data-wp-result-screen");
+  overlay.removeAttribute("role");
   document.body.classList.add("wonder-tutorial-hidden");
   setBattleShellActive(true);
   window.WonderCrashFrame?.activate("battle");
