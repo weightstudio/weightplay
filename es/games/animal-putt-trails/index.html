@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>Senderos de Putt Animal | WeightPlay</title>
   <meta name="description" content="Planifica golpes en 30 hoyos: arrastra hacia atrás para elegir dirección y fuerza, rebota en los bordes, evita el agua y guarda aquí tus mejores golpes." />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="Senderos de Putt Animal | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>Mundo y misión</h3><p>El recorrido iluminado por la luna de Orla tiene 30 hoyos. Hay césped, bordes bajos y agua; en los hoyos posteriores cambian la salida, el hoyo y los obstáculos, así que toca volver a leer la línea.</p>
 <p>Al completar un hoyo se abre el siguiente. Los hoyos 5, 10, 15, 20, 25 y 30 son puntos de control. Los hoyos superados permanecen en el mapa para intentar mejorar tu mejor resultado.</p></div>
       <div class="game-info-section"><h3>Sistemas del juego</h3><p>Arrastra hacia atrás desde la bola, en sentido contrario al que quieres que avance. La distancia del arrastre ajusta la dirección y la fuerza; al soltar, golpeas. Un arrastre corto se controla mejor. Uno largo llega más lejos, pero cuesta más recuperarse si fallas.</p>
-<p>Los muros y bordes cambian la trayectoria de la bola. Si cae al agua, termina el intento de ese hoyo; puedes repetirlo sin perder hoyos superados ni desbloqueos. Ganas 1 bellota al hacer el par y una más por cada golpe bajo par; por encima del par no recibes ninguna.</p>
+<p>Los muros y bordes desvían la bola. Si cae al agua, vuelve a su posición anterior y el golpe cuenta. Ganas 1 bellota al par y otra por cada golpe bajo par; por encima del par no ganas ninguna.</p>
 <p>Al terminar, elige Reintentar, Siguiente hoyo o Mapa de senderos. Los mejores golpes de cada hoyo y el próximo hoyo desbloqueado se guardan en este navegador, no en una cuenta en línea.</p></div>
       <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige en el mapa un hoyo desbloqueado y mira el par y los obstáculos.</li><li>Desde la bola, arrastra en dirección opuesta a la trayectoria que quieres darle.</li><li>Suelta para golpear y observa dónde se detiene. Si un arrastre largo acaba en el agua, prueba con menos fuerza o rebota por el lado seguro.</li><li>Completa el hoyo para avanzar, repetirlo o volver al mapa. También puedes regresar a un hoyo superado para mejorar tu marca.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Un error habitual es arrastrar demasiado cuando el hoyo está detrás de un muro. La bola puede pasar la zona segura y caer al agua. Prueba un rebote más corto para dejar un segundo golpe controlable.</li><li>Antes de buscar una línea recta, apunta al lado más abierto del borde. Un primer golpe seguro puede dejarte una aproximación más clara.</li><li>El par es una meta de golpes, no un temporizador. Necesitar más golpes no bloquea los hoyos posteriores y puedes repetir los anteriores.</li></ul></div>
@@ -253,7 +254,7 @@
 <p>Los hoyos posteriores combinan obstáculos desplazados, rutas más largas y pares más altos. El control sigue siendo arrastrar hacia atrás y soltar; el recorrido se puede repetir después del hoyo 30.</p></div>
       <div class="game-info-section"><h3>Nota de diseño</h3><p>En pantalla táctil y con ratón, arrastra y suelta; con el teclado, apunta con las flechas y pulsa Enter. Los mejores golpes y desbloqueos de los 30 hoyos se guardan en este navegador, sin cuenta ni clasificación en línea.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Animal Putt Trails es un puzle de putt tranquilo para público general. No requiere cuenta, compra ni clasificación pública. Los desbloqueos y mejores golpes se quedan en este navegador y pueden borrarse al eliminar los datos del sitio.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cómo apunto y golpeo?</dt><dd>Arrastra desde la bola en dirección opuesta a la trayectoria deseada para fijar dirección y fuerza; luego suelta. Un arrastre corto permite ajustar mejor.</dd></div><div><dt>¿Qué ocurre si la bola cae al agua?</dt><dd>Termina el intento de ese hoyo. Puedes repetirlo; los hoyos superados y desbloqueos se conservan.</dd></div><div><dt>¿Cuántos hoyos hay?</dt><dd>Hay 30 hoyos y un punto de control cada cinco.</dd></div><div><dt>¿Qué significan el par y las bellotas?</dt><dd>Ganas 1 bellota al hacer el par y una más por cada golpe bajo par; por encima del par no recibes ninguna.</dd></div><div><dt>¿Puedo repetir un hoyo superado?</dt><dd>Sí. Los hoyos superados siguen en el mapa para que intentes mejorar tu mejor marca.</dd></div><div><dt>¿El progreso se guarda en línea?</dt><dd>No. Los mejores golpes y el siguiente hoyo desbloqueado se guardan solo en este navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cómo apunto y golpeo?</dt><dd>Arrastra desde la bola en dirección opuesta a la trayectoria deseada para fijar dirección y fuerza; luego suelta. Un arrastre corto permite ajustar mejor.</dd></div><div><dt>¿Qué ocurre si la bola cae al agua?</dt><dd>La bola vuelve a su posición anterior y el golpe cuenta; elige una ruta más segura y continúa.</dd></div><div><dt>¿Cuántos hoyos hay?</dt><dd>Hay 30 hoyos y un punto de control cada cinco.</dd></div><div><dt>¿Qué significan el par y las bellotas?</dt><dd>Ganas 1 bellota al hacer el par y una más por cada golpe bajo par; por encima del par no recibes ninguna.</dd></div><div><dt>¿Puedo repetir un hoyo superado?</dt><dd>Sí. Los hoyos superados siguen en el mapa para que intentes mejorar tu mejor marca.</dd></div><div><dt>¿El progreso se guarda en línea?</dt><dd>No. Los mejores golpes y el siguiente hoyo desbloqueado se guardan solo en este navegador.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line es un puzle original de 30 niveles con Mimi.</span></span></a><a class="game-info-related-card" href="/es/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambú de Panko</strong><span>Gira los tubos de bambú de Panko, lleva agua por cada tramo y revive la arboleda.</span></span></a><a class="game-info-related-card" href="/es/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cajas Enlazadas</strong><span>Camina, empuja y arrastra cargamento rúnico por treinta almacenes de un arca celeste diseñados a mano.</span></span></a></div></div>
     </div>
   </section>

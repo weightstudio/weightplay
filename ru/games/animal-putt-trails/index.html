@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>Звериные пути для патта | WeightPlay</title>
   <meta name="description" content="Планируйте удары на 30 лунках: тяните назад, выбирая направление и силу, используйте борта для отскока, обходите воду и сохраняйте лучшие результаты в браузере." />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="Звериные пути для патта | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>Мир и цель</h3><p>На освещённом луной поле Орлы 30 лунок. На них есть газон, низкие борта и вода. На поздних лунках смещаются старт, лунка и препятствия, поэтому траекторию нужно оценить заново.</p>
 <p>После прохождения лунки открывается следующая. Контрольные точки находятся на лунках 5, 10, 15, 20, 25 и 30. Пройденные лунки остаются на карте, и их можно повторить ради лучшего результата.</p></div>
       <div class="game-info-section"><h3>Игровые системы</h3><p>Потяните от мяча назад, в сторону, противоположную желаемому движению. Длина жеста задаёт направление и силу; отпустите, чтобы ударить. Короткий жест легче контролировать. Длинный отправит мяч дальше, но усложнит исправление ошибки.</p>
-<p>Стены и борта меняют направление катящегося мяча. Попадание в воду завершает попытку на этой лунке; повтор не удаляет пройденные лунки и открытия. За результат в пар вы получаете 1 желудь и ещё по одному за каждый удар ниже пара; выше пара жёлуди не начисляются.</p>
+<p>Стены и борта меняют направление мяча. В воде он возвращается на прежнюю позицию, а удар засчитывается. За пар дают один жёлудь и ещё один за каждый удар ниже пара; выше пара награды нет.</p>
 <p>На экране результата можно выбрать повтор, следующую лунку или карту маршрутов. Лучший результат каждой лунки и следующая открытая лунка хранятся только в этом браузере, без онлайн-аккаунта.</p></div>
       <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите на карте открытую лунку и проверьте пар и препятствия.</li><li>От мяча потяните в сторону, противоположную желаемой траектории.</li><li>Отпустите и посмотрите, где остановился мяч. Если сильный удар привёл в воду, повторите с меньшей силой или обойдите препятствие по безопасному борту.</li><li>Пройдите лунку, повторите её или вернитесь к карте. Ранее пройденные лунки можно снова сыграть ради рекорда.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Частая ошибка — слишком сильно тянуть, когда лунка находится за стеной. Мяч может пролететь безопасную зону и попасть в воду. Попробуйте короткий отскок, чтобы следующий удар было проще контролировать.</li><li>Прежде чем бить прямо, выберите более открытый край борта. Безопасный первый удар может оставить понятный подход к лунке.</li><li>Пар — цель по числу ударов, а не таймер. Лишние удары не закрывают следующие лунки, а предыдущие можно переиграть.</li></ul></div>
@@ -253,7 +254,7 @@
 <p>На поздних лунках сочетаются смещённые препятствия, более длинные маршруты и высокий пар. Управление остаётся прежним: потянуть назад и отпустить. После 30-й лунки поле можно проходить снова.</p></div>
       <div class="game-info-section"><h3>Заметка разработчика</h3><p>На сенсорном экране и мышью тяните и отпускайте; на клавиатуре целитесь стрелками и нажимайте Enter. Лучшие результаты и открытия на 30 лунках хранятся в этом браузере; аккаунт и онлайн-рейтинг не нужны.</p></div>
       <div class="game-info-section game-info-parent"><h3>Для родителей</h3><p>Animal Putt Trails — спокойная спортивная головоломка для широкой аудитории. Аккаунт, покупки и публичный рейтинг не нужны. Открытия и лучшие результаты хранятся в этом браузере и могут удалиться при очистке данных сайта.</p></div>
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Как прицелиться и ударить?</dt><dd>Потяните от мяча в сторону, противоположную желаемому движению, чтобы задать направление и силу, затем отпустите. Короткий жест проще дозировать.</dd></div><div><dt>Что будет, если мяч попадёт в воду?</dt><dd>Попытка на этой лунке завершится. Её можно повторить; пройденные лунки и открытия сохранятся.</dd></div><div><dt>Сколько здесь лунок?</dt><dd>Всего 30 лунок; контрольная точка появляется каждые пять.</dd></div><div><dt>Что означают пар и жёлуди?</dt><dd>За результат в пар вы получаете 1 желудь и ещё по одному за каждый удар ниже пара; выше пара жёлуди не начисляются.</dd></div><div><dt>Можно ли повторить пройденную лунку?</dt><dd>Да. Пройденные лунки остаются на карте — можно постараться улучшить лучший результат.</dd></div><div><dt>Прогресс хранится онлайн?</dt><dd>Нет. Лучшие удары и следующая открытая лунка сохраняются только в этом браузере.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Как прицелиться и ударить?</dt><dd>Потяните от мяча в сторону, противоположную желаемому движению, чтобы задать направление и силу, затем отпустите. Короткий жест проще дозировать.</dd></div><div><dt>Что будет, если мяч попадёт в воду?</dt><dd>Мяч возвращается на прежнюю позицию, а удар засчитывается. Выберите более безопасную траекторию и продолжайте.</dd></div><div><dt>Сколько здесь лунок?</dt><dd>Всего 30 лунок; контрольная точка появляется каждые пять.</dd></div><div><dt>Что означают пар и жёлуди?</dt><dd>За результат в пар вы получаете 1 желудь и ещё по одному за каждый удар ниже пара; выше пара жёлуди не начисляются.</dd></div><div><dt>Можно ли повторить пройденную лунку?</dt><dd>Да. Пройденные лунки остаются на карте — можно постараться улучшить лучший результат.</dd></div><div><dt>Прогресс хранится онлайн?</dt><dd>Нет. Лучшие удары и следующая открытая лунка сохраняются только в этом браузере.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Одна линия</strong><span>«Одна линия» — оригинальная кампания из 30 головоломок с Радужной Мими.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Бамбуковый канал Панко</strong><span>Поворачивайте бамбуковые трубы Панко, проведите воду в каждый участок и оживите рощу.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Животный груз</strong><span>Толкайте, тяните и направляйте рунические грузы через 30 небесных складов с ледяными рельсами, сигналами, магнитами и связанными ящиками.</span></span></a></div></div>
     </div>
   </section>

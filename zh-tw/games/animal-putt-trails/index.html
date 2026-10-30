@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>動物推桿小徑 | WeightPlay</title>
   <meta name="description" content="規劃 30 洞推桿：向後拖曳設定方向與力道，利用邊界反彈、避開水域，並在此瀏覽器保存各洞最佳桿數。" />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="動物推桿小徑 | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>世界與任務</h3><p>Orla 的月光球場共有 30 洞。路線包含草地、低矮邊界與水域；後段會移動起點、球洞和障礙物，讓你重新判斷球路。</p>
 <p>完成一洞就會開放下一洞；第 5、10、15、20、25、30 洞是檢查點。已完成的洞會留在地圖上，可再挑戰並刷新最佳桿數。</p></div>
       <div class="game-info-section"><h3>遊戲系統</h3><p>從球的位置向後拖曳，也就是朝預計球路的反方向拖動。拖曳距離同時設定瞄準與力道，放開後球就會滾出。短拉比較好控制；長拉能推得更遠，但失手時也較難補救。</p>
-<p>牆面與場地邊界會改變球的反彈方向。球碰到水面時，本次嘗試會結束；重試只重開該洞，不會取消已完成的洞或解鎖進度。以標準桿完成可得 1 顆橡果；每少一桿再多得 1 顆，高於標準桿則沒有橡果。</p>
+<p>牆面與場地邊界會改變球的反彈方向。球碰到水面時會回到上一桿的位置，該桿仍計入桿數。以標準桿完成可得 1 顆橡果；每少一桿再多得 1 顆，高於標準桿則沒有橡果。</p>
 <p>結果畫面可選重試、下一洞或小徑地圖。各洞最佳桿數與下一個解鎖洞只保存在這個瀏覽器，不會同步到線上帳號。</p></div>
       <div class="game-info-section"><h3>玩法說明</h3><ol><li>從地圖選一個已解鎖的洞，先看標準桿與障礙位置。</li><li>在球的位置按住或放下手指，再朝預計球路的反方向拖曳。</li><li>放開推桿並觀察球停在哪裡。若長拉讓球碰水，重試時減少力道，或借邊界從安全側接近。</li><li>完成後可前往下一洞、重試，或回到地圖。想刷新紀錄時，也能重玩先前完成的洞。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>常見失誤是洞口在牆後時仍拉得太長；球可能越過安全落點而掉進水裡。改用較短的反彈球路，讓下一桿仍好控制。</li><li>先瞄準邊界較寬的一側，再考慮直線路徑。安全的第一桿能讓球停在更容易接近洞口的位置。</li><li>把標準桿當目標，不是倒數計時。多用幾桿完成也不會鎖回後續洞，舊洞仍可重玩。</li></ul></div>
@@ -253,7 +254,7 @@
 <p>後段會組合位移後的障礙、較長路線與更高的標準桿；操作仍是向後拖曳再放開。完成第 30 洞後，球場仍可重玩。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>觸控與滑鼠使用拖曳後放開；鍵盤則以方向鍵瞄準並按 Enter 推桿。30 洞的最佳桿數與解鎖狀態保存在本機，不需帳號或線上排名。</p></div>
       <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>《動物推桿小徑》是節奏平和、適合一般玩家的推桿益智遊戲。不需帳號、購買或公開排名；解鎖與最佳桿數只保存在此瀏覽器，清除網站資料可能會一併刪除。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>怎樣瞄準與推桿？</dt><dd>從球的位置朝預計球路的反方向拖曳來設定瞄準與力道，再放開。短拉比較容易微調。</dd></div><div><dt>球碰到水會怎樣？</dt><dd>該洞這次嘗試會結束。重試該洞即可，已完成的洞與解鎖會保留。</dd></div><div><dt>共有幾個洞？</dt><dd>共有 30 洞，每五洞設有檢查點。</dd></div><div><dt>標準桿與橡果代表什麼？</dt><dd>以標準桿完成可得 1 顆橡果；每少一桿再多得 1 顆，高於標準桿則沒有橡果。</dd></div><div><dt>可以重玩已完成的洞嗎？</dt><dd>可以。完成的洞會留在地圖上，你可以再挑戰並改善最佳桿數。</dd></div><div><dt>進度會存到線上嗎？</dt><dd>不會。最佳桿數與下一個解鎖洞只存在這個瀏覽器。</dd></div></dl></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>怎樣瞄準與推桿？</dt><dd>從球的位置朝預計球路的反方向拖曳來設定瞄準與力道，再放開。短拉比較容易微調。</dd></div><div><dt>球碰到水會怎樣？</dt><dd>球會回到上一桿的位置，該桿仍計入桿數；選擇更安全的路線繼續。</dd></div><div><dt>共有幾個洞？</dt><dd>共有 30 洞，每五洞設有檢查點。</dd></div><div><dt>標準桿與橡果代表什麼？</dt><dd>以標準桿完成可得 1 顆橡果；每少一桿再多得 1 顆，高於標準桿則沒有橡果。</dd></div><div><dt>可以重玩已完成的洞嗎？</dt><dd>可以。完成的洞會留在地圖上，你可以再挑戰並改善最佳桿數。</dd></div><div><dt>進度會存到線上嗎？</dt><dd>不會。最佳桿數與下一個解鎖洞只存在這個瀏覽器。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一筆到底</strong><span>One Line 一筆到底是由彩虹跳跳米米主演的 30 關格子解謎遊戲。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖達竹水道</strong><span>轉動胖達的竹管，讓水流過每一段管路，喚醒開花竹園。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬運隊</strong><span>在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。</span></span></a></div></div>
     </div>
   </section>

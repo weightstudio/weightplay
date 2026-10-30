@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>مسارات ضربات الحيوانات | WeightPlay</title>
   <meta name="description" content="خطط ضرباتك في 30 حفرة: اسحب للخلف لتحديد الاتجاه والقوة، واستفد من الحواف للارتداد، وتجنب الماء، واحفظ أفضل الضربات في هذا المتصفح." />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="مسارات ضربات الحيوانات | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>العالم والرسالة</h3><p>يضم ملعب أورلا تحت ضوء القمر 30 حفرة. ستجد العشب والحواف المنخفضة ومناطق الماء؛ وفي الحفر اللاحقة تتغير أماكن البداية والكأس والعوائق، فتحتاج إلى قراءة الخط من جديد.</p>
 <p>يؤدي إكمال الحفرة إلى فتح الحفرة التالية. الحفر 5 و10 و15 و20 و25 و30 نقاط تفتيش. تبقى الحفر المكتملة على الخريطة لتعيدها وتحسن أفضل نتيجة.</p></div>
       <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اسحب من موضع الكرة إلى الخلف، عكس الاتجاه الذي تريد أن تسلكه. تحدد مسافة السحب الاتجاه والقوة معاً؛ ارفع إصبعك لتضرب. السحبة القصيرة أسهل في التحكم، أما الطويلة فترسل الكرة أبعد لكنها تجعل تصحيح الخطأ أصعب.</p>
-<p>تغير الجدران والحواف اتجاه الكرة المتدحرجة. إذا دخلت الماء تنتهي محاولة تلك الحفرة، لكن الإعادة لا تمحو الحفر المكتملة أو ما فُتح منها. تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل.</p>
+<p>تغيّر الجدران والحواف اتجاه الكرة. إذا دخلت الماء تعود إلى موضعها السابق وتُحتسب الضربة. تحصل على بلوطة عند المعدل وأخرى لكل ضربة أقل منه؛ ولا تحصل على شيء فوق المعدل.</p>
 <p>تتيح شاشة النتيجة إعادة المحاولة أو الانتقال إلى الحفرة التالية أو العودة إلى الخريطة. تُحفظ أفضل الضربات لكل حفرة والحفرة المفتوحة التالية في هذا المتصفح فقط، ولا تُزامن مع حساب عبر الإنترنت.</p></div>
       <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اختر حفرة مفتوحة من الخريطة، ثم راجع المعدل والعوائق الظاهرة.</li><li>اسحب من الكرة عكس المسار الذي تريد أن تسلكه.</li><li>ارفع إصبعك لتضرب ولاحظ موضع توقف الكرة. إذا أرسلتها السحبة القوية إلى الماء، فخفف القوة أو استخدم الحافة من الجانب الآمن.</li><li>أكمل الحفرة للمتابعة أو أعدها أو ارجع إلى الخريطة. يمكنك إعادة حفرة مكتملة لتحسين أفضل نتيجة.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>من الأخطاء الشائعة السحب بقوة مفرطة عندما يكون الكأس خلف جدار؛ فقد تتجاوز الكرة موضع التوقف الآمن وتسقط في الماء. جرّب ارتداداً أقصر لتبقى الضربة التالية سهلة التحكم.</li><li>قبل تجربة خط مستقيم، صوب نحو الجانب الأوسع من الحافة. قد تترك الضربة الأولى الآمنة مساراً أوضح نحو الكأس.</li><li>المعدل هدف لعدد الضربات وليس مؤقتاً. لا تمنعك الضربات الإضافية من فتح الحفر التالية، ويمكنك إعادة الحفر السابقة.</li></ul></div>
@@ -253,7 +254,7 @@
 <p>تجمع الحفر اللاحقة بين العوائق المتحركة والمسارات الأطول ومعدلات أعلى. تبقى طريقة التحكم نفسها: اسحب للخلف ثم ارفع إصبعك. ويمكن إعادة الملعب بعد الحفرة 30.</p></div>
       <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>على اللمس والماوس اسحب ثم اترك؛ وباستخدام لوحة المفاتيح صوب بمفاتيح الأسهم واضغط Enter للضرب. تُحفظ أفضل النتائج والفتحات للحفر الثلاثين في هذا المتصفح، من دون حساب أو ترتيب عبر الإنترنت.</p></div>
       <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>Animal Putt Trails لغز ضربات هادئ للجمهور العام. لا يحتاج إلى حساب أو شراء أو ترتيب عام. تبقى الحفر المفتوحة وأفضل الضربات في هذا المتصفح، وقد تُحذف عند مسح بيانات الموقع.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف أصوب وأضرب؟</dt><dd>اسحب من الكرة إلى الخلف، عكس المسار الذي تريده، لتحديد الاتجاه والقوة ثم ارفع إصبعك. السحبة القصيرة أسهل في الضبط.</dd></div><div><dt>ماذا يحدث إذا دخلت الكرة الماء؟</dt><dd>تنتهي محاولة تلك الحفرة. يمكنك إعادتها من دون فقد الحفر المكتملة أو ما فُتح منها.</dd></div><div><dt>كم عدد الحفر؟</dt><dd>هناك 30 حفرة ونقطة تفتيش كل خمس حفر.</dd></div><div><dt>ماذا يعني المعدل والبلوط؟</dt><dd>تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل.</dd></div><div><dt>هل يمكن إعادة حفرة مكتملة؟</dt><dd>نعم. تبقى الحفر المكتملة على الخريطة لتتمكن من تحسين أفضل نتيجة.</dd></div><div><dt>هل يُحفظ التقدم عبر الإنترنت؟</dt><dd>لا. تُحفظ أفضل الضربات والحفرة المفتوحة التالية في هذا المتصفح فقط.</dd></div></dl></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف أصوب وأضرب؟</dt><dd>اسحب من الكرة إلى الخلف، عكس المسار الذي تريده، لتحديد الاتجاه والقوة ثم ارفع إصبعك. السحبة القصيرة أسهل في الضبط.</dd></div><div><dt>ماذا يحدث إذا دخلت الكرة الماء؟</dt><dd>تعود الكرة إلى موضعها السابق وتُحتسب الضربة. اختر مساراً أكثر أماناً وتابع اللعب.</dd></div><div><dt>كم عدد الحفر؟</dt><dd>هناك 30 حفرة ونقطة تفتيش كل خمس حفر.</dd></div><div><dt>ماذا يعني المعدل والبلوط؟</dt><dd>تحصل على بلوطة واحدة عند المعدل، وبلوطة إضافية عن كل ضربة أقل من المعدل؛ ولا تحصل على بلوطات إذا تجاوزت المعدل.</dd></div><div><dt>هل يمكن إعادة حفرة مكتملة؟</dt><dd>نعم. تبقى الحفر المكتملة على الخريطة لتتمكن من تحسين أفضل نتيجة.</dd></div><div><dt>هل يُحفظ التقدم عبر الإنترنت؟</dt><dd>لا. تُحفظ أفضل الضربات والحفرة المفتوحة التالية في هذا المتصفح فقط.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>خط واحد</strong><span>خط واحد لعبة ألغاز شبكية أصلية من 30 مرحلة، بطولة رينبو هوب ميمي.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مجرى بانكو الخيزراني</strong><span>أدر أنابيب بانكو الخيزرانية وأوصل الماء إلى كل جزء ليزهر البستان.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مستودع</strong><span>تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.</span></span></a></div></div>
     </div>
   </section>

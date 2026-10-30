@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>Sentieri di Putt Animali | WeightPlay</title>
   <meta name="description" content="Pianifica i putt in 30 buche: tira indietro per regolare direzione e forza, usa le sponde per rimbalzare, evita l’acqua e salva qui i colpi migliori." />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="Sentieri di Putt Animali | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/it.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>Mondo e missione</h3><p>Il campo di Orla al chiaro di luna ha 30 buche. Ci sono prati, sponde basse e acqua; nelle buche successive cambiano partenza, coppa e ostacoli, quindi occorre rileggere la traiettoria.</p>
 <p>Completare una buca sblocca la successiva. Le buche 5, 10, 15, 20, 25 e 30 sono checkpoint. Quelle completate restano sulla mappa e si possono ripetere per migliorare il proprio record.</p></div>
       <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Trascina indietro dalla palla, nella direzione opposta a quella in cui vuoi mandarla. La distanza imposta mira e forza; rilascia per tirare. Un trascinamento breve è più facile da controllare. Uno lungo copre più distanza, ma rende più difficile recuperare un errore.</p>
-<p>Muri e sponde deviano la palla. Se entra in acqua, il tentativo di quella buca termina; riprovare non cancella buche completate o sblocchi. Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni.</p>
+<p>Muri e sponde deviano la palla. Se cade in acqua, torna alla posizione precedente e il colpo conta. Al par guadagni una ghianda, più una per ogni colpo sotto il par; sopra il par non ne guadagni.</p>
 <p>Nella schermata Risultato puoi scegliere Riprova, Buca successiva o Mappa percorsi. I migliori colpi di ogni buca e la prossima buca sbloccata restano salvati in questo browser, non in un account online.</p></div>
       <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Scegli sulla mappa una buca sbloccata e controlla par e ostacoli.</li><li>Dalla palla trascina nella direzione opposta alla traiettoria desiderata.</li><li>Rilascia per tirare e guarda dove si ferma la palla. Se un tiro troppo forte finisce in acqua, riprova con meno forza oppure usa la sponda dal lato sicuro.</li><li>Completa la buca per avanzare, riprovarla o tornare alla mappa. Puoi rigiocare una buca già completata per migliorare il record.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Un errore comune è trascinare troppo quando la buca è dietro un muro. La palla può superare il punto sicuro e cadere in acqua. Prova un rimbalzo più corto per rendere gestibile il colpo successivo.</li><li>Prima di cercare la linea diretta, mira al lato più aperto della sponda. Un primo colpo sicuro può preparare un approccio più semplice.</li><li>Il par è un obiettivo di colpi, non un conto alla rovescia. Fare più colpi non blocca le buche successive e quelle precedenti restano rigiocabili.</li></ul></div>
@@ -253,7 +254,7 @@
 <p>Le buche successive combinano ostacoli spostati, percorsi più lunghi e par più alti. I comandi restano gli stessi: trascina indietro e rilascia. Il campo si può rigiocare anche dopo la buca 30.</p></div>
       <div class="game-info-section"><h3>Nota di design</h3><p>Con touch e mouse, trascina e rilascia; con la tastiera, mira con le frecce e premi Invio per tirare. I record e gli sblocchi delle 30 buche restano in questo browser, senza account né classifica online.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Animal Putt Trails è un puzzle di putt tranquillo per un pubblico generale. Non richiede account, acquisti o classifiche pubbliche. Sblocchi e migliori colpi restano in questo browser e possono sparire cancellando i dati del sito.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Come miro e tiro?</dt><dd>Trascina indietro dalla palla, nella direzione opposta alla traiettoria desiderata, per regolare mira e forza; poi rilascia. Un tiro breve è più facile da dosare.</dd></div><div><dt>Cosa succede se la palla entra in acqua?</dt><dd>Il tentativo in quella buca termina. Puoi riprovare senza perdere le buche completate o gli sblocchi.</dd></div><div><dt>Quante buche ci sono?</dt><dd>Ci sono 30 buche e un punto di controllo ogni cinque.</dd></div><div><dt>Cosa indicano par e ghiande?</dt><dd>Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni.</dd></div><div><dt>Posso ripetere una buca completata?</dt><dd>Sì. Le buche completate restano sulla mappa e puoi tentare di migliorare il tuo record.</dd></div><div><dt>I progressi sono salvati online?</dt><dd>No. I migliori colpi e la prossima buca sbloccata sono salvati solo in questo browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Come miro e tiro?</dt><dd>Trascina indietro dalla palla, nella direzione opposta alla traiettoria desiderata, per regolare mira e forza; poi rilascia. Un tiro breve è più facile da dosare.</dd></div><div><dt>Cosa succede se la palla entra in acqua?</dt><dd>La palla torna alla posizione precedente e il colpo conta; scegli una traiettoria più sicura e continua.</dd></div><div><dt>Quante buche ci sono?</dt><dd>Ci sono 30 buche e un punto di controllo ogni cinque.</dd></div><div><dt>Cosa indicano par e ghiande?</dt><dd>Al par ottieni 1 ghianda e un’altra per ogni colpo sotto il par; sopra il par non ne ottieni.</dd></div><div><dt>Posso ripetere una buca completata?</dt><dd>Sì. Le buche completate restano sulla mappa e puoi tentare di migliorare il tuo record.</dd></div><div><dt>I progressi sono salvati online?</dt><dd>No. I migliori colpi e la prossima buca sbloccata sono salvati solo in questo browser.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line è un originale puzzle a griglia in 30 livelli con protagonista Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/it/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canale di bambù di Panko</strong><span>Ruota i tubi di Panko, porta acqua in ogni tratto e fai rifiorire il boschetto.</span></span></a><a class="game-info-related-card" href="/it/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Carico</strong><span>Spingi, attira e instrada carichi runici in 30 magazzini celesti con ghiaccio, segnali, magneti e casse collegate.</span></span></a></div></div>
     </div>
   </section>

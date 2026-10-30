@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>动物推杆小径 | WeightPlay</title>
   <meta name="description" content="规划 30 洞推杆：向后拖动设置方向和力度，利用边界反弹、避开水域，并在此浏览器保存各洞最佳杆数。" />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="动物推杆小径 | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>世界与任务</h3><p>Orla 的月光球场共有 30 洞。路线包含草地、低矮边界和水域；后段会移动起点、球洞和障碍物，让你重新判断球路。</p>
 <p>完成一洞就会开放下一洞；第 5、10、15、20、25、30 洞是检查点。已完成的洞会留在地图上，可以再次挑战并刷新最佳杆数。</p></div>
       <div class="game-info-section"><h3>游戏系统</h3><p>从球的位置向后拖动，也就是朝预期球路的反方向拖。拖动距离同时设置瞄准和力度，松开后球就会滚出。短拉更容易控制；长拉能推得更远，但失手时也更难补救。</p>
-<p>墙面和场地边界会改变球的反弹方向。球碰到水面时，本次尝试会结束；重试只重新开始该洞，不会取消已完成的洞或解锁进度。以标准杆完成可得 1 颗橡果；每少一杆再多得 1 颗，高于标准杆则没有橡果。</p>
+<p>墙面和场地边界会改变球的反弹方向。球碰到水面时会回到上一杆的位置，该杆仍计入杆数。以标准杆完成可得 1 颗橡果；每少一杆再多得 1 颗，高于标准杆则没有橡果。</p>
 <p>结果画面可选重试、下一洞或小径地图。各洞最佳杆数与下一个解锁洞只保存在此浏览器，不会同步到线上账号。</p></div>
       <div class="game-info-section"><h3>玩法说明</h3><ol><li>从地图选择一个已解锁的洞，先查看标准杆和障碍位置。</li><li>在球的位置按下鼠标或放下手指，再朝预期球路的反方向拖动。</li><li>松开推杆并观察球停在哪里。如果长拉让球碰水，重试时减小力度，或借边界从安全侧接近。</li><li>完成后可前往下一洞、重试或回到地图。想刷新记录时，也能重玩之前完成的洞。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>常见失误是洞口在墙后时仍拉得太长；球可能越过安全落点而掉进水里。改用较短的反弹路线，让下一杆仍容易控制。</li><li>先瞄准边界较宽的一侧，再考虑直线路径。安全的第一杆能让球停在更容易靠近洞口的位置。</li><li>把标准杆当作目标，不是倒计时。多用几杆完成也不会锁回后续洞，旧洞仍可重玩。</li></ul></div>
@@ -253,7 +254,7 @@
 <p>后段会组合移位后的障碍、更长的路线和更高的标准杆；操作仍是向后拖动再松开。完成第 30 洞后，球场仍可重玩。</p></div>
       <div class="game-info-section"><h3>开发设计理念</h3><p>触控与鼠标使用拖动后松开；键盘则用方向键瞄准并按 Enter 推杆。30 洞的最佳杆数与解锁状态保存在本地，无需账号或在线排名。</p></div>
       <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《动物推杆小径》是一款节奏平和、适合一般玩家的推杆益智游戏。无需账号、购买或公开排名；解锁和最佳杆数只保存在此浏览器，清除网站数据可能会一并删除。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>怎样瞄准和推杆？</dt><dd>从球的位置朝预期球路的反方向拖动来设置瞄准和力度，再松开。短拉更容易微调。</dd></div><div><dt>球碰到水会怎样？</dt><dd>该洞本次尝试会结束。重试该洞即可，已完成的洞与解锁会保留。</dd></div><div><dt>共有多少个洞？</dt><dd>共有 30 洞，每五洞设有检查点。</dd></div><div><dt>标准杆和橡果是什么意思？</dt><dd>以标准杆完成可得 1 颗橡果；每少一杆再多得 1 颗，高于标准杆则没有橡果。</dd></div><div><dt>可以重玩已完成的洞吗？</dt><dd>可以。完成的洞会留在地图上，你可以再次挑战并改善最佳杆数。</dd></div><div><dt>进度会保存到线上吗？</dt><dd>不会。最佳杆数与下一个解锁洞只保存在此浏览器。</dd></div></dl></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>怎样瞄准和推杆？</dt><dd>从球的位置朝预期球路的反方向拖动来设置瞄准和力度，再松开。短拉更容易微调。</dd></div><div><dt>球碰到水会怎样？</dt><dd>球会回到上一杆的位置，该杆仍计入杆数；选择更安全的路线继续。</dd></div><div><dt>共有多少个洞？</dt><dd>共有 30 洞，每五洞设有检查点。</dd></div><div><dt>标准杆和橡果是什么意思？</dt><dd>以标准杆完成可得 1 颗橡果；每少一杆再多得 1 颗，高于标准杆则没有橡果。</dd></div><div><dt>可以重玩已完成的洞吗？</dt><dd>可以。完成的洞会留在地图上，你可以再次挑战并改善最佳杆数。</dd></div><div><dt>进度会保存到线上吗？</dt><dd>不会。最佳杆数与下一个解锁洞只保存在此浏览器。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一笔到底</strong><span>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖达竹水道</strong><span>转动胖达的竹管，让水流过每一段管路，唤醒开花竹园。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬运队</strong><span>在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。</span></span></a></div></div>
     </div>
   </section>

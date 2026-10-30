@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>アニマル・パット・トレイル | WeightPlay</title>
   <meta name="description" content="全30ホールのパットを計画。後ろへ引いて方向と強さを決め、壁際のバンクを使い、水を避けます。各ホールのベスト打数はこのブラウザーに保存されます。" />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="アニマル・パット・トレイル | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
@@ -246,7 +247,7 @@
       <div class="game-info-section"><h3>世界とミッション</h3><p>オルラの月明かりのコースには全30ホールがあります。芝、低い壁、水場があり、後半はスタート位置やカップ、障害物が移動してラインの読み直しが必要になります。</p>
 <p>ホールをクリアすると次が解放され、5・10・15・20・25・30ホール目がチェックポイントです。クリア済みのホールはマップに残るので、ベスト打数を目指して再挑戦できます。</p></div>
       <div class="game-info-section"><h3>ゲームの仕組み</h3><p>ボールの位置から後ろへ引き、進ませたい向きとは反対方向にドラッグします。引く距離で狙いと強さが決まり、離すとパットします。短く引くと調整しやすく、長く引くと遠くまで届く一方、外したときの立て直しが難しくなります。</p>
-<p>壁やコースの縁に当たるとボールの向きが変わります。水に入るとそのホールの試行は終了しますが、リトライしてもクリア済みホールや解放状況は失われません。パーちょうどならドングリ1個、パーより1打少ないごとに1個追加され、パーを超える打数では獲得できません。</p>
+<p>壁やコースの縁はボールの向きを変えます。水に入るとボールは前の位置に戻り、その打数は加算されます。パーならドングリ1個、パーより1打少ないごとに1個追加され、パー超過では獲得できません。</p>
 <p>結果画面からリトライ、次のホール、コースマップを選べます。各ホールのベスト打数と次の解放ホールはこのブラウザー内に保存され、オンラインアカウントには同期されません。</p></div>
       <div class="game-info-section"><h3>遊び方</h3><ol><li>マップで解放済みのホールを選び、パーと障害物を確認します。</li><li>ボールから、狙いたい向きとは反対へドラッグして引きます。</li><li>離してパットし、ボールが止まった位置を見ます。強く引いて水に入ったら、リトライでは力を弱めるか、安全な側へ回り込むバンクを使います。</li><li>クリア後は次へ進む、やり直す、マップへ戻る操作を選べます。ベスト打数を更新したいときは以前のホールも再挑戦できます。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>カップが壁の向こうにあるとき、強く引きすぎるのはよくある失敗です。安全な停止位置を越えて水に入ることがあります。短いバンクショットで、次の一打を打ちやすくしましょう。</li><li>まっすぐ狙う前に、広い側のバンクを狙ってみましょう。安全な一打でカップに近づけると、次のラインが読みやすくなります。</li><li>パーは目標打数で、制限時間ではありません。打数が増えても後のホールがロックされることはなく、前のホールも再挑戦できます。</li></ul></div>
@@ -254,7 +255,7 @@
 <p>後半は位置の変わった障害物、長いルート、高めのパーが組み合わさります。操作は後ろへ引いて離す方式のままです。30ホールをクリアした後も再挑戦できます。</p></div>
       <div class="game-info-section"><h3>開発者メモ</h3><p>タッチとマウスはドラッグして離して打ちます。キーボードでは矢印キーで狙い、Enterで打ちます。全30ホールのベスト打数と解放状況はこのブラウザーに保存され、アカウントやオンラインランキングは不要です。</p></div>
       <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>Animal Putt Trailsは、落ち着いて遊べる一般向けのパットパズルです。アカウント、購入、公開ランキングはありません。解放状況とベスト打数はこのブラウザーに保存され、サイトデータを消すと削除されることがあります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>狙って打つには？</dt><dd>ボールから狙いたい向きと反対へドラッグして、向きと強さを決めてから離します。短く引くと微調整しやすくなります。</dd></div><div><dt>ボールが水に入ると？</dt><dd>そのホールの試行が終了します。ホールをリトライすれば、クリア済みのホールや解放状況は残ります。</dd></div><div><dt>ホールはいくつありますか？</dt><dd>全30ホールで、5ホールごとにチェックポイントがあります。</dd></div><div><dt>パーとドングリは何を表しますか？</dt><dd>パーちょうどならドングリ1個、パーより1打少ないごとに1個追加され、パーを超える打数では獲得できません。</dd></div><div><dt>クリアしたホールを再挑戦できますか？</dt><dd>はい。クリア済みホールはマップに残るので、ベスト打数の更新を目指せます。</dd></div><div><dt>進行状況はオンライン保存されますか？</dt><dd>いいえ。ベスト打数と次の解放ホールはこのブラウザーにのみ保存されます。</dd></div></dl></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>狙って打つには？</dt><dd>ボールから狙いたい向きと反対へドラッグして、向きと強さを決めてから離します。短く引くと微調整しやすくなります。</dd></div><div><dt>ボールが水に入ると？</dt><dd>ボールは前の位置に戻り、その打数は加算されます。安全な経路を選んで続けましょう。</dd></div><div><dt>ホールはいくつありますか？</dt><dd>全30ホールで、5ホールごとにチェックポイントがあります。</dd></div><div><dt>パーとドングリは何を表しますか？</dt><dd>パーちょうどならドングリ1個、パーより1打少ないごとに1個追加され、パーを超える打数では獲得できません。</dd></div><div><dt>クリアしたホールを再挑戦できますか？</dt><dd>はい。クリア済みホールはマップに残るので、ベスト打数の更新を目指せます。</dd></div><div><dt>進行状況はオンライン保存されますか？</dt><dd>いいえ。ベスト打数と次の解放ホールはこのブラウザーにのみ保存されます。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Lineは、ミミと挑む30ステージのグリッドパズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>パンコの竹管を回し、すべての水路に水を通して森に花を咲かせよう。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
     </div>
   </section>

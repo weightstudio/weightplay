@@ -25,7 +25,7 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <title>Trilhas de Putt Animal | WeightPlay</title>
   <meta name="description" content="Planeje tacadas em 30 buracos: arraste para trás para definir direção e força, use as bordas para rebater, evite a água e salve aqui suas melhores tacadas." />
@@ -184,7 +184,7 @@
     <meta name="twitter:title" content="Trilhas de Putt Animal | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-putt-trails.webp" />
   </head>
-<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v21" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
+<body data-wp-game-owned-guide data-wp-game-id="animal-putt-trails" data-wp-game-version="v22" data-wp-audience="general" data-wp-interface-version="9" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
   <div class="shell" data-wp-frame-root>
     <main>
@@ -229,7 +229,8 @@
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-  <script src="game.js?v=20261017-animal-putt-trails-v21-i9&amp;wp-build=df62be61ae7bf601"></script>
+  <script src="game.js?v=20261030-putt-v22-stage-reward&amp;wp-build=5728db429fc16b3c"></script>
+  <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
@@ -245,7 +246,7 @@
       <div class="game-info-section"><h3>Mundo e missão</h3><p>O campo ao luar de Orla tem 30 buracos. Há gramados, bordas baixas e água; nos buracos seguintes, a saída, o alvo e os obstáculos mudam de posição e pedem uma nova leitura da linha.</p>
 <p>Concluir um buraco libera o próximo. Os buracos 5, 10, 15, 20, 25 e 30 são pontos de controle. Os anteriores continuam no mapa para você tentar melhorar seu melhor resultado.</p></div>
       <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Arraste para trás a partir da bola, na direção oposta à que deseja seguir. A distância define mira e força; solte para bater. Um arrasto curto é mais fácil de controlar. Um longo alcança mais longe, mas dificulta a recuperação quando erra.</p>
-<p>Muros e bordas mudam a trajetória da bola. Se ela cair na água, a tentativa daquele buraco termina; é possível tentar de novo sem perder buracos concluídos ou desbloqueios. Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas.</p>
+<p>Muros e bordas desviam a bola. Se cair na água, ela volta à posição anterior e a tacada conta. Você ganha 1 bolota no par e mais 1 por tacada abaixo do par; acima do par não ganha nenhuma.</p>
 <p>Na tela de resultado, escolha Tentar de novo, Próximo buraco ou Mapa de trilhas. As melhores tacadas por buraco e o próximo buraco liberado ficam salvos neste navegador, não em uma conta on-line.</p></div>
       <div class="game-info-section"><h3>Como jogar</h3><ol><li>Escolha no mapa um buraco liberado e confira o par e os obstáculos.</li><li>A partir da bola, arraste no sentido oposto à trajetória que deseja fazer.</li><li>Solte para bater e veja onde a bola para. Se um arrasto longo levar à água, tente com menos força ou rebata pelo lado seguro.</li><li>Conclua o buraco para avançar, tentar novamente ou voltar ao mapa. Você também pode jogar um buraco concluído outra vez para melhorar a marca.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Um erro comum é arrastar com força demais quando o buraco fica atrás de um muro. A bola pode passar do ponto seguro e cair na água. Tente uma rebatida curta para deixar a próxima tacada mais simples.</li><li>Antes de buscar uma linha reta, mire no lado mais aberto da borda. Uma primeira tacada segura pode deixar uma aproximação mais clara.</li><li>Par é uma meta de tacadas, não um cronômetro. Usar mais tacadas não bloqueia os próximos buracos, e os anteriores podem ser repetidos.</li></ul></div>
@@ -253,7 +254,7 @@
 <p>Os buracos finais combinam obstáculos deslocados, trajetos mais longos e pares maiores. O controle continua sendo arrastar para trás e soltar; dá para repetir o campo após o buraco 30.</p></div>
       <div class="game-info-section"><h3>Nota de design</h3><p>No toque e no mouse, arraste e solte; no teclado, mire com as setas e pressione Enter para bater. Os melhores resultados e desbloqueios dos 30 buracos ficam neste navegador, sem conta nem ranking on-line.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Animal Putt Trails é um quebra-cabeça de putt tranquilo para o público geral. Não exige conta, compra ou ranking público. Desbloqueios e melhores tacadas ficam neste navegador e podem ser apagados quando os dados do site são limpos.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Como mirar e bater?</dt><dd>Arraste a partir da bola na direção oposta à trajetória desejada para definir mira e força; depois solte. Um arrasto curto é mais fácil de ajustar.</dd></div><div><dt>O que acontece se a bola cair na água?</dt><dd>A tentativa daquele buraco termina. Você pode tentar de novo sem perder os buracos concluídos ou desbloqueios.</dd></div><div><dt>Quantos buracos existem?</dt><dd>São 30 buracos, com ponto de controle a cada cinco.</dd></div><div><dt>O que significam par e bolotas?</dt><dd>Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas.</dd></div><div><dt>Posso repetir um buraco concluído?</dt><dd>Sim. Os buracos concluídos continuam no mapa para você tentar melhorar sua melhor marca.</dd></div><div><dt>O progresso fica salvo on-line?</dt><dd>Não. As melhores tacadas e o próximo buraco liberado ficam salvos apenas neste navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Como mirar e bater?</dt><dd>Arraste a partir da bola na direção oposta à trajetória desejada para definir mira e força; depois solte. Um arrasto curto é mais fácil de ajustar.</dd></div><div><dt>O que acontece se a bola cair na água?</dt><dd>A bola volta à posição anterior e a tacada conta; escolha uma rota mais segura e continue.</dd></div><div><dt>Quantos buracos existem?</dt><dd>São 30 buracos, com ponto de controle a cada cinco.</dd></div><div><dt>O que significam par e bolotas?</dt><dd>Você ganha 1 bolota ao fazer o par e mais uma por tacada abaixo do par; acima do par, não ganha bolotas.</dd></div><div><dt>Posso repetir um buraco concluído?</dt><dd>Sim. Os buracos concluídos continuam no mapa para você tentar melhorar sua melhor marca.</dd></div><div><dt>O progresso fica salvo on-line?</dt><dd>Não. As melhores tacadas e o próximo buraco liberado ficam salvos apenas neste navegador.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line é um quebra-cabeça original de grade de 30 estágios estrelado por Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de Bambu do Panko</strong><span>Gire os tubos de bambu do Panko, leve água por cada trecho e reviva o bosque.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div>
     </div>
   </section>
