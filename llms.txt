@@ -297,3 +297,5 @@ WeightPlay is a family-friendly animal browser game platform where players can e
 - Layer Order Puzzles: https://weightplay.com/en/games/animal-layer-grove/
 - Purrch Grove: https://weightplay.com/en/games/purrch-grove/
 - Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/
+- Mossfold: https://weightplay.com/en/games/mossfold/
+- A Life in Moments: https://weightplay.com/en/games/smallwood-lives/
