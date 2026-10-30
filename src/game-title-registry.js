@@ -1,5 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
-  "hearthloop": { "__localizedExact": true, "en": "Hearthloop", "zh-Hant": "歸巢環遊", "zh-Hans": "归巢环游", "ja": "おかえりループ", "ko": "집으로 한 바퀴", "es": "Vuelta al hogar", "pt-BR": "Volta ao lar", "fr": "La boucle du foyer", "de": "Heimatrunde", "it": "Giro verso casa", "ru": "Круг к дому", "hi": "घर की परिक्रमा", "ar": "دورة إلى الديار" },
+  "hearthloop": {
+    "__localizedExact": true,
+    "en": "Hearthloop",
+    "zh-Hant": "歸巢環遊",
+    "zh-Hans": "归巢环游",
+    "ja": "おかえりループ",
+    "ko": "집으로 한 바퀴",
+    "es": "Vuelta al hogar",
+    "pt-BR": "Volta ao lar",
+    "fr": "La boucle du foyer",
+    "de": "Heimatrunde",
+    "it": "Giro verso casa",
+    "ru": "Круг к дому",
+    "hi": "घर की परिक्रमा",
+    "ar": "دورة إلى الديار"
+  },
   "dustwake-depot": {
     "__localizedExact": true,
     "en": "Dustwake Depot",
@@ -3199,9 +3214,53 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Жизнь в мгновениях",
     "hi": "पलों में एक जीवन",
     "ar": "حياة في لحظات"
+  },
+  "lantern-lasso": {
+    "__localizedExact": true,
+    "en": "Lantern Lasso",
+    "zh-Hant": "星燈牽引",
+    "zh-Hans": "星灯牵引",
+    "ja": "星灯りの投げ縄",
+    "ko": "별빛 올가미",
+    "es": "Lazo de faroles",
+    "pt-BR": "Laço das lanternas",
+    "fr": "Lasso des lanternes",
+    "de": "Laternen-Lasso",
+    "it": "Lazo delle lanterne",
+    "ru": "Лассо фонарей",
+    "hi": "लालटेन लासो",
+    "ar": "حبل الفوانيس"
+  },
+  "mossfold": {
+    "en": "Mossfold",
+    "zh-Hant": "苔徑翻方",
+    "zh-Hans": "苔径翻方",
+    "ja": "苔のころがり道",
+    "ko": "이끼 구름길",
+    "es": "Giro de musgo",
+    "pt-BR": "Giro de Musgo",
+    "fr": "Roule-mousse",
+    "de": "Mooswende",
+    "it": "Giro di muschio",
+    "ru": "Мшистый переворот",
+    "hi": "काई का पलटा",
+    "ar": "درب الطحلب",
+    "__localizedExact": true
+  },
+  "glowspool": {
+    "__localizedExact": true,
+    "en": "Glowspool",
+    "zh-Hant": "織光滑徑",
+    "zh-Hans": "织光滑径",
+    "ja": "光糸の小道",
+    "ko": "빛실 미끄럼길",
+    "es": "Sendero de luz",
+    "pt-BR": "Trilha de Luz",
+    "fr": "Fil de lumière",
+    "de": "Lichtfaden",
+    "it": "Filo di luce",
+    "ru": "Световая нить",
+    "hi": "रोशनी की डोर",
+    "ar": "خيط النور"
   }
 };
-
-window.WEIGHTPLAY_GAME_TITLES['lantern-lasso'] = {__localizedExact:true, en:'Lantern Lasso', 'zh-Hant':'星燈牽引', 'zh-Hans':'星灯牵引', ja:'星灯りの投げ縄', ko:'별빛 올가미', es:'Lazo de faroles', 'pt-BR':'Laço das lanternas', fr:'Lasso des lanternes', de:'Laternen-Lasso', it:'Lazo delle lanterne', ru:'Лассо фонарей', hi:'लालटेन लासो', ar:'حبل الفوانيس'};
-
-window.WEIGHTPLAY_GAME_TITLES["mossfold"] = {"en": "Mossfold", "zh-Hant": "苔徑翻方", "zh-Hans": "苔径翻方", "ja": "苔のころがり道", "ko": "이끼 구름길", "es": "Giro de musgo", "pt-BR": "Giro de Musgo", "fr": "Roule-mousse", "de": "Mooswende", "it": "Giro di muschio", "ru": "Мшистый переворот", "hi": "काई का पलटा", "ar": "درب الطحلب", "__localizedExact": true};
