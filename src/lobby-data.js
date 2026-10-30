@@ -90,12 +90,12 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "hearthloop", audience: "general", status: "planned", internalOnly: true,
-      href: "games/hearthloop/", internalTrial: "games/hearthloop/?preview=1",
+      href: "games/hearthloop/", internalTrial: "?preview=1",
       title: { __localizedExact: true, en: "Hearthloop", "zh-Hant": "歸巢環遊", "zh-Hans": "归巢环游", ja: "おかえりループ", ko: "집으로 한 바퀴", es: "Vuelta al hogar", "pt-BR": "Volta ao lar", fr: "La boucle du foyer", de: "Heimatrunde", it: "Giro verso casa", ru: "Круг к дому", hi: "घर की परिक्रमा", ar: "دورة إلى الديار" },
-      type: { en: "Dice Race Strategy", "zh-Hant": "擲骰競速棋" },
-      description: { en: "Choose which companion moves, find safe stops and bring both friends home through 60 tactical races.", "zh-Hant": "分配骰點、停靠安全驛站，帶兩位夥伴闖過60關戰術競速棋。" },
+      type: {"en":"Dice race strategy","zh-Hant":"擲骰競速棋","zh-Hans":"掷骰竞速棋","ja":"サイコロ競争ボードゲーム","ko":"주사위 경주 전략","es":"Carrera estratégica con dados","pt-BR":"Corrida estratégica de dados","fr":"Course stratégique aux dés","de":"Würfelrennen mit Strategie","it":"Corsa strategica con dadi","ru":"Стратегическая гонка с кубиком","hi":"पासा दौड़ रणनीति","ar":"سباق استراتيجي بالنرد"},
+      description: {"en":"Roll, choose a companion and find the safe way home.","zh-Hant":"擲骰、選夥伴，找出安全回家的路。","zh-Hans":"掷骰、选伙伴，找出安全回家的路。","ja":"サイコロを振り、仲間を選んで安全に家へ。","ko":"주사위를 굴리고 동료를 골라 안전하게 집으로 가세요.","es":"Tira, elige un compañero y busca el camino seguro a casa.","pt-BR":"Role, escolha um amigo e encontre o caminho seguro para casa.","fr":"Lancez, choisissez un compagnon et rentrez en sécurité.","de":"Würfle, wähle einen Gefährten und finde sicher nach Hause.","it":"Lancia, scegli un compagno e trova la via sicura verso casa.","ru":"Бросьте кубик, выберите спутника и найдите безопасный путь домой.","hi":"पासा फेंकें, साथी चुनें और घर का सुरक्षित रास्ता खोजें।","ar":"ارمِ النرد واختر رفيقًا واعثر على طريق آمن إلى البيت."},
       categories: ["Strategy", "Board Games", "Animal Games"], skills: ["Logic", "Planning", "Focus"], ages: ["9+", "Family"],
-      meta: { en: ["60 Stages", "Permanent board · 5 diamonds"], "zh-Hant": ["60關", "永久棋盤外觀 · 5鑽石"] },
+      meta: {"en":["Stages · 60","5 diamonds"],"zh-Hant":["關卡 · 60","5鑽石"],"zh-Hans":["关卡 · 60","5钻石"],"ja":["ステージ · 60","5ダイヤ"],"ko":["스테이지 · 60","다이아몬드 5개"],"es":["Etapas · 60","5 diamantes"],"pt-BR":["Fases · 60","5 diamantes"],"fr":["Étapes · 60","5 diamants"],"de":["Etappen · 60","5 Diamanten"],"it":["Tappe · 60","5 diamanti"],"ru":["Этапы · 60","5 алмазов"],"hi":["चरण · 60","5 हीरे"],"ar":["المراحل · 60","5 ألماسات"]},
       art: { kind: "image", background: "games/hearthloop/assets/cover.webp", hideHero: true }
     },
     {
