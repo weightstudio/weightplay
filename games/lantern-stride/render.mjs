@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor } from './simulation.mjs?v=9';
+import { bridgeOpen, segmentFor } from './simulation.mjs?v=10';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -236,7 +236,10 @@ export function createRenderer(container, onContextLost = () => {}) {
 
   const fia=new THREE.Group(); scene.add(fia);
   // Deliberately designed block-animal silhouette with jointed independent legs.
-  box(fia,.9,1.0,.56,0,1.33,0,0xd87427); box(fia,.56,.7,.08,0,1.31,.33,0xffe5ae);box(fia,.3,.08,.62,0,.93,0,0x9b4f20);
+  // Align the chest with the same three-quarter facing as the fox head.
+  // The cream chest remains a real 3D surface, rather than an overlay.
+  const torso=new THREE.Group();torso.rotation.y=1.95;fia.add(torso);
+  box(torso,.9,1.0,.56,0,1.33,0,0xd87427);box(torso,.56,.7,.08,0,1.31,.33,0xffe5ae);box(torso,.3,.08,.62,0,.93,0,0x9b4f20);
   const head=new THREE.Group();fia.add(head);head.rotation.y=1.95;
   box(head,1.15,.93,.8,0,2.15,0,0xe98224); box(head,.78,.28,.34,0,1.98,.5,0xffe7ba);
   // Stepped forelock echoes Fia's approved cuboid silhouette without changing her face.
