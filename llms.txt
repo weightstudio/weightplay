@@ -238,6 +238,7 @@ WeightPlay covers these game and content clusters:
 
 - Tic-Tac-Toe: https://weightplay.com/en/games/tic-tac-toe/ — Play a tactical 3×3 match, place X and O, block threats, and reach a natural win, loss, or draw.
 - Skybound Tram / 飛天電車: https://weightplay.com/en/games/flying-tram/ — Boost, flip, collect rings and land a 3D block tram across 30 rooftop routes.
+- Rux Salvage Yard / Rux 回收工坊: https://weightplay.com/en/games/rux-salvage-yard/ — Aim at supports and recover parts across 60 physics-puzzle stages.
 
 ## Age And Skill Positioning
 
