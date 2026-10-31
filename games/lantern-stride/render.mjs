@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor } from './simulation.mjs?v=13';
+import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=14';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -338,7 +338,7 @@ export function createRenderer(container, onContextLost = () => {}) {
   for(const [x,z,length] of [[-.55,-.9,.7],[.5,-1.25,1.0],[-.25,-1.6,.55]]){
     const streak=box(speedWake,.07,.06,length,x,.16,z,0x9eeaf2);streak.material.transparent=true;streak.material.opacity=.7;streak.material.depthWrite=false;
   }
-  let stageId=null, markerMeshes=[], visualLane=0;
+  let stageId=null, markerMeshes=[], landmarkMeshes=[], visualLane=0;
   function configure(stage) {
     if(stageId===stage.id)return; stageId=stage.id;
     const evening=stage.chapter===2;
@@ -346,7 +346,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     ambient.color.setHex(evening?0xa3d7ef:0xbbeaff);ambient.intensity=evening?1.9:2.1;
     sun.color.setHex(evening?0xffbc72:0xffcf82);sun.intensity=evening?2.0:2.3;
     for(const child of [...markers.children]) {child.traverse(node=>{if(node.isMesh){node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material);}});markers.remove(child);}
-    markerMeshes=[];
+    markerMeshes=[];landmarkMeshes=[];
     for(let i=0;i<stage.route.length;i++) {
       const rule=stage.route[i], start=stage.distance*i/stage.route.length, length=stage.distance/stage.route.length;
       const color=rule==='slow'?0x65a7b7:rule==='fast'||rule==='headfast'?0xf0b85a:rule==='bridge'?0x5c9ca2:rule.startsWith('fork')?0x8a78ad:0x9b9074;
@@ -393,6 +393,20 @@ export function createRenderer(container, onContextLost = () => {}) {
         if(rule.startsWith('fork')) {box(gate,.85,.5,.12,1.7,1.65,start-.12,0xf4d972);box(gate,.85,.5,.12,-1.7,1.65,start-.12,0x92d2e4);}
         else {box(gate,.85,.5,.12,rule==='left'?1.7:-1.7,1.65,start-.12,0xf4d972);}
       }
+    }
+    // A clearly framed track tile tells the player where a voluntary repeat
+    // can happen. Left/right gold accents use the existing screen mapping;
+    // no collision or lane choice is implied by the surface geometry.
+    for(const mark of landmarksFor(stage)){
+      const tile=new THREE.Group(),side=mark.foot==='left'?1:-1;tile.position.z=mark.position;markers.add(tile);
+      box(tile,3.1,.035,1.05,0,.10,0,0x227c83);
+      box(tile,3.25,.04,.12,0,.13,-.55,0xffd66f);
+      box(tile,3.25,.04,.12,0,.13,+.55,0xffd66f);
+      box(tile,.12,.04,1.02,-1.56,.13,0,0xffd66f);
+      box(tile,.12,.04,1.02,1.56,.13,0,0xffd66f);
+      for(const offset of [-.19,.19])box(tile,.50,.04,.22,side*.72,.15,offset,0xffe598);
+      const pos=[],norm=[],colors=[];tile.traverse(node=>{if(!node.isMesh)return;node.updateMatrix();const g=node.geometry.toNonIndexed();g.applyMatrix4(node.matrix);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;for(let i=0;i<p.count;i++){pos.push(p.getX(i),p.getY(i),p.getZ(i));norm.push(n.getX(i),n.getY(i),n.getZ(i));colors.push(c.r,c.g,c.b)}g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material)});tile.clear();
+      const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8,transparent:true});geometries.add(geo);materials.add(mat);const mesh=new THREE.Mesh(geo,mat);mesh.receiveShadow=true;tile.add(mesh);landmarkMeshes.push(tile);
     }
     box(markers,.2,3,.2,-3.3,1.5,stage.distance,0xb17748); box(markers,.2,3,.2,3.3,1.5,stage.distance,0xb17748);
     box(markers,6.8,.3,.25,0,3,stage.distance,0xe9c97b);
@@ -443,12 +457,12 @@ export function createRenderer(container, onContextLost = () => {}) {
     const contactVisible=race.lastStep!==null&&phase<1;
     contact.visible=contactVisible;
     if(contactVisible){
-      const clean=race.lastFeedback==='steady',strength=clean&&race.combo>=12?1.6:clean&&race.combo>=3?1.3:1;
+      const clean=race.lastFeedback==='steady'||race.lastFeedback==='landmark',strength=clean&&race.combo>=12?1.6:clean&&race.combo>=3?1.3:1;
       contact.position.set(lane+(race.lastFoot==='left'?.3:-.3),0,race.lastContactDistance);
       contact.scale.setScalar(reducedMotion?1:strength*(.7+phase*.8));
       for(const bit of contactBits){bit.material.opacity=reducedMotion?.8:Math.max(0,1-phase);bit.material.color.setHex(clean?0xffd873:0xe7a29a);}
     }
-    streakPulse.visible=!reducedMotion&&(race.combo===12||race.combo===24)&&race.lastFeedback==='steady'&&contactVisible;
+    streakPulse.visible=!reducedMotion&&contactVisible&&(race.lastFeedback==='landmark'||((race.combo===12||race.combo===24)&&race.lastFeedback==='steady'));
     if(streakPulse.visible){
       streakPulse.position.set(lane+(race.lastFoot==='left'?.3:-.3),.12,race.lastContactDistance);
       streakPulse.scale.setScalar(.8+phase*.9);streakPulseMaterial.opacity=.7*(1-phase);
@@ -462,9 +476,10 @@ export function createRenderer(container, onContextLost = () => {}) {
     // Secondary motion follows the actual running state; reduced motion stays still.
     tail.rotation.y=reducedMotion||race.speed<.2?0:Math.sin(race.elapsed*4)*.16;
     head.rotation.x=reducedMotion||race.speed<.2?0:Math.sin(phase*Math.PI)*.09;
-    speedWake.visible=(race.combo>=12||race.elapsed<race.burstUntil)&&race.speed>2&&!reducedMotion;
+    speedWake.visible=(race.combo>=12||race.elapsed<race.burstUntil||race.elapsed<race.landmarkUntil)&&race.speed>2&&!reducedMotion;
     speedWake.position.z=speedWake.visible?-.16*(.5+.5*Math.sin(race.elapsed*9)):0;
     fia.rotation.z=reducedMotion?0:(race.balance<30?.12:0);fia.rotation.x=reducedMotion?0:Math.min(.08,race.speed*.022);
+    landmarkMeshes.forEach((tile,i)=>{const mark=race.landmarks[i],duration=reducedMotion?.12:.35,age=mark?.collected?race.elapsed-mark.collectedAt:0;tile.visible=!!mark&&(mark.collected?age<duration:z<=mark.position+2.5);if(tile.visible){tile.children[0].material.opacity=mark.collected?Math.max(0,1-age/duration):1;tile.scale.setScalar(mark.collected&&!reducedMotion?1-.2*Math.min(1,age/duration):1);}});
     markerMeshes.forEach((m,i)=>{
       if(m.gate)m.gate.visible=z<=m.start+.5;
       if(m.rule==='bridge')m.surface.material.color.setHex(i===part.index&&bridgeOpen(race)?0x96e5bf:0x3e777b);

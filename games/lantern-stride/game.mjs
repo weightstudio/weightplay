@@ -1,9 +1,9 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=13';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=14';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STAGES} from './stage-config.mjs';
-import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS} from './simulation.mjs?v=13';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=14';
 import {createStore,highestUnlocked} from './save.mjs';
-import {createRenderer} from './render.mjs?v=13';
+import {createRenderer} from './render.mjs?v=14';
 
 
 function ghostDistance(race){
@@ -17,7 +17,7 @@ function recordDistance(race){while(race.trace.samples.length<=Math.floor(race.e
 const W=window, $=id=>document.getElementById(id), store=createStore();
 const labels={plain:'plain',slow:'slow',fast:'fast',headfast:'headfast',headwind:'headwind',tailwind:'tailwind',left:'gateLeft',right:'gateRight',bridge:'bridge',fork:'choosePace',forkleft:'chooseLeft',forkright:'chooseRight',forkwindbridge:'windBridge',forkgates:'chooseGate',forkfast:'chooseLeft',forkslow:'chooseRight',forkmaster:'bridgeGate'};
 const goals={finish:'goalFinish',steady3:'goalSteady',balance40:'goalBalance40',combo4:'goalCombo','steady-no-stumble':'goalNoStumble',balance35:'goalBalance35',balance30:'goalBalance30',stumble2:'goalStumbles',gates:'goalGates'};
-const feedback={steady:'good',timing:'timingAdjust','same-foot':'alternate','bridge-closed':'bridgeWait','gate-missed':'reasonGate','gate-left':'gateLeft','gate-right':'gateRight',stumble:'stumble',feather:'featherUsed','feather-burst':'featherBurst','dash-burst':'dashFeedback'};
+const feedback={landmark:'good',steady:'good',timing:'timingAdjust','same-foot':'alternate','bridge-closed':'bridgeWait','gate-missed':'reasonGate','gate-left':'gateLeft','gate-right':'gateRight',stumble:'stumble',feather:'featherUsed','feather-burst':'featherBurst','dash-burst':'dashFeedback'};
 let locale=resolveLocale(),timingHint=null,ghostVisible=true;const tr=(key,vars)=>translate(locale,key,vars);
 function bestLabel(record){return record&&Number.isFinite(record.bestTime)?tr('personalBest',{time:`\u2066${record.bestTime.toFixed(1)} s\u2069`}):'';}
 function savedMessage(){const best=bestLabel(store.progress.records[selected]);return [tr('progressSaved'),best,resultReward?tr('firstClearReward'):''].filter(Boolean).join(' · ');}
@@ -44,7 +44,7 @@ function localize(){
   $('mainProgress').textContent=tr('stage',{n:`\u2066${highestUnlocked(store.progress)} / 60\u2069`});
   if(screen==='stage'){rail?.setConfig(config(),selected-1);rail?.refresh(selected-1);if(tab!=='stages')renderManagement();}
   if(race){update();if(race.status==='finished')renderResult();}
-  if(modal==='helpPanel'){const body=$('helpPanel').querySelector('.dialog-scroll p');body.textContent=tr(body.dataset.t)+(race?.stage.chapter===1?` ${tr('dashExplain')}`:'');requestAnimationFrame(syncHelpScrollHint);}
+  if(modal==='helpPanel'){const body=$('helpPanel').querySelector('.dialog-scroll p');body.textContent=tr(body.dataset.t)+(race?.stage.chapter===1?` ${tr('dashExplain')}`:'')+(race?.stage.id>=11&&body.dataset.t!=='tutorialIntro'?` ${tr('markHelp')}`:'');requestAnimationFrame(syncHelpScrollHint);}
 }
 const SKU='lantern-stride:star-trail';
 let frame,rail,renderer=null,race=null,screen='main',tab='stages',modal=null,previousFocus=null,practice=false,practiceRun=false,startSerial=0,purchaseSerial=0,purchaseBusy=false,shoeStatusKey=null,shopStatusKey=null,resultReward=false,selected=highestUnlocked(store.progress),raf=0,last=0,saved=false,pending=null;
@@ -74,7 +74,7 @@ function activate(next){
 function focusModal(id){const panel=$(id),button=[...panel.querySelectorAll('button:not([disabled])')].find(node=>node.getClientRects().length);if(button)button.focus();else{panel.tabIndex=-1;panel.focus();}}
 function openModal(id){if(screen!=='stage'&&!race)return;if(!modal)previousFocus=document.activeElement;else if(modal!==id)$(modal).hidden=true;modal=id;$(id).hidden=false;setModalInert(screen,true);cancelAnimationFrame(raf);raf=0;last=0;focusModal(id);}
 function syncHelpScrollHint(){const scroll=$('helpPanel').querySelector('.dialog-scroll'),hint=$('helpScrollHint');if(hint)hint.hidden=scroll.scrollHeight-scroll.scrollTop-scroll.clientHeight<=1;}
-function showHelp(intro=false){const scroll=$('helpPanel').querySelector('.dialog-scroll'),body=scroll.querySelector('p');const key=intro?'tutorialIntro':'helpText';body.dataset.t=key;body.textContent=tr(key)+(race?.stage.chapter===1?` ${tr('dashExplain')}`:'');$('ghostOptions').hidden=intro||!race?.ghost;$('timeStarHelp').hidden=intro;$('featherHelp').hidden=intro||race?.stage.chapter!==2;openModal('helpPanel');scroll.scrollTop=0;requestAnimationFrame(syncHelpScrollHint);}
+function showHelp(intro=false){const scroll=$('helpPanel').querySelector('.dialog-scroll'),body=scroll.querySelector('p');const key=intro?'tutorialIntro':'helpText';body.dataset.t=key;body.textContent=tr(key)+(race?.stage.chapter===1?` ${tr('dashExplain')}`:'')+(!intro&&race?.stage.id>=11?` ${tr('markHelp')}`:'');$('ghostOptions').hidden=intro||!race?.ghost;$('timeStarHelp').hidden=intro;$('featherHelp').hidden=intro||race?.stage.chapter!==2;openModal('helpPanel');scroll.scrollTop=0;requestAnimationFrame(syncHelpScrollHint);}
 function closeModal(){if(!modal)return;$(modal).hidden=true;modal=null;setModalInert(screen,false);last=0;const target=previousFocus;previousFocus=null;if(target?.isConnected&&target.getClientRects().length&&!target.disabled)target.focus({preventScroll:true});else if(race?.status==='running')$('leftBtn').focus({preventScroll:true});if(race?.status==='running'&&!document.hidden)schedule();}
 function setTab(name){
   rail?.cancel();tab=name;
@@ -106,8 +106,12 @@ function update(){
   const nextRule=race.stage.route[part.index+1],nextStart=race.stage.distance*(part.index+1)/race.stage.route.length;
   const upcoming=nextRule&&nextStart-race.distance<=6&&(['left','right','bridge','slow','fast','headfast'].includes(nextRule)||(nextRule==='plain'&&part.rule==='slow')||nextRule.startsWith('fork'))?` → ${tr(labels[nextRule])}`:'';
   const gd=race.status==='running'?ghostDistance(race):null,delta=gd===null?null:Math.round(race.distance-gd),who=tr(race.ghost?.kind==='best'?'ghostBest':'ghostRecord'),ghost=delta===null||!ghostVisible?'':`${who} · \u2066${delta>0?'+':''}${delta} m\u2069`;
-  const routeText=`${tr(race.stage.id===55?"goalChosen":goals[race.stage.objective])} · ${extras?extras+" · ":""}${tr(labels[part.choice?part.rule:part.original]||"plain")}${bridge}${upcoming}`,routeNode=$('routeCue'),ghostNode=$('ghostCue');
-  if(routeNode.textContent!==routeText)routeNode.textContent=routeText;ghostNode.hidden=!ghost;if(ghostNode.textContent!==ghost)ghostNode.textContent=ghost;if(ghost)ghostNode.style.top=`${routeNode.offsetTop+routeNode.offsetHeight+5}px`;
+  const armedMark=race.landmarkArmed&&!race.landmarkArmed.collected&&race.lastStep!==null&&race.elapsed-race.lastStep<=rhythmRange(part.pace||part.rule)[1]?race.landmarkArmed:null;
+  const activeMark=activeLandmark(race)||armedMark,mark=activeMark||race.landmarks.find(m=>!m.collected&&m.position-race.distance<=6&&m.position-race.distance>=-2.5);
+  const markFoot=mark?tr(mark.foot==='left'?'leftFoot':'rightFoot'):'';
+  const markLabel=mark?` · ${activeMark?tr(race.lastFoot===mark.foot?'markRepeat':'markTwice',{foot:markFoot}):`${tr('markAhead')} (${markFoot})`}`:'';
+  const routeText=`${tr(race.stage.id===55?"goalChosen":goals[race.stage.objective])} · ${extras?extras+" · ":""}${tr(labels[part.choice?part.rule:part.original]||"plain")}${bridge}${upcoming}${markLabel}`,routeNode=$('routeCue'),ghostNode=$('ghostCue');
+  if(routeNode.getAttribute('aria-live')!=='polite')routeNode.setAttribute('aria-live','polite');if(routeNode.textContent!==routeText)routeNode.textContent=routeText;ghostNode.hidden=!ghost;if(ghostNode.textContent!==ghost)ghostNode.textContent=ghost;if(ghost)ghostNode.style.top=`${routeNode.offsetTop+routeNode.offsetHeight+5}px`;
   const choosing=part.original.startsWith('fork')&&!part.choice;
   const enteringGate=(part.rule==='left'||part.rule==='right')&&race.lastGateIndex!==part.index;
   const specialEntry=choosing||enteringGate;
@@ -115,7 +119,7 @@ function update(){
   // Do not display a ready cue before both available choices can be clean.
   const elapsed=race.lastStep===null?null:race.elapsed-race.lastStep;const [ruleMin,max]=rhythmRange(part.pace||part.rule);const min=choosing?Math.max(ruleMin,rhythmRange('slow')[0]):ruleMin;
   const required=enteringGate?part.rule:choosing?(['forkleft','forkfast'].includes(part.original)?'left':['forkright','forkslow'].includes(part.original)?'right':null):null;
-  const foot=required?`${required}Foot`:choosing?'either':race.lastFoot==='left'?'rightFoot':race.lastFoot==='right'?'leftFoot':'either';
+  const foot=required?`${required}Foot`:choosing?'either':activeMark&&race.lastFoot===mark.foot?'either':race.lastFoot==='left'?'rightFoot':race.lastFoot==='right'?'leftFoot':'either';
   const forkTransitionWait=choosing&&race.segmentEnteredAt!==null&&race.elapsed-race.segmentEnteredAt<FORK_CHOICE_GRACE_SECONDS;
   const timing=part.rule==='bridge'&&!bridgeOpen(race)||forkTransitionWait?'wait':elapsed===null?'ready':elapsed<min?'wait':elapsed<=max||part.rule==='bridge'||specialEntry?'stepNow':'late';
   const cue=$('rhythmCue');cue.textContent=`${tr(foot)} · ${tr(timing)}`;
@@ -126,7 +130,8 @@ function update(){
   cue.dataset.meter=meterActive?'active':'hidden';
   cue.style.setProperty('--beat-progress',meterActive?String(Math.max(0,Math.min(1,elapsed/min))):'0');
   const feedbackText=race.elapsed<race.feedbackUntil&&feedback[race.lastFeedback]?tr(race.lastFeedback==='timing'&&timingHint?timingHint:feedback[race.lastFeedback])+(race.lastFeedback==='steady'&&race.combo>=3?` ×${race.combo}${race.combo>=24?' ⚡⚡':race.combo>=12?' ⚡':''}`:''):'';
-  if($('feedback').textContent!==feedbackText)$('feedback').textContent=feedbackText;
+  const shownFeedback=race.elapsed<race.feedbackUntil&&race.lastFeedback==='landmark'?tr('markSuccess'):feedbackText;
+  if($('feedback').textContent!==shownFeedback)$('feedback').textContent=shownFeedback;
   if(race.stage.chapter===1){
     const b=$('featherBtn'),remaining=Math.max(0,race.burstUntil-race.elapsed),ready=!race.dashUsed&&race.combo>=6&&race.balance>=40;
     const unavailable=String(!ready),active=String(remaining>0),caption=remaining>0?`⚡ ${Math.ceil(remaining)} s`:race.dashUsed?'⚡ ✓':ready?'⚡ −20%':race.balance<40?'⚡ ≥40%':`⚡ ${Math.min(6,race.combo)}/6`;
@@ -146,9 +151,9 @@ function update(){
   if(feather.getAttribute('aria-label')!==description){feather.setAttribute('aria-label',description);feather.title=description;}
 }
 function tick(now){raf=0;if(screen!=='battle'||!race||modal||document.hidden||settingsOpen())return;const dt=last?Math.min(.05,(now-last)/1000):0;last=now;advance(race,dt);recordDistance(race);race.ghostPosition=ghostVisible&&race.status==='running'?ghostDistance(race):null;renderer.draw(race,matchMedia('(prefers-reduced-motion: reduce)').matches);update();if(race.status==='finished')void finish();else schedule();}
-function action(foot){if(screen!=='battle'||!race||modal||document.hidden||settingsOpen())return;const out=step(race,foot);timingHint=out.feedback==='timing'?(out.interval<rhythmRange(segmentFor(race).pace||out.rule)[0]?'tooEarly':'late'):null;if(out.accepted)audio(out.clean?([12,24].includes(race.combo)?'feedback.success':'movement.step'):'feedback.error');update();}
+function action(foot){if(screen!=='battle'||!race||modal||document.hidden||settingsOpen())return;const out=step(race,foot);timingHint=out.feedback==='timing'?(out.interval<rhythmRange(segmentFor(race).pace||out.rule)[0]?'tooEarly':'late'):null;if(out.accepted)audio(out.clean?(out.feedback==='landmark'||[12,24].includes(race.combo)?'feedback.success':'movement.step'):'feedback.error');update();}
 async function persist(){if(!pending||pending.busy)return;const item=pending;item.busy=true;$('resultStages').disabled=true;$('resultReplay').disabled=true;$('retrySave').disabled=true;if(modal==='resultPanel'&&(!$('resultPanel').contains(document.activeElement)||!document.activeElement?.getClientRects().length||document.activeElement?.disabled))focusModal('resultPanel');const result=await store.complete(item.id,item.outcome);item.busy=false;let reward=null;if(result.ok){reward=W.WonderAnalytics?.completeStage?.(`stage-${item.id}`);if(pending===item)pending=null;}if(item.owner!==race||screen!=='battle'||modal!=='resultPanel')return;$('resultStages').disabled=false;$('resultReplay').disabled=false;$('retrySave').disabled=false;saved=result.ok;resultReward=reward?.credited===true&&reward.amount===1&&['castle-block','castle-material'].includes(reward.currency);$('saveStatus').textContent=saved?savedMessage():tr('saveFailed');if(resultReward){const icon=W.ShowResultGet?.('lantern-stride',true);if(icon?.isConnected)W.WeightPlayCastle?.dismissRewardNotice?.('lantern-stride');}$('retrySave').hidden=saved;$('resultNext').disabled=!saved||item.id>=60;if(!$('resultPanel').contains(document.activeElement)||!document.activeElement?.getClientRects().length||document.activeElement===$('resultPanel')||document.activeElement?.disabled)focusModal('resultPanel');}
-function renderResult(){if(!race?.result)return;const r=race.result;$('resultArt').hidden=!r.won;$('resultStarGuide').textContent=tr('starGoals',{n:starTimeLimit(race.stage)});$('resultStars').textContent=r.won?'★'.repeat(r.stars)+'☆'.repeat(3-r.stars):'';$('resultTitle').textContent=tr(r.won?'complete':'tryAgain');const reason=r.reason==='timeout'?'reasonTimeout':r.reason==='missed-gate'?'reasonGate':r.reason==='finish'?'reasonFinish':'reasonObjective';$('resultDetails').textContent=`${r.elapsed.toFixed(1)} s · ${tr('stars',{n:r.stars})} · ${tr(reason)}`;}
+function renderResult(){if(!race?.result)return;const r=race.result;$('resultArt').hidden=!r.won;$('resultStarGuide').textContent=tr('starGoals',{n:starTimeLimit(race.stage)});$('resultStars').textContent=r.won?'★'.repeat(r.stars)+'☆'.repeat(3-r.stars):'';$('resultTitle').textContent=tr(r.won?'complete':'tryAgain');const reason=r.reason==='timeout'?'reasonTimeout':r.reason==='missed-gate'?'reasonGate':r.reason==='finish'?'reasonFinish':'reasonObjective';const markResult=r.won&&race.landmarks.length?` · ${tr('markResult',{n:race.landmarks.filter(m=>m.collected).length,total:race.landmarks.length})}`:'';$('resultDetails').textContent=`${r.elapsed.toFixed(1)} s · ${tr('stars',{n:r.stars})} · ${tr(reason)}${markResult}`;}
 async function finish(){
   audio(race.result.won?'result.win':'result.lose');saved=practiceRun&&race.result.won;pending=race.result.won&&!practiceRun?{id:selected,owner:race,outcome:{...race.result,bestTrace:race.trace},busy:false}:null;
   renderResult();

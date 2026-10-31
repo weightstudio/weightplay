@@ -4,11 +4,19 @@ const SHOES = Object.freeze({ balanced: { acceleration: 1, penalty: 1, topSpeed:
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 export const FORK_CHOICE_GRACE_SECONDS = .25;
 
+// Optional pace landmarks are kept outside hazard transitions.
+export function landmarksFor(stage) {
+  if(stage.id < 11)return [];
+  const segmentLength=stage.distance/stage.route.length;
+  if(segmentLength<24)return [];
+  return stage.route.flatMap((rule,index)=>['plain','slow','fast','headwind','tailwind','headfast'].includes(rule)?[{position:segmentLength*(index+.5),foot:(stage.id+index)%2?'left':'right',collected:false}]:[]);
+}
+export function activeLandmark(race){return race.landmarks.find(mark=>!mark.collected&&Math.abs(mark.position-race.distance)<=2.5)||null;}
 export function createRace(stageId, shoe = 'balanced') {
   const stage = stageById(stageId);
   if (!stage) throw new RangeError('Unknown stage');
   return { stage, shoe: SHOES[shoe] ? shoe : 'balanced', status: 'running', elapsed: 0, distance: 0, speed: 0,
-    balance: 100, dashUsed: false, lastFoot: null, lastStep: null, lastContactDistance: 0, combo: 0, bestCombo: 0, steadySteps: 0, stumbles: 0,
+    balance: 100, dashUsed: false, landmarks: landmarksFor(stage), landmarkUntil: 0, landmarkArmed: null, lastFoot: null, lastStep: null, lastContactDistance: 0, combo: 0, bestCombo: 0, steadySteps: 0, stumbles: 0,
     gateHits: [], gateMisses: [], lastGateIndex: -1, segmentEnteredAt: null, bridgePassed: [], branches: {}, feather: stage.chapter === 2 ? 1 : 0, featherUntil: 0, burstUntil: 0,
     lastFeedback: 'ready', feedbackUntil: 0, result: null };
 }
@@ -30,10 +38,10 @@ export function rhythmRange(rule) {
   return rule === 'slow' ? [.50, .75] : rule === 'fast' || rule === 'headfast' ? [.23, .43] : [.28, .48];
 }
 export function starTimeLimit(stage) { return Number((stage.limit*.55).toFixed(1)); }
-function speedLimit(segment, combo, shoe, burst=false) {
+function speedLimit(segment, combo, shoe, burst=false, landmark=false) {
   const pace=segment.pace||segment.rule;
   const base=segment.wind==='headwind'||segment.rule==='headwind'||segment.rule==='headfast'?2.6:segment.rule==='tailwind'?3.8:pace==='fast'?3.5:pace==='slow'?2.9:3.2;
-  return base+(combo>=12?.35:0)+(combo>=24?.15:0)+SHOES[shoe].topSpeed+(burst?1.1:0);
+  return base+(combo>=12?.35:0)+(combo>=24?.15:0)+SHOES[shoe].topSpeed+Math.max(burst?1.1:0,landmark?.85:0);
 }
 
 // The visible flashing bridge and accepted input use this same time authority.
@@ -93,7 +101,12 @@ export function step(race, foot) {
   // The first marked step is a decision, even if it repeats the preceding foot.
   const enteringGate = (rule === 'left' || rule === 'right') && race.lastGateIndex !== index && foot === rule;
   const specialEntry = choosing || enteringGate;
-  const alternating = race.lastFoot !== foot || specialEntry;
+  const activeMark=activeLandmark(race);
+  // An in-window first step commits one rhythmic repeat even if the runner
+  // leaves the marked area during the natural time to take that second step.
+  const armedMark=race.landmarkArmed && !race.landmarkArmed.collected && interval <= range[1] ? race.landmarkArmed : null;
+  const mark=activeMark || armedMark,markEntry=mark&&mark.foot===foot&&race.lastFoot===foot;
+  const alternating = race.lastFoot !== foot || specialEntry || markEntry;
   const bridge = rule !== 'bridge' || bridgeOpen(race);
   if(!choosing&&rule==='bridge'&&!bridge&&alternating&&(race.lastStep===null||interval>=range[0])){
     const phase=race.elapsed%2.4,naturalClose=race.elapsed-phase+1.2;
@@ -105,15 +118,18 @@ export function step(race, foot) {
   }
   const timed = race.lastStep == null || interval >= range[0] && (interval <= range[1] || rule === 'bridge' && bridge || specialEntry);
   const clean = alternating && timed && bridge;
-  const speedCap=speedLimit(segment,race.combo+1,race.shoe,race.elapsed<race.burstUntil);
+  const speedCap=speedLimit(segment,race.combo+1,race.shoe,race.elapsed<race.burstUntil,race.elapsed<race.landmarkUntil);
   race.lastFoot = foot; race.lastStep = race.elapsed; race.lastContactDistance = race.distance;
   if (clean) {
     race.combo++; race.steadySteps++; race.bestCombo = Math.max(race.bestCombo, race.combo);
     race.speed = clamp(race.speed + .5 * SHOES[race.shoe].acceleration, 0, speedCap);
     if (race.combo % 3 === 0) race.balance = clamp(race.balance + 5, 0, 100);
     race.lastFeedback = 'steady';
+    if(markEntry){mark.collected=true;mark.collectedAt=race.elapsed;race.landmarkUntil=race.elapsed+4;race.speed+=.6;race.lastFeedback='landmark';}
+    race.landmarkArmed=!markEntry && activeMark && activeMark.foot===foot ? activeMark : null;
     if (rule === 'bridge' && !race.bridgePassed.includes(index)) race.bridgePassed.push(index);
   } else {
+    race.landmarkArmed=null;
     race.combo = 0; race.balance = clamp(race.balance - 12 * SHOES[race.shoe].penalty, 0, 100);
     race.speed *= .82; race.lastFeedback = !bridge ? 'bridge-closed' : !alternating ? 'same-foot' : 'timing';
     if (race.balance <= 0) { race.stumbles++; race.balance = 40; race.speed *= .45; race.lastFeedback = 'stumble'; }
@@ -133,7 +149,7 @@ export function advance(race, delta) {
   const before = segmentFor(race);
   race.elapsed += dt;
   const drag = before.wind === 'headwind' || before.rule === 'headwind' || before.rule === 'headfast' ? .52 : before.rule === 'tailwind' ? .12 : .28;
-  const speedCap=speedLimit(before,race.combo,race.shoe,race.elapsed<race.burstUntil);
+  const speedCap=speedLimit(before,race.combo,race.shoe,race.elapsed<race.burstUntil,race.elapsed<race.landmarkUntil);
   race.speed = clamp(race.speed - drag * dt, 0, speedCap);
   race.distance = Math.min(race.stage.distance, race.distance + race.speed * dt);
   const after = segmentFor(race);
