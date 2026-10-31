@@ -1796,22 +1796,25 @@ async function winLevel() {
   overlay.classList.add("settlement-screen");
   overlay.setAttribute("data-wp-result-screen", "");
   overlay.setAttribute("role", "dialog");
-  bankRunCoins();
-  const wasChallenge = state.level.id === highestUnlocked;
-  const drops = rollLevelDrops();
-  const diamondReward = await awardBossFirstClearDiamonds(wasChallenge);
-  awardTalentPoints(wasChallenge);
+  const resultSave = confirmHighestUnlock(state.levelIndex + 2);
+  const wasChallenge = resultSave.ok && state.level.id === resultSave.previous;
+  let drops = [], diamondReward = 0;
+  state.talentPointsEarned = 0;
+  if (resultSave.ok) {
+    bankRunCoins();
+    drops = rollLevelDrops();
+    diamondReward = await awardBossFirstClearDiamonds(wasChallenge);
+    awardTalentPoints(wasChallenge);
+  }
   state.running = false;
   state.won = true;
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.remove("hidden");
   state.score += state.wallHp;
-  highestUnlocked = Math.max(highestUnlocked, Math.min(LEVELS.length + 1, state.levelIndex + 2));
-  saveHighestUnlocked();
-  try { __wpMeasurement.saveSucceeded = Number(localStorage.getItem(SAVE_KEY)) >= state.levelIndex + 2; } catch { __wpMeasurement.saveSucceeded = false; }
+  __wpMeasurement.saveSucceeded = resultSave.ok;
   overlay.querySelector("h1").textContent = wasChallenge ? t("victory_challenge_success") : t("victory_stage_clear");
-  overlayText.textContent = buildWinText(drops, wasChallenge);
+  overlayText.textContent = resultSave.ok ? buildWinText(drops, wasChallenge) : unlockSaveWarning();
   startBtn.classList.add("hidden");
   menuContent.classList.remove("hidden");
   menuTabs.classList.add("hidden");
@@ -1820,7 +1823,7 @@ async function winLevel() {
   upgradeGrid.classList.add("hidden");
   profilePanel.classList.remove("hidden");
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
-  profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward);
+  profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward, resultSave.ok);
   overlay.classList.remove("hidden");
   window.WonderCrashFrame?.activate("battle", { covered: true });
   focusSettlementPrimary();
@@ -1879,8 +1882,8 @@ function buildWinText(drops, wasChallenge) {
   return t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id} ${unlockText}`;
 }
 
-function renderResultActions(won) {
-  const canAdvance = won && state.levelIndex + 1 < LEVELS.length;
+function renderResultActions(won, saveConfirmed = true) {
+  const canAdvance = won && saveConfirmed && state.levelIndex + 1 < LEVELS.length;
   const preferredAction = canAdvance ? "next" : (won ? "stages" : "replay");
   const button = (action, label, { disabled = false } = {}) => `
     <button
@@ -1904,11 +1907,11 @@ function focusSettlementPrimary() {
   primary?.focus({ preventScroll: true });
 }
 
-function renderSettlement(drops, wasChallenge, diamondReward = 0) {
+function renderSettlement(drops, wasChallenge, diamondReward = 0, saveConfirmed = true) {
   settlementDecisionPending = false;
   const dropItems = drops.map((item) => renderRewardItem(item)).join("");
   const diamondItem = diamondReward > 0 ? renderDiamondReward(diamondReward) : "";
-  const coinItem = state.coins > 0
+  const coinItem = saveConfirmed && state.coins > 0
     ? `<div class="reward-item coin-reward" data-settlement-reward="coins"><img src="assets/wonder-prop-coin-block-v1.png" alt="" /><span>x${state.coins}</span></div>`
     : "";
   const unlockItem = wasChallenge && state.levelIndex + 1 < LEVELS.length
@@ -1923,14 +1926,14 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
       <div class="settlement-body" tabindex="0">
       <div class="settlement-row">
         <strong>${t("settlement_title")}</strong>
-        <span>${wasChallenge ? t("settlement_new_clear") : t("settlement_reclear")}</span>
+        <span>${saveConfirmed ? (wasChallenge ? t("settlement_new_clear") : t("settlement_reclear")) : unlockSaveWarning()}</span>
       </div>
       <div class="reward-grid">
         ${rewards || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
       </div>
       ${renderSkillReport(true)}
       </div>
-      ${renderResultActions(true)}
+      ${renderResultActions(true, saveConfirmed)}
     </div>
   `;
 }
@@ -3866,8 +3869,44 @@ function loadHighestUnlocked() {
   return clamp(Math.floor(saved), 1, LEVELS ? LEVELS.length + 1 : 11);
 }
 
-function saveHighestUnlocked() {
-  localStorage.setItem(SAVE_KEY, String(highestUnlocked));
+function confirmHighestUnlock(target) {
+  try {
+    const read = () => {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw === null) return 1;
+      if (!/^[1-9]\d*$/.test(raw)) throw new Error("Invalid campaign progress");
+      const value = Number(raw);
+      if (!Number.isSafeInteger(value) || value > LEVELS.length + 1) throw new Error("Invalid campaign progress");
+      return value;
+    };
+    const previous = Math.max(highestUnlocked, read());
+    const candidate = Math.max(previous, Math.min(LEVELS.length + 1, target));
+    localStorage.setItem(SAVE_KEY, String(candidate));
+    const confirmed = read();
+    if (confirmed < candidate) throw new Error("Campaign progress unconfirmed");
+    highestUnlocked = confirmed;
+    return { ok: true, previous };
+  } catch {
+    return { ok: false, previous: highestUnlocked };
+  }
+}
+function unlockSaveWarning() {
+  const copy = {
+    en:"Saving unavailable. Progress and rewards were not confirmed; replay this stage.",
+    "zh-TW":"無法儲存，進度與獎勵尚未確認；請重新遊玩此關。",
+    "zh-CN":"无法保存，进度和奖励尚未确认；请重新游玩此关。",
+    ja:"保存できません。進行状況と報酬は未確認です。このステージを再プレイしてください。",
+    ko:"저장할 수 없습니다. 진행 상황과 보상이 확인되지 않았습니다. 이 스테이지를 다시 플레이하세요.",
+    es:"No se pudo guardar el progreso ni confirmar las recompensas. Repite esta fase.",
+    "pt-BR":"Não foi possível salvar o progresso nem confirmar as recompensas. Jogue esta fase novamente.",
+    fr:"Enregistrement impossible. Progression et récompenses non confirmées ; rejouez ce niveau.",
+    de:"Speichern nicht möglich. Fortschritt und Belohnungen sind unbestätigt; spiele die Stufe erneut.",
+    it:"Salvataggio non disponibile. Progressi e ricompense non confermati; ripeti il livello.",
+    ru:"Не удалось сохранить прогресс и подтвердить награды. Пройдите уровень заново.",
+    hi:"सहेजना संभव नहीं है। प्रगति और पुरस्कार की पुष्टि नहीं हुई; यह स्तर फिर खेलें।",
+    ar:"تعذر الحفظ. لم يتأكد التقدم والمكافآت؛ أعد لعب هذه المرحلة."
+  };
+  return copy[locale()] || copy.en;
 }
 
 function loadProfile() {
