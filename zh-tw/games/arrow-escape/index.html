@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v24">
+  <meta name="weightplay-game-version" content="v25">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#081a32">
@@ -44,7 +44,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261017-shared-play-spacing1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-  <link rel="stylesheet" href="style.css?v=20261021-arrow-escape-i9&amp;wp-build=1ba28ca13a262cc6">
+  <link rel="stylesheet" href="style.css?v=20261101-arrow-v25-save&amp;wp-build=4958b9581da55b0c">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -78,7 +78,7 @@
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
 </head>
-<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general" data-wp-game-version="v24" data-wp-interface-version="9" data-wp-game-owned-guide="true">
+<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general" data-wp-game-version="v25" data-wp-interface-version="9" data-wp-game-owned-guide="true">
   <div id="gameFrame" data-wp-frame-root>
     <main id="mainScreen" class="main-canvas">
       <header class="main-header">
@@ -118,7 +118,7 @@
     </div>
     <section id="helpModal" class="modal" hidden><div class="dialog"><h2 id="helpTitle" data-i18n="howTitle">玩法說明</h2><p id="helpText" data-i18n="helpText">點擊前先看完整路徑，尤其要檢查傳送門出口與單向門之後。受阻測試不會消耗步數，可依標出的障礙判斷先清哪一個。</p><button id="helpClose" class="primary" type="button" data-i18n="continue">繼續</button></div></section>
     <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">要離開這次挑戰嗎？</h2><p data-i18n="leaveText">繼續會保留目前棋盤；回關卡地圖後下次會重新開始。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">繼續</button><button id="leaveStage" type="button" data-i18n="stageMap">關卡地圖</button></div></div></section>
-    <section id="resultModal" class="modal" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog result-layout"><img src="../../assets/interface7-redrawn/arrow-escape.webp" alt="箭頭大逃亡"><div><small id="resultStage">關卡 1</small><h2 id="resultTitle" data-i18n="clear">關卡完成！</h2><p id="resultText"></p><p id="resultPayoff" class="result-payoff" role="status" aria-live="polite"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">關卡地圖</button><button id="nextBtn" class="primary" type="button" data-i18n="next">下一關</button><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button></div></div></section>
+    <section id="resultModal" class="modal" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden><div class="dialog result-layout"><img src="../../assets/interface7-redrawn/arrow-escape.webp" alt="箭頭大逃亡"><div><small id="resultStage">關卡 1</small><h2 id="resultTitle" data-i18n="clear">關卡完成！</h2><p id="resultText"></p><p id="resultPayoff" class="result-payoff" role="status" aria-live="polite"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">關卡地圖</button><button id="nextBtn" class="primary" type="button" data-i18n="next">下一關</button><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button></div></div></section>
   </section>
   <div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </div>
@@ -132,7 +132,7 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
-  <script src="game.js?v=20261031-arrow-v24-reward&amp;wp-text=1.4.0&amp;wp-build=1a7ad2bf66c10abd"></script>
+  <script src="game.js?v=20261101-arrow-v25-save&amp;wp-text=1.4.0&amp;wp-build=f155b4d4ccd9cc3b"></script>
   <script src="stage-config.js?v=20261021-arrow-escape-i9&amp;wp-build=1a22e5f142bf0732"></script>
   <script src="frame.js?v=20261021-arrow-escape-i9&amp;wp-audio=1.0.0&amp;wp-build=f505eaf6c852d767"></script>
   <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>

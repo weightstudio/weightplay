@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=26';
+import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=27';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -90,7 +90,10 @@ export function createRenderer(container, onContextLost = () => {}) {
   // Far forest banks are permanent. The centre ground is split into
   // stage-aware chunks so an actual lower water plane can pass under bridges.
   box(world,10.4,.25,160,-14.8,-.54,70,0x38563b);box(world,10.4,.25,160,14.8,-.54,70,0x38563b);
-  const groundChunks=Array.from({length:32},(_,i)=>{const g=new THREE.Group();scene.add(g);box(g,19.2,.25,5,0,-.54,-7.5+i*5,0x38563b);return g;});
+  // Ground segments use a single opaque instanced mesh. Their stage-aware
+  // visibility is still selected individually when the river layout changes.
+  const groundGeometry=new THREE.BoxGeometry(19.2,.25,5),groundMaterial=new THREE.MeshStandardMaterial({color:0x38563b,roughness:.8});geometries.add(groundGeometry);materials.add(groundMaterial);
+  const groundChunks=new THREE.InstancedMesh(groundGeometry,groundMaterial,32),groundMatrix=new THREE.Matrix4();groundChunks.castShadow=true;groundChunks.receiveShadow=true;groundChunks.instanceMatrix.setUsage(THREE.DynamicDrawUsage);scene.add(groundChunks);
   box(world,8,.25,150,0,-.2,68,0x8c5c3d); box(world,7.4,.08,150,0,-.04,68,0x8e866b);
   for(let i=0;i<31;i++){
     const z=i*5-5,env=envChunks[i]; box(world,7.1,.025,.08,0,.01,z,0xdec889);
@@ -410,7 +413,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     const partLength=stage.distance/stage.route.length,rawWaters=stage.route.flatMap((rule,i)=>['bridge','forkwindbridge','forkmaster'].includes(rule)?[[Math.floor((i*partLength+10)/5)*5-10,Math.ceil(((i+1)*partLength+10)/5)*5-10]]:[]),waters=[];for(const [start,end] of rawWaters){const last=waters[waters.length-1];if(last&&start<=last[1])last[1]=Math.max(last[1],end);else waters.push([start,end]);}
     if(waters.length)duskBanks.visible=false; // Do not float ground patches above a lowered river.
     const touchesWater=(z,margin)=>waters.some(([start,end])=>z+margin>=start&&z-margin<=end);
-    groundChunks.forEach((group,i)=>{group.visible=!touchesWater(-7.5+i*5,2.49);});
+    let groundCount=0;for(let i=0;i<32;i++){const z=-7.5+i*5;if(touchesWater(z,2.49))continue;groundMatrix.makeTranslation(0,-.54,z);groundChunks.setMatrixAt(groundCount++,groundMatrix);}groundChunks.count=groundCount;groundChunks.instanceMatrix.needsUpdate=true;groundChunks.computeBoundingSphere();
     envChunks.forEach((group,i)=>{group.visible=!touchesWater(i*5-3,3);});
     extraEnv.forEach(item=>{item.group.visible=!touchesWater(item.z,2);});
     scene.background.setHex(evening?0x5b8ca5:0x80bfd0);scene.fog.color.setHex(evening?0xc6aa9a:0xc5e0d3);setSky(evening);
@@ -510,6 +513,11 @@ export function createRenderer(container, onContextLost = () => {}) {
         }
         else {box(gate,.85,.5,.12,rule==='left'?1.7:-1.7,1.65,start-.12,0xf4d972);}
         marker.signParts=gate.children.slice(signFirst).map(node=>({node,y:node.position.y}));
+        // Only immutable, non-emissive arch pieces share a vertex-colour batch.
+        // Signs remain independent for responsive repositioning; lit lamps keep
+        // their emissive materials. The group still hides after the gate.
+        const keepGateParts=[...marker.signParts.map(part=>part.node),...gate.children.slice(0,signFirst).filter(node=>node.material?.emissive?.getHex()!==0)];
+        batchJoint(gate,keepGateParts);
       }
     }
     // One continuous river mesh per merged span prevents seams or overlapping
@@ -563,6 +571,9 @@ export function createRenderer(container, onContextLost = () => {}) {
     const finishGeometry=new THREE.BufferGeometry();finishGeometry.setAttribute('position',new THREE.Float32BufferAttribute(finishPositions,3));finishGeometry.setAttribute('normal',new THREE.Float32BufferAttribute(finishNormals,3));finishGeometry.setAttribute('color',new THREE.Float32BufferAttribute(finishColors,3));
     const finishMaterial=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(finishGeometry);materials.add(finishMaterial);
     const finishMesh=new THREE.Mesh(finishGeometry,finishMaterial);finishMesh.castShadow=true;finishMesh.receiveShadow=true;finishDetails.add(finishMesh);
+    // Keep every stateful surface/lane separate; only fixed decorations merge.
+    const dynamicTrack=markerMeshes.flatMap(item=>[item.surface,item.leftLane,item.rightLane]).filter(Boolean);
+    batchJoint(markers,dynamicTrack);
   }
   let shortFit=0;
   function resize() {const r=container.getBoundingClientRect();if(r.width<=0||r.height<=0)return;shortFit=(1-THREE.MathUtils.smoothstep(r.height,240,360))*THREE.MathUtils.smoothstep(r.width/r.height,1,1.3);renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;const baseFit=Math.min(1,1.1/camera.aspect),fit=baseFit+(Math.max(baseFit,.32)-baseFit)*shortFit;camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(29))*fit));camera.updateProjectionMatrix();}
@@ -639,7 +650,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     });
     renderer.render(scene,camera);
   }
-  function dispose(){if(disposed)return;disposed=true;renderer.setAnimationLoop(null);clouds.dispose();lampFaces.dispose();plume.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();for(const t of textures)t.dispose();sun.shadow.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}
+  function dispose(){if(disposed)return;disposed=true;renderer.setAnimationLoop(null);groundChunks.dispose();clouds.dispose();lampFaces.dispose();plume.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();for(const t of textures)t.dispose();sun.shadow.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}
   // Capture the actual 3D runner once for the Result card. This borrows the
   // existing context, performs no asynchronous work, and has a safe fallback.
   function capturePortrait(){

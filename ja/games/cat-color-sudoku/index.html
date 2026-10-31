@@ -26,14 +26,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v10">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="weightplay-interface-version" content="9">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#0b202b">
   <title>ねこカラー数独 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-  <link rel="stylesheet" href="style.css?v=20261021-cat-color-sudoku-v9-i9&amp;wp-build=a020c829c9c20740">
+  <link rel="stylesheet" href="style.css?v=20261101-cat-v11-save&amp;wp-build=8b3387b8b3756145">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
   <meta name="description" content="各行・各列・模様つきカラー領域にねこを1匹ずつ置き、隣接させないようにします。" />
@@ -78,7 +78,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-version="v10" data-wp-interface-version="9" data-wp-game-owned-guide data-runtime-localize="off">
+<body data-screen="main" data-audience="general" data-wp-game-id="cat-color-sudoku" data-wp-game-version="v11" data-wp-interface-version="9" data-wp-game-owned-guide data-runtime-localize="off">
   <div id="gameFrame" data-wp-frame-root>
     <main id="main" class="screen main-screen" data-screen="main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">ねこカラー数独</h1>
@@ -166,7 +166,7 @@
         </aside>
       </section>
       <dialog id="leaveDialog" aria-labelledby="leaveTitle" data-wp-frame-result-card><h2 id="leaveTitle" data-t="leaveTitle">Leave this map?</h2><p data-t="leaveText">Continue keeps this exact deduction. Stage list ends this attempt.</p><div class="dialog-actions"><button id="leaveContinue" class="primary" type="button" data-wp-frame-action="primary" data-t="continue">Continue</button><button id="leaveStages" type="button" data-wp-frame-action="secondary" data-t="returnStages">Stage list</button></div></dialog>
-      <dialog id="resultDialog" aria-labelledby="resultTitle" data-wp-frame-result-card><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restored</p><h2 id="resultTitle" data-t="resultTitle">Moon map solved!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" type="button" data-wp-frame-action="secondary" data-t="stages">Stages</button><button id="resultNext" class="primary" type="button" data-wp-frame-action="primary" data-t="next">Next map</button><button id="resultReplay" type="button" data-wp-frame-action="secondary" data-t="replay">Play again</button></div></dialog>
+      <dialog id="resultDialog" aria-labelledby="resultTitle" aria-describedby="resultBody" data-wp-frame-result-card><img class="result-cat" src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><p class="eyebrow" data-t="resultKicker">Atlas restored</p><h2 id="resultTitle" data-t="resultTitle">Moon map solved!</h2><p id="resultBody"></p><p id="resultMastery" class="result-mastery" hidden></p><div class="result-actions"><button id="resultStages" type="button" data-wp-frame-action="secondary" data-t="stages">Stages</button><button id="resultNext" class="primary" type="button" data-wp-frame-action="primary" data-t="next">Next map</button><button id="resultReplay" type="button" data-wp-frame-action="secondary" data-t="replay">Play again</button></div></dialog>
     </main>
   </div>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
@@ -182,7 +182,7 @@
   <script src="text-growth-140.js?v=20261010-cat-color-text-growth-140&amp;wp-build=9165626054c6b77b"></script>
   <script src="/games/cat-color-sudoku/stage-config.js?v=20261021-cat-color-sudoku-v9-i9&amp;wp-build=5524f1374cd6f20b"></script>
   <script src="/games/cat-color-sudoku/frame.js?v=20261021-cat-color-sudoku-v9-i9&amp;wp-build=e42d0344ae3688cb"></script>
-  <script src="game.js?v=20261031-cat-color-sudoku-v10-i9&amp;wp-audio=1.0.0&amp;wp-build=ed2be7f824e0bcd4"></script>
+  <script src="game.js?v=20261101-cat-v11-save&amp;wp-audio=1.0.0&amp;wp-build=ad4330ec9ce3b843"></script>
 <script src="/src/runtime-locales/ja.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ねこカラー数独";document.title="ねこカラー数独 | WeightPlay";},{once:true});</script>
