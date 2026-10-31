@@ -1,9 +1,9 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=24';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=25';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STAGES} from './stage-config.mjs';
-import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=24';
-import {createStore,highestUnlocked} from './save.mjs?v=24';
-import {createRenderer} from './render.mjs?v=24';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=25';
+import {createStore,highestUnlocked} from './save.mjs?v=25';
+import {createRenderer} from './render.mjs?v=25';
 
 
 function ghostDistance(race){
@@ -172,7 +172,7 @@ async function startStage(id,{asPractice=practice}={}){
   if(asPractice){if(!await LocalPractice.validate()||serial!==startSerial)return;}else{store.refresh();if(store.progressError){activate('main');void flushPendingRewards();return;}if(id>highestUnlocked(store.progress))return;}
   practiceRun=asPractice;
   selected=id;activate('battle');renderer?.dispose();renderer=null;race=createRace(id,store.progress.equippedShoe);const record=store.progress.records[id];race.ghost=record?.bestTrace?{kind:'best',time:record.bestTime,trace:record.bestTrace}:record?.referenceRun?{kind:'recorded',...record.referenceRun}:null;race.ghostPosition=ghostVisible&&race.ghost?0:null;race.trace={route:race.stage.route.join(','),samples:[0]};pending=null;saved=false;
-  try{renderer=createRenderer($('arena'),()=>{if(screen==='battle'&&race?.status==='running')openModal('graphicsPanel');});renderer.setTrail(store.progress.equippedTrail==='star'&&W.WeightPlayWallet?.owns(SKU)===true);renderer.draw(race);update();if(!practiceRun)W.WonderAnalytics?.track?.('stage_start',{stage_id:`stage-${id}`});audio('game.start');if(!practiceRun&&id===1&&!store.progress.tutorialComplete)showHelp(true);else schedule();}
+  try{renderer=createRenderer($('arena'),()=>{if(screen==='battle'&&race?.status==='running')openModal('graphicsPanel');});renderer.setTrail(store.progress.equippedTrail==='star'&&W.WeightPlayWallet?.owns(SKU)===true);renderer.draw(race);update();if(!practiceRun)W.WonderAnalytics?.track?.('stage_start',{stage_id:`stage-${id}`});audio('game.start');if(!practiceRun&&id===1&&!store.progress.tutorialComplete)showHelp(true);else{$('leftBtn').focus({preventScroll:true});schedule();}}
   catch(error){console.error('Renderer could not start',error);openModal('graphicsPanel');}
 }
 function toStages(){++startSerial;activate('stage');}
