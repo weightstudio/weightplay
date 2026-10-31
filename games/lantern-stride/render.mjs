@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=14';
+import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=15';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -222,9 +222,9 @@ export function createRenderer(container, onContextLost = () => {}) {
   }
   lampFaces.computeBoundingSphere();scene.add(lampFaces);
   // Original flag artwork is a shared atlas-backed billboard, placed within the 3D scene.
-  const flagTexture=new THREE.TextureLoader().load(new URL('assets/props.webp',import.meta.url).href,texture=>{if(disposed)texture.dispose();});
+  const flagTexture=new THREE.TextureLoader().load(new URL('assets/props.webp',import.meta.url).href,()=>{/* Owned texture was disposed at teardown; late decode cannot restart the scene. */});
   flagTexture.colorSpace=THREE.SRGBColorSpace;flagTexture.repeat.set(1/3,1/3);flagTexture.offset.set(0,0);textures.add(flagTexture);
-  const earthTexture=new THREE.TextureLoader().load(new URL('assets/track-earth.webp',import.meta.url).href,texture=>{if(disposed)texture.dispose();});
+  const earthTexture=new THREE.TextureLoader().load(new URL('assets/track-earth.webp',import.meta.url).href,()=>{/* Owned texture was disposed at teardown; late decode cannot restart the scene. */});
   earthTexture.colorSpace=THREE.SRGBColorSpace;earthTexture.wrapS=earthTexture.wrapT=THREE.RepeatWrapping;earthTexture.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());textures.add(earthTexture);
   const flagMaterial=new THREE.SpriteMaterial({map:flagTexture,transparent:true,depthWrite:false});materials.add(flagMaterial);
   const flags=new THREE.Group();scene.add(flags);
