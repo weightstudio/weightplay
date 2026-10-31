@@ -2,6 +2,9 @@ import {stageById} from './stage-config.mjs';
 
 export const SAVE_KEY = 'weightplay:lantern-stride:progress:v1';
 const SAVE_LOCK = 'weightplay-lantern-stride-progress-v1';
+export const REWARD_KEY = 'weightplay:lantern-stride:pending-rewards:v1';
+const validRewardToken = value => typeof value==='string' && /^[0-9a-f]{32}$/.test(value);
+function newRewardToken(){const bytes=new Uint8Array(16);globalThis.crypto.getRandomValues(bytes);return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('')}
 const blank = () => ({ schemaVersion: 1, records: {}, equippedShoe: 'balanced', equippedTrail: 'default', tutorialComplete: false, revision: 0 });
 // Samples are tenths of a metre at whole seconds. Reject stale routes and
 // implausible or truncated recordings without discarding the original score.
@@ -24,6 +27,7 @@ export function normalize(value) {
     const record = source.records?.[id];
     if (record?.cleared === true && Number.isFinite(record.bestTime) && record.bestTime >= 0 && record.bestTime <= 86400) {
       result.records[id] = {cleared:true, bestTime:record.bestTime, stars:Math.min(3,Math.max(1,Math.floor(Number(record.stars)||1)))};
+      if(validRewardToken(record.rewardToken))result.records[id].rewardToken=record.rewardToken;
       const best=validTrace(id,record.bestTime,record.bestTrace);
       if(best)result.records[id].bestTrace=best;
       else {
@@ -56,12 +60,14 @@ export function createStore(options = {}) {
     catch (err) { available=false; error=err; return current; }
   }
   current=read();
-  async function mutate(change) {
+  function readRewards(){const raw=storage.getItem(REWARD_KEY);if(raw===null)return {schemaVersion:1,pending:{}};let value;try{value=JSON.parse(raw)}catch{throw Error('REWARD_UNREADABLE')}if(!value||typeof value!=='object'||Array.isArray(value)||value.schemaVersion!==1||!value.pending||typeof value.pending!=='object'||Array.isArray(value.pending))throw Error('REWARD_UNREADABLE');for(const [id,pending] of Object.entries(value.pending))if(!/^(?:[1-9]|[1-5][0-9]|60)$/.test(id)||!validRewardToken(pending))throw Error('REWARD_UNREADABLE');return value;}
+  function writeRewards(value){const encoded=JSON.stringify(value);storage.setItem(REWARD_KEY,encoded);if(storage.getItem(REWARD_KEY)!==encoded)throw Error('REWARD_READBACK_MISMATCH')}
+  async function mutate(change, rewardIntent=null) {
     if (!locks?.request) return {ok:false, reason:'locks'};
     try {
       return await locks.request(SAVE_LOCK, async () => {
         available=true; const fresh=read(); if (!available) return {ok:false,reason:'storage'};
-        const next=normalize(change(fresh)); next.revision=fresh.revision+1;
+        const next=normalize(change(fresh)); next.revision=fresh.revision+1; if(rewardIntent!==null){const queue=readRewards();queue.pending[rewardIntent.id]=rewardIntent.token;writeRewards(queue)}
         const encoded=JSON.stringify(next); storage.setItem(SAVE_KEY,encoded);
         if (storage.getItem(SAVE_KEY)!==encoded) throw new Error('SAVE_READBACK_MISMATCH');
         current=next; error=null; return {ok:true,progress:current};
@@ -72,10 +78,11 @@ export function createStore(options = {}) {
     get progress(){return current;}, get error(){return error;}, refresh(){current=read();return current;},
     complete(stageId, outcome) {
       if (!Number.isInteger(stageId) || stageId < 1 || stageId > 60 || outcome?.won !== true || !Number.isFinite(outcome.elapsed) || outcome.elapsed < 0 || outcome.elapsed > 86400 || !Number.isInteger(outcome.stars) || outcome.stars < 1 || outcome.stars > 3) return Promise.resolve({ok:false,reason:'invalid'});
+      let token;try{token=newRewardToken()}catch{return Promise.resolve({ok:false,reason:'token'})}
       return mutate(p => {
         if (stageId > highestUnlocked(p)) throw new Error('STAGE_LOCKED');
         const old=p.records[stageId], faster=!old||outcome.elapsed<old.bestTime, equal=!!old&&outcome.elapsed===old.bestTime;
-        p.records[stageId]={cleared:true,bestTime:faster?outcome.elapsed:old.bestTime,stars:Math.max(old?.stars || 0,outcome.stars)};
+        p.records[stageId]={cleared:true,bestTime:faster?outcome.elapsed:old.bestTime,stars:Math.max(old?.stars || 0,outcome.stars),rewardToken:token};
         const trace=validTrace(stageId,outcome.elapsed,outcome.bestTrace);
         const best=(faster||(equal&&trace))?trace:old?.bestTrace;
         if(best)p.records[stageId].bestTrace=best;
@@ -88,8 +95,9 @@ export function createStore(options = {}) {
           if(reference)p.records[stageId].referenceRun=reference;
         }
         return p;
-      });
+      }, {id:stageId,token});
     },
+    async flushRewards(claim,preferred=0){if(!locks?.request)return {ok:false,reason:'locks'};try{return await locks.request(SAVE_LOCK,()=>{available=true;const fresh=read();if(!available)return {ok:false,reason:'storage'};const queue=readRewards(),delivered=[];if(Number.isInteger(preferred)&&preferred>=1&&preferred<=60&&fresh.records[preferred]?.cleared&&!Object.hasOwn(queue.pending,preferred)){try{claim(preferred)}catch{}}for(let id=1;id<=60;id++){const token=queue.pending[id];if(!token||fresh.records[id]?.rewardToken!==token)continue;let result;try{result=claim(id)}catch{continue}if(result?.credited===true||result?.reason==='already-claimed'){delete queue.pending[id];delivered.push(id)}}if(delivered.length)writeRewards(queue);current=fresh;const remaining=Object.keys(queue.pending),unsaved=remaining.filter(id=>fresh.records[id]?.rewardToken!==queue.pending[id]);return {ok:true,delivered,remaining,unsaved};})}catch(err){error=err;return {ok:false,reason:'storage'}}},
     equip(shoe) {return mutate(p => { if (!['balanced',...(p.records[5]?['steady']:[]),...(p.records[15]?['swift']:[])].includes(shoe)) throw new Error('LOCKED_SHOE'); p.equippedShoe=shoe; return p; });},
     equipTrail(trail, verified) {return mutate(p=>{if(trail==='star'&&!verified)throw new Error('TRAIL_NOT_OWNED');p.equippedTrail=trail==='star'?'star':'default';return p;});},
     completeTutorial() {return mutate(p => {p.tutorialComplete=true;return p;});},
