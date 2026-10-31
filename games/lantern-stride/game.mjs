@@ -1,9 +1,9 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=25';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=26';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STAGES} from './stage-config.mjs';
-import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=25';
-import {createStore,highestUnlocked} from './save.mjs?v=25';
-import {createRenderer} from './render.mjs?v=25';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=26';
+import {createStore,highestUnlocked} from './save.mjs?v=26';
+import {createRenderer} from './render.mjs?v=26';
 
 
 function ghostDistance(race){
@@ -73,7 +73,7 @@ function activate(next){
   frame.activate(next);
   // Synchronize shared Battle Canvas ownership in the same scene transaction.
   W.WeightPlayBattleCanvas.sync();
-  if(next==='stage'){setTab('stages');rail.setConfig(config(),selected-1);rail.refresh(selected-1);}
+  if(next==='stage'){setTab('stages');rail.setConfig(config(),selected-1);rail.refresh(selected-1);$('stageRail').querySelector('[aria-current="true"]')?.focus({preventScroll:true});}
   $('mainProgress').textContent=tr('stage',{n:`\u2066${highestUnlocked(store.progress)} / 60\u2069`});rewardNotice();
 }
 function focusModal(id){const panel=$(id),button=[...panel.querySelectorAll('button:not([disabled])')].find(node=>node.getClientRects().length);if(button)button.focus();else{panel.tabIndex=-1;panel.focus();}}

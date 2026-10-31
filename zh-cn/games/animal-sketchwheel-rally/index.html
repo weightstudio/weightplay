@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><script src="/src/interface7-poster-registry.js?v=20261011-sketchwheel-v18"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="画出车轮挑战三十场竞速：平路看圆度、阶梯看高度、泥冰看抓地力，隧道和缺口看宽度；速度影响跨越表现，后续强势通过可带来短暂加速。" />
     <meta property="og:site_name" content="WeightPlay" />
@@ -57,7 +57,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="main" data-wp-game-id="animal-sketchwheel-rally" data-wp-game-version="v21" data-wp-interface-version="9" data-wp-combined-sound="true">
+<body data-screen="main" data-wp-game-id="animal-sketchwheel-rally" data-wp-game-version="v22" data-wp-interface-version="9" data-wp-combined-sound="true">
 
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainGroup" class="main-screen" data-screen="main">
@@ -117,7 +117,7 @@
       </section>
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">画线、放开、应变</h2><ol><li data-t="tutorial1">在绘轮板画线，或直接选择轮型蓝图。</li><li data-t="tutorial2">形状会改变速度、高度、抓地力与宽度。</li><li data-t="tutorial3">对手不会停下，请在障碍前重画。</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">开始竞速</button></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">要离开这场竞速吗？</h2><p data-t="leaveText">继续会保留进度；回到地图则结束本次挑战。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">继续</button><button id="leaveStage" type="button" data-t="returnStage">竞速地图</button></div></div></section>
-      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">重画</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">领先</b><strong id="resultLead"></strong></span><span><b data-t="reward">奖励</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">关卡</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">下一关</button><button id="retry" type="button" data-t="retry">再试一次</button></div></div></section>
+      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">重画</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">领先</b><strong id="resultLead"></strong></span><span><b data-t="reward">奖励</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">关卡</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">下一关</button><button id="retry" type="button" data-t="retry">再试一次</button></div></div></section>
       <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">地形与轮型指南</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">继续</button></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
@@ -136,7 +136,7 @@
   <script src="stage-config.js?v=20261021-sketchwheel-v20-i9-fix1&amp;wp-build=53c6d86285fccf72"></script>
   <script src="frame.js?v=20261021-sketchwheel-v20-i9-frame1&amp;wp-build=5ad778498f18da20"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261031-sketchwheel-v21b-forge-reward&amp;wp-audio=1.0.0&amp;wp-build=294f04151350ee34"></script>
+  <script src="game.js?v=20261101-sketchwheel-v22-confirmed-save&amp;wp-audio=1.0.0&amp;wp-build=0ce8cc82d050441d"></script>
   <section class="game-page-info game-page-info-static" aria-label="绘轮竞速 游戏信息">
 
     <div class="game-info-hero">

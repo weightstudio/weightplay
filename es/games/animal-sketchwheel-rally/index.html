@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><script src="/src/interface7-poster-registry.js?v=20261011-sketchwheel-v18"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Dibuja ruedas para 30 carreras. Ajusta redondez, altura, agarre y anchura al terreno; la velocidad influye al cruzar huecos y las buenas pasadas posteriores pueden dar un impulso breve." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -57,7 +57,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="main" data-wp-game-id="animal-sketchwheel-rally" data-wp-game-version="v21" data-wp-interface-version="9" data-wp-combined-sound="true">
+<body data-screen="main" data-wp-game-id="animal-sketchwheel-rally" data-wp-game-version="v22" data-wp-interface-version="9" data-wp-combined-sound="true">
 
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainGroup" class="main-screen" data-screen="main">
@@ -117,7 +117,7 @@
       </section>
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Dibuja, suelta y adapta</h2><ol><li data-t="tutorial1">Dibuja en el panel o elige un plano.</li><li data-t="tutorial2">La forma cambia velocidad, altura, agarre y anchura.</li><li data-t="tutorial3">Redibuja antes del obstáculo mientras el rival avanza.</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">Iniciar rally</button></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">¿Salir de esta carrera?</h2><p data-t="leaveText">Continuar conserva la carrera; volver al mapa termina el intento.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continuar</button><button id="leaveStage" type="button" data-t="returnStage">Mapa</button></div></div></section>
-      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Redibujos</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Ventaja</b><strong id="resultLead"></strong></span><span><b data-t="reward">Premio</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">Etapas</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Siguiente</button><button id="retry" type="button" data-t="retry">Reintentar</button></div></div></section>
+      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Redibujos</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Ventaja</b><strong id="resultLead"></strong></span><span><b data-t="reward">Premio</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">Etapas</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Siguiente</button><button id="retry" type="button" data-t="retry">Reintentar</button></div></div></section>
       <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">Guía de terrenos y ruedas</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">Continuar</button></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
@@ -136,7 +136,7 @@
   <script src="stage-config.js?v=20261021-sketchwheel-v20-i9-fix1&amp;wp-build=53c6d86285fccf72"></script>
   <script src="frame.js?v=20261021-sketchwheel-v20-i9-frame1&amp;wp-build=5ad778498f18da20"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="game.js?v=20261031-sketchwheel-v21b-forge-reward&amp;wp-audio=1.0.0&amp;wp-build=294f04151350ee34"></script>
+  <script src="game.js?v=20261101-sketchwheel-v22-confirmed-save&amp;wp-audio=1.0.0&amp;wp-build=0ce8cc82d050441d"></script>
   <section class="game-page-info game-page-info-static" aria-label="Información de Rally de Ruedas Dibujadas">
 
     <div class="game-info-hero">

@@ -42,10 +42,10 @@
 <script src="/src/interface7-poster-registry.js?v=20261011-sketchwheel-v18"></script>
 
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <meta name="weightplay-game-version" content="v21">
+  <meta name="weightplay-game-version" content="v22">
   <meta name="weightplay-interface-version" content="9">
 </head>
-<body data-screen="main" data-wp-game-id="animal-sketchwheel-rally" data-wp-game-version="v21" data-wp-interface-version="9" data-wp-combined-sound="true">
+<body data-screen="main" data-wp-game-id="animal-sketchwheel-rally" data-wp-game-version="v22" data-wp-interface-version="9" data-wp-combined-sound="true">
 
   <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
     <main id="mainGroup" class="main-screen" data-screen="main">
@@ -105,7 +105,7 @@
       </section>
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Sketch, release, adapt</h2><ol><li data-t="tutorial1">Draw inside the pad or choose a blueprint.</li><li data-t="tutorial2">The wheel's actual shape changes speed, height, grip, and width.</li><li data-t="tutorial3">Redraw before each obstacle while the rival keeps moving.</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">Start rally</button></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this rally?</h2><p data-t="leaveText">Continue preserves this exact race. Returning to the map ends the attempt.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnStage">Race Map</button></div></div></section>
-      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Redraws</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Lead</b><strong id="resultLead"></strong></span><span><b data-t="reward">Reward</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">Stages</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Next Race</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
+      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Redraws</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Lead</b><strong id="resultLead"></strong></span><span><b data-t="reward">Reward</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="stages">Stages</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Next Race</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
       <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">Terrain profile guide</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
@@ -123,7 +123,7 @@
   <script src="stage-config.js?v=20261021-sketchwheel-v20-i9-fix1&amp;wp-build=53c6d86285fccf72"></script>
   <script src="frame.js?v=20261021-sketchwheel-v20-i9-frame1&amp;wp-build=5ad778498f18da20"></script>
   <script src="../../src/game-screen-frame.js?v=20261021-sketchwheel-v20-i9"></script>
-  <script src="game.js?v=20261031-sketchwheel-v21b-forge-reward&amp;wp-audio=1.0.0&amp;wp-build=294f04151350ee34"></script>
+  <script src="game.js?v=20261101-sketchwheel-v22-confirmed-save&amp;wp-audio=1.0.0&amp;wp-build=0ce8cc82d050441d"></script>
   <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Animal Sketchwheel Rally game information">
     <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Sketchwheel Rally</h2><p>Draw a wheel for the next terrain, read how its measured shape changes the race, and redraw when the route changes. Sketchwheel Rally turns wheel geometry into a choice between momentum and control.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Draw-and-Test Wheel Racing</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcade · Drawing · Strategy · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Session</span><strong>2–8 minutes per rally</strong></div></div></div>
     <div class="game-info-sections"><div class="game-info-section" data-wp-gameplay-tag-section="1.4.0"><p><strong data-wp-gameplay-tags-label>Gameplay tags:</strong></p><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Drawn-Wheel Racing</span><span>Wheel Physics</span><span>Terrain Strategy</span></div></div>
