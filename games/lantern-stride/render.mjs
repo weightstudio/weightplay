@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor } from './simulation.mjs';
+import { bridgeOpen, segmentFor } from './simulation.mjs?v=9';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -59,19 +59,30 @@ export function createRenderer(container, onContextLost = () => {}) {
       box(g,.36,.17,.32,-.84,3.05,.59,colors[2]);box(g,.34,.15,.28,.58,3.73,.50,colors[3]);
       return;
     }
-    box(g,.45,2.7,.45,0,1.35,0,0x745137);box(g,.12,2.2,.08,.14,1.2,.25,0xa77848);box(g,.8,.18,.3,.34,1.95,0,0x795333);
-    box(g,1.8,.7,1.5,0,2.5,0,palette[0]); box(g,1.45,.7,1.25,.1,3.1,0,palette[1]);
-    box(g,.9,.65,.9,-.12,3.65,0,palette[2]); box(g,.55,.3,.55,.05,4.12,0,palette[3]);
-    box(g,.48,.22,.5,-.64,2.84,.52,0x78a96d);box(g,.35,.2,.4,.52,3.3,.38,0x91b77a);
-    if(variant%3===1)box(g,.55,.32,.48,.75,2.68,-.35,palette[1]);
-    if(variant%3===2)box(g,.45,.38,.48,-.7,3.08,-.28,palette[2]);
-    // The conifer silhouettes share the baked scenery mesh.
-    // Offset foliage stays outside the course and never changes collision.
-    if(variant%3===1){
-      box(g,.70,.40,.65,-.84,2.75,-.15,palette[1]);box(g,.62,.40,.55,.82,3.02,.12,palette[2]);box(g,.52,.28,.45,.37,3.74,-.16,palette[3]);
-    }else{
-      box(g,.72,.35,.60,.82,2.48,.12,palette[1]);box(g,.56,.38,.55,-.82,3.00,-.10,palette[2]);box(g,.48,.27,.42,-.36,3.77,.18,palette[3]);
-    }
+    // Clustered branch tips form irregular, layered 3D conifer crowns.
+    // Their wood and foliage join the same static, collision-free batch.
+    const lean=variant%3===1?1:-1;
+    box(g,.45,3.15,.45,0,1.575,0,0x745137);
+    box(g,.11,2.35,.07,.16,1.25,.25,0xa77848);
+    const layers=[
+      {y:2.45,w:2.05,d:1.72,h:.48},
+      {y:3.00,w:1.68,d:1.43,h:.47},
+      {y:3.50,w:1.25,d:1.12,h:.43},
+      {y:3.95,w:.81,d:.76,h:.36}
+    ];
+    layers.forEach(({y,w,d,h},tier)=>{
+      const dx=lean*(tier%2?.09:-.07);
+      box(g,w*.60,h,d*.63,dx,y,0,palette[Math.min(tier,3)]);
+      for(const side of [-1,1]){
+        const x=dx+side*w*.37, offset=(side===lean?.08:-.06);
+        box(g,w*.42,h*.78,d*.62,x,y-.12,offset,palette[Math.max(0,tier-1)]);
+        box(g,w*.27,h*.38,d*.38,x+side*w*.12,y+.11,offset+.17,palette[Math.min(3,tier+1)]);
+      }
+      box(g,w*.39,h*.55,d*.35,dx+w*.08,y-.10,d*.40,palette[Math.min(3,tier+1)]);
+      if(tier<3)box(g,w*.31,h*.40,d*.28,dx-w*.11,y-.12,-d*.43,palette[tier]);
+    });
+    box(g,.32,.27,.34,lean*.12,4.24,0,palette[3]);
+
   }
   const world=new THREE.Group(); scene.add(world);
   box(world,40,.25,160,0,-.54,70,0x38563b);box(world,8,.25,150,0,-.2,68,0x8c5c3d); box(world,7.4,.08,150,0,-.04,68,0x8e866b);
@@ -84,11 +95,23 @@ export function createRenderer(container, onContextLost = () => {}) {
       const x=side*(15.6+(i%8===0?.2:1)),depth=z+15;
       const tint=i%8===0?[0x537b68,0x709784,0x91b09a]:[0x4f786c,0x6a9388,0x8aaa9a];
       box(world,.8,3,.8,x,1.5,depth,0x6d6552);
-      box(world,6.8,1.55,6.2,x,3.2,depth,tint[0]);
-      box(world,5.5,1.5,5.1,x+side*.25,4.55,depth,tint[1]);
-      box(world,4.15,1.35,3.9,x-side*.16,5.8,depth,tint[1]);
-      box(world,2.75,1.15,2.6,x+side*.18,6.9,depth,tint[2]);
-      box(world,1.15,.65,1.2,x,7.75,depth,tint[2]);
+      const crowns=[
+        {y:3.2,w:6.8,d:6.2,h:1.10},
+        {y:4.45,w:5.4,d:5.0,h:1.05},
+        {y:5.55,w:4.1,d:3.8,h:.95},
+        {y:6.5,w:2.8,d:2.6,h:.82},
+        {y:7.25,w:1.55,d:1.5,h:.65}
+      ];
+      crowns.forEach(({y,w,d,h},tier)=>{
+        const cx=x+side*(tier%2?.13:-.10);
+        box(world,w*.60,h,d*.65,cx,y,depth,tint[Math.min(2,Math.floor((tier+1)/2))]);
+        for(const branch of [-1,1]){
+          box(world,w*.43,h*.72,d*.63,cx+branch*w*.36,y-.20,depth+side*.10,tint[Math.min(2,Math.floor(tier/2))]);
+          box(world,w*.26,h*.30,d*.32,cx+branch*w*.45,y+.20,depth+d*.20,tint[Math.min(2,Math.floor(tier/2)+1)]);
+        }
+        box(world,w*.30,h*.45,d*.36,cx-w*.10,y-.12,depth+d*.42,tint[Math.min(2,Math.floor(tier/2)+1)]);
+      });
+      box(world,.72,.45,.70,x+side*.1,7.75,depth,tint[2]);
     }}
     // Keep the near canopy outside the tracking camera's fork-lane sightline.
     tree(world,-10-(i%3),z+2,i%3); tree(world,10+(i%2),z+4,(i+1)%3);
@@ -121,6 +144,14 @@ export function createRenderer(container, onContextLost = () => {}) {
       if(i%3===1){box(world,.12,1.8,.12,side*4.65,.9,z+2,0x855438);box(world,.7,.3,.08,side*4.65,.96,z+2,0xf0b64f);box(world,.52,.25,.08,side*4.65,1.3,z+2,0x1d96b2);}
     }
 
+  }
+  // Paired sandstone kerbs with periodic lantern-gold inlays frame the
+  // playable course. They are static decorations outside all route surfaces.
+  for(let i=0;i<125;i++)for(const side of [-1,1]){
+    const x=side*3.64,z=i*1.2-5;
+    const stone=i%5===0?0xd3aa65:i%2?0x9b7753:0xb08a61;
+    box(world,.38,.12,1.12,x,.075,z,stone);
+    if(i%5===0)box(world,.17,.025,.23,x,.147,z,0xf3cc73);
   }
   // High festival garlands add landmarks above the course without changing
   // any gate or collision; the entire structure joins the static batch.

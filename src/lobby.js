@@ -200,7 +200,7 @@ const modeHeroGameIds = isKidsLobby
   ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
   : ["animal-hero-trials", "animal-relic-hunters", "beast-deck", "animal-rune-tactics", "animal-orb-fortress"];
 // Owner-locked General spotlight. See docs/lobby-featured-game-lock.md.
-const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-crystal-survivor";
+const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "orbit-menders";
 const tabletopHeroGameIds = ["mahjong-solitaire", "chess", "hearts", "klondike-solitaire", "spades"];
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
@@ -343,7 +343,9 @@ function syncSpotlightArtwork() {
   // A scene is optional artwork for any spotlight; square catalog posters stay intact.
   const scene = game.art?.lobbyScene;
   const source = scene ? new URL(scene, document.baseURI).href : new URL(lobbyThumbnail(primaryArt(game)), document.baseURI).href;
-  image.closest(".spotlight-game").classList.toggle("spotlight-game--scene", Boolean(scene));
+  const spotlight = image.closest(".spotlight-game");
+  spotlight.classList.toggle("spotlight-game--scene", Boolean(scene));
+  spotlight.classList.toggle("spotlight-game--poster", !scene);
   if (image.src !== source) {
     image.classList.remove("is-decoded");
     image.src = source;

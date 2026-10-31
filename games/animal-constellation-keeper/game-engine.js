@@ -5,11 +5,11 @@
   let practiceEnabled=false,practiceAdapter=null,practiceBadge=null,mirrorAssess=null,mirrorCopy=null,mirrorShort=null,mirrorGuide=null,mirrorRelations=null,originalCompleted=0;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
-  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete" };
+  const __wpMeasurement = { screen: null, roundKey: null, started: false, ended: false, restart: false, outcome: "complete", stageId: null, rewardEligible: false, saveSucceeded: false };
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     screen: ((({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null) === "battle" && (__wpMeasurement.ended)) ? null : (({main:"main",stage:"stage",battle:"battle",})[state.screen] ?? null), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
     paused: Boolean(state?.paused || state?.suspended), node: document.body,
-    activityMode: "input", idleSeconds: 300
+    stageIdAuthoritative: true, activityMode: "input", idleSeconds: 300
   });
   function __wpNotifyMeasurement() { if(practiceRequested)return;try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
   // Explicit authored replay actions count only when a new round was actually created.
@@ -110,7 +110,7 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v11", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v12", interface_version: 9, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
   const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();
@@ -121,7 +121,7 @@
 };
   const readBest = () => { try { const value = Number(localStorage.getItem(BEST_KEY) || localStorage.getItem("weightplay-animal-constellation-keeper-best-v4")); return Number.isFinite(value) && value >= maps.length ? value : null; } catch (_) { return null; } };
   const saveBest = () => { if (practiceRequested||!mastery.every(value => value > 0)) return; try { const total = mastery.reduce((sum, value) => sum + value, 0); const old = readBest(); if (!old || old < maps.length || total < old) localStorage.setItem(BEST_KEY, String(total)); } catch (_) {} };
-  const saveProgress = () => { if(practiceRequested)return;try { localStorage.setItem(PROGRESS_KEY, String(state.completed)); } catch (_) {} };
+  const saveProgress = () => { if(practiceRequested)return false;try { state.completed=Math.max(state.completed,readProgress()); localStorage.setItem(PROGRESS_KEY, String(state.completed)); return Number(localStorage.getItem(PROGRESS_KEY)) >= state.map+1; } catch (_) { return false; } };
   const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind;placePracticeBadge();stellar.enter(node); };
   const mirrorText=()=>mirrorCopy?.[state.locale]||mirrorCopy?.en;
   const renderCheckCount=()=>{const full=t('checksLabel',{count:state.mapChecks}),short={es:'Intentos: {count}','pt-BR':'Tentativas: {count}',fr:'Essais : {count}',ar:'فحوص: {count}'};const node=$('checkCount');node.textContent=practiceEnabled&&short[state.locale]?short[state.locale].replace('{count}',String(state.mapChecks)):full;node.setAttribute('aria-label',full);};
@@ -316,8 +316,9 @@
     __wpNotifyMeasurement();
   };
   const openStage = (preserveSelection = false) => { if (!preserveSelection) stageSelectionIndex = practiceEnabled?Math.max(30,state.map):Math.min(state.completed, maps.length - 1); show("stage"); renderStages(); };
-  function requestMap(index){if(practiceRequested)return practiceAdapter?.challenge('animal-constellation-keeper',String(index+1));return startMap(index);}
+  function requestMap(index){window.WeightPlayCastle?.dismissRewardNotice("animal-constellation-keeper");if(practiceRequested)return practiceAdapter?.challenge('animal-constellation-keeper',String(index+1));return startMap(index);}
   const startMap = (index) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length||(practiceRequested&&(!practiceEnabled||index<30))) return; state.map = index; stageSelectionIndex = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {};state.lensUsed=false;state.lensEliminated=''; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } show("battle"); renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
+    __wpMeasurement.stageId=state.map+1; __wpMeasurement.rewardEligible=state.map>=state.completed && state.map>=readProgress(); __wpMeasurement.saveSucceeded=false;
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
   const chooseOption = (id) => {
@@ -342,7 +343,7 @@
       track("map_check", { map: state.map + 1, result: "wrong" }); return;
     }
     const wasCompleted = state.completed;
-    state.completed = Math.max(state.completed, state.map + 1); saveProgress();
+    state.completed = Math.max(state.completed, state.map + 1); __wpMeasurement.saveSucceeded=saveProgress();
     mastery[state.map] = mastery[state.map] ? Math.min(mastery[state.map], state.mapChecks) : state.mapChecks;
     if(!practiceRequested)try { localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery)); } catch {}
     if (state.mapChecks === 1) state.streak++;
