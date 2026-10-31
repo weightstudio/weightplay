@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#31566a" />
     <meta name="weightplay-game-id" content="animal-weather-watch" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v11" />
+    <meta name="weightplay-game-version" content="v12" />
     <meta name="weightplay-interface-version" content="9" />
     <title>ウェザー・ウォッチ | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20261031-weather-v11b-result&amp;wp-build=aa99322a33598782" />
@@ -51,7 +51,7 @@
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
   <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
 </head>
-<body data-audience="general" data-wp-game-id="animal-weather-watch" data-wp-game-version="v11" data-wp-interface-version="9" data-runtime-localize="off" class="has-game-page-info" data-wp-game-owned-guide>
+<body data-audience="general" data-wp-game-id="animal-weather-watch" data-wp-game-version="v12" data-wp-interface-version="9" data-runtime-localize="off" class="has-game-page-info" data-wp-game-owned-guide>
   <main id="app" hidden data-wp-frame-root>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">ウェザー・ウォッチ</h1>
     <select id="localeSelect" aria-label="Language" hidden>
@@ -98,7 +98,7 @@
       <p id="status" class="status" role="status" aria-live="polite"></p>
       </div>
 
-      <section id="resultScreen" class="result-panel" data-wp-battle-substate="result" hidden>
+      <section id="resultScreen" class="result-panel" aria-labelledby="resultTitle" aria-describedby="resultText" data-wp-battle-substate="result" hidden>
         <div class="result-icon result-guide-wrap"><img class="result-guide" src="/assets/interface7-redrawn/animal-weather-watch.webp" alt="" width="1024" height="1536" aria-hidden="true" /></div>
         <p class="eyebrow" data-i18n="finished">Forecast settled</p><h2 id="resultTitle" data-i18n="resultTitle">The shelter window is clear!</h2><p id="resultText" class="intro"></p><p id="resultReason" class="result-reason"></p><p id="resultProgress"></p>
         <div class="main-actions"><button id="resultMapBtn" class="secondary" type="button">Stages</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="replayBtn" class="secondary" type="button">Replay</button></div></section>
@@ -112,7 +112,7 @@
   <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
   <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
   <script src="../../src/game-play-ui.js?v=20261019-shared-play-spacing1"></script>
-  <script src="game.js?v=20261031-weather-v11-reward&amp;wp-build=bb9b68e98fcf0fef"></script>
+  <script src="game.js?v=20261101-weather-v12-save&amp;wp-build=7d5b76635168fd14"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ウェザー・ウォッチ";document.title="ウェザー・ウォッチ | WeightPlay";},{once:true});</script>
 </body>
 </html>
