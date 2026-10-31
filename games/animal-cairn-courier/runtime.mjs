@@ -40,7 +40,10 @@ window.WeightPlayAudio?.preload(['game.start','board.move','board.undo','feedbac
 const persist=()=>{
   if(practiceRequested)return;
   const next={...saved,solved:[...solved].sort((a,b)=>a-b),updatedAt:new Date().toISOString()};
-  localStorage.setItem(STORE,JSON.stringify(next));saved=next;
+  const value=JSON.stringify(next);
+  localStorage.setItem(STORE,value);
+  if(localStorage.getItem(STORE)!==value)throw new Error('Unconfirmed campaign save');
+  saved=next;
 };
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 const animations=new Set();
