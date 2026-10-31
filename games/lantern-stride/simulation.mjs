@@ -1,1 +1,159 @@
-var y=Object.defineProperty;var d=(t,e)=>y(t,"name",{value:e,configurable:!0});import{stageById as c}from"./stage-config.mjs";const u=Object.freeze({balanced:{acceleration:1,penalty:1,topSpeed:0},steady:{acceleration:.9,penalty:.8,topSpeed:0},swift:{acceleration:1.1,penalty:1.2,topSpeed:.22}}),o=d((t,e,s)=>Math.max(e,Math.min(s,t)),"clamp");export const FORK_CHOICE_GRACE_SECONDS=.25;export function createRace(t,e="balanced"){const s=c(t);if(!s)throw new RangeError("Unknown stage");return{stage:s,shoe:u[e]?e:"balanced",status:"running",elapsed:0,distance:0,speed:0,balance:100,lastFoot:null,lastStep:null,lastContactDistance:0,combo:0,bestCombo:0,steadySteps:0,stumbles:0,gateHits:[],gateMisses:[],lastGateIndex:-1,segmentEnteredAt:null,bridgePassed:[],branches:{},feather:s.chapter===2?1:0,featherUntil:0,burstUntil:0,lastFeedback:"ready",feedbackUntil:0,result:null}}d(createRace,"createRace");export function segmentFor(t){const e=t.stage.route.length,s=Math.min(e-1,Math.floor(o(t.distance/t.stage.distance,0,.999999)*e)),n=t.stage.route[s],l=t.branches[s],i={fork:["fast","slow"],forkleft:["fast","slow"],forkright:["fast","slow"],forkwindbridge:["headwind","bridge"],forkgates:["left","right"],forkfast:["fast","slow"],forkslow:["fast","slow"],forkmaster:["bridge","right"]},a=i[n]&&l?i[n][l==="left"?0:1]:n;return{index:s,original:n,choice:l||null,rule:a,pace:l&&n==="forkgates"?l==="left"?"fast":"slow":l==="left"&&n==="forkmaster"?"fast":null,wind:l==="right"&&n==="forkmaster"?"headwind":null}}d(segmentFor,"segmentFor");export function rhythmRange(t){return t==="slow"?[.5,.75]:t==="fast"||t==="headfast"?[.23,.43]:[.28,.48]}d(rhythmRange,"rhythmRange");export function starTimeLimit(t){return Number((t.limit*.55).toFixed(1))}d(starTimeLimit,"starTimeLimit");function k(t,e,s,n=!1){const l=t.pace||t.rule;return(t.wind==="headwind"||t.rule==="headwind"||t.rule==="headfast"?2.6:t.rule==="tailwind"?3.8:l==="fast"?3.5:l==="slow"?2.9:3.2)+(e>=12?.35:0)+(e>=24?.15:0)+u[s].topSpeed+(n?1.1:0)}d(k,"speedLimit");export function bridgeOpen(t){return t.elapsed<t.featherUntil||t.elapsed%2.4<1.2}d(bridgeOpen,"bridgeOpen");export function useFeather(t){return t.status!=="running"||t.feather<=0?!1:(t.feather--,segmentFor(t).rule==="bridge"?(t.featherUntil=t.elapsed+4,t.lastFeedback="feather"):(t.burstUntil=t.elapsed+4,t.speed+=.6,t.lastFeedback="feather-burst"),t.feedbackUntil=t.elapsed+.65,!0)}d(useFeather,"useFeather");function r(t,e){t.result={won:!1,reason:e,elapsed:t.elapsed,stumbles:t.stumbles,balance:t.balance,stars:0},t.status="finished"}d(r,"failRace");export function step(t,e){if(t.status!=="running"||!["left","right"].includes(e))return{accepted:!1,reason:"inactive"};let s=segmentFor(t);const n=s.original.startsWith("fork")&&!s.choice;if(n&&(t.lastStep!==null&&t.elapsed-t.lastStep<rhythmRange("slow")[0]||t.segmentEnteredAt!==null&&t.elapsed-t.segmentEnteredAt<FORK_CHOICE_GRACE_SECONDS))return{accepted:!1,reason:"fork-not-ready"};s.original.startsWith("fork")&&!s.choice&&(t.branches[s.index]=e,(s.original==="forkleft"&&e!=="left"||s.original==="forkright"&&e!=="right"||s.original==="forkfast"&&e!=="left"||s.original==="forkslow"&&e!=="right")&&t.gateMisses.push(s.index),s=segmentFor(t));const{index:l,rule:i}=s;if(n&&i==="bridge"&&!bridgeOpen(t))return t.lastFeedback="bridge-closed",t.feedbackUntil=t.elapsed+.65,{accepted:!1,reason:"bridge-choice-wait"};if(!n&&(i==="left"||i==="right")&&t.lastGateIndex!==l&&e!==i&&t.segmentEnteredAt!==null&&t.elapsed-t.segmentEnteredAt<=.25&&e!==t.lastFoot)return t.lastFeedback=i==="left"?"gate-left":"gate-right",t.feedbackUntil=t.elapsed+.65,{accepted:!1,reason:"gate-transition"};const a=t.lastStep==null?.42:t.elapsed-t.lastStep,f=rhythmRange(s.pace||i),p=(i==="left"||i==="right")&&t.lastGateIndex!==l&&e===i,h=n||p,b=t.lastFoot!==e||h,g=i!=="bridge"||bridgeOpen(t);if(!n&&i==="bridge"&&!g&&b&&(t.lastStep===null||a>=f[0])){const M=t.elapsed%2.4,F=t.elapsed-M+1.2,S=Math.max(F,t.featherUntil<=t.elapsed?t.featherUntil:0);if(t.elapsed-S<=.25)return t.lastFeedback="bridge-closed",t.feedbackUntil=t.elapsed+.65,{accepted:!1,reason:"bridge-transition"}}const x=t.lastStep==null||a>=f[0]&&(a<=f[1]||i==="bridge"&&g||h),m=b&&x&&g,w=k(s,t.combo+1,t.shoe,t.elapsed<t.burstUntil);return t.lastFoot=e,t.lastStep=t.elapsed,t.lastContactDistance=t.distance,m?(t.combo++,t.steadySteps++,t.bestCombo=Math.max(t.bestCombo,t.combo),t.speed=o(t.speed+.5*u[t.shoe].acceleration,0,w),t.combo%3===0&&(t.balance=o(t.balance+5,0,100)),t.lastFeedback="steady",i==="bridge"&&!t.bridgePassed.includes(l)&&t.bridgePassed.push(l)):(t.combo=0,t.balance=o(t.balance-12*u[t.shoe].penalty,0,100),t.speed*=.82,t.lastFeedback=g?b?"timing":"same-foot":"bridge-closed",t.balance<=0&&(t.stumbles++,t.balance=40,t.speed*=.45,t.lastFeedback="stumble")),(i==="left"||i==="right")&&t.lastGateIndex!==l&&(t.lastGateIndex=l,(e===i?t.gateHits:t.gateMisses).push(l)),t.feedbackUntil=t.elapsed+.65,t.gateMisses.length&&(t.combo=0,t.lastFeedback="gate-missed",r(t,"missed-gate")),{accepted:!0,clean:m&&!t.gateMisses.length,feedback:t.lastFeedback,interval:a,rule:i}}d(step,"step");export function advance(t,e){if(t.status!=="running")return;const s=o(Number.isFinite(e)?e:0,0,.05),n=segmentFor(t);t.elapsed+=s;const l=n.wind==="headwind"||n.rule==="headwind"||n.rule==="headfast"?.52:n.rule==="tailwind"?.12:.28,i=k(n,t.combo,t.shoe,t.elapsed<t.burstUntil);t.speed=o(t.speed-l*s,0,i),t.distance=Math.min(t.stage.distance,t.distance+t.speed*s);const a=segmentFor(t);if(n.index!==a.index){if(["left","right"].includes(n.rule)&&t.lastGateIndex!==n.index&&t.gateMisses.push(n.index),n.rule==="bridge"&&!t.bridgePassed.includes(n.index)&&t.gateMisses.push(n.index),n.original.startsWith("fork")&&!n.choice&&t.gateMisses.push(n.index),t.gateMisses.length){r(t,"missed-gate");return}t.segmentEnteredAt=t.elapsed}(t.distance>=t.stage.distance||t.elapsed>=t.stage.limit)&&U(t)}d(advance,"advance");function U(t){const e=segmentFor(t);t.distance>=t.stage.distance&&["left","right"].includes(e.rule)&&t.lastGateIndex!==e.index&&t.gateMisses.push(e.index),t.distance>=t.stage.distance&&e.rule==="bridge"&&!t.bridgePassed.includes(e.index)&&t.gateMisses.push(e.index),t.distance>=t.stage.distance&&e.original.startsWith("fork")&&!e.choice&&t.gateMisses.push(e.index);const s=t.stage.objective,n={finish:!0,steady3:t.steadySteps>=3,balance40:t.balance>=40,combo4:t.bestCombo>=4,"steady-no-stumble":t.steadySteps>=3&&t.stumbles===0,balance35:t.balance>=35,balance30:t.balance>=30,stumble2:t.stumbles<=2,gates:t.gateMisses.length===0},l=t.gateMisses.length===0,i=t.distance>=t.stage.distance&&!!n[s]&&l;t.result={won:i,reason:t.distance<t.stage.distance?"timeout":l?n[s]?"finish":s:"missed-gate",elapsed:t.elapsed,stumbles:t.stumbles,balance:t.balance,stars:i?1+ +(t.elapsed<=starTimeLimit(t.stage))+ +(t.stumbles===0):0},t.status="finished"}d(U,"settle");
+import { stageById } from './stage-config.mjs';
+
+const SHOES = Object.freeze({ balanced: { acceleration: 1, penalty: 1, topSpeed: 0 }, steady: { acceleration: .9, penalty: .8, topSpeed: 0 }, swift: { acceleration: 1.1, penalty: 1.2, topSpeed: .22 } });
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+export const FORK_CHOICE_GRACE_SECONDS = .25;
+
+export function createRace(stageId, shoe = 'balanced') {
+  const stage = stageById(stageId);
+  if (!stage) throw new RangeError('Unknown stage');
+  return { stage, shoe: SHOES[shoe] ? shoe : 'balanced', status: 'running', elapsed: 0, distance: 0, speed: 0,
+    balance: 100, lastFoot: null, lastStep: null, lastContactDistance: 0, combo: 0, bestCombo: 0, steadySteps: 0, stumbles: 0,
+    gateHits: [], gateMisses: [], lastGateIndex: -1, segmentEnteredAt: null, bridgePassed: [], branches: {}, feather: stage.chapter === 2 ? 1 : 0, featherUntil: 0, burstUntil: 0,
+    lastFeedback: 'ready', feedbackUntil: 0, result: null };
+}
+
+export function segmentFor(race) {
+  const count = race.stage.route.length;
+  const index = Math.min(count - 1, Math.floor(clamp(race.distance / race.stage.distance, 0, .999999) * count));
+  const original = race.stage.route[index], choice = race.branches[index];
+  const variants = { fork: ['fast', 'slow'], forkleft: ['fast', 'slow'], forkright: ['fast', 'slow'],
+    forkwindbridge: ['headwind', 'bridge'], forkgates: ['left', 'right'], forkfast: ['fast', 'slow'],
+    forkslow: ['fast', 'slow'], forkmaster: ['bridge', 'right'] };
+  const rule=variants[original] && choice ? variants[original][choice === 'left' ? 0 : 1] : original;
+  const pace=choice&&original==='forkgates'?(choice==='left'?'fast':'slow'):choice==='left'&&original==='forkmaster'?'fast':null;
+  const wind=choice==='right'&&original==='forkmaster'?'headwind':null;
+  return { index, original, choice: choice || null, rule, pace, wind };
+}
+
+export function rhythmRange(rule) {
+  return rule === 'slow' ? [.50, .75] : rule === 'fast' || rule === 'headfast' ? [.23, .43] : [.28, .48];
+}
+export function starTimeLimit(stage) { return Number((stage.limit*.55).toFixed(1)); }
+function speedLimit(segment, combo, shoe, burst=false) {
+  const pace=segment.pace||segment.rule;
+  const base=segment.wind==='headwind'||segment.rule==='headwind'||segment.rule==='headfast'?2.6:segment.rule==='tailwind'?3.8:pace==='fast'?3.5:pace==='slow'?2.9:3.2;
+  return base+(combo>=12?.35:0)+(combo>=24?.15:0)+SHOES[shoe].topSpeed+(burst?1.1:0);
+}
+
+// The visible flashing bridge and accepted input use this same time authority.
+export function bridgeOpen(race) { return race.elapsed < race.featherUntil || race.elapsed % 2.4 < 1.2; }
+export function useFeather(race) {
+  if (race.status !== 'running' || race.feather <= 0) return false;
+  race.feather--;
+  if(segmentFor(race).rule==='bridge'){race.featherUntil=race.elapsed+4;race.lastFeedback='feather';}
+  else{race.burstUntil=race.elapsed+4;race.speed+=.6;race.lastFeedback='feather-burst';}
+  race.feedbackUntil=race.elapsed+.65;return true;
+}
+
+function failRace(race,reason) {
+  race.result={won:false,reason,elapsed:race.elapsed,stumbles:race.stumbles,balance:race.balance,stars:0};
+  race.status='finished';
+}
+
+export function step(race, foot) {
+  if (race.status !== 'running' || !['left', 'right'].includes(foot)) return { accepted: false, reason: 'inactive' };
+  let segment = segmentFor(race);
+  const choosing = segment.original.startsWith('fork') && !segment.choice;
+  // Match the cue: ignore the previous terrain's pending step during entry
+  // and wait until both displayed choices can be clean.
+  if (choosing && ((race.lastStep !== null && race.elapsed-race.lastStep < rhythmRange('slow')[0]) ||
+      (race.segmentEnteredAt !== null && race.elapsed-race.segmentEnteredAt < FORK_CHOICE_GRACE_SECONDS))) {
+    return {accepted:false,reason:'fork-not-ready'};
+  }
+  if (segment.original.startsWith('fork') && !segment.choice) {
+    race.branches[segment.index] = foot;
+    if (segment.original === 'forkleft' && foot !== 'left' || segment.original === 'forkright' && foot !== 'right' ||
+        segment.original === 'forkfast' && foot !== 'left' || segment.original === 'forkslow' && foot !== 'right') race.gateMisses.push(segment.index);
+    segment = segmentFor(race);
+  }
+  const { index, rule } = segment;
+  // A bridge fork has no bridge-light cue until a branch is chosen. Commit the
+  // choice without charging an unseen closed light; the player must still
+  // take a real step once the chosen bridge opens.
+  if (choosing && rule === 'bridge' && !bridgeOpen(race)) {
+    race.lastFeedback='bridge-closed';race.feedbackUntil=race.elapsed+.65;
+    return {accepted:false,reason:'bridge-choice-wait'};
+  }
+  // A step reacting to the preceding cue can arrive just after a gate
+  // transition. Ignore that one old alternating input briefly; the marked
+  // foot is still required before this segment can be cleared.
+  if (!choosing && (rule === 'left' || rule === 'right') && race.lastGateIndex !== index && foot !== rule &&
+      race.segmentEnteredAt !== null && race.elapsed - race.segmentEnteredAt <= .25 && foot !== race.lastFoot) {
+    race.lastFeedback=rule==='left'?'gate-left':'gate-right';race.feedbackUntil=race.elapsed+.65;
+    return {accepted:false,reason:'gate-transition'};
+  }
+  const interval = race.lastStep == null ? .42 : race.elapsed - race.lastStep;
+  const range = rhythmRange(segment.pace || rule);
+  // The first marked step is a decision, even if it repeats the preceding foot.
+  const enteringGate = (rule === 'left' || rule === 'right') && race.lastGateIndex !== index && foot === rule;
+  const specialEntry = choosing || enteringGate;
+  const alternating = race.lastFoot !== foot || specialEntry;
+  const bridge = rule !== 'bridge' || bridgeOpen(race);
+  if(!choosing&&rule==='bridge'&&!bridge&&alternating&&(race.lastStep===null||interval>=range[0])){
+    const phase=race.elapsed%2.4,naturalClose=race.elapsed-phase+1.2;
+    const closedAt=Math.max(naturalClose,race.featherUntil<=race.elapsed?race.featherUntil:0);
+    // A legitimate step responding to the just-visible green light can arrive
+    // after it closes. Keep the foot and balance intact briefly; the player
+    // still has to wait for an open bridge and step again.
+    if(race.elapsed-closedAt<=.25){race.lastFeedback='bridge-closed';race.feedbackUntil=race.elapsed+.65;return {accepted:false,reason:'bridge-transition'};}
+  }
+  const timed = race.lastStep == null || interval >= range[0] && (interval <= range[1] || rule === 'bridge' && bridge || specialEntry);
+  const clean = alternating && timed && bridge;
+  const speedCap=speedLimit(segment,race.combo+1,race.shoe,race.elapsed<race.burstUntil);
+  race.lastFoot = foot; race.lastStep = race.elapsed; race.lastContactDistance = race.distance;
+  if (clean) {
+    race.combo++; race.steadySteps++; race.bestCombo = Math.max(race.bestCombo, race.combo);
+    race.speed = clamp(race.speed + .5 * SHOES[race.shoe].acceleration, 0, speedCap);
+    if (race.combo % 3 === 0) race.balance = clamp(race.balance + 5, 0, 100);
+    race.lastFeedback = 'steady';
+    if (rule === 'bridge' && !race.bridgePassed.includes(index)) race.bridgePassed.push(index);
+  } else {
+    race.combo = 0; race.balance = clamp(race.balance - 12 * SHOES[race.shoe].penalty, 0, 100);
+    race.speed *= .82; race.lastFeedback = !bridge ? 'bridge-closed' : !alternating ? 'same-foot' : 'timing';
+    if (race.balance <= 0) { race.stumbles++; race.balance = 40; race.speed *= .45; race.lastFeedback = 'stumble'; }
+  }
+  if ((rule === 'left' || rule === 'right') && race.lastGateIndex !== index) {
+    race.lastGateIndex = index;
+    (foot === rule ? race.gateHits : race.gateMisses).push(index);
+  }
+  race.feedbackUntil=race.elapsed+.65;
+  if(race.gateMisses.length){race.combo=0;race.lastFeedback='gate-missed';failRace(race,'missed-gate');}
+  return { accepted: true, clean:clean&&!race.gateMisses.length, feedback: race.lastFeedback, interval, rule };
+}
+
+export function advance(race, delta) {
+  if (race.status !== 'running') return;
+  const dt = clamp(Number.isFinite(delta) ? delta : 0, 0, .05);
+  const before = segmentFor(race);
+  race.elapsed += dt;
+  const drag = before.wind === 'headwind' || before.rule === 'headwind' || before.rule === 'headfast' ? .52 : before.rule === 'tailwind' ? .12 : .28;
+  const speedCap=speedLimit(before,race.combo,race.shoe,race.elapsed<race.burstUntil);
+  race.speed = clamp(race.speed - drag * dt, 0, speedCap);
+  race.distance = Math.min(race.stage.distance, race.distance + race.speed * dt);
+  const after = segmentFor(race);
+  if (before.index !== after.index) {
+    if (['left', 'right'].includes(before.rule) && race.lastGateIndex !== before.index) race.gateMisses.push(before.index);
+    if (before.rule === 'bridge' && !race.bridgePassed.includes(before.index)) race.gateMisses.push(before.index);
+    if (before.original.startsWith('fork') && !before.choice) race.gateMisses.push(before.index);
+    if(race.gateMisses.length){failRace(race,'missed-gate');return;}
+    race.segmentEnteredAt=race.elapsed;
+  }
+  if (race.distance >= race.stage.distance || race.elapsed >= race.stage.limit) settle(race);
+}
+
+function settle(race) {
+  const last = segmentFor(race);
+  if (race.distance >= race.stage.distance && ['left', 'right'].includes(last.rule) && race.lastGateIndex !== last.index) race.gateMisses.push(last.index);
+  if (race.distance >= race.stage.distance && last.rule === 'bridge' && !race.bridgePassed.includes(last.index)) race.gateMisses.push(last.index);
+  if (race.distance >= race.stage.distance && last.original.startsWith('fork') && !last.choice) race.gateMisses.push(last.index);
+  const objective = race.stage.objective;
+  const conditions = { finish: true, steady3: race.steadySteps >= 3, balance40: race.balance >= 40,
+    combo4: race.bestCombo >= 4, 'steady-no-stumble': race.steadySteps >= 3 && race.stumbles === 0,
+    balance35: race.balance >= 35, balance30: race.balance >= 30, stumble2: race.stumbles <= 2, gates: race.gateMisses.length === 0 };
+  const gates = race.gateMisses.length === 0;
+  const won = race.distance >= race.stage.distance && !!conditions[objective] && gates;
+  race.result = { won, reason: race.distance < race.stage.distance ? 'timeout' : !gates ? 'missed-gate' : !conditions[objective] ? objective : 'finish',
+    elapsed: race.elapsed, stumbles: race.stumbles, balance: race.balance, stars: won ? 1 + Number(race.elapsed <= starTimeLimit(race.stage)) + Number(race.stumbles === 0) : 0 };
+  race.status = 'finished';
+}
