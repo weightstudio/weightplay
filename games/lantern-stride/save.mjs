@@ -80,7 +80,10 @@ export function createStore(options = {}) {
         const best=(faster||(equal&&trace))?trace:old?.bestTrace;
         if(best)p.records[stageId].bestTrace=best;
         else {
-          let reference=!faster?old?.referenceRun:null;
+          // A faster score without a valid trajectory must not erase the
+          // earlier, still-valid recording. Label it as a reference rather
+          // than claiming it represents the new best time.
+          let reference=old?.referenceRun||(old?.bestTrace?{time:old.bestTime,trace:old.bestTrace}:null);
           if(trace&&!faster&&(!reference||outcome.elapsed<reference.time))reference={time:outcome.elapsed,trace};
           if(reference)p.records[stageId].referenceRun=reference;
         }
