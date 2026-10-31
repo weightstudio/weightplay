@@ -148,7 +148,9 @@ export function advance(race, delta) {
   const dt = clamp(Number.isFinite(delta) ? delta : 0, 0, .05);
   const before = segmentFor(race);
   race.elapsed += dt;
-  const drag = before.wind === 'headwind' || before.rule === 'headwind' || before.rule === 'headfast' ? .52 : before.rule === 'tailwind' ? .12 : .28;
+  // Waiting for the light stays safe; prolonged coasting on a bridge loses momentum.
+  const idleBridge=before.rule==='bridge' && race.lastStep!==null && race.elapsed-race.lastStep>1.5;
+  const drag = idleBridge ? .8 : before.wind === 'headwind' || before.rule === 'headwind' || before.rule === 'headfast' ? .52 : before.rule === 'tailwind' ? .12 : .28;
   const speedCap=speedLimit(before,race.combo,race.shoe,race.elapsed<race.burstUntil,race.elapsed<race.landmarkUntil);
   race.speed = clamp(race.speed - drag * dt, 0, speedCap);
   race.distance = Math.min(race.stage.distance, race.distance + race.speed * dt);

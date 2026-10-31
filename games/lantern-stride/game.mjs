@@ -1,9 +1,9 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=17';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=18';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STAGES} from './stage-config.mjs';
-import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=17';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=18';
 import {createStore,highestUnlocked} from './save.mjs';
-import {createRenderer} from './render.mjs?v=17';
+import {createRenderer} from './render.mjs?v=18';
 
 
 function ghostDistance(race){
