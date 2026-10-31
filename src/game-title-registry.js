@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "duskbloom": {"__localizedExact":true,"en":"Duskbloom","zh-Hant":"暮光燈圃","zh-Hans":"暮光灯圃","ja":"夕灯の庭","ko":"노을 등불 정원","es":"Jardín del Ocaso","pt-BR":"Jardim do Crepúsculo","fr":"Jardin du crépuscule","de":"Dämmergarten","it":"Giardino del Crepuscolo","ru":"Сумеречный сад","hi":"साँझ का दीप बाग","ar":"حديقة أنوار الغسق"},
   "sunmane-journey": {"__localizedExact":true,"en":"仙旅傳說","zh-Hant":"仙旅傳說","zh-Hans":"仙旅傳說","ja":"仙旅傳說","ko":"仙旅傳說","es":"仙旅傳說","pt-BR":"仙旅傳說","fr":"仙旅傳說","de":"仙旅傳說","it":"仙旅傳說","ru":"仙旅傳說","hi":"仙旅傳說","ar":"仙旅傳說"},
   "hearthloop": {
     "__localizedExact": true,

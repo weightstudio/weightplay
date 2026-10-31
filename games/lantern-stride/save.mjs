@@ -54,28 +54,55 @@ export function createStore(options = {}) {
   let storage, locks;
   try { storage = Object.hasOwn(options,'storage') ? options.storage : globalThis.localStorage; } catch { storage = null; }
   try { locks = Object.hasOwn(options,'locks') ? options.locks : globalThis.navigator?.locks; } catch { locks = null; }
-  let current = blank(), available = true, error = null;
+  let current = blank(), available = true, error = null, progressError = null;
+  const plain=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+  function parseProgress(raw){
+    const value=JSON.parse(raw), top=new Set(['schemaVersion','records','equippedShoe','equippedTrail','tutorialComplete','revision']);
+    if(!plain(value)||Object.keys(value).some(key=>!top.has(key))||(value.schemaVersion!==undefined&&value.schemaVersion!==1)||
+       (value.records!==undefined&&!plain(value.records)))throw Error('PROGRESS_UNREADABLE');
+    const records=value.records||{},fields=new Set(['cleared','bestTime','stars','rewardToken','bestTrace','referenceRun']);
+    if((value.equippedShoe!==undefined&&!['balanced','steady','swift'].includes(value.equippedShoe))||
+       (value.equippedShoe==='steady'&&!records[5])||(value.equippedShoe==='swift'&&!records[15])||
+       (value.equippedTrail!==undefined&&!['default','star'].includes(value.equippedTrail))||
+       (value.tutorialComplete!==undefined&&typeof value.tutorialComplete!=='boolean')||
+       (value.revision!==undefined&&(!Number.isSafeInteger(value.revision)||value.revision<0)))throw Error('PROGRESS_UNREADABLE');
+    const traceShape=t=>plain(t)&&Object.keys(t).every(k=>k==='route'||k==='samples')&&typeof t.route==='string'&&Array.isArray(t.samples)&&t.samples.every(Number.isInteger);
+    for(const [id,record] of Object.entries(records)){
+      if(!/^(?:[1-9]|[1-5][0-9]|60)$/.test(id)||!plain(record)||Object.keys(record).some(key=>!fields.has(key))||
+         record.cleared!==true||!Number.isFinite(record.bestTime)||record.bestTime<0||record.bestTime>86400||
+         (record.stars!==undefined&&(!Number.isInteger(record.stars)||record.stars<1||record.stars>3))||
+         (record.rewardToken!==undefined&&!validRewardToken(record.rewardToken))||
+         (record.bestTrace!==undefined&&!traceShape(record.bestTrace))||
+         (record.referenceRun!==undefined&&(!plain(record.referenceRun)||Object.keys(record.referenceRun).some(k=>k!=='time'&&k!=='trace')||!Number.isFinite(record.referenceRun.time)||!traceShape(record.referenceRun.trace))))throw Error('PROGRESS_UNREADABLE');
+    }
+    return normalize(value);
+  }
   function read() {
-    try { const raw=storage.getItem(SAVE_KEY); return raw === null ? blank() : normalize(JSON.parse(raw)); }
-    catch (err) { available=false; error=err; return current; }
+    try {const raw=storage.getItem(SAVE_KEY), result=raw===null?blank():parseProgress(raw);progressError=null;return result;}
+    catch (err) {available=false;progressError=err;error=err;return current;}
   }
   current=read();
   function readRewards(){const raw=storage.getItem(REWARD_KEY);if(raw===null)return {schemaVersion:1,pending:{}};let value;try{value=JSON.parse(raw)}catch{throw Error('REWARD_UNREADABLE')}if(!value||typeof value!=='object'||Array.isArray(value)||value.schemaVersion!==1||!value.pending||typeof value.pending!=='object'||Array.isArray(value.pending))throw Error('REWARD_UNREADABLE');for(const [id,pending] of Object.entries(value.pending))if(!/^(?:[1-9]|[1-5][0-9]|60)$/.test(id)||!validRewardToken(pending))throw Error('REWARD_UNREADABLE');return value;}
   function writeRewards(value){const encoded=JSON.stringify(value);storage.setItem(REWARD_KEY,encoded);if(storage.getItem(REWARD_KEY)!==encoded)throw Error('REWARD_READBACK_MISMATCH')}
   async function mutate(change, rewardIntent=null) {
     if (!locks?.request) return {ok:false, reason:'locks'};
+    let entered=false,expired=false,timer;const controller=typeof AbortController==='function'?new AbortController():null;
     try {
-      return await locks.request(SAVE_LOCK, async () => {
+      const request=locks.request(SAVE_LOCK,controller?{signal:controller.signal}:{},async () => {
+        if(expired)return {ok:false,reason:'locks'};entered=true;clearTimeout(timer);
         available=true; const fresh=read(); if (!available) return {ok:false,reason:'storage'};
         const next=normalize(change(fresh)); next.revision=fresh.revision+1; if(rewardIntent!==null){const queue=readRewards();queue.pending[rewardIntent.id]=rewardIntent.token;writeRewards(queue)}
         const encoded=JSON.stringify(next); storage.setItem(SAVE_KEY,encoded);
         if (storage.getItem(SAVE_KEY)!==encoded) throw new Error('SAVE_READBACK_MISMATCH');
         current=next; error=null; return {ok:true,progress:current};
       });
-    } catch (err) { error=err; return {ok:false,reason:'storage'}; }
+      const timeout=new Promise(resolve=>{timer=setTimeout(()=>{expired=true;controller?.abort();resolve({ok:false,reason:'locks'})},4000)});
+      return await Promise.race([request,timeout]);
+    } catch (err) { error=err; return {ok:false,reason:entered?'storage':'locks'}; }
+    finally {clearTimeout(timer)}
   }
   return {
-    get progress(){return current;}, get error(){return error;}, refresh(){current=read();return current;},
+    get progress(){return current;}, get error(){return error;}, get progressError(){return progressError;}, refresh(){available=true;current=read();return current;},
     complete(stageId, outcome) {
       if (!Number.isInteger(stageId) || stageId < 1 || stageId > 60 || outcome?.won !== true || !Number.isFinite(outcome.elapsed) || outcome.elapsed < 0 || outcome.elapsed > 86400 || !Number.isInteger(outcome.stars) || outcome.stars < 1 || outcome.stars > 3) return Promise.resolve({ok:false,reason:'invalid'});
       let token;try{token=newRewardToken()}catch{return Promise.resolve({ok:false,reason:'token'})}
@@ -97,7 +124,7 @@ export function createStore(options = {}) {
         return p;
       }, {id:stageId,token});
     },
-    async flushRewards(claim,preferred=0){if(!locks?.request)return {ok:false,reason:'locks'};try{return await locks.request(SAVE_LOCK,()=>{available=true;const fresh=read();if(!available)return {ok:false,reason:'storage'};const queue=readRewards(),delivered=[];if(Number.isInteger(preferred)&&preferred>=1&&preferred<=60&&fresh.records[preferred]?.cleared&&!Object.hasOwn(queue.pending,preferred)){try{claim(preferred)}catch{}}for(let id=1;id<=60;id++){const token=queue.pending[id];if(!token||fresh.records[id]?.rewardToken!==token)continue;let result;try{result=claim(id)}catch{continue}if(result?.credited===true||result?.reason==='already-claimed'){delete queue.pending[id];delivered.push(id)}}if(delivered.length)writeRewards(queue);current=fresh;const remaining=Object.keys(queue.pending),unsaved=remaining.filter(id=>fresh.records[id]?.rewardToken!==queue.pending[id]);return {ok:true,delivered,remaining,unsaved};})}catch(err){error=err;return {ok:false,reason:'storage'}}},
+    async flushRewards(claim,preferred=0){if(!locks?.request)return {ok:false,reason:'locks'};let entered=false,expired=false,timer;try{const request=locks.request(SAVE_LOCK,{ifAvailable:true},lock=>{if(expired||!lock)return {ok:false,reason:'locks'};entered=true;available=true;const fresh=read();if(!available)return {ok:false,reason:'storage'};const queue=readRewards(),delivered=[];if(Number.isInteger(preferred)&&preferred>=1&&preferred<=60&&fresh.records[preferred]?.cleared&&!Object.hasOwn(queue.pending,preferred)){try{claim(preferred)}catch{}}for(let id=1;id<=60;id++){const token=queue.pending[id];if(!token||fresh.records[id]?.rewardToken!==token)continue;let result;try{result=claim(id)}catch{continue}if(result?.credited===true||result?.reason==='already-claimed'){delete queue.pending[id];delivered.push(id)}}if(delivered.length)writeRewards(queue);current=fresh;const remaining=Object.keys(queue.pending),unsaved=remaining.filter(id=>fresh.records[id]?.rewardToken!==queue.pending[id]);return {ok:true,delivered,remaining,unsaved};});const timeout=new Promise(resolve=>{timer=setTimeout(()=>{expired=true;resolve({ok:false,reason:'locks'})},4000)});return await Promise.race([request,timeout])}catch(err){error=err;return {ok:false,reason:entered?'storage':'locks'}}finally{clearTimeout(timer)}},
     equip(shoe) {return mutate(p => { if (!['balanced',...(p.records[5]?['steady']:[]),...(p.records[15]?['swift']:[])].includes(shoe)) throw new Error('LOCKED_SHOE'); p.equippedShoe=shoe; return p; });},
     equipTrail(trail, verified) {return mutate(p=>{if(trail==='star'&&!verified)throw new Error('TRAIL_NOT_OWNED');p.equippedTrail=trail==='star'?'star':'default';return p;});},
     completeTutorial() {return mutate(p => {p.tutorialComplete=true;return p;});},

@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "duskbloom",
       "dustwake-depot",
       "hearthloop",
       "rux-salvage-yard",
@@ -89,6 +90,16 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "duskbloom", audience: "general", status: "planned", internalOnly: true,
+      href: "games/duskbloom/", internalTrial: "index.html?preview=1",
+      title: { __localizedExact: true, en: "Duskbloom", "zh-Hant": "暮光燈圃", "zh-Hans": "暮光灯圃", ja: "夕灯の庭", ko: "노을 등불 정원", es: "Jardín del Ocaso", "pt-BR": "Jardim do Crepúsculo", fr: "Jardin du crépuscule", de: "Dämmergarten", it: "Giardino del Crepuscolo", ru: "Сумеречный сад", hi: "साँझ का दीप बाग", ar: "حديقة أنوار الغسق" },
+      type: { en: "Binary logic puzzle", "zh-Hant": "雙色邏輯解謎", "zh-Hans": "双色逻辑解谜", ja: "二色ロジックパズル", ko: "두 색 논리 퍼즐", es: "Puzle de lógica binaria", "pt-BR": "Quebra-cabeça de lógica binária", fr: "Énigme de logique binaire", de: "Binäres Logikrätsel", it: "Rompicapo di logica binaria", ru: "Двоичная головоломка", hi: "दो रंगों की तर्क पहेली", ar: "لغز منطقي بلونين" },
+      description: { en: "Balance two lanterns, trace their links and brighten 60 original gardens.", "zh-Hant": "平衡兩種燈色，循著線索點亮60座原創燈圃。", "zh-Hans": "平衡两种灯色，循着线索点亮60座原创灯圃。", ja: "二色の灯りをそろえ、つながりをたどって60の庭を照らそう。", ko: "두 등불의 균형을 맞추고 연결 단서를 따라 60개 정원을 밝혀요.", es: "Equilibra dos faroles y sigue sus vínculos en 60 jardines originales.", "pt-BR": "Equilibre duas lanternas e siga suas ligações em 60 jardins originais.", fr: "Équilibrez deux lanternes et suivez leurs liens dans 60 jardins originaux.", de: "Gleiche zwei Laternenarten aus und folge ihren Verbindungen durch 60 Gärten.", it: "Bilancia due lanterne e segui i legami in 60 giardini originali.", ru: "Уравновесьте два вида фонарей и раскройте связи в 60 садах.", hi: "दो दीपों का संतुलन बनाएँ और सुरागों से 60 अनोखे बाग रोशन करें।", ar: "وازن نوعي المصابيح واتبع الروابط لإضاءة 60 حديقة أصلية." },
+      categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Focus", "Problem Solving"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
+      art: { kind: "image", background: "games/duskbloom/assets/cover.webp", hideHero: true },
+      meta: { en: ["60 stages", "Permanent diamond appearance"], "zh-Hant": ["60關", "鑽石永久外觀"] }
+    },
     {
       id: "hearthloop", audience: "general", status: "playable",
       href: "games/hearthloop/", previewVideo: "assets/previews/hearthloop-battle.webm",
