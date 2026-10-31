@@ -8,7 +8,7 @@ export function createRace(stageId, shoe = 'balanced') {
   const stage = stageById(stageId);
   if (!stage) throw new RangeError('Unknown stage');
   return { stage, shoe: SHOES[shoe] ? shoe : 'balanced', status: 'running', elapsed: 0, distance: 0, speed: 0,
-    balance: 100, lastFoot: null, lastStep: null, lastContactDistance: 0, combo: 0, bestCombo: 0, steadySteps: 0, stumbles: 0,
+    balance: 100, dashUsed: false, lastFoot: null, lastStep: null, lastContactDistance: 0, combo: 0, bestCombo: 0, steadySteps: 0, stumbles: 0,
     gateHits: [], gateMisses: [], lastGateIndex: -1, segmentEnteredAt: null, bridgePassed: [], branches: {}, feather: stage.chapter === 2 ? 1 : 0, featherUntil: 0, burstUntil: 0,
     lastFeedback: 'ready', feedbackUntil: 0, result: null };
 }
@@ -38,6 +38,11 @@ function speedLimit(segment, combo, shoe, burst=false) {
 
 // The visible flashing bridge and accepted input use this same time authority.
 export function bridgeOpen(race) { return race.elapsed < race.featherUntil || race.elapsed % 2.4 < 1.2; }
+// One optional chapter-one dash trades balance for a short sprint.
+export function useOptionalDash(race){
+  if(race.status!=='running'||race.stage.chapter!==1||race.dashUsed||race.combo<6||race.balance<40)return false;
+  race.dashUsed=true;race.balance-=20;race.burstUntil=race.elapsed+4;race.speed+=1;race.lastFeedback='dash-burst';race.feedbackUntil=race.elapsed+.65;return true;
+}
 export function useFeather(race) {
   if (race.status !== 'running' || race.feather <= 0) return false;
   race.feather--;

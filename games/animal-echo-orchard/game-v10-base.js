@@ -66,6 +66,7 @@
   try { solved = new Set(JSON.parse(localStorage.getItem("weightplay-echo-orchard-solved-v2") || "[]").filter((value) => Number.isInteger(value) && value >= 0 && value < groves.length)); } catch { solved = new Set(); }
   const solvedKey = "weightplay-echo-orchard-solved-v2";
   const confirmedPrefix = "weightplay-echo-orchard-confirmed-stage-v1:";
+  const verifiedJournalKey = "weightplay-echo-orchard-verified-stages-v1";
   const pendingSavedStages = new Set();
   let lastSaveSucceeded = false;
   const saveFailureCopy = {
@@ -92,6 +93,14 @@
       for (let id = 1; id <= groves.length; id++) {
         if (localStorage.getItem(confirmedPrefix + id) === "1") { merged.add(id - 1); pendingSavedStages.add(id); }
       }
+      // This independent journal contains only stages whose save was read back.
+      // Keep malformed data untouched and still use the per-stage markers.
+      try {
+        const verified = JSON.parse(localStorage.getItem(verifiedJournalKey) || "[]");
+        if (Array.isArray(verified) && verified.every(id => Number.isInteger(id) && id >= 1 && id <= groves.length)) {
+          for (const id of verified) { merged.add(id - 1); pendingSavedStages.add(id); }
+        }
+      } catch { /* Preserve an unreadable journal. */ }
       const bytes = JSON.stringify([...merged].sort((a, b) => a - b));
       if ([...merged].some(index => !saved.includes(index))) localStorage.setItem(solvedKey, bytes);
       const verified = JSON.parse(localStorage.getItem(solvedKey) || "[]");
@@ -103,6 +112,13 @@
   function rememberSolvedStage(id) {
     pendingSavedStages.add(id);
     try { localStorage.setItem(confirmedPrefix + id, "1"); } catch { /* Keep the in-page queue. */ }
+    try {
+      const raw = localStorage.getItem(verifiedJournalKey), verified = raw === null ? [] : JSON.parse(raw);
+      if (Number.isInteger(id) && id >= 1 && id <= groves.length && Array.isArray(verified)
+          && verified.every(stage => Number.isInteger(stage) && stage >= 1 && stage <= groves.length)) {
+        localStorage.setItem(verifiedJournalKey, JSON.stringify([...new Set([...verified, id])].sort((a, b) => a - b)));
+      }
+    } catch { /* Keep the in-page queue and any independent marker. */ }
   }
   function flushSavedStageRewards() {
     const castle = window.WeightPlayCastle;

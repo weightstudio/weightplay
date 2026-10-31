@@ -157,7 +157,7 @@
     const target = referrer?.origin === window.location.origin
       && !/\/games\//.test(referrer.pathname)
       ? `${referrer.pathname}${referrer.search}${referrer.hash}`
-      : `/${localizedLobby || "en"}/${kids ? "kids/" : ""}`;
+      : `/${localizedLobby || "en"}/${kids ? "kids/" : ""}${new URLSearchParams(window.location.search).get("preview") === "1" ? "?preview=1" : ""}`;
     window.location.assign(target);
   };
 

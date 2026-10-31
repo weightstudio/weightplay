@@ -1,9 +1,9 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=13';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 import {STAGES} from './stage-config.mjs';
-import {createRace,advance,step,segmentFor,useFeather,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS} from './simulation.mjs?v=11';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS} from './simulation.mjs?v=13';
 import {createStore,highestUnlocked} from './save.mjs';
-import {createRenderer} from './render.mjs?v=11';
+import {createRenderer} from './render.mjs?v=13';
 
 
 function ghostDistance(race){
@@ -17,7 +17,7 @@ function recordDistance(race){while(race.trace.samples.length<=Math.floor(race.e
 const W=window, $=id=>document.getElementById(id), store=createStore();
 const labels={plain:'plain',slow:'slow',fast:'fast',headfast:'headfast',headwind:'headwind',tailwind:'tailwind',left:'gateLeft',right:'gateRight',bridge:'bridge',fork:'choosePace',forkleft:'chooseLeft',forkright:'chooseRight',forkwindbridge:'windBridge',forkgates:'chooseGate',forkfast:'chooseLeft',forkslow:'chooseRight',forkmaster:'bridgeGate'};
 const goals={finish:'goalFinish',steady3:'goalSteady',balance40:'goalBalance40',combo4:'goalCombo','steady-no-stumble':'goalNoStumble',balance35:'goalBalance35',balance30:'goalBalance30',stumble2:'goalStumbles',gates:'goalGates'};
-const feedback={steady:'good',timing:'timingAdjust','same-foot':'alternate','bridge-closed':'bridgeWait','gate-missed':'reasonGate','gate-left':'gateLeft','gate-right':'gateRight',stumble:'stumble',feather:'featherUsed','feather-burst':'featherBurst'};
+const feedback={steady:'good',timing:'timingAdjust','same-foot':'alternate','bridge-closed':'bridgeWait','gate-missed':'reasonGate','gate-left':'gateLeft','gate-right':'gateRight',stumble:'stumble',feather:'featherUsed','feather-burst':'featherBurst','dash-burst':'dashFeedback'};
 let locale=resolveLocale(),timingHint=null,ghostVisible=true;const tr=(key,vars)=>translate(locale,key,vars);
 function bestLabel(record){return record&&Number.isFinite(record.bestTime)?tr('personalBest',{time:`\u2066${record.bestTime.toFixed(1)} s\u2069`}):'';}
 function savedMessage(){const best=bestLabel(store.progress.records[selected]);return [tr('progressSaved'),best,resultReward?tr('firstClearReward'):''].filter(Boolean).join(' · ');}
@@ -44,7 +44,7 @@ function localize(){
   $('mainProgress').textContent=tr('stage',{n:`\u2066${highestUnlocked(store.progress)} / 60\u2069`});
   if(screen==='stage'){rail?.setConfig(config(),selected-1);rail?.refresh(selected-1);if(tab!=='stages')renderManagement();}
   if(race){update();if(race.status==='finished')renderResult();}
-  if(modal==='helpPanel')requestAnimationFrame(syncHelpScrollHint);
+  if(modal==='helpPanel'){const body=$('helpPanel').querySelector('.dialog-scroll p');body.textContent=tr(body.dataset.t)+(race?.stage.chapter===1?` ${tr('dashExplain')}`:'');requestAnimationFrame(syncHelpScrollHint);}
 }
 const SKU='lantern-stride:star-trail';
 let frame,rail,renderer=null,race=null,screen='main',tab='stages',modal=null,previousFocus=null,practice=false,practiceRun=false,startSerial=0,purchaseSerial=0,purchaseBusy=false,shoeStatusKey=null,shopStatusKey=null,resultReward=false,selected=highestUnlocked(store.progress),raf=0,last=0,saved=false,pending=null;
@@ -74,7 +74,7 @@ function activate(next){
 function focusModal(id){const panel=$(id),button=[...panel.querySelectorAll('button:not([disabled])')].find(node=>node.getClientRects().length);if(button)button.focus();else{panel.tabIndex=-1;panel.focus();}}
 function openModal(id){if(screen!=='stage'&&!race)return;if(!modal)previousFocus=document.activeElement;else if(modal!==id)$(modal).hidden=true;modal=id;$(id).hidden=false;setModalInert(screen,true);cancelAnimationFrame(raf);raf=0;last=0;focusModal(id);}
 function syncHelpScrollHint(){const scroll=$('helpPanel').querySelector('.dialog-scroll'),hint=$('helpScrollHint');if(hint)hint.hidden=scroll.scrollHeight-scroll.scrollTop-scroll.clientHeight<=1;}
-function showHelp(intro=false){const scroll=$('helpPanel').querySelector('.dialog-scroll'),body=scroll.querySelector('p');const key=intro?'tutorialIntro':'helpText';body.dataset.t=key;body.textContent=tr(key);$('ghostOptions').hidden=intro||!race?.ghost;$('timeStarHelp').hidden=intro;$('featherHelp').hidden=intro||race?.stage.chapter!==2;openModal('helpPanel');scroll.scrollTop=0;requestAnimationFrame(syncHelpScrollHint);}
+function showHelp(intro=false){const scroll=$('helpPanel').querySelector('.dialog-scroll'),body=scroll.querySelector('p');const key=intro?'tutorialIntro':'helpText';body.dataset.t=key;body.textContent=tr(key)+(race?.stage.chapter===1?` ${tr('dashExplain')}`:'');$('ghostOptions').hidden=intro||!race?.ghost;$('timeStarHelp').hidden=intro;$('featherHelp').hidden=intro||race?.stage.chapter!==2;openModal('helpPanel');scroll.scrollTop=0;requestAnimationFrame(syncHelpScrollHint);}
 function closeModal(){if(!modal)return;$(modal).hidden=true;modal=null;setModalInert(screen,false);last=0;const target=previousFocus;previousFocus=null;if(target?.isConnected&&target.getClientRects().length&&!target.disabled)target.focus({preventScroll:true});else if(race?.status==='running')$('leftBtn').focus({preventScroll:true});if(race?.status==='running'&&!document.hidden)schedule();}
 function setTab(name){
   rail?.cancel();tab=name;
@@ -127,7 +127,13 @@ function update(){
   cue.style.setProperty('--beat-progress',meterActive?String(Math.max(0,Math.min(1,elapsed/min))):'0');
   const feedbackText=race.elapsed<race.feedbackUntil&&feedback[race.lastFeedback]?tr(race.lastFeedback==='timing'&&timingHint?timingHint:feedback[race.lastFeedback])+(race.lastFeedback==='steady'&&race.combo>=3?` ×${race.combo}${race.combo>=24?' ⚡⚡':race.combo>=12?' ⚡':''}`:''):'';
   if($('feedback').textContent!==feedbackText)$('feedback').textContent=feedbackText;
-  const feather=$('featherBtn'),onBridge=part.rule==='bridge';
+  if(race.stage.chapter===1){
+    const b=$('featherBtn'),remaining=Math.max(0,race.burstUntil-race.elapsed),ready=!race.dashUsed&&race.combo>=6&&race.balance>=40;
+    const unavailable=String(!ready),active=String(remaining>0),caption=remaining>0?`⚡ ${Math.ceil(remaining)} s`:race.dashUsed?'⚡ ✓':ready?'⚡ −20%':race.balance<40?'⚡ ≥40%':`⚡ ${Math.min(6,race.combo)}/6`;
+    const status=remaining>0?`${tr('dashFeedback')} ${Math.ceil(remaining)} s`:race.dashUsed?tr('dashUsed'):ready?tr('ready'):race.balance<40?`${tr('balance')} ≥40%`:`${tr('good')} ${Math.min(6,race.combo)}/6`;
+    const label=`${tr('dashExplain')} ${status}`;if(b.disabled)b.disabled=false;if(b.getAttribute('aria-disabled')!==unavailable)b.setAttribute('aria-disabled',unavailable);if(b.dataset.active!==active)b.dataset.active=active;if(b.textContent!==caption)b.textContent=caption;if(b.getAttribute('aria-label')!==label)b.setAttribute('aria-label',label);if(b.title!==label)b.title=label;return;
+  }
+  const feather=$('featherBtn'),onBridge=part.rule==='bridge';if(feather.hasAttribute('aria-disabled'))feather.removeAttribute('aria-disabled');
   const holdRemaining=Math.max(0,race.featherUntil-race.elapsed),sprintRemaining=Math.max(0,race.burstUntil-race.elapsed);
   const active=holdRemaining>0?'bridge':sprintRemaining>0?'sprint':null,remaining=active==='bridge'?holdRemaining:sprintRemaining;
   const label=tr(race.stage.chapter===2?((active?active==='bridge':onBridge)?'featherBridgeLabel':'featherSprintLabel'):'feather');
@@ -178,7 +184,7 @@ function bind(){
   $('continueBtn').addEventListener('click',closeModal);$('leaveBtn').addEventListener('click',toStages);
   $('resultStages').addEventListener('click',toStages);$('resultReplay').addEventListener('click',()=>startStage(selected,{asPractice:practiceRun}));$('resultNext').addEventListener('click',()=>{if(saved)startStage(selected+1,{asPractice:practiceRun});});$('retrySave').addEventListener('click',()=>void persist());
   for(const [id,foot] of [['leftBtn','left'],['rightBtn','right']])$(id).addEventListener('click',()=>action(foot));
-  $('featherBtn').addEventListener('click',()=>{if(screen==='battle'&&!modal&&!document.hidden&&!settingsOpen()&&race&&useFeather(race)){audio('feedback.success');update();}});
+  $('featherBtn').addEventListener('click',()=>{if(screen==='battle'&&!modal&&!document.hidden&&!settingsOpen()&&race&&(race.stage.chapter===1?useOptionalDash(race):useFeather(race))){audio('feedback.success');update();}});
   document.addEventListener('keydown',e=>{if(e.defaultPrevented)return;if(modal){if(e.key==='Escape'&&['leavePanel','helpPanel','buyPanel'].includes(modal)&&!(modal==='buyPanel'&&purchaseBusy)){e.preventDefault();closeModal();return;}if(e.key==='Tab'){const buttons=[...$(modal).querySelectorAll('button:not([disabled]), input:not([disabled]), [tabindex="0"]')].filter(node=>node.getClientRects().length);if(buttons.length){const i=buttons.indexOf(document.activeElement);if(e.shiftKey&&(i<=0)){e.preventDefault();buttons.at(-1).focus();}else if(!e.shiftKey&&(i<0||i===buttons.length-1)){e.preventDefault();buttons[0].focus();}}else e.preventDefault();}return;}if(screen!=='battle'||e.repeat)return;if(e.code==='ArrowLeft'||e.code==='KeyA'){e.preventDefault();action('left');}else if(e.code==='ArrowRight'||e.code==='KeyD'){e.preventDefault();action('right');}else if(e.code==='Escape'){e.preventDefault();openModal('leavePanel');}});
   W.addEventListener('blur',()=>{if(screen==='battle'&&race?.status==='running'&&!modal)openModal('leavePanel');});
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&screen==='battle'&&race?.status==='running'&&!modal)openModal('leavePanel');});
