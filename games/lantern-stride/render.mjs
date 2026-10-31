@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor } from './simulation.mjs?v=10';
+import { bridgeOpen, segmentFor } from './simulation.mjs?v=11';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -230,7 +230,7 @@ export function createRenderer(container, onContextLost = () => {}) {
   const flags=new THREE.Group();scene.add(flags);
   for(let i=1;i<12;i++){const flag=new THREE.Sprite(flagMaterial);flag.position.set(i%2?-4.0:4.0,1.05,i*11+6);flag.scale.set(1.8,1.8,1);flags.add(flag);}
   const markers=new THREE.Group(); scene.add(markers);
-  const ghostMarker=new THREE.Group();scene.add(ghostMarker);ghostMarker.visible=false;
+  const ghostMarker=new THREE.Group();scene.add(ghostMarker);ghostMarker.visible=false;const ghostProjection=new THREE.Vector3(),ghostProjectionNext=new THREE.Vector3();
   const ghostPole=box(ghostMarker,.12,1.15,.12,0,.575,0,0x67d8ed),ghostFlag=box(ghostMarker,.64,.42,.10,0,1.05,0,0x3cc3dc),ghostStripe=box(ghostMarker,.47,.09,.11,0,1.06,-.061,0xe9ffff);
   for(const node of [ghostPole,ghostFlag,ghostStripe]){node.material.transparent=true;node.material.opacity=.72;node.material.depthWrite=false;node.castShadow=false;}
 
@@ -422,8 +422,17 @@ export function createRenderer(container, onContextLost = () => {}) {
     if(race.shoe!==renderedShoe){renderedShoe=race.shoe;for(const shoe of shoeBodies)shoe.material.color.setHex(shoeColors[race.shoe]??shoeColors.balanced);}
     const part=segmentFor(race),targetLane=part.original.startsWith('fork')?(part.choice==='left'?1.7:part.choice==='right'?-1.7:0):0;
     visualLane=reducedMotion?targetLane:THREE.MathUtils.lerp(visualLane,targetLane,.16);const lane=visualLane;
-    ghostMarker.visible=Number.isFinite(race.ghostPosition);if(ghostMarker.visible)ghostMarker.position.set(3.5,0,race.ghostPosition);
     fia.position.set(lane,0,z); camera.position.set(6.2+lane,6.0,z-9.0);camera.lookAt(lane-(camera.aspect<=1.1?.65:0),camera.aspect>1.1?1.6:1.3,z+(camera.aspect>1.1?1.3:3.5));
+    ghostMarker.visible=Number.isFinite(race.ghostPosition);
+    if(ghostMarker.visible){
+      let markerX=3.5;
+      // When the recorded position approaches an edge, keep its marker readable
+      // on narrow screens without changing its along-course position.
+      camera.updateMatrixWorld();ghostProjection.set(markerX,1.05,race.ghostPosition).project(camera);ghostProjectionNext.set(markerX-1,1.05,race.ghostPosition).project(camera);
+      const gain=ghostProjectionNext.x-ghostProjection.x;
+      if(ghostProjection.x<-.78&&gain>.0001)markerX=Math.max(.4,markerX-Math.min(3.1,(-.78-ghostProjection.x)/gain));
+      ghostMarker.position.set(markerX,0,race.ghostPosition);
+    }
     sky.position.copy(camera.position);sun.position.set(-8,16,z-7);sun.target.position.set(0,0,z+2);scene.add(sun.target);
     const phase=race.lastStep===null?0:Math.min(1,(race.elapsed-race.lastStep)/.35);
     // Keep the last contact foot close to the track while the other leg
