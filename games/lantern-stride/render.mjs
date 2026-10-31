@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=23';
+import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=24';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -493,6 +493,7 @@ export function createRenderer(container, onContextLost = () => {}) {
           box(gate,.34,.07,.34,side*2.85,gateHeight-.10,start,0x774b32);
           box(gate,.12,.26,.12,side*3.2,gateHeight-.4,start,0x1d9ab8);
         }
+        const signFirst=gate.children.length;
         if(rule.startsWith('fork')) {
           const special=rule==='forkwindbridge'||rule==='forkmaster',sx=special?2.38:1.7,sy=special?2.45:1.65;box(gate,.85,.5,.12,sx,sy,start-.12,0xf4d972);box(gate,.85,.5,.12,-sx,sy,start-.12,0x92d2e4);
           if(special){
@@ -508,6 +509,7 @@ export function createRenderer(container, onContextLost = () => {}) {
           }
         }
         else {box(gate,.85,.5,.12,rule==='left'?1.7:-1.7,1.65,start-.12,0xf4d972);}
+        marker.signParts=gate.children.slice(signFirst).map(node=>({node,y:node.position.y}));
       }
     }
     // One continuous river mesh per merged span prevents seams or overlapping
@@ -562,13 +564,14 @@ export function createRenderer(container, onContextLost = () => {}) {
     const finishMaterial=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(finishGeometry);materials.add(finishMaterial);
     const finishMesh=new THREE.Mesh(finishGeometry,finishMaterial);finishMesh.castShadow=true;finishMesh.receiveShadow=true;finishDetails.add(finishMesh);
   }
-  function resize() {const r=container.getBoundingClientRect(); if(r.width<=0||r.height<=0)return;renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(29))*Math.min(1,1.1/camera.aspect)));camera.updateProjectionMatrix();}
+  let shortFit=0;
+  function resize() {const r=container.getBoundingClientRect();if(r.width<=0||r.height<=0)return;shortFit=(1-THREE.MathUtils.smoothstep(r.height,240,360))*THREE.MathUtils.smoothstep(r.width/r.height,1,1.3);renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;const baseFit=Math.min(1,1.1/camera.aspect),fit=baseFit+(Math.max(baseFit,.32)-baseFit)*shortFit;camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(29))*fit));camera.updateProjectionMatrix();}
   function draw(race,reducedMotion=false) {
     configure(race.stage); const z=race.distance;
     if(race.shoe!==renderedShoe){renderedShoe=race.shoe;for(const shoe of shoeBodies)shoe.material.color.setHex(shoeColors[race.shoe]??shoeColors.balanced);}
     const part=segmentFor(race),targetLane=part.original.startsWith('fork')?(part.choice==='left'?1.7:part.choice==='right'?-1.7:0):0;
     visualLane=reducedMotion?targetLane:THREE.MathUtils.lerp(visualLane,targetLane,.16);const lane=visualLane;
-    fia.position.set(lane,0,z); camera.position.set(6.2+lane,6.0,z-9.0);camera.lookAt(lane-(camera.aspect<=1.1?.65:0),camera.aspect>1.1?1.6:1.3,z+(camera.aspect>1.1?1.3:3.5));
+    fia.position.set(lane,0,z); camera.position.set(6.2+lane,6.0,z-9.0);camera.lookAt(lane-(camera.aspect<=1.1?.65:0),camera.aspect>1.1?1.6-.25*shortFit:1.3,z+(camera.aspect>1.1?1.3:3.5));
     ghostMarker.visible=Number.isFinite(race.ghostPosition);
     if(ghostMarker.visible){
       let markerX=3.5;
@@ -599,7 +602,7 @@ export function createRenderer(container, onContextLost = () => {}) {
       streakPulse.position.set(lane+(race.lastFoot==='left'?.3:-.3),.12,race.lastContactDistance);
       streakPulse.scale.setScalar(.8+phase*.9);streakPulseMaterial.opacity=.7*(1-phase);
     }
-    fia.position.y=-.08;
+    const avatarReduction=shortFit*(.22+.12*THREE.MathUtils.smoothstep(camera.aspect,3.4,4.3));fia.scale.setScalar(1-avatarReduction);fia.position.y=-.08+.13*avatarReduction;
 
     legs[0].rotation.x=amplitude?(race.lastFoot==='right'?-.08:amplitude):0;
     legs[1].rotation.x=amplitude?(race.lastFoot==='left'?-.08:amplitude):0;
@@ -626,6 +629,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     landmarkMeshes.forEach((tile,i)=>{const mark=race.landmarks[i],duration=reducedMotion?.12:.35,age=mark?.collected?race.elapsed-mark.collectedAt:0;tile.visible=!!mark&&(mark.collected?age<duration:z<=mark.position+2.5);if(tile.visible){tile.children[0].material.opacity=mark.collected?Math.max(0,1-age/duration):1;tile.scale.setScalar(mark.collected&&!reducedMotion?1-.2*Math.min(1,age/duration):1);}});
     markerMeshes.forEach((m,i)=>{
       if(m.gate)m.gate.visible=z<=m.start+.5;
+      if(m.signParts)for(const part of m.signParts)part.node.position.y=part.y-.34*shortFit;
       if(m.rule==='bridge')m.surface.material.color.setHex(i===part.index&&bridgeOpen(race)?0x96e5bf:0x3e777b);
       if(m.leftLane&&m.rightLane){
         const activeBridge=i===part.index&&part.rule==='bridge',glow=activeBridge&&bridgeOpen(race)?0x96e5bf:0x3e777b;
@@ -641,8 +645,9 @@ export function createRenderer(container, onContextLost = () => {}) {
   function capturePortrait(){
     if(disposed||renderer.getContext().isContextLost())return null;
     let target=null;const previousTarget=renderer.getRenderTarget(),background=scene.background,clearColor=renderer.getClearColor(new THREE.Color()),clearAlpha=renderer.getClearAlpha(),shadowAuto=renderer.shadowMap.autoUpdate;
-    const visibility=scene.children.map(node=>[node,node.visible]);
+    const visibility=scene.children.map(node=>[node,node.visible]),previousFiaScale=fia.scale.clone(),previousFiaY=fia.position.y;
     try{
+      fia.scale.setScalar(1);fia.position.y=-.08;fia.updateMatrixWorld(true);
       for(const [node] of visibility)if(node!==fia&&!node.isLight)node.visible=false;
       scene.background=null;renderer.shadowMap.autoUpdate=false;
       const size=192;target=new THREE.WebGLRenderTarget(size,size,{format:THREE.RGBAFormat,depthBuffer:true,stencilBuffer:false});target.texture.colorSpace=THREE.SRGBColorSpace;
@@ -657,6 +662,7 @@ export function createRenderer(container, onContextLost = () => {}) {
     }catch{return null;}
     finally{
       try{renderer.setRenderTarget(previousTarget);renderer.setClearColor(clearColor,clearAlpha);}catch{}
+      fia.scale.copy(previousFiaScale);fia.position.y=previousFiaY;fia.updateMatrixWorld(true);
       renderer.shadowMap.autoUpdate=shadowAuto;scene.background=background;
       for(const [node,visible] of visibility)node.visible=visible;try{target?.dispose();}catch{}
     }

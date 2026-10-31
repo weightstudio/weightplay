@@ -195,7 +195,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "rux-salvage-yard":"/games/rux-salvage-yard/art/poster.webp",
   "mossfold":"/games/mossfold/assets/cover.webp",
   "hearthloop":"/games/hearthloop/assets/cover.webp",
-  "glowspool":"/games/glowspool/assets/cover.webp"
+  "glowspool":"/games/glowspool/assets/cover.webp",
+  "duskbloom":"/games/duskbloom/assets/cover.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/orbit-menders-poster-block-v1.webp": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp",
@@ -394,5 +395,6 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/games/rux-salvage-yard/art/poster.webp":"/assets/lobby-thumbs/w480/games__rux-salvage-yard__art__poster.webp",
   "/games/mossfold/assets/cover.webp":"/games/mossfold/assets/cover.webp",
   "/games/hearthloop/assets/cover.webp":"/games/hearthloop/assets/cover.webp",
-  "/games/glowspool/assets/cover.webp":"/games/glowspool/assets/cover.webp"
+  "/games/glowspool/assets/cover.webp":"/games/glowspool/assets/cover.webp",
+  "/games/duskbloom/assets/cover.webp":"/games/duskbloom/assets/cover.webp"
 });
