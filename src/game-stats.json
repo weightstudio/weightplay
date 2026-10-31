@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-10-30T20:21:15.592Z",
+  "updatedAt": "2026-10-31T19:42:15.019Z",
   "source": "ga4",
   "metric": "game_start",
   "windowDays": 7,
   "totals": {
-    "plays7d": 49,
+    "plays7d": 48,
     "playsTotal": 16937,
-    "users7d": 11,
+    "users7d": 10,
     "pageViews7d": 175,
-    "pageViewsTotal": 37907,
-    "lobbyVisits7d": 52,
-    "lobbyVisitsTotal": 4902,
-    "lobbyUsers7d": 15
+    "pageViewsTotal": 37915,
+    "lobbyVisits7d": 49,
+    "lobbyVisitsTotal": 4903,
+    "lobbyUsers7d": 14
   },
   "games": {
     "animal-peach-oath": {
@@ -38,8 +38,26 @@
       "users7d": 1,
       "pageViews7d": 1,
       "pageViewsTotal": 1,
-      "rank7d": 10,
+      "rank7d": 9,
       "rankTotal": 126
+    },
+    "rux-salvage-yard": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 0,
+      "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
+    },
+    "lantern-stride": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 0,
+      "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
     },
     "orbit-menders": {
       "plays7d": 0,
@@ -90,7 +108,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 5,
+      "pageViews7d": 4,
       "pageViewsTotal": 12,
       "rank7d": null,
       "rankTotal": null
@@ -477,18 +495,18 @@
       "plays7d": 0,
       "playsTotal": 566,
       "users7d": 0,
-      "pageViews7d": 73,
-      "pageViewsTotal": 1341,
+      "pageViews7d": 77,
+      "pageViewsTotal": 1349,
       "rank7d": null,
       "rankTotal": 6
     },
     "animal-quiz": {
-      "plays7d": 1,
+      "plays7d": 0,
       "playsTotal": 38,
-      "users7d": 1,
-      "pageViews7d": 3,
+      "users7d": 0,
+      "pageViews7d": 0,
       "pageViewsTotal": 62,
-      "rank7d": 8,
+      "rank7d": null,
       "rankTotal": 59
     },
     "zoo-helper-day": {
@@ -974,7 +992,7 @@
       "users7d": 1,
       "pageViews7d": 1,
       "pageViewsTotal": 402,
-      "rank7d": 9,
+      "rank7d": 8,
       "rankTotal": 65
     },
     "casino": {
@@ -1805,7 +1823,25 @@
       "rank7d": null,
       "rankTotal": null
     },
+    "lantern-lasso": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 0,
+      "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
+    },
     "mossfold": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 0,
+      "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
+    },
+    "glowspool": {
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
