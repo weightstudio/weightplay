@@ -1,6 +1,6 @@
 // Repository-pinned Three.js r180; visuals never decide simulation outcomes.
 import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js';
-import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=15';
+import { bridgeOpen, segmentFor, landmarksFor } from './simulation.mjs?v=17';
 
 export function createRenderer(container, onContextLost = () => {}) {
   const renderer = new THREE.WebGLRenderer({antialias:true, alpha:false, powerPreference:'high-performance'});
@@ -85,9 +85,15 @@ export function createRenderer(container, onContextLost = () => {}) {
 
   }
   const world=new THREE.Group(); scene.add(world);
-  box(world,40,.25,160,0,-.54,70,0x38563b);box(world,8,.25,150,0,-.2,68,0x8c5c3d); box(world,7.4,.08,150,0,-.04,68,0x8e866b);
+  // Individually batched scenery chunks can yield to water on bridge stages.
+  const envChunks=Array.from({length:31},()=>{const g=new THREE.Group();scene.add(g);return g}),extraEnv=[];
+  // Far forest banks are permanent. The centre ground is split into
+  // stage-aware chunks so an actual lower water plane can pass under bridges.
+  box(world,10.4,.25,160,-14.8,-.54,70,0x38563b);box(world,10.4,.25,160,14.8,-.54,70,0x38563b);
+  const groundChunks=Array.from({length:32},(_,i)=>{const g=new THREE.Group();scene.add(g);box(g,19.2,.25,5,0,-.54,-7.5+i*5,0x38563b);return g;});
+  box(world,8,.25,150,0,-.2,68,0x8c5c3d); box(world,7.4,.08,150,0,-.04,68,0x8e866b);
   for(let i=0;i<31;i++){
-    const z=i*5-5; box(world,7.1,.025,.08,0,.01,z,0xdec889);
+    const z=i*5-5,env=envChunks[i]; box(world,7.1,.025,.08,0,.01,z,0xdec889);
     if(i%2===0){light(world,-4.5,z);light(world,4.5,z);}
     // Distant conifers have stepped crowns and visible trunks, rather than a
     // repeated wall of square blocks. Their muted tones preserve track contrast.
@@ -119,22 +125,22 @@ export function createRenderer(container, onContextLost = () => {}) {
     // They are part of the static scenery batch and never allocate during play.
     if(i%6===1){
       const side=i%12===1?-1:1,x=side*5.9;
-      box(world,.72,.46,.66,x,.23,z+2,0x795139);box(world,.82,.09,.74,x,.51,z+2,0xbf8950);
-      box(world,.2,.1,.2,x-.13,.57,z+2,0xd7ae72);box(world,.14,.08,.14,x+.14,.56,z+1.93,0x9d6a42);
-      box(world,.13,.34,.13,x+side*.58,.17,z+1.3,0xe7d4a6);box(world,.42,.19,.42,x+side*.58,.38,z+1.3,0xd7795e);
-      box(world,.11,.04,.11,x+side*.61,.49,z+1.27,0xffe3b0);
+      box(env,.72,.46,.66,x,.23,z+2,0x795139);box(env,.82,.09,.74,x,.51,z+2,0xbf8950);
+      box(env,.2,.1,.2,x-.13,.57,z+2,0xd7ae72);box(env,.14,.08,.14,x+.14,.56,z+1.93,0x9d6a42);
+      box(env,.13,.34,.13,x+side*.58,.17,z+1.3,0xe7d4a6);box(env,.42,.19,.42,x+side*.58,.38,z+1.3,0xd7795e);
+      box(env,.11,.04,.11,x+side*.61,.49,z+1.27,0xffe3b0);
     }
     if(i%6===4){
       const side=i%12===4?1:-1,x=side*5.75;
-      box(world,1.0,.18,.55,x,.48,z+2,0x9c704b);box(world,.13,.45,.13,x-.36,.23,z+2,0x755039);box(world,.13,.45,.13,x+.36,.23,z+2,0x755039);
-      box(world,.8,.12,.12,x,.76,z+2.23,0xba8b5b);box(world,.11,.35,.11,x-.3,.62,z+2.23,0x755039);box(world,.11,.35,.11,x+.3,.62,z+2.23,0x755039);
-      box(world,.3,.2,.3,x-side*.75,.1,z+1.4,0x6b9471);box(world,.18,.13,.18,x-side*.75,.25,z+1.4,0xffd776);
+      box(env,1.0,.18,.55,x,.48,z+2,0x9c704b);box(env,.13,.45,.13,x-.36,.23,z+2,0x755039);box(env,.13,.45,.13,x+.36,.23,z+2,0x755039);
+      box(env,.8,.12,.12,x,.76,z+2.23,0xba8b5b);box(env,.11,.35,.11,x-.3,.62,z+2.23,0x755039);box(env,.11,.35,.11,x+.3,.62,z+2.23,0x755039);
+      box(env,.3,.2,.3,x-side*.75,.1,z+1.4,0x6b9471);box(env,.18,.13,.18,x-side*.75,.25,z+1.4,0xffd776);
     }
     // Repeated scenery is baked with the track below: no per-frame allocations.
     if(i%2===0){
-      box(world,.8,.35,.7,-5.3,.17,z+2,0x4f8157);box(world,.5,.3,.55,-5.55,.42,z+2,0x77a76a);box(world,.7,.22,.55,5.5,.11,z+3,0x758878);
+      box(env,.8,.35,.7,-5.3,.17,z+2,0x4f8157);box(env,.5,.3,.55,-5.55,.42,z+2,0x77a76a);box(env,.7,.22,.55,5.5,.11,z+3,0x758878);
       for(const [x,offset,c] of [[-5.1,.8,0xffd464],[-5.8,1.1,0xf18b76],[5.2,1.6,0xffdf80],[5.9,2.1,0xf4aeb0]]){
-        box(world,.08,.32,.08,x,.16,z+offset,0x3e8b59);box(world,.24,.13,.24,x,.35,z+offset,c);
+        box(env,.08,.32,.08,x,.16,z+offset,0x3e8b59);box(env,.24,.13,.24,x,.35,z+offset,c);
       }
     }
     // Short fence and fluttering colored pennants make the route read as a festival.
@@ -168,22 +174,22 @@ export function createRenderer(container, onContextLost = () => {}) {
   // Small festival kiosks provide occasional landmarks beyond the fence.
   // They are baked with the forest and do not affect the course or collision.
   for(const [side,z] of [[-1,22],[1,47],[-1,77],[1,107],[-1,137]]){
-    const x=side*6.65;
-    box(world,2.5,.22,1.9,x,.11,z,0x79513b);
-    box(world,2.1,1.7,.18,x,1.08,z+.7,0x1e7779);
-    for(const dx of [-1,1])box(world,.18,2.15,.18,x+dx,1.18,z,0x835333);
-    box(world,2.7,.22,2.25,x,2.30,z,0x684838);
-    box(world,2.28,.22,1.92,x,2.52,z,0x256e71);
-    box(world,1.70,.20,1.48,x,2.72,z,0x318b87);
-    box(world,1.02,.15,1.05,x,2.90,z,0x62afa1);
-    box(world,2.24,.10,.14,x,1.72,z-.85,0xe6b85f);
+    const x=side*6.65,kiosk=new THREE.Group();scene.add(kiosk);extraEnv.push({z,group:kiosk});
+    box(kiosk,2.5,.22,1.9,x,.11,z,0x79513b);
+    box(kiosk,2.1,1.7,.18,x,1.08,z+.7,0x1e7779);
+    for(const dx of [-1,1])box(kiosk,.18,2.15,.18,x+dx,1.18,z,0x835333);
+    box(kiosk,2.7,.22,2.25,x,2.30,z,0x684838);
+    box(kiosk,2.28,.22,1.92,x,2.52,z,0x256e71);
+    box(kiosk,1.70,.20,1.48,x,2.72,z,0x318b87);
+    box(kiosk,1.02,.15,1.05,x,2.90,z,0x62afa1);
+    box(kiosk,2.24,.10,.14,x,1.72,z-.85,0xe6b85f);
     for(const dx of [-.65,.65]){
-      box(world,.38,.42,.32,x+dx,1.45,z-.90,0xffc35d);
-      box(world,.44,.08,.38,x+dx,1.69,z-.90,0x604333);
+      box(kiosk,.38,.42,.32,x+dx,1.45,z-.90,0xffc35d);
+      box(kiosk,.44,.08,.38,x+dx,1.69,z-.90,0x604333);
     }
-    box(world,1.65,.12,.52,x,.90,z-.67,0xc18a53);
-    box(world,.36,.20,.32,x-.42,1.06,z-.67,0xf2d17b);
-    box(world,.28,.16,.29,x+.30,1.04,z-.67,0xe47b5d);
+    box(kiosk,1.65,.12,.52,x,.90,z-.67,0xc18a53);
+    box(kiosk,.36,.20,.32,x-.42,1.06,z-.67,0xf2d17b);
+    box(kiosk,.28,.16,.29,x+.30,1.04,z-.67,0xe47b5d);
   }
   // Bake static scenery into one vertex-colour mesh; never allocate per-frame.
   world.updateMatrixWorld(true);
@@ -199,6 +205,38 @@ export function createRenderer(container, onContextLost = () => {}) {
   const baked=new THREE.BufferGeometry();baked.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));baked.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));baked.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
   const worldMat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(baked);materials.add(worldMat);
   const scenery=new THREE.Mesh(baked,worldMat);scenery.castShadow=true;scenery.receiveShadow=true;world.add(scenery);
+  // Separate authored near-ground palettes preserve depth and chapter identity
+  // at play scale; the banks and objects are outside the playable road.
+  function makeChapterBanks(evening){
+    const group=new THREE.Group();scene.add(group);const positions=[],normals=[],colors=[];
+    const palette=evening?[0x426856,0x4a725e,0x587b66,0x385e54]:[0x4e7550,0x587f53,0x68895a,0x486c4a];
+    // Irregular overlapping flat moss forms on the forest floor: no grid of
+    // slabs and no geometry on the course. Seed depends only on location.
+    let seed=evening?937:541;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+    for(let i=0;i<34;i++)for(const side of [-1,1])for(let band=0;band<2;band++){
+      const x=side*(6.2+band*3.5)+(random()-.5)*1.25,z=i*4.5-7+(random()-.5)*2.5,rx=1.5+random()*1.3,rz=2.0+random()*1.5;
+      const color=new THREE.Color(palette[Math.floor(random()*palette.length)]),points=[],y=-.395+band*.004+i*.00005+(side<0?.00002:0);
+      for(let k=0;k<9;k++){const t=k*Math.PI*2/9,r=.70+random()*.35;points.push([x+Math.cos(t)*rx*r,y,z+Math.sin(t)*rz*r])}
+      for(let k=0;k<9;k++)for(const point of [[x,y,z],points[(k+1)%9],points[k]]){positions.push(...point);normals.push(0,1,0);colors.push(color.r,color.g,color.b)}
+      if(i%6===2&&band===0){
+        if(evening){
+          box(group,.68,.25,.55,x,-.12,z,0x657f72);box(group,.42,.13,.4,x+side*.54,-.19,z+.8,0x84948b);
+        }else{
+          box(group,.46,.34,.42,x,-.08,z,0x5d8754);box(group,.37,.20,.35,x+side*.2,.19,z,0x8eaa69);
+          for(const [dx,dz,c] of [[-.42,.5,0xffd875],[.38,.7,0xf0aaa0]]){box(group,.07,.25,.07,x+dx,-.03,z+dz,0x538b52);box(group,.16,.10,.16,x+dx,.13,z+dz,c)}
+        }
+      }
+    }
+    const pgeo=new THREE.BufferGeometry();pgeo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));pgeo.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));pgeo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));const pmat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:1,side:THREE.DoubleSide});geometries.add(pgeo);materials.add(pmat);const patches=new THREE.Mesh(pgeo,pmat);patches.receiveShadow=true;
+    group.updateMatrixWorld(true);const pos=[],norm=[],col=[];group.traverse(node=>{if(!node.isMesh)return;const g=node.geometry.toNonIndexed();g.applyMatrix4(node.matrixWorld);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;for(let i=0;i<p.count;i++){pos.push(p.getX(i),p.getY(i),p.getZ(i));norm.push(n.getX(i),n.getY(i),n.getZ(i));col.push(c.r,c.g,c.b)}g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material)});group.clear();
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(col,3));const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.85});geometries.add(geo);materials.add(mat);const mesh=new THREE.Mesh(geo,mat);mesh.receiveShadow=true;group.add(mesh,patches);return group;
+  }
+  const dayBanks=makeChapterBanks(false),duskBanks=makeChapterBanks(true);duskBanks.visible=false;
+  function bakeEnv(group){
+    group.updateMatrixWorld(true);const pos=[],norm=[],cols=[];group.traverse(node=>{if(!node.isMesh)return;const g=node.geometry.toNonIndexed();g.applyMatrix4(node.matrixWorld);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;for(let i=0;i<p.count;i++){pos.push(p.getX(i),p.getY(i),p.getZ(i));norm.push(n.getX(i),n.getY(i),n.getZ(i));cols.push(c.r,c.g,c.b)}g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material)});group.clear();if(!pos.length)return;
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(geo);materials.add(mat);const mesh=new THREE.Mesh(geo,mat);mesh.castShadow=true;mesh.receiveShadow=true;group.add(mesh);
+  }
+  for(const group of envChunks)bakeEnv(group);for(const item of extraEnv)bakeEnv(item.group);
   // Clouds keep their pale silhouette in backlight and share a single draw call.
   const cloudGeometry=new THREE.BoxGeometry(1,1,1),cloudMaterial=new THREE.MeshBasicMaterial({color:0xfff7de});
   geometries.add(cloudGeometry);materials.add(cloudMaterial);
@@ -240,20 +278,26 @@ export function createRenderer(container, onContextLost = () => {}) {
   // The cream chest remains a real 3D surface, rather than an overlay.
   const torso=new THREE.Group();torso.rotation.y=1.95;fia.add(torso);
   box(torso,.9,1.0,.56,0,1.33,0,0xd87427);box(torso,.56,.7,.08,0,1.31,.33,0xffe5ae);box(torso,.3,.08,.62,0,.93,0,0x9b4f20);
-  const head=new THREE.Group();fia.add(head);head.rotation.y=1.95;
+  const neck=new THREE.Group();neck.position.y=1.95;fia.add(neck);const head=new THREE.Group();neck.add(head);head.rotation.y=1.95;head.scale.set(1.16,1.07,1.10);head.position.y=-2.11;
   box(head,1.15,.93,.8,0,2.15,0,0xe98224); box(head,.78,.28,.34,0,1.98,.5,0xffe7ba);
   // Stepped forelock echoes Fia's approved cuboid silhouette without changing her face.
   box(head,.32,.19,.35,0,2.72,.13,0xf18c29);box(head,.22,.16,.25,-.20,2.66,.20,0xdc711c);box(head,.18,.22,.22,.15,2.78,.04,0xf79e31);
   box(head,.16,.20,.11,-.53,1.98,.38,0xffd9a1);box(head,.16,.20,.11,.53,1.98,.38,0xffd9a1);
   box(head,.34,.08,.06,-.32,2.51,.44,0x974820);box(head,.34,.08,.06,.32,2.51,.44,0x974820);
   box(head,.2,.13,.15,0,2.08,.7,0x38291f);
-  const arms=[];
+  const arms=[],elbows=[],ears=[];
   for(const x of [-.32,.32]){
-    box(head,.34,.4,.05,x,2.3,.42,0x9a4a21);box(head,.27,.34,.08,x,2.3,.47,0xfff7e4); box(head,.13,.23,.06,x,2.3,.53,0x267fa9);box(head,.05,.07,.03,x-.025,2.36,.57,0xffffff);
-    const ear=new THREE.Group();ear.position.set(x*1.45,2.55,-.05);ear.rotation.z=x<0?.55:-.55;head.add(ear);
+    box(head,.39,.45,.05,x,2.3,.42,0x9a4a21);box(head,.32,.39,.08,x,2.3,.47,0xfff7e4); box(head,.17,.28,.06,x,2.3,.53,0x267fa9);box(head,.06,.08,.03,x-.025,2.36,.57,0xffffff);
+    const ear=new THREE.Group();ear.position.set(x*1.45,2.55,-.05);ear.rotation.z=x<0?.55:-.55;head.add(ear);ears.push(ear);
     box(ear,.48,.46,.36,0,.23,0,0xe77c22);box(ear,.48,.13,.37,0,.52,0,0x6e3926);box(ear,.30,.28,.08,0,.23,.20,0xffddbb);
-    const arm=new THREE.Group();arm.position.set(x*1.9,1.7,0);fia.add(arm);
-    box(arm,.28,.62,.28,0,-.3,0,0xe1842e);box(arm,.38,.28,.36,0,-.60,.04,0x4c3527);box(arm,.38,.08,.37,0,-.54,.04,0xffd15d);arms.push(arm);
+    // Limbs are mounted in torso-local space, so the shoulder, upper arm,
+    // elbow and glove remain connected while the torso turns and animates.
+    const arm=new THREE.Group();arm.position.set(x*1.75,1.65,0);torso.add(arm);
+    box(arm,.34,.42,.36,0,-.18,0,0xe1842e);
+    const elbow=new THREE.Group();elbow.position.y=-.37;elbow.rotation.x=-.72;arm.add(elbow);elbows.push(elbow);
+    box(elbow,.30,.31,.31,0,-.14,0,0xd87925);
+    box(elbow,.42,.30,.39,0,-.37,.02,0x4c3527);box(elbow,.43,.07,.40,0,-.26,.02,0xffd15d);
+    box(elbow,.13,.12,.10,-.09,-.40,.23,0xffdfac);box(elbow,.13,.12,.10,.09,-.40,.23,0xffdfac);arms.push(arm);
   }
   const boltShape=new THREE.Shape();boltShape.moveTo(.02,2.70);boltShape.lineTo(-.13,2.46);boltShape.lineTo(-.02,2.46);boltShape.lineTo(-.09,2.30);boltShape.lineTo(.15,2.53);boltShape.lineTo(.04,2.53);boltShape.closePath();
   const boltGeometry=new THREE.ExtrudeGeometry(boltShape,{depth:.045,bevelEnabled:false}),boltMaterial=new THREE.MeshStandardMaterial({color:0xffdc4f,roughness:.65});
@@ -317,9 +361,13 @@ export function createRenderer(container, onContextLost = () => {}) {
   plumeCells.forEach(({x,y,z,color},i)=>{plumePose.position.set(x,y,z);plumePose.updateMatrix();plume.setMatrixAt(i,plumePose.matrix);plume.setColorAt(i,plumeColor.setHex(color));});
   plume.instanceMatrix.needsUpdate=true;if(plume.instanceColor)plume.instanceColor.needsUpdate=true;
   plume.castShadow=true;plume.receiveShadow=true;plume.computeBoundingSphere();tail.add(plume);
-  const legs=[],shoeBodies=[];
-  for(const x of [-.29,.29]) {const pivot=new THREE.Group();pivot.position.set(x,.98,0);fia.add(pivot);
-    box(pivot,.34,.68,.36,0,-.32,0,0xdc7726);shoeBodies.push(box(pivot,.44,.27,.56,0,-.67,.14,0x116bca));box(pivot,.38,.07,.12,0,-.53,.16,0xffca43);box(pivot,.12,.12,.13,-.07,-.67,.44,0xffe5ba);box(pivot,.12,.12,.13,.07,-.67,.44,0xffe5ba);legs.push(pivot);}
+  const legs=[],knees=[],shoeBodies=[];
+  for(const x of [-.29,.29]) {const pivot=new THREE.Group();pivot.position.set(x,.98,0);torso.add(pivot);
+    box(pivot,.38,.39,.38,0,-.16,0,0xdc7726);
+    const knee=new THREE.Group();knee.position.y=-.34;pivot.add(knee);
+    box(knee,.34,.30,.36,0,-.13,0,0xdc7726);shoeBodies.push(box(knee,.49,.29,.61,0,-.36,.14,0x116bca));
+    box(knee,.41,.07,.13,0,-.22,.17,0xffca43);box(knee,.14,.13,.14,-.09,-.36,.47,0xffe5ba);box(knee,.14,.13,.14,.09,-.36,.47,0xffe5ba);
+    knees.push(knee);legs.push(pivot);}
   // Shoe colors echo the authored equipment art without affecting movement.
   const shoeColors={balanced:0x116bca,steady:0x0b8f7a,swift:0xea7020};let renderedShoe=null;
   // One reusable foot-contact burst; it only appears after an accepted step.
@@ -338,10 +386,33 @@ export function createRenderer(container, onContextLost = () => {}) {
   for(const [x,z,length] of [[-.55,-.9,.7],[.5,-1.25,1.0],[-.25,-1.6,.55]]){
     const streak=box(speedWake,.07,.06,length,x,.16,z,0x9eeaf2);streak.material.transparent=true;streak.material.opacity=.7;streak.material.depthWrite=false;
   }
+  // Merge static same-material pieces inside each moving joint. Pivots and
+  // dynamic shoe color remain separate; grouping never changes gameplay.
+  function batchJoint(group,excluded=[]){
+    const bins=new Map();for(const node of [...group.children]){
+      if(!node.isMesh||excluded.includes(node)||Array.isArray(node.material)||node.material.map||node.material.transparent)continue;
+      const m=node.material,key=[m.roughness,m.metalness,node.castShadow,node.receiveShadow].join(':');if(!bins.has(key))bins.set(key,[]);bins.get(key).push(node);
+    }
+    for(const nodes of bins.values()){
+      if(nodes.length<2)continue;const pos=[],norm=[],cols=[],first=nodes[0],roughness=first.material.roughness,metalness=first.material.metalness,cast=first.castShadow,receive=first.receiveShadow;
+      for(const node of nodes){node.updateMatrix();const g=node.geometry.index?node.geometry.toNonIndexed():node.geometry.clone();g.applyMatrix4(node.matrix);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;
+        for(let i=0;i<p.count;i++){pos.push(p.getX(i),p.getY(i),p.getZ(i));norm.push(n.getX(i),n.getY(i),n.getZ(i));cols.push(c.r,c.g,c.b)}
+        g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material);group.remove(node);
+      }
+      const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness,metalness});geometries.add(geo);materials.add(mat);const mesh=new THREE.Mesh(geo,mat);mesh.castShadow=cast;mesh.receiveShadow=receive;group.add(mesh);
+    }
+  }
+  for(const group of [torso,head,...ears,...elbows])batchJoint(group);for(const knee of knees)batchJoint(knee,shoeBodies);
   let stageId=null, markerMeshes=[], landmarkMeshes=[], visualLane=0;
   function configure(stage) {
     if(stageId===stage.id)return; stageId=stage.id;
-    const evening=stage.chapter===2;
+    const evening=stage.chapter===2;dayBanks.visible=!evening;duskBanks.visible=evening;
+    const partLength=stage.distance/stage.route.length,rawWaters=stage.route.flatMap((rule,i)=>['bridge','forkwindbridge','forkmaster'].includes(rule)?[[Math.floor((i*partLength+10)/5)*5-10,Math.ceil(((i+1)*partLength+10)/5)*5-10]]:[]),waters=[];for(const [start,end] of rawWaters){const last=waters[waters.length-1];if(last&&start<=last[1])last[1]=Math.max(last[1],end);else waters.push([start,end]);}
+    if(waters.length)duskBanks.visible=false; // Do not float ground patches above a lowered river.
+    const touchesWater=(z,margin)=>waters.some(([start,end])=>z+margin>=start&&z-margin<=end);
+    groundChunks.forEach((group,i)=>{group.visible=!touchesWater(-7.5+i*5,2.49);});
+    envChunks.forEach((group,i)=>{group.visible=!touchesWater(i*5-3,3);});
+    extraEnv.forEach(item=>{item.group.visible=!touchesWater(item.z,2);});
     scene.background.setHex(evening?0x5b8ca5:0x80bfd0);scene.fog.color.setHex(evening?0xc6aa9a:0xc5e0d3);setSky(evening);
     ambient.color.setHex(evening?0xa3d7ef:0xbbeaff);ambient.intensity=evening?1.9:2.1;
     sun.color.setHex(evening?0xffbc72:0xffcf82);sun.intensity=evening?2.0:2.3;
@@ -360,6 +431,30 @@ export function createRenderer(container, onContextLost = () => {}) {
         for(const x of [-3.16,3.16])box(markers,.16,.1,Math.max(.2,length-.35),x,.10,start+length/2,0xd4b576);
         for(let k=1;k<=4;k++)box(markers,5.95,.025,.10,0,.07,start+length*k/5,0xb8dfcc);
       }
+      if(['bridge','forkwindbridge','forkmaster'].includes(rule)) {
+        // The luminous deck remains the timing authority. Baked structural
+        // piers, edge lamps and small separated side pools add depth outside
+        // the lane without drawing a competing surface over the bridge light.
+        const bank=new THREE.Group();markers.add(bank);
+        for(const side of [-1,1]){
+          box(bank,.23,.18,Math.max(.2,length-.2),side*3.47,.09,start+length/2,0xb28d58);
+          for(let k=0;k<5;k++){
+            const z=start+length*(k+.2)/5;
+            box(bank,.20,.78,.20,side*3.54,.46,z,0x77543a);
+            box(bank,.31,.13,.31,side*3.54,.90,z,0xe8bc69);
+          }
+          // Real bridge deck and piers span the lowered water; the existing
+          // flashing lane remains visible and owns all timing information.
+          box(bank,1.25,.18,Math.max(.2,length-.2),side*4.45,-.12,start+length/2,0x8a704d);
+          for(let k=0;k<4;k++){
+            const z=start+length*(k+.4)/4;
+            box(bank,.42,1.06,.42,side*4.25,-.72,z,0x77583f);
+            box(bank,.65,.15,.65,side*4.25,-1.18,z,0x8a8d79);
+          }
+        }
+        const pos=[],norm=[],colors=[];bank.traverse(node=>{if(!node.isMesh)return;node.updateMatrix();const g=node.geometry.toNonIndexed();g.applyMatrix4(node.matrix);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;for(let i=0;i<p.count;i++){pos.push(p.getX(i),p.getY(i),p.getZ(i));norm.push(n.getX(i),n.getY(i),n.getZ(i));colors.push(c.r,c.g,c.b)}g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material)});bank.clear();
+        const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(geo);materials.add(mat);const mesh=new THREE.Mesh(geo,mat);mesh.castShadow=true;mesh.receiveShadow=true;bank.add(mesh);
+      }
       if(rule==='slow'||rule==='fast'||rule==='headfast') {
         const inlay=rule==='slow'?0xc0e2df:0xffe5a4;
         for(let k=1;k<=3;k++) {
@@ -375,6 +470,14 @@ export function createRenderer(container, onContextLost = () => {}) {
         box(markers,.16,.05,Math.max(.2,length-.3),0,.09,start+length/2,0xffe2a0);
         marker.leftLane=box(markers,3.05,.05,Math.max(.2,length-.3),1.72,.08,start+length/2,0xd7a266);
         marker.rightLane=box(markers,3.05,.05,Math.max(.2,length-.3),-1.72,.08,start+length/2,0x78a8b5);
+        if(rule==='forkwindbridge'||rule==='forkmaster'){
+          // Before choosing, seams mark the bridge option while the other
+          // lane retains its wind/gate cue. The lane colour still owns GO/Wait.
+          const seam=new THREE.Group(),centre=rule==='forkwindbridge'?-1.72:1.72;markers.add(seam);
+          for(let offset=1.5;offset<length;offset+=5)box(seam,2.7,.02,.10,centre,.12,start+offset,0xd5dfbb);
+          const pos=[],norm=[],col=[];seam.traverse(node=>{if(!node.isMesh)return;node.updateMatrix();const g=node.geometry.toNonIndexed();g.applyMatrix4(node.matrix);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;for(let j=0;j<p.count;j++){pos.push(p.getX(j),p.getY(j),p.getZ(j));norm.push(n.getX(j),n.getY(j),n.getZ(j));col.push(c.r,c.g,c.b)}g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material)});seam.clear();
+          const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));const material=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(g);materials.add(material);const mesh=new THREE.Mesh(g,material);mesh.receiveShadow=true;seam.add(mesh);
+        }
       }
       if(rule==='left'||rule==='right'||rule.startsWith('fork')) {
         const gate=new THREE.Group();markers.add(gate);marker.gate=gate;
@@ -390,9 +493,38 @@ export function createRenderer(container, onContextLost = () => {}) {
           box(gate,.34,.07,.34,side*2.85,gateHeight-.10,start,0x774b32);
           box(gate,.12,.26,.12,side*3.2,gateHeight-.4,start,0x1d9ab8);
         }
-        if(rule.startsWith('fork')) {box(gate,.85,.5,.12,1.7,1.65,start-.12,0xf4d972);box(gate,.85,.5,.12,-1.7,1.65,start-.12,0x92d2e4);}
+        if(rule.startsWith('fork')) {
+          const special=rule==='forkwindbridge'||rule==='forkmaster',sx=special?2.38:1.7,sy=special?2.45:1.65;box(gate,.85,.5,.12,sx,sy,start-.12,0xf4d972);box(gate,.85,.5,.12,-sx,sy,start-.12,0x92d2e4);
+          if(special){
+            const bridgeSide=rule==='forkwindbridge'?-sx:sx;
+            // Three narrow inset boards form a bridge pictogram facing the
+            // approaching camera; the other side keeps its own route cue.
+            for(const dy of [-.12,0,.12])box(gate,.56,.045,.05,bridgeSide,sy+dy,start-.21,0x75573c);
+            if(rule==='forkmaster'){
+              const gateSide=-sx;
+              box(gate,.30,.20,.05,gateSide,sy-.07,start-.21,0xf4f3dc);
+              for(const dx of [-.13,0,.13])box(gate,.075,.08,.05,gateSide+dx,sy+.105,start-.21,0xf4f3dc);
+            }
+          }
+        }
         else {box(gate,.85,.5,.12,rule==='left'?1.7:-1.7,1.65,start-.12,0xf4d972);}
       }
+    }
+    // One continuous river mesh per merged span prevents seams or overlapping
+    // surfaces at adjacent bridge segments. The course deck still owns its light.
+    for(const [waterStart,waterEnd] of waters){
+      const waterLength=waterEnd-waterStart,water=new THREE.Group();markers.add(water);
+      box(water,19.2,.08,waterLength,0,-1.32,(waterStart+waterEnd)/2,0x438f9c);
+      for(const side of [-1,1]){
+        box(water,.40,.95,waterLength,side*9.4,-.86,(waterStart+waterEnd)/2,0x637b6a);
+        for(let k=0;k<Math.ceil(waterLength/5);k++){
+          const z=waterStart+Math.min(waterLength-.8,k*5+2.1),x=side*(6.0+(k%3)*.8);
+          box(water,1.1,.025,.10,x,-1.26,z,0xb7e5d9);box(water,.55,.025,.09,x+side*.7,-1.26,z+1.0,0x81c6c6);
+        }
+        for(const z of [waterStart,waterEnd])box(water,5.4,.95,.35,side*6.8,-.86,z,0x637b6a);
+      }
+      const pos=[],norm=[],colors=[];water.traverse(node=>{if(!node.isMesh)return;node.updateMatrix();const g=node.geometry.toNonIndexed();g.applyMatrix4(node.matrix);const p=g.getAttribute('position'),n=g.getAttribute('normal'),c=node.material.color;for(let i=0;i<p.count;i++){pos.push(p.getX(i),p.getY(i),p.getZ(i));norm.push(n.getX(i),n.getY(i),n.getZ(i));colors.push(c.r,c.g,c.b)}g.dispose();node.geometry.dispose();node.material.dispose();geometries.delete(node.geometry);materials.delete(node.material)});water.clear();
+      const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.Float32BufferAttribute(norm,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));const mat=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8});geometries.add(geo);materials.add(mat);const mesh=new THREE.Mesh(geo,mat);mesh.castShadow=true;mesh.receiveShadow=true;water.add(mesh);
     }
     // A clearly framed track tile tells the player where a voluntary repeat
     // can happen. Left/right gold accents use the existing screen mapping;
@@ -471,14 +603,26 @@ export function createRenderer(container, onContextLost = () => {}) {
 
     legs[0].rotation.x=amplitude?(race.lastFoot==='right'?-.08:amplitude):0;
     legs[1].rotation.x=amplitude?(race.lastFoot==='left'?-.08:amplitude):0;
-    arms[0].rotation.x=-legs[0].rotation.x*.7;arms[1].rotation.x=-legs[1].rotation.x*.7;
+    knees[0].rotation.x=amplitude?-Math.max(0,legs[0].rotation.x)*.48:0;knees[1].rotation.x=amplitude?-Math.max(0,legs[1].rotation.x)*.48:0;
+    arms[0].rotation.x=-legs[0].rotation.x*.75;arms[1].rotation.x=-legs[1].rotation.x*.75;
     scarf.rotation.y=reducedMotion||race.speed<.2?0:Math.sin(race.elapsed*4)*.13;
     // Secondary motion follows the actual running state; reduced motion stays still.
     tail.rotation.y=reducedMotion||race.speed<.2?0:Math.sin(race.elapsed*4)*.16;
-    head.rotation.x=reducedMotion||race.speed<.2?0:Math.sin(phase*Math.PI)*.09;
-    speedWake.visible=(race.combo>=12||race.elapsed<race.burstUntil||race.elapsed<race.landmarkUntil)&&race.speed>2&&!reducedMotion;
+    neck.rotation.x=reducedMotion||race.speed<.2?0:Math.sin(phase*Math.PI)*.09;
+    speedWake.visible=race.status==='running'&&(race.combo>=12||race.elapsed<race.burstUntil||race.elapsed<race.landmarkUntil)&&race.speed>2&&!reducedMotion;
     speedWake.position.z=speedWake.visible?-.16*(.5+.5*Math.sin(race.elapsed*9)):0;
-    fia.rotation.z=reducedMotion?0:(race.balance<30?.12:0);fia.rotation.x=reducedMotion?0:Math.min(.08,race.speed*.022);
+    // Action states derive only from the race result and the live feedback
+    // window. A stable silhouette remains in reduced-motion mode.
+    const won=race.status==='finished'&&race.result?.won;
+    const lost=race.status==='finished'&&race.result&&!race.result.won;
+    const recovering=race.lastFeedback==='stumble'&&race.elapsed<race.feedbackUntil;
+    fia.rotation.z=recovering?-.20:(reducedMotion?0:(race.balance<30?.12:0));
+    fia.rotation.x=won?-.05:lost?.16:(reducedMotion?0:Math.min(.08,race.speed*.022));
+    for(let i=0;i<arms.length;i++){
+      arms[i].rotation.z=won?(i===0?-2.0:2.0):recovering?(i===0?-.55:.55):lost?(i===0?-.20:.20):0;
+      if(won||lost){arms[i].rotation.x=0;legs[i].rotation.x=0;knees[i].rotation.x=0;}
+      elbows[i].rotation.x=won?-.22:-.72;
+    }
     landmarkMeshes.forEach((tile,i)=>{const mark=race.landmarks[i],duration=reducedMotion?.12:.35,age=mark?.collected?race.elapsed-mark.collectedAt:0;tile.visible=!!mark&&(mark.collected?age<duration:z<=mark.position+2.5);if(tile.visible){tile.children[0].material.opacity=mark.collected?Math.max(0,1-age/duration):1;tile.scale.setScalar(mark.collected&&!reducedMotion?1-.2*Math.min(1,age/duration):1);}});
     markerMeshes.forEach((m,i)=>{
       if(m.gate)m.gate.visible=z<=m.start+.5;
@@ -492,5 +636,30 @@ export function createRenderer(container, onContextLost = () => {}) {
     renderer.render(scene,camera);
   }
   function dispose(){if(disposed)return;disposed=true;renderer.setAnimationLoop(null);clouds.dispose();lampFaces.dispose();plume.dispose();for(const g of geometries)g.dispose();for(const m of materials)m.dispose();for(const t of textures)t.dispose();sun.shadow.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}
-  resize(); return {draw,resize,dispose,setTrail:enabled=>{trail.visible=!!enabled;},info:()=>({threeRevision:THREE.REVISION,pixelRatio:renderer.getPixelRatio(),calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures})};
+  // Capture the actual 3D runner once for the Result card. This borrows the
+  // existing context, performs no asynchronous work, and has a safe fallback.
+  function capturePortrait(){
+    if(disposed||renderer.getContext().isContextLost())return null;
+    let target=null;const previousTarget=renderer.getRenderTarget(),background=scene.background,clearColor=renderer.getClearColor(new THREE.Color()),clearAlpha=renderer.getClearAlpha(),shadowAuto=renderer.shadowMap.autoUpdate;
+    const visibility=scene.children.map(node=>[node,node.visible]);
+    try{
+      for(const [node] of visibility)if(node!==fia&&!node.isLight)node.visible=false;
+      scene.background=null;renderer.shadowMap.autoUpdate=false;
+      const size=192;target=new THREE.WebGLRenderTarget(size,size,{format:THREE.RGBAFormat,depthBuffer:true,stencilBuffer:false});target.texture.colorSpace=THREE.SRGBColorSpace;
+      const portraitCamera=new THREE.OrthographicCamera(-1.85,1.85,1.85,-1.85,.1,40);
+      portraitCamera.position.set(fia.position.x+6.2,4.7,fia.position.z-9);portraitCamera.lookAt(fia.position.x,1.38,fia.position.z);portraitCamera.updateProjectionMatrix();
+      renderer.setRenderTarget(target);renderer.setClearColor(0,0);renderer.clear(true,true,true);renderer.render(scene,portraitCamera);
+      const pixels=new Uint8Array(size*size*4);renderer.readRenderTargetPixels(target,0,0,size,size,pixels);
+      let hasSubject=false;for(let i=3;i<pixels.length;i+=4)if(pixels[i]){hasSubject=true;break;}if(!hasSubject)return null;
+      const canvas=document.createElement('canvas');canvas.width=size;canvas.height=size;canvas.className='result-portrait';canvas.setAttribute('aria-hidden','true');const ctx=canvas.getContext('2d');if(!ctx)return null;
+      const result=ctx.createImageData(size,size),stride=size*4;for(let y=0;y<size;y++)result.data.set(pixels.subarray((size-1-y)*stride,(size-y)*stride),y*stride);
+      ctx.putImageData(result,0,0);return canvas;
+    }catch{return null;}
+    finally{
+      try{renderer.setRenderTarget(previousTarget);renderer.setClearColor(clearColor,clearAlpha);}catch{}
+      renderer.shadowMap.autoUpdate=shadowAuto;scene.background=background;
+      for(const [node,visible] of visibility)node.visible=visible;try{target?.dispose();}catch{}
+    }
+  }
+  resize(); return {draw,resize,dispose,capturePortrait,setTrail:enabled=>{trail.visible=!!enabled;},info:()=>({threeRevision:THREE.REVISION,pixelRatio:renderer.getPixelRatio(),calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures})};
 }

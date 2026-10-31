@@ -70,10 +70,12 @@ function stopLoop(){running=false;cancelAnimationFrame(raf)}function loop(now){i
 function complete(stats={}){if(!running)return;running=false;playPrismCue("result.win");
   const nextSave={...save,cleared:{...save.cleared,[selected]:true},unlocked:Math.max(save.unlocked,Math.min(__crateStageCount(),selected+1)),best:{...save.best,[selected]:Math.max(Number(save.best[selected])||0,Number(stats.score)||0)}};
   const checked=(C.id==="animal-cratebound"||C.id==="animal-mosaic-clues")&&!__cratePracticeRequested;
+  const mosaicFirstClear=C.id==="animal-mosaic-clues"&&!save.cleared[selected];
   const saved=!checked||commitCrateSave(nextSave);
   if(saved){if(checked)save=nextSave;else{save.cleared[selected]=true;save.unlocked=nextSave.unlocked;save.best[selected]=nextSave.best[selected];persist()}}
   if(C.id==="animal-cratebound")E.result.dataset.wpCrateSaveUnconfirmed=String(checked&&!saved);
   if(C.id==="animal-mosaic-clues")E.result.dataset.wpMosaicSaveUnconfirmed=String(checked&&!saved);
+  if(mosaicFirstClear&&saved)window.dispatchEvent(new CustomEvent("weightplay:mosaic-confirmed-clear",{detail:{stageId:selected}}));
   const crateArabic=C.id==="animal-cratebound"&&(window.WonderI18n?.actualLocale?.()||document.documentElement.lang)==="ar";
   updateProgress();text(E.resultTitle,!saved?crateSaveFailureTitle():__cratePracticeActive?cratePracticeCopy()[3]:crateArabic?"اكتملت المرحلة":(C.resultTitle||localCopy("resultTitle","Stage Complete")));text(E.resultText,__cratePracticeActive?cratePracticeCopy()[2]:saved?C.win:crateSaveFailureCopy());text(E.resultA,stats.a??"✓");text(E.resultB,stats.b??"★");text(E.resultC,stats.c??"Ready");E.next.hidden=!saved||selected>=__crateStageCount();E.next.classList.toggle("primary",saved&&selected<__crateStageCount());(__wpNotifyMeasurement(), E.resultStage.classList.toggle("primary",!saved||selected>=__crateStageCount()));const generation=sceneGeneration;clearTimeout(resultFocusTimer);const revealResult=()=>{if(screen!=="battle"||generation!==sceneGeneration)return;(__wpNotifyMeasurement(), E.result.hidden=false);resultFocusTimer=setTimeout(()=>{if(screen==="battle"&&generation===sceneGeneration&&!E.result.hidden)(!saved||selected>=__crateStageCount()?E.resultStage:E.next).focus()},20)};if(C.id==="animal-mosaic-clues")requestAnimationFrame(revealResult);else revealResult()
     __wpMeasurement.ended = true; __wpMeasurement.outcome = saved?"win":"save_failed"; __wpMeasurement.saveSucceeded = saved; if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
