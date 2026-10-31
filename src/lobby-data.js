@@ -121,8 +121,8 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "/games/rux-salvage-yard/art/poster.webp", hideHero: true }
     },
     {
-      id: "lantern-stride", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "index.html?preview=1", href: "games/lantern-stride/",
+      id: "lantern-stride", audience: "general", status: "playable",
+      previewVideo: "assets/previews/lantern-stride-battle.webm", href: "games/lantern-stride/",
       title: { __localizedExact: true, en: "Lantern Stride", "zh-Hant": "燈徑疾步", "zh-Hans": "灯径疾步", ja: "灯りの駆け道", ko: "등불 달리기", es: "Carrera de Faroles", "pt-BR": "Corrida das Lanternas", fr: "Course des lanternes", de: "Laternenlauf", it: "Corsa delle lanterne", ru: "Бег фонарей", hi: "लालटेन दौड़", ar: "سباق الفوانيس" },
       type: { en: "Rhythm Racing", "zh-Hant": "節奏競跑" },
       description: { en: "Alternate your steps and find your rhythm on a forest racecourse.", "zh-Hant": "交替踏步，在森林跑道上找到自己的節奏。" },
@@ -8148,14 +8148,14 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
   const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const localize = values => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
   const game = {
-    id: "lantern-lasso", audience: "general", status: "planned",
+    id: "lantern-lasso", audience: "general", status: "playable",
     title: localize(["Lantern Lasso", "星燈牽引", "星灯牵引", "星灯りの投げ縄", "별빛 올가미", "Lazo de faroles", "Laço das lanternas", "Lasso des lanternes", "Laternen-Lasso", "Lazo delle lanterne", "Лассо фонарей", "लालटेन लासो", "حبل الفوانيس"]),
     statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريباً"]),
     type: localize(["Angle puzzle", "角度益智", "角度益智", "角度パズル", "각도 퍼즐", "Puzle de ángulos", "Quebra-cabeça de ângulos", "Énigme d'angles", "Winkelrätsel", "Enigma degli angoli", "Головоломка с углами", "कोण पहेली", "لغز الزوايا"]),
     description: localize(["Aim a line, open gates and guide lost lights home.", "瞄準牽引線，打開閘門，引領迷途星燈回家。", "瞄准牵引线，打开闸门，引领迷途星灯回家。", "ロープを狙って門を開き、迷った灯りを家へ導こう。", "줄을 조준해 문을 열고 길 잃은 빛을 집으로 이끌어요.", "Apunta la cuerda, abre puertas y guía las luces a casa.", "Mire a corda, abra portões e guie as luzes para casa.", "Visez avec la corde, ouvrez les portes et ramenez les lumières.", "Ziele mit dem Seil, öffne Tore und führe Lichter nach Hause.", "Mira con la corda, apri i cancelli e guida le luci a casa.", "Направляйте трос, открывайте ворота и возвращайте огни домой.", "रस्सी साधें, द्वार खोलें और रोशनी को घर पहुँचाएँ।", "صوّب الحبل وافتح البوابات وأعد الأضواء إلى موطنها."]),
     meta: localize([["60 stages", "Aim and reflect"], ["60 關", "瞄準反射"], ["60 关", "瞄准反射"], ["全60面", "狙いと反射"], ["60개 스테이지", "조준과 반사"], ["60 niveles", "Apunta y rebota"], ["60 fases", "Mire e reflita"], ["60 niveaux", "Visée et rebond"], ["60 Level", "Zielen und abprallen"], ["60 livelli", "Mira e rimbalza"], ["60 уровней", "Прицел и отскок"], ["60 स्तर", "निशाना और उछाल"], ["60 مرحلة", "تصويب وارتداد"]]),
     categories: ["Animal Games", "Puzzle", "Family"], skills: ["Spatial Planning", "Timing", "Focus"], ages: ["6", "family"], ageLabel: localize(Array(13).fill("6+")),
-    href: "games/lantern-lasso/", internalTrial: "index.html?preview=1", art: { kind: "image", background: "games/lantern-lasso/assets/cover.webp", hideHero: true }
+    href: "games/lantern-lasso/", previewVideo: "assets/previews/lantern-lasso-battle.webm", art: { kind: "image", background: "games/lantern-lasso/assets/cover.webp", hideHero: true }
   };
   for (const key of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(game[key], "__localizedExact", { value: true, enumerable: false });
   window.WONDER_LOBBY.games.push(game);
@@ -8171,10 +8171,27 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
   const loc=values=>Object.fromEntries(keys.map((key,i)=>[key,values[i]]));
   const title=loc(['Glowspool','織光滑徑','织光滑径','光糸の小道','빛실 미끄럼길','Sendero de luz','Trilha de Luz','Fil de lumière','Lichtfaden','Filo di luce','Световая нить','रोशनी की डोर','خيط النور']);
   Object.defineProperty(title,'__localizedExact',{value:true,enumerable:false});
-  window.WONDER_LOBBY.games.push({id:'glowspool',audience:'general',status:'planned',internalOnly:true,internalTrial:'index.html?preview=1',href:'games/glowspool/',title,
+  window.WONDER_LOBBY.games.push({id:'glowspool',audience:'general',status:'playable',previewVideo:'assets/previews/glowspool-battle.webm',href:'games/glowspool/',title,
     statusText:loc(['Coming Soon','敬請期待','敬请期待','近日公開','출시 예정','Próximamente','Em breve','Bientôt disponible','Demnächst','Prossimamente','Скоро','जल्द आ रहा है','قريباً']),
     type:loc(['Sliding-fill puzzle','滑行填滿益智','滑行填满益智','滑って埋めるパズル','미끄러져 채우는 퍼즐','Puzle de deslizamiento','Quebra-cabeça deslizante','Puzzle de glisse','Gleitpuzzle','Rompicapo a scorrimento','Скользящая головоломка','फिसलने वाली पहेली','لغز الانزلاق']),
     description:loc(['Slide Mimi to weave every tile. Plan around the line you leave behind.','帶領 Mimi 滑行鋪亮所有地磚，利用留下的光帶規劃下一次轉彎。','带领 Mimi 滑行铺亮所有地砖，利用留下的光带规划下一次转弯。','ミミを滑らせ、残した光の糸を使ってすべてのマスを照らそう。','미미를 미끄러뜨려 모든 칸에 빛실을 놓고 다음 길을 계획하세요.','Desliza a Mimi y teje todas las casillas. Planea con el hilo que dejas.','Deslize Mimi e ilumine todas as casas. Planeje com o fio deixado.','Faites glisser Mimi pour tisser chaque case et prévoyez le chemin restant.','Lass Mimi gleiten und verwebe jedes Feld. Plane mit dem gelegten Faden.','Fai scivolare Mimi per tessere ogni casella. Pianifica con il filo lasciato.','Скользите с Мими, заполняйте клетки и планируйте путь вокруг своей нити.','मिमी को फिसलाकर हर खाने में रोशनी बुनें और अगला मोड़ सोचें।','حرّك ميمي بالانزلاق لنسج كل مربع وخطّط حول الخيط الذي تتركه.']),
     categories:['Animal Games','Puzzle','Family'],skills:['Logic','Problem Solving','Focus'],ages:['9','family'],meta:loc(Array.from({length:13},()=>['60'])),art:{kind:'image',background:'games/glowspool/assets/cover.webp',hideHero:true}});
   window.WONDER_LOBBY.audiences.generalGameIds.push('glowspool');
+})();
+
+// 仙旅傳說 (internal ID sunmane-journey): original owner intake 01a190d9; unpublished production only.
+(() => {
+  const title = {"__localizedExact":true,"en":"仙旅傳說","zh-Hant":"仙旅傳說","zh-Hans":"仙旅傳說","ja":"仙旅傳說","ko":"仙旅傳說","es":"仙旅傳說","pt-BR":"仙旅傳說","fr":"仙旅傳說","de":"仙旅傳說","it":"仙旅傳說","ru":"仙旅傳說","hi":"仙旅傳說","ar":"仙旅傳說"};
+  window.WONDER_LOBBY.games.push({
+    id: "sunmane-journey", audience: "general", status: "planned",
+    internalOnly: true, internalTrial: "index.html?preview=1",
+    href: "games/sunmane-journey/", title,
+    statusText: {en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待"},
+    type: {en:"Exploration action RPG","zh-Hant":"探索動作角色扮演"},
+    description: {en:"Explore distinct regions, shape your build and restore the sunveins. The launch character is Leo, a lion swordsman.","zh-Hant":"探索各地、配出自己的冒險流派；首發角色為獅子劍士 Leo，後續角色可擴充。"},
+    categories: ["Animal Games", "Adventure", "Strategy"],
+    skills: ["Reaction", "Focus", "Problem Solving"], ages: ["12", "family"],
+    art: {kind:"image",background:"games/sunmane-journey/assets/cover.webp",hideHero:true}
+  });
+  window.WONDER_LOBBY.audiences.generalGameIds.push("sunmane-journey");
 })();

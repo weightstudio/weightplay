@@ -2336,11 +2336,19 @@ const essentialLobbyCopy = {
 
   function simplifyChineseText(value) {
     if (typeof value !== "string" || !value) return value;
-    let output = value;
-    zhHansPhraseMap.forEach(([source, replacement]) => {
-      output = output.replaceAll(source, replacement);
-    });
-    return Array.from(output, (character) => zhHansCharMap[character] || character).join("");
+    // A routed game's approved title is already localized-exact. Preserve
+    // that token when the legacy bridge converts surrounding ordinary copy.
+    // Build-time callers have no window and retain the original conversion.
+    const gameId = typeof window !== "undefined" ? window.location?.pathname?.match(/\/games\/([^/]+)/)?.[1] : "";
+    const names = typeof window !== "undefined" ? window.WEIGHTPLAY_GAME_TITLES?.[gameId] : null;
+    const exactTitle = names?.__localizedExact === true && typeof names["zh-Hans"] === "string" ? names["zh-Hans"] : "";
+    return (exactTitle ? value.split(exactTitle) : [value]).map((part) => {
+      let output = part;
+      zhHansPhraseMap.forEach(([source, replacement]) => {
+        output = output.replaceAll(source, replacement);
+      });
+      return Array.from(output, (character) => zhHansCharMap[character] || character).join("");
+    }).join(exactTitle);
   }
 
   function simplifyChineseValue(value) {
