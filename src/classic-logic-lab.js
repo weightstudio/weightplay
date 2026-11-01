@@ -215,24 +215,52 @@
     }
     return { stage: safeStage, arcIndex, arc: codeCampaignArcs[arcIndex], ...profile, checkpoint: safeStage % 5 === 0, secret, blockedColor };
   }
-  function readCodeProgress() {
-    const fallback = { cleared: [], highestUnlocked: 1 };
-    try {
-      const parsed = JSON.parse(localStorage.getItem(CODE_BREAKER_SAVE_KEY) || "null");
-      const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= CODE_BREAKER_TOTAL_STAGES))].sort((a, b) => a - b) : [];
-      const highest = Math.max(1, Math.min(CODE_BREAKER_TOTAL_STAGES, Number(parsed?.highestUnlocked) || (cleared.length ? Math.max(...cleared) + 1 : 1)));
-      return { cleared, highestUnlocked: highest };
-    } catch { return fallback; }
+  function normalizeCodeProgress(parsed) {
+    const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= CODE_BREAKER_TOTAL_STAGES))].sort((a, b) => a - b) : [];
+    const highest = Math.max(1, Math.min(CODE_BREAKER_TOTAL_STAGES, Number(parsed?.highestUnlocked) || (cleared.length ? Math.max(...cleared) + 1 : 1)));
+    return { cleared, highestUnlocked: highest };
   }
-  function writeCodeProgress(progress) { localStorageSafe(CODE_BREAKER_SAVE_KEY, JSON.stringify(progress)); }
+  function readCodeSnapshot() {
+    try {
+      const raw = localStorage.getItem(CODE_BREAKER_SAVE_KEY);
+      const parsed = raw === null ? null : JSON.parse(raw);
+      if (raw !== null && (!parsed || typeof parsed !== "object" || Array.isArray(parsed))) return { ok: false };
+      return { ok: true, raw, progress: normalizeCodeProgress(parsed) };
+    } catch { return { ok: false }; }
+  }
+  function readCodeProgress() { return readCodeSnapshot().progress || { cleared: [], highestUnlocked: 1 }; }
   function markCodeStageCleared(stage) {
-    const progress = readCodeProgress();
-    if (!progress.cleared.includes(stage)) progress.cleared.push(stage);
+    const snapshot = readCodeSnapshot();
+    if (!snapshot.ok) return { ok: false };
+    const progress = snapshot.progress;
+    const firstClear = !progress.cleared.includes(stage);
+    if (!firstClear) return { ok: true, firstClear: false, progress };
+    progress.cleared.push(stage);
     progress.cleared.sort((a, b) => a - b);
     progress.highestUnlocked = Math.min(CODE_BREAKER_TOTAL_STAGES, Math.max(progress.highestUnlocked, stage + 1));
-    writeCodeProgress(progress);
-    return progress;
+    try {
+      if (localStorage.getItem(CODE_BREAKER_SAVE_KEY) !== snapshot.raw) return { ok: false };
+      const next = JSON.stringify(progress);
+      localStorage.setItem(CODE_BREAKER_SAVE_KEY, next);
+      if (localStorage.getItem(CODE_BREAKER_SAVE_KEY) !== next) return { ok: false };
+      return { ok: true, firstClear: true, progress };
+    } catch { return { ok: false }; }
   }
+  const codeSaveFailure = {
+    en: "Progress could not be confirmed. Please replay this stage.",
+    "zh-Hant": "無法確認進度已儲存，請重新挑戰本關。",
+    "zh-Hans": "无法确认进度已保存，请重新挑战本关。",
+    ja: "進行状況を保存できたか確認できません。もう一度挑戦してください。",
+    ko: "진행 상황의 저장을 확인할 수 없습니다. 이 스테이지를 다시 시도해 주세요.",
+    es: "No se pudo confirmar el guardado. Vuelve a jugar esta etapa.",
+    "pt-BR": "Não foi possível confirmar o salvamento. Jogue esta fase novamente.",
+    fr: "L’enregistrement n’a pas pu être confirmé. Rejouez cette étape.",
+    de: "Das Speichern konnte nicht bestätigt werden. Spiele diese Stufe erneut.",
+    it: "Impossibile confermare il salvataggio. Rigioca questo livello.",
+    ru: "Не удалось подтвердить сохранение. Пройдите этот этап снова.",
+    hi: "प्रगति सहेजे जाने की पुष्टि नहीं हुई। कृपया यह चरण फिर से खेलें।",
+    ar: "تعذر تأكيد حفظ التقدم. يرجى إعادة لعب هذه المرحلة."
+  };
   const mineCopy = {
     inputSupport: L("Mouse + touch", "滑鼠＋觸控", "鼠標＋觸控", "マウス＋タッチ", "마우스 + 터치", "Ratón + táctil", "Mouse + toque", "Souris + tactile", "Maus + Touch", "Mouse + tocco", "Мышь + сенсор", "माउस + टच", "الفأرة + اللمس"),
     flags: L("Flags", "旗標", "标记", "旗", "깃발", "Banderas", "Bandeiras", "Drapeaux", "Markierungen", "Bandiere", "Флаги", "झंडे", "الأعلام"),
@@ -1043,11 +1071,14 @@
     beep(won ? "result.win" : "result.lose");
     const staged = (app.id === "code-breaker" || app.id === "sliding-15") && app.currentStage;
     if (staged) {
-      const stage = Number(app.currentStage); const sliding = app.id === "sliding-15"; const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; const campaignCopy = sliding ? slidingCampaignCopy : codeCampaignCopy; const progress = won ? (sliding ? markSlidingStageCleared(stage) : markCodeStageCleared(stage)) : (sliding ? readSlidingProgress() : readCodeProgress());
-      app.resultTitle.textContent = won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
-      app.resultText.textContent = detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
+      const stage = Number(app.currentStage); const sliding = app.id === "sliding-15"; const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; const campaignCopy = sliding ? slidingCampaignCopy : codeCampaignCopy;
+      const codeSave = !sliding && won ? markCodeStageCleared(stage) : null;
+      const progress = sliding ? (won ? markSlidingStageCleared(stage) : readSlidingProgress()) : (codeSave?.progress || readCodeProgress());
+      if (!sliding) __wpMeasurement.saveSucceeded = Boolean(codeSave?.ok && codeSave.firstClear);
+      app.resultTitle.textContent = !sliding && won && !codeSave?.ok ? t("solved") : won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
+      app.resultText.textContent = !sliding && won && !codeSave?.ok ? (codeSaveFailure[locale] || codeSaveFailure.en) : detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
       (__wpNotifyMeasurement(), app.root.querySelector("#resultStages").hidden = false);
-      const nextStage = app.root.querySelector("#resultNext"); const canNextStage = won && stage < total && stage + 1 <= progress.highestUnlocked;
+      const nextStage = app.root.querySelector("#resultNext"); const canNextStage = won && (sliding || codeSave?.ok) && stage < total && stage + 1 <= progress.highestUnlocked;
       if (sliding) { (__wpNotifyMeasurement(), nextStage.hidden = false); nextStage.disabled = !canNextStage; nextStage.setAttribute("aria-disabled", String(!canNextStage)); }
       else { (__wpNotifyMeasurement(), nextStage.hidden = !canNextStage); nextStage.disabled = false; nextStage.removeAttribute("aria-disabled"); }
       (__wpNotifyMeasurement(), app.root.querySelector("#resultReplay").hidden = false);
@@ -1270,7 +1301,7 @@
       else if (turn >= (stage?.maxTurns || 10)) { render(); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((value) => value + 1).join(" · ")}`); }
       else { guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); }
     }
-    function reset() { secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; turn = 0; hintsUsed = 0; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
+    function reset() { if (stage) { const snapshot = readCodeSnapshot(); __wpMeasurement.stageId = stage.stage; __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.rewardEligible = snapshot.ok && !snapshot.progress.cleared.includes(stage.stage); __wpMeasurement.saveSucceeded = false; } secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; turn = 0; hintsUsed = 0; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() {
