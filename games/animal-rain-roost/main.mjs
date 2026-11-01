@@ -1,5 +1,5 @@
 import {STAGES,EQUIPMENT} from './stages.mjs?v=6';
-import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=6';
+import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=8';
 import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6';
 import {RainScene} from './scene.mjs?v=6';
 import {LocalPractice} from '../../src/game-local-practice.mjs';

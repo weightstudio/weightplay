@@ -21,7 +21,9 @@ export function mergeSave(a,b) {
 }
 export function persistSave(storage,value) {
   const merged=mergeSave(normalizeSave(value),readSave(storage));
-  storage.setItem(SAVE_KEY,JSON.stringify(merged));
+  const serialized=JSON.stringify(merged);
+  storage.setItem(SAVE_KEY,serialized);
+  if(storage.getItem(SAVE_KEY)!==serialized)throw new Error('Unconfirmed progress write');
   return merged;
 }
 export function createRun(stageId,equipment='reed') {
