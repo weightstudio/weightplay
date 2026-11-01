@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-31T19:42:15.019Z",
+  "updatedAt": "2026-11-01T20:07:44.193Z",
   "source": "ga4",
   "metric": "game_start",
   "windowDays": 7,
@@ -7,11 +7,11 @@
     "plays7d": 48,
     "playsTotal": 16937,
     "users7d": 10,
-    "pageViews7d": 175,
-    "pageViewsTotal": 37915,
-    "lobbyVisits7d": 49,
-    "lobbyVisitsTotal": 4903,
-    "lobbyUsers7d": 14
+    "pageViews7d": 173,
+    "pageViewsTotal": 37934,
+    "lobbyVisits7d": 50,
+    "lobbyVisitsTotal": 4906,
+    "lobbyUsers7d": 16
   },
   "games": {
     "animal-peach-oath": {
@@ -90,7 +90,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 6,
+      "pageViews7d": 4,
       "pageViewsTotal": 6,
       "rank7d": null,
       "rankTotal": null
@@ -99,7 +99,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 2,
+      "pageViews7d": 1,
       "pageViewsTotal": 5,
       "rank7d": null,
       "rankTotal": null
@@ -108,7 +108,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 4,
+      "pageViews7d": 3,
       "pageViewsTotal": 12,
       "rank7d": null,
       "rankTotal": null
@@ -495,8 +495,8 @@
       "plays7d": 0,
       "playsTotal": 566,
       "users7d": 0,
-      "pageViews7d": 77,
-      "pageViewsTotal": 1349,
+      "pageViews7d": 83,
+      "pageViewsTotal": 1368,
       "rank7d": null,
       "rankTotal": 6
     },
@@ -1458,7 +1458,7 @@
       "plays7d": 0,
       "playsTotal": 7,
       "users7d": 0,
-      "pageViews7d": 1,
+      "pageViews7d": 0,
       "pageViewsTotal": 65,
       "rank7d": null,
       "rankTotal": 107
@@ -1620,7 +1620,7 @@
       "plays7d": 0,
       "playsTotal": 1341,
       "users7d": 0,
-      "pageViews7d": 2,
+      "pageViews7d": 1,
       "pageViewsTotal": 1366,
       "rank7d": null,
       "rankTotal": 2
@@ -1764,7 +1764,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 2,
+      "pageViews7d": 0,
       "pageViewsTotal": 2,
       "rank7d": null,
       "rankTotal": null
