@@ -15,7 +15,7 @@ const measurement={screen:'main',roundKey:null,started:false,ended:false,outcome
 const readMeasurement=()=>({...measurement,paused:document.hidden||!!modal||settingsPaused||tutorialPaused||suspended,node:document.body,activityMode:'input',idleSeconds:300});
 function notifyMeasurement(){try{window.WonderAnalytics?.game?.observeState(readMeasurement)}catch{/* Optional shared telemetry. */}}
 window.addEventListener('weightplay:analytics-ready',notifyMeasurement);notifyMeasurement();
-function storedStageCleared(index){try{const raw=localStorage.getItem(SAVE_KEY);if(raw===null)return false;const value=JSON.parse(raw);if(!value||!Array.isArray(value.stars))return null;return Boolean(value.stars[index]);}catch{return null;}}
+function storedStageCleared(index){try{const raw=localStorage.getItem(SAVE_KEY);if(raw===null)return false;const value=JSON.parse(raw),star=value?.stars?.[index];if(!value||!Array.isArray(value.stars)||!Number.isInteger(star)||star<0||star>3)return null;return star>0;}catch{return null;}}
 const abort=new AbortController(),flights=new Set(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const listen=(node,type,fn,options={})=>node.addEventListener(type,fn,{...options,signal:abort.signal});
 const t=key=>COPY[locale][key];
@@ -160,7 +160,7 @@ async function startBattle(index){
     selected=Math.max(0,Math.min(29,index));run=createRun(selected+1,save.equipment);scene.reset();settling=0;
     showScreen('battle');
     const stored=storedStageCleared(selected);window.WeightPlayCastle?.dismissRewardNotice?.(GAME);
-    Object.assign(measurement,{screen:'battle',roundKey:{},started:true,ended:false,outcome:'abandon',stageId:selected+1,rewardEligible:!everPractice&&!save.stars[selected]&&stored===false,saveSucceeded:false});notifyMeasurement();
+    Object.assign(measurement,{screen:'battle',roundKey:{},started:true,ended:false,outcome:'abandon',stageId:selected+1,rewardEligible:!everPractice&&stored===false,saveSucceeded:false});notifyMeasurement();
     renderHUD();feedback(t('ready'));play('game.start');
     $('rainCanvas').focus({preventScroll:true});
     window.dispatchEvent(new CustomEvent('weightplay:battle-open',{detail:{gameId:GAME}}));
