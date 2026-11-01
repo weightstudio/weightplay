@@ -1,11 +1,14 @@
 import {STAGES,EQUIPMENT} from './stages.mjs?v=6';
-import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=8';
+import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9';
 import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6';
 import {RainScene} from './scene.mjs?v=6';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
 
 const $=id=>document.getElementById(id),GAME='animal-rain-roost';
+const lanternUncertainCopy={en:'Purchase could not be confirmed. Reload to check before trying again.', 'zh-Hant':'無法確認購買結果，請重新載入並確認後再試。', 'zh-Hans':'无法确认购买结果，请重新加载并确认后再试。',ja:'購入を確認できません。再読み込みして確認してください。',ko:'구매를 확인할 수 없어요. 새로고침하여 확인하세요.',es:'No se pudo confirmar la compra. Recarga y comprueba antes de volver a intentarlo.', 'pt-BR':'Não foi possível confirmar a compra. Recarregue e confira antes de tentar novamente.',fr:'Achat non confirmé. Rechargez et vérifiez avant de réessayer.',de:'Kauf konnte nicht bestätigt werden. Lade neu und prüfe ihn vor einem erneuten Versuch.',it:'Acquisto non confermato. Ricarica e controlla prima di riprovare.',ru:'Не удалось подтвердить покупку. Обновите страницу и проверьте её перед повтором.',hi:'खरीद की पुष्टि नहीं हुई। दोबारा प्रयास से पहले पेज पुनः खोलकर जाँचें।',ar:'تعذر تأكيد الشراء. أعد تحميل الصفحة وتحقق قبل المحاولة مجددًا.'};
 let locale=detectLocale(),save=readSave(localStorage),screen='main',tab='journey',selected=0,run=null,raf=0,last=0,settling=0;
+const lanternRecovery=recoverLantern(localStorage,window.WeightPlayWallet,save);save=lanternRecovery.save;
+let purchaseUncertain=lanternRecovery.blocked;
 let scene,frame,rail,modal=null,previousFocus=null,settingsPaused=false,tutorialPaused=false,suspended=false,starting=false,buying=false,practice=false,everPractice=false,disposed=false;
 let tutorialTrigger=null,feedbackUntil=0,keyboard=new Set(),pointer=null,generation=0,saveFailed=false;
 const measurement={screen:'main',roundKey:null,started:false,ended:false,outcome:'abandon',stageId:null,stageIdAuthoritative:true,rewardEligible:false,saveSucceeded:false};
@@ -167,7 +170,7 @@ function finish(result){
   resetInputs();settling=.7;
   const wasCleared=cleared(),prior=storedStageCleared(selected);saveFailed=false;
   if(result.win&&!everPractice){
-    try{save=commitResult(localStorage,save,run)}
+    try{if(purchaseUncertain)throw Error('Purchase needs recovery');save=commitResult(localStorage,save,run)}
     catch{
       saveFailed=true;const next=normalizeSave(save);next.stars[selected]=Math.max(next.stars[selected],result.stars);next.bests[selected]=Math.max(next.bests[selected],result.score);next.legacyBest=Math.max(next.legacyBest,run.caught);save=normalizeSave(next);
     }
@@ -197,29 +200,31 @@ function renderGear(){
     if(!card){card=document.createElement('article');card.className='gear-card';card.dataset.gear=id;card.innerHTML='<h3></h3><p></p><button type="button"></button>';cards.append(card);listen(card.querySelector('button'),'click',()=>equip(id));}
     card.querySelector('h3').textContent=t(id);card.querySelector('p').textContent=t(`${id}Text`);
     const locked=EQUIPMENT[id].unlock>cleared(),button=card.querySelector('button');
-    button.disabled=locked||save.equipment===id||everPractice;button.textContent=locked?`${t('locked')} · ${EQUIPMENT[id].unlock}`:save.equipment===id?t('equipped'):t('equip');card.setAttribute('aria-current',String(save.equipment===id));
+    button.disabled=locked||save.equipment===id||everPractice||purchaseUncertain;button.textContent=locked?`${t('locked')} · ${EQUIPMENT[id].unlock}`:save.equipment===id?t('equipped'):t('equip');card.setAttribute('aria-current',String(save.equipment===id));
   }
   let diamonds=0;try{diamonds=window.WeightPlayWallet.read().diamonds}catch{}
   $('walletBalance').textContent=`${t('balance')} ${diamonds}`;
   $('lanternButton').textContent=save.lantern?t(save.lanternOn?'disable':'enable'):`${t('buy')} · ${LANTERN_PRICE}`;
-  $('lanternButton').disabled=everPractice||buying;
+  $('lanternButton').disabled=everPractice||buying||purchaseUncertain;
+  if(purchaseUncertain)$('nestFeedback').textContent=lanternUncertainCopy[locale]||lanternUncertainCopy.en;
 }
 function equip(id){
-  if(everPractice||EQUIPMENT[id].unlock>cleared())return;
+  if(everPractice||purchaseUncertain||EQUIPMENT[id].unlock>cleared())return;
   try{save=persistSave(localStorage,{...save,equipment:id});$('nestFeedback').textContent=`${t('equipped')} · ${t(id)}`;play('reward.collect');}
   catch{$('nestFeedback').textContent=t('saveError');play('feedback.error');}
   renderGear();
 }
 async function purchase(){
-  if(buying||everPractice)return;buying=true;$('confirmBuy').disabled=true;$('cancelBuy').disabled=true;
+  if(buying||everPractice||purchaseUncertain)return;buying=true;$('confirmBuy').disabled=true;$('cancelBuy').disabled=true;
   try{
     if(!navigator.locks)throw Error('Storage lock unavailable');
     const result=await navigator.locks.request('weightplay-wallet',async ()=>(await buyLantern(localStorage,window.WeightPlayWallet)));
     save=result.save;
+    if(result.status==='uncertain')purchaseUncertain=true;
     if(['bought','owned'].includes(result.status)){closeModal();$('nestFeedback').textContent=t(result.status==='bought'?'purchased':'owned');if(result.status==='bought')play('shop.purchase');}
-    else{$('purchaseFeedback').textContent=t(result.status==='funds'?'funds':'saveError');play('feedback.error');}
-  }catch{$('purchaseFeedback').textContent=t('saveError');play('feedback.error');}
-  finally{buying=false;$('confirmBuy').disabled=false;$('cancelBuy').disabled=false;renderGear();}
+    else{$('purchaseFeedback').textContent=purchaseUncertain?(lanternUncertainCopy[locale]||lanternUncertainCopy.en):t(result.status==='funds'?'funds':'saveError');play('feedback.error');}
+  }catch{purchaseUncertain=true;$('purchaseFeedback').textContent=lanternUncertainCopy[locale]||lanternUncertainCopy.en;play('feedback.error');}
+  finally{buying=false;$('confirmBuy').disabled=purchaseUncertain;$('cancelBuy').disabled=false;renderGear();}
 }
 function pauseForVisibility(){
   resetInputs();cancelAnimationFrame(raf);raf=0;last=0;
@@ -252,7 +257,7 @@ listen($('resultStages'),'click',()=>{selected=Math.min(29,save.unlocked-1);show
 listen($('replayButton'),'click',()=>startBattle(selected));
 listen($('nextButton'),'click',()=>{if(run?.result?.win&&selected<29)startBattle(selected+1)});
 listen($('lanternButton'),'click',()=>{
-  if(everPractice)return;
+  if(everPractice||purchaseUncertain)return;
   if(save.lantern){try{save=persistSave(localStorage,{...save,lanternOn:!save.lanternOn});renderGear()}catch{$('nestFeedback').textContent=t('saveError')}return;}
   $('purchaseFeedback').textContent='';openModal($('purchaseView'),$('cancelBuy'));
 });

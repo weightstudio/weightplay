@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "tideweave",
       "duskbloom",
       "dustwake-depot",
       "hearthloop",
@@ -90,6 +91,16 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "tideweave", audience: "general", status: "planned", internalOnly: true,
+      href: "games/tideweave/", internalTrial: "index.html?preview=1",
+      title: { __localizedExact: true, en: "Tideweave", "zh-Hant": "潮島織橋", "zh-Hans": "潮岛织桥", ja: "潮の島つなぎ", ko: "물결 섬다리", es: "Puentes de Marea", "pt-BR": "Pontes da Maré", fr: "Les ponts des marées", de: "Gezeitenbrücken", it: "Ponti di marea", ru: "Мосты прилива", hi: "ज्वार के सेतु", ar: "جسور المد" },
+      type: { en: "Bridge logic puzzle", "zh-Hant": "連橋邏輯解謎", "zh-Hans": "连桥逻辑解谜", ja: "橋つなぎパズル", ko: "다리 연결 논리 퍼즐", es: "Puzle de puentes", "pt-BR": "Quebra-cabeça de pontes", fr: "Énigme de ponts", de: "Brücken-Logikrätsel", it: "Rompicapo di ponti", ru: "Головоломка с мостами", hi: "सेतु तर्क पहेली", ar: "لغز الجسور المنطقي" },
+      description: { en: "Weave a connected island network across 60 original bridge puzzles with Nori.", "zh-Hant": "與 Nori 推敲橋數，連起60片原創潮島群。", "zh-Hans": "与 Nori 推敲桥数，连起60片原创潮岛群。", ja: "ノリと橋の数を考え、60の島々をつなごう。", ko: "노리와 다리 수를 추리하며 60개의 섬 지도를 연결해요.", es: "Conecta las islas con Nori en 60 puzles originales de puentes.", "pt-BR": "Conecte as ilhas com Nori em 60 desafios originais de pontes.", fr: "Reliez les îles avec Nori dans 60 énigmes de ponts originales.", de: "Verbinde mit Nori die Inseln in 60 originellen Brückenrätseln.", it: "Collega le isole con Nori in 60 rompicapi originali di ponti.", ru: "Соедините острова с Нори в 60 оригинальных головоломках.", hi: "नोरी के साथ 60 मौलिक सेतु पहेलियों में द्वीप जोड़ें।", ar: "صل الجزر مع نوري عبر 60 لغز جسور أصليًا." },
+      categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Focus", "Problem Solving"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
+      art: { kind: "image", background: "games/tideweave/assets/cover.webp", hideHero: true },
+      meta: { en: ["60 stages", "Free Undo and Hint"], "zh-Hant": ["60關", "免費撤回與提示"], "zh-Hans": ["60关", "免费撤回与提示"], ja: ["60ステージ", "無料の戻す・ヒント"], ko: ["60개 스테이지", "무료 되돌리기와 힌트"], es: ["60 etapas", "Deshacer y pistas gratis"], "pt-BR": ["60 fases", "Desfazer e dicas grátis"], fr: ["60 niveaux", "Annulation et indices gratuits"], de: ["60 Stufen", "Rückgängig und Hinweise gratis"], it: ["60 livelli", "Annulla e indizi gratuiti"], ru: ["60 этапов", "Бесплатные отмена и подсказки"], hi: ["60 चरण", "मुफ़्त वापसी और संकेत"], ar: ["60 مرحلة", "تراجع وتلميحات مجانية"] }
+    },
     {
       id: "duskbloom", audience: "general", status: "planned", internalOnly: true,
       href: "games/duskbloom/", internalTrial: "index.html?preview=1",

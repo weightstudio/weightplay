@@ -2,6 +2,7 @@ import {STAGES,EQUIPMENT} from './stages.mjs?v=6';
 export const SAVE_KEY='weightplay-rain-roost-v6';
 export const LEGACY_KEY='weightplay-rain-roost-best';
 export const LANTERN_PRICE=15;
+export const LANTERN_JOURNAL=SAVE_KEY+'-lantern-purchase';
 const integer=(v,min,max)=>Math.min(max,Math.max(min,Number.isFinite(Number(v))?Math.floor(Number(v)):min));
 export function normalizeSave(value,legacy=0) {
   const v=value&&typeof value==='object'?value:{};
@@ -65,21 +66,44 @@ export function commitResult(storage,save,run) {
   next.legacyBest=Math.max(next.legacyBest,run.caught);
   return persistSave(storage,next);
 }
-// The caller holds a Web Lock and disables confirmation until this transaction ends.
-// Debit only the shared wallet; rollback the actual debit if game persistence fails.
+function confirmedWrite(storage,key,value,previous){
+  try{if(value===null)storage.removeItem(key);else storage.setItem(key,value)}catch{}
+  try{const actual=storage.getItem(key);return actual===value?'confirmed':actual===previous?'failed':'uncertain'}catch{return 'uncertain'}
+}
+function strictSave(storage){
+  const raw=storage.getItem(SAVE_KEY),parsed=raw===null?null:JSON.parse(raw);
+  if(raw!==null&&(!parsed||typeof parsed!=='object'||Array.isArray(parsed)))throw Error('Invalid save');
+  return {raw,save:normalizeSave(parsed,Number(storage.getItem(LEGACY_KEY))||0)};
+}
+export function recoverLantern(storage,wallet,initial){
+  try{
+    const receiptRaw=storage.getItem(LANTERN_JOURNAL);if(receiptRaw===null)return {save:initial,blocked:false};
+    const receipt=JSON.parse(receiptRaw);if(!Number.isFinite(receipt?.before)||receipt.before<LANTERN_PRICE)return {save:initial,blocked:true};
+    const {raw,save}=strictSave(storage);
+    if(save.lantern){try{storage.removeItem(LANTERN_JOURNAL)}catch{}return {save,blocked:false}}
+    const balance=wallet.read().diamonds;
+    if(balance===receipt.before)return {save,blocked:confirmedWrite(storage,LANTERN_JOURNAL,null,receiptRaw)!=='confirmed'};
+    if(balance!==receipt.before-LANTERN_PRICE)return {save,blocked:true};
+    const next=normalizeSave({...save,lantern:true,lanternOn:true}),serialized=JSON.stringify(next);
+    if(confirmedWrite(storage,SAVE_KEY,serialized,raw)!=='confirmed')return {save,blocked:true};
+    try{storage.removeItem(LANTERN_JOURNAL)}catch{}return {save:next,blocked:false};
+  }catch{return {save:initial,blocked:true}}
+}
 export function buyLantern(storage,wallet) {
     if (wallet?.withTransaction && !wallet.inTransaction()) return wallet.withTransaction("animal-rain-roost:model.mjs:buyLantern", () => buyLantern(...arguments));
-
-  const current=readSave(storage);if(current.lantern)return {status:'owned',save:current};
-  if(!wallet||wallet.read().diamonds<LANTERN_PRICE)return {status:'funds',save:current};
-  let debited=false;
+  let current=readSave(storage);
   try {
-    if(!wallet.spendDiamonds(LANTERN_PRICE))return {status:'funds',save:current};
-    debited=true;
-    const saved=persistSave(storage,{...current,lantern:true,lanternOn:true});
-    return {status:'bought',save:saved};
-  }catch(error){
-    if(debited){try{wallet.addDiamonds(LANTERN_PRICE)}catch(rollbackError){throw new AggregateError([error,rollbackError],'WALLET_ROLLBACK_FAILED')}}
-    return {status:'storage',save:current};
-  }
+    const recovered=recoverLantern(storage,wallet,current);current=recovered.save;
+    if(recovered.blocked)return {status:'uncertain',save:current};
+    const snapshot=strictSave(storage);current=snapshot.save;if(current.lantern)return {status:'owned',save:current};
+    const before=wallet.read().diamonds;if(!Number.isFinite(before))return {status:'uncertain',save:current};
+    if(before<LANTERN_PRICE)return {status:'funds',save:current};
+    const receipt=JSON.stringify({before}),status=confirmedWrite(storage,LANTERN_JOURNAL,receipt,null);
+    if(status!=='confirmed')return {status:status==='failed'?'storage':'uncertain',save:current};
+    let spent;try{spent=wallet.spendDiamonds(LANTERN_PRICE)}catch{return {status:'uncertain',save:current}}
+    if(!spent)return {status:confirmedWrite(storage,LANTERN_JOURNAL,null,receipt)==='confirmed'?'funds':'uncertain',save:current};
+    const next=normalizeSave({...current,lantern:true,lanternOn:true});
+    if(confirmedWrite(storage,SAVE_KEY,JSON.stringify(next),snapshot.raw)!=='confirmed')return {status:'uncertain',save:current};
+    try{storage.removeItem(LANTERN_JOURNAL)}catch{}return {status:'bought',save:next};
+  }catch{return {status:'uncertain',save:current}}
 }
