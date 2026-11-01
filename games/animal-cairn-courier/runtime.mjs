@@ -1,5 +1,5 @@
 import {createCairnScene} from './scene.mjs?v=20261027-cairn-pass1';
-import {purchaseFinish} from './finishes.mjs?v=20261023-cairn-v12';
+import {purchaseFinish,writeConfirmed} from './finishes.mjs?v=20261101-cairn-v15';
 import {MOUNTAIN_PASS,passContract,passValidate,passNext} from './mountain-pass.mjs?v=20261027-cairn-pass2';
 import {PASS_COPY} from './mountain-pass-copy.mjs?v=20261027-cairn-pass2';
 import {LocalPractice} from '../../src/game-local-practice.mjs';
@@ -220,23 +220,25 @@ function renderFinishes(){
     const label=document.createElement('strong');label.textContent=text(name);row.append(label);
     const b=document.createElement('button');b.type='button';b.textContent=saved.finish===name?'✓ '+text('owned'):owned?text('equip'):name==='alpine'?text('earned'):text('purchase');
     if(!owned&&name==='aurora'){const diamond=document.createElement('img');diamond.src='/assets/weightplay-diamond.svg';diamond.alt=text('balance');diamond.width=18;diamond.height=18;b.prepend(diamond);}
-    b.disabled=saved.finish===name||(!owned&&name==='alpine');b.onclick=()=>chooseFinish(name);row.append(b);$('finishChoices').append(row);
+    b.disabled=finishWritesUncertain||saved.finish===name||(!owned&&name==='alpine');b.onclick=()=>chooseFinish(name);row.append(b);$('finishChoices').append(row);
   }
 }
-let purchasing=false;
+const finishUncertainCopy={en:'Purchase could not be confirmed. Reload to check before trying again.', 'zh-Hant':'無法確認購買結果，請重新載入並確認後再試。', 'zh-Hans':'无法确认购买结果，请重新加载并确认后再试。',ja:'購入を確認できません。再読み込みして確認してください。',ko:'구매를 확인할 수 없어요. 새로고침하여 확인하세요.',es:'No se pudo confirmar la compra. Recarga y comprueba antes de volver a intentarlo.', 'pt-BR':'Não foi possível confirmar a compra. Recarregue e confira antes de tentar novamente.',fr:'Achat non confirmé. Rechargez et vérifiez avant de réessayer.',de:'Kauf konnte nicht bestätigt werden. Lade neu und prüfe ihn vor einem erneuten Versuch.',it:'Acquisto non confermato. Ricarica e controlla prima di riprovare.',ru:'Не удалось подтвердить покупку. Обновите страницу и проверьте её перед повтором.',hi:'खरीद की पुष्टि नहीं हुई। दोबारा प्रयास से पहले पेज पुनः खोलकर जाँचें।',ar:'تعذر تأكيد الشراء. أعد تحميل الصفحة وتحقق قبل المحاولة مجددًا.'};
+let purchasing=false,finishWritesUncertain=false;
 async function chooseFinish(name){
-  if(practiceRequested||purchasing||state.screen!=='stage')return;
+  if(practiceRequested||purchasing||finishWritesUncertain||state.screen!=='stage')return;
   const owned=name==='moss'||saved.finishes.includes(name)||(name==='alpine'&&solved.size>=10);
   if(!owned&&name!=='aurora')return;
   purchasing=true;
   try{
     const result=(await purchaseFinish({saved,solved:[...solved],name,wallet:window.WeightPlayWallet,
-      write:value=>localStorage.setItem(STORE,JSON.stringify({...value,solved:[...solved],updatedAt:new Date().toISOString()}))}));
+      write:value=>writeConfirmed(localStorage,STORE,{...value,solved:[...solved],updatedAt:new Date().toISOString()})}));
     if(result.status==='insufficient'){$('finishStatus').textContent=text('needDiamonds');cue('feedback.error');return;}
     saved=result.saved;$('finishStatus').textContent=text('owned')+' · '+text(name);cue(owned?'ui.click':'reward.unlock');
     scene?.update(state.stack,{skin:name});renderFinishes();flash($('finishChoices'));
-  }catch{
-    $('finishStatus').textContent=text('saveError');cue('feedback.error');
+  }catch(error){
+    if(error?.uncertain){finishWritesUncertain=true;renderFinishes();}
+    $('finishStatus').textContent=error?.uncertain?(finishUncertainCopy[state.locale]||finishUncertainCopy.en):text('saveError');cue('feedback.error');
   }finally{purchasing=false;}
 }
 function applyLocale(){

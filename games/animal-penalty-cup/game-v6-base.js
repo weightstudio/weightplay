@@ -20,7 +20,7 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-penalty-cup";
-  const GAME_VERSION = 12;
+  const GAME_VERSION = 13;
   const INTERFACE_VERSION = 9;
   const LOCALES = ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const LOCALE_LABELS = {en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
@@ -83,7 +83,22 @@
   function t(key,vars={}){if(key==="loseCopy"&&match?.defendChoice===null)key="lateLossCopy";let value=dictionary()[key]??window.ANIMAL_PENALTY_LOCALES?.en?.[key]??key;Object.entries(vars).forEach(([name,item])=>{value=String(value).replaceAll(`{${name}}`,String(item))});return value}
   function localizedCampaign(key,index){return dictionary()[key]?.[index]??window.ANIMAL_PENALTY_LOCALES.en[key]?.[index]??""}
   function opponentName(index){return lang==="en"?OPPONENTS[index]:t("teamName",{n:index+1})}
-  function persist(){return safeStorage.set(SAVE_KEY,JSON.stringify(save))}
+  let saveWriteUncertain = false;
+  function persist(){return !saveWriteUncertain && safeStorage.set(SAVE_KEY,JSON.stringify(save))}
+  // Keep the previous in-memory progression unless the exact candidate is read back.
+  // A changed or unreadable value is ambiguous: avoid subsequent writes until reload.
+  function persistClear(candidate){
+    if(saveWriteUncertain)return false;
+    let before;
+    try{before=localStorage.getItem(SAVE_KEY)}catch{saveWriteUncertain=true;return false}
+    const encoded=JSON.stringify(candidate);
+    try{localStorage.setItem(SAVE_KEY,encoded)}catch{}
+    let after;
+    try{after=localStorage.getItem(SAVE_KEY)}catch{saveWriteUncertain=true;return false}
+    if(after===encoded){save=candidate;return true}
+    if(after!==before)saveWriteUncertain=true;
+    return false;
+  }
   function noteInput(event){if(event?.pointerType)inputClass=event.pointerType;else if(event?.type?.startsWith("key"))inputClass="keyboard";else inputClass="mouse"}
   function viewportBucket(){const w=innerWidth,h=innerHeight;if(h<=430)return"short-landscape";if(w<=480)return"phone";if(w<=920)return h>=w?"tablet-portrait":"tablet-landscape";return"desktop"}
   function track(name,data={}){try{const allowedOutcome=["goal","saved","wide","conceded","late","win","loss"];const payload={game_id:GAME_ID,game_version:GAME_VERSION,interface_version:INTERFACE_VERSION,locale:lang,viewport_bucket:viewportBucket(),input_class:inputClass,match:Math.max(1,Math.min(30,(match?.stage??selectedStage)+1))};if(allowedOutcome.includes(data.outcome))payload.outcome=data.outcome;if(Number.isInteger(data.zone))payload.zone=Math.max(1,Math.min(6,data.zone+1));if(["low","good","perfect","high"].includes(data.power))payload.power=data.power;if(Number.isInteger(data.round))payload.round=Math.max(1,Math.min(8,data.round));if(Number.isInteger(data.stars))payload.stars=Math.max(0,Math.min(3,data.stars));window.WeightPlayAnalytics?.track?.(name,payload);window.WonderAnalytics?.track?.(name,payload)}catch{}}
@@ -154,8 +169,8 @@
   }
   function finishPair(){match.round++;const regulationDone=match.round>=5,decided=regulationDone&&match.player!==match.rival,suddenDone=match.round>=8;if(decided||suddenDone){finishMatch(match.player>match.rival,!decided);return}match.phase="shoot-ready";resetActors();$("battleRound").textContent=`${t("match",{n:match.stage+1})} · ${t("round",{n:match.round+1})}`;$("turnLabel").textContent=t("shoot");setStatus("shootHint");refreshZoneAvailability()}
   function finishMatch(win,draw=false){
-    cancelTimer();match.ended=true;match.phase="result";match.result=win?"win":"loss";const diff=match.player-match.rival,stars=win?(diff>=3?3:diff>=2?2:1):0;let stored=false;if(win){save.completed[match.stage]=true;save.stars[match.stage]=Math.max(save.stars[match.stage],stars);save.bestDiff[match.stage]=save.bestDiff[match.stage]===null?diff:Math.max(save.bestDiff[match.stage],diff);save.unlocked=Math.max(save.unlocked,Math.min(30,match.stage+2));stored=persist() && readSave().completed[match.stage]}
-    if(draw)match.result="draw";$("resultKicker").textContent=t("match",{n:match.stage+1});$("resultTitle").textContent=t(draw?"drawResult":win?"winResult":"loseResult");$("resultText").textContent=t(draw?"drawCopy":win&&match.stage===29?"finalCopy":win?"winCopy":"loseCopy",{opponent:opponentName(match.stage)});$("resultStars").textContent=win?"★".repeat(stars)+"☆".repeat(3-stars):"—";$("resultDiff").textContent=diff>0?`+${diff}`:String(diff);$("nextBtn").disabled=!win||match.stage>=29;openModal("resultPanel",win&&match.stage<29?"nextBtn":win?"resultStagesBtn":"replayBtn");track("match_result",{outcome:win?"win":draw?"draw":"loss",stars});
+    cancelTimer();match.ended=true;match.phase="result";match.result=win?"win":"loss";const diff=match.player-match.rival,stars=win?(diff>=3?3:diff>=2?2:1):0;let stored=false;if(win){const candidate=JSON.parse(JSON.stringify(save));candidate.completed[match.stage]=true;candidate.stars[match.stage]=Math.max(candidate.stars[match.stage],stars);candidate.bestDiff[match.stage]=candidate.bestDiff[match.stage]===null?diff:Math.max(candidate.bestDiff[match.stage],diff);candidate.unlocked=Math.max(candidate.unlocked,Math.min(30,match.stage+2));stored=persistClear(candidate)}
+    if(draw)match.result="draw";$("resultKicker").textContent=t("match",{n:match.stage+1});$("resultTitle").textContent=t(draw?"drawResult":win?"winResult":"loseResult");$("resultText").textContent=win&&!stored?t(saveWriteUncertain?"saveUncertain":"saveFailed"):t(draw?"drawCopy":win&&match.stage===29?"finalCopy":win?"winCopy":"loseCopy",{opponent:opponentName(match.stage)});$("resultStars").textContent=win?"★".repeat(stars)+"☆".repeat(3-stars):"—";$("resultDiff").textContent=diff>0?`+${diff}`:String(diff);$("nextBtn").disabled=!win||!stored||match.stage>=29;$("replayBtn").disabled=saveWriteUncertain;openModal("resultPanel",win&&stored&&match.stage<29?"nextBtn":saveWriteUncertain||win&&stored?"resultStagesBtn":"replayBtn");track("match_result",{outcome:win?"win":draw?"draw":"loss",stars});
 
     __wpMeasurement.saveSucceeded = Boolean(win && stored); __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }
