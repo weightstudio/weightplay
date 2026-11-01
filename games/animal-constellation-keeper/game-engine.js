@@ -86,6 +86,7 @@
   const PROGRESS_KEY = "weightplay-animal-constellation-keeper-progress-v5";
   const BEST_KEY = "weightplay-animal-constellation-keeper-best-v5";
   const readProgress = () => { try { const candidates = [localStorage.getItem(PROGRESS_KEY), localStorage.getItem("weightplay-animal-constellation-keeper-progress-v4")].filter((candidate) => candidate !== null); const value = candidates.map(Number).find((candidate) => Number.isFinite(candidate) && candidate >= 0); return Math.min(maps.length, Math.max(0, value ?? 0)); } catch (_) { return 0; } };
+  const readProgressStrict = () => { try { for(const key of [PROGRESS_KEY,"weightplay-animal-constellation-keeper-progress-v4"]) { const raw=localStorage.getItem(key); if(raw===null)continue; if(!/^\d+$/.test(raw)||!Number.isSafeInteger(Number(raw)))return null; return Math.min(maps.length,Number(raw)); } return 0; } catch { return null; } };
   const MASTERY_KEY = "weightplay-animal-constellation-keeper-mastery-v10";
   const readMastery = () => { try { const value = JSON.parse(localStorage.getItem(MASTERY_KEY)); return Array.from({ length: maps.length }, (_, index) => Number.isInteger(value?.[index]) && value[index] > 0 ? value[index] : 0); } catch { return Array(maps.length).fill(0); } };
   const mastery = readMastery();
@@ -110,7 +111,7 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v13", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v14", interface_version: 9, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
   const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();
@@ -121,7 +122,7 @@
 };
   const readBest = () => { try { const value = Number(localStorage.getItem(BEST_KEY) || localStorage.getItem("weightplay-animal-constellation-keeper-best-v4")); return Number.isFinite(value) && value >= maps.length ? value : null; } catch (_) { return null; } };
   const saveBest = () => { if (practiceRequested||!mastery.every(value => value > 0)) return; try { const total = mastery.reduce((sum, value) => sum + value, 0); const old = readBest(); if (!old || old < maps.length || total < old) localStorage.setItem(BEST_KEY, String(total)); } catch (_) {} };
-  const saveProgress = () => { if(practiceRequested)return false;try { state.completed=Math.max(state.completed,readProgress()); localStorage.setItem(PROGRESS_KEY, String(state.completed)); return Number(localStorage.getItem(PROGRESS_KEY)) >= state.map+1; } catch (_) { return false; } };
+  const saveProgress = () => { if(practiceRequested)return false;try { const prior=readProgressStrict();if(prior===null)return false;state.completed=Math.max(state.completed,prior); localStorage.setItem(PROGRESS_KEY, String(state.completed)); const raw=localStorage.getItem(PROGRESS_KEY);return raw!==null&&/^\d+$/.test(raw)&&Number(raw)>=state.map+1; } catch (_) { return false; } };
   const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind;placePracticeBadge();stellar.enter(node); };
   const mirrorText=()=>mirrorCopy?.[state.locale]||mirrorCopy?.en;
   const renderCheckCount=()=>{const full=t('checksLabel',{count:state.mapChecks}),short={es:'Intentos: {count}','pt-BR':'Tentativas: {count}',fr:'Essais : {count}',ar:'فحوص: {count}'};const node=$('checkCount');node.textContent=practiceEnabled&&short[state.locale]?short[state.locale].replace('{count}',String(state.mapChecks)):full;node.setAttribute('aria-label',full);};
@@ -319,7 +320,7 @@
   const openStage = (preserveSelection = false) => { if (!preserveSelection) stageSelectionIndex = practiceEnabled?Math.max(30,state.map):Math.min(state.completed, maps.length - 1); show("stage"); renderStages(); };
   function requestMap(index){window.WeightPlayCastle?.dismissRewardNotice("animal-constellation-keeper");if(practiceRequested)return practiceAdapter?.challenge('animal-constellation-keeper',String(index+1));return startMap(index);}
   const startMap = (index) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length||(practiceRequested&&(!practiceEnabled||index<30))) return; state.map = index; stageSelectionIndex = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {};state.lensUsed=false;state.lensEliminated=''; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } show("battle"); renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
-    __wpMeasurement.stageId=state.map+1; __wpMeasurement.rewardEligible=state.map>=state.completed && state.map>=readProgress(); __wpMeasurement.saveSucceeded=false;
+    const savedProgress=readProgressStrict();__wpMeasurement.stageId=state.map+1; __wpMeasurement.rewardEligible=savedProgress!==null&&state.map>=savedProgress; __wpMeasurement.saveSucceeded=false;
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
   const chooseOption = (id) => {
