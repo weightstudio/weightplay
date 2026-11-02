@@ -220,6 +220,17 @@
     ["nori-sandworks", "Puzzle", "Spatial Planning"],
     ["meadow-touchdown", "Sports", "Action", "Strategy"],
     ["smallwood-lives", "Simulation"],
+    ["tideweave", "Puzzle", "Connection", "Deduction"],
+    ["duskbloom", "Puzzle", "Deduction", "Pattern Recognition"],
+    ["hearthloop", "Board", "Strategy"],
+    ["dustwake-depot", "Simulation", "Route Planning"],
+    ["rux-salvage-yard", "Puzzle", "Physics", "Aim"],
+    ["lantern-stride", "Racing", "Reaction", "Timing"],
+    ["orbit-menders", "Tower Defense", "Action", "Aim"],
+    ["lantern-lasso", "Puzzle", "Aim", "Spatial Planning"],
+    ["mossfold", "Puzzle", "Spatial Planning", "Sequencing"],
+    ["glowspool", "Puzzle", "Route Planning", "Spatial Planning"],
+    ["sunmane-journey", "RPG", "Action", "Adventure"],
   ];
 
   const byGame = Object.create(null);

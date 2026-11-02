@@ -83,6 +83,7 @@ window.WONDER_LOBBY = {
       "tripeaks-solitaire", "golf-solitaire", "yukon-solitaire",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
       "checkers", "tic-tac-toe", "peg-solitaire", "reversi", "four-in-a-row", "chess", "mahjong-solitaire",
+      "hearthloop",
     ],
     // Third General hall: short, timely, original games. These IDs also stay in
     // generalGameIds so the Kids catalog's non-General rule excludes them.
@@ -8211,7 +8212,7 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
     statusText: {en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待"},
     type: {en:"Exploration action RPG","zh-Hant":"探索動作角色扮演"},
     description: {en:"Explore distinct regions, shape your build and restore the sunveins. The launch character is Leo, a lion swordsman.","zh-Hant":"探索各地、配出自己的冒險流派；首發角色為獅子劍士 Leo，後續角色可擴充。"},
-    categories: ["Animal Games", "Adventure", "Strategy"],
+    categories: ["Animal Games", "RPG", "Action", "Adventure"],
     skills: ["Reaction", "Focus", "Problem Solving"], ages: ["12", "family"],
     art: {kind:"image",background:"games/sunmane-journey/assets/cover.webp",hideHero:true}
   });
