@@ -92,8 +92,8 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "tideweave", audience: "general", status: "planned", internalOnly: true,
-      href: "games/tideweave/", internalTrial: "index.html?preview=1",
+      id: "tideweave", audience: "general", status: "playable", previewVideo: "assets/previews/tideweave-battle.webm",
+      href: "games/tideweave/",
       title: { __localizedExact: true, en: "Tideweave", "zh-Hant": "潮島織橋", "zh-Hans": "潮岛织桥", ja: "潮の島つなぎ", ko: "물결 섬다리", es: "Puentes de Marea", "pt-BR": "Pontes da Maré", fr: "Les ponts des marées", de: "Gezeitenbrücken", it: "Ponti di marea", ru: "Мосты прилива", hi: "ज्वार के सेतु", ar: "جسور المد" },
       type: { en: "Bridge logic puzzle", "zh-Hant": "連橋邏輯解謎", "zh-Hans": "连桥逻辑解谜", ja: "橋つなぎパズル", ko: "다리 연결 논리 퍼즐", es: "Puzle de puentes", "pt-BR": "Quebra-cabeça de pontes", fr: "Énigme de ponts", de: "Brücken-Logikrätsel", it: "Rompicapo di ponti", ru: "Головоломка с мостами", hi: "सेतु तर्क पहेली", ar: "لغز الجسور المنطقي" },
       description: { en: "Weave a connected island network across 60 original bridge puzzles with Nori.", "zh-Hant": "與 Nori 推敲橋數，連起60片原創潮島群。", "zh-Hans": "与 Nori 推敲桥数，连起60片原创潮岛群。", ja: "ノリと橋の数を考え、60の島々をつなごう。", ko: "노리와 다리 수를 추리하며 60개의 섬 지도를 연결해요.", es: "Conecta las islas con Nori en 60 puzles originales de puentes.", "pt-BR": "Conecte as ilhas com Nori em 60 desafios originais de pontes.", fr: "Reliez les îles avec Nori dans 60 énigmes de ponts originales.", de: "Verbinde mit Nori die Inseln in 60 originellen Brückenrätseln.", it: "Collega le isole con Nori in 60 rompicapi originali di ponti.", ru: "Соедините острова с Нори в 60 оригинальных головоломках.", hi: "नोरी के साथ 60 मौलिक सेतु पहेलियों में द्वीप जोड़ें।", ar: "صل الجزر مع نوري عبر 60 لغز جسور أصليًا." },
@@ -8205,8 +8205,8 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
 (() => {
   const title = {"__localizedExact":true,"en":"仙旅傳說","zh-Hant":"仙旅傳說","zh-Hans":"仙旅傳說","ja":"仙旅傳說","ko":"仙旅傳說","es":"仙旅傳說","pt-BR":"仙旅傳說","fr":"仙旅傳說","de":"仙旅傳說","it":"仙旅傳說","ru":"仙旅傳說","hi":"仙旅傳說","ar":"仙旅傳說"};
   window.WONDER_LOBBY.games.push({
-    id: "sunmane-journey", audience: "general", status: "planned",
-    internalOnly: true, internalTrial: "index.html?preview=1",
+    id: "sunmane-journey", audience: "general", status: "playable",
+    previewVideo: "assets/previews/sunmane-journey-battle.webm",
     href: "games/sunmane-journey/", title,
     statusText: {en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待"},
     type: {en:"Exploration action RPG","zh-Hant":"探索動作角色扮演"},
