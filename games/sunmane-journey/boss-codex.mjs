@@ -1,1 +1,6 @@
-var l=Object.defineProperty;var s=(n,i)=>l(n,"name",{value:i,configurable:!0});import{MAPS as c,CAMPAIGN as p}from"./data.mjs";import{MONSTER_TYPES as m,resolveSpecies as u,roamingAppearances as S}from"./monsters.mjs";export function bossIndex(n=c){const i=new Map,r=s((o,e,t)=>{const a=m[o];if(!a?.boss)throw Error("INVALID_CODEX_BOSS");i.has(o)||i.set(o,{id:o,definition:a,maps:[]});const d=i.get(o);d.maps.some(f=>f.id===e.id)||d.maps.push({id:e.id,map:{...e,...p.find(f=>f.id===e.id)},kind:t})},"add");for(const o of n){for(const e of o.enemies){const t=u(e.type,o.id);m[t]?.boss&&r(t,o,"guardian")}for(const e of S(o))r(`chief-${e}`,o,"roaming")}return[...i.values()].sort((o,e)=>o.definition.level-e.definition.level||o.id.localeCompare(e.id))}s(bossIndex,"bossIndex");export function canNavigateBossMap(n,i){return Number.isSafeInteger(i)&&c.some(r=>r.id===i&&r.implemented!==!1)&&i<=n.unlocked}s(canNavigateBossMap,"canNavigateBossMap");
+import {MAPS} from './data.mjs';
+import {monsterIndex} from './monster-index.mjs';
+export function bossIndex(maps=MAPS){
+ return monsterIndex(maps).filter(row=>row.tier==='boss').map(({id,definition,maps})=>({id,definition,maps}));
+}
+export function canNavigateBossMap(profile,mapId){return Number.isSafeInteger(mapId)&&MAPS.some(m=>m.id===mapId&&m.implemented!==false)&&mapId<=profile.unlocked;}
