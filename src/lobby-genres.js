@@ -220,6 +220,7 @@
     ["nori-sandworks", "Puzzle", "Spatial Planning"],
     ["meadow-touchdown", "Sports", "Action", "Strategy"],
     ["smallwood-lives", "Simulation"],
+    ["starcamp-glade", "Puzzle", "Deduction", "Spatial Planning"],
     ["tideweave", "Puzzle", "Connection", "Deduction"],
     ["duskbloom", "Puzzle", "Deduction", "Pattern Recognition"],
     ["hearthloop", "Board", "Strategy"],

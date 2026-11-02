@@ -3,6 +3,7 @@
   'use strict';
   if (window.WeightPlayLayout) return;
   const games = Object.freeze({
+    "starcamp-glade": Object.freeze({ bannerAds: false }),
     "glowspool": Object.freeze({ bannerAds: false }),
     "hearthloop": Object.freeze({ bannerAds: false }),
     "nori-bankshot": Object.freeze({ bannerAds: false }),

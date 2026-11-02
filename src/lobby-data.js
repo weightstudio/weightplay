@@ -95,13 +95,13 @@ window.WONDER_LOBBY = {
   games: [
     {
       id: "starcamp-glade", audience: "general", status: "planned", internalOnly: true,
-      href: "games/starcamp-glade/", internalTrial: "games/starcamp-glade/",
-      title: { __localizedExact: true, en: "Starcamp Glade", "zh-Hant": "星帳林地", "zh-Hans": "星帐林地", ja: "星あかりの野営地", ko: "별빛 숲 야영지", es: "Claro de Estrellas", "pt-BR": "Clareira Estrelada", fr: "Clairière Étoilée", de: "Sternenzelt-Lichtung", it: "Radura Stellata", ru: "Звёздная поляна", hi: "तारों का वन शिविर", ar: "مخيم النجوم في الغابة" },
-      type: { en: "Tent logic puzzle", "zh-Hant": "帳篷配對推理" },
-      description: { en: "Give every tree its own quiet campsite across 60 original logic puzzles.", "zh-Hant": "推敲樹與帳篷的配對，安排60座安靜的原創營地。" },
+      href: "games/starcamp-glade/", internalTrial: "?preview=1",
+      title: { __localizedExact: true, en: "Starcamp Glade", "zh-Hant": "星帳林地", "zh-Hans": "星帐林地", ja: "星あかりの野営地", ko: "별빛 숲 야영지", es: "Claro de Estrellas", "pt-BR": "Clareira Estrelada", fr: "Clairière Étoilée", de: "Sternenzelt-Lichtung", it: "Radura Stellata", ru: "Звёздная поляна", hi: "तारों का वन शिविर", ar: "مخيم النجوم" },
+      type: { en: "Tent logic puzzle", "zh-Hant": "帳篷配對推理", "zh-Hans": "帐篷配对推理", ja: "テント論理パズル", ko: "텐트 논리 퍼즐", es: "Lógica de tiendas", "pt-BR": "Lógica de barracas", fr: "Logique des tentes", de: "Zelt-Logikrätsel", it: "Logica delle tende", ru: "Логика палаток", hi: "तंबू तर्क पहेली", ar: "لغز منطق الخيام" },
+      description: { en: "Give every tree its own tent. Read the counts and leave quiet space between camps.", "zh-Hant": "為每棵樹安排一頂帳篷。讀懂數量，讓營地彼此留點空間。", "zh-Hans": "为每棵树安排一顶帐篷。读懂数量，让营地彼此留点空间。", ja: "木ごとにテントを一つ。数字を読み、隣のテントと間を空けましょう。", ko: "나무마다 텐트 하나를 배정하세요. 숫자를 읽고 텐트 사이에 공간을 남겨 보세요.", es: "Una tienda para cada árbol. Lee las cifras y deja espacio entre campamentos.", "pt-BR": "Uma barraca para cada árvore. Leia os números e deixe espaço entre os acampamentos.", fr: "Une tente pour chaque arbre. Lisez les nombres et espacez les campements.", de: "Ein Zelt für jeden Baum. Lies die Zahlen und halte Abstand zwischen den Zelten.", it: "Una tenda per ogni albero. Leggi i numeri e lascia spazio tra gli accampamenti.", ru: "Каждому дереву — своя палатка. Читайте числа и оставляйте между палатками место.", hi: "हर पेड़ के लिए अलग तंबू। संख्याएँ पढ़ें और तंबुओं के बीच जगह छोड़ें।", ar: "خيمة مستقلة لكل شجرة. اقرأ الأعداد واترك مسافة بين الخيام." },
       categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Planning", "Focus"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
       art: { kind: "image", background: "games/starcamp-glade/assets/cover.webp", hideHero: true },
-      meta: { en: ["60 stages", "Permanent diamond appearance"], "zh-Hant": ["60關", "鑽石永久外觀"] }
+      meta: { en: ["60 stages", "No timer"], "zh-Hant": ["60關", "不限時間"], "zh-Hans": ["60关", "不限时间"], ja: ["60ステージ", "時間制限なし"], ko: ["60 스테이지", "시간 제한 없음"], es: ["60 niveles", "Sin límite de tiempo"], "pt-BR": ["60 fases", "Sem limite de tempo"], fr: ["60 niveaux", "Sans chronomètre"], de: ["60 Level", "Ohne Zeitlimit"], it: ["60 livelli", "Senza tempo limite"], ru: ["60 уровней", "Без таймера"], hi: ["60 स्तर", "समय सीमा नहीं"], ar: ["60 مرحلة", "بلا مؤقت"] }
     },
     {
       id: "tideweave", audience: "general", status: "playable", previewVideo: "assets/previews/tideweave-battle.webm",
