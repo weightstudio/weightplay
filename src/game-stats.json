@@ -1,27 +1,45 @@
 {
-  "updatedAt": "2026-11-01T20:07:44.193Z",
+  "updatedAt": "2026-11-02T23:19:04.385Z",
   "source": "ga4",
   "metric": "game_start",
   "windowDays": 7,
   "totals": {
-    "plays7d": 48,
+    "plays7d": 33,
     "playsTotal": 16937,
-    "users7d": 10,
-    "pageViews7d": 173,
-    "pageViewsTotal": 37934,
-    "lobbyVisits7d": 50,
-    "lobbyVisitsTotal": 4906,
-    "lobbyUsers7d": 16
+    "users7d": 9,
+    "pageViews7d": 163,
+    "pageViewsTotal": 37948,
+    "lobbyVisits7d": 52,
+    "lobbyVisitsTotal": 4909,
+    "lobbyUsers7d": 17
   },
   "games": {
     "animal-peach-oath": {
       "plays7d": 0,
       "playsTotal": 15,
       "users7d": 0,
-      "pageViews7d": 2,
+      "pageViews7d": 0,
       "pageViewsTotal": 8,
       "rank7d": null,
       "rankTotal": 76
+    },
+    "tideweave": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 0,
+      "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
+    },
+    "duskbloom": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 0,
+      "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
     },
     "hearthloop": {
       "plays7d": 0,
@@ -38,7 +56,7 @@
       "users7d": 1,
       "pageViews7d": 1,
       "pageViewsTotal": 1,
-      "rank7d": 9,
+      "rank7d": 8,
       "rankTotal": 126
     },
     "rux-salvage-yard": {
@@ -74,14 +92,14 @@
       "users7d": 1,
       "pageViews7d": 5,
       "pageViewsTotal": 5,
-      "rank7d": 3,
+      "rank7d": 2,
       "rankTotal": 94
     },
     "nori-bankshot": {
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 4,
+      "pageViews7d": 3,
       "pageViewsTotal": 4,
       "rank7d": null,
       "rankTotal": null
@@ -173,7 +191,7 @@
       "users7d": 2,
       "pageViews7d": 2,
       "pageViewsTotal": 360,
-      "rank7d": 5,
+      "rank7d": 3,
       "rankTotal": 71
     },
     "signal-veil": {
@@ -272,7 +290,7 @@
       "users7d": 1,
       "pageViews7d": 3,
       "pageViewsTotal": 600,
-      "rank7d": 6,
+      "rank7d": 4,
       "rankTotal": 13
     },
     "tripeaks-solitaire": {
@@ -315,7 +333,7 @@
       "plays7d": 0,
       "playsTotal": 246,
       "users7d": 0,
-      "pageViews7d": 1,
+      "pageViews7d": 0,
       "pageViewsTotal": 208,
       "rank7d": null,
       "rankTotal": 24
@@ -496,7 +514,7 @@
       "playsTotal": 566,
       "users7d": 0,
       "pageViews7d": 83,
-      "pageViewsTotal": 1368,
+      "pageViewsTotal": 1376,
       "rank7d": null,
       "rankTotal": 6
     },
@@ -645,12 +663,12 @@
       "rankTotal": 14
     },
     "animal-sketchwheel-rally": {
-      "plays7d": 5,
+      "plays7d": 0,
       "playsTotal": 240,
-      "users7d": 1,
-      "pageViews7d": 1,
+      "users7d": 0,
+      "pageViews7d": 0,
       "pageViewsTotal": 278,
-      "rank7d": 4,
+      "rank7d": null,
       "rankTotal": 27
     },
     "animal-sanctuary-loop": {
@@ -693,7 +711,7 @@
       "plays7d": 0,
       "playsTotal": 13,
       "users7d": 0,
-      "pageViews7d": 1,
+      "pageViews7d": 0,
       "pageViewsTotal": 8,
       "rank7d": null,
       "rankTotal": 81
@@ -902,7 +920,7 @@
       "users7d": 1,
       "pageViews7d": 2,
       "pageViewsTotal": 292,
-      "rank7d": 7,
+      "rank7d": 6,
       "rankTotal": 21
     },
     "animal-moonlight-heist": {
@@ -992,7 +1010,7 @@
       "users7d": 1,
       "pageViews7d": 1,
       "pageViewsTotal": 402,
-      "rank7d": 8,
+      "rank7d": 7,
       "rankTotal": 65
     },
     "casino": {
@@ -1701,7 +1719,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 6,
+      "pageViews7d": 0,
       "pageViewsTotal": 46,
       "rank7d": null,
       "rankTotal": null
@@ -1773,7 +1791,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 1,
+      "pageViews7d": 0,
       "pageViewsTotal": 1,
       "rank7d": null,
       "rankTotal": null
@@ -1791,7 +1809,7 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 10,
+      "pageViews7d": 9,
       "pageViewsTotal": 10,
       "rank7d": null,
       "rankTotal": null
@@ -1800,18 +1818,18 @@
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
-      "pageViews7d": 1,
+      "pageViews7d": 0,
       "pageViewsTotal": 1,
       "rank7d": null,
       "rankTotal": null
     },
     "meadow-touchdown": {
-      "plays7d": 12,
+      "plays7d": 2,
       "playsTotal": 12,
       "users7d": 1,
-      "pageViews7d": 3,
+      "pageViews7d": 2,
       "pageViewsTotal": 3,
-      "rank7d": 2,
+      "rank7d": 5,
       "rankTotal": 83
     },
     "smallwood-lives": {
@@ -1847,6 +1865,15 @@
       "users7d": 0,
       "pageViews7d": 0,
       "pageViewsTotal": 0,
+      "rank7d": null,
+      "rankTotal": null
+    },
+    "sunmane-journey": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "pageViews7d": 6,
+      "pageViewsTotal": 6,
       "rank7d": null,
       "rankTotal": null
     }
