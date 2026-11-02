@@ -2,7 +2,6 @@
 <html lang="de">
   <head>
     <base href="/" />
-    <script src="src/weightplay-audio.js?v=1.0.0"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0b202b" />
@@ -44,7 +43,7 @@
     <link rel="manifest" href="manifest.webmanifest?v=20260702-logo1" />
     <link rel="stylesheet" href="src/styles.css?v=20260906-lobby-pagination1&lobby-genres=2" />
     <link rel="stylesheet" href="src/lobby-discovery.css?20261028-mobile-activities2" />
-    <link rel="stylesheet" href="src/lobby-frame.css?v=20260921-lobby-frame1" />
+    <link rel="stylesheet" href="src/lobby-frame.css?v=20261102-first-response1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5576470284985485" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -1080,8 +1079,75 @@
       }
     </script>
   <link rel="preload" as="image" href="/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2" />
+    <link rel="stylesheet" href="/src/lobby-mobile.css" media="(max-width: 1119px)" data-lobby-mobile-style="true" />
+    <link rel="stylesheet" href="/src/lobby-desktop.css" media="(min-width: 1120px)" data-lobby-desktop-style="true" />
+  <script data-lobby-layout-boot>/* Small, dependency-free first-paint layout. The runtime reuses this owner;
+   moving the original controls preserves focus, state and breakpoint order. */
+(() => {
+  let instance;
+  function setup(hooks = {}) {
+    if (instance) { Object.assign(instance.hooks, hooks); return; }
+    const shell = document.querySelector('.general-lobby-page .lobby-shell');
+    if (!shell || !document.querySelector('[data-lobby-layout-anchor]')) return;
+    const topbar = shell.querySelector('.lobby-topbar');
+    const rail = shell.querySelector('.desktop-filter-rail');
+    const selectors = ['.game-hall-switch', '.lobby-search-row', '.lobby-hero', '.demon-event-preview', '.lobby-shell > .library-tabs'];
+    const nodes = selectors.map(selector => document.querySelector(selector));
+    if (nodes.some(node => !node)) return;
+    const [halls, search, hero, activities, library] = nodes;
+    const initialStage = shell.querySelector('[data-lobby-initial-stage]');
+    if (initialStage) initialStage.before(halls);
+    else hero.before(halls);
+    const homes = nodes.map(node => {
+      const home = document.createComment('lobby layout home');
+      if (initialStage && (node === hero || node === activities)) initialStage.before(home);
+      else node.before(home);
+      return home;
+    });
+    const stage = initialStage || document.createElement('div');
+    stage.className = 'desktop-lobby-stage';
+    const query = window.matchMedia('(min-width: 1120px)');
+    instance = { hooks, desktop: undefined };
+    const apply = () => {
+      if (instance.desktop === query.matches) return;
+      instance.hooks.beforeChange?.();
+      const focused = document.activeElement;
+      // The activity controller replaces the inert first-response entries.
+      const currentActivities = shell.querySelector('.demon-event-preview') || activities;
+      if (query.matches) {
+        const preferences = topbar.querySelector('.lobby-preferences, .language-picker');
+        topbar.insertBefore(halls, preferences);
+        topbar.insertBefore(search, preferences);
+        homes[2].before(stage);
+        stage.append(hero, currentActivities);
+        rail.append(library);
+        library.classList.add('desktop-library');
+        document.body.dataset.desktopLobby = 'true';
+      } else {
+        [halls, search, hero, currentActivities, library].forEach((node, index) => homes[index].after(node));
+        library.classList.remove('desktop-library');
+        stage.remove();
+        delete document.body.dataset.desktopLobby;
+      }
+      instance.desktop = query.matches;
+      document.documentElement.dataset.lobbyLayoutReady = 'true';
+      if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+      instance.hooks.afterChange?.();
+    };
+    query.addEventListener('change', apply);
+    apply();
+  }
+  window.WeightPlayLobbyLayout = { setup };
+  const observer = new MutationObserver(() => {
+    setup();
+    if (instance) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  setup();
+})();
+</script>
   </head>
-  <body class="lobby-page general-lobby-page" data-audience="general" data-sound-toggle="off">
+  <body class="lobby-page general-lobby-page" data-audience="general" data-sound-toggle="off" data-lobby-first-response data-desktop-lobby="true">
     <a class="lobby-skip-link" href="#gameSearch" data-i18n="search.label">Search games</a>
     <main class="lobby-shell">
       <div class="lobby-topbar">
@@ -1092,71 +1158,75 @@
               <p class="brand-byline">by WeightStudio</p>
             </div>
           </div>
-        <label class="language-picker">
-          <span id="languageLabel">Language</span>
-          <select id="localeSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
-            <option value="es">Español</option>
-            <option value="ja">日本語</option>
-          </select>
-        </label>
+        <details class="lobby-preferences" data-static-preferences><summary class="lobby-settings-button" aria-label="Einstellungen"><svg class="lobby-settings-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9.8 2h4.4l.7 2.3c.5.2 1 .5 1.5.9l2.3-.6 2.2 3.8-1.7 1.7c.1.6.1 1.2 0 1.8l1.7 1.7-2.2 3.8-2.3-.6c-.5.4-1 .7-1.5.9l-.7 2.3H9.8l-.7-2.3c-.5-.2-1-.5-1.5-.9l-2.3.6-2.2-3.8 1.7-1.7a8 8 0 0 1 0-1.8L3.1 8.4l2.2-3.8 2.3.6c.5-.4 1-.7 1.5-.9L9.8 2Zm2.2 6.3a3.7 3.7 0 1 0 0 7.4 3.7 3.7 0 0 0 0-7.4Z" />
+        </svg></summary><div class="lobby-settings-popover"><label class="language-picker">
+          <span id="languageLabel">Sprache</span>
+          <select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de" selected>Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
+        </label></div></details>
       </div>
       <aside class="desktop-filter-rail" aria-label="Game filters">
         <div class="desktop-filter-rail-heading">
-          <span data-i18n="general.play.kicker">Ready when you are</span>
-          <h2 data-i18n="general.play.title">Choose your next game</h2>
+          <span data-i18n="general.play.kicker">Pick up and play</span>
+          <h2 data-i18n="general.play.title">Choose a game and jump in</h2>
         </div>
 
         <section class="rail-library library-tabs" aria-label="Game library tabs">
-          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
-          <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
-          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">Alle Spiele</button>
+          <button type="button" data-library-tab="recent" data-i18n="library.recent">Kürzlich gespielt</button>
+          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favoriten</button>
         </section>
 
         <section class="desktop-filter-group" aria-label="Topic filters">
-          <h3 data-i18n="filter.all_topics">All Topics</h3>
-          <div class="desktop-filter-grid topic-filter">
-            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-            <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-            <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-            <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-            <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-          </div>
+          <h3 data-i18n="filter.all_genres">Alle Genres</h3>
+          <div class="desktop-filter-grid topic-filter"><button type="button" data-topic-filter="all" data-runtime-localize="off" data-i18n="filter.all_genres" class="active" aria-label="Alle Genres, 152"><span class="filter-copy"><span class="filter-label">Alle Genres</span></span><b class="filter-count">152</b></button>
+<button type="button" data-topic-filter="Featured" data-runtime-localize="off" data-i18n="category.Featured" aria-label="Empfohlen, 26"><span class="filter-copy"><span class="filter-label">Empfohlen</span></span><b class="filter-count">26</b></button>
+<button type="button" data-topic-filter="Puzzle" data-runtime-localize="off" data-i18n="category.Puzzle" aria-label="Rätsel, 84"><span class="filter-copy"><span class="filter-label">Rätsel</span></span><b class="filter-count">84</b></button>
+<button type="button" data-topic-filter="Action" data-runtime-localize="off" data-i18n="category.Action" aria-label="Action, 32"><span class="filter-copy"><span class="filter-label">Action</span></span><b class="filter-count">32</b></button>
+<button type="button" data-topic-filter="RPG" data-runtime-localize="off" data-i18n="category.RPG" aria-label="Rollenspiel, 9"><span class="filter-copy"><span class="filter-label">Rollenspiel</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Strategy" data-runtime-localize="off" data-i18n="category.Strategy" aria-label="Strategie, 22"><span class="filter-copy"><span class="filter-label">Strategie</span></span><b class="filter-count">22</b></button>
+<button type="button" data-topic-filter="Tower Defense" data-runtime-localize="off" data-i18n="category.Tower Defense" aria-label="Tower Defense, 7"><span class="filter-copy"><span class="filter-label">Tower Defense</span></span><b class="filter-count">7</b></button>
+<button type="button" data-topic-filter="Simulation" data-runtime-localize="off" data-i18n="category.Simulation" aria-label="Simulation, 9"><span class="filter-copy"><span class="filter-label">Simulation</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Management" data-runtime-localize="off" data-i18n="category.Management" aria-label="Management, 5"><span class="filter-copy"><span class="filter-label">Management</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Pet Care" data-runtime-localize="off" data-i18n="category.Pet Care" aria-label="Tierpflege, 3"><span class="filter-copy"><span class="filter-label">Tierpflege</span></span><b class="filter-count">3</b></button>
+<button type="button" data-topic-filter="Racing" data-runtime-localize="off" data-i18n="category.Racing" aria-label="Rennen, 5"><span class="filter-copy"><span class="filter-label">Rennen</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Sports" data-runtime-localize="off" data-i18n="category.Sports" aria-label="Sport, 6"><span class="filter-copy"><span class="filter-label">Sport</span></span><b class="filter-count">6</b></button>
+<button type="button" data-topic-filter="Reaction" data-runtime-localize="off" data-i18n="category.Reaction" aria-label="Reaktion, 11"><span class="filter-copy"><span class="filter-label">Reaktion</span></span><b class="filter-count">11</b></button>
+<button type="button" data-topic-filter="Card" data-runtime-localize="off" data-i18n="category.Card" aria-label="Kartenspiele, 1"><span class="filter-copy"><span class="filter-label">Kartenspiele</span></span><b class="filter-count">1</b></button>
+<button type="button" data-topic-filter="Board" data-runtime-localize="off" data-i18n="category.Board" hidden aria-label="Brettspiele, 0"><span class="filter-copy"><span class="filter-label">Brettspiele</span></span><b class="filter-count">0</b></button>
+<button type="button" data-topic-filter="Word" data-runtime-localize="off" data-i18n="category.Word" aria-label="Wörter, 2"><span class="filter-copy"><span class="filter-label">Wörter</span></span><b class="filter-count">2</b></button>
+<button type="button" data-topic-filter="Education" data-runtime-localize="off" data-i18n="category.Education" aria-label="Lernen, 1"><span class="filter-copy"><span class="filter-label">Lernen</span></span><b class="filter-count">1</b></button></div>
         </section>
 
         <button class="desktop-filter-reset" type="button" data-reset-discovery data-i18n="status.clear_filters">Clear filters</button>
       </aside>
 
 
-      <header class="lobby-hero">
+      <div class="desktop-lobby-stage" data-lobby-initial-stage><header class="lobby-hero has-spotlight">
         <img class="general-hero-scene" src="/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2" alt="" decoding="async" fetchpriority="high" width="960" height="320" />
         <div class="lobby-hero-copy">
           <span class="hero-eyebrow">WEIGHTPLAY BLOCK ANIMALS</span>
-          <h2 data-i18n="discovery.hero_title">Small breaks. Big adventures.</h2>
-          <p id="platformSubtitle" class="lobby-subtitle"></p>
+          <h2 data-i18n="discovery.hero_title">Kleine Pause.
+Große Abenteuer.</h2>
+          <p id="platformSubtitle" class="lobby-subtitle">Explore block-style adventures, puzzles, action, and strategy games in your browser on phone or computer.</p>
         </div>
         <div class="lobby-mascot" aria-hidden="true">
           <img class="lobby-mascot-main" src="assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp" alt="" loading="lazy" decoding="async" />
           <img class="lobby-mascot-side lobby-mascot-fia" src="assets/lobby-thumbs/w480/assets__weightplay-character-spark-paw-fox-block-v1.webp" alt="" loading="lazy" decoding="async" />
           <img class="lobby-mascot-side lobby-mascot-nori" src="assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp" alt="" loading="lazy" decoding="async" />
         </div>
-      </header>
+      <section id="spotlightGameSection" data-runtime-localize="off" style="--spotlight-art:url(&quot;/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp&quot;)"><h2>Spiel im Fokus</h2><a class="spotlight-game spotlight-game--poster" href="/de/games/orbit-menders/"><img class="is-decoded" src="/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp" loading="eager" fetchpriority="high" decoding="async" alt="" width="480" height="480"><div><small>Spiel im Fokus</small><h3 data-runtime-localize="off">Explosionsmähne: Turmwache</h3><p>Tower Defense Shooter</p><span>Spiel starten →</span></div></a></section></header><section class="demon-event-preview" data-static-activities data-runtime-localize="off"><div class="demon-event-track"><a class="demon-event-card" href="/activities/demon-assault/" aria-label="Dämonenangriff" style="--activity-art:url(&quot;/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&quot;);text-decoration:none"><span class="demon-event-art" aria-hidden="true"><img src="/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" width="768" height="768" loading="lazy" decoding="async" alt=""></span><span class="demon-event-card-copy"><span class="demon-event-label">Tägliches Event</span><span class="demon-event-title">Dämonenangriff</span><span class="demon-event-card-schedule">Mo, Mi, Fr, So · Einmal täglich</span></span><span class="demon-event-chevron" aria-hidden="true">›</span></a><a class="demon-event-card" href="/activities/meteor-barrage/de/" aria-label="Meteoritenabwehr" style="--activity-art:url(&quot;/activities/meteor-barrage/poster.webp&quot;);text-decoration:none"><span class="demon-event-art" aria-hidden="true"><img src="/activities/meteor-barrage/poster.webp" width="768" height="768" loading="lazy" decoding="async" alt=""></span><span class="demon-event-card-copy"><span class="demon-event-label">Block-Event</span><span class="demon-event-title">Meteoritenabwehr</span><span class="demon-event-card-schedule">Di, Do, Sa, So · Einmal täglich</span></span><span class="demon-event-chevron" aria-hidden="true">›</span></a></div></section></div>
 
-      <nav class="game-hall-switch" aria-label="Game sections" data-i18n-aria-label="hall.label">
+      <nav class="game-hall-switch" aria-label="Spielbereiche" data-i18n-aria-label="Spielbereiche">
         <button class="active" type="button" data-hall-tab="games" aria-pressed="true">
-          <span class="hall-tab-icon hall-tab-icon--world" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M16 2 29 9v14l-13 7L3 23V9z" fill="#48cfa0" stroke="#dbfae9" stroke-width="2"/><path d="m3 9 13 8 13-8M16 17v13" fill="none" stroke="#173f37" stroke-width="2"/></svg></span><span data-i18n="hall.games">Game World</span>
-          <small data-i18n="hall.games_note">Adventures, puzzles and action</small>
+          <span class="hall-tab-icon hall-tab-icon--world" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M16 2 29 9v14l-13 7L3 23V9z" fill="#48cfa0" stroke="#dbfae9" stroke-width="2"/><path d="m3 9 13 8 13-8M16 17v13" fill="none" stroke="#173f37" stroke-width="2"/></svg></span><span data-i18n="hall.games">Spielewelt</span>
+          <small data-i18n="hall.games_note">Abenteuer, Rätsel und Action</small>
         </button>
         <button type="button" data-hall-tab="tabletop" aria-pressed="false">
-          <span class="hall-tab-icon hall-tab-icon--tabletop" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><rect x="2" y="2" width="28" height="28" rx="2" fill="#182331" stroke="#f2ca73" stroke-width="2"/><path d="M4 4h6v6H4zm12 0h6v6h-6zM10 10h6v6h-6zm12 0h6v6h-6zM4 16h6v6H4zm12 0h6v6h-6zM10 22h6v6h-6zm12 0h6v6h-6z" fill="#f2ca73"/></svg></span><span data-i18n="hall.tabletop">Cards &amp; Board</span>
-          <small data-i18n="hall.tabletop_note">Solitaire, card and board games</small>
+          <span class="hall-tab-icon hall-tab-icon--tabletop" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><rect x="2" y="2" width="28" height="28" rx="2" fill="#182331" stroke="#f2ca73" stroke-width="2"/><path d="M4 4h6v6H4zm12 0h6v6h-6zM10 10h6v6h-6zm12 0h6v6h-6zM4 16h6v6H4zm12 0h6v6h-6zM10 22h6v6h-6zm12 0h6v6h-6z" fill="#f2ca73"/></svg></span><span data-i18n="hall.tabletop">Karten &amp; Brett</span>
+          <small data-i18n="hall.tabletop_note">Solitär-, Karten- und Brettspiele</small>
         </button>
-      </nav>
+      <button type="button" data-hall-tab="topics" aria-pressed="false"><span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true"><img src="/assets/topics-hall-tab-v2.webp?v=20261002-topics-icon-v2" alt="" width="30" height="30" decoding="async"></span><span class="hall-tab-label" data-i18n="hall.topics_short">Themen</span><small data-i18n="hall.topics_note" aria-hidden="true">Aktuelle Ideen mit verspieltem Dreh</small></button></nav>
 
       <section id="lobbyStats" class="lobby-stats" aria-label="Platform status"></section>
 
@@ -1190,59 +1260,48 @@
       </section>
 
       <div class="general-play-heading">
-        <span data-i18n="general.play.kicker">Ready when you are</span>
-        <h2 data-i18n="general.play.title">Choose your next game</h2>
+        <span data-i18n="general.play.kicker">Pick up and play</span>
+        <h2 data-i18n="general.play.title">Choose a game and jump in</h2>
       </div>
 
       <div class="lobby-search-row" id="lobbySearchControls">
         <label class="lobby-search" for="gameSearch">
           <span data-i18n="search.label">Search games</span>
-          <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="Search animal, puzzle, memory..." />
+          <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="Spiele oder Genres suchen…" placeholder="Spiele oder Genres suchen…" />
         </label>
         <button id="quickPickBtn" class="quick-pick-btn" type="button" data-i18n="quick_pick.action">Pick for me</button>
       </div>
 
       <section class="library-tabs" aria-label="Game library tabs">
-        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
-        <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
-        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">Alle Spiele</button>
+        <button type="button" data-library-tab="recent" data-i18n="library.recent">Kürzlich gespielt</button>
+        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favoriten</button>
       </section>
 
       <section class="vibe-strip" aria-labelledby="vibeTitle">
-        <h3 id="vibeTitle" data-i18n="filter.all_topics">All Topics</h3>
-        <div class="vibe-options">
-          <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-          <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-          <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-          <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-          <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-          <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-          <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-          <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-        </div>
+        <h3 id="vibeTitle" data-i18n="filter.all_genres">Alle Genres</h3>
+        <div class="vibe-options"><button type="button" data-topic-filter="all" data-runtime-localize="off" data-i18n="filter.all_genres" class="active" aria-label="Alle Genres, 152"><span class="filter-copy"><span class="filter-label">Alle Genres</span></span><b class="filter-count">152</b></button>
+<button type="button" data-topic-filter="Featured" data-runtime-localize="off" data-i18n="category.Featured" aria-label="Empfohlen, 26"><span class="filter-copy"><span class="filter-label">Empfohlen</span></span><b class="filter-count">26</b></button>
+<button type="button" data-topic-filter="Puzzle" data-runtime-localize="off" data-i18n="category.Puzzle" aria-label="Rätsel, 84"><span class="filter-copy"><span class="filter-label">Rätsel</span></span><b class="filter-count">84</b></button>
+<button type="button" data-topic-filter="Action" data-runtime-localize="off" data-i18n="category.Action" aria-label="Action, 32"><span class="filter-copy"><span class="filter-label">Action</span></span><b class="filter-count">32</b></button>
+<button type="button" data-topic-filter="RPG" data-runtime-localize="off" data-i18n="category.RPG" aria-label="Rollenspiel, 9"><span class="filter-copy"><span class="filter-label">Rollenspiel</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Strategy" data-runtime-localize="off" data-i18n="category.Strategy" aria-label="Strategie, 22"><span class="filter-copy"><span class="filter-label">Strategie</span></span><b class="filter-count">22</b></button>
+<button type="button" data-topic-filter="Tower Defense" data-runtime-localize="off" data-i18n="category.Tower Defense" aria-label="Tower Defense, 7"><span class="filter-copy"><span class="filter-label">Tower Defense</span></span><b class="filter-count">7</b></button>
+<button type="button" data-topic-filter="Simulation" data-runtime-localize="off" data-i18n="category.Simulation" aria-label="Simulation, 9"><span class="filter-copy"><span class="filter-label">Simulation</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Management" data-runtime-localize="off" data-i18n="category.Management" aria-label="Management, 5"><span class="filter-copy"><span class="filter-label">Management</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Pet Care" data-runtime-localize="off" data-i18n="category.Pet Care" aria-label="Tierpflege, 3"><span class="filter-copy"><span class="filter-label">Tierpflege</span></span><b class="filter-count">3</b></button>
+<button type="button" data-topic-filter="Racing" data-runtime-localize="off" data-i18n="category.Racing" aria-label="Rennen, 5"><span class="filter-copy"><span class="filter-label">Rennen</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Sports" data-runtime-localize="off" data-i18n="category.Sports" aria-label="Sport, 6"><span class="filter-copy"><span class="filter-label">Sport</span></span><b class="filter-count">6</b></button>
+<button type="button" data-topic-filter="Reaction" data-runtime-localize="off" data-i18n="category.Reaction" aria-label="Reaktion, 11"><span class="filter-copy"><span class="filter-label">Reaktion</span></span><b class="filter-count">11</b></button>
+<button type="button" data-topic-filter="Card" data-runtime-localize="off" data-i18n="category.Card" aria-label="Kartenspiele, 1"><span class="filter-copy"><span class="filter-label">Kartenspiele</span></span><b class="filter-count">1</b></button>
+<button type="button" data-topic-filter="Board" data-runtime-localize="off" data-i18n="category.Board" hidden aria-label="Brettspiele, 0"><span class="filter-copy"><span class="filter-label">Brettspiele</span></span><b class="filter-count">0</b></button>
+<button type="button" data-topic-filter="Word" data-runtime-localize="off" data-i18n="category.Word" aria-label="Wörter, 2"><span class="filter-copy"><span class="filter-label">Wörter</span></span><b class="filter-count">2</b></button>
+<button type="button" data-topic-filter="Education" data-runtime-localize="off" data-i18n="category.Education" aria-label="Lernen, 1"><span class="filter-copy"><span class="filter-label">Lernen</span></span><b class="filter-count">1</b></button></div>
       </section>
 
-      <details id="advancedFilters" class="advanced-filters">
-        <summary>
-          <span data-i18n="filter.more_filters">More filters</span>
-          <b id="advancedFilterCount" class="advanced-filter-count" aria-live="polite">0</b>
-        </summary>
-        <div class="advanced-filter-groups">
-          <section class="topic-filter" aria-label="Topic filters">
-            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-            <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-            <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-            <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-            <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-          </section>
 
-        </div>
-      </details>
 
-      <div id="filterStatus" class="filter-status" aria-live="polite"></div>
+      <div id="filterStatus" class="filter-status" aria-live="polite"><span data-lobby-layout-anchor hidden></span></div>
 
       <section id="discoverySnapshot" class="discovery-snapshot" aria-label="Game discovery summary"></section>
 
@@ -1254,12 +1313,13 @@
         <div id="continuePlaying" class="continue-playing"></div>
       </section>
 
-      <section id="heroGamesSection" class="hero-games-section" aria-label="Hero Games">
+      <section id="latestGamesSection" class="hero-games-section" data-runtime-localize="off" aria-label="Neu erschienen"><div class="section-heading"><h2 id="latestGamesTitle">Neu erschienen</h2><a class="catalog-jump" href="#catalogHeading">Alle Spiele →</a></div><div id="latestGames" class="hero-games"><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="mossfold" href="/de/games/mossfold/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/games/mossfold/assets/cover.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>Mooswende</strong><small>Räumliches Rätsel</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="dustwake-depot" href="/de/games/dustwake-depot/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/games/dustwake-depot/art/poster.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>Staubglanz-Depot</strong><small>Reinigungsstrategie</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="purrch-grove" href="/de/games/purrch-grove/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="assets/lobby-thumbs/w480/games__purrch-grove__assets__cover-block-v1.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>Schnurrnest</strong><small>Katzen · Wachstum</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="bramble-rapids" href="/de/games/bramble-rapids/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="assets/lobby-thumbs/w480/games__bramble-rapids__assets__cover.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>Dornenbach-Stromschnellen</strong><small>Flussrennen</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="orbit-menders" href="/de/games/orbit-menders/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>Explosionsmähne: Turmwache</strong><small>Tower Defense Shooter</small></span></div></a></div></section>
+<section id="heroGamesSection" class="hero-games-section" aria-label="Hero Games">
         <div class="section-heading">
-          <span id="heroRankLabel">Top 5</span>
-          <h2 id="heroGamesTitle">Hero Games</h2>
+          <span id="heroRankLabel" hidden>Top 5</span>
+          <h2 id="heroGamesTitle">Featured</h2>
         </div>
-        <div id="heroGames" class="hero-games"></div>
+        <div id="heroGames" class="hero-games"><a class="hero-game-card playable" data-discovery-game-id="animal-hero-trials" href="/de/games/animal-hero-trials/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-hero-trials.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Animal Hero Trials</strong><small>Hero Action Roguelite</small></div></a><a class="hero-game-card playable" data-discovery-game-id="animal-relic-hunters" href="/de/games/animal-relic-hunters/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-relic-hunters.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Animal Relic Hunters</strong><small>Room Action Roguelite</small></div></a><a class="hero-game-card playable" data-discovery-game-id="beast-deck" href="/de/games/beast-deck/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__beast-deck.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Beast Deck: The Mist Forest</strong><small>Roguelike Deckbuilder</small></div></a><a class="hero-game-card playable" data-discovery-game-id="animal-rune-tactics" href="/de/games/animal-rune-tactics/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__animal-rune-tactics-cover.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Runentaktik</strong><small>Turn-Based Squad Tactics</small></div></a><a class="hero-game-card playable" data-discovery-game-id="animal-orb-fortress" href="/de/games/animal-orb-fortress/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__animal-orb-fortress-cover-block-v1.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Orbfestung</strong><small>Ricochet Roguelite</small></div></a></div>
       </section>
 
       <section id="mobilePicksSection" class="mobile-picks-section" aria-label="Mobile friendly games">
@@ -1302,9 +1362,9 @@
         <div id="recommendations" class="recommendations"></div>
       </section>
 
-      <div class="catalog-heading" id="catalogHeading" tabindex="-1"><h2 data-i18n="library.all_games">All Games</h2><span id="catalogHallLabel"></span></div>
+      <div class="catalog-heading" id="catalogHeading" tabindex="-1"><h2 data-i18n="library.all_games">Alle Spiele</h2><span id="catalogHallLabel">Spielewelt</span></div>
       <section id="gameGrid" class="lobby-grid" aria-label="Game list">
-        <!-- adsense-static-catalog:start -->
+<!-- adsense-static-catalog:start -->
 <article class="game-card game-card-static playable" data-game-id="animal-peach-oath">
   <a class="game-card-static-link" href="/de/games/animal-peach-oath/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-peach-oath.webp" alt="Pfirsichgarten-Schwur Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -1315,6 +1375,19 @@
     </div>
   </a>
 </article>
+<article class="game-card game-card-static playable" data-game-id="tideweave"><a class="game-card-static-link" href="/de/games/tideweave/"><div class="game-card-art image-art"><img class="game-card-fg" src="/games/tideweave/assets/cover.webp" alt="Gezeitenbrücken" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Gezeitenbrücken</h2><p>Verbinde mit Nori die Inseln in 60 originellen Brückenrätseln.</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="duskbloom"><a class="game-card-static-link" href="/de/games/duskbloom/"><div class="game-card-art image-art"><img class="game-card-fg" src="/games/duskbloom/assets/cover.webp" alt="Dämmergarten" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Dämmergarten</h2><p>Gleiche zwei Laternenarten aus und folge ihren Verbindungen durch 60 Gärten.</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="dustwake-depot">
+  <a class="game-card-static-link" href="/de/games/dustwake-depot/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__dustwake-depot__art__poster.webp" alt="Staubglanz-Depot Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Staubglanz-Depot</h2>
+      <p>Führe Taro durch 60 Level, sammle Staub und plane jede Rückfahrt zum Depot.</p>
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static playable" data-game-id="rux-salvage-yard"><a class="game-card-static-link" href="/de/games/rux-salvage-yard/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/games__rux-salvage-yard__art__poster.webp" alt="Rux&#39; Recyclingwerkstatt" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Rux&#39; Recyclingwerkstatt</h2><p>Aim at supports and recover the pieces as workshop structures fall.</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="lantern-stride"><a class="game-card-static-link" href="/de/games/lantern-stride/"><div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__lantern-stride__assets__cover.webp" alt="Laternenlauf" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Laternenlauf</h2><p>Alternate your steps and find your rhythm on a forest racecourse.</p></div></a></article>
 <article class="game-card game-card-static playable" data-game-id="orbit-menders">
   <a class="game-card-static-link" href="/de/games/orbit-menders/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp" alt="Explosionsmähne: Turmwache Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -1375,6 +1448,7 @@
     </div>
   </a>
 </article>
+<article class="game-card game-card-static playable" data-game-id="fusekeep"><a class="game-card-static-link" href="/de/games/fusekeep/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp" alt="Fusionsfestung" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Fusionsfestung</h2><p>Verschmelze Soldaten gleichen Typs und Rangs, bilde dein Team und verteidige die Winterfestung in 30 Missionen.</p></div></a></article>
 <article class="game-card game-card-static playable" data-game-id="animal-wildwood-raid">
   <a class="game-card-static-link" href="/de/games/animal-wildwood-raid/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__animal-wildwood-raid__art__cover-v1.webp" alt="Waldexpedition Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -1501,76 +1575,6 @@
     <div class="game-card-body">
       <h2 data-runtime-localize="off">Hexa-Sortierung</h2>
       <p>Stapele farbige Sechseckchips, verbinde gleiche obere Farben und löse Ketten aus.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="klondike-solitaire">
-  <a class="game-card-static-link" href="/de/games/klondike-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__klondike-solitaire.webp" alt="Klondike-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Klondike-Solitär</h2>
-      <p>Klassisches Klondike-Solitär mit Drag-and-Drop, Ziehmodi 1/3, Auto-Finish und Undo.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="spider-solitaire">
-  <a class="game-card-static-link" href="/de/games/spider-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spider-solitaire.webp" alt="Spider-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Spider-Solitär</h2>
-      <p>Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="freecell-solitaire">
-  <a class="game-card-static-link" href="/de/games/freecell-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__freecell-solitaire.webp" alt="FreeCell-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">FreeCell-Solitär</h2>
-      <p>Klassisches FreeCell mit acht offenen Spalten, vier freien Zellen, vier Fundamenten, Tipp und Rückgängig.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="pyramid-solitaire">
-  <a class="game-card-static-link" href="/de/games/pyramid-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__pyramid-solitaire.webp" alt="Pyramiden-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Pyramiden-Solitär</h2>
-      <p>Paaren Sie offene Karten zur Summe 13 und räumen Sie die klassische Pyramide mit Tipp, Rückgängig und Neustart.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="tripeaks-solitaire">
-  <a class="game-card-static-link" href="/de/games/tripeaks-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tripeaks-solitaire.webp" alt="Drei-Gipfel-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Drei-Gipfel-Solitär</h2>
-      <p>Räumen Sie drei Gipfel ab, indem Sie offene Karten eine Rangstufe über oder unter dem Ablagestapel spielen.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="golf-solitaire">
-  <a class="game-card-static-link" href="/de/games/golf-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__golf-solitaire.webp" alt="Golf-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Golf-Solitär</h2>
-      <p>Räumen Sie sieben Golf-Spalten mit einer Ablagekette eine Rangstufe höher oder tiefer ab.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="yukon-solitaire">
-  <a class="game-card-static-link" href="/de/games/yukon-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__yukon-solitaire.webp" alt="Yukon Solitaire Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Yukon Solitaire</h2>
-      <p>Klassisches Yukon mit vollständigem Tableau, rot-schwarzen Abfolgen, flexiblen offenen Gruppen und ohne Stapel.</p>
 
     </div>
   </a>
@@ -1935,32 +1939,12 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="checkers">
-  <a class="game-card-static-link" href="/de/games/checkers/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__checkers.webp" alt="Dame Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Dame</h2>
-      <p>Spiele eine vollständige 8×8-Damepartie mit Schlagzwang, Mehrfachsprüngen, Damen und einem echten Gegner.</p>
-
-    </div>
-  </a>
-</article>
 <article class="game-card game-card-static playable" data-game-id="hangman">
   <a class="game-card-static-link" href="/de/games/hangman/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__hangman.webp" alt="Galgenmännchen Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
       <h2 data-runtime-localize="off">Galgenmännchen</h2>
       <p>Lies das Wortmuster, wähle Buchstaben und löse eine vollständige Galgenmännchen-Runde vor sechs Fehlern.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="tic-tac-toe">
-  <a class="game-card-static-link" href="/de/games/tic-tac-toe/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tic-tac-toe.webp" alt="Drei gewinnt Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Drei gewinnt</h2>
-      <p>Setze X und lies Os sofortige Antwort auf neun Feldern: drei in eine Reihe, die Drohung blockieren oder ein Remis erreichen.</p>
 
     </div>
   </a>
@@ -1991,106 +1975,6 @@
     <div class="game-card-body">
       <h2 data-runtime-localize="off">Animal Moonlight Heist</h2>
       <p>Animal Moonlight Heist ist ein 30 Missionen umfassendes Stealth-Route-Abenteuer mit Spark Paw Fia und Moon Cap Orla in den Hauptrollen. Bei jeder Mission...</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="hearts">
-  <a class="game-card-static-link" href="/de/games/hearts/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__hearts.webp" alt="Herz Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Herz</h2>
-      <p>Meide Herzen und Pik-Dame oder sammle alle Strafkarten für den Mondschuss.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="spades">
-  <a class="game-card-static-link" href="/de/games/spades/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spades.webp" alt="Pik Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Pik</h2>
-      <p>Biete mit deinem KI-Partner und nutze Pik als Trumpf, um den Kontrakt zu erfüllen.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="gin-rummy">
-  <a class="game-card-static-link" href="/de/games/gin-rummy/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__gin-rummy.webp" alt="Gin Rommé Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Gin Rommé</h2>
-      <p>Ziehe und wirf ab, um Sätze und Farbfolgen zu bilden und Deadwood klein zu halten.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="crazy-eights">
-  <a class="game-card-static-link" href="/de/games/crazy-eights/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__crazy-eights.webp" alt="Verrückte Achter Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Verrückte Achter</h2>
-      <p>Passe Farbe oder Rang an und ändere mit einer Acht die aktive Farbe.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="cribbage">
-  <a class="game-card-static-link" href="/de/games/cribbage/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__cribbage.webp" alt="Cribbage Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Cribbage</h2>
-      <p>Wähle die Crib, punkte Paare, Folgen und Fünfzehner und ziehe bis 121.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="go-fish">
-  <a class="game-card-static-link" href="/de/games/go-fish/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__go-fish.webp" alt="Gehen Sie angeln Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Gehen Sie angeln</h2>
-      <p>Frage nach Rängen, sammle Vierlinge und lies den Tisch.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="war">
-  <a class="game-card-static-link" href="/de/games/war/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__war.webp" alt="Krieg: Höhere Karte Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Krieg: Höhere Karte</h2>
-      <p>Decke Karten gleichzeitig auf; gleiche Ränge lösen Krieg aus.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="speed">
-  <a class="game-card-static-link" href="/de/games/speed/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__speed.webp" alt="Speed-Kartenspiel Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Speed-Kartenspiel</h2>
-      <p>Spiele in Echtzeit gegen die KI eine Karte höher oder niedriger.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="old-maid">
-  <a class="game-card-static-link" href="/de/games/old-maid/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__old-maid.webp" alt="Alte Magd Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Alte Magd</h2>
-      <p>Bilde Paare, ziehe aus der nächsten Hand und behalte nicht den Schwarzen Peter.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="casino">
-  <a class="game-card-static-link" href="/de/games/casino/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__casino.webp" alt="Cassino Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Cassino</h2>
-      <p>Fange Karten nach Rang oder Summe und bilde Builds für spätere Züge.</p>
 
     </div>
   </a>
@@ -2135,16 +2019,6 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="peg-solitaire">
-  <a class="game-card-static-link" href="/de/games/peg-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__peg-solitaire.webp" alt="Peg-Solitaire Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Peg-Solitaire</h2>
-      <p>Springe über einen Nachbarn in ein Loch und lasse einen Stein übrig.</p>
-
-    </div>
-  </a>
-</article>
 <article class="game-card game-card-static playable" data-game-id="sliding-15">
   <a class="game-card-static-link" href="/de/games/sliding-15/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__sliding-15.webp" alt="Schiebepuzzle 15 Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -2171,26 +2045,6 @@
     <div class="game-card-body">
       <h2 data-runtime-localize="off">Türme von Hanoi</h2>
       <p>Bewege alle Scheiben, ohne eine größere auf eine kleinere zu legen.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="reversi">
-  <a class="game-card-static-link" href="/de/games/reversi/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__reversi.webp" alt="Reversi Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Reversi</h2>
-      <p>Umschließe gegnerische Steine; am Ende gewinnt die größere Zahl.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="four-in-a-row">
-  <a class="game-card-static-link" href="/de/games/four-in-a-row/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__four-in-a-row.webp" alt="Vier gewinnt Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Vier gewinnt</h2>
-      <p>Lasse Steine fallen und verbinde vier waagerecht, senkrecht oder diagonal.</p>
 
     </div>
   </a>
@@ -2855,42 +2709,12 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="traffic-jam-diner">
-  <a class="game-card-static-link" href="/de/games/traffic-jam-diner/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/Assets__traffic-jam-diner-cover-v3.webp" alt="Stau-Diner Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Stau-Diner</h2>
-      <p>Führe tierische Nachbarn durch Einbahnspuren, halte einen Warteplatz frei und stelle die Bestellungen der Reihe nach zusammen.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="robot-dog-showtime">
-  <a class="game-card-static-link" href="/de/games/robot-dog-showtime/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__robot-dog-showtime-cover-v3.webp" alt="Die Robot-Hundeshow Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Die Robot-Hundeshow</h2>
-      <p>Plane die Bühnenzeichen für beide Darsteller und probt gemeinsam ihre Wege und Gesten.</p>
-
-    </div>
-  </a>
-</article>
 <article class="game-card game-card-static playable" data-game-id="animal-blockmart">
   <a class="game-card-static-link" href="/de/games/animal-blockmart/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__animal-blockmart__assets__poster-v1.webp" alt="Blocktier-Mini-Markt Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
       <h2 data-runtime-localize="off">Blocktier-Mini-Markt</h2>
       <p>Richte einen kleinen Blockladen ein, fülle Alltagswaren auf und bediene tierische Nachbarn, um den Laden zu vergrößern.</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="flying-tram">
-  <a class="game-card-static-link" href="/de/games/flying-tram/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__flying-tram__assets__cover-block-v1.webp" alt="Himmelsbahn Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Himmelsbahn</h2>
-      <p>Schubse eine kantige Bahn an, drehe dich für Punkte, halte den Tee im Becher und lande auf 30 Dachrouten.</p>
 
     </div>
   </a>
@@ -2902,6 +2726,15 @@
       <h2 data-runtime-localize="off">Welpenhof</h2>
       <p>Ein kleiner Garten, eine wachsende Familie. Füttere, pflege und begleite deine Hunde.</p>
 
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static playable" data-game-id="purrch-grove">
+  <a class="game-card-static-link" href="/de/games/purrch-grove/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__purrch-grove__assets__cover-block-v1.webp" alt="Schnurrnest Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Schnurrnest</h2>
+      <p>Entdecke das Lieblingsspiel jeder Katze und baue ein gemütliches Kletterheim.</p>
     </div>
   </a>
 </article>
@@ -2965,24 +2798,7 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="purrch-grove">
-  <a class="game-card-static-link" href="/de/games/purrch-grove/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__purrch-grove__assets__cover-block-v1.webp" alt="Schnurrnest Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Schnurrnest</h2>
-      <p>Entdecke das Lieblingsspiel jeder Katze und baue ein gemütliches Kletterheim.</p>
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="dustwake-depot">
-  <a class="game-card-static-link" href="/de/games/dustwake-depot/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__dustwake-depot__art__poster.webp" alt="Staubglanz-Depot Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">Staubglanz-Depot</h2>
-      <p>Führe Taro durch 60 Level, sammle Staub und plane jede Rückfahrt zum Depot.</p>
-    </div>
-  </a>
-</article>
+<article class="game-card game-card-static playable" data-game-id="lantern-lasso"><a class="game-card-static-link" href="/de/games/lantern-lasso/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/games__lantern-lasso__assets__cover.webp" alt="Laternen-Lasso" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Laternen-Lasso</h2><p>Ziele mit dem Seil, öffne Tore und führe Lichter nach Hause.</p></div></a></article>
 <article class="game-card game-card-static playable" data-game-id="mossfold">
   <a class="game-card-static-link" href="/de/games/mossfold/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__mossfold__assets__cover.webp" alt="Mooswende Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -2992,7 +2808,259 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="smallwood-lives">
+<article class="game-card game-card-static playable" data-game-id="glowspool"><a class="game-card-static-link" href="/de/games/glowspool/"><div class="game-card-art image-art"><img class="game-card-fg" src="/games/glowspool/assets/cover.webp" alt="Lichtfaden" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Lichtfaden</h2><p>Lass Mimi gleiten und verwebe jedes Feld. Plane mit dem gelegten Faden.</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="sunmane-journey"><a class="game-card-static-link" href="/de/games/sunmane-journey/"><div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__sunmane-journey__assets__cover.webp" alt="仙旅傳說" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">仙旅傳說</h2><p>Explore distinct regions, shape your build and restore the sunveins. The launch character is Leo, a lion swordsman.</p></div></a></article>
+<article class="game-card game-card-static hidden playable" data-game-id="klondike-solitaire">
+  <a class="game-card-static-link" href="/de/games/klondike-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__klondike-solitaire.webp" alt="Klondike-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Klondike-Solitär</h2>
+      <p>Klassisches Klondike-Solitär mit Drag-and-Drop, Ziehmodi 1/3, Auto-Finish und Undo.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="spider-solitaire">
+  <a class="game-card-static-link" href="/de/games/spider-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spider-solitaire.webp" alt="Spider-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Spider-Solitär</h2>
+      <p>Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="freecell-solitaire">
+  <a class="game-card-static-link" href="/de/games/freecell-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__freecell-solitaire.webp" alt="FreeCell-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">FreeCell-Solitär</h2>
+      <p>Klassisches FreeCell mit acht offenen Spalten, vier freien Zellen, vier Fundamenten, Tipp und Rückgängig.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="pyramid-solitaire">
+  <a class="game-card-static-link" href="/de/games/pyramid-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__pyramid-solitaire.webp" alt="Pyramiden-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Pyramiden-Solitär</h2>
+      <p>Paaren Sie offene Karten zur Summe 13 und räumen Sie die klassische Pyramide mit Tipp, Rückgängig und Neustart.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="tripeaks-solitaire">
+  <a class="game-card-static-link" href="/de/games/tripeaks-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tripeaks-solitaire.webp" alt="Drei-Gipfel-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Drei-Gipfel-Solitär</h2>
+      <p>Räumen Sie drei Gipfel ab, indem Sie offene Karten eine Rangstufe über oder unter dem Ablagestapel spielen.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="golf-solitaire">
+  <a class="game-card-static-link" href="/de/games/golf-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__golf-solitaire.webp" alt="Golf-Solitär Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Golf-Solitär</h2>
+      <p>Räumen Sie sieben Golf-Spalten mit einer Ablagekette eine Rangstufe höher oder tiefer ab.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="yukon-solitaire">
+  <a class="game-card-static-link" href="/de/games/yukon-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__yukon-solitaire.webp" alt="Yukon Solitaire Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Yukon Solitaire</h2>
+      <p>Klassisches Yukon mit vollständigem Tableau, rot-schwarzen Abfolgen, flexiblen offenen Gruppen und ohne Stapel.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="checkers">
+  <a class="game-card-static-link" href="/de/games/checkers/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__checkers.webp" alt="Dame Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Dame</h2>
+      <p>Spiele eine vollständige 8×8-Damepartie mit Schlagzwang, Mehrfachsprüngen, Damen und einem echten Gegner.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="tic-tac-toe">
+  <a class="game-card-static-link" href="/de/games/tic-tac-toe/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tic-tac-toe.webp" alt="Drei gewinnt Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Drei gewinnt</h2>
+      <p>Setze X und lies Os sofortige Antwort auf neun Feldern: drei in eine Reihe, die Drohung blockieren oder ein Remis erreichen.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="hearts">
+  <a class="game-card-static-link" href="/de/games/hearts/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__hearts.webp" alt="Herz Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Herz</h2>
+      <p>Meide Herzen und Pik-Dame oder sammle alle Strafkarten für den Mondschuss.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="spades">
+  <a class="game-card-static-link" href="/de/games/spades/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spades.webp" alt="Pik Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Pik</h2>
+      <p>Biete mit deinem KI-Partner und nutze Pik als Trumpf, um den Kontrakt zu erfüllen.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="gin-rummy">
+  <a class="game-card-static-link" href="/de/games/gin-rummy/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__gin-rummy.webp" alt="Gin Rommé Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Gin Rommé</h2>
+      <p>Ziehe und wirf ab, um Sätze und Farbfolgen zu bilden und Deadwood klein zu halten.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="crazy-eights">
+  <a class="game-card-static-link" href="/de/games/crazy-eights/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__crazy-eights.webp" alt="Verrückte Achter Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Verrückte Achter</h2>
+      <p>Passe Farbe oder Rang an und ändere mit einer Acht die aktive Farbe.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="cribbage">
+  <a class="game-card-static-link" href="/de/games/cribbage/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__cribbage.webp" alt="Cribbage Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Cribbage</h2>
+      <p>Wähle die Crib, punkte Paare, Folgen und Fünfzehner und ziehe bis 121.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="go-fish">
+  <a class="game-card-static-link" href="/de/games/go-fish/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__go-fish.webp" alt="Gehen Sie angeln Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Gehen Sie angeln</h2>
+      <p>Frage nach Rängen, sammle Vierlinge und lies den Tisch.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="war">
+  <a class="game-card-static-link" href="/de/games/war/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__war.webp" alt="Krieg: Höhere Karte Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Krieg: Höhere Karte</h2>
+      <p>Decke Karten gleichzeitig auf; gleiche Ränge lösen Krieg aus.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="speed">
+  <a class="game-card-static-link" href="/de/games/speed/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__speed.webp" alt="Speed-Kartenspiel Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Speed-Kartenspiel</h2>
+      <p>Spiele in Echtzeit gegen die KI eine Karte höher oder niedriger.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="old-maid">
+  <a class="game-card-static-link" href="/de/games/old-maid/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__old-maid.webp" alt="Alte Magd Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Alte Magd</h2>
+      <p>Bilde Paare, ziehe aus der nächsten Hand und behalte nicht den Schwarzen Peter.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="casino">
+  <a class="game-card-static-link" href="/de/games/casino/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__casino.webp" alt="Cassino Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Cassino</h2>
+      <p>Fange Karten nach Rang oder Summe und bilde Builds für spätere Züge.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="peg-solitaire">
+  <a class="game-card-static-link" href="/de/games/peg-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__peg-solitaire.webp" alt="Peg-Solitaire Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Peg-Solitaire</h2>
+      <p>Springe über einen Nachbarn in ein Loch und lasse einen Stein übrig.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="reversi">
+  <a class="game-card-static-link" href="/de/games/reversi/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__reversi.webp" alt="Reversi Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Reversi</h2>
+      <p>Umschließe gegnerische Steine; am Ende gewinnt die größere Zahl.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="four-in-a-row">
+  <a class="game-card-static-link" href="/de/games/four-in-a-row/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__four-in-a-row.webp" alt="Vier gewinnt Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Vier gewinnt</h2>
+      <p>Lasse Steine fallen und verbinde vier waagerecht, senkrecht oder diagonal.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="traffic-jam-diner">
+  <a class="game-card-static-link" href="/de/games/traffic-jam-diner/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/Assets__traffic-jam-diner-cover-v3.webp" alt="Stau-Diner Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Stau-Diner</h2>
+      <p>Führe tierische Nachbarn durch Einbahnspuren, halte einen Warteplatz frei und stelle die Bestellungen der Reihe nach zusammen.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="robot-dog-showtime">
+  <a class="game-card-static-link" href="/de/games/robot-dog-showtime/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__robot-dog-showtime-cover-v3.webp" alt="Die Robot-Hundeshow Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Die Robot-Hundeshow</h2>
+      <p>Plane die Bühnenzeichen für beide Darsteller und probt gemeinsam ihre Wege und Gesten.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="flying-tram">
+  <a class="game-card-static-link" href="/de/games/flying-tram/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__flying-tram__assets__cover-block-v1.webp" alt="Himmelsbahn Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">Himmelsbahn</h2>
+      <p>Schubse eine kantige Bahn an, drehe dich für Punkte, halte den Tee im Becher und lande auf 30 Dachrouten.</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="smallwood-lives">
   <a class="game-card-static-link" href="/de/games/smallwood-lives/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__smallwood-lives__assets__cover-v2.webp" alt="Ein Leben in Augenblicken Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
@@ -3001,7 +3069,7 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="hearthloop">
+<article class="game-card game-card-static hidden playable" data-game-id="hearthloop">
   <a class="game-card-static-link" href="/de/games/hearthloop/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__hearthloop__assets__cover.webp" alt="Heimatrunde Browser-Spiel" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
@@ -3010,8 +3078,10 @@
     </div>
   </a>
 </article>
-        <!-- adsense-static-catalog:end -->
-      </section>
+<article class="game-card game-card-static hidden playable" data-game-id="chess"><a class="game-card-static-link" href="/de/games/chess/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__chess.webp" alt="Schach" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Schach</h2><p>Spiele eine vollständige Schachpartie gegen den Computer oder löse 30 originelle Taktikaufgaben.</p></div></a></article>
+<article class="game-card game-card-static hidden playable" data-game-id="mahjong-solitaire"><a class="game-card-static-link" href="/de/games/mahjong-solitaire/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__mahjong-solitaire.webp" alt="Mahjong Solitaire" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">Mahjong Solitaire</h2><p>Finde offene gleiche Steine, erhole dich nach einem Fehler und räume ein kurzes Brett mit sechs Paaren ab, bevor du die optionale Meisterrunde versuchst.</p></div></a></article>
+<!-- adsense-static-catalog:end -->
+</section><details id="catalogDirectory" data-runtime-localize="off"><summary>Alle Spiele</summary><nav><a href="/de/games/animal-peach-oath/">Pfirsichgarten-Schwur</a><a href="/de/games/tideweave/">Gezeitenbrücken</a><a href="/de/games/duskbloom/">Dämmergarten</a><a href="/de/games/dustwake-depot/">Staubglanz-Depot</a><a href="/de/games/rux-salvage-yard/">Rux&#39; Recyclingwerkstatt</a><a href="/de/games/lantern-stride/">Laternenlauf</a><a href="/de/games/orbit-menders/">Explosionsmähne: Turmwache</a><a href="/de/games/bramble-rapids/">Dornenbach-Stromschnellen</a><a href="/de/games/nori-bankshot/">Noris Billardhalle</a><a href="/de/games/wildborn/">Wild geboren</a><a href="/de/games/kindred-habitats/">Gefährten der Lebensräume</a><a href="/de/games/deep-drill/">Deep Drill</a><a href="/de/games/fusekeep/">Fusionsfestung</a><a href="/de/games/animal-wildwood-raid/">Waldexpedition</a><a href="/de/games/pawaxe/">Axe &amp; Ally</a><a href="/de/games/animal-crownfall/">Kronensturz</a><a href="/de/games/animal-carnival-claw/">Jahrmarkt-Kralle</a><a href="/de/games/animal-honey-shield/">Honigschild</a><a href="/de/games/animal-dice-bastion/">Tierwürfel-Bastion</a><a href="/de/games/signal-veil/">Signal-Schleier</a><a href="/de/games/animal-unblock/">Unblock-Pfad</a><a href="/de/games/zhao-yun-a-dou/">Zhao Yun und A Dou: Tuschewache</a><a href="/de/games/animal-bus-jam/">Pankos Bus-Chaos</a><a href="/de/games/arrow-escape/">Pfeilflucht</a><a href="/de/games/block-blast/">Blockexplosion</a><a href="/de/games/hexa-sort/">Hexa-Sortierung</a><a href="/de/games/animal-sunbeam-garden/">Sonnengarten: Spiegelwege</a><a href="/de/games/animal-number-match/">Pankos Zahlenhain</a><a href="/de/games/animal-prism-garden/">Prisma-Pfadgarten</a><a href="/de/games/animal-bamboo-pipes/">Pankos Bambus-Wasserweg</a><a href="/de/games/animal-triple-match/">Animal Triple Match</a><a href="/de/games/wonder-crash/">Fantasy Lion Defense</a><a href="/de/games/animal-2048/">Animal 2048: Forest Evolution</a><a href="/de/games/animal-guard-yard/">Animal Guard Yard</a><a href="/de/games/animal-crystal-survivor/">Verliesabenteuer</a><a href="/de/games/beast-deck/">Beast Deck: The Mist Forest</a><a href="/de/games/animal-relic-hunters/">Animal Relic Hunters</a><a href="/de/games/animal-rune-tactics/">Runentaktik</a><a href="/de/games/animal-orb-fortress/">Orbfestung</a><a href="/de/games/animal-auto-squad/">Auto-Team</a><a href="/de/games/beast-tactician/">Bestienwächter</a><a href="/de/games/shadow-wolf/">Legende des Schattenwolfs</a><a href="/de/games/animal-rune-reels/">Runenräder</a><a href="/de/games/animal-spectrum-pulse/">Spektrumpuls</a><a href="/de/games/animal-rootvault-pins/">Wurzelgewölbe-Stifte</a><a href="/de/games/animal-sketchwheel-rally/">Skizzenrad-Rennen</a><a href="/de/games/animal-sanctuary-loop/">Zufluchtsschleife</a><a href="/de/games/animal-prism-battalion/">Prismabataillon</a><a href="/de/games/animal-skybridge-rivals/">Himmelsbrücken</a><a href="/de/games/animal-skyspire-drop/">Himmelsturm-Sturz</a><a href="/de/games/animal-rift-salvage/">Rissbergung</a><a href="/de/games/animal-skyport-dispatch/">Animal Skyport Dispatch</a><a href="/de/games/animal-starlight-trails/">Starlink</a><a href="/de/games/animal-one-line/">One Line</a><a href="/de/games/animal-abyss-diver/">Animal Abyss Diver</a><a href="/de/games/animal-cratebound/">Fracht</a><a href="/de/games/animal-mosaic-clues/">Mosaik-Hinweise</a><a href="/de/games/animal-prism-breakers/">Prismabrecher</a><a href="/de/games/animal-layer-grove/">Ebenen-Reihenfolge</a><a href="/de/games/animal-penalty-cup/">Elfmeterpokal</a><a href="/de/games/animal-tide-tally/">Muscheln zählen</a><a href="/de/games/animal-reef-fisher/">Animal Reef Fisher</a><a href="/de/games/hangman/">Galgenmännchen</a><a href="/de/games/animal-hero-trials/">Animal Hero Trials</a><a href="/de/games/animal-gearpack-expedition/">Tier-Gepäckexpedition</a><a href="/de/games/animal-moonlight-heist/">Animal Moonlight Heist</a><a href="/de/games/minefield-logic/">Minenfeld-Logik</a><a href="/de/games/cat-color-sudoku/">Katzen-Farbsudoku</a><a href="/de/games/sudoku/">Sudoku</a><a href="/de/games/lights-out/">Licht aus</a><a href="/de/games/sliding-15/">Schiebepuzzle 15</a><a href="/de/games/code-breaker/">Codeknacker</a><a href="/de/games/tower-of-hanoi/">Türme von Hanoi</a><a href="/de/games/animal-postcard-crop/">Postkarten-Ausschnitt</a><a href="/de/games/animal-hollow-fit/">Höhlenformen zuordnen</a><a href="/de/games/animal-cozy-camp/">Lagerfeuer-Sitzrätsel</a><a href="/de/games/animal-canopy-compass/">Baumkronen-Kompassrätsel</a><a href="/de/games/animal-orbit-orchard/">Orbit-Obstgarten</a><a href="/de/games/animal-habitat-counts/">Habitat zählen</a><a href="/de/games/animal-tideglass/">Gezeitenpegel einstellen</a><a href="/de/games/animal-cushion-stack/">Kissenstapel</a><a href="/de/games/animal-burrow-builder/">Bau der Tierhöhle</a><a href="/de/games/animal-tangle-rescue/">Rettung aus dem Rankenwirrwarr</a><a href="/de/games/animal-meadow-difference/">Wiesenblick</a><a href="/de/games/animal-pattern-patch/">Muster vervollständigen</a><a href="/de/games/animal-footprint-folio/">Spurenfolgen lösen</a><a href="/de/games/animal-constellation-keeper/">Sternkarten-Positionsrätsel</a><a href="/de/games/animal-lantern-lattice/">Laternengeflecht</a><a href="/de/games/animal-lantern-guides/">Laternenwege im Team</a><a href="/de/games/animal-folded-field/">Faltfeld</a><a href="/de/games/animal-magnet-meadow/">Magnetwiese</a><a href="/de/games/animal-dawn-shutters/">Morgenlicht-Läden</a><a href="/de/games/animal-nest-weigh/">Nest-Waage</a><a href="/de/games/animal-glyph-garden/">Glyphen-Garten</a><a href="/de/games/animal-ring-garden/">Drehring-Musterrätsel</a><a href="/de/games/animal-balance-grove/">Balance-Hain</a><a href="/de/games/animal-dewline/">Verbundene Tauventile</a><a href="/de/games/breakout/">Brick Breaker</a><a href="/de/games/pong/">Pong</a><a href="/de/games/tetris/">Tetris</a><a href="/de/games/wordle/">Wordle</a><a href="/de/games/animal-trap-trail/">Mondlicht-Fallenpfad</a><a href="/de/games/animal-canopy-cut/">Canopy Cut</a><a href="/de/games/animal-bounce-brawl/">Hüpfduell</a><a href="/de/games/animal-frost-maze/">Rettung im Eislabyrinth</a><a href="/de/games/animal-flip-foundry/">Flip-Werkstatt</a><a href="/de/games/animal-deep-sea-salvage/">Tiefsee-Bergungsfirma</a><a href="/de/games/animal-hoop-league/">Animal Hoop League</a><a href="/de/games/animal-habitat-atlas/">Lebensraum-Atlas</a><a href="/de/games/animal-moonlight-workshop/">Flucht aus der Mondwerkstatt</a><a href="/de/games/animal-chameleon-blend/">Chamäleon-Tarnproben</a><a href="/de/games/animal-habitat-builder/">Lebensraum-Baumeister</a><a href="/de/games/animal-cloudhook-courier/">Cloudhook Courier</a><a href="/de/games/animal-twin-switchyard/">Signal-Sprünge im Duo</a><a href="/de/games/animal-moon-market/">Mondmarkt verwalten</a><a href="/de/games/animal-putt-trails/">Tierische Putt-Pfade</a><a href="/de/games/animal-kite-keeper/">Drachenhüter</a><a href="/de/games/animal-gust-garden/">Wind-Saatgarten</a><a href="/de/games/animal-habitat-blueprint/">Lebensraum-Kachelrätsel</a><a href="/de/games/animal-weather-watch/">Wetterwarte</a><a href="/de/games/animal-river-gates/">Wasser durch Schleusen leiten</a><a href="/de/games/animal-echo-orchard/">Obstgarten-Klanggedächtnis</a><a href="/de/games/animal-acorn-auction/">Eichel-Auktion</a><a href="/de/games/animal-patchwork-paws/">Pfoten-Patchwork</a><a href="/de/games/animal-cairn-courier/">Steinmal-Bote</a><a href="/de/games/animal-firefly-folio/">Glühwürmchen-Richtungscodes</a><a href="/de/games/animal-signal-scout/">Patrouillensignale zuordnen</a><a href="/de/games/animal-silhouette-scout/">Tiersilhouetten zuordnen</a><a href="/de/games/road-crosser/">Straße und Fluss überqueren</a><a href="/de/games/alien-defender/">Alien-Verteidiger</a><a href="/de/games/snake/">Schlange</a><a href="/de/games/maze-chase/">Labyrinthjagd</a><a href="/de/games/space-rocks/">Weltraumfelsen</a><a href="/de/games/animal-rain-roost/">Regentropfen fangen</a><a href="/de/games/animal-orchard-steward/">Obstgarten-Ressourcen</a><a href="/de/games/animal-grove-dominoes/">Lebensraum-Dominokette</a><a href="/de/games/pawflow/">Pfoten im Kreis</a><a href="/de/games/block-apex/">Block-Apex</a><a href="/de/games/castle-cascade/">Castle Cascade</a><a href="/de/games/animal-blockmart/">Blocktier-Mini-Markt</a><a href="/de/games/puppy-haven/">Welpenhof</a><a href="/de/games/purrch-grove/">Schnurrnest</a><a href="/de/games/signal-snap/">Signalblitz</a><a href="/de/games/railguard-express/">Schienenwacht Express</a><a href="/de/games/blade-orbit/">Klingenorbit</a><a href="/de/games/fia-hightrail/">Fias Gipfelpfad</a><a href="/de/games/nori-sandworks/">Noris Sandwerkstatt</a><a href="/de/games/meadow-touchdown/">Wiesen-Touchdown</a><a href="/de/games/lantern-lasso/">Laternen-Lasso</a><a href="/de/games/mossfold/">Mooswende</a><a href="/de/games/glowspool/">Lichtfaden</a><a href="/de/games/sunmane-journey/">仙旅傳說</a><a href="/de/games/klondike-solitaire/">Klondike-Solitär</a><a href="/de/games/spider-solitaire/">Spider-Solitär</a><a href="/de/games/freecell-solitaire/">FreeCell-Solitär</a><a href="/de/games/pyramid-solitaire/">Pyramiden-Solitär</a><a href="/de/games/tripeaks-solitaire/">Drei-Gipfel-Solitär</a><a href="/de/games/golf-solitaire/">Golf-Solitär</a><a href="/de/games/yukon-solitaire/">Yukon Solitaire</a><a href="/de/games/checkers/">Dame</a><a href="/de/games/tic-tac-toe/">Drei gewinnt</a><a href="/de/games/hearts/">Herz</a><a href="/de/games/spades/">Pik</a><a href="/de/games/gin-rummy/">Gin Rommé</a><a href="/de/games/crazy-eights/">Verrückte Achter</a><a href="/de/games/cribbage/">Cribbage</a><a href="/de/games/go-fish/">Gehen Sie angeln</a><a href="/de/games/war/">Krieg: Höhere Karte</a><a href="/de/games/speed/">Speed-Kartenspiel</a><a href="/de/games/old-maid/">Alte Magd</a><a href="/de/games/casino/">Cassino</a><a href="/de/games/peg-solitaire/">Peg-Solitaire</a><a href="/de/games/reversi/">Reversi</a><a href="/de/games/four-in-a-row/">Vier gewinnt</a><a href="/de/games/traffic-jam-diner/">Stau-Diner</a><a href="/de/games/robot-dog-showtime/">Die Robot-Hundeshow</a><a href="/de/games/flying-tram/">Himmelsbahn</a><a href="/de/games/smallwood-lives/">Ein Leben in Augenblicken</a><a href="/de/games/hearthloop/">Heimatrunde</a><a href="/de/games/chess/">Schach</a><a href="/de/games/mahjong-solitaire/">Mahjong Solitaire</a></nav></details>
 
         <a id="featuredGame" class="lobby-feature lobby-kids-gateway" href="kids/">
           <img src="assets/lobby-thumbs/w480/assets__animal-zoo-idle-cover.webp" alt="" loading="lazy" decoding="async" width="480" height="480" />
@@ -3058,7 +3128,8 @@
     </main>
 
     <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
-
+    <script id="lobbyInitialData" type="application/json">{"firstPublished":{"alien-defender":{"date":"2026-08-14T10:42:10+08:00","evidence":"git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"},"animal-2048":{"date":"2026-07-19T22:07:28+08:00","evidence":"git:b5477af1933785970fb6d8786a974569067690b2"},"animal-abyss-diver":{"date":"2026-07-19T23:11:00+08:00","evidence":"git:20ac048c5a6a3be9838f3f9e8931269b70b177fb"},"animal-acorn-auction":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-auto-squad":{"date":"2026-07-07T21:29:26+08:00","evidence":"git:c52fb0fbbdf1ea248e960bb638222b17de19154c"},"animal-balance-grove":{"date":"2026-09-08T03:36:38.620Z","evidence":"canonical-public-catalog"},"animal-bamboo-pipes":{"date":"2026-07-29T23:39:48+08:00","evidence":"git:e8917977335735d5d888a69bd69d1874fbe1126d"},"animal-block-grove":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-blockmart":{"date":"2026-10-24T09:43:48.162Z","evidence":"canonical-public-catalog"},"animal-bounce-brawl":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-bubble-safari":{"date":"2026-07-15T23:32:25+08:00","evidence":"git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"},"animal-burrow-builder":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-bus-jam":{"date":"2026-07-27T22:34:17+08:00","evidence":"git:a4b01d4b0120b1737f60bf51a44d4fa3df0c60e7"},"animal-cafe-rush":{"date":"2026-07-11T16:23:08+08:00","evidence":"git:d276c8a622bf3ffe31d9d02b8701cc6ae2bfb081"},"animal-cairn-courier":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-canopy-compass":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"animal-canopy-cut":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-carnival-claw":{"date":"2026-08-01T21:20:08+08:00","evidence":"git:4ea5624cf58fa6240d4f115588bf71595d9e3adc"},"animal-chameleon-blend":{"date":"2026-09-07T20:52:50.966Z","evidence":"canonical-public-catalog"},"animal-cloudhook-courier":{"date":"2026-08-16T18:22:05+08:00","evidence":"git:ad8753d557c12ed81c6c6038d8a93483826286c9"},"animal-color-link":{"date":"2026-07-29T21:13:08+08:00","evidence":"git:9af3b072c5b0040172a8fd2f56134f0f56b64974"},"animal-color-springs":{"date":"2026-07-21T00:28:03+08:00","evidence":"git:80fe58d1be86b2d17a1949931a03fea109d8bc26"},"animal-coloring-studio":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-constellation-keeper":{"date":"2026-09-12T17:03:06.681Z","evidence":"canonical-public-catalog"},"animal-cozy-camp":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-cratebound":{"date":"2026-07-26T14:39:48+08:00","evidence":"git:0af3b8a45edfd8e11ede0ead0032a44f3ffbf0a3"},"animal-crownfall":{"date":"2026-10-10T05:42:22.201Z","evidence":"canonical-public-catalog"},"animal-crystal-survivor":{"date":"2026-07-06T08:33:55+08:00","evidence":"git:52046a360aaa1726c6e54bf488c2ac4f6e488bab"},"animal-cushion-stack":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"animal-dawn-shutters":{"date":"2026-09-13T05:59:04.844Z","evidence":"canonical-public-catalog"},"animal-deep-sea-salvage":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-dewline":{"date":"2026-09-13T04:54:16.327Z","evidence":"canonical-public-catalog"},"animal-dice-bastion":{"date":"2026-07-31T18:43:34+08:00","evidence":"git:62569beb5803fce12476561bfaa0241799cbef96"},"animal-echo-orchard":{"date":"2026-09-12T19:53:33.209Z","evidence":"canonical-public-catalog"},"animal-firefly-folio":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-flip-foundry":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-folded-field":{"date":"2026-09-12T17:23:18.025Z","evidence":"canonical-public-catalog"},"animal-footprint-folio":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-frost-maze":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-gearpack-expedition":{"date":"2026-07-12T07:59:26+08:00","evidence":"git:9007bf982e3bf8076e584b718328ec785826116e"},"animal-glyph-garden":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-grove-dominoes":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-guard-yard":{"date":"2026-07-01T09:20:11+08:00","evidence":"git:acbe4717fa418382f374a30421d48372c0617366"},"animal-gust-garden":{"date":"2026-09-13T04:04:31.207Z","evidence":"canonical-public-catalog"},"animal-habitat-atlas":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"animal-habitat-blueprint":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-habitat-builder":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"animal-habitat-counts":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-habitat-mahjong":{"date":"2026-07-15T23:32:25+08:00","evidence":"git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"},"animal-hero-trials":{"date":"2026-07-12T04:37:26+08:00","evidence":"git:5d5a2cbdbc198e916014ae544ddbf8ad9edaff3a"},"animal-hidden-safari":{"date":"2026-07-01T18:24:07+08:00","evidence":"git:f8f61b5c2d9c5aca8f2af9bb9d21a0859f8f643a"},"animal-hollow-fit":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-honey-shield":{"date":"2026-08-08T12:32:12+08:00","evidence":"git:45e3a04413a39588697ff244372f6e18d5ecdd5b"},"animal-hoop-league":{"date":"2026-09-07T10:25:54+08:00","evidence":"git:c10da82b30ee96fdacb0e997ae952c2383d1991b"},"animal-kite-keeper":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-lantern-guides":{"date":"2026-09-11T19:13:47.168Z","evidence":"canonical-public-catalog"},"animal-lantern-lattice":{"date":"2026-09-23T17:24:03.083Z","evidence":"canonical-public-catalog"},"animal-layer-grove":{"date":"2026-10-24T07:43:34.253Z","evidence":"canonical-public-catalog"},"animal-magnet-meadow":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-meadow-difference":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-mirror-meadow":{"date":"2026-09-08T01:42:36.247Z","evidence":"canonical-public-catalog"},"animal-moon-market":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-moonlight-heist":{"date":"2026-07-12T10:06:54+08:00","evidence":"git:4df4d45b548bb7a304700a05570cb6bffed90bb3"},"animal-moonlight-workshop":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"animal-mosaic-clues":{"date":"2026-07-23T00:39:38+08:00","evidence":"git:6d94e3e9f732a860412aa735b6524c27c50c3ce5"},"animal-nest-weigh":{"date":"2026-09-13T08:44:28.959Z","evidence":"canonical-public-catalog"},"animal-number-match":{"date":"2026-07-29T14:36:22+08:00","evidence":"git:5b2eba2acfddc059640be47e460ea2e778f8ec31"},"animal-one-line":{"date":"2026-07-19T17:44:26+08:00","evidence":"git:48a62c205c442a89175566110ceedc49435a0c66"},"animal-orb-fortress":{"date":"2026-07-07T13:36:56+08:00","evidence":"git:ffab92fd42f64675fbb90b2ed51e1ae43f9e71fa"},"animal-orbit-orchard":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-orchard-steward":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-parking-patrol":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-patchwork-paws":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-pattern-patch":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-peach-oath":{"date":"2026-09-07T16:23:33+08:00","evidence":"git:8c158de03ea0ec27be738b7d4d04ebabc39a56ef"},"animal-penalty-cup":{"date":"2026-09-06T11:20:00+08:00","evidence":"git:24bede97af3978f173844b18b9de9816ebf121c1"},"animal-postcard-crop":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-prism-battalion":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-prism-breakers":{"date":"2026-07-29T23:23:04+08:00","evidence":"git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"},"animal-prism-garden":{"date":"2026-07-30T14:58:54+08:00","evidence":"git:7ad044e058343a5a4b2c331b9d72f6502b4eed0c"},"animal-putt-trails":{"date":"2026-09-11T04:17:56.526Z","evidence":"canonical-public-catalog"},"animal-quiz":{"date":"2026-06-29T18:20:39+08:00","evidence":"git:dc8b075b3b2fe3124211990f8b999ed8f6af778f"},"animal-rain-roost":{"date":"2026-10-23T15:43:12.003Z","evidence":"canonical-public-catalog"},"animal-ranger-tactics":{"date":"2026-07-02T14:22:09+08:00","evidence":"git:5d2db122636491188bb3f60d58762b492a9f5d1b"},"animal-reef-fisher":{"date":"2026-07-07T20:47:00+08:00","evidence":"git:f01a85c6e80e3f711a038c08bbde10a3c997e450"},"animal-relic-hunters":{"date":"2026-07-06T16:47:07+08:00","evidence":"git:590953402eb3c369f00c6eb930534e6a9d3956df"},"animal-rescue":{"date":"2026-06-30T07:35:13+08:00","evidence":"git:2ee56f46792ba42caa86759dc4c565d598b907dd"},"animal-rift-salvage":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-ring-garden":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-river-gates":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-rootvault-pins":{"date":"2026-07-21T18:33:11+08:00","evidence":"git:c946e40e34c1c12fecbcaa376631196379756da7"},"animal-rope-rescue":{"date":"2026-07-02T15:52:55+08:00","evidence":"git:06c09a6474db720896369d471c544ac5e9c2d703"},"animal-rune-reels":{"date":"2026-07-23T10:42:45+08:00","evidence":"git:9017c47f12fa38e6910caaa980f846b19a75e157"},"animal-rune-tactics":{"date":"2026-07-07T10:28:29+08:00","evidence":"git:3bdb1310588889c268d710c99c506f54ac4a5a84"},"animal-sanctuary-loop":{"date":"2026-07-21T18:33:11+08:00","evidence":"git:c946e40e34c1c12fecbcaa376631196379756da7"},"animal-screw-workshop":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-signal-scout":{"date":"2026-09-12T02:20:17.817Z","evidence":"canonical-public-catalog"},"animal-silhouette-scout":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-sketchwheel-rally":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-skybridge-rivals":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-skyport-dispatch":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-skyspire-drop":{"date":"2026-07-23T16:04:21+08:00","evidence":"git:fc0404ed773867cc913b077f4ac1089cef6caedb"},"animal-spectrum-pulse":{"date":"2026-07-22T21:34:13+08:00","evidence":"git:ca70a96d756374b7b1e822e06bd806a119bf39d2"},"animal-starlight-trails":{"date":"2026-07-19T15:37:21+08:00","evidence":"git:57329de1df4d8a3b6c71e5d39025d8395ebf48b4"},"animal-sunbeam-garden":{"date":"2026-07-28T17:29:10+08:00","evidence":"git:63161e4c3943c1b03b0a14ba6755c94aec034e30"},"animal-tangle-rescue":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-tangram":{"date":"2026-07-29T23:23:04+08:00","evidence":"git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"},"animal-tide-tally":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-tideglass":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-trap-trail":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-triple-match":{"date":"2026-07-26T08:55:44+08:00","evidence":"git:0353b8a9d67113e5b613d590f1de1b093923739c"},"animal-twin-switchyard":{"date":"2026-08-16T18:22:05+08:00","evidence":"git:ad8753d557c12ed81c6c6038d8a93483826286c9"},"animal-unblock":{"date":"2026-07-28T14:19:40+08:00","evidence":"git:6a05ae71c10d70ea6a76b78932cb7e6d520fdf20"},"animal-weather-watch":{"date":"2026-09-08T04:17:14.305Z","evidence":"canonical-public-catalog"},"animal-wildwood-raid":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"animal-word-trails":{"date":"2026-07-21T00:28:03+08:00","evidence":"git:80fe58d1be86b2d17a1949931a03fea109d8bc26"},"animal-zoo-idle":{"date":"2026-07-01T23:43:23+08:00","evidence":"git:b605f8ce6421054b3240081cf10aee20be1dcd55"},"arrow-escape":{"date":"2026-08-01T12:46:15+08:00","evidence":"git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"},"beast-deck":{"date":"2026-07-06T16:47:07+08:00","evidence":"git:590953402eb3c369f00c6eb930534e6a9d3956df"},"beast-tactician":{"date":"2026-07-06T21:50:28+08:00","evidence":"git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"},"blade-orbit":{"date":"2026-10-25T17:14:14.033Z","evidence":"canonical-public-catalog"},"block-apex":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"block-blast":{"date":"2026-08-01T12:46:15+08:00","evidence":"git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"},"bramble-rapids":{"date":"2026-10-27T09:43:29.076Z","evidence":"canonical-public-catalog"},"breakout":{"date":"2026-10-24T07:39:29.093Z","evidence":"canonical-public-catalog"},"bubble-bakery":{"date":"2026-07-01T11:15:16+08:00","evidence":"git:d6894ab4aa79712b9cc80c938fb356f5328f6262"},"campus-dash":{"date":"2026-06-29T22:58:52+08:00","evidence":"git:60ce30d4892136d7a7668c7242412bd1f19757b3"},"casino":{"date":"2026-09-07T19:54:12.128Z","evidence":"canonical-public-catalog"},"castle-cascade":{"date":"2026-10-04T18:36:56.210Z","evidence":"canonical-public-catalog"},"cat-color-sudoku":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"checkers":{"date":"2026-08-27T00:24:12+08:00","evidence":"git:551c96aabb0a4b4e3d26549d7845b1721ea9ccf2"},"chess":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"code-breaker":{"date":"2026-09-07T20:17:00.869Z","evidence":"canonical-public-catalog"},"color-lunchbox":{"date":"2026-06-29T12:55:21+08:00","evidence":"git:1c265986ae77558669c499aad6790716110b787e"},"crazy-eights":{"date":"2026-09-06T02:23:18+08:00","evidence":"git:0298605d944c01aae1b57974ef8214a8c1b89470"},"cribbage":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"deep-drill":{"date":"2026-10-24T07:27:34.088Z","evidence":"canonical-public-catalog"},"dustwake-depot":{"date":"2026-10-29T10:31:36.367Z","evidence":"canonical-public-catalog"},"fia-hightrail":{"date":"2026-10-26T05:06:10.101Z","evidence":"canonical-public-catalog"},"flying-tram":{"date":"2026-10-23T13:29:55.603Z","evidence":"canonical-public-catalog"},"four-in-a-row":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"freecell-solitaire":{"date":"2026-09-06T07:33:49+08:00","evidence":"git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"},"fruit-merge":{"date":"2026-06-30T19:58:06+08:00","evidence":"git:c7ed47cc7ba16ad30590b38b58a1026210096cc9"},"fusekeep":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"garden-tiles":{"date":"2026-06-30T20:09:06+08:00","evidence":"git:aac6880236f15a35fba53dc5e1bb4d1b5de13a3b"},"gin-rummy":{"date":"2026-09-04T20:21:02+08:00","evidence":"git:5e8b126c73f51c52d2bbc36360d517b5f08bec80"},"go-fish":{"date":"2026-09-06T07:33:49+08:00","evidence":"git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"},"golf-solitaire":{"date":"2026-09-06T08:21:14+08:00","evidence":"git:bb9f3549c258959ec1d6c4877d60e6c0b2e82db7"},"hangman":{"date":"2026-08-31T13:16:25+08:00","evidence":"git:a714f868a988d5979fbf72411fbc11a87bf0ef38"},"hearts":{"date":"2026-09-06T19:23:08+08:00","evidence":"git:d8a3c16bca906278c0b46cbb77e0594bb6ecea5a"},"hexa-sort":{"date":"2026-08-01T12:46:15+08:00","evidence":"git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"},"kindred-habitats":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"klondike-solitaire":{"date":"2026-08-08T12:32:12+08:00","evidence":"git:45e3a04413a39588697ff244372f6e18d5ecdd5b"},"lights-out":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"mahjong-solitaire":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"maze-chase":{"date":"2026-08-14T05:29:51+08:00","evidence":"git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"},"meadow-touchdown":{"date":"2026-10-26T10:53:22.112Z","evidence":"canonical-public-catalog"},"minefield-logic":{"date":"2026-10-23T15:09:00.552Z","evidence":"canonical-public-catalog"},"mossfold":{"date":"2026-10-30T04:34:14.857Z","evidence":"canonical-public-catalog"},"nori-bankshot":{"date":"2026-10-26T09:43:57.097Z","evidence":"canonical-public-catalog"},"nori-sandworks":{"date":"2026-10-26T05:06:10.101Z","evidence":"canonical-public-catalog"},"old-maid":{"date":"2026-09-11T16:47:51.441Z","evidence":"canonical-public-catalog"},"orbit-menders":{"date":"2026-10-27T08:35:00.951Z","evidence":"canonical-public-catalog"},"pawaxe":{"date":"2026-09-27T15:59:36.430Z","evidence":"canonical-public-catalog"},"pawflow":{"date":"2026-10-23T10:21:06.808Z","evidence":"canonical-public-catalog"},"peg-solitaire":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"pong":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"puppy-haven":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"purrch-grove":{"date":"2026-10-29T10:29:39.765Z","evidence":"canonical-public-catalog"},"pyramid-solitaire":{"date":"2026-08-11T12:08:54+08:00","evidence":"git:150ba8bdcf566c3dd6a323e0a4bdf9286dbdb012"},"railguard-express":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"reversi":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"road-crosser":{"date":"2026-08-14T10:42:10+08:00","evidence":"git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"},"robot-dog-showtime":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"shadow-wolf":{"date":"2026-07-06T21:50:28+08:00","evidence":"git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"},"shape-train":{"date":"2026-06-30T15:10:16+08:00","evidence":"git:31482792320158cb21f169911efcc8038df03968"},"signal-snap":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"signal-veil":{"date":"2026-07-28T18:08:11+08:00","evidence":"git:fd41cc15280bed4ce2ddaf1b5a9f49d48cc74aa0"},"sliding-15":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"smallwood-lives":{"date":"2026-10-30T04:34:14.857Z","evidence":"canonical-public-catalog"},"snack-blocks":{"date":"2026-06-30T14:07:51+08:00","evidence":"git:da6fde81cf8a17fb05f3818e8fa0ede4a2e1cb68"},"snake":{"date":"2026-08-14T10:42:10+08:00","evidence":"git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"},"space-rocks":{"date":"2026-08-14T05:29:51+08:00","evidence":"git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"},"spades":{"date":"2026-09-06T12:22:21+08:00","evidence":"git:054a870fb0f2a3775ccc984cc7dda2801302b173"},"speed":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"spider-solitaire":{"date":"2026-08-08T13:00:37+08:00","evidence":"git:7f6156bd8829937c6aba4904f4b596942ece6842"},"star-memory":{"date":"2026-06-29T21:17:25+08:00","evidence":"git:aee27c8085ee1502fa9f3698dc30b6b82462b732"},"sudoku":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"tetris":{"date":"2026-09-05T02:17:10+08:00","evidence":"git:3ec5a0dfe850d98d0940648159cec6470da5d6ef"},"tic-tac-toe":{"date":"2026-10-20T00:18:05.505Z","evidence":"owner-approval:OAR-c49d98efeb64c0e44171906b"},"tiny-weather-rescue":{"date":"2026-06-30T16:06:14+08:00","evidence":"git:346acd6893672262c5918c4702caa6278b5442d3"},"tower-of-hanoi":{"date":"2026-09-01T17:15:15+08:00","evidence":"git:73500c6261c0110a54ce3ad99c679deee381cf00"},"traffic-jam-diner":{"date":"2026-10-25T06:05:08.764Z","evidence":"canonical-public-catalog"},"tripeaks-solitaire":{"date":"2026-08-29T01:12:57+08:00","evidence":"git:d25602c3e7ef77d6079c609b8d9ec328fb98a14a"},"war":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"wildborn":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"wonder-crash":{"date":"2026-06-29T12:55:21+08:00","evidence":"git:1c265986ae77558669c499aad6790716110b787e"},"wordle":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"yukon-solitaire":{"date":"2026-09-06T11:20:00+08:00","evidence":"git:24bede97af3978f173844b18b9de9816ebf121c1"},"zhao-yun-a-dou":{"date":"2026-08-12T18:13:26+08:00","evidence":"git:51565abac8d1759e71815f7c21545b6532e5d250"},"zoo-helper-day":{"date":"2026-06-30T15:00:49+08:00","evidence":"git:5357799f83bae6b395c87691535c0db9074eee6f"}},"stats":{"updatedAt":"2026-07-07T17:55:27.235Z","source":"ga4","windowDays":7,"totals":{"plays7d":464,"playsTotal":480,"users7d":85},"games":{"wonder-crash":{"plays7d":36,"playsTotal":39,"users7d":5,"rank7d":4},"color-lunchbox":{"plays7d":19,"playsTotal":20,"users7d":4,"rank7d":6},"bubble-bakery":{"plays7d":47,"playsTotal":47,"users7d":6,"rank7d":3},"animal-rope-rescue":{"plays7d":16,"playsTotal":16,"users7d":3,"rank7d":9},"animal-zoo-idle":{"plays7d":61,"playsTotal":61,"users7d":6,"rank7d":2},"star-memory":{"plays7d":11,"playsTotal":11,"users7d":3,"rank7d":15},"campus-dash":{"plays7d":14,"playsTotal":14,"users7d":4,"rank7d":12},"snack-blocks":{"plays7d":15,"playsTotal":15,"users7d":6,"rank7d":10},"fruit-merge":{"plays7d":29,"playsTotal":37,"users7d":6,"rank7d":5},"garden-tiles":{"plays7d":11,"playsTotal":13,"users7d":3,"rank7d":13},"animal-rescue":{"plays7d":9,"playsTotal":9,"users7d":2,"rank7d":17},"animal-hidden-safari":{"plays7d":17,"playsTotal":17,"users7d":2,"rank7d":8},"animal-guard-yard":{"plays7d":87,"playsTotal":87,"users7d":8,"rank7d":1},"animal-crystal-survivor":{"plays7d":10,"playsTotal":10,"users7d":2,"rank7d":16},"animal-quiz":{"plays7d":8,"playsTotal":10,"users7d":2,"rank7d":19},"zoo-helper-day":{"plays7d":19,"playsTotal":19,"users7d":4,"rank7d":7},"shape-train":{"plays7d":6,"playsTotal":6,"users7d":3,"rank7d":22},"tiny-weather-rescue":{"plays7d":9,"playsTotal":9,"users7d":3,"rank7d":18},"beast-deck":{"plays7d":14,"playsTotal":14,"users7d":4,"rank7d":11},"animal-relic-hunters":{"plays7d":11,"playsTotal":11,"users7d":3,"rank7d":14},"animal-rune-tactics":{"plays7d":6,"playsTotal":6,"users7d":1,"rank7d":21},"animal-orb-fortress":{"plays7d":6,"playsTotal":6,"users7d":2,"rank7d":20},"animal-auto-squad":{"plays7d":3,"playsTotal":3,"users7d":2,"rank7d":23},"animal-reef-fisher":{"plays7d":0,"playsTotal":0,"users7d":1,"rank7d":null}}}}</script>
+    <script src="src/weightplay-audio.js?v=1.0.0"></script>
     <script src="src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="src/version.js?v=20260716-general-lobby1"></script>
     <script src="src/analytics.js?v=20261028-topic-stories-v2"></script>
@@ -3072,9 +3143,9 @@
     <script src="src/lobby-data-es.js?v=20260718-es1"></script>
     <script src="src/lobby-data-ja.js?v=20260719-ja1"></script>
     <script src="src/interface7-poster-registry.js?v=20260928-castle-cascade-poster-v1"></script>
-    <script src="src/lobby-frame.js?v=20261025-gameplay-genres2&wp-audio=1.0.0"></script>
+    <script src="src/lobby-frame.js?v=20261102-first-response1&wp-audio=1.0.0"></script>
     <script src="src/lobby-genres.js?v=20261025-gameplay-genres1"></script>
-    <script src="src/lobby.js?20261030-activity-days1&wp-audio=1.0.0"></script>
+    <script src="src/lobby.js?v=20261102-first-response1&wp-audio=1.0.0"></script>
       <script src="/src/weightplay-castle.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   </body>
 </html>

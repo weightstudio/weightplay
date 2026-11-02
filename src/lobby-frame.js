@@ -146,8 +146,10 @@
     const localeSelect = document.querySelector('#localeSelect');
     const sourceLabel = localeSelect?.closest('label');
     if (!localeSelect || !sourceLabel) return null;
+    const sourceContainer = sourceLabel.closest('[data-static-preferences]') || sourceLabel;
     const preferences = createPreferences({ localeSelect, id: 'general' });
-    sourceLabel.before(preferences.utility);
+    sourceContainer.before(preferences.utility);
+    if (sourceContainer !== sourceLabel) sourceContainer.replaceWith(sourceLabel);
     sourceLabel.hidden = true;
     sourceLabel.style.setProperty('display', 'none', 'important');
     document.documentElement.dataset.lobbyFrame = '1';

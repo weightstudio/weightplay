@@ -2,7 +2,6 @@
 <html lang="hi">
   <head>
     <base href="/" />
-    <script src="src/weightplay-audio.js?v=1.0.0"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0b202b" />
@@ -44,7 +43,7 @@
     <link rel="manifest" href="manifest.webmanifest?v=20260702-logo1" />
     <link rel="stylesheet" href="src/styles.css?v=20260906-lobby-pagination1&lobby-genres=2" />
     <link rel="stylesheet" href="src/lobby-discovery.css?20261028-mobile-activities2" />
-    <link rel="stylesheet" href="src/lobby-frame.css?v=20260921-lobby-frame1" />
+    <link rel="stylesheet" href="src/lobby-frame.css?v=20261102-first-response1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5576470284985485" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -1080,8 +1079,75 @@
       }
     </script>
   <link rel="preload" as="image" href="/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2" />
+    <link rel="stylesheet" href="/src/lobby-mobile.css" media="(max-width: 1119px)" data-lobby-mobile-style="true" />
+    <link rel="stylesheet" href="/src/lobby-desktop.css" media="(min-width: 1120px)" data-lobby-desktop-style="true" />
+  <script data-lobby-layout-boot>/* Small, dependency-free first-paint layout. The runtime reuses this owner;
+   moving the original controls preserves focus, state and breakpoint order. */
+(() => {
+  let instance;
+  function setup(hooks = {}) {
+    if (instance) { Object.assign(instance.hooks, hooks); return; }
+    const shell = document.querySelector('.general-lobby-page .lobby-shell');
+    if (!shell || !document.querySelector('[data-lobby-layout-anchor]')) return;
+    const topbar = shell.querySelector('.lobby-topbar');
+    const rail = shell.querySelector('.desktop-filter-rail');
+    const selectors = ['.game-hall-switch', '.lobby-search-row', '.lobby-hero', '.demon-event-preview', '.lobby-shell > .library-tabs'];
+    const nodes = selectors.map(selector => document.querySelector(selector));
+    if (nodes.some(node => !node)) return;
+    const [halls, search, hero, activities, library] = nodes;
+    const initialStage = shell.querySelector('[data-lobby-initial-stage]');
+    if (initialStage) initialStage.before(halls);
+    else hero.before(halls);
+    const homes = nodes.map(node => {
+      const home = document.createComment('lobby layout home');
+      if (initialStage && (node === hero || node === activities)) initialStage.before(home);
+      else node.before(home);
+      return home;
+    });
+    const stage = initialStage || document.createElement('div');
+    stage.className = 'desktop-lobby-stage';
+    const query = window.matchMedia('(min-width: 1120px)');
+    instance = { hooks, desktop: undefined };
+    const apply = () => {
+      if (instance.desktop === query.matches) return;
+      instance.hooks.beforeChange?.();
+      const focused = document.activeElement;
+      // The activity controller replaces the inert first-response entries.
+      const currentActivities = shell.querySelector('.demon-event-preview') || activities;
+      if (query.matches) {
+        const preferences = topbar.querySelector('.lobby-preferences, .language-picker');
+        topbar.insertBefore(halls, preferences);
+        topbar.insertBefore(search, preferences);
+        homes[2].before(stage);
+        stage.append(hero, currentActivities);
+        rail.append(library);
+        library.classList.add('desktop-library');
+        document.body.dataset.desktopLobby = 'true';
+      } else {
+        [halls, search, hero, currentActivities, library].forEach((node, index) => homes[index].after(node));
+        library.classList.remove('desktop-library');
+        stage.remove();
+        delete document.body.dataset.desktopLobby;
+      }
+      instance.desktop = query.matches;
+      document.documentElement.dataset.lobbyLayoutReady = 'true';
+      if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+      instance.hooks.afterChange?.();
+    };
+    query.addEventListener('change', apply);
+    apply();
+  }
+  window.WeightPlayLobbyLayout = { setup };
+  const observer = new MutationObserver(() => {
+    setup();
+    if (instance) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  setup();
+})();
+</script>
   </head>
-  <body class="lobby-page general-lobby-page" data-audience="general" data-sound-toggle="off">
+  <body class="lobby-page general-lobby-page" data-audience="general" data-sound-toggle="off" data-lobby-first-response data-desktop-lobby="true">
     <a class="lobby-skip-link" href="#gameSearch" data-i18n="search.label">Search games</a>
     <main class="lobby-shell">
       <div class="lobby-topbar">
@@ -1092,71 +1158,75 @@
               <p class="brand-byline">by WeightStudio</p>
             </div>
           </div>
-        <label class="language-picker">
-          <span id="languageLabel">Language</span>
-          <select id="localeSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
-            <option value="es">Español</option>
-            <option value="ja">日本語</option>
-          </select>
-        </label>
+        <details class="lobby-preferences" data-static-preferences><summary class="lobby-settings-button" aria-label="सेटिंग्स"><svg class="lobby-settings-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9.8 2h4.4l.7 2.3c.5.2 1 .5 1.5.9l2.3-.6 2.2 3.8-1.7 1.7c.1.6.1 1.2 0 1.8l1.7 1.7-2.2 3.8-2.3-.6c-.5.4-1 .7-1.5.9l-.7 2.3H9.8l-.7-2.3c-.5-.2-1-.5-1.5-.9l-2.3.6-2.2-3.8 1.7-1.7a8 8 0 0 1 0-1.8L3.1 8.4l2.2-3.8 2.3.6c.5-.4 1-.7 1.5-.9L9.8 2Zm2.2 6.3a3.7 3.7 0 1 0 0 7.4 3.7 3.7 0 0 0 0-7.4Z" />
+        </svg></summary><div class="lobby-settings-popover"><label class="language-picker">
+          <span id="languageLabel">भाषा</span>
+          <select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi" selected>हिन्दी</option><option value="ar">العربية</option></select>
+        </label></div></details>
       </div>
       <aside class="desktop-filter-rail" aria-label="Game filters">
         <div class="desktop-filter-rail-heading">
-          <span data-i18n="general.play.kicker">Ready when you are</span>
-          <h2 data-i18n="general.play.title">Choose your next game</h2>
+          <span data-i18n="general.play.kicker">Pick up and play</span>
+          <h2 data-i18n="general.play.title">Choose a game and jump in</h2>
         </div>
 
         <section class="rail-library library-tabs" aria-label="Game library tabs">
-          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
-          <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
-          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+          <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">सभी गेम</button>
+          <button type="button" data-library-tab="recent" data-i18n="library.recent">हाल में खेले गए</button>
+          <button type="button" data-library-tab="favorites" data-i18n="library.favorites">पसंदीदा</button>
         </section>
 
         <section class="desktop-filter-group" aria-label="Topic filters">
-          <h3 data-i18n="filter.all_topics">All Topics</h3>
-          <div class="desktop-filter-grid topic-filter">
-            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-            <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-            <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-            <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-            <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-          </div>
+          <h3 data-i18n="filter.all_genres">सभी शैलियाँ</h3>
+          <div class="desktop-filter-grid topic-filter"><button type="button" data-topic-filter="all" data-runtime-localize="off" data-i18n="filter.all_genres" class="active" aria-label="सभी शैलियाँ, 152"><span class="filter-copy"><span class="filter-label">सभी शैलियाँ</span></span><b class="filter-count">152</b></button>
+<button type="button" data-topic-filter="Featured" data-runtime-localize="off" data-i18n="category.Featured" aria-label="विशेष गेम, 26"><span class="filter-copy"><span class="filter-label">विशेष गेम</span></span><b class="filter-count">26</b></button>
+<button type="button" data-topic-filter="Puzzle" data-runtime-localize="off" data-i18n="category.Puzzle" aria-label="पहेलियाँ, 84"><span class="filter-copy"><span class="filter-label">पहेलियाँ</span></span><b class="filter-count">84</b></button>
+<button type="button" data-topic-filter="Action" data-runtime-localize="off" data-i18n="category.Action" aria-label="एक्शन, 32"><span class="filter-copy"><span class="filter-label">एक्शन</span></span><b class="filter-count">32</b></button>
+<button type="button" data-topic-filter="RPG" data-runtime-localize="off" data-i18n="category.RPG" aria-label="रोल-प्लेइंग, 9"><span class="filter-copy"><span class="filter-label">रोल-प्लेइंग</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Strategy" data-runtime-localize="off" data-i18n="category.Strategy" aria-label="रणनीति, 22"><span class="filter-copy"><span class="filter-label">रणनीति</span></span><b class="filter-count">22</b></button>
+<button type="button" data-topic-filter="Tower Defense" data-runtime-localize="off" data-i18n="category.Tower Defense" aria-label="टावर डिफेंस, 7"><span class="filter-copy"><span class="filter-label">टावर डिफेंस</span></span><b class="filter-count">7</b></button>
+<button type="button" data-topic-filter="Simulation" data-runtime-localize="off" data-i18n="category.Simulation" aria-label="सिमुलेशन, 9"><span class="filter-copy"><span class="filter-label">सिमुलेशन</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Management" data-runtime-localize="off" data-i18n="category.Management" aria-label="प्रबंधन, 5"><span class="filter-copy"><span class="filter-label">प्रबंधन</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Pet Care" data-runtime-localize="off" data-i18n="category.Pet Care" aria-label="पालतू जानवरों की देखभाल, 3"><span class="filter-copy"><span class="filter-label">पालतू जानवरों की देखभाल</span></span><b class="filter-count">3</b></button>
+<button type="button" data-topic-filter="Racing" data-runtime-localize="off" data-i18n="category.Racing" aria-label="रेसिंग, 5"><span class="filter-copy"><span class="filter-label">रेसिंग</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Sports" data-runtime-localize="off" data-i18n="category.Sports" aria-label="खेल, 6"><span class="filter-copy"><span class="filter-label">खेल</span></span><b class="filter-count">6</b></button>
+<button type="button" data-topic-filter="Reaction" data-runtime-localize="off" data-i18n="category.Reaction" aria-label="त्वरित प्रतिक्रिया, 11"><span class="filter-copy"><span class="filter-label">त्वरित प्रतिक्रिया</span></span><b class="filter-count">11</b></button>
+<button type="button" data-topic-filter="Card" data-runtime-localize="off" data-i18n="category.Card" aria-label="कार्ड गेम, 1"><span class="filter-copy"><span class="filter-label">कार्ड गेम</span></span><b class="filter-count">1</b></button>
+<button type="button" data-topic-filter="Board" data-runtime-localize="off" data-i18n="category.Board" hidden aria-label="बोर्ड गेम, 0"><span class="filter-copy"><span class="filter-label">बोर्ड गेम</span></span><b class="filter-count">0</b></button>
+<button type="button" data-topic-filter="Word" data-runtime-localize="off" data-i18n="category.Word" aria-label="शब्द, 2"><span class="filter-copy"><span class="filter-label">शब्द</span></span><b class="filter-count">2</b></button>
+<button type="button" data-topic-filter="Education" data-runtime-localize="off" data-i18n="category.Education" aria-label="शिक्षा, 1"><span class="filter-copy"><span class="filter-label">शिक्षा</span></span><b class="filter-count">1</b></button></div>
         </section>
 
         <button class="desktop-filter-reset" type="button" data-reset-discovery data-i18n="status.clear_filters">Clear filters</button>
       </aside>
 
 
-      <header class="lobby-hero">
+      <div class="desktop-lobby-stage" data-lobby-initial-stage><header class="lobby-hero has-spotlight">
         <img class="general-hero-scene" src="/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2" alt="" decoding="async" fetchpriority="high" width="960" height="320" />
         <div class="lobby-hero-copy">
           <span class="hero-eyebrow">WEIGHTPLAY BLOCK ANIMALS</span>
-          <h2 data-i18n="discovery.hero_title">Small breaks. Big adventures.</h2>
-          <p id="platformSubtitle" class="lobby-subtitle"></p>
+          <h2 data-i18n="discovery.hero_title">छोटा सा विराम।
+बड़ा रोमांच।</h2>
+          <p id="platformSubtitle" class="lobby-subtitle">Explore block-style adventures, puzzles, action, and strategy games in your browser on phone or computer.</p>
         </div>
         <div class="lobby-mascot" aria-hidden="true">
           <img class="lobby-mascot-main" src="assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp" alt="" loading="lazy" decoding="async" />
           <img class="lobby-mascot-side lobby-mascot-fia" src="assets/lobby-thumbs/w480/assets__weightplay-character-spark-paw-fox-block-v1.webp" alt="" loading="lazy" decoding="async" />
           <img class="lobby-mascot-side lobby-mascot-nori" src="assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp" alt="" loading="lazy" decoding="async" />
         </div>
-      </header>
+      <section id="spotlightGameSection" data-runtime-localize="off" style="--spotlight-art:url(&quot;/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp&quot;)"><h2>खास गेम</h2><a class="spotlight-game spotlight-game--poster" href="/hi/games/orbit-menders/"><img class="is-decoded" src="/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp" loading="eager" fetchpriority="high" decoding="async" alt="" width="480" height="480"><div><small>खास गेम</small><h3 data-runtime-localize="off">धमाकेदार अयाल: टावर रक्षा</h3><p>Tower Defense Shooter</p><span>खेल शुरू करें →</span></div></a></section></header><section class="demon-event-preview" data-static-activities data-runtime-localize="off"><div class="demon-event-track"><a class="demon-event-card" href="/activities/demon-assault/" aria-label="दानवों का हमला" style="--activity-art:url(&quot;/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&quot;);text-decoration:none"><span class="demon-event-art" aria-hidden="true"><img src="/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1" width="768" height="768" loading="lazy" decoding="async" alt=""></span><span class="demon-event-card-copy"><span class="demon-event-label">दैनिक इवेंट</span><span class="demon-event-title">दानवों का हमला</span><span class="demon-event-card-schedule">सोम, बुध, शुक्र, रवि · रोज़ एक बार</span></span><span class="demon-event-chevron" aria-hidden="true">›</span></a><a class="demon-event-card" href="/activities/meteor-barrage/hi/" aria-label="उल्का रक्षा पंक्ति" style="--activity-art:url(&quot;/activities/meteor-barrage/poster.webp&quot;);text-decoration:none"><span class="demon-event-art" aria-hidden="true"><img src="/activities/meteor-barrage/poster.webp" width="768" height="768" loading="lazy" decoding="async" alt=""></span><span class="demon-event-card-copy"><span class="demon-event-label">ब्लॉक इवेंट</span><span class="demon-event-title">उल्का रक्षा पंक्ति</span><span class="demon-event-card-schedule">मंगल, गुरु, शनि, रवि · रोज़ एक बार</span></span><span class="demon-event-chevron" aria-hidden="true">›</span></a></div></section></div>
 
-      <nav class="game-hall-switch" aria-label="Game sections" data-i18n-aria-label="hall.label">
+      <nav class="game-hall-switch" aria-label="गेम अनुभाग" data-i18n-aria-label="गेम अनुभाग">
         <button class="active" type="button" data-hall-tab="games" aria-pressed="true">
-          <span class="hall-tab-icon hall-tab-icon--world" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M16 2 29 9v14l-13 7L3 23V9z" fill="#48cfa0" stroke="#dbfae9" stroke-width="2"/><path d="m3 9 13 8 13-8M16 17v13" fill="none" stroke="#173f37" stroke-width="2"/></svg></span><span data-i18n="hall.games">Game World</span>
-          <small data-i18n="hall.games_note">Adventures, puzzles and action</small>
+          <span class="hall-tab-icon hall-tab-icon--world" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M16 2 29 9v14l-13 7L3 23V9z" fill="#48cfa0" stroke="#dbfae9" stroke-width="2"/><path d="m3 9 13 8 13-8M16 17v13" fill="none" stroke="#173f37" stroke-width="2"/></svg></span><span data-i18n="hall.games">गेम वर्ल्ड</span>
+          <small data-i18n="hall.games_note">रोमांच, पहेलियाँ और एक्शन</small>
         </button>
         <button type="button" data-hall-tab="tabletop" aria-pressed="false">
-          <span class="hall-tab-icon hall-tab-icon--tabletop" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><rect x="2" y="2" width="28" height="28" rx="2" fill="#182331" stroke="#f2ca73" stroke-width="2"/><path d="M4 4h6v6H4zm12 0h6v6h-6zM10 10h6v6h-6zm12 0h6v6h-6zM4 16h6v6H4zm12 0h6v6h-6zM10 22h6v6h-6zm12 0h6v6h-6z" fill="#f2ca73"/></svg></span><span data-i18n="hall.tabletop">Cards &amp; Board</span>
-          <small data-i18n="hall.tabletop_note">Solitaire, card and board games</small>
+          <span class="hall-tab-icon hall-tab-icon--tabletop" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><rect x="2" y="2" width="28" height="28" rx="2" fill="#182331" stroke="#f2ca73" stroke-width="2"/><path d="M4 4h6v6H4zm12 0h6v6h-6zM10 10h6v6h-6zm12 0h6v6h-6zM4 16h6v6H4zm12 0h6v6h-6zM10 22h6v6h-6zm12 0h6v6h-6z" fill="#f2ca73"/></svg></span><span data-i18n="hall.tabletop">कार्ड और बोर्ड</span>
+          <small data-i18n="hall.tabletop_note">सॉलिटेयर, कार्ड और बोर्ड गेम</small>
         </button>
-      </nav>
+      <button type="button" data-hall-tab="topics" aria-pressed="false"><span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true"><img src="/assets/topics-hall-tab-v2.webp?v=20261002-topics-icon-v2" alt="" width="30" height="30" decoding="async"></span><span class="hall-tab-label" data-i18n="hall.topics_short">विषय</span><small data-i18n="hall.topics_note" aria-hidden="true">आज के विचारों में मज़ेदार नया मोड़</small></button></nav>
 
       <section id="lobbyStats" class="lobby-stats" aria-label="Platform status"></section>
 
@@ -1190,59 +1260,48 @@
       </section>
 
       <div class="general-play-heading">
-        <span data-i18n="general.play.kicker">Ready when you are</span>
-        <h2 data-i18n="general.play.title">Choose your next game</h2>
+        <span data-i18n="general.play.kicker">Pick up and play</span>
+        <h2 data-i18n="general.play.title">Choose a game and jump in</h2>
       </div>
 
       <div class="lobby-search-row" id="lobbySearchControls">
         <label class="lobby-search" for="gameSearch">
           <span data-i18n="search.label">Search games</span>
-          <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="Search animal, puzzle, memory..." />
+          <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="गेम या शैलियाँ खोजें…" placeholder="गेम या शैलियाँ खोजें…" />
         </label>
         <button id="quickPickBtn" class="quick-pick-btn" type="button" data-i18n="quick_pick.action">Pick for me</button>
       </div>
 
       <section class="library-tabs" aria-label="Game library tabs">
-        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
-        <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
-        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+        <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">सभी गेम</button>
+        <button type="button" data-library-tab="recent" data-i18n="library.recent">हाल में खेले गए</button>
+        <button type="button" data-library-tab="favorites" data-i18n="library.favorites">पसंदीदा</button>
       </section>
 
       <section class="vibe-strip" aria-labelledby="vibeTitle">
-        <h3 id="vibeTitle" data-i18n="filter.all_topics">All Topics</h3>
-        <div class="vibe-options">
-          <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-          <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-          <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-          <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-          <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-          <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-          <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-          <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-        </div>
+        <h3 id="vibeTitle" data-i18n="filter.all_genres">सभी शैलियाँ</h3>
+        <div class="vibe-options"><button type="button" data-topic-filter="all" data-runtime-localize="off" data-i18n="filter.all_genres" class="active" aria-label="सभी शैलियाँ, 152"><span class="filter-copy"><span class="filter-label">सभी शैलियाँ</span></span><b class="filter-count">152</b></button>
+<button type="button" data-topic-filter="Featured" data-runtime-localize="off" data-i18n="category.Featured" aria-label="विशेष गेम, 26"><span class="filter-copy"><span class="filter-label">विशेष गेम</span></span><b class="filter-count">26</b></button>
+<button type="button" data-topic-filter="Puzzle" data-runtime-localize="off" data-i18n="category.Puzzle" aria-label="पहेलियाँ, 84"><span class="filter-copy"><span class="filter-label">पहेलियाँ</span></span><b class="filter-count">84</b></button>
+<button type="button" data-topic-filter="Action" data-runtime-localize="off" data-i18n="category.Action" aria-label="एक्शन, 32"><span class="filter-copy"><span class="filter-label">एक्शन</span></span><b class="filter-count">32</b></button>
+<button type="button" data-topic-filter="RPG" data-runtime-localize="off" data-i18n="category.RPG" aria-label="रोल-प्लेइंग, 9"><span class="filter-copy"><span class="filter-label">रोल-प्लेइंग</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Strategy" data-runtime-localize="off" data-i18n="category.Strategy" aria-label="रणनीति, 22"><span class="filter-copy"><span class="filter-label">रणनीति</span></span><b class="filter-count">22</b></button>
+<button type="button" data-topic-filter="Tower Defense" data-runtime-localize="off" data-i18n="category.Tower Defense" aria-label="टावर डिफेंस, 7"><span class="filter-copy"><span class="filter-label">टावर डिफेंस</span></span><b class="filter-count">7</b></button>
+<button type="button" data-topic-filter="Simulation" data-runtime-localize="off" data-i18n="category.Simulation" aria-label="सिमुलेशन, 9"><span class="filter-copy"><span class="filter-label">सिमुलेशन</span></span><b class="filter-count">9</b></button>
+<button type="button" data-topic-filter="Management" data-runtime-localize="off" data-i18n="category.Management" aria-label="प्रबंधन, 5"><span class="filter-copy"><span class="filter-label">प्रबंधन</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Pet Care" data-runtime-localize="off" data-i18n="category.Pet Care" aria-label="पालतू जानवरों की देखभाल, 3"><span class="filter-copy"><span class="filter-label">पालतू जानवरों की देखभाल</span></span><b class="filter-count">3</b></button>
+<button type="button" data-topic-filter="Racing" data-runtime-localize="off" data-i18n="category.Racing" aria-label="रेसिंग, 5"><span class="filter-copy"><span class="filter-label">रेसिंग</span></span><b class="filter-count">5</b></button>
+<button type="button" data-topic-filter="Sports" data-runtime-localize="off" data-i18n="category.Sports" aria-label="खेल, 6"><span class="filter-copy"><span class="filter-label">खेल</span></span><b class="filter-count">6</b></button>
+<button type="button" data-topic-filter="Reaction" data-runtime-localize="off" data-i18n="category.Reaction" aria-label="त्वरित प्रतिक्रिया, 11"><span class="filter-copy"><span class="filter-label">त्वरित प्रतिक्रिया</span></span><b class="filter-count">11</b></button>
+<button type="button" data-topic-filter="Card" data-runtime-localize="off" data-i18n="category.Card" aria-label="कार्ड गेम, 1"><span class="filter-copy"><span class="filter-label">कार्ड गेम</span></span><b class="filter-count">1</b></button>
+<button type="button" data-topic-filter="Board" data-runtime-localize="off" data-i18n="category.Board" hidden aria-label="बोर्ड गेम, 0"><span class="filter-copy"><span class="filter-label">बोर्ड गेम</span></span><b class="filter-count">0</b></button>
+<button type="button" data-topic-filter="Word" data-runtime-localize="off" data-i18n="category.Word" aria-label="शब्द, 2"><span class="filter-copy"><span class="filter-label">शब्द</span></span><b class="filter-count">2</b></button>
+<button type="button" data-topic-filter="Education" data-runtime-localize="off" data-i18n="category.Education" aria-label="शिक्षा, 1"><span class="filter-copy"><span class="filter-label">शिक्षा</span></span><b class="filter-count">1</b></button></div>
       </section>
 
-      <details id="advancedFilters" class="advanced-filters">
-        <summary>
-          <span data-i18n="filter.more_filters">More filters</span>
-          <b id="advancedFilterCount" class="advanced-filter-count" aria-live="polite">0</b>
-        </summary>
-        <div class="advanced-filter-groups">
-          <section class="topic-filter" aria-label="Topic filters">
-            <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-            <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-            <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-            <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-            <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-            <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-            <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-          </section>
 
-        </div>
-      </details>
 
-      <div id="filterStatus" class="filter-status" aria-live="polite"></div>
+      <div id="filterStatus" class="filter-status" aria-live="polite"><span data-lobby-layout-anchor hidden></span></div>
 
       <section id="discoverySnapshot" class="discovery-snapshot" aria-label="Game discovery summary"></section>
 
@@ -1254,12 +1313,13 @@
         <div id="continuePlaying" class="continue-playing"></div>
       </section>
 
-      <section id="heroGamesSection" class="hero-games-section" aria-label="Hero Games">
+      <section id="latestGamesSection" class="hero-games-section" data-runtime-localize="off" aria-label="नए गेम"><div class="section-heading"><h2 id="latestGamesTitle">नए गेम</h2><a class="catalog-jump" href="#catalogHeading">सभी गेम →</a></div><div id="latestGames" class="hero-games"><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="mossfold" href="/hi/games/mossfold/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/games/mossfold/assets/cover.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>काई का पलटा</strong><small>स्थानिक पहेली</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="dustwake-depot" href="/hi/games/dustwake-depot/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/games/dustwake-depot/art/poster.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>धूलकिरण केंद्र</strong><small>सफाई रणनीति</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="purrch-grove" href="/hi/games/purrch-grove/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="assets/lobby-thumbs/w480/games__purrch-grove__assets__cover-block-v1.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>म्याऊँ का आशियाना</strong><small>बिल्लियाँ · विकास</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="bramble-rapids" href="/hi/games/bramble-rapids/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="assets/lobby-thumbs/w480/games__bramble-rapids__assets__cover.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>कंटीली धारा</strong><small>नदी दौड़</small></span></div></a><a class="hero-game-card playable has-visual-identity" data-discovery-game-id="orbit-menders" href="/hi/games/orbit-menders/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp" loading="lazy" decoding="async" alt=""><span class="hero-game-art-identity" aria-hidden="true"><strong>धमाकेदार अयाल: टावर रक्षा</strong><small>Tower Defense Shooter</small></span></div></a></div></section>
+<section id="heroGamesSection" class="hero-games-section" aria-label="Hero Games">
         <div class="section-heading">
-          <span id="heroRankLabel">Top 5</span>
-          <h2 id="heroGamesTitle">Hero Games</h2>
+          <span id="heroRankLabel" hidden>Top 5</span>
+          <h2 id="heroGamesTitle">Featured</h2>
         </div>
-        <div id="heroGames" class="hero-games"></div>
+        <div id="heroGames" class="hero-games"><a class="hero-game-card playable" data-discovery-game-id="animal-hero-trials" href="/hi/games/animal-hero-trials/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-hero-trials.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">नायक की परीक्षाएँ</strong><small>Hero Action Roguelite</small></div></a><a class="hero-game-card playable" data-discovery-game-id="animal-relic-hunters" href="/hi/games/animal-relic-hunters/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-relic-hunters.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Animal Relic Hunters</strong><small>Room Action Roguelite</small></div></a><a class="hero-game-card playable" data-discovery-game-id="beast-deck" href="/hi/games/beast-deck/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__beast-deck.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">Beast Deck: The Mist Forest</strong><small>Roguelike Deckbuilder</small></div></a><a class="hero-game-card playable" data-discovery-game-id="animal-rune-tactics" href="/hi/games/animal-rune-tactics/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__animal-rune-tactics-cover.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">रूण रणनीति</strong><small>Turn-Based Squad Tactics</small></div></a><a class="hero-game-card playable" data-discovery-game-id="animal-orb-fortress" href="/hi/games/animal-orb-fortress/"><div class="hero-game-art"><img class="hero-game-image is-decoded" src="/assets/lobby-thumbs/w480/assets__animal-orb-fortress-cover-block-v1.webp" loading="eager" decoding="async" alt=""></div><div class="hero-game-copy"><strong data-runtime-localize="off">ऑर्ब किला</strong><small>Ricochet Roguelite</small></div></a></div>
       </section>
 
       <section id="mobilePicksSection" class="mobile-picks-section" aria-label="Mobile friendly games">
@@ -1302,9 +1362,9 @@
         <div id="recommendations" class="recommendations"></div>
       </section>
 
-      <div class="catalog-heading" id="catalogHeading" tabindex="-1"><h2 data-i18n="library.all_games">All Games</h2><span id="catalogHallLabel"></span></div>
+      <div class="catalog-heading" id="catalogHeading" tabindex="-1"><h2 data-i18n="library.all_games">सभी गेम</h2><span id="catalogHallLabel">गेम वर्ल्ड</span></div>
       <section id="gameGrid" class="lobby-grid" aria-label="Game list">
-        <!-- adsense-static-catalog:start -->
+<!-- adsense-static-catalog:start -->
 <article class="game-card game-card-static playable" data-game-id="animal-peach-oath">
   <a class="game-card-static-link" href="/hi/games/animal-peach-oath/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__animal-peach-oath.webp" alt="पीच गार्डन शपथ ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -1315,6 +1375,19 @@
     </div>
   </a>
 </article>
+<article class="game-card game-card-static playable" data-game-id="tideweave"><a class="game-card-static-link" href="/hi/games/tideweave/"><div class="game-card-art image-art"><img class="game-card-fg" src="/games/tideweave/assets/cover.webp" alt="ज्वार के सेतु" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">ज्वार के सेतु</h2><p>नोरी के साथ 60 मौलिक सेतु पहेलियों में द्वीप जोड़ें।</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="duskbloom"><a class="game-card-static-link" href="/hi/games/duskbloom/"><div class="game-card-art image-art"><img class="game-card-fg" src="/games/duskbloom/assets/cover.webp" alt="साँझ का दीप बाग" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">साँझ का दीप बाग</h2><p>दो दीपों का संतुलन बनाएँ और सुरागों से 60 अनोखे बाग रोशन करें।</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="dustwake-depot">
+  <a class="game-card-static-link" href="/hi/games/dustwake-depot/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__dustwake-depot__art__poster.webp" alt="धूलकिरण केंद्र ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">धूलकिरण केंद्र</h2>
+      <p>टारो के साथ धूल साफ करें और 60 चरणों में हर वापसी का रास्ता बनाएँ।</p>
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static playable" data-game-id="rux-salvage-yard"><a class="game-card-static-link" href="/hi/games/rux-salvage-yard/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/games__rux-salvage-yard__art__poster.webp" alt="रक्स की रीसाइक्लिंग कार्यशाला" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">रक्स की रीसाइक्लिंग कार्यशाला</h2><p>Aim at supports and recover the pieces as workshop structures fall.</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="lantern-stride"><a class="game-card-static-link" href="/hi/games/lantern-stride/"><div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__lantern-stride__assets__cover.webp" alt="लालटेन दौड़" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">लालटेन दौड़</h2><p>Alternate your steps and find your rhythm on a forest racecourse.</p></div></a></article>
 <article class="game-card game-card-static playable" data-game-id="orbit-menders">
   <a class="game-card-static-link" href="/hi/games/orbit-menders/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp" alt="धमाकेदार अयाल: टावर रक्षा ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -1375,6 +1448,7 @@
     </div>
   </a>
 </article>
+<article class="game-card game-card-static playable" data-game-id="fusekeep"><a class="game-card-static-link" href="/hi/games/fusekeep/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/assets__fusekeep__poster.webp" alt="विलय दुर्ग" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">विलय दुर्ग</h2><p>समान प्रकार और रैंक के सैनिक मिलाएँ, दल बनाएँ और 30 मिशनों में शीत किले की रक्षा करें।</p></div></a></article>
 <article class="game-card game-card-static playable" data-game-id="animal-wildwood-raid">
   <a class="game-card-static-link" href="/hi/games/animal-wildwood-raid/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__animal-wildwood-raid__art__cover-v1.webp" alt="जंगली वन अभियान ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -1501,76 +1575,6 @@
     <div class="game-card-body">
       <h2 data-runtime-localize="off">हेक्सा सॉर्ट</h2>
       <p>रंगीन षट्भुज चिप्स जमाएँ, समान ऊपरी रंग मिलाएँ और श्रृंखला सफाई शुरू करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="klondike-solitaire">
-  <a class="game-card-static-link" href="/hi/games/klondike-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__klondike-solitaire.webp" alt="क्लोंडाइक सोलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">क्लोंडाइक सोलिटेयर</h2>
-      <p>क्लासिक सोलिटेयर, जिसमें ड्रैग-एंड-ड्रॉप, 1/3 ड्रॉ मोड, ऑटो-फिनिश और अंडू सपोर्ट मौजूद हैं।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="spider-solitaire">
-  <a class="game-card-static-link" href="/hi/games/spider-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spider-solitaire.webp" alt="स्पाइडर सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">स्पाइडर सॉलिटेयर</h2>
-      <p>1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="freecell-solitaire">
-  <a class="game-card-static-link" href="/hi/games/freecell-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__freecell-solitaire.webp" alt="फ्रीसेल सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">फ्रीसेल सॉलिटेयर</h2>
-      <p>आठ खुली कॉलम, चार फ्री सेल, चार फाउंडेशन, संकेत और अनडू वाला क्लासिक फ्रीसेल।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="pyramid-solitaire">
-  <a class="game-card-static-link" href="/hi/games/pyramid-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__pyramid-solitaire.webp" alt="पिरामिड सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">पिरामिड सॉलिटेयर</h2>
-      <p>खुली हुई पत्तियों को 13 का योग बनाने वाली जोड़ियों में हटाएँ और क्लासिक पिरामिड साफ करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="tripeaks-solitaire">
-  <a class="game-card-static-link" href="/hi/games/tripeaks-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tripeaks-solitaire.webp" alt="तीन चोटियों वाला सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">तीन चोटियों वाला सॉलिटेयर</h2>
-      <p>खुले कार्ड को डिस्कार्ड से एक रैंक ऊपर या नीचे जोड़कर तीनों शिखर साफ करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="golf-solitaire">
-  <a class="game-card-static-link" href="/hi/games/golf-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__golf-solitaire.webp" alt="गोल्फ सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">गोल्फ सॉलिटेयर</h2>
-      <p>डिस्कार्ड से एक रैंक ऊपर या नीचे चलकर सात गोल्फ कॉलम साफ करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="yukon-solitaire">
-  <a class="game-card-static-link" href="/hi/games/yukon-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__yukon-solitaire.webp" alt="युकोन सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">युकोन सॉलिटेयर</h2>
-      <p>पूरे tableau, लाल-काली घटती चालों, खुले समूहों की लचीली चाल और बिना डेक वाला क्लासिक युकोन।</p>
 
     </div>
   </a>
@@ -1935,32 +1939,12 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="checkers">
-  <a class="game-card-static-link" href="/hi/games/checkers/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__checkers.webp" alt="चेकर्स ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">चेकर्स</h2>
-      <p>अनिवार्य कैप्चर, लगातार छलाँग, किंग और असली प्रतिद्वंद्वी के साथ पूरा 8×8 चेकर्स मैच खेलें।</p>
-
-    </div>
-  </a>
-</article>
 <article class="game-card game-card-static playable" data-game-id="hangman">
   <a class="game-card-static-link" href="/hi/games/hangman/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__hangman.webp" alt="हैंगमैन ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
       <h2 data-runtime-localize="off">हैंगमैन</h2>
       <p>शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="tic-tac-toe">
-  <a class="game-card-static-link" href="/hi/games/tic-tac-toe/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tic-tac-toe.webp" alt="टिक-टैक-टो ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">टिक-टैक-टो</h2>
-      <p>नौ खानों में X रखें और O की तुरंत चाल पढ़ें: तीन को एक पंक्ति में रखें, खतरा रोकें या ड्रॉ तक पहुँचें।</p>
 
     </div>
   </a>
@@ -1991,106 +1975,6 @@
     <div class="game-card-body">
       <h2 data-runtime-localize="off">Animal Moonlight Heist</h2>
       <p>एनिमल मूनलाइट हीस्ट एक 30-मिशन स्टील्थ रूट एडवेंचर है जिसमें स्पार्क पॉ फिया और मून कैप ओर्ला ने अभिनय किया है। प्रत्येक मिशन खिलाड़ी को चलती गश्ती को...</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="hearts">
-  <a class="game-card-static-link" href="/hi/games/hearts/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__hearts.webp" alt="हार्ट्स ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">हार्ट्स</h2>
-      <p>हर्ट्स और स्पेड्स क्वीन से बचें या सभी दंड कार्ड लेकर शूटिंग द मून करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="spades">
-  <a class="game-card-static-link" href="/hi/games/spades/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spades.webp" alt="स्पेड्स ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">स्पेड्स</h2>
-      <p>AI साथी के साथ बोली लगाएँ और कॉन्ट्रैक्ट पूरा करने के लिए स्पेड्स को ट्रम्प बनाएं।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="gin-rummy">
-  <a class="game-card-static-link" href="/hi/games/gin-rummy/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__gin-rummy.webp" alt="जिन रमी ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">जिन रमी</h2>
-      <p>सेट और एक ही सूट की रन बनाने के लिए पत्ता लें और छोड़ें, Deadwood कम रखें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="crazy-eights">
-  <a class="game-card-static-link" href="/hi/games/crazy-eights/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__crazy-eights.webp" alt="पागल आठ ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">पागल आठ</h2>
-      <p>सूट या रैंक मिलाएँ और आठ से सक्रिय सूट बदलें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="cribbage">
-  <a class="game-card-static-link" href="/hi/games/cribbage/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__cribbage.webp" alt="क्रिबेज ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">क्रिबेज</h2>
-      <p>क्रिब चुनें, जोड़े, रन और 15 से अंक पाएँ और 121 तक पेग करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="go-fish">
-  <a class="game-card-static-link" href="/hi/games/go-fish/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__go-fish.webp" alt="जाओ मछली ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">जाओ मछली</h2>
-      <p>रैंक पूछें, चार समान पत्तों के सेट बनाएँ और मेज पढ़ें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="war">
-  <a class="game-card-static-link" href="/hi/games/war/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__war.webp" alt="वॉर: बड़ा पत्ता ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">वॉर: बड़ा पत्ता</h2>
-      <p>साथ में पत्ते पलटें; बराबर रैंक पर युद्ध शुरू होता है।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="speed">
-  <a class="game-card-static-link" href="/hi/games/speed/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__speed.webp" alt="स्पीड सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">स्पीड सॉलिटेयर</h2>
-      <p>AI के साथ दौड़ें: बिना बारी का इंतजार किए केंद्र से एक ऊपर या नीचे पत्ता चलाएँ।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="old-maid">
-  <a class="game-card-static-link" href="/hi/games/old-maid/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__old-maid.webp" alt="बूढ़ी नौकरानी ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">बूढ़ी नौकरानी</h2>
-      <p>जोड़े बनाएँ, अगली हाथ से पत्ता लें और ओल्ड मेड से बचें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="casino">
-  <a class="game-card-static-link" href="/hi/games/casino/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__casino.webp" alt="कैसिनो ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">कैसिनो</h2>
-      <p>रैंक या योग से टेबल कार्ड पकड़ें और अगले खेल के लिए बिल्ड बनाएँ।</p>
 
     </div>
   </a>
@@ -2135,16 +2019,6 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="peg-solitaire">
-  <a class="game-card-static-link" href="/hi/games/peg-solitaire/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__peg-solitaire.webp" alt="पेग सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">पेग सॉलिटेयर</h2>
-      <p>गोटी को पड़ोसी गोटी के ऊपर से खाली खाने में कूदाएँ और एक छोड़ें।</p>
-
-    </div>
-  </a>
-</article>
 <article class="game-card game-card-static playable" data-game-id="sliding-15">
   <a class="game-card-static-link" href="/hi/games/sliding-15/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__sliding-15.webp" alt="स्लाइडिंग 15 ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -2171,26 +2045,6 @@
     <div class="game-card-body">
       <h2 data-runtime-localize="off">हनोई टावर</h2>
       <p>सभी डिस्क को छोटे पर बड़ी रखे बिना लक्ष्य खंभे पर ले जाएँ।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="reversi">
-  <a class="game-card-static-link" href="/hi/games/reversi/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__reversi.webp" alt="रिवर्सी ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">रिवर्सी</h2>
-      <p>प्रतिद्वंद्वी की गोटियों को घेरें; अंत में अधिक गोटियाँ जीतती हैं।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="four-in-a-row">
-  <a class="game-card-static-link" href="/hi/games/four-in-a-row/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__four-in-a-row.webp" alt="चार की पंक्ति ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">चार की पंक्ति</h2>
-      <p>गोटी गिराकर क्षैतिज, लंबवत या तिरछे चार जोड़ें।</p>
 
     </div>
   </a>
@@ -2855,42 +2709,12 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="traffic-jam-diner">
-  <a class="game-card-static-link" href="/hi/games/traffic-jam-diner/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/Assets__traffic-jam-diner-cover-v3.webp" alt="ट्रैफिक डाइनर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">ट्रैफिक डाइनर</h2>
-      <p>पशु पड़ोसियों को एकतरफ़ा लेन से पहुँचाएँ, सीमित प्रतीक्षा स्थान बचाएँ और कतार के क्रम में नाश्ते के ऑर्डर तैयार करें।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="robot-dog-showtime">
-  <a class="game-card-static-link" href="/hi/games/robot-dog-showtime/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__robot-dog-showtime-cover-v3.webp" alt="रोबोट कुत्ते का शो ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">रोबोट कुत्ते का शो</h2>
-      <p>दो कलाकारों के मंच संकेत तय करें और उनके रास्तों व मुद्राओं का साथ में अभ्यास करें।</p>
-
-    </div>
-  </a>
-</article>
 <article class="game-card game-card-static playable" data-game-id="animal-blockmart">
   <a class="game-card-static-link" href="/hi/games/animal-blockmart/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__animal-blockmart__assets__poster-v1.webp" alt="ब्लॉक पशु मिनी-मार्ट ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
       <h2 data-runtime-localize="off">ब्लॉक पशु मिनी-मार्ट</h2>
       <p>ब्लॉक की छोटी दुकान सजाएँ, रोज़मर्रा का सामान भरें और पशु-पड़ोसियों की सेवा करके दुकान बढ़ाएँ।</p>
-
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="flying-tram">
-  <a class="game-card-static-link" href="/hi/games/flying-tram/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__flying-tram__assets__cover-block-v1.webp" alt="उड़ती ट्राम ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">उड़ती ट्राम</h2>
-      <p>घनाकार ट्राम को उड़ाएँ, फ़्लिप से अंक पाएँ, चाय छलकने से बचाएँ और 30 छतों पर उतरें।</p>
 
     </div>
   </a>
@@ -2902,6 +2726,15 @@
       <h2 data-runtime-localize="off">पिल्लों का आँगन</h2>
       <p>छोटा आँगन, बढ़ता परिवार। अपने कुत्तों को खिलाएँ, उनकी देखभाल करें और पिल्ले पालें।</p>
 
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static playable" data-game-id="purrch-grove">
+  <a class="game-card-static-link" href="/hi/games/purrch-grove/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__purrch-grove__assets__cover-block-v1.webp" alt="म्याऊँ का आशियाना ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">म्याऊँ का आशियाना</h2>
+      <p>हर बिल्ली का पसंदीदा खेल जानें और चढ़ने व आराम करने का घर बनाएँ।</p>
     </div>
   </a>
 </article>
@@ -2965,24 +2798,7 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="purrch-grove">
-  <a class="game-card-static-link" href="/hi/games/purrch-grove/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__purrch-grove__assets__cover-block-v1.webp" alt="म्याऊँ का आशियाना ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">म्याऊँ का आशियाना</h2>
-      <p>हर बिल्ली का पसंदीदा खेल जानें और चढ़ने व आराम करने का घर बनाएँ।</p>
-    </div>
-  </a>
-</article>
-<article class="game-card game-card-static playable" data-game-id="dustwake-depot">
-  <a class="game-card-static-link" href="/hi/games/dustwake-depot/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__dustwake-depot__art__poster.webp" alt="धूलकिरण केंद्र ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
-    <div class="game-card-body">
-      <h2 data-runtime-localize="off">धूलकिरण केंद्र</h2>
-      <p>टारो के साथ धूल साफ करें और 60 चरणों में हर वापसी का रास्ता बनाएँ।</p>
-    </div>
-  </a>
-</article>
+<article class="game-card game-card-static playable" data-game-id="lantern-lasso"><a class="game-card-static-link" href="/hi/games/lantern-lasso/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/games__lantern-lasso__assets__cover.webp" alt="लालटेन लासो" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">लालटेन लासो</h2><p>रस्सी साधें, द्वार खोलें और रोशनी को घर पहुँचाएँ।</p></div></a></article>
 <article class="game-card game-card-static playable" data-game-id="mossfold">
   <a class="game-card-static-link" href="/hi/games/mossfold/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__mossfold__assets__cover.webp" alt="काई का पलटा ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
@@ -2992,7 +2808,259 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="smallwood-lives">
+<article class="game-card game-card-static playable" data-game-id="glowspool"><a class="game-card-static-link" href="/hi/games/glowspool/"><div class="game-card-art image-art"><img class="game-card-fg" src="/games/glowspool/assets/cover.webp" alt="रोशनी की डोर" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">रोशनी की डोर</h2><p>मिमी को फिसलाकर हर खाने में रोशनी बुनें और अगला मोड़ सोचें।</p></div></a></article>
+<article class="game-card game-card-static playable" data-game-id="sunmane-journey"><a class="game-card-static-link" href="/hi/games/sunmane-journey/"><div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__sunmane-journey__assets__cover.webp" alt="仙旅傳說" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">仙旅傳說</h2><p>Explore distinct regions, shape your build and restore the sunveins. The launch character is Leo, a lion swordsman.</p></div></a></article>
+<article class="game-card game-card-static hidden playable" data-game-id="klondike-solitaire">
+  <a class="game-card-static-link" href="/hi/games/klondike-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__klondike-solitaire.webp" alt="क्लोंडाइक सोलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">क्लोंडाइक सोलिटेयर</h2>
+      <p>क्लासिक सोलिटेयर, जिसमें ड्रैग-एंड-ड्रॉप, 1/3 ड्रॉ मोड, ऑटो-फिनिश और अंडू सपोर्ट मौजूद हैं।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="spider-solitaire">
+  <a class="game-card-static-link" href="/hi/games/spider-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spider-solitaire.webp" alt="स्पाइडर सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">स्पाइडर सॉलिटेयर</h2>
+      <p>1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="freecell-solitaire">
+  <a class="game-card-static-link" href="/hi/games/freecell-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__freecell-solitaire.webp" alt="फ्रीसेल सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">फ्रीसेल सॉलिटेयर</h2>
+      <p>आठ खुली कॉलम, चार फ्री सेल, चार फाउंडेशन, संकेत और अनडू वाला क्लासिक फ्रीसेल।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="pyramid-solitaire">
+  <a class="game-card-static-link" href="/hi/games/pyramid-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__pyramid-solitaire.webp" alt="पिरामिड सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">पिरामिड सॉलिटेयर</h2>
+      <p>खुली हुई पत्तियों को 13 का योग बनाने वाली जोड़ियों में हटाएँ और क्लासिक पिरामिड साफ करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="tripeaks-solitaire">
+  <a class="game-card-static-link" href="/hi/games/tripeaks-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tripeaks-solitaire.webp" alt="तीन चोटियों वाला सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">तीन चोटियों वाला सॉलिटेयर</h2>
+      <p>खुले कार्ड को डिस्कार्ड से एक रैंक ऊपर या नीचे जोड़कर तीनों शिखर साफ करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="golf-solitaire">
+  <a class="game-card-static-link" href="/hi/games/golf-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__golf-solitaire.webp" alt="गोल्फ सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">गोल्फ सॉलिटेयर</h2>
+      <p>डिस्कार्ड से एक रैंक ऊपर या नीचे चलकर सात गोल्फ कॉलम साफ करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="yukon-solitaire">
+  <a class="game-card-static-link" href="/hi/games/yukon-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__yukon-solitaire.webp" alt="युकोन सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">युकोन सॉलिटेयर</h2>
+      <p>पूरे tableau, लाल-काली घटती चालों, खुले समूहों की लचीली चाल और बिना डेक वाला क्लासिक युकोन।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="checkers">
+  <a class="game-card-static-link" href="/hi/games/checkers/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__checkers.webp" alt="चेकर्स ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">चेकर्स</h2>
+      <p>अनिवार्य कैप्चर, लगातार छलाँग, किंग और असली प्रतिद्वंद्वी के साथ पूरा 8×8 चेकर्स मैच खेलें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="tic-tac-toe">
+  <a class="game-card-static-link" href="/hi/games/tic-tac-toe/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__tic-tac-toe.webp" alt="टिक-टैक-टो ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">टिक-टैक-टो</h2>
+      <p>नौ खानों में X रखें और O की तुरंत चाल पढ़ें: तीन को एक पंक्ति में रखें, खतरा रोकें या ड्रॉ तक पहुँचें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="hearts">
+  <a class="game-card-static-link" href="/hi/games/hearts/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__hearts.webp" alt="हार्ट्स ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">हार्ट्स</h2>
+      <p>हर्ट्स और स्पेड्स क्वीन से बचें या सभी दंड कार्ड लेकर शूटिंग द मून करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="spades">
+  <a class="game-card-static-link" href="/hi/games/spades/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__spades.webp" alt="स्पेड्स ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">स्पेड्स</h2>
+      <p>AI साथी के साथ बोली लगाएँ और कॉन्ट्रैक्ट पूरा करने के लिए स्पेड्स को ट्रम्प बनाएं।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="gin-rummy">
+  <a class="game-card-static-link" href="/hi/games/gin-rummy/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__gin-rummy.webp" alt="जिन रमी ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">जिन रमी</h2>
+      <p>सेट और एक ही सूट की रन बनाने के लिए पत्ता लें और छोड़ें, Deadwood कम रखें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="crazy-eights">
+  <a class="game-card-static-link" href="/hi/games/crazy-eights/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__crazy-eights.webp" alt="पागल आठ ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">पागल आठ</h2>
+      <p>सूट या रैंक मिलाएँ और आठ से सक्रिय सूट बदलें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="cribbage">
+  <a class="game-card-static-link" href="/hi/games/cribbage/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__cribbage.webp" alt="क्रिबेज ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">क्रिबेज</h2>
+      <p>क्रिब चुनें, जोड़े, रन और 15 से अंक पाएँ और 121 तक पेग करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="go-fish">
+  <a class="game-card-static-link" href="/hi/games/go-fish/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__go-fish.webp" alt="जाओ मछली ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">जाओ मछली</h2>
+      <p>रैंक पूछें, चार समान पत्तों के सेट बनाएँ और मेज पढ़ें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="war">
+  <a class="game-card-static-link" href="/hi/games/war/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__war.webp" alt="वॉर: बड़ा पत्ता ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">वॉर: बड़ा पत्ता</h2>
+      <p>साथ में पत्ते पलटें; बराबर रैंक पर युद्ध शुरू होता है।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="speed">
+  <a class="game-card-static-link" href="/hi/games/speed/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__speed.webp" alt="स्पीड सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">स्पीड सॉलिटेयर</h2>
+      <p>AI के साथ दौड़ें: बिना बारी का इंतजार किए केंद्र से एक ऊपर या नीचे पत्ता चलाएँ।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="old-maid">
+  <a class="game-card-static-link" href="/hi/games/old-maid/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__old-maid.webp" alt="बूढ़ी नौकरानी ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">बूढ़ी नौकरानी</h2>
+      <p>जोड़े बनाएँ, अगली हाथ से पत्ता लें और ओल्ड मेड से बचें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="casino">
+  <a class="game-card-static-link" href="/hi/games/casino/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__casino.webp" alt="कैसिनो ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">कैसिनो</h2>
+      <p>रैंक या योग से टेबल कार्ड पकड़ें और अगले खेल के लिए बिल्ड बनाएँ।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="peg-solitaire">
+  <a class="game-card-static-link" href="/hi/games/peg-solitaire/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__peg-solitaire.webp" alt="पेग सॉलिटेयर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">पेग सॉलिटेयर</h2>
+      <p>गोटी को पड़ोसी गोटी के ऊपर से खाली खाने में कूदाएँ और एक छोड़ें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="reversi">
+  <a class="game-card-static-link" href="/hi/games/reversi/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__reversi.webp" alt="रिवर्सी ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">रिवर्सी</h2>
+      <p>प्रतिद्वंद्वी की गोटियों को घेरें; अंत में अधिक गोटियाँ जीतती हैं।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="four-in-a-row">
+  <a class="game-card-static-link" href="/hi/games/four-in-a-row/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__interface7-redrawn__four-in-a-row.webp" alt="चार की पंक्ति ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">चार की पंक्ति</h2>
+      <p>गोटी गिराकर क्षैतिज, लंबवत या तिरछे चार जोड़ें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="traffic-jam-diner">
+  <a class="game-card-static-link" href="/hi/games/traffic-jam-diner/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/Assets__traffic-jam-diner-cover-v3.webp" alt="ट्रैफिक डाइनर ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">ट्रैफिक डाइनर</h2>
+      <p>पशु पड़ोसियों को एकतरफ़ा लेन से पहुँचाएँ, सीमित प्रतीक्षा स्थान बचाएँ और कतार के क्रम में नाश्ते के ऑर्डर तैयार करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="robot-dog-showtime">
+  <a class="game-card-static-link" href="/hi/games/robot-dog-showtime/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__robot-dog-showtime-cover-v3.webp" alt="रोबोट कुत्ते का शो ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">रोबोट कुत्ते का शो</h2>
+      <p>दो कलाकारों के मंच संकेत तय करें और उनके रास्तों व मुद्राओं का साथ में अभ्यास करें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="flying-tram">
+  <a class="game-card-static-link" href="/hi/games/flying-tram/">
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__flying-tram__assets__cover-block-v1.webp" alt="उड़ती ट्राम ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-body">
+      <h2 data-runtime-localize="off">उड़ती ट्राम</h2>
+      <p>घनाकार ट्राम को उड़ाएँ, फ़्लिप से अंक पाएँ, चाय छलकने से बचाएँ और 30 छतों पर उतरें।</p>
+
+    </div>
+  </a>
+</article>
+<article class="game-card game-card-static hidden playable" data-game-id="smallwood-lives">
   <a class="game-card-static-link" href="/hi/games/smallwood-lives/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__smallwood-lives__assets__cover-v2.webp" alt="पलों में एक जीवन ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
@@ -3001,7 +3069,7 @@
     </div>
   </a>
 </article>
-<article class="game-card game-card-static playable" data-game-id="hearthloop">
+<article class="game-card game-card-static hidden playable" data-game-id="hearthloop">
   <a class="game-card-static-link" href="/hi/games/hearthloop/">
     <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/games__hearthloop__assets__cover.webp" alt="घर की परिक्रमा ब्राउज़र गेम" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
@@ -3010,8 +3078,10 @@
     </div>
   </a>
 </article>
-        <!-- adsense-static-catalog:end -->
-      </section>
+<article class="game-card game-card-static hidden playable" data-game-id="chess"><a class="game-card-static-link" href="/hi/games/chess/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__chess.webp" alt="शतरंज" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">शतरंज</h2><p>कंप्यूटर के विरुद्ध पूरी शतरंज बाज़ी खेलें या 30 मौलिक रणनीतिक चुनौतियाँ हल करें।</p></div></a></article>
+<article class="game-card game-card-static hidden playable" data-game-id="mahjong-solitaire"><a class="game-card-static-link" href="/hi/games/mahjong-solitaire/"><div class="game-card-art image-art"><img class="game-card-fg" src="/assets/lobby-thumbs/w480/assets__interface7-redrawn__mahjong-solitaire.webp" alt="माहजोंग सॉलिटेयर" loading="lazy" decoding="async" width="480" height="480"></div><div class="game-card-body"><h2 data-runtime-localize="off">माहजोंग सॉलिटेयर</h2><p>खुली समान टाइलों का मिलान करें, गलती से उबरें और वैकल्पिक मास्टरी राउंड आज़माने से पहले छह जोड़ियों वाला छोटा बोर्ड साफ़ करें।</p></div></a></article>
+<!-- adsense-static-catalog:end -->
+</section><details id="catalogDirectory" data-runtime-localize="off"><summary>सभी गेम</summary><nav><a href="/hi/games/animal-peach-oath/">पीच गार्डन शपथ</a><a href="/hi/games/tideweave/">ज्वार के सेतु</a><a href="/hi/games/duskbloom/">साँझ का दीप बाग</a><a href="/hi/games/dustwake-depot/">धूलकिरण केंद्र</a><a href="/hi/games/rux-salvage-yard/">रक्स की रीसाइक्लिंग कार्यशाला</a><a href="/hi/games/lantern-stride/">लालटेन दौड़</a><a href="/hi/games/orbit-menders/">धमाकेदार अयाल: टावर रक्षा</a><a href="/hi/games/bramble-rapids/">कंटीली धारा</a><a href="/hi/games/nori-bankshot/">नोरी का बिलियर्ड्स</a><a href="/hi/games/wildborn/">वन्य पुनर्जन्म</a><a href="/hi/games/kindred-habitats/">प्रकृति के साथी</a><a href="/hi/games/deep-drill/">Deep Drill</a><a href="/hi/games/fusekeep/">विलय दुर्ग</a><a href="/hi/games/animal-wildwood-raid/">जंगली वन अभियान</a><a href="/hi/games/pawaxe/">Axe &amp; Ally</a><a href="/hi/games/animal-crownfall/">ताज की तलाश</a><a href="/hi/games/animal-carnival-claw/">कार्निवल क्लॉ</a><a href="/hi/games/animal-honey-shield/">हनी शील्ड</a><a href="/hi/games/animal-dice-bastion/">पासा दुर्ग</a><a href="/hi/games/signal-veil/">सिग्नल वेल</a><a href="/hi/games/animal-unblock/">अनब्लॉक ट्रेल</a><a href="/hi/games/zhao-yun-a-dou/">झाओ युन और आ-दो: स्याही रक्षा</a><a href="/hi/games/animal-bus-jam/">पांको बस जाम</a><a href="/hi/games/arrow-escape/">तीरों से बचाव</a><a href="/hi/games/block-blast/">ब्लॉक ब्लास्ट</a><a href="/hi/games/hexa-sort/">हेक्सा सॉर्ट</a><a href="/hi/games/animal-sunbeam-garden/">धूप का बगीचा: दर्पण पथ</a><a href="/hi/games/animal-number-match/">पैंको का नंबर ग्रोव</a><a href="/hi/games/animal-prism-garden/">प्रिज़्म रूट गार्डन</a><a href="/hi/games/animal-bamboo-pipes/">पैंको की बाँस नहर</a><a href="/hi/games/animal-triple-match/">Animal Triple Match</a><a href="/hi/games/wonder-crash/">Fantasy Lion Defense</a><a href="/hi/games/animal-2048/">Animal 2048: Forest Evolution</a><a href="/hi/games/animal-guard-yard/">Animal Guard Yard</a><a href="/hi/games/animal-crystal-survivor/">कालकोठरी का रोमांच</a><a href="/hi/games/beast-deck/">Beast Deck: The Mist Forest</a><a href="/hi/games/animal-relic-hunters/">Animal Relic Hunters</a><a href="/hi/games/animal-rune-tactics/">रूण रणनीति</a><a href="/hi/games/animal-orb-fortress/">ऑर्ब किला</a><a href="/hi/games/animal-auto-squad/">ऑटो दस्ता</a><a href="/hi/games/beast-tactician/">Beast Guardian</a><a href="/hi/games/shadow-wolf/">शैडो वुल्फ लीजेंड</a><a href="/hi/games/animal-rune-reels/">रूण रील</a><a href="/hi/games/animal-spectrum-pulse/">स्पेक्ट्रम पल्स</a><a href="/hi/games/animal-rootvault-pins/">रूटवॉल्ट पिन</a><a href="/hi/games/animal-sketchwheel-rally/">स्केचव्हील रैली</a><a href="/hi/games/animal-sanctuary-loop/">अभयारण्य चक्र</a><a href="/hi/games/animal-prism-battalion/">प्रिज़्म बटालियन</a><a href="/hi/games/animal-skybridge-rivals/">आकाशपुल प्रतिद्वंद्वी</a><a href="/hi/games/animal-skyspire-drop/">स्काईस्पायर ड्रॉप</a><a href="/hi/games/animal-rift-salvage/">रिफ्ट बचाव दल</a><a href="/hi/games/animal-skyport-dispatch/">पशु स्काईपोर्ट डिस्पैच</a><a href="/hi/games/animal-starlight-trails/">Starlink</a><a href="/hi/games/animal-one-line/">एक पंक्ति</a><a href="/hi/games/animal-abyss-diver/">एनिमल एबिस डाइवर</a><a href="/hi/games/animal-cratebound/">क्रेटबाउंड</a><a href="/hi/games/animal-mosaic-clues/">जानवर मोज़ेक संकेत</a><a href="/hi/games/animal-prism-breakers/">प्रिज़्म ब्रेकर</a><a href="/hi/games/animal-layer-grove/">परतों का क्रम</a><a href="/hi/games/animal-penalty-cup/">पेनल्टी कप</a><a href="/hi/games/animal-tide-tally/">सीपियाँ गिनें</a><a href="/hi/games/animal-reef-fisher/">Animal Reef Fisher</a><a href="/hi/games/hangman/">हैंगमैन</a><a href="/hi/games/animal-hero-trials/">नायक की परीक्षाएँ</a><a href="/hi/games/animal-gearpack-expedition/">गियरपैक अभियान</a><a href="/hi/games/animal-moonlight-heist/">Animal Moonlight Heist</a><a href="/hi/games/minefield-logic/">माइनफील्ड लॉजिक</a><a href="/hi/games/cat-color-sudoku/">बिल्ली रंग सुडोकू</a><a href="/hi/games/sudoku/">Sudoku</a><a href="/hi/games/lights-out/">लाइट्स आउट</a><a href="/hi/games/sliding-15/">स्लाइडिंग 15</a><a href="/hi/games/code-breaker/">कोड ब्रेकर</a><a href="/hi/games/tower-of-hanoi/">हनोई टावर</a><a href="/hi/games/animal-postcard-crop/">पोस्टकार्ड फ्रेम</a><a href="/hi/games/animal-hollow-fit/">बिल के आकार मिलाएँ</a><a href="/hi/games/animal-cozy-camp/">अलाव के पास बैठने का क्रम</a><a href="/hi/games/animal-canopy-compass/">जंगल के कंपास की पहेली</a><a href="/hi/games/animal-orbit-orchard/">कक्षा बाग़</a><a href="/hi/games/animal-habitat-counts/">आवास गिनती</a><a href="/hi/games/animal-tideglass/">ज्वार का स्तर मिलाएँ</a><a href="/hi/games/animal-cushion-stack/">कुशन टावर</a><a href="/hi/games/animal-burrow-builder/">बिल बनाने वाला</a><a href="/hi/games/animal-tangle-rescue/">बेल बचाव</a><a href="/hi/games/animal-meadow-difference/">घासभूमि खोज</a><a href="/hi/games/animal-pattern-patch/">पैटर्न पूरा करें</a><a href="/hi/games/animal-footprint-folio/">पदचिह्नों का क्रम</a><a href="/hi/games/animal-constellation-keeper/">तारामंडल में स्थान खोजें</a><a href="/hi/games/animal-lantern-lattice/">लालटेन जाल</a><a href="/hi/games/animal-lantern-guides/">मिलकर लालटेन का रास्ता बनाएँ</a><a href="/hi/games/animal-folded-field/">मुड़ा हुआ मैदान</a><a href="/hi/games/animal-magnet-meadow/">चुंबकीय मैदान</a><a href="/hi/games/animal-dawn-shutters/">भोर की खिड़कियाँ</a><a href="/hi/games/animal-nest-weigh/">घोंसले का तौल</a><a href="/hi/games/animal-glyph-garden/">ग्लिफ़ गार्डन</a><a href="/hi/games/animal-ring-garden/">घूमते छल्लों की पहेली</a><a href="/hi/games/animal-balance-grove/">संतुलन उपवन</a><a href="/hi/games/animal-dewline/">जुड़े हुए ओस के वाल्व</a><a href="/hi/games/breakout/">ब्रेकआउट</a><a href="/hi/games/pong/">पोंग</a><a href="/hi/games/tetris/">टेट्रिस</a><a href="/hi/games/wordle/">Wordle</a><a href="/hi/games/animal-trap-trail/">चाँदनी में जालों का रास्ता</a><a href="/hi/games/animal-canopy-cut/">Canopy Cut</a><a href="/hi/games/animal-bounce-brawl/">उछलती भिड़ंत</a><a href="/hi/games/animal-frost-maze/">बर्फीली भूलभुलैया में बचाव</a><a href="/hi/games/animal-flip-foundry/">फ्लिप कार्यशाला</a><a href="/hi/games/animal-deep-sea-salvage/">डीप सी साल्वेज कंपनी</a><a href="/hi/games/animal-hoop-league/">हूप लीग</a><a href="/hi/games/animal-habitat-atlas/">हैबिटैट एटलस</a><a href="/hi/games/animal-moonlight-workshop/">मूनलाइट वर्कशॉप एस्केप</a><a href="/hi/games/animal-chameleon-blend/">कैमेलियन ब्लेंड ट्रायल्स</a><a href="/hi/games/animal-habitat-builder/">हैबिटैट बिल्डर</a><a href="/hi/games/animal-cloudhook-courier/">Cloudhook Courier</a><a href="/hi/games/animal-twin-switchyard/">जोड़ी का संकेत कूद</a><a href="/hi/games/animal-moon-market/">चाँदनी बाज़ार प्रबंधक</a><a href="/hi/games/animal-putt-trails/">ऐनिमल पुट ट्रेल्स</a><a href="/hi/games/animal-kite-keeper/">पतंग प्रहरी</a><a href="/hi/games/animal-gust-garden/">हवा से बीज बोने का बगीचा</a><a href="/hi/games/animal-habitat-blueprint/">आवास टाइल पहेली</a><a href="/hi/games/animal-weather-watch/">मौसम चौकी</a><a href="/hi/games/animal-river-gates/">फाटकों से पानी बाँटें</a><a href="/hi/games/animal-echo-orchard/">बगीचे की ध्वनि याद करें</a><a href="/hi/games/animal-acorn-auction/">बलूत नीलामी</a><a href="/hi/games/animal-patchwork-paws/">पंजों की पैचवर्क</a><a href="/hi/games/animal-cairn-courier/">पत्थर-ढेर संदेशवाहक</a><a href="/hi/games/animal-firefly-folio/">जुगनू के दिशा संकेत</a><a href="/hi/games/animal-signal-scout/">गश्त के संकेत मिलाएँ</a><a href="/hi/games/animal-silhouette-scout/">जानवरों की परछाइयाँ मिलाएँ</a><a href="/hi/games/road-crosser/">सड़क और नदी पार करें</a><a href="/hi/games/alien-defender/">एलियन रक्षक</a><a href="/hi/games/snake/">साँप</a><a href="/hi/games/maze-chase/">भूलभुलैया पीछा</a><a href="/hi/games/space-rocks/">अंतरिक्ष शिलाखंड</a><a href="/hi/games/animal-rain-roost/">बारिश की बूँदें पकड़ें</a><a href="/hi/games/animal-orchard-steward/">बगीचे के संसाधन सँभालें</a><a href="/hi/games/animal-grove-dominoes/">आवास डोमिनो श्रृंखला</a><a href="/hi/games/pawflow/">रंगीन पंजों का चक्र</a><a href="/hi/games/block-apex/">ब्लॉक एपेक्स</a><a href="/hi/games/castle-cascade/">Castle Cascade</a><a href="/hi/games/animal-blockmart/">ब्लॉक पशु मिनी-मार्ट</a><a href="/hi/games/puppy-haven/">पिल्लों का आँगन</a><a href="/hi/games/purrch-grove/">म्याऊँ का आशियाना</a><a href="/hi/games/signal-snap/">संकेत झटपट</a><a href="/hi/games/railguard-express/">रेलरक्षक एक्सप्रेस</a><a href="/hi/games/blade-orbit/">तलवारों की कक्षा</a><a href="/hi/games/fia-hightrail/">फ़िया की शिखर यात्रा</a><a href="/hi/games/nori-sandworks/">नोरी की रेत कार्यशाला</a><a href="/hi/games/meadow-touchdown/">मैदान का टचडाउन</a><a href="/hi/games/lantern-lasso/">लालटेन लासो</a><a href="/hi/games/mossfold/">काई का पलटा</a><a href="/hi/games/glowspool/">रोशनी की डोर</a><a href="/hi/games/sunmane-journey/">仙旅傳說</a><a href="/hi/games/klondike-solitaire/">क्लोंडाइक सोलिटेयर</a><a href="/hi/games/spider-solitaire/">स्पाइडर सॉलिटेयर</a><a href="/hi/games/freecell-solitaire/">फ्रीसेल सॉलिटेयर</a><a href="/hi/games/pyramid-solitaire/">पिरामिड सॉलिटेयर</a><a href="/hi/games/tripeaks-solitaire/">तीन चोटियों वाला सॉलिटेयर</a><a href="/hi/games/golf-solitaire/">गोल्फ सॉलिटेयर</a><a href="/hi/games/yukon-solitaire/">युकोन सॉलिटेयर</a><a href="/hi/games/checkers/">चेकर्स</a><a href="/hi/games/tic-tac-toe/">टिक-टैक-टो</a><a href="/hi/games/hearts/">हार्ट्स</a><a href="/hi/games/spades/">स्पेड्स</a><a href="/hi/games/gin-rummy/">जिन रमी</a><a href="/hi/games/crazy-eights/">पागल आठ</a><a href="/hi/games/cribbage/">क्रिबेज</a><a href="/hi/games/go-fish/">जाओ मछली</a><a href="/hi/games/war/">वॉर: बड़ा पत्ता</a><a href="/hi/games/speed/">स्पीड सॉलिटेयर</a><a href="/hi/games/old-maid/">बूढ़ी नौकरानी</a><a href="/hi/games/casino/">कैसिनो</a><a href="/hi/games/peg-solitaire/">पेग सॉलिटेयर</a><a href="/hi/games/reversi/">रिवर्सी</a><a href="/hi/games/four-in-a-row/">चार की पंक्ति</a><a href="/hi/games/traffic-jam-diner/">ट्रैफिक डाइनर</a><a href="/hi/games/robot-dog-showtime/">रोबोट कुत्ते का शो</a><a href="/hi/games/flying-tram/">उड़ती ट्राम</a><a href="/hi/games/smallwood-lives/">पलों में एक जीवन</a><a href="/hi/games/hearthloop/">घर की परिक्रमा</a><a href="/hi/games/chess/">शतरंज</a><a href="/hi/games/mahjong-solitaire/">माहजोंग सॉलिटेयर</a></nav></details>
 
         <a id="featuredGame" class="lobby-feature lobby-kids-gateway" href="kids/">
           <img src="assets/lobby-thumbs/w480/assets__animal-zoo-idle-cover.webp" alt="" loading="lazy" decoding="async" width="480" height="480" />
@@ -3058,7 +3128,8 @@
     </main>
 
     <div id="lobbyToast" class="lobby-toast hidden" role="status" aria-live="polite"></div>
-
+    <script id="lobbyInitialData" type="application/json">{"firstPublished":{"alien-defender":{"date":"2026-08-14T10:42:10+08:00","evidence":"git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"},"animal-2048":{"date":"2026-07-19T22:07:28+08:00","evidence":"git:b5477af1933785970fb6d8786a974569067690b2"},"animal-abyss-diver":{"date":"2026-07-19T23:11:00+08:00","evidence":"git:20ac048c5a6a3be9838f3f9e8931269b70b177fb"},"animal-acorn-auction":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-auto-squad":{"date":"2026-07-07T21:29:26+08:00","evidence":"git:c52fb0fbbdf1ea248e960bb638222b17de19154c"},"animal-balance-grove":{"date":"2026-09-08T03:36:38.620Z","evidence":"canonical-public-catalog"},"animal-bamboo-pipes":{"date":"2026-07-29T23:39:48+08:00","evidence":"git:e8917977335735d5d888a69bd69d1874fbe1126d"},"animal-block-grove":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-blockmart":{"date":"2026-10-24T09:43:48.162Z","evidence":"canonical-public-catalog"},"animal-bounce-brawl":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-bubble-safari":{"date":"2026-07-15T23:32:25+08:00","evidence":"git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"},"animal-burrow-builder":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-bus-jam":{"date":"2026-07-27T22:34:17+08:00","evidence":"git:a4b01d4b0120b1737f60bf51a44d4fa3df0c60e7"},"animal-cafe-rush":{"date":"2026-07-11T16:23:08+08:00","evidence":"git:d276c8a622bf3ffe31d9d02b8701cc6ae2bfb081"},"animal-cairn-courier":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-canopy-compass":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"animal-canopy-cut":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-carnival-claw":{"date":"2026-08-01T21:20:08+08:00","evidence":"git:4ea5624cf58fa6240d4f115588bf71595d9e3adc"},"animal-chameleon-blend":{"date":"2026-09-07T20:52:50.966Z","evidence":"canonical-public-catalog"},"animal-cloudhook-courier":{"date":"2026-08-16T18:22:05+08:00","evidence":"git:ad8753d557c12ed81c6c6038d8a93483826286c9"},"animal-color-link":{"date":"2026-07-29T21:13:08+08:00","evidence":"git:9af3b072c5b0040172a8fd2f56134f0f56b64974"},"animal-color-springs":{"date":"2026-07-21T00:28:03+08:00","evidence":"git:80fe58d1be86b2d17a1949931a03fea109d8bc26"},"animal-coloring-studio":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-constellation-keeper":{"date":"2026-09-12T17:03:06.681Z","evidence":"canonical-public-catalog"},"animal-cozy-camp":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-cratebound":{"date":"2026-07-26T14:39:48+08:00","evidence":"git:0af3b8a45edfd8e11ede0ead0032a44f3ffbf0a3"},"animal-crownfall":{"date":"2026-10-10T05:42:22.201Z","evidence":"canonical-public-catalog"},"animal-crystal-survivor":{"date":"2026-07-06T08:33:55+08:00","evidence":"git:52046a360aaa1726c6e54bf488c2ac4f6e488bab"},"animal-cushion-stack":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"animal-dawn-shutters":{"date":"2026-09-13T05:59:04.844Z","evidence":"canonical-public-catalog"},"animal-deep-sea-salvage":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-dewline":{"date":"2026-09-13T04:54:16.327Z","evidence":"canonical-public-catalog"},"animal-dice-bastion":{"date":"2026-07-31T18:43:34+08:00","evidence":"git:62569beb5803fce12476561bfaa0241799cbef96"},"animal-echo-orchard":{"date":"2026-09-12T19:53:33.209Z","evidence":"canonical-public-catalog"},"animal-firefly-folio":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-flip-foundry":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-folded-field":{"date":"2026-09-12T17:23:18.025Z","evidence":"canonical-public-catalog"},"animal-footprint-folio":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-frost-maze":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-gearpack-expedition":{"date":"2026-07-12T07:59:26+08:00","evidence":"git:9007bf982e3bf8076e584b718328ec785826116e"},"animal-glyph-garden":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-grove-dominoes":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-guard-yard":{"date":"2026-07-01T09:20:11+08:00","evidence":"git:acbe4717fa418382f374a30421d48372c0617366"},"animal-gust-garden":{"date":"2026-09-13T04:04:31.207Z","evidence":"canonical-public-catalog"},"animal-habitat-atlas":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"animal-habitat-blueprint":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-habitat-builder":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"animal-habitat-counts":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-habitat-mahjong":{"date":"2026-07-15T23:32:25+08:00","evidence":"git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"},"animal-hero-trials":{"date":"2026-07-12T04:37:26+08:00","evidence":"git:5d5a2cbdbc198e916014ae544ddbf8ad9edaff3a"},"animal-hidden-safari":{"date":"2026-07-01T18:24:07+08:00","evidence":"git:f8f61b5c2d9c5aca8f2af9bb9d21a0859f8f643a"},"animal-hollow-fit":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-honey-shield":{"date":"2026-08-08T12:32:12+08:00","evidence":"git:45e3a04413a39588697ff244372f6e18d5ecdd5b"},"animal-hoop-league":{"date":"2026-09-07T10:25:54+08:00","evidence":"git:c10da82b30ee96fdacb0e997ae952c2383d1991b"},"animal-kite-keeper":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-lantern-guides":{"date":"2026-09-11T19:13:47.168Z","evidence":"canonical-public-catalog"},"animal-lantern-lattice":{"date":"2026-09-23T17:24:03.083Z","evidence":"canonical-public-catalog"},"animal-layer-grove":{"date":"2026-10-24T07:43:34.253Z","evidence":"canonical-public-catalog"},"animal-magnet-meadow":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-meadow-difference":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-mirror-meadow":{"date":"2026-09-08T01:42:36.247Z","evidence":"canonical-public-catalog"},"animal-moon-market":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-moonlight-heist":{"date":"2026-07-12T10:06:54+08:00","evidence":"git:4df4d45b548bb7a304700a05570cb6bffed90bb3"},"animal-moonlight-workshop":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"animal-mosaic-clues":{"date":"2026-07-23T00:39:38+08:00","evidence":"git:6d94e3e9f732a860412aa735b6524c27c50c3ce5"},"animal-nest-weigh":{"date":"2026-09-13T08:44:28.959Z","evidence":"canonical-public-catalog"},"animal-number-match":{"date":"2026-07-29T14:36:22+08:00","evidence":"git:5b2eba2acfddc059640be47e460ea2e778f8ec31"},"animal-one-line":{"date":"2026-07-19T17:44:26+08:00","evidence":"git:48a62c205c442a89175566110ceedc49435a0c66"},"animal-orb-fortress":{"date":"2026-07-07T13:36:56+08:00","evidence":"git:ffab92fd42f64675fbb90b2ed51e1ae43f9e71fa"},"animal-orbit-orchard":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-orchard-steward":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-parking-patrol":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-patchwork-paws":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-pattern-patch":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-peach-oath":{"date":"2026-09-07T16:23:33+08:00","evidence":"git:8c158de03ea0ec27be738b7d4d04ebabc39a56ef"},"animal-penalty-cup":{"date":"2026-09-06T11:20:00+08:00","evidence":"git:24bede97af3978f173844b18b9de9816ebf121c1"},"animal-postcard-crop":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-prism-battalion":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-prism-breakers":{"date":"2026-07-29T23:23:04+08:00","evidence":"git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"},"animal-prism-garden":{"date":"2026-07-30T14:58:54+08:00","evidence":"git:7ad044e058343a5a4b2c331b9d72f6502b4eed0c"},"animal-putt-trails":{"date":"2026-09-11T04:17:56.526Z","evidence":"canonical-public-catalog"},"animal-quiz":{"date":"2026-06-29T18:20:39+08:00","evidence":"git:dc8b075b3b2fe3124211990f8b999ed8f6af778f"},"animal-rain-roost":{"date":"2026-10-23T15:43:12.003Z","evidence":"canonical-public-catalog"},"animal-ranger-tactics":{"date":"2026-07-02T14:22:09+08:00","evidence":"git:5d2db122636491188bb3f60d58762b492a9f5d1b"},"animal-reef-fisher":{"date":"2026-07-07T20:47:00+08:00","evidence":"git:f01a85c6e80e3f711a038c08bbde10a3c997e450"},"animal-relic-hunters":{"date":"2026-07-06T16:47:07+08:00","evidence":"git:590953402eb3c369f00c6eb930534e6a9d3956df"},"animal-rescue":{"date":"2026-06-30T07:35:13+08:00","evidence":"git:2ee56f46792ba42caa86759dc4c565d598b907dd"},"animal-rift-salvage":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-ring-garden":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-river-gates":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-rootvault-pins":{"date":"2026-07-21T18:33:11+08:00","evidence":"git:c946e40e34c1c12fecbcaa376631196379756da7"},"animal-rope-rescue":{"date":"2026-07-02T15:52:55+08:00","evidence":"git:06c09a6474db720896369d471c544ac5e9c2d703"},"animal-rune-reels":{"date":"2026-07-23T10:42:45+08:00","evidence":"git:9017c47f12fa38e6910caaa980f846b19a75e157"},"animal-rune-tactics":{"date":"2026-07-07T10:28:29+08:00","evidence":"git:3bdb1310588889c268d710c99c506f54ac4a5a84"},"animal-sanctuary-loop":{"date":"2026-07-21T18:33:11+08:00","evidence":"git:c946e40e34c1c12fecbcaa376631196379756da7"},"animal-screw-workshop":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-signal-scout":{"date":"2026-09-12T02:20:17.817Z","evidence":"canonical-public-catalog"},"animal-silhouette-scout":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-sketchwheel-rally":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-skybridge-rivals":{"date":"2026-07-23T11:45:49+08:00","evidence":"git:be7ea7110968774814c6f9cd763a1248559fc088"},"animal-skyport-dispatch":{"date":"2026-07-20T20:19:04+08:00","evidence":"git:b44254f8bd2b97a5a81c965571a77387f7b500fe"},"animal-skyspire-drop":{"date":"2026-07-23T16:04:21+08:00","evidence":"git:fc0404ed773867cc913b077f4ac1089cef6caedb"},"animal-spectrum-pulse":{"date":"2026-07-22T21:34:13+08:00","evidence":"git:ca70a96d756374b7b1e822e06bd806a119bf39d2"},"animal-starlight-trails":{"date":"2026-07-19T15:37:21+08:00","evidence":"git:57329de1df4d8a3b6c71e5d39025d8395ebf48b4"},"animal-sunbeam-garden":{"date":"2026-07-28T17:29:10+08:00","evidence":"git:63161e4c3943c1b03b0a14ba6755c94aec034e30"},"animal-tangle-rescue":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-tangram":{"date":"2026-07-29T23:23:04+08:00","evidence":"git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"},"animal-tide-tally":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"animal-tideglass":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"animal-trap-trail":{"date":"2026-08-16T16:15:05+08:00","evidence":"git:4d88486a2386b12b147a049e66a6b9e4460cd81b"},"animal-triple-match":{"date":"2026-07-26T08:55:44+08:00","evidence":"git:0353b8a9d67113e5b613d590f1de1b093923739c"},"animal-twin-switchyard":{"date":"2026-08-16T18:22:05+08:00","evidence":"git:ad8753d557c12ed81c6c6038d8a93483826286c9"},"animal-unblock":{"date":"2026-07-28T14:19:40+08:00","evidence":"git:6a05ae71c10d70ea6a76b78932cb7e6d520fdf20"},"animal-weather-watch":{"date":"2026-09-08T04:17:14.305Z","evidence":"canonical-public-catalog"},"animal-wildwood-raid":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"animal-word-trails":{"date":"2026-07-21T00:28:03+08:00","evidence":"git:80fe58d1be86b2d17a1949931a03fea109d8bc26"},"animal-zoo-idle":{"date":"2026-07-01T23:43:23+08:00","evidence":"git:b605f8ce6421054b3240081cf10aee20be1dcd55"},"arrow-escape":{"date":"2026-08-01T12:46:15+08:00","evidence":"git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"},"beast-deck":{"date":"2026-07-06T16:47:07+08:00","evidence":"git:590953402eb3c369f00c6eb930534e6a9d3956df"},"beast-tactician":{"date":"2026-07-06T21:50:28+08:00","evidence":"git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"},"blade-orbit":{"date":"2026-10-25T17:14:14.033Z","evidence":"canonical-public-catalog"},"block-apex":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"block-blast":{"date":"2026-08-01T12:46:15+08:00","evidence":"git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"},"bramble-rapids":{"date":"2026-10-27T09:43:29.076Z","evidence":"canonical-public-catalog"},"breakout":{"date":"2026-10-24T07:39:29.093Z","evidence":"canonical-public-catalog"},"bubble-bakery":{"date":"2026-07-01T11:15:16+08:00","evidence":"git:d6894ab4aa79712b9cc80c938fb356f5328f6262"},"campus-dash":{"date":"2026-06-29T22:58:52+08:00","evidence":"git:60ce30d4892136d7a7668c7242412bd1f19757b3"},"casino":{"date":"2026-09-07T19:54:12.128Z","evidence":"canonical-public-catalog"},"castle-cascade":{"date":"2026-10-04T18:36:56.210Z","evidence":"canonical-public-catalog"},"cat-color-sudoku":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"checkers":{"date":"2026-08-27T00:24:12+08:00","evidence":"git:551c96aabb0a4b4e3d26549d7845b1721ea9ccf2"},"chess":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"code-breaker":{"date":"2026-09-07T20:17:00.869Z","evidence":"canonical-public-catalog"},"color-lunchbox":{"date":"2026-06-29T12:55:21+08:00","evidence":"git:1c265986ae77558669c499aad6790716110b787e"},"crazy-eights":{"date":"2026-09-06T02:23:18+08:00","evidence":"git:0298605d944c01aae1b57974ef8214a8c1b89470"},"cribbage":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"deep-drill":{"date":"2026-10-24T07:27:34.088Z","evidence":"canonical-public-catalog"},"dustwake-depot":{"date":"2026-10-29T10:31:36.367Z","evidence":"canonical-public-catalog"},"fia-hightrail":{"date":"2026-10-26T05:06:10.101Z","evidence":"canonical-public-catalog"},"flying-tram":{"date":"2026-10-23T13:29:55.603Z","evidence":"canonical-public-catalog"},"four-in-a-row":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"freecell-solitaire":{"date":"2026-09-06T07:33:49+08:00","evidence":"git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"},"fruit-merge":{"date":"2026-06-30T19:58:06+08:00","evidence":"git:c7ed47cc7ba16ad30590b38b58a1026210096cc9"},"fusekeep":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"garden-tiles":{"date":"2026-06-30T20:09:06+08:00","evidence":"git:aac6880236f15a35fba53dc5e1bb4d1b5de13a3b"},"gin-rummy":{"date":"2026-09-04T20:21:02+08:00","evidence":"git:5e8b126c73f51c52d2bbc36360d517b5f08bec80"},"go-fish":{"date":"2026-09-06T07:33:49+08:00","evidence":"git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"},"golf-solitaire":{"date":"2026-09-06T08:21:14+08:00","evidence":"git:bb9f3549c258959ec1d6c4877d60e6c0b2e82db7"},"hangman":{"date":"2026-08-31T13:16:25+08:00","evidence":"git:a714f868a988d5979fbf72411fbc11a87bf0ef38"},"hearts":{"date":"2026-09-06T19:23:08+08:00","evidence":"git:d8a3c16bca906278c0b46cbb77e0594bb6ecea5a"},"hexa-sort":{"date":"2026-08-01T12:46:15+08:00","evidence":"git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"},"kindred-habitats":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"klondike-solitaire":{"date":"2026-08-08T12:32:12+08:00","evidence":"git:45e3a04413a39588697ff244372f6e18d5ecdd5b"},"lights-out":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"mahjong-solitaire":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"maze-chase":{"date":"2026-08-14T05:29:51+08:00","evidence":"git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"},"meadow-touchdown":{"date":"2026-10-26T10:53:22.112Z","evidence":"canonical-public-catalog"},"minefield-logic":{"date":"2026-10-23T15:09:00.552Z","evidence":"canonical-public-catalog"},"mossfold":{"date":"2026-10-30T04:34:14.857Z","evidence":"canonical-public-catalog"},"nori-bankshot":{"date":"2026-10-26T09:43:57.097Z","evidence":"canonical-public-catalog"},"nori-sandworks":{"date":"2026-10-26T05:06:10.101Z","evidence":"canonical-public-catalog"},"old-maid":{"date":"2026-09-11T16:47:51.441Z","evidence":"canonical-public-catalog"},"orbit-menders":{"date":"2026-10-27T08:35:00.951Z","evidence":"canonical-public-catalog"},"pawaxe":{"date":"2026-09-27T15:59:36.430Z","evidence":"canonical-public-catalog"},"pawflow":{"date":"2026-10-23T10:21:06.808Z","evidence":"canonical-public-catalog"},"peg-solitaire":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"pong":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"puppy-haven":{"date":"2026-10-21T16:15:31.180Z","evidence":"canonical-public-catalog"},"purrch-grove":{"date":"2026-10-29T10:29:39.765Z","evidence":"canonical-public-catalog"},"pyramid-solitaire":{"date":"2026-08-11T12:08:54+08:00","evidence":"git:150ba8bdcf566c3dd6a323e0a4bdf9286dbdb012"},"railguard-express":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"reversi":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"road-crosser":{"date":"2026-08-14T10:42:10+08:00","evidence":"git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"},"robot-dog-showtime":{"date":"2026-10-25T06:01:31.651Z","evidence":"canonical-public-catalog"},"shadow-wolf":{"date":"2026-07-06T21:50:28+08:00","evidence":"git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"},"shape-train":{"date":"2026-06-30T15:10:16+08:00","evidence":"git:31482792320158cb21f169911efcc8038df03968"},"signal-snap":{"date":"2026-10-25T00:08:06.888Z","evidence":"canonical-public-catalog"},"signal-veil":{"date":"2026-07-28T18:08:11+08:00","evidence":"git:fd41cc15280bed4ce2ddaf1b5a9f49d48cc74aa0"},"sliding-15":{"date":"2026-09-07T13:23:52+08:00","evidence":"git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"},"smallwood-lives":{"date":"2026-10-30T04:34:14.857Z","evidence":"canonical-public-catalog"},"snack-blocks":{"date":"2026-06-30T14:07:51+08:00","evidence":"git:da6fde81cf8a17fb05f3818e8fa0ede4a2e1cb68"},"snake":{"date":"2026-08-14T10:42:10+08:00","evidence":"git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"},"space-rocks":{"date":"2026-08-14T05:29:51+08:00","evidence":"git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"},"spades":{"date":"2026-09-06T12:22:21+08:00","evidence":"git:054a870fb0f2a3775ccc984cc7dda2801302b173"},"speed":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"spider-solitaire":{"date":"2026-08-08T13:00:37+08:00","evidence":"git:7f6156bd8829937c6aba4904f4b596942ece6842"},"star-memory":{"date":"2026-06-29T21:17:25+08:00","evidence":"git:aee27c8085ee1502fa9f3698dc30b6b82462b732"},"sudoku":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"tetris":{"date":"2026-09-05T02:17:10+08:00","evidence":"git:3ec5a0dfe850d98d0940648159cec6470da5d6ef"},"tic-tac-toe":{"date":"2026-10-20T00:18:05.505Z","evidence":"owner-approval:OAR-c49d98efeb64c0e44171906b"},"tiny-weather-rescue":{"date":"2026-06-30T16:06:14+08:00","evidence":"git:346acd6893672262c5918c4702caa6278b5442d3"},"tower-of-hanoi":{"date":"2026-09-01T17:15:15+08:00","evidence":"git:73500c6261c0110a54ce3ad99c679deee381cf00"},"traffic-jam-diner":{"date":"2026-10-25T06:05:08.764Z","evidence":"canonical-public-catalog"},"tripeaks-solitaire":{"date":"2026-08-29T01:12:57+08:00","evidence":"git:d25602c3e7ef77d6079c609b8d9ec328fb98a14a"},"war":{"date":"2026-09-07T09:01:53+08:00","evidence":"git:6d610f6ef170ef3369b74620bddc987a0a074cbb"},"wildborn":{"date":"2026-10-24T16:09:49.375Z","evidence":"canonical-public-catalog"},"wonder-crash":{"date":"2026-06-29T12:55:21+08:00","evidence":"git:1c265986ae77558669c499aad6790716110b787e"},"wordle":{"date":"2026-09-07T14:32:28+08:00","evidence":"git:532f250998171934287172eda373ad395d851929"},"yukon-solitaire":{"date":"2026-09-06T11:20:00+08:00","evidence":"git:24bede97af3978f173844b18b9de9816ebf121c1"},"zhao-yun-a-dou":{"date":"2026-08-12T18:13:26+08:00","evidence":"git:51565abac8d1759e71815f7c21545b6532e5d250"},"zoo-helper-day":{"date":"2026-06-30T15:00:49+08:00","evidence":"git:5357799f83bae6b395c87691535c0db9074eee6f"}},"stats":{"updatedAt":"2026-07-07T17:55:27.235Z","source":"ga4","windowDays":7,"totals":{"plays7d":464,"playsTotal":480,"users7d":85},"games":{"wonder-crash":{"plays7d":36,"playsTotal":39,"users7d":5,"rank7d":4},"color-lunchbox":{"plays7d":19,"playsTotal":20,"users7d":4,"rank7d":6},"bubble-bakery":{"plays7d":47,"playsTotal":47,"users7d":6,"rank7d":3},"animal-rope-rescue":{"plays7d":16,"playsTotal":16,"users7d":3,"rank7d":9},"animal-zoo-idle":{"plays7d":61,"playsTotal":61,"users7d":6,"rank7d":2},"star-memory":{"plays7d":11,"playsTotal":11,"users7d":3,"rank7d":15},"campus-dash":{"plays7d":14,"playsTotal":14,"users7d":4,"rank7d":12},"snack-blocks":{"plays7d":15,"playsTotal":15,"users7d":6,"rank7d":10},"fruit-merge":{"plays7d":29,"playsTotal":37,"users7d":6,"rank7d":5},"garden-tiles":{"plays7d":11,"playsTotal":13,"users7d":3,"rank7d":13},"animal-rescue":{"plays7d":9,"playsTotal":9,"users7d":2,"rank7d":17},"animal-hidden-safari":{"plays7d":17,"playsTotal":17,"users7d":2,"rank7d":8},"animal-guard-yard":{"plays7d":87,"playsTotal":87,"users7d":8,"rank7d":1},"animal-crystal-survivor":{"plays7d":10,"playsTotal":10,"users7d":2,"rank7d":16},"animal-quiz":{"plays7d":8,"playsTotal":10,"users7d":2,"rank7d":19},"zoo-helper-day":{"plays7d":19,"playsTotal":19,"users7d":4,"rank7d":7},"shape-train":{"plays7d":6,"playsTotal":6,"users7d":3,"rank7d":22},"tiny-weather-rescue":{"plays7d":9,"playsTotal":9,"users7d":3,"rank7d":18},"beast-deck":{"plays7d":14,"playsTotal":14,"users7d":4,"rank7d":11},"animal-relic-hunters":{"plays7d":11,"playsTotal":11,"users7d":3,"rank7d":14},"animal-rune-tactics":{"plays7d":6,"playsTotal":6,"users7d":1,"rank7d":21},"animal-orb-fortress":{"plays7d":6,"playsTotal":6,"users7d":2,"rank7d":20},"animal-auto-squad":{"plays7d":3,"playsTotal":3,"users7d":2,"rank7d":23},"animal-reef-fisher":{"plays7d":0,"playsTotal":0,"users7d":1,"rank7d":null}}}}</script>
+    <script src="src/weightplay-audio.js?v=1.0.0"></script>
     <script src="src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="src/version.js?v=20260716-general-lobby1"></script>
     <script src="src/analytics.js?v=20261028-topic-stories-v2"></script>
@@ -3072,9 +3143,9 @@
     <script src="src/lobby-data-es.js?v=20260718-es1"></script>
     <script src="src/lobby-data-ja.js?v=20260719-ja1"></script>
     <script src="src/interface7-poster-registry.js?v=20260928-castle-cascade-poster-v1"></script>
-    <script src="src/lobby-frame.js?v=20261025-gameplay-genres2&wp-audio=1.0.0"></script>
+    <script src="src/lobby-frame.js?v=20261102-first-response1&wp-audio=1.0.0"></script>
     <script src="src/lobby-genres.js?v=20261025-gameplay-genres1"></script>
-    <script src="src/lobby.js?20261030-activity-days1&wp-audio=1.0.0"></script>
+    <script src="src/lobby.js?v=20261102-first-response1&wp-audio=1.0.0"></script>
       <script src="/src/weightplay-castle.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   </body>
 </html>

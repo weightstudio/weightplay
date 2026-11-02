@@ -197,3 +197,14 @@ html[dir="rtl"] body.general-lobby-page .lobby-settings-popover {
     width: min(280px, calc(100vw - 24px));
   }
 }
+/* The native first-response preferences work before the controller loads. */
+.lobby-preferences > summary.lobby-settings-button { list-style: none; display: grid; place-items: center; cursor: pointer; }
+.lobby-preferences > summary::-webkit-details-marker { display: none; }
+/* The native first-response hero/activities already have desktop geometry;
+   narrow screens use their normal flex order until the tiny inline owner runs. */
+@media (max-width: 1119px) {
+  .general-lobby-page .desktop-lobby-stage { display: contents; }
+}
+@media (min-width: 1120px) {
+  html:not([data-lobby-layout-ready]) .general-lobby-page[data-lobby-first-response] :is(.game-hall-switch, .lobby-search-row) { visibility: hidden; }
+}

@@ -1,4 +1,10 @@
 const lobby = window.WONDER_LOBBY;
+const activityLabelCopy = {en:"Daily event","zh-Hant":"每日活動","zh-Hans":"每日活动",ja:"デイリーイベント",ko:"일일 이벤트",es:"Evento diario","pt-BR":"Evento diário",fr:"Événement quotidien",de:"Tägliches Event",it:"Evento giornaliero",ru:"Ежедневное событие",hi:"दैनिक इवेंट",ar:"فعالية يومية"};
+// Generated from the same public catalog/metadata as the first response. Keep
+// these shelves stable while their fresh feeds load; a failed feed leaves a
+// useful linked page, rather than briefly removing the initial content.
+let initialLobbyData = {};
+try { initialLobbyData = JSON.parse(document.querySelector('#lobbyInitialData')?.textContent || '{}'); } catch { /* Older HTML remains supported. */ }
 const gameGenres = window.WeightPlayGameGenres;
 if (!gameGenres) throw new Error("Lobby gameplay registry is missing");
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
@@ -279,7 +285,7 @@ gameGrid.after(catalogPagination);
 // Preserve crawlable, lightweight links after hydration, including games that
 // have not had an image card created yet. The server HTML remains the no-JS
 // catalog; never replace it with an empty JavaScript-only shell.
-const catalogDirectory = document.createElement("details");
+const catalogDirectory = document.querySelector('#catalogDirectory') || document.createElement("details");
 catalogDirectory.id = "catalogDirectory";
 catalogDirectory.dataset.runtimeLocalize = "off";
 catalogDirectory.innerHTML = "<summary></summary><nav></nav>";
@@ -304,7 +310,7 @@ const catalogResizeObserver = new ResizeObserver(([entry]) => {
 catalogResizeObserver.observe(gameGrid);
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
-const latestGamesSection = document.createElement("section");
+const latestGamesSection = document.querySelector('#latestGamesSection') || document.createElement("section");
 latestGamesSection.id = "latestGamesSection";
 latestGamesSection.className = "hero-games-section hidden";
 latestGamesSection.dataset.runtimeLocalize = "off";
@@ -312,7 +318,7 @@ latestGamesSection.innerHTML = '<div class="section-heading"><h2 id="latestGames
 if (!isKidsLobby) heroGamesSection.before(latestGamesSection);
 const latestGames = latestGamesSection.querySelector("#latestGames");
 // Owner-selected General spotlight; keeps existing Kids portal and catalog order.
-const spotlightSection = document.createElement("section");
+const spotlightSection = document.querySelector('#spotlightGameSection') || document.createElement("section");
 const spotlightCopy = { en:"Spotlight game", "zh-Hant":"主打遊戲", "zh-Hans":"主打游戏", ja:"注目のゲーム", ko:"추천 게임", es:"Juego destacado", "pt-BR":"Jogo em destaque", fr:"Jeu à la une", de:"Spiel im Fokus", it:"Gioco in primo piano", ru:"Игра в центре внимания", hi:"खास गेम", ar:"اللعبة المميزة" };
 spotlightSection.id = "spotlightGameSection";
 spotlightSection.dataset.runtimeLocalize = "off";
@@ -353,7 +359,7 @@ function syncSpotlightArtwork() {
   }
 }
 
-let firstPublicDates = {};
+let firstPublicDates = initialLobbyData.firstPublished || {};
 const latestGamesCopy = {
   en: "Latest releases", "zh-Hant": "最新上架", "zh-Hans": "最新上架",
   ja: "新着ゲーム", ko: "새로 출시된 게임", es: "Últimos lanzamientos",
@@ -517,7 +523,7 @@ let toastMotionClassTimer = null;
 let toastMotionGeneration = 0;
 let favoriteGameIds = readFavorites();
 let recentGameIds = readRecentGames();
-let gameStats = {
+let gameStats = initialLobbyData.stats || {
   source: "pending",
   updatedAt: null,
   metric: "game_page_view",
@@ -669,7 +675,7 @@ function createDemonEventPreview() {
     copy.className = "demon-event-card-copy";
     const label = document.createElement("span");
     label.className = "demon-event-label";
-    label.textContent = event.label || ({en:"Daily event","zh-Hant":"每日活動","zh-Hans":"每日活动",ja:"デイリーイベント",ko:"일일 이벤트",es:"Evento diario","pt-BR":"Evento diário",fr:"Événement quotidien",de:"Tägliches Event",it:"Evento giornaliero",ru:"Ежедневное событие",hi:"दैनिक इवेंट",ar:"فعالية يومية"})[locale] || "Daily event";
+    label.textContent = event.label || activityLabelCopy[locale] || activityLabelCopy.en;
     const schedule = document.createElement("span");
     schedule.className = "demon-event-card-schedule";
     schedule.textContent = event.details.schedule;
@@ -919,6 +925,7 @@ function createDemonEventPreview() {
   window.addEventListener("pageshow", onPageShow);
   // Both public entries are part of the initial lobby render. Optional artwork
   // or activity-module loading cannot silently remove an entry on mobile.
+  document.querySelector('[data-static-activities]')?.replaceWith(section);
   return section;
 }
 
@@ -3356,71 +3363,29 @@ quickPickBtn?.addEventListener("click", () => { settleHallMotion(); openQuickPic
 
 function setupResponsiveLobbyPresentation() {
   if (isKidsLobby) return;
-  const mobileStylesheet = document.createElement("link");
-  mobileStylesheet.rel = "stylesheet";
-  mobileStylesheet.href = "/src/lobby-mobile.css";
-  mobileStylesheet.media = "(max-width: 1119px)";
-  mobileStylesheet.dataset.lobbyMobileStyle = "true";
-  document.head.append(mobileStylesheet);
-  const shell = document.querySelector(".lobby-shell");
-  const topbar = shell?.querySelector(".lobby-topbar");
-  const hero = shell?.querySelector(".lobby-hero");
-  const search = shell?.querySelector(".lobby-search-row");
-  const library = shell?.querySelector(":scope > .library-tabs");
-  const rail = shell?.querySelector(".desktop-filter-rail");
-  if (!topbar || !hero || !search || !library || !rail || !gameHallSwitch) return;
-  // Narrow-screen visual and keyboard order both start with hall selection.
-  hero.before(gameHallSwitch);
-  const query = window.matchMedia("(min-width: 1120px)");
-  const stage = document.createElement("div");
-  stage.className = "desktop-lobby-stage";
-  // Move the original controls, never clone their IDs, input state or listeners.
-  // Inert home markers restore the touch layout's DOM order at a breakpoint.
-  const homes = new Map([gameHallSwitch, search, hero, demonEventPreview, library].filter(Boolean).map(node => {
-    const home = document.createComment("desktop lobby home");
-    node.before(home);
-    return [node, home];
-  }));
-  let stylesheet = null;
-  let styleReady = false;
-  const apply = () => {
-    if (query.matches && !styleReady) {
-      if (!stylesheet) {
-        stylesheet = document.createElement("link");
-        stylesheet.rel = "stylesheet";
-        stylesheet.href = "/src/lobby-desktop.css";
-        stylesheet.media = "(min-width: 1120px)";
-        stylesheet.dataset.lobbyDesktopStyle = "true";
-        stylesheet.addEventListener("load", () => { styleReady = true; apply(); }, { once: true });
-        document.head.append(stylesheet);
-      }
-      return;
-    }
-    const wasDesktop = document.body.hasAttribute("data-desktop-lobby");
-    if (wasDesktop === query.matches) return;
-    settleHallMotion();
-    const focused = document.activeElement;
-    if (query.matches) {
-      const preferences = topbar.querySelector(".lobby-preferences, .language-picker");
-      topbar.insertBefore(gameHallSwitch, preferences);
-      topbar.insertBefore(search, preferences);
-      homes.get(hero).before(stage);
-      stage.append(hero);
-      if (demonEventPreview) stage.append(demonEventPreview);
-      rail.append(library);
-      library.classList.add("desktop-library");
-      document.body.dataset.desktopLobby = "true";
-    } else {
-      for (const [node, home] of homes) home.after(node);
-      library.classList.remove("desktop-library");
-      stage.remove();
-      delete document.body.dataset.desktopLobby;
-    }
-    if (focused?.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
-    syncSpotlightArtwork();
-  };
-  query.addEventListener("change", apply);
-  apply();
+  const setup = () => window.WeightPlayLobbyLayout?.setup({
+    beforeChange: settleHallMotion, afterChange: syncSpotlightArtwork,
+  });
+  if (window.WeightPlayLobbyLayout) { setup(); return; }
+  // Compatibility with an older cached HTML response. Current HTML loads both
+  // media styles in its head and initializes the small layout before paint.
+  for (const [name, media] of [["mobile", "(max-width: 1119px)"], ["desktop", "(min-width: 1120px)"]]) {
+    if (document.querySelector(`[data-lobby-${name}-style]`)) continue;
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `/src/lobby-${name}.css`;
+    stylesheet.media = media;
+    stylesheet.setAttribute(`data-lobby-${name}-style`, "true");
+    document.head.append(stylesheet);
+  }
+  const anchor = document.createElement("span");
+  anchor.dataset.lobbyLayoutAnchor = "";
+  anchor.hidden = true;
+  document.querySelector("#filterStatus").append(anchor);
+  const script = document.createElement("script");
+  script.src = "/src/lobby-layout.js?v=20261102-first-response1";
+  script.addEventListener("load", setup, { once: true });
+  document.head.append(script);
 }
 
 function setupKidsLobbyPresentation() {
