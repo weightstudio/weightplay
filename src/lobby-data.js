@@ -99,8 +99,8 @@ window.WONDER_LOBBY = {
       title: { __localizedExact: true, en: "Starcamp Glade", "zh-Hant": "星帳林地", "zh-Hans": "星帐林地", ja: "星あかりの野営地", ko: "별빛 숲 야영지", es: "Claro de Estrellas", "pt-BR": "Clareira Estrelada", fr: "Clairière Étoilée", de: "Sternenzelt-Lichtung", it: "Radura Stellata", ru: "Звёздная поляна", hi: "तारों का वन शिविर", ar: "مخيم النجوم في الغابة" },
       type: { en: "Tent logic puzzle", "zh-Hant": "帳篷配對推理" },
       description: { en: "Give every tree its own quiet campsite across 60 original logic puzzles.", "zh-Hant": "推敲樹與帳篷的配對，安排60座安靜的原創營地。" },
-      age: ["9+", "Family"], skills: ["logic", "planning", "focus"],
-      cover: "games/starcamp-glade/assets/cover.webp",
+      categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Planning", "Focus"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
+      art: { kind: "image", background: "games/starcamp-glade/assets/cover.webp", hideHero: true },
       meta: { en: ["60 stages", "Permanent diamond appearance"], "zh-Hant": ["60關", "鑽石永久外觀"] }
     },
     {
