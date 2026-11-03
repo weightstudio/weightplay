@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "moonlit-atrium",
       "starcamp-glade",
       "tideweave",
       "duskbloom",
@@ -93,6 +94,15 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "moonlit-atrium", audience: "general", status: "planned", internalOnly: true,
+      href: "games/moonlit-atrium/", internalTrial: "?preview=1",
+      title: { __localizedExact: true, en: "Moonlit Atrium", "zh-Hant": "月燈迴廊", "zh-Hans": "月灯回廊", ja: "月灯りの回廊", ko: "달빛 회랑", es: "Atrio de Luna", "pt-BR": "Átrio ao Luar", fr: "Atrium lunaire", de: "Mondlicht-Atrium", it: "Atrio Lunare", ru: "Лунный атриум", hi: "चाँदनी का आँगन", ar: "رواق ضوء القمر" },
+      type: { en: "Light coverage logic", "zh-Hant": "燈光覆蓋推理" },
+      description: { en: "Place moon lanterns to light every floor without letting lanterns shine on each other.", "zh-Hant": "放置月燈照亮全部地板，讓燈不互照，解開花柱、遮光片與成對花臺的秘密。" },
+      age: ["9+", "Family"], skills: ["Logic", "Focus", "Problem Solving"], meta: ["60 Stages", "Permanent lantern appearance · 8 Diamonds"],
+      art: { kind: "image", background: "games/moonlit-atrium/assets/cover.webp" },
+    },
     {
       id: "starcamp-glade", audience: "general", status: "planned", internalOnly: true,
       href: "games/starcamp-glade/", internalTrial: "?preview=1",
