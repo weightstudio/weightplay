@@ -15,7 +15,7 @@
 
   const ensureStyle = () => {
     if (entryStyleReady) return entryStyleReady;
-    const existing = document.querySelector('link[data-wp-game-entry-loader-style="true"]');
+    const existing = document.querySelector('[data-wp-game-entry-loader-style="true"]');
     const link = existing || document.createElement("link");
     entryStyleReady = new Promise(resolve => {
       let settled = false;
@@ -69,6 +69,7 @@
     const titles = window.WEIGHTPLAY_GAME_TITLES?.[selectedGameId] || {};
     const name = Object.entries(titles).find(([key]) => key.toLowerCase() === locale)?.[1]
       || selectedTitle
+      || document.querySelector('[data-wp-entry-static]')?.dataset.gameTitle
       || (gamePath ? document.querySelector('[data-wp-game-title]')?.textContent.trim() : selectedAnchor?.querySelector('h2,h3,.game-name,.game-title')?.textContent.trim())
       || titles.en || ({'zh-hant':'遊戲','zh-hans':'游戏',ja:'ゲーム',ko:'게임',ar:'اللعبة'}[locale] || 'game');
     return (bundles[locale] || ["Loading {game}…", "Game could not be loaded", "Some game resources could not be loaded. Retry or return to the lobby.", "Retry", "Back to lobby", "Cancel", "Opening {game}…", "Loaded {loaded}/{total} resources"])
@@ -77,7 +78,9 @@
 
   function makeOverlay({ titleText, messageText, mode = "loading", showBack = false, retry, cancel } = {}) {
     document.documentElement.dataset.wpGameEntryLoaderActive = "true";
-    const overlay = document.createElement("section");
+    // Only generated pilot entries carry this node. Other game/lobby paths
+    // retain the same renderer and bootstrap behavior as before.
+    const overlay = (mode === 'loading' && document.querySelector('[data-wp-entry-static]')) || document.createElement("section");
     overlay.className = ROOT_CLASS;
     overlay.dataset.state = mode;
     overlay.setAttribute("role", "dialog");
@@ -85,11 +88,11 @@
     overlay.setAttribute("aria-labelledby", "wp-game-entry-loader-title");
     overlay.setAttribute("aria-busy", String(mode === "loading"));
     const [loadingText, errorTitle, errorCopy, retryText, backText, cancelText] = copy();
-    const title = document.createElement("strong");
+    const title = overlay.querySelector('.wp-game-entry-loader-title') || document.createElement("strong");
     title.className = "wp-game-entry-loader-title";
     title.id = "wp-game-entry-loader-title";
     title.textContent = titleText || (mode === "error" ? errorTitle : loadingText);
-    const status = document.createElement("span");
+    const status = overlay.querySelector('.wp-game-entry-loader-status') || document.createElement("span");
     status.className = "wp-game-entry-loader-status";
     status.setAttribute("aria-live", "polite");
     const setStatus = (message = "") => {
@@ -99,12 +102,13 @@
       status.hidden = !status.textContent;
     };
     setStatus(messageText ?? (mode === "error" ? errorCopy : ""));
-    const track = document.createElement("span");
+    const track = overlay.querySelector('.wp-game-entry-loader-track') || document.createElement("span");
     track.className = "wp-game-entry-loader-track";
     track.setAttribute("role", "progressbar");
     track.setAttribute("aria-label", loadingText);
     track.setAttribute("aria-valuetext", loadingText);
-    const actions = document.createElement("div");
+    const actions = overlay.querySelector('.wp-game-entry-loader-actions') || document.createElement("div");
+    actions.replaceChildren();
     actions.className = "wp-game-entry-loader-actions";
     const button = (label, action, className = "") => {
       const element = document.createElement("button");
@@ -115,7 +119,7 @@
       actions.append(element);
       return element;
     };
-    const card = document.createElement("div");
+    const card = overlay.querySelector('.wp-game-entry-loader-card') || document.createElement("div");
     card.className = "wp-game-entry-loader-card";
     card.append(title, status, track, actions);
     overlay.append(card);

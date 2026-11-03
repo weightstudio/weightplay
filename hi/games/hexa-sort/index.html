@@ -1,18 +1,190 @@
 <!doctype html>
-<html lang="hi">
-  <head>
+<html lang="hi" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" class="wp-frame-main-flow" data-wp-shared-interface="7">
+  <head><meta charset="utf-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
 
-    <base href="/games/hexa-sort/" />
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+<base href="/games/hexa-sort/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <meta charset="utf-8" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v45" />
+    <meta name="weightplay-game-version" content="v47" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#081a32" />
@@ -43,18 +215,18 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/hexa-sort/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hexa-sort/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hexa-sort/" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="" />
     <link
       rel="stylesheet"
       href="../../src/battle-canvas-standard.css"
-      data-wp-battle-standard
+      data-wp-battle-standard data-wp-entry-required=""
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20261030-hexa-sort-hit-target-v42" />
-    <link rel="stylesheet" href="style.css?v=20261030-hexa-sort-hit-target-v42&amp;wp-build=a703c4040b62fc86" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
-    <link rel="stylesheet" href="frame-content.css?v=20261022-hexa-sort-v41-i9-shared-stage1&amp;wp-build=9514ebc072b87de7" />
-    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20261030-hexa-sort-hit-target-v42" data-wp-entry-required="" />
+    <link rel="stylesheet" href="style.css?v=20261030-hexa-sort-hit-target-v42&amp;wp-build=a703c4040b62fc86" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="frame-content.css?v=20261022-hexa-sort-v41-i9-shared-stage1&amp;wp-build=9514ebc072b87de7" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -86,55 +258,55 @@
 }
     </script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-hexa-sort-v41-i9-guide1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-hexa-sort-v41-i9-guide1" data-wp-entry-required="">
 </head>
-  <body class="has-game-page-info" data-wp-game-owned-guide="true"
+  <body class="has-game-page-info wp-frame-main-active" data-wp-game-owned-guide="true"
     data-screen="main"
     data-wp-game-id="hexa-sort"
-    data-wp-game-version="v45"
+    data-wp-game-version="v47"
     data-wp-interface-version="9"
     data-wp-audience="general"
-  >
-    <div id="gameFrame" data-wp-frame-root>
+  ><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="हेक्सा सॉर्ट" data-state="loading" data-error-title="गेम लोड नहीं हो सका" data-error-message="कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें।" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">हेक्सा सॉर्ट लोड हो रहा है…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="हेक्सा सॉर्ट लोड हो रहा है…" aria-valuetext="हेक्सा सॉर्ट लोड हो रहा है…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">फिर कोशिश करें</button><a class="wp-game-entry-loader-button" href="/hi/">लॉबी में लौटें</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}</style><p>कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें। <a href="/hi/">लॉबी में लौटें</a></p></noscript><script src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-frame-active="main" data-wp-play-ui="1">
     <div id="mainGroup" class="main-group">
-      <main id="main" class="main-canvas">
-        <header class="main-header">
+      <main id="main" class="main-canvas" data-wp-frame-scene="main">
+        <header class="main-header wp-frame-header" data-wp-frame-header="main">
           <a
-            class="lobby-return"
+            class="lobby-return wp-frame-return"
             href="/"
             data-wp-return="main"
             aria-label="WeightPlay पर वापस जाएँ"
-            ><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a
-          ><strong data-runtime-localize="off">हेक्सा सॉर्ट</strong>
-          <div class="main-controls">
+            ><span class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a
+          ><strong data-runtime-localize="off" data-wp-frame-title="">हेक्सा सॉर्ट</strong>
+          <div class="main-controls" hidden="">
             <label class="locale-control"
               ><span class="sr-only" data-i18n="language">भाषा</span
               ><select id="localeSelect" aria-label="भाषा"></select
             ></label>
           </div>
         </header>
-        <section class="hero">
+        <section class="hexa-main-content" data-wp-frame-content="main">
           <img
             class="poster"
             src="../../assets/interface7-redrawn/hexa-sort.webp"
-            alt="हेक्सा सॉर्ट game artwork"
+            alt="हेक्सा सॉर्ट game artwork" data-wp-frame-poster=""
           />
-          <div class="hero-copy">
-            <small data-i18n="genre">हेक्स स्टैक पहेली</small>
-            <h1 data-runtime-localize="off">हेक्सा सॉर्ट</h1>
-            <p data-i18n="pitch">ढेर रखें, समान ऊपरी रंग मिलाएँ और श्रृंखला हटाएँ।</p>
-            <strong id="mainProgress">1 / 30</strong
+          <div class="hexa-main-copy" data-wp-frame-copy="">
+            <small data-i18n="genre" hidden="">हेक्स स्टैक पहेली</small>
+            <h1 data-runtime-localize="off" hidden="">हेक्सा सॉर्ट</h1>
+            <p data-i18n="pitch" data-wp-frame-summary="">ढेर रखें, समान ऊपरी रंग मिलाएँ और श्रृंखला हटाएँ।</p>
+            <strong id="mainProgress" data-wp-frame-progress="">1 / 30</strong
             ><button
               id="startBtn"
               class="primary"
               type="button"
-              data-i18n="start"
+              data-i18n="start" data-wp-frame-action="primary"
             >खेल शुरू करें</button>
             <button
               id="endlessBtn"
               class="primary endless-action"
               type="button"
-              data-runtime-localize="off"
+              data-runtime-localize="off" data-wp-frame-action="secondary"
             >अनंत · सर्वश्रेष्ठ 0</button>
           </div>
         </section>
@@ -306,17 +478,17 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js"></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
-    <script src="game.js?v=20261103-hexa-sort-v46-confirmed-recovery&amp;wp-build=6021b9d36a23e665"></script>
+    <script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required=""></script>
+    <script src="game.js?v=entry-pilot-fb1db25de5e8&amp;wp-build=6021b9d36a23e665" data-wp-entry-required=""></script>
     <script src="stage-config.js?v=20261022-hexa-sort-v41-i9-shared-stage1&amp;wp-build=9141cb7ab2f415dc"></script>
-    <script src="../../src/game-screen-frame.js?v=20261022-hexa-sort-v41-i9-shared-stage3"></script>
-    <script src="frame.js?v=20261022-hexa-sort-v41-i9-shared-stage3&amp;wp-build=87d1ce6e33fc2102"></script>
+    <script src="../../src/game-screen-frame.js?v=20261022-hexa-sort-v41-i9-shared-stage3" data-wp-entry-required=""></script>
+    <script src="frame.js?v=entry-pilot-446acab3ea86&amp;wp-build=10d237b1bb808d01" data-wp-entry-required=""></script>
     <script
       src="../../src/battle-canvas-standard.js"
-      data-wp-battle-standard
+      data-wp-battle-standard data-wp-entry-required=""
     ></script>
     <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
     <script src="/src/game-title-registry.js?v=20260804-hexa-release-v26" data-wp-game-title-registry></script>
-    <script type="module" src="/games/hexa-sort/seo-growth.mjs?v=20261022-hexa-i9-guide140&amp;wp-build=a8563f8856394699"></script>
+    <script type="module" src="/games/hexa-sort/seo-growth.mjs?v=20261022-hexa-i9-guide140&amp;wp-build=a8563f8856394699" data-wp-entry-required=""></script>
   </body>
 </html>
