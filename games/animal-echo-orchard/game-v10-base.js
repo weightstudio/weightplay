@@ -66,6 +66,7 @@
   try { solved = new Set(JSON.parse(localStorage.getItem("weightplay-echo-orchard-solved-v2") || "[]").filter((value) => Number.isInteger(value) && value >= 0 && value < groves.length)); } catch { solved = new Set(); }
   const solvedKey = "weightplay-echo-orchard-solved-v2";
   const confirmedPrefix = "weightplay-echo-orchard-confirmed-stage-v1:";
+  const confirmedBackupPrefix = "weightplay-echo-orchard-confirmed-backup-v1:";
   const verifiedJournalKey = "weightplay-echo-orchard-verified-stages-v1";
   const pendingSavedStages = new Set();
   let lastSaveSucceeded = false;
@@ -91,7 +92,10 @@
       if (!validSolved(saved)) return;
       const merged = new Set(saved);
       for (let id = 1; id <= groves.length; id++) {
-        if (localStorage.getItem(confirmedPrefix + id) === "1") { merged.add(id - 1); pendingSavedStages.add(id); }
+        let confirmed = false;
+        try { confirmed = localStorage.getItem(confirmedPrefix + id) === "1"; } catch { /* Try the independent backup. */ }
+        try { confirmed = localStorage.getItem(confirmedBackupPrefix + id) === "1" || confirmed; } catch { /* Keep any first marker. */ }
+        if (confirmed) { merged.add(id - 1); pendingSavedStages.add(id); }
       }
       // This independent journal contains only stages whose save was read back.
       // Keep malformed data untouched and still use the per-stage markers.
@@ -112,6 +116,7 @@
   function rememberSolvedStage(id) {
     pendingSavedStages.add(id);
     try { localStorage.setItem(confirmedPrefix + id, "1"); } catch { /* Keep the in-page queue. */ }
+    try { localStorage.setItem(confirmedBackupPrefix + id, "1"); } catch { /* The original marker or journal can still recover it. */ }
     try {
       const raw = localStorage.getItem(verifiedJournalKey), verified = raw === null ? [] : JSON.parse(raw);
       if (Number.isInteger(id) && id >= 1 && id <= groves.length && Array.isArray(verified)
