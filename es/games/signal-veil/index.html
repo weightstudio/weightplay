@@ -1,18 +1,195 @@
 <!doctype html>
-<html lang="es">
-<head>
+<html lang="es" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/signal-veil.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/signal-veil/" />
-  <section class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-runtime-localize="off" aria-label="Guía completa de Velo de Señal"><div class="game-info-hero"><div class="game-info-title"><h2>Guía completa de Velo de Señal</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>RPG de acción</span><span>Aventura de investigación</span><span>Exploración con True Vision</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>Mundo y misión</h3><p>Eres Fia, una investigadora zorro que sigue una señal sospechosa por una ciudad, un bosque y unas instalaciones ocultas conectadas. Interroga testigos, descubre amenazas disfrazadas y reúne pruebas. Sigue el objetivo actual: si pide informar, vuelve con Orla en vez de buscar otro enemigo. La investigación abre nuevas rutas.</p></section><section class="game-info-section"><h3>Controles y ciclo completo</h3><ol><li>Lee el objetivo superior y explora la región actual.</li><li>Toca el aviso visible o pulsa E para hablar, abrir cofres, activar registros y usar portales.</li><li>Mira al enemigo y usa Ataque para la onda de espada o Habilidad para un disparo lejano.</li><li>Activa Visión real junto a pistas cian para descubrir disfraces, enemigos invisibles y rutas.</li><li>Completa el objetivo y lleva las pruebas a Orla cuando lo pida la historia.</li></ol><p>En escritorio, muévete con WASD o las flechas. Space/J ataca cuerpo a cuerpo, K lanza un proyectil, V cambia la visión, E habla o abre cofres y Escape abre el menú. En móvil, usa el joystick izquierdo y los botones Ataque, Habilidad y Visión. Los enemigos patrullan, persiguen y atacan de cerca; el comandante cambia de patrón al perder salud. La visión normal muestra el mundo que la mayoría percibe. La visión real revela rutas cian, personas lagarto disfrazadas, monstruos ocultos, puertas secretas y tesoros. La lente prototipo no consume recursos. El dispositivo estable del comandante demuestra que nunca cambiaron de aspecto: interfirieron con la percepción humana.</p></section><section class="game-info-section"><h3>Progreso, equipo y dificultad</h3><p>Empieza conversando y observando; después combina exploración, combate y Visión Neural. Los enemigos derrotados dan experiencia que mejora tus atributos. Puedes equipar o quitar los objetos recuperados desde el menú. Más adelante aparecen patrullas fuertes, registros por descifrar y decisiones duraderas. Continuar explorando tras el resultado de un capítulo reanuda la investigación.</p></section><section class="game-info-section"><h3>Consejos de investigación</h3><ul><li>Observa los radios de alerta y atrae una patrulla cada vez.</li><li>Usa el disparo contra brutos y lanzadores, y ataca durante su recuperación.</li><li>Activa la visión real cerca de chispas cian y muros sospechosos.</li><li>Contra el comandante, muévete durante las salvas, esquiva la carga y castiga su breve aturdimiento.</li></ul></section><section class="game-info-section"><h3>Nota de diseño</h3><p>El mundo conectado vincula las pistas con personas y lugares reconocibles. La Visión Neural no consume energía: úsala para descubrir rutas y amenazas ocultas. El teclado y los controles táctiles llevan a la misma aventura. Regresa a lugares anteriores cuando lo indique el objetivo y retoma tu progreso guardado en otra sesión.</p></section><section class="game-info-section"><h3>Jugador, dispositivo y guardado</h3><p>No requiere cuenta. Misiones, EXP, nivel, salud, equipo, cofres, derrotas, puntos seguros y decisiones se guardan automáticamente en este navegador. Caminar no escribe cada fotograma. El Ancla de Señal de cinco diamantes es una mejora permanente opcional de salud.</p></section><section class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿La Visión real consume energía?</dt><dd>No. Tras obtener la lente puedes alternarla libremente para revelar amenazas, disfraces, rutas y tesoros.</dd></div><div><dt>¿Puedo quitar equipo?</dt><dd>Sí. El menú muestra sus atributos y quitar una pieza no elimina su propiedad.</dd></div><div><dt>¿Qué ocurre si Fia cae?</dt><dd>Fia vuelve al último punto seguro y conserva el progreso permanente y los estados importantes.</dd></div><div><dt>¿Hace falta True Vision en todas las rutas?</dt><dd>No. Actívalo cuando veas rastros cian, diálogos sospechosos, rutas ocultas o amenazas disfrazadas.</dd></div><div><dt>¿Qué queda después de una derrota?</dt><dd>Fia vuelve al último punto de control seguro, pero los niveles permanentes, el equipo, las misiones y los objetivos principales derrotados permanecen en el guardado local.</dd></div></dl></section><div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><p>Prueba otra aventura de WeightPlay basada en observar, recorrer rutas y recuperarse con claridad.</p><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambú de Panko</strong><span>Gira los tubos de bambú de Panko, lleva agua por cada tramo y revive la arboleda.</span></span></a><a class="game-info-related-card" href="/es/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apaga las luces</strong><span>Cambia una casilla y sus vecinas para apagar todas las luces.</span></span></a></div></div></div></section>
+
 <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <meta charset="utf-8">
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
-  <meta name="weightplay-game-version" content="v17">
+  <meta name="weightplay-game-version" content="v18">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Interroga a los testigos, revela amenazas ocultas con la Visión Neural y combina investigación y combate para descubrir la verdad de la señal." />
   <meta property="og:site_name" content="WeightPlay" />
@@ -71,16 +248,16 @@
   "alternateName": "Signal Veil"
 }
     </script>
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-   <link rel="stylesheet" href="style.css?v=20260827-mobile-movement-surface-v11&amp;wp-build=f11800db52964508">
-  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="">
+   <link rel="stylesheet" href="style.css?v=20260827-mobile-movement-surface-v11&amp;wp-build=f11800db52964508" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="">
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   </head>
-<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-main-start-only="true" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-main-start-only="true" data-wp-combined-sound="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Velo de Señal" data-state="loading" data-error-title="No se pudo cargar el juego" data-error-message="No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Cargando Velo de Señal…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Cargando Velo de Señal…" aria-valuetext="Cargando Velo de Señal…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Reintentar</button><a class="wp-game-entry-loader-button" href="/es/">Volver al lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby. <a href="/es/">Volver al lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <span class="atlas-icon icon-device" aria-hidden="true"></span>
@@ -89,32 +266,32 @@
     </div>
   </div>
 
-  <div id="signalFrame" data-wp-frame-root></div>
-  <main id="main" class="screen main-screen" data-screen="main">
-    <header class="main-header wp-shell-header wp-main-shell-header">
-      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Volver a WeightPlay">
-        <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
+  <div id="signalFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root=""></div>
+  <main id="main" class="screen main-screen" data-screen="main" data-wp-frame-scene="main">
+    <header class="main-header wp-shell-header wp-main-shell-header wp-frame-header" data-wp-frame-header="main">
+      <a class="lobby-return wp-shell-return wp-frame-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Volver a WeightPlay">
+        <span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="/assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26">
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title" data-wp-game-title>Velo de Señal</strong>
+        <strong data-t="title" data-wp-game-title data-wp-frame-title="">Velo de Señal</strong>
       </div>
       <label class="locale-picker">
         <span data-t="language">Idioma</span>
         <select id="localeSelect" aria-label="Language"></select>
       </label>
     </header>
-    <section class="main-hero">
-      <img class="main-poster" src="../../assets/interface7-redrawn/signal-veil.webp" alt="Imagen del juego Velo de Señal" data-t-alt="posterAlt">
-      <div class="main-copy">
-        <p class="kicker" data-t="kicker">2042 · PRIMER CONTACTO</p>
+    <section class="main-hero" data-wp-frame-content="main">
+      <img class="main-poster" src="/assets/interface7-redrawn/signal-veil.webp" alt="Imagen del juego Velo de Señal" data-t-alt="posterAlt" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster="">
+      <div class="main-copy" data-wp-frame-copy="">
+        <p class="kicker" data-t="kicker" data-wp-frame-summary="">2042 · PRIMER CONTACTO</p>
         <h1 data-t="title">Velo de Señal</h1>
         <p class="main-summary" data-t="summary">Interroga a los testigos, revela amenazas ocultas con la Visión Neural y combina investigación y combate para descubrir la verdad de la señal.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 57</p>
-        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Iniciar juego</button>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress="">MISSIONS 0 / 57</p>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start" data-wp-frame-action="primary">Iniciar juego</button>
       </div>
     </section>
-    </main>
+    </main><section class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-runtime-localize="off" aria-label="Guía completa de Velo de Señal" data-wp-entry-guide=""><div class="game-info-hero"><div class="game-info-title"><h2>Guía completa de Velo de Señal</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>RPG de acción</span><span>Aventura de investigación</span><span>Exploración con True Vision</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>Mundo y misión</h3><p>Eres Fia, una investigadora zorro que sigue una señal sospechosa por una ciudad, un bosque y unas instalaciones ocultas conectadas. Interroga testigos, descubre amenazas disfrazadas y reúne pruebas. Sigue el objetivo actual: si pide informar, vuelve con Orla en vez de buscar otro enemigo. La investigación abre nuevas rutas.</p></section><section class="game-info-section"><h3>Controles y ciclo completo</h3><ol><li>Lee el objetivo superior y explora la región actual.</li><li>Toca el aviso visible o pulsa E para hablar, abrir cofres, activar registros y usar portales.</li><li>Mira al enemigo y usa Ataque para la onda de espada o Habilidad para un disparo lejano.</li><li>Activa Visión real junto a pistas cian para descubrir disfraces, enemigos invisibles y rutas.</li><li>Completa el objetivo y lleva las pruebas a Orla cuando lo pida la historia.</li></ol><p>En escritorio, muévete con WASD o las flechas. Space/J ataca cuerpo a cuerpo, K lanza un proyectil, V cambia la visión, E habla o abre cofres y Escape abre el menú. En móvil, usa el joystick izquierdo y los botones Ataque, Habilidad y Visión. Los enemigos patrullan, persiguen y atacan de cerca; el comandante cambia de patrón al perder salud. La visión normal muestra el mundo que la mayoría percibe. La visión real revela rutas cian, personas lagarto disfrazadas, monstruos ocultos, puertas secretas y tesoros. La lente prototipo no consume recursos. El dispositivo estable del comandante demuestra que nunca cambiaron de aspecto: interfirieron con la percepción humana.</p></section><section class="game-info-section"><h3>Progreso, equipo y dificultad</h3><p>Empieza conversando y observando; después combina exploración, combate y Visión Neural. Los enemigos derrotados dan experiencia que mejora tus atributos. Puedes equipar o quitar los objetos recuperados desde el menú. Más adelante aparecen patrullas fuertes, registros por descifrar y decisiones duraderas. Continuar explorando tras el resultado de un capítulo reanuda la investigación.</p></section><section class="game-info-section"><h3>Consejos de investigación</h3><ul><li>Observa los radios de alerta y atrae una patrulla cada vez.</li><li>Usa el disparo contra brutos y lanzadores, y ataca durante su recuperación.</li><li>Activa la visión real cerca de chispas cian y muros sospechosos.</li><li>Contra el comandante, muévete durante las salvas, esquiva la carga y castiga su breve aturdimiento.</li></ul></section><section class="game-info-section"><h3>Nota de diseño</h3><p>El mundo conectado vincula las pistas con personas y lugares reconocibles. La Visión Neural no consume energía: úsala para descubrir rutas y amenazas ocultas. El teclado y los controles táctiles llevan a la misma aventura. Regresa a lugares anteriores cuando lo indique el objetivo y retoma tu progreso guardado en otra sesión.</p></section><section class="game-info-section"><h3>Jugador, dispositivo y guardado</h3><p>No requiere cuenta. Misiones, EXP, nivel, salud, equipo, cofres, derrotas, puntos seguros y decisiones se guardan automáticamente en este navegador. Caminar no escribe cada fotograma. El Ancla de Señal de cinco diamantes es una mejora permanente opcional de salud.</p></section><section class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿La Visión real consume energía?</dt><dd>No. Tras obtener la lente puedes alternarla libremente para revelar amenazas, disfraces, rutas y tesoros.</dd></div><div><dt>¿Puedo quitar equipo?</dt><dd>Sí. El menú muestra sus atributos y quitar una pieza no elimina su propiedad.</dd></div><div><dt>¿Qué ocurre si Fia cae?</dt><dd>Fia vuelve al último punto seguro y conserva el progreso permanente y los estados importantes.</dd></div><div><dt>¿Hace falta True Vision en todas las rutas?</dt><dd>No. Actívalo cuando veas rastros cian, diálogos sospechosos, rutas ocultas o amenazas disfrazadas.</dd></div><div><dt>¿Qué queda después de una derrota?</dt><dd>Fia vuelve al último punto de control seguro, pero los niveles permanentes, el equipo, las misiones y los objetivos principales derrotados permanecen en el guardado local.</dd></div></dl></section><div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><p>Prueba otra aventura de WeightPlay basada en observar, recorrer rutas y recuperarse con claridad.</p><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambú de Panko</strong><span>Gira los tubos de bambú de Panko, lleva agua por cada tramo y revive la arboleda.</span></span></a><a class="game-info-related-card" href="/es/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apaga las luces</strong><span>Cambia una casilla y sus vecinas para apagar todas las luces.</span></span></a></div></div></div></section>
 
   <section id="battleShell" class="screen battle-shell" data-screen="battle" data-wp-logical-battle-canvas hidden>
     <div id="battleCanvas" class="battle-canvas">
@@ -213,13 +390,13 @@
   <script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/wallet.js"></script>
-  <script src="locales.js?wp-build=7961b9c742fd0956"></script>
-  <script src="guide-locales.js?wp-build=361fa2cc2f9a0637"></script>
-  <script src="state-store.js?wp-build=dde68c1d083b1126"></script>
-  <script src="quest-data.js?wp-build=c04b4e031681fbc3"></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="frame.js?v=20261021-signal-veil-v17-i9&amp;wp-build=9a18c6f740b4cbee"></script>
-  <script defer src="game.js?v=20261021-signal-veil-v17-i9&amp;wp-audio=1.0.0&amp;wp-build=96641434ac78bd09"></script>
+  <script src="locales.js?v=entry-initial-d059d376e2f3&amp;wp-build=7961b9c742fd0956"></script>
+  <script src="guide-locales.js?v=entry-initial-c1b7648f33be&amp;wp-build=361fa2cc2f9a0637"></script>
+  <script src="state-store.js?v=entry-initial-d845175d39ec&amp;wp-build=dde68c1d083b1126"></script>
+  <script src="quest-data.js?v=entry-initial-99f8196533d4&amp;wp-build=c04b4e031681fbc3"></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+  <script src="frame.js?v=entry-initial-661293b07a7e&amp;wp-build=9a18c6f740b4cbee" data-wp-entry-required=""></script>
+  <script defer src="game.js?v=entry-initial-ffc4f490fb9e&amp;wp-build=70b28c9efe31cf7e" data-wp-entry-required=""></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>
 </html>

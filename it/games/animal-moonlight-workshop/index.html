@@ -1,18 +1,195 @@
 <!doctype html>
-<html lang="it">
-  <head>
+<html lang="it" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-moonlight-workshop.webp" class="wp-frame-main-flow">
+  <head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/animal-moonlight-workshop/" />
   <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
   <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
 
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <meta charset="utf-8">
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general">
     <meta name="weightplay-game-id" content="animal-moonlight-workshop">
-    <meta name="weightplay-game-version" content="v10">
+    <meta name="weightplay-game-version" content="v11">
     <meta name="weightplay-interface-version" content="9">
     <meta name="weightplay-scene-controls" content="mutable">
     <title>Fuga dall’Officina Lunare | WeightPlay</title>
@@ -32,13 +209,13 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-moonlight-workshop/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-moonlight-workshop/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-moonlight-workshop/" />
-    <link rel="stylesheet" href="../../src/game-ui-theme.css">
-    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-candidate-guide-fence1">
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-    <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
-    <link rel="stylesheet" href="workshop-gameplay.css?v=20261026-workshop-stage60-v10&amp;wp-build=febadbb0f8f30498">
+    <link rel="stylesheet" href="../../src/game-ui-theme.css" data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-candidate-guide-fence1" data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2" data-wp-entry-required="">
+    <link rel="stylesheet" href="workshop-gameplay.css?v=20261026-workshop-stage60-v10&amp;wp-build=febadbb0f8f30498" data-wp-entry-required="">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Fuga dall’Officina Lunare | WeightPlay" />
@@ -79,24 +256,24 @@
 }
     </script>
   </head>
-  <body data-wp-five-game="animal-moonlight-workshop" data-wp-market-game="animal-moonlight-workshop" data-wp-game-id="animal-moonlight-workshop" data-wp-game-owned-guide="true" data-runtime-localize="off" data-wp-combined-sound="true" data-screen="main" data-wp-game-version="v10" data-wp-interface-version="9">
-    <main id="app" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
-      <section id="main-screen" class="screen main-screen m5-main active" data-screen="main">
-        <header class="m5-header">
-          <a class="m5-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-          <h1 class="m5-title" data-m5-title data-wp-frame-title>Fuga dall’Officina Lunare</h1>
+  <body data-wp-five-game="animal-moonlight-workshop" data-wp-market-game="animal-moonlight-workshop" data-wp-game-id="animal-moonlight-workshop" data-wp-game-owned-guide="true" data-runtime-localize="off" data-wp-combined-sound="true" data-screen="main" data-wp-game-version="v11" data-wp-interface-version="9" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Fuga dall’Officina Lunare" data-state="loading" data-error-title="Impossibile caricare il gioco" data-error-message="Alcune risorse non sono state caricate. Riprova o torna alla lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Caricamento di Fuga dall’Officina Lunare…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Caricamento di Fuga dall’Officina Lunare…" aria-valuetext="Caricamento di Fuga dall’Officina Lunare…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Riprova</button><a class="wp-game-entry-loader-button" href="/it/">Torna alla lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Alcune risorse non sono state caricate. Riprova o torna alla lobby. <a href="/it/">Torna alla lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+    <main id="app" data-audience="general" data-wp-frame-root data-wp-play-ui="1" data-wp-frame="2" data-wp-entry-root="">
+      <section id="main-screen" class="screen main-screen m5-main active" data-screen="main" data-wp-frame-scene="main">
+        <header class="m5-header wp-frame-header" data-wp-frame-header="main">
+          <a class="m5-return wp-frame-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a>
+          <h1 class="m5-title" data-m5-title data-wp-frame-title="">Fuga dall’Officina Lunare</h1>
           <label class="locale-picker"><span>Lingua</span><select id="localeSelect" aria-label="Lingua"><option value="en">EN</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">ES</option><option value="pt-BR">PT</option><option value="fr">FR</option><option value="de">DE</option><option value="it">IT</option><option value="ru">RU</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
         </header>
-        <div id="main-content" class="m5-main-content">
-          <div class="m5-main-hero"><img class="m5-cover" src="assets/animal-moonlight-workshop-cover.png" alt="" aria-hidden="true" data-wp-frame-poster></div>
-          <div class="m5-copy" data-wp-frame-copy>
-            <p class="m5-lede" data-m5-lede data-wp-frame-summary></p>
-            <p id="main-progress" class="m5-progress" data-wp-frame-progress></p>
+        <div id="main-content" class="m5-main-content" data-wp-frame-content="main">
+          <div class="m5-main-hero"><img class="m5-cover" src="/assets/interface7-redrawn/animal-moonlight-workshop.webp" alt="" aria-hidden="true" data-wp-frame-poster="" data-wp-interface7-poster="true" width="1254" height="1254"></div>
+          <div class="m5-copy" data-wp-frame-copy="">
+            <p class="m5-lede" data-m5-lede data-wp-frame-summary=""></p>
+            <p id="main-progress" class="m5-progress" data-wp-frame-progress=""></p>
             <button id="start-game" class="m5-primary" data-m5-copy="start" data-wp-frame-action="primary" data-wp-primary-action data-wp-main-start>Start Game</button>
           </div>
         </div>
       </section>
-          <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">Guida al gioco originale WeightPlay</span><h2>Fuga dall’Officina Lunare</h2><p>Ripara 60 stanze: accendi gli interruttori, prendi la chiave e raggiungi la porta. Pianifica cariche e contrappesi in due capitoli.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Panoramica</h3><p>Interruttori → chiave → porta. Nessun limite di tempo.</p><p>Frecce / WASD oppure tocca una casella vicina.</p><p>Accendi gli interruttori in ordine.</p><p>Il ghiaccio fa scivolare in linea retta. Ogni casella costa un passo.</p><p>I portali con la stessa lettera sono collegati.</p></div><div class="game-info-section"><h3>Circuiti di luce · 1–30</h3><p>La lanterna alterna luna/sole e costa una carica e un passo. Abbina i simboli di porte e interruttori. Gli interruttori accesi restano tali.</p><p>Ogni batteria dà una carica una sola volta. Annullare ripristina carica e batteria.</p></div><div class="game-info-section"><h3>Motore a contrappesi · 31–60</h3><p>Spingi le casse su tutte le piastre e tienile occupate per chiave e uscita. Le casse non entrano su ghiaccio o portali. Annulla per recuperare una cassa bloccata.</p></div><div class="game-info-section"><h3>Giocatore e salvataggio</h3><p>Uscire? Il percorso attuale verrà azzerato. Le stanze aperte restano salvate.</p><p>Passi esauriti. Prova un altro percorso; le stanze aperte restano salvate.</p><p>Passi insufficienti. Annulla o riprova.</p></div><div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante mosse consente ogni stanza?</dt><dd>Ogni stanza ha il proprio limite; nelle sei stanze varia da 15 a 24 mosse.</dd></div></dl></div></div></section>
+          <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-wp-entry-guide=""><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">Guida al gioco originale WeightPlay</span><h2>Fuga dall’Officina Lunare</h2><p>Ripara 60 stanze: accendi gli interruttori, prendi la chiave e raggiungi la porta. Pianifica cariche e contrappesi in due capitoli.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Panoramica</h3><p>Interruttori → chiave → porta. Nessun limite di tempo.</p><p>Frecce / WASD oppure tocca una casella vicina.</p><p>Accendi gli interruttori in ordine.</p><p>Il ghiaccio fa scivolare in linea retta. Ogni casella costa un passo.</p><p>I portali con la stessa lettera sono collegati.</p></div><div class="game-info-section"><h3>Circuiti di luce · 1–30</h3><p>La lanterna alterna luna/sole e costa una carica e un passo. Abbina i simboli di porte e interruttori. Gli interruttori accesi restano tali.</p><p>Ogni batteria dà una carica una sola volta. Annullare ripristina carica e batteria.</p></div><div class="game-info-section"><h3>Motore a contrappesi · 31–60</h3><p>Spingi le casse su tutte le piastre e tienile occupate per chiave e uscita. Le casse non entrano su ghiaccio o portali. Annulla per recuperare una cassa bloccata.</p></div><div class="game-info-section"><h3>Giocatore e salvataggio</h3><p>Uscire? Il percorso attuale verrà azzerato. Le stanze aperte restano salvate.</p><p>Passi esauriti. Prova un altro percorso; le stanze aperte restano salvate.</p><p>Passi insufficienti. Annulla o riprova.</p></div><div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante mosse consente ogni stanza?</dt><dd>Ogni stanza ha il proprio limite; nelle sei stanze varia da 15 a 24 mosse.</dd></div></dl></div></div></section>
       <section id="stage-screen" class="screen m5-stage" data-screen="stage" data-wp-standard-stage-screen hidden>
         <header class="m5-stage-header"><button id="stage-back" class="m5-back" data-wp-return="stage" aria-label="Back to Main"><span>←</span></button><h2 data-wp-frame-title hidden>Moonlight Workshop Escape</h2></header>
         <div id="stage-content"><div id="stage-list" data-wp-stage-rail></div></div>
@@ -127,11 +304,11 @@
   });
 })();</script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261018-interface9-locale-guide-refresh1"></script>
-    <script src="../../src/battle-canvas-standard.js"></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+    <script src="../../src/battle-canvas-standard.js" data-wp-entry-required=""></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script>
     <script src="../../src/edge-guard.js"></script>
-    <script type="module" src="game.js?v=20261027-workshop-reward-candidate1&amp;wp-build=506b877431e977fa"></script>
+    <script type="module" src="game.js?v=entry-initial-0dd1d12218cb&amp;wp-build=506b877431e977fa" data-wp-entry-required=""></script>
   </body>
 </html>

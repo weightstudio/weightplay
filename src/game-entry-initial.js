@@ -21,6 +21,9 @@
     const node = event.target;
     if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
     const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
     if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
     failed = true;
     window.__weightPlayGameEntryPendingFailure = gameId;

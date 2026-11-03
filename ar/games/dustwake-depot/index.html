@@ -1,8 +1,185 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-wp-official-name>
-<head>
+<html lang="ar" dir="rtl" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/games/dustwake-depot/art/poster.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/dustwake-depot/">
-  <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
@@ -34,39 +211,39 @@
   <meta name="twitter:title" content="محطة بريق الغبار">
   <meta name="twitter:description" content="وجّه تارو عبر الحديقة. اجمع الغبار الجاف، وافرك الرطب، وأعد كل حمولة إلى المستودع.">
   <meta name="twitter:image" content="https://weightplay.com/games/dustwake-depot/art/poster.webp">
-  <link rel="stylesheet" href="/src/game-screen-frame.css">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css">
-  <link rel="stylesheet" href="/src/game-play-ui.css">
-  <link rel="stylesheet" href="/src/game-page-info.css">
-  <link rel="stylesheet" href="/src/loading-screen.css">
-  <link rel="stylesheet" href="/src/play-viewport.css">
-  <link rel="stylesheet" href="/games/dustwake-depot/style.css?v=1&amp;wp-build=d1776b37d22c9c69">
-  <script data-wp-entry-required src="/src/game-layout-config.js"></script>
+  <link rel="stylesheet" href="/src/game-screen-frame.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/loading-screen.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/play-viewport.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/dustwake-depot/style.css?v=1&amp;wp-build=d1776b37d22c9c69" data-wp-entry-required="">
+  <script data-wp-entry-required="" src="/src/game-layout-config.js"></script>
   <script data-wp-entry-required src="/src/weightplay-audio.js"></script>
   <script data-wp-entry-required src="/src/site-config.js"></script>
   <script data-wp-entry-required src="/src/wallet.js"></script>
   <script data-wp-entry-required src="/src/game-title-registry.js"></script>
   <script data-wp-entry-required src="/src/i18n.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"محطة بريق الغبار","url":"https://weightplay.com/ar/games/dustwake-depot/","image":"https://weightplay.com/games/dustwake-depot/art/poster.webp","description":"وجّه تارو عبر الحديقة. اجمع الغبار الجاف، وافرك الرطب، وأعد كل حمولة إلى المستودع.","inLanguage":"ar","operatingSystem":"Web browser","applicationCategory":"Game","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio"}}</script>
-</head>
-<body data-game-id="dustwake-depot" data-audience="general" data-game-version="v3" data-interface-version="9" data-screen="main" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-combined-sound="true" data-runtime-localize="off">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-game-id="dustwake-depot" data-audience="general" data-game-version="v4" data-interface-version="9" data-screen="main" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-combined-sound="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="محطة بريق الغبار" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل محطة بريق الغبار…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل محطة بريق الغبار…" aria-valuetext="جارٍ تحميل محطة بريق الغبار…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <section id="comingSoon">
     <img src="/games/dustwake-depot/art/poster.webp" width="1254" height="1254" alt="محطة بريق الغبار" data-copy-alt="title">
     <h2 data-copy="title" data-runtime-localize="off">محطة بريق الغبار</h2>
     <p data-copy="comingSoon">قريبًا</p>
     <a data-lobby-link href="/ar/?preview=1" data-copy="returnLobby">العودة إلى الردهة</a>
   </section>
-  <div id="appRoot" data-wp-frame-root data-wp-play-ui="1" hidden>
-    <main id="mainScreen">
-      <header id="mainHeader">
-        <a id="mainBack" data-lobby-link data-wp-return="main" href="/ar/?preview=1" data-copy-aria="returnLobby" aria-label="العودة إلى الردهة">← W</a>
-        <h1 data-wp-frame-title data-copy="title" data-runtime-localize="off">محطة بريق الغبار</h1>
+  <div id="appRoot" data-wp-frame-root data-wp-play-ui="1" hidden data-wp-frame="2" data-wp-entry-root="">
+    <main id="mainScreen" data-wp-frame-scene="main">
+      <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
+        <a id="mainBack" data-lobby-link data-wp-return="main" href="/ar/?preview=1" data-copy-aria="returnLobby" aria-label="العودة إلى الردهة" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a>
+        <h1 data-wp-frame-title="" data-copy="title" data-runtime-localize="off">محطة بريق الغبار</h1>
       </header>
-      <section id="mainHero">
-        <img class="main-poster" data-wp-frame-poster src="/games/dustwake-depot/art/poster.webp" width="1254" height="1254" data-copy-alt="title" alt="محطة بريق الغبار">
-        <div data-wp-frame-copy>
-          <p data-wp-frame-summary data-copy="summary">وجّه تارو عبر الحديقة. اجمع الغبار الجاف، وافرك الرطب، وأعد كل حمولة إلى المستودع.</p>
-          <p id="mainProgress" data-wp-frame-progress>المرحلة 1 / 60</p>
+      <section id="mainHero" data-wp-frame-content="main">
+        <img class="main-poster" data-wp-frame-poster="" src="/games/dustwake-depot/art/poster.webp" width="1254" height="1254" data-copy-alt="title" alt="محطة بريق الغبار" data-wp-interface7-poster="true">
+        <div data-wp-frame-copy="">
+          <p data-wp-frame-summary="" data-copy="summary">وجّه تارو عبر الحديقة. اجمع الغبار الجاف، وافرك الرطب، وأعد كل حمولة إلى المستودع.</p>
+          <p id="mainProgress" data-wp-frame-progress="">المرحلة 1 / 60</p>
           <button id="startGame" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start" disabled>ابدأ اللعب</button>
         </div>
       </section>
@@ -133,20 +310,19 @@
     </section>
   </div>
 <!-- adsense-static-guide:start -->
-<section id="gameGuide" lang="ar" class="game-page-info game-page-info-static" data-wp-main-guide data-wp-game-guide data-wp-game-owned-guide="true" data-wp-guide-renderer="copy.mjs#renderStaticGuide" data-runtime-localize="off" hidden><div class="game-info-title"><h2 data-runtime-localize="off">محطة بريق الغبار</h2></div><div class="game-info-tags"><span>تنظيف</span><span>تخطيط مسار</span><span>محاكاة</span></div><div class="game-info-facts"><div class="game-info-fact"><strong>المراحل</strong><span>60</span></div><div class="game-info-fact"><strong>الفصل</strong><span>2</span></div><div class="game-info-fact"><strong>الأدوات</strong><span>3 · مجاني</span></div><div class="game-info-fact"><strong>مظهر فقط</strong><span>دائم</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>الهدف</h3><p>نظّف حديقة تارو المبنية من المكعبات وسلّم كل الغبار قبل انتهاء الوقت. ما في الحقيبة لم يُسلّم بعد. يجب إفراغ الحديقة والحقيبة وتحقيق قاعدة التسليم الخاصة بالمرحلة. يضم الفصلان 60 مرحلة قابلة للاختيار.</p></section><section class="game-info-section"><h3>طريقة اللعب</h3><p>اضغط على القمامة أو البقعة. يذهب تارو إلى مركزها ويختار الأداة المناسبة تلقائيًا. ابقَ هناك للتنظيف؛ الأرضية الخالية لا تحتاج إلى تنظيف. قمامة جافة: شفط · بقع زرقاء: فرشاة اضغط الأرض أو اسحب مسارًا لتحريك تارو. ابقَ قرب الغبار الجاف في وضع الشفط لجمعه. عد إلى المستودع المضيء وانتظر قليلًا للتفريغ. قرر هل تجمع كومة أخرى أم تعود مبكرًا؛ فالحقيبة الممتلئة لا تترك مكانًا لما تجده في طريق العودة.</p></section><section class="game-info-section"><h3>التحكم والقواعد</h3><p>تحرّك بالأسهم أو WASD، وبدّل الشفط والفرشاة بمفتاح المسافة، واستخدم C للضغط. يحتاج الغبار الرطب إلى الفرشاة ووقت تماس أطول. تمنع الجدران المرور. انتظر بوابة الريح الخضراء أو اسلك التفافًا. اقرأ شروط التسليم على بطاقة المرحلة قبل البدء.</p></section><section class="game-info-section"><h3>الإنهاء والنتائج</h3><p>تفتح المرحلة التالية عند تسليم كل شيء وفق القواعد. تعرض كل بطاقة زمنها المستهدف لثلاث نجوم ونجمتين. أكمل ضمن الزمن المناسب لنيل التقييم؛ وتمنح الانتصارات الأخرى نجمة واحدة. الإعادة مجانية وتُحفظ أفضل نتيجة. يمكن إعادة المرحلة الأخيرة أيضًا.</p></section><section class="game-info-section"><h3>خطط للعودة</h3><p>تعلّمك المراحل الخمس الأولى الجمع والعودة. يظهر الغبار الرطب في المرحلة 6 وبوابات الريح في 16. في الفصل الثاني، انشر مستودعًا واحدًا لكل مهمة على موضع معلّم واستخدمه مع القاعدة. الحد الأدنى للحمولة وحد التفريغات قد يجعلان الحمولة الصغيرة تهدر رحلة. تحمل أداة حمولة أكثر، بينما يمشي نسيم أسرع.</p></section><section class="game-info-section"><h3>معلومات اللاعب والحفظ</h3><p>يحفظ هذا المتصفح المراحل المكتملة وأفضل النتائج والأداة المختارة والتدريب. تُفقد الحمولة غير المكتملة عند المغادرة أو إعادة التحميل. قد يمحو حذف بيانات المتصفح التقدم. يرتبط المظهر الاختياري بإيصال المحفظة المشتركة. لا يلزم حساب للعب، وتكفي الأدوات المجانية لإكمال الحملة.</p></section><section class="game-info-section"><h3>ملاحظة التصميم</h3><p>تُبقي الرؤية العلوية الثابتة الطريق والمستودع واضحين. التحدي في ترتيب الحمولة وتبديل الوضع وتوقيت عبور البوابة، بدل تدوير الكاميرا. الحقيبة الكبيرة أبطأ، ويبادل المكبس المدى وتوقفًا قصيرًا بمساحة إضافية.</p></section></div><section class="game-info-faq"><h3>أسئلة</h3><details><summary>لماذا توقف تارو عن الجمع؟</summary><p>الحقيبة الممتلئة لا تقبل مزيدًا من الغبار. عد للتفريغ؛ ما زال بإمكانك الحركة.</p></details><details><summary>لماذا لا يختفي الغبار الرطب؟</summary><p>اضغط على القمامة أو البقعة. يذهب تارو إلى مركزها ويختار الأداة المناسبة تلقائيًا. ابقَ هناك للتنظيف؛ الأرضية الخالية لا تحتاج إلى تنظيف. قمامة جافة: شفط · بقع زرقاء: فرشاة اختر الفرشاة وابقَ قريبًا حتى تنظيف وحدة. الشفط مخصص للغبار الجاف.</p></details><details><summary>هل يمكن نقل المستودع المحمول؟</summary><p>لا. في الفصل الثاني يُسمح بنشر واحد لكل مهمة على موضع معلّم. اختر المكان قبل التأكيد.</p></details><details><summary>هل يزيد الضغط قيمة التسليم؟</summary><p>لا. ينصف المساحة المشغولة مع التقريب للأعلى دون تغيير الكمية. يتاح مرتين لكل مهمة.</p></details><details><summary>هل أحتاج أداة مدفوعة؟</summary><p>لا. نسيم متاح منذ البداية؛ تُفتح حمولة بعد المرحلة 5 والمكبس بعد 30. كلها مجانية.</p></details><details><summary>ماذا أشتري بخمس ماسات؟</summary><p>حديقة الكهرمان مظهر دائم لصدفة تارو. لا تتغير السرعة أو السعة أو الجمع أو قواعد المراحل.</p></details></section><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-abyss-diver" href="/ar/games/animal-abyss-diver/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-abyss-diver.webp" alt="غواص الهاوية الحيوانية" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">غواص الهاوية الحيوانية</strong></span></a><a class="game-info-related-card" data-game-id="animal-gearpack-expedition" href="/ar/games/animal-gearpack-expedition/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-gearpack-expedition.webp" alt="رحلة الحيوان Gearpack" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">رحلة الحيوان Gearpack</strong></span></a></div></section></section>
+<section id="gameGuide" lang="ar" class="game-page-info game-page-info-static" data-wp-main-guide data-wp-game-guide data-wp-game-owned-guide="true" data-wp-guide-renderer="copy.mjs#renderStaticGuide" data-runtime-localize="off" hidden data-wp-entry-guide=""><div class="game-info-title"><h2 data-runtime-localize="off">محطة بريق الغبار</h2></div><div class="game-info-tags"><span>تنظيف</span><span>تخطيط مسار</span><span>محاكاة</span></div><div class="game-info-facts"><div class="game-info-fact"><strong>المراحل</strong><span>60</span></div><div class="game-info-fact"><strong>الفصل</strong><span>2</span></div><div class="game-info-fact"><strong>الأدوات</strong><span>3 · مجاني</span></div><div class="game-info-fact"><strong>مظهر فقط</strong><span>دائم</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>الهدف</h3><p>نظّف حديقة تارو المبنية من المكعبات وسلّم كل الغبار قبل انتهاء الوقت. ما في الحقيبة لم يُسلّم بعد. يجب إفراغ الحديقة والحقيبة وتحقيق قاعدة التسليم الخاصة بالمرحلة. يضم الفصلان 60 مرحلة قابلة للاختيار.</p></section><section class="game-info-section"><h3>طريقة اللعب</h3><p>اضغط على القمامة أو البقعة. يذهب تارو إلى مركزها ويختار الأداة المناسبة تلقائيًا. ابقَ هناك للتنظيف؛ الأرضية الخالية لا تحتاج إلى تنظيف. قمامة جافة: شفط · بقع زرقاء: فرشاة اضغط الأرض أو اسحب مسارًا لتحريك تارو. ابقَ قرب الغبار الجاف في وضع الشفط لجمعه. عد إلى المستودع المضيء وانتظر قليلًا للتفريغ. قرر هل تجمع كومة أخرى أم تعود مبكرًا؛ فالحقيبة الممتلئة لا تترك مكانًا لما تجده في طريق العودة.</p></section><section class="game-info-section"><h3>التحكم والقواعد</h3><p>تحرّك بالأسهم أو WASD، وبدّل الشفط والفرشاة بمفتاح المسافة، واستخدم C للضغط. يحتاج الغبار الرطب إلى الفرشاة ووقت تماس أطول. تمنع الجدران المرور. انتظر بوابة الريح الخضراء أو اسلك التفافًا. اقرأ شروط التسليم على بطاقة المرحلة قبل البدء.</p></section><section class="game-info-section"><h3>الإنهاء والنتائج</h3><p>تفتح المرحلة التالية عند تسليم كل شيء وفق القواعد. تعرض كل بطاقة زمنها المستهدف لثلاث نجوم ونجمتين. أكمل ضمن الزمن المناسب لنيل التقييم؛ وتمنح الانتصارات الأخرى نجمة واحدة. الإعادة مجانية وتُحفظ أفضل نتيجة. يمكن إعادة المرحلة الأخيرة أيضًا.</p></section><section class="game-info-section"><h3>خطط للعودة</h3><p>تعلّمك المراحل الخمس الأولى الجمع والعودة. يظهر الغبار الرطب في المرحلة 6 وبوابات الريح في 16. في الفصل الثاني، انشر مستودعًا واحدًا لكل مهمة على موضع معلّم واستخدمه مع القاعدة. الحد الأدنى للحمولة وحد التفريغات قد يجعلان الحمولة الصغيرة تهدر رحلة. تحمل أداة حمولة أكثر، بينما يمشي نسيم أسرع.</p></section><section class="game-info-section"><h3>معلومات اللاعب والحفظ</h3><p>يحفظ هذا المتصفح المراحل المكتملة وأفضل النتائج والأداة المختارة والتدريب. تُفقد الحمولة غير المكتملة عند المغادرة أو إعادة التحميل. قد يمحو حذف بيانات المتصفح التقدم. يرتبط المظهر الاختياري بإيصال المحفظة المشتركة. لا يلزم حساب للعب، وتكفي الأدوات المجانية لإكمال الحملة.</p></section><section class="game-info-section"><h3>ملاحظة التصميم</h3><p>تُبقي الرؤية العلوية الثابتة الطريق والمستودع واضحين. التحدي في ترتيب الحمولة وتبديل الوضع وتوقيت عبور البوابة، بدل تدوير الكاميرا. الحقيبة الكبيرة أبطأ، ويبادل المكبس المدى وتوقفًا قصيرًا بمساحة إضافية.</p></section></div><section class="game-info-faq"><h3>أسئلة</h3><details><summary>لماذا توقف تارو عن الجمع؟</summary><p>الحقيبة الممتلئة لا تقبل مزيدًا من الغبار. عد للتفريغ؛ ما زال بإمكانك الحركة.</p></details><details><summary>لماذا لا يختفي الغبار الرطب؟</summary><p>اضغط على القمامة أو البقعة. يذهب تارو إلى مركزها ويختار الأداة المناسبة تلقائيًا. ابقَ هناك للتنظيف؛ الأرضية الخالية لا تحتاج إلى تنظيف. قمامة جافة: شفط · بقع زرقاء: فرشاة اختر الفرشاة وابقَ قريبًا حتى تنظيف وحدة. الشفط مخصص للغبار الجاف.</p></details><details><summary>هل يمكن نقل المستودع المحمول؟</summary><p>لا. في الفصل الثاني يُسمح بنشر واحد لكل مهمة على موضع معلّم. اختر المكان قبل التأكيد.</p></details><details><summary>هل يزيد الضغط قيمة التسليم؟</summary><p>لا. ينصف المساحة المشغولة مع التقريب للأعلى دون تغيير الكمية. يتاح مرتين لكل مهمة.</p></details><details><summary>هل أحتاج أداة مدفوعة؟</summary><p>لا. نسيم متاح منذ البداية؛ تُفتح حمولة بعد المرحلة 5 والمكبس بعد 30. كلها مجانية.</p></details><details><summary>ماذا أشتري بخمس ماسات؟</summary><p>حديقة الكهرمان مظهر دائم لصدفة تارو. لا تتغير السرعة أو السعة أو الجمع أو قواعد المراحل.</p></details></section><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-abyss-diver" href="/ar/games/animal-abyss-diver/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-abyss-diver.webp" alt="غواص الهاوية الحيوانية" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">غواص الهاوية الحيوانية</strong></span></a><a class="game-info-related-card" data-game-id="animal-gearpack-expedition" href="/ar/games/animal-gearpack-expedition/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-gearpack-expedition.webp" alt="رحلة الحيوان Gearpack" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">رحلة الحيوان Gearpack</strong></span></a></div></section></section>
 <!-- adsense-static-guide:end -->
 <span id="saveWarning" role="status" data-copy="saveWarning" hidden>تعذّر الحفظ. أبقِ هذه الصفحة مفتوحة وحاول مجددًا.</span>
   <label hidden><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar" selected>العربية</option></select></label>
-  <script data-wp-entry-required src="/src/game-entry-loader.js"></script>
-  <script data-wp-entry-required src="/src/game-screen-frame.js"></script>
+  <script data-wp-entry-required="" src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92"></script>
   <script data-wp-entry-required src="/src/stage-rail-i9.js"></script>
-  <script data-wp-entry-required src="/src/game-play-ui.js"></script>
+  <script data-wp-entry-required="" src="/src/game-play-ui.js"></script>
   <script data-wp-entry-required src="/src/tutorial.js"></script>
   <script data-wp-entry-required src="/src/public-game-catalog.js"></script>
   <script data-wp-entry-required src="/src/interface7-poster-registry.js"></script>
   <script data-wp-entry-required src="/src/game-official-name.js"></script>
   <script data-wp-entry-required src="/src/game-page-info.js"></script>
   <script src="/src/analytics.js"></script>
-  <script type="module" data-wp-entry-required src="/games/dustwake-depot/game.mjs?v=1&amp;wp-build=f5be48c23e6887a6"></script>
+  <script type="module" data-wp-entry-required="" src="/games/dustwake-depot/game.mjs?v=entry-initial-947ff31c92fd&amp;wp-build=f5be48c23e6887a6"></script>
 </body>
 </html>

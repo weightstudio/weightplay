@@ -879,6 +879,9 @@
           : id === "four-in-a-row"
             ? "four-in-a-row-cover-v1.webp"
             : "classic-logic-lab-cover.webp");
+    const initialEntry = document.documentElement.hasAttribute("data-wp-entry-initial");
+    const mainPoster = document.documentElement.dataset.wpEntryPoster || poster;
+    const entryClass = name => initialEntry ? ` ${name}` : "";
     document.title = `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };
@@ -892,14 +895,46 @@
       : id === "four-in-a-row" ? text(fourPreview) : t("preview");
     app.root.innerHTML = `
       <div class="logic-lab">
-          <main class="logic-main main-screen" id="logicMain" data-screen="main">
+          <main class="logic-main main-screen${entryClass("wp-standard-main-screen wp-standard-main-flow-owner")}" id="logicMain" data-screen="main">
           <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="${assetPath("weightplay-logo.png")}" alt=""></a><h1 class="wp-shell-main-title">${esc(title)}</h1><div class="logic-header-tools wp-shell-settings"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
-          <section class="logic-hero"><div class="logic-poster"><img class="main-poster" src="${poster}" alt=""></div><div class="logic-copy main-copy"><p class="logic-kicker">${esc(preview)}</p><h2>${esc(title)}</h2><p>${esc(text(cfg.blurb))}</p><div class="logic-facts"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><div class="logic-progress-slot" data-wp-main-progress>${esc(t("ready"))}</div><button id="startButton" class="logic-primary" data-wp-main-start type="button">${esc(t("start"))}</button></div></section>
+          <section class="logic-hero${entryClass("wp-standard-main-composition")}"><div class="logic-poster${entryClass("wp-standard-main-poster")}"><img class="main-poster${entryClass("wp-standard-main-poster-media")}" src="${mainPoster}" alt=""></div><div class="logic-copy main-copy${entryClass("wp-standard-main-copy")}"><p class="logic-kicker${entryClass("wp-main-legacy-layout")}">${esc(preview)}</p><h2 class="${initialEntry ? "wp-main-legacy-layout" : ""}">${esc(title)}</h2><p class="${initialEntry ? "wp-standard-main-summary" : ""}">${esc(text(cfg.blurb))}</p><div class="logic-facts${entryClass("wp-main-legacy-layout")}"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><div class="logic-progress-slot${entryClass("wp-standard-main-progress")}" data-wp-main-progress>${esc(t("ready"))}</div><button id="startButton" class="logic-primary${entryClass("wp-standard-main-start")}" data-wp-main-start type="button">${esc(t("start"))}</button></div></section>
           <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("ready"))}</h3><p>${esc(text(quickStart))}</p></section>
         </main>
         <section id="logicStage" class="code-breaker-stage-screen wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas hidden aria-label="${esc(text(codeCampaignCopy.chooseStage))}" style="--wp-stage-art: url('${poster}')"><header class="wp-standard-stage-heading code-breaker-stage-heading"><button id="stageBack" class="logic-battle-back" data-wp-return="stage" type="button" aria-label="${esc(text(codeCampaignCopy.backToMain))}">←</button><div><span class="logic-kicker">${esc(text(codeCampaignCopy.chooseStage))}</span><h1>${esc(title)}</h1><p id="stageProgress" class="logic-live"></p></div><button id="stageSound" class="logic-icon-button utility-button code-breaker-stage-settings" type="button" aria-label="${esc(t("sound"))}" aria-pressed="false">🔊</button></header><p id="stageBrowseHint" class="code-breaker-stage-hint">${esc(text(codeCampaignCopy.stageStart))}</p><section id="stageRail" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-v6-auto="true" data-wp-stage-v6-total="30" data-wp-stage-recommendation="last" data-wp-stage-total="30" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="${esc(text(codeCampaignCopy.chooseStage))}"></section><nav class="stage-tabs code-breaker-stage-tabs" aria-label="${esc(text(codeCampaignCopy.stages))}"><button type="button" role="tab" aria-selected="true" tabindex="0" data-wp-stage-tab="stages">${esc(text(codeCampaignCopy.stages))}</button></nav><p id="stageStatus" class="logic-live" role="status" aria-live="polite"></p></section>
         <section class="logic-battle-screen battle-screen" id="logicBattle" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" data-wp-return="battle" data-wp-battle-utility type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area battle-canvas"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(undoLabel)}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div id="logicLeave" class="logic-leave" hidden role="dialog" aria-modal="true" aria-labelledby="logicLeaveTitle"><div class="logic-leave-card"><h2 id="logicLeaveTitle">${esc(text(codeCampaignCopy.stages))}</h2><p>${esc(text(codeCampaignCopy.stageStart))}</p><div class="logic-result-actions"><button id="leaveContinue" class="logic-primary" type="button">${esc(text(codeCampaignCopy.continue))}</button><button id="leaveStages" class="logic-secondary" type="button">${esc(text(codeCampaignCopy.stages))}</button></div></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultStages" class="logic-secondary" type="button" hidden>${esc(text(codeCampaignCopy.stages))}</button><button id="resultNext" class="logic-primary" type="button" hidden>${esc(text(codeCampaignCopy.nextStage))}</button><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>
         <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div></div>`;
+    // The entry declares its presentation owner before the shared frame scans
+    // the document. Seed only permanent Main slots, without activating a scene.
+    if (initialEntry) {
+      const main = app.root.querySelector("#logicMain");
+      main.querySelector("header").classList.add("wp-shell-header");
+      // Shared Settings adopts the locale control and replaces this launch
+      // button. Keep its nodes/listeners, but do not reserve a second grid row
+      // for the retired tool wrapper when the shared owner is appended.
+      const legacyTools = main.querySelector(".logic-header-tools");
+      legacyTools.hidden = true;
+      legacyTools.style.display = "none";
+      const back = main.querySelector('[data-wp-return="main"]');
+      const logo = back?.querySelector("img");
+      if (logo) { logo.width = 26; logo.height = 26; }
+      if (app.root.hasAttribute("data-wp-game-shell-root")) {
+        const frame = app.root.querySelector(".logic-lab");
+        frame.dataset.wpFrame = "2"; frame.dataset.wpEntryRoot = "";
+        main.dataset.wpFrameScene = "main";
+        const header = main.querySelector("header");
+        header.classList.add("wp-frame-header"); header.dataset.wpFrameHeader = "main";
+        header.querySelector("h1").dataset.wpFrameTitle = "";
+        back.classList.add("wp-frame-return");
+        back.querySelector("span")?.classList.add("wp-frame-back-icon");
+        if (logo) logo.classList.add("wp-frame-lobby-logo");
+        main.querySelector(".logic-hero").dataset.wpFrameContent = "main";
+        main.querySelector(".main-poster").dataset.wpFramePoster = "";
+        const copy = main.querySelector(".logic-copy"); copy.dataset.wpFrameCopy = "";
+        copy.querySelector(".wp-standard-main-summary").dataset.wpFrameSummary = "";
+        copy.querySelector("[data-wp-main-progress]").dataset.wpFrameProgress = "";
+        copy.querySelector("[data-wp-main-start]").dataset.wpFrameAction = "primary";
+      }
+    }
     app.main = app.root.querySelector("#logicMain"); app.stage = app.root.querySelector("#logicStage"); app.stageSound = app.root.querySelector("#stageSound"); app.stageRail = app.root.querySelector("#stageRail"); app.stageProgress = app.root.querySelector("#stageProgress"); app.stageStatus = app.root.querySelector("#stageStatus"); app.battle = app.root.querySelector("#logicBattle"); app.board = app.root.querySelector("#logicBoard"); app.tutorial = app.root.querySelector("#logicTutorial"); app.status = app.root.querySelector("#logicStatus"); app.result = app.root.querySelector("#logicResult"); app.resultTitle = app.root.querySelector("#logicResultTitle"); app.resultText = app.root.querySelector("#logicResultText"); app.battleChip = app.root.querySelector("#battleChip"); app.currentStage = null;
     const battleBackButton = app.root.querySelector("#battleBack");
     battleBackButton?.removeAttribute("data-wp-battle-utility");

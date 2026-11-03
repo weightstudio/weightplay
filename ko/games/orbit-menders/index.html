@@ -1,6 +1,183 @@
 <!doctype html>
-<html lang="ko" dir="ltr">
-<head>
+<html lang="ko" dir="ltr" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/orbit-menders-poster-block-v1.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/orbit-menders/" />
     <link rel="canonical" href="https://weightplay.com/ko/games/orbit-menders/" />
@@ -18,13 +195,13 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/orbit-menders/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/orbit-menders/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/orbit-menders/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="orbit-menders">
-  <meta name="weightplay-game-version" content="v11"><meta name="weightplay-interface-target" content="9">
+  <meta name="weightplay-game-version" content="v12"><meta name="weightplay-interface-target" content="9">
   <title>폭탄머리 사자: 타워 수비대 | WeightPlay</title>
   <meta name="description" content="터치나 마우스로 조준하고 누른 채 연사하세요. 고정 카메라로 보는 평평한 3D 전장에서 폭탄머리 사자와 함께 좀비로부터 주탑을 지키는 브라우저 슈팅 게임입니다." />
-  <script src="/src/weightplay-audio.js" data-wp-entry-required></script><script src="/src/game-layout-config.js" data-wp-entry-required></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/game-entry-loader.css"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="style.css?v=orbit-v11-square-impact&amp;wp-build=88b16c2e9f100088">
+  <script src="/src/weightplay-audio.js" data-wp-entry-required></script><script src="/src/game-layout-config.js" data-wp-entry-required=""></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <link rel="stylesheet" href="/src/game-ui-theme.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required=""><link rel="stylesheet" href="style.css?v=orbit-v11-square-impact&amp;wp-build=88b16c2e9f100088" data-wp-entry-required="">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="폭탄머리 사자: 타워 수비대 | WeightPlay" />
@@ -65,14 +242,14 @@
 }
     </script>
   </head>
-<body data-wp-play-ui="1" data-wp-interface-candidate="9">
+<body data-wp-play-ui="1" data-wp-interface-candidate="9" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="폭탄머리 사자: 타워 수비대" data-state="loading" data-error-title="게임을 불러오지 못했습니다" data-error-message="일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">폭탄머리 사자: 타워 수비대를 불러오는 중…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="폭탄머리 사자: 타워 수비대를 불러오는 중…" aria-valuetext="폭탄머리 사자: 타워 수비대를 불러오는 중…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">다시 시도</button><a class="wp-game-entry-loader-button" href="/ko/">로비로 돌아가기</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요. <a href="/ko/">로비로 돌아가기</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
 <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">폭탄머리 사자: 타워 수비대</h1>
-<div id="gameFrame" data-wp-frame-root>
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
   <main id="mainScreen" data-wp-frame-scene="main">
-    <header data-wp-frame-header="main"><a href="/" data-wp-return="main" aria-label="返回 WeightPlay">← W</a><strong data-wp-frame-title>폭탄머리 사자: 타워 수비대</strong><select id="localeSelect" data-game-aria="localeAria" aria-label="언어"><option value="zh-Hant">繁體中文</option></select></header>
-    <section id="mainContent" data-wp-frame-content="main"><img id="poster" class="main-poster" data-wp-frame-poster src="/assets/orbit-menders-poster-block-v1.webp" width="1254" height="1254" alt="밝은 탑 위에서 파란 에너지 대포로 다가오는 블록 좀비를 막는 블록 갈기 사자."><div data-wp-frame-copy><p data-wp-frame-summary data-game-copy="summary">조준하고 누른 채 연사하세요! 좀비를 물리치고 탑을 지키세요.</p><p id="buildStatus">방어 임무 0 / 30</p><p id="deviceNotice" data-game-copy="device">휴대전화／태블릿: 누른 채 드래그 · 컴퓨터: 마우스 조준.</p><button id="start" data-wp-main-start data-wp-frame-action="primary" data-game-copy="start" disabled>게임 시작</button></div></section>
+    <header data-wp-frame-header="main" class="wp-frame-header"><a href="/" data-wp-return="main" aria-label="返回 WeightPlay" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><strong data-wp-frame-title="">폭탄머리 사자: 타워 수비대</strong><select id="localeSelect" data-game-aria="localeAria" aria-label="언어"><option value="zh-Hant">繁體中文</option></select></header>
+    <section id="mainContent" data-wp-frame-content="main"><img id="poster" class="main-poster" data-wp-frame-poster="" src="/assets/orbit-menders-poster-block-v1.webp" width="1254" height="1254" alt="밝은 탑 위에서 파란 에너지 대포로 다가오는 블록 좀비를 막는 블록 갈기 사자." data-wp-interface7-poster="true"><div data-wp-frame-copy=""><p data-wp-frame-summary="" data-game-copy="summary">조준하고 누른 채 연사하세요! 좀비를 물리치고 탑을 지키세요.</p><p id="buildStatus">방어 임무 0 / 30</p><p id="deviceNotice" data-game-copy="device">휴대전화／태블릿: 누른 채 드래그 · 컴퓨터: 마우스 조준.</p><button id="start" data-wp-main-start data-wp-frame-action="primary" data-game-copy="start" disabled>게임 시작</button></div></section>
   </main>
-  <section id="guide" class="game-page-info game-page-info-static" lang="ko" dir="ltr" data-runtime-localize="off" data-wp-guide-locale="ko" data-wp-guide-locales="./publication-copy.mjs#publicationCopy" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="게임 안내"><div class="game-info-section"><h2>마지막 방어선을 지키세요</h2><p>폭발 머리 사자가 등을 보인 채 중앙 포탑을 조종하며, 조준에 따라 포신만 돌아갑니다. 마우스나 터치로 조준하고 길게 눌러 30개 스테이지와 6개의 관문 보스에 도전하세요. 측면 공격, 보호막, 치유, 분열, 산성 포격에 대응하세요. 모든 웨이브를 막으면 다음 임무가 열리고, 탑이 무너지면 패배합니다.</p></div><div class="game-info-section"><h3>조작과 강화</h3><p>휴대전화나 태블릿에서는 전장을 누른 채 사격하고 손가락을 드래그해 조준합니다. 손을 떼면 멈춥니다. 충격파 버튼으로 조준한 위치에 충격파를 쏘고 일시 정지 버튼으로 게임을 멈출 수 있습니다. 왼쪽 클릭으로 사격하고 길게 누르면 연사합니다. 오른쪽 클릭이나 Space로 조준한 위치에 충격파를 발사하며, 다시 쓰려면 재사용 대기시간이 필요합니다. 화면 아래 버튼으로도 사용할 수 있습니다. F를 누르고 있으면 현재 조준점으로 계속 사격하고 Esc로 일시 정지합니다. 공세 사이에는 화력 강화나 주탑 수리 중 하나를 선택합니다. 효과는 이번 전투에만 적용됩니다. 카메라는 위에서 고정되어 있어 시점을 돌리거나 점프할 필요가 없습니다.</p></div><div class="game-info-section"><h3>저장과 편의 설정</h3><p>완료한 임무와 최고 점수는 현재 브라우저에 저장됩니다. 일시 정지 중 JSON을 내보내거나 가져올 수 있습니다. 미완료 전투에서 나가면 해당 임무의 첫 공세부터 다시 시작합니다. 창의 포커스를 잃으면 정지하며 계속하기를 선택해야 재개됩니다. 동작 줄이기, 낮은 그래픽, 보조 모드도 선택할 수 있습니다. 그래픽과 보조 모드 변경은 다음 전투에 들어갈 때 적용됩니다. 승패 정산 후 처치와 웨이브로 얻은 톱니가 보존됩니다. 공방에서 영구 연구를 하고 특성에서 저장할 시작 효과 하나를 고르세요. 연구는 다음 전투부터 적용되고 무료 초기화로 사용한 톱니를 돌려받습니다. 전투 중 강화는 임무마다 초기화됩니다. 선택 구매인 오로라 포신은 다이아 10개의 영구 외형이며 전투 능력을 올리지 않습니다.</p></div><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><dt>휴대전화에서도 할 수 있나요?</dt><dd>네. 전장을 누른 채 드래그하여 조준하고 연사하며, 손을 떼면 멈춥니다. 충격파와 일시 정지는 화면 버튼을 사용합니다. WebGL2를 지원하는 브라우저가 필요합니다.</dd><dt>다운로드가 필요한가요?</dt><dd>설치할 필요가 없습니다. WebGL2를 지원하는 휴대전화, 태블릿 또는 컴퓨터 브라우저에서 플레이하세요.</dd><dt>효과가 너무 밝거나 움직임이 많으면 어떻게 하나요?</dt><dd>일시 정지에서 동작 줄이기를 켜세요. 카메라는 고정되어 있고 기본 설정에서는 화면 흔들림도 없습니다.</dd><dt>다시 플레이하려면 어떻게 하나요?</dt><dd>결과 화면에서 다시 하기를 선택하거나 임무 선택으로 돌아가 열린 임무를 고르세요.</dd></dl></div></section>
+  <section id="guide" class="game-page-info game-page-info-static" lang="ko" dir="ltr" data-runtime-localize="off" data-wp-guide-locale="ko" data-wp-guide-locales="./publication-copy.mjs#publicationCopy" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="게임 안내" data-wp-entry-guide=""><div class="game-info-section"><h2>마지막 방어선을 지키세요</h2><p>폭발 머리 사자가 등을 보인 채 중앙 포탑을 조종하며, 조준에 따라 포신만 돌아갑니다. 마우스나 터치로 조준하고 길게 눌러 30개 스테이지와 6개의 관문 보스에 도전하세요. 측면 공격, 보호막, 치유, 분열, 산성 포격에 대응하세요. 모든 웨이브를 막으면 다음 임무가 열리고, 탑이 무너지면 패배합니다.</p></div><div class="game-info-section"><h3>조작과 강화</h3><p>휴대전화나 태블릿에서는 전장을 누른 채 사격하고 손가락을 드래그해 조준합니다. 손을 떼면 멈춥니다. 충격파 버튼으로 조준한 위치에 충격파를 쏘고 일시 정지 버튼으로 게임을 멈출 수 있습니다. 왼쪽 클릭으로 사격하고 길게 누르면 연사합니다. 오른쪽 클릭이나 Space로 조준한 위치에 충격파를 발사하며, 다시 쓰려면 재사용 대기시간이 필요합니다. 화면 아래 버튼으로도 사용할 수 있습니다. F를 누르고 있으면 현재 조준점으로 계속 사격하고 Esc로 일시 정지합니다. 공세 사이에는 화력 강화나 주탑 수리 중 하나를 선택합니다. 효과는 이번 전투에만 적용됩니다. 카메라는 위에서 고정되어 있어 시점을 돌리거나 점프할 필요가 없습니다.</p></div><div class="game-info-section"><h3>저장과 편의 설정</h3><p>완료한 임무와 최고 점수는 현재 브라우저에 저장됩니다. 일시 정지 중 JSON을 내보내거나 가져올 수 있습니다. 미완료 전투에서 나가면 해당 임무의 첫 공세부터 다시 시작합니다. 창의 포커스를 잃으면 정지하며 계속하기를 선택해야 재개됩니다. 동작 줄이기, 낮은 그래픽, 보조 모드도 선택할 수 있습니다. 그래픽과 보조 모드 변경은 다음 전투에 들어갈 때 적용됩니다. 승패 정산 후 처치와 웨이브로 얻은 톱니가 보존됩니다. 공방에서 영구 연구를 하고 특성에서 저장할 시작 효과 하나를 고르세요. 연구는 다음 전투부터 적용되고 무료 초기화로 사용한 톱니를 돌려받습니다. 전투 중 강화는 임무마다 초기화됩니다. 선택 구매인 오로라 포신은 다이아 10개의 영구 외형이며 전투 능력을 올리지 않습니다.</p></div><div class="game-info-section"><h3>자주 묻는 질문</h3><dl><dt>휴대전화에서도 할 수 있나요?</dt><dd>네. 전장을 누른 채 드래그하여 조준하고 연사하며, 손을 떼면 멈춥니다. 충격파와 일시 정지는 화면 버튼을 사용합니다. WebGL2를 지원하는 브라우저가 필요합니다.</dd><dt>다운로드가 필요한가요?</dt><dd>설치할 필요가 없습니다. WebGL2를 지원하는 휴대전화, 태블릿 또는 컴퓨터 브라우저에서 플레이하세요.</dd><dt>효과가 너무 밝거나 움직임이 많으면 어떻게 하나요?</dt><dd>일시 정지에서 동작 줄이기를 켜세요. 카메라는 고정되어 있고 기본 설정에서는 화면 흔들림도 없습니다.</dd><dt>다시 플레이하려면 어떻게 하나요?</dt><dd>결과 화면에서 다시 하기를 선택하거나 임무 선택으로 돌아가 열린 임무를 고르세요.</dd></dl></div></section>
   <section id="stageScreen" class="scene-canvas" hidden data-wp-frame-logical-header="stage" data-wp-frame-play-fill><header data-wp-frame-header="stage"><button id="stageBack" data-game-aria="back" data-wp-return="stage" aria-label="뒤로">←</button><strong data-wp-frame-title hidden>폭탄머리 사자: 타워 수비대</strong></header><div id="stageContent" data-wp-frame-content="stage"><div id="stageSummary">방어 완료 0 / 30</div><section id="stagePanel"><div id="stageRail" data-game-aria="stageAria" role="list" aria-label="방어 임무"></div></section><section id="growthPanel" hidden><div id="growthBodyWrap"><div class="growth-heading"><img src="/games/orbit-menders/icons/gears.webp" width="36" height="36" alt=""><strong id="growthBalance"></strong></div><h2 id="growthTitle"></h2><p id="growthIntro"></p><div id="growthBody"></div><p id="growthNotice" role="status"></p></div><section id="stageConfirm" role="dialog" aria-modal="true" aria-labelledby="stageConfirmText" hidden><div class="growth-confirm-card"><p id="stageConfirmText"></p><button id="stageConfirmCancel" data-game-copy="cancel">취소</button><button id="stageConfirmYes" data-game-copy="confirm">확인</button></div></section></section></div><nav data-wp-frame-nav data-wp-frame-stage-nav><button id="talentsTab" data-game-copy="talentsTab">특성</button><button id="stagesTab" data-game-copy="stages">임무</button><button id="equipmentTab" data-game-copy="equipmentTab">공방</button></nav></section>
   <section id="battleScreen" class="scene-canvas" hidden data-wp-logical-battle-canvas data-wp-frame-logical-header="battle" data-wp-frame-play-fill>
     <header data-wp-frame-header="battle"><button id="battleBack" data-game-aria="pauseBack" data-wp-return="battle" aria-label="일시 정지 후 임무로 돌아가기">←</button><strong data-wp-frame-title hidden>폭탄머리 사자: 타워 수비대</strong></header>
@@ -85,7 +262,7 @@
     </div>
   </section>
 </div>
-<script src="/src/wallet.js" data-wp-entry-required></script><script src="/src/site-config.js"></script><script src="/src/analytics.js"></script><script src="/src/i18n.js"></script><script src="/src/game-entry-loader.js" data-wp-entry-required></script><script src="/src/battle-canvas-standard.js" data-wp-battle-standard data-wp-entry-required></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required></script><script src="/src/stage-rail-i9.js" data-wp-entry-required></script><script src="/src/game-play-ui.js" data-wp-entry-required></script><script type="module" src="game.mjs?v=orbit-v11-square-impact&amp;wp-build=a550061004bcbed8" data-wp-entry-required></script>
+<script src="/src/wallet.js" data-wp-entry-required></script><script src="/src/site-config.js"></script><script src="/src/analytics.js"></script><script src="/src/i18n.js"></script><script src="/src/battle-canvas-standard.js" data-wp-battle-standard data-wp-entry-required=""></script><script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script src="/src/stage-rail-i9.js" data-wp-entry-required></script><script src="/src/game-play-ui.js" data-wp-entry-required=""></script><script type="module" src="game.mjs?v=entry-initial-3dee3d3895e5&amp;wp-build=a550061004bcbed8" data-wp-entry-required=""></script>
 <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

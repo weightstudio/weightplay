@@ -1,15 +1,192 @@
 <!doctype html>
-<html lang="zh-Hant" dir="ltr" data-wp-official-name>
-<head>
+<html lang="zh-Hant" dir="ltr" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/games/puppy-haven/assets/cover-block-v1.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
  <base href="/games/puppy-haven/">
- <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
- <meta name="robots" content="index,follow"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="puppy-haven"><meta name="weightplay-game-version" content="v11"><meta name="weightplay-interface-version" content="9">
+ <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="robots" content="index,follow"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="puppy-haven"><meta name="weightplay-game-version" content="v12"><meta name="weightplay-interface-version" content="9">
  <script src="/src/weightplay-audio.js"></script><script src="/src/wallet.js"></script>
  <title>汪汪小院 | WeightPlay</title>
  <meta name="description" content="一個小院，一家狗狗。餵食、清潔、陪伴，迎接新生小狗。">
  <link rel="canonical" href="https://weightplay.com/zh-tw/games/puppy-haven/">
- <link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="/games/puppy-haven/style.css?wp-build=fee5ed62d7a8ae22">
- <link rel="stylesheet" href="/games/puppy-haven/v10.css?wp-build=7d3cfaae0ea3f822">
+ <link rel="stylesheet" href="/src/game-screen-frame.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required=""><link rel="stylesheet" href="/games/puppy-haven/style.css?wp-build=fee5ed62d7a8ae22" data-wp-entry-required="">
+ <link rel="stylesheet" href="/games/puppy-haven/v10.css?wp-build=7d3cfaae0ea3f822" data-wp-entry-required="">
  <meta data-puppy-public-meta property="og:site_name" content="WeightPlay">
  <meta data-puppy-public-meta property="og:type" content="website">
  <meta data-puppy-public-meta property="og:title" content="汪汪小院">
@@ -35,13 +212,13 @@
  <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/puppy-haven/">
  <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/puppy-haven/">
  <script id="puppy-public-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"汪汪小院","description":"一個小院，一家狗狗。餵食、清潔、陪伴，迎接新生小狗。","url":"https://weightplay.com/zh-tw/games/puppy-haven/","image":"https://weightplay.com/games/puppy-haven/assets/cover-block-v1.webp","inLanguage":"zh-Hant","applicationCategory":"Game","genre":["Simulation","Strategy"],"operatingSystem":"Web browser","isAccessibleForFree":true,"softwareVersion":"v11","publisher":{"@type":"Organization","name":"WeightPlay"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
-</head>
-<body data-screen="main" data-game-id="puppy-haven" data-wp-combined-sound="true">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-screen="main" data-game-id="puppy-haven" data-wp-combined-sound="true" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="汪汪小院" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入汪汪小院…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入汪汪小院…" aria-valuetext="正在載入汪汪小院…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
  <section id="comingSoon" data-runtime-localize="off" hidden><img src="/games/puppy-haven/assets/cover-block-v1.webp" alt="汪汪小院 · 柴犬 / 柯基 / 哈士奇 · 幼犬"><h1 data-runtime-localize="off">Puppy Haven</h1><p>敬請期待</p><a href="/">← WeightPlay</a></section>
- <div id="gameFrame" data-runtime-localize="off" data-wp-frame-root>
-  <main id="mainScreen"><header><a href="/" data-wp-return="main">← W</a><strong data-wp-frame-title data-copy="title" data-runtime-localize="off">汪汪小院</strong></header>
-   <section class="main-hero"><img data-wp-frame-poster src="/games/puppy-haven/assets/cover-block-v1.webp" width="1254" height="1254" alt="汪汪小院 · 柴犬 / 柯基 / 哈士奇 · 幼犬">
-    <div data-wp-frame-copy><p data-wp-frame-summary data-copy="summary" data-runtime-localize="off">一個小院，一家狗狗。餵食、清潔、陪伴，迎接新生小狗。</p><button id="startBtn" data-wp-frame-start data-copy="start" data-runtime-localize="off">開始遊戲</button></div>
+ <div id="gameFrame" data-runtime-localize="off" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+  <main id="mainScreen" data-wp-frame-scene="main"><header class="wp-frame-header" data-wp-frame-header="main"><a href="/" data-wp-return="main" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><strong data-wp-frame-title="" data-copy="title" data-runtime-localize="off">汪汪小院</strong></header>
+   <section class="main-hero" data-wp-frame-content="main"><img data-wp-frame-poster="" src="/games/puppy-haven/assets/cover-block-v1.webp" width="1254" height="1254" alt="汪汪小院 · 柴犬 / 柯基 / 哈士奇 · 幼犬" data-wp-interface7-poster="true">
+    <div data-wp-frame-copy=""><p data-wp-frame-summary="" data-copy="summary" data-runtime-localize="off">一個小院，一家狗狗。餵食、清潔、陪伴，迎接新生小狗。</p><button id="startBtn" data-wp-frame-start data-copy="start" data-runtime-localize="off" data-wp-frame-action="primary">開始遊戲</button></div>
    </section>
   </main>
   <section id="stageScreen" hidden><header><button id="stageBack" data-wp-return="stage">←</button><strong data-wp-frame-title hidden></strong></header><div id="stageWorkspace"><div id="stageRail"></div></div><nav data-wp-frame-nav><button id="missionTab" data-copy="missions" data-runtime-localize="off">狩獵關卡</button><button id="yardBtn" data-copy="freeYard" data-runtime-localize="off">自由小院</button></nav></section>
@@ -61,8 +238,8 @@
    <div id="panel" class="modal-layer" hidden><section class="panel-card" role="dialog" aria-modal="true" aria-labelledby="panelTitle"><header><h2 id="panelTitle"></h2><button id="closePanel" aria-label="關閉">×</button></header><div id="panelContent"></div><p id="panelFeedback" class="feedback" aria-live="polite"></p></section></div>
   </section>
  </div>
- <section id="mainGuide" data-runtime-localize="off" class="game-page-info" data-wp-main-guide><h2 data-copy="title" data-runtime-localize="off">汪汪小院</h2><img class="guide-taro" src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" width="112" height="112" alt=""><p data-copy="guide" data-runtime-localize="off">選擇餐位並放下一份食物。餓了的狗狗會自己走來，吃三秒才恢復飽足與成長；最多放六碗。 健康、無親緣的成年公母犬在附近同住，每十秒有35%機率懷孕。雙方需求都須達60，並留有幼犬空位；懷孕需45秒實際遊玩時間，父母恢復需180秒。不用按迎接小狗。 為幼犬選擇培養路線，完成飲食、摸摸或散步條件，成長達100%且生活至少60秒後，長成對應品種。特殊混種仍靠自然出生；圖鑑列出每條取得路線。 這是遊戲虛構配方，不是現實犬隻遺傳規則。選任意兩種狗，查看幼犬種類與機率。特殊混種只能自然出生，不能直接領養。 兩隻無親緣的初始幼犬，提供新的家族血脈。狗狗不能購買。 先選自己養的成犬，再點前排或後排格子放上去。同一隻狗只能佔一格。出發後牠們會自己走動、找目標與攻擊；三種不同犬種全隊生命加10%。幼犬與懷孕媽媽留家，戰敗狗狗也會平安回來。首次勝利才有金幣與永久狩獵經驗。 點庭院中的狗狗，開啟牠的照顧卡。 先點位置，再選狗狗。移動已上陣的狗狗會交換兩個位置。 拖曳旋轉；雙指或滾輪縮放。 庭院最多12隻活動；休息屋與待產幼犬都計入總名額。暫停只停止新懷孕，已懷孕的媽媽會繼續待產。</p><div class="game-info-facts"></div><div class="game-info-sections"></div><div class="game-info-faq"><h3 data-copy="faqTitle" data-runtime-localize="off">常見問題</h3><dl><div><dt data-copy="faqPuppy" data-runtime-localize="off">幼犬可以出戰嗎？</dt><dd data-copy="puppyBattle" data-runtime-localize="off">幼犬不能出戰 · 請先培養到成年</dd></div><div><dt data-copy="faqBreeds" data-runtime-localize="off">怎麼培養出不同犬種？</dt><dd data-copy="cultivateGuide" data-runtime-localize="off">為幼犬選擇培養路線，完成飲食、摸摸或散步條件，成長達100%且生活至少60秒後，長成對應品種。特殊混種仍靠自然出生；圖鑑列出每條取得路線。</dd></div></dl></div><div class="game-info-related"></div></section>
+ <section id="mainGuide" data-runtime-localize="off" class="game-page-info" data-wp-main-guide data-wp-entry-guide=""><h2 data-copy="title" data-runtime-localize="off">汪汪小院</h2><img class="guide-taro" src="/assets/weightplay-character-moss-shell-turtle-block-v1.webp" width="112" height="112" alt=""><p data-copy="guide" data-runtime-localize="off">選擇餐位並放下一份食物。餓了的狗狗會自己走來，吃三秒才恢復飽足與成長；最多放六碗。 健康、無親緣的成年公母犬在附近同住，每十秒有35%機率懷孕。雙方需求都須達60，並留有幼犬空位；懷孕需45秒實際遊玩時間，父母恢復需180秒。不用按迎接小狗。 為幼犬選擇培養路線，完成飲食、摸摸或散步條件，成長達100%且生活至少60秒後，長成對應品種。特殊混種仍靠自然出生；圖鑑列出每條取得路線。 這是遊戲虛構配方，不是現實犬隻遺傳規則。選任意兩種狗，查看幼犬種類與機率。特殊混種只能自然出生，不能直接領養。 兩隻無親緣的初始幼犬，提供新的家族血脈。狗狗不能購買。 先選自己養的成犬，再點前排或後排格子放上去。同一隻狗只能佔一格。出發後牠們會自己走動、找目標與攻擊；三種不同犬種全隊生命加10%。幼犬與懷孕媽媽留家，戰敗狗狗也會平安回來。首次勝利才有金幣與永久狩獵經驗。 點庭院中的狗狗，開啟牠的照顧卡。 先點位置，再選狗狗。移動已上陣的狗狗會交換兩個位置。 拖曳旋轉；雙指或滾輪縮放。 庭院最多12隻活動；休息屋與待產幼犬都計入總名額。暫停只停止新懷孕，已懷孕的媽媽會繼續待產。</p><div class="game-info-facts"></div><div class="game-info-sections"></div><div class="game-info-faq"><h3 data-copy="faqTitle" data-runtime-localize="off">常見問題</h3><dl><div><dt data-copy="faqPuppy" data-runtime-localize="off">幼犬可以出戰嗎？</dt><dd data-copy="puppyBattle" data-runtime-localize="off">幼犬不能出戰 · 請先培養到成年</dd></div><div><dt data-copy="faqBreeds" data-runtime-localize="off">怎麼培養出不同犬種？</dt><dd data-copy="cultivateGuide" data-runtime-localize="off">為幼犬選擇培養路線，完成飲食、摸摸或散步條件，成長達100%且生活至少60秒後，長成對應品種。特殊混種仍靠自然出生；圖鑑列出每條取得路線。</dd></div></dl></div><div class="game-info-related"></div></section>
  <label hidden><select id="localeSelect" aria-label="語言"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
  <p id="saveWarning" role="status" hidden></p>
- <script src="/src/site-config.js"></script><script src="/src/game-title-registry.js"></script><script src="/src/i18n.js"></script><script src="/src/game-screen-frame.js"></script><script src="/src/stage-rail-i9.js"></script><script src="/src/game-play-ui.js"></script><script type="module" src="/games/puppy-haven/game.mjs?v=20261101-puppy-v11-save1&amp;wp-build=6efa698fe238c6c3"></script>
+ <script src="/src/site-config.js"></script><script src="/src/game-title-registry.js"></script><script src="/src/i18n.js"></script><script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script src="/src/stage-rail-i9.js"></script><script src="/src/game-play-ui.js" data-wp-entry-required=""></script><script type="module" src="/games/puppy-haven/game.mjs?v=entry-initial-4309a1d91491&amp;wp-build=6efa698fe238c6c3" data-wp-entry-required=""></script>
 </body></html>

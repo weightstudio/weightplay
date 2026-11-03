@@ -1,10 +1,187 @@
 <!doctype html>
-<html lang="en" data-wp-official-name>
-<head>
+<html lang="en" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-rune-reels.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-rune-reels/")}catch{location.replace("/en/games/animal-rune-reels/")}})();</script>
   <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rune Reels","description":"Build a five-hero animal team, spin tactical rune reels, and defeat thirty multi-wave guardian battles.","url":"https://weightplay.com/en/games/animal-rune-reels/","image":"https://weightplay.com/assets/animal-rune-reels/block-v1/cover-block-v1.webp","genre":["Team-reel RPG battle","Three downward rune reels","Animal hero squad"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"}}</script>
   <link rel="canonical" href="https://weightplay.com/en/games/animal-rune-reels/" />
@@ -22,7 +199,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rune-reels/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rune-reels/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-reels/" />
-    <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
@@ -39,36 +216,36 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Rune Reels | WeightPlay" />
   <meta name="twitter:description" content="Build a five-hero animal team, spin tactical rune reels, and defeat thirty multi-wave guardian battles." />
-  <link rel="stylesheet" href="style.css?v=20261031-rune-v81-stage-workspace&amp;wp-build=4e077f1465b77c00">
-  <link rel="stylesheet" href="battle-v3.css?v=20261031-rune-v81-stage-workspace&amp;wp-build=94d5ee3bffed1109">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
+  <link rel="stylesheet" href="style.css?v=20261031-rune-v81-stage-workspace&amp;wp-build=4e077f1465b77c00" data-wp-entry-required="">
+  <link rel="stylesheet" href="battle-v3.css?v=20261031-rune-v81-stage-workspace&amp;wp-build=94d5ee3bffed1109" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="">
   <style>[hidden]{display:none!important}</style>
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="">
   <style>body.wp-shell-main-active .main-canvas.wp-standard-main-flow-node{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important}body.wp-shell-main-active .main-canvas>.wp-standard-main-composition{height:auto;min-height:0}</style><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-<meta name="weightplay-game-version" content="v81">
+<meta name="weightplay-game-version" content="v82">
 <meta name="weightplay-interface-version" content="9">
-<link rel="stylesheet" href="/games/animal-rune-reels/shared-frame.css?v=20261031-rune-v81-stage-workspace&amp;wp-build=8fa2cd708be4a9d4">
+<link rel="stylesheet" href="/games/animal-rune-reels/shared-frame.css?v=20261031-rune-v81-stage-workspace&amp;wp-build=8fa2cd708be4a9d4" data-wp-entry-required="">
 <script defer src="/src/public-game-catalog.js?v=20261013-guide-related-i9"></script>
 
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
-</head>
-<body data-game-version="v81" data-sound-toggle="off" data-wp-game-id="animal-rune-reels" data-audience="general">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?v=entry-initial-a98a40c5cd70" data-wp-entry-required=""></head>
+<body data-game-version="v82" data-sound-toggle="off" data-wp-game-id="animal-rune-reels" data-audience="general" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Rune Reels" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Rune Reels…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Rune Reels…" aria-valuetext="Loading Rune Reels…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <div id="loading" class="loading"><div class="loader-orb"></div><strong data-i18n="loading">Awakening the rune reels…</strong><div class="load-track"><i id="loadFill"></i></div></div>
-  <main id="app" data-wp-frame-root hidden>
-    <section id="mainPage" class="page main-page" data-screen="main">
-      <div class="canvas main-canvas main-screen">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Rune Reels</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
-        <div class="poster"><img src="../../assets/animal-rune-reels/block-v1/cover-block-v1.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
-        <div class="main-copy">
-          <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
-          <span id="mainProgress" class="main-progress">Stage 1 / 30</span>
-          <button id="runeStartBtn" class="primary" data-i18n="start" data-runtime-localize="off" data-wp-main-start>Start Game</button>
+  <main id="app" data-wp-frame-root hidden data-wp-frame="2" data-wp-entry-root="">
+    <section id="mainPage" class="page main-page" data-screen="main" data-wp-frame-scene="main">
+      <div class="canvas main-canvas main-screen" data-wp-frame-content="main">
+        <header class="topbar wp-frame-header" data-wp-frame-header="main"><a class="back-logo wp-frame-return" href="/" data-i18n-aria="lobby" data-wp-return="main"><span class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a><h1 data-i18n="title" data-wp-game-title data-runtime-localize="off" data-wp-frame-title="">Rune Reels</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
+        <div class="poster"><img src="/assets/interface7-redrawn/animal-rune-reels.webp" alt="" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
+        <div class="main-copy" data-wp-frame-copy="">
+          <p class="lead" data-i18n="leadV3" data-wp-frame-summary="">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
+          <span id="mainProgress" class="main-progress" data-wp-frame-progress="">Stage 1 / 30</span>
+          <button id="runeStartBtn" class="primary" data-i18n="start" data-runtime-localize="off" data-wp-main-start data-wp-frame-action="primary">Start Game</button>
         </div>
       </div>
-      <section class="guide game-page-info" aria-labelledby="mainGuideTitle"><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Team-reel RPG battle</span><span>Three downward rune reels</span><span>Animal hero squad</span></div><h2 id="mainGuideTitle" data-i18n="guideTitle">How to play</h2><p data-i18n="guideV3">Spin downward reels. Matching lines double their effect; pets attack separately while defense and healing combine for the summoner.</p><div class="guide-grid"><div><b data-i18n="gameplayLabel">Gameplay</b><span data-i18n="gameplayV3">Team reel RPG</span></div><div><b data-i18n="difficultyLabel">Difficulty</b><span data-i18n="difficulty">Adaptive</span></div><div><b data-i18n="timeLabel">Play time</b><span data-i18n="time">3–6 minutes</span></div></div><p class="guide-tags" data-wp-gameplay-tags="1.3.0"><strong data-rr-market-label>Gameplay tags</strong>: <span data-rr-market-tag="1">Tactical reel RPG</span> · <span data-rr-market-tag="2">Party building</span> · <span data-rr-market-tag="3">Rune combinations</span> · <span data-rr-market-tag="4">Wave battles</span></p><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-deck" href="/en/games/beast-deck/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/beast-deck.webp" data-final-src="/assets/weightplay-logo.png" alt="Beast Deck: The Mist Forest" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Beast Deck: The Mist Forest</strong><span>Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos.</span></span></a><a class="game-info-related-card" data-game-id="animal-rune-tactics" href="/en/games/animal-rune-tactics/"><span class="game-info-related-poster"><img src="/assets/animal-rune-tactics-cover.webp" data-final-src="/assets/weightplay-logo.png" alt="Rune Tactics" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rune Tactics</strong><span>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards.</span></span></a><a class="game-info-related-card" data-game-id="animal-auto-squad" href="/en/games/animal-auto-squad/"><span class="game-info-related-poster"><img src="/assets/animal-auto-squad-cover-block-v2.webp" data-final-src="/assets/weightplay-logo.png" alt="Auto Squad" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Auto Squad</strong><span>Animal Auto Squad is a formation strategy game built around decisions made before combat.</span></span></a></div></div></section>
+      <section class="guide game-page-info" aria-labelledby="mainGuideTitle" data-wp-entry-guide=""><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Team-reel RPG battle</span><span>Three downward rune reels</span><span>Animal hero squad</span></div><h2 id="mainGuideTitle" data-i18n="guideTitle">How to play</h2><p data-i18n="guideV3">Spin downward reels. Matching lines double their effect; pets attack separately while defense and healing combine for the summoner.</p><div class="guide-grid"><div><b data-i18n="gameplayLabel">Gameplay</b><span data-i18n="gameplayV3">Team reel RPG</span></div><div><b data-i18n="difficultyLabel">Difficulty</b><span data-i18n="difficulty">Adaptive</span></div><div><b data-i18n="timeLabel">Play time</b><span data-i18n="time">3–6 minutes</span></div></div><p class="guide-tags" data-wp-gameplay-tags="1.3.0"><strong data-rr-market-label>Gameplay tags</strong>: <span data-rr-market-tag="1">Tactical reel RPG</span> · <span data-rr-market-tag="2">Party building</span> · <span data-rr-market-tag="3">Rune combinations</span> · <span data-rr-market-tag="4">Wave battles</span></p><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="beast-deck" href="/en/games/beast-deck/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/beast-deck.webp" data-final-src="/assets/weightplay-logo.png" alt="Beast Deck: The Mist Forest" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Beast Deck: The Mist Forest</strong><span>Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos.</span></span></a><a class="game-info-related-card" data-game-id="animal-rune-tactics" href="/en/games/animal-rune-tactics/"><span class="game-info-related-poster"><img src="/assets/animal-rune-tactics-cover.webp" data-final-src="/assets/weightplay-logo.png" alt="Rune Tactics" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rune Tactics</strong><span>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards.</span></span></a><a class="game-info-related-card" data-game-id="animal-auto-squad" href="/en/games/animal-auto-squad/"><span class="game-info-related-poster"><img src="/assets/animal-auto-squad-cover-block-v2.webp" data-final-src="/assets/weightplay-logo.png" alt="Auto Squad" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Auto Squad</strong><span>Animal Auto Squad is a formation strategy game built around decisions made before combat.</span></span></a></div></div></section>
     </section>
 
     <section id="stagePage" class="page play-page" hidden>
@@ -114,7 +291,7 @@
     <div id="summonResult" class="global-modal" hidden><div class="character-card"><span data-i18n="summonResult">Summon result</span><img id="summonArt" alt=""><h2 id="summonName"></h2><p id="summonCopy"></p><button id="summonClose" class="primary" data-i18n="continue">Continue</button></div></div>
   </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" data-wp-preserve-static-guide aria-label="Animal Rune Reels game guide">
+    <section class="game-page-info game-page-info-static" data-wp-preserve-static-guide aria-label="Animal Rune Reels game guide" data-wp-entry-guide="">
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
@@ -166,8 +343,8 @@
       </div>
     </section>
     <!-- adsense-static-guide:end -->
-    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="locales.js?v=20260901-rune-interface-contract-v71&amp;wp-build=145ad35654448301"></script><script src="locales-v3.js?v=20260804-rune-copy-v27&amp;wp-build=5835c722135b6b9a"></script><script src="locales-v4.js?wp-build=92b6923a2d9788c8"></script><script src="locales-v5.js?wp-build=1694fca28def4346"></script><script src="locales-v6.js?wp-build=d6027d40b70aabab"></script><script src="locales-v7.js?v=20260820-rune-auto-unlock-cue-v60b&amp;wp-build=28d197c3492869f6"></script><script src="locales-v8.js?v=20260824-rune-tactics-layout-v68&amp;wp-build=bf34e49e3133d549"></script><script src="locales-v9.js?v=20260820-rune-damage-taken-v56&amp;wp-build=b64174483122f394"></script><script src="locales-v10.js?v=20260822-rune-main-locale-v61c&amp;wp-build=7fe2686e34c61adc"></script><script src="locales-v11.js?v=20260823-rune-first-turn-reroll-cue-v63&amp;wp-build=090fe148e36e8926"></script><script src="locales-v12.js?v=20260824-rune-first-rift-recap-v66&amp;wp-build=ded0976a0dfc7988"></script><script src="locales-v13.js?v=20260910-rune-shield-balance-v77&amp;wp-build=23ff5c8566c9631c"></script><script src="stage-config.js?v=20261031-rune-v81-stage-workspace&amp;wp-build=c222efcf994db0c8"></script><script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script><script src="game.js?v=20261031-rune-v81-stage-workspace&amp;wp-audio=1.0.0&amp;wp-build=b153b676f4cff5e4"></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-<script src="/games/animal-rune-reels/shared-frame.js?v=20261031-rune-v81-stage-workspace&amp;wp-build=206feb10537ed0b5"></script>
+    <script src="../../src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="locales.js?v=20260901-rune-interface-contract-v71&amp;wp-build=145ad35654448301"></script><script src="locales-v3.js?v=20260804-rune-copy-v27&amp;wp-build=5835c722135b6b9a"></script><script src="locales-v4.js?wp-build=92b6923a2d9788c8"></script><script src="locales-v5.js?wp-build=1694fca28def4346"></script><script src="locales-v6.js?wp-build=d6027d40b70aabab"></script><script src="locales-v7.js?v=20260820-rune-auto-unlock-cue-v60b&amp;wp-build=28d197c3492869f6"></script><script src="locales-v8.js?v=20260824-rune-tactics-layout-v68&amp;wp-build=bf34e49e3133d549"></script><script src="locales-v9.js?v=20260820-rune-damage-taken-v56&amp;wp-build=b64174483122f394"></script><script src="locales-v10.js?v=20260822-rune-main-locale-v61c&amp;wp-build=7fe2686e34c61adc"></script><script src="locales-v11.js?v=20260823-rune-first-turn-reroll-cue-v63&amp;wp-build=090fe148e36e8926"></script><script src="locales-v12.js?v=20260824-rune-first-rift-recap-v66&amp;wp-build=ded0976a0dfc7988"></script><script src="locales-v13.js?v=20260910-rune-shield-balance-v77&amp;wp-build=23ff5c8566c9631c"></script><script src="stage-config.js?v=20261031-rune-v81-stage-workspace&amp;wp-build=c222efcf994db0c8"></script><script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="../../src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required=""></script><script src="game.js?v=20261031-rune-v81-stage-workspace&amp;wp-audio=1.0.0&amp;wp-build=be3f8abc4a5af34e" data-wp-entry-required=""></script>
+  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""></script>
+<script src="/games/animal-rune-reels/shared-frame.js?v=entry-initial-cba513e162f1&amp;wp-build=206feb10537ed0b5" data-wp-entry-required=""></script>
 </body>
 </html>

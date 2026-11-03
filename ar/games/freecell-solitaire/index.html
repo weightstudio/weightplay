@@ -1,29 +1,194 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="ar" dir="rtl" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/freecell-solitaire.webp" class="wp-frame-main-flow">
+<head><meta charset="UTF-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/freecell-solitaire/" />
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
-      <div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="guideTitle">الخلية الحرة</h2><p data-i18n="summary">كل البطاقات مكشوفة. اجمع كل نوع من الآس إلى الملك في الأساسات الأربعة.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>سوليتير الخلية الحرة</span><span>أربع خلايا حرة</span><span>أعمدة بألوان متناوبة</span></div></div>
-      <div class="game-info-sections"><section class="game-info-section"><h3 data-i18n="how">طريقة اللعب</h3><ol>
-        <li data-i18n="rule1">اضغط البطاقة ثم وجهتها أو اسحبها. رتّب الأعمدة تنازليًا مع التناوب بين الأحمر والأسود.</li>
-        <li data-i18n="rule2">تتسع كل خلية حرة لبطاقة واحدة. يمكن لأي بطاقة متاحة بدء عمود فارغ.</li>
-        <li data-i18n="rule3">يتطلب نقل مجموعة مرتبة خلايا وأعمدة فارغة كافية. احتفظ ببعض المساحة الحرة.</li>
-      </ol><p data-i18n="recovery">التلميح يعرض نقلة والتراجع يلغيها. إعادة البدء تكرر التوزيع نفسه، واللعبة الجديدة تنشئ توزيعًا آخر.</p></section>
-      <section class="game-info-section"><h3 data-i18n="faqTitle">أسئلة عن سوليتير الخلية الحرة</h3><dl>
-        <div><dt data-i18n="faqVisibleQuestion">هل توجد بطاقات مخفية؟</dt><dd data-i18n="faqVisibleAnswer">لا. تبدأ البطاقات الـ52 كلها مكشوفة.</dd></div>
-        <div><dt data-i18n="faqCellQuestion">كم بطاقة تتسع لها الخلية الحرة؟</dt><dd data-i18n="faqCellAnswer">تتسع كل واحدة من الخلايا الحرة الأربع لبطاقة واحدة.</dd></div>
-        <div><dt data-i18n="faqRestartQuestion">هل تؤدي إعادة البدء إلى توزيع بطاقات جديدة؟</dt><dd data-i18n="faqRestartAnswer">لا. تعيد إعادة البدء التوزيع الحالي؛ أما اللعبة الجديدة فتنشئ توزيعًا آخر.</dd></div>
-      </dl></section>  </div>
-    <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/ar/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="سوليتير كلوندايك" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">سوليتير كلوندايك</strong><span>Klondike Solitaire is a classic 52-card card game where you build four foundations from Ace to King while controlling tableau, stock, and waste.</span></span></a><a class="game-info-related-card" data-game-id="spider-solitaire" href="/ar/games/spider-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/spider-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="سوليتير العنكبوت" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">سوليتير العنكبوت</strong><span>Spider Solitaire uses two decks in ten tableau columns.</span></span></a></div></div></section>
+
 <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <meta charset="UTF-8" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v41" />
+  <meta name="weightplay-game-version" content="v42" />
   <meta name="weightplay-interface-version" content="9" />
   <meta name="theme-color" content="#0a1f3a" />
   <title>سوليتير فري سيل | WeightPlay</title>
@@ -45,33 +210,45 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/freecell-solitaire/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/freecell-solitaire/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"سوليتير فري سيل","url":"https://weightplay.com/ar/games/freecell-solitaire/","image":"https://weightplay.com/assets/interface7-redrawn/freecell-solitaire.webp","description":"فري سيل كلاسيكية بثمانية أعمدة مكشوفة وأربع خلايا مؤقتة وأربع أساسات مع التلميح والتراجع.","publisher":{"@type":"Organization","name":"WeightStudio"},"operatingSystem":"Web Browser","genre":["سوليتير الخلية الحرة","أربع خلايا حرة","أعمدة بألوان متناوبة"],"applicationCategory":"Game","isAccessibleForFree":true,"inLanguage":"ar","audience":{"@type":"Audience","audienceType":"General players","suggestedMinAge":9},"alternateName":"FreeCell Solitaire"}</script>
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" /><link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/tutorial.css?v=20260906-freecell-tutorial-cta-v34" /><link rel="stylesheet" href="../../src/classic-card-solitaire.css?v=20261020-freecell-action-rail-v41" />
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="" /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="" /><link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" data-wp-entry-required="" /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard data-wp-entry-required="" /><link rel="stylesheet" href="../../src/tutorial.css?v=20260906-freecell-tutorial-cta-v34" data-wp-entry-required="" /><link rel="stylesheet" href="../../src/classic-card-solitaire.css?v=20261020-freecell-action-rail-v41" data-wp-entry-required="" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:url" content="https://weightplay.com/ar/games/freecell-solitaire/" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="سوليتير فري سيل | WeightPlay" />
     <meta name="twitter:description" content="فري سيل كلاسيكية بثمانية أعمدة مكشوفة وأربع خلايا مؤقتة وأربع أساسات مع التلميح والتراجع." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/freecell-solitaire.webp" />
-  </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="freecell-solitaire" data-wp-game-version="v41" data-wp-interface-version="9" data-wp-combined-sound="true" data-wp-guide-owned="true" data-wp-game-owned-guide="true">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-screen="main" data-audience="general" data-wp-game-id="freecell-solitaire" data-wp-game-version="v42" data-wp-interface-version="9" data-wp-combined-sound="true" data-wp-guide-owned="true" data-wp-game-owned-guide="true" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="سوليتير فري سيل" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل سوليتير فري سيل…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل سوليتير فري سيل…" aria-valuetext="جارٍ تحميل سوليتير فري سيل…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">FreeCell Solitaire</strong><span>Preparing your deck</span><div class="loading-track"><i class="loading-fill"></i></div></div></section>
-  <div id="gameFrame" data-wp-frame-root>
-  <main id="mainScreen" class="main-screen">
-    <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="العودة إلى WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-copy="title">FreeCell Solitaire</strong><div class="header-utilities"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group"><strong class="settings-title" data-copy="settings">Settings</strong><button id="soundBtn" class="settings-row" type="button" aria-pressed="true">Sound: On</button><label class="settings-row"><span>◉</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header>
-    <section class="main-hero"><div class="poster-frame"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" class="cover" alt="FreeCell Solitaire" /></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-copy="title">سوليتير فري سيل</h1><p data-copy="target">Build four suit foundations from Ace to King using eight open columns and four temporary cells.</p><div id="statistics" class="stats-panel"></div><div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong id="mainProgressLabel">Goal</strong><span data-freecell-progress>52 cards · 4 foundations</span></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article><div class="feature-list"><div><strong class="feature-title">Goal</strong><p>Every card reaches its suit foundation.</p></div><div><strong class="feature-title">Control</strong><p>Tap or drag cards on phone and desktop.</p></div><div><strong class="feature-title">Assist</strong><p>Hint and unlimited Undo keep planning clear.</p></div></div></section>
-  </main>
+  <div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+  <main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
+    <header class="main-header wp-frame-header" data-wp-frame-header="main"><a class="main-return wp-frame-return" href="/" data-wp-return="main" aria-label="العودة إلى WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26" /></a><strong data-copy="title" data-wp-frame-title="">FreeCell Solitaire</strong><div class="header-utilities"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group"><strong class="settings-title" data-copy="settings">Settings</strong><button id="soundBtn" class="settings-row" type="button" aria-pressed="true">Sound: On</button><label class="settings-row"><span>◉</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header>
+    <section class="main-hero" data-wp-frame-content="main"><div class="poster-frame"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" class="cover" alt="FreeCell Solitaire" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster="" /></div><article class="main-copy" data-wp-frame-copy=""><small class="eyebrow">Classic Card Game</small><h1 data-copy="title">سوليتير فري سيل</h1><p data-copy="target" data-wp-frame-summary="">Build four suit foundations from Ace to King using eight open columns and four temporary cells.</p><div id="statistics" class="stats-panel"></div><div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite" data-wp-frame-progress=""><strong id="mainProgressLabel">Goal</strong><span data-freecell-progress>52 cards · 4 foundations</span></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-frame-action="primary">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article><div class="feature-list"><div><strong class="feature-title">Goal</strong><p>Every card reaches its suit foundation.</p></div><div><strong class="feature-title">Control</strong><p>Tap or drag cards on phone and desktop.</p></div><div><strong class="feature-title">Assist</strong><p>Hint and unlimited Undo keep planning clear.</p></div></div></section>
+  </main><section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-wp-entry-guide="">
+      <div class="game-info-hero"><div class="game-info-title"><h2 data-i18n="guideTitle">الخلية الحرة</h2><p data-i18n="summary">كل البطاقات مكشوفة. اجمع كل نوع من الآس إلى الملك في الأساسات الأربعة.</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>سوليتير الخلية الحرة</span><span>أربع خلايا حرة</span><span>أعمدة بألوان متناوبة</span></div></div>
+      <div class="game-info-sections"><section class="game-info-section"><h3 data-i18n="how">طريقة اللعب</h3><ol>
+        <li data-i18n="rule1">اضغط البطاقة ثم وجهتها أو اسحبها. رتّب الأعمدة تنازليًا مع التناوب بين الأحمر والأسود.</li>
+        <li data-i18n="rule2">تتسع كل خلية حرة لبطاقة واحدة. يمكن لأي بطاقة متاحة بدء عمود فارغ.</li>
+        <li data-i18n="rule3">يتطلب نقل مجموعة مرتبة خلايا وأعمدة فارغة كافية. احتفظ ببعض المساحة الحرة.</li>
+      </ol><p data-i18n="recovery">التلميح يعرض نقلة والتراجع يلغيها. إعادة البدء تكرر التوزيع نفسه، واللعبة الجديدة تنشئ توزيعًا آخر.</p></section>
+      <section class="game-info-section"><h3 data-i18n="faqTitle">أسئلة عن سوليتير الخلية الحرة</h3><dl>
+        <div><dt data-i18n="faqVisibleQuestion">هل توجد بطاقات مخفية؟</dt><dd data-i18n="faqVisibleAnswer">لا. تبدأ البطاقات الـ52 كلها مكشوفة.</dd></div>
+        <div><dt data-i18n="faqCellQuestion">كم بطاقة تتسع لها الخلية الحرة؟</dt><dd data-i18n="faqCellAnswer">تتسع كل واحدة من الخلايا الحرة الأربع لبطاقة واحدة.</dd></div>
+        <div><dt data-i18n="faqRestartQuestion">هل تؤدي إعادة البدء إلى توزيع بطاقات جديدة؟</dt><dd data-i18n="faqRestartAnswer">لا. تعيد إعادة البدء التوزيع الحالي؛ أما اللعبة الجديدة فتنشئ توزيعًا آخر.</dd></div>
+      </dl></section>  </div>
+    <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="klondike-solitaire" href="/ar/games/klondike-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="سوليتير كلوندايك" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">سوليتير كلوندايك</strong><span>Klondike Solitaire is a classic 52-card card game where you build four foundations from Ace to King while controlling tableau, stock, and waste.</span></span></a><a class="game-info-related-card" data-game-id="spider-solitaire" href="/ar/games/spider-solitaire/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/spider-solitaire.webp" data-final-src="/assets/weightplay-logo.png" alt="سوليتير العنكبوت" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">سوليتير العنكبوت</strong><span>Spider Solitaire uses two decks in ten tableau columns.</span></span></a></div></div></section>
     <section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><header class="battle-header"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="header-stat"><small>Moves</small><strong id="moveCount">0</strong></div><div class="header-stat"><small>Score</small><strong id="scoreValue">0</strong></div><div class="header-stat"><small>Combo</small><strong id="comboValue">—</strong></div><button id="soundToggleBattle" class="control-mini battle-utility" type="button" data-wp-battle-utility="true" aria-label="Sound: On" aria-pressed="true">Sound: On</button></header><section id="classicBoard" class="board-shell"><div class="board-top"><div class="board-group"><span class="board-label" data-label="free-cells">Free Cells</span><div id="freeCells" class="slot-row"></div></div><div class="board-group foundation-board-group"><span class="board-label" data-label="foundations">Foundations</span><div id="foundationArea" class="slot-row"></div><div id="foundationProgress" class="freecell-foundation-progress" data-wp-foundation-progress role="status" aria-live="polite"></div></div></div><div class="board-middle"><div class="board-group"><span class="board-label" data-label="stock">Stock</span><button id="stockPile" class="classic-slot stock-pile" type="button" aria-label="Stock"></button></div><div class="board-group"><span class="board-label" data-label="waste">Waste</span><div id="wastePile" class="classic-slot waste-pile"></div></div></div><div id="boardStatus" class="board-status" role="status" aria-live="polite"></div><div id="tableauArea" class="tableau-area variant-freecell" data-label="tableau"></div><div class="battle-actions"><button id="undoBtn" class="mini-btn" type="button">Undo</button><button id="hintBtn" class="mini-btn" type="button">Hint</button><button id="battleRestartBtn" class="mini-btn" type="button">Restart</button><button id="battleNewBtn" class="mini-btn" type="button">New Game</button></div><div id="toast" class="classic-toast" role="status" aria-live="polite" hidden></div><div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><h2 id="resultTitle">Game Complete</h2><p id="resultText"></p><p id="freecellResultNextStep" class="freecell-result-next-step" hidden></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button">New Game</button><button id="resultRestart" class="secondary-btn" type="button">Restart</button><button id="resultClose" class="secondary-btn" type="button">Close</button></div></div></div></section></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
   </div>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20261002-tabletop-reward-exclusion-v1"></script><script src="../../src/edge-guard.js"></script><script src="../../src/card-game-engine.js?wp-audio=1.0.0"></script><script src="../../src/tutorial.js"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-card-solitaire.js?v=20261022-card-title-sync1"></script>
-  <link rel="stylesheet" href="/src/card-table-presentation.css?v=20260909-deck-klondike-v2">
-  <link rel="stylesheet" href="/games/freecell-solitaire/royal-table.f77927f49d1cf5b3.css?v=20261001-freecell-text140-v40">
-  <link rel="stylesheet" href="/games/freecell-solitaire/frame-content.32e65e3bffb36dae.css?v=20261001-freecell-text140-v40">
-  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="/games/freecell-solitaire/locales.c64c553f0f5d5569.js?v=20261001-freecell-text140-v41"></script>
-  <script src="/games/freecell-solitaire/frame.200f55d8517fbe09.js?v=20261001-freecell-text140-v41&amp;wp-audio=1.0.0"></script>
-  <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script><script src="/games/freecell-solitaire/game.32a7be2b5c1f75e3.js?v=20261001-freecell-text140-v40"></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="/games/freecell-solitaire/analytics-ownership.c719cd1aa27b7183.js?v=20261001-freecell-text140-v40"></script>
+  <link rel="stylesheet" href="/src/card-table-presentation.css?v=20260909-deck-klondike-v2" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/freecell-solitaire/royal-table.css?v=20261001-freecell-text140-v40&amp;wp-build=f77927f49d1cf5b3" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/freecell-solitaire/frame-content.css?v=20261001-freecell-text140-v40&amp;wp-build=32e65e3bffb36dae" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+  <script src="/games/freecell-solitaire/locales.js?v=entry-initial-0749068f90dc&amp;wp-build=c64c553f0f5d5569" data-wp-entry-required=""></script>
+  <script src="/games/freecell-solitaire/frame.js?v=entry-initial-dccd632f289b&amp;wp-build=92c3b13bbb4f3ca6" data-wp-entry-required=""></script>
+  <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script><script src="game.js?v=entry-initial-8ecaa5e011b2&amp;wp-build=0d1ef44421f2ef04" data-wp-entry-required=""></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard data-wp-entry-required=""></script><script src="analytics-ownership.js?v=entry-initial-7d6b7ba213f4&amp;wp-build=2c1765c3d6fb651c"></script>
 </body>
 </html>

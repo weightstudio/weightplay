@@ -1,15 +1,192 @@
 <!doctype html>
-<html lang="ko" data-wp-official-name>
-<head>
+<html lang="ko" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-rain-roost.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-rain-roost/" />
-  <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-rain-roost">
-  <meta name="weightplay-game-version" content="v10">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="노리의 둥지로 달빛 속 비를 받아요. 파란 방울과 황금비를 모으고 나뭇잎을 피하세요." />
   <title>빗방울 받기 | WeightPlay</title>
@@ -30,17 +207,17 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
-  <link rel="stylesheet" href="/games/animal-rain-roost/style.eccdc210c4bfabbd.css?v=6">
-  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20261018-interface9-theme1">
-  <link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide>
-  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
-  <link rel="stylesheet" href="/src/stage-selector-standard.css">
-  <link rel="stylesheet" href="/src/stage-rail-i9.css">
-  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas1">
-  <link rel="stylesheet" href="/src/tutorial.css">
+  <script src="/src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script><script src="/src/shared-interface-bootstrap.js?v=entry-initial-ab88a718ecc9" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="/games/animal-rain-roost/style.eccdc210c4bfabbd.css?v=6" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20261018-interface9-theme1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css" data-wp-entry-required="">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"빗방울 받기","url":"https://weightplay.com/ko/games/animal-rain-roost/","image":"https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp","applicationCategory":"Game","operatingSystem":"Web browser","isAccessibleForFree":true,"genre":["Arcade","Timing","Focus","Family","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General, 6+","suggestedMinAge":6},"alternateName":"Raindrop Catcher","description":"노리의 작은 둥지를 움직여 잎을 피하며 빗방울을 받아요.","inLanguage":"ko","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"}}</script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -54,13 +231,13 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v10" data-wp-interface-version="9" data-screen="main">
-  <div id="app" data-wp-frame-root>
-    <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v10" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="뒤로">←</a><h1 data-wp-frame-title data-wp-game-title>빗방울 받기</h1></header>
+<body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v11" data-wp-interface-version="9" data-screen="main" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="빗방울 받기" data-state="loading" data-error-title="게임을 불러오지 못했습니다" data-error-message="일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">빗방울 받기를 불러오는 중…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="빗방울 받기를 불러오는 중…" aria-valuetext="빗방울 받기를 불러오는 중…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">다시 시도</button><a class="wp-game-entry-loader-button" href="/ko/">로비로 돌아가기</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요. <a href="/ko/">로비로 돌아가기</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="app" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+    <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v11" data-wp-interface-version="9" data-wp-frame-scene="main">
+      <header class="wp-main-shell-header wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="뒤로" class="wp-frame-return">←<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><h1 data-wp-frame-title="" data-wp-game-title>빗방울 받기</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
-        <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
-        <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>노리의 둥지로 달빛 속 비를 받아요. 파란 방울과 황금비를 모으고 나뭇잎을 피하세요.</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>여정 시작</button></div>
+        <img class="main-poster" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high" data-wp-interface7-poster="true">
+        <div data-wp-frame-copy=""><p data-copy="intro" data-wp-frame-summary="">노리의 둥지로 달빛 속 비를 받아요. 파란 방울과 황금비를 모으고 나뭇잎을 피하세요.</p><span id="mainProgress" data-wp-frame-progress="">0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>여정 시작</button></div>
         <select id="localeSelect" hidden aria-label="Language"></select>
       </div>
     </main>
@@ -91,7 +268,7 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">오로라 등불</h2><p data-copy="lanternText">보라색 등과 황금 물보라를 주는 영구 외형. 다이아몬드 15개를 한 번 내며 난이도는 변하지 않아요.</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">취소</button><button id="confirmBuy" type="button" data-copy="confirm">확인</button></div></div></section>
   </div>
-  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-wp-entry-guide="">
     <div class="game-info-hero"><small data-copy="guide">게임 안내</small><h2 data-wp-game-title>빗방울 받기</h2><p data-copy="intro">노리의 둥지로 달빛 속 비를 받아요. 파란 방울과 황금비를 모으고 나뭇잎을 피하세요.</p></div>
     <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">권장 연령</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">플레이 인원</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">한 판 시간</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">조작 방법</span><strong>← → · 1–5</strong></div></div>
     <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">달빛 습지</h3><p data-copy="worldText">노리와 함께 습지를 다시 빛나게 해요. 바람을 읽고 방울이 떨어지기 전에 둥지를 옮기세요.</p></section><section class="game-info-section"><h3 data-copy="controls">조작 방법</h3><p data-copy="controlText">수면을 끌거나 누르세요. 키보드는 ← → 또는 왼쪽부터 1–5입니다. 빛나는 표시는 다음 방울의 착지점이에요.</p></section><section class="game-info-section"><h3 data-copy="goals">빗방울 임무</h3><p data-copy="goalText">비가 끝나기 전에 목표를 채우세요. 황금비, 연속 받기, 나뭇잎 제한이 있는 단계도 있어요. 놓치거나 잎에 닿으면 연속이 끊겨요. 재도전은 무료예요.</p><p data-copy="starText">목표 달성에 별 하나, 85% 이상 받으면 두 개, 놓치거나 잎에 닿지 않으면 세 개예요.</p></section><section class="game-info-section"><h3 data-copy="growth">나의 둥지</h3><p data-copy="growthText">여섯 지역에서 바람, 잎 통로, 황금 길, 정밀 조작을 배워요. 별과 다음 단계를 열고 바구니를 고르세요.</p></section><section class="game-info-section"><h3 data-copy="privacy">로컬 진행</h3><p data-copy="privacyText">진행, 장비, 이전 최고 기록은 이 브라우저에 저장돼요. 계정은 필요 없어요. 다른 기기와 공유되지 않으며 저장 실패는 알려드려요.</p></section><section class="game-info-section"><h3 data-copy="faq">자주 묻는 질문</h3><details><summary data-copy="stars">별</summary><p data-copy="starText">목표 달성에 별 하나, 85% 이상 받으면 두 개, 놓치거나 잎에 닿지 않으면 세 개예요.</p></details><details><summary data-copy="equipment">둥지</summary><p data-copy="netText">5단계 완료 시 해제. 매번 잎 두 개를 막지만 받는 범위는 조금 좁아요.</p><p data-copy="magnetText">10단계 완료 시 해제. 먼 황금비를 끌어오지만 파란 방울은 정확히 받아야 해요.</p><p data-copy="lanternText">보라색 등과 황금 물보라를 주는 영구 외형. 다이아몬드 15개를 한 번 내며 난이도는 변하지 않아요.</p></details></section></div>
@@ -99,11 +276,11 @@
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1" defer></script>
   <script src="/src/analytics.js?v=20260929-block-world-v3" defer></script>
   <script src="/src/wallet.js"></script>
-  <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-frame-script data-wp-entry-required=""></script>
   <script src="/src/stage-rail-i9.js"></script>
-  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
-  <script src="/src/battle-canvas-standard.js?v=20261021-space-rocks-i9-battle-root-v1" data-wp-battle-standard></script>
-  <script src="/games/animal-rain-roost/game.1692a9e8cbab87fa.js?v=10"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?v=20261021-space-rocks-i9-battle-root-v1" data-wp-battle-standard data-wp-entry-required=""></script>
+  <script src="/games/animal-rain-roost/game.1692a9e8cbab87fa.js?v=entry-initial-22a628565e8e" data-wp-entry-required=""></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

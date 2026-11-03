@@ -1,12 +1,189 @@
 <!doctype html>
-<html lang="zh-Hant" data-wp-official-name>
-<head>
+<html lang="zh-Hant" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-screw-workshop.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-screw-workshop/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <meta charset="utf-8" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="kids" />
@@ -28,16 +205,16 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-screw-workshop/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-screw-workshop/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-screw-workshop/" />
-    <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="style.css?v=20261025-interface9-1&amp;wp-build=751a75c4255acb1d" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
-  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" />
-  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" />
-  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261021-shared-play1" /><meta property="og:description" content="移動黃銅螺絲以放下層疊木板，在 30 個固定謎題中留意共用支撐與步數限制。" />
+    <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-entry-required="" />
+  <link rel="stylesheet" href="style.css?v=20261025-interface9-1&amp;wp-build=751a75c4255acb1d" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261021-shared-play1" data-wp-entry-required="" /><meta property="og:description" content="移動黃銅螺絲以放下層疊木板，在 30 個固定謎題中留意共用支撐與步數限制。" />
     <meta name="twitter:description" content="移動黃銅螺絲以放下層疊木板，在 30 個固定謎題中留意共用支撐與步數限制。" />
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"螺絲工坊","url":"https://weightplay.com/zh-tw/games/animal-screw-workshop/","image":"https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp","description":"移動黃銅螺絲以放下層疊木板，在 30 個固定謎題中留意共用支撐與步數限制。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"zh-Hant","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["螺絲移位","層疊支撐邏輯","步數限制益智"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9},"alternateName":"Screw Workshop"}</script>
 
-<meta name="weightplay-game-version" content="v5">
+<meta name="weightplay-game-version" content="v6">
 <meta name="weightplay-interface-version" content="9">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -49,33 +226,33 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-screw-workshop.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-</head>
-<body data-wp-combined-sound="true" data-wp-game-id="animal-screw-workshop" data-wp-game-version="v5" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-game-owned-guide data-screen="loading">
-  <main id="gameFrame" class="game-frame" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-wp-combined-sound="true" data-wp-game-id="animal-screw-workshop" data-wp-game-version="v6" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-game-owned-guide data-screen="loading" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="螺絲工坊" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入螺絲工坊…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入螺絲工坊…" aria-valuetext="正在載入螺絲工坊…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <main id="gameFrame" class="game-frame" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off" data-wp-frame="2" data-wp-entry-root="">
   <div id="mainGroup" class="main-group" hidden>
-    <main id="mainScreen" class="main-screen">
-      <header id="mainHeader" class="main-header">
-        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <h1 data-runtime-localize="off" data-wp-frame-title data-wp-game-title data-runtime-localize="off">螺絲工坊</h1>
+    <main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
+      <header id="mainHeader" class="main-header wp-frame-header" data-wp-frame-header="main">
+        <a id="homeLink" class="home-link wp-frame-return" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" class="wp-frame-lobby-logo" width="26" height="26" /></a>
+        <h1 data-runtime-localize="off" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">螺絲工坊</h1>
         <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section id="mainContent" class="main-hero" data-wp-frame-content="main">
-        <img class="main-poster" data-wp-frame-poster src="../../assets/animal-screw-workshop-cover.webp" data-i18n-alt="posterAlt" alt="《螺絲工坊》遊戲圖片" />
-        <div class="main-copy" data-wp-frame-copy>
-          <p data-i18n="pitch" data-wp-frame-summary>把黃銅螺絲移到空孔，讓所有動物木板在步數用完前落下。</p>
-          <p id="mainProgress" class="main-progress" data-wp-frame-progress data-wp-main-progress role="status" aria-live="polite"></p>
+        <img class="main-poster" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-screw-workshop.webp" data-i18n-alt="posterAlt" alt="《螺絲工坊》遊戲圖片" data-wp-interface7-poster="true" width="1254" height="1254" />
+        <div class="main-copy" data-wp-frame-copy="">
+          <p data-i18n="pitch" data-wp-frame-summary="">把黃銅螺絲移到空孔，讓所有動物木板在步數用完前落下。</p>
+          <p id="mainProgress" class="main-progress" data-wp-frame-progress="" data-wp-main-progress role="status" aria-live="polite"></p>
           <button id="startBtn" class="primary-action" type="button" data-i18n="start" data-wp-main-start data-wp-frame-action="primary" data-wp-primary-action>開始遊戲</button>
         </div>
       </section>
     </main>
-    <section class="game-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" lang="zh-Hant" dir="ltr" aria-label="螺絲工坊 遊戲指南">
+    <section class="game-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" lang="zh-Hant" dir="ltr" aria-label="螺絲工坊 遊戲指南" data-wp-entry-guide="">
       <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>螺絲移位</span><span>層疊支撐邏輯</span><span>步數限制益智</span></div>
       <div class="game-info-hero"><div class="game-info-kicker">遊戲指南</div><h2>螺絲工坊</h2><p>把黃銅螺絲移入空孔，讓木製動物板塊落下。留意共用支撐，並在步數限制內完成 30 個固定謎題。</p></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3>玩法</h3><p>先選螺絲，再選發光的空孔。當某塊板的所有支撐孔都沒有螺絲時，它便會落下。須在顯示的步數限制內移除所有板塊；否則本次挑戰失敗。</p><p>移動前先查看哪些板塊共用同一顆螺絲。為後續螺絲保留足夠的真正空孔，尤其要注意重疊層與鎖定螺絲。六章依序介紹基本移動、重疊板塊、共用螺絲、鎖定、緊湊路線與混合盤面。</p><p>復原會還原上一步完整移動。提示會標出安全的螺絲與孔位，但不會替你移動。重新開始會重設謎題；已通關關卡可重玩以提升星等和最佳步數。</p></div>
         <div class="game-info-section"><h3>螺絲工坊: 遊戲指南</h3><p>支援觸控、滑鼠與鍵盤。若瀏覽器允許本機儲存，通關紀錄、解鎖進度與最佳步數會保存在此瀏覽器。無須帳號，也沒有雲端存檔；重新載入後，未完成盤面可能不會保留。</p><p>家長說明：這款非診斷性邏輯益智遊戲鼓勵玩家規劃步驟、觀察支撐關係並修正計畫。遊戲可依自己的步調進行，沒有倒數計時；每題仍有顯示的步數限制。</p></div>
         <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>遊戲目標是什麼？</dt><dd>把螺絲移入空孔，直到每塊木板都失去所有支撐，並遵守畫面上的步數限制。</dd></div><div><dt>為什麼板塊會掉下來？</dt><dd>當支撐孔中都沒有螺絲時，板塊會立即落下。重疊板塊可能共用支撐螺絲。</dd></div><div><dt>提示會替我移動嗎？</dt><dd>不會。提示只標出安全螺絲和目的孔；是否移動由你決定。完成移動後可用復原撤回。</dd></div><div><dt>用完步數會怎樣？</dt><dd>若仍有板塊未落下，本次挑戰便會失敗。重新開始前，先規劃空孔的用途。</dd></div><div><dt>進度儲存在哪裡？</dt><dd>瀏覽器儲存功能可用時，通關、解鎖與最佳步數會保存在此瀏覽器，不會同步至帳號。</dd></div></dl></div>
-        
+
       </div>
     </section>
   </div>
@@ -110,6 +287,6 @@
 
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js?v=20260929-block-world-v3"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20261025-i9-1&amp;wp-build=db2bb8943d6f0eba"></script><script src="guide-locales.js?v=20261003-text140&amp;wp-build=d74d39fe6de2f962"></script><script src="../../src/game-page-info.js?v=20261002-coloring-studio-text140-v1"></script><script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script><script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script><script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script src="game.js?v=20261014-guide-i9-v5&amp;wp-build=bedce5b5fcec9ac8"></script>
+  <script src="locales.js?v=entry-initial-d3553bc0f02d&amp;wp-build=db2bb8943d6f0eba"></script><script src="guide-locales.js?v=entry-initial-3fc70c80d288&amp;wp-build=d74d39fe6de2f962"></script><script src="../../src/game-page-info.js?v=20261002-coloring-studio-text140-v1"></script><script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script><script src="../../src/game-play-ui.js?v=20261021-shared-play1" data-wp-entry-required=""></script><script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script src="game.js?v=entry-initial-dbc7b12ce46f&amp;wp-build=bedce5b5fcec9ac8" data-wp-entry-required=""></script>
 </body>
 </html>

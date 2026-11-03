@@ -166,7 +166,7 @@
     if (!document.querySelector('script[src*="game-screen-frame.js"]') && !window.__weightPlayScreenFrameRequested) {
       window.__weightPlayScreenFrameRequested = true;
       const script = document.createElement("script");
-      script.src = assetUrl('game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2');
+      script.src = assetUrl('game-screen-frame.js?v=20261103-initial-entry-dom-ready1');
       script.dataset.wpSharedInterface = "7";
       document.body.append(script);
       return;

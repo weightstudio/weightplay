@@ -1,10 +1,187 @@
 <!doctype html>
-<html lang="pt-BR" dir="ltr" data-wp-official-name data-wp-publication-locale-completion>
-  <head>
-    
+<html lang="pt-BR" dir="ltr" data-wp-official-name data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-meadow-difference.webp" class="wp-frame-main-flow">
+  <head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
     <base href="/games/animal-meadow-difference/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
     <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-meadow-difference/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-meadow-difference/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-meadow-difference/" />
@@ -20,52 +197,52 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-meadow-difference/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-meadow-difference/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-meadow-difference/" />
-    <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="robots" content="index,follow">
     <meta name="weightplay-audience" content="general">
     <meta name="weightplay-scene-controls" content="immutable">
     <meta name="weightplay-game-id" content="animal-meadow-difference">
-    <meta name="weightplay-game-version" content="v16">
+    <meta name="weightplay-game-version" content="v17">
     <meta name="weightplay-interface-version" content="9">
     <meta name="weightplay-game-status" content="planned">
     <meta name="description" content="Dois pequenos jardins cheios de surpresas. Compare e descubra cada diferença.">
     <title>Encontre na campina | WeightPlay</title>
-    <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide>
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard>
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-    <link rel="stylesheet" href="style.css?v=20261022-meadow-garden-v13&amp;wp-build=c5fe7161bf931e09">
-    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1">
-    <script src="locales.js?v=20261018-meadow-i9-frame-v1&amp;wp-build=83ce5cc669b5f1a3" defer></script>
-    <script src="../../src/game-screen-frame.js?v=20261017-interface9-lifecycle-sync-v2" defer></script>
-    <script src="garden-copy.js?v=20261022-meadow-garden-v13&amp;wp-build=fbd905cd49e89104" defer></script>
-    <script src="/src/shared-interface-bootstrap.js?v=20261017-shared-dark-loader1" data-wp-shared-interface="7"></script>
+    <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-lifecycle-sync-v2" data-wp-shell-standard data-wp-entry-required="">
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard data-wp-entry-required="">
+    <link rel="stylesheet" href="style.css?v=20261022-meadow-garden-v13&amp;wp-build=c5fe7161bf931e09" data-wp-entry-required="">
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-spacing1" data-wp-entry-required="">
+    <script src="locales.js?v=entry-initial-c9ff1fbe031a&amp;wp-build=83ce5cc669b5f1a3" defer></script>
+    <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" defer data-wp-entry-required=""></script>
+    <script src="garden-copy.js?v=entry-initial-83d3ba1d700c&amp;wp-build=fbd905cd49e89104" defer></script>
+    <script src="/src/shared-interface-bootstrap.js?v=entry-initial-ab88a718ecc9" data-wp-shared-interface="7"></script>
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
   <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
-</head>
-    <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v16" data-wp-interface-version="9" data-screen="main" data-has-stage="true">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+    <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v17" data-wp-interface-version="9" data-screen="main" data-has-stage="true" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Encontre na campina" data-state="loading" data-error-title="Não foi possível carregar o jogo" data-error-message="Alguns recursos não carregaram. Tente novamente ou volte ao lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Carregando Encontre na campina…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Carregando Encontre na campina…" aria-valuetext="Carregando Encontre na campina…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Tentar novamente</button><a class="wp-game-entry-loader-button" href="/pt-br/">Voltar ao lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Alguns recursos não carregaram. Tente novamente ou volte ao lobby. <a href="/pt-br/">Voltar ao lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Meadow Find</h1>
-    <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1">
-    <main class="app-shell screen main-screen" id="mainScreen" data-screen="main" aria-labelledby="mainTitle">
-      <header class="main-header topbar wp-main-shell-header" data-wp-shell-header="main">
-        <a class="main-return home-link" data-wp-return="main" data-meadow-copy="backToLobby" href="/" aria-label="Voltar ao WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong id="mainTitle" class="wp-shell-main-title" data-wp-frame-title data-wp-game-title data-copy="title">Encontre na campina</strong>
+    <div id="gameFrame" data-wp-frame-root data-wp-play-ui="1" data-wp-frame="2" data-wp-entry-root="">
+    <main class="app-shell screen main-screen" id="mainScreen" data-screen="main" aria-labelledby="mainTitle" data-wp-frame-scene="main">
+      <header class="main-header topbar wp-main-shell-header wp-frame-header" data-wp-shell-header="main" data-wp-frame-header="main">
+        <a class="main-return home-link wp-frame-return" data-wp-return="main" data-meadow-copy="backToLobby" href="/" aria-label="Voltar ao WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" class="wp-frame-lobby-logo" width="26" height="26"></a>
+        <strong id="mainTitle" class="wp-shell-main-title" data-wp-frame-title="" data-wp-game-title data-copy="title">Encontre na campina</strong>
         <label class="locale-source"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="view is-active main-content" id="mainView" aria-labelledby="mainTitle">
-        <div class="hero-card">
-          <img class="cover-art main-poster" src="/assets/interface7-redrawn/animal-meadow-difference.webp" alt="" aria-hidden="true" data-wp-frame-poster>
-          <div class="hero-copy">
-            <p class="lede main-summary" data-copy="subtitle" data-wp-frame-summary>Dois pequenos jardins cheios de surpresas. Compare e descubra cada diferença.</p>
+        <div class="hero-card" data-wp-frame-content="main">
+          <img class="cover-art main-poster" src="/assets/interface7-redrawn/animal-meadow-difference.webp" alt="" aria-hidden="true" data-wp-frame-poster="" data-wp-interface7-poster="true" width="1254" height="1254">
+          <div class="hero-copy" data-wp-frame-copy="">
+            <p class="lede main-summary" data-copy="subtitle" data-wp-frame-summary="">Dois pequenos jardins cheios de surpresas. Compare e descubra cada diferença.</p>
             <p class="facts" data-copy="facts">30 jardins · 6 paisagens · Sem pressa</p>
-            <p class="main-progress" id="mainProgress" data-wp-frame-progress><span data-copy="best">Jardins explorados</span>: <strong id="mainBestCount">0 / 30</strong></p>
+            <p class="main-progress" id="mainProgress" data-wp-frame-progress=""><span data-copy="best">Jardins explorados</span>: <strong id="mainBestCount">0 / 30</strong></p>
             <button class="primary-button" id="startButton" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start" data-runtime-localize="off">Iniciar jogo</button>
           </div>
         </div>
       </section>
 
-    <section class="game-page-info game-page-info-static" data-wp-game-guide data-game-owned-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="Encontre na campina">
+    <section class="game-page-info game-page-info-static" data-wp-game-guide data-game-owned-guide data-wp-preserve-static-guide data-runtime-localize="off" aria-label="Encontre na campina" data-wp-entry-guide="">
       <div class="game-info-hero"><div class="game-info-title"><h2 data-copy="title">Encontre na campina</h2><p data-copy="subtitle" data-wp-intro-faq-source>Dois pequenos jardins cheios de surpresas. Compare e descubra cada diferença.</p></div></div>
       <div class="game-info-sections"><div class="game-info-section"><h3 data-copy="how">Como jogar</h3><p data-copy="howBody">Compare cores, formas, quantidades, direções e objetos ausentes. Toque em qualquer jardim para marcar ambos.</p></div><div class="game-info-section"><h3 data-copy="best">Jardins explorados</h3><p data-copy="saveBody">Conclua um jardim para abrir o próximo. Progresso e melhores estrelas são salvos neste navegador. Duas dicas por jardim apenas indicam uma região.</p></div><div class="game-info-section"><h3 data-copy="completeEyebrow">Observação concluída</h3><p data-copy="starBody">Três estrelas sem erros ou dicas; duas com até três erros e uma dica. Concluir sempre rende uma estrela e libera o próximo. Sem relógio ou vidas.</p></div></div>
     <article class="game-info-section" data-wp-intro-faq><h3>Perguntas frequentes</h3><dl><dt>O que farei neste jogo?</dt><dd>Dois pequenos jardins cheios de surpresas. Compare e descubra cada diferença.</dd></dl></article></section>
@@ -120,12 +297,12 @@
       <p class="sr-only" id="appStatus" aria-live="polite"></p>
     </div>
     <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
-    <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard defer></script>
+    <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard defer data-wp-entry-required=""></script>
     <script src="/src/stage-rail-i9.js?v=20261017-shared-play-spacing1" defer></script>
-    <script src="/src/game-play-ui.js?v=20261022-shared-play-ui-sync-mount-v1" defer></script>
-    <script src="frame.js?v=20261022-meadow-garden-v13&amp;wp-build=f6516d3ae7774e7e" defer></script>
+    <script src="/src/game-play-ui.js?v=20261022-shared-play-ui-sync-mount-v1" defer data-wp-entry-required=""></script>
+    <script src="frame.js?v=entry-initial-5dfa2304961c&amp;wp-build=aff8dfb921eaef8a" defer data-wp-entry-required=""></script>
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1" defer></script>
     <script src="/src/analytics.js?v=20260929-block-world-v3" defer></script>
-    <script type="module" src="game.js?v=20261101-meadow-garden-v16&amp;wp-build=be8ae6aed108119c"></script>
+    <script type="module" src="game.js?v=entry-initial-e00e3c0d311a&amp;wp-build=be8ae6aed108119c" data-wp-entry-required=""></script>
   </body>
 </html>

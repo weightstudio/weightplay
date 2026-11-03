@@ -1,6 +1,183 @@
 <!doctype html>
-<html lang="es" dir="ltr">
-<head>
+<html lang="es" dir="ltr" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/orbit-menders-poster-block-v1.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/orbit-menders/" />
     <link rel="canonical" href="https://weightplay.com/es/games/orbit-menders/" />
@@ -18,13 +195,13 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/orbit-menders/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/orbit-menders/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/orbit-menders/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="orbit-menders">
-  <meta name="weightplay-game-version" content="v11"><meta name="weightplay-interface-target" content="9">
+  <meta name="weightplay-game-version" content="v12"><meta name="weightplay-interface-target" content="9">
   <title>Melena Explosiva: Defensa de la Torre | WeightPlay</title>
   <meta name="description" content="Apunta con controles táctiles o ratón y mantén pulsado para disparar. Protege la torre de los zombis en un patio 3D plano con cámara fija y efectos de combate luminosos." />
-  <script src="/src/weightplay-audio.js" data-wp-entry-required></script><script src="/src/game-layout-config.js" data-wp-entry-required></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/game-entry-loader.css"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="style.css?v=orbit-v11-square-impact&amp;wp-build=88b16c2e9f100088">
+  <script src="/src/weightplay-audio.js" data-wp-entry-required></script><script src="/src/game-layout-config.js" data-wp-entry-required=""></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <link rel="stylesheet" href="/src/game-ui-theme.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required=""><link rel="stylesheet" href="style.css?v=orbit-v11-square-impact&amp;wp-build=88b16c2e9f100088" data-wp-entry-required="">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Melena Explosiva: Defensa de la Torre | WeightPlay" />
@@ -65,14 +242,14 @@
 }
     </script>
   </head>
-<body data-wp-play-ui="1" data-wp-interface-candidate="9">
+<body data-wp-play-ui="1" data-wp-interface-candidate="9" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Melena Explosiva: Defensa de la Torre" data-state="loading" data-error-title="No se pudo cargar el juego" data-error-message="No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Cargando Melena Explosiva: Defensa de la Torre…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Cargando Melena Explosiva: Defensa de la Torre…" aria-valuetext="Cargando Melena Explosiva: Defensa de la Torre…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Reintentar</button><a class="wp-game-entry-loader-button" href="/es/">Volver al lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby. <a href="/es/">Volver al lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
 <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Melena Explosiva: Defensa de la Torre</h1>
-<div id="gameFrame" data-wp-frame-root>
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
   <main id="mainScreen" data-wp-frame-scene="main">
-    <header data-wp-frame-header="main"><a href="/" data-wp-return="main" aria-label="返回 WeightPlay">← W</a><strong data-wp-frame-title>Melena Explosiva: Defensa de la Torre</strong><select id="localeSelect" data-game-aria="localeAria" aria-label="Idioma"><option value="zh-Hant">繁體中文</option></select></header>
-    <section id="mainContent" data-wp-frame-content="main"><img id="poster" class="main-poster" data-wp-frame-poster src="/assets/orbit-menders-poster-block-v1.webp" width="1254" height="1254" alt="Un león de melena de bloques dispara un cañón de energía azul desde una torre luminosa contra zombis de bloques."><div data-wp-frame-copy><p data-wp-frame-summary data-game-copy="summary">Apunta y mantén pulsado para disparar. ¡Frena a los zombis y protege la torre!</p><p id="buildStatus">Misiones de defensa 0 / 30</p><p id="deviceNotice" data-game-copy="device">Móvil/tableta: mantén y arrastra · Ordenador: apunta con el ratón.</p><button id="start" data-wp-main-start data-wp-frame-action="primary" data-game-copy="start" disabled>Jugar</button></div></section>
+    <header data-wp-frame-header="main" class="wp-frame-header"><a href="/" data-wp-return="main" aria-label="返回 WeightPlay" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><strong data-wp-frame-title="">Melena Explosiva: Defensa de la Torre</strong><select id="localeSelect" data-game-aria="localeAria" aria-label="Idioma"><option value="zh-Hant">繁體中文</option></select></header>
+    <section id="mainContent" data-wp-frame-content="main"><img id="poster" class="main-poster" data-wp-frame-poster="" src="/assets/orbit-menders-poster-block-v1.webp" width="1254" height="1254" alt="Un león de melena de bloques dispara un cañón de energía azul desde una torre luminosa contra zombis de bloques." data-wp-interface7-poster="true"><div data-wp-frame-copy=""><p data-wp-frame-summary="" data-game-copy="summary">Apunta y mantén pulsado para disparar. ¡Frena a los zombis y protege la torre!</p><p id="buildStatus">Misiones de defensa 0 / 30</p><p id="deviceNotice" data-game-copy="device">Móvil/tableta: mantén y arrastra · Ordenador: apunta con el ratón.</p><button id="start" data-wp-main-start data-wp-frame-action="primary" data-game-copy="start" disabled>Jugar</button></div></section>
   </main>
-  <section id="guide" class="game-page-info game-page-info-static" lang="es" dir="ltr" data-runtime-localize="off" data-wp-guide-locale="es" data-wp-guide-locales="./publication-copy.mjs#publicationCopy" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="Guía del juego"><div class="game-info-section"><h2>Defiende la última línea</h2><p>Maneja el cañón central con el león de espaldas a la cámara. Solo el cañón gira al apuntar. Usa ratón o toque y mantén pulsado para defender treinta misiones, con seis jefes de capítulo. Responde a flanqueos, escudos, sanadores, divisores y artillería ácida. Supera todas las oleadas para desbloquear la siguiente misión; pierdes si cae la torre.</p></div><div class="game-info-section"><h3>Controles y mejoras</h3><p>En un móvil o tableta, mantén un dedo sobre el campo para disparar y arrástralo para apuntar; suelta para parar. Toca el botón de explosión para atacar donde apuntas y el de pausa para detener el juego. Haz clic izquierdo para disparar o mantenlo pulsado para fuego continuo. Haz clic derecho o pulsa Space para lanzar una onda explosiva donde apuntas; después debes esperar a que se recargue. También hay un botón en la parte inferior. Mantén F para disparar hacia la mira actual y pulsa Esc para pausar. Entre oleadas, elige una mejora de potencia o una reparación de la torre. Sus efectos duran solo esta batalla. La cámara superior es fija: no necesitas girarla ni saltar.</p></div><div class="game-info-section"><h3>Guardado y ajustes de comodidad</h3><p>Las misiones completadas y las mejores puntuaciones se guardan en este navegador. Puedes exportar o importar JSON desde la pausa. Si sales de una batalla sin terminar, esa misión volverá a empezar en la primera oleada. Al perder el foco, el juego se pausa; elige continuar para reanudarlo. También puedes reducir el movimiento, bajar los gráficos o activar el modo de ayuda. Los cambios de gráficos y ayuda se aplican al entrar en otra batalla. Tras resolver una victoria o derrota conservas los engranajes de bajas y oleadas. Gástalos en investigación permanente en Taller y elige un talento inicial guardado. La investigación se aplica al próximo combate; reiniciarla es gratis y devuelve lo invertido. Las mejoras de combate se reinician cada misión. El cañón aurora opcional cuesta 10 diamantes, es permanente y solo cosmético.</p></div><div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><dt>¿Puedo jugar en el móvil?</dt><dd>Sí. Mantén y arrastra sobre el campo para apuntar y disparar; suelta para parar. Usa los botones de explosión y pausa. Necesitas un navegador compatible con WebGL2.</dd><dt>¿Tengo que descargar algo?</dt><dd>No requiere instalación. Juega en un navegador de móvil, tableta u ordenador compatible con WebGL2.</dd><dt>¿Y si los efectos son demasiado intensos?</dt><dd>Activa la reducción de movimiento en la pausa. La cámara es fija y las sacudidas están desactivadas por defecto.</dd><dt>¿Cómo vuelvo a jugar?</dt><dd>Elige repetir en los resultados o vuelve al selector de misiones y escoge una que esté desbloqueada.</dd></dl></div></section>
+  <section id="guide" class="game-page-info game-page-info-static" lang="es" dir="ltr" data-runtime-localize="off" data-wp-guide-locale="es" data-wp-guide-locales="./publication-copy.mjs#publicationCopy" data-wp-guide-renderer="./guide.mjs#renderGuide" aria-label="Guía del juego" data-wp-entry-guide=""><div class="game-info-section"><h2>Defiende la última línea</h2><p>Maneja el cañón central con el león de espaldas a la cámara. Solo el cañón gira al apuntar. Usa ratón o toque y mantén pulsado para defender treinta misiones, con seis jefes de capítulo. Responde a flanqueos, escudos, sanadores, divisores y artillería ácida. Supera todas las oleadas para desbloquear la siguiente misión; pierdes si cae la torre.</p></div><div class="game-info-section"><h3>Controles y mejoras</h3><p>En un móvil o tableta, mantén un dedo sobre el campo para disparar y arrástralo para apuntar; suelta para parar. Toca el botón de explosión para atacar donde apuntas y el de pausa para detener el juego. Haz clic izquierdo para disparar o mantenlo pulsado para fuego continuo. Haz clic derecho o pulsa Space para lanzar una onda explosiva donde apuntas; después debes esperar a que se recargue. También hay un botón en la parte inferior. Mantén F para disparar hacia la mira actual y pulsa Esc para pausar. Entre oleadas, elige una mejora de potencia o una reparación de la torre. Sus efectos duran solo esta batalla. La cámara superior es fija: no necesitas girarla ni saltar.</p></div><div class="game-info-section"><h3>Guardado y ajustes de comodidad</h3><p>Las misiones completadas y las mejores puntuaciones se guardan en este navegador. Puedes exportar o importar JSON desde la pausa. Si sales de una batalla sin terminar, esa misión volverá a empezar en la primera oleada. Al perder el foco, el juego se pausa; elige continuar para reanudarlo. También puedes reducir el movimiento, bajar los gráficos o activar el modo de ayuda. Los cambios de gráficos y ayuda se aplican al entrar en otra batalla. Tras resolver una victoria o derrota conservas los engranajes de bajas y oleadas. Gástalos en investigación permanente en Taller y elige un talento inicial guardado. La investigación se aplica al próximo combate; reiniciarla es gratis y devuelve lo invertido. Las mejoras de combate se reinician cada misión. El cañón aurora opcional cuesta 10 diamantes, es permanente y solo cosmético.</p></div><div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><dt>¿Puedo jugar en el móvil?</dt><dd>Sí. Mantén y arrastra sobre el campo para apuntar y disparar; suelta para parar. Usa los botones de explosión y pausa. Necesitas un navegador compatible con WebGL2.</dd><dt>¿Tengo que descargar algo?</dt><dd>No requiere instalación. Juega en un navegador de móvil, tableta u ordenador compatible con WebGL2.</dd><dt>¿Y si los efectos son demasiado intensos?</dt><dd>Activa la reducción de movimiento en la pausa. La cámara es fija y las sacudidas están desactivadas por defecto.</dd><dt>¿Cómo vuelvo a jugar?</dt><dd>Elige repetir en los resultados o vuelve al selector de misiones y escoge una que esté desbloqueada.</dd></dl></div></section>
   <section id="stageScreen" class="scene-canvas" hidden data-wp-frame-logical-header="stage" data-wp-frame-play-fill><header data-wp-frame-header="stage"><button id="stageBack" data-game-aria="back" data-wp-return="stage" aria-label="Volver">←</button><strong data-wp-frame-title hidden>Melena Explosiva: Defensa de la Torre</strong></header><div id="stageContent" data-wp-frame-content="stage"><div id="stageSummary">Defendidas 0 / 30</div><section id="stagePanel"><div id="stageRail" data-game-aria="stageAria" role="list" aria-label="Misiones de defensa"></div></section><section id="growthPanel" hidden><div id="growthBodyWrap"><div class="growth-heading"><img src="/games/orbit-menders/icons/gears.webp" width="36" height="36" alt=""><strong id="growthBalance"></strong></div><h2 id="growthTitle"></h2><p id="growthIntro"></p><div id="growthBody"></div><p id="growthNotice" role="status"></p></div><section id="stageConfirm" role="dialog" aria-modal="true" aria-labelledby="stageConfirmText" hidden><div class="growth-confirm-card"><p id="stageConfirmText"></p><button id="stageConfirmCancel" data-game-copy="cancel">Cancelar</button><button id="stageConfirmYes" data-game-copy="confirm">Confirmar</button></div></section></section></div><nav data-wp-frame-nav data-wp-frame-stage-nav><button id="talentsTab" data-game-copy="talentsTab">Talentos</button><button id="stagesTab" data-game-copy="stages">Misiones</button><button id="equipmentTab" data-game-copy="equipmentTab">Taller</button></nav></section>
   <section id="battleScreen" class="scene-canvas" hidden data-wp-logical-battle-canvas data-wp-frame-logical-header="battle" data-wp-frame-play-fill>
     <header data-wp-frame-header="battle"><button id="battleBack" data-game-aria="pauseBack" data-wp-return="battle" aria-label="Pausar y volver a misiones">←</button><strong data-wp-frame-title hidden>Melena Explosiva: Defensa de la Torre</strong></header>
@@ -85,7 +262,7 @@
     </div>
   </section>
 </div>
-<script src="/src/wallet.js" data-wp-entry-required></script><script src="/src/site-config.js"></script><script src="/src/analytics.js"></script><script src="/src/i18n.js"></script><script src="/src/game-entry-loader.js" data-wp-entry-required></script><script src="/src/battle-canvas-standard.js" data-wp-battle-standard data-wp-entry-required></script><script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required></script><script src="/src/stage-rail-i9.js" data-wp-entry-required></script><script src="/src/game-play-ui.js" data-wp-entry-required></script><script type="module" src="game.mjs?v=orbit-v11-square-impact&amp;wp-build=a550061004bcbed8" data-wp-entry-required></script>
+<script src="/src/wallet.js" data-wp-entry-required></script><script src="/src/site-config.js"></script><script src="/src/analytics.js"></script><script src="/src/i18n.js"></script><script src="/src/battle-canvas-standard.js" data-wp-battle-standard data-wp-entry-required=""></script><script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script src="/src/stage-rail-i9.js" data-wp-entry-required></script><script src="/src/game-play-ui.js" data-wp-entry-required=""></script><script type="module" src="game.mjs?v=entry-initial-3dee3d3895e5&amp;wp-build=a550061004bcbed8" data-wp-entry-required=""></script>
 <script src="/src/runtime-locales/es.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

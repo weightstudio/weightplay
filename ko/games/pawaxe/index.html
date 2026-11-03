@@ -1,5 +1,182 @@
 <!doctype html>
-<html lang="ko" dir="ltr" data-runtime-localize="off"><head>
+<html lang="ko" dir="ltr" data-runtime-localize="off" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/pawaxe.webp" class="wp-frame-main-flow"><head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <base href="/games/pawaxe/" />
 <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
 <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
@@ -18,14 +195,14 @@
 <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/pawaxe/" />
 <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/pawaxe/" />
 <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/pawaxe/" />
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v55"><meta name="weightplay-interface-version" content="9">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v56"><meta name="weightplay-interface-version" content="9">
 <title>Axe &amp; Ally | WeightPlay</title>
-<script src="../../src/game-layout-config.js"></script><script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
-<link rel="stylesheet" href="style.css?v=20261017-pawaxe-shared-play-ui1&amp;wp-build=5b59999a05e17e40"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1"><link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1">
+<script src="../../src/game-layout-config.js" data-wp-entry-required=""></script><script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script><link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen data-wp-entry-required="" />
+<link rel="stylesheet" href="style.css?v=20261017-pawaxe-shared-play-ui1&amp;wp-build=5b59999a05e17e40" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-ui-theme.css" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1" data-wp-entry-required=""><link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" data-wp-entry-required="">
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-<script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" defer></script>
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+<script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" defer data-wp-entry-required=""></script>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
 <meta name="description" content="Fia와 Nibs가 여섯 숲 지역의 30개 경로를 탐험합니다. 원하는 만큼 눌러 도끼를 휘두르거나 선택 사항인 자동 전투를 켜고, 서로 다른 능력을 지닌 동료와 장비로 탐험을 꾸려 보세요." />
 <meta property="og:site_name" content="WeightPlay" />
 <meta property="og:type" content="website" />
@@ -39,12 +216,12 @@
 <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/pawaxe.webp" />
 <script id="pawaxe-guide-faq" type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"ko","mainEntity":[{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"전장이나 공격 버튼을 누르세요. 스페이스 키도 됩니다. 자동 전투는 선택 사항입니다."},"name":"어떻게 공격하나요?"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"여덟 번째 공격이 강한 쓸기 공격이 됩니다. 박자 입력은 없습니다."},"name":"전체 공격은 언제 하나요?"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"체크 표시를 눌러 정산하거나 계속 사냥할 수 있습니다."},"name":"진행도 100%에서는 어떻게 되나요?"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"이미 얻은 장비는 저장되지만 경로 완료 보상은 받지 못합니다."},"name":"실패하면 장비를 잃나요?"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"같은 카드에 조각으로 쌓이며 열 조각으로 승급할 수 있습니다."},"name":"장비 중복은 어떻게 되나요?"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"Stage 화면에서 동료 한 명을 고릅니다. 적 처치로 다른 동료를 얻을 수 있습니다."},"name":"동료를 바꿀 수 있나요?"},{"@type":"Question","acceptedAnswer":{"@type":"Answer","text":"이 브라우저에만 저장됩니다."},"name":"저장은 어디에 되나요?"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","audience":{"@type":"PeopleAudience","audienceType":"일반 플레이어"},"description":"Fia와 Nibs가 여섯 숲 지역의 30개 경로를 탐험합니다. 원하는 만큼 눌러 도끼를 휘두르거나 선택 사항인 자동 전투를 켜고, 서로 다른 능력을 지닌 동료와 장비로 탐험을 꾸려 보세요.","genre":["액션","모험","동물 게임"],"image":"https://weightplay.com/assets/interface7-redrawn/pawaxe.webp","inLanguage":"ko","isAccessibleForFree":true,"name":"Axe & Ally","operatingSystem":"웹 브라우저","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"url":"https://weightplay.com/ko/games/pawaxe/"}</script>
-</head><body data-game-id="pawaxe" data-wp-game-id="pawaxe" data-wp-game-version="v55" data-wp-interface-version="9" data-screen="main" data-has-stage="true"><section id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong data-runtime-localize="off" data-runtime-localize="off">Axe &amp; Ally</strong><div class="loading-track" aria-hidden="true"><i></i></div></div></section><script>window.addEventListener("load",function(){document.getElementById("loadingPanel")?.classList.add("hidden")},{once:true});</script><div id="frame" data-wp-frame-root>
-<main id="main" class="scene main-scene">
-<header class="main-header"><a href="/" data-wp-return="main" data-i18n-aria="returnHome" aria-label="WeightPlay로 돌아가기">← W</a><h1 data-wp-frame-title data-i18n="title" data-runtime-localize="off">Axe &amp; Ally</h1></header>
-<div class="hero"><img class="main-cover" src="/assets/interface7-redrawn/pawaxe.webp" data-i18n-alt="coverAlt" alt="닙스와 함께 빛나는 숲에서 도끼를 휘두르는 피아"><div class="hero-copy"><p class="main-summary" data-i18n="summary">탭으로 숲길 30개를 돌파하고 동료 4명과 장비 15종을 모으세요. 중복 장비는 강화용 조각으로 바뀝니다.</p><p id="progress" class="main-progress" data-wp-main-progress></p><button id="start" class="primary" data-wp-main-start data-i18n="start">게임 시작</button></div></div>
+</head><body data-game-id="pawaxe" data-wp-game-id="pawaxe" data-wp-game-version="v56" data-wp-interface-version="9" data-screen="main" data-has-stage="true" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Axe &amp; Ally" data-state="loading" data-error-title="게임을 불러오지 못했습니다" data-error-message="일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Axe &amp; Ally를 불러오는 중…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Axe &amp; Ally를 불러오는 중…" aria-valuetext="Axe &amp; Ally를 불러오는 중…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">다시 시도</button><a class="wp-game-entry-loader-button" href="/ko/">로비로 돌아가기</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요. <a href="/ko/">로비로 돌아가기</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end --><section id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong data-runtime-localize="off" data-runtime-localize="off">Axe &amp; Ally</strong><div class="loading-track" aria-hidden="true"><i></i></div></div></section><script>window.addEventListener("load",function(){document.getElementById("loadingPanel")?.classList.add("hidden")},{once:true});</script><div id="frame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+<main id="main" class="scene main-scene" data-wp-frame-scene="main">
+<header class="main-header wp-frame-header" data-wp-frame-header="main"><a href="/" data-wp-return="main" data-i18n-aria="returnHome" aria-label="WeightPlay로 돌아가기" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><h1 data-wp-frame-title="" data-i18n="title" data-runtime-localize="off">Axe &amp; Ally</h1></header>
+<div class="hero" data-wp-frame-content="main"><img class="main-cover" src="/assets/interface7-redrawn/pawaxe.webp" data-i18n-alt="coverAlt" alt="닙스와 함께 빛나는 숲에서 도끼를 휘두르는 피아" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster=""><div class="hero-copy" data-wp-frame-copy=""><p class="main-summary" data-i18n="summary" data-wp-frame-summary="">탭으로 숲길 30개를 돌파하고 동료 4명과 장비 15종을 모으세요. 중복 장비는 강화용 조각으로 바뀝니다.</p><p id="progress" class="main-progress" data-wp-main-progress data-wp-frame-progress=""></p><button id="start" class="primary" data-wp-main-start data-i18n="start" data-wp-frame-action="primary">게임 시작</button></div></div>
 </main>
-<section class="game-page-info game-page-info-static" id="gameGuide" data-wp-guide-complete="true" data-wp-guide-depth="true" data-runtime-localize="off" aria-labelledby="pawaxe-guide-title"><h2 id="pawaxe-guide-title">Axe &amp; Ally</h2><div class="game-info-hero"><div class="game-info-title"><p>Fia와 Nibs가 여섯 숲 지역의 30개 경로를 탐험합니다. 원하는 만큼 눌러 도끼를 휘두르거나 선택 사항인 자동 전투를 켜고, 서로 다른 능력을 지닌 동료와 장비로 탐험을 꾸려 보세요.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>게임 방식</span><strong>탭과 자동 전투 모험</strong></div><div class="game-info-fact"><span>장르</span><strong>액션 · 모험 · 수집 · 동물</strong></div><div class="game-info-fact"><span>권장 연령</span><strong>13+</strong></div><div class="game-info-fact"><span>난이도</span><strong>편안함부터 도전적</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>경로당 약 5분(예상치이며 플레이 방식에 따라 달라집니다)</strong></div><div class="game-info-fact"><span>연습할 수 있는 기술</span><div class="game-info-skills"><span>집중력</span><span>반응</span><span>눈과 손의 협응</span></div></div></div></div><div class="game-info-sections"><section class="game-info-section"><h3>경로와 완료</h3><p>각 지역에는 적 웨이브로 이루어진 다섯 경로가 있습니다. 웨이브를 정리하면 즉시 승리 결과가 뜨지 않고 Fia가 길을 따라 더 나아갑니다. 적은 위치, 방패, 지원 호출과 공격 패턴이 다릅니다. 다섯 번째 경로마다 고유한 경고와 규칙이 있는 보스가 기다립니다. 진행 막대는 결승점까지의 거리이며 타이머가 아니고 결과 화면을 강제하지 않습니다.</p><p>이 게임은 여섯 지역의 30개 경로로 구성되며 5, 10, 15, 20, 25, 30단계에 보스가 있습니다. 완료하면 다음 경로가 열리고 이전 경로는 다시 플레이할 수 있습니다. 뒤쪽 경로에서 더 강한 장비가 나올 수 있습니다. 첫 완료 보상은 한 번만 받습니다. 100% 이후 체크 표시를 누르지 않으면 진행도는 멈추지만 사냥을 계속할 수 있습니다.</p></section><section class="game-info-section"><h3>조작과 전투</h3><p>전장을 누르거나 공격 버튼을 한 번 눌러 공격하세요. 스페이스 키도 사용할 수 있습니다. 빠른 입력은 대기열에 들어가며 수동 공격은 저절로 실행되지 않습니다. 자동 전투는 언제든 끌 수 있습니다.</p><p>여덟 번째 공격은 적 줄 전체를 쓸어 넘기는 강한 공격입니다. 치명타는 표시되고 추가 피해를 줍니다. 경고와 숫자가 있는 양쪽 체력 막대를 보고 대상을 고르세요. 한 적이 쓰러져도 나머지는 원래 위치에 남습니다.</p><ul><li>경로와 동료 한 명을 고르고 장비 능력을 확인하세요.</li><li>적이나 공격 버튼을 눌러 공격하고, 자동 전투로 긴 웨이브를 맡겨 보세요.</li><li>여덟 번째 공격, 치명타와 동료 에너지를 살피세요.</li><li>웨이브를 정리해 앞으로 나아가고 보스 경고에 맞춰 대상을 고르세요.</li><li>100%에서 체크 표시를 눌러 결과를 보거나 계속 사냥하세요.</li></ul></section><section class="game-info-section"><h3>동료와 장비</h3><p>한 번의 탐험에는 동료 한 명만 데려갑니다. Nibs, Moss, Frostwing, Ember는 서로 다른 지원 기술을 사용합니다. 적이 동료를 떨어뜨릴 수 있으며 중복은 조각이 되어 동료의 등급과 기술을 강화합니다.</p><p>블록 모양 장비에는 능력 효과가 있습니다. 중복 장비는 같은 수집 카드에 조각으로 쌓이며, 열 조각으로 첫 승급을 할 수 있습니다.</p><ul><li>편한 속도로 연속 입력을 사용하세요.</li><li>대상을 직접 고르고 싶으면 자동을 끄세요.</li><li>방패 파괴 효과는 공격력 증가보다 유용할 수 있습니다.</li><li>치유, 보호막, 공격 가운데 웨이브에 필요한 동료 기술을 쓰세요.</li><li>중복 조각 열 개로 장비를 승급하면 수집 목록을 깔끔하게 유지할 수 있습니다.</li></ul></section><section class="game-info-section"><h3>플레이어 및 저장 안내</h3><p>전투는 대상을 고르고 공격한 뒤 피해를 확인하고 동료 기술을 쓸지 결정하는 직접적인 흐름입니다. 적의 위치가 유지되어 전장 변화를 읽기 쉽고, 장비 효과와 동료 능력이 빌드 선택을 더합니다. 별도의 방패 박자 입력은 없습니다.</p><p class="game-info-note"><strong>플레이어 안내 · 플레이어 및 저장 정보</strong></p><p>완료 경로, 장비, 동료 조각과 승급은 로컬 저장소가 가능할 때 이 브라우저에 저장됩니다. 계정, 클라우드 동기화, 구매, 광고 보상은 필요하지 않습니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 저장 내용이 사라지거나 분리될 수 있습니다. 획득 아이템은 즉시 저장되지만 미정산 경로 보상은 지급되지 않습니다.</p></section><section class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>어떻게 공격하나요?</dt><dd>전장이나 공격 버튼을 누르세요. 스페이스 키도 됩니다. 자동 전투는 선택 사항입니다.</dd></div><div><dt>전체 공격은 언제 하나요?</dt><dd>여덟 번째 공격이 강한 쓸기 공격이 됩니다. 박자 입력은 없습니다.</dd></div><div><dt>진행도 100%에서는 어떻게 되나요?</dt><dd>체크 표시를 눌러 정산하거나 계속 사냥할 수 있습니다.</dd></div><div><dt>실패하면 장비를 잃나요?</dt><dd>이미 얻은 장비는 저장되지만 경로 완료 보상은 받지 못합니다.</dd></div><div><dt>장비 중복은 어떻게 되나요?</dt><dd>같은 카드에 조각으로 쌓이며 열 조각으로 승급할 수 있습니다.</dd></div><div><dt>동료를 바꿀 수 있나요?</dt><dd>Stage 화면에서 동료 한 명을 고릅니다. 적 처치로 다른 동료를 얻을 수 있습니다.</dd></div><div><dt>저장은 어디에 되나요?</dt><dd>이 브라우저에만 저장됩니다.</dd></div></dl></section><section class="game-info-related-section"><h3>더 많은 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-skyspire-drop/"><img src="/assets/lobby-posters/animal-skyspire-drop-square-v1.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>하늘첨탑 드롭</strong><span>회전하는 탑과 움직이는 틈에 도전하는 동물 액션 게임입니다.</span></span></a></div></section></div></section>
+<section class="game-page-info game-page-info-static" id="gameGuide" data-wp-guide-complete="true" data-wp-guide-depth="true" data-runtime-localize="off" aria-labelledby="pawaxe-guide-title" data-wp-entry-guide=""><h2 id="pawaxe-guide-title">Axe &amp; Ally</h2><div class="game-info-hero"><div class="game-info-title"><p>Fia와 Nibs가 여섯 숲 지역의 30개 경로를 탐험합니다. 원하는 만큼 눌러 도끼를 휘두르거나 선택 사항인 자동 전투를 켜고, 서로 다른 능력을 지닌 동료와 장비로 탐험을 꾸려 보세요.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>게임 방식</span><strong>탭과 자동 전투 모험</strong></div><div class="game-info-fact"><span>장르</span><strong>액션 · 모험 · 수집 · 동물</strong></div><div class="game-info-fact"><span>권장 연령</span><strong>13+</strong></div><div class="game-info-fact"><span>난이도</span><strong>편안함부터 도전적</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>경로당 약 5분(예상치이며 플레이 방식에 따라 달라집니다)</strong></div><div class="game-info-fact"><span>연습할 수 있는 기술</span><div class="game-info-skills"><span>집중력</span><span>반응</span><span>눈과 손의 협응</span></div></div></div></div><div class="game-info-sections"><section class="game-info-section"><h3>경로와 완료</h3><p>각 지역에는 적 웨이브로 이루어진 다섯 경로가 있습니다. 웨이브를 정리하면 즉시 승리 결과가 뜨지 않고 Fia가 길을 따라 더 나아갑니다. 적은 위치, 방패, 지원 호출과 공격 패턴이 다릅니다. 다섯 번째 경로마다 고유한 경고와 규칙이 있는 보스가 기다립니다. 진행 막대는 결승점까지의 거리이며 타이머가 아니고 결과 화면을 강제하지 않습니다.</p><p>이 게임은 여섯 지역의 30개 경로로 구성되며 5, 10, 15, 20, 25, 30단계에 보스가 있습니다. 완료하면 다음 경로가 열리고 이전 경로는 다시 플레이할 수 있습니다. 뒤쪽 경로에서 더 강한 장비가 나올 수 있습니다. 첫 완료 보상은 한 번만 받습니다. 100% 이후 체크 표시를 누르지 않으면 진행도는 멈추지만 사냥을 계속할 수 있습니다.</p></section><section class="game-info-section"><h3>조작과 전투</h3><p>전장을 누르거나 공격 버튼을 한 번 눌러 공격하세요. 스페이스 키도 사용할 수 있습니다. 빠른 입력은 대기열에 들어가며 수동 공격은 저절로 실행되지 않습니다. 자동 전투는 언제든 끌 수 있습니다.</p><p>여덟 번째 공격은 적 줄 전체를 쓸어 넘기는 강한 공격입니다. 치명타는 표시되고 추가 피해를 줍니다. 경고와 숫자가 있는 양쪽 체력 막대를 보고 대상을 고르세요. 한 적이 쓰러져도 나머지는 원래 위치에 남습니다.</p><ul><li>경로와 동료 한 명을 고르고 장비 능력을 확인하세요.</li><li>적이나 공격 버튼을 눌러 공격하고, 자동 전투로 긴 웨이브를 맡겨 보세요.</li><li>여덟 번째 공격, 치명타와 동료 에너지를 살피세요.</li><li>웨이브를 정리해 앞으로 나아가고 보스 경고에 맞춰 대상을 고르세요.</li><li>100%에서 체크 표시를 눌러 결과를 보거나 계속 사냥하세요.</li></ul></section><section class="game-info-section"><h3>동료와 장비</h3><p>한 번의 탐험에는 동료 한 명만 데려갑니다. Nibs, Moss, Frostwing, Ember는 서로 다른 지원 기술을 사용합니다. 적이 동료를 떨어뜨릴 수 있으며 중복은 조각이 되어 동료의 등급과 기술을 강화합니다.</p><p>블록 모양 장비에는 능력 효과가 있습니다. 중복 장비는 같은 수집 카드에 조각으로 쌓이며, 열 조각으로 첫 승급을 할 수 있습니다.</p><ul><li>편한 속도로 연속 입력을 사용하세요.</li><li>대상을 직접 고르고 싶으면 자동을 끄세요.</li><li>방패 파괴 효과는 공격력 증가보다 유용할 수 있습니다.</li><li>치유, 보호막, 공격 가운데 웨이브에 필요한 동료 기술을 쓰세요.</li><li>중복 조각 열 개로 장비를 승급하면 수집 목록을 깔끔하게 유지할 수 있습니다.</li></ul></section><section class="game-info-section"><h3>플레이어 및 저장 안내</h3><p>전투는 대상을 고르고 공격한 뒤 피해를 확인하고 동료 기술을 쓸지 결정하는 직접적인 흐름입니다. 적의 위치가 유지되어 전장 변화를 읽기 쉽고, 장비 효과와 동료 능력이 빌드 선택을 더합니다. 별도의 방패 박자 입력은 없습니다.</p><p class="game-info-note"><strong>플레이어 안내 · 플레이어 및 저장 정보</strong></p><p>완료 경로, 장비, 동료 조각과 승급은 로컬 저장소가 가능할 때 이 브라우저에 저장됩니다. 계정, 클라우드 동기화, 구매, 광고 보상은 필요하지 않습니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 저장 내용이 사라지거나 분리될 수 있습니다. 획득 아이템은 즉시 저장되지만 미정산 경로 보상은 지급되지 않습니다.</p></section><section class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>어떻게 공격하나요?</dt><dd>전장이나 공격 버튼을 누르세요. 스페이스 키도 됩니다. 자동 전투는 선택 사항입니다.</dd></div><div><dt>전체 공격은 언제 하나요?</dt><dd>여덟 번째 공격이 강한 쓸기 공격이 됩니다. 박자 입력은 없습니다.</dd></div><div><dt>진행도 100%에서는 어떻게 되나요?</dt><dd>체크 표시를 눌러 정산하거나 계속 사냥할 수 있습니다.</dd></div><div><dt>실패하면 장비를 잃나요?</dt><dd>이미 얻은 장비는 저장되지만 경로 완료 보상은 받지 못합니다.</dd></div><div><dt>장비 중복은 어떻게 되나요?</dt><dd>같은 카드에 조각으로 쌓이며 열 조각으로 승급할 수 있습니다.</dd></div><div><dt>동료를 바꿀 수 있나요?</dt><dd>Stage 화면에서 동료 한 명을 고릅니다. 적 처치로 다른 동료를 얻을 수 있습니다.</dd></div><div><dt>저장은 어디에 되나요?</dt><dd>이 브라우저에만 저장됩니다.</dd></div></dl></section><section class="game-info-related-section"><h3>더 많은 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-skyspire-drop/"><img src="/assets/lobby-posters/animal-skyspire-drop-square-v1.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong>하늘첨탑 드롭</strong><span>회전하는 탑과 움직이는 틈에 도전하는 동물 액션 게임입니다.</span></span></a></div></section></div></section>
 <section id="stage" class="scene play-scene" hidden data-wp-standard-stage-screen data-wp-stage-art="/assets/interface7-redrawn/pawaxe.webp">
 <header><button data-wp-return="stage" id="stageBack" data-i18n-aria="returnMain" aria-label="메인으로 돌아가기">←</button><span data-wp-frame-title hidden></span></header>
 <div class="workspace">
@@ -66,4 +243,4 @@
 </main>
 <div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></div></div>
 </section>
-</div><select hidden id="locale" data-i18n-aria="language" aria-label="언어"></select><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/tutorial.js?v=20260925-pawaxe-first-play-pause-v1"></script><script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script><script type="module" src="game.js?v=55&amp;wp-audio=1.0.0&amp;wp-text=pawaxe-20260924-5&amp;wp-build=5e5a42f837e886c5"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script></body></html>
+</div><select hidden id="locale" data-i18n-aria="language" aria-label="언어"></select><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/tutorial.js?v=20260925-pawaxe-first-play-pause-v1"></script><script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script><script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script><script type="module" src="game.js?v=entry-initial-b77f8a383e3f&amp;wp-build=2a424762fb9556ff" data-wp-entry-required=""></script><script src="/src/i18n.js?v=20260721-locale13-1"></script></body></html>

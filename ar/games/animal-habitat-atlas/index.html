@@ -1,8 +1,185 @@
-<!doctype html><html lang="ar" dir="rtl"><head>
+<!doctype html><html lang="ar" dir="rtl" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-habitat-atlas.webp" class="wp-frame-main-flow"><head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/animal-habitat-atlas/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="9"><meta name="weightplay-game-version" content="v13"><meta name="weightplay-game-id" content="animal-habitat-atlas"><meta name="weightplay-scene-controls" content="mutable"><title>أطلس المواطن | WeightPlay</title><meta name="description" content="أنقذ الحيوانات في 60 وادياً. ابن الجسور وأدر المؤن واستفد من انخفاض الماء." /><link rel="canonical" href="https://weightplay.com/ar/games/animal-habitat-atlas/" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-interface-version" content="9"><meta name="weightplay-game-version" content="v14"><meta name="weightplay-game-id" content="animal-habitat-atlas"><meta name="weightplay-scene-controls" content="mutable"><title>أطلس المواطن | WeightPlay</title><meta name="description" content="أنقذ الحيوانات في 60 وادياً. ابن الجسور وأدر المؤن واستفد من انخفاض الماء." /><link rel="canonical" href="https://weightplay.com/ar/games/animal-habitat-atlas/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-habitat-atlas/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-habitat-atlas/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-habitat-atlas/" />
@@ -17,8 +194,8 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-habitat-atlas/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-habitat-atlas/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-habitat-atlas/" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1"><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1"><link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260906-habitat-atlas-main-guide-v7"><link rel="stylesheet" href="../../src/market-five-games.css?v=20260908-habitat-atlas-poster-v8">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required=""><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" data-wp-entry-required=""><link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-page-info.css?v=20260906-habitat-atlas-main-guide-v7" data-wp-entry-required=""><link rel="stylesheet" href="../../src/market-five-games.css?v=20260908-habitat-atlas-poster-v8" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="أطلس المواطن | WeightPlay" />
@@ -58,26 +235,26 @@
   }
 }
     </script>
-  </head>
-<body data-wp-five-game="animal-habitat-atlas" data-wp-market-game="animal-habitat-atlas" data-wp-game-id="animal-habitat-atlas" data-wp-game-version="v13" data-wp-interface-version="9" data-runtime-localize="off" data-wp-combined-sound="true" data-audience="general" data-screen="main" data-wp-game-owned-guide="true">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-wp-five-game="animal-habitat-atlas" data-wp-market-game="animal-habitat-atlas" data-wp-game-id="animal-habitat-atlas" data-wp-game-version="v14" data-wp-interface-version="9" data-runtime-localize="off" data-wp-combined-sound="true" data-audience="general" data-screen="main" data-wp-game-owned-guide="true" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="أطلس المواطن" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل أطلس المواطن…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل أطلس المواطن…" aria-valuetext="جارٍ تحميل أطلس المواطن…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
 <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-m5-title>Habitat Atlas</strong><span>Opening the atlas…</span><div class="loading-track"><i></i></div></div></section>
-<main id="app" data-wp-frame-root>
-  <section id="main-screen" class="screen" data-screen="main">
-    <header id="main-header" class="m5-header" data-wp-shell-header="main">
-      <a class="m5-return" data-wp-return="main" data-m5-aria="backMain" href="/" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <h1 class="m5-title" data-wp-frame-title data-m5-title>أطلس المواطن</h1>
+<main id="app" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+  <section id="main-screen" class="screen" data-screen="main" data-wp-frame-scene="main">
+    <header id="main-header" class="m5-header wp-frame-header" data-wp-shell-header="main" data-wp-frame-header="main">
+      <a class="m5-return wp-frame-return" data-wp-return="main" data-m5-aria="backMain" href="/" aria-label="Back to WeightPlay"><span class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a>
+      <h1 class="m5-title" data-wp-frame-title="" data-m5-title>أطلس المواطن</h1>
       <label class="locale-picker"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">EN</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简中</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">ES</option><option value="pt-BR">PT</option><option value="fr">FR</option><option value="de">DE</option><option value="it">IT</option><option value="ru">RU</option><option value="hi">हिं</option><option value="ar">عر</option></select></label>
     </header>
     <div id="main-content" data-wp-shell-content="main">
-      <section class="main-hero">
-        <img class="m5-cover" data-wp-frame-poster src="assets/animal-habitat-atlas-cover.png" alt="" aria-hidden="true">
-        <div class="main-copy m5-copy" data-wp-frame-copy>
-          <p class="m5-lede" data-m5-lede data-wp-frame-summary>أنقذ الحيوانات في 60 وادياً. ابن الجسور وأدر المؤن واستفد من انخفاض الماء.</p>
-          <p id="main-progress" class="m5-progress" data-wp-frame-progress></p>
+      <section class="main-hero" data-wp-frame-content="main">
+        <img class="m5-cover" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-habitat-atlas.webp" alt="" aria-hidden="true" data-wp-interface7-poster="true" width="1254" height="1254">
+        <div class="main-copy m5-copy" data-wp-frame-copy="">
+          <p class="m5-lede" data-m5-lede data-wp-frame-summary="">أنقذ الحيوانات في 60 وادياً. ابن الجسور وأدر المؤن واستفد من انخفاض الماء.</p>
+          <p id="main-progress" class="m5-progress" data-wp-frame-progress=""></p>
           <button id="start-game" class="m5-primary" data-m5-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button">Start Game</button>
         </div>
       </section>
-      <section class="m5-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-wp-guide-locales="guide-source.mjs#GUIDE_COPY" data-wp-guide-locale="ar" aria-label="Game guide">
+      <section class="m5-guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-wp-guide-locales="guide-source.mjs#GUIDE_COPY" data-wp-guide-locale="ar" aria-label="Game guide" data-wp-entry-guide="">
         <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span data-t="tag0">ترميم</span><span data-t="tag1">إنقاذ</span><span data-t="tag2">المؤن</span></div>
         <h2 data-t="guideLabel">دليل لعبة أطلس المواطن</h2>
         <div class="game-info-section"><h3 data-t="actionsTitle">اختر مربعاً ثم إجراء.</h3><p data-t="rules">رمم المربعات المجاورة لفتح المسارات. الإنقاذ يكلف مؤنة على أرض مرممة واثنتين للطوارئ. المأوى يحمي من العاصفة. التموين يكلف إجراء ويمنح3 مؤن. أنقذ الجميع وحقق هدف الترميم. ثلاث نجوم: إنقاذ آمن وإجراءان متبقيان. المياه المرممة تقلل تكلفة المربع المجاور. من المرحلة 7 يكلف الجسر طقماً واحداً ومؤنتين وإجراءً واحداً. ابنه على فجوة مجاورة. يفتح الطريق لكنه لا يُحسب أرضاً مستصلحة. من المرحلة 31 اختر محطة ضخ مستصلحة. يكلف الضخ مؤنة وإجراءً، ويبقى الماء منخفضاً لعدد الإجراءات التالية المعروض. لا تُصلح الخلايا المغمورة أو تنقذ منها إلا عند انخفاض الماء. تبقى الأرض المستصلحة آمنة. من المرحلة 46 يلغي انخفاض الماء أيضاً تخفيض تكلفة الأرض الوعرة المجاورة للرطبة. قد يوفر إصلاح الطرق الجافة قبل الضخ المؤن.</p><p data-t="recovery">يستهلك كل إجراء صالح دوراً واحداً. أنقذ جميع الحيوانات وحقق هدف الترميم قبل نفاد الأدوار. أثناء الإنقاذ، يعيد التراجع الحالة قبل الإجراء الأخير. بعد النتيجة، تبدأ إعادة المحاولة البعثة نفسها من البداية مع الاحتفاظ بالتقدم المكتمل. أنقذ كل الحيوانات وحقق عدد الأراضي وأكمل المحميات والجسور المحددة. تتطلب ثلاث نجوم إنقاذ حيوانات بصحة باقية على أرض مستصلحة وبقاء إجراءين على الأقل.</p></div>
@@ -128,15 +305,15 @@
 <script src="../../src/i18n.js"></script>
 <script src="../../src/market-five-games-locale.js?v=20261010-habitat-atlas-text-140"></script>
 <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
-<script src="../../src/battle-canvas-standard.js"></script>
-<script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-frame-script data-wp-entry-required=""></script>
+<script src="../../src/battle-canvas-standard.js" data-wp-entry-required=""></script>
+<script src="../../src/game-play-ui.js?v=20261021-shared-play1" data-wp-entry-required=""></script>
 <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
 <script src="/src/edge-guard.js"></script>
-<script src="campaign-copy.js?v=20261026-habitat-stage60-v13&amp;wp-build=55ee5d5c685833b4"></script>
+<script src="campaign-copy.js?v=entry-initial-4453d8d9ea1c&amp;wp-build=55ee5d5c685833b4"></script>
 <script defer data-weightplay-castle-runtime src="/src/weightplay-castle.js?v=20261027-habitat-reward-candidate1"></script>
 <script defer data-wp-analytics-loader src="/src/analytics.js?v=20261027-habitat-reward-candidate1"></script>
-<script defer src="game.js?v=20261027-habitat-reward-candidate2&amp;wp-build=f07f6399d1d281f8"></script>
+<script defer src="game.js?v=entry-initial-bf11c4c10ccc&amp;wp-build=f07f6399d1d281f8" data-wp-entry-required=""></script>
 <script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

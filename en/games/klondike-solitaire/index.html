@@ -162,6 +162,9 @@ html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) 
     const node = event.target;
     if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
     const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
     if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
     failed = true;
     window.__weightPlayGameEntryPendingFailure = gameId;
@@ -255,7 +258,7 @@ html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) 
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v56" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Klondike Solitaire" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Klondike Solitaire…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Klondike Solitaire…" aria-valuetext="Loading Klondike Solitaire…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v56" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Klondike Solitaire" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Klondike Solitaire…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Klondike Solitaire…" aria-valuetext="Loading Klondike Solitaire…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
 <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
       <strong data-klocale="ui.title">Klondike Solitaire</strong>
@@ -405,12 +408,12 @@ html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) 
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3&wp-audio=1.0.0"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261019-klondike-issue-0521-v55" data-wp-entry-required=""></script>
-  <script src="/games/klondike-solitaire/locales.ed96359ee5c32bc9.js?v=20260913-klondike-block-v52"></script>
-  <script src="/games/klondike-solitaire/frame.81d64333162287e7.js?v=entry-pilot-6b923a5d007c" data-wp-entry-required=""></script>
-    <script src="/games/klondike-solitaire/game.349a5bebb6f58135.js?v=entry-pilot-2d2b3c6d87d8" data-wp-entry-required=""></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+  <script src="/games/klondike-solitaire/locales.ed96359ee5c32bc9.js?v=entry-initial-633fce63bcc5"></script>
+  <script src="/games/klondike-solitaire/frame.81d64333162287e7.js?v=entry-initial-6b923a5d007c" data-wp-entry-required=""></script>
+    <script src="/games/klondike-solitaire/game.349a5bebb6f58135.js?v=entry-initial-2d2b3c6d87d8" data-wp-entry-required=""></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard data-wp-entry-required=""></script>
     <script src="../../src/game-page-info.js?v=20261014-guide-related-i9-v1"></script>
-    <script src="/games/klondike-solitaire/analytics-ownership.f9a9f365e40d8a69.js?v=20260913-klondike-block-v52"></script>
+    <script src="/games/klondike-solitaire/analytics-ownership.f9a9f365e40d8a69.js?v=entry-initial-7fc38df321f6"></script>
 </body>
 </html>

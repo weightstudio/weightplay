@@ -1,18 +1,195 @@
 <!doctype html>
-<html lang="ru">
-<head>
+<html lang="ru" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/signal-veil.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/signal-veil/" />
-  <section class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-runtime-localize="off" aria-label="Полное руководство по Signal Veil"><div class="game-info-hero"><div class="game-info-title"><h2>Полное руководство по Signal Veil</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Экшен-RPG</span><span>Детективное приключение</span><span>Исследование с True Vision</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>Мир и расследование</h3><p>Вы играете за лису-следователя Фию, которая ищет источник подозрительного сигнала в связанном мире города, леса и тайных объектов. Опрашивайте свидетелей, раскрывайте маскировку и собирайте улики. Если задание требует доклада, вернитесь к Орле, а не ищите новых врагов. По мере расследования открываются новые пути.</p></section><section class="game-info-section"><h3>Управление и игровой цикл</h3><ol><li>Прочитай текущую цель сверху и исследуй регион.</li><li>Нажми видимую подсказку или E, чтобы говорить, открывать сундуки, читать записи и проходить через врата.</li><li>Повернись к врагу и используй Атаку для волны меча или Навык для дальнего выстрела.</li><li>Включай Истинное зрение у голубых следов, чтобы видеть маскировку, невидимых врагов и пути.</li><li>Заверши цель и отнеси доказательства Орле, когда потребует сюжет.</li></ol><p>На компьютере двигайтесь WASD или стрелками. Space/J — ближняя атака, K — выстрел, V — смена зрения, E — разговор или сундук, Escape — меню. На телефоне используйте джойстик и кнопки атаки, навыка и зрения. Враги патрулируют, преследуют и бьют, а командир меняет приёмы с потерей здоровья. Обычное зрение показывает мир, каким его воспринимают люди. Истинное зрение открывает голубые пути, замаскированных ящеров, невидимых монстров, тайные двери и сокровища. Прототип не тратит ресурс. Стабильный прибор доказывает: они не меняли облик, а вмешивались в человеческое восприятие.</p></section><section class="game-info-section"><h3>Развитие, снаряжение и сложность</h3><p>Начните с бесед и наблюдений, затем сочетайте исследование, бой и нейрозрение. Побеждённые враги дают опыт и улучшают характеристики. Найденное снаряжение можно надевать и снимать в меню. Позже появятся сильные патрули, записи для расшифровки и решения с последствиями. Продолжение исследования после итогов главы возвращает вас к расследованию.</p></section><section class="game-info-section"><h3>Практические советы</h3><ul><li>Следите за зонами тревоги и выманивайте врагов по одному.</li><li>Стреляйте в тяжёлых бойцов и заклинателей.</li><li>Включайте истинное зрение возле голубых искр и подозрительных стен.</li><li>В бою с командиром двигайтесь во время залпов, уходите от рывка и атакуйте в момент оглушения.</li></ul></section><section class="game-info-section"><h3>Заметка разработчика</h3><p>Связанный мир возвращает улики к знакомым людям и местам. Нейрозрение не расходует энергию и помогает замечать скрытые пути и угрозы. Клавиатура и сенсорные кнопки управляют одним приключением. Возвращайтесь в прежние места по заданию и продолжайте с сохранённого прогресса в следующем сеансе.</p></section><section class="game-info-section"><h3>Игрок, устройство и сохранение</h3><p>Аккаунт не нужен. Задания, опыт, уровень, здоровье, снаряжение, сундуки, победы, контрольные точки и решения автоматически сохраняются в браузере. Движение не записывается каждый кадр. Сигнальный якорь за пять алмазов — необязательное постоянное усиление здоровья.</p></section><section class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Истинное зрение расходует энергию?</dt><dd>Нет. После получения линзы можно свободно переключаться и раскрывать врагов, маскировку, пути и сокровища.</dd></div><div><dt>Можно снять снаряжение?</dt><dd>Да. Меню показывает параметры, а снятие не удаляет уже найденный предмет.</dd></div><div><dt>Что будет при поражении Фии?</dt><dd>Фиа возвращается к безопасной точке, сохраняя постоянный прогресс и важные состояния.</dd></div><div><dt>Нужен ли True Vision на каждом пути?</dt><dd>Нет. Включайте его, когда бирюзовые следы, подозрительные диалоги, скрытые маршруты или замаскированные угрозы показывают, что обычного зрения мало.</dd></div><div><dt>Что сохраняется после поражения?</dt><dd>Фиа возвращается к последней безопасной контрольной точке, а постоянные уровни, снаряжение, задания и важные побеждённые цели остаются в локальном сохранении.</dd></div></dl></section><div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><p>Попробуйте другое приключение WeightPlay с наблюдением, маршрутами и понятным восстановлением.</p><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Бамбуковый канал Панко</strong><span>Поворачивайте бамбуковые трубы Панко, проведите воду в каждый участок и оживите рощу.</span></span></a><a class="game-info-related-card" href="/ru/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Погаси свет</strong><span>Переключайте клетку и соседей, чтобы погасить все огни.</span></span></a></div></div></div></section>
+
 <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-  <meta charset="utf-8">
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
-  <meta name="weightplay-game-version" content="v17">
+  <meta name="weightplay-game-version" content="v18">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Опросите свидетелей, выявляйте скрытые угрозы нейрозрением и раскройте тайну сигнала в ходе расследования и сражений." />
   <meta property="og:site_name" content="WeightPlay" />
@@ -71,16 +248,16 @@
   "alternateName": "Signal Veil"
 }
     </script>
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1">
-   <link rel="stylesheet" href="style.css?v=20260827-mobile-movement-surface-v11&amp;wp-build=f11800db52964508">
-  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="">
+   <link rel="stylesheet" href="style.css?v=20260827-mobile-movement-surface-v11&amp;wp-build=f11800db52964508" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="">
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   </head>
-<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-main-start-only="true" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-main-start-only="true" data-wp-combined-sound="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Сигнальная завеса" data-state="loading" data-error-title="Не удалось загрузить игру" data-error-message="Не удалось загрузить некоторые ресурсы. Повторите попытку или вернитесь в лобби." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Загрузка Сигнальная завеса…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Загрузка Сигнальная завеса…" aria-valuetext="Загрузка Сигнальная завеса…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Повторить</button><a class="wp-game-entry-loader-button" href="/ru/">В лобби</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Не удалось загрузить некоторые ресурсы. Повторите попытку или вернитесь в лобби. <a href="/ru/">В лобби</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <span class="atlas-icon icon-device" aria-hidden="true"></span>
@@ -89,32 +266,32 @@
     </div>
   </div>
 
-  <div id="signalFrame" data-wp-frame-root></div>
-  <main id="main" class="screen main-screen" data-screen="main">
-    <header class="main-header wp-shell-header wp-main-shell-header">
-      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Вернуться в WeightPlay">
-        <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
+  <div id="signalFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root=""></div>
+  <main id="main" class="screen main-screen" data-screen="main" data-wp-frame-scene="main">
+    <header class="main-header wp-shell-header wp-main-shell-header wp-frame-header" data-wp-frame-header="main">
+      <a class="lobby-return wp-shell-return wp-frame-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Вернуться в WeightPlay">
+        <span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="/assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26">
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title" data-wp-game-title>Сигнальная Завеса</strong>
+        <strong data-t="title" data-wp-game-title data-wp-frame-title="">Сигнальная Завеса</strong>
       </div>
       <label class="locale-picker">
         <span data-t="language">Язык</span>
         <select id="localeSelect" aria-label="Language"></select>
       </label>
     </header>
-    <section class="main-hero">
-      <img class="main-poster" src="../../assets/interface7-redrawn/signal-veil.webp" alt="Изображение игры «Сигнальная завеса»" data-t-alt="posterAlt">
-      <div class="main-copy">
-        <p class="kicker" data-t="kicker">2042 · ПЕРВЫЙ КОНТАКТ</p>
+    <section class="main-hero" data-wp-frame-content="main">
+      <img class="main-poster" src="/assets/interface7-redrawn/signal-veil.webp" alt="Изображение игры «Сигнальная завеса»" data-t-alt="posterAlt" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster="">
+      <div class="main-copy" data-wp-frame-copy="">
+        <p class="kicker" data-t="kicker" data-wp-frame-summary="">2042 · ПЕРВЫЙ КОНТАКТ</p>
         <h1 data-t="title">Сигнальная Завеса</h1>
         <p class="main-summary" data-t="summary">Опросите свидетелей, выявляйте скрытые угрозы нейрозрением и раскройте тайну сигнала в ходе расследования и сражений.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 57</p>
-        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Начать игру</button>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress="">MISSIONS 0 / 57</p>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start" data-wp-frame-action="primary">Начать игру</button>
       </div>
     </section>
-    </main>
+    </main><section class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-depth="true" data-runtime-localize="off" aria-label="Полное руководство по Signal Veil" data-wp-entry-guide=""><div class="game-info-hero"><div class="game-info-title"><h2>Полное руководство по Signal Veil</h2></div><div class="game-info-tags" data-wp-gameplay-tags="1.3.1"><span>Экшен-RPG</span><span>Детективное приключение</span><span>Исследование с True Vision</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>Мир и расследование</h3><p>Вы играете за лису-следователя Фию, которая ищет источник подозрительного сигнала в связанном мире города, леса и тайных объектов. Опрашивайте свидетелей, раскрывайте маскировку и собирайте улики. Если задание требует доклада, вернитесь к Орле, а не ищите новых врагов. По мере расследования открываются новые пути.</p></section><section class="game-info-section"><h3>Управление и игровой цикл</h3><ol><li>Прочитай текущую цель сверху и исследуй регион.</li><li>Нажми видимую подсказку или E, чтобы говорить, открывать сундуки, читать записи и проходить через врата.</li><li>Повернись к врагу и используй Атаку для волны меча или Навык для дальнего выстрела.</li><li>Включай Истинное зрение у голубых следов, чтобы видеть маскировку, невидимых врагов и пути.</li><li>Заверши цель и отнеси доказательства Орле, когда потребует сюжет.</li></ol><p>На компьютере двигайтесь WASD или стрелками. Space/J — ближняя атака, K — выстрел, V — смена зрения, E — разговор или сундук, Escape — меню. На телефоне используйте джойстик и кнопки атаки, навыка и зрения. Враги патрулируют, преследуют и бьют, а командир меняет приёмы с потерей здоровья. Обычное зрение показывает мир, каким его воспринимают люди. Истинное зрение открывает голубые пути, замаскированных ящеров, невидимых монстров, тайные двери и сокровища. Прототип не тратит ресурс. Стабильный прибор доказывает: они не меняли облик, а вмешивались в человеческое восприятие.</p></section><section class="game-info-section"><h3>Развитие, снаряжение и сложность</h3><p>Начните с бесед и наблюдений, затем сочетайте исследование, бой и нейрозрение. Побеждённые враги дают опыт и улучшают характеристики. Найденное снаряжение можно надевать и снимать в меню. Позже появятся сильные патрули, записи для расшифровки и решения с последствиями. Продолжение исследования после итогов главы возвращает вас к расследованию.</p></section><section class="game-info-section"><h3>Практические советы</h3><ul><li>Следите за зонами тревоги и выманивайте врагов по одному.</li><li>Стреляйте в тяжёлых бойцов и заклинателей.</li><li>Включайте истинное зрение возле голубых искр и подозрительных стен.</li><li>В бою с командиром двигайтесь во время залпов, уходите от рывка и атакуйте в момент оглушения.</li></ul></section><section class="game-info-section"><h3>Заметка разработчика</h3><p>Связанный мир возвращает улики к знакомым людям и местам. Нейрозрение не расходует энергию и помогает замечать скрытые пути и угрозы. Клавиатура и сенсорные кнопки управляют одним приключением. Возвращайтесь в прежние места по заданию и продолжайте с сохранённого прогресса в следующем сеансе.</p></section><section class="game-info-section"><h3>Игрок, устройство и сохранение</h3><p>Аккаунт не нужен. Задания, опыт, уровень, здоровье, снаряжение, сундуки, победы, контрольные точки и решения автоматически сохраняются в браузере. Движение не записывается каждый кадр. Сигнальный якорь за пять алмазов — необязательное постоянное усиление здоровья.</p></section><section class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Истинное зрение расходует энергию?</dt><dd>Нет. После получения линзы можно свободно переключаться и раскрывать врагов, маскировку, пути и сокровища.</dd></div><div><dt>Можно снять снаряжение?</dt><dd>Да. Меню показывает параметры, а снятие не удаляет уже найденный предмет.</dd></div><div><dt>Что будет при поражении Фии?</dt><dd>Фиа возвращается к безопасной точке, сохраняя постоянный прогресс и важные состояния.</dd></div><div><dt>Нужен ли True Vision на каждом пути?</dt><dd>Нет. Включайте его, когда бирюзовые следы, подозрительные диалоги, скрытые маршруты или замаскированные угрозы показывают, что обычного зрения мало.</dd></div><div><dt>Что сохраняется после поражения?</dt><dd>Фиа возвращается к последней безопасной контрольной точке, а постоянные уровни, снаряжение, задания и важные побеждённые цели остаются в локальном сохранении.</dd></div></dl></section><div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><p>Попробуйте другое приключение WeightPlay с наблюдением, маршрутами и понятным восстановлением.</p><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Бамбуковый канал Панко</strong><span>Поворачивайте бамбуковые трубы Панко, проведите воду в каждый участок и оживите рощу.</span></span></a><a class="game-info-related-card" href="/ru/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Погаси свет</strong><span>Переключайте клетку и соседей, чтобы погасить все огни.</span></span></a></div></div></div></section>
 
   <section id="battleShell" class="screen battle-shell" data-screen="battle" data-wp-logical-battle-canvas hidden>
     <div id="battleCanvas" class="battle-canvas">
@@ -213,13 +390,13 @@
   <script src="/src/runtime-locales/ru.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/wallet.js"></script>
-  <script src="locales.js?wp-build=7961b9c742fd0956"></script>
-  <script src="guide-locales.js?wp-build=361fa2cc2f9a0637"></script>
-  <script src="state-store.js?wp-build=dde68c1d083b1126"></script>
-  <script src="quest-data.js?wp-build=c04b4e031681fbc3"></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="frame.js?v=20261021-signal-veil-v17-i9&amp;wp-build=9a18c6f740b4cbee"></script>
-  <script defer src="game.js?v=20261021-signal-veil-v17-i9&amp;wp-audio=1.0.0&amp;wp-build=96641434ac78bd09"></script>
+  <script src="locales.js?v=entry-initial-d059d376e2f3&amp;wp-build=7961b9c742fd0956"></script>
+  <script src="guide-locales.js?v=entry-initial-c1b7648f33be&amp;wp-build=361fa2cc2f9a0637"></script>
+  <script src="state-store.js?v=entry-initial-d845175d39ec&amp;wp-build=dde68c1d083b1126"></script>
+  <script src="quest-data.js?v=entry-initial-99f8196533d4&amp;wp-build=c04b4e031681fbc3"></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+  <script src="frame.js?v=entry-initial-661293b07a7e&amp;wp-build=9a18c6f740b4cbee" data-wp-entry-required=""></script>
+  <script defer src="game.js?v=entry-initial-ffc4f490fb9e&amp;wp-build=70b28c9efe31cf7e" data-wp-entry-required=""></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 </body>
 </html>

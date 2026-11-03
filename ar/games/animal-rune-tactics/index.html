@@ -1,50 +1,194 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-wp-official-name>
-  <head>
+<html lang="ar" dir="rtl" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/animal-rune-tactics-cover.webp" class="wp-frame-main-flow">
+  <head><meta charset="UTF-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}#menuPanel[data-wp-frame-scene="main"] :is(.profile-grid,.mission-list,.hero-upgrade-list,.diamond-card){display:none!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-rune-tactics/" />
-  <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة تكتيكات الرون الحيواني">
 
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2 data-wp-game-title data-runtime-localize="off">تكتيكات الرون الحيواني</h2><p>تكتيكات الرون الحيواني حملة أصلية للاعب واحد تضم 30 مهمة مصممة وثلاثة أبطال حيوانات وستة زعماء. اقرأ التضاريس، وضع حلفاءك في مواقع مناسبة، ونسّق الهجمات على لوحات تتراوح من 6×6 خانات.</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>تمركز فرقة بنظام الأدوار</strong></div><div class="game-info-fact"><span>النوع</span><strong>تكتيك بالأدوار · استراتيجية فرقة · حملة</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>تحدٍّ متدرج</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>العب بوتيرتك</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يعبر الأسد والبومة والسلحفاة ستة فصول، في كل منها خمس مهام. يقدم كل فصل مخاطر وسمات أعداء جديدة قبل زعيم يجمع تلك القواعد.</p>
-<p>ليست خريطة عشوائية لا نهائية. تبقى المهام المفتوحة متاحة لتجربة التشكيلات وتحسين سجل النجوم المحفوظ.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>يستطيع كل بطل التحرك مرة واحدة ثم تنفيذ إجراء قتالي واحد في دور اللاعب. يتحرك الأسد حتى ثلاث خانات، والبومة والسلحفاة حتى خانتين. تتبع الوجهات المضيئة مسارات مسموحة حول الأنقاض والخانات المشغولة. لا تستهلك الحركة الهجوم، لكن الهجوم أو الحراسة أو المهارة ينهي دور ذلك البطل.</p>
-<p>يقصف ممراً بعرض 3 خانات في الاتجاه المختار. يوقف الناجين ولا يصيب الحلفاء. يقصف مساحة 3×3 حول أي خانة. يضع علامة على الناجين ولا يصيب الحلفاء. يضرب كل عدو ضمن خانتين من السلحفاة. يشفي الحلفاء بمقدار 2 ويحجب 2 من الضربة التالية.</p>
-<p>يسمح وجود حليفين على جانبين متقابلين من العدو بالكماشة. تؤثر الدروع والحواجز والأختام وحصانة الطيران في معاينة الضرر. وقد يغير المد والنار ودوران الحلقة الخارجية المواقع الآمنة بعد نهاية الدور.</p>
-<p>تسجل كل مهمة ثلاث نجوم: الفوز، وبقاء الأبطال الثلاثة أحياء، وتحقيق عدد الأدوار المستهدف الظاهر. تمنح كل نجمة جديدة أربع رونات مرة واحدة فقط. لا يلغي فقدان نجمة الفوز، ولا تُدفع مكافأة النجمة المكتسبة سابقًا مرة أخرى.</p>
-<p>ادخل عقدة ذهبية لملء طاقة البطل مرة واحدة.</p>
-<p>في مهام قطع التعزيزات: استولِ على العقدتين لإيقاف التعزيزات ثم اهزم الأعداء الباقين. كل عقدة تملأ الطاقة مرة واحدة. قطع الإمداد يستدعي موجة الحرس الأخيرة. ★ قائد الحرس: +12 صحة و+1 هجوم. ضع علامة ثم أتبعه ببطل آخر.</p>
-<p>تناوب الأبطال في الأفعال يشحن الرنين. عند 3 يضيف هجوم MAP التالي ضررين ويستهلك الشحنة.</p>
-<p>يكلف MAP ثلاث طاقات. كل هزيمة تعيد 1 (بحد أقصى 1 للفعل)، والهجوم والحراسة وكل جولة تعيد 1.</p>
-<p>تصل موجات من 6 أعداء كل جولتين أو بعد إخلاء الميدان. مهام الاجتياح تتطلب هزيمة كل الموجات؛ وفي مهام قطع التعزيزات يمكنك أيضًا أخذ العقدتين وهزيمة الأعداء الباقين.</p>
-<p>يرد العدو الناجي مرة في الجولة ضمن مداه. يوقفه الأسد وتمتص الدروع الرد.</p>
-<p>◎ يتتبع التصويب البطل. اخرج من المدى أو أوقف الرامي أو امتص الإصابة بدرع.</p>
-<p>تُختار الرون الدائمة عند أول انتصار فقط في كل مهمة.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ابدأ اللعبة وتصفح البطاقات، ثم فعّل بطاقة مهمة مفتوحة. اقرأ أولًا معلومات التضاريس والأعداء.</li><li>اختر بطلًا باللمس أو الفأرة، وانقله إلى خانة مضيئة، ثم اختر الهجوم أو الحراسة أو المهارة. تنقل الأسهم التركيز، ويُفعّل Enter أو مفتاح المسافة الخانة.</li><li>تحرك وحدد نطاق MAP ثم أطلق. اقضِ على مجموعات كاملة! يكلف MAP ثلاث طاقات. كل هزيمة تعيد 1 (بحد أقصى 1 للفعل)، والهجوم والحراسة وكل جولة تعيد 1.</li><li>تُختار الرون الدائمة عند أول انتصار فقط في كل مهمة.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>تحرك وحدد نطاق MAP ثم أطلق. اقضِ على مجموعات كاملة!</li><li>استفد من مدى البومة ضد الأعداء الذين يردون على الهجمات القريبة. لا تهدر هجومًا بعيدًا على هدف طائر محصن ضده.</li><li>قد تحافظ الحراسة على نجمة بقاء الجميع. جرّب هدف الأدوار في إعادة لاحقة بدل خسارة مهمة أوشكت على الفوز بها.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تقدم المهام 1–10 التمركز والمسارات المغلقة ودعم الأعداء المتجاورين والهجمات المضادة والجذور. المهمتان 5 و10 مواجهتان مع زعيم.</p>
-<p>تضيف المهام 11–20 إزاحة المد والدفع والتجدد والنار وخانات التبريد. يختبر زعيما المهمتين 15 و20 تلك القرارات.</p>
-<p>تضيف المهام 21–30 الصمت ودوران الحافة والنسخ وامتصاص الطاقة والأختام. يكافئ زعيم المهمة 25 والكيميرا الأخيرة ترتيب الأهداف لا سرعة رد الفعل.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تصل موجات من 6 أعداء كل جولتين أو بعد إخلاء الميدان. مهام الاجتياح تتطلب هزيمة كل الموجات؛ وفي مهام قطع التعزيزات يمكنك أيضًا أخذ العقدتين وهزيمة الأعداء الباقين.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>تُحفظ المهام المفتوحة والنجوم والرونات والنمو والترقيات في هذا المتصفح. قد يؤدي حذف بيانات الموقع أو تغيير المتصفح إلى فقدان التقدم أو فصله. جميع المهام متاحة دون ألماس. إعادة اختيار المكافآت بثلاث ألماسات والتدريب بثماني عشرة ألماسة اختياريان. لا توجد ضمانة لمزامنة سحابية بين الأجهزة.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل أستطيع التحرك ثم الهجوم في الدور نفسه؟</dt><dd>نعم. حرّك البطل أولًا، ثم نفذ هجومًا أو حراسة أو مهارة واحدة. ينهي الإجراء القتالي دور ذلك البطل.</dd></div><div><dt>لماذا لا تتاح المهارة؟</dt><dd>تحقق من الطاقة، وما إذا استُخدم الإجراء القتالي، والصمت. قد يبقى الهجوم العادي أو الحراسة متاحًا.</dd></div><div><dt>هل الضرر المتوقع صفر يعني وجود خطأ؟</dt><dd>ليس بالضرورة. قد تمنع حصانة الطيران أو الحواجز أو الدروع الضرر. غيّر الموقع أو البطل ثم راجع المعاينة.</dd></div><div><dt>هل أحتاج إلى النجوم الثلاث للمتابعة؟</dt><dd>لا. يسمح الفوز بالتقدم دون نجمة البقاء أو الأدوار. أعد المهمة لتحصل فقط على المكافآت التي لم تكسبها.</dd></div><div><dt>هل تعيد المحاولة حذف الترقيات؟</dt><dd>تعيد ضبط تلك المعركة، لا الترقيات المحفوظة. أما حذف تخزين المتصفح فقد يزيل التقدم.</dd></div><div><dt>ماذا يحدث بعد المهمة 30؟</dt><dd>تنتهي الحملة هناك. يمكنك إعادة المهام وتحسين النجوم؛ لا تُنشأ مهمة 31 غير موجودة.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>فرقة الآلية</strong><span>خطط لتشكيل الحيوانات قبل معارك الفرقة التلقائية.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>صيادو الآثار الحيوانية</strong><span>استكشف الغرف واجمع الآثار عبر 30 بعثة.</span></span></a></div></div>
-    </div>
-  </section>
 <script src="/src/game-page-info.js?v=20260908-approved-game-names1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <meta charset="UTF-8" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v37" />
+    <meta name="weightplay-game-version" content="v38" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
@@ -76,23 +220,23 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rune-tactics/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-tactics/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"تكتيكات الرون الحيواني","alternateName":"符文戰棋","url":"https://weightplay.com/ar/games/animal-rune-tactics/","image":"https://weightplay.com/assets/animal-rune-tactics-cover.webp","description":"قد الأسد والبومة والسلحفاة في 30 مهمة بالأدوار، على لوحات من 6×6. استخدم التضاريس وواجه ستة زعماء وطوّر أبطالك.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"ar","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["تكتيك بالأدوار","استراتيجية فرقة","حملة","لعبة متصفح"],"audience":{"@type":"PeopleAudience","suggestedMinAge":13}}</script>
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="style.css?v=20261031-v36-result-save&amp;wp-build=cfde210977477650" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="style.css?v=20261031-v36-result-save&amp;wp-build=cfde210977477650" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
 <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-</head>
-<body data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="animal-rune-tactics" data-wp-game-version="v37" data-wp-interface-version="9">
-    <main class="rune-app" data-runtime-localize="off" data-wp-frame-root data-wp-play-ui="1" data-no-mobile-immersive="true">
-      <header class="topbar">
-        <a id="backBtn" class="back-btn" data-wp-return="main" href="/" aria-label="العودة إلى الردهة"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="animal-rune-tactics" data-wp-game-version="v38" data-wp-interface-version="9" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="تكتيكات الرون الحيواني" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل تكتيكات الرون الحيواني…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل تكتيكات الرون الحيواني…" aria-valuetext="جارٍ تحميل تكتيكات الرون الحيواني…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}html[data-wp-entry-initial] #menuPanel[data-wp-frame-scene="main"] :is(.profile-grid,.mission-list,.hero-upgrade-list,.diamond-card){display:block!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+    <main class="rune-app" data-runtime-localize="off" data-wp-frame-root data-wp-play-ui="1" data-no-mobile-immersive="true" data-wp-frame="2" data-wp-entry-root="">
+      <header class="topbar" hidden="" style=";display:none!important">
+
         <div class="brand">
           <span>WeightPlay</span>
-          <h1 data-ui="title" data-wp-game-title data-runtime-localize="off">تكتيكات الرون الحيواني</h1>
+
         </div>
         <label class="locale">
           <span data-ui="language">اللغة</span>
@@ -109,11 +253,11 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="panel menu-panel" data-wp-main-validation-root>
-        <img class="cover" src="../../assets/animal-rune-tactics-cover.webp" alt="شعار WeightPlay" />
-        <div class="menu-copy">
-          <strong data-ui="menuTitle">قد فرقة الرون.</strong>
-          <span data-ui="menuHint">اختر مهمة، وحرّك أبطال الحيوانات على شبكة الرون، وتغلّب على الأعداء بتمركز ذكي.</span>
+      <section id="menuPanel" class="panel menu-panel" data-wp-main-validation-root data-wp-frame-scene="main"><header data-wp-frame-header="main" class="wp-frame-header"><a id="backBtn" class="back-btn wp-frame-return" data-wp-return="main" href="/" aria-label="العودة إلى الردهة"><span class="wp-frame-back-icon">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26" /></a><h1 data-ui="title" data-wp-game-title data-runtime-localize="off" data-wp-frame-title="">تكتيكات الرون الحيواني</h1></header><div data-wp-frame-content="main">
+        <img class="cover" src="/assets/animal-rune-tactics-cover.webp" alt="شعار WeightPlay" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster="" />
+        <div class="menu-copy" data-wp-frame-copy="">
+          <strong data-ui="menuTitle" hidden="">قد فرقة الرون.</strong>
+          <span data-ui="menuHint" data-wp-frame-summary="">اختر مهمة، وحرّك أبطال الحيوانات على شبكة الرون، وتغلّب على الأعداء بتمركز ذكي.</span><p id="runeMainProgress" data-wp-frame-progress=""></p><button id="mainStartBtn" type="button" class="primary-btn standard-main-start" data-wp-main-start="true" data-wp-frame-action="primary">ابدأ اللعبة</button>
           <div class="profile-grid" aria-live="polite">
             <div><span data-ui="profileLevel">المستوى</span><b id="profileLevel">1</b></div>
             <div><span data-ui="profileXp">الخبرة</span><b id="profileXp">0/100</b></div>
@@ -147,7 +291,40 @@
             <small id="trainingStatus" class="status-line"></small>
           </div>
         </div>
-      </section>
+      </div></section><section class="game-page-info game-page-info-static" aria-label="معلومات لعبة تكتيكات الرون الحيواني" data-wp-entry-guide="">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2 data-wp-game-title data-runtime-localize="off">تكتيكات الرون الحيواني</h2><p>تكتيكات الرون الحيواني حملة أصلية للاعب واحد تضم 30 مهمة مصممة وثلاثة أبطال حيوانات وستة زعماء. اقرأ التضاريس، وضع حلفاءك في مواقع مناسبة، ونسّق الهجمات على لوحات تتراوح من 6×6 خانات.</p></div>
+
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>تمركز فرقة بنظام الأدوار</strong></div><div class="game-info-fact"><span>النوع</span><strong>تكتيك بالأدوار · استراتيجية فرقة · حملة</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>تحدٍّ متدرج</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>العب بوتيرتك</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يعبر الأسد والبومة والسلحفاة ستة فصول، في كل منها خمس مهام. يقدم كل فصل مخاطر وسمات أعداء جديدة قبل زعيم يجمع تلك القواعد.</p>
+<p>ليست خريطة عشوائية لا نهائية. تبقى المهام المفتوحة متاحة لتجربة التشكيلات وتحسين سجل النجوم المحفوظ.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>يستطيع كل بطل التحرك مرة واحدة ثم تنفيذ إجراء قتالي واحد في دور اللاعب. يتحرك الأسد حتى ثلاث خانات، والبومة والسلحفاة حتى خانتين. تتبع الوجهات المضيئة مسارات مسموحة حول الأنقاض والخانات المشغولة. لا تستهلك الحركة الهجوم، لكن الهجوم أو الحراسة أو المهارة ينهي دور ذلك البطل.</p>
+<p>يقصف ممراً بعرض 3 خانات في الاتجاه المختار. يوقف الناجين ولا يصيب الحلفاء. يقصف مساحة 3×3 حول أي خانة. يضع علامة على الناجين ولا يصيب الحلفاء. يضرب كل عدو ضمن خانتين من السلحفاة. يشفي الحلفاء بمقدار 2 ويحجب 2 من الضربة التالية.</p>
+<p>يسمح وجود حليفين على جانبين متقابلين من العدو بالكماشة. تؤثر الدروع والحواجز والأختام وحصانة الطيران في معاينة الضرر. وقد يغير المد والنار ودوران الحلقة الخارجية المواقع الآمنة بعد نهاية الدور.</p>
+<p>تسجل كل مهمة ثلاث نجوم: الفوز، وبقاء الأبطال الثلاثة أحياء، وتحقيق عدد الأدوار المستهدف الظاهر. تمنح كل نجمة جديدة أربع رونات مرة واحدة فقط. لا يلغي فقدان نجمة الفوز، ولا تُدفع مكافأة النجمة المكتسبة سابقًا مرة أخرى.</p>
+<p>ادخل عقدة ذهبية لملء طاقة البطل مرة واحدة.</p>
+<p>في مهام قطع التعزيزات: استولِ على العقدتين لإيقاف التعزيزات ثم اهزم الأعداء الباقين. كل عقدة تملأ الطاقة مرة واحدة. قطع الإمداد يستدعي موجة الحرس الأخيرة. ★ قائد الحرس: +12 صحة و+1 هجوم. ضع علامة ثم أتبعه ببطل آخر.</p>
+<p>تناوب الأبطال في الأفعال يشحن الرنين. عند 3 يضيف هجوم MAP التالي ضررين ويستهلك الشحنة.</p>
+<p>يكلف MAP ثلاث طاقات. كل هزيمة تعيد 1 (بحد أقصى 1 للفعل)، والهجوم والحراسة وكل جولة تعيد 1.</p>
+<p>تصل موجات من 6 أعداء كل جولتين أو بعد إخلاء الميدان. مهام الاجتياح تتطلب هزيمة كل الموجات؛ وفي مهام قطع التعزيزات يمكنك أيضًا أخذ العقدتين وهزيمة الأعداء الباقين.</p>
+<p>يرد العدو الناجي مرة في الجولة ضمن مداه. يوقفه الأسد وتمتص الدروع الرد.</p>
+<p>◎ يتتبع التصويب البطل. اخرج من المدى أو أوقف الرامي أو امتص الإصابة بدرع.</p>
+<p>تُختار الرون الدائمة عند أول انتصار فقط في كل مهمة.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ابدأ اللعبة وتصفح البطاقات، ثم فعّل بطاقة مهمة مفتوحة. اقرأ أولًا معلومات التضاريس والأعداء.</li><li>اختر بطلًا باللمس أو الفأرة، وانقله إلى خانة مضيئة، ثم اختر الهجوم أو الحراسة أو المهارة. تنقل الأسهم التركيز، ويُفعّل Enter أو مفتاح المسافة الخانة.</li><li>تحرك وحدد نطاق MAP ثم أطلق. اقضِ على مجموعات كاملة! يكلف MAP ثلاث طاقات. كل هزيمة تعيد 1 (بحد أقصى 1 للفعل)، والهجوم والحراسة وكل جولة تعيد 1.</li><li>تُختار الرون الدائمة عند أول انتصار فقط في كل مهمة.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>تحرك وحدد نطاق MAP ثم أطلق. اقضِ على مجموعات كاملة!</li><li>استفد من مدى البومة ضد الأعداء الذين يردون على الهجمات القريبة. لا تهدر هجومًا بعيدًا على هدف طائر محصن ضده.</li><li>قد تحافظ الحراسة على نجمة بقاء الجميع. جرّب هدف الأدوار في إعادة لاحقة بدل خسارة مهمة أوشكت على الفوز بها.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تقدم المهام 1–10 التمركز والمسارات المغلقة ودعم الأعداء المتجاورين والهجمات المضادة والجذور. المهمتان 5 و10 مواجهتان مع زعيم.</p>
+<p>تضيف المهام 11–20 إزاحة المد والدفع والتجدد والنار وخانات التبريد. يختبر زعيما المهمتين 15 و20 تلك القرارات.</p>
+<p>تضيف المهام 21–30 الصمت ودوران الحافة والنسخ وامتصاص الطاقة والأختام. يكافئ زعيم المهمة 25 والكيميرا الأخيرة ترتيب الأهداف لا سرعة رد الفعل.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تصل موجات من 6 أعداء كل جولتين أو بعد إخلاء الميدان. مهام الاجتياح تتطلب هزيمة كل الموجات؛ وفي مهام قطع التعزيزات يمكنك أيضًا أخذ العقدتين وهزيمة الأعداء الباقين.</p></div>
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>تُحفظ المهام المفتوحة والنجوم والرونات والنمو والترقيات في هذا المتصفح. قد يؤدي حذف بيانات الموقع أو تغيير المتصفح إلى فقدان التقدم أو فصله. جميع المهام متاحة دون ألماس. إعادة اختيار المكافآت بثلاث ألماسات والتدريب بثماني عشرة ألماسة اختياريان. لا توجد ضمانة لمزامنة سحابية بين الأجهزة.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل أستطيع التحرك ثم الهجوم في الدور نفسه؟</dt><dd>نعم. حرّك البطل أولًا، ثم نفذ هجومًا أو حراسة أو مهارة واحدة. ينهي الإجراء القتالي دور ذلك البطل.</dd></div><div><dt>لماذا لا تتاح المهارة؟</dt><dd>تحقق من الطاقة، وما إذا استُخدم الإجراء القتالي، والصمت. قد يبقى الهجوم العادي أو الحراسة متاحًا.</dd></div><div><dt>هل الضرر المتوقع صفر يعني وجود خطأ؟</dt><dd>ليس بالضرورة. قد تمنع حصانة الطيران أو الحواجز أو الدروع الضرر. غيّر الموقع أو البطل ثم راجع المعاينة.</dd></div><div><dt>هل أحتاج إلى النجوم الثلاث للمتابعة؟</dt><dd>لا. يسمح الفوز بالتقدم دون نجمة البقاء أو الأدوار. أعد المهمة لتحصل فقط على المكافآت التي لم تكسبها.</dd></div><div><dt>هل تعيد المحاولة حذف الترقيات؟</dt><dd>تعيد ضبط تلك المعركة، لا الترقيات المحفوظة. أما حذف تخزين المتصفح فقد يزيل التقدم.</dd></div><div><dt>ماذا يحدث بعد المهمة 30؟</dt><dd>تنتهي الحملة هناك. يمكنك إعادة المهام وتحسين النجوم؛ لا تُنشأ مهمة 31 غير موجودة.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>فرقة الآلية</strong><span>خطط لتشكيل الحيوانات قبل معارك الفرقة التلقائية.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>صيادو الآثار الحيوانية</strong><span>استكشف الغرف واجمع الآثار عبر 30 بعثة.</span></span></a></div></div>
+    </div>
+  </section>
 
       <section id="gamePanel" class="panel game-panel is-hidden">
         <div class="hud">
@@ -229,20 +406,20 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261011-v33-4708c3ed51d2&amp;wp-build=76609307e50888f2"></script>
-    <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27&amp;wp-build=3c9d39d300bbd95a"></script>
-    <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e&amp;wp-build=86a077e65ecaf792"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=entry-initial-4708c3ed51d2&amp;wp-build=76609307e50888f2" data-wp-entry-required=""></script>
+    <script src="/games/animal-rune-tactics/native-locales.js?v=entry-initial-77a554397a27&amp;wp-build=3c9d39d300bbd95a" data-wp-entry-required=""></script>
+    <script src="/games/animal-rune-tactics/mission-locales.js?v=entry-initial-65eb24d7962e&amp;wp-build=86a077e65ecaf792" data-wp-entry-required=""></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ar.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
-<script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+<script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
 <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-<script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261011-v33-7cced709a5c7&amp;wp-build=499139ec1390b691"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261011-v33-c2215269c2d0&amp;wp-build=916c7c72d65f78fa"></script>
-<script src="game.js?v=20261101-v37-hero-confirmation&amp;wp-build=8827c10960af4d3e"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
+<script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=entry-initial-7cced709a5c7&amp;wp-build=499139ec1390b691" data-wp-entry-required=""></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=entry-initial-c2215269c2d0&amp;wp-build=916c7c72d65f78fa" data-wp-entry-required=""></script>
+<script src="game.js?v=entry-initial-c698b36f9068&amp;wp-build=ebf364bb53da6566" data-wp-entry-required=""></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36" data-wp-entry-required=""></script>
     <script>
       (() => {
         const loadGameInfo = () => {

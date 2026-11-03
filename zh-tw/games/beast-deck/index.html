@@ -1,11 +1,188 @@
 <!doctype html>
-<html lang="zh-Hant">
-  <head>
+<html lang="zh-Hant" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/beast-deck.webp" class="wp-frame-main-flow">
+  <head><meta charset="UTF-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/beast-deck/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <meta charset="UTF-8" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-scene-controls" content="immutable" />
@@ -38,12 +215,12 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/beast-deck/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/beast-deck/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-deck/" />
-    <link rel="stylesheet" href="style.css?v=24&amp;wp-build=4e3160f03c822779" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260727-beast-layout3" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=24&amp;wp-build=4e3160f03c822779" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260727-beast-layout3" data-wp-battle-standard data-wp-entry-required="" />
             <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -80,17 +257,17 @@
     </script>
       <meta name="twitter:description" content="《獸王牌組：迷霧森林》是一套以判讀敵人意圖、安排出牌順序為核心的 30 任務回合制牌組戰役。每個任務有三場連續戰鬥；通過前兩場後各選一張本次任務限定卡並恢復部分生命，擊敗第三場才會保存經驗、獸王金幣與下一個任務。六個五關區域依序加入護甲、反擊、疲勞、標記、再生、淨化、虛弱、牌型封印、詛咒與三相結界。第..." />
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
   <meta name="twitter:title" content="獸王牌組：迷霧森林 | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/beast-deck.webp" />
   </head>
-  <body data-screen="main" data-wp-game-owned-guide="true" data-wp-frame-tutorial="true" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active">
-    <main id="main" data-wp-frame-root class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
-      <header class="topbar">
-        <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+  <body data-screen="main" data-wp-game-owned-guide="true" data-wp-frame-tutorial="true" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="獸王牌組：迷霧森林" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入獸王牌組：迷霧森林…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入獸王牌組：迷霧森林…" aria-valuetext="正在載入獸王牌組：迷霧森林…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+    <main id="main" data-wp-frame-root class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920" data-wp-frame="2" data-wp-entry-root="">
+      <header class="topbar wp-frame-header" data-wp-frame-header="main">
+        <a class="icon-btn wp-frame-return" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true" class="wp-frame-back-icon">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" class="wp-frame-lobby-logo" width="26" height="26" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
-          <h1 data-ui="title">獸王牌組：迷霧森林</h1>
+          <h1 data-ui="title" data-wp-frame-title="">獸王牌組：迷霧森林</h1>
         </div>
         <label class="language-picker">
           <span data-ui="language">Language</span>
@@ -113,11 +290,11 @@
       </header>
 
       <section id="menuPanel" class="menu-panel wp-standard-main-screen" data-screen="main">
-        <img class="cover" src="../../assets/interface7-redrawn/beast-deck.webp" alt="《獸王牌組：迷霧森林》遊戲圖片" />
-        <div class="menu-copy">
+        <img class="cover" src="/assets/interface7-redrawn/beast-deck.webp" alt="《獸王牌組：迷霧森林》遊戲圖片" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster="" />
+        <div class="menu-copy" data-wp-frame-copy="">
           <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
           <span class="main-summary" data-ui="menuHint" data-beast-authored-summary="true" data-runtime-localize="off">先看敵人意圖，再分配能量與出牌順序。</span>
-          <button id="mainStartBtn" class="standard-main-start" data-wp-main-start="true" data-ui="startGame" type="button">Start Game</button>
+          <button id="mainStartBtn" class="standard-main-start" data-wp-main-start="true" data-ui="startGame" type="button" data-wp-frame-action="primary">Start Game</button>
 
           <div class="prototype-goals" data-aria="progressTitle" aria-label="Local progress">
             <b data-ui="progressTitle">Local Progress</b>
@@ -320,14 +497,14 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
-    <link rel="stylesheet" href="../../src/game-ui-theme.css" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" />
-    <link rel="stylesheet" href="frame-content.css?v=20260919-block-v21&amp;wp-build=03b112bc4e83ba7d" />
-    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-    <script src="frame.js?v=20260913-frame-v19&amp;wp-build=dba4778ab7c59c62"></script>
-    <script src="cards.js?v=24&amp;wp-build=8154c2e11ad6b1fb"></script>
-    <script src="game.js?v=24&amp;wp-build=d3b00341100abb6d"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+    <link rel="stylesheet" href="../../src/game-ui-theme.css" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="frame-content.css?v=20260919-block-v21&amp;wp-build=03b112bc4e83ba7d" data-wp-entry-required="" />
+    <script src="/src/stage-rail-i9.js?v=entry-initial-a1032a85ebac" data-wp-entry-required=""></script><script src="/src/game-play-ui.js?v=entry-initial-de56fcebbf33" data-wp-entry-required=""></script><script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+    <script src="frame.js?v=entry-initial-268cfcf6c6ce&amp;wp-build=dba4778ab7c59c62" data-wp-entry-required=""></script>
+    <script src="cards.js?v=entry-initial-ad64a79308d1&amp;wp-build=8154c2e11ad6b1fb"></script>
+    <script src="game.js?v=entry-initial-64af89cd41ad&amp;wp-build=24ba584a2ded8a6c" data-wp-entry-required=""></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard data-wp-entry-required=""></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -350,6 +527,6 @@
       })();
     </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off"><div class="game-info-hero"><div class="game-info-title"><h2>獸王牌組：迷霧森林</h2><p>先看敵人意圖，再分配能量與出牌順序。</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>回合制卡牌戰鬥</span><span>敵人意圖判讀</span><span>牌組構築</span><span>Roguelike 策略</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3>怎麼玩</h3><ol><li>選擇已解鎖任務，確認敵人下一步的行動。</li><li>依能量出牌：攻擊、取得格擋或使用輔助效果；先後順序會影響結果。</li><li>結束回合後敵人才行動；未打出的牌會保留在手中。下回合若少於三張才會補抽到三張。戰鬥之間選牌，完成任務後繼續推進。</li></ol></div><div class="game-info-section"><h3>牌組與裝備</h3><p>戰鬥選牌只保留於本次任務。金幣卡包取得永久卡牌或裝備，出發前可配置。詛咒牌要花能量移除；未清除時，每次回合結束都會受傷。 重複卡會強化同名卡，包含起始牌與任務選牌。累積 1／2／4／7／11 張升階。 護甲上限 6；每次攻擊會削薄 1 點。</p></div><div class="game-info-section"><h3>戰役進程</h3><p>每個任務固定包含三場連續戰鬥，第一、第二場結束後各選一張本次任務使用的卡。30 個固定任務分成六個區域，會陸續加入護甲、反擊、疲勞、標記、再生、淨化、虛弱、手牌封印、詛咒與三相結界；區域頭目會改變戰術重點，而不是用隨機路線取代關卡。</p></div><div class="game-info-section"><h3>存檔</h3><p>會，進度與收藏會保存在這台裝置；清除網站資料可能會遺失。 解鎖任務不需要鑽石；迷霧護符與鑽石抽卡都是可選項目。 5 鑽石必得 1 張永久卡，各卡等機率（1/13）。所有卡也可從金幣卡包及任務選牌取得。</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>一個任務有幾場戰鬥？</dt><dd>每個任務有三場戰鬥。完成第一、第二場後，各選一張本次任務限定的選牌再繼續。</dd></div><div><dt>沒有打出的牌會怎樣？</dt><dd>未打出的牌會留在手上；下一回合若少於三張，只會補抽到三張。</dd></div><div><dt>詛咒牌怎麼處理？</dt><dd>移除詛咒要花能量；只要它還留在手上，每回合結束都會造成傷害。</dd></div><div><dt>進度與收藏會保存嗎？</dt><dd>會，進度與收藏會保存在這台裝置；清除網站資料可能會遺失。</dd></div><div><dt>需要鑽石才能解鎖任務嗎？</dt><dd>解鎖任務不需要鑽石；迷霧護符與鑽石抽卡都是可選項目。 5 鑽石必得 1 張永久卡，各卡等機率（1/13）。所有卡也可從金幣卡包及任務選牌取得。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/gin-rummy/"><img src="/assets/interface7-redrawn/gin-rummy.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>金拉米</strong><span>以抽牌、棄牌與組合牌型為核心，重點是降低未成組牌點數。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/speed/"><img src="/assets/interface7-redrawn/speed.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>極速接龍</strong><span>快速出掉手牌的紙牌遊戲，必須掌握相鄰點數與出牌節奏。</span></span></a></div></div></div></section>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-guide-complete="true" data-runtime-localize="off" data-wp-entry-guide=""><div class="game-info-hero"><div class="game-info-title"><h2>獸王牌組：迷霧森林</h2><p>先看敵人意圖，再分配能量與出牌順序。</p></div><div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>回合制卡牌戰鬥</span><span>敵人意圖判讀</span><span>牌組構築</span><span>Roguelike 策略</span></div></div><div class="game-info-sections"><div class="game-info-section"><h3>怎麼玩</h3><ol><li>選擇已解鎖任務，確認敵人下一步的行動。</li><li>依能量出牌：攻擊、取得格擋或使用輔助效果；先後順序會影響結果。</li><li>結束回合後敵人才行動；未打出的牌會保留在手中。下回合若少於三張才會補抽到三張。戰鬥之間選牌，完成任務後繼續推進。</li></ol></div><div class="game-info-section"><h3>牌組與裝備</h3><p>戰鬥選牌只保留於本次任務。金幣卡包取得永久卡牌或裝備，出發前可配置。詛咒牌要花能量移除；未清除時，每次回合結束都會受傷。 重複卡會強化同名卡，包含起始牌與任務選牌。累積 1／2／4／7／11 張升階。 護甲上限 6；每次攻擊會削薄 1 點。</p></div><div class="game-info-section"><h3>戰役進程</h3><p>每個任務固定包含三場連續戰鬥，第一、第二場結束後各選一張本次任務使用的卡。30 個固定任務分成六個區域，會陸續加入護甲、反擊、疲勞、標記、再生、淨化、虛弱、手牌封印、詛咒與三相結界；區域頭目會改變戰術重點，而不是用隨機路線取代關卡。</p></div><div class="game-info-section"><h3>存檔</h3><p>會，進度與收藏會保存在這台裝置；清除網站資料可能會遺失。 解鎖任務不需要鑽石；迷霧護符與鑽石抽卡都是可選項目。 5 鑽石必得 1 張永久卡，各卡等機率（1/13）。所有卡也可從金幣卡包及任務選牌取得。</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>一個任務有幾場戰鬥？</dt><dd>每個任務有三場戰鬥。完成第一、第二場後，各選一張本次任務限定的選牌再繼續。</dd></div><div><dt>沒有打出的牌會怎樣？</dt><dd>未打出的牌會留在手上；下一回合若少於三張，只會補抽到三張。</dd></div><div><dt>詛咒牌怎麼處理？</dt><dd>移除詛咒要花能量；只要它還留在手上，每回合結束都會造成傷害。</dd></div><div><dt>進度與收藏會保存嗎？</dt><dd>會，進度與收藏會保存在這台裝置；清除網站資料可能會遺失。</dd></div><div><dt>需要鑽石才能解鎖任務嗎？</dt><dd>解鎖任務不需要鑽石；迷霧護符與鑽石抽卡都是可選項目。 5 鑽石必得 1 張永久卡，各卡等機率（1/13）。所有卡也可從金幣卡包及任務選牌取得。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/gin-rummy/"><img src="/assets/interface7-redrawn/gin-rummy.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>金拉米</strong><span>以抽牌、棄牌與組合牌型為核心，重點是降低未成組牌點數。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/speed/"><img src="/assets/interface7-redrawn/speed.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>極速接龍</strong><span>快速出掉手牌的紙牌遊戲，必須掌握相鄰點數與出牌節奏。</span></span></a></div></div></div></section>
 </body>
 </html>

@@ -1,12 +1,189 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-wp-official-name><head>
+<html lang="en" dir="ltr" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow"><head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/blade-orbit/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/blade-orbit/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="index,follow"><meta name="weightplay-game-id" content="blade-orbit"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v6"><meta name="weightplay-interface-version" content="9"><meta name="weightplay-scene-controls" content="immutable">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="index,follow"><meta name="weightplay-game-id" content="blade-orbit"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v7"><meta name="weightplay-interface-version" content="9"><meta name="weightplay-scene-controls" content="immutable">
 <title>Blade Orbit | WeightPlay</title><meta name="description" content="Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.">
 <base href="/games/blade-orbit/">
-<script src="/src/game-layout-config.js"></script><script src="/src/weightplay-audio.js"></script><script src="/src/wallet.js"></script>
-<link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/stage-selector-standard.css"><link rel="stylesheet" href="/src/battle-canvas-standard.css"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="/src/stage-rail-i9.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0"><link rel="stylesheet" href="./style.css?v=6&amp;wp-build=8724729d642d3114">
+<script src="/src/game-layout-config.js" data-wp-entry-required=""></script><script src="/src/weightplay-audio.js"></script><script src="/src/wallet.js"></script>
+<link rel="stylesheet" href="/src/game-screen-frame.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/battle-canvas-standard.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/stage-rail-i9.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/virtual-joystick.css?v=1.0.0" data-wp-entry-required=""><link rel="stylesheet" href="./style.css?v=6&amp;wp-build=8724729d642d3114" data-wp-entry-required="">
 <link rel="canonical" href="https://weightplay.com/en/games/blade-orbit/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/blade-orbit/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/blade-orbit/" />
@@ -23,12 +200,12 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/blade-orbit/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/blade-orbit/" />
 <meta data-blade-meta property="og:title" content="Blade Orbit"><meta data-blade-meta property="og:description" content="Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde."><meta data-blade-meta property="og:url" content="https://weightplay.com/en/games/blade-orbit/"><meta data-blade-meta property="og:image" content="https://weightplay.com/games/blade-orbit/assets/poster.webp"><meta data-blade-meta name="twitter:card" content="summary_large_image"><script id="blade-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Blade Orbit","description":"Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.","url":"https://weightplay.com/en/games/blade-orbit/","image":"https://weightplay.com/games/blade-orbit/assets/poster.webp","inLanguage":"en","applicationCategory":"Game","genre":["Action","Survival"],"operatingSystem":"Web browser","isAccessibleForFree":true,"softwareVersion":"v6","publisher":{"@type":"Organization","name":"WeightPlay"}}</script>
-</head><body data-wp-interface-version="9" data-game-version="v6" data-interface-version="9" data-screen="main" data-game-id="blade-orbit" data-wp-game-id="blade-orbit" data-wp-play-ui="1" data-wp-combined-sound="true" data-wp-game-owned-guide>
-<div id="gameFrame" data-wp-frame-root data-runtime-localize="off">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head><body data-wp-interface-version="9" data-game-version="v7" data-interface-version="9" data-screen="main" data-game-id="blade-orbit" data-wp-game-id="blade-orbit" data-wp-play-ui="1" data-wp-combined-sound="true" data-wp-game-owned-guide class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Blade Orbit" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Blade Orbit…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Blade Orbit…" aria-valuetext="Loading Blade Orbit…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-runtime-localize="off" data-wp-frame="2" data-wp-entry-root="">
 <div id="mainGroup">
-<main id="mainScreen"><header><a id="mainReturn" href="/?preview=1" data-wp-return="main" aria-label="Return to lobby">← W</a><h1 data-wp-frame-title data-copy="title">Blade Orbit</h1></header>
-<section class="main-hero wp-standard-main-composition"><img class="main-poster wp-standard-main-poster" data-wp-frame-poster src="./assets/poster.webp" alt="Fia commands orbiting swords against a crystal horde" width="1254" height="1254"><div class="main-copy wp-standard-main-copy"><p data-copy="summary">Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.</p><p id="mainProgress" data-wp-main-progress>Encounter 1 / 30</p><button id="startBtn" data-wp-main-start class="wp-standard-main-start" data-copy="start">Start game</button></div></section></main>
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide><div class="game-info-hero"><h2 data-copy="title">Blade Orbit</h2></div><div class="game-info-facts" id="guideFacts"><div><strong>30</strong><span>encounters</span></div><div><strong>6</strong><span>guardians</span></div><div><strong>3</strong><span>sword paths</span></div><div><strong>45–90</strong><span>second runs</span></div></div><div class="game-info-sections" id="guideSections"><section class="game-info-section"><h3>Collect your power</h3><p>Collect golden blades and caches to expand your orbit. Gather crystals from defeated enemies to earn upgrade choices. Caches arrive in waves. Collect them all, then survive the short final wave.</p></section><section class="game-info-section"><h3>Forge your own orbit</h3><p>Choose speed, power or reach. At level 3 choose Ember, Frost or Storm. Eight blades, Power rank 3 and Speed rank 2 unlock an Awakening choice. From level 4, upgrade cards grant up to two ranks.</p></section><section class="game-info-section"><h3>Controls and victory</h3><p>Drag the shared joystick or use WASD / arrow keys. Space or Dash evades attacks. Read each stage’s survival, cache, beacon, nest or guardian objective.</p></section><section class="game-info-section"><h3>Progress stays with you</h3><p>Clears unlock stages. Settled gold buys permanent training. Run upgrades reset each encounter. The optional 5-diamond Starcrystal Inlay changes appearance only; all stages remain free.</p></section></div><div id="gameGuideFaq"><details><summary>Must I tap to attack?</summary><p>No. Swords orbit and attack automatically. Focus on movement, pickups and upgrade choices.</p></details></div><div id="gameGuideRelated"></div></section>
+<main id="mainScreen" data-wp-frame-scene="main"><header class="wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" href="/?preview=1" data-wp-return="main" aria-label="Return to lobby" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><h1 data-wp-frame-title="" data-copy="title">Blade Orbit</h1></header>
+<section class="main-hero wp-standard-main-composition" data-wp-frame-content="main"><img class="main-poster wp-standard-main-poster" data-wp-frame-poster="" src="./assets/poster.webp" alt="Fia commands orbiting swords against a crystal horde" width="1254" height="1254"><div class="main-copy wp-standard-main-copy" data-wp-frame-copy=""><p data-copy="summary" data-wp-frame-summary="">Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.</p><p id="mainProgress" data-wp-main-progress data-wp-frame-progress="">Encounter 1 / 30</p><button id="startBtn" data-wp-main-start class="wp-standard-main-start" data-copy="start" data-wp-frame-action="primary">Start game</button></div></section></main>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-entry-guide=""><div class="game-info-hero"><h2 data-copy="title">Blade Orbit</h2></div><div class="game-info-facts" id="guideFacts"><div><strong>30</strong><span>encounters</span></div><div><strong>6</strong><span>guardians</span></div><div><strong>3</strong><span>sword paths</span></div><div><strong>45–90</strong><span>second runs</span></div></div><div class="game-info-sections" id="guideSections"><section class="game-info-section"><h3>Collect your power</h3><p>Collect golden blades and caches to expand your orbit. Gather crystals from defeated enemies to earn upgrade choices. Caches arrive in waves. Collect them all, then survive the short final wave.</p></section><section class="game-info-section"><h3>Forge your own orbit</h3><p>Choose speed, power or reach. At level 3 choose Ember, Frost or Storm. Eight blades, Power rank 3 and Speed rank 2 unlock an Awakening choice. From level 4, upgrade cards grant up to two ranks.</p></section><section class="game-info-section"><h3>Controls and victory</h3><p>Drag the shared joystick or use WASD / arrow keys. Space or Dash evades attacks. Read each stage’s survival, cache, beacon, nest or guardian objective.</p></section><section class="game-info-section"><h3>Progress stays with you</h3><p>Clears unlock stages. Settled gold buys permanent training. Run upgrades reset each encounter. The optional 5-diamond Starcrystal Inlay changes appearance only; all stages remain free.</p></section></div><div id="gameGuideFaq"><details><summary>Must I tap to attack?</summary><p>No. Swords orbit and attack automatically. Focus on movement, pickups and upgrade choices.</p></details></div><div id="gameGuideRelated"></div></section>
 </div>
 <section id="stageScreen" hidden><header><button id="stageBackBtn" data-wp-return="stage" aria-label="Return to Main">←</button><span data-wp-frame-title hidden></span></header><div id="stageWorkspace"><div id="stagesPage"><div id="stageRail"></div></div><section id="management" hidden><div id="manageResources" aria-live="polite"></div><div id="manageContent"></div><p id="manageNotice" role="status"></p></section></div><nav data-wp-frame-nav><button id="heroTab" data-wp-frame-action="tab" data-copy="hero">Training</button><button id="stagesTab" data-wp-frame-action="tab" data-copy="stages">Stages</button><button id="gearTab" data-wp-frame-action="tab" data-copy="gear">Equipment</button></nav></section>
 <section id="battleScreen" hidden><header><button id="battleBackBtn" data-wp-return="battle" aria-label="Take a breath">←</button><span data-wp-frame-title hidden></span></header><div id="battleLive"><div id="arena"><div id="arenaHud"><div class="vitality"><span id="healthText">100 / 100</span><div class="meter health"><i id="healthFill"></i></div></div><span id="objective"></span><button id="helpBtn" aria-label="Swordcraft guide" data-wp-joystick-ignore>?</button><div id="xpTrack" class="meter xp"><i id="xpFill"></i></div></div><div id="bossHud" hidden><span id="bossName"></span><div class="meter boss"><i id="bossFill"></i></div></div><div id="worldFeedback" aria-live="polite"></div><div id="floaters" aria-hidden="true"></div><div id="controlHint"></div><button id="dashBtn" data-wp-joystick-ignore><strong data-copy="dash">Dash</strong><span id="dashTime">SPACE</span></button><div id="graphicsError" hidden><p data-copy="graphics">The 3D scene is unavailable. Retry or return safely.</p><button id="graphicsRetry" data-copy="retry">Retry</button><button id="graphicsBack" data-copy="stages">Stages</button></div></div></div>
@@ -36,5 +213,5 @@
 <div id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><section class="result-card"><div class="result-body"><img id="resultIcon" src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt="" width="110" height="110"><p id="resultKicker"></p><h2 id="resultTitle"></h2><div id="resultStars"></div><p id="resultSummary"></p><div id="resultStats"></div><div id="resultGold"></div><p id="resultTip"></p></div><div class="result-actions"><button id="resultStages" data-copy="stages">Stages</button><button id="resultNext" data-copy="next">Next stage</button><button id="resultReplay" data-copy="replay">Replay</button></div></section></div>
 </section></div>
 <div hidden><select id="localeSelect" aria-label="English"><option value="en" selected>English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></div><p id="saveWarning" role="status" hidden></p>
-<script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="/src/stage-rail-i9.js"></script><script src="/src/game-play-ui.js"></script><script src="/src/battle-canvas-standard.js"></script><script src="/src/game-screen-frame.js"></script><script type="module" src="./game.mjs?v=6-public1&amp;wp-build=fa8c7dcbaae8f952"></script>
+<script src="/src/virtual-joystick.js?v=1.0.0"></script><script src="/src/stage-rail-i9.js"></script><script src="/src/game-play-ui.js" data-wp-entry-required=""></script><script src="/src/battle-canvas-standard.js" data-wp-entry-required=""></script><script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script type="module" src="./game.mjs?v=entry-initial-80915451da8e&amp;wp-build=fa8c7dcbaae8f952"></script>
 </body></html>

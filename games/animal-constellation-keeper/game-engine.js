@@ -111,7 +111,7 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v14", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v15", interface_version: 9, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
   const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();

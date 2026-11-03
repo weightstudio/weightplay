@@ -1,10 +1,187 @@
 <!doctype html>
-<html lang="pt-BR">
-  <head>
+<html lang="pt-BR" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-flip-foundry.webp" class="wp-frame-main-flow">
+  <head><meta charset="utf-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/animal-flip-foundry/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
     <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-flip-foundry/" />
@@ -20,25 +197,25 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-flip-foundry/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
-    <meta charset="utf-8" />
-    <meta name="weightplay-game-version" content="v20" />
+
+    <meta name="weightplay-game-version" content="v21" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase." />
     <title>Oficina do Giro | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261027-flip-summary-candidate2&amp;wp-build=889ce451645c120e" />
+    <link rel="stylesheet" href="style.css?v=20261027-flip-summary-candidate2&amp;wp-build=889ce451645c120e" data-wp-entry-required="" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
-    <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
+    <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen data-wp-entry-required="" /><link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide data-wp-entry-required="" /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport data-wp-entry-required="" /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard data-wp-entry-required="" /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard data-wp-entry-required="" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard data-wp-entry-required="" />
     <script defer data-weightplay-castle-runtime src="/src/weightplay-castle.js?v=20261027-flip-reward-candidate1"></script>
     <script defer data-wp-analytics-loader src="/src/analytics.js?v=20261027-flip-reward-candidate1"></script>
-    <script type="module" src="game.js?v=20261030-flip-stage-copy-v20&amp;wp-build=7b212af55f584b10"></script>
+    <script type="module" src="game.js?v=entry-initial-5b6cfc87995c&amp;wp-build=7b212af55f584b10" data-wp-entry-required=""></script>
     <meta property="og:description" content="Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase." />
     <meta name="twitter:description" content="Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase." />
 
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Oficina do Giro | WeightPlay" />
@@ -48,13 +225,13 @@
     <meta name="twitter:title" content="Oficina do Giro | WeightPlay" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Oficina do Giro","alternateName":"Flip Foundry","url":"https://weightplay.com/pt-br/games/animal-flip-foundry/","image":"https://weightplay.com/assets/interface7-redrawn/animal-flip-foundry.webp","description":"Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Lançamento por deslize","Ajuste de força","Arcade de física","Pouso de precisão"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
-  </head>
-  <body data-wp-game-version="v20" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+  <body data-wp-game-version="v21" data-wp-interface-version="9" data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-wp-game-owned-guide data-screen="main" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Oficina do Giro" data-state="loading" data-error-title="Não foi possível carregar o jogo" data-error-message="Alguns recursos não carregaram. Tente novamente ou volte ao lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Carregando Oficina do Giro…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Carregando Oficina do Giro…" aria-valuetext="Carregando Oficina do Giro…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Tentar novamente</button><a class="wp-game-entry-loader-button" href="/pt-br/">Voltar ao lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Alguns recursos não carregaram. Tente novamente ou volte ao lobby. <a href="/pt-br/">Voltar ao lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Oficina do Giro</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-flip-foundry" data-audience="general" data-wp-frame-root>
+    <main id="app" data-game="animal-flip-foundry" data-audience="general" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
       <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
-        <header class="main-header" data-wp-frame-header="main"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-wp-frame-title="" data-five-copy="title">Oficina do Giro</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><div id="main-content" data-wp-frame-content="main"><img class="five-game-cover main-cover" data-wp-frame-poster="" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
-        <div data-wp-frame-copy><p class="lede main-summary" data-wp-frame-summary="">Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.</p>
+        <header class="main-header wp-frame-header" data-wp-frame-header="main"><a class="main-return wp-frame-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26" /></a><h1 class="main-title" data-wp-frame-title="" data-five-copy="title">Oficina do Giro</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><div id="main-content" data-wp-frame-content="main"><img class="five-game-cover main-cover" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-flip-foundry.webp" alt="" aria-hidden="true" data-wp-interface7-poster="true" width="1254" height="1254" />
+        <div data-wp-frame-copy=""><p class="lede main-summary" data-wp-frame-summary="">Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.</p>
         <p id="main-progress" class="progress main-progress" data-wp-frame-progress="" data-wp-main-progress>Best streak: 0</p><button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button></div></div>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png')" hidden data-wp-frame-scene="stage"><header class="stage-header" data-wp-frame-header="stage"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 data-wp-frame-title="">Foundry Chapters</h2></header><div id="stage-content" class="stage-content" data-wp-frame-content="stage"><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div></div><nav class="stage-tabs" data-wp-frame-nav="" aria-label="Stage sections"><button type="button" data-wp-frame-action="tab" aria-current="page">Stages</button></nav></section>
@@ -65,11 +242,11 @@
     <script src="../../src/five-new-games-locale.js?v=20261026-flip-stage60-v18"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Informações de Oficina do Giro">
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard data-wp-entry-required=""></script>
+  <section class="game-page-info game-page-info-static" aria-label="Informações de Oficina do Giro" data-wp-entry-guide="">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Oficina do Giro</h2><p>Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.</p></div>

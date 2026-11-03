@@ -1,11 +1,188 @@
 <!doctype html>
 <!-- Adapted from canonical general-game-interface-v7 scaffold; current shared I9 owns all screen chrome. -->
-<html lang="zh-Hant" data-wp-publication-locale-completion>
-<head>
+<html lang="zh-Hant" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/games/tideweave/assets/cover.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/tideweave/" />
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="tideweave"><meta name="weightplay-game-version" content="v1"><meta name="weightplay-interface-version" content="9">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="tideweave"><meta name="weightplay-game-version" content="v2"><meta name="weightplay-interface-version" content="9">
 <title>潮島織橋 | WeightPlay</title><meta name="description" content="與 Nori 推敲橋數，連起60片原創潮島群。" /><link rel="canonical" href="https://weightplay.com/zh-tw/games/tideweave/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/tideweave/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/tideweave/" />
@@ -22,8 +199,8 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/tideweave/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/tideweave/" />
     <meta property="og:title" content="潮島織橋 | WeightPlay" /><meta property="og:description" content="與 Nori 推敲橋數，連起60片原創潮島群。" /><meta property="og:image" content="https://weightplay.com/games/tideweave/assets/cover.webp" /><meta property="og:type" content="website" /><meta property="og:site_name" content="WeightPlay" /><meta property="og:url" content="https://weightplay.com/zh-tw/games/tideweave/" /><meta name="twitter:card" content="summary_large_image" />
-<link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1"><link rel="stylesheet" href="/src/play-viewport.css"><link rel="stylesheet" href="/games/tideweave/style.css?v=1&amp;wp-build=e683f5be17b7555c">
-<script data-wp-entry-required src="/src/game-layout-config.js"></script><script data-wp-entry-required src="/src/weightplay-audio.js"></script><script data-wp-entry-required src="/src/game-entry-loader.js?v=20261026-audience-back-v1"></script><script data-wp-entry-required src="/src/site-config.js"></script><script data-wp-entry-required src="/src/wallet.js"></script><script data-wp-entry-required src="/src/game-title-registry.js"></script><script data-wp-entry-required src="/src/i18n.js"></script><script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
+<link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/play-viewport.css" data-wp-entry-required=""><link rel="stylesheet" href="/games/tideweave/style.css?v=1&amp;wp-build=e683f5be17b7555c" data-wp-entry-required="">
+<script data-wp-entry-required="" src="/src/game-layout-config.js"></script><script data-wp-entry-required src="/src/weightplay-audio.js"></script><script data-wp-entry-required src="/src/site-config.js"></script><script data-wp-entry-required src="/src/wallet.js"></script><script data-wp-entry-required src="/src/game-title-registry.js"></script><script data-wp-entry-required src="/src/i18n.js"></script><script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -58,16 +235,16 @@
   <meta name="twitter:title" content="潮島織橋 | WeightPlay" />
     <meta name="twitter:description" content="與 Nori 推敲橋數，連起60片原創潮島群。" />
     <meta name="twitter:image" content="https://weightplay.com/games/tideweave/assets/cover.webp" />
-  </head>
-<body data-game-id="tideweave" data-audience="general" data-game-version="v1" data-interface-version="9" data-wp-game-id="tideweave" data-wp-game-version="v1" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true" data-has-stage="true" data-wp-game-age-tags="9,family">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-game-id="tideweave" data-audience="general" data-game-version="v2" data-interface-version="9" data-wp-game-id="tideweave" data-wp-game-version="v2" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true" data-has-stage="true" data-wp-game-age-tags="9,family" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="潮島織橋" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入潮島織橋…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入潮島織橋…" aria-valuetext="正在載入潮島織橋…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
 <section id="comingSoon"><img src="/games/tideweave/assets/cover.webp" width="1254" height="1254" alt="《潮島織橋》遊戲圖片"><h2 data-name data-runtime-localize="off">Tideweave</h2><p data-copy="coming">Coming Soon</p><a href="/en/" data-copy="returnLobby">Return to lobby</a></section>
-<div id="gameFrame" data-wp-frame-root data-wp-play-ui="1" hidden>
-<div id="mainGroup"><main id="mainScreen"><header id="mainHeader"><a id="mainReturn" data-wp-return="main" href="/en/?preview=1" aria-label="Return to lobby">← W</a><h1 data-wp-frame-title data-name data-runtime-localize="off">潮島織橋</h1></header><section id="mainHero"><img class="main-poster" data-wp-frame-poster src="/games/tideweave/assets/cover.webp" width="1254" height="1254" alt="Tideweave"><div data-wp-frame-copy><p data-wp-frame-summary data-copy="summary">Connect islands with single or double bridges. Meet every number and weave one connected network.</p><p id="mainProgress" data-wp-frame-progress>Stage 1 / 60</p><button id="startBtn" data-wp-main-start data-wp-frame-action="primary" data-copy="start" disabled>Start Game</button></div></section></main>
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-guide-locales="copy.mjs#COPY" data-wp-guide-locale="zh-Hant" aria-label="Game guide"><div class="game-info-hero"><h2 data-wp-game-title data-name data-runtime-localize="off">潮島織橋</h2></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="factMechanic">核心玩法</span><strong data-copy="mechanic">連橋邏輯解謎</strong></div><div class="game-info-fact"><span data-copy="stages">關卡</span><strong>60</strong></div><div class="game-info-fact"><span data-copy="factPace">節奏</span><strong data-copy="noTimer">沒有計時</strong></div><div class="game-info-fact"><span data-copy="equipment">橋面外觀</span><strong data-copy="stone">雪松木</strong></div></div><div class="game-info-sections"><article class="game-info-section"><h3 data-copy="goalTitle">遊戲目標</h3><p data-copy="g1">幫 Nori 重新連起潮島群，讓每座島的橋端總數符合島上數字。雙橋會在兩端各算兩個橋端。除了數字正確，所有島嶼也必須屬於同一片相通網路。沒有計時、生命限制或付費解答。</p></article><article class="game-info-section"><h3 data-copy="playTitle">織起航道</h3><p data-copy="g2">先選一座島，再選同行或同列中可見的下一座島；重複選擇會依序循環無橋、單橋、雙橋。不能跨過島嶼，也不能讓橋交叉。鍵盤可用方向鍵移動焦點，Enter或空白鍵選取。撤回免費，提示只指出一條航道，不會替你架橋。</p></article><article class="game-info-section"><h3 data-copy="rulesTitle">規則與操作</h3><p data-copy="g3">可從鄰島較少的位置開始推理，同時替其餘群島保留出口。蘆葦只容許單橋，珊瑚會阻斷航道；藍色潮閘只容許無橋或雙橋。相同紫色標記的航道須有相同橋數，金色岔路封印則恰好使用其中一條。第二章可免費使用海圖釘記錄排除路線。</p></article><article class="game-info-section"><h3 data-copy="finishTitle">完成與返回</h3><p data-copy="g4">檢查會指出尚未符合的可見規則，不會結束遊戲。正確網路呈現完成狀態後才結算；通關、未錯誤檢查、未用提示各得一星。存檔後解鎖下一關，共60關，重玩保留最佳星數。雪松木免費，第30關取得珍珠石；琥珀燈橋以5顆共用鑽石永久取得，解謎規則完全相同。進度只存在本瀏覽器，沒有帳號轉移。</p></article><article class="game-info-section"><h3 data-copy="faqTitle">常見問題</h3><dl><dt data-copy="faqQ1">外觀會改變解法嗎？</dt><dd data-copy="faqA1">不會。外觀只改變樣貌，所有謎題、撤回及提示都免費。</dd><dt data-copy="faqQ2">進度存在哪裡？</dt><dd data-copy="faqA2">存在此瀏覽器。清除網站資料可能失去進度，沒有帳號轉移。</dd></dl></article></div><div id="gameGuideRelated"><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" data-related-game="animal-one-line" href="/zh-tw/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line 一筆到底" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line 一筆到底</strong></span></a></div></div></div></section></div>
+<div id="gameFrame" data-wp-frame-root data-wp-play-ui="1" hidden data-wp-frame="2" data-wp-entry-root="">
+<div id="mainGroup"><main id="mainScreen" data-wp-frame-scene="main"><header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" data-wp-return="main" href="/en/?preview=1" aria-label="Return to lobby" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><h1 data-wp-frame-title="" data-name data-runtime-localize="off">潮島織橋</h1></header><section id="mainHero" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster="" src="/games/tideweave/assets/cover.webp" width="1254" height="1254" alt="Tideweave" data-wp-interface7-poster="true"><div data-wp-frame-copy=""><p data-wp-frame-summary="" data-copy="summary">Connect islands with single or double bridges. Meet every number and weave one connected network.</p><p id="mainProgress" data-wp-frame-progress="">Stage 1 / 60</p><button id="startBtn" data-wp-main-start data-wp-frame-action="primary" data-copy="start" disabled>Start Game</button></div></section></main>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-guide-locales="copy.mjs#COPY" data-wp-guide-locale="zh-Hant" aria-label="Game guide" data-wp-entry-guide=""><div class="game-info-hero"><h2 data-wp-game-title data-name data-runtime-localize="off">潮島織橋</h2></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="factMechanic">核心玩法</span><strong data-copy="mechanic">連橋邏輯解謎</strong></div><div class="game-info-fact"><span data-copy="stages">關卡</span><strong>60</strong></div><div class="game-info-fact"><span data-copy="factPace">節奏</span><strong data-copy="noTimer">沒有計時</strong></div><div class="game-info-fact"><span data-copy="equipment">橋面外觀</span><strong data-copy="stone">雪松木</strong></div></div><div class="game-info-sections"><article class="game-info-section"><h3 data-copy="goalTitle">遊戲目標</h3><p data-copy="g1">幫 Nori 重新連起潮島群，讓每座島的橋端總數符合島上數字。雙橋會在兩端各算兩個橋端。除了數字正確，所有島嶼也必須屬於同一片相通網路。沒有計時、生命限制或付費解答。</p></article><article class="game-info-section"><h3 data-copy="playTitle">織起航道</h3><p data-copy="g2">先選一座島，再選同行或同列中可見的下一座島；重複選擇會依序循環無橋、單橋、雙橋。不能跨過島嶼，也不能讓橋交叉。鍵盤可用方向鍵移動焦點，Enter或空白鍵選取。撤回免費，提示只指出一條航道，不會替你架橋。</p></article><article class="game-info-section"><h3 data-copy="rulesTitle">規則與操作</h3><p data-copy="g3">可從鄰島較少的位置開始推理，同時替其餘群島保留出口。蘆葦只容許單橋，珊瑚會阻斷航道；藍色潮閘只容許無橋或雙橋。相同紫色標記的航道須有相同橋數，金色岔路封印則恰好使用其中一條。第二章可免費使用海圖釘記錄排除路線。</p></article><article class="game-info-section"><h3 data-copy="finishTitle">完成與返回</h3><p data-copy="g4">檢查會指出尚未符合的可見規則，不會結束遊戲。正確網路呈現完成狀態後才結算；通關、未錯誤檢查、未用提示各得一星。存檔後解鎖下一關，共60關，重玩保留最佳星數。雪松木免費，第30關取得珍珠石；琥珀燈橋以5顆共用鑽石永久取得，解謎規則完全相同。進度只存在本瀏覽器，沒有帳號轉移。</p></article><article class="game-info-section"><h3 data-copy="faqTitle">常見問題</h3><dl><dt data-copy="faqQ1">外觀會改變解法嗎？</dt><dd data-copy="faqA1">不會。外觀只改變樣貌，所有謎題、撤回及提示都免費。</dd><dt data-copy="faqQ2">進度存在哪裡？</dt><dd data-copy="faqA2">存在此瀏覽器。清除網站資料可能失去進度，沒有帳號轉移。</dd></dl></article></div><div id="gameGuideRelated"><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-one-line" data-related-game="animal-one-line" href="/zh-tw/games/animal-one-line/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-one-line.webp" data-final-src="/assets/weightplay-logo.png" alt="One Line 一筆到底" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">One Line 一筆到底</strong></span></a></div></div></div></section></div>
 <section id="stageScreen" hidden><header id="stageHeader"><button id="stageBackBtn" data-wp-return="stage" aria-label="Return to game menu">←</button><strong data-wp-frame-title hidden></strong></header><div id="stageWorkspace"><section id="stagePanel"><section id="stagePage"><div id="stageRail"></div></section></section><section id="teamPanel" class="management" hidden><img class="nori-portrait" src="/assets/weightplay-character-bubble-fin-otter-block-v1.webp" width="160" height="160" alt="Nori"><h2 data-copy="team">Nori</h2><p data-copy="g1">Reconnect Nori’s archipelago by meeting the number on every island. A number counts individual bridge ends: two spans to a neighbour count as two at both ends. Every island must belong to the same connected network. There is no timer, life limit or paid solution.</p><strong id="mastery"></strong><p data-copy="g3">Start with an island that has few possible neighbours, then keep an exit for the rest of the network. Reeds allow only one span; coral blocks a route. Blue tide gates allow zero or two. Matching purple marks require equal bridge counts. At a gold fork seal, use exactly one marked route. Chapter two unlocks the free Chart Pin for exclusion notes.</p></section><section id="equipmentPanel" class="management" hidden><h2 data-copy="equipment">Bridge finishes</h2><div class="wallet-row"><img src="/assets/weightplay-diamond.svg" width="24" height="24" alt=""><span data-copy="balance">Diamonds</span><strong id="walletBalance">0</strong></div><div class="skin-options"><button id="chooseStone"><span class="object-icon cedar-icon" aria-hidden="true"></span><span data-copy="stone">Cedar</span></button><button id="chooseMoss"><span class="object-icon pearl-icon" aria-hidden="true"></span><span data-copy="moss">Pearl</span></button><button id="chooseAmber"><span class="object-icon amber-icon" aria-hidden="true"></span><span data-copy="amber">Amber lanterns</span></button></div><p data-copy="g4">Check names a visible rule that is unmet; it never ends the run. A valid network settles before Result. Stars reward completion, no failed Check and no Hint. Saved clears unlock the next of 60 stages; replay keeps your best stars. Cedar is free, Pearl is earned at stage 30, and Amber lanterns cost 5 shared Diamonds permanently. Finishes never change rules. Progress is stored in this browser, without account transfer.</p><p id="ownership"></p><button id="buySkin" data-wp-frame-action="primary" data-copy="buy">Unlock · 5</button></section><p id="managementStatus" role="status" aria-live="polite"></p></div><nav id="stageTabs" data-wp-frame-nav data-wp-frame-stage-nav><button id="tabTeam" data-wp-frame-stage-slot="team" data-wp-frame-action="tab" data-copy="team">Nori</button><button id="tabStages" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-copy="stages">Stages</button><button id="tabEquipment" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" data-copy="equipment">Bridge finishes</button></nav><div id="stageOverlay" class="overlay" role="dialog" aria-modal="true" hidden><div class="modal-card"><h2></h2><div class="modal-body" tabindex="0"></div><div class="modal-actions"></div></div></div></section>
 <section id="battleScreen" hidden data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-battle-min-width="390" data-wp-battle-min-height="844" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390"><header id="battleHeader"><button id="battleBackBtn" data-wp-return="battle" aria-label="Stages">←</button><strong data-wp-frame-title hidden></strong></header><div id="battleLive"><div id="arena"><div id="boardGrid" role="group" dir="ltr"></div><div id="routeMarks" aria-hidden="true"></div><img id="noriCompanion" src="/assets/weightplay-character-bubble-fin-otter-block-v1.webp" width="144" height="144" alt="" aria-hidden="true"></div><div id="controls"><button id="undo" data-copy="undo">Undo</button><button id="hint" data-copy="hint">Hint</button><button id="pin"><span class="object-icon pin-icon" aria-hidden="true"></span><span data-copy="pin">Chart Pin</span></button><button id="check" data-copy="check">Check</button><button id="retry" data-copy="retry">Restart</button><button id="help" data-copy="help">How to play</button></div><p id="status" role="status" aria-live="polite"></p></div><div id="resultPanel" class="overlay" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="modal-card" data-wp-result-card><img src="/assets/weightplay-character-bubble-fin-otter-block-v1.webp" width="112" height="112" alt="" class="result-nori"><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultStages" data-wp-frame-action="secondary" data-copy="stages">Stages</button><button id="resultNext" data-wp-frame-action="primary" data-copy="next">Next stage</button><button id="resultReplay" data-wp-frame-action="secondary" data-copy="replay">Replay</button></div></div></div><div id="battleOverlay" class="overlay" role="dialog" aria-modal="true" hidden><div class="modal-card"><h2></h2><div class="modal-body" tabindex="0"></div><div class="modal-actions"></div></div></div></section>
 </div><div id="statSources" hidden><span id="fillStat" data-wp-frame-stat><span data-copy="filled">Islands</span> <strong id="fillValue">0/16</strong></span><span id="moveStat" data-wp-frame-stat><span data-copy="moves">Moves</span> <strong id="moveValue">0</strong></span></div>
-<script data-wp-entry-required src="/src/stage-rail-i9.js"></script><script data-wp-entry-required src="/src/game-play-ui.js"></script><script data-wp-entry-required src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script><script data-wp-entry-required src="/src/tutorial.js"></script><script type="module" data-wp-entry-required src="/games/tideweave/game.mjs?v=1-public-20261102&amp;wp-build=cd63656158d0fb17"></script>
+<script data-wp-entry-required src="/src/stage-rail-i9.js"></script><script data-wp-entry-required="" src="/src/game-play-ui.js"></script><script data-wp-entry-required="" src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92"></script><script data-wp-entry-required src="/src/tutorial.js"></script><script type="module" data-wp-entry-required="" src="/games/tideweave/game.mjs?v=entry-initial-b3c86ce1b983&amp;wp-build=cd63656158d0fb17"></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>

@@ -1,11 +1,188 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-wp-official-name data-wp-shared-interface="7" data-wp-publication-locale-completion>
-<head>
+<html lang="ar" dir="rtl" data-wp-official-name data-wp-shared-interface="7" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-entry-poster="/assets/interface7-redrawn/animal-tideglass.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/animal-tideglass/">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ضبط مستوى المدّ | WeightPlay</title>
 <meta name="description" content="اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور."><meta name="robots" content="index,follow">
-<meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v8"><meta name="weightplay-interface-version" content="9">
+<meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v9"><meta name="weightplay-interface-version" content="9">
 <meta name="weightplay-text-version" content="1.3.0"><link rel="canonical" href="https://weightplay.com/ar/games/animal-tideglass/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tideglass/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tideglass/">
@@ -26,40 +203,40 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ضبط مستوى المدّ"><meta name="twitter:description" content="اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور."><meta name="twitter:image" content="https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover-v2.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","@id":"https://weightplay.com/ar/games/animal-tideglass/#game","name":"ضبط مستوى المدّ","url":"https://weightplay.com/ar/games/animal-tideglass/","image":"https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover-v2.png","description":"اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور.","inLanguage":"ar","genre":["تقدير بصري","لغز ذاكرة","تدريب الكسور"],"gamePlatform":"Web browser","operatingSystem":"Any","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"numberOfPlayers":{"@type":"QuantitativeValue","value":1}},{"@type":"FAQPage","@id":"https://weightplay.com/ar/games/animal-tideglass/#faq","inLanguage":"ar","mainEntity":[{"@type":"Question","name":"هل خمسة قياسات تعني خمس مراحل؟","acceptedAnswer":{"@type":"Answer","text":"لا. إكمال القياسات الخمسة معًا ينجز مرحلة واحدة فقط."}},{"@type":"Question","name":"هل يجب الإسراع في مراحل الذاكرة؟","acceptedAnswer":{"@type":"Answer","text":"لا. راقب كما تشاء ثم اختر حفظت العلامة. بعدها تختفي العلامة حتى تستخدم تلميحًا أو تكمل القياس."}},{"@type":"Question","name":"لماذا يختلف القرص عن مستوى الماء؟","acceptedAnswer":{"@type":"Answer","text":"تضيف مراحل التصحيح الانحراف بإشارته إلى القرص. لهدف 60% وانحراف +8، اضبط القرص على 52."}}]}]}</script>
 
-<link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1"><link rel="stylesheet" href="/games/animal-tideglass/style.css?v=20261021-tideglass-v6-i9-result-actions1&amp;wp-build=76d0a50a30ea2e55"><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261020-interface9-hidden-actions1"><link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-ui1"><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260925-stage-v7"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1">
-<script defer src="/src/game-layout-config.js?v=20260919-banner1"></script>
+<link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required=""><link rel="stylesheet" href="/games/animal-tideglass/style.css?v=20261021-tideglass-v6-i9-result-actions1&amp;wp-build=76d0a50a30ea2e55" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?v=20261020-interface9-hidden-actions1" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css?v=20261017-shared-play-ui1" data-wp-entry-required=""><link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20260925-stage-v7" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1" data-wp-entry-required="">
+<script defer src="/src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
 <script defer src="/src/weightplay-audio.js?v=1.0.0"></script>
 <script defer src="/src/i18n.js?v=20260721-locale13-1"></script>
 <script defer src="/src/game-title-registry.js?v=20260908-approved-game-names1"></script>
-<script defer src="/games/animal-tideglass/locales.js?v=tideglass-v4&amp;wp-build=309887881b1ff423"></script>
-<script defer src="/games/animal-tideglass/rules.js?v=tideglass-v4&amp;wp-build=566f526c7f6f4233"></script>
-<script defer src="/games/animal-tideglass/motion.js?v=tideglass-v4&amp;wp-build=bfbfb3d602499d1c"></script>
-<script defer src="/games/animal-tideglass/stage-config.js?v=20261020-tideglass-v5-i9-stage-config1&amp;wp-build=2a40d59ab01734f6"></script>
+<script defer src="/games/animal-tideglass/locales.js?v=entry-initial-a063d1600fc8&amp;wp-build=309887881b1ff423" data-wp-entry-required=""></script>
+<script defer src="/games/animal-tideglass/rules.js?v=entry-initial-9dedcfda2f62&amp;wp-build=566f526c7f6f4233" data-wp-entry-required=""></script>
+<script defer src="/games/animal-tideglass/motion.js?v=entry-initial-ddeff7f3e394&amp;wp-build=bfbfb3d602499d1c" data-wp-entry-required=""></script>
+<script defer src="/games/animal-tideglass/stage-config.js?v=entry-initial-9a9b58a21671&amp;wp-build=2a40d59ab01734f6" data-wp-entry-required=""></script>
 <script defer src="/src/stage-rail-i9.js?v=20261017-shared-stage-rail1"></script>
-<script defer src="/src/game-play-ui.js?v=20261017-shared-play-ui1"></script>
-<script defer src="/src/game-screen-frame.js?v=20261019-interface9-settings-locale-adoption-v1"></script>
-<script defer src="/src/battle-canvas-standard.js?v=20261021-tideglass-v6-battle-canvas1"></script>
+<script defer src="/src/game-play-ui.js?v=20261017-shared-play-ui1" data-wp-entry-required=""></script>
+<script defer src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+<script defer src="/src/battle-canvas-standard.js?v=20261021-tideglass-v6-battle-canvas1" data-wp-entry-required=""></script>
 <script defer src="/src/interface7-poster-registry.js?v=20261020-tideglass-i9-related1"></script>
 <script defer src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" charset="utf-8"></script>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 <script defer src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
 <script defer src="/src/analytics.js?v=20260929-block-world-v3"></script>
-<script defer src="/games/animal-tideglass/game.js?v=20261031-tideglass-v8&amp;wp-build=baa8e1c3c4d3d280"></script>
+<script defer src="/games/animal-tideglass/game.js?v=entry-initial-33f52f0115f5&amp;wp-build=baa8e1c3c4d3d280" data-wp-entry-required=""></script>
 <script>window.addEventListener('load',()=>{if(!window.TIDEGLASS_TEST)document.getElementById('loadError').hidden=false;},{once:true});</script>
   <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
-</head>
-<body class="has-game-page-info" data-audience="general" data-wp-game-age-tags="9,family" data-wp-game-id="animal-tideglass" data-wp-game-version="v8" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-screen="main">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body class="has-game-page-info wp-frame-main-active" data-audience="general" data-wp-game-age-tags="9,family" data-wp-game-id="animal-tideglass" data-wp-game-version="v9" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-screen="main"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="ضبط مستوى المدّ" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل ضبط مستوى المدّ…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل ضبط مستوى المدّ…" aria-valuetext="جارٍ تحميل ضبط مستوى المدّ…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">ضبط مستوى المدّ</h1>
-<main id="app" data-wp-frame-root data-wp-play-ui="1">
-<section id="mainView" data-wp-main-validation-root data-screen="main" aria-labelledby="mainTitle">
-<header id="mainHeader"><a href="/ar/" data-wp-return="main" aria-label="WeightPlay">←</a><strong id="mainTitle" data-wp-frame-title data-wp-game-title data-runtime-localize="off">ضبط مستوى المدّ</strong></header>
-<div id="mainContent"><img id="poster" data-wp-frame-poster src="/games/animal-tideglass/assets/animal-tideglass-cover-v2.png" alt="ضبط مستوى المدّ" width="1254" height="1254" fetchpriority="high">
-<div data-wp-frame-copy><p data-wp-frame-summary>اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور.</p><p id="mainProgress" data-wp-frame-progress>اكتملت 0/30 مرحلة</p><button type="button" id="startBtn" data-wp-frame-action="primary" disabled>ابدأ اللعب</button></div></div>
+<main id="app" data-wp-frame-root data-wp-play-ui="1" data-wp-frame="2" data-wp-entry-root="">
+<section id="mainView" data-wp-main-validation-root data-screen="main" aria-labelledby="mainTitle" data-wp-frame-scene="main">
+<header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main"><a href="/ar/" data-wp-return="main" aria-label="WeightPlay" class="wp-frame-return">←<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><strong id="mainTitle" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">ضبط مستوى المدّ</strong></header>
+<div id="mainContent" data-wp-frame-content="main"><img id="poster" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-tideglass.webp" alt="ضبط مستوى المدّ" width="1254" height="1254" fetchpriority="high" data-wp-interface7-poster="true">
+<div data-wp-frame-copy=""><p data-wp-frame-summary="">اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور.</p><p id="mainProgress" data-wp-frame-progress="">اكتملت 0/30 مرحلة</p><button type="button" id="startBtn" data-wp-frame-action="primary" disabled>ابدأ اللعب</button></div></div>
 </section></main>
 <select id="localeSelect" hidden aria-hidden="true" tabindex="-1"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar" selected>العربية</option></select>
 <p id="loadError" role="alert" hidden>تعذر تحميل اللعبة. أعد تحميل الصفحة.</p>
 <noscript><p>اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور.</p></noscript>
-<section id="gameGuide" class="game-page-info game-page-info-static tg-guide" data-wp-game-guide data-wp-guide-complete="true" data-wp-text-version="1.3.0" data-runtime-localize="off" aria-labelledby="guideTitle">
+<section id="gameGuide" class="game-page-info game-page-info-static tg-guide" data-wp-game-guide data-wp-guide-complete="true" data-wp-text-version="1.3.0" data-runtime-localize="off" aria-labelledby="guideTitle" data-wp-entry-guide="">
 <div class="game-info-hero"><div class="game-info-title"><h2 id="guideTitle" data-wp-game-title>ضبط مستوى المدّ</h2><p>اضبط كؤوس المدّ المتحركة بالملاحظة والذاكرة وتصحيح المقياس والمستويات المتكاملة والكسور.</p></div></div><div class="game-info-tags"><span>تقدير بصري</span><span>لغز ذاكرة</span><span>تدريب الكسور</span></div>
 <div class="game-info-sections">
 <section class="game-info-section"><h3>عن اللعبة</h3><p>ساعد Nori على فحص مقاييس الشعاب. هذا لغز ملاحظة وأرقام، وليس توقعًا حقيقيًا للمدّ أو لعبة فرز سوائل. يقدم كل فصل طريقة مختلفة للتفكير قبل تثبيت القياس.</p></section>

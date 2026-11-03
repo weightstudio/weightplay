@@ -1,11 +1,188 @@
 <!doctype html>
-<html lang="es" data-wp-official-name>
-<head>
+<html lang="es" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-word-trails.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-word-trails/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
     <link rel="canonical" href="https://weightplay.com/es/games/animal-word-trails/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-word-trails/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-word-trails/" />
@@ -21,7 +198,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-word-trails/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-word-trails/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-word-trails/" />
-    <meta charset="utf-8">
+
   <meta name="weightplay-audience" content="kids">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow" />
@@ -38,35 +215,35 @@
   <meta name="twitter:description" content="Explora 60 senderos de palabras con puentes de hojas, grupos de animales y naturaleza y hojas comodín." />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-word-trails.webp" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Senderos de palabras","description":"Explora 60 senderos de palabras con puentes de hojas, grupos de animales y naturaleza y hojas comodín.","url":"https://weightplay.com/es/games/animal-word-trails/","image":"https://weightplay.com/assets/animal-word-trails-cover.webp","genre":["Puzle de rutas de palabras","Pistas de animales","Práctica de lectura"],"inLanguage":"es","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","suggestedMinAge":9},"alternateName":"Word Trails"}</script>
-  <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
-  <link rel="stylesheet" href="../../src/play-viewport.css">
-  <link rel="stylesheet" href="style.css?v=20261028-word-trails-v6-save8&amp;wp-build=ed9fd93588ad3652">
-  <link rel="stylesheet" href="stage60.css?v=20261027-word-trails-v6&amp;wp-build=f23e17bff022e3c9">
-  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20260923-play-header48">
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1">
-  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-shared-play1"><meta name="weightplay-game-version" content="v6">
+  <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="style.css?v=20261028-word-trails-v6-save8&amp;wp-build=ed9fd93588ad3652" data-wp-entry-required="">
+  <link rel="stylesheet" href="stage60.css?v=20261027-word-trails-v6&amp;wp-build=f23e17bff022e3c9" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20260923-play-header48" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261021-shared-play1" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/stage-rail-i9.css?v=20261021-stage-rail-i9" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261021-shared-play1" data-wp-entry-required=""><meta name="weightplay-game-version" content="v7">
   <meta name="weightplay-interface-version" content="9">
 
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="loading" data-audience="kids" data-wp-game-id="animal-word-trails" data-wp-game-version="v6" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-combined-sound="true" data-runtime-localize="off">
-  <main id="app" class="game-frame word-trails" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off">
-    <div id="mainGroup" class="main-group" data-screen="main" hidden>
-      <header id="mainHeader" class="main-header">
-        <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span></a>
-        <h1 id="gameTitle" data-copy="title" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Senderos de palabras</h1>
+<body data-screen="loading" data-audience="kids" data-wp-game-id="animal-word-trails" data-wp-game-version="v7" data-wp-interface-version="9" data-wp-play-ui="1" data-wp-combined-sound="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Senderos de palabras" data-state="loading" data-error-title="No se pudo cargar el juego" data-error-message="No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Cargando Senderos de palabras…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Cargando Senderos de palabras…" aria-valuetext="Cargando Senderos de palabras…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Reintentar</button><a class="wp-game-entry-loader-button" href="/es/">Volver al lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby. <a href="/es/">Volver al lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <main id="app" class="game-frame word-trails" data-wp-frame-root data-wp-main-validation-root data-runtime-localize="off" data-wp-frame="2" data-wp-entry-root="">
+    <div id="mainGroup" class="main-group" data-screen="main" hidden data-wp-frame-scene="main">
+      <header id="mainHeader" class="main-header wp-frame-header" data-wp-frame-header="main">
+        <a id="homeLink" class="home-link wp-frame-return" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a>
+        <h1 id="gameTitle" data-copy="title" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">Senderos de palabras</h1>
         <label class="locale-control"><span class="sr-only" data-copy="language">Language</span><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section id="mainContent" class="main-content" data-wp-frame-content="main">
-        <img id="mainPoster" class="main-poster" data-wp-frame-poster src="../../assets/animal-word-trails-cover.webp" alt="Imagen del juego Senderos de palabras" draggable="false">
-          <div class="main-copy" data-wp-frame-copy>
-            <p class="eyebrow" data-copy="guideTitle">A calm reading puzzle</p>
+        <img id="mainPoster" class="main-poster" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-word-trails.webp" alt="Imagen del juego Senderos de palabras" draggable="false" data-wp-interface7-poster="true" width="1254" height="1254">
+          <div class="main-copy" data-wp-frame-copy="">
+            <p class="eyebrow" data-copy="guideTitle" data-wp-frame-summary="">A calm reading puzzle</p>
             <p id="mainSummary" class="main-summary" data-copy="intro" data-wp-frame-summary>Follow animal clues and connect a word path.</p>
-            <p id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-frame-progress role="status" aria-live="polite"></p>
+            <p id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-frame-progress="" role="status" aria-live="polite"></p>
             <button id="start" class="primary-action" type="button" data-copy="start" data-wp-main-start data-wp-frame-action="primary">Start trail</button>
           </div>
 
@@ -121,7 +298,7 @@
   <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script type="application/json" data-wp-animal-word-trails-guide>{"locale":"es","copy":{"intro":"Explora 60 senderos y une letras o caracteres vecinos para encontrar palabras.","systems":["Toca las casillas una a una y comprueba la palabra. Si al arrastrar añades al menos dos casillas, se envía automáticamente al soltar. Deshacer quita la última casilla; Borrar limpia el camino.","También puedes unir casillas en diagonal, sin repetir una casilla en la misma palabra.","Coloca el puente de hojas en un solo hueco elegido cada vez.","Sigue el orden de los grupos o elige el primero cuando puedas; termínalo antes de pasar al siguiente.","La hoja comodín se puede reutilizar y representa un carácter completo de la palabra elegida. Usa como máximo una por palabra.","Usar pistas puede reducir las estrellas que ganas.","En el sendero 5, elige la palabra que quieres buscar antes de conectar las casillas.","En el sendero 10, encuentra las palabras de hábitats en el orden mostrado."],"progression":["Encuentra cuatro palabras para completar cada sendero y abrir el siguiente. El sendero 60 es el último.","No hay límite de tiempo. Los avances, las estrellas y las tarjetas se guardan en este navegador."],"designNote":"Cada sendero tiene cuatro palabras. Más adelante aparecen puentes, orden de grupos y hojas comodín.","parent":"Este puzle de lectura Kids no tiene anuncios ni requiere cuenta. El progreso y los registros se guardan en este navegador y pueden perderse al borrar los datos del sitio. Es una actividad de práctica y entretenimiento, no una evaluación formal. Si el navegador no puede guardar datos, puedes seguir jugando ahora, pero el progreso podría perderse al salir.","metaDescription":"Explora 60 senderos de palabras con puentes de hojas, grupos de animales y naturaleza y hojas comodín.","text140Tags":["Puzle de rutas de palabras","Pistas de animales","Práctica de lectura"],"gameplay":"Puzle de rutas de palabras","genre":["Palabras","Lectura","Animales"],"story":["Acompaña al león guía y reúne pistas de animales y hábitats para el álbum."],"how":["Elige un sendero desbloqueado y busca sus cuatro palabras.","Une casillas vecinas, también en diagonal, sin repetir una en la misma palabra.","Cuando haya un puente de hojas, muévelo al hueco que quieras cruzar.","Sigue el orden de los grupos y elige una palabra antes de usar una hoja comodín."],"strategyTips":["Mira los objetivos antes de trazar.","Mueve el puente si necesitas cruzar otro hueco.","Elige la palabra y usa como máximo una hoja comodín en su camino."],"faq":[["¿Cuántos senderos hay?","Hay 60, con cuatro palabras objetivo en cada uno."],["¿Cómo funciona el puente de hojas?","Cruza un hueco elegido a la vez y se puede mover."],["¿Cómo funciona la hoja comodín?","Sustituye un carácter completo de la palabra elegida y puede volver a usarse en otra palabra."],["¿Hay anuncios y dónde se guarda el progreso?","No hay anuncios. El progreso y las tarjetas se guardan en este navegador."]],"difficulty":"Fácil a moderada","time":"2-5 minutos por sendero","skills":["Comprensión lectora","Concentración","Lógica"]}}</script>
-  <section class="game-page-info game-page-info-static" aria-label="Información de Senderos de palabras">
+  <section class="game-page-info game-page-info-static" aria-label="Información de Senderos de palabras" data-wp-entry-guide="">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Senderos de palabras</h2><p>Explora 60 senderos y une letras o caracteres vecinos para encontrar palabras.</p></div>
@@ -146,15 +323,15 @@
       <div class="game-info-section"><h3>Nota de diseño</h3><p>Cada sendero tiene cuatro palabras. Más adelante aparecen puentes, orden de grupos y hojas comodín.</p></div>
       <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Este puzle de lectura Kids no tiene anuncios ni requiere cuenta. El progreso y los registros se guardan en este navegador y pueden perderse al borrar los datos del sitio. Es una actividad de práctica y entretenimiento, no una evaluación formal. Si el navegador no puede guardar datos, puedes seguir jugando ahora, pero el progreso podría perderse al salir.</p></div>
       <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántos senderos hay?</dt><dd>Hay 60, con cuatro palabras objetivo en cada uno.</dd></div><div><dt>¿Cómo funciona el puente de hojas?</dt><dd>Cruza un hueco elegido a la vez y se puede mover.</dd></div><div><dt>¿Cómo funciona la hoja comodín?</dt><dd>Sustituye un carácter completo de la palabra elegida y puede volver a usarse en otra palabra.</dd></div><div><dt>¿Hay anuncios y dónde se guarda el progreso?</dt><dd>No hay anuncios. El progreso y las tarjetas se guardan en este navegador.</dd></div></dl></div>
-      
+
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20261027-animal-word-trails-text-v6"></script>
   <script src="../../src/stage-rail-i9.js?v=20261021-stage-rail-i9"></script>
-  <script src="../../src/game-play-ui.js?v=20261021-shared-play1"></script>
-  <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
-  <script src="stage60-data.js?v=20261027-word-trails-v6&amp;wp-build=026a6b5592d136e7"></script>
-  <script src="stage60-rules.js?v=20261027-word-trails-v6&amp;wp-build=e835c4ad7879828e"></script>
-  <script src="stage60-copy.js?v=20261027-word-trails-v6&amp;wp-build=f12e5add0b150012"></script>
-  <script src="game.js?v=20261028-word-trails-v6-progress-hint-save8&amp;wp-build=3491c83adbb43c96"></script>
+  <script src="../../src/game-play-ui.js?v=20261021-shared-play1" data-wp-entry-required=""></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
+  <script src="stage60-data.js?v=entry-initial-c1e9373ab1f6&amp;wp-build=026a6b5592d136e7"></script>
+  <script src="stage60-rules.js?v=entry-initial-48bedcc55fa8&amp;wp-build=e835c4ad7879828e"></script>
+  <script src="stage60-copy.js?v=entry-initial-dcb2550977d4&amp;wp-build=f12e5add0b150012"></script>
+  <script src="game.js?v=entry-initial-67f8c09af441&amp;wp-build=3491c83adbb43c96" data-wp-entry-required=""></script>
 </body>

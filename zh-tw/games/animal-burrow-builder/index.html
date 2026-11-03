@@ -1,13 +1,190 @@
 <!doctype html>
-<html lang="zh-Hant">
-<head>
+<html lang="zh-Hant" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-burrow-builder.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/animal-burrow-builder/" />
-  <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v11">
+  <meta name="weightplay-game-version" content="v12">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="蓋一座小小的家，裝下整座森林的溫暖。" />
   <title>地穴建造隊 | WeightPlay</title>
@@ -28,21 +205,21 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-burrow-builder/" />
     <script src="/src/weightplay-audio.js?v=1.0.0&amp;burrow=v7"></script>
   <script src="/src/wallet.js"></script>
-  <script src="/src/game-layout-config.js?v=20260919-banner1"></script>
-  <link rel="stylesheet" href="/src/game-page-info.css?v=20261022-burrow-v7">
-  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-burrow-v7">
-  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261022-burrow-v7">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261022-burrow-v7">
-  <link rel="stylesheet" href="/games/animal-burrow-builder/style.css?v=20261027-burrow-hillside-candidate4&amp;wp-build=79867a5aba5e4ce0">
+  <script src="/src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20261022-burrow-v7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-burrow-v7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css?v=20261022-burrow-v7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261022-burrow-v7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/animal-burrow-builder/style.css?v=20261027-burrow-hillside-candidate4&amp;wp-build=79867a5aba5e4ce0" data-wp-entry-required="">
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" defer></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" defer data-wp-entry-required=""></script>
   <script src="/src/stage-rail-i9.js?v=20261022-burrow-v7" defer></script>
-  <script src="/src/game-play-ui.js?v=20261022-burrow-v7" defer></script>
-  <script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
+  <script src="/src/game-play-ui.js?v=20261022-burrow-v7" defer data-wp-entry-required=""></script>
+  <script src="/src/shared-interface-bootstrap.js?v=entry-initial-ab88a718ecc9" data-wp-shared-interface="7"></script>
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
   <script src="/src/analytics.js?v=20260929-block-world-v3"></script>
-  <script type="module" src="/games/animal-burrow-builder/game.js?v=20261102-burrow-v11&amp;wp-build=8bc0988ad1e09837"></script>
+  <script type="module" src="/games/animal-burrow-builder/game.js?v=entry-initial-7e11ed2eeec9&amp;wp-build=8bc0988ad1e09837" data-wp-entry-required=""></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="地穴建造隊 | WeightPlay" />
@@ -84,22 +261,22 @@
   }
 }
     </script>
-  </head>
-<body data-wp-game-id="animal-burrow-builder" data-wp-interface-version="9" data-wp-play-ui="1">
-<main id="app" data-wp-frame-root>
-  <section id="mainView" class="main-screen" data-screen="main" aria-labelledby="mainTitle">
-    <header id="mainHeader"><a data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>←</span></a><strong data-wp-frame-title data-copy="title">地穴建造隊</strong></header>
-    <div id="mainContent">
-      <img data-wp-frame-poster class="main-poster" src="/assets/interface7-redrawn/animal-burrow-builder.webp" width="1254" height="1254" alt="" fetchpriority="high">
-      <div data-wp-frame-copy>
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-wp-game-id="animal-burrow-builder" data-wp-interface-version="9" data-wp-play-ui="1" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="地穴建造隊" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入地穴建造隊…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入地穴建造隊…" aria-valuetext="正在載入地穴建造隊…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<main id="app" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+  <section id="mainView" class="main-screen" data-screen="main" aria-labelledby="mainTitle" data-wp-frame-scene="main">
+    <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main"><a data-wp-return="main" href="/" aria-label="Back to WeightPlay" class="wp-frame-return"><span class="wp-frame-back-icon">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><strong data-wp-frame-title="" data-copy="title">地穴建造隊</strong></header>
+    <div id="mainContent" data-wp-frame-content="main">
+      <img data-wp-frame-poster="" class="main-poster" src="/assets/interface7-redrawn/animal-burrow-builder.webp" width="1254" height="1254" alt="" fetchpriority="high" data-wp-interface7-poster="true">
+      <div data-wp-frame-copy="">
         <h1 id="mainTitle" class="main-copy-title" data-copy="title">地穴建造隊</h1>
-        <p data-wp-frame-summary data-copy="subtitle">蓋一座小小的家，裝下整座森林的溫暖。</p>
-        <div data-wp-frame-progress><span id="mainProgress"></span></div>
+        <p data-wp-frame-summary="" data-copy="subtitle">蓋一座小小的家，裝下整座森林的溫暖。</p>
+        <div data-wp-frame-progress=""><span id="mainProgress"></span></div>
         <button id="startButton" data-wp-main-start data-wp-frame-action="primary" data-copy="start" type="button" disabled>開始遊戲</button>
       </div>
     </div>
   </section>
-  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" aria-label="地穴建造隊 · 遊戲說明"><details><summary>遊戲說明</summary><div class="game-info-hero"><div class="game-info-title"><h2>地穴建造隊</h2><p>蓋一座小小的家，裝下整座森林的溫暖。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>關卡</span><strong>30 個手製關卡 · 不限時間</strong></div><div class="game-info-fact"><span>三顆星目標</span><strong>90 ★</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>遊戲說明</h3><div id="guideCopy"><p>每個新房間都必須透過上下左右相連，接到入口。通道較便宜，也能補差價升級成房間。</p><p>儲藏室必須緊鄰臥室，才能供應食物。花圃要靠著溪流，水上只能建橋；育幼室必須緊鄰臥室。</p><p>完成入住清單後，按「邀請入住」。在水晶格建造、達成省材目標，各可多得一顆星。復原、重建與提示都免費，不消耗鑽石。</p><p>方向鍵移動 · Enter 建造 · 1–6 選工具 · Z 復原</p></div></div><div class="game-info-section"><h3>三顆星目標</h3><ul><li>完成入住清單</li><li>達成省材目標</li><li>挖出水晶</li></ul></div><div class="game-info-section"><h3>工坊</h3><p>永久解鎖本遊戲的淡紫色燈籠外觀，僅改變裝飾。從共用錢包扣除 12 顆鑽石。</p></div><div class="game-info-section"><h3>已完成家園</h3><dl><dt>已完成家園</dt><dd>已完成的家園、星星與燈籠外觀會保存在這個瀏覽器。離開未完成的建造會重新開始，不需要帳號。</dd></dl></div><div data-wp-guide-related hidden></div></div></details></section>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" aria-label="地穴建造隊 · 遊戲說明" data-wp-entry-guide=""><details><summary>遊戲說明</summary><div class="game-info-hero"><div class="game-info-title"><h2>地穴建造隊</h2><p>蓋一座小小的家，裝下整座森林的溫暖。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>關卡</span><strong>30 個手製關卡 · 不限時間</strong></div><div class="game-info-fact"><span>三顆星目標</span><strong>90 ★</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>遊戲說明</h3><div id="guideCopy"><p>每個新房間都必須透過上下左右相連，接到入口。通道較便宜，也能補差價升級成房間。</p><p>儲藏室必須緊鄰臥室，才能供應食物。花圃要靠著溪流，水上只能建橋；育幼室必須緊鄰臥室。</p><p>完成入住清單後，按「邀請入住」。在水晶格建造、達成省材目標，各可多得一顆星。復原、重建與提示都免費，不消耗鑽石。</p><p>方向鍵移動 · Enter 建造 · 1–6 選工具 · Z 復原</p></div></div><div class="game-info-section"><h3>三顆星目標</h3><ul><li>完成入住清單</li><li>達成省材目標</li><li>挖出水晶</li></ul></div><div class="game-info-section"><h3>工坊</h3><p>永久解鎖本遊戲的淡紫色燈籠外觀，僅改變裝飾。從共用錢包扣除 12 顆鑽石。</p></div><div class="game-info-section"><h3>已完成家園</h3><dl><dt>已完成家園</dt><dd>已完成的家園、星星與燈籠外觀會保存在這個瀏覽器。離開未完成的建造會重新開始，不需要帳號。</dd></dl></div><div data-wp-guide-related hidden></div></div></details></section>
   <section id="stageView" data-screen="stage" data-wp-frame-play-fill data-wp-stage-art="/assets/interface7-redrawn/animal-burrow-builder.webp" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-burrow-builder.webp')" hidden>
     <header id="stageHeader"><button data-wp-return="stage" type="button" data-copy-aria="back"><span>←</span></button><strong data-wp-frame-title data-copy="title">地穴建造隊</strong></header>
     <div id="stageWorkspace">

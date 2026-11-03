@@ -1,11 +1,188 @@
 <!doctype html>
-<html lang="fr" data-wp-official-name>
-  <head>
+<html lang="fr" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-frost-maze.webp" class="wp-frame-main-flow">
+  <head><meta charset="utf-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-frost-maze/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
     <link rel="canonical" href="https://weightplay.com/fr/games/animal-frost-maze/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-frost-maze/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-frost-maze/" />
@@ -21,28 +198,28 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-frost-maze/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-frost-maze/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-frost-maze/" />
-    <meta charset="utf-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
-    <meta name="weightplay-game-version" content="v21" />
+    <meta name="weightplay-game-version" content="v22" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Résolvez 30 salles de labyrinthe glacé : brisez et posez des murs pour atteindre chaque baie, évitez le rôdeur et revenez au départ dans les dernières salles." />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Sauvetage du labyrinthe gelé","description":"Résolvez 30 salles de labyrinthe glacé : brisez et posez des murs pour atteindre chaque baie, évitez le rôdeur et revenez au départ dans les dernières salles.","url":"https://weightplay.com/fr/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","genre":["Labyrinthe de glace","Parcours sur grille","Stratégie de poursuite"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"fr","isAccessibleForFree":true,"audience":{"@type":"Audience","audienceType":"General"},"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com/"},"alternateName":"Frost Maze Rescue"}</script>
     <title>Sauvetage du labyrinthe gelé | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20261021-frost-i9&amp;wp-build=49eb9bc1c7dc2469" />
+    <link rel="stylesheet" href="style.css?v=20261021-frost-i9&amp;wp-build=49eb9bc1c7dc2469" data-wp-entry-required="" />
 
-    <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen />
-    <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide />
-    <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard />
-    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" />
-    <script defer src="mastery.js?v=20260908-mastery-v15&amp;wp-build=e58d7fb15748efda"></script>
-    <script defer src="game.js?v=20261103-frost-confirmed-v21&amp;wp-build=b0ebd5e0d055f605"></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2">
+    <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-loading-screen data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shell-standard data-wp-entry-required="" />
+    <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="" />
+    <script defer src="mastery.js?v=entry-initial-52f7813450b0&amp;wp-build=e58d7fb15748efda"></script>
+    <script defer src="game.js?v=entry-initial-54e6ba13523b&amp;wp-build=b0ebd5e0d055f605" data-wp-entry-required=""></script><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261018-interface9-guide-theme2" data-wp-entry-required="">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Sauvetage du labyrinthe gelé | WeightPlay" />
@@ -55,18 +232,18 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-frost-maze.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-</head>
-  <body data-wp-game-version="v21" data-wp-interface-version="9" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+  <body data-wp-game-version="v22" data-wp-interface-version="9" data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-wp-battle-settings="visible" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Sauvetage du labyrinthe gelé" data-state="loading" data-error-title="Impossible de charger le jeu" data-error-message="Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Chargement de Sauvetage du labyrinthe gelé…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Chargement de Sauvetage du labyrinthe gelé…" aria-valuetext="Chargement de Sauvetage du labyrinthe gelé…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Réessayer</button><a class="wp-game-entry-loader-button" href="/fr/">Retour au lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby. <a href="/fr/">Retour au lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>Sauvetage du labyrinthe gelé</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-    <main id="app" data-game="animal-frost-maze" data-audience="general" data-wp-frame-root data-wp-play-ui="1">
-      <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Retour à WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-wp-frame-title>Sauvetage du labyrinthe gelé</h1>
+    <main id="app" data-game="animal-frost-maze" data-audience="general" data-wp-frame-root data-wp-play-ui="1" data-wp-frame="2" data-wp-entry-root="">
+      <section id="main-screen" class="screen main-screen active" data-screen="main" data-wp-frame-scene="main">
+        <header class="main-header wp-frame-header" data-wp-frame-header="main"><a class="main-return wp-frame-return" data-wp-return="main" href="/" aria-label="Retour à WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26" /></a><h1 class="main-title" data-five-copy="title" data-wp-game-title data-wp-frame-title="">Sauvetage du labyrinthe gelé</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
-        <div id="main-content" class="main-content">
-          <img class="five-game-cover main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" />
-          <div class="main-copy" data-wp-frame-copy>
-            <p class="lede main-summary" data-wp-frame-summary>Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
-            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress>Best rooms: 0</p>
+        <div id="main-content" class="main-content" data-wp-frame-content="main">
+          <img class="five-game-cover main-cover" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-frost-maze.webp" alt="" aria-hidden="true" data-wp-interface7-poster="true" width="1254" height="1254" />
+          <div class="main-copy" data-wp-frame-copy="">
+            <p class="lede main-summary" data-wp-frame-summary="">Collect the pink supplies, reshape the ice, and outsmart the drifter. Think at your own pace; there is no time limit.</p>
+            <p id="main-progress" class="progress main-progress" data-wp-main-progress data-wp-frame-progress="">Best rooms: 0</p>
             <button id="start-game" class="primary" data-wp-main-start data-wp-frame-action="primary" data-five-copy="start">Start Game</button>
           </div>
         </div>
@@ -103,10 +280,10 @@
     <script src="/src/site-config.js?v=20261017-shared-dark-loader1"></script>
     <script src="../../src/weightplay-castle.js?v=20261018-frost-toast-api1"></script>
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
-    <script src="analytics-ownership.js?v=20260908-mastery-v15&amp;wp-build=4b8a02947f7cab67"></script>
+    <script src="analytics-ownership.js?v=entry-initial-d3de44d13209&amp;wp-build=66fcc4e7368ecb8d"></script>
     <!-- Frost owns all 13 runtime locales; no shared DOM retranslation loop. -->
     <script src="../../src/five-new-games-locale.js?v=20260908-approved-game-names1"></script>
-    <section class="game-page-info game-page-info-static" aria-label="Informations sur Sauvetage du labyrinthe gelé" data-wp-preserve-static-guide data-runtime-localize="off">
+    <section class="game-page-info game-page-info-static" aria-label="Informations sur Sauvetage du labyrinthe gelé" data-wp-preserve-static-guide data-runtime-localize="off" data-wp-entry-guide="">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Sauvetage du labyrinthe gelé</h2><p>Ouvrez la route gelée, récupérez toutes les baies et gardez une longueur d’avance sur le rôdeur.</p></div>
@@ -128,10 +305,10 @@
   </section>
 <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+    <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
     <script src="../../src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
-    <script src="stage-config.js?v=20261021-frost-i9&amp;wp-build=6866f8a84697e01d"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
+    <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script>
+    <script src="stage-config.js?v=entry-initial-9ad4c0fc7d8b&amp;wp-build=6866f8a84697e01d"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard data-wp-entry-required=""></script>
   </body>
 </html>

@@ -1,50 +1,194 @@
 <!doctype html>
-<html lang="zh-Hans" data-wp-official-name>
-  <head>
+<html lang="zh-Hans" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/animal-rune-tactics-cover.webp" class="wp-frame-main-flow">
+  <head><meta charset="UTF-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}#menuPanel[data-wp-frame-scene="main"] :is(.profile-grid,.mission-list,.hero-upgrade-list,.diamond-card){display:none!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-rune-tactics/" />
-  <section class="game-page-info game-page-info-static" aria-label="符文战棋 游戏信息">
 
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2 data-wp-game-title data-runtime-localize="off">符文战棋</h2><p>《符文战棋》是包含 30 个设计关卡、三位动物英雄与六位首领的原创单人战役。在 6×6 格的符文棋盘上，观察地形、安排走位，再协调队员出招。</p></div>
-
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>回合制小队走位</strong></div><div class="game-info-fact"><span>类型</span><strong>回合战术 · 小队策略 · 章节战役</strong></div><div class="game-info-fact"><span>难度</span><strong>逐步进阶</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>按自己的节奏游玩</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>狮子、猫头鹰与乌龟一起穿越六个章节，每章五关。先认识新的地形与敌人特性，再迎战结合章节规则的首领。</p>
-<p>这是固定设计的战役，不是无限随机地图。已解锁关卡会保留，方便练习不同阵形并改善保存的星星记录。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>每位英雄在玩家回合可以先移动一次，再进行一次战斗行动。狮子最多移动三格，猫头鹰与乌龟最多两格。亮起的目的地会依合法路径绕过碎石与被占用格；移动不会用掉攻击，但完成攻击、防守或技能后，该英雄本回合便结束。</p>
-<p>朝指定方向轰出 3 格宽的贯穿炮，打断存活敌人；不伤队友。 指定任意格，轰炸周围 3×3 区域；为存活敌人刻印，不伤队友。 震击自身 2 格内所有敌人；全队恢复 2 生命并获得减伤 2 护盾。</p>
-<p>走位和攻击力同样重要。敌人两侧的队友可形成夹击；护甲、护盾、封印与飞行免疫会影响伤害预览。潮汐、火焰和外圈旋转也可能在回合结束后改变安全位置。</p>
-<p>每关保留三项星星记录：获胜、三位英雄全员存活，以及达到画面显示的回合目标。每颗新获得的星星只会发放一次四枚符文；少拿星星不会取消胜利，重复拿同一颗也不会再次领奖。</p>
-<p>踏上金色节点，即可一次补满该英雄的能量。</p>
-<p>在“切断援军”任务中：占领两个金色节点可切断后续援军，再清除场上敌人。每个节点可补满一次能量。切断时会引出最后一波守军。 ★ 守军队长：生命 +12、攻击 +1；先刻印，再由队友接力击破。</p>
-<p>不同英雄接力出手可累积共鸣；满 3 格后，下一发地图炮伤害 +2 并消耗共鸣。</p>
-<p>地图炮耗 3 能量；击杀回充 1（每次最多 1），普攻／防守／每回合各回充 1。</p>
-<p>每波 6 名敌人，每两回合或清场后抵达。扫荡任务须消灭全部波次；切断援军任务也可占领两个节点，再清除场上敌人获胜。</p>
-<p>存活敌人在射程内每回合反击一次；狮子打断、护盾可挡反击。</p>
-<p>◎ 远程瞄准会追踪英雄；必须离开射程、打断射手，或用护盾承受。</p>
-<p>每关首次胜利才能选择永久符文；重玩不会重复叠加。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>开始游戏后浏览任务卡，点击已解锁卡片即可进入战斗。先看清该关地形与敌人信息。</li><li>使用触控或鼠标选择英雄，先点击亮起的格子移动，再攻击、防守或使用技能。键盘方向键移动棋盘焦点，Enter 或空格键激活格子。</li><li>移动 → 地图炮预览 → 调整范围 → 发射，一次扫荡整群敌人！ 地图炮耗 3 能量；击杀回充 1（每次最多 1），普攻／防守／每回合各回充 1。</li><li>每关首次胜利才能选择永久符文；重玩不会重复叠加。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>移动 → 地图炮预览 → 调整范围 → 发射，一次扫荡整群敌人！</li><li>能远攻时，让猫头鹰避开近战反击敌人；遇到飞行免疫，改用适合的英雄，不要浪费远程攻击。</li><li>安全防守有助于保住全员存活星星。可以下次重玩再挑战回合目标，不必为了赶回合而输掉快完成的任务。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–10 关介绍小队走位、阻挡路线、敌人邻接支持、反击与束缚地形，第 5、10 关是首领检定。</p>
-<p>第 11–20 关加入潮汐位移、推移、再生、火焰与冷却格，第 15、20 关检验新的战术选择。</p>
-<p>第 21–30 关加入沉默、外圈转动、分身、吸能与封印。第 25 关首领与最终奇美拉考验目标顺序，而不是反应速度。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>每波 6 名敌人，每两回合或清场后抵达。扫荡任务须消灭全部波次；切断援军任务也可占领两个节点，再清除场上敌人获胜。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>解锁进度、星星、符文、小队成长与英雄升级会保存在此浏览器。清除网站数据或改用其他浏览器可能移除或分开存档。所有任务均不需要钻石；三钻重选奖励与十八钻训练栏都是可选项目，没有跨设备云端同步保证。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>同一回合可以移动再攻击吗？</dt><dd>可以。先移动选中的英雄，再使用一次攻击、防守或技能；战斗行动完成后，该英雄本回合便结束。</dd></div><div><dt>为什么不能用技能？</dt><dd>请检查剩余能量、是否已用完战斗行动，以及是否处于沉默状态；普通攻击或防守可能仍可使用。</dd></div><div><dt>伤害预览是零，代表攻击坏掉了吗？</dt><dd>不一定。飞行免疫、护盾或护甲可能减少或阻挡伤害；换位置或换英雄后再看一次预览。</dd></div><div><dt>必须拿满三颗星才能继续吗？</dt><dd>不用。没有全员存活或回合目标星星，获胜仍可推进战役；之后重玩只会补发尚未获得的星星奖励。</dd></div><div><dt>重试会删掉升级吗？</dt><dd>重试只重置该场战斗，不会删除已保存的战役升级；清除浏览器存储数据则可能移除存档。</dd></div><div><dt>第 30 关之后还有什么？</dt><dd>战役在第 30 关结束，可重玩已解锁任务并改善星星记录，不会出现不存在的第 31 关。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>自走小队</strong><span>先安排动物阵形，再观看小队自动战斗。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>遗迹猎人</strong><span>探索房间、收集遗物，挑战 30 次远征。</span></span></a></div></div>
-    </div>
-  </section>
 <script src="/src/game-page-info.js?v=20260908-approved-game-names1" defer></script>
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
-    <meta charset="UTF-8" />
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="weightplay-game-version" content="v37" />
+    <meta name="weightplay-game-version" content="v38" />
     <meta name="weightplay-interface-version" content="9" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
@@ -76,23 +220,23 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rune-tactics/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-tactics/" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"符文战棋","alternateName":"符文戰棋","url":"https://weightplay.com/zh-cn/games/animal-rune-tactics/","image":"https://weightplay.com/assets/animal-rune-tactics-cover.webp","description":"带领狮子、猫头鹰与乌龟挑战 30 关回合制任务，在 6×6 棋盘运用地形、夹击与技能，击败六位首领并积累永久成长。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["回合战术","小队策略","章节战役","Browser Game"],"audience":{"@type":"PeopleAudience","suggestedMinAge":13}}</script>
-    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" />
-    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" />
-    <link rel="stylesheet" href="style.css?v=20261031-v36-result-save&amp;wp-build=cfde210977477650" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1"><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
+    <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required="" />
+    <link rel="stylesheet" href="style.css?v=20261031-v36-result-save&amp;wp-build=cfde210977477650" data-wp-entry-required="" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
 <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
-</head>
-<body data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="animal-rune-tactics" data-wp-game-version="v37" data-wp-interface-version="9">
-    <main class="rune-app" data-runtime-localize="off" data-wp-frame-root data-wp-play-ui="1" data-no-mobile-immersive="true">
-      <header class="topbar">
-        <a id="backBtn" class="back-btn" data-wp-return="main" href="/" aria-label="返回大厅"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="animal-rune-tactics" data-wp-game-version="v38" data-wp-interface-version="9" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="符文战棋" data-state="loading" data-error-title="游戏载入失败" data-error-message="部分游戏资源无法载入。请重试或返回大厅。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在载入符文战棋…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在载入符文战棋…" aria-valuetext="正在载入符文战棋…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重试</button><a class="wp-game-entry-loader-button" href="/zh-cn/">返回大厅</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}html[data-wp-entry-initial] #menuPanel[data-wp-frame-scene="main"] :is(.profile-grid,.mission-list,.hero-upgrade-list,.diamond-card){display:block!important}</style><p>部分游戏资源无法载入。请重试或返回大厅。 <a href="/zh-cn/">返回大厅</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+    <main class="rune-app" data-runtime-localize="off" data-wp-frame-root data-wp-play-ui="1" data-no-mobile-immersive="true" data-wp-frame="2" data-wp-entry-root="">
+      <header class="topbar" hidden="" style=";display:none!important">
+
         <div class="brand">
           <span>WeightPlay</span>
-          <h1 data-ui="title" data-wp-game-title data-runtime-localize="off">符文战棋</h1>
+
         </div>
         <label class="locale">
           <span data-ui="language">语言</span>
@@ -109,11 +253,11 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="panel menu-panel" data-wp-main-validation-root>
-        <img class="cover" src="../../assets/animal-rune-tactics-cover.webp" alt="《符文战棋》游戏图片" />
-        <div class="menu-copy">
-          <strong data-ui="menuTitle">指挥你的符文小队。</strong>
-          <span data-ui="menuHint">选择任务，在符文格上移动动物英雄，通过站位与技能击败敌人。</span>
+      <section id="menuPanel" class="panel menu-panel" data-wp-main-validation-root data-wp-frame-scene="main"><header data-wp-frame-header="main" class="wp-frame-header"><a id="backBtn" class="back-btn wp-frame-return" data-wp-return="main" href="/" aria-label="返回大厅"><span class="wp-frame-back-icon">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26" /></a><h1 data-ui="title" data-wp-game-title data-runtime-localize="off" data-wp-frame-title="">符文战棋</h1></header><div data-wp-frame-content="main">
+        <img class="cover" src="/assets/animal-rune-tactics-cover.webp" alt="《符文战棋》游戏图片" data-wp-interface7-poster="true" width="1254" height="1254" data-wp-frame-poster="" />
+        <div class="menu-copy" data-wp-frame-copy="">
+          <strong data-ui="menuTitle" hidden="">指挥你的符文小队。</strong>
+          <span data-ui="menuHint" data-wp-frame-summary="">选择任务，在符文格上移动动物英雄，通过站位与技能击败敌人。</span><p id="runeMainProgress" data-wp-frame-progress=""></p><button id="mainStartBtn" type="button" class="primary-btn standard-main-start" data-wp-main-start="true" data-wp-frame-action="primary">开始游戏</button>
           <div class="profile-grid" aria-live="polite">
             <div><span data-ui="profileLevel">等级</span><b id="profileLevel">1</b></div>
             <div><span data-ui="profileXp">经验值</span><b id="profileXp">0/100</b></div>
@@ -147,7 +291,40 @@
             <small id="trainingStatus" class="status-line"></small>
           </div>
         </div>
-      </section>
+      </div></section><section class="game-page-info game-page-info-static" aria-label="符文战棋 游戏信息" data-wp-entry-guide="">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2 data-wp-game-title data-runtime-localize="off">符文战棋</h2><p>《符文战棋》是包含 30 个设计关卡、三位动物英雄与六位首领的原创单人战役。在 6×6 格的符文棋盘上，观察地形、安排走位，再协调队员出招。</p></div>
+
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>回合制小队走位</strong></div><div class="game-info-fact"><span>类型</span><strong>回合战术 · 小队策略 · 章节战役</strong></div><div class="game-info-fact"><span>难度</span><strong>逐步进阶</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>按自己的节奏游玩</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>狮子、猫头鹰与乌龟一起穿越六个章节，每章五关。先认识新的地形与敌人特性，再迎战结合章节规则的首领。</p>
+<p>这是固定设计的战役，不是无限随机地图。已解锁关卡会保留，方便练习不同阵形并改善保存的星星记录。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>每位英雄在玩家回合可以先移动一次，再进行一次战斗行动。狮子最多移动三格，猫头鹰与乌龟最多两格。亮起的目的地会依合法路径绕过碎石与被占用格；移动不会用掉攻击，但完成攻击、防守或技能后，该英雄本回合便结束。</p>
+<p>朝指定方向轰出 3 格宽的贯穿炮，打断存活敌人；不伤队友。 指定任意格，轰炸周围 3×3 区域；为存活敌人刻印，不伤队友。 震击自身 2 格内所有敌人；全队恢复 2 生命并获得减伤 2 护盾。</p>
+<p>走位和攻击力同样重要。敌人两侧的队友可形成夹击；护甲、护盾、封印与飞行免疫会影响伤害预览。潮汐、火焰和外圈旋转也可能在回合结束后改变安全位置。</p>
+<p>每关保留三项星星记录：获胜、三位英雄全员存活，以及达到画面显示的回合目标。每颗新获得的星星只会发放一次四枚符文；少拿星星不会取消胜利，重复拿同一颗也不会再次领奖。</p>
+<p>踏上金色节点，即可一次补满该英雄的能量。</p>
+<p>在“切断援军”任务中：占领两个金色节点可切断后续援军，再清除场上敌人。每个节点可补满一次能量。切断时会引出最后一波守军。 ★ 守军队长：生命 +12、攻击 +1；先刻印，再由队友接力击破。</p>
+<p>不同英雄接力出手可累积共鸣；满 3 格后，下一发地图炮伤害 +2 并消耗共鸣。</p>
+<p>地图炮耗 3 能量；击杀回充 1（每次最多 1），普攻／防守／每回合各回充 1。</p>
+<p>每波 6 名敌人，每两回合或清场后抵达。扫荡任务须消灭全部波次；切断援军任务也可占领两个节点，再清除场上敌人获胜。</p>
+<p>存活敌人在射程内每回合反击一次；狮子打断、护盾可挡反击。</p>
+<p>◎ 远程瞄准会追踪英雄；必须离开射程、打断射手，或用护盾承受。</p>
+<p>每关首次胜利才能选择永久符文；重玩不会重复叠加。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>开始游戏后浏览任务卡，点击已解锁卡片即可进入战斗。先看清该关地形与敌人信息。</li><li>使用触控或鼠标选择英雄，先点击亮起的格子移动，再攻击、防守或使用技能。键盘方向键移动棋盘焦点，Enter 或空格键激活格子。</li><li>移动 → 地图炮预览 → 调整范围 → 发射，一次扫荡整群敌人！ 地图炮耗 3 能量；击杀回充 1（每次最多 1），普攻／防守／每回合各回充 1。</li><li>每关首次胜利才能选择永久符文；重玩不会重复叠加。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>移动 → 地图炮预览 → 调整范围 → 发射，一次扫荡整群敌人！</li><li>能远攻时，让猫头鹰避开近战反击敌人；遇到飞行免疫，改用适合的英雄，不要浪费远程攻击。</li><li>安全防守有助于保住全员存活星星。可以下次重玩再挑战回合目标，不必为了赶回合而输掉快完成的任务。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–10 关介绍小队走位、阻挡路线、敌人邻接支持、反击与束缚地形，第 5、10 关是首领检定。</p>
+<p>第 11–20 关加入潮汐位移、推移、再生、火焰与冷却格，第 15、20 关检验新的战术选择。</p>
+<p>第 21–30 关加入沉默、外圈转动、分身、吸能与封印。第 25 关首领与最终奇美拉考验目标顺序，而不是反应速度。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>每波 6 名敌人，每两回合或清场后抵达。扫荡任务须消灭全部波次；切断援军任务也可占领两个节点，再清除场上敌人获胜。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>解锁进度、星星、符文、小队成长与英雄升级会保存在此浏览器。清除网站数据或改用其他浏览器可能移除或分开存档。所有任务均不需要钻石；三钻重选奖励与十八钻训练栏都是可选项目，没有跨设备云端同步保证。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>同一回合可以移动再攻击吗？</dt><dd>可以。先移动选中的英雄，再使用一次攻击、防守或技能；战斗行动完成后，该英雄本回合便结束。</dd></div><div><dt>为什么不能用技能？</dt><dd>请检查剩余能量、是否已用完战斗行动，以及是否处于沉默状态；普通攻击或防守可能仍可使用。</dd></div><div><dt>伤害预览是零，代表攻击坏掉了吗？</dt><dd>不一定。飞行免疫、护盾或护甲可能减少或阻挡伤害；换位置或换英雄后再看一次预览。</dd></div><div><dt>必须拿满三颗星才能继续吗？</dt><dd>不用。没有全员存活或回合目标星星，获胜仍可推进战役；之后重玩只会补发尚未获得的星星奖励。</dd></div><div><dt>重试会删掉升级吗？</dt><dd>重试只重置该场战斗，不会删除已保存的战役升级；清除浏览器存储数据则可能移除存档。</dd></div><div><dt>第 30 关之后还有什么？</dt><dd>战役在第 30 关结束，可重玩已解锁任务并改善星星记录，不会出现不存在的第 31 关。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover-block-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>自走小队</strong><span>先安排动物阵形，再观看小队自动战斗。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-relic-hunters/"><img src="/assets/interface7-redrawn/animal-relic-hunters.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>遗迹猎人</strong><span>探索房间、收集遗物，挑战 30 次远征。</span></span></a></div></div>
+    </div>
+  </section>
 
       <section id="gamePanel" class="panel game-panel is-hidden">
         <div class="hud">
@@ -229,20 +406,20 @@
     <script src="../../src/analytics.js?v=20260929-block-world-v3"></script>
     <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-rune-tactics", release_state: "release_candidate" });</script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/games/animal-rune-tactics/guide-copy.js?v=20261011-v33-4708c3ed51d2&amp;wp-build=76609307e50888f2"></script>
-    <script src="/games/animal-rune-tactics/native-locales.js?v=20260923-v25-77a554397a27&amp;wp-build=3c9d39d300bbd95a"></script>
-    <script src="/games/animal-rune-tactics/mission-locales.js?v=20260923-v25-65eb24d7962e&amp;wp-build=86a077e65ecaf792"></script>
+    <script src="/games/animal-rune-tactics/guide-copy.js?v=entry-initial-4708c3ed51d2&amp;wp-build=76609307e50888f2" data-wp-entry-required=""></script>
+    <script src="/games/animal-rune-tactics/native-locales.js?v=entry-initial-77a554397a27&amp;wp-build=3c9d39d300bbd95a" data-wp-entry-required=""></script>
+    <script src="/games/animal-rune-tactics/mission-locales.js?v=entry-initial-65eb24d7962e&amp;wp-build=86a077e65ecaf792" data-wp-entry-required=""></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
-<script src="../../src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1"></script>
+<script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script>
 <script src="/src/stage-rail-i9.js?v=20261016-shared-play1"></script>
-<script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
-<script src="/games/animal-rune-tactics/combat-core.js?v=20261011-v33-7cced709a5c7&amp;wp-build=499139ec1390b691"></script>
-<script src="/games/animal-rune-tactics/combat-copy.js?v=20261011-v33-c2215269c2d0&amp;wp-build=916c7c72d65f78fa"></script>
-<script src="game.js?v=20261101-v37-hero-confirmation&amp;wp-build=8827c10960af4d3e"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36"></script>
+<script src="/src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script>
+<script src="/games/animal-rune-tactics/combat-core.js?v=entry-initial-7cced709a5c7&amp;wp-build=499139ec1390b691" data-wp-entry-required=""></script>
+<script src="/games/animal-rune-tactics/combat-copy.js?v=entry-initial-c2215269c2d0&amp;wp-build=916c7c72d65f78fa" data-wp-entry-required=""></script>
+<script src="game.js?v=entry-initial-c698b36f9068&amp;wp-build=ebf364bb53da6566" data-wp-entry-required=""></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260923-rune-v25-858a43890c36" data-wp-entry-required=""></script>
     <script>
       (() => {
         const loadGameInfo = () => {

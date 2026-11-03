@@ -1,15 +1,192 @@
 <!doctype html>
-<html lang="en" data-wp-official-name>
-<head>
+<html lang="en" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/assets/interface7-redrawn/animal-rain-roost.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-rain-roost/" />
-  <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-rain-roost">
-  <meta name="weightplay-game-version" content="v10">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="weightplay-interface-version" content="9">
   <meta name="description" content="Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves." />
   <title>Raindrop Catcher | WeightPlay</title>
@@ -30,17 +207,17 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rain-roost/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp" />
   <script src="/src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="/src/game-layout-config.js?v=20260919-banner1"></script><script src="/src/shared-interface-bootstrap.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-shared-interface="7"></script>
-  <link rel="stylesheet" href="/games/animal-rain-roost/style.eccdc210c4bfabbd.css?v=6">
-  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20261018-interface9-theme1">
-  <link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide>
-  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1">
-  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1">
-  <link rel="stylesheet" href="/src/stage-selector-standard.css">
-  <link rel="stylesheet" href="/src/stage-rail-i9.css">
-  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas1">
-  <link rel="stylesheet" href="/src/tutorial.css">
+  <script src="/src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script><script src="/src/shared-interface-bootstrap.js?v=entry-initial-ab88a718ecc9" data-wp-shared-interface="7"></script>
+  <link rel="stylesheet" href="/games/animal-rain-roost/style.eccdc210c4bfabbd.css?v=6" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=20261018-interface9-theme1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-game-guide data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-style data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261016-interface9-shell1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/stage-selector-standard.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/stage-rail-i9.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/battle-canvas-standard.css?v=20261022-shared-battle-canvas1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css" data-wp-entry-required="">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Raindrop Catcher","url":"https://weightplay.com/en/games/animal-rain-roost/","image":"https://weightplay.com/assets/interface7-redrawn/animal-rain-roost.webp","applicationCategory":"Game","operatingSystem":"Web browser","isAccessibleForFree":true,"genre":["Arcade","Timing","Focus","Family","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General, 6+","suggestedMinAge":6},"description":"Slide Nori's little nest to catch gentle rain while leaves drift past.","inLanguage":"en","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"}}</script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -54,13 +231,13 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v10" data-wp-interface-version="9" data-screen="main">
-  <div id="app" data-wp-frame-root>
-    <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v10" data-wp-interface-version="9">
-      <header class="wp-main-shell-header"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back">←</a><h1 data-wp-frame-title data-wp-game-title>Raindrop Catcher</h1></header>
+<body data-wp-game-owned-guide data-runtime-localize="off" data-wp-game-id="animal-rain-roost" data-wp-audience="general" data-wp-game-version="v11" data-wp-interface-version="9" data-screen="main" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Raindrop Catcher" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Raindrop Catcher…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Raindrop Catcher…" aria-valuetext="Loading Raindrop Catcher…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="app" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+    <main id="mainScreen" data-wp-standard-main-screen data-wp-main-screen data-wp-logical-main-canvas data-wp-game-version="v11" data-wp-interface-version="9" data-wp-frame-scene="main">
+      <header class="wp-main-shell-header wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" href="/en/" data-wp-return="main" aria-label="Back" class="wp-frame-return">←<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><h1 data-wp-frame-title="" data-wp-game-title>Raindrop Catcher</h1></header>
       <div id="mainContent" data-wp-frame-content="main">
-        <img class="main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high">
-        <div data-wp-frame-copy><p data-copy="intro" data-wp-frame-summary>Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves.</p><span id="mainProgress" data-wp-frame-progress>0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>Begin journey</button></div>
+        <img class="main-poster" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-rain-roost.webp" width="1254" height="1254" alt="" fetchpriority="high" data-wp-interface7-poster="true">
+        <div data-wp-frame-copy=""><p data-copy="intro" data-wp-frame-summary="">Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves.</p><span id="mainProgress" data-wp-frame-progress="">0 / 30</span><button id="startButton" data-copy="start" data-wp-main-start data-wp-frame-action="primary" type="button" disabled>Begin journey</button></div>
         <select id="localeSelect" hidden aria-label="Language"></select>
       </div>
     </main>
@@ -91,7 +268,7 @@
     </section>
     <section id="purchaseView" class="rain-modal purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle" hidden><div class="rain-modal-card"><h2 id="purchaseTitle" data-copy="lantern">Aurora lantern</h2><p data-copy="lanternText">A permanent cosmetic: violet lantern light and gold water trails. Costs 15 diamonds once. It does not change difficulty.</p><p class="purchase-cost"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"> 15</p><p id="purchaseFeedback" role="status"></p><div class="dialog-actions"><button id="cancelBuy" type="button" data-copy="cancel">Cancel</button><button id="confirmBuy" type="button" data-copy="confirm">Confirm</button></div></div></section>
   </div>
-  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true">
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-complete="true" data-wp-entry-guide="">
     <div class="game-info-hero"><small data-copy="guide">Game guide</small><h2 data-wp-game-title>Raindrop Catcher</h2><p data-copy="intro">Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves.</p></div>
     <div class="game-info-facts"><div class="game-info-fact"><span data-copy="age">Age</span><strong>6+</strong></div><div class="game-info-fact"><span data-copy="players">Players</span><strong>1</strong></div><div class="game-info-fact"><span data-copy="roundTime">Per shower</span><strong>20–35 s</strong></div><div class="game-info-fact"><span data-copy="controls">How to play</span><strong>← → · 1–5</strong></div></div>
     <div class="game-info-sections"><section class="game-info-section"><h3 data-copy="world">The moonlit marsh</h3><p data-copy="worldText">Nori is bringing the marsh back to life, one little shower at a time. Read the wind and move beneath the glowing drops.</p></section><section class="game-info-section"><h3 data-copy="controls">How to play</h3><p data-copy="controlText">Drag or tap the water to steer. On a keyboard, use ← → or physical lanes 1–5. The glowing landing marker shows where the next drop will arrive.</p></section><section class="game-info-section"><h3 data-copy="goals">Your mission</h3><p data-copy="goalText">Meet the drop target before the shower ends. Some stages also require gold, a streak or a leaf limit. Missing rain breaks your streak; leaves break it too. Every shower is free to retry.</p><p data-copy="starText">One star for the mission, a second for catching at least 85%, and a third for a perfect shower with no missed rain or leaves.</p></section><section class="game-info-section"><h3 data-copy="growth">Your nest</h3><p data-copy="growthText">Six regions introduce wind, leaf corridors, golden routes and precision showers. Earn stars, unlock the next stage and choose a basket that suits your route.</p></section><section class="game-info-section"><h3 data-copy="privacy">Local progress</h3><p data-copy="privacyText">Progress, equipment and your old best stay in this browser. No account is needed. Another device starts its own save. If saving fails, the game tells you.</p></section><section class="game-info-section"><h3 data-copy="faq">Questions</h3><details><summary data-copy="stars">Stars</summary><p data-copy="starText">One star for the mission, a second for catching at least 85%, and a third for a perfect shower with no missed rain or leaves.</p></details><details><summary data-copy="equipment">Nest</summary><p data-copy="netText">Clear stage 5 to earn two leaf guards per shower. The catch area is a little narrower.</p><p data-copy="magnetText">Clear stage 10 to reach gold farther away. Blue drops require more precise positioning.</p><p data-copy="lanternText">A permanent cosmetic: violet lantern light and gold water trails. Costs 15 diamonds once. It does not change difficulty.</p></details></section></div>
@@ -99,11 +276,11 @@
   <script src="/src/site-config.js?v=20261017-shared-dark-loader1" defer></script>
   <script src="/src/analytics.js?v=20260929-block-world-v3" defer></script>
   <script src="/src/wallet.js"></script>
-  <script src="/src/game-screen-frame.js?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-frame-script></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-frame-script data-wp-entry-required=""></script>
   <script src="/src/stage-rail-i9.js"></script>
-  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1"></script>
-  <script src="/src/battle-canvas-standard.js?v=20261021-space-rocks-i9-battle-root-v1" data-wp-battle-standard></script>
-  <script src="/games/animal-rain-roost/game.1692a9e8cbab87fa.js?v=10"></script>
+  <script src="/src/game-play-ui.js?v=20261019-shared-play-motion-reduce1-battle-background1" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?v=20261021-space-rocks-i9-battle-root-v1" data-wp-battle-standard data-wp-entry-required=""></script>
+  <script src="/games/animal-rain-roost/game.1692a9e8cbab87fa.js?v=entry-initial-22a628565e8e" data-wp-entry-required=""></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>

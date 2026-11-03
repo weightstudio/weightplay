@@ -1,11 +1,188 @@
 <!doctype html>
-<html lang="zh-Hans" dir="ltr" data-wp-official-name data-wp-publication-locale-completion><head>
+<html lang="zh-Hans" dir="ltr" data-wp-official-name data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow"><head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/kindred-habitats/">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="index,follow"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v6"><meta name="weightplay-interface-version" content="9.1"><meta name="weightplay-seo-geo-version" content="1.4.0"><meta name="weightplay-scene-controls" content="immutable">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="index,follow"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v7"><meta name="weightplay-interface-version" content="9.1"><meta name="weightplay-seo-geo-version" content="1.4.0"><meta name="weightplay-scene-controls" content="immutable">
 <meta name="description" content="在六种栖地中，与36种动物伙伴建立友谊。"><title>栖旅图鉴 | WeightPlay</title>
-<link rel="icon" href="/assets/weightplay-logo.png"><link rel="stylesheet" href="/src/game-page-info.css"><link rel="stylesheet" href="/src/battle-canvas-standard.css"><link rel="stylesheet" href="/src/game-screen-frame.css"><link rel="stylesheet" href="/src/game-play-ui.css"><link rel="stylesheet" href="/src/interface9-shared-screens.css"><link rel="stylesheet" href="/games/kindred-habitats/style.css?v=6&amp;wp-build=4a31fe1433eb908c">
-<script src="/src/game-layout-config.js"></script><script src="/src/weightplay-audio.js"></script><script src="/src/wallet.js"></script><script src="/src/site-config.js"></script><script src="/src/i18n.js"></script><script src="/src/game-title-registry.js"></script><script defer src="/src/game-screen-frame.js"></script><script defer src="/src/battle-canvas-standard.js"></script><script type="module" src="/games/kindred-habitats/game.js?v=20261014-guide-i9-v6&amp;wp-build=f0b2ac48542b2c43"></script>
+<link rel="icon" href="/assets/weightplay-logo.png"><link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/battle-canvas-standard.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/games/kindred-habitats/style.css?v=6&amp;wp-build=4a31fe1433eb908c" data-wp-entry-required="">
+<script src="/src/game-layout-config.js" data-wp-entry-required=""></script><script src="/src/weightplay-audio.js"></script><script src="/src/wallet.js"></script><script src="/src/site-config.js"></script><script src="/src/i18n.js"></script><script src="/src/game-title-registry.js"></script><script defer src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script defer src="/src/battle-canvas-standard.js" data-wp-entry-required=""></script><script type="module" src="/games/kindred-habitats/game.js?v=entry-initial-32ca8f69915a&amp;wp-build=f0b2ac48542b2c43" data-wp-entry-required=""></script>
 <link rel="canonical" href="https://weightplay.com/zh-cn/games/kindred-habitats/">
 <meta property="og:site_name" content="WeightPlay">
 <meta property="og:type" content="website">
@@ -36,13 +213,13 @@
 <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/kindred-habitats/">
 <script id="kindred-habitats-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"栖旅图鉴","description":"在六种栖地中，与36种动物伙伴建立友谊。","url":"https://weightplay.com/zh-cn/games/kindred-habitats/","image":"https://weightplay.com/games/kindred-habitats/art/poster.webp","inLanguage":"zh-Hans","applicationCategory":"Game","operatingSystem":"Web browser","genre":["收藏","照顾"],"isAccessibleForFree":true,"softwareVersion":"6","publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com"},"gamePlatform":"Web browser","numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":1},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
   <script type="module" src="/src/game-guide-intro-faq.mjs"></script>
-</head><body data-screen="main" data-game-id="kindred-habitats" data-wp-game-id="kindred-habitats" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1">
-<div id="gameFrame" data-wp-frame-root>
-<div id="mainGroup"><main id="mainScreen" class="main-screen">
-<header data-wp-shell-header="main"><a id="mainReturn" href="/zh-cn/index.html?preview=1" data-wp-return="main" aria-label="返回"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt=""></a><strong data-wp-game-title data-runtime-localize="off">栖旅图鉴</strong></header>
-<section class="main-hero"><img class="main-poster cover" src="/games/kindred-habitats/art/poster.webp" alt="栖旅图鉴"><div class="main-copy menu-copy"><h1 data-official-title data-runtime-localize="off">栖旅图鉴</h1><p class="main-summary" data-copy="mainHow" data-runtime-localize="off">一次陪一只动物。看它需要什么，按下大按钮就能玩。</p><p id="mainGoal" class="main-goal"></p><div id="mainProgress" class="main-progress" data-wp-main-progress>已收集 0 / 36 · 成年 0</div><button id="startBtn" type="button" data-wp-main-start data-copy="start" data-runtime-localize="off">开始</button></div></section></main>
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head><body data-screen="main" data-game-id="kindred-habitats" data-wp-game-id="kindred-habitats" data-has-stage="false" data-wp-game-owned-guide data-wp-play-ui="1" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="栖旅图鉴" data-state="loading" data-error-title="游戏载入失败" data-error-message="部分游戏资源无法载入。请重试或返回大厅。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在载入栖旅图鉴…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在载入栖旅图鉴…" aria-valuetext="正在载入栖旅图鉴…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重试</button><a class="wp-game-entry-loader-button" href="/zh-cn/">返回大厅</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分游戏资源无法载入。请重试或返回大厅。 <a href="/zh-cn/">返回大厅</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+<div id="mainGroup"><main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
+<header data-wp-shell-header="main" class="wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" href="/zh-cn/index.html?preview=1" data-wp-return="main" aria-label="返回" class="wp-frame-return"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="/assets/weightplay-logo.png" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a><strong data-wp-game-title data-runtime-localize="off" data-wp-frame-title="">栖旅图鉴</strong></header>
+<section class="main-hero" data-wp-frame-content="main"><img class="main-poster cover" src="/games/kindred-habitats/art/poster.webp" alt="栖旅图鉴" width="1254" height="1254" data-wp-frame-poster=""><div class="main-copy menu-copy" data-wp-frame-copy=""><h1 data-official-title data-runtime-localize="off">栖旅图鉴</h1><p class="main-summary" data-copy="mainHow" data-runtime-localize="off" data-wp-frame-summary="">一次陪一只动物。看它需要什么，按下大按钮就能玩。</p><p id="mainGoal" class="main-goal"></p><div id="mainProgress" class="main-progress" data-wp-main-progress data-wp-frame-progress="">已收集 0 / 36 · 成年 0</div><button id="startBtn" type="button" data-wp-main-start data-copy="start" data-runtime-localize="off" data-wp-frame-action="primary">开始</button></div></section></main>
 <!-- adsense-static-guide:start -->
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide aria-label="玩法指南"><div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2 data-official-title data-runtime-localize="off">栖旅图鉴</h2><p data-copy="guideGoal" data-runtime-localize="off" data-wp-intro-faq-source>在六种栖地中，与36种动物伙伴建立友谊。</p></div><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><div class="game-info-fact"><strong>36</strong><span data-runtime-localize="off">物种</span></div><div class="game-info-fact"><strong>6</strong><span data-runtime-localize="off">栖地</span></div><div class="game-info-fact"><strong>0</strong><span data-runtime-localize="off">成年</span></div><div class="game-info-fact"><strong>0 / 36</strong><span data-runtime-localize="off">进度</span></div></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><section class="game-info-section"><h2 data-runtime-localize="off">游玩方式</h2><p data-runtime-localize="off">带食物出发，温柔打招呼，再照顾新朋友。</p></section><section class="game-info-section"><h2 data-runtime-localize="off">操作与规则</h2><p data-runtime-localize="off">画面会告诉你下一步，地点和时段已准备好。照顾三次就会长大；两次照顾之间，先一起散步。</p></section><section class="game-info-section"><h2 data-runtime-localize="off">进度与反馈</h2><p data-runtime-localize="off">朋友和升级会保存在此设备。第一只长大后，再开启图鉴与自由选购的升级。</p></section></div><div id="gameGuideFaq" data-wp-content-slot="guide-faq"></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"></div><article class="game-info-section" data-wp-intro-faq><h3>常见问题</h3><dl><dt>这款游戏要做什么？</dt><dd>在六种栖地中，与36种动物伙伴建立友谊。</dd></dl></article></section>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide aria-label="玩法指南" data-wp-entry-guide=""><div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2 data-official-title data-runtime-localize="off">栖旅图鉴</h2><p data-copy="guideGoal" data-runtime-localize="off" data-wp-intro-faq-source>在六种栖地中，与36种动物伙伴建立友谊。</p></div><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><div class="game-info-fact"><strong>36</strong><span data-runtime-localize="off">物种</span></div><div class="game-info-fact"><strong>6</strong><span data-runtime-localize="off">栖地</span></div><div class="game-info-fact"><strong>0</strong><span data-runtime-localize="off">成年</span></div><div class="game-info-fact"><strong>0 / 36</strong><span data-runtime-localize="off">进度</span></div></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><section class="game-info-section"><h2 data-runtime-localize="off">游玩方式</h2><p data-runtime-localize="off">带食物出发，温柔打招呼，再照顾新朋友。</p></section><section class="game-info-section"><h2 data-runtime-localize="off">操作与规则</h2><p data-runtime-localize="off">画面会告诉你下一步，地点和时段已准备好。照顾三次就会长大；两次照顾之间，先一起散步。</p></section><section class="game-info-section"><h2 data-runtime-localize="off">进度与反馈</h2><p data-runtime-localize="off">朋友和升级会保存在此设备。第一只长大后，再开启图鉴与自由选购的升级。</p></section></div><div id="gameGuideFaq" data-wp-content-slot="guide-faq"></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"></div><article class="game-info-section" data-wp-intro-faq><h3>常见问题</h3><dl><dt>这款游戏要做什么？</dt><dd>在六种栖地中，与36种动物伙伴建立友谊。</dd></dl></article></section>
 <!-- adsense-static-guide:end --></div>
 <section id="battleScreen" class="battle-screen" hidden data-wp-frame-play-fill data-wp-frame-logical-header="battle" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="720" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
 <header data-wp-shell-header="battle"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="返回">←</button></header>

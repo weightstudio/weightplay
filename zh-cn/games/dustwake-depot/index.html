@@ -1,8 +1,185 @@
 <!doctype html>
-<html lang="zh-Hans" dir="ltr" data-wp-official-name>
-<head>
+<html lang="zh-Hans" dir="ltr" data-wp-official-name data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/games/dustwake-depot/art/poster.webp" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/dustwake-depot/">
-  <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
@@ -34,39 +211,39 @@
   <meta name="twitter:title" content="尘光回收站">
   <meta name="twitter:description" content="带领 Taro 清理园区，吸干尘、刷湿尘，把每袋尘料送回回收站。">
   <meta name="twitter:image" content="https://weightplay.com/games/dustwake-depot/art/poster.webp">
-  <link rel="stylesheet" href="/src/game-screen-frame.css">
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css">
-  <link rel="stylesheet" href="/src/game-play-ui.css">
-  <link rel="stylesheet" href="/src/game-page-info.css">
-  <link rel="stylesheet" href="/src/loading-screen.css">
-  <link rel="stylesheet" href="/src/play-viewport.css">
-  <link rel="stylesheet" href="/games/dustwake-depot/style.css?v=1&amp;wp-build=d1776b37d22c9c69">
-  <script data-wp-entry-required src="/src/game-layout-config.js"></script>
+  <link rel="stylesheet" href="/src/game-screen-frame.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/loading-screen.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/play-viewport.css" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/dustwake-depot/style.css?v=1&amp;wp-build=d1776b37d22c9c69" data-wp-entry-required="">
+  <script data-wp-entry-required="" src="/src/game-layout-config.js"></script>
   <script data-wp-entry-required src="/src/weightplay-audio.js"></script>
   <script data-wp-entry-required src="/src/site-config.js"></script>
   <script data-wp-entry-required src="/src/wallet.js"></script>
   <script data-wp-entry-required src="/src/game-title-registry.js"></script>
   <script data-wp-entry-required src="/src/i18n.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"尘光回收站","url":"https://weightplay.com/zh-cn/games/dustwake-depot/","image":"https://weightplay.com/games/dustwake-depot/art/poster.webp","description":"带领 Taro 清理园区，吸干尘、刷湿尘，把每袋尘料送回回收站。","inLanguage":"zh-Hans","operatingSystem":"Web browser","applicationCategory":"Game","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio"}}</script>
-</head>
-<body data-game-id="dustwake-depot" data-audience="general" data-game-version="v3" data-interface-version="9" data-screen="main" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-combined-sound="true" data-runtime-localize="off">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-game-id="dustwake-depot" data-audience="general" data-game-version="v4" data-interface-version="9" data-screen="main" data-wp-interface-version="9" data-wp-game-owned-guide="true" data-wp-combined-sound="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="尘光回收站" data-state="loading" data-error-title="游戏载入失败" data-error-message="部分游戏资源无法载入。请重试或返回大厅。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在载入尘光回收站…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在载入尘光回收站…" aria-valuetext="正在载入尘光回收站…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重试</button><a class="wp-game-entry-loader-button" href="/zh-cn/">返回大厅</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分游戏资源无法载入。请重试或返回大厅。 <a href="/zh-cn/">返回大厅</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <section id="comingSoon">
     <img src="/games/dustwake-depot/art/poster.webp" width="1254" height="1254" alt="尘光回收站" data-copy-alt="title">
     <h2 data-copy="title" data-runtime-localize="off">尘光回收站</h2>
     <p data-copy="comingSoon">敬请期待</p>
     <a data-lobby-link href="/zh-cn/?preview=1" data-copy="returnLobby">返回大厅</a>
   </section>
-  <div id="appRoot" data-wp-frame-root data-wp-play-ui="1" hidden>
-    <main id="mainScreen">
-      <header id="mainHeader">
-        <a id="mainBack" data-lobby-link data-wp-return="main" href="/zh-cn/?preview=1" data-copy-aria="returnLobby" aria-label="返回大厅">← W</a>
-        <h1 data-wp-frame-title data-copy="title" data-runtime-localize="off">尘光回收站</h1>
+  <div id="appRoot" data-wp-frame-root data-wp-play-ui="1" hidden data-wp-frame="2" data-wp-entry-root="">
+    <main id="mainScreen" data-wp-frame-scene="main">
+      <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
+        <a id="mainBack" data-lobby-link data-wp-return="main" href="/zh-cn/?preview=1" data-copy-aria="returnLobby" aria-label="返回大厅" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a>
+        <h1 data-wp-frame-title="" data-copy="title" data-runtime-localize="off">尘光回收站</h1>
       </header>
-      <section id="mainHero">
-        <img class="main-poster" data-wp-frame-poster src="/games/dustwake-depot/art/poster.webp" width="1254" height="1254" data-copy-alt="title" alt="尘光回收站">
-        <div data-wp-frame-copy>
-          <p data-wp-frame-summary data-copy="summary">带领 Taro 清理园区，吸干尘、刷湿尘，把每袋尘料送回回收站。</p>
-          <p id="mainProgress" data-wp-frame-progress>关卡 1 / 60</p>
+      <section id="mainHero" data-wp-frame-content="main">
+        <img class="main-poster" data-wp-frame-poster="" src="/games/dustwake-depot/art/poster.webp" width="1254" height="1254" data-copy-alt="title" alt="尘光回收站" data-wp-interface7-poster="true">
+        <div data-wp-frame-copy="">
+          <p data-wp-frame-summary="" data-copy="summary">带领 Taro 清理园区，吸干尘、刷湿尘，把每袋尘料送回回收站。</p>
+          <p id="mainProgress" data-wp-frame-progress="">关卡 1 / 60</p>
           <button id="startGame" type="button" data-wp-main-start data-wp-frame-action="primary" data-copy="start" disabled>开始游戏</button>
         </div>
       </section>
@@ -133,20 +310,19 @@
     </section>
   </div>
 <!-- adsense-static-guide:start -->
-<section id="gameGuide" lang="zh-Hans" class="game-page-info game-page-info-static" data-wp-main-guide data-wp-game-guide data-wp-game-owned-guide="true" data-wp-guide-renderer="copy.mjs#renderStaticGuide" data-runtime-localize="off" hidden><div class="game-info-title"><h2 data-runtime-localize="off">尘光回收站</h2></div><div class="game-info-tags"><span>清扫</span><span>路线规划</span><span>模拟</span></div><div class="game-info-facts"><div class="game-info-fact"><strong>关卡</strong><span>60</span></div><div class="game-info-fact"><strong>章节</strong><span>2</span></div><div class="game-info-fact"><strong>工具</strong><span>3 · 免费</span></div><div class="game-info-fact"><strong>纯外观</strong><span>永久</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>目标</h3><p>在时间内清理 Taro 的方块园区，将每单位尘料送回回收站。背包里的货物还不算交付：场地清空、背包清空，并符合本关交付条件才会完成。两章共有 60 个可选关卡。</p></section><section class="game-info-section"><h3>玩法</h3><p>点垃圾或污渍，Taro 会走到中心并自动选对工具。停留就能清掉；空白地板不用清。 干垃圾：吸尘 · 蓝污渍：刷洗 点击地面或拖动路线让 Taro 移动，在吸尘模式靠近干尘便会收集。回到发光的回收站，停留片刻即可卸货。每次出发都要决定多扫一群，还是提早回站；背包太满，也会错过沿途适合顺手收集的尘料。</p></section><section class="game-info-section"><h3>操作与规则</h3><p>键盘可用方向键或 WASD 移动，空格键切换吸尘与刷洗，C 使用压缩工具。湿尘必须刷洗，且需要较长接触。墙会挡路，风闸会开关；看绿灯穿过，或选择绕路。开始前先在关卡卡片查看特殊交付条件。</p></section><section class="game-info-section"><h3>完成与反馈</h3><p>交付全部尘料且符合规则，即可解锁下一关。关卡卡片列出各关的三星、两星秒数目标，在对应时间内完成即可获得该星级，其余通关得一星。重试免费，旧关可重玩并保存最佳结果；最终关完成后仍可再次挑战。</p></section><section class="game-info-section"><h3>安排回站路线</h3><p>前五关练习装袋与回运，第 6 关加入湿尘，第 16 关加入风闸。第二章每局能在标记位置部署一次回收站，与原基地一起使用。部分检查点有每趟最低货量或卸货次数上限，小袋频繁卸货可能浪费次数。载货工具包大但走得慢，轻风则更快抵达远处。</p></section><section class="game-info-section"><h3>玩家与存档信息</h3><p>已完成关卡、最佳结果、工具选择与教学进度保存在此浏览器；重新加载或离开会失去尚未完成的本局货物。清除浏览器数据可能移除进度。选购外观以共享钱包的购买记录保存。不需登录即可游戏，免费工具能完成战役。</p></section><section class="game-info-section"><h3>设计笔记</h3><p>固定俯视画面让路线与回收站保持可见。挑战来自装载、模式切换和过闸时机，不必转动相机。免费工具各有取舍：大背包换来较慢移动，压缩则以较小作用范围和短暂停留换取空间。</p></section></div><section class="game-info-faq"><h3>常见问题</h3><details><summary>为什么 Taro 停止收集？</summary><p>背包满了就无法再装尘料，请回站卸货。满包时仍能移动。</p></details><details><summary>为什么湿尘没有消失？</summary><p>点垃圾或污渍，Taro 会走到中心并自动选对工具。停留就能清掉；空白地板不用清。 干垃圾：吸尘 · 蓝污渍：刷洗 切换刷洗并停在附近，直到一单位清理完成。吸尘模式只收干尘。</p></details><details><summary>移动回收站能换位置吗？</summary><p>不能。第二章每局只能在标记位置部署一次，确认前先选好位置。</p></details><details><summary>压缩会增加交付量吗？</summary><p>不会。压缩工具把占用空间减半并向上取整，货物量不变，每局可用两次。</p></details><details><summary>需要购买工具吗？</summary><p>不需要。轻风初始可用；完成第 5 关解锁载货，第 30 关解锁压缩，三款都免费。</p></details><details><summary>5 钻石能买到什么？</summary><p>琥珀花园是 Taro 背甲花园的永久外观；速度、容量、收集与关卡规则完全不变。</p></details></section><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-abyss-diver" href="/zh-cn/games/animal-abyss-diver/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-abyss-diver.webp" alt="深渊潜航员" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">深渊潜航员</strong></span></a><a class="game-info-related-card" data-game-id="animal-gearpack-expedition" href="/zh-cn/games/animal-gearpack-expedition/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-gearpack-expedition.webp" alt="装备行囊远征" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">装备行囊远征</strong></span></a></div></section></section>
+<section id="gameGuide" lang="zh-Hans" class="game-page-info game-page-info-static" data-wp-main-guide data-wp-game-guide data-wp-game-owned-guide="true" data-wp-guide-renderer="copy.mjs#renderStaticGuide" data-runtime-localize="off" hidden data-wp-entry-guide=""><div class="game-info-title"><h2 data-runtime-localize="off">尘光回收站</h2></div><div class="game-info-tags"><span>清扫</span><span>路线规划</span><span>模拟</span></div><div class="game-info-facts"><div class="game-info-fact"><strong>关卡</strong><span>60</span></div><div class="game-info-fact"><strong>章节</strong><span>2</span></div><div class="game-info-fact"><strong>工具</strong><span>3 · 免费</span></div><div class="game-info-fact"><strong>纯外观</strong><span>永久</span></div></div><div class="game-info-sections"><section class="game-info-section"><h3>目标</h3><p>在时间内清理 Taro 的方块园区，将每单位尘料送回回收站。背包里的货物还不算交付：场地清空、背包清空，并符合本关交付条件才会完成。两章共有 60 个可选关卡。</p></section><section class="game-info-section"><h3>玩法</h3><p>点垃圾或污渍，Taro 会走到中心并自动选对工具。停留就能清掉；空白地板不用清。 干垃圾：吸尘 · 蓝污渍：刷洗 点击地面或拖动路线让 Taro 移动，在吸尘模式靠近干尘便会收集。回到发光的回收站，停留片刻即可卸货。每次出发都要决定多扫一群，还是提早回站；背包太满，也会错过沿途适合顺手收集的尘料。</p></section><section class="game-info-section"><h3>操作与规则</h3><p>键盘可用方向键或 WASD 移动，空格键切换吸尘与刷洗，C 使用压缩工具。湿尘必须刷洗，且需要较长接触。墙会挡路，风闸会开关；看绿灯穿过，或选择绕路。开始前先在关卡卡片查看特殊交付条件。</p></section><section class="game-info-section"><h3>完成与反馈</h3><p>交付全部尘料且符合规则，即可解锁下一关。关卡卡片列出各关的三星、两星秒数目标，在对应时间内完成即可获得该星级，其余通关得一星。重试免费，旧关可重玩并保存最佳结果；最终关完成后仍可再次挑战。</p></section><section class="game-info-section"><h3>安排回站路线</h3><p>前五关练习装袋与回运，第 6 关加入湿尘，第 16 关加入风闸。第二章每局能在标记位置部署一次回收站，与原基地一起使用。部分检查点有每趟最低货量或卸货次数上限，小袋频繁卸货可能浪费次数。载货工具包大但走得慢，轻风则更快抵达远处。</p></section><section class="game-info-section"><h3>玩家与存档信息</h3><p>已完成关卡、最佳结果、工具选择与教学进度保存在此浏览器；重新加载或离开会失去尚未完成的本局货物。清除浏览器数据可能移除进度。选购外观以共享钱包的购买记录保存。不需登录即可游戏，免费工具能完成战役。</p></section><section class="game-info-section"><h3>设计笔记</h3><p>固定俯视画面让路线与回收站保持可见。挑战来自装载、模式切换和过闸时机，不必转动相机。免费工具各有取舍：大背包换来较慢移动，压缩则以较小作用范围和短暂停留换取空间。</p></section></div><section class="game-info-faq"><h3>常见问题</h3><details><summary>为什么 Taro 停止收集？</summary><p>背包满了就无法再装尘料，请回站卸货。满包时仍能移动。</p></details><details><summary>为什么湿尘没有消失？</summary><p>点垃圾或污渍，Taro 会走到中心并自动选对工具。停留就能清掉；空白地板不用清。 干垃圾：吸尘 · 蓝污渍：刷洗 切换刷洗并停在附近，直到一单位清理完成。吸尘模式只收干尘。</p></details><details><summary>移动回收站能换位置吗？</summary><p>不能。第二章每局只能在标记位置部署一次，确认前先选好位置。</p></details><details><summary>压缩会增加交付量吗？</summary><p>不会。压缩工具把占用空间减半并向上取整，货物量不变，每局可用两次。</p></details><details><summary>需要购买工具吗？</summary><p>不需要。轻风初始可用；完成第 5 关解锁载货，第 30 关解锁压缩，三款都免费。</p></details><details><summary>5 钻石能买到什么？</summary><p>琥珀花园是 Taro 背甲花园的永久外观；速度、容量、收集与关卡规则完全不变。</p></details></section><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-abyss-diver" href="/zh-cn/games/animal-abyss-diver/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-abyss-diver.webp" alt="深渊潜航员" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">深渊潜航员</strong></span></a><a class="game-info-related-card" data-game-id="animal-gearpack-expedition" href="/zh-cn/games/animal-gearpack-expedition/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-gearpack-expedition.webp" alt="装备行囊远征" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">装备行囊远征</strong></span></a></div></section></section>
 <!-- adsense-static-guide:end -->
 <span id="saveWarning" role="status" data-copy="saveWarning" hidden>无法保存进度，请保留此页并重试。</span>
   <label hidden><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans" selected>简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
-  <script data-wp-entry-required src="/src/game-entry-loader.js"></script>
-  <script data-wp-entry-required src="/src/game-screen-frame.js"></script>
+  <script data-wp-entry-required="" src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92"></script>
   <script data-wp-entry-required src="/src/stage-rail-i9.js"></script>
-  <script data-wp-entry-required src="/src/game-play-ui.js"></script>
+  <script data-wp-entry-required="" src="/src/game-play-ui.js"></script>
   <script data-wp-entry-required src="/src/tutorial.js"></script>
   <script data-wp-entry-required src="/src/public-game-catalog.js"></script>
   <script data-wp-entry-required src="/src/interface7-poster-registry.js"></script>
   <script data-wp-entry-required src="/src/game-official-name.js"></script>
   <script data-wp-entry-required src="/src/game-page-info.js"></script>
   <script src="/src/analytics.js"></script>
-  <script type="module" data-wp-entry-required src="/games/dustwake-depot/game.mjs?v=1&amp;wp-build=f5be48c23e6887a6"></script>
+  <script type="module" data-wp-entry-required="" src="/games/dustwake-depot/game.mjs?v=entry-initial-947ff31c92fd&amp;wp-build=f5be48c23e6887a6"></script>
 </body>
 </html>

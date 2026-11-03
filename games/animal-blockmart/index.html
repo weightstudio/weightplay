@@ -1,6 +1,183 @@
 <!doctype html>
-<html lang="en">
-<head>
+<html lang="en" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-blockmart/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/animal-blockmart/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-blockmart/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-blockmart/" />
@@ -17,23 +194,23 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-blockmart/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-blockmart/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-blockmart/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow"><meta name="googlebot" content="index,follow">
-  <meta name="description" content="Manage a growing block-animal neighborhood shop." data-l10n-content="pageDescription"><meta name="weightplay-game-id" content="animal-blockmart"><meta name="weightplay-game-version" content="v18"><meta name="weightplay-interface-version" content="9.1">
+  <meta name="description" content="Manage a growing block-animal neighborhood shop." data-l10n-content="pageDescription"><meta name="weightplay-game-id" content="animal-blockmart"><meta name="weightplay-game-version" content="v19"><meta name="weightplay-interface-version" content="9.1">
   <title data-runtime-localize="off">Animal Blockmart | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261021-shared-guide-style"><link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-battle-canvas-style"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261025-shared-main-gap12">
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-interface9-shared-shell">
-  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1">
-  <link rel="stylesheet" href="/games/animal-blockmart/style.cefad946389d90d2.css?v=18-i9.1">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261021-shared-guide-style" data-wp-entry-required=""><link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20261018-shared-battle-canvas-style" data-wp-entry-required=""><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261025-shared-main-gap12" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261022-interface9-shared-shell" data-wp-entry-required="">
+  <link rel="stylesheet" href="../../src/loading-screen.css?v=20261017-shared-dark-loader1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/animal-blockmart/style.cefad946389d90d2.css?v=18-i9.1" data-wp-entry-required="">
   <script src="../../src/shared-interface-bootstrap.js?v=20261022-shared-loader-runtime" data-wp-shared-interface="7"></script>
   <script src="../../src/game-lifecycle-controller.js?v=20261014-lifecycle-v1" defer></script>
-</head>
-<body data-wp-game-id="animal-blockmart" data-game-id="animal-blockmart" data-wp-game-version="v18" data-wp-interface-version="9.1" data-audience="general" data-wp-game-owned-guide="true" data-runtime-localize="off">
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?v=entry-initial-a98a40c5cd70" data-wp-entry-required=""></head>
+<body data-wp-game-id="animal-blockmart" data-game-id="animal-blockmart" data-wp-game-version="v19" data-wp-interface-version="9.1" data-audience="general" data-wp-game-owned-guide="true" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Animal Blockmart" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Animal Blockmart…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Animal Blockmart…" aria-valuetext="Loading Animal Blockmart…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong data-l10n="title">Animal Blockmart</strong><div aria-hidden="true"><i id="loadingFill"></i></div></div></div>
-  <main id="gameFrameRoot" data-wp-frame-root>
-    <section id="mainScreen" class="frame-main-screen" data-screen="main">
-      <header id="mainHeader" class="topbar wp-main-shell-header"><a href="../../index.html" class="back wp-shell-return" data-wp-return="main" aria-label="Back to lobby" data-l10n-aria="backToPreview"><span aria-hidden="true">←</span></a><strong class="wp-shell-main-title" data-wp-frame-title data-l10n="title">Animal Blockmart</strong></header>
-      <div id="mainContent" class="frame-main-content" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster src="assets/poster-v1.webp" alt="Original low-poly animal convenience store preview" data-l10n-alt="posterAlt" draggable="false"><div class="main-copy" data-wp-frame-copy><p class="main-summary" data-wp-frame-summary data-l10n="mainSummary">Build a lively neighborhood shop. Stock blocky goods, welcome shoppers, and reinvest every sale into a bigger store.</p><button id="mainStart" class="primary" type="button" data-wp-frame-action="primary" data-wp-main-start data-l10n="openShop" data-runtime-localize="off">Open the shop</button></div></div>
+  <main id="gameFrameRoot" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+    <section id="mainScreen" class="frame-main-screen" data-screen="main" data-wp-frame-scene="main">
+      <header id="mainHeader" class="topbar wp-main-shell-header wp-frame-header" data-wp-frame-header="main"><a href="../../index.html" class="back wp-shell-return wp-frame-return" data-wp-return="main" aria-label="Back to lobby" data-l10n-aria="backToPreview"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><strong class="wp-shell-main-title" data-wp-frame-title="" data-l10n="title">Animal Blockmart</strong></header>
+      <div id="mainContent" class="frame-main-content" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster="" src="assets/poster-v1.webp" alt="Original low-poly animal convenience store preview" data-l10n-alt="posterAlt" draggable="false" width="1254" height="1254"><div class="main-copy" data-wp-frame-copy=""><p class="main-summary" data-wp-frame-summary="" data-l10n="mainSummary">Build a lively neighborhood shop. Stock blocky goods, welcome shoppers, and reinvest every sale into a bigger store.</p><button id="mainStart" class="primary" type="button" data-wp-frame-action="primary" data-wp-main-start data-l10n="openShop" data-runtime-localize="off">Open the shop</button></div></div>
     </section>
     <div id="app" class="battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-frame-logical-header="battle" data-wp-canvas-max-width="920" hidden>
     <header id="battleHeader" class="topbar"><button id="battleBack" class="back" type="button" data-wp-return="battle" aria-label="Back to main" data-l10n-aria="backToMain">‹</button><div class="brand"><small data-l10n="sub">WEIGHTPLAY · CONTINUOUS SHOP</small><strong data-wp-frame-title data-l10n="title">Animal Blockmart</strong></div></header>
@@ -57,7 +234,7 @@
     <section id="leaveConfirm" class="leave-confirm" data-wp-battle-substate="leave-confirm" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div><h2 id="leaveTitle" data-l10n="leaveTitle">Return to the shop menu?</h2><p data-l10n="leaveText">The shop keeps running and your progress stays saved.</p><button id="continueBattle" class="primary" type="button" data-l10n="continuePlaying">Continue shopping</button><button id="returnMain" class="text-button" type="button" data-l10n="returnMain">Return to Main</button></div></section>
     </div>
     <!-- adsense-static-guide:start -->
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-game-owned-guide="true">
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-game-owned-guide="true" data-wp-entry-guide="">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-l10n="guideKicker">WeightPlay Original Game Guide</span><h2 data-l10n="title">Animal Blockmart</h2><p data-l10n="guideSummary">Keep your neighborhood store stocked and help each sale fund the next improvement.</p></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-l10n="guideGoalTitle">Goal</h3><p data-l10n="guideGoalBody">Build a stocked, varied animal shop. Reinvest paid sales in supplies, staff, equipment and a store up to22×22.</p></div>
@@ -69,6 +246,6 @@
     <!-- adsense-static-guide:end -->
   </main>
   <script src="../../src/edge-guard.js?v=1"></script>
-  <script src="../../src/weightplay-audio.js?v=1.0.0"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-screen-frame.js?v=20261025-entry-loader-stylesheet-ready1"></script><script src="../../src/battle-canvas-standard.js?v=20261022-shared-battle-canvas-runtime"></script><script src="../../src/game-page-info.js?v=20261023-shared-guide-runtime"></script><script type="module" src="/games/animal-blockmart/game.5af9324cae55b7ac.js?v=17-public1"></script>
+  <script src="../../src/weightplay-audio.js?v=1.0.0"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-screen-frame.js?v=20261025-entry-loader-stylesheet-ready1" data-wp-entry-required=""></script><script src="../../src/battle-canvas-standard.js?v=20261022-shared-battle-canvas-runtime" data-wp-entry-required=""></script><script src="../../src/game-page-info.js?v=20261023-shared-guide-runtime"></script><script type="module" src="/games/animal-blockmart/game.5af9324cae55b7ac.js?v=17-public1" data-wp-entry-required=""></script>
 </body>
 </html>

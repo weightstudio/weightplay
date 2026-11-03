@@ -668,9 +668,10 @@
           else logicalBattleActionRoot.setAttribute('data-wp-frame-logical-actions', priorLogicalBattleActionMode);
         }
         mounts.delete(root);
+        delete root.dataset.wpFrameMounted;
       },
     });
-    mounts.set(root, api); refresh(); return api;
+    mounts.set(root, api); root.dataset.wpFrameMounted = 'true'; refresh(); return api;
   }
   // One-time DOM binding for existing declared slots. This is not a second
   // renderer/skin: every control, title, setting and activation uses mount().
@@ -680,7 +681,8 @@
     root.setAttribute('data-wp-frame-root','');
     root.dataset.wpFrameAdapted = 'true';
     const oldMain = root.querySelector('[data-wp-shell-header="main"]');
-    const mainTitle = oldMain.querySelector('[data-wp-game-title],h1');
+    const preparedMainHeader = main?.querySelector?.(':scope > [data-wp-frame-header="main"]');
+    const mainTitle = preparedMainHeader?.querySelector('[data-wp-frame-title],h1') || oldMain.querySelector('[data-wp-game-title],h1');
     const localeSelect = root.querySelector('#localeSelect');
     const scenes = {};
     // The adapter accepts the legacy DOM shorthand used by older games and a
@@ -701,7 +703,8 @@
       const oldHeader = root.querySelector(`[data-wp-shell-header="${name}"]`);
       const back = root.querySelector(`[data-wp-return="${name}"]`);
       if (!back) throw Error(`FRAME_RETURN_REQUIRED:${name}`);
-      const header = document.createElement('header');
+      const preparedHeader = name==='main' ? preparedMainHeader : null;
+      const header = preparedHeader || document.createElement('header');
       header.id = `wp-shared-${name}-header`;
       const title = name==='main' ? mainTitle : document.createElement('strong');
       title.setAttribute('data-wp-frame-title','');
@@ -709,9 +712,12 @@
       header.append(back,title);
       let content;
       if (name==='main') {
-        content=document.createElement('div');
-        content.append(...screen.childNodes);
-        screen.append(content);
+        content=preparedHeader && screen.querySelector(':scope > [data-wp-frame-content="main"]');
+        if(!content){
+          content=document.createElement('div');
+          content.append(...screen.childNodes);
+          screen.append(content);
+        }
         const poster=content.querySelector('.cover'), copy=content.querySelector('.menu-copy');
         if(poster?.parentElement.classList.contains('poster-frame')) {const wrapper=poster.parentElement;wrapper.replaceWith(poster);}
         poster?.setAttribute('data-wp-frame-poster','');
@@ -782,7 +788,20 @@
   }
   // Auto-discovery feeds older game-owned scene DOM into this same Interface 7 runtime.
   // It is an input normalizer, not another frame/controller or separately loaded version.
+  let autoMountDocumentQueued = false;
   function autoMountDocument() {
+  // Discovery requires the complete authored DOM. A parser-blocking entry
+  // loader can yield with body present before declared frame roots are parsed.
+  if (document.readyState === 'loading') {
+    if (!autoMountDocumentQueued) {
+      autoMountDocumentQueued = true;
+      document.addEventListener('DOMContentLoaded', () => {
+        autoMountDocumentQueued = false;
+        autoMountDocument();
+      }, {once:true});
+    }
+    return;
+  }
   // Declared slots already use mount(); auto-discovery is only for older game-owned DOM.
   if (document.querySelector('[data-wp-frame-root],[data-wp-game-shell-root]')) return;
   if (window.__weightPlayFrameAutoMountRequested) return;

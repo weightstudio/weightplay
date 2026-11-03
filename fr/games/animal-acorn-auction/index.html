@@ -1,10 +1,187 @@
 <!doctype html>
-<html lang="fr">
-<head>
+<html lang="fr" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow" data-wp-entry-poster="/assets/interface7-redrawn/animal-acorn-auction.webp">
+<head><meta charset="utf-8" /><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
 
     <base href="/games/animal-acorn-auction/" />
     <script src="../../src/weightplay-audio.js?v=1.0.0"></script>
-  <script src="../../src/game-layout-config.js?v=20260919-banner1"></script>
+  <script src="../../src/game-layout-config.js?v=20260919-banner1" data-wp-entry-required=""></script>
     <link rel="canonical" href="https://weightplay.com/fr/games/animal-acorn-auction/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-acorn-auction/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-acorn-auction/" />
@@ -20,20 +197,20 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-acorn-auction/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-acorn-auction/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-acorn-auction/" />
-    <meta charset="utf-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#2d261d" />
   <title>Vente aux Glands | WeightPlay</title>
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-acorn-auction" />
-  <meta name="weightplay-game-version" content="v14" />
+  <meta name="weightplay-game-version" content="v15" />
   <meta name="weightplay-interface-version" content="9" />
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261017-interface9-guide-theme1" />
-  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-guide-compatibility-v1" />
-  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1" />
-  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1" />
-  <link rel="stylesheet" href="style.css?v=20261023-acorn-market-v11&amp;wp-build=e072b0c158700565" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20261017-interface9-guide-theme1" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261017-interface9-guide-compatibility-v1" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1" data-wp-entry-required="" />
+  <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261019-shared-play-motion-reduce1" data-wp-entry-required="" />
+  <link rel="stylesheet" href="style.css?v=20261023-acorn-market-v11&amp;wp-build=e072b0c158700565" data-wp-entry-required="" />
   <meta name="description" content="Composez votre panier. Attendre une baisse ou devancer un rival ?" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -74,24 +251,24 @@
     "suggestedMinAge": 9
   }
 }</script>
-  </head>
-<body data-screen="main" data-wp-game-id="animal-acorn-auction" data-wp-game-version="v14" data-wp-interface-version="9" data-wp-preserve-document-scroll="true" data-wp-game-owned-guide="true" data-sound-toggle="off">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
+<body data-screen="main" data-wp-game-id="animal-acorn-auction" data-wp-game-version="v15" data-wp-interface-version="9" data-wp-preserve-document-scroll="true" data-wp-game-owned-guide="true" data-sound-toggle="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Vente aux Glands" data-state="loading" data-error-title="Impossible de charger le jeu" data-error-message="Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Chargement de Vente aux Glands…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Chargement de Vente aux Glands…" aria-valuetext="Chargement de Vente aux Glands…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Réessayer</button><a class="wp-game-entry-loader-button" href="/fr/">Retour au lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby. <a href="/fr/">Retour au lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <div id="loading" class="loading-screen" aria-live="polite"><div class="loader-mark">◆</div><p data-i18n="loading">Opening the acorn market…</p></div>
-  <main id="app" data-wp-frame-root hidden>
+  <main id="app" data-wp-frame-root hidden data-wp-frame="2" data-wp-entry-root="">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Vente aux Glands</h1>
-    <section id="mainScreen" class="screen panel" data-screen="main">
-      <header class="topbar main-header"><button id="backBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="main" aria-label="Retour au lobby"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></button><strong data-runtime-localize="off" data-wp-game-title data-wp-frame-title>Vente aux Glands</strong></header>
-      <div id="mainContent" class="main-content">
-        <img id="mainPoster" class="main-cover" data-wp-frame-poster src="../../assets/interface7-redrawn/animal-acorn-auction.webp" alt="" width="1254" height="1254" />
-        <div class="main-copy" data-wp-frame-copy>
-          <p id="world" class="eyebrow" data-i18n="world">Le marché de Rux</p>
+    <section id="mainScreen" class="screen panel" data-screen="main" data-wp-frame-scene="main">
+      <header class="topbar main-header wp-frame-header" data-wp-frame-header="main"><button id="backBtn" class="icon-btn wp-shell-return wp-frame-return" type="button" data-wp-return="main" aria-label="Retour au lobby"><span class="wp-shell-return-arrow wp-frame-back-icon" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="26" height="26" class="wp-frame-lobby-logo" /></button><strong data-runtime-localize="off" data-wp-game-title data-wp-frame-title="">Vente aux Glands</strong></header>
+      <div id="mainContent" class="main-content" data-wp-frame-content="main">
+        <img id="mainPoster" class="main-cover" data-wp-frame-poster="" src="/assets/interface7-redrawn/animal-acorn-auction.webp" alt="" width="1254" height="1254" data-wp-interface7-poster="true" />
+        <div class="main-copy" data-wp-frame-copy="">
+          <p id="world" class="eyebrow" data-i18n="world" data-wp-frame-summary="">Le marché de Rux</p>
           <p id="mainSummary" class="intro main-summary" data-i18n="intro" data-wp-frame-summary>Composez votre panier. Attendre une baisse ou devancer un rival ?</p>
-          <p id="best" class="best main-progress" data-wp-frame-progress role="status" aria-live="polite" data-i18n="best">0/30 commandes · 0/90 étoiles</p>
+          <p id="best" class="best main-progress" data-wp-frame-progress="" role="status" aria-live="polite" data-i18n="best">0/30 commandes · 0/90 étoiles</p>
           <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-wp-frame-action="primary" data-i18n="start">Ouvrir le marché</button></div>
         </div>
       </div>
     </section>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-acorn-auction-guide="true" data-runtime-localize="off" aria-label="Vente aux Glands"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay · Le marché de Rux</span><h2>Vente aux Glands</h2><p>Composez votre panier. Attendre une baisse ou devancer un rival ?</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Mission</h3><p>Réussissez 30 commandes : nombre exact, budget et limite de caisses. Les glands dorés sont inclus dans le total. Les jetons du puzzle sont distincts des diamants partagés.</p></div><div class="game-info-section"><h3>Jouer</h3><p>Choisissez une commande ouverte. Touchez les caisses 3D ou A, B, C pour ajouter ou retirer des lots. Vérifiez le panier puis enchérissez. Chaque erreur indique le problème ; trois erreurs ferment cette tentative. Réessayer restaure le marché.</p></div><div class="game-info-section"><h3>Cloche et rivaux</h3><p>Aucun chronomètre. Seule la cloche change les prix. Chaque caisse affiche sa remise et la sonnerie où un rival l’achète, même si elle est sélectionnée. Achetez maintenant ou attendez une autre combinaison. Vider le panier ne remet ni cloche ni erreurs à zéro. Si une caisse indispensable est vendue, revenez aux commandes.</p></div><div class="game-info-section"><h3>Progression</h3><p>Six chapitres de cinq commandes introduisent comparaison, combinaisons, qualité dorée, remises, capacité et défis mixtes. Chaque cinquième commande vérifie les acquis. Une réussite ouvre la suivante. Une étoile pour réussir, une sans erreur, une au prix minimal parmi toutes les sonneries possibles. Rejouer conserve vos meilleurs scores.</p></div><div class="game-info-section"><h3>Étal</h3><p>Chêne est disponible, ambre demande 10 commandes. Clair de lune coûte 8 diamants partagés et reste acquis dans ce navigateur. Solde et prix sont affichés avant achat. Les couleurs ne donnent aucun avantage ; tout se joue sans achat.</p></div><div class="game-info-section"><h3>Sauvegarde</h3><p>Tactile, souris, Tab et Entrée fonctionnent, même sans 3D. La réduction des mouvements ne change que les effets. Commandes, étoiles, prix et couleurs sont sauvegardés localement ; le panier en cours ne l’est pas. Un ancien record valide est conservé et donne une étoile aux trois premières commandes. En cas d’échec du stockage, un message apparaît et la session continue. Pas de cloud.</p></div><details class="game-info-section game-info-faq"><summary>FAQ</summary><p>Le moins cher convient-il toujours ? Il faut aussi respecter nombre, qualité et capacité. Attendre aide-t-il ? Un rival peut acheter avant vous. Peut-on réessayer ? Oui. Quitter efface-t-il les réussites ? Seule la tentative inachevée est perdue.</p></details></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-acorn-auction-guide="true" data-runtime-localize="off" aria-label="Vente aux Glands" data-wp-entry-guide=""><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay · Le marché de Rux</span><h2>Vente aux Glands</h2><p>Composez votre panier. Attendre une baisse ou devancer un rival ?</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Mission</h3><p>Réussissez 30 commandes : nombre exact, budget et limite de caisses. Les glands dorés sont inclus dans le total. Les jetons du puzzle sont distincts des diamants partagés.</p></div><div class="game-info-section"><h3>Jouer</h3><p>Choisissez une commande ouverte. Touchez les caisses 3D ou A, B, C pour ajouter ou retirer des lots. Vérifiez le panier puis enchérissez. Chaque erreur indique le problème ; trois erreurs ferment cette tentative. Réessayer restaure le marché.</p></div><div class="game-info-section"><h3>Cloche et rivaux</h3><p>Aucun chronomètre. Seule la cloche change les prix. Chaque caisse affiche sa remise et la sonnerie où un rival l’achète, même si elle est sélectionnée. Achetez maintenant ou attendez une autre combinaison. Vider le panier ne remet ni cloche ni erreurs à zéro. Si une caisse indispensable est vendue, revenez aux commandes.</p></div><div class="game-info-section"><h3>Progression</h3><p>Six chapitres de cinq commandes introduisent comparaison, combinaisons, qualité dorée, remises, capacité et défis mixtes. Chaque cinquième commande vérifie les acquis. Une réussite ouvre la suivante. Une étoile pour réussir, une sans erreur, une au prix minimal parmi toutes les sonneries possibles. Rejouer conserve vos meilleurs scores.</p></div><div class="game-info-section"><h3>Étal</h3><p>Chêne est disponible, ambre demande 10 commandes. Clair de lune coûte 8 diamants partagés et reste acquis dans ce navigateur. Solde et prix sont affichés avant achat. Les couleurs ne donnent aucun avantage ; tout se joue sans achat.</p></div><div class="game-info-section"><h3>Sauvegarde</h3><p>Tactile, souris, Tab et Entrée fonctionnent, même sans 3D. La réduction des mouvements ne change que les effets. Commandes, étoiles, prix et couleurs sont sauvegardés localement ; le panier en cours ne l’est pas. Un ancien record valide est conservé et donne une étoile aux trois premières commandes. En cas d’échec du stockage, un message apparaît et la session continue. Pas de cloud.</p></div><details class="game-info-section game-info-faq"><summary>FAQ</summary><p>Le moins cher convient-il toujours ? Il faut aussi respecter nombre, qualité et capacité. Attendre aide-t-il ? Un rival peut acheter avant vous. Peut-on réessayer ? Oui. Quitter efface-t-il les réussites ? Seule la tentative inachevée est perdue.</p></details></div></section>
     <select id="localeSelect" class="frame-source-locale" aria-label="Language" hidden><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
     <section id="stageScreen" class="screen panel stage-screen" data-screen="stage" data-wp-frame-play-fill hidden>
       <header class="stage-header"><button id="stageBackBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Retour"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong data-wp-frame-title hidden aria-hidden="true"></strong></header>
@@ -126,13 +303,13 @@
     </section>
   </main>
   <script src="../../src/stage-rail-i9.js?v=20261017-shared-play-spacing1"></script>
-  <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1"></script>
+  <script src="../../src/game-play-ui.js?v=20261017-shared-play-spacing1" data-wp-entry-required=""></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-screen-frame.js?v=20261017-interface9-settings-locale-adoption-v1" data-wp-frame-script></script>
+  <script src="../../src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-frame-script data-wp-entry-required=""></script>
   <script src="../../src/wallet.js"></script>
-  <script src="locales.js?v=20261023-acorn-market-v11&amp;wp-build=4a249cbe0b3a6a2b"></script>
-  <script src="frame.js?v=20261023-acorn-market-v11&amp;wp-build=20f13517e80c7b59"></script>
-  <script src="game.js?v=20261101-acorn-v14&amp;wp-build=c49bae011599cacf"></script>
+  <script src="locales.js?v=entry-initial-723dcfe80c19&amp;wp-build=4a249cbe0b3a6a2b"></script>
+  <script src="frame.js?v=entry-initial-13e5ad364b7b&amp;wp-build=20f13517e80c7b59" data-wp-entry-required=""></script>
+  <script src="game.js?v=entry-initial-f9ff9f03ae1b&amp;wp-build=c49bae011599cacf" data-wp-entry-required=""></script>
 <script src="/src/site-config.js?v=20261002-tabletop-reward-exclusion-v1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260930-zoo-star-memory-runtime-guide-v4"></script>
