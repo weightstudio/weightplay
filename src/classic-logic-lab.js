@@ -156,23 +156,33 @@
     const modeLabel = slidingCampaignCopy[mode] || slidingCampaignCopy.standard;
     return { stage: safeStage, arcIndex, arc, mode, goal, start: tiles, anchorIndex, noBacktrack, checkpoint, modeLabel, shuffleSteps, solution: reverseSolution.reverse() };
   }
-  function readSlidingProgress() {
-    const fallback = { cleared: [], highestUnlocked: 1 };
+  function readSlidingSnapshot() {
     try {
-      const parsed = JSON.parse(localStorage.getItem(SLIDING_SAVE_KEY) || "null");
+      const raw = localStorage.getItem(SLIDING_SAVE_KEY);
+      const parsed = raw === null ? null : JSON.parse(raw);
+      if (raw !== null && (!parsed || typeof parsed !== "object" || Array.isArray(parsed))) return { ok: false };
       const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= SLIDING_TOTAL_STAGES))].sort((a, b) => a - b) : [];
       const highest = Math.max(1, Math.min(SLIDING_TOTAL_STAGES, Number(parsed?.highestUnlocked) || (cleared.length ? Math.max(...cleared) + 1 : 1)));
-      return { cleared, highestUnlocked: highest };
-    } catch { return fallback; }
+      return { ok: true, raw, progress: { cleared, highestUnlocked: highest } };
+    } catch { return { ok: false }; }
   }
-  function writeSlidingProgress(progress) { localStorageSafe(SLIDING_SAVE_KEY, JSON.stringify(progress)); }
+  function readSlidingProgress() { return readSlidingSnapshot().progress || { cleared: [], highestUnlocked: 1 }; }
   function markSlidingStageCleared(stage) {
-    const progress = readSlidingProgress();
-    if (!progress.cleared.includes(stage)) progress.cleared.push(stage);
+    const snapshot = readSlidingSnapshot();
+    if (!snapshot.ok) return { ok: false };
+    const progress = snapshot.progress;
+    const firstClear = !progress.cleared.includes(stage);
+    if (!firstClear) return { ok: true, firstClear: false, progress };
+    progress.cleared.push(stage);
     progress.cleared.sort((a, b) => a - b);
     progress.highestUnlocked = Math.min(SLIDING_TOTAL_STAGES, Math.max(progress.highestUnlocked, stage + 1));
-    writeSlidingProgress(progress);
-    return progress;
+    try {
+      if (localStorage.getItem(SLIDING_SAVE_KEY) !== snapshot.raw) return { ok: false };
+      const next = JSON.stringify(progress);
+      localStorage.setItem(SLIDING_SAVE_KEY, next);
+      if (localStorage.getItem(SLIDING_SAVE_KEY) !== next) return { ok: false };
+      return { ok: true, firstClear: true, progress };
+    } catch { return { ok: false }; }
   }
   const codeCampaignArcs = [
     { key: "signal", title: L("Signal School", "訊號學堂", "信号学堂", "シグナル学舎", "신호 학교", "Escuela de señales", "Escola de sinais", "École des signaux", "Signalschule", "Scuola dei segnali", "Школа сигналов", "सिग्नल स्कूल", "مدرسة الإشارات"), rule: L("Read exact positions and near colors. Repeats are not used.", "讀懂正確位置與顏色提示。本段不使用重複色。", "读懂正确位置与颜色提示。本段不使用重复色。", "位置一致と色一致を読みます。重複色はありません。", "정확한 위치와 색 힌트를 읽습니다. 중복 색은 없습니다.", "Lee posiciones exactas y colores cercanos. No hay repetidos.", "Leia posições exatas e cores próximas. Sem repetições.", "Lisez les positions exactes et les couleurs proches. Sans doublons.", "Lies exakte Positionen und nahe Farben. Keine Wiederholungen.", "Leggi posizioni esatte e colori vicini. Niente ripetizioni.", "Читайте точные позиции и близкие цвета. Повторов нет.", "सही स्थान और पास के रंग पढ़ें। दोहराव नहीं है।", "اقرأ المواضع الدقيقة والألوان القريبة. لا توجد ألوان مكررة."), index: 0 },
@@ -1108,12 +1118,15 @@
     if (staged) {
       const stage = Number(app.currentStage); const sliding = app.id === "sliding-15"; const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; const campaignCopy = sliding ? slidingCampaignCopy : codeCampaignCopy;
       const codeSave = !sliding && won ? markCodeStageCleared(stage) : null;
-      const progress = sliding ? (won ? markSlidingStageCleared(stage) : readSlidingProgress()) : (codeSave?.progress || readCodeProgress());
-      if (!sliding) __wpMeasurement.saveSucceeded = Boolean(codeSave?.ok && codeSave.firstClear);
-      app.resultTitle.textContent = !sliding && won && !codeSave?.ok ? t("solved") : won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
-      app.resultText.textContent = !sliding && won && !codeSave?.ok ? (codeSaveFailure[locale] || codeSaveFailure.en) : detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
+      const slidingSave = sliding && won ? markSlidingStageCleared(stage) : null;
+      const stageSave = sliding ? slidingSave : codeSave;
+      const progress = stageSave?.progress || (sliding ? readSlidingProgress() : readCodeProgress());
+      if (sliding) __wpMeasurement.saveSucceeded = Boolean(slidingSave?.ok && slidingSave.firstClear);
+      else __wpMeasurement.saveSucceeded = Boolean(codeSave?.ok && codeSave.firstClear);
+      app.resultTitle.textContent = won && !stageSave?.ok ? t("solved") : won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
+      app.resultText.textContent = won && !stageSave?.ok ? (codeSaveFailure[locale] || codeSaveFailure.en) : detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
       (__wpNotifyMeasurement(), app.root.querySelector("#resultStages").hidden = false);
-      const nextStage = app.root.querySelector("#resultNext"); const canNextStage = won && (sliding || codeSave?.ok) && stage < total && stage + 1 <= progress.highestUnlocked;
+      const nextStage = app.root.querySelector("#resultNext"); const canNextStage = won && stageSave?.ok && stage < total && stage + 1 <= progress.highestUnlocked;
       if (sliding) { (__wpNotifyMeasurement(), nextStage.hidden = false); nextStage.disabled = !canNextStage; nextStage.setAttribute("aria-disabled", String(!canNextStage)); }
       else { (__wpNotifyMeasurement(), nextStage.hidden = !canNextStage); nextStage.disabled = false; nextStage.removeAttribute("aria-disabled"); }
       (__wpNotifyMeasurement(), app.root.querySelector("#resultReplay").hidden = false);
@@ -1276,6 +1289,7 @@
       } else announce(`${t("turn")} · ${t("moves")}: ${history.length}`);
     }
     function reset() {
+      if (stage) { const snapshot = readSlidingSnapshot(); __wpMeasurement.stageId = stage.stage; __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.rewardEligible = snapshot.ok && !snapshot.progress.cleared.includes(stage.stage); __wpMeasurement.saveSucceeded = false; }
       tiles = stage ? stage.start.slice() : [...Array(15).keys()].map((n) => n + 1).concat(0); blank = tiles.indexOf(0); lastBlank = -1; history = [];
       if (!stage) { const random = rng(0x1571); for (let n = 0; n < 35; n += 1) { const options = neighbours(blank, 4, 4); const next = options[Math.floor(random() * options.length)]; [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]]; blank = next; } }
       hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(slidingCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
