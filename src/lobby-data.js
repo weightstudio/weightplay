@@ -97,8 +97,8 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "glowpiece-gallery", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "/games/glowpiece-gallery/?preview=1", href: "games/glowpiece-gallery/",
+      id: "glowpiece-gallery", audience: "general", status: "playable",
+      href: "games/glowpiece-gallery/", previewVideo: "assets/previews/glowpiece-gallery-battle.webm",
       title: { __localizedExact: true, en: "Glowpiece Gallery", "zh-Hant": "拾景拼館", "zh-Hans": "拾景拼馆", ja: "ひかりの絵つなぎ", ko: "빛조각 갤러리", es: "Galería de Fragmentos", "pt-BR": "Galeria de Fragmentos", fr: "Galerie des fragments", de: "Lichtstücke-Galerie", it: "Galleria di frammenti", ru: "Галерея светлых фрагментов", hi: "उजले टुकड़ों की गैलरी", ar: "معرض القطع المضيئة" },
       type: { en: "Picture assembly", "zh-Hant": "圖像拼合", "zh-Hans": "图像拼合", ja: "絵合わせ", ko: "그림 조립", es: "Montaje de imágenes", "pt-BR": "Montagem de imagens", fr: "Assemblage d’images", de: "Bilder zusammensetzen", it: "Composizione di immagini", ru: "Сборка картин", hi: "चित्र जोड़ना", ar: "تركيب الصور" },
       description: { en: "Move picture fragments, join matching seams and restore Orla’s gallery.", "zh-Hant": "搬動圖畫碎片、接起相合的邊緣，重現 Orla 的畫廊景色。", "zh-Hans": "搬动图画碎片、接起相合的边缘，重现 Orla 的画廊景色。", ja: "絵のかけらを動かしてつなぎ、オルラのギャラリーを彩ろう。", ko: "그림 조각을 옮겨 이어 붙이고 오를라의 갤러리를 완성하세요.", es: "Mueve fragmentos y une sus bordes para restaurar la galería de Orla.", "pt-BR": "Mova fragmentos e una as bordas para restaurar a galeria de Orla.", fr: "Déplacez les fragments et réunissez leurs bords pour restaurer la galerie d’Orla.", de: "Verschiebe Bildstücke und verbinde ihre Kanten, um Orlas Galerie zu vervollständigen.", it: "Sposta i frammenti e unisci i bordi per restaurare la galleria di Orla.", ru: "Перемещайте фрагменты и соединяйте края, восстанавливая галерею Орлы.", hi: "चित्र के टुकड़े खिसकाएँ, किनारे जोड़ें और ओर्ला की गैलरी सजाएँ।", ar: "حرّك أجزاء الصور ووصل حوافها لإكمال معرض أورلا." },

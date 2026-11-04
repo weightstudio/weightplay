@@ -549,6 +549,10 @@
       "date": "2026-10-24T07:27:34.088Z",
       "evidence": "canonical-public-catalog"
     },
+    "duskbloom": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
     "dustwake-depot": {
       "date": "2026-10-29T10:31:36.367Z",
       "evidence": "canonical-public-catalog"
@@ -585,6 +589,14 @@
       "date": "2026-09-04T20:21:02+08:00",
       "evidence": "git:5e8b126c73f51c52d2bbc36360d517b5f08bec80"
     },
+    "glowpiece-gallery": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "glowspool": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
     "go-fish": {
       "date": "2026-09-06T07:33:49+08:00",
       "evidence": "git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"
@@ -596,6 +608,10 @@
     "hangman": {
       "date": "2026-08-31T13:16:25+08:00",
       "evidence": "git:a714f868a988d5979fbf72411fbc11a87bf0ef38"
+    },
+    "hearthloop": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
     },
     "hearts": {
       "date": "2026-09-06T19:23:08+08:00",
@@ -612,6 +628,14 @@
     "klondike-solitaire": {
       "date": "2026-08-08T12:32:12+08:00",
       "evidence": "git:45e3a04413a39588697ff244372f6e18d5ecdd5b"
+    },
+    "lantern-lasso": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "lantern-stride": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
     },
     "lights-out": {
       "date": "2026-09-07T13:23:52+08:00",
@@ -631,6 +655,10 @@
     },
     "minefield-logic": {
       "date": "2026-10-23T15:09:00.552Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "moonlit-atrium": {
+      "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
     },
     "mossfold": {
@@ -697,6 +725,10 @@
       "date": "2026-10-25T06:01:31.651Z",
       "evidence": "canonical-public-catalog"
     },
+    "rux-salvage-yard": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
     "shadow-wolf": {
       "date": "2026-07-06T21:50:28+08:00",
       "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
@@ -749,9 +781,17 @@
       "date": "2026-06-29T21:17:25+08:00",
       "evidence": "git:aee27c8085ee1502fa9f3698dc30b6b82462b732"
     },
+    "starcamp-glade": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
     "sudoku": {
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "sunmane-journey": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
     },
     "tetris": {
       "date": "2026-09-05T02:17:10+08:00",
@@ -760,6 +800,10 @@
     "tic-tac-toe": {
       "date": "2026-10-20T00:18:05.505Z",
       "evidence": "owner-approval:OAR-c49d98efeb64c0e44171906b"
+    },
+    "tideweave": {
+      "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
     },
     "tiny-weather-rescue": {
       "date": "2026-06-30T16:06:14+08:00",

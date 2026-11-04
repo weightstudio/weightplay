@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "gameId": "glowpiece-gallery",
   "audience": "general",
-  "interfaceVersion": 0,
+  "interfaceVersion": 9,
   "targetInterfaceVersion": 9,
   "flow": "MAIN_STAGE_BATTLE",
   "stage": {
