@@ -95,8 +95,8 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "moonlit-atrium", audience: "general", status: "planned", internalOnly: true,
-      href: "games/moonlit-atrium/", internalTrial: "?preview=1",
+      id: "moonlit-atrium", audience: "general", status: "playable", previewVideo: "assets/previews/moonlit-atrium-battle.webm",
+      href: "games/moonlit-atrium/",
       title: { __localizedExact: true, en: "Moonlit Atrium", "zh-Hant": "月燈迴廊", "zh-Hans": "月灯回廊", ja: "月灯りの回廊", ko: "달빛 회랑", es: "Atrio de Luna", "pt-BR": "Átrio ao Luar", fr: "Atrium lunaire", de: "Mondlicht-Atrium", it: "Atrio Lunare", ru: "Лунный атриум", hi: "चाँदनी का आँगन", ar: "رواق ضوء القمر" },
       type: {"en":"Light coverage logic","zh-Hant":"燈光覆蓋推理","zh-Hans":"灯光覆盖推理","ja":"照明の論理パズル","ko":"빛 배치 논리 퍼즐","es":"Lógica de iluminación","pt-BR":"Lógica de iluminação","fr":"Logique d’éclairage","de":"Licht-Logikrätsel","it":"Logica delle luci","ru":"Логика освещения","hi":"प्रकाश की तर्क पहेली","ar":"لغز منطق الإضاءة"},
       description: {"en":"Place moon lanterns to light every floor. Match the pillars without letting lanterns shine on each other.","zh-Hant":"放置月燈，照亮每格地板。滿足花柱數字，並讓月燈不互照。","zh-Hans":"放置月灯，照亮每格地板。满足花柱数字，并让月灯不互照。","ja":"月のランタンを置いて床をすべて照らしましょう。柱の数字を満たし、ランタン同士は照らさないようにします。","ko":"달빛 등불을 놓아 모든 바닥을 밝히세요. 기둥 숫자를 맞추고 등불끼리 서로 비추지 않게 하세요.","es":"Coloca faroles lunares e ilumina todo el suelo. Respeta los pilares sin que los faroles se iluminen entre sí.","pt-BR":"Coloque lanternas lunares e ilumine todo o piso. Respeite os pilares sem que as lanternas iluminem umas às outras.","fr":"Placez les lanternes lunaires pour éclairer tout le sol. Respectez les piliers sans que les lanternes s’éclairent entre elles.","de":"Setze Mondlaternen und beleuchte jeden Boden. Erfülle die Säulenzahlen, ohne dass Laternen einander anleuchten.","it":"Posiziona lanterne lunari e illumina tutto il pavimento. Rispetta i pilastri senza che le lanterne si illuminino tra loro.","ru":"Расставьте лунные фонари и осветите весь пол. Соблюдайте числа на колоннах: фонари не должны светить друг на друга.","hi":"चाँदनी लालटेन रखकर हर फ़र्श रोशन करें। खंभों की गिनती पूरी करें और लालटेनों को एक-दूसरे पर चमकने न दें।","ar":"ضع فوانيس القمر لإضاءة كل الأرضية. طابق أعداد الأعمدة من دون أن تضيء الفوانيس بعضها بعضًا."},
@@ -107,11 +107,11 @@ window.WONDER_LOBBY = {
       scoreBandsByAge: null,
       relatedGameRules: {"requirePublic":true,"sharedSkills":["Logic","Focus"],"gameIds":["animal-sunbeam-garden","animal-mosaic-clues"]},
       meta: { en: ["60 stages", "No timer"], "zh-Hant": ["60關", "不限時間"], "zh-Hans": ["60关", "不限时间"], ja: ["60ステージ", "時間制限なし"], ko: ["60 스테이지", "시간 제한 없음"], es: ["60 niveles", "Sin límite de tiempo"], "pt-BR": ["60 fases", "Sem limite de tempo"], fr: ["60 niveaux", "Sans chronomètre"], de: ["60 Level", "Ohne Zeitlimit"], it: ["60 livelli", "Senza tempo limite"], ru: ["60 уровней", "Без таймера"], hi: ["60 स्तर", "समय सीमा नहीं"], ar: ["60 مرحلة", "بلا مؤقت"] },
-      art: { kind: "image", background: "games/moonlit-atrium/assets/cover.webp" },
+      art: { kind: "image", background: "games/moonlit-atrium/assets/cover.webp", hideHero: true },
     },
     {
-      id: "starcamp-glade", audience: "general", status: "planned", internalOnly: true,
-      href: "games/starcamp-glade/", internalTrial: "?preview=1",
+      id: "starcamp-glade", audience: "general", status: "playable", previewVideo: "assets/previews/starcamp-glade-battle.webm",
+      href: "games/starcamp-glade/",
       title: { __localizedExact: true, en: "Starcamp Glade", "zh-Hant": "星帳林地", "zh-Hans": "星帐林地", ja: "星あかりの野営地", ko: "별빛 숲 야영지", es: "Claro de Estrellas", "pt-BR": "Clareira Estrelada", fr: "Clairière Étoilée", de: "Sternenzelt-Lichtung", it: "Radura Stellata", ru: "Звёздная поляна", hi: "तारों का वन शिविर", ar: "مخيم النجوم" },
       type: { en: "Tent logic puzzle", "zh-Hant": "帳篷配對推理", "zh-Hans": "帐篷配对推理", ja: "テント論理パズル", ko: "텐트 논리 퍼즐", es: "Lógica de tiendas", "pt-BR": "Lógica de barracas", fr: "Logique des tentes", de: "Zelt-Logikrätsel", it: "Logica delle tende", ru: "Логика палаток", hi: "तंबू तर्क पहेली", ar: "لغز منطق الخيام" },
       description: { en: "Give every tree its own tent. Read the counts and leave quiet space between camps.", "zh-Hant": "為每棵樹安排一頂帳篷。讀懂數量，讓營地彼此留點空間。", "zh-Hans": "为每棵树安排一顶帐篷。读懂数量，让营地彼此留点空间。", ja: "木ごとにテントを一つ。数字を読み、隣のテントと間を空けましょう。", ko: "나무마다 텐트 하나를 배정하세요. 숫자를 읽고 텐트 사이에 공간을 남겨 보세요.", es: "Una tienda para cada árbol. Lee las cifras y deja espacio entre campamentos.", "pt-BR": "Uma barraca para cada árvore. Leia os números e deixe espaço entre os acampamentos.", fr: "Une tente pour chaque arbre. Lisez les nombres et espacez les campements.", de: "Ein Zelt für jeden Baum. Lies die Zahlen und halte Abstand zwischen den Zelten.", it: "Una tenda per ogni albero. Leggi i numeri e lascia spazio tra gli accampamenti.", ru: "Каждому дереву — своя палатка. Читайте числа и оставляйте между палатками место.", hi: "हर पेड़ के लिए अलग तंबू। संख्याएँ पढ़ें और तंबुओं के बीच जगह छोड़ें।", ar: "خيمة مستقلة لكل شجرة. اقرأ الأعداد واترك مسافة بين الخيام." },
