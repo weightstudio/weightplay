@@ -165,6 +165,9 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
     // A stylesheet with an applied sheet can report an error for an optional
     // @import (e.g. a blocked font host). Its local rules are already usable.
     if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js`, '/src/diamond-special-progression.js', '/src/diamond-special-progression.css'].includes(new URL(url, location.origin).pathname)) return;
     if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
     failed = true;
     window.__weightPlayGameEntryPendingFailure = gameId;
@@ -178,8 +181,7 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script><!-- wp-entry-initial-head:end -->
-
-    <base href="/games/deep-drill/" />
+<meta name="weightplay-diamond-special" content="1"><base href="/games/deep-drill/" />
     <link rel="canonical" href="https://weightplay.com/fr/games/deep-drill/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/deep-drill/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/deep-drill/" />
@@ -197,15 +199,18 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/deep-drill/" />
  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
  <meta name="robots" content="index,follow" /><meta name="theme-color" content="#0b1824">
- <meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v15"><meta name="weightplay-interface-version" content="9">
+ <meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v16"><meta name="weightplay-interface-version" content="9">
  <title>Deep Drill | WeightPlay</title>
  <link rel="icon" href="/assets/weightplay-logo.png">
  <link rel="stylesheet" href="/src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required="">
  <link rel="stylesheet" href="/src/stage-rail-i9.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required="">
- <link rel="stylesheet" href="style.css?wp-build=f62811d716bbfd19" data-wp-entry-required="">
+ <link rel="stylesheet" href="/games/deep-drill/style.css?v=diamond-special-v16&amp;wp-build=947288b05cccbb36" data-wp-entry-required="">
  <script src="/src/weightplay-audio.js"></script><script src="/src/game-layout-config.js" data-wp-entry-required=""></script>
- <script defer src="/src/game-screen-frame.js?v=entry-initial-f57dd1ec8d92" data-wp-entry-required=""></script><script defer src="/src/stage-rail-i9.js"></script><script defer src="/src/game-play-ui.js" data-wp-entry-required=""></script>
- <script type="module" src="game.mjs?v=entry-initial-400c68fb1a09&amp;wp-build=4112be3b49add0fd" data-wp-entry-required=""></script>
+ <script defer src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e" data-wp-entry-required=""></script><script defer src="/src/stage-rail-i9.js"></script><script defer src="/src/game-play-ui.js" data-wp-entry-required=""></script>
+ <script src="/src/wallet.js"></script>
+<script src="/src/diamond-special-progression.js?v=1" data-wp-entry-optional="diamond-special"></script>
+<script src="/games/deep-drill/diamond-special.js?v=entry-initial-f451c0360512&amp;wp-build=4eaa733ec14b4c52" data-wp-entry-optional="diamond-special"></script>
+<script type="module" src="/games/deep-drill/game.mjs?v=entry-initial-230edd282394&amp;wp-build=5a2467419ae3c8b2" data-wp-entry-required=""></script>
   <meta name="description" content="Drill deeper, recover ore, upgrade your rig and unlock automatic drilling." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -244,8 +249,9 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
   }
 }
     </script>
-  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""></head>
-<body data-wp-game-id="deep-drill" data-audience="general" data-screen="main" data-wp-game-owned-guide class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Deep Drill" data-state="loading" data-error-title="Impossible de charger le jeu" data-error-message="Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Chargement de Deep Drill…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Chargement de Deep Drill…" aria-valuetext="Chargement de Deep Drill…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Réessayer</button><a class="wp-game-entry-loader-button" href="/fr/">Retour au lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby. <a href="/fr/">Retour au lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-00d84c2738cb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""><link rel="stylesheet" href="/src/diamond-special-progression.css?v=1" data-wp-entry-optional="diamond-special">
+</head>
+<body data-wp-game-id="deep-drill" data-audience="general" data-screen="main" data-wp-game-owned-guide class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Deep Drill" data-state="loading" data-error-title="Impossible de charger le jeu" data-error-message="Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Chargement de Deep Drill…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Chargement de Deep Drill…" aria-valuetext="Chargement de Deep Drill…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Réessayer</button><a class="wp-game-entry-loader-button" href="/fr/">Retour au lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby. <a href="/fr/">Retour au lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
 <div id="app" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
  <select id="localeSelect" hidden aria-label="語言"><option value="zh-Hant">繁體中文</option></select>
  <section id="main" class="scene main-scene" data-wp-frame-scene="main">

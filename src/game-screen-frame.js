@@ -8,6 +8,9 @@
     window.addEventListener('error', event => {
       const failed = event.target;
       if (!(failed instanceof HTMLScriptElement) || !(failed.src || '').includes('/games/' + gameId + '/')) return;
+      if (failed.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+          document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+          new URL(failed.src, location.origin).pathname === `/games/${gameId}/diamond-special.js`) return;
       const loader = window.WeightPlayGameEntryLoader;
       if (loader?.isActive && typeof loader.fail === 'function') loader.fail();
       else window.__weightPlayGameEntryPendingFailure = gameId;

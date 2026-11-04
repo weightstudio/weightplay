@@ -8259,3 +8259,32 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
   });
   window.WONDER_LOBBY.audiences.generalGameIds.push("sunmane-journey");
 })();
+
+// WP_DIAMOND_PILOT_META_BEGIN — exactly five owner-requested games, labels only.
+// Names mirror each game's diamond-special.js title dictionary; no helpers,
+// mechanics, prices, publication, classification or SEO fields load/change here.
+(() => {
+  const locales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const route = { "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", "pt-BR": "pt-br" };
+  const ranks = { en:"20 ranks", "zh-Hant":"20 階", "zh-Hans":"20 阶", ja:"全20段階", ko:"20단계", es:"20 rangos", "pt-BR":"20 níveis", fr:"20 rangs", de:"20 Ränge", it:"20 gradi", ru:"20 рангов", hi:"20 रैंक", ar:"20 رتبة" };
+  const titles = {
+    "deep-drill": {en:"Resonant Strata","zh-tw":"共鳴穿層","zh-cn":"共鸣穿层",ja:"共鳴穿層",ko:"공명 관통",es:"Estratos resonantes","pt-br":"Estratos ressonantes",fr:"Strates résonantes",de:"Resonanzschichten",it:"Strati risonanti",ru:"Резонанс пластов",hi:"अनुनादी परतें",ar:"طبقات الرنين"},
+    "pawaxe": {en:"Echo Seal","zh-tw":"迴響斧印","zh-cn":"回响斧印",ja:"残響の刻印",ko:"메아리 각인",es:"Sello resonante","pt-br":"Selo de eco",fr:"Sceau résonnant",de:"Echosiegel",it:"Sigillo eco",ru:"Печать эха",hi:"प्रतिध्वनि मुहर",ar:"ختم الصدى"},
+    "animal-prism-battalion": {en:"Prism Refraction","zh-tw":"稜光折射","zh-cn":"棱光折射",ja:"プリズム屈折",ko:"프리즘 굴절",es:"Refracción prisma","pt-br":"Refração Prisma",fr:"Réfraction prismatique",de:"Prismenbrechung",it:"Rifrazione prisma",ru:"Призменное преломление",hi:"प्रिज़्म अपवर्तन",ar:"انكسار المنشور"},
+    "block-apex": {en:"Tailwind Guard","zh-tw":"尾流護盾","zh-cn":"尾流护盾",ja:"スリップストリームシールド",ko:"슬립스트림 보호막",es:"Escudo de rebufo","pt-br":"Escudo de vácuo",fr:"Bouclier d’aspiration",de:"Windschattenschild",it:"Scudo di scia",ru:"Щит воздушного следа",hi:"स्लिपस्ट्रीम ढाल",ar:"درع تيار الهواء"},
+    "animal-rootvault-pins": {en:"Time-root Rewind","zh-tw":"時根回溯","zh-cn":"时根回溯",ja:"時根の巻き戻し",ko:"시간뿌리 되감기",es:"Rebobinado de raíz","pt-br":"Retorno da raiz",fr:"Retour des racines",de:"Zeitwurzel-Rücklauf",it:"Riavvolgi-radice",ru:"Корень времени",hi:"समय-जड़ वापसी",ar:"جذر الزمن"},
+  };
+  for (const [id, names] of Object.entries(titles)) {
+    const game = window.WONDER_LOBBY.games.find(game => game.id === id);
+    if (!game) continue;
+    const meta = game.meta && !Array.isArray(game.meta) ? game.meta : {};
+    const english = Array.isArray(meta.en) ? meta.en : Array.isArray(game.meta) ? game.meta : [];
+    for (const locale of locales) {
+      const existing = Array.isArray(meta[locale]) ? meta[locale] : english;
+      const label = `${names[route[locale] || locale]} · ${ranks[locale]}`;
+      meta[locale] = existing.includes(label) ? existing : [...existing, label];
+    }
+    game.meta = meta;
+  }
+})();
+// WP_DIAMOND_PILOT_META_END
