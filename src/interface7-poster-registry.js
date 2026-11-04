@@ -199,7 +199,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "duskbloom":"/games/duskbloom/assets/cover.webp",
   "tideweave":"/games/tideweave/assets/cover.webp",
   "starcamp-glade":"/games/starcamp-glade/assets/cover.webp",
-  "moonlit-atrium":"/games/moonlit-atrium/assets/cover.webp"
+  "moonlit-atrium":"/games/moonlit-atrium/assets/cover.webp",
+  "leafskip":"/games/leafskip/assets/cover.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/orbit-menders-poster-block-v1.webp": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp",
@@ -402,5 +403,6 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/games/duskbloom/assets/cover.webp":"/games/duskbloom/assets/cover.webp",
   "/games/tideweave/assets/cover.webp":"/games/tideweave/assets/cover.webp",
   "/games/starcamp-glade/assets/cover.webp":"/games/starcamp-glade/assets/cover.webp",
-  "/games/moonlit-atrium/assets/cover.webp":"/games/moonlit-atrium/assets/cover.webp"
+  "/games/moonlit-atrium/assets/cover.webp":"/games/moonlit-atrium/assets/cover.webp",
+  "/games/leafskip/assets/cover.webp":"/games/leafskip/assets/cover.webp"
 });

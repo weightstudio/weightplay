@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "leafskip",
       "moonlit-atrium",
       "starcamp-glade",
       "tideweave",
@@ -94,6 +95,19 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "leafskip", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "/games/leafskip/?preview=1",
+      href: "games/leafskip/",
+      title: { __localizedExact: true, en: "Leafskip", "zh-Hant": "葉刃躍行", "zh-Hans": "叶刃跃行", ja: "リーフジャンプ", ko: "나뭇잎 도약", es: "Salto de Hoja", "pt-BR": "Salto de Folha", fr: "Bond de feuille", de: "Blattsprung", it: "Salto di foglia", ru: "Прыжок листа", hi: "पत्ती की छलाँग", ar: "قفزة الورقة" },
+      type: {"en":"Gap crossing · Brake sail","zh-Hant":"跨縫 · 制動帆","zh-Hans":"跨缝 · 制动帆","ja":"隙間越え · 制動帆","ko":"틈 건너기 · 제동 돛","es":"Salto de hueco · Vela de freno","pt-BR":"Travessia de vão · Vela de freio","fr":"Franchissement · Voile de freinage","de":"Lückensprung · Bremssegel","it":"Salto del vuoto · Vela frenante","ru":"Прыжок через разрыв · Тормозной парус","hi":"खाई पार · ब्रेक पाल","ar":"عبور فجوة · شراع الكبح"},
+      description: {"en":"Hop a leaf cutter across Rux’s greenhouse. Collect stamped seed packets and choose when to land.","zh-Hant":"讓葉形採收器翻躍 Rux 的溫室平台，收齊蓋印種籽包，判斷何時落腳。","zh-Hans":"让叶形采收器翻跃 Rux 的温室平台，收齐盖印种籽包，判断何时落脚。","ja":"葉形カッターで Rux の温室を跳び、印付きの種袋を集めて着地点を選びましょう。","ko":"잎 모양 수확기로 Rux의 온실을 도약하며 도장 찍힌 씨앗 봉투를 모으고 착지할 곳을 고르세요.","es":"Salta con una cortadora de hojas por el invernadero de Rux, recoge bolsas selladas y elige dónde aterrizar.","pt-BR":"Salte com um cortador de folhas pela estufa de Rux, recolha pacotes selados e escolha onde pousar.","fr":"Faites bondir un coupe-feuille dans la serre de Rux, ramassez les sachets marqués et choisissez vos atterrissages.","de":"Springe mit einem Blattschneider durch Rux’ Gewächshaus, sammle markierte Samentüten und wähle deine Landung.","it":"Fai saltare una tagliafoglie nella serra di Rux, raccogli i sacchetti timbrati e scegli dove atterrare.","ru":"Прыгайте листовым резаком по теплице Rux, собирайте отмеченные пакеты и выбирайте место посадки.","hi":"Rux के ग्रीनहाउस में पत्ती-कटर को उछालें, मुहर वाले बीज-पैकेट चुनें और उतरने का समय तय करें।","ar":"اقفز بقاطعة ورقية عبر بيت Rux الزجاجي، واجمع أكياس البذور المختومة واختر وقت الهبوط."},
+      categories: ["Arcade", "Skill", "Animal Games"],
+      skills: ["Reaction", "Focus", "Hand-eye Coordination"],
+      ages: ["9+", "Family"],
+      meta: {"en":["This greenhouse is still growing."],"zh-Hant":["溫室正在成長中。"],"zh-Hans":["温室正在成长中。"],"ja":["温室を準備しています。"],"ko":["온실을 준비하고 있어요."],"es":["El invernadero sigue creciendo."],"pt-BR":["A estufa ainda está crescendo."],"fr":["La serre est en préparation."],"de":["Das Gewächshaus wächst noch."],"it":["La serra sta ancora crescendo."],"ru":["Теплица ещё растёт."],"hi":["ग्रीनहाउस तैयार हो रहा है।"],"ar":["البيت الزجاجي قيد التجهيز."]},
+      art: { kind: "image", background: "games/leafskip/assets/cover.webp", hideHero: true },
+    },
     {
       id: "moonlit-atrium", audience: "general", status: "playable", previewVideo: "assets/previews/moonlit-atrium-battle.webm",
       href: "games/moonlit-atrium/",
