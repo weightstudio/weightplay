@@ -1,0 +1,6612 @@
+[
+  {
+    "id": 1,
+    "seed": "sproutsum-1-v1",
+    "name": "First Sprout",
+    "nameZh": "初芽",
+    "rows": 2,
+    "cols": 2,
+    "tiles": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "fixed": {
+      "0": 2
+    },
+    "lines": [
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 6
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 3
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 7
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      2,
+      4,
+      1,
+      3
+    ],
+    "solutionFlips": []
+  },
+  {
+    "id": 2,
+    "seed": "sproutsum-2-v1",
+    "name": "Crossing",
+    "nameZh": "交會",
+    "rows": 2,
+    "cols": 2,
+    "tiles": [
+      4,
+      4,
+      5,
+      5
+    ],
+    "fixed": {
+      "3": 5
+    },
+    "lines": [
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 9
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      4,
+      4,
+      5,
+      5
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 7,
+      "blankCount": 3
+    }
+  },
+  {
+    "id": 3,
+    "seed": "sproutsum-3-v1",
+    "name": "Step Back",
+    "nameZh": "退一步",
+    "rows": 2,
+    "cols": 2,
+    "tiles": [
+      5,
+      6,
+      7,
+      7
+    ],
+    "fixed": {
+      "2": 7
+    },
+    "lines": [
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "-"
+        ],
+        "target": 1
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      5,
+      7,
+      7,
+      6
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 7,
+      "blankCount": 3
+    }
+  },
+  {
+    "id": 4,
+    "seed": "sproutsum-4-v1",
+    "name": "Branching",
+    "nameZh": "分枝",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      4,
+      4,
+      6,
+      6,
+      7,
+      7
+    ],
+    "fixed": {
+      "3": 7,
+      "4": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "-"
+        ],
+        "target": 2
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      7,
+      4,
+      6,
+      7,
+      6,
+      4
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 9,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 5,
+    "seed": "sproutsum-5-v1",
+    "name": "Twin Gate",
+    "nameZh": "雙門花棚",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      3,
+      3,
+      4,
+      5
+    ],
+    "fixed": {
+      "4": 5,
+      "5": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 3
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 7
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      2,
+      3,
+      4,
+      1,
+      5,
+      3
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 24,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 6,
+    "seed": "sproutsum-6-v1",
+    "name": "Odd Nest",
+    "nameZh": "奇數窩",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      6,
+      6,
+      8,
+      10
+    ],
+    "fixed": {
+      "0": 8,
+      "5": 2
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 3
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 7
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 8
+      }
+    ],
+    "parity": [
+      {
+        "cell": 5,
+        "remainder": 0
+      },
+      {
+        "cell": 1,
+        "remainder": 1
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      8,
+      1,
+      6,
+      10,
+      6,
+      2
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 9,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 7,
+    "seed": "sproutsum-7-v1",
+    "name": "Even Steps",
+    "nameZh": "偶數階",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      1,
+      4,
+      5,
+      5,
+      6,
+      8
+    ],
+    "fixed": {
+      "0": 5,
+      "1": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 7
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 9
+      }
+    ],
+    "parity": [
+      {
+        "cell": 0,
+        "remainder": 1
+      },
+      {
+        "cell": 2,
+        "remainder": 0
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      5,
+      6,
+      4,
+      8,
+      1,
+      5
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 11,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 8,
+    "seed": "sproutsum-8-v1",
+    "name": "Alternating Beds",
+    "nameZh": "交錯苗床",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      2,
+      3,
+      6,
+      10
+    ],
+    "fixed": {
+      "1": 6,
+      "2": 2
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 3
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 0
+      },
+      {
+        "cell": 3,
+        "remainder": 0
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      1,
+      6,
+      2,
+      10,
+      3,
+      1
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 9,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 9,
+    "seed": "sproutsum-9-v1",
+    "name": "One Tile Left",
+    "nameZh": "留下哪張",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      4,
+      7,
+      8,
+      8,
+      9,
+      9
+    ],
+    "fixed": {
+      "2": 8,
+      "3": 8
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "-"
+        ],
+        "target": 2
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 17
+      }
+    ],
+    "parity": [
+      {
+        "cell": 2,
+        "remainder": 0
+      },
+      {
+        "cell": 4,
+        "remainder": 1
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      4,
+      9,
+      8,
+      8,
+      7,
+      9
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 13,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 10,
+    "seed": "sproutsum-10-v1",
+    "name": "Checkered Greenhouse",
+    "nameZh": "棋紋溫室",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      3,
+      3,
+      4,
+      7,
+      7,
+      8,
+      10,
+      10
+    ],
+    "fixed": {
+      "0": 3,
+      "1": 10,
+      "2": 4,
+      "4": 2
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      }
+    ],
+    "parity": [
+      {
+        "cell": 0,
+        "remainder": 1
+      },
+      {
+        "cell": 2,
+        "remainder": 0
+      },
+      {
+        "cell": 4,
+        "remainder": 0
+      },
+      {
+        "cell": 6,
+        "remainder": 1
+      },
+      {
+        "cell": 8,
+        "remainder": 0
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      3,
+      10,
+      4,
+      7,
+      2,
+      8,
+      3,
+      7,
+      10
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 31,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 11,
+    "seed": "sproutsum-11-v1",
+    "name": "Short Vine",
+    "nameZh": "短藤",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
+      8,
+      10
+    ],
+    "fixed": {
+      "1": 3,
+      "2": 3,
+      "3": 1,
+      "4": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 7
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      }
+    ],
+    "parity": [],
+    "links": [
+      {
+        "a": 1,
+        "b": 0,
+        "total": 4
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      1,
+      3,
+      3,
+      1,
+      10,
+      4,
+      8,
+      2,
+      2
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 12,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 12,
+    "seed": "sproutsum-12-v1",
+    "name": "Long Vine",
+    "nameZh": "長藤",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      3,
+      3,
+      6,
+      8,
+      9,
+      9,
+      10
+    ],
+    "fixed": {
+      "2": 3,
+      "3": 9,
+      "4": 6,
+      "5": 9
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      }
+    ],
+    "parity": [],
+    "links": [
+      {
+        "a": 0,
+        "b": 8,
+        "total": 18
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      10,
+      3,
+      3,
+      9,
+      6,
+      9,
+      1,
+      3,
+      8
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 23,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 13,
+    "seed": "sproutsum-13-v1",
+    "name": "Entwined",
+    "nameZh": "纏結",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      5,
+      6,
+      7,
+      7,
+      9,
+      9,
+      9
+    ],
+    "fixed": {
+      "3": 7,
+      "4": 7,
+      "5": 5,
+      "6": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      }
+    ],
+    "parity": [],
+    "links": [
+      {
+        "a": 0,
+        "b": 4,
+        "total": 16
+      },
+      {
+        "a": 4,
+        "b": 6,
+        "total": 13
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      9,
+      3,
+      1,
+      7,
+      7,
+      5,
+      6,
+      9,
+      9
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 17,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 14,
+    "seed": "sproutsum-14-v1",
+    "name": "Even Vine",
+    "nameZh": "偶藤",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      2,
+      3,
+      6,
+      7,
+      10,
+      10,
+      10
+    ],
+    "fixed": {
+      "4": 1,
+      "5": 1,
+      "6": 7,
+      "7": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 0
+      }
+    ],
+    "parity": [
+      {
+        "cell": 4,
+        "remainder": 1
+      },
+      {
+        "cell": 8,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 4,
+        "b": 3,
+        "total": 11
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      10,
+      6,
+      2,
+      10,
+      1,
+      1,
+      7,
+      10,
+      3
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 14,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 15,
+    "seed": "sproutsum-15-v1",
+    "name": "Three Branches",
+    "nameZh": "三枝會",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      2,
+      3,
+      5,
+      6,
+      9,
+      9,
+      9
+    ],
+    "fixed": {
+      "4": 2,
+      "5": 3,
+      "6": 9,
+      "7": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 6
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      }
+    ],
+    "parity": [],
+    "links": [
+      {
+        "a": 0,
+        "b": 4,
+        "total": 11
+      },
+      {
+        "a": 4,
+        "b": 8,
+        "total": 7
+      },
+      {
+        "a": 8,
+        "b": 0,
+        "total": 14
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      9,
+      9,
+      1,
+      1,
+      2,
+      3,
+      9,
+      6,
+      5
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 11,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 16,
+    "seed": "sproutsum-16-v1",
+    "name": "Sunward Steps",
+    "nameZh": "向陽階",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      5,
+      5,
+      5,
+      6,
+      6,
+      7,
+      8,
+      9
+    ],
+    "fixed": {
+      "0": 5,
+      "6": 6,
+      "7": 9,
+      "8": 8
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 23
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 3
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [
+      {
+        "a": 0,
+        "b": 6
+      }
+    ],
+    "flips": [],
+    "solution": [
+      5,
+      7,
+      6,
+      1,
+      5,
+      5,
+      6,
+      9,
+      8
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 25,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 17,
+    "seed": "sproutsum-17-v1",
+    "name": "Reverse Slope",
+    "nameZh": "逆向坡",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      6,
+      7,
+      9,
+      10
+    ],
+    "fixed": {
+      "0": 5,
+      "1": 3,
+      "7": 7,
+      "8": 9
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 2
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [
+      {
+        "a": 1,
+        "b": 7
+      }
+    ],
+    "flips": [],
+    "solution": [
+      5,
+      3,
+      10,
+      2,
+      6,
+      1,
+      6,
+      7,
+      9
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 22,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 18,
+    "seed": "sproutsum-18-v1",
+    "name": "Side by Side",
+    "nameZh": "並排階",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      2,
+      6,
+      6,
+      7,
+      7,
+      9,
+      10
+    ],
+    "fixed": {
+      "0": 6,
+      "1": 7,
+      "2": 2,
+      "8": 7
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 11
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [
+      {
+        "a": 0,
+        "b": 1
+      },
+      {
+        "a": 2,
+        "b": 1
+      }
+    ],
+    "flips": [],
+    "solution": [
+      6,
+      7,
+      2,
+      10,
+      9,
+      2,
+      1,
+      6,
+      7
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 91,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 19,
+    "seed": "sproutsum-19-v1",
+    "name": "Folded Vine",
+    "nameZh": "回折藤",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      1,
+      1,
+      2,
+      5,
+      5,
+      6,
+      10
+    ],
+    "fixed": {
+      "0": 6,
+      "1": 1,
+      "2": 5,
+      "3": 1
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 8
+      }
+    ],
+    "parity": [],
+    "links": [
+      {
+        "a": 0,
+        "b": 8,
+        "total": 7
+      }
+    ],
+    "orders": [
+      {
+        "a": 3,
+        "b": 0
+      }
+    ],
+    "flips": [],
+    "solution": [
+      6,
+      1,
+      5,
+      1,
+      5,
+      2,
+      10,
+      1,
+      1
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 24,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 20,
+    "seed": "sproutsum-20-v1",
+    "name": "Terrace Watch",
+    "nameZh": "梯田守望",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      5,
+      6,
+      6,
+      7,
+      8,
+      8,
+      10
+    ],
+    "fixed": {
+      "1": 8,
+      "2": 5,
+      "3": 7,
+      "4": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 0
+      },
+      {
+        "cell": 5,
+        "remainder": 0
+      },
+      {
+        "cell": 0,
+        "remainder": 0
+      }
+    ],
+    "links": [],
+    "orders": [
+      {
+        "a": 3,
+        "b": 0
+      },
+      {
+        "a": 8,
+        "b": 5
+      }
+    ],
+    "flips": [],
+    "solution": [
+      8,
+      8,
+      5,
+      7,
+      3,
+      6,
+      6,
+      10,
+      1
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 14,
+      "blankCount": 5
+    }
+  },
+  {
+    "id": 21,
+    "seed": "sproutsum-21-v1",
+    "name": "Multiplying",
+    "nameZh": "倍生",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      2,
+      6,
+      6,
+      7,
+      11,
+      11,
+      12,
+      12
+    ],
+    "fixed": {
+      "2": 11,
+      "3": 12,
+      "4": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 61
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 133
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      12,
+      6,
+      11,
+      12,
+      6,
+      2,
+      11,
+      2,
+      7
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 42,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 22,
+    "seed": "sproutsum-22-v1",
+    "name": "Crossed Products",
+    "nameZh": "兩行乘影",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      4,
+      6,
+      7,
+      8,
+      12,
+      12,
+      12
+    ],
+    "fixed": {
+      "3": 7,
+      "4": 4,
+      "5": 1
+    },
+    "lines": [
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 108
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 58
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 25
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      8,
+      12,
+      12,
+      7,
+      4,
+      1,
+      2,
+      6,
+      12
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 61,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 23,
+    "seed": "sproutsum-23-v1",
+    "name": "Shared Drops",
+    "nameZh": "均分水滴",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      3,
+      4,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "fixed": {
+      "4": 9,
+      "5": 5,
+      "6": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "/",
+          "+"
+        ],
+        "target": 6
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 34
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      6,
+      3,
+      4,
+      4,
+      9,
+      5,
+      10,
+      7,
+      8
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 108,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 24,
+    "seed": "sproutsum-24-v1",
+    "name": "Different Routes",
+    "nameZh": "不同算路",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      3,
+      3,
+      4,
+      6,
+      8,
+      12,
+      12
+    ],
+    "fixed": {
+      "5": 3,
+      "6": 1,
+      "7": 12
+    },
+    "lines": [
+      {
+        "ops": [
+          "/",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 71
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      }
+    ],
+    "parity": [
+      {
+        "cell": 5,
+        "remainder": 1
+      },
+      {
+        "cell": 0,
+        "remainder": 0
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      6,
+      3,
+      1,
+      12,
+      4,
+      3,
+      1,
+      12,
+      8
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 122,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 25,
+    "seed": "sproutsum-25-v1",
+    "name": "Water Garden",
+    "nameZh": "分水庭",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      3,
+      3,
+      4,
+      6,
+      6,
+      7,
+      8,
+      10,
+      11
+    ],
+    "fixed": {
+      "6": 10,
+      "7": 8,
+      "8": 4
+    },
+    "lines": [
+      {
+        "ops": [
+          "/",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 46
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 2
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      }
+    ],
+    "parity": [
+      {
+        "cell": 6,
+        "remainder": 0
+      },
+      {
+        "cell": 1,
+        "remainder": 1
+      },
+      {
+        "cell": 5,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 6,
+        "b": 5,
+        "total": 13
+      },
+      {
+        "a": 7,
+        "b": 4,
+        "total": 15
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      6,
+      3,
+      11,
+      6,
+      7,
+      3,
+      10,
+      8,
+      4
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 24,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 26,
+    "seed": "sproutsum-26-v1",
+    "name": "Three Branch Colors",
+    "nameZh": "三色枝",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      11,
+      12
+    ],
+    "fixed": {
+      "0": 7,
+      "7": 4,
+      "8": 11
+    },
+    "lines": [
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 57
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 23
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 36
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 2
+      }
+    ],
+    "parity": [
+      {
+        "cell": 7,
+        "remainder": 0
+      },
+      {
+        "cell": 2,
+        "remainder": 1
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      7,
+      8,
+      1,
+      5,
+      6,
+      12,
+      1,
+      4,
+      11
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 38,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 27,
+    "seed": "sproutsum-27-v1",
+    "name": "Smallest Seed",
+    "nameZh": "最小種子",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      3,
+      3,
+      4,
+      4,
+      6,
+      8,
+      8,
+      10
+    ],
+    "fixed": {
+      "0": 6,
+      "1": 3,
+      "8": 8
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      }
+    ],
+    "parity": [],
+    "links": [],
+    "orders": [
+      {
+        "a": 8,
+        "b": 2
+      }
+    ],
+    "flips": [],
+    "solution": [
+      6,
+      3,
+      10,
+      2,
+      4,
+      3,
+      8,
+      4,
+      8
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 61,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 28,
+    "seed": "sproutsum-28-v1",
+    "name": "Loop Irrigation",
+    "nameZh": "回環灌溉",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      3,
+      6,
+      7,
+      9,
+      10,
+      10,
+      12
+    ],
+    "fixed": {
+      "0": 7,
+      "1": 12,
+      "2": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 94
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      }
+    ],
+    "parity": [],
+    "links": [
+      {
+        "a": 0,
+        "b": 8,
+        "total": 10
+      }
+    ],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      7,
+      12,
+      10,
+      1,
+      10,
+      6,
+      9,
+      3,
+      3
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 96,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 29,
+    "seed": "sproutsum-29-v1",
+    "name": "Open Garden",
+    "nameZh": "留白之庭",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      3,
+      5,
+      5,
+      5,
+      7,
+      9,
+      10,
+      12
+    ],
+    "fixed": {
+      "1": 9,
+      "2": 10,
+      "3": 5
+    },
+    "lines": [
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 118
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 63
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 1
+      },
+      {
+        "cell": 5,
+        "remainder": 0
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [],
+    "solution": [
+      12,
+      9,
+      10,
+      5,
+      5,
+      2,
+      3,
+      5,
+      7
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 23,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 30,
+    "seed": "sproutsum-30-v1",
+    "name": "Dawn Conservatory",
+    "nameZh": "晨曦總園",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      2,
+      3,
+      3,
+      3,
+      6,
+      6,
+      8,
+      12
+    ],
+    "fixed": {
+      "2": 8,
+      "3": 12,
+      "4": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 66
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      }
+    ],
+    "parity": [
+      {
+        "cell": 2,
+        "remainder": 0
+      },
+      {
+        "cell": 6,
+        "remainder": 0
+      },
+      {
+        "cell": 1,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 2,
+        "b": 1,
+        "total": 11
+      },
+      {
+        "a": 3,
+        "b": 0,
+        "total": 18
+      }
+    ],
+    "orders": [
+      {
+        "a": 5,
+        "b": 2
+      }
+    ],
+    "flips": [],
+    "solution": [
+      6,
+      3,
+      8,
+      12,
+      3,
+      2,
+      6,
+      3,
+      2
+    ],
+    "solutionFlips": [],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 18,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 31,
+    "seed": "sproutsum-31-v1",
+    "name": "First Moon Turn",
+    "nameZh": "月棚初轉",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      2,
+      3,
+      3,
+      4,
+      11,
+      11
+    ],
+    "fixed": {
+      "0": 11,
+      "1": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 7
+      }
+    ],
+    "parity": [
+      {
+        "cell": 0,
+        "remainder": 1
+      },
+      {
+        "cell": 2,
+        "remainder": 1
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      11,
+      3,
+      3,
+      2,
+      11,
+      4
+    ],
+    "solutionFlips": [
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 22,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 32,
+    "seed": "sproutsum-32-v1",
+    "name": "Two Moonshadows",
+    "nameZh": "兩種月影",
+    "rows": 2,
+    "cols": 3,
+    "tiles": [
+      2,
+      2,
+      3,
+      7,
+      8,
+      10
+    ],
+    "fixed": {
+      "1": 2,
+      "2": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+"
+        ],
+        "target": 18
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 0
+      },
+      {
+        "cell": 3,
+        "remainder": 1
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      3,
+      2,
+      10,
+      7,
+      2,
+      8
+    ],
+    "solutionFlips": [
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 25,
+      "blankCount": 4
+    }
+  },
+  {
+    "id": 33,
+    "seed": "sproutsum-33-v1",
+    "name": "A Pencil Mark",
+    "nameZh": "記一筆",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      5,
+      5,
+      6,
+      7,
+      8,
+      9,
+      9,
+      9
+    ],
+    "fixed": {
+      "5": 9,
+      "6": 1,
+      "7": 5
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 2
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      }
+    ],
+    "parity": [
+      {
+        "cell": 5,
+        "remainder": 1
+      },
+      {
+        "cell": 0,
+        "remainder": 1
+      }
+    ],
+    "links": [],
+    "orders": [],
+    "flips": [
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      5,
+      6,
+      9,
+      8,
+      7,
+      9,
+      1,
+      5,
+      9
+    ],
+    "solutionFlips": [
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 139,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 34,
+    "seed": "sproutsum-34-v1",
+    "name": "Keep Both Options",
+    "nameZh": "不急定案",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      6,
+      6,
+      7,
+      7,
+      7,
+      8,
+      9,
+      12,
+      12
+    ],
+    "fixed": {
+      "6": 9,
+      "7": 6,
+      "8": 12
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 28
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      }
+    ],
+    "parity": [
+      {
+        "cell": 6,
+        "remainder": 1
+      },
+      {
+        "cell": 1,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 6,
+        "b": 5,
+        "total": 16
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      7,
+      8,
+      7,
+      12,
+      6,
+      7,
+      9,
+      6,
+      12
+    ],
+    "solutionFlips": [
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 94,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 35,
+    "seed": "sproutsum-35-v1",
+    "name": "Moon Gate",
+    "nameZh": "月門校準",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      4,
+      4,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "fixed": {
+      "0": 1,
+      "7": 8,
+      "8": 4
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 14
+      }
+    ],
+    "parity": [
+      {
+        "cell": 7,
+        "remainder": 0
+      },
+      {
+        "cell": 2,
+        "remainder": 0
+      },
+      {
+        "cell": 6,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 7,
+        "b": 6,
+        "total": 12
+      },
+      {
+        "a": 8,
+        "b": 5,
+        "total": 10
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 5,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      1,
+      4,
+      12,
+      3,
+      10,
+      6,
+      4,
+      8,
+      4
+    ],
+    "solutionFlips": [
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 132,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 36,
+    "seed": "sproutsum-36-v1",
+    "name": "Facing Beds",
+    "nameZh": "對望苗床",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      4,
+      4,
+      9,
+      9,
+      10,
+      11,
+      11,
+      11,
+      12
+    ],
+    "fixed": {
+      "0": 9,
+      "1": 9,
+      "8": 11
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 33
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 3
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 32
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      }
+    ],
+    "parity": [
+      {
+        "cell": 8,
+        "remainder": 1
+      },
+      {
+        "cell": 3,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 8,
+        "b": 7,
+        "total": 23
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 0,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      9,
+      9,
+      4,
+      4,
+      11,
+      11,
+      10,
+      12,
+      11
+    ],
+    "solutionFlips": [
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 49,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 37,
+    "seed": "sproutsum-37-v1",
+    "name": "Twin Windows",
+    "nameZh": "雙窗",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      2,
+      3,
+      4,
+      5,
+      5,
+      5,
+      5,
+      11
+    ],
+    "fixed": {
+      "0": 11,
+      "1": 4,
+      "2": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 18
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 7
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 10
+      }
+    ],
+    "parity": [
+      {
+        "cell": 0,
+        "remainder": 1
+      },
+      {
+        "cell": 4,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 0,
+        "b": 8,
+        "total": 16
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 3,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      11,
+      4,
+      3,
+      5,
+      5,
+      2,
+      5,
+      2,
+      5
+    ],
+    "solutionFlips": [
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 49,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 38,
+    "seed": "sproutsum-38-v1",
+    "name": "Exchanged Shadows",
+    "nameZh": "枝影交換",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      4,
+      7,
+      7,
+      9,
+      12,
+      12,
+      12
+    ],
+    "fixed": {
+      "1": 12,
+      "2": 7,
+      "3": 9
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 28
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 0
+      },
+      {
+        "cell": 5,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 1,
+        "b": 0,
+        "total": 19
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 4,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      7,
+      12,
+      7,
+      9,
+      3,
+      1,
+      12,
+      4,
+      12
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 130,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 39,
+    "seed": "sproutsum-39-v1",
+    "name": "Possibilities",
+    "nameZh": "寫下可能",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      3,
+      6,
+      6,
+      7,
+      7,
+      7,
+      10,
+      10,
+      11
+    ],
+    "fixed": {
+      "2": 6,
+      "3": 11,
+      "4": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 23
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      }
+    ],
+    "parity": [
+      {
+        "cell": 2,
+        "remainder": 0
+      },
+      {
+        "cell": 6,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 2,
+        "b": 1,
+        "total": 16
+      }
+    ],
+    "orders": [
+      {
+        "a": 2,
+        "b": 5
+      }
+    ],
+    "flips": [
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      7,
+      10,
+      6,
+      11,
+      3,
+      7,
+      10,
+      6,
+      7
+    ],
+    "solutionFlips": [
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 37,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 40,
+    "seed": "sproutsum-40-v1",
+    "name": "Twin House Watch",
+    "nameZh": "雙棚守望",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      4,
+      5,
+      8,
+      10,
+      10,
+      10,
+      10,
+      10,
+      12
+    ],
+    "fixed": {
+      "3": 10,
+      "4": 10,
+      "5": 5
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      }
+    ],
+    "parity": [
+      {
+        "cell": 3,
+        "remainder": 0
+      },
+      {
+        "cell": 7,
+        "remainder": 0
+      },
+      {
+        "cell": 2,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 0,
+        "b": 7,
+        "total": 18
+      },
+      {
+        "a": 1,
+        "b": 8,
+        "total": 22
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 0,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      5,
+      4,
+      8,
+      12
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 269,
+      "blankCount": 6
+    }
+  },
+  {
+    "id": 41,
+    "seed": "sproutsum-41-v1",
+    "name": "Moon Multiples",
+    "nameZh": "倍月",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      4,
+      5,
+      5,
+      5,
+      6,
+      10,
+      10,
+      12
+    ],
+    "fixed": {
+      "4": 10,
+      "5": 12
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 28
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 65
+      }
+    ],
+    "parity": [
+      {
+        "cell": 4,
+        "remainder": 0
+      },
+      {
+        "cell": 8,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 4,
+        "b": 3,
+        "total": 16
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 5,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      4,
+      1,
+      5,
+      6,
+      10,
+      12,
+      10,
+      5,
+      5
+    ],
+    "solutionFlips": [
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 211,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 42,
+    "seed": "sproutsum-42-v1",
+    "name": "Star Branch",
+    "nameZh": "星枝",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      3,
+      3,
+      9,
+      9,
+      10,
+      11,
+      12
+    ],
+    "fixed": {
+      "5": 9,
+      "6": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 36
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 0
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 2
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 35
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      }
+    ],
+    "parity": [
+      {
+        "cell": 5,
+        "remainder": 1
+      },
+      {
+        "cell": 0,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 5,
+        "b": 4,
+        "total": 12
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 0,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 2,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      3,
+      11,
+      1,
+      9,
+      3,
+      9,
+      10,
+      2,
+      12
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 546,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 43,
+    "seed": "sproutsum-43-v1",
+    "name": "Two Multiples",
+    "nameZh": "兩倍可能",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      3,
+      3,
+      5,
+      9,
+      11,
+      11,
+      12
+    ],
+    "fixed": {
+      "6": 11,
+      "7": 3
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 32
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 7
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 19
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      }
+    ],
+    "parity": [
+      {
+        "cell": 6,
+        "remainder": 1
+      },
+      {
+        "cell": 1,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 6,
+        "b": 5,
+        "total": 14
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 3,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      9,
+      11,
+      12,
+      1,
+      2,
+      3,
+      11,
+      3,
+      5
+    ],
+    "solutionFlips": [
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 617,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 44,
+    "seed": "sproutsum-44-v1",
+    "name": "Room to Grow",
+    "nameZh": "看見餘地",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      5,
+      6,
+      6,
+      6,
+      7,
+      11,
+      12
+    ],
+    "fixed": {
+      "7": 6,
+      "8": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "/",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 67
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 27
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 13
+      }
+    ],
+    "parity": [
+      {
+        "cell": 7,
+        "remainder": 0
+      },
+      {
+        "cell": 2,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 7,
+        "b": 6,
+        "total": 7
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 4,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      6,
+      3,
+      7,
+      5,
+      11,
+      12,
+      1,
+      6,
+      6
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 375,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 45,
+    "seed": "sproutsum-45-v1",
+    "name": "Mirror Arch",
+    "nameZh": "鏡葉拱門",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      3,
+      3,
+      3,
+      5,
+      6,
+      10,
+      10,
+      12,
+      12
+    ],
+    "fixed": {
+      "0": 3,
+      "8": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 48
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 123
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 25
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      }
+    ],
+    "parity": [
+      {
+        "cell": 8,
+        "remainder": 0
+      },
+      {
+        "cell": 3,
+        "remainder": 0
+      },
+      {
+        "cell": 7,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 8,
+        "b": 7,
+        "total": 16
+      },
+      {
+        "a": 0,
+        "b": 6,
+        "total": 13
+      }
+    ],
+    "orders": [
+      {
+        "a": 2,
+        "b": 8
+      }
+    ],
+    "flips": [
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 5,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      3,
+      5,
+      3,
+      12,
+      3,
+      12,
+      10,
+      10,
+      6
+    ],
+    "solutionFlips": [
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 86,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 46,
+    "seed": "sproutsum-46-v1",
+    "name": "Linked Notes",
+    "nameZh": "連環筆記",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      4,
+      7,
+      7,
+      10,
+      10,
+      10,
+      11,
+      11
+    ],
+    "fixed": {
+      "0": 10,
+      "1": 11
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 25
+      }
+    ],
+    "parity": [
+      {
+        "cell": 0,
+        "remainder": 0
+      },
+      {
+        "cell": 4,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 0,
+        "b": 8,
+        "total": 17
+      },
+      {
+        "a": 1,
+        "b": 7,
+        "total": 21
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 0,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      10,
+      11,
+      11,
+      1,
+      4,
+      7,
+      10,
+      10,
+      7
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 86,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 47,
+    "seed": "sproutsum-47-v1",
+    "name": "Even Corridor",
+    "nameZh": "偶數回廊",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      4,
+      5,
+      6,
+      6,
+      7,
+      8,
+      8,
+      9,
+      12
+    ],
+    "fixed": {
+      "1": 12,
+      "2": 9
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 5
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 92
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 41
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 0
+      },
+      {
+        "cell": 5,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 1,
+        "b": 0,
+        "total": 18
+      },
+      {
+        "a": 2,
+        "b": 8,
+        "total": 17
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 5,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      6,
+      12,
+      9,
+      6,
+      7,
+      4,
+      5,
+      8,
+      8
+    ],
+    "solutionFlips": [
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 174,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 48,
+    "seed": "sproutsum-48-v1",
+    "name": "Whole Drops",
+    "nameZh": "小數不生",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      6,
+      7,
+      9,
+      9
+    ],
+    "fixed": {
+      "2": 5,
+      "3": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 43
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 3
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 25
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      }
+    ],
+    "parity": [
+      {
+        "cell": 2,
+        "remainder": 1
+      },
+      {
+        "cell": 6,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 2,
+        "b": 1,
+        "total": 8
+      },
+      {
+        "a": 3,
+        "b": 0,
+        "total": 12
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 0,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 2,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      6,
+      3,
+      5,
+      6,
+      7,
+      1,
+      9,
+      4,
+      9
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 170,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 49,
+    "seed": "sproutsum-49-v1",
+    "name": "Across the Window",
+    "nameZh": "隔窗相望",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      4,
+      5,
+      5,
+      9,
+      9,
+      10,
+      12,
+      12
+    ],
+    "fixed": {
+      "3": 5,
+      "4": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 23
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 59
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 29
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      }
+    ],
+    "parity": [
+      {
+        "cell": 3,
+        "remainder": 1
+      },
+      {
+        "cell": 7,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 0,
+        "b": 7,
+        "total": 17
+      },
+      {
+        "a": 1,
+        "b": 8,
+        "total": 6
+      }
+    ],
+    "orders": [],
+    "flips": [
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 3,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      12,
+      2,
+      9,
+      5,
+      10,
+      9,
+      12,
+      5,
+      4
+    ],
+    "solutionFlips": [
+      0,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 106,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 50,
+    "seed": "sproutsum-50-v1",
+    "name": "Windward Terrace",
+    "nameZh": "風向梯棚",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      2,
+      3,
+      5,
+      7,
+      9,
+      10,
+      10,
+      11,
+      12
+    ],
+    "fixed": {
+      "4": 3,
+      "5": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 43
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 25
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 6
+      }
+    ],
+    "parity": [
+      {
+        "cell": 4,
+        "remainder": 1
+      },
+      {
+        "cell": 8,
+        "remainder": 1
+      },
+      {
+        "cell": 3,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 4,
+        "b": 3,
+        "total": 14
+      },
+      {
+        "a": 5,
+        "b": 2,
+        "total": 15
+      }
+    ],
+    "orders": [
+      {
+        "a": 0,
+        "b": 1
+      },
+      {
+        "a": 2,
+        "b": 1
+      }
+    ],
+    "flips": [
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 4,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      }
+    ],
+    "solution": [
+      2,
+      7,
+      5,
+      11,
+      3,
+      10,
+      12,
+      10,
+      9
+    ],
+    "solutionFlips": [
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 140,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 51,
+    "seed": "sproutsum-51-v1",
+    "name": "Three Choices",
+    "nameZh": "三路選擇",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      3,
+      4,
+      7,
+      7,
+      9,
+      10,
+      10
+    ],
+    "fixed": {
+      "5": 10,
+      "6": 1
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "*",
+          "*"
+        ],
+        "target": 120
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 24
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      }
+    ],
+    "parity": [
+      {
+        "cell": 5,
+        "remainder": 0
+      },
+      {
+        "cell": 0,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 5,
+        "b": 4,
+        "total": 13
+      },
+      {
+        "a": 6,
+        "b": 3,
+        "total": 5
+      }
+    ],
+    "orders": [
+      {
+        "a": 8,
+        "b": 5
+      }
+    ],
+    "flips": [
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 5,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      10,
+      7,
+      7,
+      4,
+      3,
+      10,
+      1,
+      3,
+      9
+    ],
+    "solutionFlips": [
+      1,
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 169,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 52,
+    "seed": "sproutsum-52-v1",
+    "name": "Tiles or Operators",
+    "nameZh": "牌先或符先",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      2,
+      5,
+      6,
+      7,
+      8,
+      11,
+      12
+    ],
+    "fixed": {
+      "6": 11,
+      "7": 7
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 43
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 20
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 8
+      }
+    ],
+    "parity": [
+      {
+        "cell": 6,
+        "remainder": 1
+      },
+      {
+        "cell": 1,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 6,
+        "b": 5,
+        "total": 16
+      },
+      {
+        "a": 7,
+        "b": 4,
+        "total": 13
+      }
+    ],
+    "orders": [
+      {
+        "a": 0,
+        "b": 6
+      }
+    ],
+    "flips": [
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 0,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      1,
+      12,
+      1,
+      8,
+      6,
+      5,
+      11,
+      7,
+      2
+    ],
+    "solutionFlips": [
+      0,
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 278,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 53,
+    "seed": "sproutsum-53-v1",
+    "name": "One Seed Two Paths",
+    "nameZh": "一籽兩途",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      3,
+      4,
+      7,
+      10,
+      10,
+      11,
+      12
+    ],
+    "fixed": {
+      "7": 4,
+      "8": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 33
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 33
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 41
+      }
+    ],
+    "parity": [
+      {
+        "cell": 7,
+        "remainder": 0
+      },
+      {
+        "cell": 2,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 7,
+        "b": 6,
+        "total": 7
+      },
+      {
+        "a": 8,
+        "b": 5,
+        "total": 13
+      }
+    ],
+    "orders": [
+      {
+        "a": 7,
+        "b": 1
+      }
+    ],
+    "flips": [
+      {
+        "line": 5,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      12,
+      10,
+      11,
+      7,
+      1,
+      3,
+      3,
+      4,
+      10
+    ],
+    "solutionFlips": [
+      1,
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 314,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 54,
+    "seed": "sproutsum-54-v1",
+    "name": "Night Channels",
+    "nameZh": "靜夜分流",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      5,
+      6,
+      7,
+      7,
+      8,
+      9,
+      9
+    ],
+    "fixed": {
+      "0": 6,
+      "8": 1
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 52
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 7
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 17
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      }
+    ],
+    "parity": [
+      {
+        "cell": 8,
+        "remainder": 1
+      },
+      {
+        "cell": 3,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 8,
+        "b": 7,
+        "total": 10
+      },
+      {
+        "a": 0,
+        "b": 6,
+        "total": 14
+      }
+    ],
+    "orders": [
+      {
+        "a": 8,
+        "b": 2
+      }
+    ],
+    "flips": [
+      {
+        "line": 0,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 2,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      6,
+      3,
+      7,
+      9,
+      5,
+      7,
+      8,
+      9,
+      1
+    ],
+    "solutionFlips": [
+      0,
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 273,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 55,
+    "seed": "sproutsum-55-v1",
+    "name": "Moonbud Council",
+    "nameZh": "月芽議會",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      4,
+      8,
+      8,
+      8,
+      9,
+      10,
+      10
+    ],
+    "fixed": {
+      "0": 4,
+      "1": 2
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 16
+      },
+      {
+        "ops": [
+          "*",
+          "*"
+        ],
+        "target": 72
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 10
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 74
+      }
+    ],
+    "parity": [
+      {
+        "cell": 0,
+        "remainder": 0
+      },
+      {
+        "cell": 4,
+        "remainder": 1
+      },
+      {
+        "cell": 8,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 0,
+        "b": 8,
+        "total": 12
+      },
+      {
+        "a": 1,
+        "b": 7,
+        "total": 10
+      }
+    ],
+    "orders": [
+      {
+        "a": 3,
+        "b": 0
+      }
+    ],
+    "flips": [
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 3,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 5,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      4,
+      2,
+      10,
+      1,
+      9,
+      8,
+      10,
+      8,
+      8
+    ],
+    "solutionFlips": [
+      1,
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 178,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 56,
+    "seed": "sproutsum-56-v1",
+    "name": "First Light",
+    "nameZh": "第一束光",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      4,
+      4,
+      5,
+      6,
+      8,
+      8,
+      10,
+      10,
+      10
+    ],
+    "fixed": {
+      "1": 8,
+      "4": 4
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 26
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 44
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 11
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 28
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 26
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 9
+      }
+    ],
+    "parity": [
+      {
+        "cell": 1,
+        "remainder": 0
+      },
+      {
+        "cell": 5,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 1,
+        "b": 0,
+        "total": 16
+      },
+      {
+        "a": 2,
+        "b": 8,
+        "total": 15
+      }
+    ],
+    "orders": [
+      {
+        "a": 4,
+        "b": 1
+      }
+    ],
+    "flips": [
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 4,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 0,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      8,
+      8,
+      10,
+      10,
+      4,
+      4,
+      10,
+      6,
+      5
+    ],
+    "solutionFlips": [
+      0,
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 324,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 57,
+    "seed": "sproutsum-57-v1",
+    "name": "Keep a Possibility",
+    "nameZh": "留住可能",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      4,
+      5,
+      6,
+      7,
+      7,
+      9,
+      11
+    ],
+    "fixed": {
+      "2": 7,
+      "3": 6
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "*",
+          "*"
+        ],
+        "target": 54
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 43
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 9
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      }
+    ],
+    "parity": [
+      {
+        "cell": 2,
+        "remainder": 1
+      },
+      {
+        "cell": 6,
+        "remainder": 1
+      }
+    ],
+    "links": [
+      {
+        "a": 2,
+        "b": 1,
+        "total": 12
+      },
+      {
+        "a": 3,
+        "b": 0,
+        "total": 7
+      }
+    ],
+    "orders": [
+      {
+        "a": 2,
+        "b": 5
+      }
+    ],
+    "flips": [
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 5,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      1,
+      5,
+      7,
+      6,
+      1,
+      9,
+      7,
+      4,
+      11
+    ],
+    "solutionFlips": [
+      1,
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 330,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 58,
+    "seed": "sproutsum-58-v1",
+    "name": "Greenhouse Chorus",
+    "nameZh": "溫室共鳴",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      1,
+      3,
+      9,
+      10,
+      10,
+      10,
+      11,
+      12
+    ],
+    "fixed": {
+      "3": 11,
+      "4": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "*",
+          "-"
+        ],
+        "target": 100
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 22
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 13
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 1
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 29
+      }
+    ],
+    "parity": [
+      {
+        "cell": 3,
+        "remainder": 1
+      },
+      {
+        "cell": 7,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 3,
+        "b": 2,
+        "total": 21
+      },
+      {
+        "a": 4,
+        "b": 1,
+        "total": 13
+      }
+    ],
+    "orders": [
+      {
+        "a": 6,
+        "b": 3
+      }
+    ],
+    "flips": [
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 0,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 2,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      1,
+      3,
+      10,
+      11,
+      10,
+      10,
+      1,
+      12,
+      9
+    ],
+    "solutionFlips": [
+      0,
+      0,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 178,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 59,
+    "seed": "sproutsum-59-v1",
+    "name": "Last Bud",
+    "nameZh": "末芽",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      3,
+      8,
+      8,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "fixed": {
+      "4": 10,
+      "5": 9
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 15
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 27
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 12
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 67
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 122
+      },
+      {
+        "ops": [
+          "+",
+          "*"
+        ],
+        "target": 73
+      }
+    ],
+    "parity": [
+      {
+        "cell": 4,
+        "remainder": 0
+      },
+      {
+        "cell": 8,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 4,
+        "b": 3,
+        "total": 18
+      },
+      {
+        "a": 5,
+        "b": 2,
+        "total": 10
+      }
+    ],
+    "orders": [
+      {
+        "a": 4,
+        "b": 7
+      }
+    ],
+    "flips": [
+      {
+        "line": 5,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 1,
+        "index": 0,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 3,
+        "index": 1,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      3,
+      11,
+      1,
+      8,
+      10,
+      9,
+      8,
+      12,
+      8
+    ],
+    "solutionFlips": [
+      1,
+      0,
+      1
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 182,
+      "blankCount": 7
+    }
+  },
+  {
+    "id": 60,
+    "seed": "sproutsum-60-v1",
+    "name": "Starlit Conservatory",
+    "nameZh": "星光總園",
+    "rows": 3,
+    "cols": 3,
+    "tiles": [
+      1,
+      2,
+      3,
+      6,
+      6,
+      6,
+      8,
+      10,
+      12
+    ],
+    "fixed": {
+      "5": 6,
+      "6": 10
+    },
+    "lines": [
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 8
+      },
+      {
+        "ops": [
+          "*",
+          "+"
+        ],
+        "target": 102
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 14
+      },
+      {
+        "ops": [
+          "+",
+          "-"
+        ],
+        "target": 4
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 21
+      },
+      {
+        "ops": [
+          "+",
+          "+"
+        ],
+        "target": 9
+      }
+    ],
+    "parity": [
+      {
+        "cell": 5,
+        "remainder": 0
+      },
+      {
+        "cell": 0,
+        "remainder": 0
+      },
+      {
+        "cell": 4,
+        "remainder": 0
+      }
+    ],
+    "links": [
+      {
+        "a": 0,
+        "b": 4,
+        "total": 18
+      },
+      {
+        "a": 4,
+        "b": 8,
+        "total": 14
+      },
+      {
+        "a": 8,
+        "b": 0,
+        "total": 8
+      }
+    ],
+    "orders": [
+      {
+        "a": 8,
+        "b": 5
+      }
+    ],
+    "flips": [
+      {
+        "line": 0,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      },
+      {
+        "line": 2,
+        "index": 1,
+        "options": [
+          "+",
+          "-"
+        ]
+      },
+      {
+        "line": 4,
+        "index": 0,
+        "options": [
+          "+",
+          "*"
+        ]
+      }
+    ],
+    "solution": [
+      6,
+      3,
+      1,
+      8,
+      12,
+      6,
+      10,
+      6,
+      2
+    ],
+    "solutionFlips": [
+      0,
+      1,
+      0
+    ],
+    "validation": {
+      "uniqueSolutions": 1,
+      "nodes": 444,
+      "blankCount": 7
+    }
+  }
+]

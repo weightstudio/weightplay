@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "sproutsum",
       "chromadock",
       "glowpiece-gallery",
       "leafskip",
@@ -97,6 +98,15 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "sproutsum", audience: "general", status: "planned", internalOnly: true,
+      internalTrial: "/games/sproutsum/?preview=1", href: "games/sproutsum/",
+      title: { __localizedExact: true, en: "Sproutsum", "zh-Hant": "數芽交織", "zh-Hans": "数芽交织", ja: "芽ぶきの数あわせ", ko: "새싹 수식 정원", es: "Brotes y sumas", "pt-BR": "Somas em Flor", fr: "Le jardin des nombres", de: "Zahlenblüten", it: "Germogli di numeri", ru: "Ростки чисел", hi: "अंकों के अंकुर", ar: "براعم الأعداد" },
+      type: { en: "Arithmetic crossword · Number placement", "zh-Hant": "交叉算式 · 數字填盤" },
+      description: { en: "Plant number tiles, balance crossing equations and let Orla’s garden bloom.", "zh-Hant": "把數字種進花床，讓交叉算式同時成立，與 Orla 一起迎接新芽。" },
+      categories: ["Puzzle", "Brain", "Animal Games"], skills: ["Logic", "Math", "Problem Solving"], ages: ["9+", "Family"],
+      meta: { en: ["A number garden is taking root."], "zh-Hant": ["數字花園正在萌芽。"] }, art: { kind: "image", background: "games/sproutsum/assets/cover.webp", hideHero: true },
+    },
     {
       id: "chromadock", audience: "general", status: "playable",
       href: "games/chromadock/", previewVideo: "assets/previews/chromadock-battle.webm",
