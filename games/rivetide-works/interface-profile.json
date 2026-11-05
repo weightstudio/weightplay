@@ -2,11 +2,12 @@
   "schemaVersion": 1,
   "gameId": "rivetide-works",
   "audience": "general",
-  "interfaceVersion": 7,
+  "interfaceVersion": 0,
   "flow": "MAIN_STAGE_BATTLE",
   "stage": {
     "enabled": true,
     "leftWorkspace": null,
-    "rightWorkspace": null
-  }
+    "rightWorkspace": "workshop"
+  },
+  "targetInterfaceVersion": 9
 }
