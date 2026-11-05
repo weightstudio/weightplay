@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "rivetide-works",
       "sproutsum",
       "chromadock",
       "glowpiece-gallery",
@@ -98,6 +99,14 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "rivetide-works", audience: "general", status: "planned", internalOnly: true,
+      href: "games/rivetide-works/", internalTrial: { href: "games/rivetide-works/" },
+      title: {"__localizedExact":true,"en":"Rivetide Works","zh-Hant":"潮輪工房","zh-Hans":"潮轮工房","ja":"潮輪工房","ko":"밀물 공방","es":"Taller de Mareas","pt-BR":"Oficina das Marés","fr":"Atelier des marées","de":"Gezeitenwerk","it":"Officina delle Maree","ru":"Приливная мастерская","hi":"ज्वार कार्यशाला","ar":"ورشة المد والجزر"},
+      description: {"en":"Build conveyor lines, balance processing and tide power, and deliver every workshop order.","zh-Hant":"搭建輸送產線，調配加工與潮能，完成每座碼頭的訂單。","zh-Hans":"搭建输送产线，调配加工与潮能，完成每座码头的订单。","ja":"搬送ラインを組み、加工と潮の電力を調整して港の注文を届けよう。","ko":"컨베이어를 연결하고 가공과 밀물 전력을 조절해 부두 주문을 완성하세요.","es":"Construye líneas, equilibra procesos y energía de marea y entrega cada pedido.","pt-BR":"Monte linhas, equilibre processos e energia das marés e entregue cada pedido.","fr":"Construisez les convoyeurs, équilibrez la production et l’énergie des marées, puis livrez les commandes.","de":"Baue Förderlinien, stimme Verarbeitung und Gezeitenkraft ab und liefere alle Aufträge.","it":"Costruisci linee, bilancia lavorazioni ed energia delle maree e consegna gli ordini.","ru":"Стройте конвейеры, сочетайте обработку и энергию прилива и выполняйте заказы.","hi":"कन्वेयर बनाएँ, प्रसंस्करण और ज्वार की ऊर्जा संतुलित करें और सभी ऑर्डर पहुँचाएँ।","ar":"ابنِ خطوط النقل ووازن التصنيع وطاقة المد وأكمل طلبات الأرصفة."},
+      categories: ["Strategy", "Simulation", "Animal Games"], skills: ["Logic", "Problem Solving", "Focus"], ages: ["13+", "Family"],
+      art: { kind: "image", background: "games/rivetide-works/assets/cover.webp", hideHero: true },
+    },
     {
       id: "sproutsum", audience: "general", status: "playable",
       href: "games/sproutsum/", previewVideo: "assets/previews/sproutsum-battle.webm",

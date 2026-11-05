@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "rivetide-works": {"__localizedExact":true,"en":"Rivetide Works","zh-Hant":"潮輪工房","zh-Hans":"潮轮工房","ja":"潮輪工房","ko":"밀물 공방","es":"Taller de Mareas","pt-BR":"Oficina das Marés","fr":"Atelier des marées","de":"Gezeitenwerk","it":"Officina delle Maree","ru":"Приливная мастерская","hi":"ज्वार कार्यशाला","ar":"ورشة المد والجزر"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
