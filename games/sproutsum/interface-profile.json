@@ -8,6 +8,6 @@
   "stage": {
     "enabled": true,
     "leftWorkspace": null,
-    "rightWorkspace": null
+    "rightWorkspace": "collection"
   }
 }
