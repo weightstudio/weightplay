@@ -101,8 +101,10 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "gilded-gathering", audience: "general", status: "planned", internalOnly: true,
-      href: "games/gilded-gathering/", internalTrial: "index.html?preview=1",
+      id: "gilded-gathering", audience: "general", status: "playable", previewVideo: "assets/previews/gilded-gathering-battle.webm",
+      ageLabel: "13+",
+      statusText: {en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待",ja:"近日公開",ko:"출시 예정",es:"Próximamente","pt-BR":"Em breve",fr:"Bientôt",de:"Demnächst",it:"In arrivo",ru:"Скоро",hi:"जल्द आ रहा है",ar:"قريبًا"},
+      href: "games/gilded-gathering/",
       title: {"__localizedExact":true,"en":"Gilded Gathering","zh-Hant":"金頂開席","zh-Hans":"金顶开席","ja":"金色ホールの宴","ko":"황금 홀의 연회","es":"Banquete Dorado","pt-BR":"Banquete Dourado","fr":"Le banquet doré","de":"Das goldene Fest","it":"Il banchetto dorato","ru":"Золотой приём","hi":"सुनहरा समारोह","ar":"الوليمة الذهبية"},
       description: {"__localizedExact":true,"en":"Arrange tables, keep aisles open and balance lighting, tea service and guest needs across two acts.","zh-Hant":"擺好桌席、留出走道，在照明、茶點與兩場賓客需要間找出巧妙配置。","zh-Hans":"摆好桌席、留出走道，在照明、茶点与两场宾客需要间找出巧妙配置。","ja":"席と通路を整え、照明、お茶、二幕のゲストの希望を両立させよう。","ko":"테이블과 통로를 배치하고 조명, 다과, 두 차례 손님의 요구를 맞추세요.","es":"Distribuye mesas y pasillos y equilibra luces, té y necesidades de los invitados en dos actos.","pt-BR":"Organize mesas e corredores e equilibre luzes, chá e os pedidos dos convidados em dois atos.","fr":"Placez les tables, libérez les allées et conciliez lumière, thé et souhaits des invités en deux actes.","de":"Ordne Tische und Wege an und stimme Licht, Tee und Gästewünsche über zwei Akte ab.","it":"Sistema tavoli e passaggi e bilancia luci, tè ed esigenze degli ospiti in due atti.","ru":"Расставьте столы, оставьте проходы и согласуйте освещение, чай и пожелания гостей в двух актах.","hi":"मेज़ और रास्ते सजाएँ तथा दो अंकों में रोशनी, चाय और मेहमानों की ज़रूरतें पूरी करें।","ar":"رتّب الطاولات واترك الممرات مفتوحة ووازن الإضاءة والشاي ورغبات الضيوف في فصلين."},
       type: {"__localizedExact":true,"en":"Venue strategy","zh-Hant":"場館策略","zh-Hans":"场馆策略","ja":"会場戦略","ko":"공간 전략","es":"Estrategia de espacios","pt-BR":"Estratégia de espaços","fr":"Stratégie spatiale","de":"Raumstrategie","it":"Strategia degli spazi","ru":"Пространственная стратегия","hi":"स्थान रणनीति","ar":"استراتيجية المكان"},

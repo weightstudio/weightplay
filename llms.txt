@@ -59,6 +59,7 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/
 - Blade Orbit: https://weightplay.com/en/games/blade-orbit/
 - Canopy Compass Logic: https://weightplay.com/en/games/animal-canopy-compass/
 - Cushion Stack: https://weightplay.com/en/games/animal-cushion-stack/

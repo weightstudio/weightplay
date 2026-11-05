@@ -589,6 +589,10 @@
       "date": "2026-06-30T20:09:06+08:00",
       "evidence": "git:aac6880236f15a35fba53dc5e1bb4d1b5de13a3b"
     },
+    "gilded-gathering": {
+      "date": "2026-11-05T22:04:09.464Z",
+      "evidence": "canonical-public-catalog"
+    },
     "gin-rummy": {
       "date": "2026-09-04T20:21:02+08:00",
       "evidence": "git:5e8b126c73f51c52d2bbc36360d517b5f08bec80"
@@ -720,6 +724,10 @@
     "reversi": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "rivetide-works": {
+      "date": "2026-11-05T22:04:09.464Z",
+      "evidence": "canonical-public-catalog"
     },
     "road-crosser": {
       "date": "2026-08-14T10:42:10+08:00",
