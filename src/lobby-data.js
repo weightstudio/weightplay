@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "chromadock",
       "glowpiece-gallery",
       "leafskip",
       "moonlit-atrium",
@@ -96,6 +97,15 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "chromadock", audience: "general", status: "planned", internalOnly: true,
+      href: "games/chromadock/", internalTrial: "/games/chromadock/?preview=1",
+      title: { __localizedExact: true, en: "Chromadock", "zh-Hant": "彩泊貨棧", "zh-Hans": "彩泊货栈", ja: "彩り港の荷さばき", ko: "색빛 부두", es: "Muelle de Colores", "pt-BR": "Cais das Cores", fr: "Quai des couleurs", de: "Farbenkai", it: "Molo dei colori", ru: "Цветной причал", hi: "रंगों का घाट", ar: "رصيف الألوان" },
+      type: { en: "Sliding block puzzle", "zh-Hant": "滑塊配色益智", "zh-Hans": "滑块配色益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle deslizante", "pt-BR": "Quebra-cabeça deslizante", fr: "Puzzle coulissant", de: "Schiebepuzzle", it: "Puzzle scorrevole", ru: "Сдвиговая головоломка", hi: "खिसकाने की पहेली", ar: "لغز الكتل المنزلقة" },
+      description: { en: "Make room for every crate, then slide it through its matching dock.", "zh-Hant": "移開擋路的貨箱，留出空間，再送進同色碼頭。", "zh-Hans": "移开挡路的货箱，留出空间，再送进同色码头。", ja: "荷箱を動かして道を空け、同じ色の港へ送り出そう。", ko: "상자를 옮겨 길을 만들고 같은 색 부두로 보내세요.", es: "Abre paso a cada caja y deslízala hasta el muelle de su color.", "pt-BR": "Abra espaço para cada caixa e leve-a ao cais da mesma cor.", fr: "Libérez un passage pour chaque caisse et rejoignez le quai de sa couleur.", de: "Schaffe Platz für jede Kiste und schiebe sie zum passenden Kai.", it: "Fai spazio a ogni cassa e falla scorrere verso il molo del suo colore.", ru: "Освобождайте путь ящикам и отправляйте их к причалу того же цвета.", hi: "हर पेटी के लिए रास्ता बनाएँ और उसे उसी रंग के घाट पर पहुँचाएँ।", ar: "أفسح الطريق لكل صندوق ثم حرّكه إلى الرصيف المطابق للونه." },
+      categories: ["Puzzle", "Animal Games"], skills: ["Logic", "Problem Solving", "Color Recognition"], ages: ["9+", "Family"],
+      art: { kind: "image", background: "games/chromadock/assets/chromadock-cover.webp", hideHero: true },
+    },
     {
       id: "glowpiece-gallery", audience: "general", status: "playable",
       href: "games/glowpiece-gallery/", previewVideo: "assets/previews/glowpiece-gallery-battle.webm",
