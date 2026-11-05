@@ -1685,19 +1685,20 @@ html[data-wp-shared-interface="7"] body.wp-logical-battle-active
 html[data-wp-shared-interface="7"] body :is(.wp-stage-shell-header,.wp-battle-shell-header) :is([data-wp-game-title],.wp-shell-main-title,.wp-generated-main-title):not([data-wp-frame-info]):not([data-wp-frame-stat]) {display:none!important}
 
 /* Fixed collectible Items reserve this slot at creation; state updates only
-   replace its icon and localized label, never the surrounding geometry. */
+   replace its icon and localized label, never the surrounding geometry.
+   Mounted Play UI inherits its physical unit; legacy roots default to 1px. */
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status] {
-  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
-  width:100%!important;min-width:0!important;height:28px!important;min-height:28px!important;max-height:28px!important;
-  margin:0!important;padding:2px 8px!important;border:1px solid var(--wp-ui-line,#3d92a9)!important;
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:calc(6 * var(--wp-play-unit,1px))!important;
+  width:100%!important;min-width:0!important;height:calc(28 * var(--wp-play-unit,1px))!important;min-height:calc(28 * var(--wp-play-unit,1px))!important;max-height:calc(28 * var(--wp-play-unit,1px))!important;
+  margin:0!important;padding:calc(2 * var(--wp-play-unit,1px)) calc(8 * var(--wp-play-unit,1px))!important;border:1px solid var(--wp-ui-line,#3d92a9)!important;
   border-radius:var(--wp-ui-radius,3px)!important;background:var(--wp-ui-background,#0b2035)!important;
-  color:var(--wp-ui-muted,#b8dbea)!important;font:700 12px/1.2 system-ui!important;white-space:nowrap!important;
+  color:var(--wp-ui-muted,#b8dbea)!important;font:700 calc(12 * var(--wp-play-unit,1px))/1.2 system-ui!important;white-space:nowrap!important;
   overflow:hidden!important;text-overflow:ellipsis!important;
 }
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-icon] {
-  box-sizing:border-box!important;display:grid!important;place-items:center!important;flex:0 0 16px!important;
-  width:16px!important;height:16px!important;border:1px solid currentColor!important;color:inherit!important;
-  font:900 11px/1 system-ui!important;
+  box-sizing:border-box!important;display:grid!important;place-items:center!important;flex:0 0 calc(16 * var(--wp-play-unit,1px))!important;
+  width:calc(16 * var(--wp-play-unit,1px))!important;height:calc(16 * var(--wp-play-unit,1px))!important;border:1px solid currentColor!important;color:inherit!important;
+  font:900 calc(11 * var(--wp-play-unit,1px))/1 system-ui!important;
 }
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-state="collected"] {
   border-color:var(--wp-ui-accent,#6cebd3)!important;color:var(--wp-ui-text,#fff)!important;
@@ -1708,11 +1709,11 @@ html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp
    Item while the game owns its artwork and collected/not-collected appearance. */
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement^="top-"] {
   position:absolute!important;z-index:2!important;display:grid!important;place-items:center!important;gap:0!important;
-  width:22px!important;min-width:22px!important;height:22px!important;min-height:22px!important;max-height:22px!important;
+  width:calc(22 * var(--wp-play-unit,1px))!important;min-width:calc(22 * var(--wp-play-unit,1px))!important;height:calc(22 * var(--wp-play-unit,1px))!important;min-height:calc(22 * var(--wp-play-unit,1px))!important;max-height:calc(22 * var(--wp-play-unit,1px))!important;
   margin:0!important;padding:0!important;border-radius:50%!important;overflow:visible!important;
 }
-html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement="top-left"] {top:5px!important;left:5px!important}
-html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement="top-right"] {top:5px!important;right:5px!important}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement="top-left"] {top:calc(5 * var(--wp-play-unit,1px))!important;left:calc(5 * var(--wp-play-unit,1px))!important}
+html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement="top-right"] {top:calc(5 * var(--wp-play-unit,1px))!important;right:calc(5 * var(--wp-play-unit,1px))!important}
 html[data-wp-shared-interface="7"] body [data-wp-item-collection-status][data-wp-item-collection-placement^="top-"] [data-wp-item-collection-label] {
   position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;
   clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;

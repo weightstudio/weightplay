@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "gilded-gathering",
       "rivetide-works",
       "sproutsum",
       "chromadock",
@@ -94,13 +95,23 @@ window.WONDER_LOBBY = {
     ],
     // Third General hall: short, timely, original games. These IDs also stay in
     // generalGameIds so the Kids catalog's non-General rule excludes them.
-    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives"],
+    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
     {
+      id: "gilded-gathering", audience: "general", status: "planned", internalOnly: true,
+      href: "games/gilded-gathering/", internalTrial: "index.html?preview=1",
+      title: {"en":"Gilded Gathering","zh-Hant":"金頂開席","zh-Hans":"金顶开席","ja":"金色ホールの宴","ko":"황금 홀의 연회","es":"Banquete Dorado","pt-BR":"Banquete Dourado","fr":"Le banquet doré","de":"Das goldene Fest","it":"Il banchetto dorato","ru":"Золотой приём","hi":"सुनहरा समारोह","ar":"الوليمة الذهبية"},
+      description: {"en":"Arrange tables, keep aisles open and balance lighting, tea service and guest needs across two acts.","zh-Hant":"擺好桌席、留出走道，在照明、茶點與兩場賓客需要間找出巧妙配置。","zh-Hans":"摆好桌席、留出走道，在照明、茶点与两场宾客需要间找出巧妙配置。","ja":"席と通路を整え、照明、お茶、二幕のゲストの希望を両立させよう。","ko":"테이블과 통로를 배치하고 조명, 다과, 두 차례 손님의 요구를 맞추세요.","es":"Distribuye mesas y pasillos y equilibra luces, té y necesidades de los invitados en dos actos.","pt-BR":"Organize mesas e corredores e equilibre luzes, chá e os pedidos dos convidados em dois atos.","fr":"Placez les tables, libérez les allées et conciliez lumière, thé et souhaits des invités en deux actes.","de":"Ordne Tische und Wege an und stimme Licht, Tee und Gästewünsche über zwei Akte ab.","it":"Sistema tavoli e passaggi e bilancia luci, tè ed esigenze degli ospiti in due atti.","ru":"Расставьте столы, оставьте проходы и согласуйте освещение, чай и пожелания гостей в двух актах.","hi":"मेज़ और रास्ते सजाएँ तथा दो अंकों में रोशनी, चाय और मेहमानों की ज़रूरतें पूरी करें।","ar":"رتّب الطاولات واترك الممرات مفتوحة ووازن الإضاءة والشاي ورغبات الضيوف في فصلين."},
+      type: {"en":"Venue strategy","zh-Hant":"場館策略","zh-Hans":"场馆策略","ja":"会場戦略","ko":"공간 전략","es":"Estrategia de espacios","pt-BR":"Estratégia de espaços","fr":"Stratégie spatiale","de":"Raumstrategie","it":"Strategia degli spazi","ru":"Пространственная стратегия","hi":"स्थान रणनीति","ar":"استراتيجية المكان"},
+      ages: ["13+", "Family"], skills: ["Logic", "Problem Solving"], categories: ["Strategy", "Puzzle"], tags: ["Strategy", "Puzzle", "Resource Management"],
+      art: { kind: "image", background: "games/gilded-gathering/assets/cover.webp", hideHero: true },
+    },
+    {
       id: "rivetide-works", audience: "general", status: "planned", internalOnly: true,
+      type: {"en":"Factory strategy","zh-Hant":"產線策略","zh-Hans":"产线策略","ja":"工場戦略","ko":"공장 전략","es":"Estrategia industrial","pt-BR":"Estratégia industrial","fr":"Stratégie industrielle","de":"Fabrikstrategie","it":"Strategia industriale","ru":"Заводская стратегия","hi":"कारखाना रणनीति","ar":"استراتيجية المصانع"},
       href: "games/rivetide-works/", internalTrial: "index.html?preview=1",
       title: {"__localizedExact":true,"en":"Rivetide Works","zh-Hant":"潮輪工房","zh-Hans":"潮轮工房","ja":"潮輪工房","ko":"밀물 공방","es":"Taller de Mareas","pt-BR":"Oficina das Marés","fr":"Atelier des marées","de":"Gezeitenwerk","it":"Officina delle Maree","ru":"Приливная мастерская","hi":"ज्वार कार्यशाला","ar":"ورشة المد والجزر"},
       description: {"en":"Build conveyor lines, balance processing and tide power, and deliver every workshop order.","zh-Hant":"搭建輸送產線，調配加工與潮能，完成每座碼頭的訂單。","zh-Hans":"搭建输送产线，调配加工与潮能，完成每座码头的订单。","ja":"搬送ラインを組み、加工と潮の電力を調整して港の注文を届けよう。","ko":"컨베이어를 연결하고 가공과 밀물 전력을 조절해 부두 주문을 완성하세요.","es":"Construye líneas, equilibra procesos y energía de marea y entrega cada pedido.","pt-BR":"Monte linhas, equilibre processos e energia das marés e entregue cada pedido.","fr":"Construisez les convoyeurs, équilibrez la production et l’énergie des marées, puis livrez les commandes.","de":"Baue Förderlinien, stimme Verarbeitung und Gezeitenkraft ab und liefere alle Aufträge.","it":"Costruisci linee, bilancia lavorazioni ed energia delle maree e consegna gli ordini.","ru":"Стройте конвейеры, сочетайте обработку и энергию прилива и выполняйте заказы.","hi":"कन्वेयर बनाएँ, प्रसंस्करण और ज्वार की ऊर्जा संतुलित करें और सभी ऑर्डर पहुँचाएँ।","ar":"ابنِ خطوط النقل ووازن التصنيع وطاقة المد وأكمل طلبات الأرصفة."},

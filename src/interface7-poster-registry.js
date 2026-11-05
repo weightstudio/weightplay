@@ -204,7 +204,8 @@ window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "glowpiece-gallery":"/games/glowpiece-gallery/assets/cover.webp",
   "chromadock":"/games/chromadock/assets/chromadock-cover.webp",
   "sproutsum":"/games/sproutsum/assets/cover.webp",
-  "rivetide-works":"/games/rivetide-works/assets/cover.webp"
+  "rivetide-works":"/games/rivetide-works/assets/cover.webp",
+  "gilded-gathering":"/games/gilded-gathering/assets/cover.webp"
 });
 window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/assets/orbit-menders-poster-block-v1.webp": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp",
@@ -412,5 +413,6 @@ window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES = Object.freeze({
   "/games/glowpiece-gallery/assets/cover.webp":"/games/glowpiece-gallery/assets/cover.webp",
   "/games/chromadock/assets/chromadock-cover.webp":"/games/chromadock/assets/chromadock-cover.webp",
   "/games/sproutsum/assets/cover.webp":"/games/sproutsum/assets/cover.webp",
-  "/games/rivetide-works/assets/cover.webp":"/games/rivetide-works/assets/cover.webp"
+  "/games/rivetide-works/assets/cover.webp":"/assets/lobby-thumbs/w480/games__rivetide-works__assets__cover.webp",
+  "/games/gilded-gathering/assets/cover.webp":"/games/gilded-gathering/assets/cover.webp"
 });

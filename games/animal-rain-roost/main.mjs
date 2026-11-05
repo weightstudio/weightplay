@@ -172,7 +172,7 @@ function finish(result){
   if(result.win&&!everPractice){
     try{if(purchaseUncertain)throw Error('Purchase needs recovery');save=commitResult(localStorage,save,run)}
     catch{
-      saveFailed=true;const next=normalizeSave(save);next.stars[selected]=Math.max(next.stars[selected],result.stars);next.bests[selected]=Math.max(next.bests[selected],result.score);next.legacyBest=Math.max(next.legacyBest,run.caught);save=normalizeSave(next);
+      saveFailed=true;
     }
   }
   Object.assign(measurement,{ended:true,outcome:result.win?'win':'lose',saveSucceeded:Boolean(result.win&&!everPractice&&!saveFailed&&prior===false&&storedStageCleared(selected)===true)});notifyMeasurement();
@@ -184,8 +184,8 @@ function finish(result){
   $('resultStars').setAttribute('aria-label',`${t('stars')} ${result.stars} / 3`);
   $('resultSummary').textContent=`${objective(run.stage,true)} · ${t('score')} ${result.score}`;
   $('saveNotice').textContent=everPractice?t('practice'):saveFailed?t('saveError'):result.win&&[5,10].includes(cleared())&&cleared()>wasCleared?`${t('unlock')} · ${t(cleared()===5?'net':'magnet')}`:'';
-  $('nextButton').disabled=!result.win||selected===29;
-  openModal($('resultView'),result.win&&selected<29?$('nextButton'):$('replayButton'));
+  $('nextButton').disabled=!result.win||selected===29||saveFailed;
+  openModal($('resultView'),!$('nextButton').disabled?$('nextButton'):$('replayButton'));
   renderProgress();
 }
 function setTab(next){
@@ -255,7 +255,7 @@ listen($('keepPlaying'),'click',()=>closeModal());listen($('confirmLeave'),'clic
 listen($('resumeButton'),'click',()=>{suspended=false;closeModal();$('rainCanvas').focus({preventScroll:true})});
 listen($('resultStages'),'click',()=>{selected=Math.min(29,save.unlocked-1);showScreen('stage')});
 listen($('replayButton'),'click',()=>startBattle(selected));
-listen($('nextButton'),'click',()=>{if(run?.result?.win&&selected<29)startBattle(selected+1)});
+listen($('nextButton'),'click',()=>{if(run?.result?.win&&selected<29&&!saveFailed)startBattle(selected+1)});
 listen($('lanternButton'),'click',()=>{
   if(everPractice||purchaseUncertain)return;
   if(save.lantern){try{save=persistSave(localStorage,{...save,lanternOn:!save.lanternOn});renderGear()}catch{$('nestFeedback').textContent=t('saveError')}return;}
