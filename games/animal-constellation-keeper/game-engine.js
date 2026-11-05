@@ -111,7 +111,7 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v15", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v16", interface_version: 9, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
   const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();
@@ -291,7 +291,7 @@
     $("clearBtn").disabled = !state.selected;
     battleRoot.style.setProperty("--arc-hue", String(175 + current.arc * 21));
   };
-  const resultSaveWarning={"en":"Progress could not be saved. This result lasts for this session only.","zh-Hant":"\u9032\u5ea6\u7121\u6cd5\u5132\u5b58\uff0c\u6b64\u7d50\u679c\u50c5\u5728\u672c\u6b21\u904a\u73a9\u671f\u9593\u4fdd\u7559\u3002","zh-Hans":"\u8fdb\u5ea6\u65e0\u6cd5\u4fdd\u5b58\uff0c\u6b64\u7ed3\u679c\u4ec5\u5728\u672c\u6b21\u6e38\u620f\u671f\u95f4\u4fdd\u7559\u3002","ja":"\u9032\u884c\u72b6\u6cc1\u3092\u4fdd\u5b58\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u4eca\u56de\u306e\u30d7\u30ec\u30a4\u4e2d\u306e\u307f\u6709\u52b9\u3067\u3059\u3002","ko":"\uc9c4\ud589 \uc0c1\ud669\uc744 \uc800\uc7a5\ud558\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \uc774\ubc88 \ud50c\ub808\uc774\uc5d0\uc11c\ub9cc \uc720\uc9c0\ub429\ub2c8\ub2e4.","es":"No se pudo guardar el progreso. El resultado solo dura esta sesi\u00f3n.","pt-BR":"N\u00e3o foi poss\u00edvel salvar o progresso. O resultado vale apenas nesta sess\u00e3o.","fr":"La progression n\u2019a pas pu \u00eatre enregistr\u00e9e. Ce r\u00e9sultat ne dure que pour cette session.","de":"Der Fortschritt konnte nicht gespeichert werden. Das Ergebnis gilt nur f\u00fcr diese Sitzung.","it":"Impossibile salvare i progressi. Il risultato dura solo per questa sessione.","ru":"\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043f\u0440\u043e\u0433\u0440\u0435\u0441\u0441. \u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0442\u043e\u043b\u044c\u043a\u043e \u0432 \u044d\u0442\u043e\u043c \u0441\u0435\u0430\u043d\u0441\u0435.","hi":"\u092a\u094d\u0930\u0917\u0924\u093f \u0938\u0939\u0947\u091c\u0940 \u0928\u0939\u0940\u0902 \u091c\u093e \u0938\u0915\u0940\u0964 \u092f\u0939 \u092a\u0930\u093f\u0923\u093e\u092e \u0915\u0947\u0935\u0932 \u0907\u0938 \u0938\u0924\u094d\u0930 \u0924\u0915 \u0930\u0939\u0947\u0917\u093e\u0964","ar":"\u062a\u0639\u0630\u0651\u0631 \u062d\u0641\u0638 \u0627\u0644\u062a\u0642\u062f\u0645. \u0633\u062a\u0628\u0642\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0647\u0630\u0647 \u0627\u0644\u062c\u0644\u0633\u0629 \u0641\u0642\u0637."};
+  const resultSaveWarning={"en":"Progress could not be saved. Restore storage and replay this map.","zh-Hant":"\u9032\u5ea6\u7121\u6cd5\u5132\u5b58\u3002\u8acb\u6062\u5fa9\u5132\u5b58\u529f\u80fd\u4e26\u91cd\u73a9\u9019\u5f35\u5730\u5716\u3002","zh-Hans":"\u8fdb\u5ea6\u65e0\u6cd5\u4fdd\u5b58\u3002\u8bf7\u6062\u590d\u5b58\u50a8\u529f\u80fd\u5e76\u91cd\u73a9\u8fd9\u5f20\u5730\u56fe\u3002","ja":"\u9032\u884c\u72b6\u6cc1\u3092\u4fdd\u5b58\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u4fdd\u5b58\u6a5f\u80fd\u3092\u5fa9\u65e7\u3057\u3066\u3001\u3053\u306e\u30de\u30c3\u30d7\u3092\u3082\u3046\u4e00\u5ea6\u30d7\u30ec\u30a4\u3057\u3066\u304f\u3060\u3055\u3044\u3002","ko":"\uc9c4\ud589 \uc0c1\ud669\uc744 \uc800\uc7a5\ud558\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \uc800\uc7a5 \uae30\ub2a5\uc744 \ubcf5\uad6c\ud55c \ud6c4 \uc774 \uc9c0\ub3c4\ub97c \ub2e4\uc2dc \ud50c\ub808\uc774\ud558\uc138\uc694.","es":"No se pudo guardar el progreso. Restablece el almacenamiento y vuelve a jugar este mapa.","pt-BR":"N\u00e3o foi poss\u00edvel salvar o progresso. Restaure o armazenamento e jogue este mapa novamente.","fr":"Impossible d\u2019enregistrer la progression. R\u00e9tablissez le stockage et rejouez cette carte.","de":"Der Fortschritt konnte nicht gespeichert werden. Stelle den Speicher wieder her und spiele diese Karte erneut.","it":"Impossibile salvare i progressi. Ripristina l\u2019archiviazione e rigioca questa mappa.","ru":"\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043f\u0440\u043e\u0433\u0440\u0435\u0441\u0441. \u0412\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435 \u0438 \u043f\u0440\u043e\u0439\u0434\u0438\u0442\u0435 \u044d\u0442\u0443 \u043a\u0430\u0440\u0442\u0443 \u0441\u043d\u043e\u0432\u0430.","hi":"\u092a\u094d\u0930\u0917\u0924\u093f \u0938\u0939\u0947\u091c\u0940 \u0928\u0939\u0940\u0902 \u091c\u093e \u0938\u0915\u0940\u0964 \u0938\u0902\u0917\u094d\u0930\u0939\u0923 \u092c\u0939\u093e\u0932 \u0915\u0930\u0947\u0902 \u0914\u0930 \u092f\u0939 \u092e\u093e\u0928\u091a\u093f\u0924\u094d\u0930 \u092b\u093f\u0930 \u0916\u0947\u0932\u0947\u0902\u0964","ar":"\u062a\u0639\u0630\u0651\u0631 \u062d\u0641\u0638 \u0627\u0644\u062a\u0642\u062f\u0645. \u0627\u0633\u062a\u0639\u062f \u0627\u0644\u062a\u062e\u0632\u064a\u0646 \u0648\u0623\u0639\u062f \u0644\u0639\u0628 \u0647\u0630\u0647 \u0627\u0644\u062e\u0631\u064a\u0637\u0629."};
   const renderResult = () => {
     const complete = state.map === maps.length - 1;
     const current = maps[state.map];
@@ -312,7 +312,8 @@
     progress.style.setProperty("--progress", `${state.completed / maps.length * 100}%`);
     reward.append(rating, detail, progress);
     $("resultPrimaryBtn").textContent = complete ? t("map") : t("next");
-    $("resultPrimaryBtn").onclick = complete ? openStage : () => requestMap(state.map + 1);
+    $("resultPrimaryBtn").disabled = !practiceRequested && !__wpMeasurement.saveSucceeded;
+    $("resultPrimaryBtn").onclick = () => { if (practiceRequested || __wpMeasurement.saveSucceeded) { if (complete) openStage(); else requestMap(state.map + 1); } };
     $("resultPrimaryBtn").hidden=practiceEnabled&&complete;
     $("resultMapBtn").hidden = false;
     __wpNotifyMeasurement();
@@ -346,10 +347,14 @@
     }
     const wasCompleted = state.completed;
     state.completed = Math.max(state.completed, state.map + 1); __wpMeasurement.saveSucceeded=saveProgress();
-    mastery[state.map] = mastery[state.map] ? Math.min(mastery[state.map], state.mapChecks) : state.mapChecks;
-    if(!practiceRequested)try { localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery)); } catch {}
+    if (!practiceRequested && !__wpMeasurement.saveSucceeded) state.completed = wasCompleted;
+    if (practiceRequested || __wpMeasurement.saveSucceeded) {
+      mastery[state.map] = mastery[state.map] ? Math.min(mastery[state.map], state.mapChecks) : state.mapChecks;
+      if(!practiceRequested)try { localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery)); } catch {}
+      saveBest();
+    }
     if (state.mapChecks === 1) state.streak++;
-    saveBest(); $("bestValue").textContent = readBest() || t("noBest");
+    $("bestValue").textContent = readBest() || t("noBest");
     track("map_check", { map: state.map + 1, result: "correct", checkpoint: Boolean(current.checkpoint), unlocked: state.completed > wasCompleted });
     show("result"); renderResult(); stellar.enter($("resultScreen").querySelector(".result-card")); stellar.burst($("ckResultReward"), true);
     tone(state.map === maps.length - 1 ? "result.win" : current.checkpoint ? "game.checkpoint" : "feedback.success");
