@@ -781,6 +781,10 @@
       "date": "2026-08-08T13:00:37+08:00",
       "evidence": "git:7f6156bd8829937c6aba4904f4b596942ece6842"
     },
+    "sproutsum": {
+      "date": "2026-11-05T10:54:45.757Z",
+      "evidence": "canonical-public-catalog"
+    },
     "star-memory": {
       "date": "2026-06-29T21:17:25+08:00",
       "evidence": "git:aee27c8085ee1502fa9f3698dc30b6b82462b732"
