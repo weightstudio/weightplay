@@ -529,6 +529,10 @@
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
     },
+    "chromadock": {
+      "date": "2026-11-05T01:46:58.332Z",
+      "evidence": "canonical-public-catalog"
+    },
     "code-breaker": {
       "date": "2026-09-07T20:17:00.869Z",
       "evidence": "canonical-public-catalog"

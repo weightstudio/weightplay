@@ -505,6 +505,7 @@ button, select{
 }
 
 .target-panel{
+  color: #173b2b;
   border-radius: 22px;
   padding: 12px;
   display: grid;
@@ -544,6 +545,7 @@ button, select{
 }
 
 .target-chip{
+  color: #173b2b;
   min-height: 54px;
   border-radius: 16px;
   display: grid;

@@ -1,0 +1,195 @@
+<!doctype html><html lang="zh-Hans" dir="ltr" data-wp-entry-renderer="generate-locales.mjs#renderEntry" data-wp-official-name data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" data-wp-entry-poster="/games/chromadock/assets/chromadock-cover.webp" class="wp-frame-main-flow"><head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js`, '/src/diamond-special-progression.js', '/src/diamond-special-progression.css'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end --><base href="/games/chromadock/"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>彩泊货栈 | WeightPlay</title><meta name="description" content="移开挡路的货箱，留出空间，再送进同色码头。"><meta name="robots" content="index,follow"><meta name="weightplay-game-id" content="chromadock"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v1"><meta name="weightplay-interface-version" content="9"><link rel="canonical" href="https://weightplay.com/zh-cn/games/chromadock/" /><meta property="og:site_name" content="WeightPlay"><meta property="og:type" content="website"><meta property="og:title" content="彩泊货栈"><meta property="og:description" content="移开挡路的货箱，留出空间，再送进同色码头。"><meta property="og:url" content="https://weightplay.com/zh-cn/games/chromadock/"><meta property="og:image" content="https://weightplay.com/games/chromadock/assets/chromadock-cover.webp"><meta name="twitter:card" content="summary_large_image"><link rel="stylesheet" href="/src/game-screen-frame.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-page-info.css?v=20261014-guide-related-i9-v1" data-wp-entry-required=""><link rel="stylesheet" href="/src/play-viewport.css" data-wp-entry-required=""><link rel="stylesheet" href="/games/chromadock/game.css?v=1&amp;wp-build=f723ad53b145ad0f" data-wp-entry-required=""><script data-wp-entry-required="" src="/src/game-layout-config.js"></script><script data-wp-entry-required src="/src/weightplay-audio.js"></script><script data-wp-entry-required src="/src/site-config.js"></script><script data-wp-entry-required src="/src/wallet.js"></script><script data-wp-entry-required src="/src/game-title-registry.js"></script><script data-wp-entry-required src="/src/i18n.js"></script><script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1" defer charset="utf-8"></script><script type="module" src="/src/game-guide-intro-faq.mjs"></script><link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9" data-wp-entry-required=""><link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/chromadock/"><link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/chromadock/"><link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/chromadock/"><link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/chromadock/"><link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/chromadock/"><link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/chromadock/"><link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/chromadock/"><link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/chromadock/"><link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/chromadock/"><link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/chromadock/"><link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/chromadock/"><link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/chromadock/"><link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/chromadock/"><link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/chromadock/"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"彩泊货栈","url":"https://weightplay.com/zh-cn/games/chromadock/","image":"https://weightplay.com/games/chromadock/assets/chromadock-cover.webp","description":"移开挡路的货箱，留出空间，再送进同色码头。","genre":["滑动方块","配色出口","空间解谜"],"publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"zh-Hans","operatingSystem":"Web browser","isAccessibleForFree":true,"applicationCategory":"Game"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"你的目标","acceptedAnswer":{"@type":"Answer","text":"将每件货箱送进同色、同图纹的码头，清空货栈。每件货箱都有实际形状，完整截面都必须落在开口内。没有倒计时或生命限制；安排谁先移动比手速更重要。"}},{"@type":"Question","name":"货箱、轨道与转台","acceptedAnswer":{"@type":"Answer","text":"第一章结合矮柱、定向轨道箱、钥匙和出货清单。锁门只限制出货，不妨碍移动。第二章加入青色转台与免费转向工具；整件货箱必须位于转台上，旋转后的完整足迹也不能被挡住。"}},{"@type":"Question","name":"游玩与存档信息","acceptedAnswer":{"@type":"Answer","text":"进度和最佳步数保存在当前浏览器。通关解锁下一关，没有倒计时或付费解法。"}}]}]}</script></head>
+<body data-game-id="chromadock" data-audience="general" data-game-version="v1" data-interface-version="9" data-wp-game-id="chromadock" data-wp-game-version="v1" data-wp-interface-version="9" data-screen="main" data-runtime-localize="off" data-wp-game-owned-guide="true" data-has-stage="true" data-wp-game-age-tags="9,family" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="彩泊货栈" data-state="loading" data-error-title="游戏载入失败" data-error-message="部分游戏资源无法载入。请重试或返回大厅。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在载入彩泊货栈…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在载入彩泊货栈…" aria-valuetext="正在载入彩泊货栈…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重试</button><a class="wp-game-entry-loader-button" href="/zh-cn/">返回大厅</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分游戏资源无法载入。请重试或返回大厅。 <a href="/zh-cn/">返回大厅</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<section id="comingSoon"><img src="/games/chromadock/assets/chromadock-cover.webp" width="1254" height="1254" alt="彩泊货栈"><h2 data-name>彩泊货栈</h2><p data-copy="comingSoon">敬请期待</p><a href="/zh-cn/">返回大厅</a></section>
+<div id="gameFrame" data-wp-frame-root data-wp-play-ui="1" hidden data-wp-frame="2" data-wp-entry-root=""><div id="mainGroup"><main id="mainScreen" data-wp-frame-scene="main"><header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" data-wp-return="main" href="/zh-cn/" aria-label="返回大厅" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png" alt="" aria-hidden="true" width="26" height="26"></a><h1 data-wp-frame-title="" data-name>彩泊货栈</h1></header><section id="mainHero" data-wp-frame-content="main"><img class="main-poster" data-wp-frame-poster="" src="/games/chromadock/assets/chromadock-cover.webp" width="1254" height="1254" alt="彩泊货栈" data-wp-interface7-poster="true"><div data-wp-frame-copy=""><p data-wp-frame-summary="" data-copy="summary">移开挡路的货箱，留出空间，再送进同色码头。</p><p id="mainProgress" data-wp-frame-progress="">第 1 关／60</p><button id="startBtn" data-wp-main-start data-wp-frame-action="primary" data-copy="start" disabled>开始游戏</button></div></section></main>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-guide-renderer="generate-locales.mjs#renderGuide" aria-label="玩法说明" data-wp-entry-guide=""><div class="game-info-hero"><h2 data-wp-game-title data-name>彩泊货栈</h2></div><div class="game-info-tags"><span data-copy="tag1">滑动方块</span><span data-copy="tag2">配色出口</span><span data-copy="tag3">空间解谜</span></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="stages">关卡</span><strong>60</strong></div><div class="game-info-fact"><span data-copy="moves">步数</span><strong data-copy="freeUndo">免费撤回</strong></div></div><div class="game-info-sections">
+<article class="game-info-section"><h3 data-copy="goalTitle">你的目标</h3><p data-copy="guide1" data-wp-intro-faq-source>将每件货箱送进同色、同图纹的码头，清空货栈。每件货箱都有实际形状，完整截面都必须落在开口内。没有倒计时或生命限制；安排谁先移动比手速更重要。</p></article>
+<article class="game-info-section"><h3 data-copy="playTitle">先为下一件留路</h3><p data-copy="guide2">选取货箱后沿横排或竖列拖动，也可以再点击目标格。键盘可聚焦货箱，用方向键逐格移动。试着在中央留下机动空间：最靠近码头的箱子有时要先往里搬，邻箱才有路可走。</p></article>
+<article class="game-info-section"><h3 data-copy="ruleTitle">货箱、轨道与转台</h3><p data-copy="guide3">第一章结合矮柱、定向轨道箱、钥匙和出货清单。锁门只限制出货，不妨碍移动。第二章加入青色转台与免费转向工具；整件货箱必须位于转台上，旋转后的完整足迹也不能被挡住。</p></article>
+<article class="game-info-section"><h3 data-copy="finishTitle">回港再走一条好路</h3><p data-copy="guide4">每移动一格计一步，旋转计一步；触控与键盘采用相同计分。 通关后解锁60关中的下一张固定题，并保存最佳步数。基准来自经过验证的解法，不代表最少步数。重玩可改善路线并收集章节印记。永久码头外观只改变呈现，所有棋盘、提示和工具都免费。</p></article>
+<article class="game-info-section"><h3 data-copy="playerInfo">游玩与存档信息</h3><p data-copy="saveInfo">进度和最佳步数保存在当前浏览器。通关解锁下一关，没有倒计时或付费解法。</p></article>
+<div class="game-info-related game-info-section" data-wp-guide-related-interface="9"><h3 data-copy="related">更多游戏</h3><div class="game-info-related-cards"><a class="game-info-related-card" data-related-game="animal-unblock" href="/zh-cn/games/animal-unblock/"><img src="/assets/interface7-redrawn/animal-unblock.webp" width="160" height="160" loading="lazy" alt=""><span class="game-info-related-copy"><strong data-runtime-localize="off">解锁滑块</strong></span></a><a class="game-info-related-card" data-related-game="arrow-escape" href="/zh-cn/games/arrow-escape/"><img src="/assets/interface7-redrawn/arrow-escape.webp" width="160" height="160" loading="lazy" alt=""><span class="game-info-related-copy"><strong data-runtime-localize="off">箭头大逃亡</strong></span></a></div></div></div><article class="game-info-section" data-wp-intro-faq><h3>常见问题</h3><dl><dt>这款游戏要做什么？</dt><dd>将每件货箱送进同色、同图纹的码头，清空货栈。每件货箱都有实际形状，完整截面都必须落在开口内。没有倒计时或生命限制；安排谁先移动比手速更重要。</dd></dl></article></section></div>
+<section id="stageScreen" hidden><header id="stageHeader"><button id="stageBackBtn" data-wp-return="stage" aria-label="返回游戏菜单">←</button><strong data-wp-frame-title hidden></strong></header><div id="stageWorkspace"><section id="stagePanel"><section id="stagePage"><div id="stageRail"></div></section></section><section id="collectionPanel" class="management" hidden><img class="rux-image" src="/assets/weightplay-character-gear-horn-rhino-block-v1.webp" width="104" height="104" alt="Rux"><h2 data-copy="collection">货栈收藏</h2><div class="wallet-row"><img src="/assets/weightplay-diamond.svg" alt="" width="24" height="24"><span data-copy="balance">钻石</span><strong id="walletBalance">0</strong></div><div class="theme-options"><button data-theme="wood"><span class="item-art item-0" aria-hidden="true"></span><span data-copy="wood">晨光木栈</span></button><button data-theme="moon"><span class="item-art item-1" aria-hidden="true"></span><span data-copy="moon">月潮港湾</span></button><button data-theme="brass"><span class="item-art item-2" aria-hidden="true"></span><span data-copy="brass">黄铜工坊</span></button></div><p data-copy="permanent">永久外观。所有谜题和工具保持免费。</p><p id="collectionStatus" role="status"></p><div id="stamps" class="stage-stamps"></div></section></div><nav id="stageTabs" data-wp-frame-nav data-wp-frame-stage-nav><button id="tabStages" data-wp-frame-stage-slot="stages" data-wp-frame-action="tab" data-copy="stages">关卡</button><button id="tabCollection" data-wp-frame-stage-slot="equipment" data-wp-frame-action="tab" data-copy="collectionTab">收藏</button></nav><div id="stageOverlay" class="overlay" role="dialog" aria-modal="true" hidden><div class="modal-card"><h2></h2><div class="modal-body" tabindex="0"></div><div class="modal-actions"></div></div></div></section>
+<section id="battleScreen" hidden data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-battle-min-width="390" data-wp-battle-min-height="600" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390"><header id="battleHeader"><button id="battleBackBtn" data-wp-return="battle" aria-label="关卡">←</button><strong data-wp-frame-title hidden></strong></header><div id="battleLive"><div id="arena"><div id="pieceTargets" role="group" dir="ltr"></div></div><div id="manifest"></div><div id="controls"><button id="undo" data-copy="undo">撤回</button><button id="restart" data-copy="restart">重来</button><button id="hint" data-copy="hint">提示</button><button id="rotate" data-copy="rotate">转向</button><button id="help" data-copy="help">玩法说明</button></div><p id="status" role="status" aria-live="polite"></p></div><div id="resultPanel" class="overlay" data-wp-battle-substate="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="modal-card" data-wp-result-card><img class="rux-image" src="/assets/weightplay-character-gear-horn-rhino-block-v1.webp" alt="Rux"><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultStages" data-copy="stages">关卡</button><button id="resultNext" data-copy="next">下一关</button><button id="resultReplay" data-copy="replay">再试一次</button></div></div></div><div id="battleOverlay" class="overlay" role="dialog" aria-modal="true" hidden><div class="modal-card"><h2></h2><div class="modal-body" tabindex="0"></div><div class="modal-actions"></div></div></div></section></div>
+<div hidden><span id="leftStat" data-wp-frame-stat><span data-copy="left">货箱</span> <strong id="leftValue">0</strong></span><span id="movesStat" data-wp-frame-stat><span data-copy="moves">步数</span> <strong id="movesValue">0</strong></span></div>
+<script data-wp-entry-required src="/src/tutorial.js"></script><script data-wp-entry-required src="/src/stage-rail-i9.js"></script><script data-wp-entry-required="" src="/src/game-play-ui.js"></script><script data-wp-entry-required="" src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e"></script><script type="module" data-wp-entry-required="" src="/games/chromadock/game.js?v=entry-initial-09f0e483c5e8&amp;wp-build=35f081a4c8fe25c2"></script></body></html>
