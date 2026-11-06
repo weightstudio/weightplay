@@ -5,6 +5,11 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   box-sizing:border-box!important;border:0!important;border-radius:0!important;
   height:100vh!important;height:100dvh!important;min-height:100vh!important;min-height:100dvh!important;
 }
+/* A nested scene can opt into its owning logical Canvas height. Reusing
+   physical viewport units inside that scaled Canvas enlarges it twice. */
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-logical-battle-canvas] [data-wp-frame-scene="battle"][data-wp-frame-contained-battle] {
+  height:100%!important;min-height:0!important;max-height:100%!important;
+}
 /* The site build label belongs to ordinary page chrome. Keep it out of the
    shared Stage/Battle control lane while an I9 play scene is active. */
 html.wp-frame-active-play body .weightplay-version-badge {display:none!important}
