@@ -1,11 +1,11 @@
 // BEGIN generated from src/lobby-data.js audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs
-if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire"]);
+if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
 // END generated tabletop classification
 // BEGIN generated from src/lobby-data.js audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 // BEGIN generated from src/lobby-data.js audiences.topicGameIds; run scripts/sync-tabletop-classification.mjs
-if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(["traffic-jam-diner","robot-dog-showtime","flying-tram","smallwood-lives"]);
+if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(["traffic-jam-diner","robot-dog-showtime","flying-tram","smallwood-lives","gilded-gathering"]);
 // END generated topic classification
 (function () {
   if (window.WonderAnalytics) return;
@@ -199,7 +199,7 @@ if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(
     if (collectionScriptPromises.has(domain)) return collectionScriptPromises.get(domain);
     const promise = new Promise(resolve => {
       const script = document.createElement("script");
-      script.src = `/src/${domain === "kids" ? "kids-collection" : domain === "topics" ? "topics-collection" : "tabletop-collection"}.js?v=${domain === "topics" ? "20261028-topic-stories-v2" : "20261028-topic-stories-v1"}`;
+      script.src = `/src/${domain === "kids" ? "kids-collection" : domain === "topics" ? "topics-collection" : "tabletop-collection"}.js?v=${domain === "topics" ? "20261106-topic-newsroom-v1" : "20261028-topic-stories-v1"}`;
       script.async = true; script.dataset.weightplayCollectionModule = domain;
       script.onload = () => resolve(collectionModules.get(domain) || null);
       script.onerror = () => resolve(null);
@@ -454,6 +454,11 @@ if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(
   }
   window.addEventListener("popstate", () => queueMicrotask(() => syncCollectionHistory()));
   window.addEventListener("hashchange", () => queueMicrotask(() => syncCollectionHistory()));
+  // A direct #collection can load before the deferred lobby catalog. Refresh
+  // once it is parsed so article titles and release-gated game links are current.
+  document.addEventListener("DOMContentLoaded", () => {
+    if (collectionDomain === "topics" && collectionDialog && !collectionDialog.hidden) renderCollection();
+  }, { once: true });
   window.addEventListener("storage", event => {
     const domains = Object.entries(collectionDomainConfig).filter(([, value]) => event.key === value.key).map(([domain]) => domain);
     domains.forEach(domain => { if (domain === collectionDomain) renderCollection(); });

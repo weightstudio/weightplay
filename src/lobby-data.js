@@ -102,14 +102,14 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "dawnward-haven", audience: "general", status: "planned", internalOnly: true,
-      ageLabel: "13+", href: "games/dawnward-haven/", internalTrial: "/games/dawnward-haven/?preview=1",
+      id: "dawnward-haven", audience: "general", status: "playable", previewVideo: "assets/previews/dawnward-haven-battle.webm",
+      ageLabel: "13+", href: "games/dawnward-haven/",
       title: {__localizedExact:true,en:"Dawnward Haven","zh-Hant":"曦港拓居","zh-Hans":"曦港拓居",ja:"朝凪の開拓港",ko:"새벽빛 개척항",es:"Refugio del Alba","pt-BR":"Refúgio da Aurora",fr:"Le havre de l’aube",de:"Hafen der Morgenröte",it:"Il porto dell’alba",ru:"Гавань рассвета",hi:"भोर का बसेरा",ar:"ملاذ الفجر"},
-      description: {en:"Build a harbor settlement, assign residents and balance supplies before the weather turns.","zh-Hant":"建造港灣聚落、分派居民，在風雨來臨前安排糧食與建材。"},
-      type: {en:"Settlement strategy","zh-Hant":"聚落策略"},
+      description: {"__localizedExact":true,"en":"Build a harbor, assign residents and prepare food and timber before the weather turns.","zh-Hant":"建造港灣聚落、分派居民，在風雨來臨前備妥糧食與建材。","zh-Hans":"建造港湾聚落、分派居民，在风雨来临前备妥粮食与建材。","ja":"港を築き、住民を配置して、嵐が来る前に食料と木材を備えよう。","ko":"항구를 짓고 주민을 배치해 폭풍 전에 식량과 목재를 준비하세요.","es":"Construye un puerto, asigna habitantes y prepara comida y madera antes del mal tiempo.","pt-BR":"Construa um porto, distribua moradores e prepare comida e madeira antes do mau tempo.","fr":"Bâtissez un port, affectez les habitants et préparez vivres et bois avant les intempéries.","de":"Baue einen Hafen, teile Bewohner ein und sichere Nahrung und Holz vor dem Unwetter.","it":"Costruisci un porto, assegna gli abitanti e prepara cibo e legna prima del maltempo.","ru":"Постройте гавань, распределите жителей и запасите еду и древесину до непогоды.","hi":"बंदरगाह बसाएँ, निवासियों को काम दें और मौसम बिगड़ने से पहले भोजन और लकड़ी जुटाएँ।","ar":"ابنِ ميناءً ووزّع السكان وجهّز الطعام والخشب قبل سوء الطقس."},
+      type: {"__localizedExact":true,"en":"Settlement building","zh-Hant":"聚落建造","zh-Hans":"聚落建造","ja":"集落建設","ko":"정착지 건설","es":"Construcción de asentamientos","pt-BR":"Construção de povoados","fr":"Construction de colonies","de":"Siedlungsbau","it":"Costruzione di insediamenti","ru":"Строительство поселения","hi":"बस्ती बनाना","ar":"بناء المستوطنات"},
       ages: ["13","family"], skills: ["Planning","Resource Management"], categories: ["Strategy","Management"],
       tags: ["Settlement Building","Worker Placement","Resource Management","Turn-Based Strategy"],
-      meta: {en:["Resident planning","Seasonal supplies","Permanent diamond themes"],"zh-Hant":["居民分工","季候供應","永久鑽石外觀"]},
+      meta: {"__localizedExact":true,"en":["Worker placement","Resource management","Turn-based strategy"],"zh-Hant":["居民分工","資源管理","回合策略"],"zh-Hans":["居民分工","资源管理","回合策略"],"ja":["人員配置","資源管理","ターン制戦略"],"ko":["주민 배치","자원 관리","턴제 전략"],"es":["Asignación de trabajadores","Gestión de recursos","Estrategia por turnos"],"pt-BR":["Distribuição de trabalhadores","Gestão de recursos","Estratégia por turnos"],"fr":["Affectation des habitants","Gestion de ressources","Stratégie au tour par tour"],"de":["Arbeitereinteilung","Ressourcenverwaltung","Rundenstrategie"],"it":["Assegnazione di lavoratori","Gestione di risorse","Strategia a turni"],"ru":["Распределение работников","Управление ресурсами","Пошаговая стратегия"],"hi":["काम का बँटवारा","संसाधन प्रबंधन","बारी आधारित रणनीति"],"ar":["توزيع العمال","إدارة الموارد","استراتيجية بالأدوار"]},
       art: {kind:"image",background:"games/dawnward-haven/assets/cover.webp",hideHero:true},
     },
     {
@@ -161,16 +161,14 @@ window.WONDER_LOBBY = {
       art: { kind: "image", background: "games/glowpiece-gallery/assets/cover.webp", hideHero: true },
     },
     {
-      id: "leafskip", audience: "general", status: "planned", internalOnly: true,
-      internalTrial: "/games/leafskip/?preview=1",
-      href: "games/leafskip/",
+      id: "leafskip", audience: "general", status: "playable",
+      href: "games/leafskip/", previewVideo: "assets/previews/leafskip-battle.webm",
       title: { __localizedExact: true, en: "Leafskip", "zh-Hant": "葉刃躍行", "zh-Hans": "叶刃跃行", ja: "リーフジャンプ", ko: "나뭇잎 도약", es: "Salto de Hoja", "pt-BR": "Salto de Folha", fr: "Bond de feuille", de: "Blattsprung", it: "Salto di foglia", ru: "Прыжок листа", hi: "पत्ती की छलाँग", ar: "قفزة الورقة" },
       type: {"en":"Gap crossing · Brake sail","zh-Hant":"跨縫 · 制動帆","zh-Hans":"跨缝 · 制动帆","ja":"隙間越え · 制動帆","ko":"틈 건너기 · 제동 돛","es":"Salto de hueco · Vela de freno","pt-BR":"Travessia de vão · Vela de freio","fr":"Franchissement · Voile de freinage","de":"Lückensprung · Bremssegel","it":"Salto del vuoto · Vela frenante","ru":"Прыжок через разрыв · Тормозной парус","hi":"खाई पार · ब्रेक पाल","ar":"عبور فجوة · شراع الكبح"},
       description: {"en":"Hop a leaf cutter across Rux’s greenhouse. Collect stamped seed packets and choose when to land.","zh-Hant":"讓葉形採收器翻躍 Rux 的溫室平台，收齊蓋印種籽包，判斷何時落腳。","zh-Hans":"让叶形采收器翻跃 Rux 的温室平台，收齐盖印种籽包，判断何时落脚。","ja":"葉形カッターで Rux の温室を跳び、印付きの種袋を集めて着地点を選びましょう。","ko":"잎 모양 수확기로 Rux의 온실을 도약하며 도장 찍힌 씨앗 봉투를 모으고 착지할 곳을 고르세요.","es":"Salta con una cortadora de hojas por el invernadero de Rux, recoge bolsas selladas y elige dónde aterrizar.","pt-BR":"Salte com um cortador de folhas pela estufa de Rux, recolha pacotes selados e escolha onde pousar.","fr":"Faites bondir un coupe-feuille dans la serre de Rux, ramassez les sachets marqués et choisissez vos atterrissages.","de":"Springe mit einem Blattschneider durch Rux’ Gewächshaus, sammle markierte Samentüten und wähle deine Landung.","it":"Fai saltare una tagliafoglie nella serra di Rux, raccogli i sacchetti timbrati e scegli dove atterrare.","ru":"Прыгайте листовым резаком по теплице Rux, собирайте отмеченные пакеты и выбирайте место посадки.","hi":"Rux के ग्रीनहाउस में पत्ती-कटर को उछालें, मुहर वाले बीज-पैकेट चुनें और उतरने का समय तय करें।","ar":"اقفز بقاطعة ورقية عبر بيت Rux الزجاجي، واجمع أكياس البذور المختومة واختر وقت الهبوط."},
       categories: ["Arcade", "Skill", "Animal Games"],
       skills: ["Reaction", "Focus", "Hand-eye Coordination"],
       ages: ["9+", "Family"],
-      meta: {"en":["This greenhouse is still growing."],"zh-Hant":["溫室正在成長中。"],"zh-Hans":["温室正在成长中。"],"ja":["温室を準備しています。"],"ko":["온실을 준비하고 있어요."],"es":["El invernadero sigue creciendo."],"pt-BR":["A estufa ainda está crescendo."],"fr":["La serre est en préparation."],"de":["Das Gewächshaus wächst noch."],"it":["La serra sta ancora crescendo."],"ru":["Теплица ещё растёт."],"hi":["ग्रीनहाउस तैयार हो रहा है।"],"ar":["البيت الزجاجي قيد التجهيز."]},
       art: { kind: "image", background: "games/leafskip/assets/cover.webp", hideHero: true },
     },
     {

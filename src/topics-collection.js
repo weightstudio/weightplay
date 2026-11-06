@@ -65,11 +65,62 @@
     hi:['क्या हुआ','शंघाई में रोबोट और नर्तक एक मंच पर','कौशल प्रतियोगिता के उद्घाटन में मानवाकार रोबोट शामिल हुए।','22 सितंबर 2026 को शंघाई में WorldSkills के उद्घाटन पर मानवाकार रोबोटों ने नर्तकों के साथ प्रस्तुति दी। वास्तविक प्रस्तुति में रोबोट कुत्ते नहीं, मानवाकार रोबोट थे।','यह खेल मूल काल्पनिक रचना है, प्रस्तुति का पुनर्निर्माण या आधिकारिक उत्पाद नहीं।','आधिकारिक रिपोर्ट'],
     ar:['ما الذي حدث','روبوتات وراقصون على مسرح واحد في شنغهاي','شاركت روبوتات بشرية الشكل في افتتاح مسابقة للمهارات.','في 22 سبتمبر 2026، قدمت روبوتات بشرية الشكل عرضاً مع راقصين في افتتاح WorldSkills شنغهاي. ضم العرض الحقيقي روبوتات بشرية الشكل، لا كلاباً آلية.','اللعبة عمل خيالي أصلي وليست إعادة للعرض أو منتجاً رسمياً للفعالية.','التقرير الرسمي']
   };
+  // Original copy; source verification lives in docs/topics-newsroom.md, never in the UI.
+  const gatheringNews = {
+    en:['THE STORY','White House ballroom construction reaches a milestone','The final steel beam became the focus of a site visit.','On 4 November 2026, Donald Trump signed the final beam for the White House ballroom and watched it being installed. A reporter at the site recorded the visit.','Gilded Gathering turns venue planning into a fictional puzzle about seats, open aisles and power. Its guests and constraints do not describe the real building.'],
+    'zh-Hant':['事件背景','白宮舞廳工程迎來鋼樑吊裝節點','最後一根鋼樑成為工地視察的焦點。','2026 年 11 月 4 日，川普在白宮舞廳工程的最後一根鋼樑上簽名，並觀看吊裝。現場隨行記者記錄了這次視察。','《金頂開席》將場館規劃轉為原創謎題：安排座位、保留走道，並分配供電。賓客需求與場地限制是遊戲設定，並非真實建築的問題。'],
+    'zh-Hans':['事件背景','白宫舞厅工程迎来钢梁吊装节点','最后一根钢梁成为工地视察的焦点。','2026 年 11 月 4 日，特朗普在白宫舞厅工程的最后一根钢梁上签名，并观看吊装。现场随行记者记录了这次视察。','《金顶开席》将场馆规划转为原创谜题：安排座位、保留通道，并分配供电。宾客需求与场地限制是游戏设定，并非真实建筑的问题。'],
+    ja:['出来事','ホワイトハウスの舞踏室工事、最後の鉄骨を設置','工事現場の視察で最後の鉄骨に注目が集まりました。','2026年11月4日、トランプ氏はホワイトハウスの舞踏室の最後の鉄骨に署名し、設置を見守りました。現場の同行記者が視察を記録しています。','このゲームは席、通路、電力を考える架空の会場パズルです。客の要望や制約はゲームの設定で、実際の建物の問題を示すものではありません。'],
+    ko:['사건 배경','백악관 연회장 공사, 마지막 철골 설치','현장 방문에서 마지막 철골이 주목받았습니다.','2026년 11월 4일 트럼프는 백악관 연회장의 마지막 철골에 서명하고 설치를 지켜봤습니다. 현장 동행 기자가 방문을 기록했습니다.','이 게임은 좌석, 통로, 전력을 배치하는 가상의 공간 퍼즐입니다. 손님 요구와 제약은 실제 건물의 문제를 나타내지 않습니다.'],
+    es:['EL HECHO','Un hito en las obras del salón de baile de la Casa Blanca','La última viga centró una visita a las obras.','El 4 de noviembre de 2026, Trump firmó la última viga del salón de baile de la Casa Blanca y observó su instalación. Una periodista presente registró la visita.','El juego convierte la planificación de un recinto en un puzle ficticio de asientos, pasillos y energía. Sus invitados y restricciones no describen el edificio real.'],
+    'pt-BR':['O ACONTECIMENTO','Obra do salão da Casa Branca chega à última viga','Uma visita à obra destacou a instalação da viga final.','Em 4 de novembro de 2026, Trump assinou a última viga do salão de baile da Casa Branca e acompanhou sua instalação. Uma jornalista presente registrou a visita.','O jogo transforma o planejamento de espaços em um quebra-cabeça fictício de mesas, corredores e energia. Os convidados e limites não descrevem o prédio real.'],
+    fr:['LES FAITS','Une étape dans le chantier de la salle de bal de la Maison-Blanche','La dernière poutre était au centre de la visite du chantier.','Le 4 novembre 2026, Trump a signé la dernière poutre de la salle de bal de la Maison-Blanche et assisté à sa pose. Une journaliste sur place a relaté la visite.','Le jeu imagine un casse-tête de sièges, de passages et d’électricité. Les invités et les contraintes sont fictifs et ne décrivent pas le bâtiment réel.'],
+    de:['HINTERGRUND','Letzter Stahlträger für den Ballsaal des Weißen Hauses','Bei einem Baustellenbesuch stand der letzte Träger im Mittelpunkt.','Am 4. November 2026 unterschrieb Trump den letzten Träger des Ballsaals des Weißen Hauses und sah beim Einbau zu. Eine Reporterin vor Ort dokumentierte den Besuch.','Das Spiel macht Raumplanung zu einem fiktiven Rätsel mit Sitzplätzen, Wegen und Strom. Gäste und Einschränkungen beschreiben nicht das echte Gebäude.'],
+    it:['IL FATTO','Una tappa nei lavori della sala da ballo della Casa Bianca','L’ultima trave al centro di una visita al cantiere.','Il 4 novembre 2026 Trump ha firmato l’ultima trave della sala da ballo della Casa Bianca e ne ha osservato l’installazione. Una giornalista sul posto ha documentato la visita.','Il gioco trasforma la progettazione di spazi in un rompicapo immaginario di posti, passaggi ed energia. Ospiti e vincoli non descrivono l’edificio reale.'],
+    ru:['ЧТО ПРОИЗОШЛО','Последняя балка для бального зала Белого дома','Установка балки стала центральным моментом посещения стройки.','4 ноября 2026 года Трамп подписал последнюю балку бального зала Белого дома и наблюдал за её установкой. Посещение описала присутствовавшая журналистка.','Игра превращает планирование зала в вымышленную задачу о местах, проходах и электричестве. Гости и ограничения не описывают реальное здание.'],
+    hi:['क्या हुआ','व्हाइट हाउस के बॉलरूम में अंतिम इस्पात बीम लगी','निर्माण स्थल की यात्रा में अंतिम बीम पर ध्यान रहा।','4 नवंबर 2026 को ट्रंप ने व्हाइट हाउस के बॉलरूम की अंतिम बीम पर हस्ताक्षर किए और उसे लगते देखा। वहाँ मौजूद पत्रकार ने इस यात्रा का विवरण दिया।','खेल में बैठने की जगह, रास्ते और बिजली की योजना एक काल्पनिक पहेली है। मेहमानों की जरूरतें और सीमाएँ वास्तविक भवन की समस्याएँ नहीं हैं।'],
+    ar:['ما الذي حدث','تركيب آخر عارضة في قاعة احتفالات البيت الأبيض','كانت العارضة الأخيرة محور زيارة موقع البناء.','في 4 نوفمبر 2026، وقّع ترامب على آخر عارضة لقاعة احتفالات البيت الأبيض وشاهد تركيبها. وسجلت صحفية كانت في الموقع تفاصيل الزيارة.','تحوّل اللعبة تخطيط القاعة إلى لغز خيالي للمقاعد والممرات والطاقة. احتياجات الضيوف والقيود لا تصف مشكلات المبنى الحقيقي.']
+  };
+  const lifeStory = {
+    en:['GAME STORY','One life, a different starting point','Birthplace and surroundings shape an imagined life.','A Life in Moments imagines one life among roughly eight billion. The story unfolds through childhood, work and later life, with different surroundings along the way. This is a game premise, not a report about a real person or a newly verified news event.','The lives are fictional. Population data informs the simulation; it cannot predict any individual’s future.'],
+    'zh-Hant':['遊戲故事','同樣一生，不同的起點','出生地與生活環境，串起一段虛構人生。','《人間一瞬》以約八十億人之中的一段人生為敘事起點，讓童年、工作與晚年隨環境展開不同片段。這是遊戲創作，並非某位真實人物的報導，也不代表新近發生的新聞。','角色的人生是虛構故事；人口資料用來支援模擬，不能預測個人的未來。'],
+    'zh-Hans':['游戏故事','同样一生，不同的起点','出生地与生活环境，串起一段虚构人生。','《人间一瞬》以约八十亿人之中的一段人生为叙事起点，让童年、工作与晚年随环境展开不同片段。这是游戏创作，并非某位真实人物的报道，也不代表新近发生的新闻。','角色的人生是虚构故事；人口资料用来支持模拟，不能预测个人的未来。'],
+    ja:['ゲームの物語','ひとつの人生、異なる出発点','生まれた場所と環境が架空の人生を彩ります。','約80億人の中のひとつの人生を想像するゲームです。幼少期、仕事、老後が異なる環境の中で展開します。実在人物の報道や、新しく確認されたニュースではありません。','人生の物語は架空です。人口データはシミュレーションの参考であり、個人の未来を予測するものではありません。'],
+    ko:['게임 이야기','하나의 삶, 서로 다른 출발점','태어난 곳과 환경이 가상의 삶을 만듭니다.','약 80억 명 중 한 사람의 삶을 상상하는 게임입니다. 어린 시절, 직장 생활, 노년이 다양한 환경에서 펼쳐집니다. 실제 인물의 보도나 새로 확인된 뉴스가 아닙니다.','삶의 이야기는 허구입니다. 인구 자료는 시뮬레이션에 활용되며 개인의 미래를 예측하지 않습니다.'],
+    es:['HISTORIA DEL JUEGO','Una vida, distintos puntos de partida','El lugar de nacimiento y el entorno dan forma a una vida imaginada.','El juego imagina una vida entre unos ocho mil millones. Infancia, trabajo y vejez transcurren en entornos diferentes. Es una premisa ficticia, no un reportaje sobre alguien real ni una noticia recién verificada.','Las vidas son ficticias. Los datos demográficos orientan la simulación; no predicen el futuro de una persona.'],
+    'pt-BR':['HISTÓRIA DO JOGO','Uma vida, diferentes pontos de partida','O lugar de nascimento e o ambiente formam uma vida imaginada.','O jogo imagina uma vida entre cerca de oito bilhões. Infância, trabalho e velhice acontecem em ambientes diferentes. É uma premissa fictícia, não uma reportagem sobre alguém real nem uma notícia recém-verificada.','As vidas são fictícias. Os dados populacionais orientam a simulação, sem prever o futuro de uma pessoa.'],
+    fr:['HISTOIRE DU JEU','Une vie, des départs différents','Le lieu de naissance et le milieu façonnent une vie imaginée.','Le jeu imagine une vie parmi environ huit milliards. Enfance, travail et vieillesse se déroulent dans des milieux variés. Il s’agit d’une fiction, pas du portrait d’une personne réelle ni d’une actualité nouvellement vérifiée.','Les vies sont fictives. Les données démographiques guident la simulation sans prédire l’avenir individuel.'],
+    de:['SPIELGESCHICHTE','Ein Leben, unterschiedliche Ausgangspunkte','Geburtsort und Umfeld prägen ein erdachtes Leben.','Das Spiel stellt sich ein Leben unter rund acht Milliarden vor. Kindheit, Arbeit und Alter entfalten sich in verschiedenen Umgebungen. Das ist eine Spielidee, kein Bericht über eine echte Person oder ein neu belegtes Ereignis.','Die Lebensgeschichten sind erfunden. Bevölkerungsdaten dienen der Simulation, nicht der Vorhersage persönlicher Zukunft.'],
+    it:['STORIA DEL GIOCO','Una vita, punti di partenza diversi','Luogo di nascita e ambiente danno forma a una vita immaginata.','Il gioco immagina una vita fra circa otto miliardi. Infanzia, lavoro e vecchiaia si svolgono in ambienti diversi. È una premessa narrativa, non un resoconto su una persona reale o una notizia appena verificata.','Le vite sono inventate. I dati demografici guidano la simulazione, senza prevedere il futuro individuale.'],
+    ru:['ИСТОРИЯ ИГРЫ','Одна жизнь, разные отправные точки','Место рождения и окружение формируют воображаемую жизнь.','Игра представляет одну жизнь среди примерно восьми миллиардов. Детство, работа и старость проходят в разных условиях. Это вымысел, а не репортаж о реальном человеке или новом подтверждённом событии.','Истории вымышлены. Демографические данные служат симуляции, но не предсказывают будущее отдельного человека.'],
+    hi:['खेल की कहानी','एक जीवन, अलग शुरुआत','जन्मस्थान और परिवेश एक काल्पनिक जीवन को आकार देते हैं।','खेल लगभग आठ अरब लोगों में से एक जीवन की कल्पना करता है। बचपन, काम और बुढ़ापा अलग परिवेश में खुलते हैं। यह खेल की कल्पना है, किसी वास्तविक व्यक्ति की रिपोर्ट या नई सत्यापित खबर नहीं।','जीवन की कहानियाँ काल्पनिक हैं। जनसंख्या के आँकड़े सिमुलेशन में मदद करते हैं, किसी व्यक्ति का भविष्य नहीं बताते।'],
+    ar:['قصة اللعبة','حياة واحدة وبدايات مختلفة','يشكّل مكان الميلاد والبيئة حياة متخيّلة.','تتخيّل اللعبة حياة واحدة بين نحو ثمانية مليارات. تتكشف الطفولة والعمل والشيخوخة في بيئات مختلفة. هذه فكرة خيالية وليست تقريراً عن شخص حقيقي أو خبراً جديداً موثّقاً.','الحيوات خيالية. تسترشد المحاكاة ببيانات السكان ولا تتنبأ بمستقبل أي فرد.']
+  };
   const items = [
-    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/assets/previews/flying-tram-news-screen.webp', news },
-    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/previews/traffic-jam-diner-news-screen.webp', news:trafficNews },
-    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/previews/robot-dog-showtime-news-screen.webp', news:robotNews }
+    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp', cover:true, news:gatheringNews },
+    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp', cover:true, news },
+    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png', cover:true, news:trafficNews },
+    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp', cover:true, news:robotNews },
+    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp', cover:true, news:lifeStory }
   ];
+  const dates = {'flying-tram':'2026-10-15','traffic-jam-diner':'2026-10-08','robot-dog-showtime':'2026-09-22'};
+  items.forEach(item => { if (dates[item.gameId]) { item.kind = 'news'; item.eventDate = dates[item.gameId]; } });
+  // intro, game artwork caption, unavailable game label
+  const editorial = {
+    en:['Short reads on the events behind our games. Read freely; complete a game to collect its story.','Game artwork','Coming soon'],
+    'zh-Hant':['用短篇讀懂遊戲背後的事件。直接閱讀，完成遊戲後收藏故事。','遊戲原創美術','敬請期待'],
+    'zh-Hans':['用短篇读懂游戏背后的事件。直接阅读，完成游戏后收藏故事。','游戏原创美术','敬请期待'],
+    ja:['ゲームの背景を短い記事で。自由に読んで、クリアしたら物語を収集。','ゲームのアート','近日公開'],
+    ko:['게임 속 배경을 짧은 글로 읽어보세요. 자유롭게 읽고 게임을 완료해 수집하세요.','게임 아트','출시 예정'],
+    es:['Los hechos detrás de los juegos, en breve. Lee libremente y completa el juego para coleccionar su historia.','Arte del juego','Próximamente'],
+    'pt-BR':['Os fatos por trás dos jogos, em poucas palavras. Leia livremente e conclua o jogo para colecionar a história.','Arte do jogo','Em breve'],
+    fr:['Les faits derrière nos jeux, en bref. Lisez librement et terminez le jeu pour collectionner son histoire.','Illustration du jeu','Bientôt disponible'],
+    de:['Kurze Artikel über die Hintergründe unserer Spiele. Frei lesen und durch Abschließen die Geschichte sammeln.','Spielgrafik','Demnächst'],
+    it:['I fatti dietro i giochi, in breve. Leggi liberamente e completa il gioco per collezionarne la storia.','Illustrazione del gioco','Prossimamente'],
+    ru:['Коротко о событиях за нашими играми. Читайте свободно и проходите игры, чтобы собирать истории.','Иллюстрация игры','Скоро'],
+    hi:['खेलों के पीछे की घटनाएँ संक्षेप में पढ़ें। पढ़ना सबके लिए खुला है; कहानी संग्रह करने के लिए खेल पूरा करें।','खेल की कलाकृति','जल्द आ रहा है'],
+    ar:['قراءات قصيرة عن خلفيات ألعابنا. اقرأ بحرية وأكمل اللعبة لتجمع قصتها.','رسوم اللعبة','قريباً']
+  };
   const css = `
     .wpt-news{box-sizing:border-box;color:#23314d;background:#faf7ef;border:1px solid #e3d5b9;border-radius:22px;padding:clamp(16px,3vw,28px);font:500 16px/1.5 system-ui,sans-serif}
     .wpt-news *{box-sizing:border-box}.wpt-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;border-bottom:2px solid #24314b;padding-bottom:14px}.wpt-eyebrow{display:block;color:#b84f3e;font-size:.75rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}.wpt-head h2{margin:2px 0;font-size:clamp(1.35rem,4vw,1.9rem);line-height:1.2;color:#24314b}.wpt-head p{margin:5px 0 0;color:#657087;font-size:.9rem}.wpt-close,.wpt-back{flex:none;border:1px solid #bdc3ca;background:white;color:#25344d;border-radius:999px;min-height:44px;padding:8px 16px;font:700 .9rem/1.2 system-ui,sans-serif;cursor:pointer}.wpt-news button:focus-visible,.wpt-news a:focus-visible{outline:3px solid #e1684d;outline-offset:3px}
@@ -77,31 +128,63 @@
     .wpt-story{max-width:680px;margin:0 auto}.wpt-story h3{font-size:clamp(1.55rem,5vw,2.25rem);line-height:1.2;margin:12px 0;color:#1f2d49}.wpt-story .wpt-lead{font-size:1.1rem;font-weight:650;color:#59657a}.wpt-story p{line-height:1.75}.wpt-story a:not(.wpt-play){color:#005b91;text-decoration:underline;font-weight:700}.wpt-back{margin-top:17px}.wpt-separator{border:0;border-top:1px solid #e1d9ca;margin:23px 0}.wpt-shot{margin:0}.wpt-shot img{display:block;width:100%;max-width:480px;height:auto;border-radius:12px;border:1px solid #d6d3c8;background:#d3e1dd}.wpt-shot figcaption{margin:7px 0 14px;color:#657087;font-size:.85rem}.wpt-game-title{font-size:1.05rem;font-weight:800;margin:0 0 10px}.wpt-grid[hidden],.wpt-story[hidden]{display:none}
     @media(max-width:520px){.wpt-news{padding:15px;border-radius:18px}.wpt-head h2{font-size:1.3rem}.wpt-close{padding:8px 12px}.wpt-story h3{font-size:1.5rem}.wpt-card__body{padding:14px}}
     @media(prefers-reduced-motion:reduce){.wpt-news *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    .wpt-news{border-radius:6px;background:#fbf8ef;color:#26312d;overflow-wrap:anywhere}
+    .wpt-head{border-top:5px solid #26312d;border-bottom:3px double #26312d;padding-block:18px}
+    .wpt-head h2{font-family:Georgia,'Noto Serif TC',serif;font-size:clamp(1.6rem,4vw,2.5rem);color:#26312d}
+    .wpt-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+    .wpt-card{min-width:0;border:0;border-bottom:1px solid #ccc5b5;border-radius:0;box-shadow:none;background:transparent;padding-block:20px}
+    .wpt-card:first-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;border-bottom:3px double #26312d}
+    .wpt-card__body{padding:14px 0 0}.wpt-card h3{font-family:Georgia,'Noto Serif TC',serif;font-size:1.4rem;color:#26312d}
+    .wpt-card:first-child h3{font-size:clamp(1.6rem,3vw,2.2rem)}
+    .wpt-card .wpt-shot img{width:100%;max-width:none;aspect-ratio:16/9;object-fit:contain;background:#e5e6df;border-radius:4px}
+    .wpt-date{display:block;color:#657064;font-size:.8rem;margin-block:4px 10px;font-variant-numeric:tabular-nums}
+    .wpt-read,.wpt-play{background:#24584b;border-radius:4px}.wpt-tag{color:#8e3d2c;letter-spacing:.06em}
+    .wpt-story{max-width:720px;padding-bottom:8px}.wpt-story h3{font-family:Georgia,'Noto Serif TC',serif;color:#26312d}
+    .wpt-game-panel{margin-top:24px;padding:20px;background:#edf0e7;border-inline-start:4px solid #24584b}
+    .wpt-game-panel .wpt-shot img{max-height:260px;width:100%;object-fit:contain;border:0;border-radius:4px}
+    .wpt-game-panel .wpt-play{width:100%}.wpt-game-title{margin-block:8px 12px}
+    @media(max-width:600px){.wpt-grid{grid-template-columns:1fr}.wpt-card:first-child{display:block}.wpt-head{gap:8px}.wpt-game-panel{padding:14px}.wpt-news{padding:14px}.wpt-head h2{font-size:1.6rem}}
   `;
   function localeKey(locale) { return copy[locale] ? locale : /^zh/i.test(locale || '') ? 'zh-Hant' : /^pt/i.test(locale || '') ? 'pt-BR' : String(locale || 'en').split('-')[0] in copy ? String(locale).split('-')[0] : 'en'; }
   function element(tag, cls, text) { const node = document.createElement(tag); if (cls) node.className = cls; if (text != null) node.textContent = text; return node; }
   function render(root, context) {
-    const c = context || {}, locale = localeKey(c.locale), t = copy[locale], owned = new Set(c.unlockedIds || []);
+    const c = context || {}, locale = localeKey(c.locale), t = copy[locale], e = editorial[locale], owned = new Set(c.unlockedIds || []);
+    const date = item => {
+      const node = element('time', 'wpt-date');
+      if (item.eventDate) { node.dateTime = item.eventDate; node.textContent = new Intl.DateTimeFormat(locale, {year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(`${item.eventDate}T00:00:00Z`)); }
+      return node;
+    };
+    const picture = (item, gameName) => {
+      const caption = item.cover ? e[1] : t[9];
+      const figure = element('figure', 'wpt-shot'), image = element('img');
+      image.src = item.image; image.alt = `${caption}: ${gameName}`; image.width = 480; image.height = 480; image.loading = 'lazy';
+      figure.append(image, element('figcaption', '', caption)); return figure;
+    };
     const style = element('style'); style.textContent = css;
     const shell = element('section', 'wpt-news'); shell.dir = locale === 'ar' ? 'rtl' : 'ltr'; shell.setAttribute('aria-label', t[0]);
     const head = element('header', 'wpt-head'); const headings = element('div');
-    headings.append(element('h2', '', t[0]), element('p', '', t[1]));
+    headings.append(element('h2', '', t[0]), element('p', '', e[0]));
     const close = element('button', 'wpt-close', t[2]); close.type = 'button'; close.addEventListener('click', () => c.onClose?.()); head.append(headings, close);
     const grid = element('div', 'wpt-grid'); const story = element('article', 'wpt-story'); story.hidden = true;
     items.forEach(item => {
       const article = item.news[locale];
       const game = window.WONDER_LOBBY?.games?.find(entry => entry.id === item.gameId);
       const gameName = game?.title?.[locale] || game?.title?.en || item.gameId;
-      const card = element('article', 'wpt-card'); const cardBody = element('div', 'wpt-card__body');
-      cardBody.append(element('span', 'wpt-tag', article[0]), element('h3', '', article[1]), element('p', '', article[2]), element('p', 'wpt-status', owned.has(item.id) ? t[3] : `${t[4]} · ${t[5]}`));
-      const read = element('button', 'wpt-read', t[6]); read.type = 'button'; cardBody.append(read); card.append(cardBody); grid.append(card);
+      const card = element('article', 'wpt-card'); card.dataset.gameId = item.gameId; const cardBody = element('div', 'wpt-card__body');
+      cardBody.append(element('span', 'wpt-tag', article[0]), date(item), element('h3', '', article[1]), element('p', '', article[2]), element('p', 'wpt-status', owned.has(item.id) ? t[3] : `${t[4]} · ${t[5]}`));
+      const read = element('button', 'wpt-read', t[6]); read.type = 'button'; read.setAttribute('aria-label', `${t[6]}: ${article[1]}`); cardBody.append(read); card.append(picture(item, gameName), cardBody); grid.append(card);
       read.addEventListener('click', () => {
         const back = element('button', 'wpt-back', t[7]); back.type = 'button';
         const storyTitle = element('h3', '', article[1]); storyTitle.tabIndex = -1;
-        const figure = element('figure', 'wpt-shot'); const image = element('img'); image.src = item.image; image.alt = `${t[9]}: ${gameName}`; image.width = 480; image.height = 480; image.loading = 'lazy'; figure.append(image, element('figcaption', '', t[9]));
+        const figure = picture(item, gameName);
         const path = `/games/${item.gameId}/`;
-        const play = element('a', 'wpt-play', t[10]); play.href = window.WonderI18n?.localizedPath?.(locale, path) || path; play.dataset.wpTopicGameId = item.gameId;
-        story.replaceChildren(back, element('p', 'wpt-tag', article[0]), storyTitle, element('p', 'wpt-lead', article[2]), element('p', '', article[3]), element('hr', 'wpt-separator'), element('p', '', article[4]), figure, element('p', 'wpt-game-title', gameName), play);
+        const playable = game?.status === 'playable' && !game.internalOnly;
+        const play = element(playable ? 'a' : 'p', playable ? 'wpt-play' : 'wpt-status', playable ? t[10] : e[2]);
+        if (playable) { play.href = window.WonderI18n?.localizedPath?.(locale, path) || path; play.dataset.wpTopicGameId = item.gameId; }
+        const panel = element('aside', 'wpt-game-panel');
+        const gameTitle = element('p', 'wpt-game-title', gameName); gameTitle.dataset.runtimeLocalize = 'off';
+        panel.append(figure, gameTitle, element('p', '', article[4]), play);
+        story.replaceChildren(back, element('p', 'wpt-tag', article[0]), date(item), storyTitle, element('p', 'wpt-lead', article[2]), element('p', '', article[3]), panel);
         back.addEventListener('click', () => { story.hidden = true; grid.hidden = false; read.focus(); });
         grid.hidden = true; story.hidden = false; storyTitle.focus();
       });
