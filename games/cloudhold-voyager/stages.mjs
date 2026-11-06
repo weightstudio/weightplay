@@ -1,0 +1,40 @@
+export const ID='cloudhold-voyager';
+export const ROOM_KEYS=['helm','lens','ward','engine','garden','workshop'];
+export const HULLS=Object.freeze({
+  survey:{unlock:1,hull:24,power:5,oxygen:8,shield:6,damage:0,engine:0,repair:4,art:10},
+  rescue:{unlock:4,hull:28,power:4,oxygen:10,shield:5,damage:0,engine:1,repair:4,art:11},
+  swift:{unlock:9,hull:20,power:6,oxygen:7,shield:4,damage:1,engine:0,repair:3,art:12},
+});
+// Explicit authored route identity, three encounters and a primary scenario rule.
+const rows=[
+ ['初航的三站','PPP','basics'],['少一格的餘裕','PWP','shield',{scrap:5}],
+ ['救援船圖','WPB','escape',{oxygen:7}],['返修的炮鏡','PBW','repair',{damage:[1]}],
+ ['盾鐘哨艦','PWW','guard'],['一縷火星','PFP','fire'],['側艙煙訊','FWF','fireShield',{oxygen:7}],
+ ['快翼的選擇','BFP','pierce',{scrap:5}],['空艙風道','FPW','vent',{fire:5}],
+ ['燼羽巡航長','FWF','fireBoss'],['封艙補片','PLP','patch'],['漏風盾壁','LWB','oxygen',{oxygen:6}],
+ ['雙重維修','FLP','dualRepair',{scrap:7}],['靜默花園','LBW','gardenRepair',{damage:[4]}],
+ ['針風艦長','LFL','breachBoss'],['不速機客','PDP','board'],['工坊被占','DBD','workshopBoard',{scrap:8,board:5}],
+ ['艙門接力','DFW','relay'],['分工的代價','LDB','roles',{hull:22}],['齒殼登艦王','DWD','boardBoss'],
+ ['雲電紊流','PIP','ion',{power:4}],['斷電護航','IWB','ionPierce'],['火中的充能','FIL','charge',{scrap:7}],
+ ['返航餘量','IDB','supplies',{hull:20}],['雲弧司令','IFI','ionBoss'],
+ ['三種危機','FLD','threeHazards'],['窄窗穿盾','BIW','burst',{scrap:5}],
+ ['最後的補給','LFI','dock',{oxygen:6}],['六艙輪值','DLB','roster',{damage:[1,2]}],['穹頂守望者','WIW','phases'],
+ ['第一條拖索','PTP','tow'],['漂流的同伴','TWB','towShield',{cargo:5}],['跨接光鏡','ITP','bridge',{lock:1}],
+ ['漏風的拖艙','TLF','towOxygen',{oxygen:7}],['索鉤領航王','TIT','hookBoss'],
+ ['雙鎖風帶','ITI','dualIon'],['遠路補片','LTW','detour',{hull:22}],['登艙牽制','DTB','helmBoard',{cargo:5,board:0}],
+ ['盾與拖索','WTF','towFire',{oxygen:6}],['磁環巡弋長','IDI','reflectBoss'],
+ ['暖流維修','FTL','towRepair',{hull:20,scrap:8}],['兩端警報','LIT','splitRepair',{oxygen:6,damage:[3,4]}],
+ ['幻盾空窗','WBT','window',{damage:[1]}],['接力艇隊','TDF','rescueHull',{cargo:5}],['霧針雙帆','LTL','alternatingBoss',{scrap:7}],
+ ['反向航標','IBT','reserve',{power:5}],['堅守工坊','DFT','siegeWorkshop',{damage:[5,5],scrap:9}],
+ ['折返接援','TLI','towLow',{cargo:4}],['繫泊危局','FDT','dockGoal',{hull:21}],['複翼救援阻截者','TIT','engineGoal'],
+ ['留下的氧','LTB','oxygenReserve',{oxygen:5,scrap:8}],['鎖環與火花','IFT','bridgeChoice',{damage:[2]}],
+ ['空艙接力','DLT','safeVent',{oxygen:6}],['兩種領航','BWT','builds',{power:5}],['天幕守門長','ITT','immuneBoss',{hull:22}],
+ ['僅存補片','LFT','patchReserve'],['三艙失聯','IDT','rotatingLock'],['風眼之前','WFT','towSuppression',{cargo:4}],
+ ['最後接援','LIT','helmGoal',{oxygen:6,scrap:7}],['雲艙大領航','DTT','finalBoss'],
+];
+export const STAGES=Object.freeze(rows.map(([name,route,rule,initial={}],i)=>Object.freeze({
+ id:i+1,chapter:i<30?1:2,name,route:[...route],rule,initial,
+ boss:(i+1)%5===0?(i+1)/5:0,patches:i>=10?1:0,bridges:i>=30?1:0,
+ tow:i>=30,goal:[49,50,55,59,60].includes(i+1)?'dock':'clear',
+})));
+export const SKINS=Object.freeze({base:{cost:0,art:10},ceramic:{cost:20,art:13},sunrise:{cost:35,art:14}});

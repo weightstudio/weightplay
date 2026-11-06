@@ -160,29 +160,34 @@
       details: "",
       locked,
       cleared,
-      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp",
+      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=b5f048e8dfd1feb0",
       posterPosition: "center"
     };
   };
   const stageSummary = () => `${copy("groves")}: ${solved.size} / ${groves.length}`;
   const saveProgress = index => {
+    let merged, bytes, wrote = false;
     try {
       const raw = localStorage.getItem(solvedKey), saved = raw === null ? [] : JSON.parse(raw);
       if (!validSolved(saved)) return false;
-      const merged = [...new Set([...saved, index])].sort((a, b) => a - b);
+      merged = [...new Set([...saved, index])].sort((a, b) => a - b);
       if (!saved.includes(index)) {
-        const bytes = JSON.stringify(merged);
+        bytes = JSON.stringify(merged);
         localStorage.setItem(solvedKey, bytes);
-        if (localStorage.getItem(solvedKey) !== bytes) return false;
+        wrote = true;
+        if (localStorage.getItem(solvedKey) !== bytes) throw Error("Solved progress unconfirmed");
       }
-      solved = new Set(merged);
-      unlockedThrough = Math.max(unlockedThrough, Math.min(groves.length, index + 2));
-      try {
-        const oldUnlocked = Number(localStorage.getItem("weightplay-echo-orchard-unlocked-v2")) || 1;
-        localStorage.setItem("weightplay-echo-orchard-unlocked-v2", String(Math.max(oldUnlocked, unlockedThrough)));
-      } catch { /* Solved stages recover the unlock on the next visit. */ }
-      return true;
-    } catch { return false; }
+    } catch {
+      if (!wrote) return false;
+      try { if (localStorage.getItem(solvedKey) !== bytes) return false; } catch { return false; }
+    }
+    solved = new Set(merged);
+    unlockedThrough = Math.max(unlockedThrough, Math.min(groves.length, index + 2));
+    try {
+      const oldUnlocked = Number(localStorage.getItem("weightplay-echo-orchard-unlocked-v2")) || 1;
+      localStorage.setItem("weightplay-echo-orchard-unlocked-v2", String(Math.max(oldUnlocked, unlockedThrough)));
+    } catch { /* Solved stages recover the unlock on the next visit. */ }
+    return true;
   };
   const bestValue = () => Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0) || "—";
   const fruitName = (fruit) => copy(`fruit${fruit[0].toUpperCase()}${fruit.slice(1)}`);

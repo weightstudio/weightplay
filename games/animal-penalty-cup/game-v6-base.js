@@ -20,7 +20,7 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-penalty-cup";
-  const GAME_VERSION = 14;
+  const GAME_VERSION = 15;
   const INTERFACE_VERSION = 9;
   const LOCALES = ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const LOCALE_LABELS = {en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
@@ -94,7 +94,9 @@
     const encoded=JSON.stringify(candidate);
     try{localStorage.setItem(SAVE_KEY,encoded)}catch{}
     let after;
-    try{after=localStorage.getItem(SAVE_KEY)}catch{saveWriteUncertain=true;return false}
+    try{after=localStorage.getItem(SAVE_KEY)}catch{
+      try{after=localStorage.getItem(SAVE_KEY)}catch{saveWriteUncertain=true;return false}
+    }
     if(after===encoded){save=candidate;return true}
     if(after!==before)saveWriteUncertain=true;
     return false;
@@ -224,5 +226,5 @@
   document.addEventListener("visibilitychange",()=>{if(document.hidden)setPaused(true);else if(!modalOwner&&$("tutorialPanel").hidden)setPaused(false)});window.addEventListener("blur",()=>{windowFocused=false;setPaused(true)});window.addEventListener("focus",()=>{windowFocused=true;if(!modalOwner&&$("tutorialPanel").hidden)setPaused(false)});window.addEventListener("pagehide",()=>setPaused(true));
 
   window.__animalPenaltyCupTest={LEVELS,getState:()=>({lang,selectedStage,save:JSON.parse(JSON.stringify(save)),match:match?{stage:match.stage,phase:match.phase,round:match.round,player:match.player,rival:match.rival,power:match.power,saves:match.saves,perfectShots:match.perfectShots,ended:match.ended,result:match.result}:null,paused,modal:modalOwner?.id||null}),startMatch,commitShot,resolveDefence,finishMatch,showStage,selectStage,resetSave(){save=defaultSave();persist();showMain()}};
-  setupLocale();screenFrame=window.mountAnimalPenaltyCupFrame?.()||null;stageSelector=screenFrame?.stageSelector||null;applyLocale();updateSoundButtons();const assets=["assets/animal-penalty-cup-cover-v1.webp","assets/animal-penalty-cup-stadium-v1.webp","assets/animal-penalty-cup-fox-v1.webp","assets/animal-penalty-cup-keeper-v1.webp"];let loaded=0;Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image(),done=()=>{loaded++;$("loadingBar").style.width=`${loaded/assets.length*100}%`;resolve()};image.onload=done;image.onerror=done;image.src=src}))).then(()=>setTimeout(()=>{$("loadingPanel").hidden=true;showMain();track("game_view")},140));
+  setupLocale();screenFrame=window.mountAnimalPenaltyCupFrame?.()||null;stageSelector=screenFrame?.stageSelector||null;applyLocale();updateSoundButtons();const assets=["assets/animal-penalty-cup-cover-v1.webp?wp-media=b5f048e8dfd1feb0","assets/animal-penalty-cup-stadium-v1.webp?wp-media=b5f048e8dfd1feb0","assets/animal-penalty-cup-fox-v1.webp?wp-media=b5f048e8dfd1feb0","assets/animal-penalty-cup-keeper-v1.webp?wp-media=b5f048e8dfd1feb0"];let loaded=0;Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image(),done=()=>{loaded++;$("loadingBar").style.width=`${loaded/assets.length*100}%`;resolve()};image.onload=done;image.onerror=done;image.src=src}))).then(()=>setTimeout(()=>{$("loadingPanel").hidden=true;showMain();track("game_view")},140));
 })();

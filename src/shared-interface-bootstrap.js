@@ -12,7 +12,7 @@
   const root = document.documentElement;
   if (root.dataset.wpSharedInterfaceBootstrapped === "7") return;
 
-  // site-config.js is also used by lobby and utility pages. Restrict the
+  // site-config.js?wp-media=b5f048e8dfd1feb0 is also used by lobby and utility pages. Restrict the
   // complete runtime and token delivery to canonical/localized game routes;
   // lobby presentation has a separate owner and does not consume this frame.
   const isGameRoute = /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(location.pathname);
@@ -23,11 +23,11 @@
   window.__weightPlaySharedInterfaceRequested = true;
   // A few authored entries load this bootstrap directly, without site-config.
   // Reuse the canonical config/collector rather than defining a second GA4 tag.
-  if (/^https?:$/.test(location.protocol) && !window.WONDER_SITE && !document.querySelector('script[src*="site-config.js"]')
+  if (/^https?:$/.test(location.protocol) && !window.WONDER_SITE && !document.querySelector('script[src*="site-config.js?wp-media=b5f048e8dfd1feb0"]')
     && !window.__weightPlaySiteConfigRequested) {
     window.__weightPlaySiteConfigRequested = true;
     const configScript = document.createElement("script");
-    configScript.src = new URL("/src/site-config.js", location.origin).href;
+    configScript.src = new URL("/src/site-config.js?wp-media=b5f048e8dfd1feb0", location.origin).href;
     configScript.async = true;
     document.head.append(configScript);
   }
@@ -49,9 +49,9 @@
 
   // Insert the token source first; the frame CSS imports it as well, and the
   // duplicate-free check makes this safe for the four explicit adopters.
-  addStylesheet("game-ui-theme.css");
-  addStylesheet("game-page-info.css");
-  addStylesheet("game-screen-frame.css");
+  addStylesheet("game-ui-theme.css?wp-media=b5f048e8dfd1feb0");
+  addStylesheet("game-page-info.css?wp-media=b5f048e8dfd1feb0");
+  addStylesheet("game-screen-frame.css?wp-media=b5f048e8dfd1feb0");
 
   const addInterfaceMeta = () => {
     const meta = document.querySelector('meta[name="weightplay-interface-version"]');
@@ -132,8 +132,8 @@
       // PNG. Preserve that explicit fallback instead of retrying the broken
       // primary every time shared Main normalization runs.
       const registeredFallback = posterImage.dataset.wpPosterFallback === poster
-        && /\.webp$/i.test(poster)
-        && posterImage.getAttribute("src") === poster.replace(/\.webp$/i, ".png");
+        && /\.webp(?:[?#]|$)/i.test(poster)
+        && posterImage.getAttribute("src") === poster.replace(/\.webp(?=[?#]|$)/i, ".png.webp");
       if (!registeredFallback && posterImage.getAttribute("src") !== poster) posterImage.src = poster;
       if (posterImage.hasAttribute("srcset")) posterImage.removeAttribute("srcset");
       posterImage.dataset.wpInterface7Poster = "true";
@@ -153,7 +153,7 @@
     }
     window.__weightPlayInterface7PosterRegistryRequested = true;
     const script = document.createElement("script");
-    script.src = assetUrl("interface7-poster-registry.js?v=20261007-kite-keeper-poster-path-fix");
+    script.src = assetUrl("interface7-poster-registry.js?v=20261007-kite-keeper-poster-path-fix&wp-media=b5f048e8dfd1feb0");
     script.dataset.wpSharedInterface = "7";
     script.addEventListener("load", () => {
       window.dispatchEvent(new Event("weightplay-interface7-poster-registry-ready"));
@@ -163,10 +163,10 @@
   };
 
   const ensureFrameRuntime = () => {
-    if (!document.querySelector('script[src*="game-screen-frame.js"]') && !window.__weightPlayScreenFrameRequested) {
+    if (!document.querySelector('script[src*="game-screen-frame.js?wp-media=b5f048e8dfd1feb0"]') && !window.__weightPlayScreenFrameRequested) {
       window.__weightPlayScreenFrameRequested = true;
       const script = document.createElement("script");
-      script.src = assetUrl('game-screen-frame.js?v=20261103-initial-entry-dom-ready1');
+      script.src = assetUrl('game-screen-frame.js?v=20261103-initial-entry-dom-ready1&wp-media=b5f048e8dfd1feb0');
       script.dataset.wpSharedInterface = "7";
       document.body.append(script);
       return;

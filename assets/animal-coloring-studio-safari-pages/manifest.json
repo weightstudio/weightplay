@@ -10,8 +10,8 @@
     {
       "id": "lion",
       "art": "lion.webp",
-      "source": "lion.png",
-      "mask": "lion-mask.png",
+      "source": "lion.png.webp",
+      "mask": "lion-mask.png.webp",
       "regions": 28,
       "smallestRegion": 1854,
       "largestRegion": 131072
@@ -19,8 +19,8 @@
     {
       "id": "elephant",
       "art": "elephant.webp",
-      "source": "elephant.png",
-      "mask": "elephant-mask.png",
+      "source": "elephant.png.webp",
+      "mask": "elephant-mask.png.webp",
       "regions": 22,
       "smallestRegion": 1807,
       "largestRegion": 139612
@@ -28,8 +28,8 @@
     {
       "id": "giraffe",
       "art": "giraffe.webp",
-      "source": "giraffe.png",
-      "mask": "giraffe-mask.png",
+      "source": "giraffe.png.webp",
+      "mask": "giraffe-mask.png.webp",
       "regions": 41,
       "smallestRegion": 1810,
       "largestRegion": 256086
@@ -37,8 +37,8 @@
     {
       "id": "zebra",
       "art": "zebra.webp",
-      "source": "zebra.png",
-      "mask": "zebra-mask.png",
+      "source": "zebra.png.webp",
+      "mask": "zebra-mask.png.webp",
       "regions": 35,
       "smallestRegion": 1839,
       "largestRegion": 184804
@@ -46,8 +46,8 @@
     {
       "id": "hippo",
       "art": "hippo.webp",
-      "source": "hippo.png",
-      "mask": "hippo-mask.png",
+      "source": "hippo.png.webp",
+      "mask": "hippo-mask.png.webp",
       "regions": 22,
       "smallestRegion": 1816,
       "largestRegion": 216164
@@ -55,8 +55,8 @@
     {
       "id": "rhino",
       "art": "rhino.webp",
-      "source": "rhino.png",
-      "mask": "rhino-mask.png",
+      "source": "rhino.png.webp",
+      "mask": "rhino-mask.png.webp",
       "regions": 18,
       "smallestRegion": 2228,
       "largestRegion": 286838

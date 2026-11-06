@@ -140,8 +140,17 @@
     let previousBlank = -1;
     const reverseSolution = [];
     const shuffleSteps = 18 + safeStage * 2;
+    let retries = 0;
     for (let step = 0; step < shuffleSteps; step += 1) {
       const options = neighbours(blank, 4, 4).filter((index) => index !== previousBlank && (anchorIndex === null || (index !== anchorIndex && blank !== anchorIndex)));
+      // A fixed anchor can trap a non-backtracking shuffle in a corner.
+      // Retry only that failed walk; already valid stage layouts stay identical.
+      if (!options.length) {
+        if (++retries > 32) throw new Error("Sliding stage shuffle could not find a legal route");
+        tiles.splice(0, tiles.length, ...goal); blank = goal.indexOf(0);
+        previousBlank = -1; reverseSolution.length = 0; step = -1;
+        continue;
+      }
       const next = options[Math.floor(random() * options.length)];
       reverseSolution.push(blank);
       [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]];
@@ -150,6 +159,7 @@
     }
     if (tiles.every((value, index) => value === goal[index])) {
       const next = neighbours(blank, 4, 4).find((index) => anchorIndex === null || (index !== anchorIndex && blank !== anchorIndex));
+      reverseSolution.push(blank);
       [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]];
       blank = next;
     }
@@ -906,7 +916,7 @@
     app.root.innerHTML = `
       <div class="logic-lab">
           <main class="logic-main main-screen${entryClass("wp-standard-main-screen wp-standard-main-flow-owner")}" id="logicMain" data-screen="main">
-          <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="${assetPath("weightplay-logo.png")}" alt=""></a><h1 class="wp-shell-main-title">${esc(title)}</h1><div class="logic-header-tools wp-shell-settings"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
+          <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="${assetPath("weightplay-logo.png.webp")}" alt=""></a><h1 class="wp-shell-main-title">${esc(title)}</h1><div class="logic-header-tools wp-shell-settings"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
           <section class="logic-hero${entryClass("wp-standard-main-composition")}"><div class="logic-poster${entryClass("wp-standard-main-poster")}"><img class="main-poster${entryClass("wp-standard-main-poster-media")}" src="${mainPoster}" alt=""></div><div class="logic-copy main-copy${entryClass("wp-standard-main-copy")}"><p class="logic-kicker${entryClass("wp-main-legacy-layout")}">${esc(preview)}</p><h2 class="${initialEntry ? "wp-main-legacy-layout" : ""}">${esc(title)}</h2><p class="${initialEntry ? "wp-standard-main-summary" : ""}">${esc(text(cfg.blurb))}</p><div class="logic-facts${entryClass("wp-main-legacy-layout")}"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><div class="logic-progress-slot${entryClass("wp-standard-main-progress")}" data-wp-main-progress>${esc(t("ready"))}</div><button id="startButton" class="logic-primary${entryClass("wp-standard-main-start")}" data-wp-main-start type="button">${esc(t("start"))}</button></div></section>
           <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("ready"))}</h3><p>${esc(text(quickStart))}</p></section>
         </main>
@@ -1198,8 +1208,9 @@
     const solution = [5,3,4,6,7,8,9,1,2,6,7,2,1,9,5,3,4,8,1,9,8,3,4,2,5,6,7,8,5,9,7,6,1,4,2,3,4,2,6,8,5,3,7,9,1,7,1,3,9,2,4,8,5,6,9,6,1,5,3,7,2,8,4,2,8,7,4,1,9,6,3,5,3,4,5,2,8,6,1,7,9,1,9,6,3,7,2,4,8,5,7,2,8,5,4,1,3,9,6];
     const masks = { easy: [0,4,9,16,23,30,37,42,50,57,64,71,78], medium: [0,1,4,7,9,11,16,18,23,26,28,30,35,37,40,42,47,50,52,57,59,62,64,66,71,73,76,78], hard: [0,1,2,4,7,9,11,13,16,18,20,23,26,28,30,33,35,37,40,42,45,47,50,52,54,57,59,62,64,66,69,71,73,76,78,80] }; let difficulty = "easy", values = [], given = new Set(), selected = -1, hintIndex = -1, history = []; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); panel.append(toolbar); const board = document.createElement("div"); board.className = "logic-sudoku-board"; panel.append(board); const keypad = document.createElement("div"); keypad.className = "logic-keypad"; panel.append(keypad); app.board.replaceChildren(panel);
     const cellButtons = [];
+    let practice = null;
     for (let i = 0; i < 81; i += 1) {
-      const b = cell("", "", "", () => { if (!given.has(i)) { selected = i; render(); } });
+      const b = cell("", "", "", () => { if (practice && (practice.step !== 0 || i !== 0)) return; if (!given.has(i)) { selected = i; render(); if (practice) { practice.step = 1; practice.notify(1); } } });
       cellButtons.push(b);
       board.append(b);
     }
@@ -1215,21 +1226,35 @@
     function remainingCells() { return values.reduce((count, value, index) => count + (!given.has(index) && !value ? 1 : 0), 0); }
     function resultGoal() { const target = Math.max(1, history.length - 1); return difficulty === "hard" ? feedback("hardGoal", { level: t(difficulty), target }) : feedback("goal", { level: t(difficulty), target, next: t(difficulty === "easy" ? "medium" : "hard") }); }
     function render() { cellButtons.forEach((b, i) => { const value = values[i] || ""; const state = given.has(i) ? fillTemplate(text(sudokuCopy.given), { value }) : value ? fillTemplate(text(sudokuCopy.filled), { value }) : text(sudokuCopy.empty); const labelState = i === hintIndex ? fillTemplate(text(sudokuCopy.hinted), { state }) : state; const label = fillTemplate(text(sudokuCopy.cell), { row: Math.floor(i / 9) + 1, col: (i % 9) + 1, state: labelState }); b.className = `logic-cell ${given.has(i) ? "given" : ""} ${i === selected ? "is-selected" : ""} ${i === hintIndex ? "is-hint" : ""}`; b.textContent = value; b.setAttribute("aria-label", label); }); clearButton.textContent = t("clear"); }
-    function enter(value) { if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(feedback("ready")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(feedback("invalid"), "is-error"); beep("feedback.error"); return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); const remaining = remainingCells(); if (sudokuComplete(values)) { finish(true, `${t("solved")} · ${resultGoal()}`); announce(`${t("solved")} · ${t("win")}`, "is-good"); } else { announce(feedback(value ? "correct" : "cleared", { remaining }), "is-good"); beep(value ? "feedback.success" : "ui.click"); } }
+    function enter(value) { if (practice && !((practice.step === 1 && value === 3) || (practice.step === 2 && value === 5))) return; if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(feedback("ready")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(feedback("invalid"), "is-error"); beep("feedback.error"); if (practice) { practice.step = 2; practice.notify(2); } return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); if (practice) { practice.step = 3; practice.notify(3); return; } const remaining = remainingCells(); if (sudokuComplete(values)) { finish(true, `${t("solved")} · ${resultGoal()}`); announce(`${t("solved")} · ${t("win")}`, "is-good"); } else { announce(feedback(value ? "correct" : "cleared", { remaining }), "is-good"); beep(value ? "feedback.success" : "ui.click"); } }
     function reset() { difficulty = select.value; const baseSolution = solution.slice(0, 81); values = baseSolution.map((v, i) => masks[difficulty].includes(i) ? 0 : v); given = new Set(baseSolution.map((_, i) => i).filter((i) => !masks[difficulty].includes(i))); selected = -1; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(feedback("ready"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() { hintIndex = values.findIndex((v, i) => !given.has(i) && v !== solution[i]); if (hintIndex >= 0) { selected = hintIndex; render(); announce(feedback("hint"), "is-good"); } }
     function undo() { const previous = history.pop(); if (!previous) { announce(feedback("ready")); return; } values[previous.index] = previous.value; selected = previous.index; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(feedback("undo", { remaining: remainingCells() }), "is-good"); if (previous) __wpReopenMeasurement(); }
-    select.addEventListener("change", reset); return { reset, hint, undo };
+    function beginTutorial(notify) {
+      if (practice) return;
+      practice={step:0,notify,paused:app.paused,saved:{values,given,selected,hintIndex,history}};
+      app.paused=true;__wpNotifyMeasurement();values=solution.slice(0,81);values[0]=0;
+      given=new Set(Array.from({length:80},(_,i)=>i+1));selected=-1;hintIndex=-1;history=[];render();notify(0);
+    }
+    function endTutorial() {
+      if (!practice) return;
+      ({values,given,selected,hintIndex,history}=practice.saved);app.paused=practice.paused;practice=null;render();__wpNotifyMeasurement();
+    }
+    select.addEventListener("change", reset); return { reset, hint, undo, beginTutorial, endTutorial };
   }
 
   function sudokuCanPlace(values, index, value) { const row = Math.floor(index / 9), col = index % 9; for (let i = 0; i < 9; i += 1) { if (values[row * 9 + i] === value || values[i * 9 + col] === value) return false; } const br = Math.floor(row / 3) * 3, bc = Math.floor(col / 3) * 3; for (let r = br; r < br + 3; r += 1) for (let c = bc; c < bc + 3; c += 1) if (values[r * 9 + c] === value) return false; return true; }
   function sudokuComplete(values) { if (values.length < 81 || values.slice(0, 81).some((value) => value < 1 || value > 9)) return false; for (let i = 0; i < 9; i += 1) { if (new Set(values.slice(i * 9, i * 9 + 9)).size !== 9) return false; if (new Set(Array.from({ length: 9 }, (_, r) => values[r * 9 + i])).size !== 9) return false; } for (let br = 0; br < 9; br += 3) for (let bc = 0; bc < 9; bc += 3) { const box = []; for (let r = br; r < br + 3; r += 1) for (let c = bc; c < bc + 3; c += 1) box.push(values[r * 9 + c]); if (new Set(box).size !== 9) return false; } return true; }
   function buildLights() {
+    // Game-owned coaching uses this same toggle engine on an isolated board.
+    // No practice move reaches finish/saveBest; the prior board and Undo survive.
+    let practice = null;
+    const practiceMoves = [12, 12, 0];
     let boardState = []; let moves = 0; let hintIndex = -1; let history = []; const initialMoves = [0, 2, 5, 7, 12, 14, 16, 18, 20, 22, 24]; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-lights-board"; panel.append(board); const info = document.createElement("div"); info.className = "logic-live"; panel.append(info); app.board.replaceChildren(panel);
     function copy(key, replacements = {}) { return Object.entries(replacements).reduce((value, [token, replacement]) => value.replace(`{${token}}`, String(replacement)), text(lightsCopy[key])); }
-    function toggle(i) { history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); announce(t("solved")); } else announce(t("turn")); }
+    function toggle(i) { if (practice && i !== practiceMoves[practice.step]) return; history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (practice) { practice.step += 1; practice.notify(practice.step, practiceMoves[practice.step]); return; } if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); announce(t("solved")); } else announce(t("turn")); }
     function render() { board.replaceChildren(); boardState.forEach((on, i) => { const row = Math.floor(i / 5) + 1; const col = (i % 5) + 1; const state = copy(on ? "cellOn" : "cellOff"); const label = i === hintIndex ? copy("hintedCell", { row, col, state }) : copy("cellLabel", { row, col, state }); const b = cell(on ? "●" : "", on ? "on" : "", label, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
     function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(t("ready"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
@@ -1237,25 +1262,54 @@
     function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); const hinted = hintIndex >= 0 ? copy("hintedCell", { row: Math.floor(hintIndex / 5) + 1, col: (hintIndex % 5) + 1, state: copy(boardState[hintIndex] ? "cellOn" : "cellOff") }) : ""; announce(hinted ? `${text(lightsCopy.hintExplanation)} ${hinted}` : text(lightsCopy.hintExplanation)); }
     function solveLights(start) { for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v)) return movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return []; }
     function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); if (previous) __wpReopenMeasurement(); }
-    return { reset, hint, undo };
+    function beginTutorial(notify) {
+      if (practice) return;
+      practice = { step: 0, notify, paused: app.paused, saved: { boardState, moves, hintIndex, history } };
+      app.paused = true;
+      __wpNotifyMeasurement();
+      boardState = Array(25).fill(false);
+      [0, ...neighbours(0, 5, 5)].forEach(i => { boardState[i] = true; });
+      moves = 0; hintIndex = -1; history = [];
+      render(); notify(0, practiceMoves[0]);
+    }
+    function endTutorial() {
+      if (!practice) return;
+      ({ boardState, moves, hintIndex, history } = practice.saved);
+      app.paused = practice.paused;
+      practice = null; render();
+      __wpNotifyMeasurement();
+    }
+    return { reset, hint, undo, beginTutorial, endTutorial };
   }
 
   function buildPeg() {
+    let practice = null;
+    const practiceTargets = [22,24,24,26];
     const valid = Array.from({ length: 49 }, (_, i) => { const r = Math.floor(i / 7), c = i % 7; return (r >= 2 && r <= 4) || (c >= 2 && c <= 4); }); let pegs = []; let selected = -1; let hintPair = []; let moves = 0; let history = []; const board = document.createElement("div"); board.className = "logic-peg-board"; app.board.replaceChildren(board);
     function legalMoves() { const found = []; for (let i = 0; i < 49; i += 1) if (pegs[i]) for (const n of neighbours(i, 7, 7)) { const beyond = n + (n - i); if (beyond >= 0 && beyond < 49 && Math.abs(Math.floor(beyond / 7) - Math.floor(i / 7)) + Math.abs(beyond % 7 - i % 7) === 2 && valid[beyond] && pegs[n] && !pegs[beyond]) found.push([i, n, beyond]); } return found; }
     function render() { board.replaceChildren(); for (let i = 0; i < 49; i += 1) { if (!valid[i]) { board.append(cell("", "void", "", () => {})); continue; } const b = cell(pegs[i] ? "●" : "", `${pegs[i] ? "peg" : "empty"} ${i === selected ? "is-selected" : ""} ${hintPair.includes(i) ? "is-hint" : ""}`, pegs[i] ? `Peg ${i + 1}` : `Empty hole ${i + 1}`, () => choose(i)); board.append(b); } }
-    function choose(i) { if (!valid[i]) return; if (selected < 0) { if (pegs[i]) { selected = i; announce(t("selectTarget")); } } else if (pegs[i]) { selected = i; announce(t("selectTarget")); } else { const move = legalMoves().find(([from, , to]) => from === selected && to === i); if (move) { history.push({ pegs: pegs.slice(), moves }); pegs[move[0]] = false; pegs[move[1]] = false; pegs[move[2]] = true; moves += 1; selected = -1; if (pegs.filter(Boolean).length === 1) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (!legalMoves().length) finish(false, t("noMoves")); else announce(`${t("turn")} · ${t("moves")}: ${moves}`); } else announce(t("selectTarget")); } hintPair = []; render(); }
+    function choose(i) { if (!valid[i] || (practice && i !== practiceTargets[practice.step])) return; if (selected < 0) { if (pegs[i]) { selected = i; announce(t("selectTarget")); } } else if (pegs[i]) { selected = i; announce(t("selectTarget")); } else { const move = legalMoves().find(([from, , to]) => from === selected && to === i); if (move) { history.push({ pegs: pegs.slice(), moves }); pegs[move[0]] = false; pegs[move[1]] = false; pegs[move[2]] = true; moves += 1; selected = -1; if (!practice) { if (pegs.filter(Boolean).length === 1) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (!legalMoves().length) finish(false, t("noMoves")); else announce(`${t("turn")} · ${t("moves")}: ${moves}`); } } else announce(t("selectTarget")); } hintPair = []; render(); if (practice) { practice.step += 1; practice.notify(practice.step, practiceTargets[practice.step]); } }
     function reset() { pegs = valid.map((v, i) => v && i !== 24); selected = -1; hintPair = []; moves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(t("selectSource"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() { const move = legalMoves()[0]; hintPair = move ? [move[0], move[2]] : []; render(); announce(t("hint")); }
     function undo() { const previous = history.pop(); if (!previous) { selected = -1; hintPair = []; render(); announce(t("selectSource")); return; } pegs = previous.pegs; moves = previous.moves; selected = -1; hintPair = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves} · ${t("selectSource")}`); if (previous) __wpReopenMeasurement(); }
-    return { reset, hint, undo };
+    function beginTutorial(notify) {
+      if (practice) return;
+      practice={step:0,notify,paused:app.paused,saved:{pegs,selected,hintPair,moves,history}};
+      app.paused=true;__wpNotifyMeasurement();pegs=valid.map((_,i)=>[22,23,25].includes(i));selected=-1;hintPair=[];moves=0;history=[];render();notify(0,22);
+    }
+    function endTutorial() {
+      if (!practice) return;
+      ({pegs,selected,hintPair,moves,history}=practice.saved);app.paused=practice.paused;practice=null;render();__wpNotifyMeasurement();
+    }
+    return { reset, hint, undo, beginTutorial, endTutorial };
   }
 
   function buildSliding() {
-    const stage = app.currentStage ? slidingStageData(app.currentStage) : null;
+    let stage = app.currentStage ? slidingStageData(app.currentStage) : null;
     let tiles = [], blank = 15, lastBlank = -1, history = [], hintIndex = -1;
+    let practice = null;
     const panel = document.createElement("div"); panel.className = "logic-sliding-panel";
     const meta = document.createElement("div"); meta.className = "logic-sliding-stage-meta";
     const stageTitle = document.createElement("strong"); const stageRule = document.createElement("span"); meta.append(stageTitle, stageRule);
@@ -1276,12 +1330,14 @@
       label.textContent = `${t("moves")}: ${history.length}${stage ? ` · ${text(slidingCampaignCopy.goal)}: ${text(stage.modeLabel)}` : ""}`;
     }
     function move(i) {
+      if (practice && i !== [14,15][practice.step]) return;
       if (!neighbours(i, 4, 4).includes(blank)) { announce(t("failed")); return; }
       if (stage?.anchorIndex !== null && stage?.anchorIndex !== undefined && (i === stage.anchorIndex || blank === stage.anchorIndex)) { announce(text(slidingCampaignCopy.noMove)); return; }
       if (stage?.noBacktrack && i === lastBlank) { announce(text(slidingCampaignCopy.noMove)); return; }
       history.push({ tiles: tiles.slice(), blank, lastBlank });
       [tiles[i], tiles[blank]] = [tiles[blank], tiles[i]];
       lastBlank = blank; blank = i; hintIndex = -1; render();
+      if (practice) { practice.step += 1; practice.notify(practice.step, [14,15][practice.step]); return; }
       if (solved()) {
         const solvedStatus = `${t("solved")} · ${t("moves")}: ${history.length}`;
         finish(true, solvedStatus);
@@ -1300,11 +1356,24 @@
       const target = neighbours(blank, 4, 4).find((i) => tiles[i] !== stage?.goal?.[i] && !(stage?.anchorIndex !== null && stage?.anchorIndex !== undefined && i === stage.anchorIndex) && !(stage?.noBacktrack && i === lastBlank));
       hintIndex = target ?? -1; render(); announce(stage ? `${t("hint")} · ${text(stage.modeLabel)}` : t("hint"));
     }
-    return { reset, hint, undo() { const previous = history.pop(); if (!previous) { hintIndex = -1; render(); announce(t("ready")); return; } tiles = previous.tiles; blank = previous.blank; lastBlank = previous.lastBlank; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${history.length}`); } };
+    function beginTutorial(notify) {
+      if (practice) return;
+      practice = {step:0,notify,paused:app.paused,saved:{stage,tiles,blank,lastBlank,history,hintIndex}};
+      app.paused=true; __wpNotifyMeasurement(); stage=null;
+      tiles=[1,2,3,4,5,6,7,8,9,10,11,12,13,0,14,15]; blank=13;lastBlank=-1;history=[];hintIndex=-1;
+      render();notify(0,14);
+    }
+    function endTutorial() {
+      if (!practice) return;
+      ({stage,tiles,blank,lastBlank,history,hintIndex}=practice.saved);
+      app.paused=practice.paused;practice=null;render();__wpNotifyMeasurement();
+    }
+    return { reset, hint, beginTutorial, endTutorial, undo() { const previous = history.pop(); if (!previous) { hintIndex = -1; render(); announce(t("ready")); return; } tiles = previous.tiles; blank = previous.blank; lastBlank = previous.lastBlank; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${history.length}`); } };
   }
 
   function buildCode() {
-    const stage = app.currentStage ? codeStageData(app.currentStage) : null;
+    let practice = null; const practiceTargets=[3,2,6,0,1,2,3,6];
+    let stage = app.currentStage ? codeStageData(app.currentStage) : null;
     let secret = [], guess = [], history = [], turn = 0, hintsUsed = 0;
     const colors = ["#ff6b6b", "#ffd166", "#6ee7b7", "#6ec8ff", "#b69cff", "#ff9ed2"];
     const panel = document.createElement("div"); panel.className = "logic-code-board";
@@ -1330,22 +1399,24 @@
         const b = makeButton("", "logic-code-slot"); const color = guess[i]; const anchored = stage?.anchorIndex === i;
         b.dataset.color = color ?? ""; if (anchored) b.classList.add("is-anchored");
         b.setAttribute("aria-label", anchored ? `${text(codeCampaignCopy.anchored)} · ${color + 1}` : color === undefined ? fillTemplate(text(codeSlotCopy.empty), { slot: i + 1 }) : fillTemplate(text(codeSlotCopy.filled), { slot: i + 1, color: color + 1 }));
-        b.addEventListener("click", () => { if (!anchored) { guess[i] = undefined; render(); } }); slots.append(b);
+        b.addEventListener("click", () => { if (!practice && !anchored) { guess[i] = undefined; render(); } }); slots.append(b);
       }
       palette.replaceChildren();
       colors.forEach((color, i) => {
         const b = makeButton("", "logic-color"); const sealed = stage?.blockedColor === i; b.dataset.color = i; b.style.background = color; b.setAttribute("aria-label", sealed ? `${text(codeCampaignCopy.sealed)} ${i + 1}` : `${t("codePick")} ${i + 1}`); b.disabled = sealed;
         if (sealed) b.classList.add("is-sealed");
-        b.addEventListener("click", () => { const index = nextOpenSlot(); if (index === undefined) return; if (!stage?.allowRepeats && guess.includes(i)) { announce(t("noRepeat")); return; } guess[index] = i; render(); }); palette.append(b);
+        b.addEventListener("click", () => { if (practice && i !== practiceTargets[practice.step]) return; const index = nextOpenSlot(); if (index === undefined) return; if (!stage?.allowRepeats && guess.includes(i)) { announce(t("noRepeat")); return; } guess[index] = i; render(); advancePractice(); }); palette.append(b);
       });
       historyBox.replaceChildren(...history.map((row) => { const el = document.createElement("div"); el.className = "logic-guess-row"; el.innerHTML = `<span>${row.guess.map((v) => `<i class="logic-code-slot" data-color="${v}"></i>`).join("")}</span><span class="logic-feedback">${row.exact} ● ${row.near} ○</span>`; return el; }));
     }
     function submitGuess() {
+      if (practice && practiceTargets[practice.step] !== 6) return;
       if (filledCount() !== 4) { announce(`${t("codePick")} · ${text(codeRemaining)}: ${4 - filledCount()}`); return; }
       const exact = guess.filter((value, index) => value === secret[index]).length; const counts = Array(6).fill(0);
       secret.forEach((value, index) => { if (guess[index] !== value) counts[value] += 1; });
       const near = guess.reduce((total, value, index) => total + (value !== secret[index] && counts[value] > 0 ? (counts[value] -= 1, 1) : 0), 0);
       history.push({ guess: guess.slice(), exact, near }); turn += 1;
+      if (practice) { guess=Array(4).fill(undefined);render();advancePractice();return; }
       if (exact === 4) { render(); announce(t("solved")); finish(true, `${fillTemplate(text(codeCampaignCopy.stageWin), { stage: stage?.stage || 1 })} ${t("correct")}: 4`); }
       else if (turn >= (stage?.maxTurns || 10)) { render(); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((value) => value + 1).join(" · ")}`); }
       else { guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); }
@@ -1358,22 +1429,42 @@
       if (hintsUsed >= stage.hintLimit) { announce(stage.hintLimit ? text(codeCampaignCopy.hints).replace("{hints}", "0") : text(codeCampaignCopy.noHints)); return; }
       const index = nextOpenSlot(); if (index === undefined) { announce(t("submit")); return; } guess[index] = secret[index]; hintsUsed += 1; render(); announce(`${t("hint")} · ${stageMetrics()}`);
     }
+    function advancePractice() { if (practice) { practice.step += 1; practice.notify(practice.step,practiceTargets[practice.step]); } }
+    function beginTutorial(notify) {
+      if(practice)return;
+      practice={step:0,notify,paused:app.paused,saved:{stage,secret,guess,history,turn,hintsUsed}};
+      app.paused=true;__wpNotifyMeasurement();stage=null;secret=[0,1,2,3];guess=[0,1,undefined,undefined];history=[];turn=0;hintsUsed=0;render();notify(0,3);
+    }
+    function endTutorial() {
+      if(!practice)return;
+      ({stage,secret,guess,history,turn,hintsUsed}=practice.saved);app.paused=practice.paused;practice=null;submit.disabled=false;render();__wpNotifyMeasurement();
+    }
     submit.addEventListener("click", submitGuess);
-    return { reset, hint, undo() { history.pop(); turn = history.length; guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); } };
+    return { reset, hint, beginTutorial, endTutorial, undo() { history.pop(); turn = history.length; guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); } };
   }
 
   function buildHanoi() {
+    let practice = null; const practiceTargets = [0,1,0,1,0,2,1,2];
     let count = 3, towers = [], selected = -1, moves = 0, history = []; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); const target = document.createElement("span"); target.className = "logic-live logic-hanoi-target"; target.setAttribute("aria-live", "polite"); toolbar.append(select, target); const board = document.createElement("div"); board.className = "logic-hanoi-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
     function minimumMoves() { return (2 ** count) - 1; }
     function legalDestination(index) { if (selected < 0 || selected === index) return false; const from = towers[selected]; const disk = from?.[from.length - 1]; const to = towers[index]; return Boolean(disk) && (!to.length || to[to.length - 1] > disk); }
-    function render(status = `${t("moves")}: ${moves}`) { target.textContent = fillTemplate(text(hanoiCopy.minimumMoves), { moves, minimum: minimumMoves() }); board.replaceChildren(); towers.forEach((tower, index) => { const peg = document.createElement("button"); peg.type = "button"; peg.className = `logic-tower ${selected === index ? "is-selected" : ""} ${legalDestination(index) ? "is-legal-destination" : ""}`; peg.setAttribute("aria-label", fillTemplate(text(hanoiCopy.pegLabel), { peg: index + 1 })); tower.forEach((disk) => { const diskEl = document.createElement("span"); diskEl.className = "logic-disk"; diskEl.style.width = `${30 + disk * (56 / count)}%`; diskEl.textContent = disk; peg.append(diskEl); }); peg.addEventListener("click", () => clickPeg(index)); board.append(peg); }); announce(status); }
-    function clickPeg(index) { if (selected < 0) { if (towers[index].length) { selected = index; render(t("selectTarget")); } else render(t("selectSource")); return; } if (selected === index) { selected = -1; render(t("selectSource")); return; } const from = towers[selected], to = towers[index]; const disk = from[from.length - 1]; if (disk && (!to.length || to[to.length - 1] > disk)) { history.push({ towers: towers.map((tower) => tower.slice()), moves }); from.pop(); to.push(disk); moves += 1; selected = -1; beep("board.move"); if (to.length === count && index === 2) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (to.length === count) render(fillTemplate(text(hanoiCopy.goalPeg), { peg: index + 1 })); else render(); } else { selected = -1; render(t("failed")); } }
+    function render(status = `${t("moves")}: ${moves}`) { target.textContent = fillTemplate(text(hanoiCopy.minimumMoves), { moves, minimum: minimumMoves() }); board.replaceChildren(); towers.forEach((tower, index) => { const peg = document.createElement("button"); peg.type = "button"; peg.className = `logic-tower ${selected === index ? "is-selected" : ""} ${legalDestination(index) ? "is-legal-destination" : ""}`; peg.setAttribute("aria-label", fillTemplate(text(hanoiCopy.pegLabel), { peg: index + 1 })); tower.forEach((disk) => { const diskEl = document.createElement("span"); diskEl.className = "logic-disk"; diskEl.style.width = `${30 + disk * (56 / count)}%`; diskEl.textContent = disk; peg.append(diskEl); }); peg.addEventListener("click", () => { if (practice && index !== practiceTargets[practice.step]) return; clickPeg(index); if (practice) { practice.step += 1; practice.notify(practice.step, practiceTargets[practice.step]); } }); board.append(peg); }); announce(status); }
+    function clickPeg(index) { if (selected < 0) { if (towers[index].length) { selected = index; render(t("selectTarget")); } else render(t("selectSource")); return; } if (selected === index) { selected = -1; render(t("selectSource")); return; } const from = towers[selected], to = towers[index]; const disk = from[from.length - 1]; if (disk && (!to.length || to[to.length - 1] > disk)) { history.push({ towers: towers.map((tower) => tower.slice()), moves }); from.pop(); to.push(disk); moves += 1; selected = -1; beep("board.move"); if (!practice && to.length === count && index === 2) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else if (to.length === count) render(fillTemplate(text(hanoiCopy.goalPeg), { peg: index + 1 })); else render(); } else { selected = -1; render(t("failed")); } }
     function reset() { count = select.value === "easy" ? 3 : select.value === "medium" ? 4 : 5; towers = [Array.from({ length: count }, (_, i) => count - i), [], []]; selected = -1; moves = 0; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render();
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() { const index = towers.findIndex((tower) => tower.length); selected = index; render(t("hint")); }
     function undo() { const previous = history.pop(); if (!previous) { selected = -1; render(t("ready")); return; } towers = previous.towers.map((tower) => tower.slice()); moves = previous.moves; selected = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(`${t("undo")} · ${t("moves")}: ${moves}`); if (previous) __wpReopenMeasurement(); }
-    select.addEventListener("change", reset); return { reset, hint, undo };
+    function beginTutorial(notify) {
+      if (practice) return;
+      practice={step:0,notify,paused:app.paused,saved:{count,towers,selected,moves,history}};
+      app.paused=true;__wpNotifyMeasurement();count=2;towers=[[2,1],[],[]];selected=-1;moves=0;history=[];select.disabled=true;render();notify(0,0);
+    }
+    function endTutorial() {
+      if (!practice) return;
+      ({count,towers,selected,moves,history}=practice.saved);app.paused=practice.paused;practice=null;select.disabled=false;render();__wpNotifyMeasurement();
+    }
+    select.addEventListener("change", reset); return { reset, hint, undo, beginTutorial, endTutorial };
   }
 
   function buildReversi() {
@@ -1488,7 +1579,7 @@
         status: cleared ? text(slidingCampaignCopy.cleared) : locked ? text(slidingCampaignCopy.locked) : fillTemplate(text(slidingCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details,
-        poster: "/assets/interface7-redrawn/sliding-15.webp",
+        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=b5f048e8dfd1feb0",
         locked,
         cleared,
         stage: data.stage,
@@ -1519,7 +1610,7 @@
         status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details: [text(data.arc.rule)],
-        poster: "/assets/code-breaker-cover-v2.webp",
+        poster: "/assets/code-breaker-cover-v2.webp?wp-media=b5f048e8dfd1feb0",
         locked,
         cleared,
       };

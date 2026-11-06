@@ -1,1 +1,1 @@
-(()=>{"use strict";window.AnimalColorLinkStageConfig=Object.freeze({create({count,stage}){return Object.freeze({gameId:"animal-color-link",count,stage,poster:"/assets/animal-color-link/cover-block-v1.png",background:"/assets/lobby-block-atmosphere.svg"})}})})();
+(()=>{"use strict";window.AnimalColorLinkStageConfig=Object.freeze({create({count,stage}){return Object.freeze({gameId:"animal-color-link",count,stage,poster:"/assets/animal-color-link/cover-block-v1.png.webp?wp-media=b5f048e8dfd1feb0",background:"/assets/lobby-block-atmosphere.svg"})}})})();

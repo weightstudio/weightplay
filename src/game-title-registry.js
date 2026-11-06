@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "cloudhold-voyager": {"__localizedExact":true,"en":"Cloudhold Voyager","zh-Hant":"雲艙領航","zh-Hans":"云舱领航","ja":"雲船の航海士","ko":"구름배 항해사","es":"Navegante de las Nubes","pt-BR":"Navegante das Nuvens","fr":"Capitaine des nuages","de":"Wolkenkapitän","it":"Navigante delle Nuvole","ru":"Капитан облаков","hi":"बादलों का नाविक","ar":"ربّان السحاب"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

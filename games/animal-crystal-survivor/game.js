@@ -1,1 +1,1 @@
-document.write('<script src="/games/animal-crystal-survivor/game-v31-base.js?v=20261103-entry-pilot-v51"><\/script>'),document.write('<script src="/games/animal-crystal-survivor/interface-7-compat.js?v=20261026-crystal-i9-26a7bf3237cc"><\/script>');
+document.write('<script src="/games/animal-crystal-survivor/game-v31-base.js?v=20261103-entry-pilot-v51&wp-media=b5f048e8dfd1feb0"><\/script>'),document.write('<script src="/games/animal-crystal-survivor/interface-7-compat.js?v=20261026-crystal-i9-26a7bf3237cc&wp-media=b5f048e8dfd1feb0"><\/script>');
