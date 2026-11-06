@@ -1,7 +1,7 @@
-import {COPY,LOCALES,getLocale,lobbyPath} from './copy.mjs?v=3&wp-media=a241ed22a01504bc';
-import {ACTIVITY_VERSION,freshRun,fire,tick,advance,STEP,safeBlocks} from './physics.mjs?v=3&wp-media=a241ed22a01504bc';
-import {makeStore,emptySave,SAVE_KEY,dailyStatus} from './store.mjs?v=3&wp-media=a241ed22a01504bc';
-import {rewardCopy,rewardStatus,payRewards} from './rewards.mjs?v=1&wp-media=a241ed22a01504bc';
+import {COPY,LOCALES,getLocale,lobbyPath} from './copy.mjs?v=3&wp-media=5f9e5575cc1bdbc6';
+import {ACTIVITY_VERSION,freshRun,fire,tick,advance,STEP,safeBlocks} from './physics.mjs?v=3&wp-media=5f9e5575cc1bdbc6';
+import {makeStore,emptySave,SAVE_KEY,dailyStatus} from './store.mjs?v=3&wp-media=5f9e5575cc1bdbc6';
+import {rewardCopy,rewardStatus,payRewards} from './rewards.mjs?v=1&wp-media=5f9e5575cc1bdbc6';
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),locale=getLocale(params.get('locale')||document.querySelector('meta[name="weightplay-activity-locale"]')?.content||'zh-Hant'),t=COPY[locale];
 const fmt=(s,values={})=>s.replace(/\{(\w+)\}/g,(_,k)=>values[k]??'');
 document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';document.title=t.title+' · WeightPlay';
@@ -76,7 +76,7 @@ $('back').onclick=leave;
 function failure(){saveError=true;show(t.saveError,t.loadError,t.reload,()=>location.reload(),t.back,()=>location.assign(lobbyPath(locale)),'error');}
 async function ensureScene(){
   if(scene)return scene;if(scenePromise)return scenePromise;
-  scenePromise=(async()=>{let timer;try{const {MeteorScene}=await Promise.race([import('./render.mjs?v=2&wp-media=a241ed22a01504bc'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('SCENE_TIMEOUT')),10000);})]);scene=new MeteorScene($('world'),$('arena'));return scene;}finally{clearTimeout(timer);}})();
+  scenePromise=(async()=>{let timer;try{const {MeteorScene}=await Promise.race([import('./render.mjs?v=2&wp-media=5f9e5575cc1bdbc6'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('SCENE_TIMEOUT')),10000);})]);scene=new MeteorScene($('world'),$('arena'));return scene;}finally{clearTimeout(timer);}})();
   try{return await scenePromise;}catch(error){scenePromise=null;throw error;}
 }
 async function enter(mode,resume=false){
