@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "gameId": "starpip-vanguard",
+  "method": "OpenAI built-in ImageGen plus authored real-time Three.js r180 meshes",
+  "generated": {
+    "cover": {
+      "source": "Library generation exec-64564dec-09e5-45ec-a072-e782bf6b6632",
+      "references": [
+        "WeightPlay canonical Fia/Taro/Orla/Nori block character sheets",
+        "approved block-world material and lighting references"
+      ],
+      "purpose": "square astronomical expedition poster",
+      "delivery": "cover.webp"
+    },
+    "object-atlas": {
+      "source": "Library generation exec-901535f2-3a6e-4d65-a994-960135f90114",
+      "purpose": "4x4 authored icon atlas: seven die actions and expedition equipment",
+      "delivery": "object-atlas.webp",
+      "grid": [
+        4,
+        4
+      ]
+    }
+  },
+  "geometry": {
+    "source": "Authored procedural cuboid character, mechanical guardian and astronomical terrace geometry in scene.mjs?wp-media=781b0b37b324f8a3",
+    "engine": "shared pinned Three.js r180; upstream MIT license retained in shared vendor directory",
+    "licenseClaim": "No third-party model or texture was imported"
+  },
+  "assets": [
+    {
+      "path": "cover.png.webp",
+      "bytes": 2695253,
+      "sha256": "d703e14e39d2c4de74423ca1473c30b513b55552cd6367f764e74a94f1f82443"
+    },
+    {
+      "path": "cover.webp",
+      "bytes": 386248,
+      "sha256": "99e9a107d09ca9666569eef3244f1ce6ca828a5fcbf7e28f65c4a52c461847b1"
+    },
+    {
+      "path": "object-atlas.png.webp",
+      "bytes": 1931839,
+      "sha256": "24ae836ede81d9cc65b10c1c847d34f77ea9fc350f1fe4981b54bc9da0d8ef62"
+    },
+    {
+      "path": "object-atlas.webp",
+      "bytes": 225760,
+      "sha256": "be63a9dcace1da32445df3f15c00ca8b39ffde7015716f3850dfef6de1c27ed4"
+    }
+  ]
+}

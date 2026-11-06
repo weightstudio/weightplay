@@ -1,6 +1,33 @@
 {
   "gameId": "skymeadow-keeper",
   "generator": "built-in image_gen",
+  "materialsV6": {
+    "source": "art/materials-v6.png.webp?wp-media=781b0b37b324f8a3",
+    "delivery": "art/materials-v6.webp?wp-media=781b0b37b324f8a3",
+    "generator": "built-in image_gen",
+    "generatedSource": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-1ed4c18e-a7a2-4f13-b151-4b83bfb2b934.png",
+    "prompt": "Use case: stylized-concept. Asset type: production seamless albedo material atlas for an original first-person 3D sky-meadow creature herding game, polished handcrafted block-animal fantasy style. Create ONE square 1024x1024 image divided into EXACTLY FOUR equal 512x512 square quadrants, no gutters, margins, frames, labels, lettering or objects. Each quadrant is its own flat orthographic seamless tile viewed straight-on, uniform diffuse lighting, NO directional cast shadows, no perspective, no vignette. TOP LEFT: soft meadow turf and fine compact soil, short woven grass blades, subtle tiny pebbles, light desaturated gray-beige neutral palette suitable for runtime green tinting, no big leaves. TOP RIGHT: premium hand-worked timber with fine continuous vertical grain, tasteful small knots and carved fibers, warm medium-light tan, NOT planks or boards or gaps. BOTTOM LEFT: weathered pale stone with beautiful broad mineral veins, small layered fissures and tactile chipped microdetails, desaturated light warm gray, no brick grid. BOTTOM RIGHT: restrained fine leather and woven fiber surface, light gray-beige, natural soft microtexture, no seams or logos. All four tiles: clear but restrained multi-scale detail, painterly AAA stylized material quality, texture-only full surface, midtones around 65-80 percent brightness, low contrast, avoid noisy photorealistic dirt and large dark cracks; preserve strong visual readability when wrapped over small beveled cuboid meshes. Four flat material swatches, not a rendered scene or a sheet of 3D samples.",
+    "layout": {
+      "columns": 2,
+      "rows": 2,
+      "order": [
+        "turf",
+        "timber",
+        "stone",
+        "leather"
+      ]
+    },
+    "sourceSha256": "a66d349c98423e95c1d61e1c5bd6ce2ae4f623f0079f2b1a58ec0aa2c64e54fb",
+    "deliverySha256": "4b0db5fc86d21a84f086d6d74bbd7126a97733d5fd0e626f47d847caa2ecf3da",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "deliveryBytes": 1739950,
+    "encoding": "Lossless WebP with exact decoded pixels and alpha, no resizing/cropping/repainting; export-lossless-webp.py receipt b9291d18-9556-4988-aace-3449041e66ba",
+    "integration": "Bounded shared entry loader decodes before ordinary or local-practice Battle. Per-scene owned sRGB texture, mirrored inset atlas UV, neutralized material tint and restrained derivative relief; timber/cloth masks preserve clean animal faces. Dispose with the scene.",
+    "inspection": "Source and actual Stage6 desktop,16 phone,26 short-landscape and Stage50 habitat at1280/844/390 inspected. Initial relief was visibly noisy and reduced before adoption. Five-size missing-item/missing-material native retry suite PASS29groups (5cab57e7-f129-40cc-81c7-21874fbbf58b). Five-cycle1280 GPU check PASS29groups (9f4b8c59-1e94-41e5-bb72-0722e8642d0c):4textures,9geometries,12materials,created5=disposed5. Software-render timings are not device FPS. Real native feeding/following recorded and replayed. Terrain texture improves surface depth, but block-heavy scenery and repeated silhouettes remain below the Art9 target; final Art/source binding pending."
+  },
   "poster": {
     "source": "assets/interface7-redrawn/skymeadow-keeper.png.webp?wp-media=781b0b37b324f8a3",
     "delivery": "art/poster.webp?wp-media=781b0b37b324f8a3",

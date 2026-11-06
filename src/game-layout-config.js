@@ -3,6 +3,7 @@
   'use strict';
   if (window.WeightPlayLayout) return;
   const games = Object.freeze({
+    "starpip-vanguard": Object.freeze({ bannerAds: false }),
     "skymeadow-keeper": Object.freeze({ bannerAds: false }),
     "gilded-gathering": Object.freeze({ bannerAds: false }),
     "glowpiece-gallery": Object.freeze({ bannerAds: false }),
