@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "dawnward-haven",
       "gilded-gathering",
       "rivetide-works",
       "sproutsum",
@@ -100,6 +101,17 @@ window.WONDER_LOBBY = {
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
+    {
+      id: "dawnward-haven", audience: "general", status: "planned", internalOnly: true,
+      ageLabel: "13+", href: "games/dawnward-haven/", internalTrial: "/games/dawnward-haven/?preview=1",
+      title: {__localizedExact:true,en:"Dawnward Haven","zh-Hant":"曦港拓居","zh-Hans":"曦港拓居",ja:"朝凪の開拓港",ko:"새벽빛 개척항",es:"Refugio del Alba","pt-BR":"Refúgio da Aurora",fr:"Le havre de l’aube",de:"Hafen der Morgenröte",it:"Il porto dell’alba",ru:"Гавань рассвета",hi:"भोर का बसेरा",ar:"ملاذ الفجر"},
+      description: {en:"Build a harbor settlement, assign residents and balance supplies before the weather turns.","zh-Hant":"建造港灣聚落、分派居民，在風雨來臨前安排糧食與建材。"},
+      type: {en:"Settlement strategy","zh-Hant":"聚落策略"},
+      ages: ["13","family"], skills: ["Planning","Resource Management"], categories: ["Strategy","Management"],
+      tags: ["Settlement Building","Worker Placement","Resource Management","Turn-Based Strategy"],
+      meta: {en:["Resident planning","Seasonal supplies","Permanent diamond themes"],"zh-Hant":["居民分工","季候供應","永久鑽石外觀"]},
+      art: {kind:"image",background:"games/dawnward-haven/assets/cover.webp",hideHero:true},
+    },
     {
       id: "gilded-gathering", audience: "general", status: "playable", previewVideo: "assets/previews/gilded-gathering-battle.webm",
       ageLabel: "13+",
