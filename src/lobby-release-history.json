@@ -533,6 +533,10 @@
       "date": "2026-11-05T01:46:58.332Z",
       "evidence": "canonical-public-catalog"
     },
+    "cloudhold-voyager": {
+      "date": "2026-11-06T23:18:22.452Z",
+      "evidence": "canonical-public-catalog"
+    },
     "code-breaker": {
       "date": "2026-09-07T20:17:00.869Z",
       "evidence": "canonical-public-catalog"
@@ -713,6 +717,10 @@
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
     },
+    "prismtide": {
+      "date": "2026-11-06T23:18:22.452Z",
+      "evidence": "canonical-public-catalog"
+    },
     "puppy-haven": {
       "date": "2026-10-21T16:15:31.180Z",
       "evidence": "canonical-public-catalog"
@@ -765,6 +773,10 @@
       "date": "2026-07-28T18:08:11+08:00",
       "evidence": "git:fd41cc15280bed4ce2ddaf1b5a9f49d48cc74aa0"
     },
+    "skymeadow-keeper": {
+      "date": "2026-11-06T23:18:22.452Z",
+      "evidence": "canonical-public-catalog"
+    },
     "sliding-15": {
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
@@ -807,6 +819,10 @@
     },
     "starcamp-glade": {
       "date": "2026-11-04T18:02:55.540Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "starpip-vanguard": {
+      "date": "2026-11-06T23:18:22.452Z",
       "evidence": "canonical-public-catalog"
     },
     "sudoku": {

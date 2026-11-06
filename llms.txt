@@ -59,6 +59,8 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Prismtide: https://weightplay.com/en/games/prismtide/ — First-person 3D light-routing adventure through a submerged city, with 60 stages and touch or keyboard controls.
+
 - Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/
 - Blade Orbit: https://weightplay.com/en/games/blade-orbit/
 - Canopy Compass Logic: https://weightplay.com/en/games/animal-canopy-compass/
