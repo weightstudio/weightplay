@@ -50,15 +50,40 @@
   "runtimeMeshesV2": {
     "source": "../scene.mjs?wp-media=781b0b37b324f8a3",
     "creation": "Original hand-authored procedural 3D geometry and joint animation; no downloaded model or texture pack",
-    "references": ["assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=781b0b37b324f8a3", "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=781b0b37b324f8a3", "art/poster.webp?wp-media=781b0b37b324f8a3"],
-    "families": ["six wildlife anatomies and facial parts", "Taro fortress garden shell", "Fia lightning glove and blue-gold wrist loom", "layered floating island strata", "six biome sky and foliage palettes", "habitats and camp", "berry/root/nectar plants", "gates, plates, bridges, wind anchors and windtree"],
+    "references": [
+      "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=781b0b37b324f8a3",
+      "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=781b0b37b324f8a3",
+      "art/poster.webp?wp-media=781b0b37b324f8a3"
+    ],
+    "families": [
+      "six wildlife anatomies and facial parts",
+      "Taro fortress garden shell",
+      "Fia lightning glove and blue-gold wrist loom",
+      "layered floating island strata",
+      "six biome sky and foliage palettes",
+      "habitats and camp",
+      "berry/root/nectar plants",
+      "gates, plates, bridges, wind anchors and windtree"
+    ],
     "technicalChecks": "Closed outward bevel mesh; all 60 scene graphs preserve simulation state; bounded main/shadow geometry; narrow/portrait/landscape tool projection; five CPU reload/dispose cycles and 24-effect cap. See scripts/test-skymeadow-keeper.mjs?wp-media=781b0b37b324f8a3.",
     "renderedInspection": "NOT_RUN: current CUA inventory reports local browser use disabled in Work settings. CPU checks do not establish Art approval, rendered frame time or visible play."
   },
   "runtimeMeshesV4": {
     "source": "../scene.mjs?wp-media=781b0b37b324f8a3",
     "creation": "Original procedural geometry, world-space arithmetic-noise material and sky-derived PMREM environment. No external model, texture download or generated raster added in V4.",
-    "changes": ["Six-triangle grass clusters and flowers outside bridge footprints", "Faceted soft cloud silhouettes and atmospheric distance", "Beveled near crowns with far-tree LOD", "Continuous ground/stone grain", "Hemispheric lighting and disposed sky reflection target", "Read-only anchor placement brackets based on the actual model checks", "Irregular eight-sided island strata and six biome flora", "Owned contact-shadow texture and animal greeting/blink animation", "GPU uniform grass sway", "Warm ground light pools at authored lamp radii and owned emissive lamp material", "Light-range route map, named follower status and delayed obstruction guidance"],
+    "changes": [
+      "Six-triangle grass clusters and flowers outside bridge footprints",
+      "Faceted soft cloud silhouettes and atmospheric distance",
+      "Beveled near crowns with far-tree LOD",
+      "Continuous ground/stone grain",
+      "Hemispheric lighting and disposed sky reflection target",
+      "Read-only anchor placement brackets based on the actual model checks",
+      "Irregular eight-sided island strata and six biome flora",
+      "Owned contact-shadow texture and animal greeting/blink animation",
+      "GPU uniform grass sway",
+      "Warm ground light pools at authored lamp radii and owned emissive lamp material",
+      "Light-range route map, named follower status and delayed obstruction guidance"
+    ],
     "renderedInspection": "PARTIAL: normal1–5; full native practice10/15/18/20/21/25/30/31/35/60; all six wildlife species, plates, two anchors, floating/vine bridges, lit fox escort and dense five-follower state inspected. Desktop,390portrait,844landscape including Arabic map/warning viewed. Explicit isolated-wallet engineering captures show applied silver cuff and gold habitat roofs. Asset-family final scoring and formal Art result remain pending; no AAA claim. Historical V2 NOT_RUN remains historical only.",
     "technicalChecks": "25 base CPU/model/source/HTTP groups pass, all60 legal zero-upgrade witnesses. Current HUD/lamp five-cycle1280 and two-cycle390/612/844/1920 engineering reruns each26groupsPASS with exact served-source checks;9geometries/12materials/3textures and balanced create/dispose. Earlier attempts failed strictly on a peer site-version-only change and were not reported passed. CPU base82,534/stress84,470 main+shadow triangles. See handoff for receipts; concurrent software timings are not physical-device FPS or Art approval."
   },
@@ -69,5 +94,20 @@
     "prompt": "Edit the attached 4 by 4 square game icon atlas. Preserve the exact sixteen icons, their order, block-animal aesthetic and arrangement. Correct the defective background: REMOVE ALL rainbow noise, coloured halos, green/yellow/red fringe pixels, random texture and shadows outside the icons. Deliver a perfectly clean fully transparent RGBA background, with crisp antialiased edges only. Each icon must fit wholly inside its own equal square cell with a clear transparent 12 percent margin on all sides; no icon or effect may cross a cell border. No glow, no scattered particles, no cast shadow, no text, no grid lines. Keep the cute miniature voxel forms, readable silhouettes, and rich material details. Row 1 berries, carrot-like roots, nectar jar, dew crystal; row 2 vine seed, feather, blue-gold wrist cuff, wind anchor; row 3 rabbit, turtle, bird, deer; row 4 otter, purple fox, habitat shelter, star wrist cuff. This is a production spritesheet, perfectly aligned cell centers, transparent background only.",
     "delivery": "items.webp",
     "inspection": "Generated source inspected. Numeric alpha samples show coloured background pixels at alpha0–1; no >100-alpha pixels at vertical seams. Actual resource row, shop cards and Help map crops inspected in desktop/phone/short-landscape including RTL; no visible cell bleed in those observations. Final per-asset Art scoring remains pending."
+  },
+  "runtimeMeshesV7": {
+    "source": "../scene.mjs?wp-media=781b0b37b324f8a3",
+    "sourceSha256": "c67ca92cc8618e150a17e9270b23f0335057509d057282061a3265dc62f41bfd",
+    "creation": "Original authored procedural meshes and existing generated material atlas; no new external model, raster or rendering dependency.",
+    "changes": [
+      "Thicker interlocking stepped crowns and chamfered nearby canopy volumes",
+      "Outward-only tapered perimeter faces, preserving exact top edges and collisions",
+      "Continuous world-space path borders and denser biome planting",
+      "Pitched habitat roof tiles, front-facing recipe signs and varied distant silhouettes",
+      "Smaller first-person cuff with chamfered painted housing",
+      "Resident camera clearance with natural pause and resume"
+    ],
+    "renderedInspection": "Actual fresh practice1 paid feed, escort, housing and manual2dew tree restoration through natural Result; native screenshots viewed at390/844/1280, all six biomes1/6/11/16/21/26 and dense60. No game errors. Existing source-unaffected ordinary1-5, all five-stage checkpoints and UI evidence retained. Art still below9 and AAA requirement unfulfilled; no release approval.",
+    "technicalChecks": "29 base groups PASS3ad71638-9101-491f-9af1-1d8421df141e including all60 zero-upgrade witnesses. CPUmax85,400 base and87,336 with24effects+2anchors. Five1280 GPU cycles PASS800c453b-4c6e-40e4-bb2a-7eab16b0cc04,4textures/11geometries/12materials,5created=5disposed,21visible calls in first scene. Concurrent software timings median50-100ms; not physical-device FPS. SSAO pilot removed because its cost outweighed the observed gain."
   }
 }
