@@ -1,0 +1,4 @@
+import {ID,STAGES} from './campaign.mjs?wp-media=bd681b90e84172d9';
+import {STAGE_NAMES} from './i18n.mjs?wp-media=bd681b90e84172d9';
+import {unlocked} from './model.mjs?wp-media=bd681b90e84172d9';
+export function stageConfig({t,locale,save,practice=false}){return{gameId:ID,count:STAGES.length,poster:'/games/'+ID+'/art/cover.webp?wp-media=bd681b90e84172d9',background:'/assets/lobby-block-atmosphere.svg',stage(index){const s=STAGES[index];return{id:s.id,kicker:t('stage',{n:s.id}),title:STAGE_NAMES[locale][index],subtitle:t('chapter',{n:s.chapter}),summary:t('room',{n:1,total:s.rooms}),details:[t('keepPhase'),t('teamBody')],status:save.cleared.includes(s.id)?t('cleared'):s.id<=unlocked(save)||practice?t('ready'):t('locked'),locked:!practice&&s.id>unlocked(save),cleared:save.cleared.includes(s.id)};}};}
