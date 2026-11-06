@@ -103,7 +103,7 @@ body:has(#main[hidden])>
 #confirmation #confirmNo:focus-visible{outline:3px solid #fff1ba;outline-offset:3px}
 
 /* Owned Chess art stays behind opaque controls; status never relies on dimming. */
-#stages{background-color:#17243a;background-image:linear-gradient(#17243aea,#17243ae8),url('../../assets/chess-cover-v1.webp?wp-media=bb72a7777a2deab8');background-size:cover;background-position:center 38%}
+#stages{background-color:#17243a;background-image:linear-gradient(#17243aea,#17243ae8),url('../../assets/chess-cover-v1.webp?wp-media=1cfa8fa23bc84100');background-size:cover;background-position:center 38%}
 #stages>header,#stages #matchModes{background:#17243aeb}
 #stages #stageReserve{background:#17243a}
 #stageList .stage-card{background:#102d37f5}
@@ -129,7 +129,7 @@ body:has(#main[hidden])>
 /* One responsive logical envelope: 390×480 minimum, separate physical reserve. */
 #stages{display:block;inset:auto;margin:0;max-width:none;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px)}
 #stageCanvas{position:absolute;left:0;top:0;transform-origin:0 0;display:grid;grid-template-rows:88px minmax(0,1fr) 56px;overflow:hidden}
-#stageCanvas{background-image:linear-gradient(#17243aea,#17243ae8),url('../../assets/chess-cover-v1.webp?wp-media=bb72a7777a2deab8');background-size:cover;background-position:center 38%}
+#stageCanvas{background-image:linear-gradient(#17243aea,#17243ae8),url('../../assets/chess-cover-v1.webp?wp-media=1cfa8fa23bc84100');background-size:cover;background-position:center 38%}
 #stageCanvas>.wp-shell-header-layout{width:100%!important;max-width:none!important;height:88px!important;min-height:88px!important;padding:0 12px!important;grid-template-rows:48px 32px!important}
 #stageCanvas>.wp-shell-header-layout #stageTitle{grid-column:1/-1!important;grid-row:2!important;font-size:20px!important}
 #stageWorkspace{position:relative;min-height:0;overflow:hidden}

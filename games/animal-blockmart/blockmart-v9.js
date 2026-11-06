@@ -1,8 +1,8 @@
-import {panelElement,reconcilePanel} from './panel-view.js?v=15&wp-media=bb72a7777a2deab8';
-import {REWARD_TRACKS,normalizeRewards,rewardOffer,claimReward,normalizeOperatingFlow,netProfitPerMinute,decorationTraffic} from './rewards-profit.js?v=15&wp-media=bb72a7777a2deab8';
-import {canClaimOwner,takeNavigationHandoff,leaveNavigationHandoff} from './ownership.mjs?v=17&wp-media=bb72a7777a2deab8';
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=bb72a7777a2deab8';
-import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,visitorCapacity,visitorRenderLimit,shopDemandMultiplier,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15&wp-media=bb72a7777a2deab8';
+import {panelElement,reconcilePanel} from './panel-view.js?v=15&wp-media=1cfa8fa23bc84100';
+import {REWARD_TRACKS,normalizeRewards,rewardOffer,claimReward,normalizeOperatingFlow,netProfitPerMinute,decorationTraffic} from './rewards-profit.js?v=15&wp-media=1cfa8fa23bc84100';
+import {canClaimOwner,takeNavigationHandoff,leaveNavigationHandoff} from './ownership.mjs?v=17&wp-media=1cfa8fa23bc84100';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=1cfa8fa23bc84100';
+import {liveElapsedWindow,simulationSteps,migrateEmployees,hireStoreEmployee,changeEmployeeRole,employeeCheckoutSeconds,employeeRestockSeconds,migrateBusinessUpgrades,trainedEmployee,businessUpgradeCost,purchaseBusinessUpgrade,purchaseExpansion,EXPANSIONS,normalizeBusinessPerformance,recordBusinessSale,businessPerformance,visitorCapacity,visitorRenderLimit,shopDemandMultiplier,EMPLOYEE_HIRE_COST,EMPLOYEE_RESTOCK_BATCH} from './economy.js?v=15&wp-media=1cfa8fa23bc84100';
 import {
   GRID_ENTRANCES, baseFootprint, footprintSize, occupiedTiles, footprintConflict,
   serviceVector, serviceFacingTarget, queueTile, clampPopularity, popularityAfterWait,
@@ -10,7 +10,7 @@ import {
   ACHIEVEMENT_CATALOG,
   legacyAchievementProgress, normalizeAchievementState, mergeAchievementStates,
   achievementProgress, awardCompletedAchievements, recordAchievementEvent
-} from './blockmart-v9-systems.js?v=12&wp-media=bb72a7777a2deab8';
+} from './blockmart-v9-systems.js?v=12&wp-media=1cfa8fa23bc84100';
 
 const PRODUCT_DEFS = {
   water: { label: 'waterProduct', cost: 8, price: 12, demand: 1.45, color: 0x48b6cf, display: 'water' },
@@ -220,7 +220,7 @@ export function installBlockmartV9(ctx) {
   function loadPackageAtlas(){
     if(packageAtlasLoading)return packageAtlas;
     packageAtlasLoading=true;
-    const texture=new THREE.TextureLoader().load(new URL('./assets/package-labels-v13.webp?wp-media=bb72a7777a2deab8',import.meta.url).href,loaded=>{
+    const texture=new THREE.TextureLoader().load(new URL('./assets/package-labels-v13.webp?wp-media=1cfa8fa23bc84100',import.meta.url).href,loaded=>{
       if(disposed){loaded.dispose();packageAtlas=null;packageAtlasLoading=false;return;}
       packageAtlasLoading=false;packageAtlas=loaded;
       ctx.scene.userData.packageAtlas={status:'ready',width:loaded.image.width,height:loaded.image.height,regions:10};

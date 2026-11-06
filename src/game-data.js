@@ -1,22 +1,22 @@
 window.WONDER_DATA = {
   assets: {
     images: {
-      bg: "assets/wonder-crash-cover-block-v1.webp?wp-media=bb72a7777a2deab8",
-      hero: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=bb72a7777a2deab8",
-      wall: "assets/wonder-prop-wall-block-v1.png.webp?wp-media=bb72a7777a2deab8",
-      eraser: "assets/wonder-prop-eraser-block-v1.png.webp?wp-media=bb72a7777a2deab8",
-      pencil: "assets/wonder-prop-pencil-block-v1.png.webp?wp-media=bb72a7777a2deab8",
-      ruler: "assets/wonder-prop-ruler-block-v1.png.webp?wp-media=bb72a7777a2deab8"
+      bg: "assets/wonder-crash-cover-block-v1.webp?wp-media=1cfa8fa23bc84100",
+      hero: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=1cfa8fa23bc84100",
+      wall: "assets/wonder-prop-wall-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
+      eraser: "assets/wonder-prop-eraser-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
+      pencil: "assets/wonder-prop-pencil-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
+      ruler: "assets/wonder-prop-ruler-block-v1.png.webp?wp-media=1cfa8fa23bc84100"
     },
     enemies: [
-"assets/wonder-beast-boar-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-hyena-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-rhino-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-buffalo-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-hawk-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-bear-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-tiger-block-v1.webp?wp-media=bb72a7777a2deab8",
-"assets/wonder-beast-crocodile-block-v1.webp?wp-media=bb72a7777a2deab8"
+"assets/wonder-beast-boar-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-hyena-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-rhino-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-buffalo-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-hawk-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-bear-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-tiger-block-v1.webp?wp-media=1cfa8fa23bc84100",
+"assets/wonder-beast-crocodile-block-v1.webp?wp-media=1cfa8fa23bc84100"
     ]
   },
   enemyTypes: [
@@ -121,7 +121,7 @@ window.WONDER_DATA = {
 {
       id: "eraser",
       name: "橡皮擦",
-      icon: "assets/wonder-prop-eraser-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-eraser-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       projectile: "eraser",
       cooldown: 1.35,
       damageScale: 1,
@@ -131,7 +131,7 @@ window.WONDER_DATA = {
 {
       id: "pencil",
       name: "鉛筆",
-      icon: "assets/wonder-prop-pencil-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-pencil-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       projectile: "pencil",
       cooldown: 1.05,
       damageScale: 0.78,
@@ -141,7 +141,7 @@ window.WONDER_DATA = {
 {
       id: "ruler",
       name: "尺",
-      icon: "assets/wonder-prop-ruler-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-ruler-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       projectile: "ruler",
       cooldown: 1.75,
       damageScale: 1.65,
@@ -154,7 +154,7 @@ window.WONDER_DATA = {
       id: "damage",
       name: "銳利橡皮擦",
       desc: "武器傷害 +1",
-      icon: "assets/wonder-prop-damage-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-damage-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         projectileDamage: 1
       }
@@ -163,7 +163,7 @@ window.WONDER_DATA = {
       id: "cooldown",
       name: "快速出手",
       desc: "武器冷卻 -15%",
-      icon: "assets/wonder-prop-cooldown-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-cooldown-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         cooldownMultiplier: 0.85,
         minCooldownMultiplier: 0.55
@@ -173,7 +173,7 @@ window.WONDER_DATA = {
       id: "double",
       name: "雙重投擲",
       desc: "每次多丟 1 個",
-      icon: "assets/wonder-prop-double-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-double-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         projectileCount: 1
       }
@@ -182,7 +182,7 @@ window.WONDER_DATA = {
       id: "sideShot",
       name: "左右斜射",
       desc: "正面攻擊時額外往左右各丟 1 個",
-      icon: "assets/wonder-prop-double-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-double-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         sideShots: 1
       }
@@ -191,7 +191,7 @@ window.WONDER_DATA = {
       id: "burst",
       name: "連續投擲",
       desc: "每次出手追加 1 波連射",
-      icon: "assets/wonder-prop-cooldown-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-cooldown-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         burstCount: 1
       }
@@ -200,7 +200,7 @@ window.WONDER_DATA = {
       id: "size",
       name: "大型文具",
       desc: "武器變大 20%",
-      icon: "assets/wonder-prop-size-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-size-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         projectileSizeMultiplier: 0.2,
         maxProjectileSizeMultiplier: 1.8
@@ -210,7 +210,7 @@ window.WONDER_DATA = {
       id: "wallHp",
       name: "修補城牆",
       desc: "立即回復 25 點城牆血量",
-      icon: "assets/wonder-prop-repair-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-repair-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         wallHp: 25,
         maxWallHp: 100
@@ -220,7 +220,7 @@ window.WONDER_DATA = {
       id: "coinMultiplier",
       name: "金幣磁鐵",
       desc: "之後擊敗野獸金幣 +30%",
-      icon: "assets/wonder-prop-coin-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-coin-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         coinMultiplier: 0.3
       }
@@ -229,7 +229,7 @@ window.WONDER_DATA = {
       id: "pierce",
       name: "穿透投擲",
       desc: "武器可多穿透 1 隻敵人",
-      icon: "assets/wonder-prop-double-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-double-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         pierceCount: 1
       }
@@ -238,7 +238,7 @@ window.WONDER_DATA = {
       id: "explode",
       name: "爆裂文具",
       desc: "命中時對附近敵人造成濺射傷害",
-      icon: "assets/wonder-prop-size-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-size-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         splashDamage: 0.35,
         splashRadius: 145
@@ -248,7 +248,7 @@ window.WONDER_DATA = {
       id: "lifeSteal",
       name: "守城回復",
       desc: "擊敗敵人時回復 3 點牆血量",
-      icon: "assets/wonder-prop-repair-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-repair-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         killHeal: 3
       }
@@ -257,7 +257,7 @@ window.WONDER_DATA = {
       id: "thunder",
       name: "雷霆連鎖",
       desc: "每 4 次命中引發一次閃電鏈",
-      icon: "assets/wonder-prop-crit-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-crit-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         chainEvery: 4,
         chainDamage: 0.6
@@ -267,7 +267,7 @@ window.WONDER_DATA = {
       id: "barrier",
       name: "城牆護符",
       desc: "獲得 1 層城牆護盾並回復 8 點",
-      icon: "assets/wonder-prop-wall-block-v1.png.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/wonder-prop-wall-block-v1.png.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         wallShield: 1,
         wallHp: 8,
@@ -278,7 +278,7 @@ window.WONDER_DATA = {
       id: "fury",
       name: "獅心狂熱",
       desc: "爆擊率 +8%，獅吼冷卻 -1 秒",
-      icon: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=bb72a7777a2deab8",
+      icon: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=1cfa8fa23bc84100",
       effect: {
         critChance: 0.08,
         roarCooldownReduction: 1

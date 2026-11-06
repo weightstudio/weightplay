@@ -1,4 +1,4 @@
-import {LOCALES} from './life-locales.mjs?wp-media=bb72a7777a2deab8';
+import {LOCALES} from './life-locales.mjs?wp-media=1cfa8fa23bc84100';
 const UI_ROWS={
   "environment": "Living environment|生活環境|生活环境|暮らしの環境|생활 환경|Entorno de vida|Condições de vida|Cadre de vie|Lebensumfeld|Ambiente di vita|Условия жизни|रहने का परिवेश|بيئة المعيشة",
   "environmentButton": "Environment & sources|生活環境與資料|生活环境与资料|暮らし・資料|환경과 자료|Entorno y fuentes|Ambiente e fontes|Cadre et sources|Umfeld und Quellen|Ambiente e fonti|Среда и источники|परिवेश व स्रोत|البيئة والمصادر",

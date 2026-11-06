@@ -57,7 +57,7 @@
   PROFILES["animal-blockmart"] = ["game.start", "reward.coin", "ui.click"]
   PROFILES["animal-burrow-builder"] = ["board.move", "board.undo", "feedback.error", "feedback.hint", "game.start", "result.win", "reward.collect", "shop.purchase", "ui.click"];
   /* AUDIO_PROFILES_END */
-  const scriptURL = new URL(document.currentScript?.src || 'src/weightplay-audio.js?wp-media=bb72a7777a2deab8', document.baseURI);
+  const scriptURL = new URL(document.currentScript?.src || 'src/weightplay-audio.js?wp-media=1cfa8fa23bc84100', document.baseURI);
   const siteRoot = new URL('../', scriptURL);
   const cache = new Map();
   const requests = [];

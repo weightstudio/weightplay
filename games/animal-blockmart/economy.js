@@ -1,4 +1,4 @@
-import {recordStoreTransaction} from './rewards-profit.js?v=15&wp-media=bb72a7777a2deab8';
+import {recordStoreTransaction} from './rewards-profit.js?v=15&wp-media=1cfa8fa23bc84100';
 export const BASE_STOCK_CAPACITY=40;
 export const COOLER_STOCK_BONUS=30;
 export const BASE_BROWSE_SECONDS=.27;
