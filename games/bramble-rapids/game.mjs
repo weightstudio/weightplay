@@ -1,10 +1,10 @@
-import {STAGES,BOARDS,getStage,featureX,gateIsOpen,gateSecondsToChange,tidePhase,tideLabel} from './content.mjs?wp-media=11c5087d8fd3a80f';
-import {createRace,startRace,pauseRace,resumeRace,stepRace,drainEvents} from './simulation.mjs?wp-media=11c5087d8fd3a80f';
-import {RapidsRenderer} from './render.mjs?wp-media=11c5087d8fd3a80f';
-import {createProgressStore} from './save.mjs?wp-media=11c5087d8fd3a80f';
-import {resolveLocale,t,stageName,stageLesson,guide,renderRelatedGames,renderGameplayTags} from './i18n.mjs?wp-media=11c5087d8fd3a80f';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=11c5087d8fd3a80f';
-import {makeStageConfig} from './stage-config.mjs?wp-media=11c5087d8fd3a80f';
+import {STAGES,BOARDS,getStage,featureX,gateIsOpen,gateSecondsToChange,tidePhase,tideLabel} from './content.mjs?wp-media=d6c9a617ca516ea3';
+import {createRace,startRace,pauseRace,resumeRace,stepRace,drainEvents} from './simulation.mjs?wp-media=d6c9a617ca516ea3';
+import {RapidsRenderer} from './render.mjs?wp-media=d6c9a617ca516ea3';
+import {createProgressStore} from './save.mjs?wp-media=d6c9a617ca516ea3';
+import {resolveLocale,t,stageName,stageLesson,guide,renderRelatedGames,renderGameplayTags} from './i18n.mjs?wp-media=d6c9a617ca516ea3';
+import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=d6c9a617ca516ea3';
+import {makeStageConfig} from './stage-config.mjs?wp-media=d6c9a617ca516ea3';
 const $=id=>document.getElementById(id), W=window, SKU='bramble-rapids:coral-night';
 const store=createProgressStore();store.load();
 let locale=resolveLocale(),screen='main',tab='stages',selected=store.persistedSnapshot.unlocked,frame,rail,joystick,renderer,race,modal=null,previousFocus=null,practice=false,practiceRun=false,raf=0,lastFrame=0,round=0,resultSaved=false,busy=false,feedbackUntil=0,shopFeedbackKey=null;
@@ -197,7 +197,7 @@ function selectTab(name,focus=false){
 }
 function stagePresentation(index){
   const s=STAGES[index],p=store.snapshot,durable=store.persistedSnapshot,r=durable.records[s.id],pending=!r?.cleared&&p.records[s.id]?.cleared,locked=!practice&&s.id>durable.unlocked;
-  return {id:s.id,kicker:`${tr('chapter')} ${s.chapter}`,title:stageName(s.id,locale),subtitle:`${tr('stage')} ${s.id}`,locked,cleared:!!r?.cleared,status:locked?tr('locked'):pending?tr('notSaved'):r?.cleared?`${tr('stars')} ${r.stars}/3`:tr('ready'),rewardState:r?.cleared?'collected':'not-collected',summary:stageLesson(s,locale),details:stageDetails(s),poster:'/games/bramble-rapids/assets/scenes.webp?wp-media=11c5087d8fd3a80f',posterPosition:s.chapter===1?'center top':'center bottom'};
+  return {id:s.id,kicker:`${tr('chapter')} ${s.chapter}`,title:stageName(s.id,locale),subtitle:`${tr('stage')} ${s.id}`,locked,cleared:!!r?.cleared,status:locked?tr('locked'):pending?tr('notSaved'):r?.cleared?`${tr('stars')} ${r.stars}/3`:tr('ready'),rewardState:r?.cleared?'collected':'not-collected',summary:stageLesson(s,locale),details:stageDetails(s),poster:'/games/bramble-rapids/assets/scenes.webp?wp-media=d6c9a617ca516ea3',posterPosition:s.chapter===1?'center top':'center bottom'};
 }
 function conditionDetails(c){
   const details=[];

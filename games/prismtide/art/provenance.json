@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "path": "cover.webp",
+      "source": "cover.png.webp",
+      "generationSource": "/Users/kuoyu/.codex/generated_images/01a1b0ee-34dd-7083-8d80-e349a3c7e055/exec-da65332c-1892-44f8-908e-c3214b3420b6.png",
+      "generator": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: original WeightPlay square 1:1 lobby poster for Prismtide, a first-person spatial puzzle adventure. Show Bubble Fin Nori, the brown block-built otter explorer with square golden water-glass cyan goggles, ivory box muzzle, teal coat and coral charm, actively placing a portable copper-and-cyan cubic light relay onto an engraved stone socket. Nori is full body, dominant foreground, an expressive focused smile, literal cuboid limbs and stepped silhouette as in the otter reference. One clear bright cyan beam runs from a wall emitter into the relay then diagonally to a large matching square receiver; an ancient stone bridge is rising toward a luminous arch beyond, making the mechanic immediately readable. Environment: a magnificent dry chamber inside submerged ancient ruins, monumental sea-green carved stone pillars, large windows revealing a turquoise ocean with tiny distant fish silhouettes, coral-coloured block flora at the edges, brass mechanisms, tessellated stone floors. Hero and gameplay device in central 80% safe area. Composition has confident diagonal movement and foreground/middle/background depth with generous breathing space. Premium original animated-film 3D game render, beveled planar blocks, soft luminous volumetric daylight falling through water, jewel turquoise palette, warm amber copper highlights and coral accents, tactile premium materials, rich but clean details, bright welcoming mystery. Use image1 only for Nori character identity; use other references only for cinematic lighting quality and block construction, not their world. Mandatory genuine square complete composition; no crop/padding, no text, title, numbers, UI, badge, logos, watermark, weapons, combat, floating islands, photographic fur, round plush anatomy or third-party game identity.",
+      "rights": "Original AI-generated game artwork; original WeightPlay cast references",
+      "status": "SOURCE_INSPECTED_RENDERED_GATE_PENDING"
+    },
+    {
+      "path": "materials.webp",
+      "generationSource": "/Users/kuoyu/.codex/generated_images/01a1b0ee-34dd-7083-8d80-e349a3c7e055/exec-c36bafc3-be64-45e1-aee8-62adca8e2f9d.png",
+      "generator": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: tileable game-ready albedo texture for actual 3D architecture of Prismtide, original underwater ancient mechanical ruins. A single flat orthographic square surface of luxurious sea-green patinated sandstone with subtle turquoise mineral streaks, warm muted golden pinprick deposits, fine nonphotographic sculpted grain, a few shallow elegant angular geometric carving fragments. Premium stylized 3D animated-film game material, restrained low contrast so objects and light beams remain readable. Medium sea-green teal dominant, locally lighter worn planar edges and small pale seafoam flecks. Uniform diffuse illumination only; no cast shadows, no perspective, no objects, no brick grid, no seams, no text or letters, no UI, no border, no logos. Exact square texture fills every edge, visually seamless left/right and top/bottom. No large shapes dominating the pattern, no photorealism, no heavy mottling. Intended to repeat on beveled stone blocks and floors of a luminous submerged cathedral.",
+      "rights": "Original AI-generated texture",
+      "status": "SOURCE_INSPECTED_RENDERED_GATE_PENDING"
+    },
+    {
+      "path": "collection.webp",
+      "generationSource": "/Users/kuoyu/.codex/generated_images/01a1b0ee-34dd-7083-8d80-e349a3c7e055/exec-dfc9c73f-1ee6-495b-b54f-a66c7015d556.png",
+      "generator": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: an original premium game inventory atlas of twelve collectible stone-and-brass memory seals for Prismtide. A clean exact 4 columns by 3 rows contact sheet, each cell square and identically sized, no gaps or drawn grid lines. Each cell contains one complete centered square or stepped medallion, with generous internal padding and a dark deep-teal uniform background. Consistent frontal orthographic view with slight relief depth, crisp beveled block geometry, warm antique brass rims, turquoise carved stone, luminous cyan or coral glass details, soft warm top-left studio lighting and subtle contact shadow. Reading order motifs: 1 a cyan lighthouse beam; 2 a square pressure plate; 3 two intertwined cyan and amber crystals; 4 an angular shutter wheel; 5 a rising stepped bridge; 6 a glowing city-heart engine; 7 two overlapping echo silhouettes made of square lines; 8 a heavy copper cube; 9 a tidal wave lever; 10 a glowing window with three beams; 11 an arched dome ring; 12 a radiant geometric dawn above a tiny block city. The motifs must be distinct and recognizable at 96 pixel cell size, ornate but not busy, coherent premium stylized 3D animated-film material language. All twelve motifs fit fully within their cells. Absolutely no text, digits, captions, UI, badges, logos, watermark, photorealism, blur, or cropped objects. The complete atlas image has a 4:3 landscape aspect ratio, containing exactly four columns and three rows of square cells.",
+      "rights": "Original AI-generated collectible relief atlas",
+      "status": "SOURCE_INSPECTED_RENDERED_GATE_PENDING"
+    }
+  ]
+}
