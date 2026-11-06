@@ -1,5 +1,5 @@
 // Canonical locale-owned copy for the Habitat Mahjong Text Growth 1.4.0 pass.
-// Gameplay facts are checked against game.js?wp-media=bd681b90e84172d9 and the shipped board definitions.
+// Gameplay facts are checked against game.js?wp-media=781b0b37b324f8a3 and the shipped board definitions.
 export const HABITAT_MAHJONG_TEXT_140 = {
   en: {
     intro: "Match identical animal or habitat tiles only when no tile covers them and at least one side is open. Across 30 boards, open diamond-key seals, uncover starred families, and follow A/B patrol routes; six chapter finales combine these rules without a countdown.",

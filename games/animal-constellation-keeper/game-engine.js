@@ -156,7 +156,7 @@
       details: detail,
       locked,
       cleared,
-      poster: "/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png.webp?wp-media=bd681b90e84172d9",
+      poster: "/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png.webp?wp-media=781b0b37b324f8a3",
       posterPosition: "center",
     };
   };
@@ -178,7 +178,7 @@
         selected: stageSelectionIndex,
         config: {
           count: practiceRequested?60:maps.length,
-          poster: "/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png.webp?wp-media=bd681b90e84172d9",
+          poster: "/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png.webp?wp-media=781b0b37b324f8a3",
           stage: stageRecord,
         },
         onSelect: (index) => { stageSelectionIndex = index; updateStageStats(); },
@@ -398,7 +398,7 @@
   if(practiceRequested)void activatePractice().catch(()=>{ $('battleStatus').textContent='Local practice unavailable'; });
   async function activatePractice(){
     const ready=await new Promise(resolve=>{let done=false;const timer=setTimeout(()=>finish(false),25000),observer=new MutationObserver(check);function finish(v){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(v)}function check(){const d=document.documentElement.dataset;if($('loadingPanel').hidden&&(d.wpGameEntryLoaderInstalled!=='true'||d.wpGameEntryLoaderActive!=='true'))finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false)}observer.observe(document.documentElement,{attributes:true,attributeFilter:['hidden','class','data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check()});
-    if(!ready)return;const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs?wp-media=bd681b90e84172d9'),import('./mirror-observatory-candidate.mjs?v=20261027-mirror1&wp-media=bd681b90e84172d9'),import('./mirror-observatory-locales.mjs?v=20261028-mirror2&wp-media=bd681b90e84172d9')]);if(!await LocalPractice.ready)return;
+    if(!ready)return;const [{LocalPractice},chapter,locale]=await Promise.all([import('../../src/game-local-practice.mjs?wp-media=781b0b37b324f8a3'),import('./mirror-observatory-candidate.mjs?v=20261027-mirror1&wp-media=781b0b37b324f8a3'),import('./mirror-observatory-locales.mjs?v=20261028-mirror2&wp-media=781b0b37b324f8a3')]);if(!await LocalPractice.ready)return;
     const data=chapter.createMirrorMaps();if(data.length!==30||data.some((m,i)=>m.number!==31+i))return;practiceAdapter=LocalPractice;mirrorAssess=chapter.assess;mirrorCopy=locale.MIRROR_COPY;mirrorShort=locale.MIRROR_SHORT;mirrorGuide=locale.MIRROR_GUIDE;mirrorRelations=locale.MIRROR_RELATIONS;originalCompleted=state.completed;
     const style=document.createElement('style');style.textContent='body[data-wp-constellation-mirror] .battle-actions{grid-template-columns:repeat(3,minmax(0,1fr));position:relative;z-index:3}body[data-wp-constellation-mirror] .battle-actions button{min-width:0}body[data-wp-constellation-mirror] #ckMirrorLens{display:inline-flex;gap:4px;align-items:center;justify-content:center}body[data-wp-constellation-mirror] #ckMirrorLens[hidden]{display:none}body[data-wp-constellation-mirror] .ck-lens-eliminated{opacity:.35}body[data-wp-constellation-mirror] .battle-info-field:has(#mapName){display:none}@media (orientation:landscape) and (max-height:590px){html[data-wp-shared-interface] body[data-wp-constellation-mirror] #resultScreen .result-card{display:grid!important;grid-template-columns:minmax(120px,32%) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;align-items:center;justify-content:normal;min-height:0;max-height:100%;overflow:auto;padding:8px}body[data-wp-constellation-mirror] #ckResultReward{grid-column:1;grid-row:1 / 5}body[data-wp-constellation-mirror] #ckResultReward .star-board{width:120px;height:120px}body[data-wp-constellation-mirror] #ckResultReward .ck-animal{width:28px;height:28px}body[data-wp-constellation-mirror] #ckResultReward .ck-rating{font-size:22px;margin:2px}body[data-wp-constellation-mirror] #resultTitle,body[data-wp-constellation-mirror] #resultText,body[data-wp-constellation-mirror] #resultScreen [data-wp-local-practice],body[data-wp-constellation-mirror] #resultScreen .result-actions{grid-column:2}body[data-wp-constellation-mirror] #resultScreen .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0}body[data-wp-constellation-mirror] #resultScreen .result-actions button{min-width:0;min-height:44px}}';document.head.append(style);
     // The portrait Canvas is 390 logical pixels wide. At 320px viewport width,
