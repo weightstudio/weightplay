@@ -1,4 +1,4 @@
-import {t, supportedLocales} from './locales.js?wp-media=b5f048e8dfd1feb0';
+import {t, supportedLocales} from './locales.js?wp-media=bb72a7777a2deab8';
 
 const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 

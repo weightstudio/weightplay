@@ -1,0 +1,23 @@
+{
+  "gameId": "skymeadow-keeper",
+  "generator": "built-in image_gen",
+  "poster": {
+    "source": "assets/interface7-redrawn/skymeadow-keeper.png.webp?wp-media=bb72a7777a2deab8",
+    "delivery": "art/poster.webp?wp-media=bb72a7777a2deab8",
+    "generatedSource": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-a7ff18ab-0f81-4654-bce7-1bbeda1008e7.png",
+    "prompt": "Use case: stylized-concept. Asset type: original WeightPlay game square cover, Skymeadow Keeper, NO TEXT. Create a genuine 1:1 square premium fantasy 3D illustration. A full-body original block fox hero Fia (square orange head, separate cuboid ears with cream inner ear and dark brown tips, blue expressive eyes, box cream muzzle, forehead gold lightning motif, cube limbs, blue scarf with gold comet-star tip, cream paws and stepped orange/cream tail) is gently guiding a little cuboid cream rabbit with leaf ears and a moss-shell block turtle along a grassy floating path toward a warm little habitat garden. Fia holds an OPEN two-prong blue-and-amber wrist loom, casting a thin mint guidance ribbon; no gun, no vacuum, no suction. Fia dominates central 60%, full body and feet visible inside central 80%. Rabbit visibly follows berry bait on the ribbon; turtle follows behind. Background has a restored golden-leaf windtree, teal floating meadows, small timber habitat roof, indigo mountain silhouettes, cloud ocean and a curved vine bridge. Sculptural literal cubes and rectangular prisms with subtle bevels, planar faces, stepped silhouettes, coherent matte premium materials, fine block edges, warm late-afternoon key light, cool shadows, luminous restrained rim lighting, layered foreground-middle-background. Preserve Fia identity from the viewed character reference; crystal-survivor lighting/composition reference only, not its rounded anatomy. Readable hero and guidance action, friendly adventurous mood, rich mint/teal, orange/gold and indigo palette. No smooth rounded/plush/clay animals, no photorealism, no logos, no words, no UI, no frame, no watermark, no copied third-party imagery, no letterboxing, no critical crop.",
+    "registrationFingerprint": "sha256:401845b6a3d9e3b2e3f3860e7b0347e427b08784a7ae96f656a122c4eec4847e",
+    "inspection": "Original and compressed delivery visually inspected, 1254x1254. In-game, mobile and lobby validation pending; no Art score."
+  },
+  "items": {
+    "source": "art/items.png.webp?wp-media=bb72a7777a2deab8",
+    "delivery": "art/items.webp?wp-media=bb72a7777a2deab8",
+    "generatedSource": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-5664629f-c5a0-4d2d-92e1-5959aa298e62.png",
+    "prompt": "Use case: stylized-concept. Create ONE original game item atlas for Skymeadow Keeper with actual transparent background. Exactly 4 columns by 4 rows, 16 equally spaced cells, each object fully isolated and centered within its own cell with generous 18% transparent margin, absolutely no touching neighbors, no letters numbers labels borders grid lines. Premium polished stylized block-fantasy 3D objects, literal cuboid construction and stepped silhouettes, fine bevels, soft consistent upper-left lighting, mint/teal/amber/indigo palette, readable small UI inventory icons, no ground plane. Row1 left to right: a cluster of ruby cube berries with two green angular leaves; an orange cuboid root vegetable with green tops; an amber glass cube nectar jar with blossom stopper; a luminous cyan dew crystal. Row2: a curled green vine seed with gold kernel; a pale turquoise stepped feather; an open blue-and-gold two-prong guiding wrist loom with tiny mint gem; a brass-and-teal wind anchor with two angular sails. Row3: a little cuboid meadow rabbit cream face long leaf ears; a moss-shell box turtle with a small garden on shell; a blue cuboid wind bird with gold box beak and spread stepped wings; an amber block deer with tiny blossom antlers. Row4: a brown cube otter with cream box muzzle and turquoise wrist fins; a lavender block twilight fox with cream box muzzle and two angular ears; a small wood-and-mint-roof garden habitat; a star-blue and silver alternative wrist cuff with a gold star. All animals have square heads, box muzzles or beaks, expressive eyes, cuboid bodies and limbs, no smooth rounded anatomy. No text, watermark, third-party style, photorealism, outer shadows extending across cells. Genuinely transparent alpha, not checkerboard pixels.",
+    "layout": {
+      "columns": 4,
+      "rows": 4
+    },
+    "inspection": "Source viewed. Runtime cell/crop verification pending."
+  }
+}

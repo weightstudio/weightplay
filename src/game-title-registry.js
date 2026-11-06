@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "skymeadow-keeper": { "__localizedExact": true, "en": "Skymeadow Keeper", "zh-Hant": "雲原牧行", "zh-Hans": "云原牧行", "ja": "雲原の牧守", "ko": "구름들 목장지기", "es": "Guardián de la Pradera Celeste", "pt-BR": "Guardião do Prado Celeste", "fr": "Gardien des prés célestes", "de": "Hüter der Wolkenwiesen", "it": "Custode dei Prati Celesti", "ru": "Хранитель небесных лугов", "hi": "नभ घासभूमि का रखवाला", "ar": "حارس المروج السماوية" },
   "cloudhold-voyager": {"__localizedExact":true,"en":"Cloudhold Voyager","zh-Hant":"雲艙領航","zh-Hans":"云舱领航","ja":"雲船の航海士","ko":"구름배 항해사","es":"Navegante de las Nubes","pt-BR":"Navegante das Nuvens","fr":"Capitaine des nuages","de":"Wolkenkapitän","it":"Navigante delle Nuvole","ru":"Капитан облаков","hi":"बादलों का नाविक","ar":"ربّان السحاب"},
   "animal-peach-oath": {
     "__localizedExact": true,
