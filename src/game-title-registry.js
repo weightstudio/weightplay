@@ -3438,5 +3438,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "仙旅傳說",
     "hi": "仙旅傳說",
     "ar": "仙旅傳說"
+  },
+  "dawnward-haven": {
+    "__localizedExact": true,
+    "en": "Dawnward Haven",
+    "zh-Hant": "曦港拓居",
+    "zh-Hans": "曦港拓居",
+    "ja": "朝凪の開拓港",
+    "ko": "새벽빛 개척항",
+    "es": "Refugio del Alba",
+    "pt-BR": "Refúgio da Aurora",
+    "fr": "Le havre de l’aube",
+    "de": "Hafen der Morgenröte",
+    "it": "Il porto dell’alba",
+    "ru": "Гавань рассвета",
+    "hi": "भोर का बसेरा",
+    "ar": "ملاذ الفجر"
   }
 };
