@@ -4,5 +4,5 @@
       </svg>`;const clipId=`peach-sprite-${instance}`,sheet=side==="hero"?"heroes":"enemies";return`<svg class="sprite" data-sprite="${id}" viewBox="${frame.box.join(" ")}"
       preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
       <defs><clipPath id="${clipId}" clipPathUnits="userSpaceOnUse"><polygon points="${frame.clip}"/></clipPath></defs>
-      <image href="assets/${sheet}.png.webp?wp-media=9bd82780f26f68d4" width="${atlas.width}" height="${atlas.height}" clip-path="url(#${clipId})"/>
+      <image href="assets/${sheet}.png.webp?wp-media=a241ed22a01504bc" width="${atlas.width}" height="${atlas.height}" clip-path="url(#${clipId})"/>
     </svg>`}window.PEACH_OATH_SPRITES=Object.freeze({atlases,markup})})();
