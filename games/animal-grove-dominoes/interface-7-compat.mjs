@@ -1,4 +1,4 @@
-const cleanupHref = new URL('./interface-7-cleanup.css?v=20260922-grove-dominoes-i7-cleanup2&wp-media=781b0b37b324f8a3', import.meta.url).href;
+const cleanupHref = new URL('./interface-7-cleanup.css?v=20260922-grove-dominoes-i7-cleanup2&wp-media=9bd82780f26f68d4', import.meta.url).href;
 if (![...document.querySelectorAll('link[rel="stylesheet"]')].some((link) => link.href === cleanupHref)) {
   const link = document.createElement('link');
   link.rel = 'stylesheet';

@@ -1047,7 +1047,7 @@
         returnLink.href = "/";
         returnLink.dataset.wpReturn = "main";
         returnLink.setAttribute("aria-label", "Back to WeightPlay");
-        returnLink.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png.webp?wp-media=781b0b37b324f8a3" alt="">';
+        returnLink.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png.webp?wp-media=9bd82780f26f68d4" alt="">';
         const settings = document.createElement("div");
         settings.className = "settings-control";
         settings.innerHTML = '<button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span></label></div>';
@@ -1195,7 +1195,7 @@
       if (preview && !preview.querySelector("img")) {
         preview.textContent = "";
         const image = document.createElement("img");
-        image.src = "../../assets/hangman-cover-v1.webp?wp-media=781b0b37b324f8a3";
+        image.src = "../../assets/hangman-cover-v1.webp?wp-media=9bd82780f26f68d4";
         image.alt = "";
         image.width = 1254;
         image.height = 1254;
@@ -1226,7 +1226,7 @@
       if (preview && !preview.querySelector("img")) {
         preview.textContent = "";
         const image = document.createElement("img");
-        image.src = "../../assets/wordle-cover-v1.webp?wp-media=781b0b37b324f8a3";
+        image.src = "../../assets/wordle-cover-v1.webp?wp-media=9bd82780f26f68d4";
         image.alt = "";
         image.width = 1254;
         image.height = 1254;
