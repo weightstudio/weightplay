@@ -585,6 +585,10 @@
       "date": "2026-09-06T07:33:49+08:00",
       "evidence": "git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"
     },
+    "frostline-expedition": {
+      "date": "2026-11-07T12:29:13.794Z",
+      "evidence": "canonical-public-catalog"
+    },
     "fruit-merge": {
       "date": "2026-06-30T19:58:06+08:00",
       "evidence": "git:c7ed47cc7ba16ad30590b38b58a1026210096cc9"
@@ -737,6 +741,10 @@
       "date": "2026-10-25T00:08:06.888Z",
       "evidence": "canonical-public-catalog"
     },
+    "reedway-transit": {
+      "date": "2026-11-07T12:29:13.794Z",
+      "evidence": "canonical-public-catalog"
+    },
     "reversi": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
@@ -848,6 +856,10 @@
     "tiny-weather-rescue": {
       "date": "2026-06-30T16:06:14+08:00",
       "evidence": "git:346acd6893672262c5918c4702caa6278b5442d3"
+    },
+    "touchline-tails": {
+      "date": "2026-11-07T12:29:13.794Z",
+      "evidence": "canonical-public-catalog"
     },
     "tower-of-hanoi": {
       "date": "2026-09-01T17:15:15+08:00",

@@ -1,14 +1,4 @@
 window.WEIGHTPLAY_GAME_TITLES = {
-  "frostline-expedition": { "__localizedExact": true, "en": "AAA: Frostline Expedition", "zh-Hant": "3A大作：霜嶺遠征", "zh-Hans": "3A大作：霜岭远征", "ja": "AAA大作：霜嶺遠征", "ko": "AAA 대작: 서리 능선 원정", "es": "AAA: Expedición Escarcha", "pt-BR": "AAA: Expedição Geada", "fr": "AAA : Expédition des Cimes", "de": "AAA: Frostgrat-Expedition", "it": "AAA: Spedizione sulle Cime", "ru": "AAA: Экспедиция к морозным вершинам", "hi": "AAA: हिमशिखर अभियान", "ar": "AAA: بعثة قمم الصقيع" },
-  "touchline-tails": {"__localizedExact":true,"en":"Touchline Tails","zh-Hant":"風線球會","zh-Hans":"风线球会","ja":"風のタッチライン","ko":"바람길 축구단","es":"Club Línea de Viento","pt-BR":"Clube Linha do Vento","fr":"Le Club des Vents","de":"Verein an der Windlinie","it":"Club Linea del Vento","ru":"Клуб ветровой линии","hi":"पवनरेखा फुटबॉल क्लब","ar":"نادي خط الريح"},
-  "reedway-transit": {
-    "__localizedExact": true,
-    "en": "Reedway Transit", "zh-Hant": "葦灣行線", "zh-Hans": "苇湾行线",
-    "ja": "葦湾の路線", "ko": "갈대만 노선", "es": "Rutas de la Bahía",
-    "pt-BR": "Linhas da Baía", "fr": "Les Lignes de la Baie", "de": "Schilfbucht-Linien",
-    "it": "Le Linee della Baia", "ru": "Маршруты Камышовой бухты",
-    "hi": "नरकट खाड़ी की लाइनें", "ar": "خطوط خليج القصب"
-  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
@@ -24,6 +14,54 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Клятва Персикового сада",
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
+  },
+  "frostline-expedition": {
+    "__localizedExact": true,
+    "en": "AAA: Frostline Expedition",
+    "zh-Hant": "3A大作：霜嶺遠征",
+    "zh-Hans": "3A大作：霜岭远征",
+    "ja": "AAA大作：霜嶺遠征",
+    "ko": "AAA 대작: 서리 능선 원정",
+    "es": "AAA: Expedición Escarcha",
+    "pt-BR": "AAA: Expedição Geada",
+    "fr": "AAA : Expédition des Cimes",
+    "de": "AAA: Frostgrat-Expedition",
+    "it": "AAA: Spedizione sulle Cime",
+    "ru": "AAA: Экспедиция к морозным вершинам",
+    "hi": "AAA: हिमशिखर अभियान",
+    "ar": "AAA: بعثة قمم الصقيع"
+  },
+  "touchline-tails": {
+    "__localizedExact": true,
+    "en": "Touchline Tails",
+    "zh-Hant": "風線球會",
+    "zh-Hans": "风线球会",
+    "ja": "風のタッチライン",
+    "ko": "바람길 축구단",
+    "es": "Club Línea de Viento",
+    "pt-BR": "Clube Linha do Vento",
+    "fr": "Le Club des Vents",
+    "de": "Verein an der Windlinie",
+    "it": "Club Linea del Vento",
+    "ru": "Клуб ветровой линии",
+    "hi": "पवनरेखा फुटबॉल क्लब",
+    "ar": "نادي خط الريح"
+  },
+  "reedway-transit": {
+    "__localizedExact": true,
+    "en": "Reedway Transit",
+    "zh-Hant": "葦灣行線",
+    "zh-Hans": "苇湾行线",
+    "ja": "葦湾の路線",
+    "ko": "갈대만 노선",
+    "es": "Rutas de la Bahía",
+    "pt-BR": "Linhas da Baía",
+    "fr": "Les Lignes de la Baie",
+    "de": "Schilfbucht-Linien",
+    "it": "Le Linee della Baia",
+    "ru": "Маршруты Камышовой бухты",
+    "hi": "नरकट खाड़ी की लाइनें",
+    "ar": "خطوط خليج القصب"
   },
   "tomorrow-share": {
     "__localizedExact": true,
