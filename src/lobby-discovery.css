@@ -1043,16 +1043,16 @@ body.general-lobby-page [data-weightplay-collection-entry] > button > span:last-
 }
 
 
-/* First Person changes palette only; the common responsive skin owns geometry. */
+/* First Person uses a warm orange tint over the shared adventure scenery. */
 body.general-lobby-page:is([data-game-hall="first-person"]:not([data-hall-transition-target]),[data-hall-transition-target="first-person"]) {
-  --lobby-skin-panel:#071f35d9; --lobby-skin-control:#103d53;
-  --lobby-skin-selected:#22647a88; --lobby-skin-line:#78c9de88;
-  --lobby-skin-poster:#102d43; --lobby-scene-tint:#06476088;
-  --hall-text:#edfaff; --hall-muted:#b2dce7; --hall-accent:#9cf4f4;
-  --hall-border:#519bb1; --hall-surface:#143e57; --hall-surface-deep:#071d32;
-  --hall-selected:#22647a; --hall-selected-edge:#89e8e9; --hall-selected-ink:#ecffff;
-  --hall-shadow:#031220; --hall-edge:#4ba5bc; --hall-action:#f3d18c;
-  --hall-action-ink:#123044; --hall-hover:#20536c; --hall-icon-contrast:#143c51;
+  --lobby-skin-panel:#361b0ee6; --lobby-skin-control:#522b17;
+  --lobby-skin-selected:#a55222a6; --lobby-skin-line:#e99a638c;
+  --lobby-skin-poster:#3b2115; --lobby-scene-tint:#a34d12b3;
+  --hall-text:#fff5e9; --hall-muted:#f0c9ad; --hall-accent:#ffba7d;
+  --hall-border:#bc774b; --hall-surface:#5c301b; --hall-surface-deep:#2b170e;
+  --hall-selected:#85421d; --hall-selected-edge:#ffbf86; --hall-selected-ink:#fff8ec;
+  --hall-shadow:#1c0e08; --hall-edge:#db8f59; --hall-action:#ffc181;
+  --hall-action-ink:#361b0e; --hall-hover:#713c22; --hall-icon-contrast:#522b17;
   --lobby-ink:var(--hall-text); --lobby-muted:var(--hall-muted);
   --lobby-line:var(--hall-border); --lobby-paper:var(--hall-surface);
   --lobby-accent:var(--hall-accent); --lobby-arcade-surface:var(--hall-surface);
@@ -1064,3 +1064,4 @@ body.general-lobby-page:is([data-game-hall="first-person"]:not([data-hall-transi
   --lobby-frame-gold:var(--hall-action); --lobby-frame-active:var(--hall-selected);
   --lobby-frame-highlight:var(--hall-hover); --lobby-frame-shadow:var(--hall-shadow);
 }
+body.general-lobby-page:is([data-game-hall="first-person"]:not([data-hall-transition-target]),[data-hall-transition-target="first-person"])::after { opacity: 1; }

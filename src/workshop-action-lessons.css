@@ -12,5 +12,7 @@ body:has(.native-teaching-host[data-opening-lesson="animal-blockmart"] .wp-actio
 #cascade-replay-controls,#apex-replay-controls,#diner-replay-controls,#showtime-replay-controls,#blockmart-replay-controls,#lasso-replay-controls{min-height:40px;white-space:normal;overflow-wrap:anywhere}
 @media(max-height:470px) and (orientation:landscape){
   .native-teaching-host:is([data-opening-lesson="pawflow"],[data-opening-lesson="nori-sandworks"],[data-opening-lesson="lantern-lasso"]){inset-inline:12px auto}
+  .native-teaching-host[data-opening-lesson="nori-sandworks"]{inset-inline:auto;left:12px}
+  .native-teaching-host[data-opening-lesson="animal-blockmart"]{top:114px}
   .native-teaching-host:is([data-opening-lesson="block-apex"],[data-opening-lesson="castle-cascade"],[data-opening-lesson="robot-dog-showtime"],[data-opening-lesson="signal-snap"],[data-opening-lesson="smallwood-lives"],[data-opening-lesson="lantern-lasso"]){top:82px}
 }

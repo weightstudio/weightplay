@@ -205,7 +205,17 @@
     if (window.WeightPlayAudio && window.WeightPlayAudio.isMuted() === sound) window.WeightPlayAudio.setMuted(!sound);
     renderStatic();
   }
+  let lessonReplay=false;
+  const lessonText=()=>window.WeightPlayStageLessonCopy[locale]||window.WeightPlayStageLessonCopy.en;
+  const lessonHost=document.createElement('div');lessonHost.id='echoLesson';
+  const replayLesson=document.createElement('button');replayLesson.id='replayActionTutorial';replayLesson.type='button';replayLesson.onclick=()=>startGrove(0,false,{teachingReplay:true});$('startBtn').after(replayLesson);
+  const lessonTarget=()=>phase==='repeat' ? $('orchardButtons').querySelector(`[data-fruit="${groves[groveIndex].pattern[entered.length]}"]`) : phase==='ready'||phase==='pause'?$('replayBtn'):null;
+  const actionGuide=window.WeightPlayTutorial.createActionGuide({gameId:'animal-echo-orchard',revision:1,host:lessonHost,steps:[
+    {id:'first',title:()=>lessonText()[0],instruction:()=>lessonText()[1],target:lessonTarget},
+    {id:'second',title:()=>lessonText()[2],instruction:()=>lessonText()[3],target:lessonTarget},
+  ]});
   function show(screen) {
+    if(screen==='main'||screen==='stage'){actionGuide.stop();lessonReplay=false;}
     phase = screen;
     const scene = screen === "result" ? "battle" : screen;
     document.body.dataset.screen = screen;
@@ -230,6 +240,7 @@
     if (wrong) wrong.textContent = copy("retryHelp");
   }
   function renderStatic() {
+    replayLesson.textContent=lessonText()[4];actionGuide.refresh();
     const isArabic = locale === "ar";
     document.documentElement.lang = locale;
     document.documentElement.dir = isArabic ? "rtl" : "ltr";
@@ -259,12 +270,12 @@
     noteHandle?.stop();
     noteHandle = window.WeightPlayAudio.note([261.63, 329.63, 392, 523.25][fruits.indexOf(fruit)]);
   }
-  function startGrove(index, fromStage = false) {
+  function startGrove(index, fromStage = false,{teachingReplay=false}={}) {
     if (!canAccess(index)) return;
-    clearTimer(); groveIndex = index; entered = []; attempts = 0; feedback = "ready"; watchStep = 0;
+    actionGuide.stop();lessonReplay=teachingReplay;clearTimer(); groveIndex = index; entered = []; attempts = 0; feedback = "ready"; watchStep = 0;
     if (index === 0 || fromStage) { sessionAttempts = 0; runSolved = new Set(); }
-    show("battle"); phase = "ready"; renderBattle(); announce("start");
-    lastSaveSucceeded = false; __wpMeasurement.stageId = index + 1; __wpMeasurement.saveSucceeded = false;
+    show("battle"); phase = "ready"; if(index===0)actionGuide.start({replay:lessonReplay});renderBattle(); announce("start");
+    lastSaveSucceeded = false; __wpMeasurement.stageId = index + 1; __wpMeasurement.rewardEligible=!lessonReplay; __wpMeasurement.saveSucceeded = false;
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true;
     __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
   }
@@ -295,7 +306,7 @@
       panel.innerHTML = '<span class="echo-phase-number" aria-hidden="true"></span><div><strong id="echoPhaseTitle"></strong><p id="echoPhaseHelp"></p></div>';
       const play = document.createElement("div"); play.className = "echo-content-host";
       prompt.before(play);
-      play.append(panel, prompt, $("patternSlots"), $("orchardButtons"), $("battleScreen").querySelector(".battle-actions"), $("status"));
+      play.append(lessonHost,panel, prompt, $("patternSlots"), $("orchardButtons"), $("battleScreen").querySelector(".battle-actions"), $("status"));
       prompt.hidden = true;
       panel.setAttribute("role", "status"); panel.setAttribute("aria-live", "polite");
     }
@@ -312,7 +323,7 @@
     if (!$("orchardButtons") || ["main", "stage", "result"].includes(phase)) return;
     ensureBattleUI();
     const grove = groves[groveIndex];
-    $("battleScreen").dataset.echoPhase = phase;
+    $("battleScreen").dataset.echoPhase = phase;$("battleScreen").classList.toggle("echo-teaching",actionGuide.active);
     $("roundTitle").textContent = stageTitle(groveIndex);
     $("progressPill").textContent = `${campaign().stage} ${grove.id} / ${groves.length}`;
     const title = phase === "ready" ? copy("readyTitle") : copy(feedback === "selection" ? "yourTurn" : feedback || "watch");
@@ -336,7 +347,7 @@
       const fruit = button.dataset.fruit;
       button.classList.toggle("is-lit", litFruit === fruit);
       button.classList.toggle("is-accepted", phase === "repeat" && entered.at(-1) === fruit);
-      button.disabled = phase !== "repeat";
+      button.disabled = phase !== "repeat"||(actionGuide.active&&fruit!==grove.pattern[entered.length]);
       button.setAttribute("aria-label", `${index + 1}: ${fruitName(fruit)}`);
       button.querySelector("strong").textContent = fruitName(fruit);
     });
@@ -345,17 +356,22 @@
     $("status").textContent = phase === "repeat" ? copy("selection", {count: entered.length, total: grove.pattern.length}) :
       phase === "complete" ? copy("correct") : copy("keyboardHelp");
     $("status").className = phase === "complete" ? "status good" : "status";
+    actionGuide.refresh();
   }
   function chooseFruit(fruit) {
     if (phase !== "repeat" || !fruits.includes(fruit) || document.querySelector('.wp-shell-settings-popover:not([hidden])') || document.querySelector('.echo-leave-dialog:not([hidden])')) return;
-    const pattern = groves[groveIndex].pattern; attempts += 1; sessionAttempts += 1;
+    const pattern = groves[groveIndex].pattern, teaching=actionGuide.stepId;
+    if(document.hidden||(teaching&&fruit!==pattern[entered.length]))return;
+    attempts += 1; sessionAttempts += 1;
     const position = entered.length; soundFruit(fruit);
     if (fruit !== pattern[position]) {
       feedback = "wrong"; phase = "pause"; announce("wrong", {fruit}); renderBattle(); return;
     }
     entered = [...entered, fruit]; feedback = "selection"; announce("tap", {fruit, position: position + 1});
+    if(teaching==='first'&&position===0&&entered.length===1)actionGuide.accept('first',{accepted:true});
+    else if(teaching==='second'&&position===1&&entered.length===2)actionGuide.accept('second',{accepted:true});
     if (entered.length === pattern.length) {
-      clearTimer(false); lastSaveSucceeded = saveProgress(groveIndex);
+      clearTimer(false); lastSaveSucceeded = !lessonReplay&&saveProgress(groveIndex);
       if (lastSaveSucceeded) { runSolved.add(groveIndex); rememberSolvedStage(groveIndex + 1); flushSavedStageRewards(); }
       __wpMeasurement.saveSucceeded = lastSaveSucceeded;
       feedback = "correct"; phase = "complete"; announce("complete"); renderBattle();
@@ -371,18 +387,19 @@
       : campaign().result.replaceAll("{count}", String(solved.size)).replaceAll("{total}", String(groves.length)).replaceAll("{attempts}", String(attempts));
     $("resultMapBtn").hidden = false;
     $("nextBtn").hidden = false;
-    if (!lastSaveSucceeded) $("resultText").textContent = saveFailureCopy[locale] || saveFailureCopy.en;
+    if (lessonReplay) $("resultText").textContent=lessonText()[5];
+    else if (!lastSaveSucceeded) $("resultText").textContent = saveFailureCopy[locale] || saveFailureCopy.en;
     $("nextBtn").disabled = complete || !lastSaveSucceeded;
     $("nextBtn").setAttribute("aria-disabled", String(complete || !lastSaveSucceeded));
     $("resultReplayBtn").hidden = false;
     __wpNotifyMeasurement();
-    if (complete && phase === "result" && runSolved.size === groves.length) {
+    if (!lessonReplay&&complete && phase === "result" && runSolved.size === groves.length) {
       const old = Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0);
       if (!old || sessionAttempts < old) localStorage.setItem("weightplay-echo-orchard-best-v1", String(sessionAttempts));
       $("resultText").textContent = campaign().resultAll.replaceAll("{best}", String(Math.min(old || sessionAttempts, sessionAttempts))).replaceAll("{total}", String(groves.length));
     }
   }
-  function nextGrove() { const next = groveIndex + 1; if (next < groves.length && canAccess(next)) startGrove(next); else { show("stage"); renderStages(); } }
+  function nextGrove() { if(lessonReplay)return;const next = groveIndex + 1; if (next < groves.length && canAccess(next)) startGrove(next); else { show("stage"); renderStages(); } }
   function goBack() { clearTimer(); if (["ready", "battle", "watch", "repeat", "pause", "complete", "result"].includes(phase)) { show("stage"); renderStages(); } else if (phase === "stage") { show("main"); renderStatic(); } }
   function openStage() {
     show("stage");
@@ -401,7 +418,7 @@
     }
   });
   window.addEventListener("pagehide", clearTimer);
-  function bind() { $("startBtn").addEventListener("click", openStage); $("resultMapBtn").addEventListener("click", openStage); $("resultReplayBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex)); }); $("nextBtn").addEventListener("click", nextGrove); $("replayBtn").addEventListener("click", playPattern); $("resetBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex)); }); $("stageBack").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-echo-orchard-locale", locale); renderStatic(); }); }
+  function bind() { $("startBtn").addEventListener("click", openStage); $("resultMapBtn").addEventListener("click", openStage); $("resultReplayBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex,false,{teachingReplay:lessonReplay})); }); $("nextBtn").addEventListener("click", nextGrove); $("replayBtn").addEventListener("click", playPattern); $("resetBtn").addEventListener("click", () => { __wpReplayStart(() => startGrove(groveIndex,false,{teachingReplay:lessonReplay})); }); $("stageBack").addEventListener("click", () => { show("main"); renderStatic(); }); $("battleBackBtn").addEventListener("click", goBack); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-echo-orchard-locale", locale); renderStatic(); }); }
   window.addEventListener("weightplay:audio-volume-change", syncSharedSound);
   function boot() { bind(); $("localeSelect").value = locale; $("loading")?.setAttribute("hidden", ""); $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
   window.__ECHO_ORCHARD_TEST__ = { groves, startGrove, playPattern, chooseFruit, copy, stageRecord, stageSummary, getState: () => ({ groveIndex, phase, entered: [...entered], solved: [...solved], unlockedThrough, attempts, screen: phase }) };
