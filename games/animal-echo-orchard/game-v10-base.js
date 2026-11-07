@@ -160,7 +160,7 @@
       details: "",
       locked,
       cleared,
-      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=0a561b3bf0c2e323",
+      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=1a67483c003e0833",
       posterPosition: "center"
     };
   };

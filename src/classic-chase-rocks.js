@@ -208,7 +208,7 @@
     ui.sound.textContent = muted ? "🔇" : "🔊"; ui.sound.setAttribute("aria-label", muted ? tr("soundOff") : tr("soundOn"));
     ui.restart.textContent = tr("restart"); ui.scoreLabel.textContent = tr("score"); ui.bestLabel.textContent = tr("best"); ui.levelLabel.textContent = gameId === "maze" ? tr("level") : tr("wave"); ui.powerLabel.textContent = gameId === "maze" ? tr("power") : tr("shield"); if (ui.livesLabel && ui.livesHud) { ui.livesLabel.textContent = tr("livesStat"); ui.livesHud.hidden = gameId !== "maze"; }
     ui.confirmCopy.textContent = tr("confirm"); ui.stay.textContent = tr("stay"); ui.leave.textContent = tr("leave"); ui.retry.textContent = tr("retry"); ui.home.textContent = tr("home"); ui.controlHint.textContent = gameId === "maze" ? `${gt("hint")} · ${tr("controlsMaze")}` : `${gt("hint")} · ${tr("controlsSpace")}`;
-    ui.cover.src = gameId === "maze" ? "../../assets/maze-chase-cover.png.webp?wp-media=0a561b3bf0c2e323" : "../../assets/space-rocks-cover.png.webp?wp-media=0a561b3bf0c2e323";
+    ui.cover.src = gameId === "maze" ? "../../assets/maze-chase-cover.png.webp?wp-media=1a67483c003e0833" : "../../assets/space-rocks-cover.png.webp?wp-media=1a67483c003e0833";
     ui.cover.alt = `${gameTitle} original WeightPlay cover`;
     ui.footer.textContent = tr("footer");
     if (ui.result && !ui.result.hidden) renderResult();
@@ -475,7 +475,7 @@
     mainReturn.href = "/";
     mainReturn.dataset.wpReturn = "main";
     mainReturn.setAttribute("aria-label", "Return to WeightPlay");
-    mainReturn.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png.webp?wp-media=0a561b3bf0c2e323" alt="">';
+    mainReturn.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png.webp?wp-media=1a67483c003e0833" alt="">';
     ui.main.prepend(mainReturn);
     window.dispatchEvent(new Event("weightplay:shell-sync"));
   }

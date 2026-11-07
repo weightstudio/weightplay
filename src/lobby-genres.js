@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["touchline-tails", "Strategy", "Sports", "Management"],
     ["prismtide", "Puzzle", firstPersonFacet, "Adventure", "Spatial Planning", "Connection"],
     ["skymeadow-keeper", "Simulation", firstPersonFacet, "Pet Care", "Adventure", "Collection"],
     ["tomorrow-share", "Strategy", "Management"],

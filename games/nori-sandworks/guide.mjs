@@ -1,9 +1,9 @@
-import {TEXT} from './locales.mjs?wp-media=0a561b3bf0c2e323';
-import {RELATED} from './related.mjs?wp-media=0a561b3bf0c2e323';
+import {TEXT} from './locales.mjs?wp-media=1a67483c003e0833';
+import {RELATED} from './related.mjs?wp-media=1a67483c003e0833';
 export const SEGMENTS={en:'en','zh-Hant':'zh-tw','zh-Hans':'zh-cn',ja:'ja',ko:'ko',es:'es','pt-BR':'pt-br',fr:'fr',de:'de',it:'it',ru:'ru',hi:'hi',ar:'ar'};
 export const escape=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 export function renderStaticGuide(locale){const t=TEXT[locale];if(!t)throw Error('GUIDE_LOCALE_REQUIRED');const e=escape;
- return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="guide.mjs?wp-media=0a561b3bf0c2e323#renderStaticGuide" data-wp-guide-locale="${locale}" aria-label="${e(t.guideLabel)}">
+ return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="guide.mjs?wp-media=1a67483c003e0833#renderStaticGuide" data-wp-guide-locale="${locale}" aria-label="${e(t.guideLabel)}">
 <div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2>${e(t.guideLabel)}</h2><p>${e(t.summary)}</p><div class="game-info-tags">${t.tags.map(tag=>`<span>${e(tag)}</span>`).join('')}</div></div>
 <div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts">${[[t.puzzles,'30'],[t.scenes,'6'],[t.undo,t.free],[t.controls,'']].map(([label,value])=>`<div class="game-info-fact"><strong>${e(value||label)}</strong>${value?e(label):''}</div>`).join('')}</div>
 <div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections">${t.guide.map((p,i)=>`<section class="game-info-section"><h3>${e(t.guideTitles[i])}</h3><p>${e(p)}</p></section>`).join('')}</div>
