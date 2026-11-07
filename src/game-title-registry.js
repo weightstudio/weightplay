@@ -1,4 +1,12 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "reedway-transit": {
+    "__localizedExact": true,
+    "en": "Reedway Transit", "zh-Hant": "葦灣行線", "zh-Hans": "苇湾行线",
+    "ja": "葦湾の路線", "ko": "갈대만 노선", "es": "Rutas de la Bahía",
+    "pt-BR": "Linhas da Baía", "fr": "Les Lignes de la Baie", "de": "Schilfbucht-Linien",
+    "it": "Le Linee della Baia", "ru": "Маршруты Камышовой бухты",
+    "hi": "नरकट खाड़ी की लाइनें", "ar": "خطوط خليج القصب"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
