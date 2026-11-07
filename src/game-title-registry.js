@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "mistcanopy": {"__localizedExact":true,"en":"Mist Canopy","zh-Hant":"霧穹復育","zh-Hans":"雾穹复育","ja":"霧の谷再生","ko":"안개 골짜기 복원","es":"Dosel de Niebla","pt-BR":"Dossel da Névoa","fr":"La Canopée des brumes","de":"Nebelgarten","it":"Cupola di Nebbia","ru":"Купол тумана","hi":"धुंध की छतरी","ar":"مظلّة الضباب"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
