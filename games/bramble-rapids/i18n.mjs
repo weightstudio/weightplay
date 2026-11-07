@@ -281,15 +281,15 @@ const htmlText = value => String(value).replaceAll('&', '&amp;').replaceAll('<',
 // Curated from the current public catalog, official title and poster sources.
 // Rally shares route adaptation and obstacle timing; River Gates shares water routing.
 export const RELATED_GAMES = Object.freeze([
-  Object.freeze({ id: 'animal-sketchwheel-rally', poster: '/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp?wp-media=a5465b2863a3bbab', titles: Object.freeze({ en: 'Sketchwheel Rally', 'zh-Hant': '繪輪競速', 'zh-Hans': '绘轮竞速', ja: 'スケッチホイール・ラリー', ko: '스케치휠 랠리', es: 'Rally de Ruedas Dibujadas', 'pt-BR': 'Rali de Rodas Desenhadas', fr: 'Rally des Roues Dessinées', de: 'Skizzenrad-Rennen', it: 'Rally delle Ruote Disegnate', ru: 'ралли рисованных колёс', hi: 'स्केचव्हील रैली', ar: 'رالي رسم العجلات الحيوانية' }) }),
-  Object.freeze({ id: 'animal-river-gates', poster: '/assets/interface7-redrawn/animal-river-gates.webp?wp-media=a5465b2863a3bbab', titles: Object.freeze({ en: 'River Gate Water Routing', 'zh-Hant': '河閘水量調度', 'zh-Hans': '河闸水量调度', ja: '水門の水量配分', ko: '수문 물길 조절', es: 'Distribución de Agua por Compuertas', 'pt-BR': 'Distribuição de Água nas Comportas', fr: 'Distribution d’eau par les vannes', de: 'Wasser durch Schleusen leiten', it: 'Distribuzione dell’Acqua alle Chiuse', ru: 'Распределение воды шлюзами', hi: 'फाटकों से पानी बाँटें', ar: 'توزيع المياه عبر البوابات' }) }),
+  Object.freeze({ id: 'animal-sketchwheel-rally', poster: '/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover-v18.webp?wp-media=92383410bfc3532f', titles: Object.freeze({ en: 'Sketchwheel Rally', 'zh-Hant': '繪輪競速', 'zh-Hans': '绘轮竞速', ja: 'スケッチホイール・ラリー', ko: '스케치휠 랠리', es: 'Rally de Ruedas Dibujadas', 'pt-BR': 'Rali de Rodas Desenhadas', fr: 'Rally des Roues Dessinées', de: 'Skizzenrad-Rennen', it: 'Rally delle Ruote Disegnate', ru: 'ралли рисованных колёс', hi: 'स्केचव्हील रैली', ar: 'رالي رسم العجلات الحيوانية' }) }),
+  Object.freeze({ id: 'animal-river-gates', poster: '/assets/interface7-redrawn/animal-river-gates.webp?wp-media=92383410bfc3532f', titles: Object.freeze({ en: 'River Gate Water Routing', 'zh-Hant': '河閘水量調度', 'zh-Hans': '河闸水量调度', ja: '水門の水量配分', ko: '수문 물길 조절', es: 'Distribución de Agua por Compuertas', 'pt-BR': 'Distribuição de Água nas Comportas', fr: 'Distribution d’eau par les vannes', de: 'Wasser durch Schleusen leiten', it: 'Distribuzione dell’Acqua alle Chiuse', ru: 'Распределение воды шлюзами', hi: 'फाटकों से पानी बाँटें', ar: 'توزيع المياه عبر البوابات' }) }),
 ]);
 
 /** The controller and first-response renderer share these exact I9 related cards. */
 export function renderRelatedGames(locale) {
   const selected = localeOf(locale);
   if (!selected) throw new Error(`BRAMBLE_RELATED_LOCALE_INVALID: ${locale}`);
-  const cards = RELATED_GAMES.map(game => `<a class="game-info-related-card" data-game-id="${game.id}" href="/${ROUTE_SEGMENTS[selected]}/games/${game.id}/"><span class="game-info-related-poster"><img src="${game.poster}" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="${htmlText(game.titles[selected])}" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">${htmlText(game.titles[selected])}</strong></span></a>`).join('');
+  const cards = RELATED_GAMES.map(game => `<a class="game-info-related-card" data-game-id="${game.id}" href="/${ROUTE_SEGMENTS[selected]}/games/${game.id}/"><span class="game-info-related-poster"><img src="${game.poster}" data-final-src="/assets/weightplay-logo.png.webp?wp-media=92383410bfc3532f" alt="${htmlText(game.titles[selected])}" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">${htmlText(game.titles[selected])}</strong></span></a>`).join('');
   return `<div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>${htmlText(t(selected, 'relatedGamesTitle'))}</h3><div class="game-info-related">${cards}</div></div>`;
 }
 
@@ -368,23 +368,23 @@ export function renderLocalizedRoute(sourceHtml, locale, titles) {
   const graph = {
     '@context': 'https://schema.org', '@graph': [
       { '@type': 'WebPage', '@id': route, url: route, name: pageTitle, description, inLanguage: selected, mainEntity: { '@id': `${route}#game` } },
-      { '@type': 'VideoGame', '@id': `${route}#game`, name: title, description, url: route, image: 'https://weightplay.com/games/bramble-rapids/assets/cover.webp?wp-media=a5465b2863a3bbab', inLanguage: selected, applicationCategory: 'GameApplication', gamePlatform: 'Web browser', isAccessibleForFree: true, mainEntityOfPage: { '@id': route } },
+      { '@type': 'VideoGame', '@id': `${route}#game`, name: title, description, url: route, image: 'https://weightplay.com/games/bramble-rapids/assets/cover.webp?wp-media=92383410bfc3532f', inLanguage: selected, applicationCategory: 'GameApplication', gamePlatform: 'Web browser', isAccessibleForFree: true, mainEntityOfPage: { '@id': route } },
       { '@type': 'FAQPage', '@id': `${route}#faq`, inLanguage: selected, mainEntity: content.faq.map(item => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })) },
     ],
   };
-  const metadata = `<title>${htmlText(pageTitle)}</title>\n<meta name="description" content="${htmlText(description)}">\n<meta name="robots" content="${htmlText(robots)}">\n<link rel="canonical" href="${route}">\n${alternates}\n<link rel="alternate" hreflang="x-default" href="https://weightplay.com/games/bramble-rapids/">\n<meta property="og:type" content="website"><meta property="og:site_name" content="WeightPlay"><meta property="og:title" content="${htmlText(pageTitle)}"><meta property="og:description" content="${htmlText(description)}"><meta property="og:url" content="${route}"><meta property="og:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp?wp-media=a5465b2863a3bbab"><meta property="og:image:alt" content="${htmlText(t(selected, 'posterAlt'))}">\n<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${htmlText(pageTitle)}"><meta name="twitter:description" content="${htmlText(description)}"><meta name="twitter:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp?wp-media=a5465b2863a3bbab">\n<script type="application/ld+json">${JSON.stringify(graph).replaceAll('<', '\\u003c')}</script>\n`;
+  const metadata = `<title>${htmlText(pageTitle)}</title>\n<meta name="description" content="${htmlText(description)}">\n<meta name="robots" content="${htmlText(robots)}">\n<link rel="canonical" href="${route}">\n${alternates}\n<link rel="alternate" hreflang="x-default" href="https://weightplay.com/games/bramble-rapids/">\n<meta property="og:type" content="website"><meta property="og:site_name" content="WeightPlay"><meta property="og:title" content="${htmlText(pageTitle)}"><meta property="og:description" content="${htmlText(description)}"><meta property="og:url" content="${route}"><meta property="og:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp?wp-media=92383410bfc3532f"><meta property="og:image:alt" content="${htmlText(t(selected, 'posterAlt'))}">\n<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${htmlText(pageTitle)}"><meta name="twitter:description" content="${htmlText(description)}"><meta name="twitter:image" content="https://weightplay.com/games/bramble-rapids/assets/cover.webp?wp-media=92383410bfc3532f">\n<script type="application/ld+json">${JSON.stringify(graph).replaceAll('<', '\\u003c')}</script>\n`;
   if (!/<\/head>/i.test(html)) throw new Error('BRAMBLE_ROUTE_HEAD_MISSING');
   html = html.replace(/<\/head>/i, `${metadata}</head>`);
   if (!/<base\b[^>]*href=["']\/games\/bramble-rapids\/["']/i.test(html)) {
     html = html.replace(/(<head\b[^>]*>)/i, '$1\n    <base href="/games/bramble-rapids/" />');
   }
-  if (selected === 'ja' && !html.includes('i18n-ja.js?wp-media=a5465b2863a3bbab')) {
-    const japaneseDictionary = '<script src="/src/i18n-ja.js?v=20260719-ja1&wp-media=a5465b2863a3bbab"></script>';
+  if (selected === 'ja' && !html.includes('i18n-ja.js?wp-media=92383410bfc3532f')) {
+    const japaneseDictionary = '<script src="/src/i18n-ja.js?v=20260719-ja1&wp-media=92383410bfc3532f"></script>';
     html = html.replace(
       /(<script\s+src=["'][^"']*i18n\.js[^"']*["'][^>]*><\/script>)/i,
       `${japaneseDictionary}\n  $1`,
     );
-    if (!html.includes('i18n-ja.js?wp-media=a5465b2863a3bbab')) {
+    if (!html.includes('i18n-ja.js?wp-media=92383410bfc3532f')) {
       html = html.replace(/(<\/head>)/i, `${japaneseDictionary}\n  $1`);
     }
   }

@@ -59,6 +59,8 @@ WeightPlay covers these game and content clusters:
 
 ## Current Playable Games
 
+- Reedway Transit: https://weightplay.com/games/reedway-transit/ — Plan tram lines, transfers, carriage capacity and tidal gates across 60 authored shifts in two chapters; free functional charters and optional cosmetic paints.
+
 - Prismtide: https://weightplay.com/en/games/prismtide/ — First-person 3D light-routing adventure through a submerged city, with 60 stages and touch or keyboard controls.
 
 - Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/

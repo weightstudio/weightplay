@@ -1,6 +1,6 @@
-import {drawDarkShield} from './demon-assault-shield.mjs?v=20261014-obsidian-shield-1&wp-media=a5465b2863a3bbab';
+import {drawDarkShield} from './demon-assault-shield.mjs?v=20261014-obsidian-shield-1&wp-media=92383410bfc3532f';
 // Same approved art, world coordinates and authoritative physics in both renderers.
-import {FALLBACK_ART} from './demon-assault-image-pack.mjs?v=20261014-asset-recovery-2&wp-media=a5465b2863a3bbab';
+import {FALLBACK_ART} from './demon-assault-image-pack.mjs?v=20261014-asset-recovery-2&wp-media=92383410bfc3532f';
 export const RENDER_REVISION='asset-recovery-shield-3';
 const names={boss:'demon-assault-boss-v2.webp',sling:'demon-assault-sling-v2.webp'},assetDiagnostics=[];
 export const imageDiagnostics=()=>assetDiagnostics.map(row=>({...row,errors:[...row.errors]}));

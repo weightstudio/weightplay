@@ -5,10 +5,10 @@
   },
   "decision": "APPROVED",
   "assetFiles": [
-    "games/signal-snap/poster.png.webp?wp-media=a5465b2863a3bbab",
-    "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
-    "games/signal-snap/night-sky.webp?wp-media=a5465b2863a3bbab",
-    "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab"
+    "games/signal-snap/poster.png.webp?wp-media=92383410bfc3532f",
+    "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
+    "games/signal-snap/night-sky.webp?wp-media=92383410bfc3532f",
+    "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f"
   ],
   "surfaces": [
     "Lobby",
@@ -31,7 +31,7 @@
     {
       "surface": "Lobby",
       "state": "Filtered actual Signal Snap card",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "phone",
       "width": 390,
       "height": 844,
@@ -45,7 +45,7 @@
     {
       "surface": "Lobby",
       "state": "Filtered actual Signal Snap card",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "short-landscape",
       "width": 844,
       "height": 390,
@@ -59,7 +59,7 @@
     {
       "surface": "Lobby",
       "state": "Filtered actual Signal Snap card",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "desktop",
       "width": 1280,
       "height": 720,
@@ -73,7 +73,7 @@
     {
       "surface": "Main",
       "state": "Normal localized Main",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "phone",
       "width": 390,
       "height": 844,
@@ -87,7 +87,7 @@
     {
       "surface": "Main",
       "state": "Normal localized Main",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "short-landscape",
       "width": 844,
       "height": 390,
@@ -101,7 +101,7 @@
     {
       "surface": "Main",
       "state": "Normal localized Main",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "desktop",
       "width": 1280,
       "height": 720,
@@ -115,7 +115,7 @@
     {
       "surface": "Stage",
       "state": "Shared rail after layout settlement",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "phone",
       "width": 390,
       "height": 844,
@@ -129,7 +129,7 @@
     {
       "surface": "Stage",
       "state": "Shared rail after layout settlement",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "short-landscape",
       "width": 844,
       "height": 390,
@@ -143,7 +143,7 @@
     {
       "surface": "Stage",
       "state": "Shared rail after layout settlement",
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "viewport": "desktop",
       "width": 1280,
       "height": 720,
@@ -157,7 +157,7 @@
     {
       "surface": "Battle",
       "state": "Real playable fox and signal platform",
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "viewport": "phone",
       "width": 390,
       "height": 844,
@@ -171,7 +171,7 @@
     {
       "surface": "Battle",
       "state": "Real playable fox and signal platform",
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "viewport": "short-landscape",
       "width": 844,
       "height": 390,
@@ -185,7 +185,7 @@
     {
       "surface": "Battle",
       "state": "Real playable fox and signal platform",
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "viewport": "desktop",
       "width": 1280,
       "height": 720,
@@ -199,7 +199,7 @@
     {
       "surface": "Styles",
       "state": "Live3D preview; lower controls use internal scroll on short landscape",
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "viewport": "phone",
       "width": 390,
       "height": 844,
@@ -213,7 +213,7 @@
     {
       "surface": "Styles",
       "state": "Live3D preview; lower controls use internal scroll on short landscape",
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "viewport": "short-landscape",
       "width": 844,
       "height": 390,
@@ -227,7 +227,7 @@
     {
       "surface": "Styles",
       "state": "Live3D preview; lower controls use internal scroll on short landscape",
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "viewport": "desktop",
       "width": 1280,
       "height": 720,
@@ -267,22 +267,22 @@
   },
   "assetScores": [
     {
-      "asset": "games/signal-snap/poster.png.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.png.webp?wp-media=92383410bfc3532f",
       "score": 9.3,
       "rationale": "Source image has readable fox anatomy, one clear signal action and safe square composition."
     },
     {
-      "asset": "games/signal-snap/poster.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/poster.webp?wp-media=92383410bfc3532f",
       "score": 9.3,
       "rationale": "Optimized1254px WebP retains the source composition and readable cyan/gold silhouette at actual lobby thumbnail scale."
     },
     {
-      "asset": "games/signal-snap/night-sky.webp?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/night-sky.webp?wp-media=92383410bfc3532f",
       "score": 9.0,
       "rationale": "Distant block citadels and clouds frame the real foreground without baking in false targets or a second hero."
     },
     {
-      "asset": "games/signal-snap/scene.mjs?wp-media=a5465b2863a3bbab",
+      "asset": "games/signal-snap/scene.mjs?wp-media=92383410bfc3532f",
       "score": 9.0,
       "rationale": "One instanced bevelled geometry supports the articulated fox, platform and beacons with stable resource cost and coherent materials."
     }
