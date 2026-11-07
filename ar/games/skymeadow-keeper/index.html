@@ -1,28 +1,207 @@
 <!doctype html>
-<html lang="ar" dir="rtl" data-wp-official-name data-wp-entry-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderEntry" data-wp-entry-poster="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab">
-<head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/skymeadow-keeper/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/skymeadow-keeper/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+<html lang="ar" dir="rtl" data-wp-official-name data-wp-entry-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderEntry" data-wp-entry-poster="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=a5465b2863a3bbab`, '/src/diamond-special-progression.js?wp-media=a5465b2863a3bbab', '/src/diamond-special-progression.css?wp-media=a5465b2863a3bbab'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/skymeadow-keeper/">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="weightplay-audience" content="general"><meta name="weightplay-scene-controls" content="immutable"><meta name="weightplay-game-version" content="8"><meta name="weightplay-interface-version" content="0"><meta name="weightplay-interface-target" content="9">
+<meta name="robots" content="index,follow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="weightplay-audience" content="general"><meta name="weightplay-scene-controls" content="immutable"><meta name="weightplay-game-version" content="9"><meta name="weightplay-interface-version" content="0"><meta name="weightplay-interface-target" content="9">
 <title>حارس المروج السماوية | WeightPlay</title>
 <meta name="description" content="استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.">
 <link rel="canonical" href="https://weightplay.com/ar/games/skymeadow-keeper/">
-    <script src="/src/weightplay-audio.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-layout-config.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script>
-<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=a5465b2863a3bbab" data-wp-stage-standard><link rel="stylesheet" href="/src/battle-canvas-standard.css?wp-media=a5465b2863a3bbab" data-wp-battle-standard>
-<link rel="stylesheet" href="/src/game-page-info.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/stage-rail-i9.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/game-play-ui.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/virtual-joystick.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/games/skymeadow-keeper/style.css?v=20261107-action-guide-v8&amp;wp-build=e5974dfd869a1140&wp-media=a5465b2863a3bbab">
+    <script src="/src/weightplay-audio.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-layout-config.js?wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=a5465b2863a3bbab" data-wp-stage-standard data-wp-entry-required=""><link rel="stylesheet" href="/src/battle-canvas-standard.css?wp-media=a5465b2863a3bbab" data-wp-battle-standard data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-page-info.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/stage-rail-i9.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/virtual-joystick.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/games/skymeadow-keeper/style.css?v=20261107-action-guide-v8&amp;wp-build=e5974dfd869a1140&wp-media=a5465b2863a3bbab" data-wp-entry-required="">
 <script src="/src/wallet.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-title-registry.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/site-config.js?wp-media=a5465b2863a3bbab"></script><script src="/src/i18n.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=a5465b2863a3bbab"></script>
-<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/skymeadow-keeper/"><link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/skymeadow-keeper/"><link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/skymeadow-keeper/"><link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/skymeadow-keeper/"><link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/skymeadow-keeper/"><link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/skymeadow-keeper/"><link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/skymeadow-keeper/"><link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/skymeadow-keeper/"><link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/skymeadow-keeper/"><link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/skymeadow-keeper/"><link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/skymeadow-keeper/"><link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/skymeadow-keeper/"><meta property="og:type" content="website"><meta property="og:title" content="حارس المروج السماوية | WeightPlay"><meta property="og:description" content="استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح."><meta property="og:url" content="https://weightplay.com/ar/games/skymeadow-keeper/"><meta property="og:image" content="https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"حارس المروج السماوية","description":"استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.","url":"https://weightplay.com/ar/games/skymeadow-keeper/","inLanguage":"ar","genre":["مغامرة من منظور الشخص الأول","قيادة الحيوانات","إدارة المواطن"],"image":"https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab","gamePlatform":"Web browser","publisher":{"@type":"Organization","name":"WeightPlay"}}</script><link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required></head>
-<body data-screen="main" data-audience="general" data-game-id="skymeadow-keeper" data-wp-game-id="skymeadow-keeper" data-has-stage="true" data-wp-play-ui="1" data-runtime-localize="off">
+<link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/skymeadow-keeper/"><link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/skymeadow-keeper/"><link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/skymeadow-keeper/"><link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/skymeadow-keeper/"><link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/skymeadow-keeper/"><link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/skymeadow-keeper/"><link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/skymeadow-keeper/"><link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/skymeadow-keeper/"><link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/skymeadow-keeper/"><link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/skymeadow-keeper/"><link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/skymeadow-keeper/"><link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/skymeadow-keeper/"><meta property="og:type" content="website"><meta property="og:title" content="حارس المروج السماوية | WeightPlay"><meta property="og:description" content="استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح."><meta property="og:url" content="https://weightplay.com/ar/games/skymeadow-keeper/"><meta property="og:image" content="https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"حارس المروج السماوية","description":"استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.","url":"https://weightplay.com/ar/games/skymeadow-keeper/","inLanguage":"ar","genre":["مغامرة من منظور الشخص الأول","قيادة الحيوانات","إدارة المواطن"],"image":"https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab","gamePlatform":"Web browser","publisher":{"@type":"Organization","name":"WeightPlay"}}</script><link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9&wp-media=a5465b2863a3bbab" data-wp-entry-required=""></head>
+<body data-screen="main" data-audience="general" data-game-id="skymeadow-keeper" data-wp-game-id="skymeadow-keeper" data-has-stage="true" data-wp-play-ui="1" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="حارس المروج السماوية" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل حارس المروج السماوية…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل حارس المروج السماوية…" aria-valuetext="جارٍ تحميل حارس المروج السماوية…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=a5465b2863a3bbab" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">حارس المروج السماوية</h1>
-<div id="gameFrame" data-wp-frame-root>
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
 <div id="mainGroup">
-<main id="mainScreen" class="main-screen wp-standard-main-screen wp-standard-main-flow-owner">
-<header id="mainHeader" data-wp-shell-header="main"><a id="mainReturn" href="/ar/" data-wp-return="main" aria-label="العودة إلى WeightPlay"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt=""></a><strong data-wp-frame-title data-wp-game-title data-name>حارس المروج السماوية</strong></header>
-<section id="mainHero" class="wp-standard-main-composition"><div class="wp-standard-main-poster"><img id="mainPoster" class="wp-standard-main-poster-media" src="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" alt="حارس المروج السماوية" width="1254" height="1254"></div><div class="wp-standard-main-copy"><p class="main-summary wp-standard-main-summary" data-copy="summary">استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.</p><div id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-main-progress>المرحلة ⁦1 / 60⁩</div><button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-copy="start" disabled>ابدأ اللعب</button><p id="entryNotice" class="entry-notice" role="status"></p></div></section>
+<main id="mainScreen" class="main-screen wp-standard-main-screen wp-standard-main-flow-owner" data-wp-frame-scene="main">
+<header id="mainHeader" data-wp-shell-header="main" class="wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" href="/ar/" data-wp-return="main" aria-label="العودة إلى WeightPlay" class="wp-frame-return"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a><strong data-wp-frame-title="" data-wp-game-title data-name>حارس المروج السماوية</strong></header>
+<section id="mainHero" class="wp-standard-main-composition" data-wp-frame-content="main"><div class="wp-standard-main-poster"><img id="mainPoster" class="wp-standard-main-poster-media" src="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" alt="حارس المروج السماوية" width="1254" height="1254" data-wp-interface7-poster="true" data-wp-frame-poster=""></div><div class="wp-standard-main-copy" data-wp-frame-copy=""><p class="main-summary wp-standard-main-summary" data-copy="summary" data-wp-frame-summary="">استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.</p><div id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress="">المرحلة ⁦1 / 60⁩</div><button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-copy="start" disabled data-wp-frame-action="primary">ابدأ اللعب</button><p id="entryNotice" class="entry-notice" role="status"></p></div></section>
 </main>
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-authored-guide="true" data-wp-guide-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderGuide" aria-label="مساعدة"><div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2>حارس المروج السماوية</h2></div><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><span class="game-info-tag">مغامرة من منظور الشخص الأول</span><span class="game-info-tag">قيادة الحيوانات</span><span class="game-info-tag">إدارة المواطن</span></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><section class="game-info-section"><h3>أسكن الحيوانات المطلوبة وقدّم المنتجات لشجرة الرياح.</h3><p>استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.</p><p>أسكن الأنواع المطلوبة وسلّم الندى والبذور والريش للشجرة. تتطلب بعض المراحل جسرًا أو لوحًا أو مرساة أيضًا. تتسع الحقيبة لثلاثين منتجًا ويمكن التسليم على دفعات. يستهلك كل سقوط إشارة إنقاذ، وينهي الثالث الرحلة. لا يوجد عد تنازلي.</p></section><section class="game-info-section"><h3>مساعدة</h3><p>WASD أو العصا اليسرى للحركة. اسحب المشهد أو استخدم الأسهم للنظر. E للتفاعل، Q للأداة، F للطعام، المسافة للقفز، H للمساعدة، L لقفل الفأرة.</p><p>اجمع الطعام وصوّب نحو الحيوان وقدّم طعامه المفضّل. قده عبر طريق آمن، واستخدم أداة التوجيه للتبديل بين الانتظار والمتابعة.</p></section><section class="game-info-section"><h3>المواطن</h3><p>الأرانب والسلاحف في العشب، والطيور والأيائل والثعالب في الأزهار، والقضاعات في الماء. قرّب الحيوانات التي أطعمتها ثم تفاعل. غيّر الموطن الفارغ بأداة التوجيه.</p></section><section class="game-info-section"><h3>الأدوات</h3><p>ابنِ الجسور بالبذور. في الفصل الثاني أنفق الريش لوضع مرساتين كحد أقصى على أرض قريبة. استرجاع المرساة لا يعيد الريش. قد ثعالب الشفق عبر الفوانيس.</p></section><section class="game-info-section"><h3>المراحل</h3><p>تضم الحملة 60 مرحلة في فصلين. تبدأ بأرنب يأكل التوت؛ تضيف المرحلة 8 ألواح السلاحف، و18 المواطن المائية، و21 الثعالب التي تتبع الفوانيس. من المرحلة 31 تنفق الريش على مراسي تحمي من الرياح وتحاذي الجسور العائمة. تجمع المراحل الأخيرة القواعد مع تسليمات أكبر.</p></section><section class="game-info-section"><h3>نقاط البحث</h3><p>يزداد مدى التفاعل من 6 إلى 8 أمتار.</p><p>مرافق إضافي وسرعة أقل 10%.</p><p>كل إطعام ثالث يمنح منتجًا إضافيًا.</p><p>وضع المرساة للمرة الثانية مجاني مرة في كل رحلة.</p></section><section class="game-info-section"><h3>محفوظ على هذا الجهاز</h3><p>لا يلزم تسجيل الدخول. تُحفظ المراحل والأبحاث والمعدات والرحلة الحالية في هذا المتصفح. مسح بيانات الموقع يزيل التقدم. تمنح أول مرة تُكمل فيها المرحلة نقاط بحث فقط. المظاهر بالألماس اختيارية ولا تحتاجها لإنهاء المراحل.</p></section><section class="game-info-section"><h3>ملاحظة التصميم</h3><p>صُممت أداة المعصم لتبقى الحيوانات في المكان. تطعمها وتقودها بدل حملها في الحقيبة. يعبر الطائر الفجوات، وتحتاج السلحفاة طريقًا آمنًا، ويتبع الثعلب الضوء. اختيار الطريق يربط الاستكشاف بمواطن المخيم.</p></section></div><div id="gameGuideFaq" class="game-info-section" data-wp-content-slot="guide-faq" data-wp-intro-faq><details><summary>لماذا يرفض الحيوان الطعام أو يتوقف عن المتابعة؟</summary><p>اجمع الطعام وصوّب نحو الحيوان وقدّم طعامه المفضّل. قده عبر طريق آمن، واستخدم أداة التوجيه للتبديل بين الانتظار والمتابعة.</p></details><details><summary>لماذا لم تُرمّم شجرة الرياح بعد؟</summary><p>أسكن الأنواع المطلوبة وسلّم الندى والبذور والريش للشجرة. تتطلب بعض المراحل جسرًا أو لوحًا أو مرساة أيضًا. تتسع الحقيبة لثلاثين منتجًا ويمكن التسليم على دفعات. يستهلك كل سقوط إشارة إنقاذ، وينهي الثالث الرحلة. لا يوجد عد تنازلي.</p></details><details><summary>كيف أنقل مرساة الرياح؟</summary><p>ابنِ الجسور بالبذور. في الفصل الثاني أنفق الريش لوضع مرساتين كحد أقصى على أرض قريبة. استرجاع المرساة لا يعيد الريش. قد ثعالب الشفق عبر الفوانيس.</p></details><details><summary>أين يُحفظ تقدمي؟</summary><p>لا يلزم تسجيل الدخول. تُحفظ المراحل والأبحاث والمعدات والرحلة الحالية في هذا المتصفح. مسح بيانات الموقع يزيل التقدم. تمنح أول مرة تُكمل فيها المرحلة نقاط بحث فقط. المظاهر بالألماس اختيارية ولا تحتاجها لإنهاء المراحل.</p></details></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-habitat-builder" href="/ar/games/animal-habitat-builder/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-builder.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="باني المواطن" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">باني المواطن</strong></span></a><a class="game-info-related-card" data-game-id="animal-habitat-atlas" href="/ar/games/animal-habitat-atlas/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-atlas.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="أطلس المواطن" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">أطلس المواطن</strong></span></a></div></div></div></section></div>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-authored-guide="true" data-wp-guide-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderGuide" aria-label="مساعدة" data-wp-entry-guide=""><div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2>حارس المروج السماوية</h2></div><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><span class="game-info-tag">مغامرة من منظور الشخص الأول</span><span class="game-info-tag">قيادة الحيوانات</span><span class="game-info-tag">إدارة المواطن</span></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><section class="game-info-section"><h3>أسكن الحيوانات المطلوبة وقدّم المنتجات لشجرة الرياح.</h3><p data-wp-intro-faq-source>استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.</p><p>أسكن الأنواع المطلوبة وسلّم الندى والبذور والريش للشجرة. تتطلب بعض المراحل جسرًا أو لوحًا أو مرساة أيضًا. تتسع الحقيبة لثلاثين منتجًا ويمكن التسليم على دفعات. يستهلك كل سقوط إشارة إنقاذ، وينهي الثالث الرحلة. لا يوجد عد تنازلي.</p></section><section class="game-info-section"><h3>مساعدة</h3><p>WASD أو العصا اليسرى للحركة. اسحب المشهد أو استخدم الأسهم للنظر. E للتفاعل، Q للأداة، F للطعام، المسافة للقفز، H للمساعدة، L لقفل الفأرة.</p><p>اجمع الطعام وصوّب نحو الحيوان وقدّم طعامه المفضّل. قده عبر طريق آمن، واستخدم أداة التوجيه للتبديل بين الانتظار والمتابعة.</p></section><section class="game-info-section"><h3>المواطن</h3><p>الأرانب والسلاحف في العشب، والطيور والأيائل والثعالب في الأزهار، والقضاعات في الماء. قرّب الحيوانات التي أطعمتها ثم تفاعل. غيّر الموطن الفارغ بأداة التوجيه.</p></section><section class="game-info-section"><h3>الأدوات</h3><p>ابنِ الجسور بالبذور. في الفصل الثاني أنفق الريش لوضع مرساتين كحد أقصى على أرض قريبة. استرجاع المرساة لا يعيد الريش. قد ثعالب الشفق عبر الفوانيس.</p></section><section class="game-info-section"><h3>المراحل</h3><p>تضم الحملة 60 مرحلة في فصلين. تبدأ بأرنب يأكل التوت؛ تضيف المرحلة 8 ألواح السلاحف، و18 المواطن المائية، و21 الثعالب التي تتبع الفوانيس. من المرحلة 31 تنفق الريش على مراسي تحمي من الرياح وتحاذي الجسور العائمة. تجمع المراحل الأخيرة القواعد مع تسليمات أكبر.</p></section><section class="game-info-section"><h3>نقاط البحث</h3><p>يزداد مدى التفاعل من 6 إلى 8 أمتار.</p><p>مرافق إضافي وسرعة أقل 10%.</p><p>كل إطعام ثالث يمنح منتجًا إضافيًا.</p><p>وضع المرساة للمرة الثانية مجاني مرة في كل رحلة.</p></section><section class="game-info-section"><h3>محفوظ على هذا الجهاز</h3><p>لا يلزم تسجيل الدخول. تُحفظ المراحل والأبحاث والمعدات والرحلة الحالية في هذا المتصفح. مسح بيانات الموقع يزيل التقدم. تمنح أول مرة تُكمل فيها المرحلة نقاط بحث فقط. المظاهر بالألماس اختيارية ولا تحتاجها لإنهاء المراحل.</p></section><section class="game-info-section"><h3>ملاحظة التصميم</h3><p>صُممت أداة المعصم لتبقى الحيوانات في المكان. تطعمها وتقودها بدل حملها في الحقيبة. يعبر الطائر الفجوات، وتحتاج السلحفاة طريقًا آمنًا، ويتبع الثعلب الضوء. اختيار الطريق يربط الاستكشاف بمواطن المخيم.</p></section></div><div id="gameGuideFaq" class="game-info-section" data-wp-content-slot="guide-faq" data-wp-intro-faq><details><summary>لماذا يرفض الحيوان الطعام أو يتوقف عن المتابعة؟</summary><p>اجمع الطعام وصوّب نحو الحيوان وقدّم طعامه المفضّل. قده عبر طريق آمن، واستخدم أداة التوجيه للتبديل بين الانتظار والمتابعة.</p></details><details><summary>لماذا لم تُرمّم شجرة الرياح بعد؟</summary><p>أسكن الأنواع المطلوبة وسلّم الندى والبذور والريش للشجرة. تتطلب بعض المراحل جسرًا أو لوحًا أو مرساة أيضًا. تتسع الحقيبة لثلاثين منتجًا ويمكن التسليم على دفعات. يستهلك كل سقوط إشارة إنقاذ، وينهي الثالث الرحلة. لا يوجد عد تنازلي.</p></details><details><summary>كيف أنقل مرساة الرياح؟</summary><p>ابنِ الجسور بالبذور. في الفصل الثاني أنفق الريش لوضع مرساتين كحد أقصى على أرض قريبة. استرجاع المرساة لا يعيد الريش. قد ثعالب الشفق عبر الفوانيس.</p></details><details><summary>أين يُحفظ تقدمي؟</summary><p>لا يلزم تسجيل الدخول. تُحفظ المراحل والأبحاث والمعدات والرحلة الحالية في هذا المتصفح. مسح بيانات الموقع يزيل التقدم. تمنح أول مرة تُكمل فيها المرحلة نقاط بحث فقط. المظاهر بالألماس اختيارية ولا تحتاجها لإنهاء المراحل.</p></details></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>المزيد من الألعاب ذات الصلة</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-habitat-builder" href="/ar/games/animal-habitat-builder/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-builder.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="باني المواطن" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">باني المواطن</strong></span></a><a class="game-info-related-card" data-game-id="animal-habitat-atlas" href="/ar/games/animal-habitat-atlas/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-atlas.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="أطلس المواطن" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">أطلس المواطن</strong></span></a></div></div></div><article class="game-info-section" data-wp-intro-faq><h3>الأسئلة الشائعة</h3><dl><dt>ماذا سأفعل في هذه اللعبة؟</dt><dd>استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح.</dd></dl></article></section></div>
 <section id="stageScreen" class="stage-screen" hidden><div id="stageCanvas" class="stage-canvas" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" style="--wp-stage-art:url('/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab')">
 <header id="stageHeader" data-wp-shell-header="stage"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="رجوع">←</button><span data-wp-frame-title hidden></span></header>
 <section id="stageWorkspace" data-wp-stage-workspace><div id="stagePage"><div id="stageRail" data-wp-stage-rail></div></div><div id="fieldPanel" class="management" hidden></div><div id="workshopPanel" class="management" hidden></div></section>
@@ -36,5 +215,5 @@
 <div id="battleOverlay" class="sky-overlay" role="dialog" aria-modal="true" aria-labelledby="battleModalTitle" hidden><div class="sky-dialog"><h2 id="battleModalTitle"></h2><div class="modal-body"></div><div class="modal-actions"></div></div></div>
 <div id="resultPanel" class="sky-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="sky-dialog" data-wp-result-card><h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultSaved" role="status"></p><div class="result-actions"><button id="resultStages" data-copy="stages">المراحل</button><button id="resultNext" data-copy="next">التالية</button><button id="resultReplay" data-copy="replay">إعادة</button></div></div></div>
 </div></section></div>
-<script src="/src/stage-selector-standard.js?wp-media=a5465b2863a3bbab" data-wp-stage-standard data-wp-entry-required></script><script src="/src/battle-canvas-standard.js?wp-media=a5465b2863a3bbab" data-wp-battle-standard data-wp-entry-required></script><script src="/src/stage-rail-i9.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-play-ui.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/virtual-joystick.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-screen-frame.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script type="module" src="/games/skymeadow-keeper/game.mjs?v=20261107-action-guide-v8&amp;wp-build=e031398bbf30da63&wp-media=a5465b2863a3bbab" data-wp-entry-required></script>
+<script src="/src/stage-selector-standard.js?wp-media=a5465b2863a3bbab" data-wp-stage-standard data-wp-entry-required></script><script src="/src/battle-canvas-standard.js?wp-media=a5465b2863a3bbab" data-wp-battle-standard data-wp-entry-required=""></script><script src="/src/stage-rail-i9.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-play-ui.js?wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script><script src="/src/virtual-joystick.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script><script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script type="module" src="/games/skymeadow-keeper/game.mjs?v=entry-initial-ff1d99a59495&amp;wp-build=e031398bbf30da63&wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script>
 </body></html>

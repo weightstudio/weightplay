@@ -1,28 +1,208 @@
 <!doctype html>
-<html lang="ja" dir="ltr" data-wp-official-name data-wp-entry-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderEntry" data-wp-entry-poster="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab">
-<head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/skymeadow-keeper/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/skymeadow-keeper/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+<html lang="ja" dir="ltr" data-wp-official-name data-wp-entry-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderEntry" data-wp-entry-poster="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=a5465b2863a3bbab`, '/src/diamond-special-progression.js?wp-media=a5465b2863a3bbab', '/src/diamond-special-progression.css?wp-media=a5465b2863a3bbab'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/skymeadow-keeper/">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="weightplay-audience" content="general"><meta name="weightplay-scene-controls" content="immutable"><meta name="weightplay-game-version" content="8"><meta name="weightplay-interface-version" content="0"><meta name="weightplay-interface-target" content="9">
+<meta name="robots" content="index,follow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="weightplay-audience" content="general"><meta name="weightplay-scene-controls" content="immutable"><meta name="weightplay-game-version" content="9"><meta name="weightplay-interface-version" content="0"><meta name="weightplay-interface-target" content="9">
 <title>雲原の牧守 | WeightPlay</title>
 <meta name="description" content="雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。">
 <link rel="canonical" href="https://weightplay.com/ja/games/skymeadow-keeper/">
-    <script src="/src/weightplay-audio.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-layout-config.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script>
-<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=a5465b2863a3bbab" data-wp-stage-standard><link rel="stylesheet" href="/src/battle-canvas-standard.css?wp-media=a5465b2863a3bbab" data-wp-battle-standard>
-<link rel="stylesheet" href="/src/game-page-info.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/stage-rail-i9.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/game-play-ui.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/src/virtual-joystick.css?wp-media=a5465b2863a3bbab"><link rel="stylesheet" href="/games/skymeadow-keeper/style.css?v=20261107-action-guide-v8&amp;wp-build=e5974dfd869a1140&wp-media=a5465b2863a3bbab">
+    <script src="/src/weightplay-audio.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-layout-config.js?wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=a5465b2863a3bbab" data-wp-stage-standard data-wp-entry-required=""><link rel="stylesheet" href="/src/battle-canvas-standard.css?wp-media=a5465b2863a3bbab" data-wp-battle-standard data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-page-info.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/stage-rail-i9.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/game-play-ui.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/src/virtual-joystick.css?wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="stylesheet" href="/games/skymeadow-keeper/style.css?v=20261107-action-guide-v8&amp;wp-build=e5974dfd869a1140&wp-media=a5465b2863a3bbab" data-wp-entry-required="">
 <script src="/src/wallet.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-title-registry.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/site-config.js?wp-media=a5465b2863a3bbab"></script><script src="/src/i18n.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=a5465b2863a3bbab"></script>
-<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/skymeadow-keeper/"><link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/skymeadow-keeper/"><link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/skymeadow-keeper/"><link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/skymeadow-keeper/"><link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/skymeadow-keeper/"><link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/skymeadow-keeper/"><link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/skymeadow-keeper/"><link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/skymeadow-keeper/"><link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/skymeadow-keeper/"><link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/skymeadow-keeper/"><link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/skymeadow-keeper/"><link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/skymeadow-keeper/"><meta property="og:type" content="website"><meta property="og:title" content="雲原の牧守 | WeightPlay"><meta property="og:description" content="雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。"><meta property="og:url" content="https://weightplay.com/ja/games/skymeadow-keeper/"><meta property="og:image" content="https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"雲原の牧守","description":"雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。","url":"https://weightplay.com/ja/games/skymeadow-keeper/","inLanguage":"ja","genre":["一人称アドベンチャー","動物の誘導","生息地管理"],"image":"https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab","gamePlatform":"Web browser","publisher":{"@type":"Organization","name":"WeightPlay"}}</script><link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required></head>
-<body data-screen="main" data-audience="general" data-game-id="skymeadow-keeper" data-wp-game-id="skymeadow-keeper" data-has-stage="true" data-wp-play-ui="1" data-runtime-localize="off">
+<link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required=""><link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/skymeadow-keeper/"><link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/skymeadow-keeper/"><link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/skymeadow-keeper/"><link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/skymeadow-keeper/"><link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/skymeadow-keeper/"><link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/skymeadow-keeper/"><link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/skymeadow-keeper/"><link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/skymeadow-keeper/"><link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/skymeadow-keeper/"><link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/skymeadow-keeper/"><link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/skymeadow-keeper/"><link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/skymeadow-keeper/"><link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/skymeadow-keeper/"><meta property="og:type" content="website"><meta property="og:title" content="雲原の牧守 | WeightPlay"><meta property="og:description" content="雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。"><meta property="og:url" content="https://weightplay.com/ja/games/skymeadow-keeper/"><meta property="og:image" content="https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"雲原の牧守","description":"雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。","url":"https://weightplay.com/ja/games/skymeadow-keeper/","inLanguage":"ja","genre":["一人称アドベンチャー","動物の誘導","生息地管理"],"image":"https://weightplay.com/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab","gamePlatform":"Web browser","publisher":{"@type":"Organization","name":"WeightPlay"}}</script>  <script src="/src/i18n-ja.js?v=20260719-ja1&wp-media=a5465b2863a3bbab"></script>
+<link rel="stylesheet" href="/src/game-ui-theme.css?v=entry-initial-7d95604542e9&wp-media=a5465b2863a3bbab" data-wp-entry-required=""></head>
+<body data-screen="main" data-audience="general" data-game-id="skymeadow-keeper" data-wp-game-id="skymeadow-keeper" data-has-stage="true" data-wp-play-ui="1" data-runtime-localize="off" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="雲原の牧守" data-state="loading" data-error-title="ゲームを読み込めませんでした" data-error-message="一部のゲーム素材を読み込めません。再試行するかロビーに戻ってください。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">雲原の牧守を読み込み中…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="雲原の牧守を読み込み中…" aria-valuetext="雲原の牧守を読み込み中…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">再試行</button><a class="wp-game-entry-loader-button" href="/ja/">ロビーに戻る</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>一部のゲーム素材を読み込めません。再試行するかロビーに戻ってください。 <a href="/ja/">ロビーに戻る</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=a5465b2863a3bbab" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
   <h1 data-wp-game-title data-runtime-localize="off" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">雲原の牧守</h1>
-<div id="gameFrame" data-wp-frame-root>
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
 <div id="mainGroup">
-<main id="mainScreen" class="main-screen wp-standard-main-screen wp-standard-main-flow-owner">
-<header id="mainHeader" data-wp-shell-header="main"><a id="mainReturn" href="/ja/" data-wp-return="main" aria-label="WeightPlayへ戻る"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt=""></a><strong data-wp-frame-title data-wp-game-title data-name>雲原の牧守</strong></header>
-<section id="mainHero" class="wp-standard-main-composition"><div class="wp-standard-main-poster"><img id="mainPoster" class="wp-standard-main-poster-media" src="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" alt="雲原の牧守" width="1254" height="1254"></div><div class="wp-standard-main-copy"><p class="main-summary wp-standard-main-summary" data-copy="summary">雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。</p><div id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-main-progress>ステージ 1 / 60</div><button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-copy="start" disabled>ゲーム開始</button><p id="entryNotice" class="entry-notice" role="status"></p></div></section>
+<main id="mainScreen" class="main-screen wp-standard-main-screen wp-standard-main-flow-owner" data-wp-frame-scene="main">
+<header id="mainHeader" data-wp-shell-header="main" class="wp-frame-header" data-wp-frame-header="main"><a id="mainReturn" href="/ja/" data-wp-return="main" aria-label="WeightPlayへ戻る" class="wp-frame-return"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a><strong data-wp-frame-title="" data-wp-game-title data-name>雲原の牧守</strong></header>
+<section id="mainHero" class="wp-standard-main-composition" data-wp-frame-content="main"><div class="wp-standard-main-poster"><img id="mainPoster" class="wp-standard-main-poster-media" src="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" alt="雲原の牧守" width="1254" height="1254" data-wp-interface7-poster="true" data-wp-frame-poster=""></div><div class="wp-standard-main-copy" data-wp-frame-copy=""><p class="main-summary wp-standard-main-summary" data-copy="summary" data-wp-frame-summary="">雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。</p><div id="mainProgress" class="main-progress wp-standard-main-progress" data-wp-main-progress data-wp-frame-progress="">ステージ 1 / 60</div><button id="startBtn" class="wp-standard-main-start" type="button" data-wp-main-start data-copy="start" disabled data-wp-frame-action="primary">ゲーム開始</button><p id="entryNotice" class="entry-notice" role="status"></p></div></section>
 </main>
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-authored-guide="true" data-wp-guide-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderGuide" aria-label="遊び方"><div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2>雲原の牧守</h2></div><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><span class="game-info-tag">一人称アドベンチャー</span><span class="game-info-tag">動物の誘導</span><span class="game-info-tag">生息地管理</span></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><section class="game-info-section"><h3>必要な動物を迎え、風の樹に生産物を届けよう。</h3><p>雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。</p><p>指定された動物を住まわせ、露・種・羽を風の樹へ届けます。橋や重し板、風錨が必要な面もあります。生産物は30個まで持てるので、分けて届けましょう。落下で救助信号を1個使い、3回目で探索終了です。時間制限はありません。</p></section><section class="game-info-section"><h3>遊び方</h3><p>WASDか左スティックで移動。画面ドラッグか矢印キーで視点移動。Eで調べる、Qで道具、Fで食べ物、空白でジャンプ、Hで説明、Lでマウス固定。</p><p>食べ物を集め、動物を狙って好物を与えよう。安全な道を進み、誘導道具で待機と追従を切り替えよう。</p></section><section class="game-info-section"><h3>生息地</h3><p>ウサギとカメは草地、鳥・シカ・キツネは花畑、カワウソは水辺へ。エサを与えた動物を近づけて調べよう。空の生息地は誘導道具で種類を変えられる。</p></section><section class="game-info-section"><h3>道具</h3><p>種でつる橋を作ろう。第2章では羽を使い、近くの地面に風錨を2つまで置ける。回収しても羽は戻らない。黄昏ギツネは灯りに沿って導こう。</p></section><section class="game-info-section"><h3>ステージ</h3><p>2章、全60ステージです。ベリーを食べる草原ウサギから始まり、8面で岩ガメの重し板、18面で水辺の生息地、21面でランタンをたどるキツネが登場します。31面からは羽で風錨を設置し、風よけや浮き橋の経路を作ります。後半は仕組みを組み合わせ、納品量も増えます。</p></section><section class="game-info-section"><h3>研究点</h3><p>調べられる距離が6mから8mに伸びる。</p><p>追従が1匹増え、移動速度が10%下がる。</p><p>エサを3回与えるごとに生産物が1つ増える。</p><p>各探索で2つ目の風錨の設置が1回無料。</p></section><section class="game-info-section"><h3>この端末に保存済み</h3><p>ログインは不要です。クリア状況、研究、装備、探索の途中経過はこのブラウザに保存されます。サイトデータを消すと進行も消えます。研究点は初回クリアのみ獲得できます。ダイヤで買う外観は任意で、攻略に必要ありません。</p></section><section class="game-info-section"><h3>設計ノート</h3><p>腕の道具は、動物を風景の中に残すための設計です。持ち物にしまうのではなく、エサをあげて家へ導きます。鳥は隙間を飛び越え、カメは安全な道を、キツネは明かりを必要とします。道選びが探索とキャンプをつなぎます。</p></section></div><div id="gameGuideFaq" class="game-info-section" data-wp-content-slot="guide-faq" data-wp-intro-faq><details><summary>動物が食べない、ついてこないのはなぜ？</summary><p>食べ物を集め、動物を狙って好物を与えよう。安全な道を進み、誘導道具で待機と追従を切り替えよう。</p></details><details><summary>風の樹が復元されないのはなぜ？</summary><p>指定された動物を住まわせ、露・種・羽を風の樹へ届けます。橋や重し板、風錨が必要な面もあります。生産物は30個まで持てるので、分けて届けましょう。落下で救助信号を1個使い、3回目で探索終了です。時間制限はありません。</p></details><details><summary>風錨はどう移動する？</summary><p>種でつる橋を作ろう。第2章では羽を使い、近くの地面に風錨を2つまで置ける。回収しても羽は戻らない。黄昏ギツネは灯りに沿って導こう。</p></details><details><summary>進行状況はどこに保存される？</summary><p>ログインは不要です。クリア状況、研究、装備、探索の途中経過はこのブラウザに保存されます。サイトデータを消すと進行も消えます。研究点は初回クリアのみ獲得できます。ダイヤで買う外観は任意で、攻略に必要ありません。</p></details></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-habitat-builder" href="/ja/games/animal-habitat-builder/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-builder.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="ハビタット・ビルダー" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ハビタット・ビルダー</strong></span></a><a class="game-info-related-card" data-game-id="animal-habitat-atlas" href="/ja/games/animal-habitat-atlas/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-atlas.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="ハビタット・アトラス" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ハビタット・アトラス</strong></span></a></div></div></div></section></div>
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-authored-guide="true" data-wp-guide-renderer="i18n.mjs?wp-media=a5465b2863a3bbab#renderGuide" aria-label="遊び方" data-wp-entry-guide=""><div id="gameGuideTitle" class="game-info-hero" data-wp-content-slot="guide-title"><h2>雲原の牧守</h2></div><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><span class="game-info-tag">一人称アドベンチャー</span><span class="game-info-tag">動物の誘導</span><span class="game-info-tag">生息地管理</span></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><section class="game-info-section"><h3>必要な動物を迎え、風の樹に生産物を届けよう。</h3><p data-wp-intro-faq-source>雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。</p><p>指定された動物を住まわせ、露・種・羽を風の樹へ届けます。橋や重し板、風錨が必要な面もあります。生産物は30個まで持てるので、分けて届けましょう。落下で救助信号を1個使い、3回目で探索終了です。時間制限はありません。</p></section><section class="game-info-section"><h3>遊び方</h3><p>WASDか左スティックで移動。画面ドラッグか矢印キーで視点移動。Eで調べる、Qで道具、Fで食べ物、空白でジャンプ、Hで説明、Lでマウス固定。</p><p>食べ物を集め、動物を狙って好物を与えよう。安全な道を進み、誘導道具で待機と追従を切り替えよう。</p></section><section class="game-info-section"><h3>生息地</h3><p>ウサギとカメは草地、鳥・シカ・キツネは花畑、カワウソは水辺へ。エサを与えた動物を近づけて調べよう。空の生息地は誘導道具で種類を変えられる。</p></section><section class="game-info-section"><h3>道具</h3><p>種でつる橋を作ろう。第2章では羽を使い、近くの地面に風錨を2つまで置ける。回収しても羽は戻らない。黄昏ギツネは灯りに沿って導こう。</p></section><section class="game-info-section"><h3>ステージ</h3><p>2章、全60ステージです。ベリーを食べる草原ウサギから始まり、8面で岩ガメの重し板、18面で水辺の生息地、21面でランタンをたどるキツネが登場します。31面からは羽で風錨を設置し、風よけや浮き橋の経路を作ります。後半は仕組みを組み合わせ、納品量も増えます。</p></section><section class="game-info-section"><h3>研究点</h3><p>調べられる距離が6mから8mに伸びる。</p><p>追従が1匹増え、移動速度が10%下がる。</p><p>エサを3回与えるごとに生産物が1つ増える。</p><p>各探索で2つ目の風錨の設置が1回無料。</p></section><section class="game-info-section"><h3>この端末に保存済み</h3><p>ログインは不要です。クリア状況、研究、装備、探索の途中経過はこのブラウザに保存されます。サイトデータを消すと進行も消えます。研究点は初回クリアのみ獲得できます。ダイヤで買う外観は任意で、攻略に必要ありません。</p></section><section class="game-info-section"><h3>設計ノート</h3><p>腕の道具は、動物を風景の中に残すための設計です。持ち物にしまうのではなく、エサをあげて家へ導きます。鳥は隙間を飛び越え、カメは安全な道を、キツネは明かりを必要とします。道選びが探索とキャンプをつなぎます。</p></section></div><div id="gameGuideFaq" class="game-info-section" data-wp-content-slot="guide-faq" data-wp-intro-faq><details><summary>動物が食べない、ついてこないのはなぜ？</summary><p>食べ物を集め、動物を狙って好物を与えよう。安全な道を進み、誘導道具で待機と追従を切り替えよう。</p></details><details><summary>風の樹が復元されないのはなぜ？</summary><p>指定された動物を住まわせ、露・種・羽を風の樹へ届けます。橋や重し板、風錨が必要な面もあります。生産物は30個まで持てるので、分けて届けましょう。落下で救助信号を1個使い、3回目で探索終了です。時間制限はありません。</p></details><details><summary>風錨はどう移動する？</summary><p>種でつる橋を作ろう。第2章では羽を使い、近くの地面に風錨を2つまで置ける。回収しても羽は戻らない。黄昏ギツネは灯りに沿って導こう。</p></details><details><summary>進行状況はどこに保存される？</summary><p>ログインは不要です。クリア状況、研究、装備、探索の途中経過はこのブラウザに保存されます。サイトデータを消すと進行も消えます。研究点は初回クリアのみ獲得できます。ダイヤで買う外観は任意で、攻略に必要ありません。</p></details></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"><div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>関連ゲームをもっと見る</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-habitat-builder" href="/ja/games/animal-habitat-builder/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-builder.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="ハビタット・ビルダー" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ハビタット・ビルダー</strong></span></a><a class="game-info-related-card" data-game-id="animal-habitat-atlas" href="/ja/games/animal-habitat-atlas/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-habitat-atlas.webp?wp-media=a5465b2863a3bbab" data-final-src="/assets/weightplay-logo.png.webp?wp-media=a5465b2863a3bbab" alt="ハビタット・アトラス" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">ハビタット・アトラス</strong></span></a></div></div></div><article class="game-info-section" data-wp-intro-faq><h3>よくある質問</h3><dl><dt>このゲームでは何をしますか？</dt><dd>雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。</dd></dl></article></section></div>
 <section id="stageScreen" class="stage-screen" hidden><div id="stageCanvas" class="stage-canvas" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab" style="--wp-stage-art:url('/games/skymeadow-keeper/art/poster.webp?wp-media=a5465b2863a3bbab')">
 <header id="stageHeader" data-wp-shell-header="stage"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="戻る">←</button><span data-wp-frame-title hidden></span></header>
 <section id="stageWorkspace" data-wp-stage-workspace><div id="stagePage"><div id="stageRail" data-wp-stage-rail></div></div><div id="fieldPanel" class="management" hidden></div><div id="workshopPanel" class="management" hidden></div></section>
@@ -36,5 +216,5 @@
 <div id="battleOverlay" class="sky-overlay" role="dialog" aria-modal="true" aria-labelledby="battleModalTitle" hidden><div class="sky-dialog"><h2 id="battleModalTitle"></h2><div class="modal-body"></div><div class="modal-actions"></div></div></div>
 <div id="resultPanel" class="sky-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="sky-dialog" data-wp-result-card><h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultSaved" role="status"></p><div class="result-actions"><button id="resultStages" data-copy="stages">ステージ</button><button id="resultNext" data-copy="next">次へ</button><button id="resultReplay" data-copy="replay">再挑戦</button></div></div></div>
 </div></section></div>
-<script src="/src/stage-selector-standard.js?wp-media=a5465b2863a3bbab" data-wp-stage-standard data-wp-entry-required></script><script src="/src/battle-canvas-standard.js?wp-media=a5465b2863a3bbab" data-wp-battle-standard data-wp-entry-required></script><script src="/src/stage-rail-i9.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-play-ui.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/virtual-joystick.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-screen-frame.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script type="module" src="/games/skymeadow-keeper/game.mjs?v=20261107-action-guide-v8&amp;wp-build=e031398bbf30da63&wp-media=a5465b2863a3bbab" data-wp-entry-required></script>
+<script src="/src/stage-selector-standard.js?wp-media=a5465b2863a3bbab" data-wp-stage-standard data-wp-entry-required></script><script src="/src/battle-canvas-standard.js?wp-media=a5465b2863a3bbab" data-wp-battle-standard data-wp-entry-required=""></script><script src="/src/stage-rail-i9.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-play-ui.js?wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script><script src="/src/virtual-joystick.js?wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script><script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=a5465b2863a3bbab" data-wp-entry-required></script><script type="module" src="/games/skymeadow-keeper/game.mjs?v=entry-initial-ff1d99a59495&amp;wp-build=e031398bbf30da63&wp-media=a5465b2863a3bbab" data-wp-entry-required=""></script>
 </body></html>
