@@ -1,0 +1,1 @@
+window.WeightPlayFirstMoveCopy={en:["Replay tutorial"],"zh-Hant":["重玩操作教學"],"zh-Hans":["重玩操作教学"],ja:["チュートリアルをやり直す"],ko:["튜토리얼 다시 하기"],es:["Repetir tutorial"],"pt-BR":["Repetir tutorial"],fr:["Rejouer le tutoriel"],de:["Tutorial wiederholen"],it:["Ripeti il tutorial"],ru:["Повторить обучение"],hi:["ट्यूटोरियल फिर खेलें"],ar:["أعد لعب الدرس"]};

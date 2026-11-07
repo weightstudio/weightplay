@@ -10,5 +10,5 @@
 .native-teaching-host[data-opening-lesson="animal-hoop-league"]{top:120px}
 @media(max-height:470px) and (orientation:landscape){
   .native-teaching-host[data-opening-lesson]{top:82px;bottom:auto;inset-inline:auto 12px;max-width:min(300px,calc(50vw - 28px))}
-  .native-teaching-host:is([data-opening-lesson="animal-trap-trail"],[data-opening-lesson="animal-bounce-brawl"]){inset-inline:12px auto}
+  .native-teaching-host:is([data-opening-lesson="animal-trap-trail"],[data-opening-lesson="animal-bounce-brawl"],[data-opening-lesson="animal-deep-sea-salvage"]){inset-inline:12px auto}
 }

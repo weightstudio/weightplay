@@ -1,0 +1,1 @@
+#atlasLesson:empty{display:none}#atlasLesson{min-width:0}.rescue-inspector:has(#atlasLesson:not(:empty)){grid-template-rows:auto!important;align-content:center}.rescue-inspector:has(#atlasLesson:not(:empty))>:not(#atlasLesson){display:none}#replayActionTutorial{margin-block:6px;min-height:44px;white-space:normal}

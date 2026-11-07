@@ -1,0 +1,1 @@
+#layerLesson:empty{display:none}#battleScreen .puzzle-scene:has(#layerLesson:not(:empty)){grid-template-rows:auto minmax(0,1fr);gap:4px}#replayActionTutorial{margin-block:8px;white-space:normal}

@@ -50,7 +50,7 @@
   }
   body.general-lobby-page[data-desktop-lobby] .game-hall-switch button:hover { background: var(--lobby-skin-selected); }
   body.general-lobby-page[data-desktop-lobby] .game-hall-switch .hall-tab-icon { inset-inline-start: 10px; width: 23px; height: 23px; }
-  body.general-lobby-page[data-desktop-lobby] .game-hall-switch span { font-size: 14px; }
+  body.general-lobby-page[data-desktop-lobby] .game-hall-switch span { font-size: 14px; overflow-wrap:anywhere; }
   body.general-lobby-page[data-desktop-lobby] .game-hall-switch small { display: none; }
   html[dir='rtl'] body.general-lobby-page[data-desktop-lobby] .game-hall-switch button { padding-inline: 40px 8px; }
   body.general-lobby-page[data-desktop-lobby] .lobby-topbar .lobby-search-row {

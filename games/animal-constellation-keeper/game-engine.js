@@ -111,10 +111,35 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v17", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v18", interface_version: 9, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
-  const show = (screen) => { stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();
+
+  const teachingStatus = $('battleStatus');
+  const teachingHost = document.createElement('div');
+  teachingHost.className = 'wp-first-move';
+  teachingHost.hidden = true;
+  teachingStatus.after(teachingHost);
+  const teachingCopy = () => window.WeightPlayFirstMoveCopy[state.locale] || window.WeightPlayFirstMoveCopy.en;
+  const teachingOption = () => maps[state.map].options.find(option => puzzle.assess(maps[state.map],option).every(Boolean))?.id;
+  const teaching = window.WeightPlayTutorial?.createActionGuide({
+    gameId: 'animal-constellation-keeper', revision: 1, host: teachingHost,
+    steps: [{id: 'select', title: () => teachingCopy()[0], instruction: () => teachingCopy()[1], target: () => document.querySelector(`[data-option-id="${teachingOption()}"]`)}],
+  });
+  function refreshTeaching() {
+    const active = Boolean(teaching?.active);
+    teachingHost.hidden = !active;
+    teachingStatus.hidden = active;
+    teaching?.refresh();
+  }
+
+  teachingHost.classList.add('battle-status');
+  const teachingReplay=document.createElement('button');
+  teachingReplay.id='constellationTeachingReplay';teachingReplay.type='button';
+  teachingReplay.className='secondary-btn wp-first-move-replay';teachingReplay.hidden=practiceRequested;
+  document.querySelector('[data-wp-game-guide]').append(teachingReplay);
+  teachingReplay.addEventListener('click',()=>{if(!practiceRequested)startMap(0,true);});
+  const show = (screen) => { if(screen!=='battle'){teaching?.stop();refreshTeaching();}stellar.settle(); state.screen = screen; const frameScene = screen === "result" ? "battle" : screen; document.querySelectorAll("#mainScreen, #stageScreen, #battleScreen").forEach((node) => { node.hidden = node.dataset.screen !== frameScene; }); $("battleContent").hidden = screen === "result"; $("resultScreen").hidden = screen !== "result"; document.body.dataset.screen = screen; sharedFrame.activate(frameScene);placePracticeBadge();
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})[screen] ?? null;
       if (["result"].includes(screen) && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -287,8 +312,8 @@
       hero.replaceChildren();
       const neutral = document.createElement("span"); neutral.className = "ck-neutral-star"; neutral.textContent = "✧"; hero.append(neutral);
     }
-    $("checkBtn").disabled = !state.selected || Boolean(evaluation);
-    $("clearBtn").disabled = !state.selected;
+    $("checkBtn").disabled = !state.selected || Boolean(evaluation) || Boolean(teaching?.active);
+    $("clearBtn").disabled = !state.selected || Boolean(teaching?.active);refreshTeaching();
     battleRoot.style.setProperty("--arc-hue", String(175 + current.arc * 21));
   };
   const resultSaveWarning={"en":"Progress could not be saved. Restore storage and replay this map.","zh-Hant":"\u9032\u5ea6\u7121\u6cd5\u5132\u5b58\u3002\u8acb\u6062\u5fa9\u5132\u5b58\u529f\u80fd\u4e26\u91cd\u73a9\u9019\u5f35\u5730\u5716\u3002","zh-Hans":"\u8fdb\u5ea6\u65e0\u6cd5\u4fdd\u5b58\u3002\u8bf7\u6062\u590d\u5b58\u50a8\u529f\u80fd\u5e76\u91cd\u73a9\u8fd9\u5f20\u5730\u56fe\u3002","ja":"\u9032\u884c\u72b6\u6cc1\u3092\u4fdd\u5b58\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u4fdd\u5b58\u6a5f\u80fd\u3092\u5fa9\u65e7\u3057\u3066\u3001\u3053\u306e\u30de\u30c3\u30d7\u3092\u3082\u3046\u4e00\u5ea6\u30d7\u30ec\u30a4\u3057\u3066\u304f\u3060\u3055\u3044\u3002","ko":"\uc9c4\ud589 \uc0c1\ud669\uc744 \uc800\uc7a5\ud558\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \uc800\uc7a5 \uae30\ub2a5\uc744 \ubcf5\uad6c\ud55c \ud6c4 \uc774 \uc9c0\ub3c4\ub97c \ub2e4\uc2dc \ud50c\ub808\uc774\ud558\uc138\uc694.","es":"No se pudo guardar el progreso. Restablece el almacenamiento y vuelve a jugar este mapa.","pt-BR":"N\u00e3o foi poss\u00edvel salvar o progresso. Restaure o armazenamento e jogue este mapa novamente.","fr":"Impossible d\u2019enregistrer la progression. R\u00e9tablissez le stockage et rejouez cette carte.","de":"Der Fortschritt konnte nicht gespeichert werden. Stelle den Speicher wieder her und spiele diese Karte erneut.","it":"Impossibile salvare i progressi. Ripristina l\u2019archiviazione e rigioca questa mappa.","ru":"\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043f\u0440\u043e\u0433\u0440\u0435\u0441\u0441. \u0412\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435 \u0438 \u043f\u0440\u043e\u0439\u0434\u0438\u0442\u0435 \u044d\u0442\u0443 \u043a\u0430\u0440\u0442\u0443 \u0441\u043d\u043e\u0432\u0430.","hi":"\u092a\u094d\u0930\u0917\u0924\u093f \u0938\u0939\u0947\u091c\u0940 \u0928\u0939\u0940\u0902 \u091c\u093e \u0938\u0915\u0940\u0964 \u0938\u0902\u0917\u094d\u0930\u0939\u0923 \u092c\u0939\u093e\u0932 \u0915\u0930\u0947\u0902 \u0914\u0930 \u092f\u0939 \u092e\u093e\u0928\u091a\u093f\u0924\u094d\u0930 \u092b\u093f\u0930 \u0916\u0947\u0932\u0947\u0902\u0964","ar":"\u062a\u0639\u0630\u0651\u0631 \u062d\u0641\u0638 \u0627\u0644\u062a\u0642\u062f\u0645. \u0627\u0633\u062a\u0639\u062f \u0627\u0644\u062a\u062e\u0632\u064a\u0646 \u0648\u0623\u0639\u062f \u0644\u0639\u0628 \u0647\u0630\u0647 \u0627\u0644\u062e\u0631\u064a\u0637\u0629."};
@@ -320,20 +345,23 @@
   };
   const openStage = (preserveSelection = false) => { if (!preserveSelection) stageSelectionIndex = practiceEnabled?Math.max(30,state.map):Math.min(state.completed, maps.length - 1); show("stage"); renderStages(); };
   function requestMap(index){window.WeightPlayCastle?.dismissRewardNotice("animal-constellation-keeper");if(practiceRequested)return practiceAdapter?.challenge('animal-constellation-keeper',String(index+1));return startMap(index);}
-  const startMap = (index) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length||(practiceRequested&&(!practiceEnabled||index<30))) return; state.map = index; stageSelectionIndex = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {};state.lensUsed=false;state.lensEliminated=''; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } show("battle"); renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
+  const startMap = (index,replay=false) => { if (!Number.isInteger(index) || index > state.completed || index < 0 || index >= maps.length||(practiceRequested&&(!practiceEnabled||index<30))) return; state.map = index; stageSelectionIndex = index; state.selected = ""; state.mapChecks = 0; state.clue = -1; state.evaluations = {};state.lensUsed=false;state.lensEliminated=''; if (index === 0) { state.checks = 0; state.sessionChecks = 0; state.streak = 0; } teaching?.stop();show("battle");if(index===0&&!practiceRequested)teaching?.start({replay});renderBattle(); stellar.enter(document.querySelector(".battle-content")); announce("waiting"); tone("game.start"); track("map_start", { map: state.map + 1, arc: maps[state.map].arc });
     const savedProgress=readProgressStrict();__wpMeasurement.stageId=state.map+1; __wpMeasurement.rewardEligible=savedProgress!==null&&state.map>=savedProgress; __wpMeasurement.saveSucceeded=false;
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 };
   const chooseOption = (id) => {
     if (state.screen !== "battle" || (practiceEnabled&&state.lensEliminated===id) || !maps[state.map].options.some(option => option.id === id)) return;
-    state.selected = id; renderBattle();
+    if(teaching?.active&&id!==teachingOption())return;
+    state.selected = id;
+    if(teaching?.active&&state.selected===teachingOption())teaching.accept('select',{accepted:true});
+    renderBattle();
     const previous = state.evaluations[id];
     announce(previous ? "reviewedBoard" : "selected", {}, previous ? "wrong" : "");
     stellar.trace(observatory); stellar.burst(observatory); tone("board.move"); track("constellation_select", { map: state.map + 1 });
   };
-  const clearChoice = () => { if (state.screen !== "battle") return; state.selected = ""; state.clue = -1; renderBattle(); announce("waiting"); track("constellation_clear", { map: state.map + 1 }); };
+  const clearChoice = () => { if (teaching?.active || state.screen !== "battle") return; state.selected = ""; state.clue = -1; renderBattle(); announce("waiting"); track("constellation_clear", { map: state.map + 1 }); };
   const checkChoice = () => {
-    if (state.screen !== "battle" || !state.selected || state.evaluations[state.selected]) return;
+    if (teaching?.active || state.screen !== "battle" || !state.selected || state.evaluations[state.selected]) return;
     const current = maps[state.map]; const option = current.options.find(item => item.id === state.selected);
     if (!option) return;
     state.checks++; state.sessionChecks++; state.mapChecks++;
@@ -365,6 +393,7 @@
     if (/^[123]$/.test(event.key)) { event.preventDefault(); chooseOption(maps[state.map].options[Number(event.key) - 1].id); }
   });
   const applyLocale = () => {
+    teachingReplay.textContent=teachingCopy()[2];refreshTeaching();
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.documentElement.dataset.weightPlayLocale = state.locale;

@@ -9,10 +9,29 @@ const lanternUncertainCopy={en:'Purchase could not be confirmed. Reload to check
 let locale=detectLocale(),save=readSave(localStorage),screen='main',tab='journey',selected=0,run=null,raf=0,last=0,settling=0;
 const lanternRecovery=recoverLantern(localStorage,window.WeightPlayWallet,save);save=lanternRecovery.save;
 let purchaseUncertain=lanternRecovery.blocked;
-let scene,frame,rail,modal=null,previousFocus=null,settingsPaused=false,tutorialPaused=false,suspended=false,starting=false,buying=false,practice=false,everPractice=false,disposed=false;
-let tutorialTrigger=null,feedbackUntil=0,keyboard=new Set(),pointer=null,generation=0,saveFailed=false;
+let scene,frame,rail,modal=null,previousFocus=null,settingsPaused=false,suspended=false,starting=false,buying=false,practice=false,everPractice=false,disposed=false;
+let feedbackUntil=0,keyboard=new Set(),pointer=null,generation=0,saveFailed=false;
+
+  const teachingStatus = $('landingCue');
+  const teachingHost = document.createElement('div');
+  teachingHost.className = 'wp-first-move';
+  teachingHost.hidden = true;
+  teachingStatus.after(teachingHost);
+  const teachingCopy = () => window.WeightPlayFirstMoveCopy[locale] || window.WeightPlayFirstMoveCopy.en;
+  let teachingDrop=null,teachingArmed=false;
+  const canPersistTeaching=()=>!everPractice;
+  const teaching = window.WeightPlayTutorial?.createActionGuide({
+    gameId: 'animal-rain-roost', revision: 1, host: teachingHost, canPersist: canPersistTeaching,
+    steps: [{id: 'catch', title: () => teachingCopy()[0], instruction: () => teachingCopy()[1], target: () => $('laneControls').querySelector(`[data-lane="${teachingDrop?.lane}"]`)}],
+  });
+  function refreshTeaching() {
+    const active = Boolean(teaching?.active);
+    teachingHost.hidden = !active;
+    teachingStatus.hidden = active;
+    teaching?.refresh();
+  }
 const measurement={screen:'main',roundKey:null,started:false,ended:false,outcome:'abandon',stageId:null,stageIdAuthoritative:true,rewardEligible:false,saveSucceeded:false};
-const readMeasurement=()=>({...measurement,paused:document.hidden||!!modal||settingsPaused||tutorialPaused||suspended,node:document.body,activityMode:'input',idleSeconds:300});
+const readMeasurement=()=>({...measurement,paused:document.hidden||!!modal||settingsPaused||suspended,node:document.body,activityMode:'input',idleSeconds:300});
 function notifyMeasurement(){try{window.WonderAnalytics?.game?.observeState(readMeasurement)}catch{/* Optional shared telemetry. */}}
 window.addEventListener('weightplay:analytics-ready',notifyMeasurement);notifyMeasurement();
 function storedStageCleared(index){try{const raw=localStorage.getItem(SAVE_KEY);if(raw===null)return false;const value=JSON.parse(raw),star=value?.stars?.[index];if(!value||!Array.isArray(value.stars)||!Number.isInteger(star)||star<0||star>3)return null;return star>0;}catch{return null;}}
@@ -24,11 +43,12 @@ const play=id=>audio.play(id);
 const soundIds=['water.splash','reward.collect','impact.soft','feedback.error','game.start','game.checkpoint','result.win','result.lose','reward.unlock','shop.purchase'];
 window.WeightPlayAudio.preload(soundIds);
 const modalRoots=[$('resultView'),$('leaveView'),$('pauseView'),$('purchaseView')];
-const activeRun=()=>screen==='battle'&&run&&!run.ended&&!modal&&!settingsPaused&&!tutorialPaused&&!suspended&&!document.hidden;
+const activeRun=()=>screen==='battle'&&run&&!run.ended&&!modal&&!settingsPaused&&!suspended&&!document.hidden;
 const cleared=()=>save.stars.filter(Boolean).length;
 const totalStars=()=>save.stars.reduce((sum,n)=>sum+n,0);
 
 function applyLocale(){
+  refreshTeaching();
   document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
   document.querySelectorAll('[data-copy]').forEach(node=>{node.textContent=t(node.dataset.copy)});
   $('localeSelect').value=locale;
@@ -63,7 +83,7 @@ function cancelEffects(){for(const item of flights){item.animation.cancel();item
 function resetInputs(){keyboard.clear();if(pointer!==null){try{$('rainCanvas').releasePointerCapture(pointer)}catch{}}pointer=null;}
 function hideModals(){for(const node of modalRoots)node.hidden=true;modal=null;setInert();}
 function setInert(){
-  const covered=Boolean(modal)||tutorialPaused;
+  const covered=Boolean(modal);
   $('battleContent').inert=covered;
   $('battleScreen').querySelector('[data-wp-frame-header]')?.toggleAttribute('inert',covered);
   $('stageContent').inert=modal===$('purchaseView');
@@ -71,10 +91,11 @@ function setInert(){
   $('stageScreen').querySelector('nav')?.toggleAttribute('inert',modal===$('purchaseView'));
 }
 function showScreen(next){
+  if(next!=='battle'){teaching?.stop();refreshTeaching();}
   if(next!=='battle'&&measurement.started&&!measurement.ended){measurement.ended=true;measurement.outcome='abandon';measurement.saveSucceeded=false;}
   measurement.screen=next;notifyMeasurement();
   generation++;cancelAnimationFrame(raf);raf=0;last=0;resetInputs();cancelEffects();hideModals();
-  screen=next;suspended=false;settingsPaused=false;tutorialPaused=false;
+  screen=next;suspended=false;settingsPaused=false;
   document.body.dataset.screen=next;
   for(const [name,id] of [['main','mainScreen'],['stage','stageScreen'],['battle','battleScreen']]){
     $(id).hidden=name!==next;$(id).inert=name!==next;
@@ -88,11 +109,13 @@ function showScreen(next){
   if(next==='battle')schedule();
 }
 function openModal(node,focus){
+  teaching?.pause(true);
   if(modal&&modal!==node)modal.hidden=true;
   previousFocus=document.activeElement;modal=node;node.hidden=false;resetInputs();setInert();last=0;
   (focus||node.querySelector('button:not(:disabled)'))?.focus({preventScroll:true});
 }
 function closeModal(restore=true){
+  teaching?.pause(false);
   if(modal)modal.hidden=true;modal=null;setInert();last=0;
   if(restore&&previousFocus?.isConnected&&!previousFocus.closest('[hidden]'))previousFocus.focus({preventScroll:true});
   if(activeRun())schedule();
@@ -116,6 +139,9 @@ function flyCount(event){
   const item={node,animation};flights.add(item);animation.finished.catch(()=>{}).finally(()=>{node.remove();flights.delete(item)});
 }
 function onGameEvent(kind,event){
+  if(teaching?.active&&teachingArmed&&event===teachingDrop&&(kind==='rain'||kind==='gold')&&run.caught===1){
+    teaching.accept('catch',{accepted:true});refreshTeaching();
+  }
   scene.impact(kind,event,reduced.matches);
   if(kind==='rain'||kind==='gold'){play(kind==='gold'?'reward.collect':'water.splash');feedback(kind==='gold'?`${t('gold')} +1 · ${t('combo')} ${run.combo}`:`${t('caught')} ×${run.combo}`);flyCount(event)}
   else if(kind==='leaf'){play('impact.soft');feedback(`${t('leaves')} · ${t('combo')} 0`)}
@@ -135,14 +161,22 @@ function renderHUD(){
   for(const button of $('laneControls').children)button.setAttribute('aria-pressed',String(Math.round(run.targetX)===Number(button.dataset.lane)));
   if(run.time>feedbackUntil)$('feedback').textContent='';
 }
+function aim(lane){
+  if(!activeRun()||(teaching?.active&&teachingArmed))return;
+  move(run,lane);
+  if(teaching?.active&&Math.round(run.targetX)===teachingDrop?.lane){
+    move(run,teachingDrop.lane);teachingArmed=true;keyboard.clear();
+  }
+}
 function schedule(){if(!raf&&!disposed&&screen==='battle')raf=requestAnimationFrame(loop);}
 function loop(now){
   raf=0;if(screen!=='battle'||disposed)return;
   const dt=last?Math.min(.05,(now-last)/1000):0;last=now;
   if(activeRun()){
     const direction=Number(keyboard.has('right'))-Number(keyboard.has('left'));
-    if(direction)move(run,run.targetX+direction*dt*4.8);
-    tick(run,dt,onGameEvent);renderHUD();
+    if(direction)aim(run.targetX+direction*dt*4.8);
+    if(!teaching?.active||teachingArmed)tick(run,dt,onGameEvent);
+    renderHUD();
   }
   const animating=activeRun()||(run?.ended&&settling>0&&!document.hidden);
   scene.render(run,animating?dt:0,{reduced:reduced.matches,lantern:save.lantern&&save.lanternOn});
@@ -150,7 +184,7 @@ function loop(now){
   if(run?.ended)settling=Math.max(0,settling-dt);
   if(animating)schedule();else last=0;
 }
-async function startBattle(index){
+async function startBattle(index,replay=false){
   if(starting||disposed)return;
   starting=true;const stamp=generation;
   try{
@@ -158,7 +192,9 @@ async function startBattle(index){
     if(stamp!==generation)return;
     if(!practice&&index+1>save.unlocked){play('feedback.error');return;}
     selected=Math.max(0,Math.min(29,index));run=createRun(selected+1,save.equipment);scene.reset();settling=0;
-    showScreen('battle');
+    teaching?.stop();teachingArmed=false;teachingDrop=run.stage.events.find(event=>event.kind!=='leaf');
+    if(selected===0&&!everPractice&&teachingDrop)teaching?.start({replay:replay===true});
+    showScreen('battle');refreshTeaching();
     const stored=storedStageCleared(selected);window.WeightPlayCastle?.dismissRewardNotice?.(GAME);
     Object.assign(measurement,{screen:'battle',roundKey:{},started:true,ended:false,outcome:'abandon',stageId:selected+1,rewardEligible:!everPractice&&stored===false,saveSucceeded:false});notifyMeasurement();
     renderHUD();feedback(t('ready'));play('game.start');
@@ -228,7 +264,7 @@ async function purchase(){
 }
 function pauseForVisibility(){
   resetInputs();cancelAnimationFrame(raf);raf=0;last=0;
-  if(screen==='battle'&&run&&!run.ended&&!modal&&!tutorialPaused){suspended=true;openModal($('pauseView'),$('resumeButton'));}
+  if(screen==='battle'&&run&&!run.ended&&!modal){suspended=true;openModal($('pauseView'),$('resumeButton'));}
 }
 
 // Initialize the explicit shared frame once. All scene roots remain permanent.
@@ -265,20 +301,18 @@ listen($('cancelBuy'),'click',()=>{if(!buying)closeModal()});listen($('confirmBu
 listen($('localeSelect'),'change',()=>{locale=$('localeSelect').value;try{localStorage.setItem('weightplay-rain-roost-locale',locale)}catch{}window.WonderI18n?.setLocale?.(locale);applyLocale()});
 listen(window,'wonder:locale-change',()=>{const candidate=window.WonderI18n?.actualLocale?.();if(COPY[candidate]){locale=candidate;applyLocale()}});
 listen(window,'storage',event=>{if(event.key===SAVE_KEY){save=readSave(localStorage);renderProgress();renderGear();rail.refresh(selected)}else if(event.key===window.WeightPlayWallet.key)renderGear()});
-for(const button of $('laneControls').children)listen(button,'click',()=>{if(activeRun()){move(run,Number(button.dataset.lane));$('rainCanvas').focus({preventScroll:true})}});
-listen($('rainCanvas'),'pointerdown',event=>{if(!activeRun())return;pointer=event.pointerId;$('rainCanvas').setPointerCapture(pointer);$('rainCanvas').focus({preventScroll:true});move(run,scene.inputLane(event.clientX));event.preventDefault()});
-listen($('rainCanvas'),'pointermove',event=>{if(activeRun()&&pointer===event.pointerId){move(run,scene.inputLane(event.clientX));event.preventDefault()}});
+for(const button of $('laneControls').children)listen(button,'click',()=>{if(activeRun()){aim(Number(button.dataset.lane));$('rainCanvas').focus({preventScroll:true})}});
+listen($('rainCanvas'),'pointerdown',event=>{if(!activeRun())return;pointer=event.pointerId;$('rainCanvas').setPointerCapture(pointer);$('rainCanvas').focus({preventScroll:true});aim(scene.inputLane(event.clientX));event.preventDefault()});
+listen($('rainCanvas'),'pointermove',event=>{if(activeRun()&&pointer===event.pointerId){aim(scene.inputLane(event.clientX));event.preventDefault()}});
 for(const type of ['pointerup','pointercancel','lostpointercapture'])listen($('rainCanvas'),type,event=>{if(pointer===event.pointerId)pointer=null});
 listen(document,'keydown',event=>{
-  const tutorial=document.querySelector('.wp-tutorial-backdrop');
-  if(tutorial){trapFocus(event,tutorial);if(event.key==='Escape')tutorial.querySelector('.wp-tutorial-close')?.click();return;}
   if(modal){trapFocus(event,modal);if(event.key==='Escape'&&modal!==$('resultView')&&!buying){if(modal===$('pauseView'))suspended=false;closeModal();event.preventDefault()}return;}
   if(event.defaultPrevented)return;
   if(event.key==='Escape'&&activeRun()){openModal($('leaveView'),$('keepPlaying'));return;}
   if(!activeRun()||document.activeElement!==$('rainCanvas'))return;
-  if(['ArrowLeft','a','A'].includes(event.key)){keyboard.add('left');move(run,run.targetX-.1);event.preventDefault()}
-  if(['ArrowRight','d','D'].includes(event.key)){keyboard.add('right');move(run,run.targetX+.1);event.preventDefault()}
-  if(/^[1-5]$/.test(event.key)){move(run,Number(event.key)-1);event.preventDefault()}
+  if(['ArrowLeft','a','A'].includes(event.key)){keyboard.add('left');aim(run.targetX-.1);event.preventDefault()}
+  if(['ArrowRight','d','D'].includes(event.key)){keyboard.add('right');aim(run.targetX+.1);event.preventDefault()}
+  if(/^[1-5]$/.test(event.key)){aim(Number(event.key)-1);event.preventDefault()}
 });
 listen(document,'keyup',event=>{if(['ArrowLeft','a','A'].includes(event.key))keyboard.delete('left');if(['ArrowRight','d','D'].includes(event.key))keyboard.delete('right')});
 listen(window,'weightplay:interaction-state',()=>{settingsPaused=Boolean(document.querySelector('.wp-frame-settings[aria-expanded="true"]'));resetInputs();last=0;if(!settingsPaused&&activeRun())schedule()});
@@ -287,19 +321,25 @@ listen(window,'blur',pauseForVisibility);
 listen(window,'focus',()=>{if(screen==='battle')schedule()});
 listen($('rainCanvas'),'webglcontextlost',event=>{event.preventDefault();pauseForVisibility();$('pauseTitle').textContent=t('retry');$('resumeButton').textContent=t('retry');$('resumeButton').onclick=()=>location.reload();});
 const resizeObserver=new ResizeObserver(()=>{if(screen==='battle'){scene.resize();if(!raf)scene.render(run,0,{reduced:reduced.matches,lantern:save.lantern&&save.lanternOn})}});resizeObserver.observe($('arena'));
-listen(window,'pagehide',event=>{pauseForVisibility();if(!event.persisted){disposed=true;generation++;resizeObserver.disconnect();cancelEffects();audio.dispose();scene.dispose();rail.destroy();frame.destroy();abort.abort()}});
+listen(window,'pagehide',event=>{pauseForVisibility();if(!event.persisted){teaching?.destroy();disposed=true;generation++;resizeObserver.disconnect();cancelEffects();audio.dispose();scene.dispose();rail.destroy();frame.destroy();abort.abort()}});
 listen(window,'pageshow',event=>{if(event.persisted&&screen==='battle')schedule()});
 
 await LocalPractice.ready;
 practice=LocalPractice.enabled;everPractice=practice;
-window.RAIN_ROOST_TUTORIAL={persistSeen:!everPractice,title:Object.fromEntries(LOCALES.map(code=>[code,COPY[code].ready])),steps:['controls','goals','growth'].map((key,i)=>({icon:String(i+1),...Object.fromEntries(LOCALES.map(code=>[code,[COPY[code][key],COPY[code][['controlText','goalText','growthText'][i]]]]))}))};
-if(everPractice)document.body.dataset.tutorialAutoShow='false';
-listen(window,'weightplay:tutorial-open',event=>{
-  if(event.detail.gameId!==GAME)return;tutorialPaused=true;resetInputs();setInert();last=0;
-  document.querySelector('.wp-tutorial-backdrop button')?.focus({preventScroll:true});
+const teachingHelp=document.createElement('section');
+teachingHelp.id='rainTeachingHelp';teachingHelp.hidden=true;teachingHelp.className='rain-modal';
+teachingHelp.setAttribute('role','dialog');teachingHelp.setAttribute('aria-modal','true');teachingHelp.setAttribute('aria-labelledby','rainTeachingHelpTitle');
+teachingHelp.innerHTML='<div class="rain-modal-card"><h2 id="rainTeachingHelpTitle"></h2><p data-help-text></p><div class="modal-actions"><button type="button" data-teaching-stay></button><button type="button" id="rainTeachingReplay"></button></div></div>';
+$('leaveView').after(teachingHelp);
+const teachingReplay=$('rainTeachingReplay'),teachingStay=teachingHelp.querySelector('[data-teaching-stay]');
+listen(teachingStay,'click',()=>closeModal());
+listen(teachingReplay,'click',()=>{if(!everPractice){closeModal(false);void startBattle(0,true);}});
+listen($('helpButton'),'click',()=>{
+  $('rainTeachingHelpTitle').textContent=t('controls');
+  teachingHelp.querySelector('[data-help-text]').textContent=[t('controlText'),t('goalText'),t('growthText')].join(' ');
+  teachingStay.textContent=$('keepPlaying').textContent;
+  teachingReplay.textContent=teachingCopy()[2];teachingReplay.hidden=everPractice;
+  openModal(teachingHelp,teachingStay);
 });
-listen(window,'weightplay:tutorial-close',event=>{if(event.detail.gameId!==GAME)return;tutorialPaused=false;setInert();last=0;if(screen==='battle'){$('rainCanvas').focus({preventScroll:true});schedule()}});
-await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='/src/tutorial.js?v=20261023-rain-roost-v6&wp-media=38786ea4992abdbf';script.onload=resolve;script.onerror=reject;document.body.append(script)});
-tutorialTrigger=document.querySelector('.wp-tutorial-button');if(tutorialTrigger){tutorialTrigger.hidden=true;listen($('helpButton'),'click',()=>tutorialTrigger.click())}
 renderGear();$('startButton').disabled=false;window.WeightPlayGameEntryLoader?.ready();
 await LocalPractice.register({gameId:GAME,stageIds:STAGES.map(s=>String(s.id)),enable(value){practice=value;everPractice=everPractice||value;renderGear();rail.refresh(selected)},startStage:id=>startBattle(Number(id)-1)});

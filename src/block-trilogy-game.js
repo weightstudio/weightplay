@@ -74,6 +74,7 @@ function complete(stats={}){if(!running)return;running=false;playPrismCue("resul
   const mosaicFirstClear=C.id==="animal-mosaic-clues"&&!save.cleared[selected];
   const saved=!lessonReplay&&(!checked||commitCrateSave(nextSave));
   const clearShown=saved||lessonReplay;
+  E.result.dataset.wpLessonReplay=String(lessonReplay);
   if(saved){if(checked)save=nextSave;else{save.cleared[selected]=true;save.unlocked=nextSave.unlocked;save.best[selected]=nextSave.best[selected];persist()}}
   if(C.id==="animal-cratebound")E.result.dataset.wpCrateSaveUnconfirmed=String(checked&&!saved&&!lessonReplay);
   if(C.id==="animal-mosaic-clues")E.result.dataset.wpMosaicSaveUnconfirmed=String(checked&&!saved&&!lessonReplay);

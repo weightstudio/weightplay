@@ -1,0 +1,7 @@
+.wp-compact-puzzle-lesson:empty { display:none; }
+:where(p,div):has(+ .wp-compact-puzzle-lesson:not(:empty)) { display:none; }
+.wp-compact-puzzle-lesson .wp-action-guide { padding:3px 6px; border-radius:7px; font-size:12px; line-height:1.22; }
+.wp-compact-puzzle-lesson .wp-action-guide-progress,.wp-compact-puzzle-lesson strong { display:inline; font-size:11px; }
+.wp-compact-puzzle-lesson strong { margin-inline-start:.4em; }
+.wp-compact-puzzle-lesson .wp-action-guide p { margin-block-start:2px; }
+.wp-compact-puzzle-replay { min-height:36px; padding:3px 12px; margin:4px; border:1px solid #8cbfb1; border-radius:8px; background:#173b49; color:#f3fff9; font:700 13px system-ui; cursor:pointer; }

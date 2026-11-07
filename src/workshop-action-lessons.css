@@ -1,0 +1,16 @@
+/* Keep the guidance in physical pixels while each game sizes its own scene. */
+.native-teaching-host[data-opening-lesson="block-apex"]{top:124px}
+.native-teaching-host[data-opening-lesson="castle-cascade"]{top:103px}
+.native-teaching-host[data-opening-lesson="robot-dog-showtime"]{top:105px}
+.native-teaching-host[data-opening-lesson="signal-snap"]{top:111px}
+.native-teaching-host[data-opening-lesson="smallwood-lives"]{top:104px}
+.native-teaching-host[data-opening-lesson="lantern-lasso"]{top:105px}
+body[data-wp-game-id="castle-cascade"] #board:has(.wp-action-guide-target){clip-path:none;direction:ltr}
+body[data-wp-game-id="castle-cascade"] #board .wp-action-guide-target{outline-offset:-3px;box-shadow:inset 0 0 0 2px #402c00;border-radius:7px}
+body[data-wp-game-id="traffic-jam-diner"] :is(.guest-hit,.stop-hit).wp-action-guide-target{box-shadow:0 0 0 3px #1e2f25,0 0 0 6px #ffe384}
+body:has(.native-teaching-host[data-opening-lesson="animal-blockmart"] .wp-action-guide:not([hidden])) #panel .business-guide{display:none}
+#cascade-replay-controls,#apex-replay-controls,#diner-replay-controls,#showtime-replay-controls,#blockmart-replay-controls,#lasso-replay-controls{min-height:40px;white-space:normal;overflow-wrap:anywhere}
+@media(max-height:470px) and (orientation:landscape){
+  .native-teaching-host:is([data-opening-lesson="pawflow"],[data-opening-lesson="nori-sandworks"],[data-opening-lesson="lantern-lasso"]){inset-inline:12px auto}
+  .native-teaching-host:is([data-opening-lesson="block-apex"],[data-opening-lesson="castle-cascade"],[data-opening-lesson="robot-dog-showtime"],[data-opening-lesson="signal-snap"],[data-opening-lesson="smallwood-lives"],[data-opening-lesson="lantern-lasso"]){top:82px}
+}

@@ -544,8 +544,14 @@ function gameHall(game) {
   return tabletopGameIds.has(game?.id) ? "tabletop" : "games";
 }
 
+function firstPersonHallIncludes(gameId, status) {
+  return status === "playable" && gameGenres.matches(gameId, "First Person");
+}
+
 function gameMatchesHall(game, hall = activeHall) {
-  return isKidsLobby || gameHall(game) === hall;
+  if (isKidsLobby) return true;
+  if (hall === "first-person") return firstPersonHallIncludes(game.id, game.status);
+  return gameHall(game) === hall;
 }
 
 function createDemonEventPreview() {
@@ -989,6 +995,10 @@ function primaryArt(game) {
 }
 
 function hallHeroImageSource(hall) {
+  if (hall === "first-person") {
+    const game = lobby.games.find((item) => gameMatchesHall(item, hall));
+    if (game) return new URL(game.art?.lobbyScene || primaryArt(game), document.baseURI).href;
+  }
   return hall === "topics"
     ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=38786ea4992abdbf"
     : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=38786ea4992abdbf";
@@ -1128,14 +1138,10 @@ function syncHallPresentation() {
 
 function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
   const params = new URLSearchParams(window.location.search);
-  const hall = params.get("hall");
-  const legacyFirstPersonHall = !isKidsLobby && hall === "first-person";
-  activeHall = isKidsLobby || legacyFirstPersonHall
-    ? "games" : selectedFilterValue(hallButtons, "hallTab", hall || "games");
+  activeHall = isKidsLobby ? "games" : selectedFilterValue(hallButtons, "hallTab", params.get("hall") || "games");
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
   const legacyGameType = params.get("gameType");
-  const legacyTopic = legacyFirstPersonHall ? "First Person"
-    : legacyGameType === "tower-defense" ? "Tower Defense" : legacyGameType;
+  const legacyTopic = legacyGameType === "tower-defense" ? "Tower Defense" : legacyGameType;
   activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || legacyTopic || "all");
   if (!isKidsLobby && activeTopic !== "all" && ![...catalogGames, ...upcomingPreviewGames()]
     .some((game) => gameMatchesHall(game) && topicMatches(game, activeTopic))) activeTopic = "all";
@@ -1760,8 +1766,11 @@ function cardMatchesFilterState(card, state) {
   const ages = card.dataset.age.split(" ");
   const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
   const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
+  const matchesHall = state.hall === "first-person"
+    ? firstPersonHallIncludes(card.dataset.gameId, card.dataset.status)
+    : card.dataset.hall === state.hall;
   return (
-    (isKidsLobby || state.hall === "all" || card.dataset.hall === state.hall) &&
+    (isKidsLobby || state.hall === "all" || matchesHall) &&
     matchesAgeFilter(ages, state.age) &&
     (state.topic === "all" || topics.includes(state.topic)) &&
     (state.skill === "all" || skills.includes(state.skill)) &&
@@ -2078,6 +2087,7 @@ function hallMotionImageSources(targetHall) {
   const featured = lobby.games.find(game => game.id === lobby.featuredGameId);
   if (featured && gameMatchesHall(featured, targetHall)) sources.add(lobbyThumbnail(primaryArt(featured), 480));
   const previewIds = targetHall === 'topics' ? [...topicGameIds]
+    : targetHall === 'first-person' ? gamesInHall(targetHall).map((game) => game.id)
     : targetHall === 'tabletop' ? tabletopHeroGameIds : lobby.heroGameIds;
   lobby.games.filter(game => gameMatchesHall(game, targetHall) && previewIds.includes(game.id))
     .slice(0, 5).forEach(game => sources.add(lobbyThumbnail(game.art?.background || primaryArt(game), 480)));
@@ -2978,22 +2988,23 @@ function applyFilter({ historyMode = "replace" } = {}) {
     activeLibrary === "recent" ? "library.recent" : activeLibrary === "favorites" ? "library.favorites" : "library.all_games"
   );
   if (!isKidsLobby && activeHall === 'topics') renderHeroGames();
-  heroGamesSection.classList.toggle("hidden", isFiltered || (!isKidsLobby && activeHall === "topics"));
-  latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || activeHall === "topics" || latestGames.childElementCount === 0);
-  discoverySnapshot?.classList.toggle("hidden", isFiltered);
-  continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
-  mobilePicksSection?.classList.toggle("hidden", isFiltered);
+  const hideDiscoveryShelves = isFiltered || activeHall === "first-person";
+  heroGamesSection.classList.toggle("hidden", hideDiscoveryShelves || (!isKidsLobby && activeHall === "topics"));
+  latestGamesSection.classList.toggle("hidden", hideDiscoveryShelves || isKidsLobby || activeHall === "topics" || latestGames.childElementCount === 0);
+  discoverySnapshot?.classList.toggle("hidden", hideDiscoveryShelves);
+  continuePlayingSection?.classList.toggle("filtered-out", hideDiscoveryShelves);
+  mobilePicksSection?.classList.toggle("hidden", hideDiscoveryShelves);
   const hideUpcoming = upcomingPreviewGames().length === 0
     || (isFiltered && upcomingVisibleCount === 0);
   if (upcomingGamesSection) {
     upcomingGamesSection.hidden = hideUpcoming;
     upcomingGamesSection.classList.toggle("hidden", hideUpcoming);
   }
-  characterShowcaseSection?.classList.toggle("hidden", isFiltered);
-  recommendationsSection?.classList.toggle("hidden", isFiltered);
-  freshUpdatesSection?.classList.toggle("hidden", isFiltered);
-  challengeSpotlightSection?.classList.toggle("hidden", isFiltered);
-  skillPathsSection?.classList.toggle("hidden", isFiltered);
+  characterShowcaseSection?.classList.toggle("hidden", hideDiscoveryShelves);
+  recommendationsSection?.classList.toggle("hidden", hideDiscoveryShelves);
+  freshUpdatesSection?.classList.toggle("hidden", hideDiscoveryShelves);
+  challengeSpotlightSection?.classList.toggle("hidden", hideDiscoveryShelves);
+  skillPathsSection?.classList.toggle("hidden", hideDiscoveryShelves);
   filterStatus.classList.toggle("results-active", isFiltered);
   filterStatus.classList.toggle("empty", visibleCount === 0);
   filterStatus.classList.toggle("has-filters", isFiltered && visibleCount > 0);

@@ -1,0 +1,1 @@
+#blueprintLesson:empty{display:none}#blueprintLesson{min-width:0}#blueprintLesson:not(:empty)+#prompt{display:none}#habitatGrid .habitat-tile[data-lesson-plot]{outline:3px solid #ffdc75;outline-offset:-4px}#replayActionTutorial{margin-block:6px;min-height:44px;white-space:normal}

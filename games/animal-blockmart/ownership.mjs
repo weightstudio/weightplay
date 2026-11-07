@@ -1,18 +1,1 @@
-const HANDOFF_KEY = 'blockmart.departing-owner';
-
-export function takeNavigationHandoff(storage) {
-  try {
-    const predecessor = storage.getItem(HANDOFF_KEY);
-    storage.removeItem(HANDOFF_KEY);
-    return predecessor;
-  } catch { return null; }
-}
-
-export function leaveNavigationHandoff(storage, documentId) {
-  try { storage.setItem(HANDOFF_KEY, documentId); } catch {}
-}
-
-export function canClaimOwner(owner, {documentId, tabToken, reload, predecessor, takeover}) {
-  return takeover || !owner || owner.documentId === documentId
-    || (owner.tabToken === tabToken && (reload || (Boolean(predecessor) && owner.documentId === predecessor)));
-}
+var u=Object.defineProperty;var e=(t,n)=>u(t,"name",{value:n,configurable:!0});const o="blockmart.departing-owner";export function takeNavigationHandoff(t){try{const n=t.getItem(o);return t.removeItem(o),n}catch{return null}}e(takeNavigationHandoff,"takeNavigationHandoff");export function leaveNavigationHandoff(t,n){try{t.setItem(o,n)}catch{}}e(leaveNavigationHandoff,"leaveNavigationHandoff");export function canClaimOwner(t,{documentId:n,tabToken:c,reload:r,predecessor:a,takeover:i}){return i||!t||t.documentId===n||t.tabToken===c&&(r||!!a&&t.documentId===a)}e(canClaimOwner,"canClaimOwner");

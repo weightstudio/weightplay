@@ -1,0 +1,15 @@
+window.WeightPlayFirstMoveCopy = {
+  en: ['Replay tutorial','Pack the hammer in the outlined slot.','Move stone A to the outlined dock.'],
+  'zh-Hant': ['重玩教學','把鐵鎚裝進框出的背包格。','把 A 磁石移到框出的停靠格。'],
+  'zh-Hans': ['重玩教学','把铁锤装进框出的背包格。','把 A 磁石移到框出的停靠格。'],
+  ja: ['チュートリアルを再プレイ','ハンマーを枠内のマスに入れます。','石 A を枠で囲まれた場所に移します。'],
+  ko: ['튜토리얼 다시 하기','망치를 표시된 배낭 칸에 넣으세요.','자석 A를 표시된 칸으로 옮기세요.'],
+  es: ['Repetir tutorial','Coloca el martillo en la casilla marcada de la mochila.','Mueve la piedra A a la base marcada.'],
+  'pt-BR': ['Repetir tutorial','Guarde o martelo no espaço marcado da mochila.','Mova a pedra A até a base marcada.'],
+  fr: ['Rejouer le tutoriel','Rangez le marteau dans la case encadrée du sac.','Déplacez la pierre A vers la case encadrée.'],
+  de: ['Anleitung wiederholen','Lege den Hammer in das markierte Rucksackfeld.','Bewege Stein A zur markierten Station.'],
+  it: ['Ripeti tutorial','Metti il martello nella casella evidenziata dello zaino.','Sposta la pietra A nella base evidenziata.'],
+  ru: ['Повторить обучение','Положите молот в выделенную ячейку рюкзака.','Переместите камень A на выделенную площадку.'],
+  hi: ['ट्यूटोरियल फिर खेलें','हथौड़े को बैग के घेरे वाले खाने में रखें।','पत्थर A को घेरे वाले खाने में ले जाएँ।'],
+  ar: ['إعادة التدريب','ضع المطرقة في الخانة المحددة من الحقيبة.','حرّك الحجر A إلى المرسى المحدد.'],
+};
