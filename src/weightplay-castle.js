@@ -1,7 +1,7 @@
-// BEGIN generated from src/lobby-data.js?wp-media=92383410bfc3532f audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=92383410bfc3532f
+// BEGIN generated from src/lobby-data.js?wp-media=38786ea4992abdbf audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=38786ea4992abdbf
 if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
 // END generated tabletop classification
-// BEGIN generated from src/lobby-data.js?wp-media=92383410bfc3532f audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=92383410bfc3532f
+// BEGIN generated from src/lobby-data.js?wp-media=38786ea4992abdbf audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=38786ea4992abdbf
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 (function(){
@@ -148,7 +148,7 @@ ar:["إعادة بناء الكل","إفراغ هذا العالم؟","أزل ك
 };
 for(const [language,values] of Object.entries(resetCopy)) ["resetAll","resetTitle","resetBody","resetConfirm","resetDone","resetStale","doubleClickHint"].forEach((key,i)=>L[language][key]=values[i]);
 const LION_ACTIONS=["wiggle","roll","proud"],LION_ACTION_ICONS={wiggle:"↝",roll:"⤿",proud:"✦"};
-const CHARACTER_TYPES=["lion","otter"],CHARACTERS={lion:{actions:LION_ACTIONS,icons:LION_ACTION_ICONS,image:"/assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp?wp-media=92383410bfc3532f"},otter:{actions:["wave","float","bubble"],icons:{wave:"↝",float:"≈",bubble:"◇"},image:"/assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=92383410bfc3532f"}};
+const CHARACTER_TYPES=["lion","otter"],CHARACTERS={lion:{actions:LION_ACTIONS,icons:LION_ACTION_ICONS,image:"/assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp?wp-media=38786ea4992abdbf"},otter:{actions:["wave","float","bubble"],icons:{wave:"↝",float:"≈",bubble:"◇"},image:"/assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=38786ea4992abdbf"}};
 function normalizeCharacter(kind,value){if(!CHARACTER_TYPES.includes(kind)||!value||!Number.isInteger(value.x)||!Number.isInteger(value.z)||Math.abs(value.x)>BOARD||Math.abs(value.z)>BOARD)return null;const actions=CHARACTERS[kind].actions;return{x:value.x,y:Number.isFinite(value.y)&&value.y>=0&&value.y<=MAXY+1?Math.round(value.y*100)/100:0,z:value.z,rotation:clean(value.rotation)%4,action:actions.includes(value.action)?value.action:actions[0]}}
 function normalizeLion(value){return normalizeCharacter("lion",value)}
 const LION_SCALE=.6;
@@ -380,7 +380,7 @@ dispose(){this.disposed=true;cancelAnimationFrame(this.raf);this.observer?.disco
 }
 
 let UI=null,scene=null,midnight,editorOverflow=null,worldHallNeedsRender=false;
-function worldHallActive(){return !document.body.matches('.general-lobby-page[data-game-hall]:not([data-game-hall="games"])')}
+function worldHallActive(){return !document.body.matches('.general-lobby-page[data-game-hall="tabletop"]')}
 function syncWorldHall(){
  const m=document.querySelector("#weightplayCastle");if(!m)return;
  const active=worldHallActive(),returnFocus=!active&&m.contains(document.activeElement);
@@ -393,7 +393,7 @@ function syncWorldHall(){
   scene?.setActive(false);
  }
  m.inert=!active;m.hidden=!active;
- if(returnFocus)document.querySelector(`[data-hall-tab="${document.body.dataset.gameHall}"]`)?.focus({preventScroll:true});
+ if(returnFocus)document.querySelector('[data-hall-tab="tabletop"]')?.focus({preventScroll:true});
  if(active){if(worldHallNeedsRender){worldHallNeedsRender=false;render()}else scene?.setActive(true)}
 }
 function editorScroll(open){if(open&&editorOverflow===null){editorOverflow={overflow:document.documentElement.style.overflow,y:window.scrollY};document.documentElement.style.overflow="hidden"}else if(!open&&editorOverflow!==null){document.documentElement.style.overflow=editorOverflow.overflow;window.scrollTo({top:editorOverflow.y,behavior:"instant"});editorOverflow=null}}

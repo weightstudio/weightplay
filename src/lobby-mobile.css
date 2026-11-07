@@ -7,11 +7,11 @@
     --lobby-line: var(--lobby-skin-line);
     --lobby-paper: var(--lobby-skin-poster);
     color-scheme: dark;
-    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp?wp-media=92383410bfc3532f') center top / auto 900px no-repeat;
+    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp?wp-media=38786ea4992abdbf') center top / auto 900px no-repeat;
   }
   body.general-lobby-page::before,
   body.general-lobby-page::after {
-    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp?wp-media=92383410bfc3532f') center top / auto 900px no-repeat;
+    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp?wp-media=38786ea4992abdbf') center top / auto 900px no-repeat;
   }
   body.general-lobby-page .lobby-shell { width: calc(100% - 28px); padding-bottom: 24px; }
   body.general-lobby-page .lobby-topbar {
@@ -28,7 +28,7 @@
     background: var(--lobby-skin-control); box-shadow: none;
   }
 
-  body.general-lobby-page .game-hall-switch { order: -2; grid-template-columns:repeat(2,minmax(0,1fr)); gap: 6px; margin: 0 0 12px; }
+  body.general-lobby-page .game-hall-switch { order: -2; gap: 6px; margin: 0 0 12px; }
   body.general-lobby-page .game-hall-switch button {
     min-width: 0; min-height: 48px; padding: 8px 5px 8px 30px;
     border: 1px solid var(--lobby-skin-line); border-radius: 6px; background: var(--lobby-skin-panel);
@@ -171,8 +171,4 @@
   body.general-lobby-page .spotlight-game--scene > div { width: 48%; }
   body.general-lobby-page .spotlight-game h3 { font-size: 38px; }
   body.general-lobby-page .demon-event-card-schedule { display: block; }
-}
-
-@media (min-width:600px) and (max-width:1119px) {
-  body.general-lobby-page .game-hall-switch { grid-template-columns:repeat(4,minmax(0,1fr)); }
 }

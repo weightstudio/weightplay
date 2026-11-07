@@ -9,7 +9,7 @@ const gameGenres = window.WeightPlayGameGenres;
 if (!gameGenres) throw new Error("Lobby gameplay registry is missing");
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
 // BEGIN GENERATED METEOR ACTIVITY ENTRY
-// Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=92383410bfc3532f from activity-owned copy.
+// Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=38786ea4992abdbf from activity-owned copy.
 const meteorActivityCopy = {
   "en": {
     "title": "Meteor Barrage",
@@ -192,7 +192,6 @@ const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "gene
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
 const topicGameIds = new Set(lobby.audiences?.topicGameIds || []);
-const firstPersonGameIds = new Set(lobby.audiences?.firstPersonGameIds || []);
 const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
 const catalogGames = allLobbyGames.filter((game) =>
@@ -223,15 +222,8 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   topicsButton.type = "button";
   topicsButton.dataset.hallTab = "topics";
   topicsButton.setAttribute("aria-pressed", "false");
-  topicsButton.innerHTML = '<span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true"><img src="/assets/topics-hall-tab-v2.webp?v=20261002-topics-icon-v2&wp-media=92383410bfc3532f" alt="" width="30" height="30" decoding="async"></span><span class="hall-tab-label" data-i18n="hall.topics_short"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
+  topicsButton.innerHTML = '<span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true"><img src="/assets/topics-hall-tab-v2.webp?v=20261002-topics-icon-v2&wp-media=38786ea4992abdbf" alt="" width="30" height="30" decoding="async"></span><span class="hall-tab-label" data-i18n="hall.topics_short"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
   gameHallSwitch.append(topicsButton);
-}
-if (!isKidsLobby && firstPersonGameIds.size && gameHallSwitch && !gameHallSwitch.querySelector('[data-hall-tab="first-person"]')) {
-  const button = document.createElement('button');
-  button.type = 'button'; button.dataset.hallTab = 'first-person';
-  button.setAttribute('aria-pressed', 'false');
-  button.innerHTML = '<span class="hall-tab-icon" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M2 16 9 7h14l7 9-7 9H9z" fill="#123c53" stroke="#8ee8ed" stroke-width="2"/><circle cx="16" cy="16" r="6" fill="#48c6db" stroke="#dcfcff" stroke-width="2"/><path d="M16 2v6m0 16v6M2 16h6m16 0h6" stroke="#dcfcff" stroke-width="2"/></svg></span><span data-i18n="hall.first-person"></span><small data-i18n="hall.first-person_note" aria-hidden="true"></small>';
-  gameHallSwitch.append(button);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
 if (!isKidsLobby) {
@@ -436,49 +428,49 @@ const weightPlayCharacters = [
   {
     nameKey: "character.spark_paw_fox.name",
     roleKey: "character.spark_paw_fox.role",
-    image: "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Reaction",
   },
   {
     nameKey: "character.boom_mane_lion.name",
     roleKey: "character.boom_mane_lion.role",
-    image: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Focus",
   },
   {
     nameKey: "character.moss_shell_turtle.name",
     roleKey: "character.moss_shell_turtle.role",
-    image: "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Logic",
   },
   {
     nameKey: "character.moon_cap_owl.name",
     roleKey: "character.moon_cap_owl.role",
-    image: "assets/weightplay-character-moon-cap-owl-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-moon-cap-owl-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Problem Solving",
   },
   {
     nameKey: "character.bubble_fin_otter.name",
     roleKey: "character.bubble_fin_otter.role",
-    image: "assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Animal Knowledge",
   },
   {
     nameKey: "character.gear_horn_rhino.name",
     roleKey: "character.gear_horn_rhino.role",
-    image: "assets/weightplay-character-gear-horn-rhino-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-gear-horn-rhino-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Problem Solving",
   },
   {
     nameKey: "character.drum_belly_panda.name",
     roleKey: "character.drum_belly_panda.role",
-    image: "assets/weightplay-character-drum-belly-panda-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-drum-belly-panda-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Focus",
   },
   {
     nameKey: "character.rainbow_hop_rabbit.name",
     roleKey: "character.rainbow_hop_rabbit.role",
-    image: "assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp?wp-media=92383410bfc3532f",
+    image: "assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp?wp-media=38786ea4992abdbf",
     skill: "Reaction",
   },
 ];
@@ -548,7 +540,6 @@ let gameStats = initialLobbyData.stats || {
 };
 
 function gameHall(game) {
-  if (firstPersonGameIds.has(game?.id)) return "first-person";
   if (topicGameIds.has(game?.id)) return "topics";
   return tabletopGameIds.has(game?.id) ? "tabletop" : "games";
 }
@@ -627,13 +618,13 @@ function createDemonEventPreview() {
   const meteor = meteorActivityCopy[locale] || meteorActivityCopy.en;
   const events = [{
     id: "demon-assault", title: strings.title,
-    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&wp-media=92383410bfc3532f",
+    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&wp-media=38786ea4992abdbf",
     details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: activityScheduleCopy[locale] || activityScheduleCopy.en, reward: strings.reward },
     entry: { kind: "activity", path: "/activities/demon-assault/", label: daily[0] },
     renderer: "demon-assault",
   }, {
     id: "meteor-barrage", title: meteor.title, label: meteor.label,
-    image: "/activities/meteor-barrage/poster.webp?wp-media=92383410bfc3532f", showBlocks: true,
+    image: "/activities/meteor-barrage/poster.webp?wp-media=38786ea4992abdbf", showBlocks: true,
     details: { line: meteor.line, body: meteor.body, blocks: meteor.blocks, schedule: meteor.schedule, reward: meteor.reward },
     entry: { kind: "activity", path: meteor.path, label: meteor.start }, renderer: null,
   }];
@@ -892,7 +883,7 @@ function createDemonEventPreview() {
     const controller = new AbortController();
     artAbort = controller;
     const isCurrent = () => generation === artGeneration && !artDisposed && section.dataset.motion === "on" && !section.hidden && !document.hidden;
-    import("/src/demon-event-pixi.mjs?wp-media=92383410bfc3532f")
+    import("/src/demon-event-pixi.mjs?wp-media=38786ea4992abdbf")
     .then(module => {
       const selected = events[activeIndex];
       const art = openButtons[activeIndex]?.querySelector(".demon-event-art");
@@ -958,7 +949,12 @@ function topicMatches(game, topic) {
 }
 
 function filterTopicsFor(game) {
-  return [...game.categories, ...(game.catalogTags.includes("Featured") ? ["Featured"] : [])];
+  // Secondary tags also supply filters such as the first-person viewpoint.
+  return [
+    ...game.categories,
+    ...(game.mechanics ?? []),
+    ...(game.catalogTags.includes("Featured") ? ["Featured"] : []),
+  ];
 }
 
 function syncGenreFilters() {
@@ -989,17 +985,13 @@ function normalizeSearch(value) {
 }
 
 function primaryArt(game) {
-  return game.art?.background || "assets/hero.png.webp?wp-media=92383410bfc3532f";
+  return game.art?.background || "assets/hero.png.webp?wp-media=38786ea4992abdbf";
 }
 
 function hallHeroImageSource(hall) {
-  if (hall === 'first-person') {
-    const game = lobby.games.find(item => firstPersonGameIds.has(item.id) && item.status === 'playable');
-    if (game) return '/' + String(game.art?.lobbyScene || primaryArt(game)).replace(/^\/+/, '');
-  }
   return hall === "topics"
-    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=92383410bfc3532f"
-    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=92383410bfc3532f";
+    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=38786ea4992abdbf"
+    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=38786ea4992abdbf";
 }
 
 function lobbyThumbnail(source, width = 480) {
@@ -1136,9 +1128,15 @@ function syncHallPresentation() {
 
 function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
   const params = new URLSearchParams(window.location.search);
-  activeHall = isKidsLobby ? "games" : selectedFilterValue(hallButtons, "hallTab", params.get("hall") || "games");
+  const hall = params.get("hall");
+  const legacyFirstPersonHall = !isKidsLobby && hall === "first-person";
+  activeHall = isKidsLobby || legacyFirstPersonHall
+    ? "games" : selectedFilterValue(hallButtons, "hallTab", hall || "games");
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
-  activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || (params.get("gameType") === "tower-defense" ? "Tower Defense" : params.get("gameType")) || "all");
+  const legacyGameType = params.get("gameType");
+  const legacyTopic = legacyFirstPersonHall ? "First Person"
+    : legacyGameType === "tower-defense" ? "Tower Defense" : legacyGameType;
+  activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || legacyTopic || "all");
   if (!isKidsLobby && activeTopic !== "all" && ![...catalogGames, ...upcomingPreviewGames()]
     .some((game) => gameMatchesHall(game) && topicMatches(game, activeTopic))) activeTopic = "all";
   activeSkill = selectedFilterValue(skillButtons, "skillFilter", params.get("skill") || "all");
@@ -1554,8 +1552,7 @@ function popularGames(limit = 3) {
   const ranked = rankedPopularGames(limit);
   if (ranked.length) return ranked;
   const availableGames = gamesInHall().filter((game) => game.status === "playable");
-  const heroIds = !isKidsLobby && activeHall === 'first-person' ? [...firstPersonGameIds]
-    : !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
+  const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
   return heroIds.map((id) => availableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
 }
 
@@ -1929,7 +1926,7 @@ function createGameCard(game) {
   if (discoveryLabel) card.setAttribute("aria-label", discoveryLabel);
   const cardArt = game.art || {
     kind: "image",
-    background: game.cover || "assets/hero.png.webp?wp-media=92383410bfc3532f",
+    background: game.cover || "assets/hero.png.webp?wp-media=38786ea4992abdbf",
     hideHero: true,
   };
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
@@ -2081,7 +2078,6 @@ function hallMotionImageSources(targetHall) {
   const featured = lobby.games.find(game => game.id === lobby.featuredGameId);
   if (featured && gameMatchesHall(featured, targetHall)) sources.add(lobbyThumbnail(primaryArt(featured), 480));
   const previewIds = targetHall === 'topics' ? [...topicGameIds]
-    : targetHall === 'first-person' ? [...firstPersonGameIds]
     : targetHall === 'tabletop' ? tabletopHeroGameIds : lobby.heroGameIds;
   lobby.games.filter(game => gameMatchesHall(game, targetHall) && previewIds.includes(game.id))
     .slice(0, 5).forEach(game => sources.add(lobbyThumbnail(game.art?.background || primaryArt(game), 480)));
@@ -2383,7 +2379,7 @@ function renderLobbyContent({ historyMode = "replace" } = {}) {
     }
   } else {
     featuredGame.href = "kids/";
-    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp?wp-media=92383410bfc3532f", { priority: true });
+    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp?wp-media=38786ea4992abdbf", { priority: true });
     featuredGame.querySelector("strong").textContent = i18n.t("kids.portal.title");
     featuredGame.setAttribute("aria-label", i18n.t("kids.portal.action"));
   }
@@ -2465,7 +2461,7 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png.webp?wp-media=92383410bfc3532f", { priority })} alt="" />
+          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png.webp?wp-media=38786ea4992abdbf", { priority })} alt="" />
           ${isPlayable && topicGameIds.has(game.id) && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}
           ${hasVisualIdentity ? `<span class="hero-game-art-identity" aria-hidden="true"><strong>${title}</strong><small>${type}</small></span>` : ""}
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
@@ -3006,8 +3002,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     const emptyText =
       activeLibrary === "favorites" ? i18n.t("status.no_favorites")
         : activeLibrary === "recent" ? i18n.t("status.no_recent")
-          : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty")
-            : activeHall === "first-person" && !isFiltered ? i18n.t("hall.first-person_empty") : i18n.t("status.no_games");
+          : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty") : i18n.t("status.no_games");
     const recoveryLabel = activeLibrary === "recent"
       ? i18n.t("library.all_games")
       : i18n.t("status.clear_filters");
@@ -3399,7 +3394,7 @@ function setupResponsiveLobbyPresentation() {
   anchor.hidden = true;
   document.querySelector("#filterStatus").append(anchor);
   const script = document.createElement("script");
-  script.src = "/src/lobby-layout.js?v=20261102-first-response1&wp-media=92383410bfc3532f";
+  script.src = "/src/lobby-layout.js?v=20261102-first-response1&wp-media=38786ea4992abdbf";
   script.addEventListener("load", setup, { once: true });
   document.head.append(script);
 }
@@ -3534,7 +3529,7 @@ renderLobby();
 loadGameStats();
 if (!document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1&wp-media=92383410bfc3532f";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1&wp-media=38786ea4992abdbf";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }

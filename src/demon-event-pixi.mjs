@@ -1,11 +1,11 @@
-import {bones,parts,channels,duration,interpolate} from './demon-event-rig.mjs?wp-media=92383410bfc3532f';
+import {bones,parts,channels,duration,interpolate} from './demon-event-rig.mjs?wp-media=38786ea4992abdbf';
 
 // Pinned local MIT runtime, requested only after the entrance becomes visible.
 let runtimePromise;
 function loadRuntime(){
   if(window.PIXI){if(window.PIXI.VERSION!=='8.22.0')return Promise.reject(Error('Incompatible Pixi runtime'));return Promise.resolve(window.PIXI);}
   if(!runtimePromise)runtimePromise=new Promise((resolve,reject)=>{
-    const script=document.createElement('script');script.src='/assets/demon-event-pixi/pixi-8.22.0.min.js?wp-media=92383410bfc3532f';script.async=true;
+    const script=document.createElement('script');script.src='/assets/demon-event-pixi/pixi-8.22.0.min.js?wp-media=38786ea4992abdbf';script.async=true;
     const timer=setTimeout(()=>finish(Error('Pixi load timeout')),12000);
     function finish(error){clearTimeout(timer);script.onload=script.onerror=null;script.remove();error?reject(error):resolve(window.PIXI);}
     script.onload=()=>finish(window.PIXI?.VERSION==='8.22.0'?null:Error('Pixi unavailable'));script.onerror=()=>finish(Error('Pixi failed'));document.head.append(script);

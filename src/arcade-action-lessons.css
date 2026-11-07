@@ -1,0 +1,14 @@
+/* Leave the existing HUD and controls visible while the lesson is active. */
+.native-teaching-host[data-opening-lesson="animal-penalty-cup"]{top:165px}
+.native-teaching-host[data-opening-lesson="animal-reef-fisher"]{top:126px}
+.native-teaching-host[data-opening-lesson="animal-cafe-rush"]{top:125px}
+.native-teaching-host[data-opening-lesson="animal-hero-trials"]{top:140px}
+.native-teaching-host[data-opening-lesson="animal-moonlight-heist"]{top:209px}
+.native-teaching-host[data-opening-lesson="animal-canopy-cut"]{top:100px}
+.native-teaching-host[data-opening-lesson="animal-bounce-brawl"]{top:152px}
+.native-teaching-host[data-opening-lesson="animal-deep-sea-salvage"]{top:116px}
+.native-teaching-host[data-opening-lesson="animal-hoop-league"]{top:120px}
+@media(max-height:470px) and (orientation:landscape){
+  .native-teaching-host[data-opening-lesson]{top:82px;bottom:auto;inset-inline:auto 12px;max-width:min(300px,calc(50vw - 28px))}
+  .native-teaching-host:is([data-opening-lesson="animal-trap-trail"],[data-opening-lesson="animal-bounce-brawl"]){inset-inline:12px auto}
+}

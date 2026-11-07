@@ -8,15 +8,16 @@
     "Management", "Pet Care", "Racing", "Sports", "Reaction", "Card", "Board",
     "Word", "Education",
   ]);
+  const firstPersonFacet = "First Person";
   const secondaryIds = Object.freeze([
-    ...genreIds, "Adventure", "Arcade", "Platform", "Survival", "Idle", "Merge",
+    ...genreIds, firstPersonFacet, "Adventure", "Arcade", "Platform", "Survival", "Idle", "Merge",
     "Physics", "Memory", "Collection", "Route Planning", "Spatial Planning",
     "Deduction", "Pattern Recognition", "Shape Matching", "Observation",
     "Connection", "Construction", "Sequencing", "Escape", "Co-op", "Aim",
     "Timing", "Geography", "Visual Framing", "Comparison", "Estimation",
     "Calibration", "Balance", "Block", "Builder",
   ]);
-  const definitions = Object.freeze(genreIds.map((id) => Object.freeze({
+  const definitions = Object.freeze([firstPersonFacet, ...genreIds].map((id) => Object.freeze({
     id,
     labelKey: `category.${id}`,
   })));
@@ -24,8 +25,8 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
-    ["prismtide", "Puzzle", "Adventure", "Spatial Planning", "Connection"],
-    ["skymeadow-keeper", "Simulation", "Pet Care", "Adventure", "Collection"],
+    ["prismtide", "Puzzle", firstPersonFacet, "Adventure", "Spatial Planning", "Connection"],
+    ["skymeadow-keeper", "Simulation", firstPersonFacet, "Pet Care", "Adventure", "Collection"],
     ["tomorrow-share", "Strategy", "Management"],
     ["cloudhold-voyager", "Strategy", "Management", "Adventure"],
     ["dawnward-haven", "Management", "Strategy", "Construction"],
