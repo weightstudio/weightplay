@@ -1,0 +1,15 @@
+.wp-field-action-host .wp-action-guide{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 7px;width:100%;max-width:none;margin:0;padding:3px 6px;box-sizing:border-box;border:1px solid #ffe48b;border-radius:7px;background:#0b2639;color:#fff;font:600 12px/1.2 system-ui;text-align:start;white-space:normal;overflow-wrap:anywhere}
+.wp-field-action-host .wp-action-guide-progress{grid-column:1;font:700 10px/1.2 system-ui;align-self:center;color:#ffe48b}
+.wp-field-action-host .wp-action-guide>strong{display:none}
+.wp-field-action-host .wp-action-guide>p{grid-column:2;margin:0;font:600 12px/1.2 system-ui;color:#fff}
+.wp-field-action-host:has(.wp-action-guide){overflow:visible!important;white-space:normal!important;text-overflow:clip!important;min-height:32px!important;height:auto!important}
+.status-line.wp-field-action-host:has(.wp-action-guide){clip-path:none!important;position:relative!important;width:auto!important}
+.phase-hint.wp-field-action-host:has(.wp-action-guide){display:block!important;width:calc(100% - 24px);max-width:calc(100% - 24px);padding:0;bottom:8px;z-index:4}
+.objective.wp-field-action-host:has(.wp-action-guide){width:calc(100% - 32px);max-width:calc(100% - 32px);padding:0}
+#tutorial.game-dialog[open] #zhaoReplayLesson{pointer-events:auto}
+#battle .battle-content:has(.wp-field-action-host .wp-action-guide){grid-template-rows:44px minmax(0,1fr) 82px calc(42px * var(--wp-battle-canvas-inverse-scale,1))!important}
+#battle .status-line.wp-field-action-host:has(.wp-action-guide){grid-row:4;min-height:calc(40px * var(--wp-battle-canvas-inverse-scale,1))!important}
+#battle .status-line.wp-field-action-host .wp-action-guide{padding:calc(3px * var(--wp-battle-canvas-inverse-scale,1)) calc(6px * var(--wp-battle-canvas-inverse-scale,1));gap:2px calc(7px * var(--wp-battle-canvas-inverse-scale,1));border-radius:calc(7px * var(--wp-battle-canvas-inverse-scale,1));font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1))}
+#battle .status-line.wp-field-action-host .wp-action-guide-progress{font-size:calc(11px * var(--wp-battle-canvas-inverse-scale,1))}
+#battle .status-line.wp-field-action-host .wp-action-guide>p{font-size:calc(13px * var(--wp-battle-canvas-inverse-scale,1))}
+@media(max-height:500px) and (orientation:landscape){#battle .battle-content:has(.wp-field-action-host .wp-action-guide){grid-template-rows:44px minmax(0,1fr) 66px calc(42px * var(--wp-battle-canvas-inverse-scale,1))!important}}

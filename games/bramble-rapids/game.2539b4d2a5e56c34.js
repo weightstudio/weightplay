@@ -1,0 +1,1 @@
+import("./game.mjs?v=20261107-action-teaching-v5&wp-media=a5465b2863a3bbab").catch(a=>{console.error("Bramble Rapids bootstrap",a),window.WeightPlayGameEntryLoader?.fail?.(a.message,()=>location.reload())});

@@ -288,7 +288,7 @@ function moveRacer(race, racer, dt, input) {
   const push = racer.grounded ? current.force * board.crossCurrentMultiplier : 0;
   racer.x += (racer.vx + push) * dt;
   const touchingBank = touchBank(race, racer);
-  if (!heldByAnchor) {
+  if (!heldByAnchor && !race.teaching) {
     const wantedSpeed = racer.airborne ? racer.flight.forwardSpeed : targetSpeedFor(racer, stage, race.activeTime)
       * (racer.slowTime > 0 ? 0.62 : 1) * (touchingBank ? PHYSICS.bankSpeedMultiplier : 1);
     racer.speed = approach(racer.speed, wantedSpeed, PHYSICS.acceleration * dt);
@@ -418,8 +418,9 @@ export function stepRace(race, dt, input = {}) {
   race.accumulator = Math.min(PHYSICS.step * PHYSICS.maxSubsteps, race.accumulator + elapsed);
   let steps = 0;
   while (race.accumulator + 1e-9 >= PHYSICS.step && steps++ < PHYSICS.maxSubsteps && race.status === 'running') {
-    race.accumulator -= PHYSICS.step; race.activeTime += PHYSICS.step; race.sequence++;
+    race.accumulator -= PHYSICS.step; if (!race.teaching) race.activeTime += PHYSICS.step; race.sequence++;
     moveRacer(race, race.player, PHYSICS.step, input);
+    if (race.teaching) continue;
     for (const rival of race.rivals) moveRacer(race, rival, PHYSICS.step, aiInputFor(race, rival));
     if (race.status !== 'running') break;
     softBumps(race); rankRace(race);

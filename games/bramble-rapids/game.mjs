@@ -1,5 +1,6 @@
+import {TEACHING_COPY} from './teaching-copy.mjs?v=1&wp-media=a5465b2863a3bbab';
 import {STAGES,BOARDS,getStage,featureX,gateIsOpen,gateSecondsToChange,tidePhase,tideLabel} from './content.mjs?wp-media=a5465b2863a3bbab';
-import {createRace,startRace,pauseRace,resumeRace,stepRace,drainEvents} from './simulation.mjs?wp-media=a5465b2863a3bbab';
+import {createRace,startRace,pauseRace,resumeRace,stepRace,drainEvents} from './simulation.mjs?v=20261107-action-teaching-v5&wp-media=a5465b2863a3bbab';
 import {RapidsRenderer} from './render.mjs?wp-media=a5465b2863a3bbab';
 import {createProgressStore} from './save.mjs?wp-media=a5465b2863a3bbab';
 import {resolveLocale,t,stageName,stageLesson,guide,renderRelatedGames,renderGameplayTags} from './i18n.mjs?wp-media=a5465b2863a3bbab';
@@ -10,6 +11,7 @@ const store=createProgressStore();store.load();
 let locale=resolveLocale(),screen='main',tab='stages',selected=store.persistedSnapshot.unlocked,frame,rail,joystick,renderer,race,modal=null,previousFocus=null,practice=false,practiceRun=false,raf=0,lastFrame=0,round=0,resultSaved=false,busy=false,feedbackUntil=0,shopFeedbackKey=null;
 const savingRuns=new WeakSet(),stageSaveNotice=document.createElement('span');stageSaveNotice.setAttribute('role','status');
 const resultRewards=new WeakMap(),rewardOwners=new Map();let publishingReward=null,rewardSyncQueued=false;
+let actionGuide=null;
 let jumpQueued=false,anchorHeld=false;const keys=new Set(),abort=new AbortController();
 const listen=(node,event,fn,opts={})=>node.addEventListener(event,fn,{...opts,signal:abort.signal});
 const tr=(key,vars)=>t(locale,key,vars),text=(id,key,vars)=>{$(id).textContent=tr(key,vars);};
@@ -149,7 +151,7 @@ function clearFrame(){cancelAnimationFrame(raf);raf=0;lastFrame=0;}
 function syncPause(){
   syncMotionPause();
   if(!race||screen!=='battle')return;
-  const paused=!!modal||document.hidden||settingsOpen();
+  const paused=!!modal||document.hidden||settingsOpen();actionGuide?.pause(paused);
   if(paused&&race.status==='running'){pauseRace(race);clearInput();clearFrame();}
   else if(!paused&&race.status==='paused'){resumeRace(race);lastFrame=0;schedule();}
   joystick?.setEnabled(runnable());syncMotionPause();
@@ -178,7 +180,7 @@ function openModal(id){
 function activate(next){
   clearMotion();
   closeModal({restore:false});clearInput();clearFrame();
-  if(next!=='battle'){renderer?.dispose();renderer=null;race=null;}
+  if(next!=='battle'){actionGuide?.stop();$('firstActionGuide').hidden=true;renderer?.dispose();renderer=null;race=null;}
   screen=next;document.body.dataset.screen=next;
   $('mainGroup').hidden=next!=='main';$('mainScreen').hidden=next!=='main';$('stageScreen').hidden=next!=='stage';$('battleScreen').hidden=next!=='battle';
   frame.activate(next);if(next==='stage'){renderManagement();rail.refresh(selected-1);}
@@ -264,6 +266,7 @@ function renderGuide(){
 }
 function localize(){
   clearMotion();
+  actionGuide?.refresh();if($('firstActionReplay'))$('firstActionReplay').textContent='↻ '+tr('replay')+' · '+tr('help');
   document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
   for(const el of document.querySelectorAll('[data-t]'))el.textContent=tr(el.dataset.t,{cost:el.dataset.cost||5});
   for(const el of document.querySelectorAll('[data-t-aria]'))el.setAttribute('aria-label',tr(el.dataset.tAria));
@@ -332,6 +335,7 @@ function processEvents(){
   for(const event of events){
     renderer?.respond(event);
     if(event.racerId!==race.player.id)continue;
+    if(actionGuide?.active&&actionGuide.stepId==='jump'&&event.type==='jump')actionGuide.accept('jump',{accepted:true});
     if(event.type==='fall'||event.type==='recover')recovery=event;
     if(['jump','land','fall','flag','bonus','hit','bump','bank'].includes(event.type))renderer?.burst(event.s,event.x,event.type==='hit'?1.5:event.type==='bank'?.35:.8);
     if(event.type==='start')audio('game.start');
@@ -358,23 +362,27 @@ function tick(now){
   raf=0;if(!runnable())return;
   const dt=lastFrame?Math.min(.066,(now-lastFrame)/1000):0;lastFrame=now;
   const keyboard=(keys.has('ArrowRight')||keys.has('KeyD')?1:0)-(keys.has('ArrowLeft')||keys.has('KeyA')?1:0);
-  const steer=keyboard||joystick.getVector().x;
-  const beforeStep=race.activeTime;
-  stepRace(race,dt,{steer,jump:jumpQueued,anchor:anchorHeld||keys.has('KeyX')});
-  if(race.activeTime>beforeStep||race.status!=='running')jumpQueued=false;
+  let steer=keyboard||joystick.getVector().x;
+  if(actionGuide?.active){steer=actionGuide.stepId==='left'?Math.min(0,steer):actionGuide.stepId==='right'?Math.max(0,steer):0;anchorHeld=false;if(actionGuide.stepId!=='jump')jumpQueued=false;}
+  const beforeStep=race.sequence;
+  stepRace(race,dt,{steer,jump:jumpQueued,anchor:!actionGuide?.active&&(anchorHeld||keys.has('KeyX'))});
+  if(race.sequence>beforeStep||race.status!=='running')jumpQueued=false;
+  if(actionGuide?.active&&actionGuide.stepId==='left'&&race.player.x<=-.16)actionGuide.accept('left',{accepted:true});
+  else if(actionGuide?.active&&actionGuide.stepId==='right'&&race.player.x>=0)actionGuide.accept('right',{accepted:true});
   renderer?.render(race,dt);updateHUD();processEvents();schedule();
 }
 async function startStage(id,{practice:asPractice=practice,restart=false}={}){
   if(busy)return;id=Number(id);if(!getStage(id))return;
   if(asPractice){if(!await LocalPractice.validate())return;}else if(id>store.persistedSnapshot.unlocked)return;
   if(restart)W.WonderAnalytics?.game?.markRestart();
-  selected=id;practiceRun=asPractice;resultSaved=false;renderer?.dispose();renderer=null;activate('battle');
+  actionGuide?.stop();$('firstActionGuide').hidden=true;selected=id;practiceRun=asPractice;resultSaved=false;renderer?.dispose();renderer=null;activate('battle');
   race=createRace(id,{boardId:store.snapshot.equippedBoard});resultRewards.set(race,{practice:asPractice,obtained:false});round++;startRace(race);
   try{renderer=new RapidsRenderer($('riverArena'),{onContextLost:()=>openModal('graphicsDialog')});renderer.setStage(race.stage);renderer.setAppearance?.(race.boardId,W.WeightPlayWallet?.owns(SKU)&&store.snapshot.equippedCosmetic==='coral-night'?'coral-night':'default');renderer.resize();renderer.render(race,0);}
   catch(error){console.error('Bramble Rapids renderer',error);renderer?.dispose();renderer=null;openModal('graphicsDialog');return;}
   updateHUD();processEvents();joystick.setEnabled(true);$('riverArena').focus({preventScroll:true});
   const newMechanicLesson=(id===6||id===31)&&!store.persistedSnapshot.records[id]?.cleared;
-  if(!asPractice&&(!store.snapshot.tutorialComplete||newMechanicLesson))showHelp();else schedule();notify();
+  if(id===1&&!asPractice)actionGuide.start();
+  if(!asPractice&&newMechanicLesson)showHelp();else schedule();notify();
 }
 function showHelp(open=true){if(!race)return;$('helpStage').textContent=`${tr('stage')} ${race.stage.id} · ${stageName(race.stage.id,locale)}`;$('helpLesson').textContent=`${stageLesson(race.stage,locale)}
 ${stageDetails(race.stage).join('\n')}${phaseTargets(race.stage).length?'\n'+tr('phaseHelp'):''}`;$('helpBasics').textContent=`${tr('keyControls')} ${tr('touchControls')} ${tr('tutorialJump')} ${race.stage.chapter===2?tr('tutorialAnchor'):''}`;if(open)openModal('helpDialog');}
@@ -442,7 +450,7 @@ function bind(){
   listen($('cosmeticBtn'),'click',async()=>{if(practice)return;if(W.WeightPlayWallet.owns(SKU)){await store.setCosmetic('coral-night',true);renderManagement();}else openModal('buyDialog');});
   listen($('defaultStyle'),'click',async()=>{if(!practice){await store.setCosmetic('default');renderManagement();}});listen($('confirmBuy'),'click',()=>void purchase());listen($('cancelBuy'),'click',()=>closeModal());
   listen($('retryManagementSave'),'click',async()=>{if(busy||practice)return;busy=true;renderManagement();try{const receipt=await store.retryPersist();publishPersisted(receipt);shopFeedbackKey=receipt.saved?'progressSaved':'saveFailed';}finally{busy=false;renderManagement();rail.refresh(selected-1);notify();}});
-  listen($('helpBtn'),'click',()=>showHelp());listen($('helpClose'),'click',async()=>{closeModal();if(!practiceRun&&!store.snapshot.tutorialComplete)await store.markTutorialComplete();});listen($('continueBtn'),'click',()=>closeModal());listen($('leaveBtn'),'click',toStages);
+  listen($('helpBtn'),'click',()=>showHelp());listen($('helpClose'),'click',()=>closeModal());listen($('continueBtn'),'click',()=>closeModal());listen($('leaveBtn'),'click',toStages);
   listen($('resultStages'),'click',toStages);listen($('resultNext'),'click',()=>{if(!$('resultNext').disabled)void startStage(selected+1,{practice:practiceRun});});listen($('resultReplay'),'click',()=>void startStage(selected,{practice:practiceRun,restart:true}));listen($('retrySave'),'click',()=>void persistResult(true));listen($('graphicsBack'),'click',toStages);listen($('graphicsRetry'),'click',()=>void startStage(selected,{practice:practiceRun,restart:true}));
   for(const [id,type]of [['jumpBtn','jump'],['anchorBtn','anchor']]){
     const node=$(id);listen(node,'pointerdown',e=>{if(!runnable()||node.disabled)return;e.preventDefault();node.setPointerCapture(e.pointerId);node.dataset.held='true';if(type==='jump')jumpQueued=true;else anchorHeld=true;});
@@ -460,7 +468,7 @@ function bind(){
   listen(document,'visibilitychange',()=>{clearInput();syncPause();});listen(W,'weightplay:interaction-state',()=>{clearInput();syncPause();});
   listen(W,'wonder:locale-change',()=>{locale=resolveLocale({pathname:'',search:'',storage:null,documentLanguage:W.WonderI18n?.actualLocale?.()||document.documentElement.lang});localize();});
   listen(W,'storage',()=>{if(!practice){store.refresh();renderManagement();rail.refresh(selected-1);}});
-  listen(W,'pagehide',()=>{clearMotion();motionState.layer?.remove();motionState.layer=null;clearInput();clearFrame();renderer?.dispose();renderer=null;});
+  listen(W,'pagehide',event=>{actionGuide?.pause(true);if(!event.persisted)actionGuide?.destroy();clearMotion();motionState.layer?.remove();motionState.layer=null;clearInput();clearFrame();renderer?.dispose();renderer=null;});
 }
 async function boot(){
   if(!W.WeightPlayScreenFrame||!W.WeightPlayPlayUI||!W.WeightPlayJoystick)throw Error('SHARED_RUNTIME_MISSING');
@@ -474,6 +482,9 @@ async function boot(){
   const tabs=W.WeightPlayScreenFrame.createGroup();for(const node of [...$('stageTabs').children])tabs.add(node);frame.commonDownButton.clear().add(tabs);frame.commonDownButton.element.setAttribute('role','tablist');$('stageTabs').hidden=true;
   rail=W.WeightPlayPlayUI.mountStage({page:$('stagesPanel'),rail:$('stageRail'),config:makeStageConfig(stagePresentation),selected:selected-1,onSelect:index=>{selected=index+1;},onStart:index=>{if(screen==='stage'&&tab==='stages'&&!modal)void startStage(index+1);},isActive:()=>screen==='stage'&&tab==='stages'&&!modal});
   joystick=W.WeightPlayJoystick.create({surface:$('riverArena'),container:$('riverArena'),mode:'floating',anchor:{left:76,bottom:76},enabled:false,isEnabled:runnable});
+  const host=document.createElement('div');host.id='firstActionGuide';host.hidden=true;$('battleLive').prepend(host);
+  actionGuide=W.WeightPlayTutorial.createActionGuide({gameId:'bramble-rapids',revision:1,host,canPersist:()=>!practiceRun,steps:['left','right','jump'].map((id,index)=>({id,title:()=>tr('help'),instruction:()=>TEACHING_COPY[locale][index],target:()=>$(id==='jump'?'jumpBtn':'riverArena')})),onStep(){host.hidden=false;race.teaching=true;clearInput();},onComplete(){host.hidden=true;race.teaching=false;clearInput();if(!practiceRun)void store.markTutorialComplete();}});
+  const actions=document.createElement('div');actions.className='dialog-actions';const replay=document.createElement('button');replay.type='button';replay.id='firstActionReplay';replay.textContent='↻ '+tr('replay')+' · '+tr('help');$('helpClose').before(actions);actions.append(replay,$('helpClose'));listen(replay,'click',async()=>{closeModal();await startStage(1,{practice:false});actionGuide.start({replay:true});schedule();});
   bind();localize();activate('main');selectTab('stages');
   for(const card of document.querySelectorAll('.dialog-card')){
     const footer=card.querySelector(':scope > .dialog-actions,:scope > button:last-child');
