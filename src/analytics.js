@@ -1,10 +1,10 @@
-// BEGIN generated from src/lobby-data.js?wp-media=38786ea4992abdbf audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=38786ea4992abdbf
+// BEGIN generated from src/lobby-data.js?wp-media=0a561b3bf0c2e323 audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=0a561b3bf0c2e323
 if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
 // END generated tabletop classification
-// BEGIN generated from src/lobby-data.js?wp-media=38786ea4992abdbf audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=38786ea4992abdbf
+// BEGIN generated from src/lobby-data.js?wp-media=0a561b3bf0c2e323 audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=0a561b3bf0c2e323
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
-// BEGIN generated from src/lobby-data.js?wp-media=38786ea4992abdbf audiences.topicGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=38786ea4992abdbf
+// BEGIN generated from src/lobby-data.js?wp-media=0a561b3bf0c2e323 audiences.topicGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=0a561b3bf0c2e323
 if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(["traffic-jam-diner","robot-dog-showtime","flying-tram","smallwood-lives","gilded-gathering"]);
 // END generated topic classification
 (function () {
@@ -334,7 +334,7 @@ if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(
     document.body.dataset.wpCollectionCardBack = equipped.cardBack || "";
     document.body.classList.add("wp-collection-active");
     if (!document.querySelector("[data-weightplay-tabletop-bridge]")) {
-      const script = document.createElement("script"); script.src = "/src/tabletop-collection-bridge.js?v=20261002-collections-v2&wp-media=38786ea4992abdbf"; script.dataset.weightplayTabletopBridge = "true"; script.async = true; document.head.append(script);
+      const script = document.createElement("script"); script.src = "/src/tabletop-collection-bridge.js?v=20261002-collections-v2&wp-media=0a561b3bf0c2e323"; script.dataset.weightplayTabletopBridge = "true"; script.async = true; document.head.append(script);
     } else window.WeightPlayTabletopThemeBridge?.refresh?.();
   }
   let collectionDialog, collectionDialogContent, collectionOpener, collectionDomain, collectionHistoryState = false;
@@ -591,7 +591,7 @@ if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(
     if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
     try {
       const script = document.createElement("script");
-      script.src = "/src/weightplay-castle.js?v=20261011-reward-toast-safe-inset-v2&wp-media=38786ea4992abdbf";
+      script.src = "/src/weightplay-castle.js?v=20261011-reward-toast-safe-inset-v2&wp-media=0a561b3bf0c2e323";
       script.async = true;
       script.dataset.weightplayCastleRuntime = "true";
       document.head.append(script);

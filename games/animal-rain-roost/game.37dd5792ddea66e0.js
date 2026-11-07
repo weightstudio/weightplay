@@ -1,1 +1,1 @@
-import("./main.mjs?v=20261107-action-teaching-v13&wp-media=38786ea4992abdbf").catch(i=>{console.error("Rain Roost initialization failed",i),window.__weightPlayGameEntryPendingFailure="animal-rain-roost",window.WeightPlayGameEntryLoader?.fail(void 0,()=>location.reload())});
+import("./main.mjs?v=20261107-action-teaching-v13&wp-media=0a561b3bf0c2e323").catch(i=>{console.error("Rain Roost initialization failed",i),window.__weightPlayGameEntryPendingFailure="animal-rain-roost",window.WeightPlayGameEntryLoader?.fail(void 0,()=>location.reload())});
