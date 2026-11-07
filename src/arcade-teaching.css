@@ -1,0 +1,30 @@
+/* Lessons reuse each game's reserved status track, so no control is covered. */
+body[data-tutorial-owner="action-guide"] #gameMessage.arcade-action-lesson {
+  box-sizing: border-box;
+  min-width: 0;
+  color: #f3fff9 !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  overflow: auto !important;
+  text-align: start;
+}
+body[data-tutorial-owner="action-guide"] #gameMessage .wp-action-guide {
+  display: inline;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+body[data-tutorial-owner="action-guide"] #gameMessage .wp-action-guide strong { display: none; }
+body[data-tutorial-owner="action-guide"] #gameMessage .wp-action-guide-progress {
+  display: inline;
+  font: 700 11px/16px system-ui, sans-serif;
+  margin-inline-end: 6px;
+}
+body[data-tutorial-owner="action-guide"] #gameMessage .wp-action-guide p { display: inline; margin: 0; }
+body[data-tutorial-owner="action-guide"] #gameMessage .wp-action-guide[hidden] { display: none; }
+body[data-tutorial-owner="action-guide"] [data-wp-game-guide] > #arcadeReplayTutorial,
+body[data-tutorial-owner="action-guide"] [data-wp-game-guide] #mazeReplayTutorial { min-height: 44px; margin-block: 8px; }
+body[data-tutorial-owner="action-guide"] button:disabled { cursor: default; }

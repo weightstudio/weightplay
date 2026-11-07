@@ -1,3 +1,24 @@
+.wp-action-guide {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: calc(10px * var(--wp-battle-canvas-inverse-scale, 1)) calc(12px * var(--wp-battle-canvas-inverse-scale, 1));
+  border: 1px solid #9ee5d6;
+  border-radius: calc(12px * var(--wp-battle-canvas-inverse-scale, 1));
+  background: #102b35;
+  color: #f3fff9;
+  font: 500 calc(14px * var(--wp-battle-canvas-inverse-scale, 1))/1.4 system-ui, sans-serif;
+  text-align: start;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+.wp-action-guide[hidden] { display: none; }
+.wp-action-guide-progress { display: block; color: #a6eed5; font-size: calc(11px * var(--wp-battle-canvas-inverse-scale, 1)); }
+.wp-action-guide strong { display: block; font-size: calc(15px * var(--wp-battle-canvas-inverse-scale, 1)); }
+.wp-action-guide p { margin: 3px 0 0; }
+.wp-action-guide-target { outline: 3px solid #ffdc75; outline-offset: 2px; }
+
 .wp-tutorial-button {
   position: fixed;
   top: calc(164px + env(safe-area-inset-top));

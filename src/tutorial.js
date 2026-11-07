@@ -1,5 +1,5 @@
 (() => {
-  if (window.WeightPlayTutorial?.createEmbedded) return;
+  if (window.WeightPlayTutorial?.createEmbedded && window.WeightPlayTutorial?.createActionGuide) return;
   const memoryStorage = new Map();
   function readStorage(key) {
     try { return localStorage.getItem(key); } catch { return memoryStorage.get(key) || null; }
@@ -1137,7 +1137,84 @@
   // I9 games keep tutorial panels inside their own Battle canvas. Reuse the
   // shared seen-state and lesson renderer without a second body-level dialog.
   const embedded = new Map();
+  const actionGuides = new Map();
+  const lessonLabels = {
+    en: 'Lesson', 'zh-Hant': '操作教學', 'zh-Hans': '操作教学', ja: '操作レッスン', ko: '조작 연습',
+    es: 'Tutorial', 'pt-BR': 'Tutorial', fr: 'Tutoriel', de: 'Anleitung', it: 'Tutorial',
+    ru: 'Обучение', hi: 'अभ्यास', ar: 'التدريب',
+  };
+  // Opt-in controller only. The game adapter owns the real success predicates,
+  // allowed actions and held game pressure. No click or timer advances a lesson.
+  function createActionGuide({ gameId, revision, host, steps, onStep = () => {}, onComplete = () => {}, canPersist = () => true }) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(gameId || '') || !Number.isInteger(revision) || revision < 1
+        || !host || host.ownerDocument !== document || !Array.isArray(steps) || steps.length < 1 || steps.length > 8
+        || steps.some(step => !step || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(step.id || '')
+          || !['string', 'function'].includes(typeof step.title) || !['string', 'function'].includes(typeof step.instruction)
+          || (step.target !== undefined && typeof step.target !== 'function'))
+        || new Set(steps.map(step => step.id)).size !== steps.length
+        || [onStep, onComplete, canPersist].some(fn => typeof fn !== 'function')) throw new Error('INVALID_ACTION_GUIDE');
+    if (actionGuides.has(gameId)) throw new Error('DUPLICATE_ACTION_GUIDE');
+    const key = `weightplay_action_tutorial_${gameId}_v${revision}`;
+    let index = -1, active = false, paused = false, disposed = false, replay = false, advancing = false;
+    let panel = null, label = null, title = null, instruction = null, highlighted = null;
+    const hasCompleted = () => memoryStorage.get(key) === '1' || readStorage(key) === '1';
+    const clearTarget = () => { highlighted?.classList.remove('wp-action-guide-target'); highlighted = null; };
+    const clearPanel = () => { clearTarget(); panel?.remove(); panel = label = title = instruction = null; };
+    const info = () => ({ id: steps[index]?.id || null, index, total: steps.length, replay });
+    const resolve = value => typeof value === 'function' ? value() : value;
+    const refresh = () => {
+      if (!active || disposed) return false;
+      const step = steps[index], heading = resolve(step.title), body = resolve(step.instruction);
+      if (typeof heading !== 'string' || !heading.trim() || typeof body !== 'string' || !body.trim()) throw new Error('INVALID_ACTION_GUIDE_COPY');
+      if (!panel) {
+        panel = document.createElement('section'); panel.className = 'wp-action-guide';
+        panel.setAttribute('role', 'status'); panel.setAttribute('aria-live', 'polite'); panel.setAttribute('aria-atomic', 'true');
+        label = document.createElement('span'); label.className = 'wp-action-guide-progress';
+        title = document.createElement('strong'); instruction = document.createElement('p');
+        panel.append(label, title, instruction); host.append(panel);
+      }
+      panel.dataset.step = step.id; panel.hidden = paused;
+      label.textContent = `${lessonLabels[locale()] || lessonLabels.en} ${index + 1} / ${steps.length}`;
+      title.textContent = heading; instruction.textContent = body;
+      clearTarget();
+      const target = !paused && step.target?.();
+      if (target?.ownerDocument === document && target.classList) { highlighted = target; target.classList.add('wp-action-guide-target'); }
+      return true;
+    };
+    const controller = Object.freeze({
+      get active() { return active && !disposed; },
+      get stepId() { return active ? steps[index]?.id : null; },
+      hasCompleted,
+      start(options = {}) {
+        if (disposed || active || (!options.replay && hasCompleted())) return false;
+        active = true; paused = false; replay = Boolean(options.replay); index = 0;
+        advancing = true;
+        try { refresh(); onStep(info()); } catch (error) { active = false; clearPanel(); throw error; }
+        finally { advancing = false; }
+        return true;
+      },
+      accept(stepId, evidence) {
+        if (!active || disposed || paused || advancing || stepId !== steps[index].id || evidence?.accepted !== true) return false;
+        advancing = true;
+        try {
+          if (index + 1 === steps.length) {
+            const result = info(); active = false; clearPanel();
+            if (canPersist()) writeStorage(key, '1');
+            onComplete(result);
+          } else { index += 1; refresh(); onStep(info()); }
+        } finally { advancing = false; }
+        return true;
+      },
+      pause(value = true) { if (!active || disposed) return false; paused = Boolean(value); refresh(); return true; },
+      refresh,
+      stop() { if (disposed) return; active = false; paused = false; index = -1; clearPanel(); },
+      destroy() { controller.stop(); disposed = true; actionGuides.delete(gameId); },
+    });
+    actionGuides.set(gameId, controller);
+    return controller;
+  }
   window.WeightPlayTutorial = Object.freeze({
+    createActionGuide,
     createEmbedded({ gameId, open, isSeen = () => false, onComplete = () => {}, canPersist = () => true }) {
       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(gameId || '') || typeof open !== 'function'
           || [isSeen,onComplete,canPersist].some(fn => typeof fn !== 'function')) throw new Error('INVALID_EMBEDDED_TUTORIAL');
@@ -1267,7 +1344,7 @@
 
   function install() {
     const gameId = gameIdFromPath();
-    if (embedded.has(gameId) || !tutorials[gameId]) return;
+    if (document.body?.dataset.tutorialOwner === 'action-guide' || embedded.has(gameId) || !tutorials[gameId]) return;
     applyCommonLabels();
     const button = document.createElement("button");
     button.type = "button";

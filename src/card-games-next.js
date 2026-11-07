@@ -2118,7 +2118,7 @@
       const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : speedBattle?.paragraph || oldMaidBattle?.quickGuideCopy || casinoBattle?.quickGuideCopy || goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
       const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : speedBattle?.heading || oldMaidBattle?.quickGuide || casinoBattle?.quickGuide || goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
       const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || speedBattle || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
-      return { heading, paragraph, localized: Boolean(speedBattle || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell) };
+      return { heading: heartsShell?.category || heading, paragraph: heartsShell?.summary || paragraph, localized: Boolean(speedBattle || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell) };
     };
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
@@ -2481,17 +2481,34 @@
     statsContainer?.append(statsNode);
     const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${id === "war" && root.WeightPlayWarText ? root.WeightPlayWarText.get("record", stats) : id === "cribbage" ? cribbageStatsText(stats) : id === "old-maid" ? oldMaidStatsText(stats) : `${stats.wins}W · ${stats.losses}L`}</strong>`; };
     updateStatsView();
-    let game;
+    let game, lessonGuide = null, replayLesson = false;
+    const lessonPlan = CARD_ACTION_LESSONS[id] || [];
+    const lessonHost = document.createElement('div');
+    lessonHost.className = 'card-action-guide-host';
+    lessonHost.setAttribute('data-runtime-localize', 'off');
+    const lessonStep = () => lessonPlan.find(step => step.id === lessonGuide?.stepId);
+    const startLesson = () => {
+      if (!lessonGuide || !controller.isBattleActive()) return;
+      lessonGuide.start({ replay: replayLesson }); replayLesson = false;
+      lessonGuide.refresh();
+    };
     const controller = {
       id,
+      needsLesson() { return Boolean(lessonGuide && (replayLesson || !lessonGuide.hasCompleted())); },
+      teaching() { return Boolean(lessonGuide?.active); },
+      lessonStep() { return lessonGuide?.stepId || null; },
+      lesson(event) {
+        const step = lessonStep();
+        return step?.event === event ? lessonGuide.accept(step.id, { accepted: true }) : false;
+      },
       isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
-      openBattle() { resultRecorded = false; if (id === "casino") playCardGameCue("start"); main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync"));
+      openBattle() { resultRecorded = false; if (id === "casino") playCardGameCue("start"); main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; startLesson(); render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync"));
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["battle"] ?? null;
       if (["result"].includes("battle") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (false && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen; if (__wpNextScreen === "battle" && __wpMeasurement.roundKey && !__wpMeasurement.ended) __wpMeasurement.started = true; __wpNotifyMeasurement(); }
 },
-      openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; (__wpNotifyMeasurement(), result.hidden = true); window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync"));
+      openMain() { lessonGuide?.stop(); battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; (__wpNotifyMeasurement(), result.hidden = true); window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync"));
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (false && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
@@ -2577,7 +2594,8 @@
         [opponents, center, hand, actions, status, statusText].forEach((node) => node?.setAttribute("data-runtime-localize", "off"));
       }
       updateQuickGuide();
-      if (quickGuide.textContent) actions.prepend(quickGuide);
+      if (lessonGuide?.active) { quickGuide.remove(); actions.prepend(lessonHost); lessonGuide.refresh(); }
+      else { lessonHost.remove(); if (quickGuide.textContent) actions.prepend(quickGuide); }
       status.textContent = view.status || "";
       statusText.textContent = view.help || "";
       document.querySelector("#cardGameScore").textContent = view.score || "0";
@@ -2659,14 +2677,21 @@
     const clickHandler = (event) => {
       const actionNode = event.target.closest("[data-action]");
       const cardNode = event.target.closest("[data-card-index]");
+      const lesson = lessonStep();
+      if (lessonGuide?.active && (document.hidden || battle.querySelector('[data-card-game-return-confirm]')
+          || battle.querySelector('.wp-frame-popover:not([hidden])'))) return;
       if (actionNode) {
         const action = actionNode.dataset.action;
+        if (lesson && !lesson.actions?.includes(action)) return;
         game.action(action, actionNode.dataset.value);
         if (id === "casino") controller.beep(["capture", "build", "trail"].includes(action) ? "place" : "click");
         else controller.beep(action === "flip" ? "flip" : "place");
         render(); return;
       }
-      if (cardNode && game.card) { game.card(Number(cardNode.dataset.cardIndex)); controller.beep(id === "casino" ? "click" : "place"); render(); }
+      if (cardNode && game.card) {
+        if (lesson && (!lesson.cards || !(lesson.cards === 'center' ? center : hand).contains(cardNode))) return;
+        game.card(Number(cardNode.dataset.cardIndex)); controller.beep(id === "casino" ? "click" : "place"); render();
+      }
     };
     battle.addEventListener("click", clickHandler);
     document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
@@ -2767,10 +2792,11 @@
     // The wrapper runs only after the authored method succeeds and preserves this/return.
     const resetModel = game.reset;
     game.reset = function (...args) {
+      lessonGuide?.stop();
       const value = resetModel.apply(this, args);
       __wpMeasurement.roundKey = {}; __wpMeasurement.started = __wpMeasurement.screen === "battle"; __wpMeasurement.restart = false;
       __wpMeasurement.ended = false; __wpMeasurement.paused = false; __wpMeasurement.outcome = "complete";
-      __wpNotifyMeasurement(); return value;
+      __wpNotifyMeasurement(); startLesson(); return value;
     };
     for (const method of ["pause", "resume", "stop"]) {
       if (typeof game[method] !== "function") continue;
@@ -2781,6 +2807,38 @@
         else __wpMeasurement.paused = method === "pause";
         __wpNotifyMeasurement(); return value;
       };
+    }
+    if (rootElement.dataset.tutorialOwner === 'action-guide') {
+      if (!root.WeightPlayTutorial?.createActionGuide) throw new Error('CARD_ACTION_GUIDE_UNAVAILABLE');
+      const text = () => CARD_LESSON_COPY[currentLocale()] || CARD_LESSON_COPY.en;
+      lessonGuide = root.WeightPlayTutorial.createActionGuide({
+        gameId: id, revision: 1, host: lessonHost,
+        steps: lessonPlan.map(step => ({ id: step.id, title: () => t(step.label),
+          instruction: () => text()[step.copy].replace('{count}', String(step.count || 1)).replace('{action}', t(step.label)),
+          target: () => battle.querySelector(game.lessonTarget?.(step.id) || step.target || '[data-action]'),
+        })),
+        onComplete() { game.releaseLesson?.(); render(); },
+      });
+      const replay = document.createElement('button'); replay.type = 'button'; replay.className = 'secondary-btn';
+      replay.dataset.cardLessonReplay = 'true'; replay.setAttribute('data-runtime-localize', 'off');
+      const updateReplay = () => { replay.textContent = text().replay; lessonGuide.refresh(); };
+      updateReplay(); window.addEventListener('wonder:locale-change', updateReplay);
+      replay.addEventListener('click', () => { replayLesson = true; game.reset(); controller.openBattle(); });
+      // The existing localized Guide renderer replaces its section after boot
+      // and on locale changes. Reattach the same owned control without polling.
+      let observedGuide = null;
+      const attachReplay = () => {
+        const guide = document.querySelector('.game-page-info,.public-guide,.game-guide,[data-wp-entry-guide]');
+        if (observedGuide !== guide) {
+          replayObserver.disconnect(); replayObserver.observe(main.parentElement, { childList: true });
+          if (guide) replayObserver.observe(guide, { childList: true });
+          observedGuide = guide;
+        }
+        if (guide && !guide.contains(replay)) guide.append(replay);
+      };
+      const replayObserver = new MutationObserver(attachReplay);
+      replayObserver.observe(main.parentElement, { childList: true }); attachReplay();
+      window.addEventListener('beforeunload', () => replayObserver.disconnect(), { once: true });
     }
     game.reset();
     render();
@@ -2887,15 +2945,16 @@
     };
     const scoreTrick = () => { const hearts = s.trick.filter((entry) => entry.card.suit === "hearts").length; const queen = s.trick.some((entry) => entry.card.suit === "spades" && entry.card.rank === 12) ? 13 : 0; const points = hearts + queen; const winner = trickWinner(s.trick); s.scores[winner] += points; s.penaltyHearts[winner] += hearts; s.penaltyQueens[winner] += queen; if (hearts) s.heartsBroken = true; s.trick = []; s.turn = winner; s.lead = winner; return { points, winner }; };
     const finish = () => { const moon = s.scores.findIndex((score) => score === 26); if (moon >= 0) { s.scores = s.scores.map((score, index) => index === moon ? score - 26 : score + 26); } const playerWon = s.scores[0] === Math.min(...s.scores); const lesson = heartsResultText(s.penaltyHearts[0], s.penaltyQueens[0], moon >= 0); controller.result(playerWon, `${t("score")}: ${s.scores[0]} · ${t("points")}: ${s.scores.join(" / ")} · ${lesson}`); };
-    const play = (player, item) => { const handCards = s.hands[player]; const index = handCards.indexOf(item); if (index < 0) return; const legalCards = legal(handCards, s.trick); if (!legalCards.includes(item)) return; if (!s.trick.length && player === 0 && s.hands[0].length === 13 && !(item.suit === "clubs" && item.rank === 2)) return; handCards.splice(index, 1); s.trick.push({ player, card: item }); if (item.suit === "hearts") s.heartsBroken = true; s.turn = (player + 1) % 4; if (s.trick.length === 4) { scoreTrick(); if (!s.hands.some((cards) => cards.length)) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
+    const play = (player, item) => { const handCards = s.hands[player]; const index = handCards.indexOf(item); if (index < 0) return; const legalCards = legal(handCards, s.trick); if (!legalCards.includes(item)) return; if (!s.trick.length && player === 0 && s.hands[0].length === 13 && !(item.suit === "clubs" && item.rank === 2)) return; handCards.splice(index, 1); if (player === 0) controller.lesson?.("play"); s.trick.push({ player, card: item }); if (item.suit === "hearts") s.heartsBroken = true; s.turn = (player + 1) % 4; if (s.trick.length === 4) { scoreTrick(); if (!s.hands.some((cards) => cards.length)) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
     const aiTurn = () => { if (paused || s.phase !== "play" || s.turn === 0) return; const item = chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn], s.trick), "low"); if (item) play(s.turn, item); };
     return {
       reset() { cancelAi(); paused = false; Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
       pause() { paused = true; cancelAi(); },
       resume() { if (!paused) return; paused = false; if (s.phase === "play" && s.turn !== 0) scheduleAi(); },
       stop() { paused = true; cancelAi(); },
-      card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3) s.selected.add(index); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
-      action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) scheduleAi(); } },
+      card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3 && s.hands[0][index]) s.selected.add(index); if (s.selected.size === 3) controller.lesson?.("select-three"); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
+      action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; controller.lesson?.("pass"); s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) scheduleAi(); } },
+      lessonTarget(step) { if (step === "pass-cards") return '[data-action="pass"]'; const item = s.phase === "pass" ? s.hands[0].find((_, i) => !s.selected.has(i)) : !s.trick.length && s.hands[0].length === 13 ? s.hands[0].find(item => item.suit === "clubs" && item.rank === 2) : legal(s.hands[0], s.trick)[0]; return `#cardGameHand [data-card-index="${s.hands[0].indexOf(item)}"]`; },
       view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; const shellCopy = heartsShellCopy(); const firstLead = shellCopy?.lead || "2♣ leads the first trick"; const lead = s.hands[0].length === 13 && !s.trick.length ? firstLead : shellCopy?.leadBy ? shellCopy.leadBy.replace("{name}", aiNames[s.lead] || aiNames[0]) : `${aiNames[s.lead] || aiNames[0]} leads`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => heartsOpponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || `<span>${lead}</span>`}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
     };
   }
@@ -2910,7 +2969,7 @@
     const legal = (cards) => { const lead = s.trick[0]?.card.suit; const suited = lead ? cards.filter((item) => item.suit === lead) : []; return suited.length ? suited : cards; };
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; const teamBid = s.bids[0] + s.bids[2]; s.scores[0] += own ? 10 * teamBid + Math.max(0, s.tricks[0] - teamBid) : -10 * teamBid; s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); const playerWon = s.scores[0] >= s.scores[1]; controller.result(playerWon, spadesResultText(teamBid, s.tricks[0], s.scores[0], s.scores[1], playerWon, own)); };
     const currentWinnerEntry = () => { const winner = trickWinner(s.trick, "spades"); return s.trick.find((entry) => entry.player === winner) || null; };
-    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
+    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); if (player === 0) controller.lesson?.("play"); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
     const aiTurn = () => { if (paused || s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
     return {
       reset() { cancelAi(); paused = false; Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
@@ -2918,7 +2977,8 @@
       resume() { if (!paused) return; paused = false; if (s.phase === "play" && s.turn !== 0) scheduleAi(); },
       stop() { paused = true; cancelAi(); },
       card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
-      action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } },
+      action(action, selected) { if (s.phase === "bid" && action === "bid" && Number.isInteger(Number(selected)) && Number(selected) >= 0 && Number(selected) <= 13) { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; controller.lesson?.("bid"); } },
+      lessonTarget(step) { return step === "play-card" ? `#cardGameHand [data-card-index="${s.hands[0].indexOf(legal(s.hands[0])[0])}"]` : '[data-action="bid"][data-value="3"]'; },
       view() {
         const bidControls = Array.from({ length: 14 }, (_, i) => `<button class="secondary-btn" data-action="bid" data-value="${i}" ${s.bids[0] !== null ? "disabled" : ""}>${i}</button>`).join("");
         const progress = s.phase === "play" ? spadesProgressText(s.tricks[0], s.bids[0] + s.bids[2]) : null;
@@ -3026,7 +3086,7 @@
     return {
       reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", winner: null, warCount: 0, largestPot: 0 }); },
       card() {},
-      action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
+      action(action) { if (action !== "flip" || !["ready", "war"].includes(s.phase)) return; if (s.phase === "war") continueWar(); else reveal(); controller.lesson?.("reveal"); },
       view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "finished" ? t("roundOver") : s.phase === "war" ? t("war") : t("flip"), status: s.phase === "finished" ? t("roundOver") : t("yourTurn"), help: s.phase === "finished" ? t("roundOver") : warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup(root.WeightPlayWarText?.get("computer") || "AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div data-war-outcome="${s.phase === "war" ? "tie" : s.winner || "ready"}" class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip" ${s.phase === "finished" ? "disabled" : ""}>${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
     };
   }
@@ -3103,7 +3163,7 @@
       if (ordinarySpades) parts.push(casinoText("specialSpade", { count: ordinarySpades, bonus: ordinarySpades }));
       return parts.length ? parts.join(" · ") : casinoText("specialNone");
     };
-    const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); const capturedCards = [item, ...picked.flatMap(entryCards)]; s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(...capturedCards); s.feedback = casinoText("captureFeedback", { count: capturedCards.length, special: specialBonusSummary(capturedCards), bonus: immediateBonus(capturedCards) }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
+    const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); const capturedCards = [item, ...picked.flatMap(entryCards)]; s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(...capturedCards); s.feedback = casinoText("captureFeedback", { count: capturedCards.length, special: specialBonusSummary(capturedCards), bonus: immediateBonus(capturedCards) }); s.selectedCard = null; s.selectedTable.clear(); controller.lesson?.("capture"); aiTurn(); };
     const trail = (cardIndex) => { const item = s.player[cardIndex]; if (!item || s.selectedTable.size || canCapture(item)) return; s.player.splice(cardIndex, 1); s.table.push({ card: item }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
     const scoreCasino = (cards) => cards.reduce((score, item) => score + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), 0) + (cards.length >= 27 ? 3 : 0);
     const resultBreakdown = (cards) => casinoText("resultBreakdown", { cards: cards.length, immediate: immediateBonus(cards), majority: cards.length >= 27 ? "+3" : "—", score: scoreCasino(cards) });
@@ -3114,13 +3174,15 @@
       reset() {
         Object.assign(s, { player: [], ai: [], stock: deck(), table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0], feedback: "" });
         for (let i = 0; i < 4; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); s.table.push({ card: s.stock.pop() }); }
+        if (controller.needsLesson?.()) { const tableCards = s.table.map(entry => entry.card); arrangeLessonCards([s.player, s.ai, s.stock, tableCards], [[0, 0, "spades", 2], [3, 0, "clubs", 2]]); s.table = tableCards.map(card => ({card})); }
       },
       card(index) {
-        if (s.selectedCard === null) { s.selectedCard = index; return; }
+        if (s.selectedCard === null) { if (!s.player[index] || (controller.teaching?.() && index !== 0)) return; s.selectedCard = index; controller.lesson?.("select"); return; }
         const tableIndex = index;
         if (tableIndex < s.table.length) {
           if (s.selectedTable.has(tableIndex)) s.selectedTable.delete(tableIndex);
           else s.selectedTable.add(tableIndex);
+          if (validCaptureSelection(s.player[s.selectedCard], [...s.selectedTable])) controller.lesson?.("table");
         }
       },
       action(action) {
@@ -3146,6 +3208,7 @@
           aiTurn();
         }
       },
+      lessonTarget(step) { return step === "choose-hand" ? '#cardGameHand [data-card-index="0"]' : step === "choose-table" ? '#cardGameCenter [data-card-index="0"]' : '[data-action="capture"]'; },
       view() {
         const selectedItem = s.selectedCard === null ? null : s.player[s.selectedCard];
         const options = captureOptions(selectedItem);
@@ -3231,6 +3294,7 @@
       if (!legal(item)) return;
       s.hands[player].splice(s.hands[player].indexOf(item), 1);
       s.discard.push(item);
+      if (player === 0 && item.rank === 8) controller.lesson?.("eight");
       if (!s.hands[player].length) { finish(player); return; }
       if (item.rank === 8) {
         s.activeSuit = player === 0 ? null : SUITS[Math.floor(Math.random() * SUITS.length)];
@@ -3246,9 +3310,10 @@
       else { draw(s.turn); const drawn = s.hands[s.turn].at(-1); if (legal(drawn)) play(s.turn, drawn); else next(); }
     };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "", illegalCue: "" }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; },
-      card(index) { if (s.turn === 0 && !s.pendingSuit) { s.drawCue = ""; const item = s.hands[0][index]; if (legal(item)) { s.illegalCue = ""; play(0, item); } else { s.illegalCue = crazyEightsIllegalText(); } } },
-      action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { s.illegalCue = ""; const drawn = draw(0); if (drawn) s.drawCue = crazyEightsDrawText(s.hands[0].length, s.playerDraws); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit) { s.drawCue = ""; s.illegalCue = ""; s.activeSuit = selected; s.playerWildSuit = selected; s.playerWildSuitCards = s.hands[0].filter((item) => item.suit === selected && item.rank !== 8).length; s.pendingSuit = false; next(); } },
+      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "", illegalCue: "" }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; if (controller.needsLesson?.()) arrangeLessonCards([s.hands[0], ...s.hands.slice(1), s.stock, s.discard], [[0, 0, "clubs", 8]]); s.activeSuit = s.discard[0].suit; },
+      card(index) { if (s.turn === 0 && !s.pendingSuit) { s.drawCue = ""; const item = s.hands[0][index]; if (legal(item) && (!controller.teaching?.() || item.rank === 8)) { s.illegalCue = ""; play(0, item); } else { s.illegalCue = crazyEightsIllegalText(); } } },
+      action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { s.illegalCue = ""; const drawn = draw(0); if (drawn) s.drawCue = crazyEightsDrawText(s.hands[0].length, s.playerDraws); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit && SUITS.includes(selected)) { s.drawCue = ""; s.illegalCue = ""; s.activeSuit = selected; s.playerWildSuit = selected; s.playerWildSuitCards = s.hands[0].filter((item) => item.suit === selected && item.rank !== 8).length; s.pendingSuit = false; controller.lesson?.("suit"); next(); } },
+      lessonTarget(step) { return step === "play-eight" ? `#cardGameHand [data-card-index="${s.hands[0].findIndex(item => item.rank === 8)}"]` : '[data-action="suit"]'; },
       view() { const illegalCue = s.illegalCue ? `<p class="card-choice-summary card-crazy-eights-illegal-cue" data-runtime-localize="off" role="status" aria-live="polite" aria-atomic="true">${s.illegalCue}</p>` : ""; const drawCue = s.drawCue ? `<p class="card-choice-summary card-crazy-eights-draw-cue" data-runtime-localize="off" role="status" aria-live="polite" aria-atomic="true">${s.drawCue}</p>` : ""; return { phase: `${t("play")} ${SYMBOLS[s.activeSuit] || "8"}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.pendingSuit ? t("chooseSuit") : `${t("play")}: ${rankText(s.discard.at(-1).rank)}${SYMBOLS[s.activeSuit]}`, score: s.hands[0].length, opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length)).join(""), center: `<div class="card-table-label">${t("discard")}</div><div class="table-row">${cardMarkup(s.discard.at(-1), 0)}${s.stock.length ? `<button class="playing-card is-face-down" data-action="draw" aria-label="${t("draw")}"></button>` : ""}</div>${illegalCue}${drawCue}${s.pendingSuit ? `<p class="card-choice-summary" role="status" aria-live="polite">${suitPreview()}</p><div class="card-choice-panel">${SUITS.map((suit) => `<button class="secondary-btn" data-action="suit" data-value="${suit}">${SYMBOLS[suit]}</button>`).join("")}</div>` : ""}`, hand: cardsMarkup(s.hands[0]), actions: `<button class="secondary-btn" data-action="draw" ${s.pendingSuit ? "disabled" : ""}>${t("draw")}</button>` }; }
     };
   }
@@ -3308,7 +3373,7 @@
         aiScore: s.score[1],
       }));
     };
-    const drawCard = (fromDiscard) => { const item = fromDiscard ? s.discard.pop() : s.stock.pop(); if (item) { s.player.push(item); s.drawn = true; } };
+    const drawCard = (fromDiscard) => { const item = fromDiscard ? s.discard.pop() : s.stock.pop(); if (item) { s.player.push(item); s.drawn = true; controller.lesson?.("draw"); } };
     const chooseAiDiscard = () => { let bestIndex = 0; let bestDeadwood = Infinity; s.ai.forEach((_, index) => { const candidate = s.ai.filter((__, itemIndex) => itemIndex !== index); const deadwood = meldStats(candidate).deadwood; if (deadwood < bestDeadwood) { bestDeadwood = deadwood; bestIndex = index; } }); return bestIndex; };
     const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, "gin"); else if (stats.deadwood <= 10) finish(1, "knock", 1); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, "stock"); } else { s.turn = 0; s.drawn = false; } };
     const discardMarkup = () => s.discard.at(-1)
@@ -3316,8 +3381,9 @@
       : `<span class="card-empty-slot" data-runtime-localize="off" role="status">${ginBattleText("emptyDiscard")}</span>`;
     return {
       reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
-      card(index) { if (s.turn === 0 && s.drawn && !s.over) { s.selected = s.selected.has(index) ? new Set() : new Set([index]); } },
-      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
+      card(index) { if (s.turn === 0 && s.drawn && !s.over) { if (!s.player[index]) return; s.selected = s.selected.has(index) ? new Set() : new Set([index]); if (s.selected.size === 1) controller.lesson?.("select"); } },
+      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); controller.lesson?.("discard"); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
+      lessonTarget(step) { return step === "select-card" ? '#cardGameHand [data-card-index="0"]' : step === "discard-card" ? '[data-action="discard"]' : '[data-action="draw-stock"]'; },
       view() {
         const stats = meldStats(s.player);
         const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : "";
@@ -3417,6 +3483,7 @@
       const index = hand.indexOf(item);
       if (index < 0) return;
       hand.splice(index, 1);
+      if (player === 0) controller.lesson?.("peg");
       scorePegCard(player, item);
       s.count += value(item);
       s.lastPegPlayer = player;
@@ -3430,8 +3497,9 @@
     function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], playerCrib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], roundPegScore: [0, 0], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", pegCue: "", round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
     return {
       reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
-      card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
-      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { const selectedCards = [...s.selected].sort((a, b) => a - b).map((index) => s.hand[index]).filter(Boolean); s.playerCrib = selectedCards; [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.selected.clear(); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; s.pegCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
+      card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2 && s.hand[index]) s.selected.add(index); if (s.selected.size === 2) controller.lesson?.("select-two"); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
+      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { const selectedCards = [...s.selected].sort((a, b) => a - b).map((index) => s.hand[index]).filter(Boolean); s.playerCrib = selectedCards; [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.selected.clear(); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; controller.lesson?.("crib"); s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; s.pegCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
+      lessonTarget(step) { if (step === "send-crib") return '[data-action="send-crib"]'; const index = s.phase === "discard" ? s.hand.findIndex((_, i) => !s.selected.has(i)) : s.hand.indexOf(legalPeg(0)[0]); return `#cardGameHand [data-card-index="${index}"]`; },
       view() { const playable = legalPeg(0); const battleCopy = cribbageBattleCopy(); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter, s.dealer)}</span>` : ""; const pegCue = s.phase === "pegging" && s.pegCue ? `<div class="card-crib-score-cue" role="status" aria-live="polite">${s.pegCue}</div>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? cribbageSelectionText(s.selected.size) : s.turn === 0 ? cribPeggingCoachText(playable.length > 0) : t("aiTurn"), score: s.score[0], opponents: opponentMarkup(battleCopy.ai, s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label" data-runtime-localize="off">${t("cribbage")} · ${battleCopy.round} ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>${pegCue}`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" data-runtime-localize="off" ${s.turn !== 0 || playable.length ? "disabled" : ""}>${battleCopy.go}</button>` }; }
     };
   }
@@ -3465,15 +3533,15 @@
       if (s.turn !== 0) scheduleAi();
     };
     const terminal = () => !s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length);
-    const ask = (target, rank) => { if (paused || stopped) return; s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } if (terminal()) { clearAiTimer(); finish(); } else if (!matching.length || !s.players[0].length) next(); };
+    const ask = (target, rank) => { if (paused || stopped) return; s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } controller.lesson?.("ask"); if (terminal()) { clearAiTimer(); finish(); } else if (!matching.length || !s.players[0].length) next(); };
     const aiTurn = () => { if (paused || stopped || !controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (terminal()) { clearAiTimer(); finish(); } else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn && (s.stock.length || s.players[index].length)); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (terminal()) { clearAiTimer(); finish(); } else if (matching.length) scheduleAi(); else next(); };
     return {
       reset() { deal(); },
       pause() { paused = true; clearAiTimer(); },
       resume() { if (stopped) return; paused = false; if (s.turn !== 0) scheduleAi(); },
       stop() { paused = true; stopped = true; clearAiTimer(); },
-      card(index) { if (!paused && !stopped && s.turn === 0 && s.players[0][index]) s.selectedRank = s.players[0][index].rank; },
-      action(action, valueArg) { if (paused || stopped) return; if (action === "players") { const count = Number(valueArg); if (count >= 2 && count <= 4) { s.playerCount = count; deal(); } return; } if (s.turn !== 0) return; if (action === "opponent") s.selectedOpponent = Math.min(Number(valueArg), s.playerCount - 1); if (action === "rank") { const rank = Number(valueArg); if (s.players[0].some((item) => item.rank === rank)) s.selectedRank = rank; } if (action === "ask" && s.selectedRank && s.players[0].some((item) => item.rank === s.selectedRank)) ask(s.selectedOpponent, s.selectedRank); },
+      card(index) { if (!paused && !stopped && s.turn === 0 && s.players[0][index]) { s.selectedRank = s.players[0][index].rank; controller.lesson?.("rank"); } },
+      action(action, valueArg) { if (paused || stopped) return; if (action === "players") { const count = Number(valueArg); if (count >= 2 && count <= 4) { s.playerCount = count; deal(); } return; } if (s.turn !== 0) return; if (action === "opponent") s.selectedOpponent = Math.min(Number(valueArg), s.playerCount - 1); if (action === "rank") { const rank = Number(valueArg); if (s.players[0].some((item) => item.rank === rank)) { s.selectedRank = rank; controller.lesson?.("rank"); } } if (action === "ask" && s.selectedRank && s.players[0].some((item) => item.rank === s.selectedRank)) ask(s.selectedOpponent, s.selectedRank); },
       view() { const rankCounts = s.players[0].reduce((counts, item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1), new Map()); if (s.selectedRank && !rankCounts.has(s.selectedRank)) s.selectedRank = null; const target = [...rankCounts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0] || [null, 0]; const heldRanks = new Set(rankCounts.keys()); const rankControls = RANKS.map((rank, index) => { const value = index + 1; const held = heldRanks.has(value); return `<button class="secondary-btn ${s.selectedRank === value ? "is-selected" : ""}" data-action="rank" data-value="${value}" aria-pressed="${s.selectedRank === value}" ${held ? "" : "disabled"}>${rank}</button>`; }).join(""); const playerControls = [2, 3, 4].map((count) => `<button class="secondary-btn ${s.playerCount === count ? "is-selected" : ""}" data-action="players" data-value="${count}" aria-label="${count} players">${count}</button>`).join(""); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const targetText = target[0] ? `${rankText(target[0])} ${target[1]}/4` : "—"; const targetAttrs = target[0] ? ` data-go-fish-target-rank="${target[0]}" data-go-fish-target-label="${rankText(target[0])}" data-go-fish-target-count="${target[1]}"` : ` data-go-fish-target-full="true"`; const stateAttrs = ` data-go-fish-player-count="${s.playerCount}" data-go-fish-book-ranks="${s.bookRanks[0].join(",")}"`; const requestSummary = goFishText(s.selectedRank ? "ready" : "pending", { rank: s.selectedRank ? rankText(s.selectedRank) : "", opponent: names[s.selectedOpponent] }); const bookCue = s.bookCue ? `<p class="card-choice-summary card-go-fish-book-cue" data-go-fish-book-cue data-runtime-localize="off" role="status" aria-live="polite">${goFishText("book", { rank: s.bookCue, books: s.books[0] })}</p>` : ""; return { phase: `${t("ask")} ${s.playerCount}P`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `${t("ask")}: ${names[s.selectedOpponent]} — ${t("chooseRank")}`, score: s.books[0], opponents: names.slice(1, s.playerCount).map((name, index) => `<button class="opponent-card" data-action="opponent" data-value="${index + 1}"><strong>${name}</strong><span>${s.players[index + 1].length} ${t("cards")} — ${s.books[index + 1]} ${t("books")}</span></button>`).join(""), center: `<div class="card-table-label">${t("stock")}: ${s.stock.length}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw" aria-label="${t("stock")}"></button><div class="card-book-progress" aria-live="polite"${stateAttrs}><strong>${t("books")}: ${s.books[0]}/13</strong><span>${completed}</span><span${targetAttrs}>${t("target")}: ${targetText}</span></div></div>${bookCue}<p class="card-choice-summary" data-go-fish-request-summary role="status" aria-live="polite">${requestSummary}</p><div class="card-choice-panel">${rankControls}</div>`, hand: cardsMarkup(s.players[0]), actions: `<div class="card-choice-panel">${playerControls}</div><button class="primary-btn" data-action="ask" ${!s.selectedRank || s.selectedOpponent >= s.playerCount || !heldRanks.has(s.selectedRank) ? "disabled" : ""}>${t("ask")}</button>` }; }
     };
   }
@@ -3491,6 +3559,7 @@
     const finishIfDone = () => { const playerEmpty = !s.hand.length && !s.stock.length; const aiEmpty = !s.aiHand.length && !s.aiStock.length; if (playerEmpty || aiEmpty) { s.over = true; clearTimeout(s.timer); controller.result(playerEmpty, `${t("cards")}: ${s.hand.length + s.stock.length} / ${s.aiHand.length + s.aiStock.length}`); } };
     const aiLoop = () => {
       if (s.over || s.paused || !controller.isBattleActive()) return;
+      if (controller.teaching?.()) return;
       const candidates = s.aiHand.flatMap((item, index) => s.centers.flatMap((centerCard, centerIndex) => canPlay(item, centerCard) ? [{ index, centerIndex, item }] : []));
       if (candidates.length) {
         const playerIsActive = Date.now() - s.lastPlayerAt < 1500;
@@ -3530,12 +3599,14 @@
       if (!s.over) schedule();
     };
     return {
-      reset() { clearTimeout(s.timer); const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now(), paused: false, pausedAt: 0, remaining: 850 }); schedule(); },
+      reset() { clearTimeout(s.timer); const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now(), paused: false, pausedAt: 0, remaining: 850 }); if (controller.needsLesson?.()) arrangeLessonCards([s.hand, s.stock, s.aiHand, s.aiStock, s.centers], [[0, 0, "clubs", 6], [0, 1, "clubs", 7], [4, 0, "clubs", 5], [4, 1, "clubs", 11]]); schedule(); },
       pause() { if (s.over || s.paused) return; s.paused = true; s.pausedAt = Date.now(); s.remaining = Math.max(0, s.dueAt - s.pausedAt); clearTimeout(s.timer); },
       resume() { if (s.over || !s.paused) return; s.lastPlayerAt += Date.now() - s.pausedAt; s.paused = false; schedule(s.remaining); },
       stop() { clearTimeout(s.timer); s.over = true; s.paused = false; },
       isPaused() { return s.paused; },
-      card(index) { if (s.over || s.paused) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
+      card(index) { if (s.over || s.paused) return; if (controller.teaching?.() && index !== s.hand.findIndex(card => s.centers.some(center => canPlay(card, center)))) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); controller.lesson?.("place"); finishIfDone(); },
+      releaseLesson() { if (!s.over && !s.paused) schedule(); },
+      lessonTarget() { return `#cardGameHand [data-card-index="${s.hand.findIndex(item => s.centers.some(center => canPlay(item, center)))}"]`; },
       action() {},
       view() { const legalCount = s.hand.filter((item) => s.centers.some((centerCard) => canPlay(item, centerCard))).length; const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: t("cards"), status: t("yourTurn"), help: speedCoachText(legalCount), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };
@@ -3579,6 +3650,7 @@
       if (player === 0) {
         s.drawCue = oldMaidText(cueKey);
         s.drawOutcome = cueKey;
+        controller.lesson?.("draw-hidden");
         oldMaidTrack("blind_draw", { source: "opponent_hand", position, remaining_count: source.length, input_type: "card_control" });
         oldMaidTrack("pair_outcome", { outcome: cueKey, pairs_delta: s.books[player] - pairsBefore });
       }
@@ -3597,6 +3669,47 @@
     };
   }
 
+  // Move existing cards only: a training deal remains one complete real deck.
+  function arrangeLessonCards(groups, placements) {
+    for (const [group, index, suit, rank] of placements) {
+      let found;
+      for (const cards of groups) {
+        const at = cards.findIndex(card => card.suit === suit && card.rank === rank);
+        if (at >= 0) { found = [cards, at]; break; }
+      }
+      if (!found || !groups[group]?.[index]) throw new Error('INVALID_CARD_LESSON_DEAL');
+      const [cards, at] = found;
+      [cards[at], groups[group][index]] = [groups[group][index], cards[at]];
+    }
+  }
+  const cardLesson = (id, event, label, copy, { cards, actions, count, target } = {}) => ({ id, event, label, copy, cards, actions, count, target });
+  const CARD_ACTION_LESSONS = {
+    hearts: [cardLesson('select-three', 'select-three', 'selectCards', 'select', { cards: 'hand', count: 3 }), cardLesson('pass-cards', 'pass', 'pass', 'use', { actions: ['pass'], target: '[data-action="pass"]' }), cardLesson('play-card', 'play', 'play', 'play', { cards: 'hand' })],
+    spades: [cardLesson('bid-tricks', 'bid', 'bid', 'bid', { actions: ['bid'], target: '[data-action="bid"][data-value="3"]' }), cardLesson('play-card', 'play', 'play', 'play', { cards: 'hand' })],
+    'gin-rummy': [cardLesson('draw-card', 'draw', 'draw', 'use', { actions: ['draw-stock', 'draw-discard'], target: '[data-action="draw-stock"]' }), cardLesson('select-card', 'select', 'selectCards', 'select', { cards: 'hand' }), cardLesson('discard-card', 'discard', 'discard', 'use', { actions: ['discard'], target: '[data-action="discard"]' })],
+    'crazy-eights': [cardLesson('play-eight', 'eight', 'play', 'eight', { cards: 'hand' }), cardLesson('choose-suit', 'suit', 'chooseSuit', 'suit', { actions: ['suit'], target: '[data-action="suit"]' })],
+    cribbage: [cardLesson('select-two', 'select-two', 'selectCards', 'select', { cards: 'hand', count: 2 }), cardLesson('send-crib', 'crib', 'submit', 'use', { actions: ['send-crib'], target: '[data-action="send-crib"]' }), cardLesson('peg-card', 'peg', 'play', 'select', { cards: 'hand' })],
+    'go-fish': [cardLesson('choose-rank', 'rank', 'ask', 'rank', { cards: 'hand', actions: ['rank', 'opponent'], target: '[data-action="rank"]:not([disabled])' }), cardLesson('ask-rank', 'ask', 'ask', 'use', { actions: ['ask', 'opponent'], target: '[data-action="ask"]' })],
+    war: [cardLesson('reveal-first', 'reveal', 'flip', 'use', { actions: ['flip'], target: '[data-action="flip"]' }), cardLesson('reveal-next', 'reveal', 'flip', 'use', { actions: ['flip'], target: '[data-action="flip"]' })],
+    speed: [cardLesson('place-first', 'place', 'play', 'speed', { cards: 'hand' }), cardLesson('place-next', 'place', 'play', 'speed', { cards: 'hand' })],
+    'old-maid': [cardLesson('draw-hidden', 'draw-hidden', 'draw', 'hidden', { cards: 'center', target: '#cardGameCenter [data-card-index]' })],
+    casino: [cardLesson('choose-hand', 'select', 'selectCards', 'select', { cards: 'hand' }), cardLesson('choose-table', 'table', 'capture', 'table', { cards: 'center' }), cardLesson('capture-cards', 'capture', 'capture', 'use', { actions: ['capture'], target: '[data-action="capture"]' })],
+  };
+  const CARD_LESSON_COPY = {
+    en: { replay: 'Replay the controls tutorial', select: 'Select {count} card(s) from your hand.', use: 'Use “{action}” to complete this action.', play: 'Play the highlighted legal card. Follow the led suit when possible.', bid: 'Choose how many tricks you expect to win (0–13).', eight: 'Play the highlighted Eight. It can change the active suit.', suit: 'Choose a suit for the next player to follow.', rank: 'Choose a rank that you hold, then ask an opponent for it.', speed: 'Play the highlighted card: its rank is one above or below a center card.', hidden: 'Draw one face-down card from the next player. Matching pairs leave your hand automatically.', table: 'Select the highlighted table card that matches your chosen hand card.' },
+    'zh-Hant': { replay: '重播操作教學', select: '從手牌選取 {count} 張牌。', use: '使用「{action}」完成這個操作。', play: '打出標示的合法牌；能跟隨首出花色時就要跟牌。', bid: '選擇預期贏得的墩數（0–13）。', eight: '打出標示的 8，這張牌可以改變目前花色。', suit: '選擇下一位玩家需要跟隨的花色。', rank: '選擇手上持有的點數，再向對手要牌。', speed: '打出標示的牌：它的點數比中央牌大一或小一。', hidden: '從下一位玩家抽一張蓋牌；相同點數會自動配對移除。', table: '選取標示的桌面牌，與你選好的手牌配對。' },
+    'zh-Hans': { replay: '重播操作教学', select: '从手牌选取 {count} 张牌。', use: '使用“{action}”完成这个操作。', play: '打出标示的合法牌；能跟随首出花色时就要跟牌。', bid: '选择预期赢得的墩数（0–13）。', eight: '打出标示的 8，这张牌可以改变当前花色。', suit: '选择下一位玩家需要跟随的花色。', rank: '选择手上持有的点数，再向对手要牌。', speed: '打出标示的牌：它的点数比中央牌大一或小一。', hidden: '从下一位玩家抽一张暗牌；相同点数会自动配对移除。', table: '选取标示的桌面牌，与选好的手牌配对。' },
+    ja: { replay: '操作レッスンをもう一度', select: '手札から{count}枚選びましょう。', use: '「{action}」でこの操作を完了しましょう。', play: '強調された出せるカードを出しましょう。同じスートがあれば従います。', bid: '取れると思うトリック数を0～13から選びましょう。', eight: '強調された8を出しましょう。スートを変更できます。', suit: '次のプレイヤーが従うスートを選びましょう。', rank: '手札にあるランクを選び、相手に要求しましょう。', speed: '中央のカードよりランクが1つ上か下の、強調されたカードを出しましょう。', hidden: '次の人の伏せ札を1枚引きましょう。同じランクのペアは自動で消えます。', table: '選んだ手札と合う、強調された場のカードを選びましょう。' },
+    ko: { replay: '조작 연습 다시 하기', select: '손패에서 {count}장을 선택하세요.', use: '“{action}”으로 이 동작을 완료하세요.', play: '강조된 합법 카드를 내세요. 가능하면 선두 카드의 무늬를 따르세요.', bid: '이길 것으로 예상하는 트릭 수를 0–13에서 고르세요.', eight: '강조된 8을 내세요. 현재 무늬를 바꿀 수 있습니다.', suit: '다음 플레이어가 따를 무늬를 고르세요.', rank: '손에 있는 숫자를 고르고 상대에게 요청하세요.', speed: '중앙 카드보다 숫자가 하나 높거나 낮은 강조된 카드를 내세요.', hidden: '다음 플레이어의 뒷면 카드 한 장을 뽑으세요. 같은 숫자의 쌍은 자동으로 제거됩니다.', table: '선택한 손패와 맞는 강조된 테이블 카드를 고르세요.' },
+    es: { replay: 'Repetir el tutorial de controles', select: 'Selecciona {count} carta(s) de tu mano.', use: 'Usa «{action}» para completar esta acción.', play: 'Juega la carta legal resaltada. Sigue el palo de salida si puedes.', bid: 'Elige cuántas bazas esperas ganar (0–13).', eight: 'Juega el Ocho resaltado para cambiar el palo activo.', suit: 'Elige el palo que deberá seguir el próximo jugador.', rank: 'Elige un valor que tengas y pídelo a un rival.', speed: 'Juega la carta resaltada: su valor es uno mayor o menor que una carta central.', hidden: 'Roba una carta boca abajo al siguiente jugador. Las parejas se retiran automáticamente.', table: 'Selecciona la carta resaltada de la mesa que coincide con tu carta.' },
+    'pt-BR': { replay: 'Repetir o tutorial de controles', select: 'Selecione {count} carta(s) da sua mão.', use: 'Use “{action}” para concluir esta ação.', play: 'Jogue a carta válida destacada. Siga o naipe inicial se puder.', bid: 'Escolha quantas vazas espera ganhar (0–13).', eight: 'Jogue o Oito destacado para mudar o naipe ativo.', suit: 'Escolha o naipe que o próximo jogador deve seguir.', rank: 'Escolha um valor que você tenha e peça a um adversário.', speed: 'Jogue a carta destacada: seu valor é um acima ou abaixo de uma carta central.', hidden: 'Compre uma carta virada do próximo jogador. Pares são removidos automaticamente.', table: 'Selecione a carta destacada da mesa que combina com a sua carta.' },
+    fr: { replay: 'Rejouer le tutoriel des commandes', select: 'Sélectionnez {count} carte(s) de votre main.', use: 'Utilisez « {action} » pour terminer cette action.', play: 'Jouez la carte autorisée en surbrillance. Fournissez la couleur demandée si possible.', bid: 'Choisissez le nombre de plis que vous pensez gagner (0–13).', eight: 'Jouez le Huit en surbrillance pour changer la couleur active.', suit: 'Choisissez la couleur que le prochain joueur devra suivre.', rank: 'Choisissez une valeur de votre main et demandez-la à un adversaire.', speed: 'Jouez la carte en surbrillance : sa valeur est supérieure ou inférieure de un à une carte centrale.', hidden: 'Piochez une carte cachée chez le joueur suivant. Les paires sont retirées automatiquement.', table: 'Sélectionnez la carte de table en surbrillance qui correspond à votre carte.' },
+    de: { replay: 'Steuerungsanleitung wiederholen', select: 'Wähle {count} Karte(n) aus deiner Hand.', use: 'Nutze „{action}“, um diese Aktion abzuschließen.', play: 'Spiele die hervorgehobene erlaubte Karte. Bediene die angespielte Farbe, wenn möglich.', bid: 'Wähle, wie viele Stiche du erwartest (0–13).', eight: 'Spiele die hervorgehobene Acht, um die aktive Farbe zu ändern.', suit: 'Wähle die Farbe für den nächsten Spieler.', rank: 'Wähle einen Rang deiner Hand und frage einen Gegner danach.', speed: 'Spiele die hervorgehobene Karte: Ihr Rang liegt eins über oder unter einer mittleren Karte.', hidden: 'Ziehe eine verdeckte Karte vom nächsten Spieler. Paare werden automatisch entfernt.', table: 'Wähle die hervorgehobene Tischkarte passend zu deiner gewählten Handkarte.' },
+    it: { replay: 'Ripeti il tutorial dei comandi', select: 'Seleziona {count} carta/e dalla mano.', use: 'Usa «{action}» per completare questa azione.', play: 'Gioca la carta valida evidenziata. Segui il seme iniziale quando puoi.', bid: 'Scegli quante prese prevedi di vincere (0–13).', eight: 'Gioca l’Otto evidenziato per cambiare il seme attivo.', suit: 'Scegli il seme che il prossimo giocatore dovrà seguire.', rank: 'Scegli un valore che hai in mano e chiedilo a un avversario.', speed: 'Gioca la carta evidenziata: il valore è uno sopra o sotto una carta centrale.', hidden: 'Pesca una carta coperta dal prossimo giocatore. Le coppie vengono rimosse automaticamente.', table: 'Seleziona la carta evidenziata sul tavolo che corrisponde alla tua carta.' },
+    ru: { replay: 'Повторить обучение управлению', select: 'Выберите {count} карт из руки.', use: 'Используйте «{action}», чтобы выполнить действие.', play: 'Сыграйте выделенную допустимую карту. По возможности ходите в масть.', bid: 'Выберите ожидаемое число взяток (0–13).', eight: 'Сыграйте выделенную восьмёрку, чтобы изменить масть.', suit: 'Выберите масть для следующего игрока.', rank: 'Выберите ранг из своей руки и попросите его у соперника.', speed: 'Сыграйте выделенную карту: её ранг на один выше или ниже центральной.', hidden: 'Возьмите закрытую карту у следующего игрока. Пары удаляются автоматически.', table: 'Выберите выделенную карту стола, подходящую к выбранной карте руки.' },
+    hi: { replay: 'नियंत्रण अभ्यास फिर खेलें', select: 'अपने हाथ से {count} पत्ते चुनें।', use: 'यह क्रिया पूरी करने के लिए “{action}” का उपयोग करें।', play: 'हाइलाइट किया वैध पत्ता खेलें। संभव हो तो पहले पत्ते का सूट मिलाएँ।', bid: 'जितनी बाज़ियाँ जीतने की उम्मीद है, वह चुनें (0–13)।', eight: 'सक्रिय सूट बदलने के लिए हाइलाइट किया आठ खेलें।', suit: 'अगले खिलाड़ी के लिए सूट चुनें।', rank: 'अपने हाथ की रैंक चुनें और प्रतिद्वंद्वी से माँगें।', speed: 'हाइलाइट किया पत्ता खेलें: उसकी रैंक बीच के पत्ते से एक ऊपर या नीचे है।', hidden: 'अगले खिलाड़ी से एक उलटा पत्ता लें। समान रैंक की जोड़ियाँ अपने आप हटती हैं।', table: 'अपने चुने हुए पत्ते से मिलने वाला हाइलाइट किया मेज़ का पत्ता चुनें।' },
+    ar: { replay: 'إعادة تدريب التحكم', select: 'اختر {count} بطاقة من يدك.', use: 'استخدم «{action}» لإكمال هذه الخطوة.', play: 'العب البطاقة القانونية المميزة. اتبع النوع الأول إن أمكن.', bid: 'اختر عدد اللمم التي تتوقع الفوز بها (0–13).', eight: 'العب الثمانية المميزة لتغيير النوع الحالي.', suit: 'اختر النوع الذي سيتبعه اللاعب التالي.', rank: 'اختر رتبة تملكها واطلبها من خصم.', speed: 'العب البطاقة المميزة: رتبتها أعلى أو أدنى بواحد من بطاقة وسطية.', hidden: 'اسحب بطاقة مقلوبة من اللاعب التالي. تُزال الأزواج المتطابقة تلقائيًا.', table: 'اختر بطاقة الطاولة المميزة المطابقة لبطاقتك المختارة.' },
+  };
   const GAME_BUILDERS = { hearts: makeHearts, spades: makeSpades, "gin-rummy": makeGinRummyFixed, "crazy-eights": makeCrazyEightsFixed, cribbage: makeCribbageFixed, "go-fish": makeGoFishFixed, war: makeWarFixed, speed: makeSpeedFixed, "old-maid": makeOldMaidFixed, casino: makeCasino };
   root.WPCardGamesNext = Object.freeze({ mount: mountCardGame, titles: TITLES });
 })(window);

@@ -1001,3 +1001,6 @@ body[data-wp-card-game] [data-wp-logical-battle-canvas] > .result-overlay .resul
     height: 61px;
   }
 }
+.card-action-guide-host { flex: 1 1 100%; grid-column: 1 / -1; width: 100%; min-width: 0; }
+.card-action-guide-host .wp-action-guide { padding: 7px 10px; font-size: 12px; }
+.card-action-guide-host .wp-action-guide strong { font-size: 13px; }

@@ -23,6 +23,7 @@
   const root = document.getElementById("classicArcade");
   if (!root) return;
   const gameId = document.body.dataset.gameId === "space-rocks" ? "space" : "maze";
+  if(gameId==="maze"){document.body.dataset.gameVersion="v27";document.body.dataset.wpGameVersion="v27";}
   const localeKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 
   const UI = {
@@ -85,6 +86,7 @@
     confirm: document.getElementById("backConfirm"), confirmCopy: document.getElementById("backConfirmCopy"), stay: document.getElementById("backStayBtn"), leave: document.getElementById("backLeaveBtn"), canvas: document.getElementById("gameCanvas"), message: document.getElementById("gameMessage"), controls: document.getElementById("touchControls"), controlHint: document.getElementById("controlHint"), resultTitle: document.getElementById("resultTitle"), resultCopy: document.getElementById("resultCopy"), stats: document.getElementById("resultStats"), retry: document.getElementById("retryBtn"), home: document.getElementById("homeBtn")
   };
   const ctx = ui.canvas.getContext("2d");
+  let mazeLesson = null;
   const state = { running: false, confirming: false, score: 0, best: Number(localStorage.getItem(`weightplay-${gameId}-best`) || 0), level: 1, result: null, lastTime: 0, input: {}, maze: null, space: null };
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeLocale = routeLocaleMap[window.location.pathname.split("/").filter(Boolean)[0]];
@@ -163,7 +165,7 @@
   function ensureAudio() { return window.WeightPlayAudio?.unlock(); }
   function tone(cue = "ui.click") { return window.WeightPlayAudio?.play(cue); }
 
-  function setMessage(text, toneName = "") { ui.message.textContent = text; ui.message.dataset.tone = toneName; }
+  function setMessage(text, toneName = "") { if(!mazeLesson?.active)ui.message.textContent = text; ui.message.dataset.tone = toneName; }
   function setLocale(nextLocale) {
     locale = localeKeys.includes(nextLocale) ? nextLocale : "en";
     localStorage.setItem("weightplay-locale", locale);
@@ -303,7 +305,14 @@
     setMessage(tr("ready")); updateHud(); drawMaze();
   }
   function mazeSetDirection(direction) {
-    if (gameId !== "maze" || !state.running) return;
+    if (gameId !== "maze" || !state.running || state.confirming || document.hidden || ui.canvas.closest("[inert]")) return;
+    if(mazeLesson?.active){
+      if(direction!=="down")return;
+      const before=state.maze.pellets.size;state.maze.player.dir=direction;state.maze.player.next=direction;state.maze.started=true;mazeStepPlayer();
+      if(mazeLesson.stepId==="pellet"&&state.maze.pellets.size<before)mazeLesson.accept("pellet",{accepted:true});
+      else if(mazeLesson.stepId==="beacon"&&state.maze.power>0)mazeLesson.accept("beacon",{accepted:true});
+      updateHud();drawMaze();return;
+    }
     const maze = state.maze;
     const player = maze.player;
     if (!maze.started) {
@@ -358,6 +367,7 @@
   }
   function updateMaze(dt) {
     const maze = state.maze;
+    if(mazeLesson?.active){updateHud();drawMaze();return;}
     if (!maze.started) { updateHud(); drawMaze(); return; }
     maze.power = Math.max(0, maze.power - dt * 1000); maze.player.grace = Math.max(0, (maze.player.grace || 0) - dt * 1000); maze.moveClock += dt * 1000; maze.enemyClock += dt * 1000;
     const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(1000, 2900 - state.level * 500);
@@ -422,13 +432,14 @@
   function buildControls() { ui.controls.replaceChildren(); if (gameId === "maze") { createControlButton("▲", "up"); createControlButton("◀", "left"); createControlButton("▼", "down"); createControlButton("▶", "right"); } else { createControlButton("↺", "left", "hold"); createControlButton("↻", "right", "hold"); createControlButton("▲", "thrust", "hold"); createControlButton("✦", "fire", "hold"); createControlButton("◇", "shield"); } }
 
   function syncBattleGeometry() { window.WeightPlayBattleCanvas?.sync?.(); }
-  function showMain() { state.running = false; state.confirming = false; setPlayMode(false); ui.main.hidden = false; ui.battle.hidden = true; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); syncBattleGeometry(); setLocale(locale); ui.start.focus({ preventScroll: true });
+  function showMain() { mazeLesson?.stop();ui.controls.querySelectorAll("[data-action]").forEach(b=>b.disabled=false);ui.message.classList.remove("arcade-action-lesson"); state.running = false; state.confirming = false; setPlayMode(false); ui.main.hidden = false; ui.battle.hidden = true; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); syncBattleGeometry(); setLocale(locale); ui.start.focus({ preventScroll: true });
     { const __wpNextScreen = ({main:"main",stage:"stage",battle:"battle",})["main"] ?? null;
       if (["result"].includes("main") && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "complete"; }
       else if (true && (__wpNextScreen === "main" || __wpNextScreen === "stage") && __wpMeasurement.screen === "battle" && __wpMeasurement.started && !__wpMeasurement.ended) { __wpMeasurement.ended = true; __wpMeasurement.outcome = "abandon"; }
       __wpMeasurement.screen = __wpNextScreen;  __wpNotifyMeasurement(); }
 }
-  function startGame() { ensureAudio(); setPlayMode(true); state.running = true; state.confirming = false; state.score = 0; state.level = 1; state.result = null; ui.main.hidden = true; ui.battle.hidden = false; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); window.dispatchEvent(new Event("weightplay:battle-open")); syncBattleGeometry(); if (gameId === "maze") mazeResetStage(); else resetSpace(); ui.canvas.focus(); setMessage(gameId === "space" ? spaceHint("driftCue") : tr("ready")); state.lastTime = performance.now(); requestAnimationFrame(loop);
+  function startGame() { mazeLesson?.stop();ui.controls.querySelectorAll("[data-action]").forEach(b=>b.disabled=false);ui.message.classList.remove("arcade-action-lesson"); ensureAudio(); setPlayMode(true); state.running = true; state.confirming = false; state.score = 0; state.level = 1; state.result = null; ui.main.hidden = true; ui.battle.hidden = false; (__wpNotifyMeasurement(), ui.result.hidden = true); ui.battle.classList.remove("has-result"); (__wpNotifyMeasurement(), ui.confirm.hidden = true); window.dispatchEvent(new Event("weightplay:shell-sync")); window.dispatchEvent(new Event("weightplay:battle-open")); syncBattleGeometry(); if (gameId === "maze") mazeResetStage(); else resetSpace(); ui.canvas.focus(); setMessage(gameId === "space" ? spaceHint("driftCue") : tr("ready")); state.lastTime = performance.now(); requestAnimationFrame(loop);
+    if(gameId==="maze")beginMazeLesson();
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
 }
   function finish(won, details) { if (!state.running) return; state.running = false; state.result = { won, details }; if (state.score > state.best) { state.best = state.score; localStorage.setItem(`weightplay-${gameId}-best`, String(state.best)); } tone(won ? "result.win" : "result.lose", won ? 0.25 : 0.3, won ? "triangle" : "sawtooth", 0.05); renderResult(); (__wpNotifyMeasurement(), ui.result.hidden = false); ui.battle.classList.add("has-result");
@@ -437,6 +448,18 @@
   function renderResult() { if (!state.result) return; const won = state.result.won; ui.resultTitle.textContent = won ? resultText("win") : resultText("lose"); ui.resultCopy.textContent = won ? resultText("winCopy") : resultText("loseCopy"); const d = state.result.details || {}; const rows = gameId === "maze" ? [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("stageStat"), d.stage || state.level], [tr("livesStat"), state.maze?.lives ?? 0]] : [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("waveStat"), d.wave || state.level], [tr("shotsStat"), d.shots || state.space?.shots || 0], [tr("fragmentsStat"), d.fragments || state.space?.fragments || 0]]; ui.stats.replaceChildren(); rows.forEach(([name, value]) => { const item = document.createElement("div"); item.className = "stat"; item.innerHTML = `<span>${name}</span><strong>${value}</strong>`; ui.stats.append(item); }); }
   function loop(now) { if (!state.running) return; if (state.confirming) { requestAnimationFrame(loop); return; } const dt = Math.min(0.05, Math.max(0, (now - state.lastTime) / 1000)); state.lastTime = now; if (gameId === "maze") updateMaze(dt); else updateSpace(dt); if (state.running) requestAnimationFrame(loop); }
 
+  function beginMazeLesson(replay=false){if(!mazeLesson||(!replay&&mazeLesson.hasCompleted()))return;ui.message.textContent='';ui.message.classList.add('arcade-action-lesson');mazeLesson.start({replay});}
+  if(gameId==='maze'){
+    const lessonCopy=index=>window.WPArcadeTeachingCopy(locale,index);
+    mazeLesson=window.WeightPlayTutorial.createActionGuide({gameId:'maze-chase',revision:1,host:ui.message,steps:[
+      {id:'pellet',title:()=>lessonCopy(1),instruction:()=>lessonCopy(8),target:()=>ui.controls.querySelector('[data-action="down"]')},
+      {id:'beacon',title:()=>lessonCopy(1),instruction:()=>lessonCopy(9),target:()=>ui.controls.querySelector('[data-action="down"]')}
+    ],onStep:()=>{ui.controls.querySelectorAll('[data-action]').forEach(b=>b.disabled=b.dataset.action!=='down');},onComplete:()=>{ui.message.classList.remove('arcade-action-lesson');ui.controls.querySelectorAll('[data-action]').forEach(b=>b.disabled=false);state.lastTime=performance.now();setMessage(tr('powerReady'),'success');}});
+    const replay=document.createElement('button');replay.type='button';replay.className='secondary';replay.id='mazeReplayTutorial';replay.textContent=lessonCopy(0);replay.addEventListener('click',()=>{startGame();if(!mazeLesson.active)beginMazeLesson(true);});
+    const install=()=>document.querySelector('.game-page-info .game-info-sections, [data-wp-game-guide] .game-info-sections, .game-page-info, [data-wp-game-guide]')?.prepend(replay);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+    window.addEventListener('load',install,{once:true});
+  }
   ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", function (...args) { return __wpReplayStart(() => startGame.apply(this, args)); }); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; (__wpNotifyMeasurement(), ui.confirm.hidden = false); ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { setSoundMuted(!muted); if (!muted) tone("ui.click", 0.07); });
   window.addEventListener("weightplay:audio-volume-change", () => { const sharedMuted = sharedSoundMuted(); if (sharedMuted === null || sharedMuted === muted) return; muted = !window.WeightPlayAudio.setEnabled(!(sharedMuted)); setLocale(locale); });
   window.addEventListener("keydown", (event) => { if (state.confirming) { if (event.key === "Escape") { state.confirming = false; (__wpNotifyMeasurement(), ui.confirm.hidden = true); ui.canvas.focus(); } return; } const key = event.key.toLowerCase(); if (gameId === "maze") { const direction = key === "arrowup" || key === "w" ? "up" : key === "arrowdown" || key === "s" ? "down" : key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : null; if (direction) { event.preventDefault(); mazeSetDirection(direction); } } else { const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : key === "shift" ? "shield" : null; if (action) { event.preventDefault(); if (action === "shield") spaceShield(); else state.input[action] = true; } } });
