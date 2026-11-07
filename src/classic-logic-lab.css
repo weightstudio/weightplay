@@ -665,3 +665,6 @@ body[data-logic-game="sliding-15"] .logic-leave-card p { margin: 0 0 16px; color
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
+
+.logic-turn-status { display:block; min-height:30px; padding:5px 8px; border-inline-start:3px solid #ffe292; color:#fff0ad; font-size:13px; line-height:1.3; font-variant-numeric:tabular-nums; }
+[data-tabletop-turn="2"] .logic-reversi-policy { border-inline-start:3px solid #ffe292; padding-inline-start:8px; }

@@ -2081,6 +2081,7 @@ function hallMotionImageSources(targetHall) {
   const featured = lobby.games.find(game => game.id === lobby.featuredGameId);
   if (featured && gameMatchesHall(featured, targetHall)) sources.add(lobbyThumbnail(primaryArt(featured), 480));
   const previewIds = targetHall === 'topics' ? [...topicGameIds]
+    : targetHall === 'first-person' ? [...firstPersonGameIds]
     : targetHall === 'tabletop' ? tabletopHeroGameIds : lobby.heroGameIds;
   lobby.games.filter(game => gameMatchesHall(game, targetHall) && previewIds.includes(game.id))
     .slice(0, 5).forEach(game => sources.add(lobbyThumbnail(game.art?.background || primaryArt(game), 480)));

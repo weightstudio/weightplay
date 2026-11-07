@@ -409,7 +409,7 @@ button.checker-cell.dark { cursor: pointer; touch-action: manipulation; }
 .checker-cell.last-ai-from { outline: 3px dashed rgba(255, 184, 107, .82); outline-offset: -4px; }
 .checker-cell.last-ai-to { box-shadow: inset 0 0 0 4px rgba(255, 184, 107, .95), 0 0 13px rgba(255, 184, 107, .4); z-index: 2; }
 .checker-cell.last-captured::before { content: "×"; position: absolute; z-index: 3; color: #ff8c9b; font-size: clamp(.9rem, 4vw, 1.4rem); font-weight: 900; text-shadow: 0 1px 3px #08121e; pointer-events: none; }
-.checker-cell.hinted .checker-piece { animation: checkers-hint-pulse .8s ease-in-out infinite alternate; }
+.checker-cell.hinted .checker-piece { outline: 3px solid #ffe292; outline-offset: 2px; }
 .checker-piece { position: relative; z-index: 1; display: grid; place-items: center; width: 72%; aspect-ratio: 1; border: 2px solid rgba(255,255,255,.55); border-radius: 50%; background: var(--arcade-accent-2); color: #203047; font-size: clamp(.65rem, 3vw, 1.25rem); font-weight: 900; box-shadow: inset 0 -5px 0 rgba(0,0,0,.22), 0 3px 8px rgba(0,0,0,.28); }
 .checker-piece.enemy { background: var(--arcade-danger); color: #fff2d8; }
 .checker-piece.king::after { content: ""; position: absolute; inset: 18%; border: 2px solid currentColor; border-radius: 50%; opacity: .75; }
@@ -2286,3 +2286,9 @@ body[data-game-id="checkers"][data-screen="result"] .game-page-info-static { dis
     height: auto;
   }
 }
+
+/* Persistent seat ownership remains visible beside transient move feedback. */
+.tabletop-turn-rail { box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:6px; width:100%; min-height:40px; padding:4px; color:#e4eee8; font-size:12px; line-height:1.25; }
+.tabletop-turn-rail > span { flex:0 0 auto; padding:5px 7px; border:2px solid transparent; border-radius:7px; font-variant-numeric:tabular-nums; }
+.tabletop-turn-rail > strong { flex:1; text-align:center; }
+.tabletop-turn-rail > .is-current { border-color:#ffe292; background:#304b44; color:#fff0ad; }

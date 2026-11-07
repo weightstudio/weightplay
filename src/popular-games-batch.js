@@ -1,5 +1,12 @@
 (() => {
   "use strict";
+  const TABLETOP_TURN_COPY = {
+    en: ['Your turn', 'Opponent thinking'], 'zh-Hant': ['輪到你操作', '對手思考中'], 'zh-Hans': ['轮到你操作', '对手思考中'],
+    ja: ['あなたの番', '相手が思考中'], ko: ['내 차례', '상대가 생각 중'], es: ['Tu turno', 'El rival está pensando'],
+    'pt-BR': ['Sua vez', 'O rival está pensando'], fr: ['À vous de jouer', 'L’adversaire réfléchit'], de: ['Du bist dran', 'Gegner überlegt'],
+    it: ['Tocca a te', 'L’avversario sta pensando'], ru: ['Ваш ход', 'Соперник думает'], hi: ['आपकी बारी', 'प्रतिद्वंद्वी सोच रहा है'], ar: ['دورك', 'الخصم يفكر'],
+  };
+
 
   const LOCALES = [
     ["en", "English"], ["zh-Hant", "繁體中文"], ["zh-Hans", "简体中文"], ["ja", "日本語"],
@@ -132,8 +139,8 @@
     hi: { tagline: "हर चाल में असली चुनाव वाला पूरा मैच।", objective: "प्रतिद्वंद्वी के सभी मोहरे लें या उसकी सभी वैध चालें रोकें।", main: "सुनहरा मोहरा चुनें, फिर चमकता तिरछा खाना। कैप्चर अनिवार्य है और लगातार छलाँग जारी रहती है।", yourTurn: "आपकी चाल: सुनहरा मोहरा चुनें।", choose: "चमकता लक्ष्य चुनें।", capture: "कैप्चर उपलब्ध है और अनिवार्य है।", continueCapture: "उसी मोहरे से अगला कैप्चर करें।", aiTurn: "प्रतिद्वंद्वी चाल चुन रहा है…", invalid: "यह वैध चाल नहीं है।", selected: "मोहरा चुना गया। लक्ष्य चुनें।", captured: "मोहरा लिया गया; अगला कैप्चर हो तो जारी रखें।", promoted: "मोहरा अंतिम पंक्ति पर पहुँचकर किंग बन गया।", aiMoved: "प्रतिद्वंद्वी चला। अब आपकी चाल।", hint: "संकेत: धड़कता मोहरा चुनें, फिर चमकता लक्ष्य।", winTitle: "आप जीते!", lossTitle: "प्रतिद्वंद्वी जीता", drawTitle: "मैच ड्रॉ", winCopy: "प्रतिद्वंद्वी के पास मोहरा या वैध चाल नहीं बची।", lossCopy: "आपके पास मोहरा या वैध चाल नहीं बची।", drawCopy: "चाल सीमा पूरी हुई।", board: "चेकर्स बोर्ड", human: "आपका मोहरा", humanKing: "आपका किंग", ai: "प्रतिद्वंद्वी मोहरा", aiKing: "प्रतिद्वंद्वी किंग", empty: "खाली", target: "वैध लक्ष्य", selectable: "चुनने योग्य" },
     ar: { tagline: "مباراة كاملة بقرارات حقيقية في كل دور.", objective: "التقط كل قطع الخصم أو اتركه بلا حركة قانونية.", main: "اختر قطعة ذهبية ثم مربعاً قطرياً مميزاً. الأخذ إجباري وتستمر القفزات المتعددة.", yourTurn: "دورك: اختر قطعة ذهبية.", choose: "اختر وجهة مميزة.", capture: "هناك أخذ متاح ويجب تنفيذه.", continueCapture: "تابع سلسلة الأخذ بالقطعة نفسها.", aiTurn: "الخصم يختار حركة…", invalid: "هذا المربع ليس حركة قانونية.", selected: "تم اختيار القطعة. اختر الوجهة.", captured: "تم أخذ قطعة؛ تابع إن توفرت قفزة أخرى.", promoted: "وصلت قطعتك إلى الصف الأخير وأصبحت ملكاً.", aiMoved: "تحرك الخصم. دورك الآن.", hint: "تلميح: اختر القطعة النابضة ثم الوجهة المميزة.", winTitle: "فزت!", lossTitle: "فاز الخصم", drawTitle: "تعادل", winCopy: "لم يبق للخصم قطع أو حركات قانونية.", lossCopy: "لم يبق لديك قطع أو حركات قانونية.", drawCopy: "تم بلوغ حد الحركات.", board: "لوحة الداما", human: "قطعتك", humanKing: "ملكك", ai: "قطعة الخصم", aiKing: "ملك الخصم", empty: "فارغ", target: "وجهة قانونية", selectable: "قابل للاختيار" },
   };
-  const CHECKERS_GAME_VERSION = "v24";
-  const TIC_TAC_TOE_GAME_VERSION = "v41";
+  const CHECKERS_GAME_VERSION = "v25";
+  const TIC_TAC_TOE_GAME_VERSION = "v42";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
     en: { board: "Guess board", hit: "Correct position", near: "Present elsewhere", miss: "Not in word", format: (row, column, letter, state) => `Row ${row}, position ${column}: ${letter ? `letter ${letter}, ${state}` : "empty"}` },
@@ -1964,7 +1971,7 @@
     let ticReplyTimer = null;
     const stopCheckersAiTimer = () => { if (checkersAiTimer) { window.clearTimeout(checkersAiTimer); checkersAiTimer = null; } };
     const stopTicResultTimer = () => { if (ticResultTimer) { (ticUiClock || window).clearTimeout(ticResultTimer); ticResultTimer = null; } };
-    const stopTicReplyTimer = () => { if (ticReplyTimer) { (ticUiClock || window).clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
+    const stopTicReplyTimer = () => { if (state) state.ticThinking = false; if (ticReplyTimer) { (ticUiClock || window).clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
     let checkersLeaveDialog = null;
     let checkersLeaveReturnFocus = null;
     let checkersResumeAi = false;
@@ -2231,7 +2238,7 @@
         state.forcedFrom = -1;
         announce(checkersTurnSummary(locale, state), "", "checkersTurnSummary");
         render();
-      }, 420);
+      }, 700);
     };
     const action = (name, value) => {
       if (state.done) return;
@@ -2247,7 +2254,7 @@
           render(); return;
         }
       }
-      if (game.type === "tic" && (name !== "cell" || !Number.isInteger(value) || value < 0 || value >= state.cells.length || state.cells[value] !== "")) return;
+      if (game.type === "tic" && (state.ticThinking || name !== "cell" || !Number.isInteger(value) || value < 0 || value >= state.cells.length || state.cells[value] !== "")) return;
       if (game.type === "hangman" && name === "letter" && state.letters.includes(value)) { state.focusLetter = value; state.lastLetter = value; announce(`${value}: ${hangmanAlreadyUsed(locale)}`, "warn", "hangmanUsed"); render(); return; }
       if (game.type === "snake") {
         if (!["left", "right", "up", "down"].includes(name)) return;
@@ -2343,34 +2350,29 @@
             state.outcome = "draw";
             finish(false);
           } else {
-            const rivalMove = ticRivalMove(state.cells);
-            if (rivalMove >= 0) {
+            // Paint X alone, then give the opponent a visible decision beat.
+            const round = state;
+            state.ticThinking = true;
+            render();
+            ticReplyTimer = (ticUiClock || window).setTimeout(() => {
+              ticReplyTimer = null;
+              if (state !== round || state.done) return;
+              const rivalMove = ticRivalMove(state.cells);
+              state.ticThinking = false;
+              if (rivalMove < 0) { render(); return; }
               state.cells[rivalMove] = "O";
               state.aiMoves += 1;
+              state.rivalCell = rivalMove;
               const rivalLine = ticWinningLine(state.cells, "O");
               if (rivalLine.length === 3) {
-                state.winningCells = rivalLine;
-                state.outcome = "loss";
-                finish(false);
+                state.winningCells = rivalLine; state.outcome = "loss"; finish(false);
               } else if (state.cells.every(Boolean)) {
-                state.outcome = "draw";
-                finish(false);
+                state.outcome = "draw"; finish(false);
               } else {
-                state.rivalCell = rivalMove;
                 announce(ticRivalReplyCopy(locale, rivalMove), "good", "ticRivalReply");
-                ticReplyTimer = (ticUiClock || window).setTimeout(() => {
-                  ticReplyTimer = null;
-                  if (state.done || state.rivalCell !== rivalMove) return;
-                  state.rivalCell = -1;
-                  if (state.messageKey === "ticRivalReply") {
-                    state.message = "";
-                    state.messageKey = "";
-                    state.tone = "";
-                  }
-                  render();
-                }, 760);
               }
-            }
+              render();
+            }, 700);
           }
         }
       } else if (game.type === "chess") { if (name === "move") { state.step += 1; state.score += 30; if (state.step >= 3) finish(true); }
@@ -2406,7 +2408,7 @@
       if (game.type === "tetris") {
         renderTetris();
         return;
-      } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board" data-winning-count="${state.winningCells?.length || 0}" data-outcome="${state.outcome}">${state.cells.map((cell, i) => { const winning = state.winningCells?.includes(i); const rivalReply = state.rivalCell === i; return `<button class="tic-cell${winning ? " winning" : ""}${rivalReply ? " rival-reply" : ""}" data-action="cell" data-wp-primary-action="cell" data-value="${i}"${winning ? " data-winning-cell=\"true\"" : ""}${rivalReply ? " data-rival-reply=\"true\"" : ""} aria-label="${ticCellLabel(locale, i, cell, winning)}"${cell || state.done ? " disabled" : ""}>${cell}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
+      } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board" data-winning-count="${state.winningCells?.length || 0}" data-outcome="${state.outcome}">${state.cells.map((cell, i) => { const winning = state.winningCells?.includes(i); const rivalReply = state.rivalCell === i; return `<button class="tic-cell${winning ? " winning" : ""}${rivalReply ? " rival-reply" : ""}" data-action="cell" data-wp-primary-action="cell" data-value="${i}"${winning ? " data-winning-cell=\"true\"" : ""}${rivalReply ? " data-rival-reply=\"true\"" : ""} aria-label="${ticCellLabel(locale, i, cell, winning)}"${cell || state.done || state.ticThinking ? " disabled" : ""}>${cell}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
       } else if (game.type === "chess") { const pieces = ["♜", "♟", "", "♚", "", "♙", "", "", "", "", "♙", "", "", "", "", "♔"]; els.board.innerHTML = `<div class="chess-board" role="group" aria-label="${copy(locale, "chess")}">${pieces.map((piece, i) => { const target = i === 6 + state.step; return `<button class="chess-cell ${target ? "target" : ""}" data-action="move" data-cell="${i}"${target ? " data-target=\"true\"" : ""} aria-label="${chessCellLabel(locale, i, piece, target)}">${piece}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
       } else if (game.type === "checkers") { const engine = window.WPCheckersEngine; const legalMoves = state.turn === engine.HUMAN ? checkersLegalMoves(state) : []; const selectableSources = new Set(legalMoves.map((move) => move.from)); const selectedMoves = legalMoves.filter((move) => move.from === state.selected); const targetCells = new Set(selectedMoves.map((move) => move.to)); const lastHuman = state.lastMoves.human; const lastAi = state.lastMoves.ai; const cells = state.checkersBoard.map((piece, i) => { const row = engine.rowOf(i); const column = engine.columnOf(i); const dark = (row + column) % 2 === 1; const target = targetCells.has(i); const selectable = selectableSources.has(i); const selected = state.selected === i; const hinted = state.hintSource === i; const humanFrom = lastHuman?.from === i; const humanTo = lastHuman?.to === i; const aiFrom = lastAi?.from === i; const aiTo = lastAi?.to === i; const captured = lastHuman?.captured === i || lastAi?.captured === i; const classes = ["checker-cell", dark ? "dark" : "light", target ? "target" : "", selectable ? "selectable" : "", selected ? "selected" : "", hinted ? "hinted" : "", humanFrom ? "last-human-from" : "", humanTo ? "last-human-to" : "", aiFrom ? "last-ai-from" : "", aiTo ? "last-ai-to" : "", captured ? "last-captured" : ""].filter(Boolean).join(" "); const pieceClass = piece ? `checker-piece ${piece.player === engine.AI ? "enemy" : "player"} ${piece.king ? "king" : ""}` : ""; const contents = piece ? `<span class="${pieceClass}" aria-hidden="true">${piece.king ? "★" : ""}</span>` : ""; const interactive = dark && (selectable || target || piece?.player === engine.HUMAN); const label = checkersCellLabel(locale, i, piece, target, selectable); return interactive ? `<button type="button" class="${classes}" data-cell="${i}" data-action="checkers-cell" data-value="${i}"${target ? " data-target=\"true\"" : ""}${selectable ? " data-selectable=\"true\"" : ""} aria-label="${label}" aria-pressed="${selected}">${contents}</button>` : `<div class="${classes}" data-cell="${i}" aria-label="${label}" role="gridcell">${contents}</div>`; }).join(""); els.board.innerHTML = `<div class="checkers-board" role="grid" aria-label="${checkersCopy(locale, "board")}" data-turn="${state.turn}" data-human-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.HUMAN).length}" data-ai-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.AI).length}" data-human-captures="${state.captures.human}" data-ai-captures="${state.captures.ai}" data-last-human="${checkersMoveLabel(lastHuman)}" data-last-ai="${checkersMoveLabel(lastAi)}">${cells}</div>`; els.controls.innerHTML = "";
       } else if (game.type === "mahjong") { els.board.innerHTML = window.WPMahjong.render(state, locale); els.controls.innerHTML = `<div class="control-row"><span class="round-label" role="status" aria-live="polite" aria-atomic="true">${copy(locale, "remaining")}: ${state.targetPairs - state.matched}</span></div>`;
@@ -2539,6 +2541,23 @@
     let snakePointerActionUntil = 0;
     const runActionNode = (node) => { if (!node || node.disabled) return; if (node.dataset.action === "hint") { hint(); return; } const value = node.dataset.action === "letter" ? node.dataset.value : node.dataset.value === undefined ? undefined : Number(node.dataset.value); action(node.dataset.action, value); };
     const handleActionClick = (event) => { const node = event.target?.closest?.("[data-action]"); if (!node || (!els.controls.contains(node) && !els.board.contains(node)) || node.disabled) return; if (game.type === "snake" && performance.now() < snakePointerActionUntil) return; runActionNode(node); };
+    const syncTabletopTurn = () => {
+      if (!["tic", "checkers"].includes(game.type)) return;
+      const ai = game.type === "tic" ? state.ticThinking : state.turn === window.WPCheckersEngine.AI;
+      let rail = els.round.querySelector(".tabletop-turn-rail");
+      if (!rail) {
+        rail = document.createElement("div"); rail.className = "tabletop-turn-rail";
+        rail.setAttribute("role", "status"); rail.setAttribute("aria-live", "polite");
+        rail.setAttribute("data-runtime-localize", "off");
+        els.round.title = els.round.textContent;
+        els.round.textContent = "";
+        els.round.append(rail);
+      }
+      const labels = TABLETOP_TURN_COPY[locale] || TABLETOP_TURN_COPY.en;
+      const marks = game.type === "tic" ? ["X", "O"] : ["●", "○"];
+      rail.dataset.turn = ai ? "2" : "1";
+      rail.innerHTML = `<span class="${!ai ? "is-current" : ""}">1P · ${marks[0]}</span><strong>${labels[ai ? 1 : 0]}</strong><span class="${ai ? "is-current" : ""}">2P · ${marks[1]} · AI</span>`;
+    };
     const render = () => {
       if (game.type === "breakout") {
         const ui = breakoutMainCopy(locale);
@@ -2550,7 +2569,7 @@
       } else if (els.round) {
         els.round.textContent = game.type === "snake" ? `${snakeCopy(locale, "run", state.runNumber)} · ${snakeModeLabel(locale, state.modeKey)} · ${snakeGoalLabel()} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}` : `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`;
       }
-      renderBoard(); syncActionLesson(); const defaultMessage = game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "breakout" ? breakoutStateCopy(locale, state) : copy(locale, "ready"); const liveMessage = game.type === "tic" && state.messageKey === "ticRivalReply" && state.rivalCell >= 0 ? ticRivalReplyCopy(locale, state.rivalCell) : state.message; if (!actionLesson?.active && !els.message.classList.contains('arcade-action-lesson')) els.message.textContent = liveMessage || defaultMessage; els.message.dataset.tone = state.tone; els.message.dataset.messageKey = state.messageKey || ""; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
+      renderBoard(); syncTabletopTurn(); syncActionLesson(); const defaultMessage = game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "breakout" ? breakoutStateCopy(locale, state) : copy(locale, "ready"); const liveMessage = game.type === "tic" && state.messageKey === "ticRivalReply" && state.rivalCell >= 0 ? ticRivalReplyCopy(locale, state.rivalCell) : state.message; if (!actionLesson?.active && !els.message.classList.contains('arcade-action-lesson')) els.message.textContent = liveMessage || defaultMessage; els.message.dataset.tone = state.tone; els.message.dataset.messageKey = state.messageKey || ""; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
     let snakePointerStart = null;
     els.board.addEventListener("pointerdown", (event) => { if (game.type === "snake" && document.body.dataset.screen === "battle") snakePointerStart = { x: event.clientX, y: event.clientY }; });
     els.board.addEventListener("pointerup", (event) => { if (game.type !== "snake" || document.body.dataset.screen !== "battle") return; const startPoint = snakePointerStart; snakePointerStart = null; if (!startPoint) return; const deltaX = event.clientX - startPoint.x; const deltaY = event.clientY - startPoint.y; if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 18) { beginSnake(); return; } action(Math.abs(deltaX) > Math.abs(deltaY) ? (deltaX > 0 ? "right" : "left") : (deltaY > 0 ? "down" : "up")); });

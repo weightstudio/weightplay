@@ -380,7 +380,7 @@ dispose(){this.disposed=true;cancelAnimationFrame(this.raf);this.observer?.disco
 }
 
 let UI=null,scene=null,midnight,editorOverflow=null,worldHallNeedsRender=false;
-function worldHallActive(){return !document.body.matches('.general-lobby-page[data-game-hall="tabletop"]')}
+function worldHallActive(){return !document.body.matches('.general-lobby-page[data-game-hall]:not([data-game-hall="games"])')}
 function syncWorldHall(){
  const m=document.querySelector("#weightplayCastle");if(!m)return;
  const active=worldHallActive(),returnFocus=!active&&m.contains(document.activeElement);
@@ -393,7 +393,7 @@ function syncWorldHall(){
   scene?.setActive(false);
  }
  m.inert=!active;m.hidden=!active;
- if(returnFocus)document.querySelector('[data-hall-tab="tabletop"]')?.focus({preventScroll:true});
+ if(returnFocus)document.querySelector(`[data-hall-tab="${document.body.dataset.gameHall}"]`)?.focus({preventScroll:true});
  if(active){if(worldHallNeedsRender){worldHallNeedsRender=false;render()}else scene?.setActive(true)}
 }
 function editorScroll(open){if(open&&editorOverflow===null){editorOverflow={overflow:document.documentElement.style.overflow,y:window.scrollY};document.documentElement.style.overflow="hidden"}else if(!open&&editorOverflow!==null){document.documentElement.style.overflow=editorOverflow.overflow;window.scrollTo({top:editorOverflow.y,behavior:"instant"});editorOverflow=null}}

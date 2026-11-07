@@ -100,9 +100,10 @@ window.WONDER_LOBBY = {
       "checkers", "tic-tac-toe", "peg-solitaire", "reversi", "four-in-a-row", "chess", "mahjong-solitaire",
       "hearthloop",
     ],
-    // Third General hall: short, timely, original games. These IDs also stay in
-    // generalGameIds so the Kids catalog's non-General rule excludes them.
+    // Controlled first-person camera; independent of gameplay genre.
     firstPersonGameIds: ["skymeadow-keeper", "prismtide"],
+    // Timely, original games. These IDs also stay in generalGameIds so the
+    // Kids catalog's non-General rule excludes them.
     topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering", "tomorrow-share"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],

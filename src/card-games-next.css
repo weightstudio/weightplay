@@ -50,12 +50,13 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .opponent-card strong, .opponent-card span { display: block; }
 .opponent-card span { color: #b9d8d3; font-size: 12px; margin-top: 3px; }
 .opponent-card[data-card-seat] strong::before { content: attr(data-card-seat) " · "; color: #fff0ad; font-variant-numeric: tabular-nums; }
-.card-game-player.is-current-turn,
-.opponent-card.is-current-turn { border-color: #ffe292; box-shadow: inset 0 0 0 1px #ffe29280; }
+body[data-wp-card-game] .card-game-player.is-current-turn,
+body[data-wp-card-game] .opponent-card.is-current-turn { border-color: #ffe292; box-shadow: inset 0 0 0 1px #ffe29280; }
 .card-game-status { min-height: 2.4em; display: grid; place-items: center; font-weight: 750; font-variant-numeric: tabular-nums; }
 [data-card-turn] .card-game-status { border-inline-start: 3px solid #ffe292; padding-inline-start: 5px; }
 [data-card-turn-phase="thinking"] .card-game-status { color: #ffe292; }
 [data-card-turn-phase="settling"] .card-game-status { color: #b4f6dd; }
+body[data-wp-card-game] #cardGameStatus { white-space: normal; overflow: visible; text-overflow: clip; max-width: 12ch; line-height: 1.2; }
 .playing-card:disabled { cursor: default; }
 .playing-card:disabled:hover { transform: none; }
 .card-table-center { min-height: 160px; border-radius: 18px; border: 1px solid rgba(255,255,255,.18); background: rgba(4, 39, 34, .42); padding: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
@@ -63,6 +64,8 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-table-label { color: #b9d8d3; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
 .card-game-player { border-radius: 16px; padding: 10px; background: rgba(7, 28, 43, .48); border: 1px solid rgba(255,255,255,.14); }
 .card-game-player-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
+.card-game-player-header > strong { flex: 0 0 auto; white-space: nowrap; }
+.card-game-player-header > strong::before { content: "1P · "; color: #ffe292; }
 .card-game-player-header small { color: #b9d8d3; }
 body[data-wp-card-game="hearts"] .card-game-player-header small { min-width: 0; flex: 1 1 auto; line-height: 1.2; overflow-wrap: anywhere; text-align: right; }
 body[data-wp-card-game="hearts"] .card-game-topbar .battle-back,
