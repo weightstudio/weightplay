@@ -126,9 +126,8 @@ body.general-lobby-page .game-hall-switch { grid-template-columns: repeat(4, min
 body.general-lobby-page .game-hall-switch button { position: relative; min-height: 70px; padding: 13px 18px 13px 58px; border: 1px solid var(--lobby-line); border-radius: 12px; background: var(--lobby-paper); color: var(--lobby-ink); box-shadow: none; text-align: start; }
 body.general-lobby-page .game-hall-switch button::before { content: none !important; }
 body.general-lobby-page .game-hall-switch .hall-tab-icon { position: absolute; inset-inline-start: 16px; top: 50%; display: grid; width: 30px; height: 30px; place-items: center; transform: translateY(-50%); line-height: 1; }
-body.general-lobby-page .game-hall-switch .hall-tab-icon svg { display: block; width: 100%; height: 100%; overflow: visible; }
-body.general-lobby-page .game-hall-switch .hall-tab-icon--topics img { display:block; width:100%; height:100%; object-fit:contain; image-rendering:auto; }
-body.general-lobby-page .game-hall-switch button.active .hall-tab-icon--topics img { filter:brightness(1.12) saturate(1.12); }
+body.general-lobby-page .game-hall-switch .hall-tab-icon img { display:block; width:100%; height:100%; object-fit:contain; }
+body.general-lobby-page .game-hall-switch button.active .hall-tab-icon img { filter:brightness(1.12); }
 body.general-lobby-page .game-hall-switch button.active { background: #1b513f; border-color: #1b513f; color: #fffef4; box-shadow: 0 3px 0 #123b2f; }
 body.general-lobby-page .game-hall-switch button:hover { border-color: #718f78; }
 body.general-lobby-page .game-hall-switch .hall-tab-label,
@@ -1043,16 +1042,16 @@ body.general-lobby-page [data-weightplay-collection-entry] > button > span:last-
 }
 
 
-/* First Person uses a warm orange tint over the shared adventure scenery. */
+/* First Person uses muted olive stone with pale, readable accents. */
 body.general-lobby-page:is([data-game-hall="first-person"]:not([data-hall-transition-target]),[data-hall-transition-target="first-person"]) {
-  --lobby-skin-panel:#361b0ee6; --lobby-skin-control:#522b17;
-  --lobby-skin-selected:#a55222a6; --lobby-skin-line:#e99a638c;
-  --lobby-skin-poster:#3b2115; --lobby-scene-tint:#a34d12b3;
-  --hall-text:#fff5e9; --hall-muted:#f0c9ad; --hall-accent:#ffba7d;
-  --hall-border:#bc774b; --hall-surface:#5c301b; --hall-surface-deep:#2b170e;
-  --hall-selected:#85421d; --hall-selected-edge:#ffbf86; --hall-selected-ink:#fff8ec;
-  --hall-shadow:#1c0e08; --hall-edge:#db8f59; --hall-action:#ffc181;
-  --hall-action-ink:#361b0e; --hall-hover:#713c22; --hall-icon-contrast:#522b17;
+  --lobby-skin-panel:#1b251be6; --lobby-skin-control:#2e3b2b;
+  --lobby-skin-selected:#596b40ad; --lobby-skin-line:#9baa7f8c;
+  --lobby-skin-poster:#253125; --lobby-scene-tint:#3f4a31c2;
+  --hall-text:#f2f6eb; --hall-muted:#c9d4bd; --hall-accent:#d8eba8;
+  --hall-border:#7f936b; --hall-surface:#344333; --hall-surface-deep:#182218;
+  --hall-selected:#4d5e38; --hall-selected-edge:#d5e5a5; --hall-selected-ink:#f6f9ee;
+  --hall-shadow:#0e170f; --hall-edge:#a1b482; --hall-action:#d4e4a0;
+  --hall-action-ink:#26321c; --hall-hover:#43553a; --hall-icon-contrast:#2e3b2b;
   --lobby-ink:var(--hall-text); --lobby-muted:var(--hall-muted);
   --lobby-line:var(--hall-border); --lobby-paper:var(--hall-surface);
   --lobby-accent:var(--hall-accent); --lobby-arcade-surface:var(--hall-surface);

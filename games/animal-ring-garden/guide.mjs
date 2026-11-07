@@ -1,5 +1,5 @@
-import {NEW_COPY} from './copy.mjs?wp-media=ea2aa79c951c865a';
-import {appendStaticIntroFaq} from '../../src/game-guide-intro-faq.mjs?wp-media=ea2aa79c951c865a';
+import {NEW_COPY} from './copy.mjs?wp-media=716c6e15bee096d3';
+import {appendStaticIntroFaq} from '../../src/game-guide-intro-faq.mjs?wp-media=716c6e15bee096d3';
 const escape=value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 export function renderConservatoryGuide(locale){
   const c=NEW_COPY[locale]||NEW_COPY.en;
