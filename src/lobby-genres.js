@@ -24,6 +24,16 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["prismtide", "Puzzle", "Adventure", "Spatial Planning", "Connection"],
+    ["skymeadow-keeper", "Simulation", "Pet Care", "Adventure", "Collection"],
+    ["tomorrow-share", "Strategy", "Management"],
+    ["cloudhold-voyager", "Strategy", "Management", "Adventure"],
+    ["dawnward-haven", "Management", "Strategy", "Construction"],
+    ["rivetide-works", "Management", "Strategy", "Construction"],
+    ["sproutsum", "Puzzle", "Education", "Deduction"],
+    ["glowpiece-gallery", "Puzzle", "Shape Matching", "Spatial Planning"],
+    ["leafskip", "Reaction", "Platform", "Arcade"],
+    ["moonlit-atrium", "Puzzle", "Spatial Planning", "Deduction"],
     ["reedway-transit", "Simulation", "Management", "Strategy", "Route Planning"],
     ["starpip-vanguard", "Strategy", "RPG", "Adventure"],
     ["gilded-gathering", "Strategy", "Puzzle", "Spatial Planning", "Route Planning"],

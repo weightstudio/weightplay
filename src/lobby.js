@@ -192,6 +192,7 @@ const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "gene
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
 const topicGameIds = new Set(lobby.audiences?.topicGameIds || []);
+const firstPersonGameIds = new Set(lobby.audiences?.firstPersonGameIds || []);
 const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
 const catalogGames = allLobbyGames.filter((game) =>
@@ -224,6 +225,13 @@ if (!isKidsLobby && topicGameIds.size && gameHallSwitch && !gameHallSwitch.query
   topicsButton.setAttribute("aria-pressed", "false");
   topicsButton.innerHTML = '<span class="hall-tab-icon hall-tab-icon--topics" aria-hidden="true"><img src="/assets/topics-hall-tab-v2.webp?v=20261002-topics-icon-v2&wp-media=92383410bfc3532f" alt="" width="30" height="30" decoding="async"></span><span class="hall-tab-label" data-i18n="hall.topics_short"></span><small data-i18n="hall.topics_note" aria-hidden="true"></small>';
   gameHallSwitch.append(topicsButton);
+}
+if (!isKidsLobby && firstPersonGameIds.size && gameHallSwitch && !gameHallSwitch.querySelector('[data-hall-tab="first-person"]')) {
+  const button = document.createElement('button');
+  button.type = 'button'; button.dataset.hallTab = 'first-person';
+  button.setAttribute('aria-pressed', 'false');
+  button.innerHTML = '<span class="hall-tab-icon" aria-hidden="true"><svg viewBox="0 0 32 32" focusable="false"><path d="M2 16 9 7h14l7 9-7 9H9z" fill="#123c53" stroke="#8ee8ed" stroke-width="2"/><circle cx="16" cy="16" r="6" fill="#48c6db" stroke="#dcfcff" stroke-width="2"/><path d="M16 2v6m0 16v6M2 16h6m16 0h6" stroke="#dcfcff" stroke-width="2"/></svg></span><span data-i18n="hall.first-person"></span><small data-i18n="hall.first-person_note" aria-hidden="true"></small>';
+  gameHallSwitch.append(button);
 }
 const hallButtons = document.querySelectorAll("[data-hall-tab]");
 if (!isKidsLobby) {
@@ -540,6 +548,7 @@ let gameStats = initialLobbyData.stats || {
 };
 
 function gameHall(game) {
+  if (firstPersonGameIds.has(game?.id)) return "first-person";
   if (topicGameIds.has(game?.id)) return "topics";
   return tabletopGameIds.has(game?.id) ? "tabletop" : "games";
 }
@@ -984,6 +993,10 @@ function primaryArt(game) {
 }
 
 function hallHeroImageSource(hall) {
+  if (hall === 'first-person') {
+    const game = lobby.games.find(item => firstPersonGameIds.has(item.id) && item.status === 'playable');
+    if (game) return '/' + String(game.art?.lobbyScene || primaryArt(game)).replace(/^\/+/, '');
+  }
   return hall === "topics"
     ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=92383410bfc3532f"
     : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=92383410bfc3532f";
@@ -1541,7 +1554,8 @@ function popularGames(limit = 3) {
   const ranked = rankedPopularGames(limit);
   if (ranked.length) return ranked;
   const availableGames = gamesInHall().filter((game) => game.status === "playable");
-  const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
+  const heroIds = !isKidsLobby && activeHall === 'first-person' ? [...firstPersonGameIds]
+    : !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
   return heroIds.map((id) => availableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
 }
 
@@ -2991,7 +3005,8 @@ function applyFilter({ historyMode = "replace" } = {}) {
     const emptyText =
       activeLibrary === "favorites" ? i18n.t("status.no_favorites")
         : activeLibrary === "recent" ? i18n.t("status.no_recent")
-          : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty") : i18n.t("status.no_games");
+          : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty")
+            : activeHall === "first-person" && !isFiltered ? i18n.t("hall.first-person_empty") : i18n.t("status.no_games");
     const recoveryLabel = activeLibrary === "recent"
       ? i18n.t("library.all_games")
       : i18n.t("status.clear_filters");

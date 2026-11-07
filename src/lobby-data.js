@@ -102,6 +102,7 @@ window.WONDER_LOBBY = {
     ],
     // Third General hall: short, timely, original games. These IDs also stay in
     // generalGameIds so the Kids catalog's non-General rule excludes them.
+    firstPersonGameIds: ["skymeadow-keeper", "prismtide"],
     topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering", "tomorrow-share"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],

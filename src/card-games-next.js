@@ -2124,8 +2124,12 @@
     quickGuide.className = "card-game-quick-guide";
     quickGuide.setAttribute("role", "note");
     quickGuide.dataset.cardQuickGuide = "true";
+    let quickGuideSignature = "";
     const updateQuickGuide = () => {
       const { heading, paragraph, localized } = guideContent();
+      const signature = JSON.stringify([heading, paragraph, localized]);
+      if (signature === quickGuideSignature) return;
+      quickGuideSignature = signature;
       quickGuide.replaceChildren();
       const quickGuideLabel = document.createElement("strong");
       quickGuideLabel.textContent = heading;
@@ -2577,14 +2581,57 @@
           return;
         }
       }
-      if (id !== "speed" || speedRenderMarkup.get(node) !== markup) {
+      // Compare authored markup, not live HTML: deck decoration, read-only
+      // hands and tutorial targets legitimately amend the rendered nodes.
+      // Polling must never restart selection/entrance effects or steal focus.
+      if (speedRenderMarkup.get(node) !== markup) {
         node.innerHTML = markup;
-        if (id === "speed") speedRenderMarkup.set(node, markup);
+        speedRenderMarkup.set(node, markup);
       }
+    };
+    const writeText = (node, value) => {
+      if (node && node.textContent !== String(value)) node.textContent = value;
+    };
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    status.setAttribute("aria-atomic", "true");
+    status.setAttribute("data-runtime-localize", "off");
+    const syncTurn = (view) => {
+      const turn = Number.isInteger(view.turn) ? view.turn : null;
+      const ready = turn === null || (turn === 0 && !view.resolving);
+      if (turn === null) delete battle.dataset.cardTurn;
+      else battle.dataset.cardTurn = String(turn + 1);
+      battle.dataset.cardTurnPhase = view.resolving ? "settling" : ready ? "input" : "thinking";
+      opponents.querySelectorAll(".opponent-card").forEach((seat, index) => {
+        seat.dataset.cardSeat = `${index + 2}P`;
+        const label = seat.querySelector("strong");
+        if (label) label.dataset.cardSeat = seat.dataset.cardSeat;
+        seat.classList.toggle("is-current-turn", turn === index + 1);
+        if (turn === index + 1) seat.setAttribute("aria-current", "true");
+        else seat.removeAttribute("aria-current");
+      });
+      hand.closest(".card-game-player")?.classList.toggle("is-current-turn", turn === 0);
+      // Keep targets in place while the opponent acts. The model remains the
+      // authority; disabled controls also make the waiting state explicit.
+      [hand, center, actions].forEach(container => {
+        container.querySelectorAll("button[data-card-index], button[data-action]").forEach(button => {
+          if (!ready) {
+            if (!button.disabled) button.dataset.cardTurnDisabled = "true";
+            button.disabled = true;
+          } else if (button.dataset.cardTurnDisabled) {
+            button.disabled = false;
+            delete button.dataset.cardTurnDisabled;
+          }
+        });
+      });
+      const turnStatus = turn === null ? view.status : `${turn + 1}P · ${view.status || ""}`;
+      writeText(status, turnStatus || "");
     };
     const render = () => {
       if (!game) return;
       const view = game.view() || {};
+      view.turn = game.turn?.();
+      view.resolving = view.resolving || game.resolving?.();
       writeRenderedMarkup(opponents, view.opponents || "");
       writeRenderedMarkup(center, view.center || "");
       writeRenderedMarkup(hand, view.hand || "");
@@ -2596,10 +2643,10 @@
       updateQuickGuide();
       if (lessonGuide?.active) { quickGuide.remove(); actions.prepend(lessonHost); lessonGuide.refresh(); }
       else { lessonHost.remove(); if (quickGuide.textContent) actions.prepend(quickGuide); }
-      status.textContent = view.status || "";
-      statusText.textContent = view.help || "";
-      document.querySelector("#cardGameScore").textContent = view.score || "0";
-      document.querySelector("#cardGamePhase").textContent = view.phase || title;
+      syncTurn(view);
+      writeText(statusText, view.help || "");
+      writeText(document.querySelector("#cardGameScore"), view.score || "0");
+      writeText(document.querySelector("#cardGamePhase"), view.phase || title);
       if (view.cssClass) table.className = `card-table-center ${view.cssClass}`;
       if (view.refreshTimer) clearTimeout(view.refreshTimer);
     };
@@ -2928,8 +2975,17 @@
     const s = { hands: [], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false, winner: null };
     let aiTimer = null;
     let paused = false;
+    let settling = false;
     const cancelAi = () => { if (aiTimer !== null) clearTimeout(aiTimer); aiTimer = null; };
-    const scheduleAi = () => { cancelAi(); aiTimer = setTimeout(() => { aiTimer = null; if (!paused) aiTurn(); }, 220); };
+    const scheduleAi = () => {
+      cancelAi();
+      aiTimer = setTimeout(() => {
+        aiTimer = null;
+        if (paused || !controller.isBattleActive()) return;
+        if (settling) settleTrick(); else aiTurn();
+        controller.refresh?.();
+      }, settling ? 900 : 700);
+    };
     const aiNames = heartsShellCopy()?.opponents || ["You", "Orchid", "Mango", "Nova"];
     const legal = (handCards, trick) => {
       const leadSuit = trick[0]?.card.suit;
@@ -2945,17 +3001,35 @@
     };
     const scoreTrick = () => { const hearts = s.trick.filter((entry) => entry.card.suit === "hearts").length; const queen = s.trick.some((entry) => entry.card.suit === "spades" && entry.card.rank === 12) ? 13 : 0; const points = hearts + queen; const winner = trickWinner(s.trick); s.scores[winner] += points; s.penaltyHearts[winner] += hearts; s.penaltyQueens[winner] += queen; if (hearts) s.heartsBroken = true; s.trick = []; s.turn = winner; s.lead = winner; return { points, winner }; };
     const finish = () => { const moon = s.scores.findIndex((score) => score === 26); if (moon >= 0) { s.scores = s.scores.map((score, index) => index === moon ? score - 26 : score + 26); } const playerWon = s.scores[0] === Math.min(...s.scores); const lesson = heartsResultText(s.penaltyHearts[0], s.penaltyQueens[0], moon >= 0); controller.result(playerWon, `${t("score")}: ${s.scores[0]} · ${t("points")}: ${s.scores.join(" / ")} · ${lesson}`); };
-    const play = (player, item) => { const handCards = s.hands[player]; const index = handCards.indexOf(item); if (index < 0) return; const legalCards = legal(handCards, s.trick); if (!legalCards.includes(item)) return; if (!s.trick.length && player === 0 && s.hands[0].length === 13 && !(item.suit === "clubs" && item.rank === 2)) return; handCards.splice(index, 1); if (player === 0) controller.lesson?.("play"); s.trick.push({ player, card: item }); if (item.suit === "hearts") s.heartsBroken = true; s.turn = (player + 1) % 4; if (s.trick.length === 4) { scoreTrick(); if (!s.hands.some((cards) => cards.length)) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
+    const settleTrick = () => {
+      settling = false; scoreTrick();
+      if (!s.hands.some(cards => cards.length)) { finish(); return; }
+      if (s.turn !== 0) scheduleAi();
+    };
+    const play = (player, item) => {
+      if (paused || settling) return;
+      const handCards = s.hands[player], index = handCards.indexOf(item);
+      if (index < 0 || !legal(handCards, s.trick).includes(item)) return;
+      if (!s.trick.length && player === 0 && handCards.length === 13 && !(item.suit === "clubs" && item.rank === 2)) return;
+      handCards.splice(index, 1);
+      if (player === 0) controller.lesson?.("play");
+      s.trick.push({ player, card: item });
+      if (item.suit === "hearts") s.heartsBroken = true;
+      if (s.trick.length === 4) { s.turn = player; settling = true; scheduleAi(); }
+      else { s.turn = (player + 1) % 4; if (s.turn !== 0) scheduleAi(); }
+    };
     const aiTurn = () => { if (paused || s.phase !== "play" || s.turn === 0) return; const item = chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn], s.trick), "low"); if (item) play(s.turn, item); };
     return {
-      reset() { cancelAi(); paused = false; Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
+      resolving() { return settling; },
+      turn() { return s.turn; },
+      reset() { cancelAi(); paused = false; settling = false; Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
       pause() { paused = true; cancelAi(); },
-      resume() { if (!paused) return; paused = false; if (s.phase === "play" && s.turn !== 0) scheduleAi(); },
+      resume() { if (!paused) return; paused = false; if (s.phase === "play" && (settling || s.turn !== 0)) scheduleAi(); },
       stop() { paused = true; cancelAi(); },
-      card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3 && s.hands[0][index]) s.selected.add(index); if (s.selected.size === 3) controller.lesson?.("select-three"); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
+      card(index) { if (paused || settling) return; if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3 && s.hands[0][index]) s.selected.add(index); if (s.selected.size === 3) controller.lesson?.("select-three"); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; controller.lesson?.("pass"); s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) scheduleAi(); } },
       lessonTarget(step) { if (step === "pass-cards") return '[data-action="pass"]'; const item = s.phase === "pass" ? s.hands[0].find((_, i) => !s.selected.has(i)) : !s.trick.length && s.hands[0].length === 13 ? s.hands[0].find(item => item.suit === "clubs" && item.rank === 2) : legal(s.hands[0], s.trick)[0]; return `#cardGameHand [data-card-index="${s.hands[0].indexOf(item)}"]`; },
-      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; const shellCopy = heartsShellCopy(); const firstLead = shellCopy?.lead || "2♣ leads the first trick"; const lead = s.hands[0].length === 13 && !s.trick.length ? firstLead : shellCopy?.leadBy ? shellCopy.leadBy.replace("{name}", aiNames[s.lead] || aiNames[0]) : `${aiNames[s.lead] || aiNames[0]} leads`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => heartsOpponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || `<span>${lead}</span>`}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
+      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${s.turn === 0 ? t("yourTurn") : t("aiTurn")}</p>`; const shellCopy = heartsShellCopy(); const firstLead = shellCopy?.lead || "2♣ leads the first trick"; const lead = s.hands[0].length === 13 && !s.trick.length ? firstLead : shellCopy?.leadBy ? shellCopy.leadBy.replace("{name}", aiNames[s.lead] || aiNames[0]) : `${aiNames[s.lead] || aiNames[0]} leads`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => heartsOpponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || `<span>${lead}</span>`}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
     };
   }
 
@@ -2964,19 +3038,48 @@
     const names = spadesOpponentNames();
     let aiTimer = null;
     let paused = false;
+    let settling = false;
     const cancelAi = () => { if (aiTimer !== null) clearTimeout(aiTimer); aiTimer = null; };
-    const scheduleAi = () => { cancelAi(); aiTimer = setTimeout(() => { aiTimer = null; if (!paused) aiTurn(); }, 180); };
+    const scheduleAi = () => {
+      cancelAi();
+      aiTimer = setTimeout(() => {
+        aiTimer = null;
+        if (paused || !controller.isBattleActive()) return;
+        if (settling) settleTrick(); else aiTurn();
+        controller.refresh?.();
+      }, settling ? 900 : 700);
+    };
     const legal = (cards) => { const lead = s.trick[0]?.card.suit; const suited = lead ? cards.filter((item) => item.suit === lead) : []; return suited.length ? suited : cards; };
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; const teamBid = s.bids[0] + s.bids[2]; s.scores[0] += own ? 10 * teamBid + Math.max(0, s.tricks[0] - teamBid) : -10 * teamBid; s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); const playerWon = s.scores[0] >= s.scores[1]; controller.result(playerWon, spadesResultText(teamBid, s.tricks[0], s.scores[0], s.scores[1], playerWon, own)); };
     const currentWinnerEntry = () => { const winner = trickWinner(s.trick, "spades"); return s.trick.find((entry) => entry.player === winner) || null; };
-    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); if (player === 0) controller.lesson?.("play"); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) scheduleAi(); };
+    const settleTrick = () => {
+      const winningEntry = currentWinnerEntry(), winner = winningEntry.player;
+      s.lastTrick = { card: winningEntry.card, leadSuit: s.trick[0].card.suit };
+      s.tricks[winner % 2 === 0 ? 0 : 1] += 1;
+      s.trick = []; s.turn = winner; settling = false;
+      if (!s.hands[0].length) { finish(); return; }
+      if (s.turn !== 0) scheduleAi();
+    };
+    const play = (player, item) => {
+      if (paused || settling) return;
+      const cards = s.hands[player];
+      if (!legal(cards).includes(item)) return;
+      if (!s.trick.length) s.lastTrick = null;
+      cards.splice(cards.indexOf(item), 1);
+      if (player === 0) controller.lesson?.("play");
+      s.trick.push({ player, card: item });
+      if (s.trick.length === 4) { s.turn = player; settling = true; scheduleAi(); }
+      else { s.turn = (player + 1) % 4; if (s.turn !== 0) scheduleAi(); }
+    };
     const aiTurn = () => { if (paused || s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
     return {
-      reset() { cancelAi(); paused = false; Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
+      resolving() { return settling; },
+      turn() { return s.phase === "bid" ? 0 : s.turn; },
+      reset() { cancelAi(); paused = false; settling = false; Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
       pause() { paused = true; cancelAi(); },
-      resume() { if (!paused) return; paused = false; if (s.phase === "play" && s.turn !== 0) scheduleAi(); },
+      resume() { if (!paused) return; paused = false; if (s.phase === "play" && (settling || s.turn !== 0)) scheduleAi(); },
       stop() { paused = true; cancelAi(); },
-      card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
+      card(index) { if (paused || settling) return; if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action, selected) { if (s.phase === "bid" && action === "bid" && Number.isInteger(Number(selected)) && Number(selected) >= 0 && Number(selected) <= 13) { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; controller.lesson?.("bid"); } },
       lessonTarget(step) { return step === "play-card" ? `#cardGameHand [data-card-index="${s.hands[0].indexOf(legal(s.hands[0])[0])}"]` : '[data-action="bid"][data-value="3"]'; },
       view() {
@@ -3113,7 +3216,8 @@
   }
 
   function makeCasino(controller) {
-    const s = { player: [], ai: [], stock: [], table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0], feedback: "" };
+    const s = { player: [], ai: [], stock: [], table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", turn: 0, score: [0, 0], feedback: "" };
+    const turnClock = makeCardTurnClock(controller);
     const tableValue = (entry) => entry.buildValue || value(entry.card);
     const entryCards = (entry) => entry?.buildCards?.length ? entry.buildCards : [entry?.card].filter(Boolean);
     const combinations = (items, target) => { const output = []; const walk = (start, chosen, total) => { if (total === target && chosen.length) output.push(chosen.slice()); if (total >= target) return; for (let i = start; i < items.length; i += 1) walk(i + 1, [...chosen, i], total + tableValue(items[i])); }; walk(0, [], 0); return output; };
@@ -3163,20 +3267,25 @@
       if (ordinarySpades) parts.push(casinoText("specialSpade", { count: ordinarySpades, bonus: ordinarySpades }));
       return parts.length ? parts.join(" · ") : casinoText("specialNone");
     };
-    const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); const capturedCards = [item, ...picked.flatMap(entryCards)]; s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(...capturedCards); s.feedback = casinoText("captureFeedback", { count: capturedCards.length, special: specialBonusSummary(capturedCards), bonus: immediateBonus(capturedCards) }); s.selectedCard = null; s.selectedTable.clear(); controller.lesson?.("capture"); aiTurn(); };
-    const trail = (cardIndex) => { const item = s.player[cardIndex]; if (!item || s.selectedTable.size || canCapture(item)) return; s.player.splice(cardIndex, 1); s.table.push({ card: item }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
+    const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); const capturedCards = [item, ...picked.flatMap(entryCards)]; s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(...capturedCards); s.feedback = casinoText("captureFeedback", { count: capturedCards.length, special: specialBonusSummary(capturedCards), bonus: immediateBonus(capturedCards) }); s.selectedCard = null; s.selectedTable.clear(); controller.lesson?.("capture"); queueAi(); };
+    const trail = (cardIndex) => { const item = s.player[cardIndex]; if (!item || s.selectedTable.size || canCapture(item)) return; s.player.splice(cardIndex, 1); s.table.push({ card: item }); s.selectedCard = null; s.selectedTable.clear(); queueAi(); };
     const scoreCasino = (cards) => cards.reduce((score, item) => score + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), 0) + (cards.length >= 27 ? 3 : 0);
     const resultBreakdown = (cards) => casinoText("resultBreakdown", { cards: cards.length, immediate: immediateBonus(cards), majority: cards.length >= 27 ? "+3" : "—", score: scoreCasino(cards) });
     const finish = () => { const playerScore = scoreCasino(s.captured[0]); const aiScore = scoreCasino(s.captured[1]); controller.result(playerScore === aiScore ? null : playerScore > aiScore, `${t("score")}: ${playerScore} / ${aiScore} · ${resultBreakdown(s.captured[0])}`); };
     const dealNextHand = () => { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); if (s.stock.length) s.ai.push(s.stock.pop()); } controller.beep("draw"); };
+    const queueAi = () => { s.turn = 1; turnClock.schedule(() => { aiTurn(); s.turn = 0; }); };
     const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) dealNextHand(); else { finish(); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.flatMap((index) => entryCards(s.table[index]))); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); if (!s.ai.length && s.stock.length) dealNextHand(); if (!s.stock.length && (!s.ai.length || !s.player.length)) finish(); };
     return {
-      reset() {
-        Object.assign(s, { player: [], ai: [], stock: deck(), table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0], feedback: "" });
+      turn() { return s.turn; },
+      pause() { turnClock.pause(); },
+      resume() { turnClock.resume(); },
+      stop() { turnClock.stop(); },
+      reset() { turnClock.reset(); s.turn = 0;
+        Object.assign(s, { player: [], ai: [], stock: deck(), table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", turn: 0, score: [0, 0], feedback: "" });
         for (let i = 0; i < 4; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); s.table.push({ card: s.stock.pop() }); }
         if (controller.needsLesson?.()) { const tableCards = s.table.map(entry => entry.card); arrangeLessonCards([s.player, s.ai, s.stock, tableCards], [[0, 0, "spades", 2], [3, 0, "clubs", 2]]); s.table = tableCards.map(card => ({card})); }
       },
-      card(index) {
+      card(index) { if (s.turn !== 0) return;
         if (s.selectedCard === null) { if (!s.player[index] || (controller.teaching?.() && index !== 0)) return; s.selectedCard = index; controller.lesson?.("select"); return; }
         const tableIndex = index;
         if (tableIndex < s.table.length) {
@@ -3186,6 +3295,7 @@
         }
       },
       action(action) {
+        if (s.turn !== 0) return;
         if (action === "clear-selection") { s.selectedCard = null; s.selectedTable.clear(); }
         if (action === "capture" && s.selectedCard !== null) {
           const indices = [...s.selectedTable];
@@ -3205,7 +3315,7 @@
           s.table.push(built);
           s.selectedCard = null;
           s.selectedTable.clear();
-          aiTurn();
+          queueAi();
         }
       },
       lessonTarget(step) { return step === "choose-hand" ? '#cardGameHand [data-card-index="0"]' : step === "choose-table" ? '#cardGameCenter [data-card-index="0"]' : '[data-action="capture"]'; },
@@ -3245,7 +3355,7 @@
           : "";
         return {
           phase: t("capture"),
-          status: t("yourTurn"),
+          status: s.turn === 0 ? t("yourTurn") : t("aiTurn"),
           help: s.feedback || (selectedItem ? (trailReady ? casinoText("trailPrompt") : `${t("selectCards")}: ${cardText(selectedItem)} · ${s.selectedTable.size}`) : casinoText("selectPrompt")),
           score: s.captured[0].length,
           opponents: opponentMarkup("AI", s.ai.length, `${t("cards")}: ${s.captured[1].length}`),
@@ -3266,8 +3376,29 @@
     return { reset() { Object.assign(s, { hand: [], ai: [], crib: [], stock: deck(), starter: null, pegging: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set() }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }, card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); }, action(action) { if (action === "send-crib" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.starter = s.stock.pop(); s.phase = "pegging"; s.turn = 0; s.pegging = []; s.count = 0; } if (action === "new-round") this.reset(); }, view() { return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : "Peg without passing 31; pairs, runs and 15s score.", score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · ${s.starter ? cardText(s.starter) : ""}</div>${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.pegging)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : "" }; } };
   }
 
+  function makeCardTurnClock(controller) {
+    let timer = null, callback = null, paused = false;
+    const clear = () => { clearTimeout(timer); timer = null; };
+    const arm = () => {
+      clear();
+      if (!paused && callback) timer = setTimeout(() => {
+        timer = null;
+        if (paused || !controller.isBattleActive()) return;
+        const run = callback; callback = null; run(); controller.refresh?.();
+      }, 700);
+    };
+    return {
+      schedule(run) { callback = run; arm(); },
+      reset() { clear(); callback = null; paused = false; },
+      pause() { paused = true; clear(); },
+      resume() { paused = false; arm(); },
+      stop() { paused = true; clear(); callback = null; },
+    };
+  }
+
   function makeCrazyEightsFixed(controller) {
     const s = { hands: [[], [], [], []], stock: [], discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "", illegalCue: "" };
+    const turnClock = makeCardTurnClock(controller);
     const names = ["You", "AI North", "AI East", "AI West"];
     const legal = (item) => item && (item.rank === 8 || item.suit === s.activeSuit || item.rank === s.discard.at(-1)?.rank);
     const draw = (player) => { if (!s.stock.length) return null; const item = s.stock.pop(); s.hands[player].push(item); if (player === 0) s.playerDraws += 1; return item; };
@@ -3289,7 +3420,7 @@
       const counts = SUITS.map((suit, index) => `${copy.suits[index]} ${s.hands[0].filter((item) => item.suit === suit && item.rank !== 8).length}`).join(" · ");
       return crazyEightsText("summary", { counts });
     };
-    const next = () => { s.turn = (s.turn + 1) % 4; if (s.turn !== 0) setTimeout(aiTurn, 260); };
+    const next = () => { s.turn = (s.turn + 1) % 4; if (s.turn !== 0) turnClock.schedule(aiTurn); };
     const play = (player, item) => {
       if (!legal(item)) return;
       s.hands[player].splice(s.hands[player].indexOf(item), 1);
@@ -3310,7 +3441,11 @@
       else { draw(s.turn); const drawn = s.hands[s.turn].at(-1); if (legal(drawn)) play(s.turn, drawn); else next(); }
     };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "", illegalCue: "" }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; if (controller.needsLesson?.()) arrangeLessonCards([s.hands[0], ...s.hands.slice(1), s.stock, s.discard], [[0, 0, "clubs", 8]]); s.activeSuit = s.discard[0].suit; },
+      turn() { return s.turn; },
+      pause() { turnClock.pause(); },
+      resume() { turnClock.resume(); },
+      stop() { turnClock.stop(); },
+      reset() { turnClock.reset(); Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "", illegalCue: "" }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; if (controller.needsLesson?.()) arrangeLessonCards([s.hands[0], ...s.hands.slice(1), s.stock, s.discard], [[0, 0, "clubs", 8]]); s.activeSuit = s.discard[0].suit; },
       card(index) { if (s.turn === 0 && !s.pendingSuit) { s.drawCue = ""; const item = s.hands[0][index]; if (legal(item) && (!controller.teaching?.() || item.rank === 8)) { s.illegalCue = ""; play(0, item); } else { s.illegalCue = crazyEightsIllegalText(); } } },
       action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { s.illegalCue = ""; const drawn = draw(0); if (drawn) s.drawCue = crazyEightsDrawText(s.hands[0].length, s.playerDraws); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit && SUITS.includes(selected)) { s.drawCue = ""; s.illegalCue = ""; s.activeSuit = selected; s.playerWildSuit = selected; s.playerWildSuitCards = s.hands[0].filter((item) => item.suit === selected && item.rank !== 8).length; s.pendingSuit = false; controller.lesson?.("suit"); next(); } },
       lessonTarget(step) { return step === "play-eight" ? `#cardGameHand [data-card-index="${s.hands[0].findIndex(item => item.rank === 8)}"]` : '[data-action="suit"]'; },
@@ -3320,6 +3455,7 @@
 
   function makeGinRummyFixed(controller) {
     const s = { player: [], ai: [], stock: [], discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false };
+    const turnClock = makeCardTurnClock(controller);
     const meldStats = (hand) => {
       // A card can belong to one meld only. Enumerate valid sets/runs, then
       // choose the disjoint combination leaving the least deadwood.
@@ -3380,9 +3516,13 @@
       ? cardMarkup(s.discard.at(-1), 0, { runtimeLocalizeOff: true })
       : `<span class="card-empty-slot" data-runtime-localize="off" role="status">${ginBattleText("emptyDiscard")}</span>`;
     return {
-      reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
+      turn() { return s.turn; },
+      pause() { turnClock.pause(); },
+      resume() { turnClock.resume(); },
+      stop() { turnClock.stop(); },
+      reset() { turnClock.reset(); Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
       card(index) { if (s.turn === 0 && s.drawn && !s.over) { if (!s.player[index]) return; s.selected = s.selected.has(index) ? new Set() : new Set([index]); if (s.selected.size === 1) controller.lesson?.("select"); } },
-      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); controller.lesson?.("discard"); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
+      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); controller.lesson?.("discard"); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; turnClock.schedule(aiTurn); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
       lessonTarget(step) { return step === "select-card" ? '#cardGameHand [data-card-index="0"]' : step === "discard-card" ? '[data-action="discard"]' : '[data-action="draw-stock"]'; },
       view() {
         const stats = meldStats(s.player);
@@ -3400,6 +3540,7 @@
 
   function makeCribbageFixed(controller) {
     const s = { hand: [], ai: [], crib: [], playerCrib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], pegSequence: [], roundPegScore: [0, 0], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", pegCue: "", round: 1, dealer: 1 };
+    const turnClock = makeCardTurnClock(controller);
     const combinations = (cards, target) => { let points = 0; const total = 1 << cards.length; for (let mask = 1; mask < total; mask += 1) { const chosen = cards.filter((_, index) => mask & (1 << index)); if (sum(chosen) === target) points += 2; } return points; };
     const scoreCards = (cards, isCrib = false) => {
       let points = combinations(cards, 15);
@@ -3457,7 +3598,7 @@
       s.score[s.dealer] += scoreCards([...s.crib, s.starter], true);
       if (!finish()) startRound();
     };
-    const scheduleTurn = (player) => { s.turn = player; if (player === 1) setTimeout(aiPeg, 240); };
+    const scheduleTurn = (player) => { s.turn = player; if (player === 1) turnClock.schedule(aiPeg); };
     const resetPegCount = (leader, reason = "go") => {
       s.count = 0;
       s.pegSequence = [];
@@ -3496,7 +3637,11 @@
     const aiPeg = () => { if (s.phase !== "pegging" || s.turn !== 1) return; const item = legalPeg(1).sort((a, b) => b.rank - a.rank)[0]; if (item) playPeg(1, item); else passPeg(1); };
     function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], playerCrib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], roundPegScore: [0, 0], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", pegCue: "", round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
     return {
-      reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
+      turn() { return s.phase === "discard" ? 0 : s.turn; },
+      pause() { turnClock.pause(); },
+      resume() { turnClock.resume(); },
+      stop() { turnClock.stop(); },
+      reset() { turnClock.reset(); Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2 && s.hand[index]) s.selected.add(index); if (s.selected.size === 2) controller.lesson?.("select-two"); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
       action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { const selectedCards = [...s.selected].sort((a, b) => a - b).map((index) => s.hand[index]).filter(Boolean); s.playerCrib = selectedCards; [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.selected.clear(); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; controller.lesson?.("crib"); s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; s.pegCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
       lessonTarget(step) { if (step === "send-crib") return '[data-action="send-crib"]'; const index = s.phase === "discard" ? s.hand.findIndex((_, i) => !s.selected.has(i)) : s.hand.indexOf(legalPeg(0)[0]); return `#cardGameHand [data-card-index="${index}"]`; },
@@ -3509,7 +3654,7 @@
     let aiTimer = 0, paused = false, stopped = false;
     const names = ["You", "Otter", "Fox", "Panda"];
     const clearAiTimer = () => { if (aiTimer) { clearTimeout(aiTimer); aiTimer = 0; } };
-    const scheduleAi = () => { clearAiTimer(); if (!paused && !stopped && s.turn !== 0) aiTimer = setTimeout(() => { aiTimer = 0; aiTurn(); controller.refresh?.(); }, 300); };
+    const scheduleAi = () => { clearAiTimer(); if (!paused && !stopped && s.turn !== 0) aiTimer = setTimeout(() => { aiTimer = 0; aiTurn(); controller.refresh?.(); }, 700); };
     const removeBooks = (player) => { const completedRanks = []; for (let rank = 1; rank <= 13; rank += 1) { if (s.players[player].filter((item) => item.rank === rank).length === 4) { s.players[player] = s.players[player].filter((item) => item.rank !== rank); s.books[player] += 1; if (!s.bookRanks[player].includes(rank)) { s.bookRanks[player].push(rank); completedRanks.push(rank); } } } if (player === 0 && completedRanks.length) s.bookCue = completedRanks.map(rankText).join(" · "); };
     const refillEmptyHand = (player) => {
       const handSize = s.playerCount === 2 ? 7 : 5;
@@ -3536,6 +3681,7 @@
     const ask = (target, rank) => { if (paused || stopped) return; s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } controller.lesson?.("ask"); if (terminal()) { clearAiTimer(); finish(); } else if (!matching.length || !s.players[0].length) next(); };
     const aiTurn = () => { if (paused || stopped || !controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (terminal()) { clearAiTimer(); finish(); } else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn && (s.stock.length || s.players[index].length)); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (terminal()) { clearAiTimer(); finish(); } else if (matching.length) scheduleAi(); else next(); };
     return {
+      turn() { return s.turn; },
       reset() { deal(); },
       pause() { paused = true; clearAiTimer(); },
       resume() { if (stopped) return; paused = false; if (s.turn !== 0) scheduleAi(); },
@@ -3613,17 +3759,28 @@
   }
 
   function makeOldMaidFixed(controller) {
-    const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "", drawOutcome: "" };
+    const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, resolving: false, drawCue: "", drawOutcome: "" };
     let timer = null;
     let paused = false;
+    let pendingResult = null;
     const cancelTurn = () => { clearTimeout(timer); timer = null; };
     const scheduleTurn = () => {
       cancelTurn();
-      if (!paused && !s.over && s.turn !== 0) {
+      if (paused) return;
+      if (s.resolving) {
+        timer = setTimeout(() => {
+          timer = null;
+          if (paused || !controller.isBattleActive()) return;
+          s.resolving = false;
+          if (pendingResult) { const finish = pendingResult; pendingResult = null; finish(); }
+          else next();
+          controller.refresh?.();
+        }, 720);
+      } else if (!s.over && s.turn !== 0) {
         const target = targetFor(s.turn);
         const lastCard = target >= 0 && s.players[target].length === 1;
-        const turnDelay = lastCard ? 920 : 560 + Math.floor(Math.random() * 180);
-        timer = setTimeout(() => { timer = null; aiTurn(); }, turnDelay);
+        const turnDelay = lastCard ? 920 : 760;
+        timer = setTimeout(() => { timer = null; aiTurn(); controller.refresh?.(); }, turnDelay);
       }
     };
     window.addEventListener("pagehide", cancelTurn);
@@ -3633,13 +3790,13 @@
     const names = OLD_MAID_NAMES[currentLocale()] || OLD_MAID_NAMES.en;
     const oldMaidOpponentMarkup = (name, count, extra = "", player = 0) => `<div class="opponent-card${s.turn === player ? " is-old-maid-turn" : ""}${count === 1 ? " is-old-maid-last-card" : ""}${count === 0 ? " is-old-maid-out" : ""}" data-old-maid-player="${player}"><strong data-runtime-localize="off">${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`;
     const pair = (player) => { const byRank = new Map(); s.players[player].forEach((item) => { const list = byRank.get(item.rank) || []; list.push(item); byRank.set(item.rank, list); }); byRank.forEach((items) => { const normal = items.filter((item) => !item.oldMaid); for (let pairIndex = 0; pairIndex + 1 < normal.length; pairIndex += 2) { [normal[pairIndex], normal[pairIndex + 1]].forEach((item) => { const index = s.players[player].indexOf(item); if (index >= 0) s.players[player].splice(index, 1); }); s.books[player] += 1; } }); };
-    const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
+    const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; pendingResult = () => controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
     const targetFor = (player) => { for (let offset = 1; offset < s.players.length; offset += 1) { const target = (player + offset) % s.players.length; if (s.players[target].length) return target; } return -1; };
-    const next = () => { s.turn = (s.turn + 1) % 4; while (!s.players[s.turn].length && s.players.some((cards) => cards.length)) s.turn = (s.turn + 1) % 4; scheduleTurn(); };
+    const next = () => { s.drawCue = ""; s.turn = (s.turn + 1) % 4; while (!s.players[s.turn].length && s.players.some((cards) => cards.length)) s.turn = (s.turn + 1) % 4; scheduleTurn(); };
     const drawFrom = (player, index) => {
+      if (s.resolving || s.over) return;
       const target = targetFor(player);
       if (target < 0) { finishIfDone(); return; }
-      if (player === 0) s.drawCue = "";
       const source = s.players[target];
       const position = Math.min(index, source.length - 1) + 1;
       const pairsBefore = s.books[player];
@@ -3647,25 +3804,31 @@
       s.players[player].push(item);
       pair(player);
       const cueKey = s.books[player] > pairsBefore ? "pair" : s.players[player].some((card) => card.oldMaid) ? "risk" : "none";
+      const drawPath = `${player + 1}P ${names[player]} · ${t("draw")} ← ${target + 1}P ${names[target]}`;
+      // Public counts are sufficient for AI feedback; never reveal hidden risk.
+      s.drawOutcome = player === 0 ? cueKey : s.books[player] > pairsBefore ? "pair" : "none";
+      s.drawCue = `${drawPath} · +${s.books[player] - pairsBefore} ${t("pairs")}`;
+      s.resolving = true;
       if (player === 0) {
-        s.drawCue = oldMaidText(cueKey);
-        s.drawOutcome = cueKey;
+        s.drawCue += ` · ${oldMaidText(cueKey)}`;
         controller.lesson?.("draw-hidden");
         oldMaidTrack("blind_draw", { source: "opponent_hand", position, remaining_count: source.length, input_type: "card_control" });
         oldMaidTrack("pair_outcome", { outcome: cueKey, pairs_delta: s.books[player] - pairsBefore });
       }
       finishIfDone();
-      if (!s.over) next();
+      scheduleTurn();
     };
     const aiTurn = () => { if (!paused && controller.isBattleActive() && s.turn !== 0 && !s.over) { const target = targetFor(s.turn); if (target < 0) finishIfDone(); else drawFrom(s.turn, Math.floor(Math.random() * s.players[target].length)); } };
     return {
+      turn() { return s.turn; },
+      resolving() { return s.resolving; },
       pause() { paused = true; cancelTurn(); },
       resume() { if (!paused) return; paused = false; scheduleTurn(); },
       stop() { paused = true; cancelTurn(); },
-      reset() { cancelTurn(); paused = false; const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "", drawOutcome: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
-      card(index) { if (!paused && s.turn === 0 && !s.over) drawFrom(0, index); },
+      reset() { cancelTurn(); pendingResult = null; paused = false; const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, resolving: false, drawCue: "", drawOutcome: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
+      card(index) { if (!paused && !s.resolving && s.turn === 0 && !s.over) drawFrom(0, index); },
       action() {},
-      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-outcome="${s.drawOutcome}" data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; const choices = target.map((_, index) => cardMarkup({ faceDown: true }, index, { ariaLabel: oldMaidText("hiddenCard", { position: index + 1, total: target.length }), runtimeLocalizeOff: true })).join(""); return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`, index + 1)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}${s.turn === 0 ? " is-old-maid-player-turn" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${choices}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
+      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-outcome="${s.drawOutcome}" data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; const choices = target.map((_, index) => cardMarkup({ faceDown: true }, index, { ariaLabel: oldMaidText("hiddenCard", { position: index + 1, total: target.length }), runtimeLocalizeOff: true })).join(""); return { phase: t("oldMaid"), resolving: s.resolving, status: s.resolving ? t("draw") : s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.resolving ? s.drawCue : s.turn === 0 ? oldMaidText("help", { name: `${targetIndex + 1}P ${names[targetIndex]}` }) : `${s.turn + 1}P ${names[s.turn]} · ${t("draw")} ← ${turnTarget + 1}P ${names[turnTarget]}`, score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`, index + 1)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}${s.turn === 0 ? " is-old-maid-player-turn" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${choices}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
     };
   }
 

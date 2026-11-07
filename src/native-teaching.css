@@ -1,0 +1,4 @@
+.native-teaching-host{position:fixed;z-index:75;inset-inline:12px;bottom:88px;margin-inline:auto;max-width:540px;pointer-events:none;--wp-battle-canvas-inverse-scale:1}
+.native-teaching-host:empty{display:none}.native-teaching-host .wp-action-guide{font-size:14px;padding:9px 12px}.native-teaching-host .wp-action-guide strong{font-size:15px}.native-teaching-host .wp-action-guide-progress{font-size:11px}
+.native-teaching-park{bottom:auto;top:60px}
+@media(max-height:470px) and (orientation:landscape){.native-teaching-host{max-width:360px;inset-inline:auto 12px;bottom:56px}.native-teaching-park{top:58px;bottom:auto}}

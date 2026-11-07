@@ -49,6 +49,15 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .opponent-card { min-height: 50px; padding: 8px; border-radius: 12px; background: rgba(7, 28, 43, .58); border: 1px solid rgba(255,255,255,.14); }
 .opponent-card strong, .opponent-card span { display: block; }
 .opponent-card span { color: #b9d8d3; font-size: 12px; margin-top: 3px; }
+.opponent-card[data-card-seat] strong::before { content: attr(data-card-seat) " · "; color: #fff0ad; font-variant-numeric: tabular-nums; }
+.card-game-player.is-current-turn,
+.opponent-card.is-current-turn { border-color: #ffe292; box-shadow: inset 0 0 0 1px #ffe29280; }
+.card-game-status { min-height: 2.4em; display: grid; place-items: center; font-weight: 750; font-variant-numeric: tabular-nums; }
+[data-card-turn] .card-game-status { border-inline-start: 3px solid #ffe292; padding-inline-start: 5px; }
+[data-card-turn-phase="thinking"] .card-game-status { color: #ffe292; }
+[data-card-turn-phase="settling"] .card-game-status { color: #b4f6dd; }
+.playing-card:disabled { cursor: default; }
+.playing-card:disabled:hover { transform: none; }
 .card-table-center { min-height: 160px; border-radius: 18px; border: 1px solid rgba(255,255,255,.18); background: rgba(4, 39, 34, .42); padding: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
 .card-table-center .table-row { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 86px; }
 .card-table-label { color: #b9d8d3; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }

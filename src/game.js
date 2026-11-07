@@ -5,7 +5,7 @@
   const __wpReadMeasurement = () => ({ ...__wpMeasurement,
     keyboardKeys: ["ArrowLeft", "ArrowRight", "a", "A", "d", "D"],
     screen: ((__wpMeasurement.screen) === "battle" && (__wpMeasurement.ended)) ? null : (__wpMeasurement.screen), ended: Boolean(__wpMeasurement.ended), outcome: __wpMeasurement.outcome,
-    paused: Boolean(!state.running || state.awaitingUpgrade || pauseReturnIntent), node: document.body,
+    paused: Boolean(actionGuide?.active || !state.running || state.awaitingUpgrade || pauseReturnIntent), node: document.body,
     activityMode: "input", idleSeconds: 300
   });
   function __wpNotifyMeasurement() { try { window.WonderAnalytics?.game?.observeState(__wpReadMeasurement); } catch { /* Optional telemetry. */ } }
@@ -24,6 +24,7 @@ defenseModuleUrl.search = '?v=29-combat-motion';
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
+let actionGuide=null,lessonDirection=-1,lessonHeroX=0;
 const defenseCopy = {
   en:['Lion roar','Drag to aim · auto-fire · Space roar · Q Pride Volley · E Wall Aegis','3D unavailable. Return to stages and retry.'],
   'zh-TW':['獅吼擊退','拖曳瞄準・自動射擊・Space 獅吼・Q 獅心齊射・E 城牆護盾','3D 暫時無法使用，請返回關卡後重試。'],
@@ -1180,6 +1181,7 @@ function setPauseBattleAccessibility(covered) {
 window.addEventListener("resize", updateBattleShell);
 
 function startLevel(levelIndex) {
+  actionGuide?.stop();
   if (levelIndex + 1 > highestUnlocked) {
     showFloatingMessage(t("locked"));
     window.WeightPlayAudio?.play("feedback.error");
@@ -1215,6 +1217,7 @@ function startLevel(levelIndex) {
   window.WeightPlayAudio?.play("game.start");
 
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.stageId = levelIndex + 1; __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.rewardEligible = levelIndex + 1 === highestUnlocked; __wpMeasurement.saveSucceeded = false; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
+  startActionLesson();
 }
 
 window.addEventListener("keydown", (event) => {
@@ -1363,9 +1366,10 @@ function loop(now) {
 }
 
 function update(dt) {
-  state.time += dt;
   const direction = Number(movementKeys.has('ArrowRight') || movementKeys.has('KeyD')) - Number(movementKeys.has('ArrowLeft') || movementKeys.has('KeyA'));
   if (direction) moveHeroTo(state.hero.x + direction * W * .8 * dt);
+  if(actionGuide?.active)return;
+  state.time += dt;
   state.roarCooldown = Math.max(0, state.roarCooldown-dt);
   state.roarPulse = Math.max(0, state.roarPulse-dt);
   for (const id of Object.keys(state.abilityCooldowns)) {
@@ -2653,6 +2657,7 @@ function updateHud() {
 }
 
 function showMainMenu(tab = activeMenuTab) {
+  actionGuide?.stop();
   (__wpNotifyMeasurement(), talentDialog?.close());
   disposeDefense();
   clearFloatingMessage();
@@ -2702,6 +2707,7 @@ function showMainMenu(tab = activeMenuTab) {
 }
 
 function showWonderMain() {
+  actionGuide?.stop();
   disposeDefense();
   clearFloatingMessage();
   pauseReturnIntent = false;
@@ -2975,6 +2981,7 @@ function showPauseMenu(returnIntent = false) {
   movementKeys.clear();
   stopDrag({pointerId:drag.pointerId});
   if (!state.running) return;
+  actionGuide?.pause(true);
   pauseReturnIntent = returnIntent;
   window.WonderCrashFrame?.moveOverlay("battle");
   overlay.classList.remove("equipment-screen", "settlement-screen");
@@ -3005,6 +3012,7 @@ function showPauseMenu(returnIntent = false) {
 }
 
 function resumeBattle() {
+  actionGuide?.pause(false);
   if (!prepareDefense()) return;
   pauseReturnIntent = false;
   setPauseBattleAccessibility(false);
@@ -3024,6 +3032,7 @@ function resumeBattle() {
 }
 
 function leaveBattle() {
+  actionGuide?.stop();
   pauseReturnIntent = false;
   setPauseBattleAccessibility(false);
   bankRunCoins();
@@ -4083,8 +4092,11 @@ function stopDrag(event) {
 }
 
 function moveHeroTo(x) {
+  const previous=state.hero.x;
+  if(actionGuide?.active&&Math.sign(x-previous)!==(actionGuide.stepId==='move-out'?lessonDirection:-lessonDirection))return;
   state.hero.x = clamp(x, state.hero.width / 2 + 14, W - state.hero.width / 2 - 14);
   canvas.dataset.heroX = String(state.hero.x);
+  if(actionGuide?.active&&Math.abs(state.hero.x-lessonHeroX)>=18)actionGuide.accept(actionGuide.stepId,{accepted:true});
 }
 
 function canvasPoint(event) {
@@ -4139,6 +4151,12 @@ bindLocaleSelect(pauseLocaleSelect);
 bindLocaleSelect(wonderMainLocaleSelect);
 translateStaticUI();
 
+const actionHost=document.createElement('div');actionHost.className='native-teaching-host';document.body.append(actionHost);
+actionGuide=window.WeightPlayTutorial.createActionGuide({gameId:'wonder-crash',revision:1,host:actionHost,steps:['move-out','move-back'].map((id,index)=>({id,title:()=>document.title.split('|')[0],instruction:()=>window.WPNativeTeachingCopy(window.WonderI18n?.actualLocale?.()||'en',(index===0?lessonDirection:-lessonDirection)<0?8:9),target:()=>canvas})),onStep:()=>{lessonHeroX=state.hero.x;movementKeys.clear();},onComplete:()=>{movementKeys.clear();__wpNotifyMeasurement();}});
+function startActionLesson(replay=false){if(!state.running)return;lessonDirection=state.hero.x<W*.3?1:-1;actionGuide.start({replay});__wpNotifyMeasurement();}
+const replayLesson=document.createElement('button');replayLesson.id='wonderReplayLesson';replayLesson.type='button';replayLesson.textContent=window.WPNativeTeachingCopy(window.WonderI18n?.actualLocale?.()||'en',13);resumeBtn.after(replayLesson);replayLesson.onclick=()=>{resumeBtn.click();startActionLesson(true);};
+window.WeightPlayTutorial.createEmbedded({gameId:'wonder-crash',open:()=>{if(state.running)startActionLesson(true);else{startLevel(0);startActionLesson(true);}},isSeen:actionGuide.hasCompleted,canPersist:()=>false});
+window.addEventListener('wonder:locale-change',()=>{replayLesson.textContent=window.WPNativeTeachingCopy(window.WonderI18n?.actualLocale?.()||'en',13);actionGuide.refresh();});
 wonderMainStart.addEventListener("click", () => showMainMenu("battle"));
 wonderStageBack.addEventListener("click", showWonderMain);
 

@@ -3,7 +3,7 @@
   'use strict';
   if (global.WeightPlayJoystick) return;
 
-  const VERSION = '1.0.0';
+  const VERSION = '1.1.0';
   const RADIUS = 48;
   const INSET = 72;
   const DEAD_ZONE = 0.12;
@@ -12,12 +12,13 @@
   const ZERO = Object.freeze({ x: 0, y: 0, strength: 0, active: false });
 
   function create({ surface, container = surface?.parentElement, mode = 'floating',
-    anchor = {}, enabled = true, isEnabled = () => true, onChange = () => {} } = {}) {
+    anchor = {}, enabled = true, allowSecondaryTouch = false, isEnabled = () => true, onChange = () => {} } = {}) {
     if (!surface?.addEventListener || !container?.appendChild || !container.contains(surface)) {
       throw new TypeError('WeightPlayJoystick requires a surface inside its container');
     }
     if (instances.has(surface)) throw new Error('WeightPlayJoystick already owns this surface');
     if (!['floating', 'fixed'].includes(mode)) throw new TypeError('Joystick mode must be floating or fixed');
+    if (typeof allowSecondaryTouch !== 'boolean') throw new TypeError('Joystick allowSecondaryTouch must be boolean');
     if (typeof isEnabled !== 'function' || typeof onChange !== 'function') throw new TypeError('Joystick callbacks must be functions');
     const left = anchor.left ?? 76, bottom = anchor.bottom ?? 76;
     if (![left, bottom].every(value => Number.isFinite(value) && value >= 0)) throw new TypeError('Joystick anchor must use nonnegative logical pixels');
@@ -102,7 +103,7 @@
       publish(distance ? dx / distance * strength : 0, distance ? dy / distance * strength : 0, true);
     }
     function down(event) {
-      if (!usable() || pointerId !== null || event.isPrimary === false || (event.button ?? 0) !== 0) return;
+      if (!usable() || pointerId !== null || (event.isPrimary === false && !(allowSecondaryTouch && event.pointerType === 'touch')) || (event.button ?? 0) !== 0) return;
       // A containing play surface may also host action buttons; leave them to their owner.
       if (event.target?.closest?.('button, a, input, select, textarea, [contenteditable="true"], [role="button"], [data-wp-joystick-ignore]')) return;
       const rect = measure();

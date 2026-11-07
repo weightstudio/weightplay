@@ -2029,6 +2029,90 @@ const essentialLobbyCopy = {
     };
   });
 
+  const firstPersonHallCopy = {
+  "en": [
+    "First Person",
+    "Explore, adventure and solve puzzles through your own eyes",
+    "Step into the adventure",
+    "No first-person games are available yet."
+  ],
+  "zh-Hant": [
+    "第一人稱",
+    "以自己的視角探索、冒險與解謎",
+    "親身走進冒險世界",
+    "目前沒有可遊玩的第一人稱遊戲。"
+  ],
+  "zh-Hans": [
+    "第一人称",
+    "以自己的视角探索、冒险与解谜",
+    "亲身走进冒险世界",
+    "目前没有可游玩的第一人称游戏。"
+  ],
+  "ja": [
+    "一人称",
+    "自分の視点で探索・冒険・謎解き",
+    "冒険の世界へ踏み出そう",
+    "現在プレイできる一人称ゲームはありません。"
+  ],
+  "ko": [
+    "1인칭",
+    "내 시점으로 탐험하고 모험하며 퍼즐을 푸세요",
+    "모험 속으로 들어가세요",
+    "현재 플레이할 수 있는 1인칭 게임이 없습니다."
+  ],
+  "es": [
+    "Primera persona",
+    "Explora y resuelve puzles desde tu propia perspectiva",
+    "Entra en la aventura",
+    "Aún no hay juegos en primera persona disponibles."
+  ],
+  "pt-BR": [
+    "Primeira pessoa",
+    "Explore e resolva desafios pelo seu próprio olhar",
+    "Entre na aventura",
+    "Ainda não há jogos em primeira pessoa disponíveis."
+  ],
+  "fr": [
+    "Première personne",
+    "Explorez et résolvez des énigmes à travers votre regard",
+    "Entrez dans l’aventure",
+    "Aucun jeu à la première personne n’est disponible pour le moment."
+  ],
+  "de": [
+    "Ego-Perspektive",
+    "Erkunde und löse Rätsel aus deiner eigenen Perspektive",
+    "Tauche ins Abenteuer ein",
+    "Derzeit sind keine Spiele aus der Ego-Perspektive verfügbar."
+  ],
+  "it": [
+    "Prima persona",
+    "Esplora e risolvi enigmi dal tuo punto di vista",
+    "Entra nell’avventura",
+    "Non ci sono ancora giochi in prima persona disponibili."
+  ],
+  "ru": [
+    "От первого лица",
+    "Исследуйте мир и решайте головоломки своими глазами",
+    "Шагните навстречу приключениям",
+    "Пока нет доступных игр от первого лица."
+  ],
+  "hi": [
+    "प्रथम व्यक्ति",
+    "अपने नज़रिए से खोजें, रोमांच करें और पहेलियाँ सुलझाएँ",
+    "रोमांच में कदम रखें",
+    "अभी प्रथम व्यक्ति के खेल उपलब्ध नहीं हैं।"
+  ],
+  "ar": [
+    "منظور الشخص الأول",
+    "استكشف وخض المغامرات وحل الألغاز من منظورك",
+    "ادخل عالم المغامرة",
+    "لا تتوفر ألعاب منظور الشخص الأول حاليًا."
+  ]
+};
+  Object.entries(firstPersonHallCopy).forEach(([locale,[label,note,title,empty]]) => {
+    Object.assign(dictionaries[locale], {"hall.first-person":label,"hall.first-person_note":note,"hall.first-person_title":title,"hall.first-person_empty":empty});
+  });
+
   const topicShortLabels = {
     en: "Topics", "zh-Hant": "熱梗", "zh-Hans": "热梗", ja: "話題", ko: "화제",
     es: "Temas", "pt-BR": "Temas", fr: "Tendances", de: "Themen", it: "Temi",
