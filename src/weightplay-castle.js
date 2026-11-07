@@ -1,7 +1,7 @@
-// BEGIN generated from src/lobby-data.js?wp-media=1a67483c003e0833 audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=1a67483c003e0833
+// BEGIN generated from src/lobby-data.js?wp-media=ea2aa79c951c865a audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=ea2aa79c951c865a
 if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
 // END generated tabletop classification
-// BEGIN generated from src/lobby-data.js?wp-media=1a67483c003e0833 audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=1a67483c003e0833
+// BEGIN generated from src/lobby-data.js?wp-media=ea2aa79c951c865a audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=ea2aa79c951c865a
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 (function(){
@@ -148,7 +148,7 @@ ar:["إعادة بناء الكل","إفراغ هذا العالم؟","أزل ك
 };
 for(const [language,values] of Object.entries(resetCopy)) ["resetAll","resetTitle","resetBody","resetConfirm","resetDone","resetStale","doubleClickHint"].forEach((key,i)=>L[language][key]=values[i]);
 const LION_ACTIONS=["wiggle","roll","proud"],LION_ACTION_ICONS={wiggle:"↝",roll:"⤿",proud:"✦"};
-const CHARACTER_TYPES=["lion","otter"],CHARACTERS={lion:{actions:LION_ACTIONS,icons:LION_ACTION_ICONS,image:"/assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp?wp-media=1a67483c003e0833"},otter:{actions:["wave","float","bubble"],icons:{wave:"↝",float:"≈",bubble:"◇"},image:"/assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=1a67483c003e0833"}};
+const CHARACTER_TYPES=["lion","otter"],CHARACTERS={lion:{actions:LION_ACTIONS,icons:LION_ACTION_ICONS,image:"/assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp?wp-media=ea2aa79c951c865a"},otter:{actions:["wave","float","bubble"],icons:{wave:"↝",float:"≈",bubble:"◇"},image:"/assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=ea2aa79c951c865a"}};
 function normalizeCharacter(kind,value){if(!CHARACTER_TYPES.includes(kind)||!value||!Number.isInteger(value.x)||!Number.isInteger(value.z)||Math.abs(value.x)>BOARD||Math.abs(value.z)>BOARD)return null;const actions=CHARACTERS[kind].actions;return{x:value.x,y:Number.isFinite(value.y)&&value.y>=0&&value.y<=MAXY+1?Math.round(value.y*100)/100:0,z:value.z,rotation:clean(value.rotation)%4,action:actions.includes(value.action)?value.action:actions[0]}}
 function normalizeLion(value){return normalizeCharacter("lion",value)}
 const LION_SCALE=.6;
@@ -192,6 +192,10 @@ function creditFirstClear(gameId,completionId="first-completion"){
  if(["stage-endless","stage-infinite","stage-survival","endless","infinite","survival"].includes(c.toLowerCase()))return{credited:false,reason:"non-stage-clear"};
  let s,snapshot;try{({store:s,snapshot}=creditSnapshot())}catch{return{credited:false,reason:"storage-unavailable"}}
  const key=`${g}:${c}`;if(Object.prototype.hasOwnProperty.call(s.completions,key))return{credited:false,reason:"already-claimed",store:s};
+ // An older Bus Jam page emits an unqualified completion even on replay.
+ // Once a stage-specific receipt exists, that legacy event cannot prove a new
+ // first clear and must not add a second block for the same progress.
+ if(g.toLowerCase()==="animal-bus-jam"&&c.toLowerCase()==="first-completion"&&Object.keys(s.completions).some(id=>id.toLowerCase().startsWith("animal-bus-jam:stage-")))return{credited:false,reason:"ambiguous-legacy-completion",store:s};
  if(!Number.isSafeInteger(s.castleMaterials+REWARD)||!Number.isSafeInteger(s.ownedBlocks+REWARD))return{credited:false,reason:"storage-unavailable"};
  s.completions[key]=Date.now();if(!s.badges.includes(g))s.badges.push(g);s.castleMaterials+=REWARD;s.ownedBlocks+=REWARD;
  let bytes;try{bytes=JSON.stringify(s);if(snapshot.some(([key,value])=>localStorage.getItem(key)!==value))return{credited:false,reason:"storage-unavailable"}}catch{return{credited:false,reason:"storage-unavailable"}}
