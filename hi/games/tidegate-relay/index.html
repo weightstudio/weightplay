@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="hi" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=eba0b9882ce13811#renderEntry" data-wp-publication-locale-completion data-wp-shared-interface="7" data-wp-entry-poster="/games/tidegate-relay/assets/cover.webp?wp-media=eba0b9882ce13811" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=eba0b9882ce13811`, '/src/diamond-special-progression.js?wp-media=eba0b9882ce13811', '/src/diamond-special-progression.css?wp-media=eba0b9882ce13811'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+  <base href="/games/tidegate-relay/">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="तटीय जंक्शन पर गाड़ियाँ भेजें। खाली लेन का अंदाज़ा लगाएँ और प्राथमिकता वाली गाड़ियों को समय पर पहुँचाएँ।">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://weightplay.com/hi/games/tidegate-relay/">
+<meta property="og:title" content="ज्वार मार्ग नियंत्रण">
+<meta property="og:description" content="तटीय जंक्शन पर गाड़ियाँ भेजें। खाली लेन का अंदाज़ा लगाएँ और प्राथमिकता वाली गाड़ियों को समय पर पहुँचाएँ।">
+<meta property="og:image" content="https://weightplay.com/games/tidegate-relay/assets/cover.webp?wp-media=eba0b9882ce13811">
+<link rel="canonical" href="https://weightplay.com/hi/games/tidegate-relay/">
+<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/tidegate-relay/">
+<link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/tidegate-relay/">
+<link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/tidegate-relay/">
+<link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/tidegate-relay/">
+<link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/tidegate-relay/">
+<link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/tidegate-relay/">
+<link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/tidegate-relay/">
+<link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/tidegate-relay/">
+<link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/tidegate-relay/">
+<link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/tidegate-relay/">
+<link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/tidegate-relay/">
+<link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/tidegate-relay/">
+<link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/tidegate-relay/">
+<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/tidegate-relay/">
+    <title>ज्वार मार्ग नियंत्रण | WeightPlay</title>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-page-info.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/tutorial.css?wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<link rel="stylesheet" href="/games/tidegate-relay/style.css?v=1&amp;wp-build=22c68e39c42525aa&wp-media=eba0b9882ce13811" data-wp-entry-required="">
+<script src="/src/game-layout-config.js?wp-media=eba0b9882ce13811" data-wp-entry-required=""></script>
+<script src="/src/weightplay-audio.js?wp-media=eba0b9882ce13811" data-wp-entry-required></script>
+<script src="/src/site-config.js?wp-media=eba0b9882ce13811" data-wp-entry-required></script>
+<script src="/src/i18n.js?wp-media=eba0b9882ce13811"></script>
+<script src="/src/game-title-registry.js?wp-media=eba0b9882ce13811" data-wp-game-title-registry></script>
+<script src="/src/wallet.js?wp-media=eba0b9882ce13811"></script>
+<script src="/src/analytics.js?wp-media=eba0b9882ce13811"></script>
+<script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=eba0b9882ce13811"></script>
+<script type="application/ld+json" data-tide-schema>{"@context":"https://schema.org","@type":"VideoGame","name":"ज्वार मार्ग नियंत्रण","alternateName":"Tidegate Relay","description":"तटीय जंक्शन पर गाड़ियाँ भेजें। खाली लेन का अंदाज़ा लगाएँ और प्राथमिकता वाली गाड़ियों को समय पर पहुँचाएँ।","url":"https://weightplay.com/hi/games/tidegate-relay/","inLanguage":"hi","genre":"यातायात रणनीति","gamePlatform":"Web browser","operatingSystem":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio"},"image":"https://weightplay.com/games/tidegate-relay/assets/cover.webp?wp-media=eba0b9882ce13811"}</script>
+</head>
+<body class="wp-frame-main-active" data-wp-interface-candidate="9" data-wp-game-age-tags="9,family" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="tidegate-relay" data-game-id="tidegate-relay" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="ज्वार मार्ग नियंत्रण" data-state="loading" data-error-title="गेम लोड नहीं हो सका" data-error-message="कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें।" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">ज्वार मार्ग नियंत्रण लोड हो रहा है…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="ज्वार मार्ग नियंत्रण लोड हो रहा है…" aria-valuetext="ज्वार मार्ग नियंत्रण लोड हो रहा है…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">फिर कोशिश करें</button><a class="wp-game-entry-loader-button" href="/hi/">लॉबी में लौटें</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें। <a href="/hi/">लॉबी में लौटें</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=eba0b9882ce13811" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-wp-frame="2" data-wp-entry-root="">
+ <div id="mainGroup">
+  <section id="mainScreen" data-wp-frame-scene="main">
+   <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main"><a href="/hi/" data-wp-return="main" aria-label="WeightPlay" class="wp-frame-return">←<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=eba0b9882ce13811" alt="" aria-hidden="true" width="26" height="26"></a><h1 id="gameTitle" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">ज्वार मार्ग नियंत्रण</h1></header>
+   <section id="mainHero" data-wp-frame-content="main">
+    <img id="cover" data-wp-frame-poster="" src="/games/tidegate-relay/assets/cover.webp?wp-media=eba0b9882ce13811" alt="ज्वार मार्ग नियंत्रण" width="1254" height="1254" fetchpriority="high" data-wp-interface7-poster="true">
+    <div data-wp-frame-copy=""><p id="description" data-wp-frame-summary="">तटीय जंक्शन पर गाड़ियाँ भेजें। खाली लेन का अंदाज़ा लगाएँ और प्राथमिकता वाली गाड़ियों को समय पर पहुँचाएँ।</p><p id="mainProgress" data-wp-frame-progress=""></p><button type="button" id="startBtn" data-wp-main-start data-wp-frame-action="primary" disabled>खेलें</button></div>
+   </section>
+  </section>
+  <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
+   <h2 id="guideTitle">खेल की गाइड</h2>
+   <div id="guideCards" class="tide-guide-grid"><article><h3>लक्ष्य</h3><p data-wp-intro-faq-source>पाली खत्म होने से पहले हर गाड़ी निकास तक पहुँचाएँ। प्राथमिक गाड़ी देर करे तो पाली वहीं खत्म हो जाती है।</p></article><article><h3>कैसे खेलें</h3><p>प्रवेश पर पहली गाड़ी और फिर मार्ग चुनें। पुष्टि करें। हर बारी सिर्फ एक गाड़ी निकलती है।</p><p>मालवाहक को अधिक समय लगता है और वह अस्थायी पुल नहीं ले सकता। मरम्मत और अगली खुलने वाली राह देखें।</p><p>पाली पूरी होने पर अगला चरण खुलेगा। कम बारी में अधिक सितारे मिलते हैं। वर्दी केवल रूप बदलती है।</p></article></div>
+   <p id="newsText">नई सड़क ने चांगहुआ के तट को अंदरूनी इलाकों से जोड़ा। खेल एक काल्पनिक बंदरगाह की यातायात व्यवस्था दिखाता है।</p>
+   <section id="saveInfo"><h3>खेल और सेव की जानकारी</h3><p>लॉगिन ज़रूरी नहीं है। प्रगति इस ब्राउज़र में सहेजी जाती है। हीरे केवल वैकल्पिक वर्दी के लिए हैं।</p></section>
+   <div id="faqContent"><details><summary>क्या मैं बिना नई गाड़ी भेजे यातायात आगे बढ़ा सकता हूँ?</summary><p>हाँ। एक बारी रुकें। सड़क पर चलती गाड़ियाँ आगे जाएँगी, कतारें वहीं रहेंगी।</p></details><details><summary>अस्थायी पुल कैसे काम करता है?</summary><p>एक हल्की गाड़ी ज्वार द्वार से बचकर जा सकती है। हर पाली में इसके इस्तेमाल सीमित हैं।</p></details></div><div id="relatedContent"><section aria-label="मिलते-जुलते खेल"><h3>मिलते-जुलते खेल</h3><a data-related-id="reedway-transit" href="/hi/games/reedway-transit/">नरकट खाड़ी की लाइनें</a> <a data-related-id="traffic-jam-diner" href="/hi/games/traffic-jam-diner/">ट्रैफिक डाइनर</a></section></div>
+  <article class="game-info-section" data-wp-intro-faq><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><dt>इस खेल में मुझे क्या करना होगा?</dt><dd>पाली खत्म होने से पहले हर गाड़ी निकास तक पहुँचाएँ। प्राथमिक गाड़ी देर करे तो पाली वहीं खत्म हो जाती है।</dd></dl></article></section>
+ </div>
+ <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/assets/lobby-block-atmosphere.svg" hidden>
+  <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
+  <div id="stageWorkspace"><div id="stagePanel"><div id="stagePage"><div id="stageRail"></div></div></div><section id="lockerPanel" hidden></section></div>
+  <nav id="stageTabs" data-wp-frame-stage-nav><button id="stagesTab" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages">चरण</button><button id="lockerTab" data-wp-frame-action="secondary" data-wp-frame-stage-slot="shop">वर्दी की अलमारी</button></nav>
+ </section>
+ <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="660" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390" hidden>
+  <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
+  <main id="battleLive">
+   <section id="arena" dir="ltr" aria-label="Roads"><div id="mapBadges" aria-hidden="true"></div><div id="mapMarkers" aria-hidden="true"></div><div id="arrivalNotice" aria-hidden="true"></div></section>
+   <section id="deck">
+    <div id="trafficNotice" role="status" aria-live="polite"></div>
+    <div id="rampButtons" class="choices" role="group" aria-label="Ramps"></div>
+    <div id="laneButtons" class="choices" role="group" aria-label="Roads"></div>
+    <div id="actions" data-wp-frame-logical-actions="battle"><button id="helpBtn" type="button" data-wp-frame-action="secondary">मदद</button><button id="waitBtn" type="button" data-wp-frame-action="secondary">एक बारी रुकें</button><button id="dispatchBtn" type="button" data-wp-frame-action="primary" data-wp-audio-click="off">गाड़ी भेजें</button></div>
+   </section>
+  </main>
+  <section id="resultPanel" class="tide-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden><div class="tide-dialog" data-wp-result-card><h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultNotice" role="status"></p><div class="tide-actions"><button id="resultMap" type="button" data-wp-frame-action="secondary">चरण</button><button id="resultRetry" type="button" data-wp-frame-action="secondary">फिर कोशिश करें</button><button id="resultNext" type="button" data-wp-frame-action="primary">अगला चरण</button></div></div></section>
+ </section>
+ <section id="dialog" class="tide-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden><div class="tide-dialog"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogActions" class="tide-actions"></div></div></section>
+ <div id="turnHud" class="tide-hud"><span id="turnLabel">बारी</span><meter id="turnMeter" min="0" max="7" value="0"></meter><b id="turnValue"></b></div>
+ <div id="deliveryHud" class="tide-hud"><span id="deliveryLabel">पहुँची गाड़ियाँ</span><meter id="deliveryMeter" min="0" max="3" value="0"></meter><b id="deliveryValue"></b></div>
+</div>
+<script src="/src/edge-guard.js?wp-media=eba0b9882ce13811" data-wp-entry-required></script>
+<script src="/src/stage-rail-i9.js?wp-media=eba0b9882ce13811" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=eba0b9882ce13811" data-wp-entry-required=""></script>
+<script src="/src/battle-canvas-standard.js?wp-media=eba0b9882ce13811" data-wp-entry-required=""></script>
+<script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=eba0b9882ce13811" data-wp-entry-required=""></script>
+<script src="/src/tutorial.js?wp-media=eba0b9882ce13811" data-wp-entry-required></script>
+<script type="module" src="/games/tidegate-relay/game.mjs?v=entry-initial-d5914a6e2563&amp;wp-build=fc1c8acd695bc36a&wp-media=eba0b9882ce13811" data-wp-entry-required=""></script>
+</body>
+</html>

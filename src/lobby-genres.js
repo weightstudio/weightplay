@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["tidegate-relay", "Puzzle", "Strategy", "Route Planning"],
     ["prismkin-rescue", "Strategy", "Puzzle", "Spatial Planning", "Route Planning"],
     ["galevault-atlas", "Strategy", "Puzzle", "Spatial Planning", "Route Planning", "Construction"],
     ["touchline-tails", "Strategy", "Sports", "Management"],
