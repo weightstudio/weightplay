@@ -7,10 +7,10 @@
   const configs = Object.freeze({
     "deep-drill": Object.freeze({ skill: "resonance", base: 8, step: 2, band: 2 }),
     pawaxe: Object.freeze({ skill: "echo-cleave", base: 10, step: 3, band: 3,
-      icon: "/games/pawaxe/art/objects/breaker-axe.webp?wp-media=2e7e93781a18cbfd" }),
+      icon: "/games/pawaxe/art/objects/breaker-axe.webp?wp-media=3948f73263ab5ac7" }),
     "animal-prism-battalion": Object.freeze({ skill: "refraction", base: 9, step: 2, band: 3 }),
     "block-apex": Object.freeze({ skill: "slipstream-guard", base: 8, step: 2, band: 2,
-      icon: "/assets/animal-rune-tactics-fx-guard-shield.webp?wp-media=2e7e93781a18cbfd" }),
+      icon: "/assets/animal-rune-tactics-fx-guard-shield.webp?wp-media=3948f73263ab5ac7" }),
     "animal-rootvault-pins": Object.freeze({ skill: "time-rewind", base: 5, step: 2, band: 2 }),
   });
   const prefix = "diamond-special-v1", preferenceKey = "weightplayDiamondSpecialPrefsV1";
@@ -147,7 +147,7 @@
     if (!inScope(gameId) || !container?.append || typeof describe !== "function") return null;
     // If the optional skin failed, ordinary play remains available and an
     // unstyled purchase surface is never offered.
-    const skin = root.document?.querySelector('link[href*="/src/diamond-special-progression.css?wp-media=2e7e93781a18cbfd"]');
+    const skin = root.document?.querySelector('link[href*="/src/diamond-special-progression.css?wp-media=3948f73263ab5ac7"]');
     if (!skin?.sheet) return null;
     mounts.get(gameId)?.destroy();
     const document = root.document, abort = new AbortController();
