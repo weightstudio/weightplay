@@ -1,6 +1,6 @@
-var x=Object.defineProperty;var l=(t,s)=>x(t,"name",{value:s,configurable:!0});import c from"node:fs";import d from"node:path";import P from"node:vm";import{fileURLToPath as b}from"node:url";import{titles as v,descriptions as $,word as O,routes as o}from"./locales.mjs?wp-media=3948f73263ab5ac7";const a="galevault-atlas",j="games/"+a,w=b(new URL("../../",import.meta.url)),y={window:{}};for(const t of["game-title-registry","lobby-data"])P.runInNewContext(c.readFileSync(d.join(w,"src",t+".js"),"utf8"),y);const q=y.window.WONDER_LOBBY.games,B=y.window.WEIGHTPLAY_GAME_TITLES,f=q.find(t=>t.id===a),T=f?.status==="playable"&&!f.internalTrial&&!f.internalOnly,p=l(t=>String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"),"esc");export function renderEntry(t,{canonical:s=!1}={}){if(!Object.hasOwn(o,t))throw Error("GALEVAULT_LOCALE_UNKNOWN");const e=l(i=>p(O(t,i)),"t"),n=p(v[t]),m=p($[t]),g=o[t],u="https://weightplay.com/"+g+"/games/"+a+"/",h="/games/"+a+"/art/cover.webp?wp-media=3948f73263ab5ac7",k=Object.entries(o).map(([i,r])=>'<link rel="alternate" hreflang="'+i+'" href="https://weightplay.com/'+r+"/games/"+a+'/">').join(`
+var x=Object.defineProperty;var l=(t,s)=>x(t,"name",{value:s,configurable:!0});import c from"node:fs";import d from"node:path";import P from"node:vm";import{fileURLToPath as b}from"node:url";import{titles as v,descriptions as $,word as O,routes as o}from"./locales.mjs?wp-media=286816816a987cc1";const a="galevault-atlas",j="games/"+a,w=b(new URL("../../",import.meta.url)),y={window:{}};for(const t of["game-title-registry","lobby-data"])P.runInNewContext(c.readFileSync(d.join(w,"src",t+".js"),"utf8"),y);const q=y.window.WONDER_LOBBY.games,B=y.window.WEIGHTPLAY_GAME_TITLES,f=q.find(t=>t.id===a),T=f?.status==="playable"&&!f.internalTrial&&!f.internalOnly,p=l(t=>String(t).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"),"esc");export function renderEntry(t,{canonical:s=!1}={}){if(!Object.hasOwn(o,t))throw Error("GALEVAULT_LOCALE_UNKNOWN");const e=l(i=>p(O(t,i)),"t"),n=p(v[t]),m=p($[t]),g=o[t],u="https://weightplay.com/"+g+"/games/"+a+"/",h="/games/"+a+"/art/cover.webp?wp-media=286816816a987cc1",k=Object.entries(o).map(([i,r])=>'<link rel="alternate" hreflang="'+i+'" href="https://weightplay.com/'+r+"/games/"+a+'/">').join(`
 `),L=s?'<script data-wp-locale-route>if(/^https?:$/.test(location.protocol)&&!["localhost","127.0.0.1","[::1]"].includes(location.hostname)){try{const byLocale='+JSON.stringify(o)+';const p=new URLSearchParams(location.search);const l=p.get("lang")||localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";if(Object.hasOwn(byLocale,l)&&l!=="en"){location.replace("/"+byLocale[l]+"/games/'+a+'/"+location.search+location.hash)}else{location.replace("/en/games/'+a+'/"+location.search+location.hash)}}catch{location.replace("/en/games/'+a+'/"+location.search+location.hash)}}<\/script>':"",S=["moonlit-atrium","cloudhold-voyager","reedway-transit"].map(i=>q.find(r=>r.id===i&&r.status==="playable"&&!r.internalOnly&&!r.internalTrial)).filter(Boolean).map(i=>'<a data-related-id="'+i.id+'" href="/'+g+"/games/"+i.id+'/">'+p(B[i.id]?.[t]??i.title[t])+"</a>").join("");return`<!doctype html>
-<html lang="${t}" dir="${t==="ar"?"rtl":"ltr"}" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=3948f73263ab5ac7#renderEntry" data-wp-publication-locale-completion data-wp-shared-interface="7">
+<html lang="${t}" dir="${t==="ar"?"rtl":"ltr"}" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=286816816a987cc1#renderEntry" data-wp-publication-locale-completion data-wp-shared-interface="7">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${n} | WeightPlay</title>
@@ -13,16 +13,16 @@ ${k}
 <meta property="og:type" content="website"><meta property="og:site_name" content="WeightPlay"><meta property="og:url" content="${u}"><meta property="og:title" content="${n}"><meta property="og:description" content="${m}"><meta property="og:image" content="https://weightplay.com${h}">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"VideoGame",name:v[t],description:$[t],url:u,inLanguage:t,gamePlatform:"Web browser",genre:"Strategy",image:"https://weightplay.com"+h}).replaceAll("<","\\u003c")}<\/script>
-<script src="/src/game-layout-config.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/weightplay-audio.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/site-config.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/i18n.js?wp-media=3948f73263ab5ac7"><\/script>${t==="ja"?'<script src="/src/i18n-ja.js?v=20260719-ja1&wp-media=3948f73263ab5ac7"><\/script>':""}<script src="/src/game-title-registry.js?wp-media=3948f73263ab5ac7" data-wp-game-title-registry><\/script>
-<script src="/src/wallet.js?wp-media=3948f73263ab5ac7"><\/script><script src="/src/analytics.js?wp-media=3948f73263ab5ac7"><\/script>
-<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=3948f73263ab5ac7" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=3948f73263ab5ac7" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=3948f73263ab5ac7" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=3948f73263ab5ac7" data-wp-entry-required>
-<link rel="stylesheet" href="/games/${a}/game.css?v=1&wp-media=3948f73263ab5ac7" data-wp-entry-required>
+<script src="/src/game-layout-config.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/weightplay-audio.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/site-config.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/i18n.js?wp-media=286816816a987cc1"><\/script>${t==="ja"?'<script src="/src/i18n-ja.js?v=20260719-ja1&wp-media=286816816a987cc1"><\/script>':""}<script src="/src/game-title-registry.js?wp-media=286816816a987cc1" data-wp-game-title-registry><\/script>
+<script src="/src/wallet.js?wp-media=286816816a987cc1"><\/script><script src="/src/analytics.js?wp-media=286816816a987cc1"><\/script>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=286816816a987cc1" data-wp-entry-required>
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=286816816a987cc1" data-wp-entry-required>
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=286816816a987cc1" data-wp-entry-required>
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=286816816a987cc1" data-wp-entry-required>
+<link rel="stylesheet" href="/games/${a}/game.css?v=1&wp-media=286816816a987cc1" data-wp-entry-required>
 </head>
 <body ${T?"data-galevault-public":""} class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-game-id="${a}" data-wp-game-id="${a}" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0">
 <div id="gameFrame" data-wp-frame-root hidden>
@@ -70,13 +70,13 @@ ${k}
  <div id="windStat"><label for="windMeter">${e("wind")}</label><meter id="windMeter" min="0" max="6" value="6"></meter><span id="windValue">6 / 6</span></div>
  <div id="pageStat"></div>
 </div>
-<script src="/src/edge-guard.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/stage-rail-i9.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/game-play-ui.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/battle-canvas-standard.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script src="/src/game-screen-frame.js?wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script defer src="/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
-<script type="module" src="/games/${a}/game.mjs?v=1&wp-media=3948f73263ab5ac7" data-wp-entry-required><\/script>
+<script src="/src/edge-guard.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/stage-rail-i9.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/game-play-ui.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/battle-canvas-standard.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script src="/src/game-screen-frame.js?wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script defer src="/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=286816816a987cc1" data-wp-entry-required><\/script>
+<script type="module" src="/games/${a}/game.mjs?v=1&wp-media=286816816a987cc1" data-wp-entry-required><\/script>
 </body>
 </html>
 `}if(l(renderEntry,"renderEntry"),process.argv[1]&&d.resolve(process.argv[1])===b(import.meta.url)){c.writeFileSync(d.join(w,j,"index.html"),renderEntry("en",{canonical:!0}));for(const[t,s]of Object.entries(o)){const e=d.join(w,s,j);c.mkdirSync(e,{recursive:!0}),c.writeFileSync(d.join(e,"index.html"),renderEntry(t))}}

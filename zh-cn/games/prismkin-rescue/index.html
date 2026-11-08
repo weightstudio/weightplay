@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-Hans" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=286816816a987cc1#renderEntry" data-wp-publication-locale-completion data-wp-shared-interface="7" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-entry-poster="/games/prismkin-rescue/art/cover.webp?wp-media=286816816a987cc1">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=286816816a987cc1`, '/src/diamond-special-progression.js?wp-media=286816816a987cc1', '/src/diamond-special-progression.css?wp-media=286816816a987cc1'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<base href="/games/prismkin-rescue/">
+<title>晶脉救援 | WeightPlay</title>
+<meta name="description" content="和诺里、塔罗规划每一步，在晶潮耗尽灯光前带迷途晶兽回家。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://weightplay.com/zh-cn/games/prismkin-rescue/">
+<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/prismkin-rescue/">
+<link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/prismkin-rescue/">
+<link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/prismkin-rescue/">
+<link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/prismkin-rescue/">
+<link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/prismkin-rescue/">
+<link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/prismkin-rescue/">
+<link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/prismkin-rescue/">
+<link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/prismkin-rescue/">
+<link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/prismkin-rescue/">
+<link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/prismkin-rescue/">
+<link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/prismkin-rescue/">
+<link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/prismkin-rescue/">
+<link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/prismkin-rescue/">
+<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/prismkin-rescue/">
+    <meta property="og:type" content="website"><meta property="og:site_name" content="WeightPlay">
+<meta property="og:url" content="https://weightplay.com/zh-cn/games/prismkin-rescue/"><meta property="og:title" content="晶脉救援"><meta property="og:description" content="和诺里、塔罗规划每一步，在晶潮耗尽灯光前带迷途晶兽回家。">
+<meta property="og:image" content="https://weightplay.com/games/prismkin-rescue/art/cover.webp?wp-media=286816816a987cc1">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=286816816a987cc1" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=286816816a987cc1" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=286816816a987cc1" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=286816816a987cc1" data-wp-entry-required="">
+<link rel="stylesheet" href="/games/prismkin-rescue/styles.css?v=1&amp;wp-build=5dfa8098525e40bb&wp-media=286816816a987cc1" data-wp-entry-required="">
+<script src="/src/game-layout-config.js?wp-media=286816816a987cc1" data-wp-entry-required=""></script>
+<script src="/src/weightplay-audio.js?wp-media=286816816a987cc1" data-wp-entry-required></script>
+<script src="/src/site-config.js?wp-media=286816816a987cc1" data-wp-entry-required></script>
+<script src="/src/i18n.js?wp-media=286816816a987cc1"></script><script src="/src/game-title-registry.js?wp-media=286816816a987cc1" data-wp-game-title-registry></script>
+<script src="/src/wallet.js?wp-media=286816816a987cc1"></script><script src="/src/analytics.js?wp-media=286816816a987cc1"></script>
+  <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=286816816a987cc1"></script>
+<script type="application/ld+json" data-rescue-schema>{"@context":"https://schema.org","@type":"VideoGame","name":"晶脉救援","description":"和诺里、塔罗规划每一步，在晶潮耗尽灯光前带迷途晶兽回家。","url":"https://weightplay.com/zh-cn/games/prismkin-rescue/","inLanguage":"zh-Hans","genre":"回合制救援战术","gamePlatform":"Web browser","image":"https://weightplay.com/games/prismkin-rescue/art/cover.webp?wp-media=286816816a987cc1"}</script>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?v=entry-initial-c87294835a1d&wp-media=286816816a987cc1" data-wp-entry-required=""></head>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="prismkin-rescue" data-game-id="prismkin-rescue" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="晶脉救援" data-state="loading" data-error-title="游戏载入失败" data-error-message="部分游戏资源无法载入。请重试或返回大厅。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在载入晶脉救援…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在载入晶脉救援…" aria-valuetext="正在载入晶脉救援…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重试</button><a class="wp-game-entry-loader-button" href="/zh-cn/">返回大厅</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分游戏资源无法载入。请重试或返回大厅。 <a href="/zh-cn/">返回大厅</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=286816816a987cc1" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root hidden data-wp-frame="2" data-wp-entry-root="">
+ <div id="mainGroup" class="wp-frame-main-flow">
+  <section id="mainScreen" data-wp-frame-scene="main">
+   <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main"><a href="/zh-cn/" data-wp-frame-action="secondary" data-wp-return="main" aria-label="WeightPlay" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=286816816a987cc1" alt="" aria-hidden="true" width="26" height="26"></a><h1 id="gameTitle" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">晶脉救援</h1></header>
+   <section id="mainHero" data-wp-frame-content="main">
+    <img id="cover" data-wp-frame-poster="" src="/games/prismkin-rescue/art/cover.webp?wp-media=286816816a987cc1" alt="晶脉救援" width="1254" height="1254" fetchpriority="high" data-wp-interface7-poster="true">
+    <div data-wp-frame-copy=""><p id="description" data-wp-frame-summary="">和诺里、塔罗规划每一步，在晶潮耗尽灯光前带迷途晶兽回家。</p><p id="mainProgress" data-wp-frame-progress=""></p><button type="button" id="startBtn" data-wp-frame-action="primary" disabled>开始</button></div>
+   </section>
+  </section>
+  <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
+   <h2 id="guideTitle">游戏指南</h2>
+   <div id="guideCards" class="rescue-guide-grid"><article><h3>目标</h3><p data-wp-intro-faq-source>把所有迷途晶兽带回琥珀灯台。</p></article><article><h3>怎么玩</h3><p>选队员，再点亮格。踏上小晶兽所在的格子就能牵住它，带它回家。</p></article></div>
+   <div id="faqContent"><details class="rescue-faq"><summary>如何获得新能力？</summary><p>带回谱印并完成救援，就能到救援簿更换队员能力。</p></details><details class="rescue-faq"><summary>一定要买披肩吗？</summary><p>不用。两位队员和所有战役关卡都能免费使用。</p></details></div><div id="relatedContent"><section aria-label="相关游戏"><h3>相关游戏</h3><a data-related-id="animal-rune-tactics" href="/zh-cn/games/animal-rune-tactics/">符文战棋</a> <a data-related-id="kindred-habitats" href="/zh-cn/games/kindred-habitats/">栖旅图鉴</a> <a data-related-id="galevault-atlas" href="/zh-cn/games/galevault-atlas/">风匣图廊</a></section></div>
+  <article class="game-info-section" data-wp-intro-faq><h3>常见问题</h3><dl><dt>这款游戏要做什么？</dt><dd>把所有迷途晶兽带回琥珀灯台。</dd></dl></article></section>
+ </div>
+ <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/assets/lobby-block-atmosphere.svg" hidden>
+  <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="返回">←</button><strong data-wp-frame-title hidden></strong></header>
+  <div id="stageWorkspace"><div id="stagePanel"><div id="stagePage"><div id="stageRail"></div></div></div><section id="rosterPanel" hidden></section></div>
+  <nav id="stageTabs" data-wp-frame-stage-nav><button id="stagesTab" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages">关卡</button><button id="rosterTab" data-wp-frame-action="secondary" data-wp-frame-stage-slot="shop">救援簿</button></nav>
+ </section>
+ <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="660" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390" hidden>
+  <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="返回">←</button><strong data-wp-frame-title hidden></strong></header>
+  <main id="battleLive">
+   <section id="arena" dir="ltr" aria-label="救援棋盘"><div id="tileControls" role="group"></div><div id="arenaLabel" aria-hidden="true"></div></section>
+   <section id="commandDeck">
+    <div id="message" role="status" aria-live="polite"></div>
+    <div class="partners"><button id="partner0" type="button" data-wp-frame-action="secondary" data-wp-audio-click="off"></button><button id="partner1" type="button" data-wp-frame-action="secondary" data-wp-audio-click="off"></button></div>
+    <div id="toolDock" data-wp-frame-logical-actions="battle">
+     <button id="waitBtn" type="button" data-wp-frame-action="secondary">等一拍</button><button id="passBtn" type="button" data-wp-frame-action="secondary">交接</button><button id="helpBtn" type="button" data-wp-frame-action="secondary">帮助</button>
+    </div>
+   </section>
+  </main>
+  <section id="resultPanel" class="rescue-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+   <div class="rescue-dialog" data-wp-result-card><h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultNotice" role="status"></p>
+    <div class="result-actions"><button id="resultMap" data-wp-frame-action="secondary">关卡</button><button id="resultRetry" data-wp-frame-action="secondary">重试</button><button id="resultReport" data-wp-frame-action="secondary">技能报告</button><button id="resultNext" data-wp-frame-action="primary">下一关</button></div>
+   </div>
+  </section>
+ </section>
+ <section id="dialog" class="rescue-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden><div class="rescue-dialog"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogActions"></div></div></section>
+ <div id="stepsStat" class="rescue-hud"><label for="stepsMeter">步数</label><meter id="stepsMeter" min="0" max="13" value="13"></meter><span id="stepsValue">13 / 13</span></div>
+ <div id="lightStat" class="rescue-hud"><label for="lightMeter">灯光</label><meter id="lightMeter" min="0" max="3" value="3"></meter><span id="lightValue">3 / 3</span></div>
+ <div id="savedStat" class="rescue-hud"></div>
+</div>
+<script src="/src/edge-guard.js?wp-media=286816816a987cc1" data-wp-entry-required></script>
+<script src="/src/stage-rail-i9.js?wp-media=286816816a987cc1" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=286816816a987cc1" data-wp-entry-required=""></script>
+<script src="/src/battle-canvas-standard.js?wp-media=286816816a987cc1" data-wp-entry-required=""></script>
+<script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=286816816a987cc1" data-wp-entry-required=""></script>
+<script type="module" src="/games/prismkin-rescue/game.mjs?v=entry-initial-9c6fcc0d6ad7&amp;wp-build=324d3bacff168376&wp-media=286816816a987cc1" data-wp-entry-required=""></script>
+</body>
+</html>

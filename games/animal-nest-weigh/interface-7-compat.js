@@ -1,11 +1,11 @@
 (() => {
   "use strict";
 
-  const current = document.currentScript?.src || new URL("interface-7-compat.js?wp-media=3948f73263ab5ac7", location.href).href;
+  const current = document.currentScript?.src || new URL("interface-7-compat.js?wp-media=286816816a987cc1", location.href).href;
   if (!document.querySelector('link[data-nest-weigh-interface7-cleanup]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("interface-7-cleanup.css?v=20260922-interface7-compat2&wp-media=3948f73263ab5ac7", current).href;
+    link.href = new URL("interface-7-cleanup.css?v=20260922-interface7-compat2&wp-media=286816816a987cc1", current).href;
     link.dataset.nestWeighInterface7Cleanup = "true";
     document.head.append(link);
   }

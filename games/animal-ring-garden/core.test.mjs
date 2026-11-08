@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {STAGES,SAVE_KEY,LEGACY_KEY,FINISH_COST,applyMove,aligned,solve,parFor,normalizeSave,settleSave,highestUnlocked} from './core.mjs?wp-media=3948f73263ab5ac7';
-import {readSave,purchaseMoonstone,recoverPurchase} from './economy.mjs?wp-media=3948f73263ab5ac7';
-import {NEW_COPY} from './copy.mjs?wp-media=3948f73263ab5ac7';
+import {STAGES,SAVE_KEY,LEGACY_KEY,FINISH_COST,applyMove,aligned,solve,parFor,normalizeSave,settleSave,highestUnlocked} from './core.mjs?wp-media=286816816a987cc1';
+import {readSave,purchaseMoonstone,recoverPurchase} from './economy.mjs?wp-media=286816816a987cc1';
+import {NEW_COPY} from './copy.mjs?wp-media=286816816a987cc1';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -68,7 +68,7 @@ test('canonical and 13 generated entries agree on identity, module loading, appr
       const resource=url.startsWith('/')?path.join(root,url):path.resolve(resourceBase,url);assert.ok(fs.existsSync(resource),locale+': '+url);
     }
   }
-  const engine=fs.readFileSync(path.join(root,'src/weightplay-audio.js?wp-media=3948f73263ab5ac7'),'utf8');
+  const engine=fs.readFileSync(path.join(root,'src/weightplay-audio.js?wp-media=286816816a987cc1'),'utf8');
   const embedded=JSON.parse(engine.match(/const PROFILES = (\{[^\n]+\});/)[1]);
   const profile=JSON.parse(fs.readFileSync(path.join(root,'config/audio-game-cues.json'))).games['animal-ring-garden'];
   assert.deepEqual(embedded['animal-ring-garden'],profile);

@@ -112,12 +112,12 @@
     ar: ['الحدث','المطر يوقف مطاردة النقاط مبكرًا في ويلينغتون','حُسمت المباراة الدولية الثانية ليوم واحد بالنتيجة المعدّلة بسبب المطر.','في 7 نوفمبر 2026 في ويلينغتون، أنهى المطر اللعب والهند عند 113 ركضة مع خسارة سبع ويكيتات. حددت طريقة DLS نتيجة التعادل عند 109، ففازت الهند على نيوزيلندا بفارق أربع ركضات.','في لعبة «سباق مع المطر» الخيالية تختار مع كل كرة بين المجازفة لإحراز الركضات وحماية الضاربين قبل توقف اللعب.']
   };
   const items = [
-    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=3948f73263ab5ac7', cover:true, news:rainlineNews },
-    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=3948f73263ab5ac7', cover:true, news:gatheringNews },
-    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=3948f73263ab5ac7', cover:true, news },
-    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=3948f73263ab5ac7', cover:true, news:trafficNews },
-    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=3948f73263ab5ac7', cover:true, news:robotNews },
-    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=3948f73263ab5ac7', cover:true, news:lifeStory }
+    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=286816816a987cc1', cover:true, news:rainlineNews },
+    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=286816816a987cc1', cover:true, news:gatheringNews },
+    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=286816816a987cc1', cover:true, news },
+    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=286816816a987cc1', cover:true, news:trafficNews },
+    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=286816816a987cc1', cover:true, news:robotNews },
+    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=286816816a987cc1', cover:true, news:lifeStory }
   ];
   const dates = {'flying-tram':'2026-10-15','traffic-jam-diner':'2026-10-08','robot-dog-showtime':'2026-09-22'};
   items.forEach(item => { if (dates[item.gameId]) { item.kind = 'news'; item.eventDate = dates[item.gameId]; } });
