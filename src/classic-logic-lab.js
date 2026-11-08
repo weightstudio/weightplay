@@ -1612,7 +1612,7 @@
         status: cleared ? text(slidingCampaignCopy.cleared) : locked ? text(slidingCampaignCopy.locked) : fillTemplate(text(slidingCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details,
-        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=716c6e15bee096d3",
+        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=2e7e93781a18cbfd",
         locked,
         cleared,
         stage: data.stage,
@@ -1643,7 +1643,7 @@
         status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details: [text(data.arc.rule)],
-        poster: "/assets/code-breaker-cover-v2.webp?wp-media=716c6e15bee096d3",
+        poster: "/assets/code-breaker-cover-v2.webp?wp-media=2e7e93781a18cbfd",
         locked,
         cleared,
       };

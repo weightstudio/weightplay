@@ -1,4 +1,7 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "galevault-atlas": {"__localizedExact":true,"en":"Galevault Atlas","zh-Hant":"風匣圖廊","zh-Hans":"风匣图廊","ja":"風函の図廊","ko":"바람함 지도 회랑","es":"Atlas de la Bóveda del Viento","pt-BR":"Atlas da Galeria dos Ventos","fr":"L’Atlas du coffre des vents","de":"Atlas der Windkammer","it":"Atlante della Galleria del Vento","ru":"Атлас хранилища ветров","hi":"पवन कक्ष का एटलस","ar":"أطلس خزانة الرياح"},
+  "emberglaze-kiln": {"__localizedExact":true,"en":"Emberglaze Kiln","zh-Hant":"琉火窯","zh-Hans":"琉火窑","ja":"琥珀釉の窯","ko":"유약 불가마","es":"Horno de esmalte ámbar","pt-BR":"Forno de Esmalte Âmbar","fr":"Four aux émaux","de":"Glutglasur","it":"Forno degli smalti","ru":"Печь янтарной глазури","hi":"अंबर की भट्ठी","ar":"فرن طلاء العنبر"},
+  "rainline-chase": {"__localizedExact":true,"en":"Rainline Chase","zh-Hant":"雨線追分","zh-Hans":"雨线追分","ja":"雨の追点線","ko":"빗줄기 추격전","es":"Carrera contra la lluvia","pt-BR":"Corrida contra a chuva","fr":"Au-delà de la pluie","de":"Jagd an der Regenlinie","it":"Rincorsa sotto la pioggia","ru":"Гонка до дождя","hi":"बारिश से पहले","ar":"سباق مع المطر"},
   "mistcanopy": {"__localizedExact":true,"en":"Mist Canopy","zh-Hant":"霧穹復育","zh-Hans":"雾穹复育","ja":"霧の谷再生","ko":"안개 골짜기 복원","es":"Dosel de Niebla","pt-BR":"Dossel da Névoa","fr":"La Canopée des brumes","de":"Nebelgarten","it":"Cupola di Nebbia","ru":"Купол тумана","hi":"धुंध की छतरी","ar":"مظلّة الضباب"},
   "animal-peach-oath": {
     "__localizedExact": true,
@@ -18,19 +21,19 @@ window.WEIGHTPLAY_GAME_TITLES = {
   },
   "frostline-expedition": {
     "__localizedExact": true,
-    "en": "AAA: Frostline Expedition",
-    "zh-Hant": "3A大作：霜嶺遠征",
-    "zh-Hans": "3A大作：霜岭远征",
-    "ja": "AAA大作：霜嶺遠征",
-    "ko": "AAA 대작: 서리 능선 원정",
-    "es": "AAA: Expedición Escarcha",
-    "pt-BR": "AAA: Expedição Geada",
-    "fr": "AAA : Expédition des Cimes",
-    "de": "AAA: Frostgrat-Expedition",
-    "it": "AAA: Spedizione sulle Cime",
-    "ru": "AAA: Экспедиция к морозным вершинам",
-    "hi": "AAA: हिमशिखर अभियान",
-    "ar": "AAA: بعثة قمم الصقيع"
+    "en": "Frostline Expedition",
+    "zh-Hant": "霜嶺遠征",
+    "zh-Hans": "霜岭远征",
+    "ja": "霜嶺遠征",
+    "ko": "서리 능선 원정",
+    "es": "Expedición Escarcha",
+    "pt-BR": "Expedição Geada",
+    "fr": "Expédition des Cimes",
+    "de": "Frostgrat-Expedition",
+    "it": "Spedizione sulle Cime",
+    "ru": "Экспедиция к морозным вершинам",
+    "hi": "हिमशिखर अभियान",
+    "ar": "بعثة قمم الصقيع"
   },
   "touchline-tails": {
     "__localizedExact": true,

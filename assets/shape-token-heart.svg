@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="heart">
-  <path d="M80 137C45 108 23 87 23 58c0-24 18-41 39-41 11 0 22 5 28 15 6-10 17-15 28-15 21 0 39 17 39 41 0 29-22 50-57 79l-10 8-10-8z" fill="#ff7ab6"/>
-  <circle cx="62" cy="49" r="15" fill="#fff" opacity=".4"/>
-  <path d="M54 93c17 14 36 15 53 0" fill="none" stroke="#c84783" stroke-width="9" stroke-linecap="round" opacity=".35"/>
-</svg>

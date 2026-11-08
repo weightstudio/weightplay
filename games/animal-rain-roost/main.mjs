@@ -1,8 +1,8 @@
-import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=716c6e15bee096d3';
-import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9&wp-media=716c6e15bee096d3';
-import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6&wp-media=716c6e15bee096d3';
-import {RainScene} from './scene.mjs?v=6&wp-media=716c6e15bee096d3';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=716c6e15bee096d3';
+import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=2e7e93781a18cbfd';
+import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9&wp-media=2e7e93781a18cbfd';
+import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6&wp-media=2e7e93781a18cbfd';
+import {RainScene} from './scene.mjs?v=6&wp-media=2e7e93781a18cbfd';
+import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=2e7e93781a18cbfd';
 
 const $=id=>document.getElementById(id),GAME='animal-rain-roost';
 const lanternUncertainCopy={en:'Purchase could not be confirmed. Reload to check before trying again.', 'zh-Hant':'無法確認購買結果，請重新載入並確認後再試。', 'zh-Hans':'无法确认购买结果，请重新加载并确认后再试。',ja:'購入を確認できません。再読み込みして確認してください。',ko:'구매를 확인할 수 없어요. 새로고침하여 확인하세요.',es:'No se pudo confirmar la compra. Recarga y comprueba antes de volver a intentarlo.', 'pt-BR':'Não foi possível confirmar a compra. Recarregue e confira antes de tentar novamente.',fr:'Achat non confirmé. Rechargez et vérifiez avant de réessayer.',de:'Kauf konnte nicht bestätigt werden. Lade neu und prüfe ihn vor einem erneuten Versuch.',it:'Acquisto non confermato. Ricarica e controlla prima di riprovare.',ru:'Не удалось подтвердить покупку. Обновите страницу и проверьте её перед повтором.',hi:'खरीद की पुष्टि नहीं हुई। दोबारा प्रयास से पहले पेज पुनः खोलकर जाँचें।',ar:'تعذر تأكيد الشراء. أعد تحميل الصفحة وتحقق قبل المحاولة مجددًا.'};
@@ -35,6 +35,24 @@ const readMeasurement=()=>({...measurement,paused:document.hidden||!!modal||sett
 function notifyMeasurement(){try{window.WonderAnalytics?.game?.observeState(readMeasurement)}catch{/* Optional shared telemetry. */}}
 window.addEventListener('weightplay:analytics-ready',notifyMeasurement);notifyMeasurement();
 function storedStageCleared(index){try{const raw=localStorage.getItem(SAVE_KEY);if(raw===null)return false;const value=JSON.parse(raw),star=value?.stars?.[index];if(!value||!Array.isArray(value.stars)||!Number.isInteger(star)||star<0||star>3)return null;return star>0;}catch{return null;}}
+const PENDING_REWARD_PREFIX='weightplay-rain-roost-pending-reward-v1:';
+let rewardsReady=false;
+function preparePendingReward(stageId){
+  const key=PENDING_REWARD_PREFIX+stageId,value=JSON.stringify({schema:1,stageId});
+  try{localStorage.setItem(key,value);return localStorage.getItem(key)===value;}catch{return false;}
+}
+function flushPendingRewards(){
+  if(!rewardsReady||everPractice)return;
+  const castle=window.WeightPlayCastle;if(!castle?.read)return;
+  for(let stageId=1;stageId<=30;stageId++)try{
+    const key=PENDING_REWARD_PREFIX+stageId,marker=JSON.parse(localStorage.getItem(key));
+    if(marker?.schema!==1||marker.stageId!==stageId||storedStageCleared(stageId-1)!==true)continue;
+    const receipt=`${GAME}:stage-${stageId}`;
+    if(!Object.hasOwn(castle.read()?.completions||{},receipt))window.dispatchEvent(new CustomEvent('weightplay:game-completed',{detail:{gameId:GAME,stageId,outcome:'win'}}));
+    queueMicrotask(()=>{try{if(Object.hasOwn(castle.read()?.completions||{},receipt))localStorage.removeItem(key);}catch{/* Retry after a confirmed receipt. */}});
+  }catch{/* Retain markers until storage and World are readable. */}
+}
+window.addEventListener('weightplay:castle-ready',flushPendingRewards);
 const abort=new AbortController(),flights=new Set(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const listen=(node,type,fn,options={})=>node.addEventListener(type,fn,{...options,signal:abort.signal});
 const t=key=>COPY[locale][key];
@@ -75,7 +93,7 @@ function objective(stage,withProgress=false){
   if(stage.maxLeaves<99)parts.push(`${t('leaves')} ${withProgress?`${run.leaves}/`:'≤ '}${stage.maxLeaves}`);
   return parts.join(' · ');
 }
-const stageConfig={gameId:GAME,poster:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=716c6e15bee096d3',background:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=716c6e15bee096d3',count:30,stage(index){
+const stageConfig={gameId:GAME,poster:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=2e7e93781a18cbfd',background:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=2e7e93781a18cbfd',count:30,stage(index){
   const s=STAGES[index],locked=!practice&&s.id>save.unlocked;
   return {id:s.id,kicker:`${t('stage')} ${s.id}`,title:t('chapters')[s.arc],subtitle:s.checkpoint?`${t('precision')} · ${t('goal')}`:s.gold?`${t('gold')} · ${t('wind')}`:s.arc? t('wind'):t('calm'),status:locked?t('locked'):save.stars[index]?'★'.repeat(save.stars[index]):t('ready'),summary:objective(s),details:[t('controlText'),t('goalText'),t('starText')],locked,cleared:save.stars[index]>0};
 }};
@@ -206,7 +224,7 @@ function finish(result){
   resetInputs();settling=.7;
   const wasCleared=cleared(),prior=storedStageCleared(selected);saveFailed=false;
   if(result.win&&!everPractice){
-    try{if(purchaseUncertain)throw Error('Purchase needs recovery');save=commitResult(localStorage,save,run)}
+    try{if(purchaseUncertain)throw Error('Purchase needs recovery');if(prior===false&&!preparePendingReward(selected+1))throw Error('Reward marker unconfirmed');save=commitResult(localStorage,save,run);queueMicrotask(flushPendingRewards)}
     catch{
       saveFailed=true;
     }
@@ -280,7 +298,7 @@ window.WeightPlayGameEntryLoader?.begin(4);
 scene=new RainScene($('rainCanvas'));await scene.loadBackdrop();scene.render(null);
 window.WeightPlayGameEntryLoader?.assetProgress(1,4);
 let decoded=1;
-await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=716c6e15bee096d3','/assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=716c6e15bee096d3','/assets/weightplay-diamond.svg'].map(async src=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(++decoded,4)}));
+await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=2e7e93781a18cbfd','/assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=2e7e93781a18cbfd','/assets/weightplay-diamond.svg'].map(async src=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(++decoded,4)}));
 
 listen($('startButton'),'click',()=>{selected=Math.min(29,save.unlocked-1);setTab('journey');showScreen('stage')});
 listen($('stageBack'),'click',()=>{showScreen('main');$('startButton').focus({preventScroll:true})});
@@ -325,7 +343,7 @@ listen(window,'pagehide',event=>{pauseForVisibility();if(!event.persisted){teach
 listen(window,'pageshow',event=>{if(event.persisted&&screen==='battle')schedule()});
 
 await LocalPractice.ready;
-practice=LocalPractice.enabled;everPractice=practice;
+practice=LocalPractice.enabled;everPractice=practice;rewardsReady=true;flushPendingRewards();
 const teachingHelp=document.createElement('section');
 teachingHelp.id='rainTeachingHelp';teachingHelp.hidden=true;teachingHelp.className='rain-modal';
 teachingHelp.setAttribute('role','dialog');teachingHelp.setAttribute('aria-modal','true');teachingHelp.setAttribute('aria-labelledby','rainTeachingHelpTitle');

@@ -61,6 +61,7 @@ WeightPlay covers these game and content clusters:
 
 - Touchline Tails: https://weightplay.com/en/games/touchline-tails/ — Coach a five-a-side team across 60 football matches. Plan training and formations, manage stamina, and use substitutions, scouting and set plays.
 - Reedway Transit: https://weightplay.com/games/reedway-transit/ — Plan tram lines, transfers, carriage capacity and tidal gates across 60 authored shifts in two chapters; free functional charters and optional cosmetic paints.
+- Emberglaze Kiln: https://weightplay.com/games/emberglaze-kiln/ — Mix minerals, manage kiln heat, stamp glaze and fill village orders across 60 stages.
 
 - Prismtide: https://weightplay.com/en/games/prismtide/ — First-person 3D light-routing adventure through a submerged city, with 60 stages and touch or keyboard controls.
 

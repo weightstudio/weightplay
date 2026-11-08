@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="house">
-  <path d="M25 75 80 28l55 47" fill="#ff8a3d"/>
-  <path d="M39 72h82v63H39z" fill="#ffd98a"/>
-  <path d="M25 75 80 28l55 47" fill="none" stroke="#5b3b28" stroke-width="9" stroke-linejoin="round"/>
-  <path d="M39 72h82v63H39z" fill="none" stroke="#5b3b28" stroke-width="8"/>
-  <rect x="66" y="92" width="28" height="43" rx="8" fill="#8b5a36"/>
-  <rect x="98" y="86" width="17" height="17" rx="4" fill="#7bd7ff"/>
-</svg>

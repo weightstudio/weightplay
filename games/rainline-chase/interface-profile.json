@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "gameId": "rainline-chase",
+  "audience": "general",
+  "interfaceVersion": 0,
+  "targetInterfaceVersion": 9,
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": null,
+    "rightWorkspace": "collection"
+  }
+}

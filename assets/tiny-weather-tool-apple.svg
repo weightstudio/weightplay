@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="apple">
-  <path d="M83 45c12-17 27-15 36-5 13 14 9 52-9 78-10 14-23 17-31 9-8 8-22 5-31-9-18-26-22-64-9-78 10-10 25-12 37 5 2 2 5 2 7 0z" fill="#ef4444"/>
-  <path d="M84 39c0-15 8-24 21-28" fill="none" stroke="#5b3b28" stroke-width="8" stroke-linecap="round"/>
-  <path d="M91 31c15-13 29-10 39 3-14 9-27 8-39-3z" fill="#61c267"/>
-  <circle cx="57" cy="58" r="11" fill="#fff" opacity=".38"/>
-</svg>

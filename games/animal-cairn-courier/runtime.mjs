@@ -1,8 +1,8 @@
-import {createCairnScene} from './scene.mjs?v=20261027-cairn-pass1&wp-media=716c6e15bee096d3';
-import {purchaseFinish,writeConfirmed} from './finishes.mjs?v=20261101-cairn-v15&wp-media=716c6e15bee096d3';
-import {MOUNTAIN_PASS,passContract,passValidate,passNext} from './mountain-pass.mjs?v=20261027-cairn-pass2&wp-media=716c6e15bee096d3';
-import {PASS_COPY} from './mountain-pass-copy.mjs?v=20261027-cairn-pass2&wp-media=716c6e15bee096d3';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=716c6e15bee096d3';
+import {createCairnScene} from './scene.mjs?v=20261027-cairn-pass1&wp-media=2e7e93781a18cbfd';
+import {purchaseFinish,writeConfirmed} from './finishes.mjs?v=20261101-cairn-v15&wp-media=2e7e93781a18cbfd';
+import {MOUNTAIN_PASS,passContract,passValidate,passNext} from './mountain-pass.mjs?v=20261027-cairn-pass2&wp-media=2e7e93781a18cbfd';
+import {PASS_COPY} from './mountain-pass-copy.mjs?v=20261027-cairn-pass2&wp-media=2e7e93781a18cbfd';
+import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=2e7e93781a18cbfd';
 
 const $=id=>document.getElementById(id);
 const {STAGES:originalStages,stoneCatalog,validate:originalValidate,contract:originalContract,load,tray,normalize}=window.CairnModel;
@@ -12,6 +12,26 @@ let practice=false,starting=false;
 const dictionaries=window.ANIMAL_CAIRN_COURIER_LOCALES;
 const frame=window.__ANIMAL_CAIRN_COURIER_FRAME__;
 const STORE='weightplay-animal-cairn-courier-v7-campaign-v1';
+const PENDING_REWARD_PREFIX='weightplay-cairn-courier-pending-reward-v1:';
+function storedStageCleared(stageId){
+  try{const raw=localStorage.getItem(STORE);if(raw===null)return false;const value=JSON.parse(raw);if(!value||!Array.isArray(value.solved)||value.solved.some(id=>!Number.isInteger(id)))return null;return value.solved.includes(stageId);}catch{return null;}
+}
+function preparePendingReward(stageId){
+  const key=PENDING_REWARD_PREFIX+stageId,value=JSON.stringify({schema:1,stageId});
+  try{localStorage.setItem(key,value);return localStorage.getItem(key)===value;}catch{return false;}
+}
+function flushPendingRewards(){
+  if(practiceRequested)return;
+  const castle=window.WeightPlayCastle;if(!castle?.read)return;
+  for(let stageId=1;stageId<=30;stageId++)try{
+    const key=PENDING_REWARD_PREFIX+stageId,marker=JSON.parse(localStorage.getItem(key));
+    if(marker?.schema!==1||marker.stageId!==stageId||storedStageCleared(stageId)!==true)continue;
+    const receipt=`animal-cairn-courier:stage-${stageId}`;
+    if(!Object.hasOwn(castle.read()?.completions||{},receipt))window.dispatchEvent(new CustomEvent('weightplay:game-completed',{detail:{gameId:'animal-cairn-courier',stageId,outcome:'win'}}));
+    queueMicrotask(()=>{try{if(Object.hasOwn(castle.read()?.completions||{},receipt))localStorage.removeItem(key);}catch{/* Keep marker until receipt is readable. */}});
+  }catch{/* Retry after storage and World are available. */}
+}
+window.addEventListener('weightplay:castle-ready',flushPendingRewards);flushPendingRewards();
 let saved;
 try{saved=practiceRequested?normalize({}):normalize(JSON.parse(localStorage.getItem(STORE)||'{}'));}catch{saved=normalize({});}
 const solved=new Set(saved.solved);
@@ -130,7 +150,7 @@ function renderPassTools(){
     button.onclick=()=>{state.route=route;state.status='';buildBattle();passTools.querySelector(`[data-route="${route}"]`)?.focus({preventScroll:true});};passTools.append(button);
   }
   const pin=document.createElement('button');pin.type='button';pin.dataset.passPin='';
-  const image=document.createElement('img');image.src='/games/animal-cairn-courier/assets/mountain-marker-pin-v1.png.webp?wp-media=716c6e15bee096d3';image.alt='';image.width=48;image.height=48;pin.append(image);
+  const image=document.createElement('img');image.src='/games/animal-cairn-courier/assets/mountain-marker-pin-v1.png.webp?wp-media=2e7e93781a18cbfd';image.alt='';image.width=48;image.height=48;pin.append(image);
   const name=document.createElement('span');name.textContent=`${passText('pin')} · ${passText('uses',{n:state.pinUses})}`;pin.append(name);pin.disabled=state.pinUses===0||state.settled;
   pin.onclick=()=>{if(!acceptsInput()||state.pinUses<=0)return;state.pinUses--;const choices=passNext(plan(),state.stack,state.route);state.status=choices.length?passText('next',{stones:choices.map(stoneName).join(' · ')}):passText('none');updateBattle();const target=passTools.querySelector('[data-pass-pin]:not(:disabled)')||[...buttons.values()].find(b=>!b.disabled)||(!$('undoBtn').disabled?$('undoBtn'):$('checkBtn'));target?.focus({preventScroll:true});};passTools.append(pin);
 }
@@ -205,15 +225,21 @@ function check(){
   }
   state.settled=true;
   const seals=state.mistakes?1:state.edits||state.picks!==plan().stones.length?2:3;
+  const priorSolved=[...solved];
+  const priorSaved={...saved,solved:[...saved.solved],seals:{...saved.seals},best:{...saved.best},finishes:[...saved.finishes]};
   let persisted=false;
   if(!lessonReplay){
     solved.add(plan().id);saved.seals[plan().id]=Math.max(saved.seals[plan().id]||0,seals);
     saved.best[plan().id]=Math.min(saved.best[plan().id]||Infinity,state.picks);
     if(solved.size>=10&&!saved.finishes.includes('alpine'))saved.finishes.push('alpine');
-    try{persist();persisted=true;}catch{}
+    try{if(!practiceRequested){const stored=storedStageCleared(plan().id);if(stored===null)throw Error('Progress unreadable');if(stored===false&&!preparePendingReward(plan().id))throw Error('Reward marker unconfirmed');}persist();persisted=true;}catch{}
   }
   let savedClear=false;try{savedClear=!lessonReplay&&!practiceRequested&&persisted&&normalize(JSON.parse(localStorage.getItem(STORE)||'{}')).solved.includes(plan().id);}catch{}
+  if(!lessonReplay&&!practiceRequested&&!savedClear){
+    saved=priorSaved;solved.clear();priorSolved.forEach(id=>solved.add(id));persisted=false;
+  }
   Object.assign(measurement,{ended:true,outcome:'win',saveSucceeded:savedClear});
+  if(savedClear)queueMicrotask(flushPendingRewards);
   // Outcome ownership is synchronous; effects never grant progress or repeat rewards.
   show('result');updateBattle(true);cue('result.win');
   $('resultTitle').textContent=text(seals===3?'perfect':seals===2?'clean':'settled');
@@ -221,7 +247,7 @@ function check(){
   $('resultSeals').setAttribute('aria-label',text('seals')+' '+seals+'/3');
   $('resultText').textContent=text('picks')+': '+state.picks+' · '+text('best')+': '+(saved.best[plan().id]||'—')+'\n'+text('stagesV7',{current:solved.size,total:practice?STAGES.length:30})+(lessonReplay?'\n'+lessonText()[5]:practice?'\n'+passText('practice'):persisted?'':'\n'+text('saveError'));
   $('resultStagesBtn').textContent=text('stages');$('resultNextBtn').textContent=text('next');$('resultReplayBtn').textContent=text('replay');
-  $('resultNextBtn').disabled=lessonReplay||state.round===STAGES.length-1;
+  $('resultNextBtn').disabled=lessonReplay||(!practiceRequested&&!savedClear)||state.round===STAGES.length-1;
   flash($('resultScreen').querySelector('.dialog-card'));$('resultNextBtn').disabled?$('resultStagesBtn').focus({preventScroll:true}):$('resultNextBtn').focus({preventScroll:true});
 }
 function guardReturn(){
@@ -240,7 +266,7 @@ function renderFinishes(){
   for(const name of ['moss','alpine','aurora']){
     const owned=name==='moss'||saved.finishes.includes(name)||(name==='alpine'&&solved.size>=10);
     const row=document.createElement('div');row.className='finish-row';row.dataset.finish=name;
-    const image=document.createElement('img');image.src='/assets/interface7-redrawn/animal-cairn-courier.webp?wp-media=716c6e15bee096d3';image.alt='';row.append(image);
+    const image=document.createElement('img');image.src='/assets/interface7-redrawn/animal-cairn-courier.webp?wp-media=2e7e93781a18cbfd';image.alt='';row.append(image);
     const label=document.createElement('strong');label.textContent=text(name);row.append(label);
     const b=document.createElement('button');b.type='button';b.textContent=saved.finish===name?'✓ '+text('owned'):owned?text('equip'):name==='alpine'?text('earned'):text('purchase');
     if(!owned&&name==='aurora'){const diamond=document.createElement('img');diamond.src='/assets/weightplay-diamond.svg';diamond.alt=text('balance');diamond.width=18;diamond.height=18;b.prepend(diamond);}
@@ -281,7 +307,7 @@ $('battleBackBtn').onclick=guardReturn;
 $('checkBtn').onclick=check;$('undoBtn').onclick=()=>undo();$('clearBtn').onclick=()=>undo(true);
 $('leaveContinueBtn').onclick=closeLeave;$('leaveStagesBtn').onclick=()=>{state.stack=[];show('stage');renderStages();};
 $('resultStagesBtn').onclick=()=>{selectedStage=Math.min(practice?STAGES.length-1:29,state.round+1);show('stage');renderStages();};
-$('resultNextBtn').onclick=()=>{if(!lessonReplay&&state.screen==='result'&&state.round<(practice?STAGES.length-1:29))void startRound(state.round+1);};
+$('resultNextBtn').onclick=()=>{if(!lessonReplay&&(practiceRequested||measurement.saveSucceeded)&&state.screen==='result'&&state.round<(practice?STAGES.length-1:29))void startRound(state.round+1);};
 $('resultReplayBtn').onclick=()=>{if(state.screen==='result')startRound(state.round,{teachingReplay:lessonReplay});};
 finishButton.onclick=()=>{if(!practiceRequested)showFinishes();};
 $('finishClose').onclick=()=>{setModal('finishPanel',false);finishButton.focus({preventScroll:true});};

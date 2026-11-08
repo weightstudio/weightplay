@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="boots">
-  <path d="M38 29h34v72c0 16-12 30-29 30H24c-8 0-12-10-6-16l20-19V29z" fill="#57b9e8" stroke="#1f6ca0" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M92 29h34v72c0 16-12 30-29 30H78c-8 0-12-10-6-16l20-19V29z" fill="#ffcf48" stroke="#b87512" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M41 55h28M95 55h28" stroke="#fff" stroke-width="8" opacity=".55"/>
-</svg>

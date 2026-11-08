@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="towel">
-  <rect x="42" y="22" width="76" height="116" rx="16" fill="#57b9e8"/>
-  <path d="M57 25v110M80 25v110M103 25v110" stroke="#d7f4ff" stroke-width="8" opacity=".65"/>
-  <path d="M49 48h62M49 84h62M49 120h62" stroke="#2389c5" stroke-width="6" opacity=".45"/>
-  <circle cx="61" cy="43" r="9" fill="#fff" opacity=".48"/>
-</svg>

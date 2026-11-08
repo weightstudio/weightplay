@@ -1,4 +1,4 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=716c6e15bee096d3';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=2e7e93781a18cbfd';
 
 const COLORS = [0xffca65, 0x8de2b9, 0xff8f90, 0xb8a2ff];
 const FINISHES = {stone:[0x526f78,0xc7ac76],jade:[0x247b69,0xc9e8c7],moonstone:[0x727ca8,0xe8d9ff]};
