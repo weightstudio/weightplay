@@ -2,8 +2,8 @@
   "gameId": "skymeadow-keeper",
   "generator": "built-in image_gen",
   "materialsV6": {
-    "source": "art/materials-v6.png.webp?wp-media=623885c2cc591d25",
-    "delivery": "art/materials-v6.webp?wp-media=623885c2cc591d25",
+    "source": "art/materials-v6.png.webp?wp-media=d1030b4eb55bb9f5",
+    "delivery": "art/materials-v6.webp?wp-media=d1030b4eb55bb9f5",
     "generator": "built-in image_gen",
     "generatedSource": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-1ed4c18e-a7a2-4f13-b151-4b83bfb2b934.png",
     "prompt": "Use case: stylized-concept. Asset type: production seamless albedo material atlas for an original first-person 3D sky-meadow creature herding game, polished handcrafted block-animal fantasy style. Create ONE square 1024x1024 image divided into EXACTLY FOUR equal 512x512 square quadrants, no gutters, margins, frames, labels, lettering or objects. Each quadrant is its own flat orthographic seamless tile viewed straight-on, uniform diffuse lighting, NO directional cast shadows, no perspective, no vignette. TOP LEFT: soft meadow turf and fine compact soil, short woven grass blades, subtle tiny pebbles, light desaturated gray-beige neutral palette suitable for runtime green tinting, no big leaves. TOP RIGHT: premium hand-worked timber with fine continuous vertical grain, tasteful small knots and carved fibers, warm medium-light tan, NOT planks or boards or gaps. BOTTOM LEFT: weathered pale stone with beautiful broad mineral veins, small layered fissures and tactile chipped microdetails, desaturated light warm gray, no brick grid. BOTTOM RIGHT: restrained fine leather and woven fiber surface, light gray-beige, natural soft microtexture, no seams or logos. All four tiles: clear but restrained multi-scale detail, painterly AAA stylized material quality, texture-only full surface, midtones around 65-80 percent brightness, low contrast, avoid noisy photorealistic dirt and large dark cracks; preserve strong visual readability when wrapped over small beveled cuboid meshes. Four flat material swatches, not a rendered scene or a sheet of 3D samples.",
@@ -29,16 +29,16 @@
     "inspection": "Source and actual Stage6 desktop,16 phone,26 short-landscape and Stage50 habitat at1280/844/390 inspected. Initial relief was visibly noisy and reduced before adoption. Five-size missing-item/missing-material native retry suite PASS29groups (5cab57e7-f129-40cc-81c7-21874fbbf58b). Five-cycle1280 GPU check PASS29groups (9f4b8c59-1e94-41e5-bb72-0722e8642d0c):4textures,9geometries,12materials,created5=disposed5. Software-render timings are not device FPS. Real native feeding/following recorded and replayed. Terrain texture improves surface depth, but block-heavy scenery and repeated silhouettes remain below the Art9 target; final Art/source binding pending."
   },
   "poster": {
-    "source": "assets/interface7-redrawn/skymeadow-keeper.png.webp?wp-media=623885c2cc591d25",
-    "delivery": "art/poster.webp?wp-media=623885c2cc591d25",
+    "source": "assets/interface7-redrawn/skymeadow-keeper.png.webp?wp-media=d1030b4eb55bb9f5",
+    "delivery": "art/poster.webp?wp-media=d1030b4eb55bb9f5",
     "generatedSource": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-a7ff18ab-0f81-4654-bce7-1bbeda1008e7.png",
     "prompt": "Use case: stylized-concept. Asset type: original WeightPlay game square cover, Skymeadow Keeper, NO TEXT. Create a genuine 1:1 square premium fantasy 3D illustration. A full-body original block fox hero Fia (square orange head, separate cuboid ears with cream inner ear and dark brown tips, blue expressive eyes, box cream muzzle, forehead gold lightning motif, cube limbs, blue scarf with gold comet-star tip, cream paws and stepped orange/cream tail) is gently guiding a little cuboid cream rabbit with leaf ears and a moss-shell block turtle along a grassy floating path toward a warm little habitat garden. Fia holds an OPEN two-prong blue-and-amber wrist loom, casting a thin mint guidance ribbon; no gun, no vacuum, no suction. Fia dominates central 60%, full body and feet visible inside central 80%. Rabbit visibly follows berry bait on the ribbon; turtle follows behind. Background has a restored golden-leaf windtree, teal floating meadows, small timber habitat roof, indigo mountain silhouettes, cloud ocean and a curved vine bridge. Sculptural literal cubes and rectangular prisms with subtle bevels, planar faces, stepped silhouettes, coherent matte premium materials, fine block edges, warm late-afternoon key light, cool shadows, luminous restrained rim lighting, layered foreground-middle-background. Preserve Fia identity from the viewed character reference; crystal-survivor lighting/composition reference only, not its rounded anatomy. Readable hero and guidance action, friendly adventurous mood, rich mint/teal, orange/gold and indigo palette. No smooth rounded/plush/clay animals, no photorealism, no logos, no words, no UI, no frame, no watermark, no copied third-party imagery, no letterboxing, no critical crop.",
     "registrationFingerprint": "sha256:401845b6a3d9e3b2e3f3860e7b0347e427b08784a7ae96f656a122c4eec4847e",
     "inspection": "Original and compressed delivery visually inspected, 1254x1254. In-game, mobile and lobby validation pending; no Art score."
   },
   "items": {
-    "source": "art/items.png.webp?wp-media=623885c2cc591d25",
-    "delivery": "art/items.webp?wp-media=623885c2cc591d25",
+    "source": "art/items.png.webp?wp-media=d1030b4eb55bb9f5",
+    "delivery": "art/items.webp?wp-media=d1030b4eb55bb9f5",
     "generatedSource": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-5664629f-c5a0-4d2d-92e1-5959aa298e62.png",
     "prompt": "Use case: stylized-concept. Create ONE original game item atlas for Skymeadow Keeper with actual transparent background. Exactly 4 columns by 4 rows, 16 equally spaced cells, each object fully isolated and centered within its own cell with generous 18% transparent margin, absolutely no touching neighbors, no letters numbers labels borders grid lines. Premium polished stylized block-fantasy 3D objects, literal cuboid construction and stepped silhouettes, fine bevels, soft consistent upper-left lighting, mint/teal/amber/indigo palette, readable small UI inventory icons, no ground plane. Row1 left to right: a cluster of ruby cube berries with two green angular leaves; an orange cuboid root vegetable with green tops; an amber glass cube nectar jar with blossom stopper; a luminous cyan dew crystal. Row2: a curled green vine seed with gold kernel; a pale turquoise stepped feather; an open blue-and-gold two-prong guiding wrist loom with tiny mint gem; a brass-and-teal wind anchor with two angular sails. Row3: a little cuboid meadow rabbit cream face long leaf ears; a moss-shell box turtle with a small garden on shell; a blue cuboid wind bird with gold box beak and spread stepped wings; an amber block deer with tiny blossom antlers. Row4: a brown cube otter with cream box muzzle and turquoise wrist fins; a lavender block twilight fox with cream box muzzle and two angular ears; a small wood-and-mint-roof garden habitat; a star-blue and silver alternative wrist cuff with a gold star. All animals have square heads, box muzzles or beaks, expressive eyes, cuboid bodies and limbs, no smooth rounded anatomy. No text, watermark, third-party style, photorealism, outer shadows extending across cells. Genuinely transparent alpha, not checkerboard pixels.",
     "layout": {
@@ -48,12 +48,12 @@
     "inspection": "Source viewed. Runtime cell/crop verification pending."
   },
   "runtimeMeshesV2": {
-    "source": "../scene.mjs?wp-media=623885c2cc591d25",
+    "source": "../scene.mjs?wp-media=d1030b4eb55bb9f5",
     "creation": "Original hand-authored procedural 3D geometry and joint animation; no downloaded model or texture pack",
     "references": [
-      "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=623885c2cc591d25",
-      "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=623885c2cc591d25",
-      "art/poster.webp?wp-media=623885c2cc591d25"
+      "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=d1030b4eb55bb9f5",
+      "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=d1030b4eb55bb9f5",
+      "art/poster.webp?wp-media=d1030b4eb55bb9f5"
     ],
     "families": [
       "six wildlife anatomies and facial parts",
@@ -69,7 +69,7 @@
     "renderedInspection": "NOT_RUN: current CUA inventory reports local browser use disabled in Work settings. CPU checks do not establish Art approval, rendered frame time or visible play."
   },
   "runtimeMeshesV4": {
-    "source": "../scene.mjs?wp-media=623885c2cc591d25",
+    "source": "../scene.mjs?wp-media=d1030b4eb55bb9f5",
     "creation": "Original procedural geometry, world-space arithmetic-noise material and sky-derived PMREM environment. No external model, texture download or generated raster added in V4.",
     "changes": [
       "Six-triangle grass clusters and flowers outside bridge footprints",
@@ -90,13 +90,13 @@
   "itemsRefinement": {
     "source": "/Users/kuoyu/.codex/generated_images/01a1afea-381b-7012-b72e-af18b083a63b/exec-e4948ff1-a4ee-48b2-8e11-8f86ae257047.png",
     "mode": "builtin-imagegen-edit",
-    "reference": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/games/skymeadow-keeper/art/items.png.webp?wp-media=623885c2cc591d25 (previous version; original retained at exec-5664629f-c5a0-4d2d-92e1-5959aa298e62.png)",
+    "reference": "/Users/kuoyu/Documents/MacMini/Project/WeightPlay/games/skymeadow-keeper/art/items.png.webp?wp-media=d1030b4eb55bb9f5 (previous version; original retained at exec-5664629f-c5a0-4d2d-92e1-5959aa298e62.png)",
     "prompt": "Edit the attached 4 by 4 square game icon atlas. Preserve the exact sixteen icons, their order, block-animal aesthetic and arrangement. Correct the defective background: REMOVE ALL rainbow noise, coloured halos, green/yellow/red fringe pixels, random texture and shadows outside the icons. Deliver a perfectly clean fully transparent RGBA background, with crisp antialiased edges only. Each icon must fit wholly inside its own equal square cell with a clear transparent 12 percent margin on all sides; no icon or effect may cross a cell border. No glow, no scattered particles, no cast shadow, no text, no grid lines. Keep the cute miniature voxel forms, readable silhouettes, and rich material details. Row 1 berries, carrot-like roots, nectar jar, dew crystal; row 2 vine seed, feather, blue-gold wrist cuff, wind anchor; row 3 rabbit, turtle, bird, deer; row 4 otter, purple fox, habitat shelter, star wrist cuff. This is a production spritesheet, perfectly aligned cell centers, transparent background only.",
     "delivery": "items.webp",
     "inspection": "Generated source inspected. Numeric alpha samples show coloured background pixels at alpha0–1; no >100-alpha pixels at vertical seams. Actual resource row, shop cards and Help map crops inspected in desktop/phone/short-landscape including RTL; no visible cell bleed in those observations. Final per-asset Art scoring remains pending."
   },
   "runtimeMeshesV7": {
-    "source": "../scene.mjs?wp-media=623885c2cc591d25",
+    "source": "../scene.mjs?wp-media=d1030b4eb55bb9f5",
     "sourceSha256": "c67ca92cc8618e150a17e9270b23f0335057509d057282061a3265dc62f41bfd",
     "creation": "Original authored procedural meshes and existing generated material atlas; no new external model, raster or rendering dependency.",
     "changes": [
