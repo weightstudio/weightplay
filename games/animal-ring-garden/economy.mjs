@@ -1,4 +1,4 @@
-import {SAVE_KEY,LEGACY_KEY,FINISH_COST,normalizeSave} from './core.mjs?wp-media=81eb4bba2d329a45';
+import {SAVE_KEY,LEGACY_KEY,FINISH_COST,normalizeSave} from './core.mjs?wp-media=623885c2cc591d25';
 const JOURNAL=SAVE_KEY+':purchase';
 export function readSave(storage){
   let value={},legacy=[];
