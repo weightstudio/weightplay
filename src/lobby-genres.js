@@ -51,6 +51,7 @@
     ["wildborn", "Action", "Survival", "Adventure"],
     ["kindred-habitats", "Pet Care", "Collection", "Adventure"],
     ["deep-drill", "Simulation", "Idle", "Adventure"],
+    ["block-dig-crew", "Simulation", "Idle", "Management"],
     ["fusekeep", "Tower Defense", "Merge", "Strategy"],
     ["animal-wildwood-raid", "Action", "Adventure", "Collection"],
     ["pawaxe", "RPG", "Action", "Adventure"],

@@ -1,14 +1,194 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-wp-entry-renderer="locale.mjs?wp-media=24d73496cf5a8495#renderEntry" data-wp-shared-interface="9" class="wp-frame-main-flow" data-wp-publication-locale-completion>
-<head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/block-dig-crew/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/block-dig-crew/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
-  <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1&wp-media=24d73496cf5a8495" charset="utf-8" defer></script>
-    <meta charset="utf-8">
+<html lang="en" dir="ltr" data-wp-entry-renderer="locale.mjs?wp-media=24d73496cf5a8495#renderEntry" data-wp-shared-interface="7" class="wp-frame-main-flow" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-entry-poster="/games/block-dig-crew/art/cover.webp?wp-media=24d73496cf5a8495">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=24d73496cf5a8495`, '/src/diamond-special-progression.js?wp-media=24d73496cf5a8495', '/src/diamond-special-progression.css?wp-media=24d73496cf5a8495'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/block-dig-crew/")}catch{location.replace("/en/games/block-dig-crew/")}})();</script>
+    <script src="/src/game-page-info.js?v=20261014-guide-related-i9-v1&wp-media=24d73496cf5a8495" charset="utf-8" defer></script>
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <base href="/games/block-dig-crew/">
 <title>Block Dig Crew | WeightPlay</title>
 <meta name="description" content="Sweep over tools, uncover gems and build your own digging crew.">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://weightplay.com/en/games/block-dig-crew/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-dig-crew/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-dig-crew/" />
@@ -31,13 +211,13 @@
 <meta property="og:url" content="https://weightplay.com/en/games/block-dig-crew/">
 <meta property="og:image" content="https://weightplay.com/games/block-dig-crew/art/cover.webp?wp-media=24d73496cf5a8495">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=24d73496cf5a8495" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=24d73496cf5a8495" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=24d73496cf5a8495" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=24d73496cf5a8495" data-wp-entry-required>
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=24d73496cf5a8495" data-wp-entry-required>
-<link rel="stylesheet" href="/games/block-dig-crew/styles.css?v=1&amp;wp-build=1b0dbb64a5a968d0&wp-media=24d73496cf5a8495" data-wp-entry-required>
-<script src="/src/game-layout-config.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=24d73496cf5a8495" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=24d73496cf5a8495" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=24d73496cf5a8495" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=24d73496cf5a8495" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=24d73496cf5a8495" data-wp-entry-required="">
+<link rel="stylesheet" href="/games/block-dig-crew/styles.css?v=1&amp;wp-build=0776ad0a89d775ec&wp-media=24d73496cf5a8495" data-wp-entry-required="">
+<script src="/src/game-layout-config.js?wp-media=24d73496cf5a8495" data-wp-entry-required=""></script>
 <script src="/src/weightplay-audio.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
 <script src="/src/site-config.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
 <script src="/src/i18n.js?wp-media=24d73496cf5a8495"></script>
@@ -47,19 +227,19 @@
 <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=24d73496cf5a8495"></script>
 <script type="application/ld+json" id="gameSchema">{"@context":"https://schema.org","@type":"VideoGame","name":"Block Dig Crew","description":"Sweep over tools, uncover gems and build your own digging crew.","url":"https://weightplay.com/en/games/block-dig-crew/","inLanguage":"en","genre":["Mining & Upgrades","Free digging","Gem bag"],"gamePlatform":"Web browser","operatingSystem":"Web browser","playMode":"SinglePlayer","isAccessibleForFree":true,"audience":{"@type":"PeopleAudience","audienceType":"General"},"image":"https://weightplay.com/games/block-dig-crew/art/cover.webp?wp-media=24d73496cf5a8495","publisher":{"@type":"Organization","name":"WeightPlay"}}</script>
 </head>
-<body data-internal-only="true" class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="block-dig-crew" data-game-id="block-dig-crew" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0">
-<div id="gameFrame" data-wp-frame-root hidden data-wp-frame="2" data-wp-entry-root>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="block-dig-crew" data-game-id="block-dig-crew" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Block Dig Crew" data-state="loading" data-error-title="Game could not be loaded" data-error-message="Some game resources could not be loaded. Retry or return to the lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Loading Block Dig Crew…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Loading Block Dig Crew…" aria-valuetext="Loading Block Dig Crew…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Retry</button><a class="wp-game-entry-loader-button" href="/en/">Back to lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Some game resources could not be loaded. Retry or return to the lobby. <a href="/en/">Back to lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=24d73496cf5a8495" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root hidden data-wp-frame="2" data-wp-entry-root="">
  <div id="mainGroup" class="wp-frame-main-flow">
   <section id="mainScreen" data-wp-frame-scene="main">
    <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
-    <a id="mainReturn" href="/en/?preview=1" data-wp-frame-action="secondary" data-wp-return="main" aria-label="WeightPlay" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=24d73496cf5a8495" alt="" hidden></a>
-    <h1 id="gameTitle" data-wp-frame-title>Block Dig Crew</h1>
+    <a id="mainReturn" href="/en/" data-wp-frame-action="secondary" data-wp-return="main" aria-label="WeightPlay" class="wp-frame-return">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=24d73496cf5a8495" alt="" hidden width="26" height="26"></a>
+    <h1 id="gameTitle" data-wp-frame-title="">Block Dig Crew</h1>
    </header>
    <div id="mainHero" data-wp-frame-content="main">
-    <img id="cover" data-wp-frame-poster src="/games/block-dig-crew/art/cover.webp?wp-media=24d73496cf5a8495" alt="Block Dig Crew" width="768" height="768" fetchpriority="high">
-    <div data-wp-frame-copy>
-     <p id="description" data-wp-frame-summary data-dig-copy="description">Sweep over tools, uncover gems and build your own digging crew.</p>
-     <p id="mainProgress" data-wp-frame-progress></p>
+    <img id="cover" data-wp-frame-poster="" src="/games/block-dig-crew/art/cover.webp?wp-media=24d73496cf5a8495" alt="Block Dig Crew" width="1254" height="1254" fetchpriority="high" data-wp-interface7-poster="true">
+    <div data-wp-frame-copy="">
+     <p id="description" data-wp-frame-summary="" data-dig-copy="description">Sweep over tools, uncover gems and build your own digging crew.</p>
+     <p id="mainProgress" data-wp-frame-progress=""></p>
      <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" data-dig-copy="start" disabled>Start</button>
      <div class="dig-main-actions">
       <button id="resumeBtn" type="button" data-wp-frame-action="secondary" data-dig-copy="resume" hidden>Continue</button>
@@ -69,7 +249,7 @@
     </div>
    </div>
   </section>
-  <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-entry-guide data-wp-guide-renderer="locale.mjs?wp-media=24d73496cf5a8495#renderGuide" aria-labelledby="guideTitle">
+  <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-preserve-static-guide data-wp-entry-guide="" data-wp-guide-renderer="locale.mjs?wp-media=24d73496cf5a8495#renderGuide" aria-labelledby="guideTitle">
    <h2 id="guideTitle" data-dig-copy="guide">Game guide</h2>
    <div class="dig-guide">
     <article><h3 data-dig-copy="goal">Goal</h3><p data-wp-intro-faq-source data-dig-copy="goalBody">Build your digging crew and uncover gems across five lands.</p></article>
@@ -84,15 +264,15 @@
     <dt data-dig-copy="spendQ">Should I buy a tool or upgrade one?</dt><dd data-dig-copy="spendA">Buy a second tool so you can dig while the spoon cools. Upgrade a favorite to earn more per hit and reach its next evolution.</dd>
    </dl></article>
    <div class="game-info-tags" data-dig-tags><span>Mining &amp; Upgrades</span><span>Free digging</span><span>Gem bag</span></div>
-   <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="relatedTitle"><h3 id="relatedTitle">More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="rux-salvage-yard" href="/en/games/rux-salvage-yard/"><span class="game-info-related-poster"><img src="/games/rux-salvage-yard/art/poster.webp?wp-media=24d73496cf5a8495" data-final-src="/assets/weightplay-logo.png.webp?wp-media=24d73496cf5a8495" alt="Rux Salvage Yard" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rux Salvage Yard</strong></span></a></div></div>
+   <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9" aria-labelledby="relatedTitle"><h3 id="relatedTitle">More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="rux-salvage-yard" href="/en/games/rux-salvage-yard/"><span class="game-info-related-poster"><img src="/games/rux-salvage-yard/art/poster.webp?wp-media=24d73496cf5a8495" data-final-src="/assets/weightplay-logo.png.webp?wp-media=24d73496cf5a8495" alt="Rux Salvage Yard" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Rux Salvage Yard</strong></span></a><a class="game-info-related-card" data-game-id="dustwake-depot" href="/en/games/dustwake-depot/"><span class="game-info-related-poster"><img src="/games/dustwake-depot/art/poster.webp?wp-media=24d73496cf5a8495" data-final-src="/assets/weightplay-logo.png.webp?wp-media=24d73496cf5a8495" alt="Dustwake Depot" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Dustwake Depot</strong></span></a><a class="game-info-related-card" data-game-id="skymeadow-keeper" href="/en/games/skymeadow-keeper/"><span class="game-info-related-poster"><img src="/games/skymeadow-keeper/art/poster.webp?wp-media=24d73496cf5a8495" data-final-src="/assets/weightplay-logo.png.webp?wp-media=24d73496cf5a8495" alt="Skymeadow Keeper" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Skymeadow Keeper</strong></span></a></div></div>
   </section>
  </div>
- <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/assets/lobby-block-atmosphere.svg" hidden>
+ <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/block-dig-crew/art/cover.webp?wp-media=24d73496cf5a8495" hidden>
   <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
   <div id="stageWorkspace"><div id="stagePage"><div id="stageRail"></div></div></div>
   <nav id="stageTabs" data-wp-frame-stage-nav>
-   <button id="landTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages" data-dig-copy="lands">Lands</button>
-   <button id="surveyTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="progression" data-dig-copy="surveys">Surveys</button>
+   <button id="landTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="lands" data-dig-copy="lands">Lands</button>
+   <button id="surveyTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages" data-dig-copy="surveys">Surveys</button>
   </nav>
  </section>
  <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="660" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="400" data-wp-game-id="block-dig-crew" hidden>
@@ -117,7 +297,12 @@
   </main>
   <section id="resultPanel" class="dig-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
    <div class="dig-dialog" data-wp-result-card><h2 id="resultTitle" data-dig-copy="done">Survey complete!</h2><p id="resultText"></p>
-    <div class="dig-actions"><button id="resultMap" type="button" data-wp-frame-action="secondary" data-dig-copy="surveys">Surveys</button><button id="resultRetry" type="button" data-wp-frame-action="secondary" data-dig-copy="retry">Retry</button><button id="resultNext" type="button" data-wp-frame-action="primary" data-dig-copy="next">Next survey</button></div>
+    <div class="dig-result-actions"><button id="resultMap" type="button" data-wp-frame-action="secondary" data-dig-copy="surveys">Surveys</button><button id="resultNext" type="button" data-wp-frame-action="secondary" data-dig-copy="next">Next survey</button><button id="resultRetry" type="button" data-wp-frame-action="secondary" data-dig-copy="retry">Retry</button></div>
+   </div>
+  </section>
+  <section id="leavePanel" class="dig-overlay" role="dialog" aria-labelledby="leaveTitle" aria-describedby="leaveText" aria-modal="true" hidden>
+   <div class="dig-dialog"><h2 id="leaveTitle" data-dig-copy="leaveTitle">Leave this dig?</h2><p id="leaveText"></p>
+    <div class="dig-actions"><button id="leaveStay" type="button" data-wp-frame-action="primary" data-dig-copy="leaveStay">Keep digging</button><button id="leaveExit" type="button" data-wp-frame-action="secondary" data-dig-copy="leaveExit">Return to the map</button></div>
    </div>
   </section>
  </section>
@@ -127,9 +312,9 @@
 </div>
 <script src="/src/edge-guard.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
 <script src="/src/stage-rail-i9.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
-<script src="/src/game-play-ui.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
-<script src="/src/battle-canvas-standard.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
-<script src="/src/game-screen-frame.js?wp-media=24d73496cf5a8495" data-wp-entry-required></script>
-<script type="module" src="/games/block-dig-crew/game.mjs?v=1&amp;wp-build=c11d9e1751a4cfea&wp-media=24d73496cf5a8495" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=24d73496cf5a8495" data-wp-entry-required=""></script>
+<script src="/src/battle-canvas-standard.js?wp-media=24d73496cf5a8495" data-wp-entry-required=""></script>
+<script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=24d73496cf5a8495" data-wp-entry-required=""></script>
+<script type="module" src="/games/block-dig-crew/game.mjs?v=entry-initial-7fefb401ef96&amp;wp-build=915033bc0a997ee4&wp-media=24d73496cf5a8495" data-wp-entry-required=""></script>
 </body>
 </html>
