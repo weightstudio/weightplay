@@ -128,6 +128,7 @@ window.WONDER_LOBBY = {
       ages: ["9", "family"], categories: ["Management"], skills: ["Planning", "Observation"],
       tags: ["Idle", "Resource Management", "Collection"], difficulty: "Easy", estimatedPlayTime: "3–6 minutes",
       art: { kind: "image", background: "games/block-planet-repair/art/cover.webp?wp-media=81eb4bba2d329a45", hideHero: true },
+      relatedGameRules: { requirePublic: true, gameIds: ["block-dig-crew", "animal-zoo-idle"] },
     },
     {
       id: "mosslight-museum", audience: "general", status: "playable",

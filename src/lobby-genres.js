@@ -53,6 +53,7 @@
     ["kindred-habitats", "Pet Care", "Collection", "Adventure"],
     ["deep-drill", "Simulation", "Idle", "Adventure"],
     ["block-dig-crew", "Simulation", "Idle", "Management"],
+    ["block-planet-repair", "Management", "Idle", "Collection"],
     ["fusekeep", "Tower Defense", "Merge", "Strategy"],
     ["animal-wildwood-raid", "Action", "Adventure", "Collection"],
     ["pawaxe", "RPG", "Action", "Adventure"],
