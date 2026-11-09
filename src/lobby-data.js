@@ -120,14 +120,15 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "block-planet-repair", audience: "general", status: "planned", internalOnly: true,
-      href: "games/block-planet-repair/", internalTrial: "/games/block-planet-repair/index.html?preview=1",
+      id: "block-planet-repair", audience: "general", status: "playable",
+      href: "games/block-planet-repair/",
       title: {"__localizedExact":true,"en":"Block Planet Repair Crew","zh-Hant":"方塊星球修復隊","zh-Hans":"方块星球修复队","ja":"ブロック惑星修復隊","ko":"블록 행성 복구대","es":"Brigada Planeta Bloque","pt-BR":"Equipe Planeta em Blocos","fr":"Brigade des planètes cubiques","de":"Blockplaneten-Reparaturteam","it":"Squadra ripara pianeti","ru":"Бригада кубических планет","hi":"ब्लॉक ग्रह मरम्मत दल","ar":"فريق ترميم كواكب المكعبات"},
       type: {"__localizedExact":true,"en":"Idle restoration","zh-Hant":"放置修復","zh-Hans":"放置修复","ja":"放置型の惑星修復","ko":"방치형 행성 복구","es":"Restauración incremental","pt-BR":"Restauração incremental","fr":"Restauration incrémentale","de":"Idle-Aufbau","it":"Restauro incrementale","ru":"Восстановление планет","hi":"ग्रहों की मरम्मत","ar":"ترميم تدريجي"},
       description: {"__localizedExact":true,"en":"Sweep across repair robots, bring five planets to life and hatch block animals.","zh-Hant":"滑過修復機器人，讓五顆星球重獲生機，孵化方塊動物。","zh-Hans":"滑过修复机器人，让五颗星球重获生机，孵化方块动物。","ja":"修復ロボットをなぞり、5つの惑星に生命を取り戻して、ブロック動物を孵化させよう。","ko":"복구 로봇을 스쳐 다섯 행성에 생기를 되찾고 블록 동물을 부화시키세요.","es":"Desliza sobre los robots, revive cinco planetas e incuba animales de bloques.","pt-BR":"Passe pelos robôs, restaure cinco planetas e choque ovos de bichos em blocos.","fr":"Balayez les robots, ranimez cinq planètes et faites éclore des animaux cubiques.","de":"Streiche über Reparaturroboter, belebe fünf Planeten und brüte Blocktiere aus.","it":"Scorri sui robot, riporta in vita cinque pianeti e fai schiudere gli animali a blocchi.","ru":"Проведите по роботам, оживите пять планет и выведите кубических зверей.","hi":"रोबोटों पर उँगली फिराएँ, पाँच ग्रहों को सँवारें और ब्लॉक जीवों के अंडे सेएँ।","ar":"مرّر فوق روبوتات الترميم، وأحيِ خمسة كواكب، وفقّس حيوانات مكعبة."},
       ages: ["9", "family"], categories: ["Management"], skills: ["Planning", "Observation"],
       tags: ["Idle", "Resource Management", "Collection"], difficulty: "Easy", estimatedPlayTime: "3–6 minutes",
       art: { kind: "image", background: "games/block-planet-repair/art/cover.webp?wp-media=81eb4bba2d329a45", hideHero: true },
+      previewVideo: "assets/previews/block-planet-repair-battle.webm",
       relatedGameRules: { requirePublic: true, gameIds: ["block-dig-crew", "animal-zoo-idle"] },
     },
     {
