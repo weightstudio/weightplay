@@ -1,4 +1,4 @@
-@import url('./demon-assault-v4.css?wp-media=e68b67da2c902bac');
+@import url('./demon-assault-v4.css?wp-media=24d73496cf5a8495');
 #liveGame{grid-template-rows:52px 40px 47px minmax(0,1fr) 66px 92px}
 #dailyStatusLine{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 18px;background:#233448;border-bottom:1px solid #93aec044;z-index:3;font-size:11px;color:#e4ebf3;min-width:0}
 #dailyState{color:#ffe3a6;white-space:nowrap}#dailyNext{text-align:right;overflow-wrap:anywhere;font-size:10px}

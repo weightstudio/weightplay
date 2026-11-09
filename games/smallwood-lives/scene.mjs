@@ -1,6 +1,6 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=e68b67da2c902bac';
-import {seededRandom} from './content.mjs?wp-media=e68b67da2c902bac';
-import {weather} from './model.mjs?wp-media=e68b67da2c902bac';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=24d73496cf5a8495';
+import {seededRandom} from './content.mjs?wp-media=24d73496cf5a8495';
+import {weather} from './model.mjs?wp-media=24d73496cf5a8495';
 
 // Original editable Block Animals mesh library. Every visible coloured part is
 // actual world geometry; batches retain per-face lighting and contact shadows.
