@@ -116,14 +116,14 @@ window.WONDER_LOBBY = {
     ],
     // Third General hall: short, timely, original games. These IDs also stay in
     // generalGameIds so the Kids catalog's non-General rule excludes them.
-    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering", "tomorrow-share", "rainline-chase", "tidegate-relay"],
+    topicGameIds: ["traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering", "tomorrow-share", "rainline-chase", "tidegate-relay", "silicon-shift"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
     {
-      id: "silicon-shift", audience: "general", status: "planned", internalOnly: true,
-      href: "games/silicon-shift/", internalTrial: "/games/silicon-shift/index.html?preview=1",
+      id: "silicon-shift", audience: "general", status: "playable",
+      href: "games/silicon-shift/", previewVideo: "assets/previews/silicon-shift-battle.webm",
       title: { __localizedExact: true, en: "Silicon Shift", "zh-Hant": "矽光校準", "zh-Hans": "硅光校准", ja: "シリコン調整室", ko: "실리콘 교정실", es: "Turno de Silicio", "pt-BR": "Turno de Silício", fr: "Relais de silicium", de: "Siliziumschicht", it: "Turno al silicio", ru: "Кремниевая смена", hi: "सिलिकॉन पारी", ar: "وردية السيليكون" },
       type: { en: "Circuit puzzle", "zh-Hant": "電路益智", "zh-Hans": "电路益智", ja: "回路パズル", ko: "회로 퍼즐", es: "Puzle de circuitos", "pt-BR": "Quebra-cabeça de circuitos", fr: "Puzzle de circuits", de: "Schaltkreisrätsel", it: "Rompicapo di circuiti", ru: "Головоломка с цепями", hi: "परिपथ पहेली", ar: "لغز الدارات" },
       description: { en: "Trace test pulses and wire one circuit to pass every case.", "zh-Hant": "追蹤測試訊號，讓同一張電路通過每組測試。", "zh-Hans": "追踪测试信号，让同一张电路通过每组测试。", ja: "試験信号を追い、一つの回路ですべての試験を通そう。", ko: "시험 신호를 추적해 하나의 회로로 모든 검사를 통과하세요.", es: "Sigue los pulsos y configura un circuito que supere todas las pruebas.", "pt-BR": "Siga os pulsos e monte um circuito que passe em todos os testes.", fr: "Suis les impulsions et câble un circuit qui réussit chaque test.", de: "Verfolge Testimpulse und verdrahte einen Schaltkreis für alle Prüfungen.", it: "Segui gli impulsi e cabla un circuito che superi ogni prova.", ru: "Проследите импульсы и настройте одну цепь для всех проверок.", hi: "परीक्षण संकेत देखें और एक ही परिपथ से हर जाँच पूरी करें।", ar: "تتبّع نبضات الاختبار واضبط دارة واحدة لاجتياز كل الحالات." },

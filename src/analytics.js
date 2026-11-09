@@ -5,7 +5,7 @@ if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = ne
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 // BEGIN generated from src/lobby-data.js?wp-media=d1030b4eb55bb9f5 audiences.topicGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=d1030b4eb55bb9f5
-if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(["traffic-jam-diner","robot-dog-showtime","flying-tram","smallwood-lives","gilded-gathering","tomorrow-share","rainline-chase","tidegate-relay"]);
+if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(["traffic-jam-diner","robot-dog-showtime","flying-tram","smallwood-lives","gilded-gathering","tomorrow-share","rainline-chase","tidegate-relay","silicon-shift"]);
 // END generated topic classification
 (function () {
   if (window.WonderAnalytics) return;

@@ -1,20 +1,199 @@
 <!doctype html>
-<html lang="zh-Hant" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localized-content.js?wp-media=d1030b4eb55bb9f5#renderEntry" data-wp-entry-poster="/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5" data-wp-publication-locale-completion>
-<head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/silicon-shift/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/silicon-shift/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+<html lang="zh-Hant" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localized-content.js?wp-media=d1030b4eb55bb9f5#renderEntry" data-wp-entry-poster="/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=d1030b4eb55bb9f5`, '/src/diamond-special-progression.js?wp-media=d1030b4eb55bb9f5', '/src/diamond-special-progression.css?wp-media=d1030b4eb55bb9f5'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/silicon-shift/">
-<meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="weightplay-audience" content="general">
-<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-page-info.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<link rel="stylesheet" href="/games/silicon-shift/game.css?wp-build=b58e5ca8a75f76f1&wp-media=d1030b4eb55bb9f5" data-wp-entry-required>
-<script src="/src/game-layout-config.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-page-info.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<link rel="stylesheet" href="/games/silicon-shift/game.css?wp-build=0c1bcc80a85b75f0&wp-media=d1030b4eb55bb9f5" data-wp-entry-required="">
+<script src="/src/game-layout-config.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required=""></script>
 <script src="/src/site-config.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
 <script src="/src/weightplay-audio.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
 <script src="/src/i18n.js?wp-media=d1030b4eb55bb9f5"></script>
@@ -25,7 +204,7 @@
 <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=d1030b4eb55bb9f5"></script>
 <title>矽光校準 | WeightPlay</title>
 <meta name="description" content="追蹤測試訊號，讓同一張電路通過每組測試。">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://weightplay.com/zh-tw/games/silicon-shift/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/silicon-shift/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/silicon-shift/">
@@ -53,24 +232,24 @@
 <meta name="twitter:image" content="https://weightplay.com/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5">
 <script type="application/ld+json" id="gameSchema">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"矽光校準","description":"追蹤測試訊號，讓同一張電路通過每組測試。","url":"https://weightplay.com/zh-tw/games/silicon-shift/","image":"https://weightplay.com/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5","inLanguage":"zh-Hant","genre":"電路益智","gamePlatform":"Web","operatingSystem":"Web","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio"}},{"@type":"FAQPage","inLanguage":"zh-Hant","mainEntity":[{"@type":"Question","name":"為什麼過閘後燈會改變？","acceptedAnswer":{"@type":"Answer","text":"反相標記會在閘後翻轉燈光。探針揭露暗藏標記；聯鎖及負載上限也會限制接法。"}},{"@type":"Question","name":"怎麼找出遮住的反相標記？","acceptedAnswer":{"@type":"Answer","text":"點選遮住的閘來量測。 反相標記已顯示。"}},{"@type":"Question","name":"不買面板能全通嗎？","acceptedAnswer":{"@type":"Answer","text":"支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。"}},{"@type":"Question","name":"進度會帶到另一台裝置嗎？","acceptedAnswer":{"@type":"Answer","text":"用同一組接線交驗全部案例。看實測亮點、免費重試或前往下一班。進度存在這個瀏覽器。 支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。"}}]}]}</script>
 </head>
-<body data-internal-only="true" class="wp-frame-main-active" data-wp-game-owned-guide data-wp-interface-candidate="9" data-wp-play-ui="1" data-wp-game-id="silicon-shift" data-game-id="silicon-shift" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0" data-tutorial-owner="action-guide" data-tutorial-auto-show="false">
-<div id="gameFrame" data-wp-frame-root data-wp-entry-root>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-interface-candidate="9" data-wp-play-ui="1" data-wp-game-id="silicon-shift" data-game-id="silicon-shift" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0" data-tutorial-owner="action-guide" data-tutorial-auto-show="false"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="矽光校準" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入矽光校準…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入矽光校準…" aria-valuetext="正在載入矽光校準…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-wp-entry-root="" data-wp-frame="2">
   <div id="mainGroup" class="wp-frame-main-flow">
     <main id="mainScreen" class="main-screen" data-wp-frame-scene="main">
-      <header id="mainHeader" data-wp-frame-header="main">
-        <a id="mainReturn" href="/zh-tw/?preview=1" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">←<img src="/assets/weightplay-logo.png.webp?wp-media=d1030b4eb55bb9f5" alt="" width="26" height="26"></a>
-        <h1 id="gameTitle" data-wp-frame-title data-runtime-localize="off">矽光校準</h1>
+      <header id="mainHeader" data-wp-frame-header="main" class="wp-frame-header">
+        <a id="mainReturn" href="/zh-tw/" data-wp-return="main" aria-label="WeightPlay" class="wp-frame-return">←<img src="/assets/weightplay-logo.png.webp?wp-media=d1030b4eb55bb9f5" alt="" width="26" height="26" class="wp-frame-lobby-logo"></a>
+        <h1 id="gameTitle" data-wp-frame-title="" data-runtime-localize="off">矽光校準</h1>
       </header>
       <section id="mainHero" data-wp-frame-content="main">
-        <img id="cover" class="main-poster cover" data-wp-frame-poster src="/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5" alt="矽光校準" width="1254" height="1254" fetchpriority="high">
-        <div class="main-copy menu-copy" data-wp-frame-copy>
-          <p id="description" class="main-summary" data-wp-frame-summary>追蹤測試訊號，讓同一張電路通過每組測試。</p>
-          <p id="mainProgress" class="main-progress" data-wp-frame-progress></p>
+        <img id="cover" class="main-poster cover" data-wp-frame-poster="" src="/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5" alt="矽光校準" width="1254" height="1254" fetchpriority="high" data-wp-interface7-poster="true">
+        <div class="main-copy menu-copy" data-wp-frame-copy="">
+          <p id="description" class="main-summary" data-wp-frame-summary="">追蹤測試訊號，讓同一張電路通過每組測試。</p>
+          <p id="mainProgress" class="main-progress" data-wp-frame-progress=""></p>
           <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>開始</button>
         </div>
       </section>
     </main>
-    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localized-content.js?wp-media=d1030b4eb55bb9f5#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide aria-labelledby="guideTitle"><h2 id="guideTitle">遊戲指南</h2><button id="replayLesson" type="button" data-wp-frame-action="secondary">重玩教學</button><!-- silicon-guide:start --><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><div class="game-info-fact"><strong>電路益智</strong></div><div class="game-info-fact"><strong>班次 · 60</strong></div><div class="game-info-fact"><strong>訊號工坊</strong></div><div class="game-info-fact"><strong>異相實驗室</strong></div></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><article class="game-info-section"><h3>目標</h3><p data-wp-intro-faq-source>讓每個輸出都符合目標。</p></article><article class="game-info-section"><h3>怎麼玩</h3><p>沿著銅線追蹤每個輸入。旋轉閘能交換兩條路；用一格試送可見實際亮點。</p></article><article class="game-info-section"><h3>操作與規則</h3><p>反相標記會在閘後翻轉燈光。探針揭露暗藏標記；聯鎖及負載上限也會限制接法。</p></article><article class="game-info-section"><h3>完成班次</h3><p>用同一組接線交驗全部案例。看實測亮點、免費重試或前往下一班。進度存在這個瀏覽器。</p></article><article class="game-info-section"><h3>題材背景</h3><p>台灣公布的 2026 年 10 月出口金額創下單月新高。遊戲想像一座面對需求增加的虛構測試工坊。</p></article><article class="game-info-section"><h3>玩家與存檔</h3><p>支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。</p></article></div><div id="gameGuideFaq" data-wp-content-slot="guide-faq"><section class="game-info-section"><h3>FAQ</h3><details><summary>為什麼過閘後燈會改變？</summary><p>反相標記會在閘後翻轉燈光。探針揭露暗藏標記；聯鎖及負載上限也會限制接法。</p></details><details><summary>怎麼找出遮住的反相標記？</summary><p>點選遮住的閘來量測。 反相標記已顯示。</p></details><details><summary>不買面板能全通嗎？</summary><p>支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。</p></details><details><summary>進度會帶到另一台裝置嗎？</summary><p>用同一組接線交驗全部案例。看實測亮點、免費重試或前往下一班。進度存在這個瀏覽器。 支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。</p></details></section></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>相關遊戲</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-game-id="animal-sunbeam-garden" data-wp-related-id="animal-sunbeam-garden" href="/zh-tw/games/animal-sunbeam-garden/"><img src="/assets/animal-sunbeam-garden-cover-general-v3.webp?wp-media=d1030b4eb55bb9f5" alt="" width="96" height="96" loading="lazy"><strong>陽光花園：鏡面導光</strong></a><a class="game-info-related-card" data-game-id="code-breaker" data-wp-related-id="code-breaker" href="/zh-tw/games/code-breaker/"><img src="/assets/code-breaker-cover-v2.webp?wp-media=d1030b4eb55bb9f5" alt="" width="96" height="96" loading="lazy"><strong>密碼推理</strong></a></div></section></div><!-- silicon-guide:end --><article class="game-info-section" data-wp-intro-faq><h3>常見問題</h3><dl><dt>這款遊戲要做什麼？</dt><dd>讓每個輸出都符合目標。</dd></dl></article></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localized-content.js?wp-media=d1030b4eb55bb9f5#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle"><h2 id="guideTitle">遊戲指南</h2><button id="replayLesson" type="button" data-wp-frame-action="secondary">重玩教學</button><!-- silicon-guide:start --><div id="gameGuideFacts" class="game-info-facts" data-wp-content-slot="guide-facts"><div class="game-info-fact"><strong>電路益智</strong></div><div class="game-info-fact"><strong>班次 · 60</strong></div><div class="game-info-fact"><strong>訊號工坊</strong></div><div class="game-info-fact"><strong>異相實驗室</strong></div></div><div id="gameGuideSections" class="game-info-sections" data-wp-content-slot="guide-sections"><article class="game-info-section"><h3>目標</h3><p data-wp-intro-faq-source>讓每個輸出都符合目標。</p></article><article class="game-info-section"><h3>怎麼玩</h3><p>沿著銅線追蹤每個輸入。旋轉閘能交換兩條路；用一格試送可見實際亮點。</p></article><article class="game-info-section"><h3>操作與規則</h3><p>反相標記會在閘後翻轉燈光。探針揭露暗藏標記；聯鎖及負載上限也會限制接法。</p></article><article class="game-info-section"><h3>完成班次</h3><p>用同一組接線交驗全部案例。看實測亮點、免費重試或前往下一班。進度存在這個瀏覽器。</p></article><article class="game-info-section"><h3>題材背景</h3><p>台灣公布的 2026 年 10 月出口金額創下單月新高。遊戲想像一座面對需求增加的虛構測試工坊。</p></article><article class="game-info-section"><h3>玩家與存檔</h3><p>支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。</p></article></div><div id="gameGuideFaq" data-wp-content-slot="guide-faq"><section class="game-info-section"><h3>FAQ</h3><details><summary>為什麼過閘後燈會改變？</summary><p>反相標記會在閘後翻轉燈光。探針揭露暗藏標記；聯鎖及負載上限也會限制接法。</p></details><details><summary>怎麼找出遮住的反相標記？</summary><p>點選遮住的閘來量測。 反相標記已顯示。</p></details><details><summary>不買面板能全通嗎？</summary><p>支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。</p></details><details><summary>進度會帶到另一台裝置嗎？</summary><p>用同一組接線交驗全部案例。看實測亮點、免費重試或前往下一班。進度存在這個瀏覽器。 支援觸控、滑鼠，或 Tab 與 Enter。遊戲不用帳號；通關與面板保存在此瀏覽器。清除網站資料會移除紀錄。鑽石面板是選購外觀，完全不影響關卡規則。</p></details></section></div><div id="gameGuideRelated" data-wp-content-slot="guide-related"><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>相關遊戲</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-game-id="animal-sunbeam-garden" data-wp-related-id="animal-sunbeam-garden" href="/zh-tw/games/animal-sunbeam-garden/"><img src="/assets/animal-sunbeam-garden-cover-general-v3.webp?wp-media=d1030b4eb55bb9f5" alt="" width="96" height="96" loading="lazy"><strong>陽光花園：鏡面導光</strong></a><a class="game-info-related-card" data-game-id="code-breaker" data-wp-related-id="code-breaker" href="/zh-tw/games/code-breaker/"><img src="/assets/code-breaker-cover-v2.webp?wp-media=d1030b4eb55bb9f5" alt="" width="96" height="96" loading="lazy"><strong>密碼推理</strong></a></div></section></div><!-- silicon-guide:end --><article class="game-info-section" data-wp-intro-faq><h3>常見問題</h3><dl><dt>這款遊戲要做什麼？</dt><dd>讓每個輸出都符合目標。</dd></dl></article></section>
   </div>
   <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5" hidden>
     <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
@@ -126,10 +305,10 @@
 </div>
 <script src="/src/edge-guard.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
 <script src="/src/stage-rail-i9.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
-<script src="/src/game-play-ui.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
-<script src="/src/battle-canvas-standard.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
-<script src="/src/game-screen-frame.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required=""></script>
+<script src="/src/battle-canvas-standard.js?wp-media=d1030b4eb55bb9f5" data-wp-entry-required=""></script>
+<script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=d1030b4eb55bb9f5" data-wp-entry-required=""></script>
 <script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
-<script type="module" src="/games/silicon-shift/game.mjs?wp-build=e027fae107e6b28b&wp-media=d1030b4eb55bb9f5" data-wp-entry-required></script>
+<script type="module" src="/games/silicon-shift/game.mjs?v=entry-initial-b3fc3da6547b&amp;wp-build=e027fae107e6b28b&wp-media=d1030b4eb55bb9f5" data-wp-entry-required=""></script>
 </body>
 </html>

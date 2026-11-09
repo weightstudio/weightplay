@@ -28,6 +28,7 @@
     ["cinderburrow", "Strategy", "Simulation", "Management"],
     ["mosslight-museum", "Management", "Strategy", "Route Planning"],
     ["wingseal-post", "Simulation", "Strategy", "Comparison", "Sequencing"],
+    ["silicon-shift", "Puzzle", "Strategy", "Route Planning"],
     ["tidegate-relay", "Puzzle", "Strategy", "Route Planning"],
     ["prismkin-rescue", "Strategy", "Puzzle", "Spatial Planning", "Route Planning"],
     ["galevault-atlas", "Strategy", "Puzzle", "Spatial Planning", "Route Planning", "Construction"],

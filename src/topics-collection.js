@@ -126,7 +126,101 @@
     "hi": ["घटना","चांगहुआ के तट से अंदरूनी इलाकों तक नई सड़क","मार्ग 76 का पश्चिमी विस्तार तट को मौजूदा सड़क नेटवर्क से जोड़ता है।","नया खंड 8 नवंबर 2026 को दोपहर में खोला गया। समारोह एक दिन पहले हुआ था। यह फ़ांगयुआन क्षेत्र को मौजूदा मार्ग 76 से जोड़ता है।","खेल का बंदरगाह, गाड़ियाँ और ज्वार द्वार काल्पनिक हैं। नई सड़क खोलने की स्थिति से बारी आधारित यातायात पहेली बनाई गई है।","घटना की पृष्ठभूमि"],
     "ar": ["خلفية الحدث","طريق جديد من ساحل تشانغهوا إلى الداخل","يربط التمديد الغربي للطريق 76 الساحل بشبكة الطرق القائمة.","فُتح المقطع الجديد ظهر 8 نوفمبر 2026 بعد حفل أُقيم في اليوم السابق. ويربط منطقة فانغيوان بالطريق 76 القائم.","الميناء والمركبات وبوابة المد في اللعبة خيالية. افتتاح طريق جديد ألهم لغزًا لإدارة المرور بالدور.","خلفية الخبر"],
   };
+  const siliconShiftNews = {
+  "en": [
+    "THE STORY",
+    "Taiwan reports a record month for exports",
+    "The October preliminary figures mark a new monthly high.",
+    "Taiwan’s Ministry of Finance released preliminary customs figures on 9 November 2026. Exports in October reached US$96.76 billion, up 58.9% from a year earlier.",
+    "Silicon Shift imagines a workshop with more orders to check. Route pulses, uncover phase marks and test every case with one wiring plan. The workshop and its faults are fictional."
+  ],
+  "zh-Hant": [
+    "事件背景",
+    "十月出口寫下新的單月紀錄",
+    "海關初步統計顯示，台灣出口金額再創月度新高。",
+    "財政部在 2026 年 11 月 9 日公布海關初步統計。台灣 10 月出口為 967.6 億美元，比上年同期增加 58.9%。",
+    "《矽光校準》從出貨增加的情境出發，設計一座需要加快驗收的虛構工坊。玩家切換光路、量測反相標記，再用一組接線交驗所有案例。工坊和接線故障都是遊戲設定。"
+  ],
+  "zh-Hans": [
+    "事件背景",
+    "十月出口刷新单月纪录",
+    "海关初步统计显示，台湾出口金额达到新的月度高点。",
+    "财政部门在 2026 年 11 月 9 日公布海关初步统计。台湾 10 月出口为 967.6 亿美元，较上年同期增加 58.9%。",
+    "《硅光校准》把出货增加改编成虚构工坊的检验挑战。玩家切换光路，测量反相标记，再用同一组接线验收所有案例。工坊和接线故障均为虚构。"
+  ],
+  "ja": [
+    "出来事",
+    "台湾の10月の輸出額、単月の最高を更新",
+    "税関の速報値で月間輸出額が新たな水準に達しました。",
+    "台湾の財政部は2026年11月9日に貿易統計の速報値を公表しました。10月の輸出額は967億6000万米ドルで、前年同月比58.9％増でした。",
+    "ゲームは注文が増えた架空の工房が舞台です。経路を切り替え、反転の印を測り、同じ配線で全ケースを検定します。工房や配線の不具合は創作です。"
+  ],
+  "ko": [
+    "사건 배경",
+    "대만의 10월 수출액, 월간 최고 기록",
+    "세관 잠정 통계에서 월간 수출액이 새 기록을 세웠습니다.",
+    "대만 재정부는 2026년 11월 9일 세관 잠정 통계를 발표했습니다. 10월 수출액은 967억 6천만 달러로, 전년 동월보다 58.9% 늘었습니다.",
+    "게임에서는 주문이 늘어난 가상의 공방을 운영합니다. 신호 경로를 바꾸고 반전 표시를 측정한 뒤 같은 배선으로 모든 검사를 통과하세요. 공방과 배선 문제는 창작입니다."
+  ],
+  "es": [
+    "EL HECHO",
+    "Octubre marca un récord de exportación en Taiwán",
+    "El dato preliminar de aduanas alcanza un nuevo máximo mensual.",
+    "El Ministerio de Finanzas de Taiwán publicó sus cifras preliminares el 9 de noviembre de 2026. Las exportaciones de octubre sumaron 96 760 millones de dólares, un 58,9 % más que un año antes.",
+    "El juego imagina un taller con más pedidos que revisar. Desvía pulsos, descubre marcas de fase y valida todos los casos con un mismo cableado. El taller y sus fallos son ficticios."
+  ],
+  "pt-BR": [
+    "O ACONTECIMENTO",
+    "Taiwan registra novo pico mensal nas exportações",
+    "Os dados preliminares de outubro mostram o maior valor de um mês.",
+    "O Ministério das Finanças de Taiwan divulgou os dados aduaneiros em 9 de novembro de 2026. As exportações de outubro somaram US$ 96,76 bilhões, alta de 58,9% ante o mesmo mês do ano anterior.",
+    "O jogo imagina uma oficina com mais encomendas para conferir. Desvie pulsos, meça marcas de fase e valide todos os casos com as mesmas conexões. A oficina e seus defeitos são fictícios."
+  ],
+  "fr": [
+    "LES FAITS",
+    "Les exportations de Taïwan atteignent un record en octobre",
+    "Les premières données douanières placent le mois au plus haut.",
+    "Le ministère taïwanais des Finances a publié ces chiffres provisoires le 9 novembre 2026. Les exportations d’octobre ont atteint 96,76 milliards de dollars américains, en hausse de 58,9 % sur un an.",
+    "Le jeu imagine un atelier qui reçoit davantage de commandes à contrôler. Dévie les impulsions, sonde les repères de phase et valide tous les cas avec un seul câblage. L’atelier et ses pannes sont fictifs."
+  ],
+  "de": [
+    "HINTERGRUND",
+    "Taiwans Exporte erreichen im Oktober einen Monatsrekord",
+    "Vorläufige Zolldaten zeigen einen neuen Höchststand.",
+    "Taiwans Finanzministerium veröffentlichte am 9. November 2026 die vorläufigen Zolldaten. Die Exporte erreichten im Oktober 96,76 Milliarden US-Dollar, 58,9 Prozent mehr als im Vorjahresmonat.",
+    "Das Spiel zeigt eine erfundene Werkstatt mit mehr Prüfaufträgen. Leite Impulse um, prüfe Phasenmarken und löse alle Fälle mit derselben Verdrahtung. Die Werkstatt und ihre Fehler sind erfunden."
+  ],
+  "it": [
+    "IL FATTO",
+    "Taiwan raggiunge un nuovo record mensile di esportazioni",
+    "I dati doganali preliminari di ottobre segnano un nuovo massimo.",
+    "Il ministero delle Finanze di Taiwan ha diffuso i dati preliminari il 9 novembre 2026. Le esportazioni di ottobre hanno raggiunto 96,76 miliardi di dollari statunitensi, il 58,9% in più rispetto a un anno prima.",
+    "Il gioco immagina un’officina con più ordini da controllare. Devia gli impulsi, misura i segni di fase e verifica tutti i casi con lo stesso cablaggio. L’officina e i guasti sono inventati."
+  ],
+  "ru": [
+    "СОБЫТИЕ",
+    "Экспорт Тайваня поставил месячный рекорд в октябре",
+    "Предварительная таможенная статистика показала новый максимум.",
+    "Министерство финансов Тайваня опубликовало предварительные данные 9 ноября 2026 года. Объём октябрьского экспорта достиг 96,76 миллиарда долларов США — на 58,9% больше, чем годом ранее.",
+    "В игре вымышленная мастерская получает больше заказов на проверку. Меняйте маршруты импульсов, находите фазовые метки и сдавайте все тесты с одной схемой. Мастерская и её неполадки вымышлены."
+  ],
+  "hi": [
+    "घटना",
+    "अक्टूबर में ताइवान का निर्यात मासिक रिकॉर्ड पर",
+    "प्रारंभिक सीमा शुल्क आँकड़ों में निर्यात का नया मासिक उच्च स्तर दर्ज हुआ।",
+    "ताइवान के वित्त मंत्रालय ने 9 नवंबर 2026 को प्रारंभिक आँकड़े जारी किए। अक्टूबर का निर्यात 96.76 अरब अमेरिकी डॉलर रहा, जो एक साल पहले से 58.9 प्रतिशत अधिक है।",
+    "खेल एक काल्पनिक कार्यशाला में बढ़ते ऑर्डरों की जाँच दिखाता है। संकेतों के रास्ते बदलें, कला के निशान खोजें और एक ही जोड़ से हर जाँच पूरी करें। कार्यशाला और उसकी खराबियाँ काल्पनिक हैं।"
+  ],
+  "ar": [
+    "خلفية الحدث",
+    "صادرات تايوان تسجل رقمًا شهريًا قياسيًا في أكتوبر",
+    "أظهرت بيانات الجمارك الأولية ارتفاع الصادرات إلى أعلى قيمة شهرية.",
+    "أعلنت وزارة المالية في تايوان الأرقام الأولية في 9 نوفمبر 2026. بلغت صادرات أكتوبر 96.76 مليار دولار أمريكي، بزيادة 58.9٪ عن الشهر نفسه قبل عام.",
+    "تتخيل اللعبة ورشة عليها فحص مزيد من الطلبات. بدّل مسار النبضات، واكشف علامات الطور، واختبر كل الحالات بالتوصيلات نفسها. الورشة والأعطال من الخيال."
+  ]
+};
   const items = [
+    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=d1030b4eb55bb9f5', cover:true, news:siliconShiftNews },
     { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=d1030b4eb55bb9f5', cover:true, news:tidegateNews },
     { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=d1030b4eb55bb9f5', cover:true, news:rainlineNews },
     { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=d1030b4eb55bb9f5', cover:true, news:gatheringNews },
