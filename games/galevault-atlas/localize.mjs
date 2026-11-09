@@ -22,9 +22,9 @@ ${k}
 <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=623885c2cc591d25" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=623885c2cc591d25" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=623885c2cc591d25" data-wp-entry-required>
-<link rel="stylesheet" href="/games/${a}/game.css?v=1&wp-media=623885c2cc591d25" data-wp-entry-required>
+<link rel="stylesheet" href="/games/${a}/game.css?v=gameplay-v2&wp-media=623885c2cc591d25" data-wp-entry-required>
 </head>
-<body ${T?"data-galevault-public":""} class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-game-id="${a}" data-wp-game-id="${a}" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0">
+<body ${T?"data-galevault-public":""} class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-game-id="${a}" data-wp-game-id="${a}" data-audience="general" data-has-stage="true" data-wp-game-version="v2" data-game-version="v2" data-wp-interface-version="0">
 <div id="gameFrame" data-wp-frame-root hidden>
  <div id="mainGroup" class="wp-frame-main-flow">
   <section id="mainScreen" data-wp-frame-scene="main">
@@ -68,7 +68,7 @@ ${k}
  </section>
  <section id="dialog" class="archive-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden><div class="archive-dialog"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogActions"></div></div></section>
  <div id="windStat"><label for="windMeter">${e("wind")}</label><meter id="windMeter" min="0" max="6" value="6"></meter><span id="windValue">6 / 6</span></div>
- <div id="pageStat"></div>
+ <div id="pageStat" role="group"></div>
 </div>
 <script src="/src/edge-guard.js?wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
 <script src="/src/stage-rail-i9.js?wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
@@ -76,7 +76,7 @@ ${k}
 <script src="/src/battle-canvas-standard.js?wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
 <script src="/src/game-screen-frame.js?wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
 <script defer src="/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
-<script type="module" src="/games/${a}/game.mjs?v=1&wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
+<script type="module" src="/games/${a}/game.mjs?v=gameplay-v2&wp-media=623885c2cc591d25" data-wp-entry-required><\/script>
 </body>
 </html>
 `}if(l(renderEntry,"renderEntry"),process.argv[1]&&d.resolve(process.argv[1])===b(import.meta.url)){c.writeFileSync(d.join(w,j,"index.html"),renderEntry("en",{canonical:!0}));for(const[t,s]of Object.entries(o)){const e=d.join(w,s,j);c.mkdirSync(e,{recursive:!0}),c.writeFileSync(d.join(e,"index.html"),renderEntry(t))}}
