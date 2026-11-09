@@ -1,9 +1,9 @@
-import {STAGES,SAVE_KEY,applyMove,aligned,solve,parFor,highestUnlocked,settleSave,vectors} from './core.mjs?wp-media=24d73496cf5a8495';
-import {readSave,recoverPurchase,purchaseMoonstone} from './economy.mjs?wp-media=24d73496cf5a8495';
-import {NEW_COPY,GLYPHS} from './copy.mjs?wp-media=24d73496cf5a8495';
-import {renderConservatoryGuide} from './guide.mjs?wp-media=24d73496cf5a8495';
-import {ConservatoryScene} from './scene.mjs?wp-media=24d73496cf5a8495';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=24d73496cf5a8495';
+import {STAGES,SAVE_KEY,applyMove,aligned,solve,parFor,highestUnlocked,settleSave,vectors} from './core.mjs?wp-media=81eb4bba2d329a45';
+import {readSave,recoverPurchase,purchaseMoonstone} from './economy.mjs?wp-media=81eb4bba2d329a45';
+import {NEW_COPY,GLYPHS} from './copy.mjs?wp-media=81eb4bba2d329a45';
+import {renderConservatoryGuide} from './guide.mjs?wp-media=81eb4bba2d329a45';
+import {ConservatoryScene} from './scene.mjs?wp-media=81eb4bba2d329a45';
+import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=81eb4bba2d329a45';
 
 const $=id=>document.getElementById(id), roman=['I','II','III'];
 const localeMap={'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'};
@@ -186,7 +186,7 @@ function stageRecord(index){
   return {id:'garden-'+s.id,kicker:String(s.id).padStart(2,'0')+' / 30',title:title(s),subtitle:t('arcs')[s.arc],
     status:cleared?'✓ '+(best?t('best')+' '+best:t('complete')):'',summary:t('arcs')[s.arc],
     details:[t('phase')+' '+s.phases.length+' · '+t('par')+' '+parFor(s)],locked:!practiceSession&&s.id>highestUnlocked(save),cleared,
-    poster:'/assets/interface7-redrawn/animal-ring-garden.webp?wp-media=24d73496cf5a8495',posterPosition:'center',rewardState:practiceSession||!shared?'unknown':shared.completions['animal-ring-garden:stage-garden-'+s.id]?'collected':'not-collected'};
+    poster:'/assets/interface7-redrawn/animal-ring-garden.webp?wp-media=81eb4bba2d329a45',posterPosition:'center',rewardState:practiceSession||!shared?'unknown':shared.completions['animal-ring-garden:stage-garden-'+s.id]?'collected':'not-collected'};
 }
 function headerState(){return {stageName:title(STAGES[state.browse]),stageIndex:(state.browse+1)+' / 30',battleName:title(stage()),turns:t('turns')+' '+state.turns};}
 
