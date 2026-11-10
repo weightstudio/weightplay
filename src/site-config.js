@@ -1,12 +1,12 @@
-// BEGIN generated from src/lobby-data.js?wp-media=ae25ea75a3a3cbff audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=ae25ea75a3a3cbff
+// BEGIN generated from src/lobby-data.js?wp-media=12f1a9634182c9e7 audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=12f1a9634182c9e7
 if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
 // END generated tabletop classification
-// BEGIN generated from src/lobby-data.js?wp-media=ae25ea75a3a3cbff audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=ae25ea75a3a3cbff
+// BEGIN generated from src/lobby-data.js?wp-media=12f1a9634182c9e7 audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=12f1a9634182c9e7
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 
 window.WONDER_SITE = {
-  version: "v0.44.32",
+  version: "v0.44.33",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
@@ -28,12 +28,12 @@ window.WONDER_SITE = {
 
 // Every lobby and game that loads the shared site configuration also owns the
 // same anti-selection and anti-double-tap boundary. Individual pages may still
-// include edge-guard.js?wp-media=ae25ea75a3a3cbff explicitly; the guard is idempotent.
+// include edge-guard.js?wp-media=12f1a9634182c9e7 explicitly; the guard is idempotent.
 if (typeof document !== "undefined" && !window.__weightPlayEdgeGuardRequested) {
   window.__weightPlayEdgeGuardRequested = true;
   const currentScript = document.currentScript;
   const guard = document.createElement("script");
-  guard.src = new URL("edge-guard.js?wp-media=ae25ea75a3a3cbff", currentScript?.src || document.baseURI).href;
+  guard.src = new URL("edge-guard.js?wp-media=12f1a9634182c9e7", currentScript?.src || document.baseURI).href;
   guard.dataset.wpSharedEdgeGuard = "true";
   document.head.append(guard);
 }
@@ -46,7 +46,7 @@ if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(loca
   window.__weightPlaySharedInterfaceRequested = true;
   const currentScript = document.currentScript;
   const bootstrap = document.createElement("script");
-  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20261022-registered-poster-fallback1&wp-media=ae25ea75a3a3cbff", currentScript?.src || document.baseURI).href;
+  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20261022-registered-poster-fallback1&wp-media=12f1a9634182c9e7", currentScript?.src || document.baseURI).href;
   bootstrap.dataset.wpSharedInterface = "7";
   document.head.append(bootstrap);
 }
@@ -60,7 +60,7 @@ if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(loca
       || document.querySelector('script[data-wp-analytics-loader]')) return;
     window.__weightPlayAnalyticsRequested = true;
     const script = document.createElement("script");
-    script.src = new URL("/src/analytics.js?wp-media=ae25ea75a3a3cbff", location.origin).href;
+    script.src = new URL("/src/analytics.js?wp-media=12f1a9634182c9e7", location.origin).href;
     script.async = true;
     script.dataset.wpAnalyticsLoader = "true";
     document.head.append(script);

@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="hi" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=12f1a9634182c9e7#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/bellshift-atelier/art/cover.webp?wp-media=12f1a9634182c9e7" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=12f1a9634182c9e7`, '/src/diamond-special-progression.js?wp-media=12f1a9634182c9e7', '/src/diamond-special-progression.css?wp-media=12f1a9634182c9e7'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
+
+
+
+  <base href="/games/bellshift-atelier/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- bell-meta:start -->
+<title>घंटी की कार्यशाला | WeightPlay</title>
+<meta name="description" content="दो कारीगरों के आदेश सजाएँ और बिजली खत्म होने से पहले सही घंटियाँ बजाएँ।">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://weightplay.com/hi/games/bellshift-atelier/">
+<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/bellshift-atelier/">
+<link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/bellshift-atelier/">
+<link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/bellshift-atelier/">
+<link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/bellshift-atelier/">
+<link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/bellshift-atelier/">
+<link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/bellshift-atelier/">
+<link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/bellshift-atelier/">
+<link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/bellshift-atelier/">
+<link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/bellshift-atelier/">
+<link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/bellshift-atelier/">
+<link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/bellshift-atelier/">
+<link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/bellshift-atelier/">
+<link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/bellshift-atelier/">
+<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/bellshift-atelier/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WeightPlay">
+<meta property="og:url" content="https://weightplay.com/hi/games/bellshift-atelier/">
+<meta property="og:title" content="घंटी की कार्यशाला">
+<meta property="og:description" content="दो कारीगरों के आदेश सजाएँ और बिजली खत्म होने से पहले सही घंटियाँ बजाएँ।">
+<meta property="og:image" content="https://weightplay.com/games/bellshift-atelier/art/cover.webp?wp-media=12f1a9634182c9e7">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"घंटी की कार्यशाला","description":"दो कारीगरों के आदेश सजाएँ और बिजली खत्म होने से पहले सही घंटियाँ बजाएँ।","url":"https://weightplay.com/hi/games/bellshift-atelier/","image":"https://weightplay.com/games/bellshift-atelier/art/cover.webp?wp-media=12f1a9634182c9e7","inLanguage":"hi","genre":"स्वचालन पहेली","gamePlatform":"Web browser","applicationCategory":"GameApplication"},{"@type":"FAQPage","inLanguage":"hi","mainEntity":[{"@type":"Question","name":"क्या घंटियाँ सुनना ज़रूरी है?","acceptedAnswer":{"@type":"Answer","text":"नहीं। आकार, पटरियाँ और सूचक माँगे गए और बजे सुर दिखाते हैं।"}}]}]}</script>
+<!-- bell-meta:end -->
+  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/bellshift-atelier/style.css?wp-build=d98b6c1e83074548&wp-media=12f1a9634182c9e7" data-wp-entry-required="">
+  <script src="/src/game-layout-config.js?wp-media=12f1a9634182c9e7" data-wp-entry-required=""></script>
+  <script src="/src/weightplay-audio.js?wp-media=12f1a9634182c9e7" data-wp-entry-required></script>
+  <script src="/src/site-config.js?wp-media=12f1a9634182c9e7" data-wp-entry-required></script>
+  <script src="/src/i18n.js?wp-media=12f1a9634182c9e7"></script>
+  <script src="/src/game-title-registry.js?wp-media=12f1a9634182c9e7" data-wp-game-title-registry></script>
+  <script defer src="/src/public-game-catalog.js?wp-media=12f1a9634182c9e7" data-wp-public-game-catalog></script>
+  <script src="/src/wallet.js?wp-media=12f1a9634182c9e7" data-wp-entry-required></script>
+  <script src="/src/weightplay-castle.js?wp-media=12f1a9634182c9e7" data-weightplay-castle-runtime></script>
+  <script src="/src/analytics.js?wp-media=12f1a9634182c9e7"></script>
+  <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=12f1a9634182c9e7"></script>
+</head>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="bellshift-atelier" data-game-id="bellshift-atelier" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="घंटी की कार्यशाला" data-state="loading" data-error-title="गेम लोड नहीं हो सका" data-error-message="कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें।" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">घंटी की कार्यशाला लोड हो रहा है…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="घंटी की कार्यशाला लोड हो रहा है…" aria-valuetext="घंटी की कार्यशाला लोड हो रहा है…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">फिर कोशिश करें</button><a class="wp-game-entry-loader-button" href="/hi/">लॉबी में लौटें</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>कुछ गेम संसाधन लोड नहीं हुए। फिर कोशिश करें या लॉबी में लौटें। <a href="/hi/">लॉबी में लौटें</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=12f1a9634182c9e7" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-wp-entry-root="" data-wp-frame="2" hidden>
+  <div id="mainGroup" class="wp-frame-main-flow">
+    <section id="mainScreen" data-wp-frame-scene="main">
+      <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
+        <a id="mainReturn" href="/hi/" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=12f1a9634182c9e7" alt="" width="26" height="26"></a>
+        <h1 id="gameTitle" data-wp-frame-title="" data-runtime-localize="off">घंटी की कार्यशाला</h1>
+      </header>
+      <section id="mainHero" data-wp-frame-content="main">
+        <img id="cover" src="/games/bellshift-atelier/art/cover.webp?wp-media=12f1a9634182c9e7" width="1254" height="1254" data-wp-frame-poster="" data-wp-interface7-poster="true" alt="घंटी की कार्यशाला" fetchpriority="high">
+        <div data-wp-frame-copy="">
+          <p id="description" data-wp-frame-summary="">दो कारीगरों के आदेश सजाएँ और बिजली खत्म होने से पहले सही घंटियाँ बजाएँ।</p>
+          <p id="mainProgress" data-wp-frame-progress=""></p>
+          <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>शुरू करें</button>
+        </div>
+      </section>
+    </section>
+    <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=12f1a9634182c9e7#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
+      <h2 id="guideTitle">खेल मार्गदर्शिका</h2>
+      <!-- bell-guide:start -->
+<div class="bell-guide"><article><h3>लक्ष्य</h3><p data-wp-intro-faq-source>दो कारीगरों और एक साझा बिजली स्रोत से सभी माँगे गए सुर बजाएँ।</p></article><article><h3>कैसे खेलें</h3><p>किसी पटरी की ताल चुनें, आदेश जोड़ें और अभ्यास करें। सूचक के साथ देखें कि दोनों कारीगर कैसे साथ काम करते हैं।</p></article><article><h3>नियंत्रण और नियम</h3><p>घंटी बजाने से पहले जगह बदलें। दोनों पटरियाँ बिजली साझा करती हैं और उसी ताल की चार्जिंग खर्च से पहले होती है। आगे हवा, ताले और प्रतिध्वनि सुर बदलते हैं।</p></article><article><h3>समापन और प्रतिक्रिया</h3><p>हर ताल सही होने पर काम पूरा होता है। गलत सुर पर चिह्नित ताल देखें और आदेश सुधारें। ध्वनि या हीरे आवश्यक नहीं हैं।</p></article></div>
+<!-- bell-guide:end -->
+      <!-- bell-faq:start -->
+<details><summary>क्या घंटियाँ सुनना ज़रूरी है?</summary><p>नहीं। आकार, पटरियाँ और सूचक माँगे गए और बजे सुर दिखाते हैं।</p></details>
+<!-- bell-faq:end -->
+      <!-- bell-related:start -->
+<div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>मिलते-जुलते खेल</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-game-id="prismkin-rescue" data-wp-related-id="prismkin-rescue" href="/hi/games/prismkin-rescue/"><img src="/games/prismkin-rescue/art/cover.webp?wp-media=12f1a9634182c9e7" width="96" height="96" alt="स्फटिक घाटी बचाव" loading="lazy"><span data-runtime-localize="off">स्फटिक घाटी बचाव</span></a><a class="game-info-related-card" data-game-id="dusk-signal" data-wp-related-id="dusk-signal" href="/hi/games/dusk-signal/"><img src="/games/dusk-signal/art/cover.webp?wp-media=12f1a9634182c9e7" width="96" height="96" alt="साँझ के संकेत" loading="lazy"><span data-runtime-localize="off">साँझ के संकेत</span></a><a class="game-info-related-card" data-game-id="silicon-shift" data-wp-related-id="silicon-shift" href="/hi/games/silicon-shift/"><img src="/games/silicon-shift/art/cover.webp?wp-media=12f1a9634182c9e7" width="96" height="96" alt="सिलिकॉन पारी" loading="lazy"><span data-runtime-localize="off">सिलिकॉन पारी</span></a></div></div>
+<!-- bell-related:end -->
+    <article class="game-info-section" data-wp-intro-faq><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><dt>इस खेल में मुझे क्या करना होगा?</dt><dd>दो कारीगरों और एक साझा बिजली स्रोत से सभी माँगे गए सुर बजाएँ।</dd></dl></article></section>
+  </div>
+  <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/bellshift-atelier/art/cover.webp?wp-media=12f1a9634182c9e7" hidden>
+    <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="वापस">←</button><strong data-wp-frame-title hidden></strong></header>
+    <div id="stageWorkspace"><div id="stagePanel"><div id="stagePage"><div id="stageRail"></div></div></div><section id="gearPanel" hidden></section></div>
+    <nav id="stageTabs" data-wp-frame-stage-nav>
+      <button id="stagesTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages">काम</button>
+      <button id="gearTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="shop">कार्यशाला</button>
+    </nav>
+  </section>
+  <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="650" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="330" hidden>
+    <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="वापस">←</button><strong data-wp-frame-title hidden></strong></header>
+    <main id="battleLive">
+      <div id="lessonHost"></div>
+      <section id="arena" aria-hidden="true"><div id="pitchLabels"><span>●</span><span>◆</span><span>▲</span></div></section>
+      <section id="deck">
+        <div id="forecast" aria-live="polite"></div>
+        <div id="score" role="group"></div>
+        <div id="message" role="status" aria-live="polite"></div>
+        <div id="commands" data-wp-frame-logical-actions="battle"></div>
+        <div id="transport">
+          <button id="runBtn" type="button" data-wp-frame-action="primary">अभ्यास</button>
+          <button id="stepBtn" type="button" data-wp-frame-action="secondary">एक ताल</button>
+          <button id="helpBtn" type="button" data-wp-frame-action="secondary">मदद</button>
+        </div>
+      </section>
+    </main>
+    <section id="resultPanel" class="bell-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+      <div class="bell-dialog" data-wp-result-card>
+        <h2 id="resultTitle"></h2><p id="resultSummary"></p><p id="resultNotice" role="status"></p>
+        <div class="bell-actions">
+          <button id="resultMap" type="button" data-wp-frame-action="secondary">काम</button>
+          <button id="resultRetry" type="button" data-wp-frame-action="secondary">फिर कोशिश करें</button>
+          <button id="resultNext" type="button" data-wp-frame-action="primary">अगला काम</button>
+        </div>
+      </div>
+    </section>
+  </section>
+  <section id="dialog" class="bell-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden>
+    <div class="bell-dialog"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogActions" class="bell-actions"></div></div>
+  </section>
+  <div id="hudSource" hidden>
+    <div id="powerStat" class="bell-stat"><label for="powerMeter" id="powerLabel">बिजली</label><meter id="powerMeter" min="0" max="8" value="4"></meter><bdi id="powerValue"></bdi></div>
+    <div id="beatStat" class="bell-stat"><label for="beatMeter" id="beatLabel">ताल</label><meter id="beatMeter" min="0" max="8" value="0"></meter><bdi id="beatValue"></bdi></div>
+  </div>
+</div>
+<script src="/src/edge-guard.js?wp-media=12f1a9634182c9e7" data-wp-entry-required></script>
+<script src="/src/stage-rail-i9.js?wp-media=12f1a9634182c9e7" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=12f1a9634182c9e7" data-wp-entry-required=""></script>
+<script src="/src/battle-canvas-standard.js?wp-media=12f1a9634182c9e7" data-wp-entry-required=""></script>
+<script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=12f1a9634182c9e7" data-wp-entry-required=""></script>
+<script src="/src/tutorial.js?wp-media=12f1a9634182c9e7" data-wp-entry-required></script>
+<script type="module" src="/games/bellshift-atelier/game.mjs?v=entry-initial-1b9534402e3d&amp;wp-build=d5f99799c7995d61&wp-media=12f1a9634182c9e7" data-wp-entry-required=""></script>
+</body>
+</html>
