@@ -66,9 +66,12 @@
     const stageGroup = window.WeightPlayScreenFrame.createGroup().add(stageProgress);
     frame.stageTopUI.add(stageGroup);
 
+    const scoreBox = battlePlayArea.querySelector('.score-box');
     const battleGroup = window.WeightPlayScreenFrame.createGroup()
       .add(battlePlayArea.querySelector('.battle-heading'))
-      .add(battlePlayArea.querySelector('.score-box'));
+      .add($('playerScore').parentElement)
+      .add($('rivalScore').parentElement);
+    scoreBox.remove();
     frame.battleTopUI.add(battleGroup);
 
     const stageAction = $('stageTabsBtn');
