@@ -1,7 +1,7 @@
-// BEGIN generated from src/lobby-data.js?wp-media=b0db8db41699d72b audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=b0db8db41699d72b
+// BEGIN generated from src/lobby-data.js?wp-media=162b227476bca3c4 audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=162b227476bca3c4
 if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
 // END generated tabletop classification
-// BEGIN generated from src/lobby-data.js?wp-media=b0db8db41699d72b audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=b0db8db41699d72b
+// BEGIN generated from src/lobby-data.js?wp-media=162b227476bca3c4 audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=162b227476bca3c4
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 (function(){
@@ -148,7 +148,7 @@ ar:["إعادة بناء الكل","إفراغ هذا العالم؟","أزل ك
 };
 for(const [language,values] of Object.entries(resetCopy)) ["resetAll","resetTitle","resetBody","resetConfirm","resetDone","resetStale","doubleClickHint"].forEach((key,i)=>L[language][key]=values[i]);
 const LION_ACTIONS=["wiggle","roll","proud"],LION_ACTION_ICONS={wiggle:"↝",roll:"⤿",proud:"✦"};
-const CHARACTER_TYPES=["lion","otter"],CHARACTERS={lion:{actions:LION_ACTIONS,icons:LION_ACTION_ICONS,image:"/assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp?wp-media=b0db8db41699d72b"},otter:{actions:["wave","float","bubble"],icons:{wave:"↝",float:"≈",bubble:"◇"},image:"/assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=b0db8db41699d72b"}};
+const CHARACTER_TYPES=["lion","otter"],CHARACTERS={lion:{actions:LION_ACTIONS,icons:LION_ACTION_ICONS,image:"/assets/lobby-thumbs/w480/assets__weightplay-character-boom-mane-lion-block-v1.webp?wp-media=162b227476bca3c4"},otter:{actions:["wave","float","bubble"],icons:{wave:"↝",float:"≈",bubble:"◇"},image:"/assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=162b227476bca3c4"}};
 function normalizeCharacter(kind,value){if(!CHARACTER_TYPES.includes(kind)||!value||!Number.isInteger(value.x)||!Number.isInteger(value.z)||Math.abs(value.x)>BOARD||Math.abs(value.z)>BOARD)return null;const actions=CHARACTERS[kind].actions;return{x:value.x,y:Number.isFinite(value.y)&&value.y>=0&&value.y<=MAXY+1?Math.round(value.y*100)/100:0,z:value.z,rotation:clean(value.rotation)%4,action:actions.includes(value.action)?value.action:actions[0]}}
 function normalizeLion(value){return normalizeCharacter("lion",value)}
 const LION_SCALE=.6;

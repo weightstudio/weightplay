@@ -7,11 +7,11 @@
     --lobby-line: var(--lobby-skin-line);
     --lobby-paper: var(--lobby-skin-poster);
     color-scheme: dark;
-    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp?wp-media=b0db8db41699d72b') center top / auto 900px no-repeat;
+    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp?wp-media=162b227476bca3c4') center top / auto 900px no-repeat;
   }
   body.general-lobby-page::before,
   body.general-lobby-page::after {
-    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp?wp-media=b0db8db41699d72b') center top / auto 900px no-repeat;
+    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp?wp-media=162b227476bca3c4') center top / auto 900px no-repeat;
   }
   body.general-lobby-page .lobby-shell { width: calc(100% - 28px); padding-bottom: 24px; }
   body.general-lobby-page .lobby-topbar {
