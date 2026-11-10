@@ -168,6 +168,17 @@ function onGameEvent(kind,event){
   else if(kind==='phase'){play('game.checkpoint');feedback(`${t('wind')} · ${event.phase+1} / 3`)}
   else if(kind==='result')finish(event);
 }
+function updateLaneControls(next){
+  for(const button of $('laneControls').children){
+    const lane=Number(button.dataset.lane);
+    const incoming=next?.lane===lane?next.kind:'';
+    if(button.dataset.incoming!==incoming)button.dataset.incoming=incoming;
+    const pressed=String(Math.round(run.targetX)===lane);
+    if(button.getAttribute('aria-pressed')!==pressed)button.setAttribute('aria-pressed',pressed);
+    const name=`${t('lane')} ${lane+1}${incoming?` · ${t('landing')}`:''}${incoming==='gold'?` · ${t('gold')}`:''}`;
+    if(button.getAttribute('aria-label')!==name)button.setAttribute('aria-label',name);
+  }
+}
 function renderHUD(){
   const s=run.stage;
   $('stageValue').textContent=String(s.id);$('catchValue').textContent=`${run.caught} / ${s.target}`;$('comboValue').textContent=String(run.combo);
@@ -176,7 +187,7 @@ function renderHUD(){
   $('landingCue').textContent=next?`${t('landing')} · ${t('lane')} ${next.lane+1}${next.kind==='gold'?` · ${t('gold')}`:''}`:t('complete');
   $('windLabel').textContent=next?.wind?`${t('wind')} ${next.wind>0?'→':'←'}`:t('calm');
   $('timeLabel').textContent=`${t('time')} ${Math.max(0,Math.ceil(s.duration-run.time))}s`;
-  for(const button of $('laneControls').children)button.setAttribute('aria-pressed',String(Math.round(run.targetX)===Number(button.dataset.lane)));
+  updateLaneControls(next);
   if(run.time>feedbackUntil)$('feedback').textContent='';
 }
 function aim(lane){

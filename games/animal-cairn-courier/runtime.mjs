@@ -182,8 +182,10 @@ function updateBattle(success=false){
   if(!state.stack.length){const li=document.createElement('li');li.textContent=text('empty');$('stack').append(li);}
   $('checkBtn').disabled=state.stack.length!==p.stones.length||state.settled;
   $('undoBtn').disabled=$('clearBtn').disabled=state.stack.length===0||state.settled;
-  $('battleStatus').textContent=state.status||text(state.stack.length===p.stones.length?'ready':'chooseStone');
-  $('battleStatus').dataset.bad=String(!!state.status);
+  const broken=actionGuide.active?null:rules.find(rule=>rule.status==='bad');
+  const status=state.status||(broken?text('fixRule',{rule:ruleLabel(broken)}):'');
+  $('battleStatus').textContent=status||text(state.stack.length===p.stones.length?'ready':'chooseStone');
+  $('battleStatus').dataset.bad=String(Boolean(status));
   if(actionGuide.active){
     for(const [id,button] of buttons)button.disabled=actionGuide.stepId!=='place'||id!==p.stones[0];
     $('clearBtn').disabled=$('checkBtn').disabled=true;
