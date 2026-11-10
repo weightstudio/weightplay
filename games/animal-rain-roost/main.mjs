@@ -1,8 +1,8 @@
-import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=162b227476bca3c4';
-import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9&wp-media=162b227476bca3c4';
-import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6&wp-media=162b227476bca3c4';
-import {RainScene} from './scene.mjs?v=6&wp-media=162b227476bca3c4';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=162b227476bca3c4';
+import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=ae25ea75a3a3cbff';
+import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9&wp-media=ae25ea75a3a3cbff';
+import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6&wp-media=ae25ea75a3a3cbff';
+import {RainScene} from './scene.mjs?v=6&wp-media=ae25ea75a3a3cbff';
+import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=ae25ea75a3a3cbff';
 
 const $=id=>document.getElementById(id),GAME='animal-rain-roost';
 const lanternUncertainCopy={en:'Purchase could not be confirmed. Reload to check before trying again.', 'zh-Hant':'無法確認購買結果，請重新載入並確認後再試。', 'zh-Hans':'无法确认购买结果，请重新加载并确认后再试。',ja:'購入を確認できません。再読み込みして確認してください。',ko:'구매를 확인할 수 없어요. 새로고침하여 확인하세요.',es:'No se pudo confirmar la compra. Recarga y comprueba antes de volver a intentarlo.', 'pt-BR':'Não foi possível confirmar a compra. Recarregue e confira antes de tentar novamente.',fr:'Achat non confirmé. Rechargez et vérifiez avant de réessayer.',de:'Kauf konnte nicht bestätigt werden. Lade neu und prüfe ihn vor einem erneuten Versuch.',it:'Acquisto non confermato. Ricarica e controlla prima di riprovare.',ru:'Не удалось подтвердить покупку. Обновите страницу и проверьте её перед повтором.',hi:'खरीद की पुष्टि नहीं हुई। दोबारा प्रयास से पहले पेज पुनः खोलकर जाँचें।',ar:'تعذر تأكيد الشراء. أعد تحميل الصفحة وتحقق قبل المحاولة مجددًا.'};
@@ -93,7 +93,7 @@ function objective(stage,withProgress=false){
   if(stage.maxLeaves<99)parts.push(`${t('leaves')} ${withProgress?`${run.leaves}/`:'≤ '}${stage.maxLeaves}`);
   return parts.join(' · ');
 }
-const stageConfig={gameId:GAME,poster:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=162b227476bca3c4',background:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=162b227476bca3c4',count:30,stage(index){
+const stageConfig={gameId:GAME,poster:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=ae25ea75a3a3cbff',background:'/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=ae25ea75a3a3cbff',count:30,stage(index){
   const s=STAGES[index],locked=!practice&&s.id>save.unlocked;
   return {id:s.id,kicker:`${t('stage')} ${s.id}`,title:t('chapters')[s.arc],subtitle:s.checkpoint?`${t('precision')} · ${t('goal')}`:s.gold?`${t('gold')} · ${t('wind')}`:s.arc? t('wind'):t('calm'),status:locked?t('locked'):save.stars[index]?'★'.repeat(save.stars[index]):t('ready'),summary:objective(s),details:[t('controlText'),t('goalText'),t('starText')],locked,cleared:save.stars[index]>0};
 }};
@@ -309,7 +309,7 @@ window.WeightPlayGameEntryLoader?.begin(4);
 scene=new RainScene($('rainCanvas'));await scene.loadBackdrop();scene.render(null);
 window.WeightPlayGameEntryLoader?.assetProgress(1,4);
 let decoded=1;
-await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=162b227476bca3c4','/assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=162b227476bca3c4','/assets/weightplay-diamond.svg'].map(async src=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(++decoded,4)}));
+await Promise.all(['/assets/interface7-redrawn/animal-rain-roost.webp?wp-media=ae25ea75a3a3cbff','/assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=ae25ea75a3a3cbff','/assets/weightplay-diamond.svg'].map(async src=>{const image=new Image();image.src=src;await image.decode();window.WeightPlayGameEntryLoader?.assetProgress(++decoded,4)}));
 
 listen($('startButton'),'click',()=>{selected=Math.min(29,save.unlocked-1);setTab('journey');showScreen('stage')});
 listen($('stageBack'),'click',()=>{showScreen('main');$('startButton').focus({preventScroll:true})});
