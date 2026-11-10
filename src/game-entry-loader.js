@@ -2,7 +2,7 @@
 (() => {
   const path = window.location.pathname.replace(/\/+$/, "");
   const GAME_ID = path.match(/\/games\/([a-z0-9-]+)(?:\/index\.html)?$/)?.[1] || "";
-  const STYLE_URL = "/src/game-entry-loader.css?v=20261020-single-loading-label1&wp-media=12f1a9634182c9e7";
+  const STYLE_URL = "/src/game-entry-loader.css?v=20261020-single-loading-label1&wp-media=cbb98e618ccef3b8";
   const ROOT_CLASS = "wp-game-entry-loader";
   const gamePath = Boolean(GAME_ID);
   let selectedGameId = GAME_ID;
@@ -260,8 +260,8 @@
       // Existing unmarked engine/resource failures keep their recovery path.
       if (failed.getAttribute?.("data-wp-entry-optional") === "diamond-special" &&
           document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
-          [`/games/${GAME_ID}/diamond-special.js?wp-media=12f1a9634182c9e7`, "/src/diamond-special-progression.js?wp-media=12f1a9634182c9e7"].includes(new URL(source, window.location.origin).pathname)) return;
-      if (failed.hasAttribute("data-wp-entry-required") || source.includes(`/games/${GAME_ID}/`) || source.includes("/src/game-screen-frame.js?wp-media=12f1a9634182c9e7")) {
+          [`/games/${GAME_ID}/diamond-special.js?wp-media=cbb98e618ccef3b8`, "/src/diamond-special-progression.js?wp-media=cbb98e618ccef3b8"].includes(new URL(source, window.location.origin).pathname)) return;
+      if (failed.hasAttribute("data-wp-entry-required") || source.includes(`/games/${GAME_ID}/`) || source.includes("/src/game-screen-frame.js?wp-media=cbb98e618ccef3b8")) {
         fail(undefined, () => window.location.reload());
       }
     }

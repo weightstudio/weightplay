@@ -219,15 +219,109 @@
     "تتخيل اللعبة ورشة عليها فحص مزيد من الطلبات. بدّل مسار النبضات، واكشف علامات الطور، واختبر كل الحالات بالتوصيلات نفسها. الورشة والأعطال من الخيال."
   ]
 };
+  const sunshiftCommonsNews = {
+  "en": [
+    "THE STORY",
+    "Rooftop solar on the agenda in Antalya",
+    "A declaration at the climate talks calls for broader use of solar on homes.",
+    "On 10 November 2026, a coalition of countries backed a declaration promoting residential rooftop solar during COP31 in Antalya. Its campaign aims for 300 million solar-powered homes by 2030.",
+    "Sunshift Commons follows a fictional neighborhood. You allocate sunlight, store the surplus, and send electricity after dark. The residents, contracts, and power grid are invented."
+  ],
+  "zh-Hant": [
+    "事件背景",
+    "安塔利亞會議談住宅屋頂太陽能",
+    "一項會議宣言倡議讓更多住戶使用屋頂太陽能。",
+    "2026 年 11 月 10 日，多國在安塔利亞 COP31 期間支持一項推廣住宅屋頂太陽能的宣言。相關倡議將 2030 年全球 3 億戶使用太陽能定為目標。",
+    "《暮電共巷》把題材搬進虛構街區。玩家分配當拍日照、把餘電留在電池裡，並在入夜後完成供電。角色、工單與電網都是原創設定。"
+  ],
+  "zh-Hans": [
+    "事件背景",
+    "安塔利亚会议谈住宅屋顶太阳能",
+    "一项会议宣言倡议让更多住户使用屋顶太阳能。",
+    "2026 年 11 月 10 日，多国在安塔利亚 COP31 期间支持一项推广住宅屋顶太阳能的宣言。相关倡议将 2030 年全球 3 亿户使用太阳能定为目标。",
+    "《暮电共巷》把题材搬进虚构街区。玩家分配当拍日照、把余电留在电池里，并在入夜后完成供电。角色、工单和电网都是原创设定。"
+  ],
+  "ja": [
+    "ニュースの背景",
+    "アンタルヤで住宅の屋上太陽光を議論",
+    "住宅の屋上発電を広げる宣言が発表されました。",
+    "2026年11月10日、アンタルヤのCOP31で複数の国が住宅の屋上太陽光発電を広げる宣言を支持しました。関連する取り組みは2030年までに世界で3億世帯への普及を目指します。",
+    "ゲームの街区と住人、依頼、電力網は架空です。日中に電力を分け、余りを蓄えて夜の依頼に備えます。"
+  ],
+  "ko": [
+    "뉴스 배경",
+    "안탈리아에서 논의한 주택 옥상 태양광",
+    "기후회의에서 주택 태양광을 확대하자는 선언이 나왔습니다.",
+    "2026년 11월 10일 여러 나라가 안탈리아 COP31에서 주택 옥상 태양광 확대 선언을 지지했습니다. 관련 계획은 2030년까지 전 세계 3억 가구가 태양광을 이용하는 것을 목표로 합니다.",
+    "가상의 동네에서 낮에 전력을 나누고 남은 전기를 밤에 보냅니다. 주민과 요청, 전력망은 게임을 위해 만들었습니다."
+  ],
+  "es": [
+    "EL CONTEXTO",
+    "Energía solar en tejados, en la agenda de Antalya",
+    "Una declaración propone extender la energía solar en los hogares.",
+    "El 10 de noviembre de 2026, varios países respaldaron en la COP31 de Antalya una declaración de promoción de la energía solar residencial. Su iniciativa aspira a llegar a 300 millones de hogares en 2030.",
+    "El juego imagina un barrio que distribuye la energía de día y guarda el excedente para la noche. Sus vecinos, pedidos y red son ficticios."
+  ],
+  "pt-BR": [
+    "O CONTEXTO",
+    "Energia solar nos telhados em debate em Antália",
+    "Uma declaração propõe expandir a energia solar nas moradias.",
+    "Em 10 de novembro de 2026, vários países apoiaram na COP31 de Antália uma declaração para ampliar a energia solar residencial. A iniciativa tem como meta chegar a 300 milhões de lares até 2030.",
+    "O jogo imagina uma vila que distribui a energia durante o dia e guarda o excedente para a noite. Moradores, pedidos e rede são fictícios."
+  ],
+  "fr": [
+    "LES FAITS",
+    "Le solaire sur les toits au programme à Antalya",
+    "Une déclaration vise à étendre l’usage du solaire dans les logements.",
+    "Le 10 novembre 2026, plusieurs pays ont soutenu à la COP31 d’Antalya une déclaration en faveur du solaire résidentiel. L’initiative associée vise 300 millions de foyers alimentés par le solaire d’ici 2030.",
+    "Le quartier du jeu répartit l’électricité de jour et garde le surplus pour la nuit. Les habitants, demandes et lignes sont fictifs."
+  ],
+  "de": [
+    "HINTERGRUND",
+    "Solarstrom von Wohndächern in Antalya",
+    "Eine Erklärung wirbt für mehr Solaranlagen auf Wohngebäuden.",
+    "Am 10. November 2026 unterstützten mehrere Staaten auf der COP31 in Antalya eine Erklärung zum Ausbau von Solarstrom auf Wohngebäuden. Die Initiative zielt auf 300 Millionen solarversorgte Haushalte bis 2030.",
+    "Im Spiel verteilt ein erfundenes Viertel tagsüber Solarstrom und spart Überschüsse für die Nacht. Bewohner, Aufträge und Netz sind fiktiv."
+  ],
+  "it": [
+    "IL CONTESTO",
+    "Solare sui tetti delle case ad Antalya",
+    "Una dichiarazione propone di ampliare l’uso del solare residenziale.",
+    "Il 10 novembre 2026 diversi paesi hanno sostenuto alla COP31 di Antalya una dichiarazione per promuovere il solare domestico. L’iniziativa punta a 300 milioni di abitazioni alimentate dal solare entro il 2030.",
+    "Nel quartiere immaginario del gioco si distribuisce l’energia di giorno e la si conserva per la notte. Abitanti, richieste e rete sono inventati."
+  ],
+  "ru": [
+    "ЧТО ПРОИЗОШЛО",
+    "В Анталье обсудили солнечные панели на домах",
+    "Декларация призывает шире применять солнечную энергию в жилых домах.",
+    "10 ноября 2026 года несколько стран поддержали на COP31 в Анталье декларацию о развитии солнечной энергетики на крышах домов. Инициатива ставит цель обеспечить солнечной энергией 300 миллионов домов к 2030 году.",
+    "В вымышленном квартале игрок распределяет дневную энергию и сохраняет запас на ночь. Жители, заявки и сеть придуманы для игры."
+  ],
+  "hi": [
+    "घटना",
+    "अंताल्या में घरों की छत पर सौर ऊर्जा की चर्चा",
+    "एक घोषणा में घरों तक सौर ऊर्जा पहुँचाने का प्रस्ताव है।",
+    "10 नवंबर 2026 को अंताल्या की COP31 बैठक में कई देशों ने घरों की छतों पर सौर ऊर्जा बढ़ाने की घोषणा का समर्थन किया। पहल का लक्ष्य 2030 तक 30 करोड़ घरों तक सौर ऊर्जा पहुँचाना है।",
+    "खेल के काल्पनिक मोहल्ले में दिन की बिजली बाँटें और रात के लिए बचाएँ। निवासी, काम और बिजली की लाइनें खेल के लिए बनाई गई हैं।"
+  ],
+  "ar": [
+    "خلفية الحدث",
+    "الطاقة الشمسية فوق المنازل على جدول أنطاليا",
+    "إعلان يدعو إلى توسيع استخدام الطاقة الشمسية في المساكن.",
+    "في ١٠ نوفمبر ٢٠٢٦ دعمت عدة دول خلال مؤتمر COP31 في أنطاليا إعلانًا لتوسيع الطاقة الشمسية على أسطح المنازل. تهدف المبادرة إلى وصول الطاقة الشمسية إلى ٣٠٠ مليون منزل بحلول ٢٠٣٠.",
+    "في حي اللعبة الخيالي توزّع الكهرباء نهارًا وتخزّن الفائض لليل. السكان والطلبات والشبكة من ابتكار اللعبة."
+  ]
+};
   const items = [
-    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=12f1a9634182c9e7', cover:true, news:siliconShiftNews },
-    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=12f1a9634182c9e7', cover:true, news:tidegateNews },
-    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=12f1a9634182c9e7', cover:true, news:rainlineNews },
-    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=12f1a9634182c9e7', cover:true, news:gatheringNews },
-    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=12f1a9634182c9e7', cover:true, news },
-    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=12f1a9634182c9e7', cover:true, news:trafficNews },
-    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=12f1a9634182c9e7', cover:true, news:robotNews },
-    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=12f1a9634182c9e7', cover:true, news:lifeStory }
+    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=cbb98e618ccef3b8', cover:true, news:sunshiftCommonsNews },
+    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=cbb98e618ccef3b8', cover:true, news:siliconShiftNews },
+    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=cbb98e618ccef3b8', cover:true, news:tidegateNews },
+    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=cbb98e618ccef3b8', cover:true, news:rainlineNews },
+    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=cbb98e618ccef3b8', cover:true, news:gatheringNews },
+    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=cbb98e618ccef3b8', cover:true, news },
+    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=cbb98e618ccef3b8', cover:true, news:trafficNews },
+    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=cbb98e618ccef3b8', cover:true, news:robotNews },
+    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=cbb98e618ccef3b8', cover:true, news:lifeStory }
   ];
   const dates = {'flying-tram':'2026-10-15','traffic-jam-diner':'2026-10-08','robot-dog-showtime':'2026-09-22'};
   items.forEach(item => { if (dates[item.gameId]) { item.kind = 'news'; item.eventDate = dates[item.gameId]; } });

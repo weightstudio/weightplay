@@ -1,5 +1,5 @@
-import {activityDailyCopy} from '../../src/activity-daily-copy.mjs?v=1&wp-media=12f1a9634182c9e7';
-import {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1&wp-media=12f1a9634182c9e7';
+import {activityDailyCopy} from '../../src/activity-daily-copy.mjs?v=1&wp-media=cbb98e618ccef3b8';
+import {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1&wp-media=cbb98e618ccef3b8';
 // Activity-owned copy. Every supported locale supplies the entire dictionary.
 export const LOCALES = Object.freeze(['en', 'zh-Hant', 'zh-Hans', 'ja', 'ko', 'es', 'pt-BR', 'fr', 'de', 'it', 'ru', 'hi', 'ar']);
 const keys = 'title tagline eventLabel schedule intro guide collection challenge training trainingNote noBlocks start resume retry back help close pause paused continue fire aim ammo hull wave score best combo nextWave waveClear victory defeat empty breach resultCopy saved saveError loadError reload sound soundOn soundOff language power standard violet skinLocked skinUnlocked appearance ready shooting advancing hit blocked blast waveNames preview leave confirmLeave cancel keyboard launchLabel tipArmor tipBlast tipBoss'.split(' ');
