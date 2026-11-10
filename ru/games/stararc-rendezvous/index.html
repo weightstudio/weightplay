@@ -1,14 +1,198 @@
 <!doctype html>
-<html lang="ru" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=ae25ea75a3a3cbff#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/stararc-rendezvous/art/cover.webp?wp-media=ae25ea75a3a3cbff">
-<head>
-    
+<html lang="ru" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=ae25ea75a3a3cbff#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/stararc-rendezvous/art/cover.webp?wp-media=ae25ea75a3a3cbff" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=ae25ea75a3a3cbff`, '/src/diamond-special-progression.js?wp-media=ae25ea75a3a3cbff', '/src/diamond-special-progression.css?wp-media=ae25ea75a3a3cbff'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
+
+
+
+
   <base href="/games/stararc-rendezvous/">
-    <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- stararc-meta:start -->
 <title>Звёздная стыковка | WeightPlay</title>
 <meta name="description" content="Оснастите шаттл, спланируйте переход и состыкуйтесь с движущимися станциями до конца смены.">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://weightplay.com/ru/games/stararc-rendezvous/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/stararc-rendezvous/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/stararc-rendezvous/">
@@ -33,14 +217,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"Звёздная стыковка","description":"Оснастите шаттл, спланируйте переход и состыкуйтесь с движущимися станциями до конца смены.","url":"https://weightplay.com/ru/games/stararc-rendezvous/","image":"https://weightplay.com/games/stararc-rendezvous/art/cover.webp?wp-media=ae25ea75a3a3cbff","inLanguage":"ru","genre":"Орбитальное планирование","gamePlatform":"Web browser","applicationCategory":"GameApplication"},{"@type":"FAQPage","inLanguage":"ru","mainEntity":[{"@type":"Question","name":"Почему стыковка недоступна?","acceptedAnswer":{"@type":"Answer","text":"Стабилизируйте шаттл и совместите орбиту и сектор с открытым портом станции."}},{"@type":"Question","name":"Нужны ли алмазы для прохождения?","acceptedAnswer":{"@type":"Answer","text":"Нет. Комплекты открываются за прохождение смен. Алмазы нужны только для постоянного покрытия."}}]}]}</script>
 <!-- stararc-meta:end -->
-<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<link rel="stylesheet" href="/games/stararc-rendezvous/style.css?wp-build=461466681c9e5b10&wp-media=ae25ea75a3a3cbff" data-wp-entry-required>
-<script src="/src/game-layout-config.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<link rel="stylesheet" href="/games/stararc-rendezvous/style.css?wp-build=870302bc6f93f616&wp-media=ae25ea75a3a3cbff" data-wp-entry-required="">
+<script src="/src/game-layout-config.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required=""></script>
 <script src="/src/weightplay-audio.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
 <script src="/src/site-config.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
 <script src="/src/i18n.js?wp-media=ae25ea75a3a3cbff"></script>
@@ -50,24 +234,24 @@
 <script src="/src/analytics.js?wp-media=ae25ea75a3a3cbff"></script>
 <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=ae25ea75a3a3cbff"></script>
 </head>
-<body data-internal-only="true" class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="stararc-rendezvous" data-game-id="stararc-rendezvous" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false">
-<div id="gameFrame" data-wp-frame-root data-wp-entry-root hidden data-wp-frame="2">
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="stararc-rendezvous" data-game-id="stararc-rendezvous" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Звёздная стыковка" data-state="loading" data-error-title="Не удалось загрузить игру" data-error-message="Не удалось загрузить некоторые ресурсы. Повторите попытку или вернитесь в лобби." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Загрузка Звёздная стыковка…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Загрузка Звёздная стыковка…" aria-valuetext="Загрузка Звёздная стыковка…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Повторить</button><a class="wp-game-entry-loader-button" href="/ru/">В лобби</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Не удалось загрузить некоторые ресурсы. Повторите попытку или вернитесь в лобби. <a href="/ru/">В лобби</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+<div id="gameFrame" data-wp-frame-root data-wp-entry-root="" hidden data-wp-frame="2">
   <div id="mainGroup" class="wp-frame-main-flow">
     <section id="mainScreen" data-wp-frame-scene="main">
       <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
-        <a id="mainReturn" href="/ru/?preview=1" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=ae25ea75a3a3cbff" alt="" width="26" height="26"></a>
-        <h1 id="gameTitle" data-wp-frame-title data-runtime-localize="off">Звёздная стыковка</h1>
+        <a id="mainReturn" href="/ru/" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=ae25ea75a3a3cbff" alt="" width="26" height="26"></a>
+        <h1 id="gameTitle" data-wp-frame-title="" data-runtime-localize="off">Звёздная стыковка</h1>
       </header>
       <section id="mainHero" data-wp-frame-content="main">
-        <img id="cover" src="/games/stararc-rendezvous/art/cover.webp?wp-media=ae25ea75a3a3cbff" width="1254" height="1254" data-wp-frame-poster data-wp-interface7-poster="true" alt="Звёздная стыковка" fetchpriority="high">
-        <div data-wp-frame-copy>
-          <p id="description" data-wp-frame-summary>Оснастите шаттл, спланируйте переход и состыкуйтесь с движущимися станциями до конца смены.</p>
-          <p id="mainProgress" data-wp-frame-progress></p>
+        <img id="cover" src="/games/stararc-rendezvous/art/cover.webp?wp-media=ae25ea75a3a3cbff" width="1254" height="1254" data-wp-frame-poster="" data-wp-interface7-poster="true" alt="Звёздная стыковка" fetchpriority="high">
+        <div data-wp-frame-copy="">
+          <p id="description" data-wp-frame-summary="">Оснастите шаттл, спланируйте переход и состыкуйтесь с движущимися станциями до конца смены.</p>
+          <p id="mainProgress" data-wp-frame-progress=""></p>
           <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>Начать</button>
         </div>
       </section>
     </section>
-    <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=ae25ea75a3a3cbff#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide aria-labelledby="guideTitle">
+    <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=ae25ea75a3a3cbff#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
       <h2 id="guideTitle">Руководство</h2>
       <div><!-- stararc-guide:start -->
 <div class="stararc-guide"><article><h3>Ваша цель</h3><p data-wp-intro-faq-source>Доставьте груз на все отмеченные станции до конца смены.</p></article><article><h3>Как летать</h3><p>Выберите комплект. Сравните орбиту, сектор, время и расход. Дрейфуйте и меняйте орбиту, чтобы догнать движущуюся станцию.</p></article><article><h3>Управление и правила</h3><p>Перейдите на соседнюю орбиту, затем стабилизируйте шаттл. Стыковка возможна на той же орбите и в том же секторе при открытом порте. Следите за обломками и тенью.</p></article><article><h3>Завершение смены</h3><p>Все стыковки открывают новую смену. Повторяйте бесплатно, экономьте топливо или пробуйте другие комплекты.</p></article></div>
@@ -91,8 +275,9 @@
   <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="650" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390" hidden>
     <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="Назад">←</button><strong data-wp-frame-title hidden></strong></header>
     <main id="battleLive">
-      <section id="arena"><div id="mapLabels" aria-hidden="true"></div><div id="lessonHost"></div></section>
+      <section id="arena"><div id="mapLabels" aria-hidden="true"></div></section>
       <section id="deck">
+        <div id="lessonHost"></div>
         <div id="missionLine"><strong id="missionTitle"></strong><span id="targetLine"></span><span id="shipLine"></span></div>
         <div id="message" role="status" aria-live="polite"></div>
         <div id="flightControls" data-wp-frame-logical-actions="battle">
@@ -125,15 +310,15 @@
     <div id="fuelStat" class="stararc-stat"><label id="fuelLabel" for="fuelMeter">Топливо</label><meter id="fuelMeter" min="0" max="10" value="10"></meter><bdi id="fuelValue"></bdi></div>
     <div id="timeStat" class="stararc-stat"><label id="timeLabel" for="timeMeter">Тактов осталось</label><meter id="timeMeter" min="0" max="16" value="16"></meter><bdi id="timeValue"></bdi></div>
     <div id="cargoStat" class="stararc-stat"><label id="cargoLabel" for="cargoMeter">Стыковки</label><meter id="cargoMeter" min="0" max="2" value="0"></meter><bdi id="cargoValue"></bdi></div>
+    <div id="heatStat" class="stararc-stat" hidden><label id="heatLabel" for="heatMeter">Нагрев</label><meter id="heatMeter" min="0" max="2" value="0"></meter><bdi id="heatValue"></bdi></div>
   </div>
 </div>
-<script src="/src/game-entry-loader.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
 <script src="/src/edge-guard.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
 <script src="/src/stage-rail-i9.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
-<script src="/src/game-play-ui.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
-<script src="/src/battle-canvas-standard.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
-<script src="/src/game-screen-frame.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required=""></script>
+<script src="/src/battle-canvas-standard.js?wp-media=ae25ea75a3a3cbff" data-wp-entry-required=""></script>
+<script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=ae25ea75a3a3cbff" data-wp-entry-required=""></script>
 <script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
-<script type="module" src="/games/stararc-rendezvous/game.mjs?wp-build=b970122f3765ad6f&wp-media=ae25ea75a3a3cbff" data-wp-entry-required></script>
+<script type="module" src="/games/stararc-rendezvous/game.mjs?v=entry-initial-9d193eb7f967&amp;wp-build=eefc8929631c8e83&wp-media=ae25ea75a3a3cbff" data-wp-entry-required=""></script>
 </body>
 </html>

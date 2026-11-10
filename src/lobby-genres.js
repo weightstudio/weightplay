@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["stararc-rendezvous", "Puzzle", "Strategy", "Route Planning"],
     ["dusk-signal", "Strategy", "Deduction", "Management"],
     ["cinderburrow", "Strategy", "Simulation", "Management"],
     ["mosslight-museum", "Management", "Strategy", "Route Planning"],
