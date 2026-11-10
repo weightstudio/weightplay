@@ -284,7 +284,11 @@
     const current = maps[state.map];
     const mirror=practiceEnabled&&state.map>=30;
     $("mapName").textContent = mirror?mirrorText()[0]:t(current.nameKey);
-    $("mapLabel").textContent = mirror?`${state.map+1} / ${maps.length}`:t("round", { n: state.map + 1, total: maps.length });if(mirror)$("mapLabel").dir='ltr';else $("mapLabel").removeAttribute('dir');
+    const mapLabel = $("mapLabel");
+    mapLabel.textContent = `${state.map+1} / ${maps.length}`;
+    mapLabel.title = t("round", { n: state.map + 1, total: maps.length });
+    mapLabel.setAttribute("aria-label", mapLabel.title);
+    mapLabel.dir = "ltr";
     $("mapIntro").textContent = mirror?`${current.checkpoint?t('checkpoint')+' · ':''}${mirrorText()[0]}`:`${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.introKey)}`;
     if(mirror)placePracticeBadge();
     lensButton.hidden=!mirror;lensHelp.hidden=!mirror;if(mirror){lensLabel.textContent=mirrorText()[1];lensHelp.textContent=mirrorGuide[state.locale]||mirrorGuide.en;lensButton.setAttribute('aria-describedby','ckMirrorLensHelp');lensButton.disabled=Boolean(state.lensUsed)||!current.options.some(o=>!state.evaluations[o.id]&&!mirrorAssess(current,o).every(Boolean));}
@@ -323,8 +327,10 @@
       button.dataset.state = tested && !tested.every(Boolean) ? "wrong" : state.selected === option.id ? "selected" : "idle";
       button.querySelector(".star-board").replaceWith(renderBoard(option));
       const verdict = button.querySelector(".ck-choice-verdict");
-      verdict.textContent = tested ? `${tested.filter(Boolean).length} / ${current.clues.length} ✓` : "✦ · ✦";
-      button.setAttribute("aria-label", `${t("boardOption", { slot: option.slot })}: ${option.stars.map(star => `${t(star.animal)} (${star.row + 1}, ${star.col + 1})`).join(", ")}${tested ? `. ${t("matchedRules", { count: tested.filter(Boolean).length })}` : ""}${eliminated?`. ${mirrorText()[2]}`:''}`);
+      verdict.textContent = tested ? tested.map((passed, index) => `${index + 1}${passed ? "✓" : "×"}`).join(" · ") : "✦ · ✦";
+      verdict.setAttribute("aria-hidden", "true");
+      const clueResults = tested ? tested.map((passed, index) => `${describeRelation(current.clues[index])} ${t(passed ? "rulePass" : "ruleFail")}`).join(" ") : "";
+      button.setAttribute("aria-label", `${t("boardOption", { slot: option.slot })}: ${option.stars.map(star => `${t(star.animal)} (${star.row + 1}, ${star.col + 1})`).join(", ")}${clueResults ? `. ${clueResults}` : ""}${eliminated?`. ${mirrorText()[2]}`:''}`);
     });
     const chosen = current.options.find(option => option.id === state.selected);
     const hero = observatory.querySelector(".ck-hero-board");
