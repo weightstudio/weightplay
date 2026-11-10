@@ -338,10 +338,11 @@
     if (slots.children.length !== grove.pattern.length) slots.replaceChildren(...grove.pattern.map(() => document.createElement("span")));
     [...slots.children].forEach((slot, index) => {
       const matched = entered[index] === grove.pattern[index];
-      slot.className = `pattern-slot ${matched ? "matched" : ""} ${phase === "watch" && index === watchStep - 1 && litFruit ? "is-current" : ""}`;
-      slot.textContent = matched ? String(fruits.indexOf(entered[index]) + 1) : String(index + 1);
+      const missed = phase === "pause" && feedback === "wrong" && index === entered.length;
+      slot.className = `pattern-slot ${matched ? "matched" : ""} ${phase === "watch" && index === watchStep - 1 && litFruit ? "is-current" : ""}${missed ? " is-missed" : ""}`;
+      slot.textContent = matched ? String(fruits.indexOf(entered[index]) + 1) : missed ? `${index + 1} ×` : String(index + 1);
       slot.dataset.fruit = matched ? entered[index] : "";
-      slot.setAttribute("aria-label", `${copy("slot", {count: index + 1})}${matched ? ": " + fruitName(entered[index]) : ""}`);
+      slot.setAttribute("aria-label", `${copy("slot", {count: index + 1})}${matched ? ": " + fruitName(entered[index]) : missed ? ". " + copy("wrong") : ""}`);
     });
     $("orchardButtons").querySelectorAll(".fruit-button").forEach((button, index) => {
       const fruit = button.dataset.fruit;
@@ -365,7 +366,9 @@
     attempts += 1; sessionAttempts += 1;
     const position = entered.length; soundFruit(fruit);
     if (fruit !== pattern[position]) {
-      feedback = "wrong"; phase = "pause"; announce("wrong", {fruit}); renderBattle(); return;
+      feedback = "wrong"; phase = "pause"; announce("wrong", {fruit}); renderBattle();
+      $("replayBtn").focus({preventScroll: true});
+      return;
     }
     entered = [...entered, fruit]; feedback = "selection"; announce("tap", {fruit, position: position + 1});
     if(teaching==='first'&&position===0&&entered.length===1)actionGuide.accept('first',{accepted:true});
