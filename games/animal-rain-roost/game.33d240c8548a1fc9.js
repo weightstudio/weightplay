@@ -1,1 +1,1 @@
-import("./main.mjs?v=20261108-reward-recovery-v14&wp-media=d1030b4eb55bb9f5").catch(i=>{console.error("Rain Roost initialization failed",i),window.__weightPlayGameEntryPendingFailure="animal-rain-roost",window.WeightPlayGameEntryLoader?.fail(void 0,()=>location.reload())});
+import("./main.mjs?v=20261108-reward-recovery-v14&wp-media=b0db8db41699d72b").catch(i=>{console.error("Rain Roost initialization failed",i),window.__weightPlayGameEntryPendingFailure="animal-rain-roost",window.WeightPlayGameEntryLoader?.fail(void 0,()=>location.reload())});

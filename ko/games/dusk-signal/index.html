@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ko" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=b0db8db41699d72b#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/dusk-signal/art/cover.webp?wp-media=b0db8db41699d72b" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=b0db8db41699d72b`, '/src/diamond-special-progression.js?wp-media=b0db8db41699d72b', '/src/diamond-special-progression.css?wp-media=b0db8db41699d72b'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
+
+
+
+  <base href="/games/dusk-signal/">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <!-- dusk-meta:start -->
+<title>황혼 골짜기 관측소 | WeightPlay</title>
+<meta name="description" content="메아리를 대조해 동물의 소리를 기록하고 다음 조사의 전력을 확보하세요.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://weightplay.com/ko/games/dusk-signal/">
+<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/dusk-signal/">
+<link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/dusk-signal/">
+<link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/dusk-signal/">
+<link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/dusk-signal/">
+<link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/dusk-signal/">
+<link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/dusk-signal/">
+<link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/dusk-signal/">
+<link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/dusk-signal/">
+<link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/dusk-signal/">
+<link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/dusk-signal/">
+<link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/dusk-signal/">
+<link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/dusk-signal/">
+<link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/dusk-signal/">
+<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/dusk-signal/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WeightPlay">
+<meta property="og:url" content="https://weightplay.com/ko/games/dusk-signal/">
+<meta property="og:title" content="황혼 골짜기 관측소">
+<meta property="og:description" content="메아리를 대조해 동물의 소리를 기록하고 다음 조사의 전력을 확보하세요.">
+<meta property="og:image" content="https://weightplay.com/games/dusk-signal/art/cover.webp?wp-media=b0db8db41699d72b">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"황혼 골짜기 관측소","description":"메아리를 대조해 동물의 소리를 기록하고 다음 조사의 전력을 확보하세요.","url":"https://weightplay.com/ko/games/dusk-signal/","image":"https://weightplay.com/games/dusk-signal/art/cover.webp?wp-media=b0db8db41699d72b","inLanguage":"ko","genre":"관측 전략 · 추리","gamePlatform":"Web browser","applicationCategory":"GameApplication"},{"@type":"FAQPage","inLanguage":"ko","mainEntity":[{"@type":"Question","name":"소리를 끄고 할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 레이블, 빛나는 지점, 관측소 수치로 신호와 결과를 알 수 있습니다."}},{"@type":"Question","name":"완료하려면 다이아몬드가 필요한가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. 장비는 조사로 획득하며 다이아몬드는 영구 렌즈 외형에만 사용합니다。"}}]}]}</script>
+<!-- dusk-meta:end -->
+  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?v=20261107-action-guide-v1&wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/dusk-signal/style.css?wp-build=03384e002869aef5&wp-media=b0db8db41699d72b" data-wp-entry-required="">
+  <script src="/src/game-layout-config.js?wp-media=b0db8db41699d72b" data-wp-entry-required=""></script>
+  <script src="/src/weightplay-audio.js?wp-media=b0db8db41699d72b" data-wp-entry-required></script>
+  <script src="/src/site-config.js?wp-media=b0db8db41699d72b" data-wp-entry-required></script>
+  <script src="/src/i18n.js?wp-media=b0db8db41699d72b"></script>
+  <script src="/src/game-title-registry.js?wp-media=b0db8db41699d72b" data-wp-game-title-registry></script>
+  <script src="/src/wallet.js?wp-media=b0db8db41699d72b"></script>
+  <script src="/src/weightplay-castle.js?wp-media=b0db8db41699d72b" data-weightplay-castle-runtime></script>
+  <script src="/src/analytics.js?wp-media=b0db8db41699d72b"></script>
+  <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=b0db8db41699d72b"></script>
+</head>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-wp-game-id="dusk-signal" data-game-id="dusk-signal" data-audience="general" data-has-stage="true" data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="황혼 골짜기 관측소" data-state="loading" data-error-title="게임을 불러오지 못했습니다" data-error-message="일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">황혼 골짜기 관측소를 불러오는 중…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="황혼 골짜기 관측소를 불러오는 중…" aria-valuetext="황혼 골짜기 관측소를 불러오는 중…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">다시 시도</button><a class="wp-game-entry-loader-button" href="/ko/">로비로 돌아가기</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요. <a href="/ko/">로비로 돌아가기</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=b0db8db41699d72b" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-frame-root data-wp-entry-root="" hidden data-wp-frame="2">
+    <div id="mainGroup" class="wp-frame-main-flow">
+      <section id="mainScreen" data-wp-frame-scene="main">
+        <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
+          <a id="mainReturn" href="/ko/" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=b0db8db41699d72b" alt="" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-frame-title="" data-runtime-localize="off">황혼 골짜기 관측소</h1>
+        </header>
+        <section id="mainHero" data-wp-frame-content="main">
+          <img id="cover" src="/games/dusk-signal/art/cover.webp?wp-media=b0db8db41699d72b" width="1254" height="1254" data-wp-frame-poster="" data-wp-interface7-poster="true" alt="황혼 골짜기 관측소" fetchpriority="high">
+          <div data-wp-frame-copy="">
+            <p id="description" data-wp-frame-summary="">메아리를 대조해 동물의 소리를 기록하고 다음 조사의 전력을 확보하세요.</p>
+            <p id="mainProgress" data-wp-frame-progress=""></p>
+            <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>게임 시작</button>
+          </div>
+        </section>
+      </section>
+      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=b0db8db41699d72b#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
+        <h2 id="guideTitle">게임 가이드</h2>
+        <div><!-- dusk-guide:start -->
+<div class="dusk-guide"><article><h3>목표</h3><p data-wp-intro-faq-source>모든 음원을 찾고 전력이 바닥나기 전에 검증, 충전, 중계 목표를 달성하세요.</p></article><article><h3>현장에서</h3><p>가로와 세로를 탐지하고 두 단서에 맞는 지점을 녹음하세요. 후반에는 막힌 세로 채널을 참조 탐지로 대신할 수 있습니다.</p></article><article><h3>관측소에서</h3><p>검증은 표식 하나, 충전은 전력 네 칸을 줍니다. 깨끗한 녹음을 중계하면 표식 하나, 전력 두 칸과 다음 단서를 얻습니다.</p></article><article><h3>진행과 결과</h3><p>모두 녹음하고 계약을 달성하세요. 전력을 아끼고 확실한 녹음을 하면 표식을 더 얻습니다. 이정표를 넘으면 장비가 열립니다.</p></article></div>
+<!-- dusk-guide:end --></div>
+        <div id="faqContent"><!-- dusk-faq:start -->
+<details><summary>소리를 끄고 할 수 있나요?</summary><p>네. 레이블, 빛나는 지점, 관측소 수치로 신호와 결과를 알 수 있습니다.</p></details><details><summary>완료하려면 다이아몬드가 필요한가요?</summary><p>아니요. 장비는 조사로 획득하며 다이아몬드는 영구 렌즈 외형에만 사용합니다。</p></details>
+<!-- dusk-faq:end --></div>
+        <div><!-- dusk-related:start -->
+<div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>관련 게임</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-game-id="wingseal-post" data-wp-related-id="wingseal-post" href="/ko/games/wingseal-post/"><img src="/games/wingseal-post/art/cover.webp?wp-media=b0db8db41699d72b" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">날개 인장 우체국</span></a><a class="game-info-related-card" data-game-id="cinderburrow" data-wp-related-id="cinderburrow" href="/ko/games/cinderburrow/"><img src="/games/cinderburrow/art/cover.webp?wp-media=b0db8db41699d72b" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">바위등불 방어선</span></a><a class="game-info-related-card" data-game-id="mosslight-museum" data-wp-related-id="mosslight-museum" href="/ko/games/mosslight-museum/"><img src="/games/mosslight-museum/art/cover.webp?wp-media=b0db8db41699d72b" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">이끼빛 박물관</span></a></div></div>
+<!-- dusk-related:end --></div>
+      <article class="game-info-section" data-wp-intro-faq><h3>자주 묻는 질문</h3><dl><dt>이 게임에서는 무엇을 하나요?</dt><dd>모든 음원을 찾고 전력이 바닥나기 전에 검증, 충전, 중계 목표를 달성하세요.</dd></dl></article></section>
+    </div>
+    <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/assets/lobby-block-atmosphere.svg" hidden>
+      <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="뒤로">←</button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageWorkspace">
+        <div id="stagePanel"><div id="stagePage"><div id="stageRail"></div></div></div>
+        <section id="gearPanel" hidden></section>
+      </div>
+      <nav id="stageTabs" data-wp-frame-stage-nav>
+        <button id="stagesTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages">근무</button>
+        <button id="gearTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="shop">장비</button>
+      </nav>
+    </section>
+    <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="650" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390" hidden>
+      <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="뒤로">←</button><strong data-wp-frame-title hidden></strong></header>
+      <main id="battleLive">
+        <section id="arena">
+          <p id="arenaLabel"></p>
+          <div id="lessonHost"></div>
+        </section>
+        <section id="surveyDeck">
+          <div id="forecast"></div>
+          <div id="targetGrid" role="group">
+            <button type="button" id="cell0" data-cell="0" data-wp-frame-action="secondary">A</button>
+            <button type="button" id="cell1" data-cell="1" data-wp-frame-action="secondary">B</button>
+            <button type="button" id="cell2" data-cell="2" data-wp-frame-action="secondary">C</button>
+            <button type="button" id="cell3" data-cell="3" data-wp-frame-action="secondary">D</button>
+            <button type="button" id="cell4" data-cell="4" data-wp-frame-action="secondary">E</button>
+            <button type="button" id="cell5" data-cell="5" data-wp-frame-action="secondary">F</button>
+          </div>
+          <div id="message" role="status" aria-live="polite"></div>
+          <div id="fieldControls" class="dusk-controls" data-wp-frame-logical-actions="battle">
+            <button type="button" id="rowBtn" data-action="row">가로 탐지</button>
+            <button type="button" id="columnBtn" data-action="column">세로 탐지</button>
+            <button type="button" id="auxBtn" data-action="diagonal">참조 탐지</button>
+            <button type="button" id="bandBtn" data-action="band">대역 변경</button>
+            <button type="button" id="recordBtn" data-action="record" data-wp-frame-action="primary">녹음</button>
+            <button type="button" id="helpBtn" data-wp-frame-action="secondary">도움말</button>
+          </div>
+          <div id="stationControls" class="dusk-controls" data-wp-frame-logical-actions="battle" hidden>
+            <button type="button" id="verifyBtn" data-action="verify" data-wp-frame-action="primary">검증 +1</button>
+            <button type="button" id="bankBtn" data-action="bank">충전 +4</button>
+            <button type="button" id="relayBtn" data-action="relay">중계 전력 +2 · 표식 +1</button>
+            <button type="button" id="stationHelpBtn" data-wp-frame-action="secondary">도움말</button>
+          </div>
+        </section>
+      </main>
+      <section id="resultPanel" class="dusk-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+        <div class="dusk-dialog" data-wp-result-card>
+          <h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultNotice" role="status"></p>
+          <p id="resultSummary"></p>
+          <div class="dusk-dialog-actions">
+            <button type="button" id="resultMap" data-wp-frame-action="secondary">근무</button>
+            <button type="button" id="resultNext" data-wp-frame-action="primary">다음 근무</button>
+            <button type="button" id="resultRetry" data-wp-frame-action="secondary">다시 시도</button>
+          </div>
+        </div>
+      </section>
+    </section>
+    <section id="dialog" class="dusk-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden>
+      <div class="dusk-dialog"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogActions" class="dusk-dialog-actions"></div></div>
+    </section>
+    <div id="hudSource" hidden>
+      <div id="powerStat" class="dusk-stat"><label id="powerLabel" for="powerMeter">배터리</label><meter id="powerMeter" min="0" max="9" value="9"></meter><bdi id="powerValue">9 / 9</bdi></div>
+      <div id="sealStat" class="dusk-stat"><label id="sealLabel" for="sealMeter">검증</label><meter id="sealMeter" min="0" max="2" value="0"></meter><bdi id="sealValue">0 / 2</bdi></div>
+      <div id="extraStat" class="dusk-stat"><span id="extraLabel">관측소</span><bdi id="extraValue"></bdi></div>
+    </div>
+  </div>
+  <script src="/src/edge-guard.js?wp-media=b0db8db41699d72b" data-wp-entry-required></script>
+  <script src="/src/stage-rail-i9.js?wp-media=b0db8db41699d72b" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=b0db8db41699d72b" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=b0db8db41699d72b" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=b0db8db41699d72b" data-wp-entry-required=""></script>
+  <script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=b0db8db41699d72b" data-wp-entry-required></script>
+  <script type="module" src="/games/dusk-signal/game.mjs?v=entry-initial-cfccb75a3ba0&amp;wp-build=880b8333384b56a2&wp-media=b0db8db41699d72b" data-wp-entry-required=""></script>
+</body>
+</html>
