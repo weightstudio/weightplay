@@ -1,4 +1,4 @@
-import {STAGES} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1&wp-media=056a8712e966ef63';
+import {STAGES} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1&wp-media=9014fb44e291ad74';
 
 // This campaign is stable across runtime revisions. A new build never reopens
 // an already paid civil date / stage in the same anonymous local wallet.
@@ -23,4 +23,4 @@ export async function payRewards(state,wallet){
  return true;
 }
 
-export {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1&wp-media=056a8712e966ef63';
+export {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1&wp-media=9014fb44e291ad74';
