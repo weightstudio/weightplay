@@ -2355,6 +2355,66 @@ const essentialLobbyCopy = {
     "hall.tabletop_title": "挑一款紙牌或棋盤遊戲",
   });
 
+  const kidsLandingKeys = [
+    "kids.site.kicker", "kids.back_general", "kids.play.kicker", "kids.play.title",
+    "kids.promise.title", "kids.promise.body", "kids.promise.local", "kids.promise.no_account",
+    "trust.kicker", "trust.title", "trust.body", "trust.report",
+    "trust.no_login.title", "trust.no_login.body", "trust.local_progress.title", "trust.local_progress.body", "trust.supportive.title", "trust.supportive.body",
+  ];
+  const kidsLandingCopy = {
+    "ko": [
+      "게임을 골라 바로 시작하세요!", "일반 게임 대기실로 돌아가기", "나이 선택", "좋아하는 게임을 골라 보세요",
+      "광고 없이 플레이", "WeightPlay Kids에는 화면 광고, 팝업, 중간 광고가 없습니다.", "진행 상황은 이 기기에 저장됩니다.", "계정이 필요하지 않습니다.",
+      "보호자 안내", "짧게 즐기는 놀이와 연습", "무료로 시작할 수 있고 로그인이 필요 없습니다. 결과는 아이의 진행을 격려합니다.", "안전, 개인정보 또는 콘텐츠 문제 알리기",
+      "로그인 필요 없음", "계정을 만들지 않고 시작할 수 있습니다.", "기기에 저장", "점수와 즐겨찾기는 이 기기에 남습니다.", "노력과 진행을 응원", "결과는 다른 아이와의 비교 없이 노력과 향상을 보여 줍니다.",
+    ],
+    "pt-BR": [
+      "Escolha um jogo e comece!", "Voltar ao salão de jogos", "Escolha a idade", "Escolha um jogo de que você goste",
+      "Jogue sem anúncios", "O WeightPlay Kids não exibe anúncios, pop-ups nem intervalos publicitários.", "O progresso fica neste dispositivo.", "Não é preciso criar uma conta.",
+      "Para responsáveis", "Atividades curtas para aprender brincando", "Os jogos são gratuitos para começar e não exigem cadastro. Os resultados incentivam o progresso.", "Relatar uma questão de segurança, privacidade ou conteúdo",
+      "Sem cadastro", "As crianças podem jogar sem criar uma conta.", "Progresso local", "Pontuações e favoritos ficam neste dispositivo.", "Incentivo ao progresso", "Os resultados destacam o esforço e a evolução.",
+    ],
+    "fr": [
+      "Choisissez un jeu et commencez !", "Retour à l’accueil des jeux", "Choisissez l’âge", "Choisissez un jeu qui vous plaît",
+      "Jouez sans publicité", "WeightPlay Kids ne diffuse ni publicité, ni fenêtre publicitaire, ni coupure publicitaire.", "La progression reste sur cet appareil.", "Aucun compte n’est nécessaire.",
+      "Pour les parents", "De courtes activités pour apprendre en jouant", "Les jeux sont gratuits pour commencer et ne demandent pas de compte. Les résultats encouragent les progrès.", "Signaler un problème de sécurité, de confidentialité ou de contenu",
+      "Sans inscription", "Les enfants peuvent jouer sans créer de compte.", "Progression sur cet appareil", "Les scores et les favoris restent sur cet appareil.", "Des résultats encourageants", "Les résultats mettent en avant les efforts et les progrès.",
+    ],
+    "de": [
+      "Wähle ein Spiel und leg los!", "Zurück zur Spielübersicht", "Alter wählen", "Wähle ein Spiel, das dir gefällt",
+      "Spielen ohne Werbung", "WeightPlay Kids zeigt keine Anzeigen, Werbe-Pop-ups oder Werbeunterbrechungen.", "Der Fortschritt bleibt auf diesem Gerät.", "Kein Konto erforderlich.",
+      "Für Eltern", "Kurze Übungen, die Spaß machen", "Die Spiele lassen sich kostenlos und ohne Anmeldung starten. Die Ergebnisse ermutigen zum Weiterspielen.", "Ein Problem mit Sicherheit, Datenschutz oder Inhalten melden",
+      "Keine Anmeldung", "Kinder können ohne Konto spielen.", "Fortschritt auf diesem Gerät", "Punktestände und Favoriten bleiben auf diesem Gerät.", "Ermutigende Ergebnisse", "Die Ergebnisse zeigen Einsatz und Fortschritt.",
+    ],
+    "it": [
+      "Scegli un gioco e comincia!", "Torna alla pagina dei giochi", "Scegli l’età", "Scegli un gioco che ti piace",
+      "Gioca senza pubblicità", "WeightPlay Kids non mostra annunci, pop-up o interruzioni pubblicitarie.", "I progressi restano su questo dispositivo.", "Non serve un account.",
+      "Per i genitori", "Brevi attività per imparare giocando", "I giochi si avviano gratis e senza registrazione. I risultati incoraggiano i progressi.", "Segnala un problema di sicurezza, privacy o contenuti",
+      "Nessuna registrazione", "I bambini possono giocare senza creare un account.", "Progressi sul dispositivo", "Punteggi e preferiti restano su questo dispositivo.", "Risultati incoraggianti", "I risultati valorizzano l’impegno e i progressi.",
+    ],
+    "ru": [
+      "Выберите игру и начните!", "Вернуться к списку игр", "Выберите возраст", "Выберите игру по душе",
+      "Играйте без рекламы", "В WeightPlay Kids нет рекламных баннеров, всплывающих окон и рекламных пауз.", "Прогресс сохраняется на этом устройстве.", "Аккаунт не нужен.",
+      "Для родителей", "Короткие игровые занятия", "Игры запускаются бесплатно и без регистрации. Результаты помогают замечать свой прогресс.", "Сообщить о проблеме с безопасностью, конфиденциальностью или содержанием",
+      "Без регистрации", "Дети могут играть без создания аккаунта.", "Прогресс на устройстве", "Очки и избранное хранятся на этом устройстве.", "Поддержка и прогресс", "Результаты отмечают старание и улучшения.",
+    ],
+    "hi": [
+      "कोई गेम चुनें और खेलें!", "सभी गेम की सूची में लौटें", "उम्र चुनें", "अपनी पसंद का गेम चुनें",
+      "बिना विज्ञापन खेलें", "WeightPlay Kids में बैनर विज्ञापन, पॉप-अप या विज्ञापन के लिए रुकावट नहीं होती।", "प्रगति इसी डिवाइस पर सहेजी जाती है।", "खाता बनाने की ज़रूरत नहीं है।",
+      "अभिभावकों के लिए", "खेलते हुए थोड़ी देर अभ्यास", "गेम मुफ़्त शुरू होते हैं और साइन-इन नहीं माँगते। नतीजे बच्चों को अपनी प्रगति देखने में मदद करते हैं।", "सुरक्षा, निजता या सामग्री की समस्या बताएँ",
+      "साइन-इन ज़रूरी नहीं", "बच्चे खाता बनाए बिना खेल सकते हैं।", "इसी डिवाइस पर प्रगति", "स्कोर और पसंदीदा गेम इसी डिवाइस पर रहते हैं।", "हौसला बढ़ाने वाले नतीजे", "नतीजे कोशिश और सुधार पर ध्यान देते हैं।",
+    ],
+    "ar": [
+      "اختر لعبة وابدأ اللعب!", "العودة إلى قائمة الألعاب", "اختر العمر", "اختر لعبة تعجبك",
+      "العب بلا إعلانات", "لا يعرض WeightPlay Kids إعلانات أو نوافذ منبثقة أو فواصل إعلانية.", "يُحفظ التقدم على هذا الجهاز.", "لا حاجة إلى إنشاء حساب.",
+      "لأولياء الأمور", "أنشطة قصيرة للتدرّب باللعب", "يمكن بدء الألعاب مجانًا ومن دون تسجيل دخول. وتساعد النتائج الطفل على ملاحظة تقدّمه.", "أبلغ عن مشكلة في السلامة أو الخصوصية أو المحتوى",
+      "لا حاجة لتسجيل الدخول", "يمكن للأطفال اللعب من دون إنشاء حساب.", "التقدم على الجهاز", "تُحفظ النقاط والألعاب المفضلة على هذا الجهاز.", "نتائج مشجّعة", "تُبرز النتائج الجهد والتحسّن.",
+    ],
+  };
+  for (const [locale, values] of Object.entries(kidsLandingCopy)) {
+    kidsLandingKeys.forEach((key, index) => { dictionaries[locale][key] ??= values[index]; });
+  }
+
   const kidsAgeCopy = {
     en: ["Minimum suitable age: {age}", "Recommended age group: {age}", "Min {age}", "Group", "Independent play from {age}; younger children may play with adult help.", "Solo {age}"],
     "zh-Hant": ["最低適齡年齡：{age}", "推薦年齡組：{age}", "最低 {age}", "推薦", "建議 {age} 以上獨立遊玩；年幼孩子可由成人讀題陪玩。", "獨立 {age}"],

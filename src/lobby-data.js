@@ -150,7 +150,7 @@ window.WONDER_LOBBY = {
       href: "games/block-planet-repair/",
       title: {"__localizedExact":true,"en":"Block Planet Repair Crew","zh-Hant":"方塊星球修復隊","zh-Hans":"方块星球修复队","ja":"ブロック惑星修復隊","ko":"블록 행성 복구대","es":"Brigada Planeta Bloque","pt-BR":"Equipe Planeta em Blocos","fr":"Brigade des planètes cubiques","de":"Blockplaneten-Reparaturteam","it":"Squadra ripara pianeti","ru":"Бригада кубических планет","hi":"ब्लॉक ग्रह मरम्मत दल","ar":"فريق ترميم كواكب المكعبات"},
       type: {"__localizedExact":true,"en":"Idle restoration","zh-Hant":"放置修復","zh-Hans":"放置修复","ja":"放置型の惑星修復","ko":"방치형 행성 복구","es":"Restauración incremental","pt-BR":"Restauração incremental","fr":"Restauration incrémentale","de":"Idle-Aufbau","it":"Restauro incrementale","ru":"Восстановление планет","hi":"ग्रहों की मरम्मत","ar":"ترميم تدريجي"},
-      description: {"__localizedExact":true,"en":"Sweep across repair robots, bring five planets to life and hatch block animals.","zh-Hant":"滑過修復機器人，讓五顆星球重獲生機，孵化方塊動物。","zh-Hans":"滑过修复机器人，让五颗星球重获生机，孵化方块动物。","ja":"修復ロボットをなぞり、5つの惑星に生命を取り戻して、ブロック動物を孵化させよう。","ko":"복구 로봇을 스쳐 다섯 행성에 생기를 되찾고 블록 동물을 부화시키세요.","es":"Desliza sobre los robots, revive cinco planetas e incuba animales de bloques.","pt-BR":"Passe pelos robôs, restaure cinco planetas e choque ovos de bichos em blocos.","fr":"Balayez les robots, ranimez cinq planètes et faites éclore des animaux cubiques.","de":"Streiche über Reparaturroboter, belebe fünf Planeten und brüte Blocktiere aus.","it":"Scorri sui robot, riporta in vita cinque pianeti e fai schiudere gli animali a blocchi.","ru":"Проведите по роботам, оживите пять планет и выведите кубических зверей.","hi":"रोबोटों पर उँगली फिराएँ, पाँच ग्रहों को सँवारें और ब्लॉक जीवों के अंडे सेएँ।","ar":"مرّر فوق روبوتات الترميم، وأحيِ خمسة كواكب، وفقّس حيوانات مكعبة."},
+      description: {"__localizedExact":true,"en":"Sweep over lit repair robots to restore five planets. Spend energy coins to recruit robots and take on contracts in specific zones.","zh-Hant":"滑過亮起的修復機器人，讓五顆星球復原。用能量幣招募機器人，再挑戰指定區域的修復委託。","zh-Hans":"滑过亮起的修复机器人，让五颗星球复原。用能量币招募机器人，再挑战指定区域的修复委托。","ja":"光った修復ロボットをなぞって、5つの惑星を復元しましょう。エネルギーコインでロボットを雇い、指定エリアの修復依頼に挑みます。","ko":"불이 켜진 복구 로봇을 쓸어 다섯 행성을 복구하세요. 에너지 코인으로 로봇을 영입하고 지정 구역의 복구 의뢰에 도전하세요.","es":"Desliza sobre los robots iluminados para restaurar cinco planetas. Gasta monedas de energía en reclutar robots y acepta encargos en zonas concretas.","pt-BR":"Passe pelos robôs acesos para restaurar cinco planetas. Use moedas de energia para recrutar robôs e cumpra contratos em áreas específicas.","fr":"Passez sur les robots allumés pour restaurer cinq planètes. Dépensez vos pièces d’énergie pour recruter des robots et relevez des missions dans des zones précises.","de":"Streiche über leuchtende Reparaturroboter, um fünf Planeten wiederherzustellen. Rekrutiere mit Energiemünzen Roboter und nimm Aufträge für bestimmte Gebiete an.","it":"Scorri sui robot illuminati per ripristinare cinque pianeti. Recluta robot con le monete di energia e affronta incarichi in zone precise.","ru":"Проводите по светящимся ремонтным роботам, чтобы восстановить пять планет. Нанимайте роботов за энергомонеты и выполняйте заказы в отдельных зонах.","hi":"चमकते मरम्मत रोबोटों पर उँगली फेरकर पाँच ग्रह बहाल करें। ऊर्जा सिक्कों से रोबोट भर्ती करें और तय इलाकों में मरम्मत के काम पूरे करें।","ar":"مرّر فوق روبوتات الترميم المضيئة لإصلاح خمسة كواكب. أنفق عملات الطاقة لتجنيد روبوتات وتولَّ مهام الترميم في مناطق محددة."},
       ages: ["9", "family"], categories: ["Management"], skills: ["Planning", "Observation"],
       tags: ["Idle", "Resource Management", "Collection"], difficulty: "Easy", estimatedPlayTime: "3–6 minutes",
       art: { kind: "image", background: "games/block-planet-repair/art/cover.webp?wp-media=6a3d1c6d444e86cc", hideHero: true },
@@ -3329,19 +3329,19 @@ for (const game of window.WONDER_LOBBY.games) {
 const animalRuneReelsV3 = window.WONDER_LOBBY.games.find((game) => game.id === "animal-rune-reels");
 if (animalRuneReelsV3) {
   animalRuneReelsV3.description = {
-    en: "Build a summoned animal team, spin ten kinds of downward-moving runes, complete doubled lines, and unleash separate pet attacks while shared defense and healing protect the summoner.",
-    "zh-Hant": "召集動物夥伴，轉動十種符石形成連線來加倍效果；夥伴會自動攻擊，防禦與治療則保護召喚師。",
-    "zh-Hans": "组成召唤动物队伍，转动十种向下滚动的符石；完成连线让效果加倍，宠物各自攻击，全队防御与治疗共同保护召唤师。",
-    ja: "召喚した動物チームを編成し、下へ回る10種類のルーンでラインを完成。各ペットが個別に攻撃し、合計防御と回復で召喚師を守ります。",
-    ko: "소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다.",
-    es: "Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al invocador.",
-    "pt-BR": "Monte uma equipe animal invocada, gire dez runas para baixo, dobre linhas e ataque com cada mascote enquanto defesa e cura totais protegem o invocador.",
-    fr: "Formez une équipe animale invoquée, faites défiler dix runes vers le bas, doublez les lignes et attaquez avec chaque familier tandis que défense et soin protègent l'invocateur.",
-    de: "Stelle ein beschworenes Tierteam zusammen, drehe zehn Runen nach unten, verdopple Linien und greife mit jedem Begleiter an, während Gesamtverteidigung und Heilung den Beschwörer schützen.",
-    it: "Crea una squadra animale evocata, gira dieci rune verso il basso, raddoppia le linee e attacca con ogni compagno mentre difesa e cura totali proteggono l'evocatore.",
-    ru: "Соберите отряд призванных зверей, вращайте вниз десять видов рун, удваивайте линии и атакуйте каждым питомцем, пока общая защита и лечение берегут призывателя.",
-    hi: "बुलाए गए पशु दल को बनाएँ, नीचे घूमने वाले दस रून मिलाएँ और लाइन का प्रभाव दुगुना करें। हर साथी अलग वार करता है, जबकि कुल रक्षा और उपचार आह्वानकर्ता को बचाते हैं।",
-    ar: "كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة المستدعي.",
+    "en": "Spin three runes and read the enemy’s next move. Hold or reroll one reel before resolving your team’s attacks, defence and healing.",
+    "zh-Hant": "轉出三枚符石，查看敵人的下一步。決定要保留或重轉哪一格，再結算隊伍的攻擊、防禦和治療。",
+    "zh-Hans": "转出三枚符石，查看敌人的下一步。决定要保留或重转哪一格，再结算队伍的攻击、防御和治疗。",
+    "ja": "3つのルーンを回して敵の次の行動を確認。リールを1つキープするか回し直してから、味方の攻撃・防御・回復を実行します。",
+    "ko": "룬 세 개를 돌리고 적의 다음 행동을 확인하세요. 릴 하나를 고정하거나 다시 돌린 뒤 팀의 공격, 방어, 회복을 처리하세요.",
+    "es": "Gira tres runas y lee el próximo movimiento enemigo. Conserva un rodillo o vuelve a girarlo antes de resolver el ataque, la defensa y la curación del equipo.",
+    "pt-BR": "Gire três runas e veja o próximo movimento do inimigo. Trave ou gire novamente um rolo antes de resolver os ataques, a defesa e a cura da equipe.",
+    "fr": "Tirez trois runes et repérez la prochaine action ennemie. Gardez ou relancez un rouleau avant de résoudre les attaques, la défense et les soins de l’équipe.",
+    "de": "Drehe drei Runen und prüfe den nächsten Zug des Gegners. Halte eine Walze oder drehe sie erneut, bevor Angriff, Verteidigung und Heilung deines Teams ausgewertet werden.",
+    "it": "Fai girare tre rune e leggi la prossima mossa del nemico. Blocca o rigira un rullo prima di risolvere attacchi, difesa e cure della squadra.",
+    "ru": "Прокрутите три руны и посмотрите, что готовит противник. Сохраните или прокрутите один барабан заново перед расчётом атак, защиты и лечения отряда.",
+    "hi": "तीन रून घुमाएँ और दुश्मन की अगली चाल देखें। दल के हमले, बचाव और उपचार तय करने से पहले एक रील रोकें या फिर से घुमाएँ।",
+    "ar": "أدر ثلاث رونات واقرأ حركة العدو التالية. ثبّت بكرة واحدة أو أدرها مجددًا قبل تنفيذ هجمات الفريق ودفاعه وعلاجه."
   };
   animalRuneReelsV3.meta = {
     en: ["10 Rune Types", "Collectible Team", "Downward Auto Reels"], "zh-Hant": ["10 種符石", "角色召喚隊伍", "向下自動轉輪"], "zh-Hans": ["10 种符石", "角色召唤队伍", "向下自动转轮"],
@@ -6179,19 +6179,6 @@ for (const audience of ["generalGameIds", "kidsGameIds"]) if (window.WONDER_LOBB
 // END OWNER CATALOG RETIREMENTS
 
 // BEGIN OWNER OFFICIAL GAME NAMES
-// Board games previously inherited the broad Classic/Puzzle labels, which
-// made them disappear from board-game discovery. Keep Board as a category;
-// the separate tabletopGameIds registry owns the higher-level hall placement.
-const lobbyBoardGameIds = new Set([
-  "checkers", "tic-tac-toe", "peg-solitaire", "reversi",
-  "four-in-a-row", "chess", "mahjong-solitaire",
-]);
-for (const game of window.WONDER_LOBBY.games) {
-  if (lobbyBoardGameIds.has(game.id) && !game.categories?.includes("Board")) {
-    game.categories = [...(game.categories || []), "Board"];
-  }
-}
-
 window.WONDER_LOBBY.officialTitleOverrides = {
   "frostline-expedition": {
     "en": "Frostline Expedition",
@@ -7587,6 +7574,52 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "ru": "Пасьянс «Пирамида»",
     "hi": "पिरामिड सॉलिटेयर",
     "ar": "سوليتير الهرم"
+  },
+  "blade-orbit": {
+    "__localizedExact": true,
+    "en": "Blade Orbit",
+    "zh-Hant": "劍陣無雙",
+    "zh-Hans": "剑阵无双",
+    "ja": "ブレードオービット",
+    "ko": "블레이드 오비트",
+    "es": "Órbita de espadas",
+    "pt-BR": "Órbita de lâminas",
+    "fr": "Orbite des lames",
+    "de": "Klingenorbit",
+    "it": "Orbita di lame",
+    "ru": "Орбита клинков",
+    "hi": "तलवारों की कक्षा",
+    "ar": "مدار السيوف"
+  },
+  "animal-glyph-garden": {
+    "en": "Rune Clue Match",
+    "ja": "ルーンの手がかり合わせ",
+    "ko": "룬 단서 맞추기",
+    "es": "Pistas de Runas",
+    "pt-BR": "Pistas de Runas",
+    "fr": "Indices de runes",
+    "de": "Runenhinweise zuordnen",
+    "it": "Indizi delle Rune",
+    "ru": "Подбор рун по подсказкам",
+    "hi": "संकेतों से रूण मिलाएँ",
+    "ar": "مطابقة الرموز بالقرائن",
+    "zh-Hant": "符文線索配對",
+    "zh-Hans": "符文线索配对"
+  },
+  "animal-putt-trails": {
+    "en": "Putt Trails",
+    "ja": "パット・トレイル",
+    "ko": "퍼트 트레일",
+    "es": "Senderos de Putt",
+    "pt-BR": "Trilhas de Putt",
+    "fr": "Sentiers de Putt",
+    "de": "Putt-Pfade",
+    "it": "Sentieri di Putt",
+    "ru": "пути для патта",
+    "hi": "पुट ट्रेल्स",
+    "ar": "مسارات ضربات",
+    "zh-Hant": "推桿小徑",
+    "zh-Hans": "推杆小径"
   }
 };
 for (const game of window.WONDER_LOBBY.games) if (window.WONDER_LOBBY.officialTitleOverrides[game.id]) game.title = {__localizedExact:true,...window.WONDER_LOBBY.officialTitleOverrides[game.id]};
@@ -7883,19 +7916,19 @@ const animalBlockmartType = {
 };
 const animalBlockmartDescription = {
   __localizedExact: true,
-  en: "Arrange a tiny block-built shop, stock everyday favorites, serve animal neighbors, and reinvest in a bigger, busier store.",
-  "zh-Hant": "擺好方塊貨架、補滿日常商品，服務動物街坊，再把收入投入更大、更忙碌的店面。",
-  "zh-Hans": "摆好方块货架、补满日常商品，服务动物街坊，再把收入投入更大、更忙碌的店面。",
-  ja: "ブロック造りの小さなお店に棚を並べ、商品を補充して動物のご近所さんを迎えよう。売上でお店を広げよう。",
-  ko: "블록으로 지은 작은 가게에 진열대를 놓고 상품을 채워 동물 이웃을 맞이하세요. 매출로 가게를 넓혀 보세요.",
-  es: "Organiza una tienda de bloques, repón productos cotidianos y atiende a tus vecinos animales para ampliar el local.",
-  "pt-BR": "Organize uma lojinha de blocos, reponha produtos do dia a dia e atenda aos vizinhos animais para ampliar a loja.",
-  fr: "Aménagez une boutique en blocs, réapprovisionnez les essentiels et accueillez vos voisins animaux pour agrandir le magasin.",
-  de: "Richte einen kleinen Blockladen ein, fülle Alltagswaren auf und bediene tierische Nachbarn, um den Laden zu vergrößern.",
-  it: "Sistema un negozio a blocchi, rifornisci i prodotti quotidiani e servi i vicini animali per ampliare il locale.",
-  ru: "Расставляйте полки в блочном магазинчике, пополняйте товары и обслуживайте соседей-животных, чтобы расширить магазин.",
-  hi: "ब्लॉक की छोटी दुकान सजाएँ, रोज़मर्रा का सामान भरें और पशु-पड़ोसियों की सेवा करके दुकान बढ़ाएँ।",
-  ar: "رتّب متجرًا صغيرًا من المكعبات، وجدّد السلع اليومية، واستقبل جيرانك من الحيوانات لتوسيع المتجر.",
+  "en": "Lay out shelves and checkout lanes, restock goods and hire staff. Use the proceeds to expand the same shop, with progress saved on this device.",
+  "zh-Hant": "安排貨架和結帳動線、補貨並雇用員工，再用營收擴建同一間店。店鋪進度會保存在這台裝置。",
+  "zh-Hans": "安排货架和结账动线、补货并雇用员工，再用营收扩建同一家店。店铺进度会保存在这台设备。",
+  "ja": "棚とレジの動線を整え、品物を補充してスタッフを雇いましょう。売上で同じ店を拡張でき、進み具合はこの端末に保存されます。",
+  "ko": "진열대와 계산대 동선을 정하고, 상품을 채우고 직원을 고용하세요. 매출로 같은 가게를 확장할 수 있으며 진행 상황은 이 기기에 저장됩니다.",
+  "es": "Organiza los estantes y las cajas, repón productos y contrata personal. Usa las ventas para ampliar la misma tienda, con el progreso guardado en este dispositivo.",
+  "pt-BR": "Organize prateleiras e caixas, reponha produtos e contrate funcionários. Use a receita para ampliar a mesma loja, com o progresso salvo neste dispositivo.",
+  "fr": "Disposez les rayons et les caisses, réapprovisionnez les produits et embauchez du personnel. Agrandissez le même magasin avec les recettes. Votre progression reste sur cet appareil.",
+  "de": "Plane Regale und Kassenwege, fülle Waren nach und stelle Personal ein. Erweitere denselben Laden mit den Einnahmen. Dein Fortschritt bleibt auf diesem Gerät.",
+  "it": "Organizza scaffali e casse, rifornisci i prodotti e assumi personale. Usa gli incassi per ampliare lo stesso negozio. I progressi restano su questo dispositivo.",
+  "ru": "Расставляйте полки и кассы, пополняйте товары и нанимайте сотрудников. Расширяйте тот же магазин за счёт выручки. Прогресс сохраняется на этом устройстве.",
+  "hi": "अलमारियों और बिलिंग काउंटर का रास्ता तय करें, सामान भरें और कर्मचारी रखें। कमाई से उसी दुकान को बढ़ाएँ। प्रगति इस डिवाइस पर सहेजी जाती है।",
+  "ar": "رتّب الرفوف ومسارات الدفع، وجدّد المخزون ووظّف عاملين. استخدم العائدات لتوسيع المتجر نفسه. يُحفظ تقدمك على هذا الجهاز."
 };
 const animalBlockmartStatusText = {
   "en": "Playable",
@@ -8004,19 +8037,19 @@ window.WONDER_LOBBY.games.push({
     "ar": "رعاية الكلاب والعائلات"
   },
   description: {
-    "en": "A little yard. A growing family. Feed, care for and raise your very own dogs.",
-    "zh-Hant": "一個小院，一家狗狗。餵食、清潔、陪伴，迎接新生小狗。",
-    "zh-Hans": "一个小院，一家狗狗。喂食、清洁、陪伴，迎接新生小狗。",
-    "ja": "小さな庭で育つ犬の家族。ごはん、お掃除、ふれあいで子犬を迎えよう。",
-    "ko": "작은 마당에서 자라는 강아지 가족. 먹이고, 청소하고, 함께 놀며 새끼를 맞이하세요.",
-    "es": "Un pequeño jardín, una familia que crece. Alimenta, cuida y cría a tus perros.",
-    "pt-BR": "Um pequeno quintal, uma família que cresce. Alimente, cuide e crie seus cães.",
-    "fr": "Un petit jardin, une famille qui grandit. Nourrissez, choyez et élevez vos chiens.",
-    "de": "Ein kleiner Garten, eine wachsende Familie. Füttere, pflege und begleite deine Hunde.",
-    "it": "Un piccolo giardino, una famiglia che cresce. Nutri, accudisci e alleva i tuoi cani.",
-    "ru": "Маленький двор и растущая семья. Кормите собак, ухаживайте за ними и растите щенков.",
-    "hi": "छोटा आँगन, बढ़ता परिवार। अपने कुत्तों को खिलाएँ, उनकी देखभाल करें और पिल्ले पालें।",
-    "ar": "حديقة صغيرة وعائلة تكبر. أطعم كلابك واعتن بها وربِّ جراءها."
+    "en": "Set out bowls for hungry dogs to find on their own. Pet your dogs, clean the yard and adopt new companions.",
+    "zh-Hant": "擺好食碗，讓餓了的狗狗自己走來吃。摸摸牠們、清理小院，再領養新的夥伴。",
+    "zh-Hans": "摆好食碗，让饿了的狗狗自己走来吃。摸摸它们、清理小院，再领养新的伙伴。",
+    "ja": "フードの器を置くと、おなかをすかせた犬が自分で食べに来ます。犬をなでたり、庭を掃除したり、新しい仲間を迎えたりできます。",
+    "ko": "밥그릇을 놓아 두면 배고픈 강아지가 스스로 찾아와 먹어요. 강아지를 쓰다듬고 마당을 청소하며 새 친구를 입양하세요.",
+    "es": "Coloca cuencos para que los perros hambrientos se acerquen a comer. Acarícialos, limpia el patio y adopta nuevos compañeros.",
+    "pt-BR": "Deixe tigelas no quintal para os cães encontrarem a comida quando estiverem com fome. Faça carinho neles, limpe o quintal e adote novos companheiros.",
+    "fr": "Déposez des gamelles pour que les chiens viennent manger quand ils ont faim. Caressez-les, nettoyez la cour et adoptez de nouveaux compagnons.",
+    "de": "Stelle Näpfe auf, damit hungrige Hunde selbst zum Fressen kommen. Streichle sie, säubere den Hof und adoptiere neue Gefährten.",
+    "it": "Metti le ciotole in cortile e lascia che i cani affamati vengano a mangiare. Accarezzali, pulisci il cortile e adotta nuovi compagni.",
+    "ru": "Расставляйте миски, чтобы голодные собаки сами находили корм. Гладьте собак, убирайте двор и берите к себе новых питомцев.",
+    "hi": "खाने के कटोरे रखें ताकि भूखे कुत्ते खुद आकर खा सकें। उन्हें प्यार से सहलाएँ, आँगन साफ़ करें और नए साथी गोद लें।",
+    "ar": "ضع أوعية الطعام لتأتي الكلاب الجائعة وتأكل بنفسها. دلّل كلابك ونظّف الفناء وتبنَّ رفاقًا جددًا."
   },
   categories: ["Simulation", "Management", "Animal Games", "Pet Care"],
   skills: ["Planning", "Resource Balance"], ages: ["general"],
@@ -8477,7 +8510,7 @@ window.WONDER_LOBBY.games.push({
   previewVideo: "assets/previews/smallwood-lives-battle.webm", href: "games/smallwood-lives/",
   title: {"en":"A Life in Moments","zh-Hant":"人間一瞬","zh-Hans":"人间一瞬","ja":"一瞬の人生","ko":"한순간의 삶","es":"Una vida en instantes","pt-BR":"Uma vida em instantes","fr":"Une vie en instants","de":"Ein Leben in Augenblicken","it":"Una vita in istanti","ru":"Жизнь в мгновениях","hi":"पलों में एक जीवन","ar":"حياة في لحظات"},
   type: { en: "Life simulation", "zh-Hant": "人生模擬", "zh-Hans": "人生模拟", ja: "人生シミュレーション", ko: "인생 시뮬레이션", es: "Simulación de vida", "pt-BR": "Simulação de vida", fr: "Simulation de vie", de: "Lebenssimulation", it: "Simulazione di vita", ru: "Симулятор жизни", hi: "जीवन सिमुलेशन", ar: "محاكاة الحياة" },
-  description: {"en":"Among around eight billion people, you are one of a kind. Begin again somewhere in the world and see how a life unfolds.","zh-Hant":"世界有約80億人，每個人都是其中獨一無二的八十億分之一。若人生重新開始，你會出生在哪裡，又會走過怎樣的一生？","zh-Hans":"世界有约80亿人，每个人都是其中独一无二的八十亿分之一。若人生重新开始，你会出生在哪里，又会走过怎样的一生？","ja":"世界には約80億人。一人ひとりが、かけがえのない80億分の1です。人生をもう一度始めたら、どこに生まれ、どんな一生を歩むでしょう。","ko":"세계의 약 80억 명 중 당신은 단 하나뿐인 존재입니다. 삶을 다시 시작한다면 어디에서 태어나 어떤 인생을 살게 될까요?","es":"Entre unos ocho mil millones de personas, cada vida es única. Si pudieras empezar de nuevo, ¿dónde nacerías y qué vida vivirías?","pt-BR":"Entre cerca de oito bilhões de pessoas, cada vida é única. Se pudesse recomeçar, onde você nasceria e que vida viveria?","fr":"Parmi environ huit milliards de personnes, chaque vie est unique. Si tout recommençait, où naîtriez-vous et quelle vie mèneriez-vous ?","de":"Unter rund acht Milliarden Menschen ist jedes Leben einzigartig. Wo würdest du geboren werden und wie würde dein Leben verlaufen, wenn es neu begänne?","it":"Tra circa otto miliardi di persone, ogni vita è unica. Se potessi ricominciare, dove nasceresti e quale vita vivresti?","ru":"Среди примерно восьми миллиардов людей каждая жизнь неповторима. Если бы всё началось заново, где бы вы родились и какую жизнь прожили?","hi":"दुनिया के लगभग आठ अरब लोगों में हर जीवन अनोखा है। अगर जीवन फिर शुरू हो, तो आपका जन्म कहाँ होगा और आपकी कहानी कैसी होगी?","ar":"بين نحو ثمانية مليارات إنسان، لكل شخص حياة لا تشبه غيرها. لو بدأت من جديد، فأين ستولد وأي حياة ستعيش؟"},
+  description: {"en":"Among around eight billion people, you are one of a kind. Follow a life from a randomly selected birthplace. Watch it unfold year by year, then look back on its story.","zh-Hant":"世界有約80億人，每個人都是其中獨一無二的八十億分之一。從隨機出生地開始，看人生逐年展開，最後回顧這一生的故事。","zh-Hans":"世界有约80亿人，每个人都是其中独一无二的八十亿分之一。从随机出生地开始，看人生逐年展开，最后回顾这一生的故事。","ja":"世界には約80億人。一人ひとりが、かけがえのない80億分の1です。生まれる場所はランダムに決まります。年を重ねる様子を見届け、最後にその一生を振り返ります。","ko":"세계의 약 80억 명 중 당신은 단 하나뿐인 존재입니다. 무작위로 정해진 출생지에서 시작해 해마다 펼쳐지는 삶을 지켜보고, 마지막에 그 이야기를 돌아보세요.","es":"Entre unos ocho mil millones de personas, cada vida es única. Sigue una vida desde un lugar de nacimiento elegido al azar. Observa cómo transcurre año a año y repasa su historia al final.","pt-BR":"Entre cerca de oito bilhões de pessoas, cada vida é única. Acompanhe uma vida a partir de um local de nascimento escolhido ao acaso. Veja a história avançar ano a ano e relembre a trajetória no final.","fr":"Parmi environ huit milliards de personnes, chaque vie est unique. Suivez une vie depuis un lieu de naissance tiré au sort. Regardez-la se dérouler année après année, puis revenez sur son histoire.","de":"Unter rund acht Milliarden Menschen ist jedes Leben einzigartig. Verfolge ein Leben mit zufällig gewähltem Geburtsort. Erlebe, wie es sich Jahr für Jahr entwickelt, und blicke am Ende auf seine Geschichte zurück.","it":"Tra circa otto miliardi di persone, ogni vita è unica. Segui una vita a partire da un luogo di nascita scelto a caso. Osserva come si sviluppa anno dopo anno e ripercorri la sua storia alla fine.","ru":"Среди примерно восьми миллиардов людей каждая жизнь неповторима. Проследите жизнь человека, родившегося в случайном месте. Наблюдайте за ней год за годом, а в конце вернитесь к её истории.","hi":"दुनिया के लगभग आठ अरब लोगों में हर जीवन अनोखा है। किसी बेतरतीब चुनी गई जन्मभूमि से एक जीवन शुरू होता है। उसे साल दर साल आगे बढ़ते देखें और अंत में उसकी कहानी पर नज़र डालें।","ar":"بين نحو ثمانية مليارات إنسان، لكل شخص حياة لا تشبه غيرها. تابع حياة تبدأ في مكان ولادة يُختار عشوائيًا. شاهد أحداثها عامًا بعد عام، ثم استعرض قصتها في النهاية."},
   meta: {"en":["Life journal","Living conditions","Journal themes"],"zh-Hant":["人生紀錄","生活背景","紀錄風格"],"zh-Hans":["人生记录","生活背景","记录风格"],"ja":["人生の記録","暮らしの背景","記録のテーマ"],"ko":["삶의 기록","생활 환경","기록 테마"],"es":["Diario de vidas","Condiciones de vida","Temas del diario"],"pt-BR":["Diário de vidas","Condições de vida","Temas do diário"],"fr":["Journal des vies","Conditions de vie","Thèmes du journal"],"de":["Lebensbuch","Lebensbedingungen","Buchdesigns"],"it":["Diario delle vite","Condizioni di vita","Temi del diario"],"ru":["Дневник жизней","Условия жизни","Оформление дневника"],"hi":["जीवन डायरी","जीवन की परिस्थितियाँ","डायरी की शैली"],"ar":["سجل الحياة","ظروف المعيشة","سمات السجل"]},
   categories: ["Simulation"], skills: ["Focus"], ages: ["13", "family"],
   art: { kind: "image", background: "/games/smallwood-lives/assets/cover-v2.webp?v=20261025-life-v2&wp-media=6a3d1c6d444e86cc", hideHero: true }

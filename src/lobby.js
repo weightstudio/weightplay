@@ -2390,7 +2390,9 @@ function renderLobbyContent({ historyMode = "replace" } = {}) {
   if (publisherStory) publisherStory.hidden = !isKidsLobby && activeHall !== "games";
   renderCatalogDirectory();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
-  platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : activeHall === 'games' ? "general.site.subtitle" : `hall.${activeHall}_note`);
+  const kidsSearchIntro = isKidsLobby && platformSubtitle.dataset.wpLobbySearchIntro === i18n.actualLocale()
+    ? document.querySelector('meta[name="description"]')?.content : '';
+  platformSubtitle.textContent = kidsSearchIntro || i18n.t(isKidsLobby ? "kids.site.subtitle" : activeHall === 'games' ? "general.site.subtitle" : `hall.${activeHall}_note`);
 
   const totalGameCount = gamesInHall().length;
   const lobbyVisitsTotal = Number(gameStats.totals?.lobbyVisitsTotal);

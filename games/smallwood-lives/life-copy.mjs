@@ -1,4 +1,4 @@
-import {LOCALES,ROUTES,TEXT} from './life-locales.mjs?wp-media=6a3d1c6d444e86cc';
+import {LOCALES,ROUTES,TEXT} from './life-locales.mjs?v=search20-life-story&wp-media=6a3d1c6d444e86cc';
 import {NARRATIVE} from './life-narrative.mjs?wp-media=6a3d1c6d444e86cc';
 import {ENV_COPY} from './life-environment-copy.mjs?wp-media=6a3d1c6d444e86cc';
 export {LOCALES,ROUTES};

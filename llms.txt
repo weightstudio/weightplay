@@ -21,9 +21,24 @@ Games with local saves keep progress in the current browser.
 - [Бесплатные браузерные игры для телефона и ПК](https://weightplay.com/ru/)
 - [मोबाइल और कंप्यूटर के लिए मुफ़्त ब्राउज़र गेम](https://weightplay.com/hi/)
 - [ألعاب متصفح مجانية للهاتف والكمبيوتر](https://weightplay.com/ar/)
-- [WeightPlay Kids](https://weightplay.com/en/kids/)
 
-### Game categories in English
+### WeightPlay Kids
+
+- [Free Browser Games for Kids](https://weightplay.com/en/kids/)
+- [免費兒童網頁遊戲](https://weightplay.com/zh-tw/kids/)
+- [免费儿童网页游戏](https://weightplay.com/zh-cn/kids/)
+- [子ども向け無料ブラウザゲーム](https://weightplay.com/ja/kids/)
+- [어린이를 위한 무료 웹게임](https://weightplay.com/ko/kids/)
+- [Juegos infantiles gratis en el navegador](https://weightplay.com/es/kids/)
+- [Jogos infantis grátis no navegador](https://weightplay.com/pt-br/kids/)
+- [Jeux gratuits sur navigateur pour enfants](https://weightplay.com/fr/kids/)
+- [Kostenlose Browserspiele für Kinder](https://weightplay.com/de/kids/)
+- [Giochi gratis nel browser per bambini](https://weightplay.com/it/kids/)
+- [Бесплатные браузерные игры для детей](https://weightplay.com/ru/kids/)
+- [बच्चों के लिए मुफ़्त ब्राउज़र गेम](https://weightplay.com/hi/kids/)
+- [ألعاب متصفح مجانية للأطفال](https://weightplay.com/ar/kids/)
+
+### English
 
 - [Free Solitaire Games](https://weightplay.com/en/categories/solitaire/)
 - [Free Puzzle Games](https://weightplay.com/en/categories/puzzle/)
@@ -44,8 +59,12 @@ Games with local saves keep progress in the current browser.
 - [Free Path and Route Puzzles](https://weightplay.com/en/categories/path-puzzles/)
 - [Free Match-3 and Tile-Clearing Games](https://weightplay.com/en/categories/tile-clearing/)
 - [Free Browser Shooting Games](https://weightplay.com/en/categories/shooting/)
+- [Free Word and Guessing Games](https://weightplay.com/en/categories/word-games/)
+- [Free Pet Care Games](https://weightplay.com/en/categories/pet-care/)
+- [Free Browser Games Inspired by Real-World Topics](https://weightplay.com/en/categories/topic-games/)
+- [Free Puzzle Games for Kids](https://weightplay.com/en/categories/kids-puzzles/)
 
-### 繁體中文遊戲分類
+### 繁體中文
 
 - [免費紙牌接龍](https://weightplay.com/zh-tw/categories/solitaire/)
 - [免費益智遊戲](https://weightplay.com/zh-tw/categories/puzzle/)
@@ -66,8 +85,12 @@ Games with local saves keep progress in the current browser.
 - [免費路線解謎遊戲](https://weightplay.com/zh-tw/categories/path-puzzles/)
 - [免費三消與消除益智遊戲](https://weightplay.com/zh-tw/categories/tile-clearing/)
 - [免費網頁射擊遊戲](https://weightplay.com/zh-tw/categories/shooting/)
+- [免費猜字遊戲與文字謎題](https://weightplay.com/zh-tw/categories/word-games/)
+- [免費寵物養成遊戲](https://weightplay.com/zh-tw/categories/pet-care/)
+- [熱梗與話題網頁遊戲](https://weightplay.com/zh-tw/categories/topic-games/)
+- [免費兒童益智遊戲](https://weightplay.com/zh-tw/categories/kids-puzzles/)
 
-### 简体中文游戏分类
+### 简体中文
 
 - [免费纸牌接龙](https://weightplay.com/zh-cn/categories/solitaire/)
 - [免费益智游戏](https://weightplay.com/zh-cn/categories/puzzle/)
@@ -88,6 +111,270 @@ Games with local saves keep progress in the current browser.
 - [免费路线解谜游戏](https://weightplay.com/zh-cn/categories/path-puzzles/)
 - [免费三消与消除益智游戏](https://weightplay.com/zh-cn/categories/tile-clearing/)
 - [免费网页射击游戏](https://weightplay.com/zh-cn/categories/shooting/)
+- [免费猜字游戏与文字谜题](https://weightplay.com/zh-cn/categories/word-games/)
+- [免费宠物养成游戏](https://weightplay.com/zh-cn/categories/pet-care/)
+- [热梗与话题网页游戏](https://weightplay.com/zh-cn/categories/topic-games/)
+- [免费儿童益智游戏](https://weightplay.com/zh-cn/categories/kids-puzzles/)
+
+### 日本語
+
+- [無料ソリティア](https://weightplay.com/ja/categories/solitaire/)
+- [無料パズルゲーム](https://weightplay.com/ja/categories/puzzle/)
+- [無料タワーディフェンス](https://weightplay.com/ja/categories/tower-defense/)
+- [ブラウザで遊べる無料RPG](https://weightplay.com/ja/categories/rpg/)
+- [無料カード・ボードゲーム](https://weightplay.com/ja/categories/card-board/)
+- [無料シミュレーション・経営ゲーム](https://weightplay.com/ja/categories/simulation/)
+- [一人称視点ブラウザゲーム](https://weightplay.com/ja/categories/first-person/)
+- [無料アクションゲーム](https://weightplay.com/ja/categories/action/)
+- [ブロック消し・合体パズル](https://weightplay.com/ja/categories/block-merge-puzzles/)
+- [無料ブラウザレースゲーム](https://weightplay.com/ja/categories/racing/)
+- [無料ブラウザ戦略ゲーム](https://weightplay.com/ja/categories/strategy/)
+- [無料の反射神経・タイミングゲーム](https://weightplay.com/ja/categories/reaction/)
+- [無料ブラウザスポーツゲーム](https://weightplay.com/ja/categories/sports/)
+- [無料ブラウザサバイバルゲーム](https://weightplay.com/ja/categories/survival/)
+- [無料ブラウザ放置ゲーム](https://weightplay.com/ja/categories/idle/)
+- [無料の数独・論理パズル](https://weightplay.com/ja/categories/logic-puzzles/)
+- [無料のルートパズル](https://weightplay.com/ja/categories/path-puzzles/)
+- [無料のマッチ3・消去パズル](https://weightplay.com/ja/categories/tile-clearing/)
+- [無料ブラウザシューティングゲーム](https://weightplay.com/ja/categories/shooting/)
+- [無料の単語当てゲーム](https://weightplay.com/ja/categories/word-games/)
+- [無料ペット育成ゲーム](https://weightplay.com/ja/categories/pet-care/)
+- [話題を題材にした無料ブラウザゲーム](https://weightplay.com/ja/categories/topic-games/)
+- [子ども向け無料パズルゲーム](https://weightplay.com/ja/categories/kids-puzzles/)
+
+### 한국어
+
+- [무료 솔리테어](https://weightplay.com/ko/categories/solitaire/)
+- [무료 퍼즐 게임](https://weightplay.com/ko/categories/puzzle/)
+- [무료 타워 디펜스 게임](https://weightplay.com/ko/categories/tower-defense/)
+- [무료 브라우저 RPG](https://weightplay.com/ko/categories/rpg/)
+- [무료 카드 및 보드게임](https://weightplay.com/ko/categories/card-board/)
+- [무료 시뮬레이션 및 경영 게임](https://weightplay.com/ko/categories/simulation/)
+- [1인칭 브라우저 게임](https://weightplay.com/ko/categories/first-person/)
+- [무료 액션 게임](https://weightplay.com/ko/categories/action/)
+- [블록 지우기와 합치기 퍼즐](https://weightplay.com/ko/categories/block-merge-puzzles/)
+- [무료 브라우저 레이싱 게임](https://weightplay.com/ko/categories/racing/)
+- [무료 브라우저 전략 게임](https://weightplay.com/ko/categories/strategy/)
+- [무료 반응과 타이밍 게임](https://weightplay.com/ko/categories/reaction/)
+- [무료 브라우저 스포츠 게임](https://weightplay.com/ko/categories/sports/)
+- [무료 브라우저 생존 게임](https://weightplay.com/ko/categories/survival/)
+- [무료 브라우저 방치형 게임](https://weightplay.com/ko/categories/idle/)
+- [무료 스도쿠와 논리 퍼즐](https://weightplay.com/ko/categories/logic-puzzles/)
+- [무료 경로 퍼즐](https://weightplay.com/ko/categories/path-puzzles/)
+- [무료 매치 3와 조각 제거 퍼즐](https://weightplay.com/ko/categories/tile-clearing/)
+- [무료 브라우저 슈팅 게임](https://weightplay.com/ko/categories/shooting/)
+- [무료 단어 맞히기 게임](https://weightplay.com/ko/categories/word-games/)
+- [무료 반려동물 키우기 게임](https://weightplay.com/ko/categories/pet-care/)
+- [화제를 소재로 만든 무료 웹게임](https://weightplay.com/ko/categories/topic-games/)
+- [무료 어린이 퍼즐 게임](https://weightplay.com/ko/categories/kids-puzzles/)
+
+### español
+
+- [Solitarios gratis](https://weightplay.com/es/categories/solitaire/)
+- [Juegos de puzles gratis](https://weightplay.com/es/categories/puzzle/)
+- [Juegos de defensa de torres gratis](https://weightplay.com/es/categories/tower-defense/)
+- [Juegos de rol gratis en el navegador](https://weightplay.com/es/categories/rpg/)
+- [Juegos de cartas y de mesa gratis](https://weightplay.com/es/categories/card-board/)
+- [Juegos de simulación y gestión gratis](https://weightplay.com/es/categories/simulation/)
+- [Juegos en primera persona para navegador](https://weightplay.com/es/categories/first-person/)
+- [Juegos de acción gratis](https://weightplay.com/es/categories/action/)
+- [Puzles de bloques y de fusión](https://weightplay.com/es/categories/block-merge-puzzles/)
+- [Juegos de carreras gratis en el navegador](https://weightplay.com/es/categories/racing/)
+- [Juegos de estrategia gratis en el navegador](https://weightplay.com/es/categories/strategy/)
+- [Juegos gratis de reflejos y precisión](https://weightplay.com/es/categories/reaction/)
+- [Juegos de deportes gratis en el navegador](https://weightplay.com/es/categories/sports/)
+- [Juegos de supervivencia gratis en el navegador](https://weightplay.com/es/categories/survival/)
+- [Juegos idle gratis en el navegador](https://weightplay.com/es/categories/idle/)
+- [Sudoku y puzles de lógica gratis](https://weightplay.com/es/categories/logic-puzzles/)
+- [Puzles de recorridos gratis](https://weightplay.com/es/categories/path-puzzles/)
+- [Juegos gratis de combinar 3 y eliminar fichas](https://weightplay.com/es/categories/tile-clearing/)
+- [Juegos de disparos gratis en el navegador](https://weightplay.com/es/categories/shooting/)
+- [Juegos gratis de palabras y adivinanzas](https://weightplay.com/es/categories/word-games/)
+- [Juegos gratis de cuidado de mascotas](https://weightplay.com/es/categories/pet-care/)
+- [Juegos gratis de navegador inspirados en temas de actualidad](https://weightplay.com/es/categories/topic-games/)
+- [Juegos de lógica gratis para niños](https://weightplay.com/es/categories/kids-puzzles/)
+
+### português (Brasil)
+
+- [Jogos de paciência grátis](https://weightplay.com/pt-br/categories/solitaire/)
+- [Jogos de quebra-cabeça grátis](https://weightplay.com/pt-br/categories/puzzle/)
+- [Jogos grátis de defesa de torres](https://weightplay.com/pt-br/categories/tower-defense/)
+- [RPGs grátis no navegador](https://weightplay.com/pt-br/categories/rpg/)
+- [Jogos de cartas e tabuleiro grátis](https://weightplay.com/pt-br/categories/card-board/)
+- [Jogos grátis de simulação e gestão](https://weightplay.com/pt-br/categories/simulation/)
+- [Jogos em primeira pessoa no navegador](https://weightplay.com/pt-br/categories/first-person/)
+- [Jogos de ação grátis](https://weightplay.com/pt-br/categories/action/)
+- [Quebra-cabeças de blocos e fusão](https://weightplay.com/pt-br/categories/block-merge-puzzles/)
+- [Jogos de corrida grátis no navegador](https://weightplay.com/pt-br/categories/racing/)
+- [Jogos de estratégia grátis no navegador](https://weightplay.com/pt-br/categories/strategy/)
+- [Jogos grátis de reflexo e tempo de reação](https://weightplay.com/pt-br/categories/reaction/)
+- [Jogos de esportes grátis no navegador](https://weightplay.com/pt-br/categories/sports/)
+- [Jogos de sobrevivência grátis no navegador](https://weightplay.com/pt-br/categories/survival/)
+- [Jogos idle grátis no navegador](https://weightplay.com/pt-br/categories/idle/)
+- [Sudoku e quebra-cabeças de lógica grátis](https://weightplay.com/pt-br/categories/logic-puzzles/)
+- [Quebra-cabeças de caminhos grátis](https://weightplay.com/pt-br/categories/path-puzzles/)
+- [Jogos grátis de combinar 3 e eliminar peças](https://weightplay.com/pt-br/categories/tile-clearing/)
+- [Jogos de tiro grátis no navegador](https://weightplay.com/pt-br/categories/shooting/)
+- [Jogos grátis de adivinhar palavras](https://weightplay.com/pt-br/categories/word-games/)
+- [Jogos grátis de cuidar de pets](https://weightplay.com/pt-br/categories/pet-care/)
+- [Jogos grátis de navegador inspirados em assuntos do dia a dia](https://weightplay.com/pt-br/categories/topic-games/)
+- [Jogos de raciocínio grátis para crianças](https://weightplay.com/pt-br/categories/kids-puzzles/)
+
+### français
+
+- [Solitaires gratuits](https://weightplay.com/fr/categories/solitaire/)
+- [Jeux de réflexion gratuits](https://weightplay.com/fr/categories/puzzle/)
+- [Jeux gratuits de défense de tours](https://weightplay.com/fr/categories/tower-defense/)
+- [Jeux de rôle gratuits sur navigateur](https://weightplay.com/fr/categories/rpg/)
+- [Jeux de cartes et de plateau gratuits](https://weightplay.com/fr/categories/card-board/)
+- [Jeux gratuits de simulation et de gestion](https://weightplay.com/fr/categories/simulation/)
+- [Jeux à la première personne sur navigateur](https://weightplay.com/fr/categories/first-person/)
+- [Jeux d’action gratuits](https://weightplay.com/fr/categories/action/)
+- [Jeux de blocs et de fusion](https://weightplay.com/fr/categories/block-merge-puzzles/)
+- [Jeux de course gratuits sur navigateur](https://weightplay.com/fr/categories/racing/)
+- [Jeux de stratégie gratuits sur navigateur](https://weightplay.com/fr/categories/strategy/)
+- [Jeux gratuits de réflexes et de timing](https://weightplay.com/fr/categories/reaction/)
+- [Jeux de sport gratuits sur navigateur](https://weightplay.com/fr/categories/sports/)
+- [Jeux de survie gratuits sur navigateur](https://weightplay.com/fr/categories/survival/)
+- [Jeux idle gratuits sur navigateur](https://weightplay.com/fr/categories/idle/)
+- [Sudokus et jeux de logique gratuits](https://weightplay.com/fr/categories/logic-puzzles/)
+- [Jeux de parcours gratuits](https://weightplay.com/fr/categories/path-puzzles/)
+- [Jeux gratuits de match-3 et d’élimination](https://weightplay.com/fr/categories/tile-clearing/)
+- [Jeux de tir gratuits sur navigateur](https://weightplay.com/fr/categories/shooting/)
+- [Jeux de mots gratuits](https://weightplay.com/fr/categories/word-games/)
+- [Jeux gratuits pour s’occuper d’animaux](https://weightplay.com/fr/categories/pet-care/)
+- [Jeux gratuits sur navigateur inspirés de sujets du quotidien](https://weightplay.com/fr/categories/topic-games/)
+- [Jeux de réflexion gratuits pour enfants](https://weightplay.com/fr/categories/kids-puzzles/)
+
+### Deutsch
+
+- [Kostenlose Solitärspiele](https://weightplay.com/de/categories/solitaire/)
+- [Kostenlose Rätselspiele](https://weightplay.com/de/categories/puzzle/)
+- [Kostenlose Tower-Defense-Spiele](https://weightplay.com/de/categories/tower-defense/)
+- [Kostenlose Browser-Rollenspiele](https://weightplay.com/de/categories/rpg/)
+- [Kostenlose Karten- und Brettspiele](https://weightplay.com/de/categories/card-board/)
+- [Kostenlose Simulations- und Aufbauspiele](https://weightplay.com/de/categories/simulation/)
+- [Browserspiele aus der Ich-Perspektive](https://weightplay.com/de/categories/first-person/)
+- [Kostenlose Actionspiele](https://weightplay.com/de/categories/action/)
+- [Block- und Verschmelzpuzzles](https://weightplay.com/de/categories/block-merge-puzzles/)
+- [Kostenlose Rennspiele im Browser](https://weightplay.com/de/categories/racing/)
+- [Kostenlose Strategiespiele im Browser](https://weightplay.com/de/categories/strategy/)
+- [Kostenlose Reaktions- und Geschicklichkeitsspiele](https://weightplay.com/de/categories/reaction/)
+- [Kostenlose Sportspiele im Browser](https://weightplay.com/de/categories/sports/)
+- [Kostenlose Survival-Browserspiele](https://weightplay.com/de/categories/survival/)
+- [Kostenlose Idle-Browserspiele](https://weightplay.com/de/categories/idle/)
+- [Kostenlose Sudoku- und Logikrätsel](https://weightplay.com/de/categories/logic-puzzles/)
+- [Kostenlose Wege- und Routenrätsel](https://weightplay.com/de/categories/path-puzzles/)
+- [Kostenlose 3-Gewinnt- und Abräumspiele](https://weightplay.com/de/categories/tile-clearing/)
+- [Kostenlose Shooter im Browser](https://weightplay.com/de/categories/shooting/)
+- [Kostenlose Worträtsel](https://weightplay.com/de/categories/word-games/)
+- [Kostenlose Haustierspiele](https://weightplay.com/de/categories/pet-care/)
+- [Kostenlose Browserspiele zu Themen aus dem Alltag](https://weightplay.com/de/categories/topic-games/)
+- [Kostenlose Rätselspiele für Kinder](https://weightplay.com/de/categories/kids-puzzles/)
+
+### italiano
+
+- [Solitari gratis](https://weightplay.com/it/categories/solitaire/)
+- [Giochi rompicapo gratis](https://weightplay.com/it/categories/puzzle/)
+- [Giochi gratis di difesa delle torri](https://weightplay.com/it/categories/tower-defense/)
+- [Giochi di ruolo gratis nel browser](https://weightplay.com/it/categories/rpg/)
+- [Giochi di carte e da tavolo gratis](https://weightplay.com/it/categories/card-board/)
+- [Giochi gratis di simulazione e gestione](https://weightplay.com/it/categories/simulation/)
+- [Giochi in prima persona nel browser](https://weightplay.com/it/categories/first-person/)
+- [Giochi d’azione gratis](https://weightplay.com/it/categories/action/)
+- [Rompicapi con blocchi e fusioni](https://weightplay.com/it/categories/block-merge-puzzles/)
+- [Giochi di corse gratis nel browser](https://weightplay.com/it/categories/racing/)
+- [Giochi di strategia gratis nel browser](https://weightplay.com/it/categories/strategy/)
+- [Giochi gratis di riflessi e tempismo](https://weightplay.com/it/categories/reaction/)
+- [Giochi sportivi gratis nel browser](https://weightplay.com/it/categories/sports/)
+- [Giochi di sopravvivenza gratis nel browser](https://weightplay.com/it/categories/survival/)
+- [Giochi idle gratis nel browser](https://weightplay.com/it/categories/idle/)
+- [Sudoku e rompicapi di logica gratis](https://weightplay.com/it/categories/logic-puzzles/)
+- [Rompicapi di percorsi gratis](https://weightplay.com/it/categories/path-puzzles/)
+- [Giochi gratis match-3 e di eliminazione](https://weightplay.com/it/categories/tile-clearing/)
+- [Giochi di tiro gratis nel browser](https://weightplay.com/it/categories/shooting/)
+- [Giochi di parole gratis](https://weightplay.com/it/categories/word-games/)
+- [Giochi gratis per accudire animali](https://weightplay.com/it/categories/pet-care/)
+- [Giochi gratis per browser ispirati alla vita quotidiana](https://weightplay.com/it/categories/topic-games/)
+- [Rompicapi gratuiti per bambini](https://weightplay.com/it/categories/kids-puzzles/)
+
+### русский
+
+- [Бесплатные пасьянсы](https://weightplay.com/ru/categories/solitaire/)
+- [Бесплатные игры-головоломки](https://weightplay.com/ru/categories/puzzle/)
+- [Бесплатные игры в жанре Tower Defense](https://weightplay.com/ru/categories/tower-defense/)
+- [Бесплатные браузерные RPG](https://weightplay.com/ru/categories/rpg/)
+- [Бесплатные карточные и настольные игры](https://weightplay.com/ru/categories/card-board/)
+- [Бесплатные симуляторы и игры про управление](https://weightplay.com/ru/categories/simulation/)
+- [Браузерные игры от первого лица](https://weightplay.com/ru/categories/first-person/)
+- [Бесплатные игры в жанре экшен](https://weightplay.com/ru/categories/action/)
+- [Головоломки с блоками и объединением](https://weightplay.com/ru/categories/block-merge-puzzles/)
+- [Бесплатные гонки в браузере](https://weightplay.com/ru/categories/racing/)
+- [Бесплатные стратегии в браузере](https://weightplay.com/ru/categories/strategy/)
+- [Бесплатные игры на реакцию](https://weightplay.com/ru/categories/reaction/)
+- [Бесплатные спортивные игры в браузере](https://weightplay.com/ru/categories/sports/)
+- [Бесплатные браузерные игры на выживание](https://weightplay.com/ru/categories/survival/)
+- [Бесплатные браузерные игры с автоматическим прогрессом](https://weightplay.com/ru/categories/idle/)
+- [Бесплатные судоку и логические головоломки](https://weightplay.com/ru/categories/logic-puzzles/)
+- [Бесплатные головоломки с маршрутами](https://weightplay.com/ru/categories/path-puzzles/)
+- [Бесплатные игры «три в ряд» и на удаление фишек](https://weightplay.com/ru/categories/tile-clearing/)
+- [Бесплатные браузерные стрелялки](https://weightplay.com/ru/categories/shooting/)
+- [Бесплатные игры в слова](https://weightplay.com/ru/categories/word-games/)
+- [Бесплатные игры по уходу за питомцами](https://weightplay.com/ru/categories/pet-care/)
+- [Бесплатные браузерные игры на темы из жизни](https://weightplay.com/ru/categories/topic-games/)
+- [Бесплатные игры-головоломки для детей](https://weightplay.com/ru/categories/kids-puzzles/)
+
+### हिन्दी
+
+- [मुफ़्त सॉलिटेयर गेम](https://weightplay.com/hi/categories/solitaire/)
+- [मुफ़्त पहेली वाले गेम](https://weightplay.com/hi/categories/puzzle/)
+- [मुफ़्त टावर डिफ़ेंस गेम](https://weightplay.com/hi/categories/tower-defense/)
+- [ब्राउज़र में मुफ़्त रोल-प्लेइंग गेम](https://weightplay.com/hi/categories/rpg/)
+- [मुफ़्त कार्ड और बोर्ड गेम](https://weightplay.com/hi/categories/card-board/)
+- [मुफ़्त सिमुलेशन और प्रबंधन गेम](https://weightplay.com/hi/categories/simulation/)
+- [प्रथम-पुरुष ब्राउज़र गेम](https://weightplay.com/hi/categories/first-person/)
+- [मुफ़्त ऐक्शन गेम](https://weightplay.com/hi/categories/action/)
+- [ब्लॉक और मिलान की पहेलियाँ](https://weightplay.com/hi/categories/block-merge-puzzles/)
+- [ब्राउज़र में मुफ़्त रेसिंग गेम](https://weightplay.com/hi/categories/racing/)
+- [ब्राउज़र में मुफ़्त रणनीति गेम](https://weightplay.com/hi/categories/strategy/)
+- [मुफ़्त प्रतिक्रिया और समय साधने वाले गेम](https://weightplay.com/hi/categories/reaction/)
+- [ब्राउज़र में मुफ़्त खेलकूद गेम](https://weightplay.com/hi/categories/sports/)
+- [मुफ़्त ब्राउज़र सर्वाइवल गेम](https://weightplay.com/hi/categories/survival/)
+- [मुफ़्त ब्राउज़र आइडल गेम](https://weightplay.com/hi/categories/idle/)
+- [मुफ़्त सुडोकू और तर्क पहेलियाँ](https://weightplay.com/hi/categories/logic-puzzles/)
+- [मुफ़्त रास्ते बनाने की पहेलियाँ](https://weightplay.com/hi/categories/path-puzzles/)
+- [तीन मिलाने और टाइल हटाने वाले मुफ़्त गेम](https://weightplay.com/hi/categories/tile-clearing/)
+- [ब्राउज़र में मुफ़्त शूटिंग गेम](https://weightplay.com/hi/categories/shooting/)
+- [मुफ़्त शब्द और अनुमान के गेम](https://weightplay.com/hi/categories/word-games/)
+- [पालतू जानवरों की देखभाल के मुफ़्त गेम](https://weightplay.com/hi/categories/pet-care/)
+- [रोज़मर्रा के विषयों पर मुफ़्त ब्राउज़र गेम](https://weightplay.com/hi/categories/topic-games/)
+- [बच्चों के लिए मुफ़्त पहेली गेम](https://weightplay.com/hi/categories/kids-puzzles/)
+
+### العربية
+
+- [ألعاب سوليتير مجانية](https://weightplay.com/ar/categories/solitaire/)
+- [ألعاب ألغاز مجانية](https://weightplay.com/ar/categories/puzzle/)
+- [ألعاب مجانية للدفاع عن الأبراج](https://weightplay.com/ar/categories/tower-defense/)
+- [ألعاب تقمص أدوار مجانية في المتصفح](https://weightplay.com/ar/categories/rpg/)
+- [ألعاب ورق ولوحة مجانية](https://weightplay.com/ar/categories/card-board/)
+- [ألعاب محاكاة وإدارة مجانية](https://weightplay.com/ar/categories/simulation/)
+- [ألعاب متصفح بمنظور الشخص الأول](https://weightplay.com/ar/categories/first-person/)
+- [ألعاب حركة مجانية](https://weightplay.com/ar/categories/action/)
+- [ألغاز الكتل والدمج](https://weightplay.com/ar/categories/block-merge-puzzles/)
+- [ألعاب سباق مجانية في المتصفح](https://weightplay.com/ar/categories/racing/)
+- [ألعاب استراتيجية مجانية في المتصفح](https://weightplay.com/ar/categories/strategy/)
+- [ألعاب مجانية لسرعة الاستجابة والتوقيت](https://weightplay.com/ar/categories/reaction/)
+- [ألعاب رياضية مجانية في المتصفح](https://weightplay.com/ar/categories/sports/)
+- [ألعاب بقاء مجانية على المتصفح](https://weightplay.com/ar/categories/survival/)
+- [ألعاب تقدم تلقائي مجانية على المتصفح](https://weightplay.com/ar/categories/idle/)
+- [سودوكو وألغاز منطق مجانية](https://weightplay.com/ar/categories/logic-puzzles/)
+- [ألغاز مسارات مجانية](https://weightplay.com/ar/categories/path-puzzles/)
+- [ألعاب مجانية لمطابقة ثلاثة وإزالة القطع](https://weightplay.com/ar/categories/tile-clearing/)
+- [ألعاب تصويب مجانية في المتصفح](https://weightplay.com/ar/categories/shooting/)
+- [ألعاب كلمات وتخمين مجانية](https://weightplay.com/ar/categories/word-games/)
+- [ألعاب مجانية للعناية بالحيوانات الأليفة](https://weightplay.com/ar/categories/pet-care/)
+- [ألعاب متصفح مجانية مستوحاة من مواضيع الحياة اليومية](https://weightplay.com/ar/categories/topic-games/)
+- [ألعاب ألغاز مجانية للأطفال](https://weightplay.com/ar/categories/kids-puzzles/)
 
 ## Site information
 
@@ -107,7 +394,7 @@ Games with local saves keep progress in the current browser.
 - Stararc Rendezvous: https://weightplay.com/en/games/stararc-rendezvous/ — Orbital planning. Fit your shuttle, plan a transfer, and dock with moving stations before the shift ends.
 - Silicon Shift: https://weightplay.com/en/games/silicon-shift/ — Circuit puzzle. Trace test pulses and wire one circuit to pass every case.
 - Cinderburrow: https://weightplay.com/en/games/cinderburrow/ — Mining strategy. Carve a way through the ridge, bring glow cores home, and brace the gates before the ash surges.
-- Block Planet Repair Crew: https://weightplay.com/en/games/block-planet-repair/ — Idle restoration. Sweep across repair robots, bring five planets to life and hatch block animals.
+- Block Planet Repair Crew: https://weightplay.com/en/games/block-planet-repair/ — Idle restoration. Sweep over lit repair robots to restore five planets. Spend energy coins to recruit robots and take on contracts in specific zones.
 - Mosslight Museum: https://weightplay.com/en/games/mosslight-museum/ — Museum management. Curate a museum puzzle: choose exhibits, order tour stops for each group’s interests, and repair worn pieces before the next visitors arrive.
 - Block Dig Crew: https://weightplay.com/en/games/block-dig-crew/ — Mining & Upgrades. Sweep across tools to dig up gems. Explore at your own pace or take on survey goals, then upgrade your workshop and hire miners who dig automatically.
 - Wingseal Post: https://weightplay.com/en/games/wingseal-post/ — Postal strategy. Check labels, mend parcels and plan which mail flies first.
@@ -169,15 +456,15 @@ Games with local saves keep progress in the current browser.
 - Sunbeam Garden: Mirror Paths: https://weightplay.com/en/games/animal-sunbeam-garden/ — Sunlight Mirror Puzzle. Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.
 - Panko's Number Grove: https://weightplay.com/en/games/animal-number-match/ — Number Match Puzzle. Clear pairs that add to ten, opening sight lines across 30 calm groves.
 - Panko's Tangram Trail: https://weightplay.com/en/games/animal-tangram/ — Tangram Shape Puzzle. Move and rotate seven bright pieces to rebuild animal silhouettes across 30 shapes.
-- Color Link Garden: https://weightplay.com/en/games/animal-color-link/ — Color-Link Puzzle. Connect matching garden seeds without crossing paths, then fill every tile.
+- Color Link Garden: https://weightplay.com/en/games/animal-color-link/ — Non-Crossing Path Puzzle. Connect matching garden seeds without crossing paths, then fill every tile.
 - Prism Route Garden: https://weightplay.com/en/games/animal-prism-garden/ — Color Path Puzzle. Design luminous routes across 30 expanded gardens, obey color-locked prism gates, and illuminate every open tile.
 - Panko's Bamboo Waterway: https://weightplay.com/en/games/animal-bamboo-pipes/ — Pipe Rotation Puzzle. Turn Panko's bamboo pipes, carry water through every segment, and bring the flowering grove back to life.
-- Triple Match: https://weightplay.com/en/games/animal-triple-match/ — Triple Tile Match. Pick uncovered treasures and match three identical pieces in the tray. Later stages shrink the tray from seven slots to six, so plan your picks.
+- Triple Match: https://weightplay.com/en/games/animal-triple-match/ — Tile Tray Puzzle. Pick uncovered treasures and match three identical pieces in the tray. Later stages shrink the tray from seven slots to six, so plan your picks.
 - Fantasy Lion Defense: https://weightplay.com/en/games/wonder-crash/ — Wave Defense Action. Defend the wall from enemy waves. Move to meet each attack and choose fire, storm or fortress talents to change how you fight.
 - Color Lunchbox: https://weightplay.com/en/games/color-lunchbox/ — Food Color Matching. Sort the foods shown in the pictures into lunchboxes of the matching color. Later puzzles use similar shades and boxes that change places.
 - Bubble Bakery: https://weightplay.com/en/games/bubble-bakery/ — Bubble Group Popping. Clear connected groups of matching bubbles to fill recipe orders. Plan the order of your moves when several trays need ingredients.
 - Vine Rescue: https://weightplay.com/en/games/animal-rope-rescue/ — Vine-Cutting Physics Puzzle. Cut vines and move a leaf trampoline to bounce fruit into a basket. Use the wind and time your bounces as the targets move.
-- Zoo Idle: https://weightplay.com/en/games/animal-zoo-idle/ — Idle Zoo Management. Manage a zoo at your own pace. Care for animals, arrange habitats and upgrade facilities as visitors and ticket income grow.
+- Zoo Idle: https://weightplay.com/en/games/animal-zoo-idle/ — Animal Care and Park Management. Manage a zoo at your own pace. Care for animals, arrange habitats and upgrade facilities as visitors and ticket income grow.
 - Star Memory: https://weightplay.com/en/games/star-memory/ — Memory Card Matching. Flip cards and remember their positions to match constellation pairs. Use previews and follow the target order in later puzzles.
 - Safari Dash: https://weightplay.com/en/games/campus-dash/ — Three-Lane Obstacle Runner. Run along three lanes, follow the star trails and switch lanes in time to dodge gates and sticky mud.
 - Snack Blocks: https://weightplay.com/en/games/snack-blocks/ — Match-3 Puzzle. Swap neighboring snacks to line up at least three of the same kind. Set up cascades and meet each stage’s score or collection goal.
@@ -188,7 +475,7 @@ Games with local saves keep progress in the current browser.
 - Hidden Safari: https://weightplay.com/en/games/animal-hidden-safari/ — Hidden Object Game. Find six listed animals in each of 30 saved habitats. Ordered searches, pairs, camouflage, decoys and moving patrols change the hunt; two hints help and time never causes failure.
 - Guard Yard: https://weightplay.com/en/games/animal-guard-yard/ — Five-Lane Tower Defense. Deploy defenders across five lanes and use energy as it recovers. Change your lineup and talents to stop new enemies and bosses.
 - Dungeon Venture: https://weightplay.com/en/games/animal-crystal-survivor/ — Dungeon Survival. Action survival: dodge hazards while magic attacks automatically. Collect XP crystals, choose spells and develop permanent talents.
-- Quiz: https://weightplay.com/en/games/animal-quiz/ — Animal Knowledge Quiz. Answer 30 saved animal-quiz stages with ten unique animals each. Clues cover pictures, habitats, features, behavior and food. Wrong choices allow another try; there is no timer.
+- Quiz: https://weightplay.com/en/games/animal-quiz/ — Animal Trivia. Answer 30 saved animal-quiz stages with ten unique animals each. Clues cover pictures, habitats, features, behavior and food. Wrong choices allow another try; there is no timer.
 - Zoo Helper Day: https://weightplay.com/en/games/zoo-helper-day/ — Zoo Care Simulation. Choose the right care tools from picture clues, remember what each animal needs, and complete zoo routines in order.
 - Shape Train: https://weightplay.com/en/games/shape-train/ — Shape Matching Game. Shape Train has 30 shape-matching routes for kids. Match each passenger to one of six train cars; later routes add changing positions, memory checks and passenger-first ticket checks. Each route has four to eight passengers, and a wrong choice lets you try again.
 - Helper Quest: https://weightplay.com/en/games/tiny-weather-rescue/ — Picture Clue Matching. Solve 30 animal-care missions by matching picture clues to eight tools, choosing priorities, recalling hidden needs, and adapting when the tool tray moves.
@@ -201,7 +488,7 @@ Games with local saves keep progress in the current browser.
 - Shadow Wolf Legend: https://weightplay.com/en/games/shadow-wolf/ — Side-Scrolling Action RPG. Lead the wolf through 30 action-platform stages: double-jump across ruined ledges, dash past hazards, defeat enemies, and unlock each route.
 - Block Grove: https://weightplay.com/en/games/animal-block-grove/ — Block Placement Puzzle. Place three block groups on an 8×8 forest board, clear rows and columns, and finish 30 habitat missions or continue in Infinite Grove.
 - Color Springs: https://weightplay.com/en/games/animal-color-springs/ — Color Sorting Puzzle. Sort colors across 30 stages by moving matching top orbs into vessels with room. Plan around seals, changing capacities, and move goals.
-- Rune Reels: https://weightplay.com/en/games/animal-rune-reels/ — Tactical Reel Combat. Build a summoned animal team, spin ten kinds of downward-moving runes, complete doubled lines, and unleash separate pet attacks while shared defense and healing protect the summoner.
+- Rune Reels: https://weightplay.com/en/games/animal-rune-reels/ — Tactical Reel Combat. Spin three runes and read the enemy’s next move. Hold or reroll one reel before resolving your team’s attacks, defence and healing.
 - Spectrum Pulse: https://weightplay.com/en/games/animal-spectrum-pulse/ — Chain-Reaction Shooter. Auto-fire at nearby enemies and trigger chain explosions with Pulse. Break three cores and reach the exit, defeating a guardian every fifth mission.
 - Rootvault Pins: https://weightplay.com/en/games/animal-rootvault-pins/ — Pull-the-Pin Puzzle. Plan complete pin pulls and material reactions as Taro and the Star Core cross 30 authored Rootvault chambers. Use Moonwater, wards, rune keys, and the optional Preview Thread.
 - Sketchwheel Rally: https://weightplay.com/en/games/animal-sketchwheel-rally/ — Draw-to-Drive Rally. Draw wheels for 30 races. Match roundness, height, grip, and width to each terrain. Speed affects gap crossings, and strong later passes can grant a brief boost.
@@ -274,7 +561,7 @@ Games with local saves keep progress in the current browser.
 - Magnet Meadow: https://weightplay.com/en/games/animal-magnet-meadow/ — Magnetic Docking Puzzle. Move moonstones into their docks. Plan how linked stones will pull or push each other, work around blocked docks and undo a move to try a different route.
 - Dawn Shutters: https://weightplay.com/en/games/animal-dawn-shutters/ — Light Calibration Puzzle. Set the shutters to match the target light levels. Check which shutters are linked before choosing your next adjustment.
 - Nest Weigh-In: https://weightplay.com/en/games/animal-nest-weigh/ — Pairwise Comparison Puzzle. Compare nest materials two at a time, keep each heavier-or-lighter clue, and infer a requested rank across 30 untimed lessons.
-- Glyph Garden: https://weightplay.com/en/games/animal-glyph-garden/ — Shape-and-Colour Matching Puzzle. Read shape, colour, and sequence rules across thirty authored mosslight garden stages.
+- Rune Clue Match: https://weightplay.com/en/games/animal-glyph-garden/ — Shape-and-Colour Matching Puzzle. Read shape, colour, and sequence rules across thirty authored mosslight garden stages.
 - Rotating Ring Puzzles: https://weightplay.com/en/games/animal-ring-garden/ — Pattern Matching Puzzle. Turn three petal rings until the moon-garden pattern blooms, then replay for fewer turns.
 - Balance Grove: https://weightplay.com/en/games/animal-balance-grove/ — Balance Subset Puzzle. Choose stones whose values total 5, 7, or 9 to balance three forest bridges. No timer; best checks save in this browser.
 - Linked Dew Valves: https://weightplay.com/en/games/animal-dewline/ — Linked Waterflow Puzzle. Use + and − to adjust each valve from 0 to 6. One valve can feed more than one bed.
@@ -289,7 +576,7 @@ Games with local saves keep progress in the current browser.
 - Bounce Brawl: https://weightplay.com/en/games/animal-bounce-brawl/ — Soft Physics Arena. Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.
 - Frost Maze Rescue: https://weightplay.com/en/games/animal-frost-maze/ — Changeable Ice Maze. Solve a 30-room ice maze: break and build walls to reach every berry, avoid the snow drifter, then return to the start in the final rooms.
 - Flip Foundry: https://weightplay.com/en/games/animal-flip-foundry/ — Precision Flip Challenge. Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.
-- Deep Sea Salvage Company: https://weightplay.com/en/games/animal-deep-sea-salvage/ — Deep-Sea Idle Company. Send ROV robots into the deep, sell salvage, unlock new sea zones, and curate a living museum of the ocean floor.
+- Deep Sea Salvage Company: https://weightplay.com/en/games/animal-deep-sea-salvage/ — Idle Underwater Exploration. Send ROV robots into the deep, sell salvage, unlock new sea zones, and curate a living museum of the ocean floor.
 - Hoop League: https://weightplay.com/en/games/animal-hoop-league/ — Arc-and-Power Basketball. Read the defense, aim your shot and hold to build power. Release in the green zone or use a relay pass to set up an opening across 60 basketball courts.
 - Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/ — Rescue Strategy. Rescue wildlife across 60 valleys. Build bridges, manage supplies and time the falling water.
 - Moonlight Workshop Escape: https://weightplay.com/en/games/animal-moonlight-workshop/ — Switch-and-Key Escape. Restore 60 rooms: light the switches, collect the key and reach the door. Plan lantern charges and counterweights in two chapters.
@@ -298,35 +585,35 @@ Games with local saves keep progress in the current browser.
 - Cloudhook Courier: https://weightplay.com/en/games/animal-cloudhook-courier/ — Grapple-and-Swing Route Action. Catch cloud rings, build a pendulum swing, and deliver every parcel without touching the storm teeth.
 - Twin Signal Jump: https://weightplay.com/en/games/animal-twin-switchyard/ — Synchronized Platform Puzzle. Guide two different jumpers through split lanes, flip signal gates, and gather every relay shard together.
 - Moon Market Manager: https://weightplay.com/en/games/animal-moon-market/ — Shelf-Demand Helper Management. Plan 30 saved market nights with ordered shelves, helper rules, and multi-round forecasts.
-- Animal Putt Trails: https://weightplay.com/en/games/animal-putt-trails/ — One-Thumb Putting Strategy. Plan putts across 30 holes: pull back to set direction and power, bank around walls, avoid water, and save each hole’s best strokes in this browser.
+- Putt Trails: https://weightplay.com/en/games/animal-putt-trails/ — Mini Golf Putting Game. Plan putts across 30 holes: pull back to set direction and power, bank around walls, avoid water, and save each hole’s best strokes in this browser.
 - Kite Keeper: https://weightplay.com/en/games/animal-kite-keeper/ — Wind-Vector Route Puzzle. Choose each gust to steer Taro's kite through three sky windows and reach the lantern dock.
 - Wind-Sown Garden: https://weightplay.com/en/games/animal-gust-garden/ — Wind-Vector Seed Puzzle. Choose a seed and send one gust at a time to bloom every flower without brushing a thorn.
 - Habitat Tile Logic: https://weightplay.com/en/games/animal-habitat-blueprint/ — Habitat Constraint Puzzle. Swap four habitat tiles to satisfy every neighbour clue and build a calm, connected home for the animals.
 - Weather Watch: https://weightplay.com/en/games/animal-weather-watch/ — Forecast Pattern Puzzle. Spot the repeating pattern in a row of weather signs. Choose the cards that fill the gaps, then check your forecast. Play at your own pace.
-- River Gate Water Routing: https://weightplay.com/en/games/animal-river-gates/ — Water Routing Puzzle. Open gates to route water to gardens and reservoirs. Plan each release around tide phases and how much water each destination can hold.
+- River Gate Water Routing: https://weightplay.com/en/games/animal-river-gates/ — Tidal Water Puzzle. Open gates to route water to gardens and reservoirs. Plan each release around tide phases and how much water each destination can hold.
 - Orchard Sound Memory: https://weightplay.com/en/games/animal-echo-orchard/ — Sequence Memory Puzzle. Watch four colored chime-fruits light up, then tap them in the same order. Complete each sequence to open the next of 30 stages.
 - Acorn Auction: https://weightplay.com/en/games/animal-acorn-auction/ — Quantity-and-Budget Choice Puzzle. Combine lots to meet each acorn order’s quantity and budget. Bid before a rival takes a lot, or wait for a better price when the market allows it.
 - Patchwork Paws: https://weightplay.com/en/games/animal-patchwork-paws/ — Edge-Matching Habitat Puzzle. Stitch 30 little habitats. Turn, connect, and discover six clever ways to weave.
 - Cairn Courier: https://weightplay.com/en/games/animal-cairn-courier/ — Support-Order Trail Puzzle. Build 30 mountain cairns by solving support, pairing and weight clues. Undo freely and master each trail.
 - Firefly Direction Codes: https://weightplay.com/en/games/animal-firefly-folio/ — Route-Code Direction Puzzle. Program Mica’s path through 30 forest maps. Collect fireflies, unlock gates and bring the lantern home.
 - Patrol Signal Match: https://weightplay.com/en/games/animal-signal-scout/ — Signal Decoding Puzzle. Decode 30 patrols in six chapters. Match fox, owl and rabbit signals by applying visible clues for order, reversal, rotation, skipped posts and memory. Every fifth patrol is a checkpoint; progress stays in this browser.
-- Animal Silhouette Match: https://weightplay.com/en/games/animal-silhouette-scout/ — Outline Recognition Puzzle. Explore thirty authored dawn lookouts and match each animal outline to its full-colour card.
+- Animal Silhouette Match: https://weightplay.com/en/games/animal-silhouette-scout/ — Picture Recognition Puzzle. Explore thirty authored dawn lookouts and match each animal outline to its full-colour card.
 - Traffic and River Crossing: https://weightplay.com/en/games/road-crosser/ — Timing Crossing Arcade. Deliver lanterns through 30 handcrafted crossings. Read the traffic, ride the current, and find your own route.
 - Alien Defender: https://weightplay.com/en/games/alien-defender/ — Wave Survival Shooter. Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.
 - Snake: https://weightplay.com/en/games/snake/ — Steer the snake to collect food and grow. Cross a board edge to enter from the opposite side, and keep clear of your own trail and any glowing obstacles.
-- Maze Chase: https://weightplay.com/en/games/maze-chase/ — Maze Chase Arcade. Guide Orla through three increasingly fast maze stages, collect every star mote, learn four Wisp patterns, and activate Beacons to turn pursuit into a counterattack.
+- Maze Chase: https://weightplay.com/en/games/maze-chase/ — Collect and Dodge Arcade. Guide Orla through three increasingly fast maze stages, collect every star mote, learn four Wisp patterns, and activate Beacons to turn pursuit into a counterattack.
 - Space Rocks: https://weightplay.com/en/games/space-rocks/ — Inertia Space Shooter. Pilot a 30-stage space campaign, collect crystals, rescue pods, and face six bosses.
 - Raindrop Catcher: https://weightplay.com/en/games/animal-rain-roost/ — Rain Catching Arcade. Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves.
-- Orchard Resource Manager: https://weightplay.com/en/games/animal-orchard-steward/ — Resource Stewardship Puzzle. Care for three fruit trees, read the forecast, and harvest an eight-day order. Grow a lasting orchard.
+- Orchard Resource Manager: https://weightplay.com/en/games/animal-orchard-steward/ — Harvest Planning Puzzle. Care for three fruit trees, read the forecast, and harvest an eight-day order. Grow a lasting orchard.
 - Habitat Domino Chain: https://weightplay.com/en/games/animal-grove-dominoes/ — Match dominoes to the open habitat and plan a route to the moon. Use every required tile and save bridge tokens and flips for the right spots.
 - Pawflow: https://weightplay.com/en/games/pawflow/ — Conveyor Color Clearing. Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.
 - Block Apex: https://weightplay.com/en/games/block-apex/ — 3D Kart Racing. Take corners in a drift and time your boost in 3D kart races. Follow rivals for slipstream speed and avoid losing momentum to obstacles.
 - Castle Cascade: https://weightplay.com/en/games/castle-cascade/ — Match-3 Puzzle. Swap neighboring gems to match three or more. Combine special pieces to clear blockers and reach each stage’s goal.
 - Traffic Jam Diner: https://weightplay.com/en/games/traffic-jam-diner/ — Queue Routing Puzzle. Guide customers through one-way lanes, leave room in the waiting bays, and fill snack orders in queue order.
 - Robot Dog Showtime: https://weightplay.com/en/games/robot-dog-showtime/ — Choreography Puzzle. Plan both performers' stage cues, then rehearse their routes and gestures together.
-- Animal Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Convenience Store Management. Arrange a tiny block-built shop, stock everyday favorites, serve animal neighbors, and reinvest in a bigger, busier store.
+- Animal Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Convenience Store Management. Lay out shelves and checkout lanes, restock goods and hire staff. Use the proceeds to expand the same shop, with progress saved on this device.
 - Skybound Tram: https://weightplay.com/en/games/flying-tram/ — Flip & Landing Arcade. Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto 30 rooftop routes.
-- Puppy Haven: https://weightplay.com/en/games/puppy-haven/ — Dog Care & Family. Feed, groom and play with dogs in your yard. Raise puppies into adults and grow your family by pairing dogs to discover new breeds.
+- Puppy Haven: https://weightplay.com/en/games/puppy-haven/ — Dog Care & Family. Set out bowls for hungry dogs to find on their own. Pet your dogs, clean the yard and adopt new companions.
 - Purrch Grove: https://weightplay.com/en/games/purrch-grove/ — Cat Care and Play. Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.
 - Signal Snap: https://weightplay.com/en/games/signal-snap/ — Tap-or-Wait Reaction Game. A solid diamond means tap that side; a crossed hollow echo means do nothing. Use the two buttons or ← and →.
 - Railguard Express: https://weightplay.com/en/games/railguard-express/ — Train Escort Defense. Escort 60 routes across two chapters. Plan carriage power, signal pulses and safe cargo deliveries.
@@ -334,7 +621,7 @@ Games with local saves keep progress in the current browser.
 - Fia’s Hightrail: https://weightplay.com/en/games/fia-hightrail/ — Climbing Adventure. Choose your next handhold, rest on safe ledges and guide Fia through 30 mountain rescue routes.
 - Nori’s Sandworks: https://weightplay.com/en/games/nori-sandworks/ — Sand Collection Puzzle. Slide collectors, uncover colorful sand and build six coastal scenes through 30 thoughtful puzzles.
 - Meadow Touchdown: https://weightplay.com/en/games/meadow-touchdown/ — Flag football. Read the defense, lead your receivers with a pass, then weave toward the end zone across 30 challenges.
-- A Life in Moments: https://weightplay.com/en/games/smallwood-lives/ — Life simulation. Among around eight billion people, you are one of a kind. Begin again somewhere in the world and see how a life unfolds.
+- A Life in Moments: https://weightplay.com/en/games/smallwood-lives/ — Life simulation. Among around eight billion people, you are one of a kind. Follow a life from a randomly selected birthplace. Watch it unfold year by year, then look back on its story.
 - Lantern Lasso: https://weightplay.com/en/games/lantern-lasso/ — Ricochet Light Puzzle. Drag to aim and release a line that bounces off the board edges. Collect numbered lights in order and pull switches to open gates.
 - Mossfold: https://weightplay.com/en/games/mossfold/ — Spatial puzzle. Collect all dewdrops, then place the whole block upright in the square nest. The same rules apply on phone and desktop.
 - Glowspool: https://weightplay.com/en/games/glowspool/ — Sliding-fill puzzle. Slide Mimi to weave every tile. Plan around the line you leave behind.

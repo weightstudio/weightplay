@@ -28,7 +28,7 @@
     ["perchweave", "Card", "Strategy", "Sequencing"],
     ["reef-current", "Strategy", "Management", "Route Planning"],
     ["sunshift-commons", "Puzzle", "Strategy", "Management", "Sequencing"],
-    ["crossbank-rovers", "Strategy", "Simulation"],
+    ["crossbank-rovers", "Strategy", "Simulation", "Route Planning"],
     ["bellshift-atelier", "Puzzle", "Strategy", "Sequencing"],
     ["stararc-rendezvous", "Puzzle", "Strategy", "Route Planning"],
     ["dusk-signal", "Strategy", "Deduction", "Management"],
