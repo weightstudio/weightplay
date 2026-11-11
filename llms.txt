@@ -504,7 +504,7 @@ Games with local saves keep progress in the current browser.
 - Bubble Safari: https://weightplay.com/en/games/animal-bubble-safari/ — Bubble Shooter Puzzle. Aim through 30 bubble-rescue levels with bank shots, four blocker types, wind, moving rows, four power bubbles, and six checkpoints.
 - Coloring Studio: https://weightplay.com/en/games/animal-coloring-studio/ — Online Coloring and Drawing. Color twelve original animal pages with bounded Fill and free Brush tools, then save finished pictures to a gallery on this device.
 - Screw Workshop: https://weightplay.com/en/games/animal-screw-workshop/ — Screw Removal Puzzle. Move brass screws into open holes to release layered wooden plates across 30 fixed puzzles. Plan around shared supports and each puzzle’s move limit.
-- Animal Parking Patrol: https://weightplay.com/en/games/animal-parking-patrol/ — Parking Exit Puzzle. Choose which carts to move first so the parking lanes clear. Watch signals, convoys and exits before committing to a route.
+- Forest Parking Patrol: https://weightplay.com/en/games/animal-parking-patrol/ — Parking Exit Puzzle. Choose which carts to move first so the parking lanes clear. Watch signals, convoys and exits before committing to a route.
 - Habitat Mahjong: https://weightplay.com/en/games/animal-habitat-mahjong/ — Match free tiles on layered Mahjong solitaire boards. Use key pairs to open seals and plan around the routes that change which tiles are available.
 - Word Trails: https://weightplay.com/en/games/animal-word-trails/ — Word Path Puzzle. Explore 60 word trails with leaf bridges, animal and nature groups, and reusable wild leaves.
 - Cratebound: https://weightplay.com/en/games/animal-cratebound/ — Push-Box Logistics Puzzle. Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.
@@ -611,7 +611,7 @@ Games with local saves keep progress in the current browser.
 - Castle Cascade: https://weightplay.com/en/games/castle-cascade/ — Match-3 Puzzle. Swap neighboring gems to match three or more. Combine special pieces to clear blockers and reach each stage’s goal.
 - Traffic Jam Diner: https://weightplay.com/en/games/traffic-jam-diner/ — Queue Routing Puzzle. Guide customers through one-way lanes, leave room in the waiting bays, and fill snack orders in queue order.
 - Robot Dog Showtime: https://weightplay.com/en/games/robot-dog-showtime/ — Choreography Puzzle. Plan both performers' stage cues, then rehearse their routes and gestures together.
-- Animal Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Convenience Store Management. Lay out shelves and checkout lanes, restock goods and hire staff. Use the proceeds to expand the same shop, with progress saved on this device.
+- Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Convenience Store Management. Lay out shelves and checkout lanes, restock goods and hire staff. Use the proceeds to expand the same shop, with progress saved on this device.
 - Skybound Tram: https://weightplay.com/en/games/flying-tram/ — Flip & Landing Arcade. Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto 30 rooftop routes.
 - Puppy Haven: https://weightplay.com/en/games/puppy-haven/ — Dog Care & Family. Set out bowls for hungry dogs to find on their own. Pet your dogs, clean the yard and adopt new companions.
 - Purrch Grove: https://weightplay.com/en/games/purrch-grove/ — Cat Care and Play. Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.

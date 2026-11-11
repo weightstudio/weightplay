@@ -877,7 +877,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Scudo di Miele",
     "ru": "медовый щит",
     "hi": "हनी शील्ड",
-    "ar": "درع العسل الحيواني"
+    "ar": "درع العسل"
   },
   "animal-dice-bastion": {
     "__localizedExact": true,
@@ -889,7 +889,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Bastión de Dados",
     "pt-BR": "Bastião dos Dados",
     "fr": "Bastion des Dés",
-    "de": "Tierwürfel-Bastion",
+    "de": "Würfelbastion",
     "it": "Bastione dei Dadi",
     "ru": "Бастион Звериных Кубов",
     "hi": "पासा दुर्ग",
@@ -1220,15 +1220,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "en": "Triple Match",
     "zh-Hant": "三消收納",
     "zh-Hans": "三消收纳",
-    "ja": "Animal Triple Match",
-    "ko": "Animal Triple Match",
+    "ja": "トリプルマッチ",
+    "ko": "트리플 매치",
     "es": "Triple Match",
     "pt-BR": "Triple Match",
     "fr": "Triple Match",
-    "de": "Animal Triple Match",
+    "de": "Dreier-Match",
     "it": "Abbinamento triplo",
-    "ru": "Animal Triple Match",
-    "hi": "Animal Triple Match",
+    "ru": "Три одинаковые плитки",
+    "hi": "ट्रिपल मैच",
     "ar": "مطابقة الثلاثية"
   },
   "wonder-crash": {
@@ -1257,11 +1257,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Lonchera de Colores",
     "pt-BR": "Marmita Cor",
     "fr": "Boîte à lunch couleur",
-    "de": "Lunchbox in Tierfarbe",
-    "it": "Portapranzo a colori con",
-    "ru": "Ланчбокс цвета животного",
+    "de": "Bunte Brotdose",
+    "it": "Portapranzo a colori",
+    "ru": "Цветной ланчбокс",
     "hi": "रंग लंचबॉक्स",
-    "ar": "صندوق طعام بلون الحيوان"
+    "ar": "علبة الطعام الملوّنة"
   },
   "bubble-bakery": {
     "__localizedExact": true,
@@ -1273,11 +1273,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Panadería de Burbujas",
     "pt-BR": "Padaria Bolha",
     "fr": "La Pâtisserie des Bulles",
-    "de": "Tierblasenbäckerei",
-    "it": "Panetteria a bolle di",
-    "ru": "Пекарня «Животный пузырь»",
+    "de": "Blasenbäckerei",
+    "it": "Panetteria delle bolle",
+    "ru": "Пузырьковая пекарня",
     "hi": "बुलबुला बेकरी",
-    "ar": "مخبز فقاعة الحيوان"
+    "ar": "مخبز الفقاعات"
   },
   "animal-rope-rescue": {
     "__localizedExact": true,
@@ -1289,9 +1289,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Rescate con Lianas",
     "pt-BR": "Resgate de Videira",
     "fr": "Sauvetage de la vigne",
-    "de": "Rettung von Tierreben",
+    "de": "Rettung mit Lianen",
     "it": "Salvataggio della vite",
-    "ru": "Спасение животных",
+    "ru": "Спасение с лианами",
     "hi": "बेल की रस्सी से बचाव",
     "ar": "إنقاذ كرمة"
   },
@@ -1305,11 +1305,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Zoológico Idle",
     "pt-BR": "Zoológico ocioso",
     "fr": "Zoo animalier inactif",
-    "de": "Tierzoo im Leerlauf",
+    "de": "Zoo-Verwaltung",
     "it": "Zoo inattivo",
-    "ru": "Зоопарк животных",
+    "ru": "Управление зоопарком",
     "hi": "चिड़ियाघर निष्क्रिय",
-    "ar": "حديقة حيوان الحيوان الخمول"
+    "ar": "إدارة حديقة الحيوان"
   },
   "star-memory": {
     "__localizedExact": true,
@@ -1323,9 +1323,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Mémoire d'étoile",
     "de": "Sternengedächtnis",
     "it": "Memoria delle stelle",
-    "ru": "Звездная память животных",
+    "ru": "Звёздная память",
     "hi": "स्टार मेमोरी",
-    "ar": "ذاكرة نجم الحيوان"
+    "ar": "ذاكرة النجوم"
   },
   "campus-dash": {
     "__localizedExact": true,
@@ -1334,7 +1334,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hans": "草原闪电跑",
     "ja": "キャンパス・サファリダッシュ",
     "ko": "사파리 대시",
-    "es": "Carrera Relámpago Animal",
+    "es": "Carrera por la sabana",
     "pt-BR": "Safari Dash",
     "fr": "Safari Dash",
     "de": "Safari Dash",
@@ -1364,14 +1364,14 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "en": "Merge Tower",
     "zh-Hant": "合成塔",
     "zh-Hans": "合成塔",
-    "ja": "フルーツ合体どうぶつ園",
+    "ja": "合体タワー",
     "ko": "병합 타워",
     "es": "Torre de Fusión",
     "pt-BR": "Torre de fusão",
-    "fr": "Tour de fusion d'animaux",
-    "de": "Tierverschmelzungsturm",
+    "fr": "Tour de fusion",
+    "de": "Fusionsturm",
     "it": "Torre di fusione",
-    "ru": "Башня слияния животных",
+    "ru": "Башня слияния",
     "hi": "मर्ज टावर",
     "ar": "برج دمج"
   },
@@ -1381,15 +1381,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "2048：森林進化",
     "zh-Hans": "2048：森林进化",
     "ja": "2048：森の進化",
-    "ko": "Animal 2048: Forest Evolution",
+    "ko": "2048: 숲의 진화",
     "es": "2048: Evolución del bosque",
     "pt-BR": "2048: Forest Evolution",
     "fr": "2048: Forest Evolution",
-    "de": "Animal 2048: Forest Evolution",
-    "it": "Animal 2048: Forest Evolution",
-    "ru": "Животные 2048: эволюция леса",
-    "hi": "Animal 2048: Forest Evolution",
-    "ar": "الحيوان 2048: تطور الغابة"
+    "de": "2048: Evolution im Wald",
+    "it": "2048: Evoluzione della foresta",
+    "ru": "2048: Эволюция леса",
+    "hi": "2048: वन का विकास",
+    "ar": "2048: تطور الغابة"
   },
   "garden-tiles": {
     "__localizedExact": true,
@@ -1398,14 +1398,14 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hans": "宠物花园方块",
     "ja": "ガーデンタイル",
     "ko": "Pet Garden Tiles",
-    "es": "Fichas del Jardín Animal",
+    "es": "Fichas del Jardín",
     "pt-BR": "Pet Garden Tiles",
     "fr": "Pet Garden Tiles",
     "de": "Pet Garden Tiles",
     "it": "Pet Garden Tiles",
     "ru": "Садовые карточки с питомцами",
     "hi": "पालतू बगीचे के जोड़ी कार्ड",
-    "ar": "بطاقات حديقة الحيوانات المتطابقة"
+    "ar": "ذاكرة بلاطات الحديقة"
   },
   "animal-rescue": {
     "__localizedExact": true,
@@ -1432,9 +1432,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "꼭꼭 숨은 동물 사파리",
     "es": "Safari Oculto",
     "pt-BR": "Safari Escondido",
-    "fr": "Safari des animaux cachés",
+    "fr": "Safari caché",
     "de": "Versteckte Tiersafari",
-    "it": "Safari degli animali nascosti",
+    "it": "Safari nascosto",
     "ru": "Сафари со скрытыми животными",
     "hi": "हिडन सफ़ारी",
     "ar": "رحلات السفاري المخفية للحيوانات"
@@ -1445,15 +1445,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "守衛庭院",
     "zh-Hans": "守卫庭院",
     "ja": "ガードヤード",
-    "ko": "Animal Guard Yard",
+    "ko": "정원 수비대",
     "es": "Guardianes del Jardín",
     "pt-BR": "Guard Yard",
     "fr": "Guard Yard",
-    "de": "Animal Guard Yard",
-    "it": "Animal Guard Yard",
-    "ru": "Animal Guard Yard",
-    "hi": "Animal Guard Yard",
-    "ar": "ساحة حراس الحيوانات"
+    "de": "Gartenwache",
+    "it": "Guardiani del giardino",
+    "ru": "Стражи сада",
+    "hi": "बगीचे के रक्षक",
+    "ar": "حراس الحديقة"
   },
   "animal-crystal-survivor": {
     "__localizedExact": true,
@@ -1479,10 +1479,10 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ja": "クイズ",
     "ko": "퀴즈",
     "es": "Cuestionario",
-    "pt-BR": "Questionário sobre",
-    "fr": "Quiz sur les",
+    "pt-BR": "Questionário sobre animais",
+    "fr": "Quiz sur les animaux",
     "de": "Tierquiz",
-    "it": "Quiz sugli",
+    "it": "Quiz sugli animali",
     "ru": "Викторина о животных",
     "hi": "प्रश्नोत्तरी",
     "ar": "مسابقة الحيوان"
@@ -1511,13 +1511,13 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ja": "かたちトレイン",
     "ko": "모양 기차",
     "es": "Tren de Formas",
-    "pt-BR": "Trem em forma de",
+    "pt-BR": "Trem das Formas",
     "fr": "Le Train des Formes",
-    "de": "Zug in Tierform",
-    "it": "Treno a forma di",
-    "ru": "Поезд в форме животного",
+    "de": "Formenzug",
+    "it": "Treno delle Forme",
+    "ru": "Поезд фигур",
     "hi": "आकार ट्रेन",
-    "ar": "قطار على شكل حيوان"
+    "ar": "قطار الأشكال"
   },
   "tiny-weather-rescue": {
     "__localizedExact": true,
@@ -1528,9 +1528,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "도우미 퀘스트",
     "es": "Misión de Ayuda",
     "pt-BR": "Missão de ajudante",
-    "fr": "Quête d'aide aux",
+    "fr": "Petites missions de secours",
     "de": "Tierhelfer-Quest",
-    "it": "Missione Aiuta-",
+    "it": "Piccole missioni di soccorso",
     "ru": "Квест «Помощник животным»",
     "hi": "सहायक क्वेस्ट",
     "ar": "مهمة مساعد الحيوان"
@@ -1557,15 +1557,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "遺跡獵人",
     "zh-Hans": "遗迹猎人",
     "ja": "レリックハンター",
-    "ko": "Animal Relic Hunters",
+    "ko": "유물 사냥꾼",
     "es": "Cazadores de Reliquias",
     "pt-BR": "Relic Hunters",
     "fr": "Relic Hunters",
-    "de": "Animal Relic Hunters",
-    "it": "Animal Relic Hunters",
-    "ru": "Animal Relic Hunters",
-    "hi": "Animal Relic Hunters",
-    "ar": "صيادو الآثار الحيوانية"
+    "de": "Reliktjäger",
+    "it": "Cacciatori di reliquie",
+    "ru": "Охотники за реликвиями",
+    "hi": "अवशेषों के शिकारी",
+    "ar": "صيادو الآثار"
   },
   "animal-rune-tactics": {
     "__localizedExact": true,
@@ -1579,9 +1579,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Tactiques runiques",
     "de": "Runentaktik",
     "it": "Tattiche delle rune",
-    "ru": "Тактика животных с рунами",
+    "ru": "Тактика рун",
     "hi": "रूण रणनीति",
-    "ar": "تكتيكات الرون الحيواني"
+    "ar": "تكتيكات الرون"
   },
   "animal-orb-fortress": {
     "__localizedExact": true,
@@ -1595,9 +1595,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Forteresse des Orbes",
     "de": "Orbfestung",
     "it": "Fortezza delle Sfere",
-    "ru": "Крепость животных сфер",
+    "ru": "Крепость сфер",
     "hi": "ऑर्ब किला",
-    "ar": "حصن الكرات الحيوانية"
+    "ar": "حصن الكرات"
   },
   "animal-auto-squad": {
     "__localizedExact": true,
@@ -1652,16 +1652,16 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "en": "Block Grove",
     "zh-Hant": "方塊森林",
     "zh-Hans": "方块森林",
-    "ja": "Animal Block Grove",
-    "ko": "Animal Block Grove",
+    "ja": "ブロックの森",
+    "ko": "블록 숲",
     "es": "Bosque de Bloques",
     "pt-BR": "Block Grove",
     "fr": "Block Grove",
-    "de": "Animal Block Grove",
-    "it": "Animal Block Grove",
-    "ru": "Animal Block Grove",
-    "hi": "Animal Block Grove",
-    "ar": "Animal Block Grove"
+    "de": "Blockhain",
+    "it": "Bosco di blocchi",
+    "ru": "Блочная роща",
+    "hi": "ब्लॉक वन",
+    "ar": "غابة المكعبات"
   },
   "animal-color-springs": {
     "__localizedExact": true,
@@ -1675,9 +1675,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Sources de couleurs",
     "de": "Farbenquellen",
     "it": "Sorgenti di colori",
-    "ru": "Цветные источники животных",
+    "ru": "Цветные источники",
     "hi": "रंगीन झरने",
-    "ar": "ينابيع الألوان الحيوانية"
+    "ar": "ينابيع الألوان"
   },
   "animal-rune-reels": {
     "__localizedExact": true,
@@ -1691,9 +1691,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Roues de runes",
     "de": "Runenräder",
     "it": "Rulli di rune",
-    "ru": "Животные: рунические барабаны",
+    "ru": "Рунические барабаны",
     "hi": "रूण रील",
-    "ar": "بكرات الرون للحيوانات"
+    "ar": "بكرات الرون"
   },
   "animal-spectrum-pulse": {
     "__localizedExact": true,
@@ -1725,7 +1725,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Perni della Cripta",
     "ru": "Звери: Штифты корневого хранилища",
     "hi": "रूटवॉल्ट पिन",
-    "ar": "دبابيس روتفولت الحيوانية"
+    "ar": "دبابيس روتفولت"
   },
   "animal-sketchwheel-rally": {
     "__localizedExact": true,
@@ -1741,7 +1741,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Rally delle Ruote Disegnate",
     "ru": "ралли рисованных колёс",
     "hi": "स्केचव्हील रैली",
-    "ar": "رالي رسم العجلات الحيوانية"
+    "ar": "رالي العجلات المرسومة"
   },
   "animal-sanctuary-loop": {
     "__localizedExact": true,
@@ -1771,9 +1771,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Bataillon de prismes",
     "de": "Prismabataillon",
     "it": "Battaglione Prismi",
-    "ru": "Батальон Животных Призм",
+    "ru": "Призменный батальон",
     "hi": "प्रिज़्म बटालियन",
-    "ar": "كتيبة بريزم الحيوان"
+    "ar": "كتيبة المنشور"
   },
   "animal-skybridge-rivals": {
     "__localizedExact": true,
@@ -1828,16 +1828,16 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "en": "Skyport Dispatch",
     "zh-Hant": "天空港調度隊",
     "zh-Hans": "天空港调度队",
-    "ja": "Animal Skyport Dispatch",
-    "ko": "Animal Skyport Dispatch",
+    "ja": "飛行船の航路管制",
+    "ko": "비행선 관제",
     "es": "Skyport Dispatch",
     "pt-BR": "Skyport Dispatch",
     "fr": "Skyport Dispatch",
-    "de": "Animal Skyport Dispatch",
-    "it": "Animal Skyport Dispatch",
+    "de": "Luftschiff-Leitstelle",
+    "it": "Controllo dei dirigibili",
     "ru": "Диспетчер небесного порта",
-    "hi": "पशु स्काईपोर्ट डिस्पैच",
-    "ar": "إرسال سكايبورت الحيوان"
+    "hi": "हवाई पोतों की उड़ानें",
+    "ar": "توجيه المناطيد"
   },
   "animal-starlight-trails": {
     "__localizedExact": true,
@@ -1877,15 +1877,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "深淵潛航員",
     "zh-Hans": "深渊潜航员",
     "ja": "深淵ダイバー",
-    "ko": "Animal Abyss Diver",
+    "ko": "심해 잠수부",
     "es": "Buzo del Abismo",
     "pt-BR": "Abyss Diver",
     "fr": "Abyss Diver",
-    "de": "Animal Abyss Diver",
-    "it": "Animal Abyss Diver",
-    "ru": "Animal Abyss Diver",
+    "de": "Tiefseetaucher",
+    "it": "Subacqueo degli abissi",
+    "ru": "Глубоководный ныряльщик",
     "hi": "एनिमल एबिस डाइवर",
-    "ar": "غواص الهاوية الحيوانية"
+    "ar": "غواص الأعماق"
   },
   "animal-bubble-safari": {
     "__localizedExact": true,
@@ -1897,11 +1897,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Safari de Burbujas",
     "pt-BR": "Safari de bolhas",
     "fr": "Safari à bulles",
-    "de": "Tierblasensafari",
+    "de": "Blasensafari",
     "it": "Safari con le bolle",
-    "ru": "Сафари с пузырьками животных",
+    "ru": "Пузырьковое сафари",
     "hi": "बुलबुला सफारी",
-    "ar": "سفاري فقاعة الحيوان"
+    "ar": "سفاري الفقاعات"
   },
   "animal-coloring-studio": {
     "__localizedExact": true,
@@ -1912,7 +1912,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "색칠 공부 스튜디오",
     "es": "Estudio para colorear",
     "pt-BR": "Estúdio de coloração",
-    "fr": "Studio de coloriage d'",
+    "fr": "Studio de coloriage",
     "de": "Tierfärbestudio",
     "it": "Studio di colorazione",
     "ru": "Студия раскраски животных",
@@ -1929,27 +1929,27 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Taller de Tornillos",
     "pt-BR": "Oficina de Parafusos",
     "fr": "Atelier des vis",
-    "de": "Schrauben-Werkstatt",
-    "it": "Officina delle viti",
+    "de": "Schraubenwerkstatt",
+    "it": "Laboratorio delle viti",
     "ru": "Мастерская винтов",
     "hi": "पेंच कार्यशाला",
     "ar": "ورشة البراغي"
   },
   "animal-parking-patrol": {
     "__localizedExact": true,
-    "en": "Animal Parking Patrol",
+    "en": "Forest Parking Patrol",
     "zh-Hant": "森林停車疏導隊",
     "zh-Hans": "森林停车疏导队",
-    "ja": "Animal Parking Patrol",
-    "ko": "Animal Parking Patrol",
-    "es": "Patrulla de Aparcamiento Animal",
-    "pt-BR": "Animal Parking Patrol",
-    "fr": "Animal Parking Patrol",
-    "de": "Animal Parking Patrol",
-    "it": "Animal Parking Patrol",
-    "ru": "Animal Parking Patrol",
-    "hi": "Animal Parking Patrol",
-    "ar": "دورية مواقف الحيوانات"
+    "ja": "森の駐車場パトロール",
+    "ko": "숲속 주차 순찰대",
+    "es": "Patrulla de Aparcamiento del Bosque",
+    "pt-BR": "Patrulha de Estacionamento da Floresta",
+    "fr": "Patrouille du parking en forêt",
+    "de": "Waldparkplatz-Patrouille",
+    "it": "Pattuglia del parcheggio nel bosco",
+    "ru": "Патруль лесной парковки",
+    "hi": "वन पार्किंग गश्त",
+    "ar": "دورية مواقف الغابة"
   },
   "animal-habitat-mahjong": {
     "__localizedExact": true,
@@ -1961,11 +1961,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Mahjong de Hábitats",
     "pt-BR": "Habitat Mahjong",
     "fr": "Mahjong Habitat",
-    "de": "Tierlebensraum Mahjong",
+    "de": "Lebensraum-Mahjong",
     "it": "Mahjong Habitat",
-    "ru": "Среда обитания животных Маджонг",
+    "ru": "Маджонг «Места обитания»",
     "hi": "आवास माहजोंग",
-    "ar": "الموئل الحيواني جونغ"
+    "ar": "ماجونغ الموائل"
   },
   "animal-word-trails": {
     "__localizedExact": true,
@@ -1976,12 +1976,12 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "단어 트레일",
     "es": "Senderos de palabras",
     "pt-BR": "Trilhas de palavras",
-    "fr": "Sentiers de mots sur les",
+    "fr": "Sentiers de mots",
     "de": "Wortspuren",
-    "it": "Sentieri di parole sugli",
-    "ru": "Тропы слов о животных",
+    "it": "Sentieri di parole",
+    "ru": "Тропы слов",
     "hi": "शब्द ट्रेल्स",
-    "ar": "مسارات كلمة الحيوان"
+    "ar": "مسارات الكلمات"
   },
   "animal-cratebound": {
     "__localizedExact": true,
@@ -1995,7 +1995,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Cargaison",
     "de": "Fracht",
     "it": "Carico",
-    "ru": "Животный груз",
+    "ru": "Рунный груз",
     "hi": "क्रेटबाउंड",
     "ar": "مستودع"
   },
@@ -2085,15 +2085,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "珊瑚釣手",
     "zh-Hans": "珊瑚钓手",
     "ja": "リーフフィッシャー",
-    "ko": "Animal Reef Fisher",
+    "ko": "산호초 낚시꾼",
     "es": "Pescador del Arrecife",
     "pt-BR": "Reef Fisher",
     "fr": "Reef Fisher",
-    "de": "Animal Reef Fisher",
-    "it": "Animal Reef Fisher",
-    "ru": "Animal Reef Fisher",
-    "hi": "Animal Reef Fisher",
-    "ar": "صياد الشعاب الحيوانية"
+    "de": "Riffangler",
+    "it": "Pescatore della barriera corallina",
+    "ru": "Рыбак у рифа",
+    "hi": "रीफ़ का मछुआरा",
+    "ar": "صياد الشعاب"
   },
   "checkers": {
     "__localizedExact": true,
@@ -2153,11 +2153,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Fiebre del Café",
     "pt-BR": "Cafe Rush",
     "fr": "Ruée vers le café",
-    "de": "Animal Cafe Rush",
+    "de": "Café im Hochbetrieb",
     "it": "Corsa agli al caffè",
-    "ru": "Животное Кафе Раш",
+    "ru": "Кафе в час пик",
     "hi": "कैफे रश",
-    "ar": "مقهى الحيوان راش"
+    "ar": "ازدحام المقهى"
   },
   "animal-hero-trials": {
     "__localizedExact": true,
@@ -2165,15 +2165,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "英雄試煉",
     "zh-Hans": "英雄试炼",
     "ja": "英雄試練",
-    "ko": "Animal Hero Trials",
+    "ko": "영웅의 시련",
     "es": "Pruebas de Héroes",
     "pt-BR": "Hero Trials",
     "fr": "Hero Trials",
-    "de": "Animal Hero Trials",
-    "it": "Animal Hero Trials",
-    "ru": "Animal Hero Trials",
+    "de": "Heldenprüfungen",
+    "it": "Prove degli eroi",
+    "ru": "Испытания героев",
     "hi": "नायक की परीक्षाएँ",
-    "ar": "محاكمات بطل الحيوان"
+    "ar": "تحديات الأبطال"
   },
   "animal-gearpack-expedition": {
     "__localizedExact": true,
@@ -2184,12 +2184,12 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "기어팩 원정대",
     "es": "Expedición de la Mochila",
     "pt-BR": "Expedição Gearpack",
-    "fr": "Expédition avec des packs d'équipements pour",
-    "de": "Tier-Gepäckexpedition",
+    "fr": "Expédition avec sac à dos",
+    "de": "Rucksack-Expedition",
     "it": "Spedizione con equipaggiamenti",
-    "ru": "Экспедиция с снаряжением для животных",
+    "ru": "Экспедиция со снаряжением",
     "hi": "गियरपैक अभियान",
-    "ar": "رحلة الحيوان Gearpack"
+    "ar": "رحلة تجهيز الحقيبة"
   },
   "animal-moonlight-heist": {
     "__localizedExact": true,
@@ -2197,15 +2197,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "月影潛行隊",
     "zh-Hans": "月影潜行队",
     "ja": "月夜の潜入",
-    "ko": "Animal Moonlight Heist",
+    "ko": "달빛 잠입",
     "es": "Golpe a la Luz de la Luna",
     "pt-BR": "Moonlight Heist",
     "fr": "Moonlight Heist",
-    "de": "Animal Moonlight Heist",
-    "it": "Animal Moonlight Heist",
-    "ru": "Animal Moonlight Heist",
-    "hi": "Animal Moonlight Heist",
-    "ar": "Animal Moonlight Heist"
+    "de": "Coup im Mondlicht",
+    "it": "Colpo al chiaro di luna",
+    "ru": "Ограбление при лунном свете",
+    "hi": "चाँदनी में चोरी",
+    "ar": "سرقة تحت ضوء القمر"
   },
   "hearts": {
     "__localizedExact": true,
@@ -2850,6 +2850,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "animal-glyph-garden": {
     "__localizedExact": true,
     "en": "Rune Clue Match",
+    "zh-Hant": "符文線索配對",
+    "zh-Hans": "符文线索配对",
     "ja": "ルーンの手がかり合わせ",
     "ko": "룬 단서 맞추기",
     "es": "Pistas de Runas",
@@ -2859,9 +2861,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Indizi delle Rune",
     "ru": "Подбор рун по подсказкам",
     "hi": "संकेतों से रूण मिलाएँ",
-    "ar": "مطابقة الرموز بالقرائن",
-    "zh-Hant": "符文線索配對",
-    "zh-Hans": "符文线索配对"
+    "ar": "مطابقة الرموز بالقرائن"
   },
   "animal-ring-garden": {
     "__localizedExact": true,
@@ -3113,11 +3113,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Liga de Aros",
     "pt-BR": "Liga de Arremessos",
     "fr": "Ligue des Arceaux",
-    "de": "Animal Hoop League",
-    "it": "Animal Hoop League",
+    "de": "Basketball-Liga",
+    "it": "Lega dei Canestri",
     "ru": "лига колец",
     "hi": "हूप लीग",
-    "ar": "دوري الحلقات الحيواني"
+    "ar": "دوري السلال"
   },
   "animal-habitat-atlas": {
     "__localizedExact": true,
@@ -3234,6 +3234,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "animal-putt-trails": {
     "__localizedExact": true,
     "en": "Putt Trails",
+    "zh-Hant": "推桿小徑",
+    "zh-Hans": "推杆小径",
     "ja": "パット・トレイル",
     "ko": "퍼트 트레일",
     "es": "Senderos de Putt",
@@ -3243,9 +3245,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Sentieri di Putt",
     "ru": "пути для патта",
     "hi": "पुट ट्रेल्स",
-    "ar": "مسارات ضربات",
-    "zh-Hant": "推桿小徑",
-    "zh-Hans": "推杆小径"
+    "ar": "مسارات ضربات"
   },
   "animal-kite-keeper": {
     "__localizedExact": true,
@@ -3649,19 +3649,19 @@ window.WEIGHTPLAY_GAME_TITLES = {
   },
   "animal-blockmart": {
     "__localizedExact": true,
-    "en": "Animal Blockmart",
-    "zh-Hant": "動物方塊便利店",
-    "zh-Hans": "动物方块便利店",
-    "ja": "どうぶつブロックマート",
-    "ko": "동물 블록 마트",
+    "en": "Blockmart",
+    "zh-Hant": "方塊便利店",
+    "zh-Hans": "方块便利店",
+    "ja": "ブロックマート",
+    "ko": "블록 마트",
     "es": "Minimercado de Bloques",
     "pt-BR": "Minimercado de Blocos",
     "fr": "Mini-marché des Blocs",
-    "de": "Blocktier-Mini-Markt",
+    "de": "Block-Minimarkt",
     "it": "Minimarket a Blocchi",
     "ru": "Блочный мини-маркет",
-    "hi": "ब्लॉक पशु मिनी-मार्ट",
-    "ar": "متجر الحيوانات المكعبة"
+    "hi": "ब्लॉक मिनी-मार्ट",
+    "ar": "متجر المكعبات"
   },
   "flying-tram": {
     "__localizedExact": true,
