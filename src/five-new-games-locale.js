@@ -224,7 +224,8 @@
   const sourceToTranslation = new Map();
   function currentCopy() {
     const copy = [...(gameCopy[gameId]?.[locale] || gameCopy[gameId]?.en || [gameId, "", ""])];
-    copy[0] = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale] || copy[0];
+    const routeName = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchName : "";
+    copy[0] = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale] || routeName || copy[0];
     return copy;
   }
   function rebuildMap() {
@@ -282,7 +283,8 @@
       document.documentElement.lang = locale;
       document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
       const [title] = currentCopy();
-      document.title = `${title} | WeightPlay`;
+      const searchTitle = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchTitle : "";
+      document.title = searchTitle || `${title} | WeightPlay`;
     }
     root.querySelectorAll?.("[data-five-copy]").forEach((element) => {
       const key = element.dataset.fiveCopy;

@@ -854,6 +854,7 @@
   function text(map) { return map?.[locale] ?? map?.en ?? ""; }
   function t(key) { return shared[locale]?.[key] ?? shared.en[key] ?? key; }
   function updateMetadata(id) {
+    if (document.head.dataset.wpSearchLocale === locale) return;
     const descriptionMap = metadataDescriptions[id];
     if (!descriptionMap) return;
     let description = document.querySelector('meta[name="description"]');

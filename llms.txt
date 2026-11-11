@@ -100,6 +100,7 @@ Games with local saves keep progress in the current browser.
 - Sliding 15: https://weightplay.com/en/games/sliding-15/
 - Lights Out: https://weightplay.com/en/games/lights-out/
 - Four in a Row: https://weightplay.com/en/games/four-in-a-row/
+- Fusekeep: https://weightplay.com/en/games/fusekeep/ — Merge matching troops, choose where to deploy them, and defend the keep through waves.
 - Chess: https://weightplay.com/en/games/chess/
 - Pong: https://weightplay.com/en/games/pong/
 - Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/

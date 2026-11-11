@@ -212,7 +212,7 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20261021-interface9-battle-runtime-i9-owner-v1&wp-media=9014fb44e291ad74" data-wp-entry-required="">
   <link rel="stylesheet" href="../../src/game-play-ui.css?v=20261022-shared-stage-action-slots1&wp-media=9014fb44e291ad74" data-wp-entry-required="">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?v=20261017-interface9-guide-theme1&wp-media=9014fb44e291ad74" data-wp-entry-required="">
-  <script src="/src/game-page-info.js?v=20261111-search20&wp-media=9014fb44e291ad74" defer charset="utf-8"></script>
+  <script src="/src/game-page-info.js?v=20261111-search20-snippets&wp-media=9014fb44e291ad74" defer charset="utf-8"></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=9014fb44e291ad74"></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -256,14 +256,13 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
         <div class="game-info-sections">
           <section class="game-info-section"><span class="step-dot">1</span><h3 data-copy="guideOneTitle">閱讀棲所</h3><p data-copy="guideOne" data-wp-intro-faq-source>下方一列會顯示每個棲所需要的動物。</p></section>
           <section class="game-info-section"><span class="step-dot">2</span><h3 data-copy="guideTwoTitle">交換兩個端點</h3><p data-copy="guideTwo">先點一個藤蔓端點，再點另一個，兩隻動物就會交換位置。</p></section>
-          <section class="game-info-section"><span class="step-dot">3</span><h3 data-copy="guideThreeTitle">檢查救援</h3><p data-copy="guideThree">正確的路徑會連線；錯誤嘗試會保留且不會受懲罰。</p></section>
         </div>
         <section class="game-page-info-static" aria-label="Related games">
           <div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>更多相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-sunbeam-garden" href="/zh-tw/games/animal-sunbeam-garden/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp?wp-media=9014fb44e291ad74" data-final-src="/assets/weightplay-logo.png.webp?wp-media=9014fb44e291ad74" alt="陽光花園：鏡面導光" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">陽光花園：鏡面導光</strong></span></a><a class="game-info-related-card" data-game-id="animal-prism-garden" href="/zh-tw/games/animal-prism-garden/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-prism-garden.webp?wp-media=9014fb44e291ad74" data-final-src="/assets/weightplay-logo.png.webp?wp-media=9014fb44e291ad74" alt="幻彩連線庭園" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">幻彩連線庭園</strong></span></a></div></div>
         </section>
         <button id="guideStartBtn" class="primary-btn" type="button" data-copy="start">開始救援</button>
       </div>
-    <article class="game-info-section" data-wp-intro-faq><h3>常見問題</h3><dl><dt>這款遊戲要做什麼？</dt><dd>下方一列會顯示每個棲所需要的動物。</dd></dl></article></details>
+    <article class="game-info-section" data-wp-intro-faq><h3>常見問題</h3><dl><dt>這款遊戲要做什麼？</dt><dd>下方一列會顯示每個棲所需要的動物。</dd></dl></article><section class="game-info-section" data-wp-guide-strategy="zh-Hant" lang="zh-Hant" data-runtime-localize="off"><h3>用更少交換解開藤蔓</h3><p>比較藤蔓端點和庇護所的圖像。點選兩個端點，或把一個拖到另一個上，就能交換位置。試著一次把兩隻動物送回家。後段有些盤面會鎖定端點或遮住庇護所圖像，可以先配對看得到的圖像，再推理缺少的那個。</p><p>連線數滿了就確認救援。復原會撤銷上一次交換，免費提示會標出可交換的兩個端點。用最少交換且不用提示可得三星。只要過關就能開啟下一盤，最佳成績會保存在這個瀏覽器。</p></section></details>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy-aria-label="back" aria-label="返回"><span aria-hidden="true">←</span></button><h2 data-copy="map" data-wp-frame-title>救援地圖</h2></header>
@@ -311,6 +310,6 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
   <script src="frame.js?v=entry-initial-17893027f9ed&amp;wp-build=8ebac6f872307d87&wp-media=9014fb44e291ad74" data-wp-entry-required=""></script>
   <script src="/src/tutorial.js?v=20261107-action-guide-v1&wp-media=9014fb44e291ad74" data-wp-entry-required=""></script>
 <script src="/games/animal-tangle-rescue/teaching-copy.js?v=20261107-action-teaching-v21&amp;wp-build=13a0ee0b284803d4&wp-media=9014fb44e291ad74" data-wp-entry-required=""></script>
-<script src="game.js?v=20261107-action-teaching-v21&amp;wp-build=887f324ca710334e&wp-media=9014fb44e291ad74" data-wp-entry-required=""></script>
+<script src="game.js?v=20261107-action-teaching-v21-search20&amp;wp-build=26d8dbef80e453bd&wp-media=9014fb44e291ad74" data-wp-entry-required=""></script>
 </body>
 </html>
