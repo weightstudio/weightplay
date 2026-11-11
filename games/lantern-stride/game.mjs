@@ -15,6 +15,11 @@ function ghostDistance(race){
 }
 function recordDistance(race){while(race.trace.samples.length<=Math.floor(race.elapsed))race.trace.samples.push(Math.round(race.distance*10));}
 const W=window, $=id=>document.getElementById(id), store=createStore();
+const authoredSearch = {
+  locale: document.head.dataset.wpSearchLocale,
+  title: document.head.dataset.wpSearchTitle,
+  description: document.querySelector('meta[name=description]')?.getAttribute('content'),
+};
 const labels={plain:'plain',slow:'slow',fast:'fast',headfast:'headfast',headwind:'headwind',tailwind:'tailwind',left:'gateLeft',right:'gateRight',bridge:'bridge',fork:'choosePace',forkleft:'chooseLeft',forkright:'chooseRight',forkwindbridge:'windBridge',forkgates:'chooseGate',forkfast:'chooseLeft',forkslow:'chooseRight',forkmaster:'bridgeGate'};
 const goals={finish:'goalFinish',steady3:'goalSteady',balance40:'goalBalance40',combo4:'goalCombo','steady-no-stumble':'goalNoStumble',balance35:'goalBalance35',balance30:'goalBalance30',stumble2:'goalStumbles',gates:'goalGates'};
 const feedback={landmark:'good',steady:'good',timing:'timingAdjust','same-foot':'alternate','bridge-closed':'bridgeWait','gate-missed':'reasonGate','gate-left':'gateLeft','gate-right':'gateRight',stumble:'stumble',feather:'featherUsed','feather-burst':'featherBurst','dash-burst':'dashFeedback'};
@@ -42,10 +47,15 @@ function localize(){
   for(const node of document.querySelectorAll('[data-t-aria]'))node.setAttribute('aria-label',tr(node.dataset.tAria));
   for(const node of document.querySelectorAll('[data-t-alt]'))node.setAttribute('alt',tr(node.dataset.tAlt));
   const extras=guideExtras(locale);$('gameGuideFaq').innerHTML=extras.faqHtml;renderRelated(extras.relatedHtml);$('gameGuide').dataset.wpGuideLocale=locale;$('gameGuide').setAttribute('aria-label',tr('guideTitle'));
-  document.querySelector('meta[name=description]')?.setAttribute('content',tr('summary'));
+  const search = authoredSearch.locale === locale ? authoredSearch : {};
+  document.querySelector('meta[name=description]')?.setAttribute('content', search.description || tr('summary'));
   $('shoeStatus').textContent=shoeStatusKey?tr(shoeStatusKey):'';$('shopStatus').textContent=shopStatusKey?tr(shopStatusKey):'';
   if(modal==='resultPanel'&&!practiceRun){$('saveStatus').textContent=saved?savedMessage()+(rewardOutstanding?' · '+tr(progressUnavailable?'progressUnavailableShort':'rewardPendingShort'):''):pending&&!pending.busy?tr('saveFailed'):'';if(saved&&rewardOutstanding)$('retrySave').textContent=tr(progressUnavailable?'retrySave':'retryReward')}
-  const title=W.WEIGHTPLAY_GAME_TITLES?.['lantern-stride']?.[locale];if(title){for(const node of document.querySelectorAll('[data-wp-game-title]'))node.textContent=title;document.title=`${title} | WeightPlay`;}
+  const title = W.WEIGHTPLAY_GAME_TITLES?.['lantern-stride']?.[locale];
+  if (title) {
+    for (const node of document.querySelectorAll('[data-wp-game-title]')) node.textContent = title;
+    document.title = search.title || `${title} | WeightPlay`;
+  }
   $('mainProgress').textContent=tr('stage',{n:`\u2066${highestUnlocked(store.progress)} / 60\u2069`});rewardNotice();
   if(screen==='stage'){rail?.setConfig(config(),selected-1);rail?.refresh(selected-1);if(tab!=='stages')renderManagement();}
   if(race){update();if(race.status==='finished')renderResult();}

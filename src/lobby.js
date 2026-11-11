@@ -343,7 +343,7 @@ function renderSpotlight() {
   spotlightSection.style.setProperty("--spotlight-art", `url(${JSON.stringify(new URL(lobbyThumbnail(primaryArt(game)), document.baseURI).href)})`);
   spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">
     <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
-    <div><small>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
+    <div><small>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</small><h3>${text(game.title)}</h3><p>${gameType(game)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
   revealDecodedImage(spotlightSection.querySelector(".spotlight-game > img"));
   syncSpotlightArtwork();
 }
@@ -989,6 +989,11 @@ function text(value) {
   const catalog = window.WeightPlayGameRuntimeLocales?.[locale];
   const english = value && typeof value === "object" && !Array.isArray(value) ? value.en : value;
   return catalog?.[localized] || catalog?.[english] || localized;
+}
+
+function gameType(game) {
+  if (i18n.actualLocale() === "ja" && game.type?.ja) return game.type.ja;
+  return text(game.type);
 }
 
 function publicGameSummary(game) {
@@ -1864,7 +1869,7 @@ function createGameCard(game) {
   const isPlayable = game.status === "playable";
   const summary = publicGameSummary(game);
   const title = text(game.title);
-  const type = text(game.type);
+  const type = gameType(game);
   const ageLabel = text(game.ageLabel);
   const numericAge = /^\d+\+$/.test(ageLabel);
   const isIndependentAgeGame = game.id === "animal-quiz";
@@ -2430,7 +2435,7 @@ function renderContinuePlaying() {
   if (!continuePlaying || !continuePlayingSection) return;
   const cards = recentPlayableGames(4).map((game, index) => {
     const title = text(game.title);
-    const type = text(game.type);
+    const type = gameType(game);
     const ageLabel = text(game.ageLabel);
     const card = document.createElement("a");
     card.className = "continue-playing-card";
@@ -2469,7 +2474,7 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
       const isPlayable = game.status === "playable";
       const isTopicPreview = !isKidsLobby && activeHall === "topics" && topicGameIds.has(game.id) && game.status === "planned";
       const title = text(game.title);
-      const type = text(game.type);
+      const type = gameType(game);
       const ageLabel = text(game.ageLabel);
       const hasVisualIdentity = visualIdentity && isPlayable && !isKidsLobby;
       // Popular cards are ranked after unavailable games are filtered out, so
@@ -2540,7 +2545,7 @@ function renderMobilePicks() {
   if (!mobilePicks || !mobilePicksSection) return;
   const cards = mobileFriendlyGames(4).map((game) => {
     const title = text(game.title);
-    const type = text(game.type);
+    const type = gameType(game);
     const ageLabel = text(game.ageLabel);
     const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
@@ -2578,7 +2583,7 @@ function renderUpcomingGames() {
   if (!upcomingGames || !upcomingGamesSection) return;
   const cards = upcomingPreviewGames().map((game) => {
     const title = text(game.title);
-    const type = text(game.type);
+    const type = gameType(game);
     const ageLabel = text(game.ageLabel);
     const description = text(game.description);
     const card = document.createElement("button");
@@ -2657,7 +2662,7 @@ function renderRecommendations() {
   const seeds = recommendationSeeds();
   const cards = recommendedGames(3).map((game, index) => {
     const title = text(game.title);
-    const type = text(game.type);
+    const type = gameType(game);
     const ageLabel = text(game.ageLabel);
     const note = recommendationNote(game, seeds);
     const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
@@ -2695,7 +2700,7 @@ function renderFreshUpdates() {
   if (!freshUpdates || !freshUpdatesSection) return;
   const cards = recentlyUpdatedGames(4).map((game) => {
     const title = text(game.title);
-    const type = text(game.type);
+    const type = gameType(game);
     const ageLabel = text(game.ageLabel);
     const description = escapeHtml(gameDescription(game));
     const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
@@ -2735,7 +2740,7 @@ function renderChallengeSpotlight() {
   if (!challengeSpotlight || !challengeSpotlightSection) return;
   const cards = challengeSpotlightGames(4).map((game) => {
     const title = text(game.title);
-    const type = text(game.type);
+    const type = gameType(game);
     const description = escapeHtml(gameDescription(game));
     const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 3).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
@@ -2904,7 +2909,7 @@ function catalogSearchText(game) {
   if (!catalogSearchIndex.has(game.id)) {
     // Same localized + English aliases for rendered cards and off-screen games.
     catalogSearchIndex.set(game.id, normalizeSearch([
-      text(game.title), game.title?.en, text(game.type), game.type?.en,
+      text(game.title), game.title?.en, gameType(game), game.type?.en,
       text(game.ageLabel), gameDescription(game), game.description?.en,
       ...(text(game.meta) || []), ...(game.meta?.en || []),
       ...(game.categories || []).map(categoryText), ...(game.categories || []),

@@ -20,6 +20,9 @@ Games with local saves keep progress in the current browser.
 - [Free Action Games](https://weightplay.com/en/categories/action/)
 - [Block and Merge Puzzle Games](https://weightplay.com/en/categories/block-merge-puzzles/)
 - [Free Browser Racing Games](https://weightplay.com/en/categories/racing/)
+- [Free Strategy Games](https://weightplay.com/en/categories/strategy/)
+- [Free Reaction and Timing Games](https://weightplay.com/en/categories/reaction/)
+- [Free Browser Sports Games](https://weightplay.com/en/categories/sports/)
 - [WeightPlay Kids](https://weightplay.com/en/kids/) offers age-grouped games without ads.
 
 ## Site information
@@ -34,14 +37,14 @@ Games with local saves keep progress in the current browser.
 
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Build your squad, equip heroes and win automatic battles to advance through the campaign.
 - Reefwatch Tides: https://weightplay.com/en/games/reef-current/ — Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.
-- Sunshift Commons: https://weightplay.com/en/games/sunshift-commons/ — Power the neighborhood by day and save sunlight for the night.
+- Sunshift Commons: https://weightplay.com/en/games/sunshift-commons/ — Solve power-grid puzzles for a neighborhood. Choose which jobs get solar power now and charge batteries to cover jobs after dark.
 - Bellshift Atelier: https://weightplay.com/en/games/bellshift-atelier/ — Plan two crews’ commands and ring the requested notes before the tower runs out of power.
 - Stararc Rendezvous: https://weightplay.com/en/games/stararc-rendezvous/ — Fit your shuttle, plan a transfer, and dock with moving stations before the shift ends.
 - Silicon Shift: https://weightplay.com/en/games/silicon-shift/ — Trace test pulses and wire one circuit to pass every case.
 - Cinderburrow: https://weightplay.com/en/games/cinderburrow/ — Carve a way through the ridge, bring glow cores home, and brace the gates before the ash surges.
 - Block Planet Repair Crew: https://weightplay.com/en/games/block-planet-repair/ — Sweep across repair robots, bring five planets to life and hatch block animals.
-- Mosslight Museum: https://weightplay.com/en/games/mosslight-museum/ — Curate exhibits, plan tours and keep your collection ready for the next guests.
-- Block Dig Crew: https://weightplay.com/en/games/block-dig-crew/ — Sweep over tools, uncover gems and build your own digging crew.
+- Mosslight Museum: https://weightplay.com/en/games/mosslight-museum/ — Curate a museum puzzle: choose exhibits, order tour stops for each group’s interests, and repair worn pieces before the next visitors arrive.
+- Block Dig Crew: https://weightplay.com/en/games/block-dig-crew/ — Sweep across tools to dig up gems. Explore at your own pace or take on survey goals, then upgrade your workshop and hire miners who dig automatically.
 - Wingseal Post: https://weightplay.com/en/games/wingseal-post/ — Check labels, mend parcels and plan which mail flies first.
 - Tidegate Relay: https://weightplay.com/en/games/tidegate-relay/ — Dispatch vehicles across a coastal interchange. Read the lanes, plan ahead and get priority traffic through on time.
 - Prismkin Rescue: https://weightplay.com/en/games/prismkin-rescue/ — Plan each step with Nori and Taro. Guide lost crystal creatures home before the tide drains your light.
@@ -55,7 +58,7 @@ Games with local saves keep progress in the current browser.
 - Starpip Vanguard: https://weightplay.com/en/games/starpip-vanguard/ — Keep the right dice. Read enemy intentions and bring your four companions home.
 - Prismtide: https://weightplay.com/en/games/prismtide/ — Explore underwater rooms in a first-person light puzzle. Carry and place relays to guide beams to receivers, power doors and reach the exit.
 - Skymeadow Keeper: https://weightplay.com/en/games/skymeadow-keeper/ — Explore sky meadows, guide wildlife home and restore the windtrees.
-- Cloudhold Voyager: https://weightplay.com/en/games/cloudhold-voyager/ — Assign your crew, balance ship power and bring the cloud convoy home.
+- Cloudhold Voyager: https://weightplay.com/en/games/cloudhold-voyager/ — Command an airship in turn-based strategy. Assign crew to repair rooms and split limited power between weapons, shields, engines and oxygen.
 - Dawnward Haven: https://weightplay.com/en/games/dawnward-haven/ — Build a harbor, assign residents and prepare food and timber before the weather turns.
 - Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/ — Arrange tables, keep aisles open and welcome every guest with light, tea and a little quiet.
 - Rivetide Works: https://weightplay.com/en/games/rivetide-works/ — Build a production line. Turn raw materials into cargo and keep every workshop supplied.
@@ -70,7 +73,7 @@ Games with local saves keep progress in the current browser.
 - Hearthloop: https://weightplay.com/en/games/hearthloop/ — Roll the dice, buy properties and collect rent in a board game. Own matching lots to build houses and keep enough cash for rent and taxes.
 - Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/ — Guide Taro through the garden. Sweep dry dust, brush damp patches and deliver every load to a depot.
 - Rux Salvage Yard: https://weightplay.com/en/games/rux-salvage-yard/ — Aim at supports and recover reusable parts as structures fall.
-- Lantern Stride: https://weightplay.com/en/games/lantern-stride/ — Alternate your steps and find your rhythm on a forest racecourse.
+- Lantern Stride: https://weightplay.com/en/games/lantern-stride/ — Race along forest courses by alternating left and right steps. Adjust your rhythm for fast and slow surfaces, then choose a route at the forks.
 - Boom Mane: Tower Guard: https://weightplay.com/en/games/orbit-menders/ — Aim with touch or mouse and hold to fire. Protect the tower from zombies in a flat 3D courtyard with a fixed camera and bright combat effects.
 - Bramble Rapids: https://weightplay.com/en/games/bramble-rapids/ — Steer Nori through 60 river races. Read currents, jump marked ramps, collect route flags and time tide gates with three free boards.
 - Nori Bankshot: https://weightplay.com/en/games/nori-bankshot/ — Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.
@@ -124,7 +127,7 @@ Games with local saves keep progress in the current browser.
 - Zoo Helper Day: https://weightplay.com/en/games/zoo-helper-day/ — Choose the right care tools from picture clues, remember what each animal needs, and complete zoo routines in order.
 - Shape Train: https://weightplay.com/en/games/shape-train/ — Shape Train has 30 shape-matching routes for kids. Match each passenger to one of six train cars; later routes add changing positions, memory checks and passenger-first ticket checks. Each route has four to eight passengers, and a wrong choice lets you try again.
 - Helper Quest: https://weightplay.com/en/games/tiny-weather-rescue/ — Solve 30 animal-care missions by matching picture clues to eight tools, choosing priorities, recalling hidden needs, and adapting when the tool tray moves.
-- Beast Deck: The Mist Forest: https://weightplay.com/en/games/beast-deck/ — Build your deck and read enemy intent before spending Energy.
+- Beast Deck: The Mist Forest: https://weightplay.com/en/games/beast-deck/ — Build a deck for turn-based battles. Read the enemy’s next move, spend energy on attacks or blocks, and draft cards between fights.
 - Relic Hunters: https://weightplay.com/en/games/animal-relic-hunters/ — Explore ruins, dodge enemies and build a relic loadout.
 - Rune Tactics: https://weightplay.com/en/games/animal-rune-tactics/ — Lead a lion, owl and turtle through 30 turn-based missions on 6×6 boards. Master terrain, six bosses and permanent upgrades.
 - Orb Fortress: https://weightplay.com/en/games/animal-orb-fortress/ — Aim an orb and use walls or mirror pillars to bounce it into enemies before they reach the crystal.
