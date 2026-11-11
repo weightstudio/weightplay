@@ -99,65 +99,65 @@ Games with local saves keep progress in the current browser.
 
 ## Current Playable Games
 
-- Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Build your squad, equip heroes and win automatic battles to advance through the campaign.
-- Reefwatch Tides: https://weightplay.com/en/games/reef-current/ — Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.
-- Sunshift Commons: https://weightplay.com/en/games/sunshift-commons/ — Solve power-grid puzzles for a neighborhood. Choose which jobs get solar power now and charge batteries to cover jobs after dark.
+- Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Reefwatch Tides: https://weightplay.com/en/games/reef-current/ — Tidal strategy. Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.
+- Sunshift Commons: https://weightplay.com/en/games/sunshift-commons/ — Energy strategy puzzle. Solve power-grid puzzles for a neighborhood. Choose which jobs get solar power now and charge batteries to cover jobs after dark.
 - Bellshift Atelier: https://weightplay.com/en/games/bellshift-atelier/ — Automation puzzle. Plan two crews’ commands and ring the requested notes before the tower runs out of power.
-- Stararc Rendezvous: https://weightplay.com/en/games/stararc-rendezvous/ — Fit your shuttle, plan a transfer, and dock with moving stations before the shift ends.
+- Stararc Rendezvous: https://weightplay.com/en/games/stararc-rendezvous/ — Orbital planning. Fit your shuttle, plan a transfer, and dock with moving stations before the shift ends.
 - Silicon Shift: https://weightplay.com/en/games/silicon-shift/ — Circuit puzzle. Trace test pulses and wire one circuit to pass every case.
-- Cinderburrow: https://weightplay.com/en/games/cinderburrow/ — Carve a way through the ridge, bring glow cores home, and brace the gates before the ash surges.
+- Cinderburrow: https://weightplay.com/en/games/cinderburrow/ — Mining strategy. Carve a way through the ridge, bring glow cores home, and brace the gates before the ash surges.
 - Block Planet Repair Crew: https://weightplay.com/en/games/block-planet-repair/ — Idle restoration. Sweep across repair robots, bring five planets to life and hatch block animals.
 - Mosslight Museum: https://weightplay.com/en/games/mosslight-museum/ — Museum management. Curate a museum puzzle: choose exhibits, order tour stops for each group’s interests, and repair worn pieces before the next visitors arrive.
-- Block Dig Crew: https://weightplay.com/en/games/block-dig-crew/ — Sweep across tools to dig up gems. Explore at your own pace or take on survey goals, then upgrade your workshop and hire miners who dig automatically.
-- Wingseal Post: https://weightplay.com/en/games/wingseal-post/ — Check labels, mend parcels and plan which mail flies first.
+- Block Dig Crew: https://weightplay.com/en/games/block-dig-crew/ — Mining & Upgrades. Sweep across tools to dig up gems. Explore at your own pace or take on survey goals, then upgrade your workshop and hire miners who dig automatically.
+- Wingseal Post: https://weightplay.com/en/games/wingseal-post/ — Postal strategy. Check labels, mend parcels and plan which mail flies first.
 - Tidegate Relay: https://weightplay.com/en/games/tidegate-relay/ — Traffic dispatch strategy. Dispatch vehicles across a coastal interchange. Read the lanes, plan ahead and get priority traffic through on time.
-- Prismkin Rescue: https://weightplay.com/en/games/prismkin-rescue/ — Plan each step with Nori and Taro. Guide lost crystal creatures home before the tide drains your light.
-- Galevault Atlas: https://weightplay.com/en/games/galevault-atlas/ — Choose rooms to build a route through the floating archive. Collect chart pages and save enough wind to bring them home.
-- Emberglaze Kiln: https://weightplay.com/en/games/emberglaze-kiln/ — Mix minerals, balance the kiln heat and fire ceramics for the village.
-- Rainline Chase: https://weightplay.com/en/games/rainline-chase/ — Pick a gap, time your swing and beat the rain line before play stops.
-- Frostline Expedition: https://weightplay.com/en/games/frostline-expedition/ — Take the wheel with Rux. Haul supplies through mud and snow, rescue stranded trucks and rebuild mountain routes.
-- Touchline Tails: https://weightplay.com/en/games/touchline-tails/ — Coach a five-a-side club. Set your shapes, manage stamina and change the match from the touchline.
-- Reedway Transit: https://weightplay.com/en/games/reedway-transit/ — Build tram lines, balance transfers and bring every passenger to the right station.
-- Dusk Signal: https://weightplay.com/en/games/dusk-signal/ — Cross-check echoes, record wildlife and power your next survey.
-- Starpip Vanguard: https://weightplay.com/en/games/starpip-vanguard/ — Keep the right dice. Read enemy intentions and bring your four companions home.
+- Prismkin Rescue: https://weightplay.com/en/games/prismkin-rescue/ — Turn-based rescue tactics. Plan each step with Nori and Taro. Guide lost crystal creatures home before the tide drains your light.
+- Galevault Atlas: https://weightplay.com/en/games/galevault-atlas/ — Room drafting strategy. Choose rooms to build a route through the floating archive. Collect chart pages and save enough wind to bring them home.
+- Emberglaze Kiln: https://weightplay.com/en/games/emberglaze-kiln/ — Kiln workshop. Mix minerals, balance the kiln heat and fire ceramics for the village.
+- Rainline Chase: https://weightplay.com/en/games/rainline-chase/ — Cricket batting. Pick a gap, time your swing and beat the rain line before play stops.
+- Frostline Expedition: https://weightplay.com/en/games/frostline-expedition/ — Rescue simulation. Take the wheel with Rux. Haul supplies through mud and snow, rescue stranded trucks and rebuild mountain routes.
+- Touchline Tails: https://weightplay.com/en/games/touchline-tails/ — Football tactics. Coach a five-a-side club. Set your shapes, manage stamina and change the match from the touchline.
+- Reedway Transit: https://weightplay.com/en/games/reedway-transit/ — Tram Network Management. Build tram lines, balance transfers and bring every passenger to the right station.
+- Dusk Signal: https://weightplay.com/en/games/dusk-signal/ — Signal Pattern Deduction. Compare visible signal traces to identify wildlife. Choose which readings to take and how to spend battery power before the next survey.
+- Starpip Vanguard: https://weightplay.com/en/games/starpip-vanguard/ — Dice Squad Tactics. Keep the right dice. Read enemy intentions and bring your four companions home.
 - Prismtide: https://weightplay.com/en/games/prismtide/ — Explore underwater rooms in a first-person light puzzle. Carry and place relays to guide beams to receivers, power doors and reach the exit.
 - Skymeadow Keeper: https://weightplay.com/en/games/skymeadow-keeper/ — First-person adventure. Explore sky meadows, guide wildlife home and restore the windtrees.
-- Cloudhold Voyager: https://weightplay.com/en/games/cloudhold-voyager/ — Command an airship in turn-based strategy. Assign crew to repair rooms and split limited power between weapons, shields, engines and oxygen.
-- Dawnward Haven: https://weightplay.com/en/games/dawnward-haven/ — Build a harbor, assign residents and prepare food and timber before the weather turns.
-- Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/ — Arrange tables, keep aisles open and welcome every guest with light, tea and a little quiet.
-- Rivetide Works: https://weightplay.com/en/games/rivetide-works/ — Build a production line. Turn raw materials into cargo and keep every workshop supplied.
-- Sproutsum: https://weightplay.com/en/games/sproutsum/ — Plant each number so every row and column reaches its target.
-- Chromadock: https://weightplay.com/en/games/chromadock/ — Make room for every crate, then slide it through its matching dock.
+- Cloudhold Voyager: https://weightplay.com/en/games/cloudhold-voyager/ — Ship-system strategy. Command an airship in turn-based strategy. Assign crew to repair rooms and split limited power between weapons, shields, engines and oxygen.
+- Dawnward Haven: https://weightplay.com/en/games/dawnward-haven/ — Settlement building. Build a harbor, assign residents and prepare food and timber before the weather turns.
+- Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/ — Venue strategy. Arrange tables, keep aisles open and welcome every guest with light, tea and a little quiet.
+- Rivetide Works: https://weightplay.com/en/games/rivetide-works/ — Factory strategy. Build a production line. Turn raw materials into cargo and keep every workshop supplied.
+- Sproutsum: https://weightplay.com/en/games/sproutsum/ — Arithmetic Crossword. Plant each number so every row and column reaches its target.
+- Chromadock: https://weightplay.com/en/games/chromadock/ — Sliding block puzzle. Make room for every crate, then slide it through its matching dock.
 - Glowpiece Gallery: https://weightplay.com/en/games/glowpiece-gallery/ — Picture assembly. Move picture fragments, join matching seams and restore Orla’s gallery.
-- Leafskip: https://weightplay.com/en/games/leafskip/ — Hop a leaf cutter across Rux’s greenhouse. Collect stamped seed packets and choose when to land.
-- Moonlit Atrium: https://weightplay.com/en/games/moonlit-atrium/ — Place moon lanterns to light every floor. Match the pillars without letting lanterns shine on each other.
-- Starcamp Glade: https://weightplay.com/en/games/starcamp-glade/ — Give every tree its own tent. Read the counts and leave quiet space between camps.
+- Leafskip: https://weightplay.com/en/games/leafskip/ — Jump and Landing Timing. Hop a leaf cutter across Rux’s greenhouse. Collect stamped seed packets and choose when to land.
+- Moonlit Atrium: https://weightplay.com/en/games/moonlit-atrium/ — Light coverage logic. Place moon lanterns to light every floor. Match the pillars without letting lanterns shine on each other.
+- Starcamp Glade: https://weightplay.com/en/games/starcamp-glade/ — Tent logic puzzle. Give every tree its own tent. Read the counts and leave quiet space between camps.
 - Tideweave: https://weightplay.com/en/games/tideweave/ — Bridge logic puzzle. Join numbered islands with single or double bridges. Match each island’s bridge count and connect them all without crossing any bridges.
 - Duskbloom: https://weightplay.com/en/games/duskbloom/ — Binary logic puzzle. Solve a two-color logic puzzle. Use both lantern colors equally in each row and column. Never place three matching lanterns consecutively.
-- Hearthloop: https://weightplay.com/en/games/hearthloop/ — Roll the dice, buy properties and collect rent in a board game. Own matching lots to build houses and keep enough cash for rent and taxes.
-- Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/ — Guide Taro through the garden. Sweep dry dust, brush damp patches and deliver every load to a depot.
-- Rux Salvage Yard: https://weightplay.com/en/games/rux-salvage-yard/ — Aim at supports and recover reusable parts as structures fall.
-- Lantern Stride: https://weightplay.com/en/games/lantern-stride/ — Race along forest courses by alternating left and right steps. Adjust your rhythm for fast and slow surfaces, then choose a route at the forks.
-- Boom Mane: Tower Guard: https://weightplay.com/en/games/orbit-menders/ — Aim with touch or mouse and hold to fire. Protect the tower from zombies in a flat 3D courtyard with a fixed camera and bright combat effects.
-- Bramble Rapids: https://weightplay.com/en/games/bramble-rapids/ — Steer Nori through 60 river races. Read currents, jump marked ramps, collect route flags and time tide gates with three free boards.
-- Nori Bankshot: https://weightplay.com/en/games/nori-bankshot/ — Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.
-- Wildborn: https://weightplay.com/en/games/wildborn/ — Born small. Forage, hide and evolve in a living wilderness. Death begins a new life.
-- Kindred Habitats: https://weightplay.com/en/games/kindred-habitats/ — Befriend 36 different animal companions across six habitats.
-- Deep Drill: https://weightplay.com/en/games/deep-drill/ — Choose a mining lane, bring ore back to sell, and upgrade your drill to reach deeper underground regions.
-- Fusekeep: https://weightplay.com/en/games/fusekeep/ — Merge soldiers of the same type and rank, build your squad and defend the winter fortress through 30 missions.
+- Hearthloop: https://weightplay.com/en/games/hearthloop/ — Property strategy. Roll the dice, buy properties and collect rent in a board game. Own matching lots to build houses and keep enough cash for rent and taxes.
+- Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/ — Cleaning Strategy. Guide Taro through the garden. Sweep dry dust, brush damp patches and deliver every load to a depot.
+- Rux Salvage Yard: https://weightplay.com/en/games/rux-salvage-yard/ — Physics Demolition Puzzle. Choose which supports to hit with a limited number of shots. Let the structure collapse, then recover the reusable parts to clear the salvage job.
+- Lantern Stride: https://weightplay.com/en/games/lantern-stride/ — Rhythm Running Race. Race along forest courses by alternating left and right steps. Adjust your rhythm for fast and slow surfaces, then choose a route at the forks.
+- Boom Mane: Tower Guard: https://weightplay.com/en/games/orbit-menders/ — Tower Defense Shooter. Aim with touch or mouse and hold to fire. Protect the tower from zombies in a flat 3D courtyard with a fixed camera and bright combat effects.
+- Bramble Rapids: https://weightplay.com/en/games/bramble-rapids/ — River Racing. Steer Nori through 60 river races. Read currents, jump marked ramps, collect route flags and time tide gates with three free boards.
+- Nori Bankshot: https://weightplay.com/en/games/nori-bankshot/ — Billiards Puzzle. Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.
+- Wildborn: https://weightplay.com/en/games/wildborn/ — Wildlife Survival and Evolution. Born small. Forage, hide and evolve in a living wilderness. Death begins a new life.
+- Kindred Habitats: https://weightplay.com/en/games/kindred-habitats/ — Pet Collecting and Care. Read field-guide clues and prepare the right food and approach to earn a companion’s trust. Care for 36 species and unlock six habitats as they grow.
+- Deep Drill: https://weightplay.com/en/games/deep-drill/ — Mining and Drill Upgrades. Choose a mining lane, bring ore back to sell, and upgrade your drill to reach deeper underground regions.
+- Fusekeep: https://weightplay.com/en/games/fusekeep/ — Merge Tower Defense. Merge soldiers of the same type and rank, build your squad and defend the winter fortress through 30 missions.
 - Wildwood Raid: https://weightplay.com/en/games/animal-wildwood-raid/ — Forest Action Adventure. Chop timber with an axe, fight from range with a bow and rescue allies in 30 forest missions. Strengthen your ranger to take on eight guardian types.
-- Axe & Ally: https://weightplay.com/en/games/pawaxe/ — Follow Fia and Nibs along a 30-route forest expedition. Tap to swing as quickly as you like, switch on Auto when you want the fight to run itself, and shape each run with companions and equipment that change how combat works.
-- Crownfall: https://weightplay.com/en/games/animal-crownfall/ — Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.
-- Carnival Claw: https://weightplay.com/en/games/animal-carnival-claw/ — Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.
-- Honey Shield: https://weightplay.com/en/games/animal-honey-shield/ — Draw and repair nectar lines during live bee waves to protect Clover Pup Pip across 30 original meadow stages.
-- Dice Bastion: https://weightplay.com/en/games/animal-dice-bastion/ — Summon random guardians, merge matching ranks and issue tactical orders. Adapt your defense to the units you draw and the next enemy wave.
-- Signal Veil: https://weightplay.com/en/games/signal-veil/ — Question witnesses, reveal hidden threats with Neural Vision, and fight your way to the truth behind the signal.
-- Unblock Trail: https://weightplay.com/en/games/animal-unblock/ — Free the green bamboo block with the gold arrow through the gate in 30 authored sliding puzzles across three chapters.
-- Zhao Yun & A Dou: https://weightplay.com/en/games/zhao-yun-a-dou/ — Tap a troop card to deploy. Soldiers advance and fight automatically.
-- Panko's Bus Jam: https://weightplay.com/en/games/animal-bus-jam/ — Route passengers to matching buses, manage the FIFO holding lane, and clear 30 stops. Earn three stars by minimizing holds without assistance.
+- Axe & Ally: https://weightplay.com/en/games/pawaxe/ — Loot Adventure. Follow Fia and Nibs along a 30-route forest expedition. Tap to swing as quickly as you like, switch on Auto when you want the fight to run itself, and shape each run with companions and equipment that change how combat works.
+- Crownfall: https://weightplay.com/en/games/animal-crownfall/ — Connected Rune Clearing. Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.
+- Carnival Claw: https://weightplay.com/en/games/animal-carnival-claw/ — Skill Claw Arcade. Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.
+- Honey Shield: https://weightplay.com/en/games/animal-honey-shield/ — Live Drawing Defense. Draw and repair nectar lines during live bee waves to protect Clover Pup Pip across 30 original meadow stages.
+- Dice Bastion: https://weightplay.com/en/games/animal-dice-bastion/ — Random Merge Tower Defense. Summon random guardians, merge matching ranks and issue tactical orders. Adapt your defense to the units you draw and the next enemy wave.
+- Signal Veil: https://weightplay.com/en/games/signal-veil/ — Top-Down Action RPG. Question witnesses, reveal hidden threats with Neural Vision, and fight your way to the truth behind the signal.
+- Unblock Trail: https://weightplay.com/en/games/animal-unblock/ — Sliding Block Puzzle. Free the green bamboo block with the gold arrow through the gate in 30 authored sliding puzzles across three chapters.
+- Zhao Yun & A Dou: https://weightplay.com/en/games/zhao-yun-a-dou/ — Lane strategy. Tap a troop card to deploy. Soldiers advance and fight automatically.
+- Panko's Bus Jam: https://weightplay.com/en/games/animal-bus-jam/ — Queue Strategy. Route passengers to matching buses, manage the FIFO holding lane, and clear 30 stops. Earn three stars by minimizing holds without assistance.
 - Arrow Escape: https://weightplay.com/en/games/arrow-escape/ — Arrow Block Puzzle. Clear the board by sliding arrow blocks out in the right order. A block leaves only if its whole route is open, including the path beyond a portal.
-- Block Blast: https://weightplay.com/en/games/block-blast/ — Place three shapes on an 8×8 board and clear complete rows and columns.
-- Hexa Sort: https://weightplay.com/en/games/hexa-sort/ — Stack colored hex chips, merge matching top colors, and trigger chain clears.
+- Block Blast: https://weightplay.com/en/games/block-blast/ — Block Placement Puzzle. Place three shapes on an 8×8 board and clear complete rows and columns.
+- Hexa Sort: https://weightplay.com/en/games/hexa-sort/ — Color Stack Merging. Stack colored hex chips, merge matching top colors, and trigger chain clears.
 - Klondike Solitaire: https://weightplay.com/en/games/klondike-solitaire/ — Build four suited foundations from Ace to King. Arrange cards in descending order with alternating colors, and choose to draw one or three at a time.
 - Spider Solitaire: https://weightplay.com/en/games/spider-solitaire/ — Clear the board by building sequences from King to Ace in the same suit. Choose a one-, two- or four-suit Spider game.
 - FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/ — Use four empty cells to plan moves and build four foundations by suit from Ace to King. Keep temporary spaces free for rearranging longer runs.
@@ -165,179 +165,179 @@ Games with local saves keep progress in the current browser.
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/ — Clear three peaks by playing an exposed card one rank above or below the discard. Ace and King do not connect. Draw from the stock when you run out of moves.
 - Golf Solitaire: https://weightplay.com/en/games/golf-solitaire/ — Clear seven columns by moving exposed cards one rank higher or lower than the top discard. Ace and King do not connect. Use the stock when no card fits.
 - Yukon Solitaire: https://weightplay.com/en/games/yukon-solitaire/ — Move an exposed group even if its cards are out of order. To place it on another card, the first card must be one rank lower and the opposite color. Build four suited foundations.
-- Sunbeam Garden: Mirror Paths: https://weightplay.com/en/games/animal-sunbeam-garden/ — Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.
-- Panko's Number Grove: https://weightplay.com/en/games/animal-number-match/ — Clear pairs that add to ten, opening sight lines across 30 calm groves.
+- Sunbeam Garden: Mirror Paths: https://weightplay.com/en/games/animal-sunbeam-garden/ — Sunlight Mirror Puzzle. Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.
+- Panko's Number Grove: https://weightplay.com/en/games/animal-number-match/ — Number Match Puzzle. Clear pairs that add to ten, opening sight lines across 30 calm groves.
 - Panko's Tangram Trail: https://weightplay.com/en/games/animal-tangram/ — Tangram Shape Puzzle. Move and rotate seven bright pieces to rebuild animal silhouettes across 30 shapes.
 - Color Link Garden: https://weightplay.com/en/games/animal-color-link/ — Color-Link Puzzle. Connect matching garden seeds without crossing paths, then fill every tile.
-- Prism Route Garden: https://weightplay.com/en/games/animal-prism-garden/ — Design luminous routes across 30 expanded gardens, obey color-locked prism gates, and illuminate every open tile.
-- Panko's Bamboo Waterway: https://weightplay.com/en/games/animal-bamboo-pipes/ — Turn Panko's bamboo pipes, carry water through every segment, and bring the flowering grove back to life.
+- Prism Route Garden: https://weightplay.com/en/games/animal-prism-garden/ — Color Path Puzzle. Design luminous routes across 30 expanded gardens, obey color-locked prism gates, and illuminate every open tile.
+- Panko's Bamboo Waterway: https://weightplay.com/en/games/animal-bamboo-pipes/ — Pipe Rotation Puzzle. Turn Panko's bamboo pipes, carry water through every segment, and bring the flowering grove back to life.
 - Triple Match: https://weightplay.com/en/games/animal-triple-match/ — Triple Tile Match. Pick uncovered treasures and match three identical pieces in the tray. Later stages shrink the tray from seven slots to six, so plan your picks.
-- Fantasy Lion Defense: https://weightplay.com/en/games/wonder-crash/ — Defend the wall from enemy waves. Move to meet each attack and choose fire, storm or fortress talents to change how you fight.
-- Color Lunchbox: https://weightplay.com/en/games/color-lunchbox/ — Sort the foods shown in the pictures into lunchboxes of the matching color. Later puzzles use similar shades and boxes that change places.
-- Bubble Bakery: https://weightplay.com/en/games/bubble-bakery/ — Clear connected groups of matching bubbles to fill recipe orders. Plan the order of your moves when several trays need ingredients.
-- Vine Rescue: https://weightplay.com/en/games/animal-rope-rescue/ — Cut vines and move a leaf trampoline to bounce fruit into a basket. Use the wind and time your bounces as the targets move.
-- Zoo Idle: https://weightplay.com/en/games/animal-zoo-idle/ — Manage a zoo at your own pace. Care for animals, arrange habitats and upgrade facilities as visitors and ticket income grow.
-- Star Memory: https://weightplay.com/en/games/star-memory/ — Flip cards and remember their positions to match constellation pairs. Use previews and follow the target order in later puzzles.
-- Safari Dash: https://weightplay.com/en/games/campus-dash/ — Run along three lanes, follow the star trails and switch lanes in time to dodge gates and sticky mud.
+- Fantasy Lion Defense: https://weightplay.com/en/games/wonder-crash/ — Wave Defense Action. Defend the wall from enemy waves. Move to meet each attack and choose fire, storm or fortress talents to change how you fight.
+- Color Lunchbox: https://weightplay.com/en/games/color-lunchbox/ — Food Color Matching. Sort the foods shown in the pictures into lunchboxes of the matching color. Later puzzles use similar shades and boxes that change places.
+- Bubble Bakery: https://weightplay.com/en/games/bubble-bakery/ — Bubble Group Popping. Clear connected groups of matching bubbles to fill recipe orders. Plan the order of your moves when several trays need ingredients.
+- Vine Rescue: https://weightplay.com/en/games/animal-rope-rescue/ — Vine-Cutting Physics Puzzle. Cut vines and move a leaf trampoline to bounce fruit into a basket. Use the wind and time your bounces as the targets move.
+- Zoo Idle: https://weightplay.com/en/games/animal-zoo-idle/ — Idle Zoo Management. Manage a zoo at your own pace. Care for animals, arrange habitats and upgrade facilities as visitors and ticket income grow.
+- Star Memory: https://weightplay.com/en/games/star-memory/ — Memory Card Matching. Flip cards and remember their positions to match constellation pairs. Use previews and follow the target order in later puzzles.
+- Safari Dash: https://weightplay.com/en/games/campus-dash/ — Three-Lane Obstacle Runner. Run along three lanes, follow the star trails and switch lanes in time to dodge gates and sticky mud.
 - Snack Blocks: https://weightplay.com/en/games/snack-blocks/ — Match-3 Puzzle. Swap neighboring snacks to line up at least three of the same kind. Set up cascades and meet each stage’s score or collection goal.
-- Merge Tower: https://weightplay.com/en/games/fruit-merge/ — Drop and merge matching pieces. Aim for the target zones as narrow spaces, wind and gravity change each physics puzzle.
-- 2048: Forest Evolution: https://weightplay.com/en/games/animal-2048/ — Slide tiles on a 4×4 board and merge matching pairs. Plan around each mission’s move limit or play Infinite Forest without one.
-- Pet Garden Tiles: https://weightplay.com/en/games/garden-tiles/ — Flip tiles to find matching pictures. Remember their positions when mist hides the board or tiles move, with no countdown.
-- Rescue Trail: https://weightplay.com/en/games/animal-rescue/ — Guide animals home in 30 saved 5×5 route puzzles. Six regions add fruit goals, mud that costs two moves, key gates and one-use tiles; there is no countdown.
-- Hidden Safari: https://weightplay.com/en/games/animal-hidden-safari/ — Find six listed animals in each of 30 saved habitats. Ordered searches, pairs, camouflage, decoys and moving patrols change the hunt; two hints help and time never causes failure.
-- Guard Yard: https://weightplay.com/en/games/animal-guard-yard/ — Deploy defenders across five lanes and use energy as it recovers. Change your lineup and talents to stop new enemies and bosses.
+- Merge Tower: https://weightplay.com/en/games/fruit-merge/ — Physics Merging Puzzle. Drop and merge matching pieces. Aim for the target zones as narrow spaces, wind and gravity change each physics puzzle.
+- 2048: Forest Evolution: https://weightplay.com/en/games/animal-2048/ — 4×4 Tile Merge. Slide tiles on a 4×4 board and merge matching pairs. Plan around each mission’s move limit or play Infinite Forest without one.
+- Pet Garden Tiles: https://weightplay.com/en/games/garden-tiles/ — Picture Memory Pairs. Flip tiles to find matching pictures. Remember their positions when mist hides the board or tiles move, with no countdown.
+- Rescue Trail: https://weightplay.com/en/games/animal-rescue/ — Route Planning Puzzle. Guide animals home in 30 saved 5×5 route puzzles. Six regions add fruit goals, mud that costs two moves, key gates and one-use tiles; there is no countdown.
+- Hidden Safari: https://weightplay.com/en/games/animal-hidden-safari/ — Hidden Object Game. Find six listed animals in each of 30 saved habitats. Ordered searches, pairs, camouflage, decoys and moving patrols change the hunt; two hints help and time never causes failure.
+- Guard Yard: https://weightplay.com/en/games/animal-guard-yard/ — Five-Lane Tower Defense. Deploy defenders across five lanes and use energy as it recovers. Change your lineup and talents to stop new enemies and bosses.
 - Dungeon Venture: https://weightplay.com/en/games/animal-crystal-survivor/ — Dungeon Survival. Action survival: dodge hazards while magic attacks automatically. Collect XP crystals, choose spells and develop permanent talents.
-- Quiz: https://weightplay.com/en/games/animal-quiz/ — Answer 30 saved animal-quiz stages with ten unique animals each. Clues cover pictures, habitats, features, behavior and food. Wrong choices allow another try; there is no timer.
-- Zoo Helper Day: https://weightplay.com/en/games/zoo-helper-day/ — Choose the right care tools from picture clues, remember what each animal needs, and complete zoo routines in order.
-- Shape Train: https://weightplay.com/en/games/shape-train/ — Shape Train has 30 shape-matching routes for kids. Match each passenger to one of six train cars; later routes add changing positions, memory checks and passenger-first ticket checks. Each route has four to eight passengers, and a wrong choice lets you try again.
-- Helper Quest: https://weightplay.com/en/games/tiny-weather-rescue/ — Solve 30 animal-care missions by matching picture clues to eight tools, choosing priorities, recalling hidden needs, and adapting when the tool tray moves.
+- Quiz: https://weightplay.com/en/games/animal-quiz/ — Animal Knowledge Quiz. Answer 30 saved animal-quiz stages with ten unique animals each. Clues cover pictures, habitats, features, behavior and food. Wrong choices allow another try; there is no timer.
+- Zoo Helper Day: https://weightplay.com/en/games/zoo-helper-day/ — Zoo Care Simulation. Choose the right care tools from picture clues, remember what each animal needs, and complete zoo routines in order.
+- Shape Train: https://weightplay.com/en/games/shape-train/ — Shape Matching Game. Shape Train has 30 shape-matching routes for kids. Match each passenger to one of six train cars; later routes add changing positions, memory checks and passenger-first ticket checks. Each route has four to eight passengers, and a wrong choice lets you try again.
+- Helper Quest: https://weightplay.com/en/games/tiny-weather-rescue/ — Picture Clue Matching. Solve 30 animal-care missions by matching picture clues to eight tools, choosing priorities, recalling hidden needs, and adapting when the tool tray moves.
 - Beast Deck: The Mist Forest: https://weightplay.com/en/games/beast-deck/ — Turn-Based Deckbuilder. Build a deck for turn-based battles. Read the enemy’s next move, spend energy on attacks or blocks, and draft cards between fights.
 - Relic Hunters: https://weightplay.com/en/games/animal-relic-hunters/ — Ruin Exploration Action. Explore ruins, dodge enemies and build a relic loadout.
-- Rune Tactics: https://weightplay.com/en/games/animal-rune-tactics/ — Lead a lion, owl and turtle through 30 turn-based missions on 6×6 boards. Master terrain, six bosses and permanent upgrades.
+- Rune Tactics: https://weightplay.com/en/games/animal-rune-tactics/ — Turn-Based Grid Tactics. Lead a lion, owl and turtle through 30 turn-based missions on 6×6 boards. Master terrain, six bosses and permanent upgrades.
 - Orb Fortress: https://weightplay.com/en/games/animal-orb-fortress/ — Ricochet Defense. Aim an orb and use walls or mirror pillars to bounce it into enemies before they reach the crystal.
 - Auto Squad: https://weightplay.com/en/games/animal-auto-squad/ — Tactical Auto Battler. Train heroes, arrange your front and back rows, and watch them fight automatically. Adjust the formation for each enemy wave.
-- Beast Guardian: https://weightplay.com/en/games/beast-tactician/ — Build the route enemies must follow, place defenders to cover turns, and protect the crystal through waves and boss fights.
-- Shadow Wolf Legend: https://weightplay.com/en/games/shadow-wolf/ — Lead the wolf through 30 action-platform stages: double-jump across ruined ledges, dash past hazards, defeat enemies, and unlock each route.
-- Block Grove: https://weightplay.com/en/games/animal-block-grove/ — Place three block groups on an 8×8 forest board, clear rows and columns, and finish 30 habitat missions or continue in Infinite Grove.
-- Color Springs: https://weightplay.com/en/games/animal-color-springs/ — Sort colors across 30 stages by moving matching top orbs into vessels with room. Plan around seals, changing capacities, and move goals.
-- Rune Reels: https://weightplay.com/en/games/animal-rune-reels/ — Build a summoned animal team, spin ten kinds of downward-moving runes, complete doubled lines, and unleash separate pet attacks while shared defense and healing protect the summoner.
+- Beast Guardian: https://weightplay.com/en/games/beast-tactician/ — Path-Building Tower Defense. Build the route enemies must follow, place defenders to cover turns, and protect the crystal through waves and boss fights.
+- Shadow Wolf Legend: https://weightplay.com/en/games/shadow-wolf/ — Side-Scrolling Action RPG. Lead the wolf through 30 action-platform stages: double-jump across ruined ledges, dash past hazards, defeat enemies, and unlock each route.
+- Block Grove: https://weightplay.com/en/games/animal-block-grove/ — Block Placement Puzzle. Place three block groups on an 8×8 forest board, clear rows and columns, and finish 30 habitat missions or continue in Infinite Grove.
+- Color Springs: https://weightplay.com/en/games/animal-color-springs/ — Color Sorting Puzzle. Sort colors across 30 stages by moving matching top orbs into vessels with room. Plan around seals, changing capacities, and move goals.
+- Rune Reels: https://weightplay.com/en/games/animal-rune-reels/ — Tactical Reel Combat. Build a summoned animal team, spin ten kinds of downward-moving runes, complete doubled lines, and unleash separate pet attacks while shared defense and healing protect the summoner.
 - Spectrum Pulse: https://weightplay.com/en/games/animal-spectrum-pulse/ — Chain-Reaction Shooter. Auto-fire at nearby enemies and trigger chain explosions with Pulse. Break three cores and reach the exit, defeating a guardian every fifth mission.
-- Rootvault Pins: https://weightplay.com/en/games/animal-rootvault-pins/ — Plan complete pin pulls and material reactions as Taro and the Star Core cross 30 authored Rootvault chambers. Use Moonwater, wards, rune keys, and the optional Preview Thread.
-- Sketchwheel Rally: https://weightplay.com/en/games/animal-sketchwheel-rally/ — Draw wheels for 30 races. Match roundness, height, grip, and width to each terrain. Speed affects gap crossings, and strong later passes can grant a brief boost.
-- Sanctuary Loop: https://weightplay.com/en/games/animal-sanctuary-loop/ — Leave restored land, draw an exposed trail through corruption, and reconnect before a hunter cuts it across 30 missions in six regions.
+- Rootvault Pins: https://weightplay.com/en/games/animal-rootvault-pins/ — Pull-the-Pin Puzzle. Plan complete pin pulls and material reactions as Taro and the Star Core cross 30 authored Rootvault chambers. Use Moonwater, wards, rune keys, and the optional Preview Thread.
+- Sketchwheel Rally: https://weightplay.com/en/games/animal-sketchwheel-rally/ — Draw-to-Drive Rally. Draw wheels for 30 races. Match roundness, height, grip, and width to each terrain. Speed affects gap crossings, and strong later passes can grant a brief boost.
+- Sanctuary Loop: https://weightplay.com/en/games/animal-sanctuary-loop/ — Territory Capture Arcade. Leave restored land, draw an exposed trail through corruption, and reconnect before a hunter cuts it across 30 missions in six regions.
 - Prism Battalion: https://weightplay.com/en/games/animal-prism-battalion/ — Three-Lane Shooter. Switch between three lanes while your cannon fires automatically. Stop incoming enemies and bombs, or charge power cores to strengthen your shots.
-- Skybridge Rivals: https://weightplay.com/en/games/animal-skybridge-rivals/ — Collect cyan aurora tiles, choose a bridge lane, and spend each stack at a dock to finish 30 sky races before three rivals.
-- Skyspire Drop: https://weightplay.com/en/games/animal-skyspire-drop/ — Rotate crystal spires, guide Fia through 30 descents, align shifting gaps, and charge Comet Break before cursed rings stop the fall.
-- Rift Salvage: https://weightplay.com/en/games/animal-rift-salvage/ — Guide Orla’s lunar recovery ring through 30 salvage zones: collect smaller debris, rescue stranded cores, and leave before the closing storm.
-- Skyport Dispatch: https://weightplay.com/en/games/animal-skyport-dispatch/ — Draw a flight path from each airship to its matching dock. Pass the numbered beacons in order and route around storms when they block the way.
-- Starlink: https://weightplay.com/en/games/animal-starlight-trails/ — Trace every trail in a constellation exactly once. Pick the right starting point and follow the direction of comet arrows.
+- Skybridge Rivals: https://weightplay.com/en/games/animal-skybridge-rivals/ — Real-Time Stack-and-Build Racing. Collect cyan aurora tiles, choose a bridge lane, and spend each stack at a dock to finish 30 sky races before three rivals.
+- Skyspire Drop: https://weightplay.com/en/games/animal-skyspire-drop/ — Rotating Tower Drop. Rotate crystal spires, guide Fia through 30 descents, align shifting gaps, and charge Comet Break before cursed rings stop the fall.
+- Rift Salvage: https://weightplay.com/en/games/animal-rift-salvage/ — Growing Salvage Arena. Guide Orla’s lunar recovery ring through 30 salvage zones: collect smaller debris, rescue stranded cores, and leave before the closing storm.
+- Skyport Dispatch: https://weightplay.com/en/games/animal-skyport-dispatch/ — Air-route Drawing Puzzle. Draw a flight path from each airship to its matching dock. Pass the numbered beacons in order and route around storms when they block the way.
+- Starlink: https://weightplay.com/en/games/animal-starlight-trails/ — One-Stroke Puzzle. Trace every trail in a constellation exactly once. Pick the right starting point and follow the direction of comet arrows.
 - One Line: https://weightplay.com/en/games/animal-one-line/ — One-Stroke Puzzle. Start at the lit footprint and draw one continuous path through every open square. Move between adjacent squares without visiting any twice.
-- Abyss Diver: https://weightplay.com/en/games/animal-abyss-diver/ — Choose routes across 30 authored abyss missions, manage oxygen and tool power, recover relics, and surface safely.
-- Bubble Safari: https://weightplay.com/en/games/animal-bubble-safari/ — Aim through 30 bubble-rescue levels with bank shots, four blocker types, wind, moving rows, four power bubbles, and six checkpoints.
-- Coloring Studio: https://weightplay.com/en/games/animal-coloring-studio/ — Color twelve original animal pages with bounded Fill and free Brush tools, then save finished pictures to a gallery on this device.
-- Screw Workshop: https://weightplay.com/en/games/animal-screw-workshop/ — Move brass screws into open holes to release layered wooden plates across 30 fixed puzzles. Plan around shared supports and each puzzle’s move limit.
-- Animal Parking Patrol: https://weightplay.com/en/games/animal-parking-patrol/ — Choose which carts to move first so the parking lanes clear. Watch signals, convoys and exits before committing to a route.
+- Abyss Diver: https://weightplay.com/en/games/animal-abyss-diver/ — Deep-Sea Route Strategy. Choose routes across 30 authored abyss missions, manage oxygen and tool power, recover relics, and surface safely.
+- Bubble Safari: https://weightplay.com/en/games/animal-bubble-safari/ — Bubble Shooter Puzzle. Aim through 30 bubble-rescue levels with bank shots, four blocker types, wind, moving rows, four power bubbles, and six checkpoints.
+- Coloring Studio: https://weightplay.com/en/games/animal-coloring-studio/ — Online Coloring and Drawing. Color twelve original animal pages with bounded Fill and free Brush tools, then save finished pictures to a gallery on this device.
+- Screw Workshop: https://weightplay.com/en/games/animal-screw-workshop/ — Screw Removal Puzzle. Move brass screws into open holes to release layered wooden plates across 30 fixed puzzles. Plan around shared supports and each puzzle’s move limit.
+- Animal Parking Patrol: https://weightplay.com/en/games/animal-parking-patrol/ — Parking Exit Puzzle. Choose which carts to move first so the parking lanes clear. Watch signals, convoys and exits before committing to a route.
 - Habitat Mahjong: https://weightplay.com/en/games/animal-habitat-mahjong/ — Match free tiles on layered Mahjong solitaire boards. Use key pairs to open seals and plan around the routes that change which tiles are available.
-- Word Trails: https://weightplay.com/en/games/animal-word-trails/ — Explore 60 word trails with leaf bridges, animal and nature groups, and reusable wild leaves.
-- Cratebound: https://weightplay.com/en/games/animal-cratebound/ — Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.
+- Word Trails: https://weightplay.com/en/games/animal-word-trails/ — Word Path Puzzle. Explore 60 word trails with leaf bridges, animal and nature groups, and reusable wild leaves.
+- Cratebound: https://weightplay.com/en/games/animal-cratebound/ — Push-Box Logistics Puzzle. Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.
 - Mosaic Clues: https://weightplay.com/en/games/animal-mosaic-clues/ — Nonogram Puzzle. Read every row and column clue to uncover a hidden animal portrait.
-- Prism Breakers: https://weightplay.com/en/games/animal-prism-breakers/ — Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.
-- Layer Order Puzzles: https://weightplay.com/en/games/animal-layer-grove/ — Reorder transparent picture layers to rebuild each scene. Use overlap clues to decide what belongs in front and what goes behind.
-- Penalty Cup: https://weightplay.com/en/games/animal-penalty-cup/ — Hold to aim and release your penalty at the right moment. Then switch to goalkeeping and react to the shot cue.
-- Tidal Shell Counting: https://weightplay.com/en/games/animal-tide-tally/ — Count shells arriving and leaving at Shell Cove, then choose the tide total that remains.
-- Reef Fisher: https://weightplay.com/en/games/animal-reef-fisher/ — Choose a reef fishing spot and aim your cast. Once a fish bites, keep the line tension in the green band while reeling it in. Collect sea creatures and upgrade your gear.
+- Prism Breakers: https://weightplay.com/en/games/animal-prism-breakers/ — Prism Brick-Breaker Arcade. Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.
+- Layer Order Puzzles: https://weightplay.com/en/games/animal-layer-grove/ — Picture Layer Puzzle. Reorder transparent picture layers to rebuild each scene. Use overlap clues to decide what belongs in front and what goes behind.
+- Penalty Cup: https://weightplay.com/en/games/animal-penalty-cup/ — Penalty shootout. Hold to aim and release your penalty at the right moment. Then switch to goalkeeping and react to the shot cue.
+- Tidal Shell Counting: https://weightplay.com/en/games/animal-tide-tally/ — Tide counting puzzle. Count shells arriving and leaving at Shell Cove, then choose the tide total that remains.
+- Reef Fisher: https://weightplay.com/en/games/animal-reef-fisher/ — Fishing and Line Control. Choose a reef fishing spot and aim your cast. Once a fish bites, keep the line tension in the green band while reeling it in. Collect sea creatures and upgrade your gear.
 - Checkers: https://weightplay.com/en/games/checkers/ — Play a full 8×8 Checkers match: plan legal diagonals, make every available capture, continue multi-jumps, and promote pieces to kings.
 - Hangman: https://weightplay.com/en/games/hangman/ — Read the word pattern, choose letters, and solve a complete Hangman round before six misses build the final clue.
 - Tic-Tac-Toe: https://weightplay.com/en/games/tic-tac-toe/ — Place X and read the rival's immediate O reply across nine squares; make three in a row, block the threat, or settle a draw.
-- Cafe Rush: https://weightplay.com/en/games/animal-cafe-rush/ — Serve pictured food orders across 30 cafe days, follow recipe order and guest priorities, and spend coins on three local upgrades.
-- Hero Trials: https://weightplay.com/en/games/animal-hero-trials/ — Pick a hero with a different skill and fight through connected rooms. Dodge enemy attacks and build mastery for the next trial.
+- Cafe Rush: https://weightplay.com/en/games/animal-cafe-rush/ — Cafe Time Management. Serve pictured food orders across 30 cafe days, follow recipe order and guest priorities, and spend coins on three local upgrades.
+- Hero Trials: https://weightplay.com/en/games/animal-hero-trials/ — Hero Action Roguelite. Pick a hero with a different skill and fight through connected rooms. Dodge enemy attacks and build mastery for the next trial.
 - Gearpack Expedition: https://weightplay.com/en/games/animal-gearpack-expedition/ — Backpack Strategy. Fit weapons and gear into your pack, make room for useful combinations, and test your loadout against changing expedition threats.
-- Moonlight Heist: https://weightplay.com/en/games/animal-moonlight-heist/ — Plan routes past moving patrols, recover each mission object, and reach extraction across 30 stealth missions. Optional treasure adds risk and rewards.
-- Hearts: https://weightplay.com/en/games/hearts/ — Pass three cards, follow suit, and avoid penalty hearts across thirteen tricks.
-- Spades: https://weightplay.com/en/games/spades/ — Play Spades free in your browser: bid a team contract, follow suit, and use spades as trump.
-- Gin Rummy: https://weightplay.com/en/games/gin-rummy/ — Draw one card and discard one each turn. Build sets and suited runs, then choose when to Knock or finish with Gin.
-- Crazy Eights: https://weightplay.com/en/games/crazy-eights/ — Play Crazy Eights against three AI rivals. Match the active suit or rank, choose the next suit with any Eight, and empty your hand first to win.
-- Cribbage: https://weightplay.com/en/games/cribbage/ — Set aside two cards for the crib, then take turns playing cards without going over 31. Score pairs, runs and fifteens on the way to 121.
+- Moonlight Heist: https://weightplay.com/en/games/animal-moonlight-heist/ — Stealth and Extraction. Plan routes past moving patrols, recover each mission object, and reach extraction across 30 stealth missions. Optional treasure adds risk and rewards.
+- Hearts: https://weightplay.com/en/games/hearts/ — Classic Evasion Trick-Taking. Pass three cards, follow suit, and avoid penalty hearts across thirteen tricks.
+- Spades: https://weightplay.com/en/games/spades/ — Team Trick-Taking. Play Spades free in your browser: bid a team contract, follow suit, and use spades as trump.
+- Gin Rummy: https://weightplay.com/en/games/gin-rummy/ — Two-player Meld Builder. Draw one card and discard one each turn. Build sets and suited runs, then choose when to Knock or finish with Gin.
+- Crazy Eights: https://weightplay.com/en/games/crazy-eights/ — Wild-card Shedding Game. Play Crazy Eights against three AI rivals. Match the active suit or rank, choose the next suit with any Eight, and empty your hand first to win.
+- Cribbage: https://weightplay.com/en/games/cribbage/ — Pegging Score Card Game. Set aside two cards for the crib, then take turns playing cards without going over 31. Score pairs, runs and fifteens on the way to 121.
 - Go Fish: https://weightplay.com/en/games/go-fish/ — Ask for a rank in your hand. Take every matching card or draw one, then build four-card books with 2–4 players in this browser card game.
 - War: High Card: https://weightplay.com/en/games/war/ — Play solo War: each side reveals one card; the higher rank takes the pile. Ties add three face-down cards per side.
-- Speed Solitaire: https://weightplay.com/en/games/speed/ — Race the AI in Speed: start with five cards, match either center card by one rank, and refill from a 20-card stock. Clear your cards first.
+- Speed Solitaire: https://weightplay.com/en/games/speed/ — Real-time Card Race. Race the AI in Speed: start with five cards, match either center card by one rank, and refill from a 20-card stock. Clear your cards first.
 - Old Maid: https://weightplay.com/en/games/old-maid/ — Pair matching ranks, draw from the next hand, and avoid being left with the Old Maid.
-- Casino: https://weightplay.com/en/games/casino/ — Play a card to capture a table card of the same value or several table cards whose values add to it.
+- Casino: https://weightplay.com/en/games/casino/ — Capture Cards by Matching Sums. Play a card to capture a table card of the same value or several table cards whose values add to it.
 - Minefield Logic: https://weightplay.com/en/games/minefield-logic/ — Minesweeper. Use the numbers to find mines in neighboring cells. Flag suspected mines and reveal every safe square in a quick game or a campaign stage.
-- Cat Color Sudoku: https://weightplay.com/en/games/cat-color-sudoku/ — Place one cat in every row, column, and patterned color territory without letting cats touch.
+- Cat Color Sudoku: https://weightplay.com/en/games/cat-color-sudoku/ — Color Territory Logic. Place one cat in every row, column, and patterned color territory without letting cats touch.
 - Sudoku: https://weightplay.com/en/games/sudoku/ — Fill every row, column, and 3×3 box with numbers 1–9.
 - Lights Out: https://weightplay.com/en/games/lights-out/ — Lights Out is a classic 5x5 switch puzzle: press a tile and its orthogonal neighbors to turn every light off.
-- Peg Solitaire: https://weightplay.com/en/games/peg-solitaire/ — Jump a peg over a neighbor into an empty hole and leave one peg.
-- Sliding 15: https://weightplay.com/en/games/sliding-15/ — Choose from 30 saved stages with classic, snake, column, anchor, and detour goals.
-- Code Breaker: https://weightplay.com/en/games/code-breaker/ — Guess the hidden four-color code using exact-position and color-only clues.
-- Tower of Hanoi: https://weightplay.com/en/games/tower-of-hanoi/ — Move every disk to the goal peg without putting a larger disk on a smaller one.
+- Peg Solitaire: https://weightplay.com/en/games/peg-solitaire/ — Jump-and-Clear Puzzle. Jump a peg over a neighbor into an empty hole and leave one peg.
+- Sliding 15: https://weightplay.com/en/games/sliding-15/ — Sliding Number Puzzle. Choose from 30 saved stages with classic, snake, column, anchor, and detour goals.
+- Code Breaker: https://weightplay.com/en/games/code-breaker/ — Pattern Deduction. Guess the hidden four-color code using exact-position and color-only clues.
+- Tower of Hanoi: https://weightplay.com/en/games/tower-of-hanoi/ — Disk-Moving Puzzle. Move every disk to the goal peg without putting a larger disk on a smaller one.
 - Reversi: https://weightplay.com/en/games/reversi/ — Reversi is an eight-by-eight strategy board game: place a disc to surround opponent discs, flip the chain, and finish with more discs than the AI.
 - Four in a Row: https://weightplay.com/en/games/four-in-a-row/ — Drop discs into a column and connect four horizontally, vertically, or diagonally.
-- Postcard Crop: https://weightplay.com/en/games/animal-postcard-crop/ — A calm visual logic game on a four-by-three illustrated scene. Frame every requested landmark, keep unwanted subjects outside, and plan rotations and corner compositions to earn postcard stars.
-- Burrow Shape Match: https://weightplay.com/en/games/animal-hollow-fit/ — Restore woodland shelters by reading block silhouettes, rotating and mirroring pieces, and filling missing openings. A calm spatial puzzle with safe retries and saved stars.
-- Campfire Seating Logic: https://weightplay.com/en/games/animal-cozy-camp/ — Read comfort notes and choose the one campfire seat order that keeps every friend cozy.
-- Canopy Compass Logic: https://weightplay.com/en/games/animal-canopy-compass/ — Light the lost canopy beacons. Cross-reference clues, rule out false trails, and find the one safe lookout.
+- Postcard Crop: https://weightplay.com/en/games/animal-postcard-crop/ — Visual Framing Puzzle. A calm visual logic game on a four-by-three illustrated scene. Frame every requested landmark, keep unwanted subjects outside, and plan rotations and corner compositions to earn postcard stars.
+- Burrow Shape Match: https://weightplay.com/en/games/animal-hollow-fit/ — Shelter Shape Logic. Restore woodland shelters by reading block silhouettes, rotating and mirroring pieces, and filling missing openings. A calm spatial puzzle with safe retries and saved stars.
+- Campfire Seating Logic: https://weightplay.com/en/games/animal-cozy-camp/ — Seating Logic Puzzle. Read comfort notes and choose the one campfire seat order that keeps every friend cozy.
+- Canopy Compass Logic: https://weightplay.com/en/games/animal-canopy-compass/ — Orientation Clue Puzzle. Light the lost canopy beacons. Cross-reference clues, rule out false trails, and find the one safe lookout.
 - Orbit Orchard: https://weightplay.com/en/games/animal-orbit-orchard/ — Orbit Timing Puzzle. Tune a moonlit orbit, then release each seed when it reaches the matching orchard beacon.
 - Habitat Counts: https://weightplay.com/en/games/animal-habitat-counts/ — Row-and-Column Habitat Logic. Fill habitat cells until every row and column matches its count.
-- Tide Level Calibration: https://weightplay.com/en/games/animal-tideglass/ — Calibrate animated tide glasses through visual reading, memory, gauge offsets, complementary levels and fractions.
-- Cushion Stack: https://weightplay.com/en/games/animal-cushion-stack/ — Stability Stack Puzzle. Choose the next soft block so Taro can build a safe little lookout.
+- Tide Level Calibration: https://weightplay.com/en/games/animal-tideglass/ — Water Level Estimation. Calibrate animated tide glasses through visual reading, memory, gauge offsets, complementary levels and fractions.
+- Cushion Stack: https://weightplay.com/en/games/animal-cushion-stack/ — Stability Stack Puzzle. Choose felt, linen or cloud cushions and time each drop so it overlaps the stack. Adjust to shifting landing positions and wind while building to the target height.
 - Burrow Builder: https://weightplay.com/en/games/animal-burrow-builder/ — Room Layout Puzzle. Plan an underground home with limited timber. Connect rooms to the entrance, build bedrooms and pantries, then invite residents once the plan is complete.
-- Tangle Rescue: https://weightplay.com/en/games/animal-tangle-rescue/ — Swap two vine endpoints until every rescue trail reaches the matching animal shelter.
-- Meadow Find: https://weightplay.com/en/games/animal-meadow-difference/ — Two tiny gardens. A world of little differences. Explore, compare and find every surprise.
-- Pattern Completion: https://weightplay.com/en/games/animal-pattern-patch/ — Visual Pattern Logic. Find the missing piece. Restore 30 patterns in a little woodland workshop.
+- Tangle Rescue: https://weightplay.com/en/games/animal-tangle-rescue/ — Endpoint Swap Logic Puzzle. Swap two vine endpoints until every rescue trail reaches the matching animal shelter.
+- Meadow Find: https://weightplay.com/en/games/animal-meadow-difference/ — Spot the Difference. Two tiny gardens. A world of little differences. Explore, compare and find every surprise.
+- Pattern Completion: https://weightplay.com/en/games/animal-pattern-patch/ — Visual Pattern Logic. Read each pattern’s clues and choose the tile that fills the blank. Use symmetry, repeated shapes and number patterns to solve 30 workshop puzzles.
 - Footprint Sequence Logic: https://weightplay.com/en/games/animal-footprint-folio/ — Trail Sequence Deduction. Read repeating, mirrored and turning footprint patterns. Work out which prints belong in the gaps, including cases with more than one missing step.
-- Star Map Position Logic: https://weightplay.com/en/games/animal-constellation-keeper/ — Read two sky rules, choose the only animal constellation that obeys them, and restore six five-map arcs across a 30-map night campaign.
-- Lantern Lattice: https://weightplay.com/en/games/animal-lantern-lattice/ — Read three keeper clues, connect the right lanterns, and wake a safe path through the meadow night.
-- Co-op Lantern Paths: https://weightplay.com/en/games/animal-lantern-guides/ — Find safe lanterns from the clues and work together to mark a safe route.
-- Folded Field: https://weightplay.com/en/games/animal-folded-field/ — Flip linked leaves to match the target pattern. One move can change several leaves, so plan the order before you tap.
+- Star Map Position Logic: https://weightplay.com/en/games/animal-constellation-keeper/ — Relationship Deduction Puzzle. Read two sky rules, choose the only animal constellation that obeys them, and restore six five-map arcs across a 30-map night campaign.
+- Lantern Lattice: https://weightplay.com/en/games/animal-lantern-lattice/ — Constraint Path Puzzle. Read three keeper clues, connect the right lanterns, and wake a safe path through the meadow night.
+- Co-op Lantern Paths: https://weightplay.com/en/games/animal-lantern-guides/ — Asymmetric Co-op Puzzle. Find safe lanterns from the clues and work together to mark a safe route.
+- Folded Field: https://weightplay.com/en/games/animal-folded-field/ — Hinged Pattern Puzzle. Flip linked leaves to match the target pattern. One move can change several leaves, so plan the order before you tap.
 - Magnet Meadow: https://weightplay.com/en/games/animal-magnet-meadow/ — Magnetic Docking Puzzle. Move moonstones into their docks. Plan how linked stones will pull or push each other, work around blocked docks and undo a move to try a different route.
-- Dawn Shutters: https://weightplay.com/en/games/animal-dawn-shutters/ — Set the shutters to match the target light levels. Check which shutters are linked before choosing your next adjustment.
-- Nest Weigh-In: https://weightplay.com/en/games/animal-nest-weigh/ — Compare nest materials two at a time, keep each heavier-or-lighter clue, and infer a requested rank across 30 untimed lessons.
+- Dawn Shutters: https://weightplay.com/en/games/animal-dawn-shutters/ — Light Calibration Puzzle. Set the shutters to match the target light levels. Check which shutters are linked before choosing your next adjustment.
+- Nest Weigh-In: https://weightplay.com/en/games/animal-nest-weigh/ — Pairwise Comparison Puzzle. Compare nest materials two at a time, keep each heavier-or-lighter clue, and infer a requested rank across 30 untimed lessons.
 - Glyph Garden: https://weightplay.com/en/games/animal-glyph-garden/ — Shape-and-Colour Matching Puzzle. Read shape, colour, and sequence rules across thirty authored mosslight garden stages.
-- Rotating Ring Puzzles: https://weightplay.com/en/games/animal-ring-garden/ — Turn three petal rings until the moon-garden pattern blooms, then replay for fewer turns.
-- Balance Grove: https://weightplay.com/en/games/animal-balance-grove/ — Choose stones whose values total 5, 7, or 9 to balance three forest bridges. No timer; best checks save in this browser.
-- Linked Dew Valves: https://weightplay.com/en/games/animal-dewline/ — Use + and − to adjust each valve from 0 to 6. One valve can feed more than one bed.
+- Rotating Ring Puzzles: https://weightplay.com/en/games/animal-ring-garden/ — Pattern Matching Puzzle. Turn three petal rings until the moon-garden pattern blooms, then replay for fewer turns.
+- Balance Grove: https://weightplay.com/en/games/animal-balance-grove/ — Balance Subset Puzzle. Choose stones whose values total 5, 7, or 9 to balance three forest bridges. No timer; best checks save in this browser.
+- Linked Dew Valves: https://weightplay.com/en/games/animal-dewline/ — Linked Waterflow Puzzle. Use + and − to adjust each valve from 0 to 6. One valve can feed more than one bed.
 - Breakout: https://weightplay.com/en/games/breakout/ — Move the paddle to keep the ball in play and break every brick. Aim for explosive crystals and charge a pulse to hit through armor.
 - Chess: https://weightplay.com/en/games/chess/ — Move your pieces to checkmate the king. Choose a tactical challenge or a full match.
 - Mahjong Solitaire: https://weightplay.com/en/games/mahjong-solitaire/ — Match all identical available pairs to clear the board. Clear each board to unlock the next of 30 stages. Completed stages remain available. Progress is saved in this browser when storage is available.
 - Pong: https://weightplay.com/en/games/pong/ — Move your paddle, return the ball, and beat the computer to 7 points.
-- Tetris: https://weightplay.com/en/games/tetris/ — Fill horizontal rows with falling blocks, use the landing outline, and keep the stack low as speed rises.
+- Tetris: https://weightplay.com/en/games/tetris/ — Continuous Falling-Block Puzzle. Fill horizontal rows with falling blocks, use the landing outline, and keep the stack low as speed rises.
 - Wordle: https://weightplay.com/en/games/wordle/ — Guess a five-letter word in six tries, use feedback to narrow your next guess, and unlock the next puzzle.
-- Moonlit Trap Trail: https://weightplay.com/en/games/animal-trap-trail/ — Read trap cues, use the optional Pulse to reveal the next hint, and reach the lantern across 30 authored stages. A mistake resets only the current room.
-- Canopy Cut: https://weightplay.com/en/games/animal-canopy-cut/ — Swipe safe fruit across 30 canopy stages, avoid dark seed pods, and adapt to crosswinds, weaving branches, light cues, and pulse timing.
-- Bounce Brawl: https://weightplay.com/en/games/animal-bounce-brawl/ — Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.
-- Frost Maze Rescue: https://weightplay.com/en/games/animal-frost-maze/ — Solve a 30-room ice maze: break and build walls to reach every berry, avoid the snow drifter, then return to the start in the final rooms.
-- Flip Foundry: https://weightplay.com/en/games/animal-flip-foundry/ — Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.
+- Moonlit Trap Trail: https://weightplay.com/en/games/animal-trap-trail/ — Trap Platformer. Read trap cues, use the optional Pulse to reveal the next hint, and reach the lantern across 30 authored stages. A mistake resets only the current room.
+- Canopy Cut: https://weightplay.com/en/games/animal-canopy-cut/ — Swipe Fruit Reaction. Swipe safe fruit across 30 canopy stages, avoid dark seed pods, and adapt to crosswinds, weaving branches, light cues, and pulse timing.
+- Bounce Brawl: https://weightplay.com/en/games/animal-bounce-brawl/ — Soft Physics Arena. Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.
+- Frost Maze Rescue: https://weightplay.com/en/games/animal-frost-maze/ — Changeable Ice Maze. Solve a 30-room ice maze: break and build walls to reach every berry, avoid the snow drifter, then return to the start in the final rooms.
+- Flip Foundry: https://weightplay.com/en/games/animal-flip-foundry/ — Precision Flip Challenge. Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.
 - Deep Sea Salvage Company: https://weightplay.com/en/games/animal-deep-sea-salvage/ — Deep-Sea Idle Company. Send ROV robots into the deep, sell salvage, unlock new sea zones, and curate a living museum of the ocean floor.
-- Hoop League: https://weightplay.com/en/games/animal-hoop-league/ — 60 courts. Read the defense. Build a relay. Hold. Find the green zone. Release.
-- Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/ — Rescue wildlife across 60 valleys. Build bridges, manage supplies and time the falling water.
+- Hoop League: https://weightplay.com/en/games/animal-hoop-league/ — Arc-and-Power Basketball. Read the defense, aim your shot and hold to build power. Release in the green zone or use a relay pass to set up an opening across 60 basketball courts.
+- Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/ — Rescue Strategy. Rescue wildlife across 60 valleys. Build bridges, manage supplies and time the falling water.
 - Moonlight Workshop Escape: https://weightplay.com/en/games/animal-moonlight-workshop/ — Switch-and-Key Escape. Restore 60 rooms: light the switches, collect the key and reach the door. Plan lantern charges and counterweights in two chapters.
-- Chameleon Blend Trials: https://weightplay.com/en/games/animal-chameleon-blend/ — Watch color-and-pattern pairs, recreate each sequence before the scan, and learn new twists across 30 stages in six garden arcs.
-- Habitat Builder: https://weightplay.com/en/games/animal-habitat-builder/ — Place water, shelter, meadow, and forest tiles so every visiting animal has what it needs.
+- Chameleon Blend Trials: https://weightplay.com/en/games/animal-chameleon-blend/ — Color-and-Texture Memory. Watch color-and-pattern pairs, recreate each sequence before the scan, and learn new twists across 30 stages in six garden arcs.
+- Habitat Builder: https://weightplay.com/en/games/animal-habitat-builder/ — Habitat Tile Strategy. Place water, shelter, meadow, and forest tiles so every visiting animal has what it needs.
 - Cloudhook Courier: https://weightplay.com/en/games/animal-cloudhook-courier/ — Grapple-and-Swing Route Action. Catch cloud rings, build a pendulum swing, and deliver every parcel without touching the storm teeth.
 - Twin Signal Jump: https://weightplay.com/en/games/animal-twin-switchyard/ — Synchronized Platform Puzzle. Guide two different jumpers through split lanes, flip signal gates, and gather every relay shard together.
-- Moon Market Manager: https://weightplay.com/en/games/animal-moon-market/ — Plan 30 saved market nights with ordered shelves, helper rules, and multi-round forecasts.
-- Animal Putt Trails: https://weightplay.com/en/games/animal-putt-trails/ — Plan putts across 30 holes: pull back to set direction and power, bank around walls, avoid water, and save each hole’s best strokes in this browser.
+- Moon Market Manager: https://weightplay.com/en/games/animal-moon-market/ — Shelf-Demand Helper Management. Plan 30 saved market nights with ordered shelves, helper rules, and multi-round forecasts.
+- Animal Putt Trails: https://weightplay.com/en/games/animal-putt-trails/ — One-Thumb Putting Strategy. Plan putts across 30 holes: pull back to set direction and power, bank around walls, avoid water, and save each hole’s best strokes in this browser.
 - Kite Keeper: https://weightplay.com/en/games/animal-kite-keeper/ — Wind-Vector Route Puzzle. Choose each gust to steer Taro's kite through three sky windows and reach the lantern dock.
 - Wind-Sown Garden: https://weightplay.com/en/games/animal-gust-garden/ — Wind-Vector Seed Puzzle. Choose a seed and send one gust at a time to bloom every flower without brushing a thorn.
-- Habitat Tile Logic: https://weightplay.com/en/games/animal-habitat-blueprint/ — Swap four habitat tiles to satisfy every neighbour clue and build a calm, connected home for the animals.
-- Weather Watch: https://weightplay.com/en/games/animal-weather-watch/ — Read the weather rhythm. Fill the outlined cards, then check your forecast. 0 / 30 investigations solved · no timer
-- River Gate Water Routing: https://weightplay.com/en/games/animal-river-gates/ — Open gates to route water to gardens and reservoirs. Plan each release around tide phases and how much water each destination can hold.
-- Orchard Sound Memory: https://weightplay.com/en/games/animal-echo-orchard/ — Watch four colored chime-fruits light up, then tap them in the same order. Complete each sequence to open the next of 30 stages.
-- Acorn Auction: https://weightplay.com/en/games/animal-acorn-auction/ — Build the right basket. Wait for a bargain—or bid before a rival takes it.
+- Habitat Tile Logic: https://weightplay.com/en/games/animal-habitat-blueprint/ — Habitat Constraint Puzzle. Swap four habitat tiles to satisfy every neighbour clue and build a calm, connected home for the animals.
+- Weather Watch: https://weightplay.com/en/games/animal-weather-watch/ — Forecast Pattern Puzzle. Spot the repeating pattern in a row of weather signs. Choose the cards that fill the gaps, then check your forecast. Play at your own pace.
+- River Gate Water Routing: https://weightplay.com/en/games/animal-river-gates/ — Water Routing Puzzle. Open gates to route water to gardens and reservoirs. Plan each release around tide phases and how much water each destination can hold.
+- Orchard Sound Memory: https://weightplay.com/en/games/animal-echo-orchard/ — Sequence Memory Puzzle. Watch four colored chime-fruits light up, then tap them in the same order. Complete each sequence to open the next of 30 stages.
+- Acorn Auction: https://weightplay.com/en/games/animal-acorn-auction/ — Quantity-and-Budget Choice Puzzle. Combine lots to meet each acorn order’s quantity and budget. Bid before a rival takes a lot, or wait for a better price when the market allows it.
 - Patchwork Paws: https://weightplay.com/en/games/animal-patchwork-paws/ — Edge-Matching Habitat Puzzle. Stitch 30 little habitats. Turn, connect, and discover six clever ways to weave.
-- Cairn Courier: https://weightplay.com/en/games/animal-cairn-courier/ — Build 30 mountain cairns by solving support, pairing and weight clues. Undo freely and master each trail.
-- Firefly Direction Codes: https://weightplay.com/en/games/animal-firefly-folio/ — Program Mica’s path through 30 forest maps. Collect fireflies, unlock gates and bring the lantern home.
-- Patrol Signal Match: https://weightplay.com/en/games/animal-signal-scout/ — Decode 30 patrols in six chapters. Match fox, owl and rabbit signals by applying visible clues for order, reversal, rotation, skipped posts and memory. Every fifth patrol is a checkpoint; progress stays in this browser.
-- Animal Silhouette Match: https://weightplay.com/en/games/animal-silhouette-scout/ — Explore thirty authored dawn lookouts and match each animal outline to its full-colour card.
-- Traffic and River Crossing: https://weightplay.com/en/games/road-crosser/ — Deliver lanterns through 30 handcrafted crossings. Read the traffic, ride the current, and find your own route.
+- Cairn Courier: https://weightplay.com/en/games/animal-cairn-courier/ — Support-Order Trail Puzzle. Build 30 mountain cairns by solving support, pairing and weight clues. Undo freely and master each trail.
+- Firefly Direction Codes: https://weightplay.com/en/games/animal-firefly-folio/ — Route-Code Direction Puzzle. Program Mica’s path through 30 forest maps. Collect fireflies, unlock gates and bring the lantern home.
+- Patrol Signal Match: https://weightplay.com/en/games/animal-signal-scout/ — Signal Decoding Puzzle. Decode 30 patrols in six chapters. Match fox, owl and rabbit signals by applying visible clues for order, reversal, rotation, skipped posts and memory. Every fifth patrol is a checkpoint; progress stays in this browser.
+- Animal Silhouette Match: https://weightplay.com/en/games/animal-silhouette-scout/ — Outline Recognition Puzzle. Explore thirty authored dawn lookouts and match each animal outline to its full-colour card.
+- Traffic and River Crossing: https://weightplay.com/en/games/road-crosser/ — Timing Crossing Arcade. Deliver lanterns through 30 handcrafted crossings. Read the traffic, ride the current, and find your own route.
 - Alien Defender: https://weightplay.com/en/games/alien-defender/ — Wave Survival Shooter. Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.
 - Snake: https://weightplay.com/en/games/snake/ — Steer the snake to collect food and grow. Cross a board edge to enter from the opposite side, and keep clear of your own trail and any glowing obstacles.
-- Maze Chase: https://weightplay.com/en/games/maze-chase/ — Guide Orla through three increasingly fast maze stages, collect every star mote, learn four Wisp patterns, and activate Beacons to turn pursuit into a counterattack.
+- Maze Chase: https://weightplay.com/en/games/maze-chase/ — Maze Chase Arcade. Guide Orla through three increasingly fast maze stages, collect every star mote, learn four Wisp patterns, and activate Beacons to turn pursuit into a counterattack.
 - Space Rocks: https://weightplay.com/en/games/space-rocks/ — Inertia Space Shooter. Pilot a 30-stage space campaign, collect crystals, rescue pods, and face six bosses.
-- Raindrop Catcher: https://weightplay.com/en/games/animal-rain-roost/ — Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves.
-- Orchard Resource Manager: https://weightplay.com/en/games/animal-orchard-steward/ — Care for three fruit trees, read the forecast, and harvest an eight-day order. Grow a lasting orchard.
+- Raindrop Catcher: https://weightplay.com/en/games/animal-rain-roost/ — Rain Catching Arcade. Guide Nori’s nest through the moonlit rain. Catch blue drops, chase gold and slip past leaves.
+- Orchard Resource Manager: https://weightplay.com/en/games/animal-orchard-steward/ — Resource Stewardship Puzzle. Care for three fruit trees, read the forecast, and harvest an eight-day order. Grow a lasting orchard.
 - Habitat Domino Chain: https://weightplay.com/en/games/animal-grove-dominoes/ — Match dominoes to the open habitat and plan a route to the moon. Use every required tile and save bridge tokens and flips for the right spots.
-- Pawflow: https://weightplay.com/en/games/pawflow/ — Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.
+- Pawflow: https://weightplay.com/en/games/pawflow/ — Conveyor Color Clearing. Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.
 - Block Apex: https://weightplay.com/en/games/block-apex/ — 3D Kart Racing. Take corners in a drift and time your boost in 3D kart races. Follow rivals for slipstream speed and avoid losing momentum to obstacles.
 - Castle Cascade: https://weightplay.com/en/games/castle-cascade/ — Match-3 Puzzle. Swap neighboring gems to match three or more. Combine special pieces to clear blockers and reach each stage’s goal.
-- Traffic Jam Diner: https://weightplay.com/en/games/traffic-jam-diner/ — Guide customers through one-way lanes, leave room in the waiting bays, and fill snack orders in queue order.
+- Traffic Jam Diner: https://weightplay.com/en/games/traffic-jam-diner/ — Queue Routing Puzzle. Guide customers through one-way lanes, leave room in the waiting bays, and fill snack orders in queue order.
 - Robot Dog Showtime: https://weightplay.com/en/games/robot-dog-showtime/ — Choreography Puzzle. Plan both performers' stage cues, then rehearse their routes and gestures together.
 - Animal Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Convenience Store Management. Arrange a tiny block-built shop, stock everyday favorites, serve animal neighbors, and reinvest in a bigger, busier store.
-- Skybound Tram: https://weightplay.com/en/games/flying-tram/ — Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto 30 rooftop routes.
-- Puppy Haven: https://weightplay.com/en/games/puppy-haven/ — A little yard. A growing family. Feed, care for and raise your very own dogs.
-- Purrch Grove: https://weightplay.com/en/games/purrch-grove/ — Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.
-- Signal Snap: https://weightplay.com/en/games/signal-snap/ — A solid diamond means tap that side; a crossed hollow echo means do nothing. Use the two buttons or ← and →.
-- Railguard Express: https://weightplay.com/en/games/railguard-express/ — Escort 60 routes across two chapters. Plan carriage power, signal pulses and safe cargo deliveries.
+- Skybound Tram: https://weightplay.com/en/games/flying-tram/ — Flip & Landing Arcade. Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto 30 rooftop routes.
+- Puppy Haven: https://weightplay.com/en/games/puppy-haven/ — Dog Care & Family. Feed, groom and play with dogs in your yard. Raise puppies into adults and grow your family by pairing dogs to discover new breeds.
+- Purrch Grove: https://weightplay.com/en/games/purrch-grove/ — Cat Care and Play. Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.
+- Signal Snap: https://weightplay.com/en/games/signal-snap/ — Tap-or-Wait Reaction Game. A solid diamond means tap that side; a crossed hollow echo means do nothing. Use the two buttons or ← and →.
+- Railguard Express: https://weightplay.com/en/games/railguard-express/ — Train Escort Defense. Escort 60 routes across two chapters. Plan carriage power, signal pulses and safe cargo deliveries.
 - Blade Orbit: https://weightplay.com/en/games/blade-orbit/ — Sword Survivor. Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.
-- Fia’s Hightrail: https://weightplay.com/en/games/fia-hightrail/ — Choose your next handhold, rest on safe ledges and guide Fia through 30 mountain rescue routes.
-- Nori’s Sandworks: https://weightplay.com/en/games/nori-sandworks/ — Slide collectors, uncover colorful sand and build six coastal scenes through 30 thoughtful puzzles.
-- Meadow Touchdown: https://weightplay.com/en/games/meadow-touchdown/ — Read the defense, lead your receivers with a pass, then weave toward the end zone across 30 challenges.
-- A Life in Moments: https://weightplay.com/en/games/smallwood-lives/ — Among around eight billion people, you are one of a kind. Begin again somewhere in the world and see how a life unfolds.
-- Lantern Lasso: https://weightplay.com/en/games/lantern-lasso/ — Drag to aim and release a line that bounces off the board edges. Collect numbered lights in order and pull switches to open gates.
+- Fia’s Hightrail: https://weightplay.com/en/games/fia-hightrail/ — Climbing Adventure. Choose your next handhold, rest on safe ledges and guide Fia through 30 mountain rescue routes.
+- Nori’s Sandworks: https://weightplay.com/en/games/nori-sandworks/ — Sand Collection Puzzle. Slide collectors, uncover colorful sand and build six coastal scenes through 30 thoughtful puzzles.
+- Meadow Touchdown: https://weightplay.com/en/games/meadow-touchdown/ — Flag football. Read the defense, lead your receivers with a pass, then weave toward the end zone across 30 challenges.
+- A Life in Moments: https://weightplay.com/en/games/smallwood-lives/ — Life simulation. Among around eight billion people, you are one of a kind. Begin again somewhere in the world and see how a life unfolds.
+- Lantern Lasso: https://weightplay.com/en/games/lantern-lasso/ — Ricochet Light Puzzle. Drag to aim and release a line that bounces off the board edges. Collect numbered lights in order and pull switches to open gates.
 - Mossfold: https://weightplay.com/en/games/mossfold/ — Spatial puzzle. Collect all dewdrops, then place the whole block upright in the square nest. The same rules apply on phone and desktop.
 - Glowspool: https://weightplay.com/en/games/glowspool/ — Sliding-fill puzzle. Slide Mimi to weave every tile. Plan around the line you leave behind.
-- 仙旅傳說: https://weightplay.com/en/games/sunmane-journey/ — Explore 60 maps across 12 regions. Dodge enemy attacks and shape your build with equipment, runes and branching talents.
+- 仙旅傳說: https://weightplay.com/en/games/sunmane-journey/ — Exploration Action RPG. Explore 60 maps across 12 regions. Dodge enemy attacks and shape your build with equipment, runes and branching talents.
 
 ## Game audiences
 

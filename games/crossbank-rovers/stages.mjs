@@ -1,0 +1,1 @@
+const s=[["BK BR PB",9,1],["KB MB BP",8,1],["MR KD PB",10,1],["BM RK AB KB",10,1],["KM RD BP BK",10,2],["RK RR AP",9,1]];export const STAGES=s.map(([B,K,R],o)=>({id:o+1,rows:B.split(" "),energy:K,freight:R}));
