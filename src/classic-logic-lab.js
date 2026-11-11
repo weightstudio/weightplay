@@ -930,7 +930,8 @@
     const initialEntry = document.documentElement.hasAttribute("data-wp-entry-initial");
     const mainPoster = document.documentElement.dataset.wpEntryPoster || poster;
     const entryClass = name => initialEntry ? ` ${name}` : "";
-    document.title = `${title} | WeightPlay`;
+    const searchTitle = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchTitle : "";
+    document.title = searchTitle || `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body, teachingCompleteText:text(teachingCompleteCopy) };
     const publicPreview = {

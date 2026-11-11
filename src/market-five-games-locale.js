@@ -202,7 +202,8 @@
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll(".locale-picker > span").forEach((node) => { node.textContent = c()[0]; });
     const title = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale] || at(game.title);
-    document.title = `${title} | WeightPlay`;
+    const searchTitle = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchTitle : "";
+    document.title = searchTitle || `${title} | WeightPlay`;
     document.querySelectorAll("[data-m5-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
     document.querySelectorAll("[data-m5-lede]").forEach((node) => { node.textContent = at(game.lede); });
     document.querySelectorAll("[data-m5-guide]").forEach((node) => { node.textContent = at(game.guide); });

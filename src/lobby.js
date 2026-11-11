@@ -3042,8 +3042,8 @@ function applyFilter({ historyMode = "replace" } = {}) {
 }
 
 function applyStaticTranslations() {
-  // Locale routes already serve search metadata in their own language.
-  if (!i18n.localeFromPath()) {
+  // Public routes serve their search copy in the initial HTML.
+  if (!i18n.localeFromPath() && !document.head.hasAttribute("data-wp-lobby-search-copy")) {
     document.title = i18n.t(isKidsLobby ? "kids.site.title" : "general.site.title");
     const descriptionKey = isKidsLobby ? "kids.site.description" : "general.site.description";
     const localizedDescription = i18n.t(descriptionKey);

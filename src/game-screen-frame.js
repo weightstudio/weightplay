@@ -1175,12 +1175,17 @@
       : "";
   }
 
+  function officialPageTitle(name) {
+    const searchTitle = document.head.dataset.wpSearchLocale === localeCode() ? document.head.dataset.wpSearchTitle : "";
+    return searchTitle || `${name} | WeightPlay`;
+  }
+
   function applyOfficialGameTitle() {
     if (document.body?.dataset.wpFiveGame && window.WeightPlayFiveGameLocale) return;
     const localizedTitle = officialGameTitle();
     if (!localizedTitle) return;
     if (document.documentElement.hasAttribute('data-wp-official-name')) {
-      const pageTitle = `${localizedTitle} | WeightPlay`;
+      const pageTitle = officialPageTitle(localizedTitle);
       if (document.title !== pageTitle) document.title = pageTitle;
     }
     document.querySelectorAll(OFFICIAL_TITLE_SELECTORS).forEach((node) => {
@@ -2150,7 +2155,10 @@
     const sync = () => {
       const id = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1];
       const name = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[localeCode()];
-      if (name && document.title !== `${name} | WeightPlay`) document.title = `${name} | WeightPlay`;
+      if (name) {
+        const pageTitle = officialPageTitle(name);
+        if (document.title !== pageTitle) document.title = pageTitle;
+      }
     };
     // Observe only the one title and locale attribute, not the full page.
     const observer = new MutationObserver(sync);

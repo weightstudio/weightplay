@@ -11949,7 +11949,8 @@
     const localizedTitle = activeLocale === "es"
       ? String(game.title).replace("Escuadrón animales Automático", "Escuadrón Animal Automático")
       : game.title;
-    const title = document.documentElement.hasAttribute('data-wp-official-name') ? `${localizedTitle} | WeightPlay` : `${localizedTitle} - ${identity.suffix} | WeightPlay`;
+    const searchTitle = document.head.dataset.wpSearchLocale === activeLocale ? document.head.dataset.wpSearchTitle : "";
+    const title = searchTitle || (document.documentElement.hasAttribute('data-wp-official-name') ? `${localizedTitle} | WeightPlay` : `${localizedTitle} - ${identity.suffix} | WeightPlay`);
     const description = game.metaDescription || compactMetaDescription(game.intro);
     document.documentElement.lang = activeLocale;
     if (activeLocale !== "en") document.querySelector("title")?.setAttribute("data-runtime-localize", "off");

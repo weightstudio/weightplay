@@ -173,7 +173,8 @@
     window.WonderI18n?.setLocale?.(locale);
     document.documentElement.lang = locale === "zh-Hant" ? "zh-TW" : locale === "zh-Hans" ? "zh-CN" : locale;
     const gameTitle = gt("title");
-    document.title = `${gameTitle} | WeightPlay`;
+    const searchTitle = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchTitle : "";
+    document.title = searchTitle || `${gameTitle} | WeightPlay`;
     ui.eyebrow.textContent = gameId === "space" && locale === "zh-Hant" ? "WEIGHTPLAY · 原創街機" : "WEIGHTPLAY · ORIGINAL ARCADE";
     ui.title.textContent = gameTitle;
     ui.tagline.textContent = gt("tagline");

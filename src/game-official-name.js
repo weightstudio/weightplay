@@ -17,7 +17,8 @@
     const name=title();if(!name)return;
     const normalized=map[document.documentElement.lang.toLowerCase()];
     if(normalized===locale&&document.documentElement.lang!==normalized)document.documentElement.lang=normalized;
-    const browserTitle=`${name} | WeightPlay`;
+    const searchTitle=document.head.dataset.wpSearchLocale===locale?document.head.dataset.wpSearchTitle:"";
+    const browserTitle=searchTitle||`${name} | WeightPlay`;
     if(document.title!==browserTitle)document.title=browserTitle;
     for(const node of labels){node.dataset.runtimeLocalize='off';if(node.textContent.trim()!==name)node.textContent=name;}
     for(const node of document.querySelectorAll('meta[property="og:title"],meta[name="twitter:title"]'))if(node.content!==browserTitle)node.content=browserTitle;
