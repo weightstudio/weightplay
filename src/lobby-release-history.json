@@ -481,6 +481,10 @@
       "date": "2026-07-06T21:50:28+08:00",
       "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
     },
+    "bellshift-atelier": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "blade-orbit": {
       "date": "2026-10-25T17:14:14.033Z",
       "evidence": "canonical-public-catalog"
@@ -492,6 +496,14 @@
     "block-blast": {
       "date": "2026-08-01T12:46:15+08:00",
       "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
+    },
+    "block-dig-crew": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "block-planet-repair": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
     },
     "bramble-rapids": {
       "date": "2026-10-27T09:43:29.076Z",
@@ -533,6 +545,10 @@
       "date": "2026-11-05T01:46:58.332Z",
       "evidence": "canonical-public-catalog"
     },
+    "cinderburrow": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "cloudhold-voyager": {
       "date": "2026-11-06T23:18:22.452Z",
       "evidence": "canonical-public-catalog"
@@ -561,12 +577,20 @@
       "date": "2026-10-24T07:27:34.088Z",
       "evidence": "canonical-public-catalog"
     },
+    "dusk-signal": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "duskbloom": {
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
     },
     "dustwake-depot": {
       "date": "2026-10-29T10:31:36.367Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "emberglaze-kiln": {
+      "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
     },
     "fia-hightrail": {
@@ -595,6 +619,10 @@
     },
     "fusekeep": {
       "date": "2026-10-21T16:15:31.180Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "galevault-atlas": {
+      "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
     },
     "garden-tiles": {
@@ -689,6 +717,10 @@
       "date": "2026-10-30T04:34:14.857Z",
       "evidence": "canonical-public-catalog"
     },
+    "mosslight-museum": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "nori-bankshot": {
       "date": "2026-10-26T09:43:57.097Z",
       "evidence": "canonical-public-catalog"
@@ -721,6 +753,10 @@
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
     },
+    "prismkin-rescue": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "prismtide": {
       "date": "2026-11-06T23:18:22.452Z",
       "evidence": "canonical-public-catalog"
@@ -747,6 +783,10 @@
     },
     "reedway-transit": {
       "date": "2026-11-07T12:29:13.794Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "reef-current": {
+      "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
     },
     "reversi": {
@@ -784,6 +824,10 @@
     "signal-veil": {
       "date": "2026-07-28T18:08:11+08:00",
       "evidence": "git:fd41cc15280bed4ce2ddaf1b5a9f49d48cc74aa0"
+    },
+    "silicon-shift": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
     },
     "skymeadow-keeper": {
       "date": "2026-11-06T23:18:22.452Z",
@@ -829,6 +873,10 @@
       "date": "2026-06-29T21:17:25+08:00",
       "evidence": "git:aee27c8085ee1502fa9f3698dc30b6b82462b732"
     },
+    "stararc-rendezvous": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "starcamp-glade": {
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
@@ -845,6 +893,10 @@
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
     },
+    "sunshift-commons": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
     "tetris": {
       "date": "2026-09-05T02:17:10+08:00",
       "evidence": "git:3ec5a0dfe850d98d0940648159cec6470da5d6ef"
@@ -852,6 +904,10 @@
     "tic-tac-toe": {
       "date": "2026-10-20T00:18:05.505Z",
       "evidence": "owner-approval:OAR-c49d98efeb64c0e44171906b"
+    },
+    "tidegate-relay": {
+      "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
     },
     "tideweave": {
       "date": "2026-11-04T18:02:55.540Z",
@@ -883,6 +939,10 @@
     },
     "wildborn": {
       "date": "2026-10-24T16:09:49.375Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "wingseal-post": {
+      "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
     },
     "wonder-crash": {

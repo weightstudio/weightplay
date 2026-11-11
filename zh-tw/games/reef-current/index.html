@@ -1,17 +1,198 @@
 <!doctype html>
 <html lang="zh-Hant" dir="ltr" class="wp-frame-main-flow" data-wp-official-name
   data-wp-entry-renderer="localize.mjs?wp-media=056a8712e966ef63#renderEntry" data-wp-publication-locale-completion
-  data-wp-entry-poster="/games/reef-current/art/cover.webp?wp-media=056a8712e966ef63" data-wp-entry-initial="1">
-<head>
-    
-    
-    <meta charset="utf-8">
+  data-wp-entry-poster="/games/reef-current/art/cover.webp?wp-media=056a8712e966ef63" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=056a8712e966ef63`, '/src/diamond-special-progression.js?wp-media=056a8712e966ef63', '/src/diamond-special-progression.css?wp-media=056a8712e966ef63'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
+
+
+
   <base href="/games/reef-current/">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <!-- reef-meta:start -->
 <title>潮礁守望 | WeightPlay</title>
 <meta name="description" content="讀潮向、採藻樣，再部署濾種保護珊瑚苗圃。">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://weightplay.com/zh-tw/games/reef-current/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/reef-current/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/reef-current/">
@@ -36,14 +217,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"潮礁守望","description":"讀潮向、採藻樣，再部署濾種保護珊瑚苗圃。","url":"https://weightplay.com/zh-tw/games/reef-current/","image":"https://weightplay.com/games/reef-current/art/cover.webp?wp-media=056a8712e966ef63","inLanguage":"zh-Hant","genre":"潮流策略","gamePlatform":"Web browser","applicationCategory":"GameApplication"},{"@type":"FAQPage","inLanguage":"zh-Hant","mainEntity":[{"@type":"Question","name":"通關需要鑽石嗎？","acceptedAnswer":{"@type":"Answer","text":"基礎工具可通過全部關卡。鑽石可購買永久礁盤外觀。"}},{"@type":"Question","name":"回潮怎麼運作？","acceptedAnswer":{"@type":"Answer","text":"第二章的回潮會更換出流方向。錨標可固定當前主流兩潮。"}}]}]}</script>
 <!-- reef-meta:end -->
-  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=056a8712e966ef63" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=056a8712e966ef63" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=056a8712e966ef63" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=056a8712e966ef63" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=056a8712e966ef63" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/tutorial.css?wp-media=056a8712e966ef63" data-wp-entry-required>
-  <link rel="stylesheet" href="/games/reef-current/style.css?wp-build=4ec6b156b38bcbeb&wp-media=056a8712e966ef63" data-wp-entry-required>
-  <script src="/src/game-layout-config.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
+  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/reef-current/style.css?wp-build=4ec6b156b38bcbeb&wp-media=056a8712e966ef63" data-wp-entry-required="">
+  <script src="/src/game-layout-config.js?wp-media=056a8712e966ef63" data-wp-entry-required=""></script>
   <script src="/src/weightplay-audio.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
   <script src="/src/site-config.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
   <script src="/src/i18n.js?wp-media=056a8712e966ef63"></script>
@@ -53,27 +234,27 @@
   <script src="/src/analytics.js?wp-media=056a8712e966ef63"></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=056a8712e966ef63"></script>
 </head>
-<body data-internal-only="true" class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1"
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1"
   data-wp-game-id="reef-current" data-game-id="reef-current" data-audience="general" data-has-stage="true"
   data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0"
-  data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false" data-screen="main">
-  <div id="gameFrame" data-wp-frame-root data-wp-entry-root hidden>
+  data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false" data-screen="main"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="潮礁守望" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入潮礁守望…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入潮礁守望…" aria-valuetext="正在載入潮礁守望…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=056a8712e966ef63" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-frame-root data-wp-entry-root="" hidden data-wp-frame="2">
     <div id="mainGroup" class="wp-frame-main-flow">
       <section id="mainScreen" data-wp-frame-scene="main">
         <header id="mainHeader" data-wp-frame-header="main" class="wp-frame-header">
-          <a id="mainReturn" href="/zh-tw/?preview=1" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=056a8712e966ef63" alt="" width="26" height="26"></a>
-          <h1 id="gameTitle" data-wp-frame-title data-runtime-localize="off">潮礁守望</h1>
+          <a id="mainReturn" href="/zh-tw/" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=056a8712e966ef63" alt="" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-frame-title="" data-runtime-localize="off">潮礁守望</h1>
         </header>
         <section id="mainHero" data-wp-frame-content="main">
-          <img id="cover" src="/games/reef-current/art/cover.webp?wp-media=056a8712e966ef63" width="1024" height="1024" data-wp-frame-poster data-wp-interface7-poster="true" alt="潮礁守望" fetchpriority="high">
-          <div data-wp-frame-copy>
-            <p id="description" data-wp-frame-summary>讀潮向、採藻樣，再部署濾種保護珊瑚苗圃。</p>
-            <p id="mainProgress" data-wp-frame-progress></p>
+          <img id="cover" src="/games/reef-current/art/cover.webp?wp-media=056a8712e966ef63" width="1254" height="1254" data-wp-frame-poster="" data-wp-interface7-poster="true" alt="潮礁守望" fetchpriority="high">
+          <div data-wp-frame-copy="">
+            <p id="description" data-wp-frame-summary="">讀潮向、採藻樣，再部署濾種保護珊瑚苗圃。</p>
+            <p id="mainProgress" data-wp-frame-progress=""></p>
             <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>開始遊戲</button>
           </div>
         </section>
       </section>
-      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=056a8712e966ef63#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide aria-labelledby="guideTitle">
+      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=056a8712e966ef63#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
         <h2 id="guideTitle">遊戲指南</h2>
         <div><!-- reef-guide:start -->
 <article class="game-info-section"><h3>守護苗圃</h3><p data-wp-intro-faq-source>保住每座珊瑚苗圃、部署指定濾種，並把殘藻壓在上限內。</p></article><article class="game-info-section"><h3>採樣與培養</h3><p>先選採樣，再點有藻的地點。兩份樣本經一潮培養後，把濾種放到藻流將經過的地點。</p></article><article class="game-info-section"><h3>讀潮線</h3><p>每潮可行動兩次。箭頭顯示藻流下一步。浮網留藻、分流閥換向，錨標固定主流。準備好再推潮。</p></article><article class="game-info-section"><h3>守到末潮</h3><p>苗圃藻量達 2 會失去礁心，連續兩潮無藻可回養一心。末潮後可查看結果、重試或前往下一關。</p></article>
@@ -139,10 +320,10 @@
   </div>
   <script src="/src/edge-guard.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
   <script src="/src/stage-rail-i9.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
-  <script src="/src/game-play-ui.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
-  <script src="/src/battle-canvas-standard.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
-  <script src="/src/game-screen-frame.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=056a8712e966ef63" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=056a8712e966ef63" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-ddea76c2079e&wp-media=056a8712e966ef63" data-wp-entry-required=""></script>
   <script src="/src/tutorial.js?wp-media=056a8712e966ef63" data-wp-entry-required></script>
-  <script type="module" src="/games/reef-current/game.mjs?wp-build=452a9be5b1eaaf6f&wp-media=056a8712e966ef63" data-wp-entry-required></script>
+  <script type="module" src="/games/reef-current/game.mjs?v=entry-initial-c77e6e929ad4&amp;wp-build=452a9be5b1eaaf6f&wp-media=056a8712e966ef63" data-wp-entry-required=""></script>
 </body>
 </html>
