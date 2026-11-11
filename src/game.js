@@ -3902,8 +3902,8 @@ function confirmHighestUnlock(target) {
 function unlockSaveWarning() {
   const copy = {
     en:"Saving unavailable. Progress and rewards were not confirmed; replay this stage.",
-    "zh-TW":"無法儲存，進度與獎勵尚未確認；請重新遊玩此關。",
-    "zh-CN":"无法保存，进度和奖励尚未确认；请重新游玩此关。",
+    "zh-Hant":"無法儲存，進度與獎勵尚未確認；請重新遊玩此關。",
+    "zh-Hans":"无法保存，进度和奖励尚未确认；请重新游玩此关。",
     ja:"保存できません。進行状況と報酬は未確認です。このステージを再プレイしてください。",
     ko:"저장할 수 없습니다. 진행 상황과 보상이 확인되지 않았습니다. 이 스테이지를 다시 플레이하세요.",
     es:"No se pudo guardar el progreso ni confirmar las recompensas. Repite esta fase.",
