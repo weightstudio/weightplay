@@ -1,1 +1,1 @@
-(()=>{"use strict";window.HeroTrialsStageConfig=Object.freeze({create({count,stage}){return{gameId:"animal-hero-trials",count,stage,poster:"/assets/interface7-redrawn/animal-hero-trials.webp?wp-media=ce7525cf45c7a0b6",background:"/assets/lobby-block-atmosphere.svg"}}})})();
+(()=>{"use strict";window.HeroTrialsStageConfig=Object.freeze({create({count,stage}){return{gameId:"animal-hero-trials",count,stage,poster:"/assets/interface7-redrawn/animal-hero-trials.webp?wp-media=6a3d1c6d444e86cc",background:"/assets/lobby-block-atmosphere.svg"}}})})();

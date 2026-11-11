@@ -569,6 +569,10 @@
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
     },
+    "crossbank-rovers": {
+      "date": "2026-11-11T16:52:39.017Z",
+      "evidence": "canonical-public-catalog"
+    },
     "dawnward-haven": {
       "date": "2026-11-06T03:22:54.319Z",
       "evidence": "canonical-public-catalog"

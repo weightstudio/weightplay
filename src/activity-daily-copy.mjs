@@ -1,4 +1,4 @@
-import {scheduleCopy} from './activity-schedule-copy.mjs?v=1&wp-media=ce7525cf45c7a0b6';
+import {scheduleCopy} from './activity-schedule-copy.mjs?v=1&wp-media=6a3d1c6d444e86cc';
 const rows={
   "zh-Hant": [
     "每日一次",

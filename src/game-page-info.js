@@ -3,29 +3,29 @@
   const comparisonOnly = Boolean(document.currentScript?.hasAttribute?.("data-wp-comparison-only"));
   const sharedPlayUI = Boolean(document.querySelector('[data-wp-play-ui="1"]'));
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
-  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('link[href*="stage-selector-standard.css?wp-media=ce7525cf45c7a0b6"]')) {
+  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('link[href*="stage-selector-standard.css?wp-media=6a3d1c6d444e86cc"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3&wp-media=ce7525cf45c7a0b6", sharedAssetBase).href;
+    link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3&wp-media=6a3d1c6d444e86cc", sharedAssetBase).href;
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
-  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('script[src*="stage-selector-standard.js?wp-media=ce7525cf45c7a0b6"]')) {
+  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('script[src*="stage-selector-standard.js?wp-media=6a3d1c6d444e86cc"]')) {
     const script = document.createElement("script");
-    script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3&wp-media=ce7525cf45c7a0b6", sharedAssetBase).href;
+    script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3&wp-media=6a3d1c6d444e86cc", sharedAssetBase).href;
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }
-  if (!comparisonOnly && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css?wp-media=ce7525cf45c7a0b6"]')) {
+  if (!comparisonOnly && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css?wp-media=6a3d1c6d444e86cc"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("battle-canvas-standard.css?wp-media=ce7525cf45c7a0b6", sharedAssetBase).href;
+    link.href = new URL("battle-canvas-standard.css?wp-media=6a3d1c6d444e86cc", sharedAssetBase).href;
     link.dataset.wpBattleStandard = "true";
     document.head.appendChild(link);
   }
-  if (!comparisonOnly && !sharedPlayUI && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js?wp-media=ce7525cf45c7a0b6"]')) {
+  if (!comparisonOnly && !sharedPlayUI && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js?wp-media=6a3d1c6d444e86cc"]')) {
     const script = document.createElement("script");
-    script.src = new URL("battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1&wp-media=ce7525cf45c7a0b6", sharedAssetBase).href;
+    script.src = new URL("battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1&wp-media=6a3d1c6d444e86cc", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }
@@ -3896,7 +3896,7 @@
     "animal-habitat-mahjong": "animal-habitat-mahjong-cover.webp",
     "animal-hidden-safari": "animal-hidden-safari-cover.webp",
     "animal-crystal-survivor": "animal-crystal-survivor-otter-cover-v26.webp",
-    "animal-guard-yard": "interface7-redrawn/animal-guard-yard.webp?wp-media=ce7525cf45c7a0b6",
+    "animal-guard-yard": "interface7-redrawn/animal-guard-yard.webp?wp-media=6a3d1c6d444e86cc",
     "animal-quiz": "quiz-cover.webp",
     "zoo-helper-day": "zoo-helper-day-cover.webp",
     "shape-train": "shape-train-cover.webp",
@@ -3907,9 +3907,9 @@
     "animal-orb-fortress": "animal-orb-fortress-cover-block-v1.webp",
     "animal-auto-squad": "animal-auto-squad-cover-block-v2.webp",
     "beast-tactician": "beast-tactician-cover.webp",
-    "animal-prism-battalion": "animal-prism-battalion/cover.webp?wp-media=ce7525cf45c7a0b6",
-    "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=ce7525cf45c7a0b6",
-    "animal-cratebound": "animal-cratebound/cover.webp?wp-media=ce7525cf45c7a0b6",
+    "animal-prism-battalion": "animal-prism-battalion/cover.webp?wp-media=6a3d1c6d444e86cc",
+    "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=6a3d1c6d444e86cc",
+    "animal-cratebound": "animal-cratebound/cover.webp?wp-media=6a3d1c6d444e86cc",
     "animal-bamboo-pipes": "animal-bamboo-pipes-cover.webp",
     "shadow-wolf": "shadow-wolf-cover.webp",
   };
@@ -6516,9 +6516,9 @@
     if (ready()) return Promise.resolve(true);
     if (relatedRegistryLoadPromise) return relatedRegistryLoadPromise;
     relatedRegistryLoadPromise = Promise.all([
-      ["WEIGHTPLAY_PUBLIC_GAME_CATALOG", "public-game-catalog.js?wp-media=ce7525cf45c7a0b6", "data-wp-public-game-catalog"],
-      ["WEIGHTPLAY_GAME_TITLES", "game-title-registry.js?wp-media=ce7525cf45c7a0b6", "data-wp-game-title-registry"],
-      ["WEIGHTPLAY_INTERFACE7_POSTERS", "interface7-poster-registry.js?wp-media=ce7525cf45c7a0b6", "data-wp-interface7-poster-registry"],
+      ["WEIGHTPLAY_PUBLIC_GAME_CATALOG", "public-game-catalog.js?wp-media=6a3d1c6d444e86cc", "data-wp-public-game-catalog"],
+      ["WEIGHTPLAY_GAME_TITLES", "game-title-registry.js?wp-media=6a3d1c6d444e86cc", "data-wp-game-title-registry"],
+      ["WEIGHTPLAY_INTERFACE7_POSTERS", "interface7-poster-registry.js?wp-media=6a3d1c6d444e86cc", "data-wp-interface7-poster-registry"],
     ].map(([globalName, filename, dataAttribute]) => {
       if (window[globalName]) return Promise.resolve(true);
       return new Promise((resolve) => {
@@ -6876,8 +6876,8 @@
     genre: ["Strategy", "Spatial Inventory", "Roguelite", "Animal"],
     relatedIds: ["animal-rift-salvage", "animal-cratebound", "animal-bamboo-pipes"],
     relatedCoverMap: {
-      "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=ce7525cf45c7a0b6",
-      "animal-cratebound": "animal-cratebound/cover.webp?wp-media=ce7525cf45c7a0b6",
+      "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=6a3d1c6d444e86cc",
+      "animal-cratebound": "animal-cratebound/cover.webp?wp-media=6a3d1c6d444e86cc",
       "animal-bamboo-pipes": "animal-bamboo-pipes-cover.webp",
     },
     skills: ["Planning", "Spatial Reasoning", "Adaptation"],
@@ -10856,7 +10856,7 @@
     if (japaneseResourcePromise) return japaneseResourcePromise;
     japaneseResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-ja.js?v=20261001-fruit-garden-text140-v1&wp-media=ce7525cf45c7a0b6", sharedAssetBase).href;
+      script.src = new URL("game-page-info-ja.js?v=20261001-fruit-garden-text140-v1&wp-media=6a3d1c6d444e86cc", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "ja";
       script.onload = () => { installJapaneseResource(); resolve(); };
       script.onerror = () => { japaneseResourceFailed = true; resolve(); };
@@ -13702,7 +13702,7 @@
     localizedGames[locale]["shadow-wolf"] = { ...games["shadow-wolf"], ...copy };
   }
 
-  // Checkers owns its interactive shell in popular-games-batch.js?wp-media=ce7525cf45c7a0b6 and its
+  // Checkers owns its interactive shell in popular-games-batch.js?wp-media=6a3d1c6d444e86cc and its
   // static, locale-owned SEO Guide here. Each published route must carry the
   // same verified rules without falling back to English paragraphs.
   const checkersLocaleFacts = {
@@ -23405,11 +23405,8 @@
   const alienV63GuideCopy = {
   "en": {
     "intro": "Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.",
-    "story": [
-      "Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway."
-    ],
     "systems": [
-      "Kills charge Pulse in 1–30; eight kills restore a shield. Credits buy permanent upgrades. In 31–60, amber lane edges warn before coral beams hurt. Prisms block shots during discharge. Remove green relays to erase their lanes and copper Anchors to unjam Phase. Phase moves 28 units toward your direction, costs one of two cells, protects for 0.45 seconds and recovers for 2 seconds. One cell recharges every 8 active seconds; relay kills return one. Without a direction, it jumps away from your current side. Blue beacons are required route objectives: collect them in order by moving close. The next lights after each discharge; an active beam prevents collection. Clearing the fleet alone does not finish the route."
+      "In stages 1–30, hits charge Pulse and defeating an enemy fills it faster. Every eight kills restore one shield. Credits buy permanent upgrades. In 31–60, amber lane edges warn before coral beams hurt. Prisms block shots during discharge. Remove green relays to erase their lanes and copper Anchors to unjam Phase. Phase moves 28 units toward your direction, costs one of two cells, protects for 0.45 seconds and recovers for 2 seconds. One cell recharges every 8 active seconds; relay kills return one. Without a direction, it jumps away from your current side. Blue beacons are required route objectives: collect them in order by moving close. The next lights after each discharge; an active beam prevents collection. Clearing the fleet alone does not finish the route."
     ],
     "how": [
       "Arrows or A/D move; hold Space to fire. E uses Pulse in 1–30 and the Phase drive in 31–60.",
@@ -23424,12 +23421,11 @@
     "progression": [
       "The 60 stages form two chapters of 30, each with six five-stage arcs. Clear the current frontier to unlock the next stage. In 31–60, also collect the blue beacons in order. Credits, upgrades and unlocked stages remain saved in this browser."
     ],
-    "designNote": "Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.",
     "parent": "Spend credits earned in Battle. Upgrades persist between stages. Permanent pink-violet hull and engine colors. Cosmetic only. 15 diamonds · permanent",
     "faq": [
       [
         "How many waves are in a Stage?",
-        "Each stage contains one battle and one formation. The 60 stages form two chapters of 30, each with six five-stage arcs. Clear the current frontier to unlock the next stage. In 31–60, also collect the blue beacons in order. Credits, upgrades and unlocked stages remain saved in this browser."
+        "Each stage contains one battle and one formation."
       ],
       [
         "How do bullets increase?",
@@ -23451,11 +23447,8 @@
   },
   "zh-Hant": {
     "intro": "駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。",
-    "story": [
-      "駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。"
-    ],
     "systems": [
-      "1–30 關擊敗敵人可充填脈衝，每八次擊敗恢復一格護盾；點數購買永久升級。31–60 關的琥珀色航道先預警，再以珊瑚色光束造成傷害。稜鏡機在放電時擋住射擊；擊破綠色中繼器可移除其航道，擊破銅色錨點可解除相位干擾。相位沿輸入方向移動 28 單位，消耗兩格電池之一、保護 0.45 秒，並恢復 2 秒。每八秒有效遊玩補回一格，擊破中繼器也補一格；未指定方向時朝目前所在側的反方向跳躍。 藍色航標是必要路線目標，靠近後依序收集。每次放電結束才亮起下一個；光束作用中無法收取。只清除敵人尚未完成航線。"
+      "第 1–30 關命中敵人即可累積脈衝，擊敗敵人時充能更多。每擊敗八個敵人恢復一格護盾。點數購買永久升級。31–60 關的琥珀色航道先預警，再以珊瑚色光束造成傷害。稜鏡機在放電時擋住射擊；擊破綠色中繼器可移除其航道，擊破銅色錨點可解除相位干擾。相位沿輸入方向移動 28 單位，消耗兩格電池之一、保護 0.45 秒，並恢復 2 秒。每八秒有效遊玩補回一格，擊破中繼器也補一格；未指定方向時朝目前所在側的反方向跳躍。 藍色航標是必要路線目標，靠近後依序收集。每次放電結束才亮起下一個；光束作用中無法收取。只清除敵人尚未完成航線。"
     ],
     "how": [
       "方向鍵或 A/D 移動，按住空白鍵射擊。E 在 1–30 關使用脈衝，31–60 關使用相位引擎。",
@@ -23470,12 +23463,11 @@
     "progression": [
       "60 關分為兩章，每章 30 關、六段各五關。通過目前最前沿關卡後依序解鎖下一關；31–60 關也必須依序收集藍色信標。點數、強化與已解鎖關卡都保留在此瀏覽器。"
     ],
-    "designNote": "駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。",
     "parent": "用戰鬥賺到的能源點購買強化，效果會保留到之後的關卡。 永久解鎖粉紫色船體與引擎光。僅改變外觀。 15 鑽石・永久",
     "faq": [
       [
         "每關有幾波？",
-        "每關包含一場戰鬥與一組編隊。 60 關分為兩章，每章 30 關、六段各五關。通過目前最前沿關卡後依序解鎖下一關；31–60 關也必須依序收集藍色信標。點數、強化與已解鎖關卡都保留在此瀏覽器。"
+        "每關包含一場戰鬥與一組編隊。"
       ],
       [
         "子彈怎麼增加？",
@@ -23497,11 +23489,8 @@
   },
   "zh-Hans": {
     "intro": "驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。",
-    "story": [
-      "驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。"
-    ],
     "systems": [
-      "1–30 关击败敌人可充填脉冲，每八次击败恢复一格护盾；点数购买永久升级。31–60 关的琥珀色航道先预警，再以珊瑚色光束造成伤害。棱镜机在放电时挡住射击；击破绿色中继器可移除其航道，击破铜色锚点可解除相位干扰。相位沿输入方向移动 28 单位，消耗两格电池之一、保护 0.45 秒，并恢复 2 秒。每八秒有效游玩补回一格，击破中继器也补一格；未指定方向时向当前所在侧的反方向跳跃。 蓝色航标是必要路线目标，靠近后依次收集。每次放电结束才亮起下一个；光束作用中无法收取。只清除敌人尚未完成航线。"
+      "第 1–30 关命中敌人即可积攒脉冲，击败敌人时充能更多。每击败八个敌人恢复一格护盾。点数购买永久升级。31–60 关的琥珀色航道先预警，再以珊瑚色光束造成伤害。棱镜机在放电时挡住射击；击破绿色中继器可移除其航道，击破铜色锚点可解除相位干扰。相位沿输入方向移动 28 单位，消耗两格电池之一、保护 0.45 秒，并恢复 2 秒。每八秒有效游玩补回一格，击破中继器也补一格；未指定方向时向当前所在侧的反方向跳跃。 蓝色航标是必要路线目标，靠近后依次收集。每次放电结束才亮起下一个；光束作用中无法收取。只清除敌人尚未完成航线。"
     ],
     "how": [
       "方向键或 A/D 移动，按住空格键射击。E 在 1–30 关使用脉冲，31–60 关使用相位引擎。",
@@ -23516,12 +23505,11 @@
     "progression": [
       "60 关分为两章，每章 30 关、六段各五关。通过当前最前沿关卡后依序解锁下一关；31–60 关还必须依序收集蓝色信标。点数、强化与已解锁关卡都保留在此浏览器。"
     ],
-    "designNote": "驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。",
     "parent": "用战斗赚到的能源点购买强化，效果会保留到之后的关卡。 永久解锁粉紫色船体与引擎光。仅改变外观。 15 钻石・永久",
     "faq": [
       [
         "每关有几波？",
-        "每关包含一场战斗与一组编队。 60 关分为两章，每章 30 关、六段各五关。通过当前最前沿关卡后依序解锁下一关；31–60 关还必须依序收集蓝色信标。点数、强化与已解锁关卡都保留在此浏览器。"
+        "每关包含一场战斗与一组编队。"
       ],
       [
         "子弹怎么增加？",
@@ -23543,11 +23531,8 @@
   },
   "ja": {
     "intro": "ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。",
-    "story": [
-      "ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。"
-    ],
     "systems": [
-      "1〜30は撃破でパルスを充填し、8体ごとにシールドが1回復。クレジットで永続強化。31〜60は琥珀色の予告後、赤い光線が危険になる。放電中のプリズムは射撃を防ぐ。緑のリレーを壊すとその光線が消え、銅のアンカーを壊すと位相妨害が解ける。位相は入力方向へ28移動し、2セルのうち1つを消費、0.45秒保護、再使用まで2秒。活動時間8秒またはリレー撃破で1セル回復。方向入力がなければ現在の側から反対側へ跳ぶ。 青い標識は必須目標。近づいて順番に集めよう。次の標識は放電後に点灯し、作動中の光線内では回収できない。敵を倒すだけでは航路は完成しない。"
+      "ステージ1〜30では命中でパルスがたまり、敵を撃破するとさらに大きくたまる。8体撃破するごとにシールドが1回復する。クレジットで永続強化。31〜60は琥珀色の予告後、赤い光線が危険になる。放電中のプリズムは射撃を防ぐ。緑のリレーを壊すとその光線が消え、銅のアンカーを壊すと位相妨害が解ける。位相は入力方向へ28移動し、2セルのうち1つを消費、0.45秒保護、再使用まで2秒。活動時間8秒またはリレー撃破で1セル回復。方向入力がなければ現在の側から反対側へ跳ぶ。 青い標識は必須目標。近づいて順番に集めよう。次の標識は放電後に点灯し、作動中の光線内では回収できない。敵を倒すだけでは航路は完成しない。"
     ],
     "how": [
       "矢印またはA/Dで移動、スペース長押しで射撃。Eは1〜30でパルス、31〜60で位相ドライブ。",
@@ -23562,12 +23547,11 @@
     "progression": [
       "全60ステージは30ステージずつの2章で、各章に5ステージの区間が6つあります。最前線をクリアすると次が解放されます。31〜60では青いビーコンも順番に集めます。クレジット、強化、解放状態はこのブラウザーに保存されます。"
     ],
-    "designNote": "ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。",
     "parent": "バトルで得たエネルギーで購入。強化は次のステージにも残ります。 ピンクと紫の船体とエンジン光を永久解放。外見のみ変更。 15ダイヤ・永久",
     "faq": [
       [
         "1ステージに何ウェーブありますか？",
-        "各ステージは1回の戦闘と1つの編隊です。 全60ステージは30ステージずつの2章で、各章に5ステージの区間が6つあります。最前線をクリアすると次が解放されます。31〜60では青いビーコンも順番に集めます。クレジット、強化、解放状態はこのブラウザーに保存されます。"
+        "各ステージは1回の戦闘と1つの編隊です。"
       ],
       [
         "弾を増やすには？",
@@ -23589,11 +23573,8 @@
   },
   "ko": {
     "intro": "수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요.",
-    "story": [
-      "수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요."
-    ],
     "systems": [
-      "1–30에서는 처치로 펄스를 충전하고 8회 처치마다 방어막을 회복합니다. 크레딧으로 영구 강화하세요. 31–60의 호박색 선은 산호색 광선의 예고입니다. 방전 중 프리즘은 사격을 막습니다. 녹색 중계기를 부수면 해당 광선이 사라지고 구리색 앵커를 부수면 위상 방해가 풀립니다. 위상은 입력 방향으로 28 이동하며 2칸 중 1칸을 쓰고 0.45초 보호, 재사용까지 2초가 필요합니다. 활동 8초 또는 중계기 처치로 1칸 회복합니다. 방향이 없으면 현재 위치의 반대편으로 도약합니다. 파란 표지는 필수 목표입니다. 가까이 이동하여 순서대로 모으세요. 방전이 끝날 때 다음 표지가 켜지며 작동 중인 광선 안에서는 모을 수 없습니다. 적만 없애면 항로가 완성되지 않습니다."
+      "1–30 스테이지에서는 적을 맞히면 펄스가 충전되고, 처치하면 더 많이 충전됩니다. 적을 8기 처치할 때마다 방어막이 1칸 회복됩니다. 크레딧으로 영구 강화하세요. 31–60의 호박색 선은 산호색 광선의 예고입니다. 방전 중 프리즘은 사격을 막습니다. 녹색 중계기를 부수면 해당 광선이 사라지고 구리색 앵커를 부수면 위상 방해가 풀립니다. 위상은 입력 방향으로 28 이동하며 2칸 중 1칸을 쓰고 0.45초 보호, 재사용까지 2초가 필요합니다. 활동 8초 또는 중계기 처치로 1칸 회복합니다. 방향이 없으면 현재 위치의 반대편으로 도약합니다. 파란 표지는 필수 목표입니다. 가까이 이동하여 순서대로 모으세요. 방전이 끝날 때 다음 표지가 켜지며 작동 중인 광선 안에서는 모을 수 없습니다. 적만 없애면 항로가 완성되지 않습니다."
     ],
     "how": [
       "방향키 또는 A/D로 이동, 스페이스를 누르고 사격합니다. E는 1–30에서 펄스, 31–60에서 위상 도약입니다.",
@@ -23608,12 +23589,11 @@
     "progression": [
       "60개 스테이지는 30개씩 두 장이며 각 장은 5개씩 여섯 구간입니다. 현재 마지막 스테이지를 완료하면 다음이 열립니다. 31–60에서는 파란 신호기도 순서대로 모아야 합니다. 크레딧, 강화와 해제 상태는 이 브라우저에 저장됩니다."
     ],
-    "designNote": "수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요.",
     "parent": "전투에서 얻은 에너지로 구매하세요. 강화 효과는 다음 스테이지에도 유지됩니다. 분홍·보라 선체와 엔진 색상을 영구 해제합니다. 외형만 변경됩니다. 다이아 15개 · 영구",
     "faq": [
       [
         "한 스테이지에 웨이브가 몇 개 있나요?",
-        "각 스테이지는 한 번의 전투와 한 편대로 구성됩니다. 60개 스테이지는 30개씩 두 장이며 각 장은 5개씩 여섯 구간입니다. 현재 마지막 스테이지를 완료하면 다음이 열립니다. 31–60에서는 파란 신호기도 순서대로 모아야 합니다. 크레딧, 강화와 해제 상태는 이 브라우저에 저장됩니다."
+        "각 스테이지는 한 번의 전투와 한 편대로 구성됩니다."
       ],
       [
         "탄환을 늘리려면 어떻게 하나요?",
@@ -23635,11 +23615,8 @@
   },
   "es": {
     "intro": "Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora.",
-    "story": [
-      "Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora."
-    ],
     "systems": [
-      "En 1–30, las bajas cargan Pulso y cada ocho restauran un escudo. Compra mejoras permanentes con créditos. En 31–60, el ámbar avisa antes del rayo coral. Los prismas bloquean durante la descarga. Destruye relés verdes para quitar sus rayos y anclas cobrizas para liberar Fase. Fase avanza 28 unidades en la dirección elegida, gasta una de dos celdas, protege 0,45 s y se recupera en 2 s. Recarga una celda cada 8 s activos o al destruir un relé. Sin dirección, salta hacia el lado opuesto. Las balizas azules son obligatorias: acércate y recógelas en orden. La siguiente se enciende tras cada descarga; un rayo activo impide recogerla. Destruir la flota no basta para completar la ruta."
+      "En las fases 1–30, los impactos cargan el Pulso y destruir un enemigo aporta más carga. Cada ocho bajas recuperas un punto de escudo. Compra mejoras permanentes con créditos. En 31–60, el ámbar avisa antes del rayo coral. Los prismas bloquean durante la descarga. Destruye relés verdes para quitar sus rayos y anclas cobrizas para liberar Fase. Fase avanza 28 unidades en la dirección elegida, gasta una de dos celdas, protege 0,45 s y se recupera en 2 s. Recarga una celda cada 8 s activos o al destruir un relé. Sin dirección, salta hacia el lado opuesto. Las balizas azules son obligatorias: acércate y recógelas en orden. La siguiente se enciende tras cada descarga; un rayo activo impide recogerla. Destruir la flota no basta para completar la ruta."
     ],
     "how": [
       "Flechas o A/D para moverte; mantén Espacio para disparar. E usa Pulso en 1–30 y Fase en 31–60.",
@@ -23654,12 +23631,11 @@
     "progression": [
       "Las 60 fases forman dos capítulos de 30, cada uno con seis tramos de cinco. Supera la última fase abierta para desbloquear la siguiente. En 31–60 también debes recoger las balizas azules en orden. Créditos, mejoras y fases abiertas se guardan en este navegador."
     ],
-    "designNote": "Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora.",
     "parent": "Gasta la energía ganada en Battle. Las mejoras permanecen entre fases. Colores rosa y violeta permanentes para casco y motores. Solo cosmético. 15 diamantes · permanente",
     "faq": [
       [
         "¿Cuántas oleadas tiene una fase?",
-        "Cada fase contiene una batalla y una formación. Las 60 fases forman dos capítulos de 30, cada uno con seis tramos de cinco. Supera la última fase abierta para desbloquear la siguiente. En 31–60 también debes recoger las balizas azules en orden. Créditos, mejoras y fases abiertas se guardan en este navegador."
+        "Cada fase contiene una batalla y una formación."
       ],
       [
         "¿Cómo aumentan las balas?",
@@ -23681,11 +23657,8 @@
   },
   "pt-BR": {
     "intro": "Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora.",
-    "story": [
-      "Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora."
-    ],
     "systems": [
-      "Em 1–30, abates carregam Pulso e cada oito restauram um escudo. Créditos compram melhorias permanentes. Em 31–60, o âmbar avisa antes do raio coral. Prismas bloqueiam tiros durante a descarga. Destrua relés verdes para remover seus raios e âncoras de cobre para liberar Fase. Fase move 28 unidades na direção escolhida, gasta uma de duas células, protege por 0,45 s e recupera em 2 s. Uma célula volta a cada 8 s ativos ou ao destruir um relé. Sem direção, salta para o lado oposto. As balizas azuis são obrigatórias: aproxime-se e colete em ordem. A próxima acende após cada descarga; um raio ativo impede a coleta. Destruir a frota não basta para concluir a rota."
+      "Nas fases 1–30, acertar um inimigo carrega o Pulso, e abatê-lo dá mais carga. A cada oito abates, você recupera um ponto de escudo. Créditos compram melhorias permanentes. Em 31–60, o âmbar avisa antes do raio coral. Prismas bloqueiam tiros durante a descarga. Destrua relés verdes para remover seus raios e âncoras de cobre para liberar Fase. Fase move 28 unidades na direção escolhida, gasta uma de duas células, protege por 0,45 s e recupera em 2 s. Uma célula volta a cada 8 s ativos ou ao destruir um relé. Sem direção, salta para o lado oposto. As balizas azuis são obrigatórias: aproxime-se e colete em ordem. A próxima acende após cada descarga; um raio ativo impede a coleta. Destruir a frota não basta para concluir a rota."
     ],
     "how": [
       "Setas ou A/D movem; segure Espaço para atirar. E usa Pulso em 1–30 e Fase em 31–60.",
@@ -23700,12 +23673,11 @@
     "progression": [
       "As 60 fases formam dois capítulos de 30, cada um com seis trechos de cinco. Vença a última fase aberta para liberar a próxima. Em 31–60, também colete os sinalizadores azuis em ordem. Créditos, melhorias e fases abertas ficam salvos neste navegador."
     ],
-    "designNote": "Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora.",
     "parent": "Gaste a energia ganha na Batalha. As melhorias permanecem entre as fases. Cores rosa e violeta permanentes no casco e motores. Apenas visual. 15 diamantes · permanente",
     "faq": [
       [
         "Quantas ondas há em uma fase?",
-        "Cada fase contém uma batalha e uma formação. As 60 fases formam dois capítulos de 30, cada um com seis trechos de cinco. Vença a última fase aberta para liberar a próxima. Em 31–60, também colete os sinalizadores azuis em ordem. Créditos, melhorias e fases abertas ficam salvos neste navegador."
+        "Cada fase contém uma batalha e uma formação."
       ],
       [
         "Como aumento as balas?",
@@ -23727,11 +23699,8 @@
   },
   "fr": {
     "intro": "Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores.",
-    "story": [
-      "Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores."
-    ],
     "systems": [
-      "En 1–30, les destructions chargent Impulsion ; huit restaurent un bouclier. Les crédits achètent des améliorations permanentes. En 31–60, les bords ambre annoncent le rayon corail. Les prismes bloquent pendant la décharge. Détruisez les relais verts pour supprimer leurs rayons et les ancres cuivrées pour libérer Phase. Phase déplace de 28 unités dans la direction choisie, coûte une des deux cellules, protège 0,45 s et récupère en 2 s. Une cellule revient toutes les 8 s actives ou par relais détruit. Sans direction, le saut part vers le côté opposé. Les balises bleues sont obligatoires : approchez et prenez-les dans l’ordre. La suivante s’allume après chaque décharge ; un rayon actif empêche sa collecte. Détruire la flotte ne suffit pas."
+      "Dans les niveaux 1 à 30, toucher un ennemi charge l’Impulsion, et le détruire la charge davantage. Tous les huit ennemis éliminés, vous récupérez un point de bouclier. Les crédits achètent des améliorations permanentes. En 31–60, les bords ambre annoncent le rayon corail. Les prismes bloquent pendant la décharge. Détruisez les relais verts pour supprimer leurs rayons et les ancres cuivrées pour libérer Phase. Phase déplace de 28 unités dans la direction choisie, coûte une des deux cellules, protège 0,45 s et récupère en 2 s. Une cellule revient toutes les 8 s actives ou par relais détruit. Sans direction, le saut part vers le côté opposé. Les balises bleues sont obligatoires : approchez et prenez-les dans l’ordre. La suivante s’allume après chaque décharge ; un rayon actif empêche sa collecte. Détruire la flotte ne suffit pas."
     ],
     "how": [
       "Flèches ou A/D pour bouger ; maintenez Espace pour tirer. E utilise Impulsion en 1–30 et Phase en 31–60.",
@@ -23746,12 +23715,11 @@
     "progression": [
       "Les 60 niveaux forment deux chapitres de 30, chacun en six groupes de cinq. Termine le dernier niveau ouvert pour débloquer le suivant. Dans les niveaux 31–60, collecte aussi les balises bleues dans l’ordre. Crédits, améliorations et niveaux ouverts restent enregistrés dans ce navigateur."
     ],
-    "designNote": "Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores.",
     "parent": "Dépense l'énergie gagnée en Battle. Les améliorations restent entre les niveaux. Coque et moteurs roses et violets permanents. Effet visuel uniquement. 15 diamants · permanent",
     "faq": [
       [
         "Combien de vagues contient un niveau?",
-        "Chaque niveau comprend un combat et une formation. Les 60 niveaux forment deux chapitres de 30, chacun en six groupes de cinq. Termine le dernier niveau ouvert pour débloquer le suivant. Dans les niveaux 31–60, collecte aussi les balises bleues dans l’ordre. Crédits, améliorations et niveaux ouverts restent enregistrés dans ce navigateur."
+        "Chaque niveau comprend un combat et une formation."
       ],
       [
         "Comment augmenter les tirs?",
@@ -23773,11 +23741,8 @@
   },
   "de": {
     "intro": "Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg.",
-    "story": [
-      "Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg."
-    ],
     "systems": [
-      "In 1–30 laden Abschüsse den Impuls; acht stellen einen Schild wieder her. Credits kaufen dauerhafte Upgrades. In 31–60 warnen bernsteinfarbene Ränder vor korallroten Strahlen. Prismen blocken während der Entladung. Zerstöre grüne Relais, um ihre Strahlen zu entfernen, und kupferne Anker, um Phase freizugeben. Phase versetzt dich 28 Einheiten in Eingaberichtung, kostet eine von zwei Zellen, schützt 0,45 s und erholt sich 2 s. Alle 8 aktiven Sekunden oder pro zerstörtem Relais kommt eine Zelle zurück. Ohne Richtung springst du zur Gegenseite. Blaue Baken sind Pflichtziele: Nähere dich und sammle sie der Reihe nach. Die nächste leuchtet nach jeder Entladung; ein aktiver Strahl verhindert das Einsammeln. Die Flotte allein zu besiegen reicht nicht."
+      "In den Stufen 1–30 laden Treffer den Impuls auf. Ein Abschuss bringt mehr Ladung. Je acht Abschüsse stellen einen Schildpunkt wieder her. Credits kaufen dauerhafte Upgrades. In 31–60 warnen bernsteinfarbene Ränder vor korallroten Strahlen. Prismen blocken während der Entladung. Zerstöre grüne Relais, um ihre Strahlen zu entfernen, und kupferne Anker, um Phase freizugeben. Phase versetzt dich 28 Einheiten in Eingaberichtung, kostet eine von zwei Zellen, schützt 0,45 s und erholt sich 2 s. Alle 8 aktiven Sekunden oder pro zerstörtem Relais kommt eine Zelle zurück. Ohne Richtung springst du zur Gegenseite. Blaue Baken sind Pflichtziele: Nähere dich und sammle sie der Reihe nach. Die nächste leuchtet nach jeder Entladung; ein aktiver Strahl verhindert das Einsammeln. Die Flotte allein zu besiegen reicht nicht."
     ],
     "how": [
       "Pfeile oder A/D bewegen, Leertaste halten feuert. E nutzt Impuls in 1–30 und Phase in 31–60.",
@@ -23792,12 +23757,11 @@
     "progression": [
       "Die 60 Stufen bilden zwei Kapitel mit je 30 Stufen und sechs Abschnitten zu je fünf. Schließe die zuletzt freigeschaltete Stufe ab, um die nächste zu öffnen. In 31–60 musst du auch die blauen Signalgeber der Reihe nach sammeln. Credits, Upgrades und Freischaltungen bleiben in diesem Browser gespeichert."
     ],
-    "designNote": "Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg.",
     "parent": "Gib die im Battle verdiente Energie aus. Verbesserungen bleiben zwischen den Stufen erhalten. Dauerhaft rosa-violette Hülle und Triebwerke. Nur kosmetisch. 15 Diamanten · dauerhaft",
     "faq": [
       [
         "Wie viele Wellen hat eine Stufe?",
-        "Jede Stufe enthält einen Kampf und eine Formation. Die 60 Stufen bilden zwei Kapitel mit je 30 Stufen und sechs Abschnitten zu je fünf. Schließe die zuletzt freigeschaltete Stufe ab, um die nächste zu öffnen. In 31–60 musst du auch die blauen Signalgeber der Reihe nach sammeln. Credits, Upgrades und Freischaltungen bleiben in diesem Browser gespeichert."
+        "Jede Stufe enthält einen Kampf und eine Formation."
       ],
       [
         "Wie bekomme ich mehr Munition?",
@@ -23819,11 +23783,8 @@
   },
   "it": {
     "intro": "Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora.",
-    "story": [
-      "Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora."
-    ],
     "systems": [
-      "In 1–30, le eliminazioni caricano Impulso e ogni otto ripristinano uno scudo. I crediti comprano potenziamenti permanenti. In 31–60, i bordi ambra avvisano prima del raggio corallo. I prismi bloccano durante la scarica. Distruggi i relè verdi per rimuovere i loro raggi e le ancore di rame per liberare Fase. Fase sposta di 28 unità nella direzione scelta, usa una di due celle, protegge per 0,45 s e recupera in 2 s. Una cella torna ogni 8 s attivi o per relè distrutto. Senza direzione, salta verso il lato opposto. I segnali blu sono obbligatori: avvicinati e raccoglili in ordine. Il successivo si accende dopo ogni scarica; un raggio attivo ne impedisce la raccolta. Distruggere la flotta non basta."
+      "Nei livelli 1–30, colpire un nemico carica l’Impulso e abbatterlo dà più carica. Ogni otto nemici abbattuti recuperi un punto scudo. I crediti comprano potenziamenti permanenti. In 31–60, i bordi ambra avvisano prima del raggio corallo. I prismi bloccano durante la scarica. Distruggi i relè verdi per rimuovere i loro raggi e le ancore di rame per liberare Fase. Fase sposta di 28 unità nella direzione scelta, usa una di due celle, protegge per 0,45 s e recupera in 2 s. Una cella torna ogni 8 s attivi o per relè distrutto. Senza direzione, salta verso il lato opposto. I segnali blu sono obbligatori: avvicinati e raccoglili in ordine. Il successivo si accende dopo ogni scarica; un raggio attivo ne impedisce la raccolta. Distruggere la flotta non basta."
     ],
     "how": [
       "Frecce o A/D muovono; tieni Spazio per sparare. E usa Impulso in 1–30 e Fase in 31–60.",
@@ -23838,12 +23799,11 @@
     "progression": [
       "Le 60 fasi formano due capitoli da 30, ciascuno con sei gruppi di cinque. Completa l’ultima fase aperta per sbloccare la successiva. In 31–60 raccogli anche i segnali blu nell’ordine indicato. Crediti, potenziamenti e fasi sbloccate restano salvati in questo browser."
     ],
-    "designNote": "Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora.",
     "parent": "Spendi l'energia ottenuta in Battaglia. I potenziamenti restano tra i livelli. Scafo e motori rosa-viola permanenti. Solo estetica. 15 diamanti · permanente",
     "faq": [
       [
         "Quante ondate ci sono in un livello?",
-        "Ogni fase contiene una battaglia e una formazione. Le 60 fasi formano due capitoli da 30, ciascuno con sei gruppi di cinque. Completa l’ultima fase aperta per sbloccare la successiva. In 31–60 raccogli anche i segnali blu nell’ordine indicato. Crediti, potenziamenti e fasi sbloccate restano salvati in questo browser."
+        "Ogni fase contiene una battaglia e una formazione."
       ],
       [
         "Come aumento i proiettili?",
@@ -23865,11 +23825,8 @@
   },
   "ru": {
     "intro": "Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры.",
-    "story": [
-      "Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры."
-    ],
     "systems": [
-      "В 1–30 победы заряжают Импульс; каждые восемь возвращают щит. Кредиты дают постоянные улучшения. В 31–60 янтарные границы предупреждают о коралловом луче. Призмы блокируют огонь при разряде. Разрушайте зелёные реле, чтобы убрать их лучи, и медные якоря, чтобы снять помехи Фазы. Фаза перемещает на 28 единиц по вводу, тратит одну из двух ячеек, защищает 0,45 с и восстанавливается 2 с. Ячейка возвращается за 8 активных секунд или за реле. Без направления прыжок идёт к противоположной стороне. Синие маяки обязательны: подойдите и соберите их по порядку. Следующий загорается после разряда; в активном луче сбор невозможен. Одной победы над флотом недостаточно."
+      "На этапах 1–30 попадания заряжают Импульс, а уничтожение противника даёт больше заряда. За каждые восемь уничтоженных противников восстанавливается одна единица щита. Кредиты дают постоянные улучшения. В 31–60 янтарные границы предупреждают о коралловом луче. Призмы блокируют огонь при разряде. Разрушайте зелёные реле, чтобы убрать их лучи, и медные якоря, чтобы снять помехи Фазы. Фаза перемещает на 28 единиц по вводу, тратит одну из двух ячеек, защищает 0,45 с и восстанавливается 2 с. Ячейка возвращается за 8 активных секунд или за реле. Без направления прыжок идёт к противоположной стороне. Синие маяки обязательны: подойдите и соберите их по порядку. Следующий загорается после разряда; в активном луче сбор невозможен. Одной победы над флотом недостаточно."
     ],
     "how": [
       "Стрелки или A/D — движение, удерживайте пробел для огня. E включает Импульс в 1–30 и Фазу в 31–60.",
@@ -23884,12 +23841,11 @@
     "progression": [
       "60 этапов разделены на две главы по 30, каждая из шести участков по пять этапов. Пройдите последний открытый этап, чтобы открыть следующий. На этапах 31–60 также соберите синие маяки по порядку. Кредиты, улучшения и открытые этапы сохраняются в этом браузере."
     ],
-    "designNote": "Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры.",
     "parent": "Тратьте энергию, заработанную в бою. Усиления сохраняются между этапами. Розово-фиолетовые корпус и двигатели навсегда. Только внешний вид. 15 алмазов · навсегда",
     "faq": [
       [
         "Сколько волн в одном этапе?",
-        "В каждом этапе один бой и одно построение противников. 60 этапов разделены на две главы по 30, каждая из шести участков по пять этапов. Пройдите последний открытый этап, чтобы открыть следующий. На этапах 31–60 также соберите синие маяки по порядку. Кредиты, улучшения и открытые этапы сохраняются в этом браузере."
+        "В каждом этапе один бой и одно построение противников."
       ],
       [
         "Как увеличить число снарядов?",
@@ -23911,11 +23867,8 @@
   },
   "hi": {
     "intro": "ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।",
-    "story": [
-      "ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।"
-    ],
     "systems": [
-      "1–30 में दुश्मन हराने से पल्स भरता है; हर आठ पर ढाल लौटती है। क्रेडिट से स्थायी सुधार लें। 31–60 में अंबर किनारे मूंगे रंग की किरण की चेतावनी हैं। डिस्चार्ज के दौरान प्रिज़्म गोली रोकते हैं। हरे रिले तोड़कर उनकी किरणें हटाएँ और ताँबे के एंकर तोड़कर फेज़ खोलें। फेज़ चुनी दिशा में 28 इकाई ले जाता है, दो में से एक सेल खर्च करता है, 0.45 सेकंड बचाता है और 2 सेकंड में फिर तैयार होता है। हर 8 सक्रिय सेकंड या रिले नष्ट करने पर एक सेल लौटता है। दिशा न देने पर विपरीत ओर छलाँग लगती है। नीले संकेत ज़रूरी लक्ष्य हैं: पास जाकर क्रम से लें। हर डिस्चार्ज के बाद अगला जलता है; सक्रिय किरण में उसे नहीं ले सकते। केवल बेड़ा हराने से मार्ग पूरा नहीं होता।"
+      "चरण 1–30 में दुश्मन पर गोली लगने से पल्स भरता है और उसे हराने से ज़्यादा चार्ज मिलता है। हर आठ दुश्मनों को हराने पर ढाल का एक खंड लौटता है। क्रेडिट से स्थायी सुधार लें। 31–60 में अंबर किनारे मूंगे रंग की किरण की चेतावनी हैं। डिस्चार्ज के दौरान प्रिज़्म गोली रोकते हैं। हरे रिले तोड़कर उनकी किरणें हटाएँ और ताँबे के एंकर तोड़कर फेज़ खोलें। फेज़ चुनी दिशा में 28 इकाई ले जाता है, दो में से एक सेल खर्च करता है, 0.45 सेकंड बचाता है और 2 सेकंड में फिर तैयार होता है। हर 8 सक्रिय सेकंड या रिले नष्ट करने पर एक सेल लौटता है। दिशा न देने पर विपरीत ओर छलाँग लगती है। नीले संकेत ज़रूरी लक्ष्य हैं: पास जाकर क्रम से लें। हर डिस्चार्ज के बाद अगला जलता है; सक्रिय किरण में उसे नहीं ले सकते। केवल बेड़ा हराने से मार्ग पूरा नहीं होता।"
     ],
     "how": [
       "तीर या A/D से चलें, गोली के लिए Space दबाए रखें। E से 1–30 में पल्स और 31–60 में फेज़ छलाँग लगाएँ।",
@@ -23930,12 +23883,11 @@
     "progression": [
       "60 चरणों के दो अध्याय हैं, हर अध्याय में 30 चरण और पाँच-पाँच चरणों के छह खंड हैं। अगला चरण खोलने के लिए आखिरी खुले चरण को पूरा करें। 31–60 में नीले बीकन भी क्रम से इकट्ठा करें। क्रेडिट, अपग्रेड और खुले चरण इसी ब्राउज़र में सहेजे जाते हैं।"
     ],
-    "designNote": "ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।",
     "parent": "बैटल में मिली ऊर्जा खर्च करें। अपग्रेड अगले स्टेज में भी बने रहते हैं। गुलाबी-बैंगनी ढाँचे और इंजन के रंग स्थायी रूप से खोलें। केवल रूप बदलता है। 15 हीरे · स्थायी",
     "faq": [
       [
         "एक स्टेज में कितनी लहरें हैं?",
-        "हर चरण में एक लड़ाई और एक दुश्मन दल होता है। 60 चरणों के दो अध्याय हैं, हर अध्याय में 30 चरण और पाँच-पाँच चरणों के छह खंड हैं। अगला चरण खोलने के लिए आखिरी खुले चरण को पूरा करें। 31–60 में नीले बीकन भी क्रम से इकट्ठा करें। क्रेडिट, अपग्रेड और खुले चरण इसी ब्राउज़र में सहेजे जाते हैं।"
+        "हर चरण में एक लड़ाई और एक दुश्मन दल होता है।"
       ],
       [
         "गोलियाँ कैसे बढ़ती हैं?",
@@ -23970,11 +23922,8 @@
       "رد الفعل"
     ],
     "intro": "قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق.",
-    "story": [
-      "قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق."
-    ],
     "systems": [
-      "في 1–30 يشحن التدمير النبضة؛ كل ثمانية يعيد درعاً. اشترِ تحسينات دائمة بالأرصدة. في 31–60 تحذّر الحواف الكهرمانية قبل الشعاع المرجاني. تحجب المنشورات الطلقات أثناء التفريغ. حطّم المرحّلات الخضراء لإزالة أشعتها والمراسي النحاسية لفك تشويش الطور. ينقلك الطور 28 وحدة باتجاه الإدخال، ويستهلك خلية من اثنتين ويحميك 0.45 ثانية ويتعافى خلال ثانيتين. تعود خلية كل 8 ثوانٍ نشطة أو عند تدمير مرحّل. دون اتجاه تقفز نحو الجانب المقابل. المنارات الزرقاء أهداف إلزامية: اقترب لجمعها بالترتيب. تضيء التالية بعد كل تفريغ، ويمنع الشعاع النشط جمعها. تدمير الأسطول وحده لا يكمل الطريق."
+      "في المراحل 1–30، تشحن إصابة العدو النبضة، وتدميره يمنح شحنًا أكبر. تستعيد وحدة درع واحدة بعد تدمير كل ثمانية أعداء. اشترِ تحسينات دائمة بالأرصدة. في 31–60 تحذّر الحواف الكهرمانية قبل الشعاع المرجاني. تحجب المنشورات الطلقات أثناء التفريغ. حطّم المرحّلات الخضراء لإزالة أشعتها والمراسي النحاسية لفك تشويش الطور. ينقلك الطور 28 وحدة باتجاه الإدخال، ويستهلك خلية من اثنتين ويحميك 0.45 ثانية ويتعافى خلال ثانيتين. تعود خلية كل 8 ثوانٍ نشطة أو عند تدمير مرحّل. دون اتجاه تقفز نحو الجانب المقابل. المنارات الزرقاء أهداف إلزامية: اقترب لجمعها بالترتيب. تضيء التالية بعد كل تفريغ، ويمنع الشعاع النشط جمعها. تدمير الأسطول وحده لا يكمل الطريق."
     ],
     "how": [
       "الأسهم أو A/D للحركة، واضغط مطولاً المسافة للإطلاق. E للنبضة في 1–30 وللقفزة الطورية في 31–60.",
@@ -23989,12 +23938,11 @@
     "progression": [
       "تتكون المراحل الستون من فصلين، كل منهما 30 مرحلة في ست مجموعات من خمس. أكمل آخر مرحلة مفتوحة لفتح التالية. في 31–60 اجمع أيضاً المنارات الزرقاء بالترتيب. تبقى الاعتمادات والترقيات والمراحل المفتوحة محفوظة في هذا المتصفح."
     ],
-    "designNote": "قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق.",
     "parent": "أنفق الطاقة التي تكسبها في المعركة. تبقى الترقيات بين المراحل. ألوان وردية وبنفسجية دائمة للهيكل والمحركات. تغيير تجميلي فقط. 15 ألماسة · دائم",
     "faq": [
       [
         "كم موجة في كل مرحلة؟",
-        "تضم كل مرحلة معركة واحدة وتشكيلًا واحدًا. تتكون المراحل الستون من فصلين، كل منهما 30 مرحلة في ست مجموعات من خمس. أكمل آخر مرحلة مفتوحة لفتح التالية. في 31–60 اجمع أيضاً المنارات الزرقاء بالترتيب. تبقى الاعتمادات والترقيات والمراحل المفتوحة محفوظة في هذا المتصفح."
+        "تضم كل مرحلة معركة واحدة وتشكيلًا واحدًا."
       ],
       [
         "كيف أزيد الرصاص؟",
@@ -24017,7 +23965,12 @@
 };
   for (const [code, guide] of Object.entries(alienV63GuideCopy)) {
     localizedGames[code] ||= {};
-    localizedGames[code]["alien-defender"] = { ...(localizedGames[code]["alien-defender"] || games["alien-defender"]), ...guide };
+    localizedGames[code]["alien-defender"] = {
+      ...(localizedGames[code]["alien-defender"] || games["alien-defender"]),
+      ...guide,
+      story: [],
+      designNote: "",
+    };
   }
   games["animal-cloudhook-courier"] = {
     title: "Cloudhook Courier",
