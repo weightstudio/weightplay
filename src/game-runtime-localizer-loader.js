@@ -2,7 +2,7 @@
   const base = new URL(".", document.currentScript?.src || document.baseURI).href;
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   if (gameId === "animal-cratebound" && document.body?.dataset.wpInterfaceVersion !== "9" && !document.querySelector('script[data-wp-cratebound-interface7-preload]')) {
-    const preload = new URL("../games/animal-cratebound/interface-7-preload.js?v=20260923-cratebound-interface7-preload1&wp-media=85138c1bb958755e", base).href;
+    const preload = new URL("../games/animal-cratebound/interface-7-preload.js?v=20260923-cratebound-interface7-preload1&wp-media=ce7525cf45c7a0b6", base).href;
     document.write(`<script src="${preload}" data-wp-cratebound-interface7-preload><\/script>`);
   }
 
@@ -24,5 +24,5 @@
   }[locale];
   if (!segment) return;
   document.write(`<script src="${base}runtime-locales/${segment}.js?v=20260910-auto-squad-relic-free-v1"><\/script>`);
-  document.write(`<script src="${base}game-runtime-localizer.js?v=20260721-pattern1&wp-media=85138c1bb958755e"><\/script>`);
+  document.write(`<script src="${base}game-runtime-localizer.js?v=20260721-pattern1&wp-media=ce7525cf45c7a0b6"><\/script>`);
 })();

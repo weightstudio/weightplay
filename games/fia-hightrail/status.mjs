@@ -1,4 +1,4 @@
-import {format} from './feedback-locales.mjs?wp-media=85138c1bb958755e';
+import {format} from './feedback-locales.mjs?wp-media=ce7525cf45c7a0b6';
 export function terrainStatus(sim,t){
  if(sim.catchMotion)return t.checkpoint;
  if(sim.motion)return t.moving;

@@ -862,7 +862,12 @@
       this.notifyMeasurement();
     }
     t(key, params) { const copy = COMMON[this.locale] || COMMON.en; return text(copy[key] || COMMON.en[key] || key, params); }
-    variantCopy() { const copy = VARIANTS[this.config.variant] || VARIANTS.freecell; return { title: copy.titles[this.locale] || copy.titles.en, target: copy.target[this.locale] || copy.target.en }; }
+    variantCopy() {
+      const copy = VARIANTS[this.config.variant] || VARIANTS.freecell;
+      const search = document.head.dataset;
+      const routeName = search.wpSearchLocale === this.locale ? search.wpSearchName : "";
+      return { title: routeName || copy.titles[this.locale] || copy.titles.en, target: copy.target[this.locale] || copy.target.en };
+    }
     resetYukonCoach() { this.yukonCoachRetired = false; this.yukonCoachMove = null; }
     resetYukonRecovery() { this.yukonHintArmed = false; this.yukonHintBaseline = null; this.yukonHintStallMoves = 0; this.yukonRecoveryShown = false; }
     yukonProgressSnapshot() {

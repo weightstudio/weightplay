@@ -65,8 +65,8 @@ Games with local saves keep progress in the current browser.
 - Leafskip: https://weightplay.com/en/games/leafskip/ — Hop a leaf cutter across Rux’s greenhouse. Collect stamped seed packets and choose when to land.
 - Moonlit Atrium: https://weightplay.com/en/games/moonlit-atrium/ — Place moon lanterns to light every floor. Match the pillars without letting lanterns shine on each other.
 - Starcamp Glade: https://weightplay.com/en/games/starcamp-glade/ — Give every tree its own tent. Read the counts and leave quiet space between camps.
-- Tideweave: https://weightplay.com/en/games/tideweave/ — Weave a connected island network across 60 original bridge puzzles with Nori.
-- Duskbloom: https://weightplay.com/en/games/duskbloom/ — Balance two lanterns, trace their links and brighten 60 original gardens.
+- Tideweave: https://weightplay.com/en/games/tideweave/ — Join numbered islands with single or double bridges. Match each island’s bridge count and connect them all without crossing any bridges.
+- Duskbloom: https://weightplay.com/en/games/duskbloom/ — Solve a two-color logic puzzle. Use both lantern colors equally in each row and column. Never place three matching lanterns consecutively.
 - Hearthloop: https://weightplay.com/en/games/hearthloop/ — Roll the dice, buy properties and collect rent in a board game. Own matching lots to build houses and keep enough cash for rent and taxes.
 - Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/ — Guide Taro through the garden. Sweep dry dust, brush damp patches and deliver every load to a depot.
 - Rux Salvage Yard: https://weightplay.com/en/games/rux-salvage-yard/ — Aim at supports and recover reusable parts as structures fall.

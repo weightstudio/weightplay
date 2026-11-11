@@ -911,7 +911,9 @@
     const assetPath = (name) => ["peg-solitaire", "sliding-15"].includes(id) ? `/assets/${name}` : `../../assets/${name}`;
     document.documentElement.style.setProperty("--logic-accent", cfg.accent);
     document.body.dataset.logicGame = id;
-    const title = text(titles[id]);
+    const search = document.head.dataset;
+    const routeName = search.wpSearchLocale === locale ? search.wpSearchName : "";
+    const title = routeName || text(titles[id]);
     const undoLabel = id === "tower-of-hanoi"
       ? ({ it: "Annulla", hi: "पिछली चाल पूर्ववत करें", ar: "ألغِ الحركة السابقة" }[locale] || t("undo"))
       : t("undo");
@@ -1614,7 +1616,7 @@
         status: cleared ? text(slidingCampaignCopy.cleared) : locked ? text(slidingCampaignCopy.locked) : fillTemplate(text(slidingCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details,
-        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=85138c1bb958755e",
+        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=ce7525cf45c7a0b6",
         locked,
         cleared,
         stage: data.stage,
@@ -1645,7 +1647,7 @@
         status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details: [text(data.arc.rule)],
-        poster: "/assets/code-breaker-cover-v2.webp?wp-media=85138c1bb958755e",
+        poster: "/assets/code-breaker-cover-v2.webp?wp-media=ce7525cf45c7a0b6",
         locked,
         cleared,
       };
