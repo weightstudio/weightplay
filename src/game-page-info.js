@@ -4922,21 +4922,18 @@
     for (const [gameId, copy] of Object.entries(copies)) localizedGames[localeKey][gameId] = { ...(localizedGames[localeKey][gameId] || {}), ...copy };
   }
 
-  // Hexa Sort owns a complete public FAQ in every generated route. The
-  // runtime guide renderer starts from the shared six-question catalog for
-  // most locales, so keep the two additional public-value answers and the
-  // two questions that the runtime dictionaries do not translate here too.
+  // Keep Hexa Sort’s stage-count and save questions localized in the live Guide.
   const hexaSortFaqByLocale = Object.freeze({
-    en: { first: "How many stages are included?", save: "Is progress saved?", tail: [["Which controls and screen sizes are supported?", "The same game rules support touch, mouse, and keyboard where available; the layout scales across phone, landscape, and desktop screens."], ["Can progress move automatically to another device?", "No. Progress stays in this browser's local storage, so another device or browser profile starts separately."]] },
-    ja: { first: "ステージはいくつありますか？", save: "進行状況は保存されますか？", tail: [["どの操作方法と画面サイズに対応していますか？", "対応している場合、タッチ、マウス、キーボードは同じルールで使えます。画面はスマートフォン、横画面、デスクトップに合わせて拡大縮小されます。"], ["進行状況は別の端末に自動で移行しますか？", "いいえ。進行状況はブラウザのローカルストレージだけに保存されるため、別の端末やプロファイルでは別の進行状況になります。"]] },
-    ko: { first: "스테이지는 몇 개인가요?", save: "진행 상황이 저장되나요?", tail: [["어떤 조작 방식과 화면 크기를 지원하나요?", "지원하는 범위에서 터치, 마우스와 키보드는 같은 규칙으로 작동하며 화면은 휴대폰, 가로 화면과 데스크톱에 맞춰 조정됩니다."], ["진행 상황이 다른 기기로 자동 이동하나요?", "아니요. 진행 상황은 브라우저 로컬 저장소에만 보관되므로 다른 기기나 브라우저 프로필에서는 별도로 시작합니다."]] },
-    es: { first: "¿Cuántas fases hay?", save: "¿Se guarda el progreso?", tail: [["¿Qué controles y tamaños de pantalla son compatibles?", "Cuando están disponibles, el tacto, el ratón y el teclado siguen las mismas reglas; el diseño se adapta a móvil, apaisado y escritorio."], ["¿El progreso se transfiere automáticamente a otro dispositivo?", "No. El progreso permanece en el almacenamiento local de este navegador, así que otro dispositivo o perfil empieza por separado."]] },
-    "pt-BR": { first: "Quantas fases existem?", save: "O progresso é salvo?", tail: [["Quais controles e tamanhos de tela são compatíveis?", "Quando disponíveis, toque, mouse e teclado seguem as mesmas regras; o layout se adapta a celular, paisagem e desktop."], ["O progresso é transferido automaticamente para outro dispositivo?", "Não. O progresso fica no armazenamento local deste navegador, então outro dispositivo ou perfil começa separadamente."]] },
-    fr: { first: "Combien de niveaux sont inclus ?", save: "La progression est-elle sauvegardée ?", tail: [["Quels contrôles et quelles tailles d’écran sont pris en charge ?", "Lorsqu’ils sont disponibles, le tactile, la souris et le clavier suivent les mêmes règles ; la mise en page s’adapte au téléphone, au paysage et au bureau."], ["La progression est-elle transférée automatiquement vers un autre appareil ?", "Non. Elle reste dans le stockage local de ce navigateur ; un autre appareil ou profil démarre séparément."]] },
-    de: { first: "Wie viele Stufen gibt es?", save: "Wird der Fortschritt gespeichert?", tail: [["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Wenn verfügbar, folgen Touch, Maus und Tastatur denselben Regeln; das Layout passt sich an Smartphone, Querformat und Desktop an."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Der Fortschritt bleibt im lokalen Speicher dieses Browsers; ein anderes Gerät oder Profil beginnt getrennt."]] },
-    it: { first: "Quanti livelli sono inclusi?", save: "I progressi vengono salvati?", tail: [["Quali controlli e dimensioni dello schermo sono supportati?", "Quando disponibili, tocco, mouse e tastiera seguono le stesse regole; il layout si adatta a telefono, orizzontale e desktop."], ["I progressi vengono trasferiti automaticamente su un altro dispositivo?", "No. Restano nell’archiviazione locale di questo browser, quindi un altro dispositivo o profilo parte separatamente."]] },
-    ru: { first: "Сколько этапов включено?", save: "Сохраняется ли прогресс?", tail: [["Какие способы управления и размеры экрана поддерживаются?", "Если они доступны, сенсорное управление, мышь и клавиатура работают по одним правилам; макет адаптируется к телефону, альбомной ориентации и компьютеру."], ["Прогресс автоматически переносится на другое устройство?", "Нет. Он хранится в локальном хранилище этого браузера, поэтому другое устройство или профиль начинает отдельно."]] },
-    hi: { first: "कितने चरण शामिल हैं?", save: "क्या प्रगति सहेजी जाती है?", tail: [["कौन-से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "जहाँ उपलब्ध हों, टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फोन, लैंडस्केप और डेस्कटॉप के अनुसार ढलता है।"], ["क्या प्रगति अपने-आप दूसरे डिवाइस पर चली जाती है?", "नहीं। प्रगति इसी ब्राउज़र के स्थानीय संग्रहण में रहती है, इसलिए दूसरा डिवाइस या प्रोफ़ाइल अलग से शुरू होता है।"]] },
+    en: { first: "How many stages are included?", save: "Is progress saved?" },
+    ja: { first: "ステージはいくつありますか？", save: "進行状況は保存されますか？" },
+    ko: { first: "스테이지는 몇 개인가요?", save: "진행 상황이 저장되나요?" },
+    es: { first: "¿Cuántas fases hay?", save: "¿Se guarda el progreso?" },
+    "pt-BR": { first: "Quantas fases existem?", save: "O progresso é salvo?" },
+    fr: { first: "Combien de niveaux sont inclus ?", save: "La progression est-elle sauvegardée ?" },
+    de: { first: "Wie viele Stufen gibt es?", save: "Wird der Fortschritt gespeichert?" },
+    it: { first: "Quanti livelli sono inclusi?", save: "I progressi vengono salvati?" },
+    ru: { first: "Сколько этапов включено?", save: "Сохраняется ли прогресс?" },
+    hi: { first: "कितने चरण शामिल हैं?", save: "क्या प्रगति सहेजी जाती है?" },
   });
   const ginRummyLocalizedCopy = {
     en: {
@@ -10815,11 +10812,11 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      const spanishResourceVersion = currentGameId() === "beast-tactician"
-        ? "20261011-beast-guide-facts-v2"
-        : currentGameId() === "animal-gearpack-expedition"
-          ? "20261003-gearpack-text140-v5"
-          : "20261001-fruit-garden-text140-v1";
+      const spanishResourceVersion = {
+        "beast-tactician": "20261011-beast-guide-facts-v2",
+        "animal-gearpack-expedition": "20261003-gearpack-text140-v5",
+        "animal-rune-reels": "20261112-search20-faq-cleanup",
+      }[currentGameId()] || "20261001-fruit-garden-text140-v1";
       script.src = new URL(`game-page-info-es.js?v=${spanishResourceVersion}`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
@@ -11597,7 +11594,6 @@
       if (faqFix && faq.length) {
         if (faqFix.first && faq[0]) faq[0][0] = faqFix.first;
         if (faqFix.save && faq[5]) faq[5][0] = faqFix.save;
-        if (faqFix.tail?.length && faq.length < 8) faq.push(...faqFix.tail.slice(0, 8 - faq.length));
       }
       translated.faq = faq;
     }
@@ -20375,7 +20371,7 @@
     progression: ["六個五關戰役章節會增加波次長度與守護者組合。每日任務偏重金幣或材料，活動則依畫面顯示的排程輪換。", "英雄名冊與符文成長會擴大策略選擇，但不會改變清楚可讀的三轉輪結算順序。"],
     designNote: "轉輪固定依可見順序停止，完整符文列會在結算前發光，英雄行動也會與召喚師合併的防禦和治療總量分開呈現。完整介面使用最大寬度 920 像素的置中單一邏輯版面；手機、橫向與桌面會一起縮放相同的控制項、點擊區、美術與遊戲座標。",
     parent: "不需要帳號。英雄名冊、戰役進度、貨幣、材料、符文等級與獎勵領取紀錄都儲存在此瀏覽器。清除網站資料或更換瀏覽器可能會建立獨立存檔。",
-    faq: [["相同符文列會做什麼？", "三列轉輪全部停止後，相同列會讓該符文能力加倍。"], ["所有英雄共用一次攻擊嗎？", "不會。英雄會分別攻擊；隊伍防禦與治療則會合併給召喚師。"], ["離開戰鬥會怎樣？", "永久背包內容會保留，但目前的戰鬥嘗試會失去。"], ["活動獎勵總是可以取得嗎？", "不一定。活動任務依關卡頁顯示的排程開放。"], ["支援哪些控制方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。"], ["進度會自動移到其他裝置嗎？", "不會。進度目前只儲存在本機瀏覽器，其他設定檔或裝置會有獨立進度。"], ["召喚師的護盾會持續多久？", "護盾只在目前回合抵擋敵人傷害，上限為召喚師最大生命值的 35%；回合結束時，未消耗的護盾會消失。"]]
+    faq: [["相同符文列會做什麼？", "三列轉輪全部停止後，相同列會讓該符文能力加倍。"], ["所有英雄共用一次攻擊嗎？", "不會。英雄會分別攻擊；隊伍防禦與治療則會合併給召喚師。"], ["離開戰鬥會怎樣？", "永久背包內容會保留，但目前的戰鬥嘗試會失去。"], ["活動獎勵總是可以取得嗎？", "不一定。活動任務依關卡頁顯示的排程開放。"], ["召喚師的護盾會持續多久？", "護盾只在目前回合抵擋敵人傷害，上限為召喚師最大生命值的 35%；回合結束時，未消耗的護盾會消失。"]]
   };
   localizedGames["zh-Hans"] ||= {};
   localizedGames["zh-Hans"]["animal-rune-reels"] = {
@@ -20390,7 +20386,7 @@
     progression: ["六个五关战役章节会增加波次长度与守护者组合。每日任务偏重金币或材料，活动则依画面显示的排程轮换。", "英雄名册与符文成长会扩大策略选择，但不会改变清楚可读的三转轮结算顺序。"],
     designNote: "转轮固定依可见顺序停止，完整符文列会在结算前发光，英雄行动也会与召唤师合并的防御和治疗总量分开呈现。完整界面使用最大宽度 920 像素的居中单一逻辑版面；手机、横向与桌面会一起缩放相同的控制项、点击区、美术与游戏坐标。",
     parent: "不需要账号。英雄名册、战役进度、货币、材料、符文等级与奖励领取记录都保存在此浏览器。清除网站数据或更换浏览器可能会建立独立存档。",
-    faq: [["相同符文列会做什么？", "三列转轮全部停止后，相同列会让该符文能力加倍。"], ["所有英雄共用一次攻击吗？", "不会。英雄会分别攻击；队伍防御与治疗则会合并给召唤师。"], ["离开战斗会怎样？", "永久背包内容会保留，但当前的战斗尝试会丢失。"], ["活动奖励总是可以取得吗？", "不一定。活动任务依关卡页显示的排程开放。"], ["支持哪些控制方式与屏幕尺寸？", "游戏支持触控、鼠标与键盘；界面会在手机、横向与桌面窗口中以单一逻辑版面缩放。"], ["进度会自动移到其他设备吗？", "不会。进度目前只保存在本地浏览器，其他配置文件或设备会有独立进度。"], ["召唤师的护盾会持续多久？", "护盾只在当前回合抵挡敌人伤害，上限为召唤师最大生命值的 35%；回合结束时，未消耗的护盾会消失。"]]
+    faq: [["相同符文列会做什么？", "三列转轮全部停止后，相同列会让该符文能力加倍。"], ["所有英雄共用一次攻击吗？", "不会。英雄会分别攻击；队伍防御与治疗则会合并给召唤师。"], ["离开战斗会怎样？", "永久背包内容会保留，但当前的战斗尝试会丢失。"], ["活动奖励总是可以取得吗？", "不一定。活动任务依关卡页显示的排程开放。"], ["召唤师的护盾会持续多久？", "护盾只在当前回合抵挡敌人伤害，上限为召唤师最大生命值的 35%；回合结束时，未消耗的护盾会消失。"]]
   };
   localizedGames["ja"] ||= {};
   localizedGames["ja"]["animal-rune-reels"] = {
@@ -20405,7 +20401,7 @@
     progression: ["5ステージずつの6章でウェーブの長さと守護者の組み合わせが増えます。デイリーはコインや素材を重視し、イベントは表示された予定で入れ替わります。", "ヒーローとルーンの成長は戦略の選択肢を広げますが、3列リールの分かりやすい解決順は変わりません。"],
     designNote: "リールは固定された見た目の順で止まり、完成した列は解決前に光ります。ヒーローの行動は、召喚士に合算される防御と回復の合計とは分けて表示されます。インターフェースは最大幅920ピクセルの中央揃え論理レイアウトで、スマートフォン、横画面、デスクトップの操作部と座標を一緒に拡大縮小します。",
     parent: "アカウントは必要ありません。ヒーロー、キャンペーン進行、通貨、素材、ルーンレベル、報酬の受け取りはこのブラウザに保存されます。サイトデータを消去したりブラウザを変えたりすると別のセーブになる場合があります。",
-    faq: [["同じルーンの列は何をしますか？", "3列のリールがすべて止まると、そのルーンの能力が2倍になります。"], ["ヒーローは1回だけ攻撃しますか？", "いいえ。ヒーローは個別に攻撃し、防御と回復は召喚士用に合算されます。"], ["バトルを離れるとどうなりますか？", "恒久的な所持品は残りますが、現在のバトル挑戦は失われます。"], ["イベント報酬はいつでも受け取れますか？", "いいえ。イベントミッションはStageに表示された予定に従います。"], ["対応する操作と画面サイズは？", "タッチ、マウス、キーボードに対応し、スマートフォン、横画面、デスクトップで同じ論理レイアウトを使います。"], ["進行状況は別の端末へ移りますか？", "いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。"], ["召喚士のシールドはいつまで続きますか？", "敵から受けるダメージをそのターン中だけ防ぎます。上限は召喚士の最大HPの35%で、ターン終了時に残ったシールドは消えます。"]]
+    faq: [["同じルーンの列は何をしますか？", "3列のリールがすべて止まると、そのルーンの能力が2倍になります。"], ["ヒーローは1回だけ攻撃しますか？", "いいえ。ヒーローは個別に攻撃し、防御と回復は召喚士用に合算されます。"], ["バトルを離れるとどうなりますか？", "恒久的な所持品は残りますが、現在のバトル挑戦は失われます。"], ["イベント報酬はいつでも受け取れますか？", "いいえ。イベントミッションはStageに表示された予定に従います。"], ["召喚士のシールドはいつまで続きますか？", "敵から受けるダメージをそのターン中だけ防ぎます。上限は召喚士の最大HPの35%で、ターン終了時に残ったシールドは消えます。"]]
   };
 
   registerExpandedGuide("animal-sketchwheel-rally", {
@@ -20863,7 +20859,7 @@
     progression: ["5스테이지씩 구성된 6개 챕터에서 웨이브 길이와 수호자 조합이 늘어납니다. 일일 임무는 코인이나 재료를 강조하고 이벤트는 표시된 일정에 따라 바뀝니다.", "영웅과 룬의 성장은 전략 선택을 넓히지만 읽기 쉬운 세 릴 처리 순서는 바꾸지 않습니다."],
     designNote: "릴은 고정된 시각 순서로 멈추고, 완성된 줄은 처리 전에 빛납니다. 영웅 행동은 소환사에게 합산되는 방어 및 회복 총량과 분리되어 표시됩니다. 인터페이스는 최대 920픽셀의 중앙 정렬 논리 레이아웃을 사용하며 휴대폰, 가로 화면, 데스크톱에서 컨트롤과 게임 좌표를 함께 확대합니다.",
     parent: "계정은 필요하지 않습니다. 영웅, 캠페인 진행, 재화, 재료, 룬 레벨과 보상 기록은 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 별도 저장이 생길 수 있습니다.",
-    faq: [["같은 룬 줄은 무엇을 하나요?", "세 릴이 모두 멈춘 뒤 해당 룬 능력을 두 배로 만듭니다."], ["영웅이 한 번에 함께 공격하나요?", "아니요. 영웅은 각각 공격하고 방어와 회복은 소환사에게 합산됩니다."], ["전투를 나가면 어떻게 되나요?", "영구 보관물은 남지만 현재 전투 시도는 사라집니다."], ["이벤트 보상은 언제나 받을 수 있나요?", "아니요. 이벤트 임무는 Stage에 표시된 일정에 따릅니다."], ["어떤 조작과 화면 크기를 지원하나요?", "터치·마우스·키보드를 지원하며 휴대폰, 가로 화면과 데스크톱에서 같은 논리 레이아웃을 사용합니다."], ["진행도가 다른 기기로 자동 이동하나요?", "아니요. 현재는 브라우저에만 저장되므로 다른 프로필이나 기기에는 별도 진행도가 생깁니다."], ["소환사의 보호막은 얼마나 지속되나요?", "그 턴에 받는 적의 피해만 막습니다. 최대치는 소환사의 최대 HP의 35%이며, 턴이 끝날 때 남은 보호막은 사라집니다."]]
+    faq: [["같은 룬 줄은 무엇을 하나요?", "세 릴이 모두 멈춘 뒤 해당 룬 능력을 두 배로 만듭니다."], ["영웅이 한 번에 함께 공격하나요?", "아니요. 영웅은 각각 공격하고 방어와 회복은 소환사에게 합산됩니다."], ["전투를 나가면 어떻게 되나요?", "영구 보관물은 남지만 현재 전투 시도는 사라집니다."], ["이벤트 보상은 언제나 받을 수 있나요?", "아니요. 이벤트 임무는 Stage에 표시된 일정에 따릅니다."], ["소환사의 보호막은 얼마나 지속되나요?", "그 턴에 받는 적의 피해만 막습니다. 최대치는 소환사의 최대 HP의 35%이며, 턴이 끝날 때 남은 보호막은 사라집니다."]]
   };
   localizedGames["es"] ||= {};
   localizedGames["es"]["animal-rune-reels"] = {
@@ -20878,7 +20874,7 @@
     progression: ["Los seis capítulos de cinco etapas aumentan la longitud de las oleadas y las combinaciones de guardianes. Las misiones diarias destacan monedas o materiales y los eventos rotan según el horario mostrado.", "El crecimiento del elenco y las runas amplía las opciones estratégicas sin cambiar el orden legible de las tres ruletas."],
     designNote: "Las ruletas se detienen en un orden visual fijo, las líneas completas brillan antes de resolverse y las acciones de los héroes se mantienen separadas de los totales combinados de defensa y curación del invocador. La interfaz usa un diseño lógico centrado de 920 píxeles como máximo y escala juntos controles y coordenadas en móvil, horizontal y escritorio.",
     parent: "No se necesita cuenta. El elenco, la campaña, las monedas, los materiales, los niveles de runa y las recompensas se guardan localmente en este navegador. Borrar los datos del sitio o cambiar de navegador puede crear otro guardado.",
-    faq: [["¿Qué hace una línea de runas iguales?", "Duplica esa habilidad cuando se detienen las tres ruletas."], ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."], ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."], ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."], ["¿Qué controles y tamaños de pantalla se admiten?", "Toque, ratón y teclado usan las mismas reglas y el diseño lógico se adapta a móvil, horizontal y escritorio."], ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Solo se guarda en el navegador; otro perfil o dispositivo tiene progreso independiente."], ["¿Cuánto dura el escudo del invocador?", "Bloquea el daño enemigo solo durante ese turno. Su límite es el 35 % de la vida máxima del invocador; el escudo restante desaparece al terminar el turno."]]
+    faq: [["¿Qué hace una línea de runas iguales?", "Duplica esa habilidad cuando se detienen las tres ruletas."], ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."], ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."], ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."], ["¿Cuánto dura el escudo del invocador?", "Bloquea el daño enemigo solo durante ese turno. Su límite es el 35 % de la vida máxima del invocador; el escudo restante desaparece al terminar el turno."]]
   };
   localizedGames["pt-BR"] ||= {};
   localizedGames["pt-BR"]["animal-rune-reels"] = {
@@ -20893,7 +20889,7 @@
     progression: ["Os seis capítulos de cinco fases aumentam o tamanho das ondas e as combinações de guardiões. Missões diárias destacam moedas ou materiais e eventos alternam conforme o horário exibido.", "O crescimento do elenco e das runas amplia as opções estratégicas sem mudar a ordem clara das três roletas."],
     designNote: "As roletas param em uma ordem visual fixa, linhas completas brilham antes de resolver e as ações dos heróis ficam separadas dos totais combinados de defesa e cura do invocador. A interface usa um layout lógico centralizado de no máximo 920 pixels e escala controles e coordenadas juntos no celular, na horizontal e no desktop.",
     parent: "Não é preciso criar conta. Elenco, campanha, moedas, materiais, níveis de runa e recompensas ficam salvos localmente neste navegador. Limpar os dados do site ou trocar de navegador pode criar outro salvamento.",
-    faq: [["O que uma linha de runas iguais faz?", "Ela dobra a habilidade quando as três roletas param."], ["Os heróis compartilham um ataque?", "Não. Eles atacam separadamente; defesa e cura da equipe são combinadas para o invocador."], ["O que acontece se eu sair da Battle?", "O inventário permanente fica, mas a tentativa de batalha atual é perdida."], ["As recompensas de evento estão sempre disponíveis?", "Não. As missões de evento seguem o horário exibido em Stage."], ["Quais controles e tamanhos de tela são aceitos?", "Toque, mouse e teclado usam as mesmas regras e o layout lógico se adapta ao celular, horizontal e desktop."], ["O progresso vai automaticamente para outro dispositivo?", "Não. Ele fica apenas no navegador; outro perfil ou dispositivo terá progresso separado."], ["Por quanto tempo dura o escudo do invocador?", "Ele bloqueia o dano inimigo apenas naquele turno. O limite é 35% da vida máxima do invocador; qualquer escudo restante desaparece no fim do turno."]]
+    faq: [["O que uma linha de runas iguais faz?", "Ela dobra a habilidade quando as três roletas param."], ["Os heróis compartilham um ataque?", "Não. Eles atacam separadamente; defesa e cura da equipe são combinadas para o invocador."], ["O que acontece se eu sair da Battle?", "O inventário permanente fica, mas a tentativa de batalha atual é perdida."], ["As recompensas de evento estão sempre disponíveis?", "Não. As missões de evento seguem o horário exibido em Stage."], ["Por quanto tempo dura o escudo do invocador?", "Ele bloqueia o dano inimigo apenas naquele turno. O limite é 35% da vida máxima do invocador; qualquer escudo restante desaparece no fim do turno."]]
   };
   localizedGames["fr"] ||= {};
   localizedGames["fr"]["animal-rune-reels"] = {
@@ -20908,7 +20904,7 @@
     progression: ["Les six chapitres de cinq étapes augmentent la longueur des vagues et les combinaisons de gardiens. Les missions quotidiennes privilégient pièces ou matériaux et les événements suivent le calendrier affiché.", "La progression des héros et des runes élargit les choix sans changer l’ordre lisible de résolution des trois roues."],
     designNote: "Les roues s’arrêtent dans un ordre visuel fixe, les lignes complètes brillent avant leur résolution et les actions des héros restent distinctes des totaux combinés de défense et de soins de l’invocateur. L’interface utilise une mise en page logique centrée de 920 pixels maximum et agrandit ensemble contrôles et coordonnées sur mobile, en paysage et sur ordinateur.",
     parent: "Aucun compte n’est nécessaire. Héros, campagne, monnaies, matériaux, niveaux de runes et récompenses restent enregistrés dans ce navigateur. Effacer les données du site ou changer de navigateur peut créer une sauvegarde distincte.",
-    faq: [["Que fait une ligne de runes identiques ?", "Elle double cette capacité quand les trois roues sont arrêtées."], ["Les héros partagent-ils une attaque ?", "Non. Ils attaquent séparément ; défense et soins de l’équipe sont additionnés pour l’invocateur."], ["Que se passe-t-il si je quitte Battle ?", "L’inventaire permanent reste, mais la tentative actuelle est perdue."], ["Les récompenses d’événement sont-elles toujours disponibles ?", "Non. Les missions d’événement suivent le calendrier affiché dans Stage."], ["Quels contrôles et écrans sont pris en charge ?", "Tactile, souris et clavier suivent les mêmes règles ; la mise en page logique s’adapte au mobile, au paysage et à l’ordinateur."], ["La progression passe-t-elle automatiquement sur un autre appareil ?", "Non. Elle reste dans le navigateur ; un autre profil ou appareil aura sa propre progression."], ["Combien de temps dure le bouclier de l’invocateur ?", "Il bloque les dégâts ennemis pendant ce tour uniquement. Son plafond est de 35 % des PV max. de l’invocateur ; tout bouclier restant disparaît à la fin du tour."]]
+    faq: [["Que fait une ligne de runes identiques ?", "Elle double cette capacité quand les trois roues sont arrêtées."], ["Les héros partagent-ils une attaque ?", "Non. Ils attaquent séparément ; défense et soins de l’équipe sont additionnés pour l’invocateur."], ["Que se passe-t-il si je quitte Battle ?", "L’inventaire permanent reste, mais la tentative actuelle est perdue."], ["Les récompenses d’événement sont-elles toujours disponibles ?", "Non. Les missions d’événement suivent le calendrier affiché dans Stage."], ["Combien de temps dure le bouclier de l’invocateur ?", "Il bloque les dégâts ennemis pendant ce tour uniquement. Son plafond est de 35 % des PV max. de l’invocateur ; tout bouclier restant disparaît à la fin du tour."]]
   };
   localizedGames["de"] ||= {};
   localizedGames["de"]["animal-rune-reels"] = {
@@ -20923,7 +20919,7 @@
     progression: ["Sechs Kapitel mit je fünf Abschnitten erhöhen Wellenlänge und Wächterkombinationen. Tagesmissionen betonen Münzen oder Materialien, Events wechseln nach dem angezeigten Zeitplan.", "Helden- und Runenwachstum erweitert die Strategie, ohne die gut lesbare Auflösungsreihenfolge der drei Räder zu ändern."],
     designNote: "Die Räder halten in einer festen visuellen Reihenfolge an, vollständige Reihen leuchten vor der Auflösung und Heldenaktionen bleiben von den addierten Verteidigungs- und Heilwerten des Beschwörers getrennt. Die Oberfläche nutzt ein zentriertes logisches Layout mit höchstens 920 Pixeln und skaliert Steuerung und Koordinaten auf Handy, Querformat und Desktop gemeinsam.",
     parent: "Ein Konto ist nicht erforderlich. Helden, Kampagne, Währungen, Materialien, Runenstufen und Belohnungen werden in diesem Browser gespeichert. Das Löschen von Websitedaten oder ein Browserwechsel kann einen separaten Spielstand erzeugen.",
-    faq: [["Was bewirkt eine gleiche Runenreihe?", "Sie verdoppelt diese Fähigkeit, sobald alle drei Räder angehalten sind."], ["Teilen sich die Helden einen Angriff?", "Nein. Helden greifen einzeln an; Teamverteidigung und Heilung werden für den Beschwörer addiert."], ["Was passiert beim Verlassen von Battle?", "Das permanente Inventar bleibt, aber der aktuelle Kampfversuch geht verloren."], ["Sind Eventbelohnungen immer verfügbar?", "Nein. Eventmissionen folgen dem in Stage angezeigten Zeitplan."], ["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; das logische Layout passt sich Handy, Querformat und Desktop an."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Er bleibt im Browser; ein anderes Profil oder Gerät erhält eigenen Fortschritt."], ["Wie lange hält der Schild des Beschwörers?", "Er blockt gegnerischen Schaden nur in diesem Zug. Die Obergrenze beträgt 35 % der maximalen LP des Beschwörers; übriger Schild verfällt am Zugende."]]
+    faq: [["Was bewirkt eine gleiche Runenreihe?", "Sie verdoppelt diese Fähigkeit, sobald alle drei Räder angehalten sind."], ["Teilen sich die Helden einen Angriff?", "Nein. Helden greifen einzeln an; Teamverteidigung und Heilung werden für den Beschwörer addiert."], ["Was passiert beim Verlassen von Battle?", "Das permanente Inventar bleibt, aber der aktuelle Kampfversuch geht verloren."], ["Sind Eventbelohnungen immer verfügbar?", "Nein. Eventmissionen folgen dem in Stage angezeigten Zeitplan."], ["Wie lange hält der Schild des Beschwörers?", "Er blockt gegnerischen Schaden nur in diesem Zug. Die Obergrenze beträgt 35 % der maximalen LP des Beschwörers; übriger Schild verfällt am Zugende."]]
   };
   localizedGames["it"] ||= {};
   localizedGames["it"]["animal-rune-reels"] = {
@@ -20938,7 +20934,7 @@
     progression: ["Sei capitoli da cinque fasi aumentano la durata delle ondate e le combinazioni di guardiani. Le missioni giornaliere privilegiano monete o materiali, gli eventi seguono il calendario mostrato.", "La crescita di eroi e rune amplia le scelte senza cambiare l’ordine leggibile di risoluzione dei tre rulli."],
     designNote: "I rulli si fermano in un ordine visivo fisso, le linee complete brillano prima della risoluzione e le azioni degli eroi restano separate dai totali combinati di difesa e cura dell’evocatore. L’interfaccia usa un layout logico centrato di massimo 920 pixel e scala insieme controlli e coordinate su telefono, orizzontale e desktop.",
     parent: "Non serve un account. Eroi, campagna, valute, materiali, livelli delle rune e ricompense restano salvati in questo browser. Cancellare i dati del sito o cambiare browser può creare un salvataggio separato.",
-    faq: [["Cosa fa una linea di rune uguali?", "Raddoppia quella capacità quando tutti e tre i rulli si fermano."], ["Gli eroi condividono un attacco?", "No. Attaccano separatamente; difesa e cura della squadra vengono sommate per l’evocatore."], ["Cosa succede se esco da Battle?", "L’inventario permanente resta, ma il tentativo di battaglia corrente viene perso."], ["Le ricompense degli eventi sono sempre disponibili?", "No. Le missioni evento seguono il calendario mostrato in Stage."], ["Quali controlli e dimensioni sono supportati?", "Touch, mouse e tastiera usano le stesse regole; il layout logico si adatta a telefono, orizzontale e desktop."], ["I progressi passano automaticamente a un altro dispositivo?", "No. Ora vengono salvati solo nel browser; un altro profilo o dispositivo avrà progressi separati."], ["Quanto dura lo scudo dell’evocatore?", "Blocca i danni nemici solo per quel turno. Il limite è il 35% dei PS massimi dell’evocatore; lo scudo residuo scompare alla fine del turno."]]
+    faq: [["Cosa fa una linea di rune uguali?", "Raddoppia quella capacità quando tutti e tre i rulli si fermano."], ["Gli eroi condividono un attacco?", "No. Attaccano separatamente; difesa e cura della squadra vengono sommate per l’evocatore."], ["Cosa succede se esco da Battle?", "L’inventario permanente resta, ma il tentativo di battaglia corrente viene perso."], ["Le ricompense degli eventi sono sempre disponibili?", "No. Le missioni evento seguono il calendario mostrato in Stage."], ["Quanto dura lo scudo dell’evocatore?", "Blocca i danni nemici solo per quel turno. Il limite è il 35% dei PS massimi dell’evocatore; lo scudo residuo scompare alla fine del turno."]]
   };
   localizedGames["ru"] ||= {};
   localizedGames["ru"]["animal-rune-reels"] = {
@@ -20953,7 +20949,7 @@
     progression: ["Шесть глав по пять этапов увеличивают длину волн и сочетания хранителей. Ежедневные миссии выделяют монеты или материалы, а события меняются по показанному расписанию.", "Рост героев и рун расширяет стратегию, не меняя понятный порядок разрешения трёх барабанов."],
     designNote: "Барабаны останавливаются в фиксированном визуальном порядке, полные линии светятся до разрешения, а действия героев отделены от объединённых показателей защиты и лечения призывателя. Интерфейс использует единую центрированную логическую раскладку шириной до 920 пикселей и вместе масштабирует управление и координаты на телефоне, в альбомном режиме и на компьютере.",
     parent: "Аккаунт не нужен. Герои, кампания, валюты, материалы, уровни рун и награды хранятся в этом браузере. Очистка данных сайта или смена браузера может создать отдельное сохранение.",
-    faq: [["Что делает линия одинаковых рун?", "После остановки всех трёх барабанов она удваивает способность этой руны."], ["Герои делят одну атаку?", "Нет. Герои атакуют отдельно, а защита и лечение команды суммируются для призывателя."], ["Что произойдёт, если выйти из Battle?", "Постоянный инвентарь сохранится, но текущая попытка боя будет потеряна."], ["Событийные награды доступны всегда?", "Нет. Событийные миссии следуют расписанию, показанному на Stage."], ["Какие способы управления и размеры экрана поддерживаются?", "Сенсорное управление, мышь и клавиатура используют одни правила; раскладка масштабируется на телефоне, в альбомном режиме и на компьютере."], ["Переносится ли прогресс на другое устройство автоматически?", "Нет. Сейчас он хранится только в браузере, поэтому другой профиль или устройство получит отдельный прогресс."], ["Как долго действует щит призывателя?", "Он блокирует урон врагов только в этом ходу. Предел — 35% от максимума здоровья призывателя; остаток щита исчезает в конце хода."]]
+    faq: [["Что делает линия одинаковых рун?", "После остановки всех трёх барабанов она удваивает способность этой руны."], ["Герои делят одну атаку?", "Нет. Герои атакуют отдельно, а защита и лечение команды суммируются для призывателя."], ["Что произойдёт, если выйти из Battle?", "Постоянный инвентарь сохранится, но текущая попытка боя будет потеряна."], ["Событийные награды доступны всегда?", "Нет. Событийные миссии следуют расписанию, показанному на Stage."], ["Как долго действует щит призывателя?", "Он блокирует урон врагов только в этом ходу. Предел — 35% от максимума здоровья призывателя; остаток щита исчезает в конце хода."]]
   };
   localizedGames["hi"] ||= {};
   localizedGames["hi"]["animal-rune-reels"] = {
@@ -20968,7 +20964,7 @@
     progression: ["पाँच-पाँच चरण वाले छह अध्याय लहर की लंबाई और संरक्षक संयोजन बढ़ाते हैं। दैनिक मिशन सिक्कों या सामग्री पर जोर देते हैं और कार्यक्रम दिखाए गए समय पर बदलते हैं।", "नायक और रूण की वृद्धि रणनीतिक विकल्प बढ़ाती है, लेकिन तीन रील के स्पष्ट समाधान क्रम को नहीं बदलती।"],
     designNote: "रील एक निश्चित दृश्य क्रम में रुकती हैं, पूरी हुई पंक्तियाँ हल होने से पहले चमकती हैं और नायक की क्रियाएँ बुलाने वाले की संयुक्त रक्षा व उपचार से अलग रहती हैं। इंटरफ़ेस अधिकतम 920 पिक्सेल वाले केंद्रित तार्किक लेआउट में फ़ोन, लैंडस्केप और डेस्कटॉप पर नियंत्रण व निर्देशांक साथ स्केल करता है।",
     parent: "खाते की आवश्यकता नहीं है। नायक, अभियान, मुद्रा, सामग्री, रूण स्तर और इनाम इसी ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने या ब्राउज़र बदलने पर अलग सेव बन सकती है।",
-    faq: [["समान रूण पंक्ति क्या करती है?", "तीनों रील रुकने के बाद वह उस रूण की क्षमता दोगुनी करती है।"], ["क्या नायक एक ही हमला साझा करते हैं?", "नहीं। नायक अलग-अलग हमला करते हैं; टीम रक्षा और उपचार बुलाने वाले के लिए जुड़ते हैं।"], ["Battle से निकलने पर क्या होगा?", "स्थायी सामान बचा रहता है, लेकिन वर्तमान युद्ध प्रयास खो जाता है।"], ["क्या कार्यक्रम इनाम हमेशा उपलब्ध हैं?", "नहीं। कार्यक्रम मिशन Stage में दिखाए समय का पालन करते हैं।"], ["कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फ़ोन, लैंडस्केप और डेस्कटॉप पर स्केल होता है।"], ["क्या प्रगति दूसरे उपकरण पर अपने आप जाती है?", "नहीं। यह केवल ब्राउज़र में रहती है; दूसरे प्रोफ़ाइल या उपकरण की प्रगति अलग होगी।"], ["समनर की शील्ड कितनी देर रहती है?", "यह केवल उसी टर्न में दुश्मनों का नुकसान रोकती है। इसकी सीमा समनर के अधिकतम HP का 35% है; टर्न खत्म होने पर बची शील्ड हट जाती है।"]]
+    faq: [["समान रूण पंक्ति क्या करती है?", "तीनों रील रुकने के बाद वह उस रूण की क्षमता दोगुनी करती है।"], ["क्या नायक एक ही हमला साझा करते हैं?", "नहीं। नायक अलग-अलग हमला करते हैं; टीम रक्षा और उपचार बुलाने वाले के लिए जुड़ते हैं।"], ["Battle से निकलने पर क्या होगा?", "स्थायी सामान बचा रहता है, लेकिन वर्तमान युद्ध प्रयास खो जाता है।"], ["क्या कार्यक्रम इनाम हमेशा उपलब्ध हैं?", "नहीं। कार्यक्रम मिशन Stage में दिखाए समय का पालन करते हैं।"], ["समनर की शील्ड कितनी देर रहती है?", "यह केवल उसी टर्न में दुश्मनों का नुकसान रोकती है। इसकी सीमा समनर के अधिकतम HP का 35% है; टर्न खत्म होने पर बची शील्ड हट जाती है।"]]
   };
   localizedGames["ar"] ||= {};
   localizedGames["ar"]["animal-rune-reels"] = {
@@ -20983,7 +20979,7 @@
     progression: ["تزيد ستة فصول من خمس مراحل طول الموجات وتركيبات الحراس. تركز المهام اليومية على العملات أو المواد، وتتبدل الفعاليات حسب الجدول الظاهر.", "يوسع نمو الأبطال والرونات الخيارات الاستراتيجية من دون تغيير ترتيب حل البكرات الثلاث الواضح."],
     designNote: "تتوقف البكرات بترتيب بصري ثابت، وتضيء الصفوف المكتملة قبل حلها، وتبقى أفعال الأبطال منفصلة عن إجمالي دفاع المستدعي وعلاجه. تستخدم الواجهة تخطيطًا منطقيًا واحدًا في المنتصف بعرض أقصى 920 بكسل، وتكبر عناصر التحكم والإحداثيات معًا على الهاتف والوضع الأفقي وسطح المكتب.",
     parent: "لا يلزم حساب. تُحفظ الأبطال والحملة والعملات والمواد ومستويات الرون والمكافآت في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى إنشاء حفظ منفصل.",
-    faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت المعركة؟", "تبقى محتويات الحقيبة الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في المراحل."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط المنطقي مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."], ["إلى متى يستمر درع المستدعي؟", "يصد ضرر الأعداء خلال هذا الدور فقط. حده 35٪ من أقصى صحة للمستدعي، ويختفي أي درع متبقٍ عند نهاية الدور."]]
+    faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت المعركة؟", "تبقى محتويات الحقيبة الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في المراحل."], ["إلى متى يستمر درع المستدعي؟", "يصد ضرر الأعداء خلال هذا الدور فقط. حده 35٪ من أقصى صحة للمستدعي، ويختفي أي درع متبقٍ عند نهاية الدور."]]
   };
   const runeReelsTacticalAdditions = {
     en: {
@@ -22241,15 +22237,10 @@
       ? "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. Start Game opens Battle directly from Main. The 3×3 board, dialogs, and Result each keep their own bounded content and return path."
       : "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.";
     const saveNote = "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.";
-    const sharedFaq = [
-      ["Which controls and screen sizes are supported?", "The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports."],
-      ["Can progress move automatically to another device?", "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added."]
-    ];
     game.designNoteParts = [game.designNote || "", responsiveNote].filter(Boolean);
     game.parentParts = [game.parent || "", saveNote].filter(Boolean);
     game.designNote = game.designNoteParts.join(" ");
     game.parent = game.parentParts.join(" ");
-    game.faq = [...(game.faq || []), ...sharedFaq];
     for (const code of ["zh-Hant", "zh-Hans"]) {
       if (!localizedGames[code]?.[id]) continue;
       const current = localizedGames[code][id];
@@ -23989,8 +23980,9 @@
     how: ["Choose an unlocked stage from the 30-card Stage rail and read its arc, objective, warning, and hazard layout before entering Battle.", "Use Left and Right or the touch nudge controls to shape the approach, then hold Tether or Space when an anchor is in range.", "Release at the top or forward side of the swing to carry momentum toward the next ring; reattach only when the next route is readable.", "Collect every parcel and touch the lantern goal. A clean delivery opens Result, while a collision or fall opens a failure Result with Retry."],
     strategyTips: ["Attach early enough to build a stable arc, but release before the rope pulls you below the next platform line.", "Use short directional taps during a swing; a long hold can overshoot the next anchor or push the courier into a spike.", "Moving anchors and gust pulses reveal their rhythm. Watch one full cycle before committing when a route feels narrow.", "When a run fails, change one release decision at a time; later arcs also require parcel order, swing mastery, and a moving lantern approach."],
     progression: ["Thirty authored stages form six arcs of five. Stages 5, 10, 15, 20, 25, and 30 are checkpoints that change the decision: complete a swing, read a gust, time moving rings, respect parcel order, forecast lantern drift, and finally combine every mechanic."],
-    designNote: "Cloudhook Courier keeps one logical play space across phone, landscape, and desktop. Touch, mouse, and keyboard share the same tether, release, and nudge state, while Main, Stage, Battle, and Result remain separate screens with direct returns.",
-    parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Stage clears, best times, language, sound, and preferences stay in the current browser profile and may reset when site data is cleared.",
+    noteTitle: "Player and Save Information",
+    designNote: "Hold until the ring lights up. The dotted arc shows your initial path after release, so use short steering taps if a gust pushes you off course.",
+    parent: "Progress, best times and equipment are stored in this browser. Clearing site data can remove them. The basic spool is free. The optional Aurora Spool costs 12 shared diamonds and only changes rope colour.",
     faq: [["Can I steer while attached?", "Yes. Left and Right or the nudge controls adjust the courier's horizontal movement while the tether carries the swing."], ["When should I release?", "Release near the top or forward side of the arc when the next anchor, parcel, or lantern line is clear."], ["What causes a failed stage?", "Touching a spike or falling outside the route ends the attempt and opens a failure Result."], ["Does progress save?", "Cleared stages, unlocks, and best times are saved locally in this browser."]]
   };
   gameplayProfiles["animal-cloudhook-courier"] = { gameplay: "Grapple and Swing Platform Action", genre: ["Action", "Platform", "Animal"] };
@@ -26124,7 +26116,6 @@
     "snake",
     "tic-tac-toe",
     "animal-twin-switchyard",
-    "animal-cloudhook-courier",
   ].forEach(completeGuideStandard);
   localizedGames["zh-Hant"] ||= {};
   localizedGames["zh-Hant"]["animal-canopy-cut"] = {

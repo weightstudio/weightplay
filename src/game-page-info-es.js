@@ -3716,8 +3716,6 @@ window.WeightPlayGameInfoLocales.es.games["animal-rune-reels"] = {
     ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."],
     ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."],
     ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."],
-    ["¿Qué controles y tamaños de pantalla se admiten?", "Toque, ratón y teclado usan las mismas reglas y el diseño lógico se adapta a móvil, horizontal y escritorio."],
-    ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Solo se guarda en el navegador; otro perfil o dispositivo tiene progreso independiente."],
     ["¿Cuánto dura el escudo del invocador?", "Bloquea el daño enemigo solo durante ese turno. Su límite es el 35 % de la vida máxima del invocador; el escudo restante desaparece al terminar el turno."]
   ]
 };

@@ -1482,6 +1482,10 @@ window.WONDER_LOBBY = {
         "zh-Hant": "左右切換跑道，閃避草原障礙並挑戰高分。",
       },
       meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
+      relatedGameRules: {
+        requirePublic: true, useInGuide: true, guidePlacement: "primary",
+        gameIds: ["animal-color-link", "animal-word-trails"],
+      },
       previewVideo: "assets/previews/campus-dash-battle.webm",
       art: { kind: "image", background: "assets/campus-dash-cover.webp?wp-media=376b261cda679b49", hideHero: true },
     },
@@ -1918,6 +1922,7 @@ window.WONDER_LOBBY = {
         "pt-BR": ["30 fases", "Recipientes selados", "Capacidade variável"], de: ["30 Stufen", "Versiegelte Gefäße", "Variable Kapazität"],
       },
       previewVideo: "assets/previews/animal-color-springs-battle.webm",
+      relatedGameRules: { guidePlacement: "primary" },
       art: { kind: "image", background: "games/animal-color-springs/assets/animal-color-springs-cover.webp?wp-media=376b261cda679b49", hideHero: true },
     },
     {
@@ -3929,6 +3934,10 @@ const animalLanternGuidesPlanned = {
   meta: animalLanternGuidesLocalized([["3 Night Scenes", "Scout + Guide", "Calm Recovery"], ["3 個夜林場景", "偵察員＋引路員", "平靜恢復"], ["3 个夜林场景", "侦察员＋引路员", "平静恢复"], ["3つの夜の場面", "スカウト＋ガイド", "穏やかな回復"], ["밤 장면 3개", "정찰자 + 안내자", "차분한 회복"], ["3 escenas nocturnas", "Explorador + Guía", "Recuperación serena"], ["3 cenas noturnas", "Batedor + Guia", "Recuperação calma"], ["3 scènes nocturnes", "Éclaireur + Guide", "Reprise sereine"], ["3 Nachtszenen", "Späher + Lotse", "Ruhige Erholung"], ["3 scene notturne", "Esploratore + Guida", "Recupero calmo"], ["3 ночные сцены", "Разведчик + Проводник", "Спокойное восстановление"], ["3 रात के दृश्य", "खोजी + मार्गदर्शक", "शांत वापसी"], ["3 مشاهد ليلية", "الكشّاف + المرشد", "تعافٍ هادئ"]]),
   categories: ["Puzzle", "Co-op", "Logic", "Family", "Animal"],
   skills: ["Communication", "Pattern Recognition", "Focus"],
+  relatedGameRules: {
+    requirePublic: true, useInGuide: true, guidePlacement: "existing",
+    gameIds: ["animal-lantern-lattice", "duskbloom", "moonlit-atrium"],
+  },
   ages: ["6", "family"],
   ageLabel: animalLanternGuidesLocalized(Array(13).fill("6+")),
   href: "games/animal-lantern-guides/",

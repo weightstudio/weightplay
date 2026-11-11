@@ -387,6 +387,7 @@ Games with local saves keep progress in the current browser.
 ## Current Playable Games
 
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Parcel Pact: https://weightplay.com/en/games/parcel-pact/ — Open mixed crates, supply every neighbor, and save what the next batch needs.
 - Crossbank Rovers: https://weightplay.com/en/games/crossbank-rovers/ — Vehicle strategy. Fit a rover, choose a trail and deliver supplies before charge or armor runs out.
 - Reefwatch Tides: https://weightplay.com/en/games/reef-current/ — Tidal strategy. Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.
 - Sunshift Commons: https://weightplay.com/en/games/sunshift-commons/ — Energy strategy puzzle. Solve power-grid puzzles for a neighborhood. Choose which jobs get solar power now and charge batteries to cover jobs after dark.
