@@ -25,6 +25,9 @@ Games with local saves keep progress in the current browser.
 - [Free Browser Sports Games](https://weightplay.com/en/categories/sports/)
 - [Free Browser Survival Games](https://weightplay.com/en/categories/survival/)
 - [Free Browser Idle Games](https://weightplay.com/en/categories/idle/)
+- [Free Sudoku and Logic Puzzles](https://weightplay.com/en/categories/logic-puzzles/)
+- [Free Path and Route Puzzles](https://weightplay.com/en/categories/path-puzzles/)
+- [Free Match-3 and Tile-Clearing Games](https://weightplay.com/en/categories/tile-clearing/)
 - [WeightPlay Kids](https://weightplay.com/en/kids/) offers age-grouped games without ads.
 
 ## Site information
@@ -117,7 +120,7 @@ Games with local saves keep progress in the current browser.
 - Zoo Idle: https://weightplay.com/en/games/animal-zoo-idle/ — Manage a zoo at your own pace. Care for animals, arrange habitats and upgrade facilities as visitors and ticket income grow.
 - Star Memory: https://weightplay.com/en/games/star-memory/ — Flip cards and remember their positions to match constellation pairs. Use previews and follow the target order in later puzzles.
 - Safari Dash: https://weightplay.com/en/games/campus-dash/ — Run along three lanes, follow the star trails and switch lanes in time to dodge gates and sticky mud.
-- Snack Blocks: https://weightplay.com/en/games/snack-blocks/ — Swap neighboring snack pieces to make matches, set up cascades and meet each board’s score or collection goal.
+- Snack Blocks: https://weightplay.com/en/games/snack-blocks/ — Swap neighboring snacks to line up at least three of the same kind. Set up cascades and meet each stage’s score or collection goal.
 - Merge Tower: https://weightplay.com/en/games/fruit-merge/ — Drop and merge matching pieces. Aim for the target zones as narrow spaces, wind and gravity change each physics puzzle.
 - 2048: Forest Evolution: https://weightplay.com/en/games/animal-2048/ — Slide tiles on a 4×4 board and merge matching pairs. Plan around each mission’s move limit or play Infinite Forest without one.
 - Pet Garden Tiles: https://weightplay.com/en/games/garden-tiles/ — Flip tiles to find matching pictures. Remember their positions when mist hides the board or tiles move, with no countdown.
@@ -258,7 +261,7 @@ Games with local saves keep progress in the current browser.
 - Habitat Domino Chain: https://weightplay.com/en/games/animal-grove-dominoes/ — Match dominoes to the open habitat and plan a route to the moon. Use every required tile and save bridge tokens and flips for the right spots.
 - Pawflow: https://weightplay.com/en/games/pawflow/ — Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.
 - Block Apex: https://weightplay.com/en/games/block-apex/ — Take corners in a drift and time your boost in 3D kart races. Follow rivals for slipstream speed and avoid losing momentum to obstacles.
-- Castle Cascade: https://weightplay.com/en/games/castle-cascade/ — Match bright gems, build clever power pieces, and open a path through the castle.
+- Castle Cascade: https://weightplay.com/en/games/castle-cascade/ — Swap neighboring gems to match three or more. Combine special pieces to clear blockers and reach each stage’s goal.
 - Traffic Jam Diner: https://weightplay.com/en/games/traffic-jam-diner/ — Guide customers through one-way lanes, leave room in the waiting bays, and fill snack orders in queue order.
 - Robot Dog Showtime: https://weightplay.com/en/games/robot-dog-showtime/ — Plan both performers' stage cues, then rehearse their routes and gestures together.
 - Animal Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Arrange a tiny block-built shop, stock everyday favorites, serve animal neighbors, and reinvest in a bigger, busier store.

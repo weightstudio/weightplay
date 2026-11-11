@@ -56,10 +56,10 @@
     ]
   },
   "star-memory": {
-    "title": "Memoria Estelar Animal",
+    "title": "Memoria Estelar",
     "statusText": "Jugar ahora",
     "type": "Puzle de memoria",
-    "description": "Repara el mapa de estrellas animales en 30 niveles guardadas con vistas previas, combinaciones de lunas, pares ordenados y constelaciones giratorias.",
+    "description": "Da la vuelta a las cartas y recuerda su posición para emparejar constelaciones. Las fases avanzadas añaden vistas previas y un orden de parejas.",
     "meta": [
       "30 niveles",
       "Reglas de la memoria",

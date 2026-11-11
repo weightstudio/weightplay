@@ -11489,7 +11489,8 @@
       skills,
       genre: override.genre || localizedProfile.genre || profile.genre || [],
     };
-    if (generalSaveNoteTitleGameIds.has(id) && generalSaveNoteTitles[activeLocale]) {
+    if (generalSaveNoteTitles[activeLocale]
+        && (generalSaveNoteTitleGameIds.has(id) || merged.noteTitle === generalSaveNoteTitles.en)) {
       merged.noteTitle = generalSaveNoteTitles[activeLocale];
     }
     const catalog = window.WeightPlayGameRuntimeLocales?.[activeLocale];
@@ -11719,23 +11720,26 @@
   // catalog is assembled. Keep the owner initialized during that early pass;
   // the complete catalog is assigned below before the final render.
   let localizedRelatedCardCopy = {};
+  const routeRelatedSummaries = new Map();
 
   function relatedCard(gameId) {
     const game = localizedGame(gameId);
     if (!game || !isPublicRelatedGame(gameId, currentGameId())) return "";
     const nativeRelated = currentGameId() === "animal-rune-tactics" ? window.WeightPlayRuneTacticsGuideCopy?.[locale()]?.relatedSummaries?.[gameId] : null;
     const cardCopy = nativeRelated ? {intro:nativeRelated} : localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
+    const routeSummary = document.head.dataset.wpSearchLocale === locale() ? routeRelatedSummaries.get(gameId) : "";
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     const cardGame = cardCopy.intro ? { ...game, intro: cardCopy.intro } : game;
     const officialPoster = window.WEIGHTPLAY_INTERFACE7_POSTERS?.[gameId] || "";
     const posterUrl = officialPoster.startsWith("/") ? officialPoster : assetHref("weightplay-logo.png.webp");
     const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png.webp"))}"`;
+    const summaryAttrs = routeSummary ? ` data-wp-search-related-summary="${escapeHtml(gameId)}" data-runtime-localize="off"` : "";
     return `
       <a class="game-info-related-card" data-game-id="${escapeHtml(gameId)}" href="${escapeHtml(gameHref(gameId))}">
         <span class="game-info-related-poster"><img src="${escapeHtml(posterUrl)}"${fallbackAttrs} alt="${escapeHtml(officialTitle)}" width="320" height="320" loading="lazy" decoding="async" /></span>
         <span class="game-info-related-copy">
           <strong data-runtime-localize="off">${escapeHtml(officialTitle || cardCopy.title || game.title)}</strong>
-          <span>${escapeHtml(nativeRelated || shortDescription(cardGame))}</span>
+          <span${summaryAttrs}>${escapeHtml(routeSummary || nativeRelated || shortDescription(cardGame))}</span>
         </span>
       </a>
     `;
@@ -12153,6 +12157,11 @@
 
     const curatedRelated = document.querySelector('.game-info-related-section[data-wp-guide-related-curated="true"]')?.outerHTML;
     const matchesSearchLocale = activeLocale === document.head.dataset.wpSearchLocale;
+    if (matchesSearchLocale) {
+      for (const summary of document.querySelectorAll(".game-info-related-card [data-wp-search-related-summary]")) {
+        if (summary.textContent.trim()) routeRelatedSummaries.set(summary.dataset.wpSearchRelatedSummary, summary.textContent.trim());
+      }
+    }
     const curatedGameplayTags = matchesSearchLocale
       ? document.querySelector('[data-wp-search-gameplay-tags="2.0"]')?.outerHTML : "";
     const curatedGuideIntro = matchesSearchLocale
