@@ -5647,6 +5647,7 @@ if (hexaSortPublic) {
     ar: "فرز السداسيات",
   });
   hexaSortPublic.previewVideo = "assets/previews/hexa-sort-battle.webm";
+  hexaSortPublic.relatedGameRules = { ...hexaSortPublic.relatedGameRules, guidePlacement: "primary" };
   delete hexaSortPublic.statusText;
   delete hexaSortPublic.internalTrial;
 }

@@ -11635,7 +11635,7 @@
     const catalog = window.WEIGHTPLAY_PUBLIC_GAME_CATALOG;
     const target = catalog?.[gameId];
     const active = catalog?.[activeId];
-    if (!target || target.status !== "playable" || target.internalOnly || target.internalTrial || target.previewOnly) return false;
+    if (gameId === activeId || !target || target.status !== "playable" || target.internalOnly || target.internalTrial || target.previewOnly) return false;
     const targetAudience = relatedAudience(gameId, target);
     const activeAudience = relatedAudience(activeId, active);
     if (!targetAudience || targetAudience !== activeAudience) return false;
@@ -11645,12 +11645,11 @@
     if (!target.href || !/^games\/[a-z0-9-]+\/$/u.test(target.href)) return false;
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     if (typeof officialTitle !== "string" || !officialTitle.trim()) return false;
-    if (authoredHref) {
-      const route = location.pathname.replace(/\/games\/[a-z0-9-]+\/(?:index\.html)?$/u, `/games/${gameId}/`);
-      const url = new URL(authoredHref, location.href);
-      return route !== location.pathname && url.origin === location.origin && url.pathname === route && !url.search && !url.hash;
-    }
     const route = gameHref(gameId);
+    if (authoredHref) {
+      const url = new URL(authoredHref, location.href);
+      return url.origin === location.origin && url.pathname === route && !url.search && !url.hash;
+    }
     const routeBase = location.pathname.includes("/weightplay/") ? "/weightplay/games/" : "/games/";
     const canonicalRoute = `${routeBase}${gameId}/`;
     const expectedLocalizedRoute = window.WonderI18n?.localizedPath?.(locale(), canonicalRoute);
