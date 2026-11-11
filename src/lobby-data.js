@@ -4632,7 +4632,7 @@ const deepSeaSalvagePreview = {
   status: "planned",
   statusText: { ...ownerPreviewStatusText },
   type: {
-    en: "Deep-Sea Idle Company", "zh-Hant": "深海放置經營", "zh-Hans": "深海放置经营", ja: "深海放置経営", ko: "심해 방치 경영", es: "Gestión idle de aguas profundas", "pt-BR": "Gestão idle em alto-mar", fr: "Gestion idle des grands fonds", de: "Idle-Tiefseeunternehmen", it: "Gestionale idle degli abissi", ru: "Idle-управление глубоководьем", hi: "डीप-सी आइडल प्रबंधन", ar: "إدارة أعماق البحر الخاملة",
+    en: "Deep-Sea Idle Company", "zh-Hant": "深海放置經營", "zh-Hans": "深海放置经营", ja: "深海放置経営", ko: "심해 방치 경영", es: "Gestión idle de aguas profundas", "pt-BR": "Gestão idle em alto-mar", fr: "Gestion idle sous-marine", de: "Idle-Tiefseeunternehmen", it: "Gestionale idle degli abissi", ru: "Idle-управление глубоководьем", hi: "डीप-सी आइडल प्रबंधन", ar: "إدارة أعماق البحر الخاملة",
   },
   description: {
     en: "Send ROV robots into the deep, sell salvage, unlock new sea zones, and curate a living museum of the ocean floor.",
@@ -7631,7 +7631,7 @@ Object.defineProperty(blockApexPlayerNote, "__localizedExact", { value: true, en
 window.WONDER_LOBBY.games.push({
   id: "block-apex", audience: "general", status: "playable",
   title: { __localizedExact: true, en: "Block Apex", "zh-Hant": "方塊極速", "zh-Hans": "方块极速", ja: "ブロック・アペックス", ko: "블록 에이펙스", es: "Apex de Bloques", "pt-BR": "Apex de Blocos", fr: "Apex des Blocs", de: "Block-Apex", it: "Apex a Blocchi", ru: "Блочный апекс", hi: "ब्लॉक एपेक्स", ar: "قمة المكعبات" },
-  type: { __localizedExact: true, en: "3D Kart Racing", "zh-Hant": "3D 方塊賽車", "zh-Hans": "3D 方块赛车", ja: "3Dカートレース", ko: "3D 카트 레이싱", es: "Carreras de karts 3D", "pt-BR": "Corrida de kart 3D", fr: "Course de kart 3D", de: "3D-Kart-Rennen", it: "Corse di kart 3D", ru: "3D-гонки на картах", hi: "3D कार्ट रेसिंग", ar: "سباق عربات ثلاثي الأبعاد" },
+  type: { __localizedExact: true, en: "3D Kart Racing", "zh-Hant": "3D 卡丁車競速", "zh-Hans": "3D 卡丁车竞速", ja: "3Dカートレース", ko: "3D 카트 레이싱", es: "Carreras de karts 3D", "pt-BR": "Corrida de kart 3D", fr: "Course de kart 3D", de: "3D-Kart-Rennen", it: "Corse di kart 3D", ru: "3D-гонки на картах", hi: "3D कार्ट रेसिंग", ar: "سباق عربات ثلاثي الأبعاد" },
   description: { __localizedExact: true, en: "Drift, boost, and race across 30 authored 3D kart challenges with the WeightPlay block-animal cast.", "zh-Hant": "駕駛方塊賽車挑戰 30 場 3D 賽事，抓準甩尾與加速時機，和方塊動物夥伴一較高下。", "zh-Hans": "驾驶方块赛车挑战 30 场 3D 赛事，抓准甩尾与加速时机，和方块动物伙伴一较高下。", ja: "ドリフトとブーストを使いこなし、ブロック動物たちと30の3Dカートレースに挑もう。", ko: "드리프트와 부스트를 활용해 블록 동물들과 30개의 3D 카트 레이스에 도전하세요.", es: "Derrapa, acelera con nitro y compite en 30 desafíos de kart 3D con animales de bloques.", "pt-BR": "Derrape, use o nitro e dispute 30 desafios de kart 3D com animais em blocos.", fr: "Driffez, déclenchez le turbo et disputez 30 courses de kart 3D avec des animaux cubiques.", de: "Drifte, zünde den Turbo und fahre 30 3D-Kart-Herausforderungen mit Blocktieren.", it: "Derapa, usa il turbo e affronta 30 sfide di kart 3D con animali a blocchi.", ru: "Дрифтуйте, ускоряйтесь и проходите 30 гоночных испытаний в 3D с кубическими зверятами.", hi: "ब्लॉक जानवरों के साथ 30 3D कार्ट रेस में ड्रिफ्ट करें और नाइट्रो बूस्ट चलाएँ.", ar: "انجرف واستخدم تعزيز النيترو لخوض 30 تحديًا لسباقات عربات ثلاثية الأبعاد مع حيوانات مكعبة." },
   categories: ["Action", "Arcade", "Animal Games"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"], ages: ["general"], ageTags: ["general"],
   recommendedAge: "13+", difficulty: "Medium", estimatedPlayTime: "1-3 minutes per race",

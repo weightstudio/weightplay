@@ -11387,12 +11387,14 @@
     try { aliases = JSON.parse(encodedAliases); }
     catch { return game; }
     if (!Array.isArray(aliases) || !aliases.length) return game;
+    aliases = aliases.filter(alias => typeof alias === "string" && alias && alias !== title)
+      .sort((a, b) => b.length - a.length);
     const rename = (text) => {
       if (typeof text !== "string") return text;
       const quoted = text.replace(/([《「『«„“"])([^》」』»“”"\r\n]+)([》」』»“”"])/gu,
         (whole, open, name, close) => aliases.includes(name) ? open + title + close : whole);
       for (const alias of aliases) {
-        if (typeof alias !== "string" || !alias || !quoted.startsWith(alias)) continue;
+        if (!quoted.startsWith(alias) || (quoted.startsWith(title) && title.length >= alias.length)) continue;
         const rest = quoted.slice(alias.length);
         if (/[A-Za-z0-9]$/u.test(alias) && /^[A-Za-z0-9]/u.test(rest)) continue;
         return title + rest;

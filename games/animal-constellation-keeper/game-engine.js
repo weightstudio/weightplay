@@ -436,7 +436,10 @@
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.documentElement.dataset.weightPlayLocale = state.locale;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria)));
+    document.querySelectorAll("[data-copy-aria]").forEach((node) => {
+      const routeLabel = document.head.dataset.wpSearchLocale === state.locale && node.dataset.wpSearchAriaLabel;
+      node.setAttribute("aria-label", routeLabel || t(node.dataset.copyAria));
+    });
     const localeSelect = $("localeSelect");
     if (localeSelect) {
       localeSelect.value = state.locale;
