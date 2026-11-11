@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "parcel-pact": {"__localizedExact":true,"en":"Parcel Pact","zh-Hant":"合籃約定","zh-Hans":"合篮约定","ja":"おすそわけ便","ko":"꾸러미 약속","es":"Pacto de Cestas","pt-BR":"Pacto das Cestas","fr":"Pacte des Paniers","de":"Korbpakt","it":"Patto dei Cestini","ru":"Корзины по уговору","hi":"टोकरियों का समझौता","ar":"عهد السلال"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

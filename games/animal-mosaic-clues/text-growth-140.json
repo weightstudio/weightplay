@@ -1,10 +1,10 @@
 {
   "en": {
-    "gameplay": "Animal Nonogram Logic",
+    "gameplay": "Nonogram deduction",
     "genre": [
       "Nonogram",
       "Logic puzzle",
-      "Animal mosaics"
+      "Row and column clues"
     ],
     "intro": "Solve 30 unique animal nonograms by reading row and column runs, painting certain cells, and marking the gaps that complete each hidden picture.",
     "story": [
@@ -64,11 +64,11 @@
     ]
   },
   "zh-Hant": {
-    "gameplay": "動物數織邏輯拼圖",
+    "gameplay": "數繪方格推理",
     "genre": [
       "數織拼圖",
       "數字線索推理",
-      "動物圖像"
+      "橫列與直欄線索"
     ],
     "intro": "閱讀列與行的連續數字，填出 30 幅各有唯一解的動物數織圖；確定的格子填色，確定的空格標上 ×。",
     "story": [
@@ -128,11 +128,11 @@
     ]
   },
   "zh-Hans": {
-    "gameplay": "动物数织逻辑拼图",
+    "gameplay": "数织方格推理",
     "genre": [
       "数织拼图",
       "数字线索推理",
-      "动物图像"
+      "横行与竖列线索"
     ],
     "intro": "阅读行与列的连续数字，填出 30 幅各有唯一解的动物数织图；确定的格子涂色，确定的空格标上 ×。",
     "story": [
@@ -192,11 +192,11 @@
     ]
   },
   "ja": {
-    "gameplay": "動物ノノグラム論理パズル",
+    "gameplay": "ノノグラムのマス推理",
     "genre": [
       "ノノグラム",
       "論理パズル",
-      "動物モザイク"
+      "行と列の数字ヒント"
     ],
     "intro": "縦横の連続数を読み、30種類の動物ノノグラムを完成させましょう。確定したマスを塗り、空きマスには×を付けます。",
     "story": [
@@ -256,11 +256,11 @@
     ]
   },
   "ko": {
-    "gameplay": "동물 노노그램 논리 퍼즐",
+    "gameplay": "노노그램 칸 추리",
     "genre": [
       "노노그램",
       "논리 퍼즐",
-      "동물 모자이크"
+      "행과 열의 숫자 단서"
     ],
     "intro": "행과 열의 연속 숫자를 읽어 고유 해답이 있는 동물 노노그램 30개를 완성하세요. 확실한 칸은 칠하고 빈칸은 ×로 표시합니다.",
     "story": [
@@ -320,11 +320,11 @@
     ]
   },
   "es": {
-    "gameplay": "Lógica de nonogramas animales",
+    "gameplay": "Deducción con nonogramas",
     "genre": [
       "Nonograma",
       "Rompecabezas lógico",
-      "Mosaicos de animales"
+      "Pistas de filas y columnas"
     ],
     "intro": "Resuelve 30 nonogramas de animales leyendo las pistas de filas y columnas, pintando las casillas seguras y marcando las vacías.",
     "story": [
@@ -384,11 +384,11 @@
     ]
   },
   "pt-BR": {
-    "gameplay": "Lógica de nonogramas de animais",
+    "gameplay": "Dedução com nonogramas",
     "genre": [
       "Nonograma",
       "Quebra-cabeça lógico",
-      "Mosaicos de animais"
+      "Pistas de linhas e colunas"
     ],
     "intro": "Resolva 30 nonogramas de animais lendo as pistas de linhas e colunas, colorindo casas certas e marcando as vazias.",
     "story": [
@@ -448,11 +448,11 @@
     ]
   },
   "fr": {
-    "gameplay": "Logique de nonogrammes animaliers",
+    "gameplay": "Déduction par nonogrammes",
     "genre": [
       "Nonogramme",
       "Logique en grille",
-      "Mosaïques animales"
+      "Indices de lignes et de colonnes"
     ],
     "intro": "Résolvez 30 nonogrammes animaliers en lisant les suites des lignes et colonnes, en coloriant les cases certaines et en marquant les vides.",
     "story": [
@@ -512,11 +512,11 @@
     ]
   },
   "de": {
-    "gameplay": "Logik mit Tier-Nonogrammen",
+    "gameplay": "Nonogramm-Logik",
     "genre": [
       "Nonogramm",
       "Logikrätsel",
-      "Tiermosaike"
+      "Zeilen- und Spaltenhinweise"
     ],
     "intro": "Löse 30 Tier-Nonogramme mit eindeutiger Lösung: Lies die Zahlenfolgen in Zeilen und Spalten, male sichere Felder aus und markiere leere Felder.",
     "story": [
@@ -576,11 +576,11 @@
     ]
   },
   "it": {
-    "gameplay": "Logica con nonogrammi di animali",
+    "gameplay": "Deduzione con nonogrammi",
     "genre": [
       "Nonogramma",
       "Puzzle logico",
-      "Mosaici di animali"
+      "Indizi di righe e colonne"
     ],
     "intro": "Risolvi 30 nonogrammi di animali leggendo gli indizi di righe e colonne, colorando le caselle certe e segnando quelle vuote.",
     "story": [
@@ -640,11 +640,11 @@
     ]
   },
   "ru": {
-    "gameplay": "Логические нонограммы с животными",
+    "gameplay": "Логика нонограмм",
     "genre": [
       "Нонограмма",
       "Логическая головоломка",
-      "Мозаики с животными"
+      "Подсказки для строк и столбцов"
     ],
     "intro": "Решите 30 нонограмм с животными: читайте числа в строках и столбцах, закрашивайте точные клетки и отмечайте пустые.",
     "story": [
@@ -704,11 +704,11 @@
     ]
   },
   "hi": {
-    "gameplay": "पशु नोनोग्राम तर्क पहेली",
+    "gameplay": "नोनोग्राम में खानों का अनुमान",
     "genre": [
       "नोनोग्राम",
       "तर्क पहेली",
-      "पशु मोज़ेक"
+      "पंक्तियों और स्तंभों के संकेत"
     ],
     "intro": "पंक्ति और स्तंभ के क्रम-संकेत पढ़कर 30 अद्वितीय पशु नोनोग्राम हल करें; पक्के खानों में रंग भरें और खाली खानों पर × लगाएँ।",
     "story": [
@@ -768,11 +768,11 @@
     ]
   },
   "ar": {
-    "gameplay": "ألغاز نونوغرام منطقية للحيوانات",
+    "gameplay": "استنتاج خانات النونوغرام",
     "genre": [
       "نونوغرام",
       "لغز منطقي شبكي",
-      "فسيفساء حيوانات"
+      "أدلة الصفوف والأعمدة"
     ],
     "intro": "حل 30 لغز نونوغرام للحيوانات بقراءة تتابعات الصفوف والأعمدة، وتلوين الخانات المؤكدة، ووضع × على الخانات الفارغة.",
     "story": [
