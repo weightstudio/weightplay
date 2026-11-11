@@ -12152,8 +12152,11 @@
     const showRecommendedAge = audience === "kids" && Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
     const curatedRelated = document.querySelector('.game-info-related-section[data-wp-guide-related-curated="true"]')?.outerHTML;
-    const curatedGameplayTags = activeLocale === document.head.dataset.wpSearchLocale
+    const matchesSearchLocale = activeLocale === document.head.dataset.wpSearchLocale;
+    const curatedGameplayTags = matchesSearchLocale
       ? document.querySelector('[data-wp-search-gameplay-tags="2.0"]')?.outerHTML : "";
+    const curatedGuideIntro = matchesSearchLocale
+      ? document.querySelector('.game-page-info [data-wp-search-guide-intro="2.0"]')?.outerHTML : "";
     document
       .querySelectorAll(".game-page-info, .public-guide, .game-guide")
       .forEach((node) => node.remove());
@@ -12241,7 +12244,7 @@
         <div class="game-info-title">
           <span class="game-info-kicker">${escapeHtml(identity.kicker)}</span>
           <h2>${escapeHtml(game.title)}</h2>
-          <p>${escapeHtml(game.intro)}</p>
+          ${curatedGuideIntro || `<p>${escapeHtml(game.intro)}</p>`}
         </div>
         ${curatedGameplayTags || (gameplayTags.length >= 2 ? `<div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${gameplayTags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : "")}
         ${isClassicCardGame ? "" : `<div class="game-info-facts">
