@@ -6544,7 +6544,7 @@
   }
 
   function publicGameplayTags(tags) {
-    const decoration = /^(?:animal(?:s|[- ]themed| games?)?|動物(?:風格|主題|遊戲)?|动物(?:风格|主题|游戏)?|동물|animales|animais|animaux|tiere?|animali|животные|जानवर|पशु|(?:ال)?حيوانات|block[- ]style|方[塊块](?:風格|风格))$/iu;
+    const decoration = /^(?:animal(?:s|[- ]themed| games?| theme)?|動物(?:風格|主題|遊戲|テーマ)?|动物(?:风格|主题|游戏)?|(?:どうぶつ|アニマル)(?:ゲーム|テーマ)?|동물(?:\s*(?:테마|게임))?|animales|animais|animaux|tema animal(?:e)?|thème animal|tiere?|tiermotive|animali|животные|тема животных|जानवर|पशु(?: थीम)?|(?:ال)?حيوانات|موضوع الحيوانات|block[- ]style|方[塊块](?:風格|风格))$/iu;
     return Array.isArray(tags)
       ? tags.filter(tag => typeof tag === "string" && tag.trim() && !decoration.test(tag.trim()))
       : [];
