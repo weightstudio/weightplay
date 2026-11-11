@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["perchweave", "Card", "Strategy", "Sequencing"],
     ["reef-current", "Strategy", "Management", "Route Planning"],
     ["sunshift-commons", "Puzzle", "Strategy", "Management", "Sequencing"],
     ["bellshift-atelier", "Puzzle", "Strategy", "Sequencing"],

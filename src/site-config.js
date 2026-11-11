@@ -1,12 +1,12 @@
 // BEGIN generated from src/lobby-data.js?wp-media=ce7525cf45c7a0b6 audiences.tabletopGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=ce7525cf45c7a0b6
-if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop"]);
+if (!window.__weightPlayTabletopGameIds) window.__weightPlayTabletopGameIds = new Set(["klondike-solitaire","spider-solitaire","freecell-solitaire","pyramid-solitaire","tripeaks-solitaire","golf-solitaire","yukon-solitaire","hearts","spades","gin-rummy","crazy-eights","cribbage","go-fish","war","speed","old-maid","casino","checkers","tic-tac-toe","peg-solitaire","reversi","four-in-a-row","chess","mahjong-solitaire","hearthloop","perchweave"]);
 // END generated tabletop classification
 // BEGIN generated from src/lobby-data.js?wp-media=ce7525cf45c7a0b6 audiences.castleBlockRewardExcludedGameIds; run scripts/sync-tabletop-classification.mjs?wp-media=ce7525cf45c7a0b6
 if (!window.__weightPlayCastleBlockRewardExcludedGameIds) window.__weightPlayCastleBlockRewardExcludedGameIds = new Set(["animal-crownfall"]);
 // END generated Castle Block reward exclusions
 
 window.WONDER_SITE = {
-  version: "v0.44.45",
+  version: "v0.44.46",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",

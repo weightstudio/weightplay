@@ -170,13 +170,13 @@ Games with local saves keep progress in the current browser.
 - Spades: https://weightplay.com/en/games/spades/ — Play Spades free in your browser: bid a team contract, follow suit, and use spades as trump.
 - Gin Rummy: https://weightplay.com/en/games/gin-rummy/ — Draw one card and discard one each turn. Build sets and suited runs, then choose when to Knock or finish with Gin.
 - Crazy Eights: https://weightplay.com/en/games/crazy-eights/ — Play Crazy Eights against three AI rivals. Match the active suit or rank, choose the next suit with any Eight, and empty your hand first to win.
-- Cribbage: https://weightplay.com/en/games/cribbage/ — Choose a crib, score pairs, runs and fifteens, and peg toward 121.
+- Cribbage: https://weightplay.com/en/games/cribbage/ — Set aside two cards for the crib, then take turns playing cards without going over 31. Score pairs, runs and fifteens on the way to 121.
 - Go Fish: https://weightplay.com/en/games/go-fish/ — Ask for a rank in your hand. Take every matching card or draw one, then build four-card books with 2–4 players in this browser card game.
 - War: High Card: https://weightplay.com/en/games/war/ — Play solo War: each side reveals one card; the higher rank takes the pile. Ties add three face-down cards per side.
 - Speed Solitaire: https://weightplay.com/en/games/speed/ — Race the AI in Speed: start with five cards, match either center card by one rank, and refill from a 20-card stock. Clear your cards first.
 - Old Maid: https://weightplay.com/en/games/old-maid/ — Pair matching ranks, draw from the next hand, and avoid being left with the Old Maid.
 - Casino: https://weightplay.com/en/games/casino/ — Play a card to capture a table card of the same value or several table cards whose values add to it.
-- Minefield Logic: https://weightplay.com/en/games/minefield-logic/ — Read the numbers, avoid mines, and reveal every safe cell.
+- Minefield Logic: https://weightplay.com/en/games/minefield-logic/ — Use the numbers to find mines in neighboring cells. Flag suspected mines and reveal every safe square in a quick game or a campaign stage.
 - Cat Color Sudoku: https://weightplay.com/en/games/cat-color-sudoku/ — Place one cat in every row, column, and patterned color territory without letting cats touch.
 - Sudoku: https://weightplay.com/en/games/sudoku/ — Fill every row, column, and 3×3 box with numbers 1–9.
 - Lights Out: https://weightplay.com/en/games/lights-out/ — Lights Out is a classic 5x5 switch puzzle: press a tile and its orthogonal neighbors to turn every light off.
@@ -270,7 +270,7 @@ Games with local saves keep progress in the current browser.
 - Lantern Lasso: https://weightplay.com/en/games/lantern-lasso/ — Drag to aim and release a line that bounces off the board edges. Collect numbered lights in order and pull switches to open gates.
 - Mossfold: https://weightplay.com/en/games/mossfold/ — Collect all dewdrops, then place the whole block upright in the square nest. The same rules apply on phone and desktop.
 - Glowspool: https://weightplay.com/en/games/glowspool/ — Slide Mimi to weave every tile. Plan around the line you leave behind.
-- 仙旅傳說: https://weightplay.com/en/games/sunmane-journey/ — Explore sixty maps across twelve regions, shape a six-attribute build and configure automatic skills and healing.
+- 仙旅傳說: https://weightplay.com/en/games/sunmane-journey/ — Explore 60 maps across 12 regions. Dodge enemy attacks and shape your build with equipment, runes and branching talents.
 
 ## Age And Skill Positioning
 

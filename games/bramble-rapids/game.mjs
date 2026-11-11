@@ -259,7 +259,10 @@ function renderManagement(){
 }
 function renderGuide(){
   const g=guide(locale);$('gameGuideTitle').replaceChildren();const h=document.createElement('h2');h.textContent=g.title;const p=document.createElement('p');p.textContent=g.goal;$('gameGuideTitle').append(h,p);$('gameGuideTitle').insertAdjacentHTML('beforeend',renderGameplayTags(locale));
-  $('gameGuideRelated').innerHTML=renderRelatedGames(locale);
+  const related=$('gameGuideRelated');
+  if(document.head.dataset.wpSearchLocale!==locale||!related.querySelector('[data-wp-guide-related-curated="true"]')){
+    related.innerHTML=renderRelatedGames(locale);
+  }
   $('gameGuideFacts').replaceChildren();for(const value of [`60 ${tr('stages')}`,`3 ${tr('boards')}`,tr('localRivals')]){const span=document.createElement('span');span.textContent=value;$('gameGuideFacts').append(span);}
   $('gameGuideSections').replaceChildren();for(const [key,copy]of [['guideGoalTitle',g.goal],['guideHowTitle',g.howToPlay],['guideRulesTitle',g.controlsAndRules],['guideFinishTitle',g.finishingAndFeedback],['guideStrategyTitle',g.strategy],['guideProgressionTitle',g.progression],['guideSaveTitle',g.save]]){const section=document.createElement('section'),head=document.createElement('h3'),body=document.createElement('p');head.textContent=tr(key);body.textContent=copy;section.append(head,body);$('gameGuideSections').append(section);}
   $('gameGuideFaq').replaceChildren();for(const item of g.faq){const d=document.createElement('details'),q=document.createElement('summary'),a=document.createElement('p');q.textContent=item.question;a.textContent=item.answer;d.append(q,a);$('gameGuideFaq').append(d);}

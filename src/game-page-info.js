@@ -11632,7 +11632,7 @@
     return ages.map((age) => String(age).toLowerCase().replace(/\+$/u, "")).filter((age) => age && age !== "general");
   }
 
-  function isPublicRelatedGame(gameId, activeId) {
+  function isPublicRelatedGame(gameId, activeId, authoredHref) {
     const catalog = window.WEIGHTPLAY_PUBLIC_GAME_CATALOG;
     const target = catalog?.[gameId];
     const active = catalog?.[activeId];
@@ -11646,6 +11646,11 @@
     if (!target.href || !/^games\/[a-z0-9-]+\/$/u.test(target.href)) return false;
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     if (typeof officialTitle !== "string" || !officialTitle.trim()) return false;
+    if (authoredHref) {
+      const route = location.pathname.replace(/\/games\/[a-z0-9-]+\/(?:index\.html)?$/u, `/games/${gameId}/`);
+      const url = new URL(authoredHref, location.href);
+      return route !== location.pathname && url.origin === location.origin && url.pathname === route && !url.search && !url.hash;
+    }
     const route = gameHref(gameId);
     const routeBase = location.pathname.includes("/weightplay/") ? "/weightplay/games/" : "/games/";
     const canonicalRoute = `${routeBase}${gameId}/`;
@@ -11788,12 +11793,14 @@
       if (!relatedSection) return;
       relatedSection.querySelectorAll(".game-info-related-card").forEach((card) => {
         const id = card.dataset.gameId || card.dataset.relatedGame || new URL(card.href, location.href).pathname.match(/\/games\/([a-z0-9-]+)\//u)?.[1] || "";
-        if (!id || !isPublicRelatedGame(id, currentGameId())) {
+        const authoredHref = relatedSection.dataset.wpGuideRelatedCurated === "true"
+          && document.head.dataset.wpSearchLocale === locale() ? card.getAttribute("href") : "";
+        if (!id || !isPublicRelatedGame(id, currentGameId(), authoredHref)) {
           card.remove();
           return;
         }
         const title = window.WEIGHTPLAY_GAME_TITLES[id][locale()];
-        const href = gameHref(id);
+        const href = authoredHref || gameHref(id);
         const posterUrl = window.WEIGHTPLAY_INTERFACE7_POSTERS[id];
         if (!posterUrl?.startsWith("/")) {
           card.remove();
@@ -12144,6 +12151,9 @@
     const showSkills = audience === "kids" && game.showSkills !== false;
     const showRecommendedAge = audience === "kids" && Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
+    const curatedRelated = document.querySelector('.game-info-related-section[data-wp-guide-related-curated="true"]')?.outerHTML;
+    const curatedGameplayTags = activeLocale === document.head.dataset.wpSearchLocale
+      ? document.querySelector('[data-wp-search-gameplay-tags="2.0"]')?.outerHTML : "";
     document
       .querySelectorAll(".game-page-info, .public-guide, .game-guide")
       .forEach((node) => node.remove());
@@ -12214,10 +12224,10 @@
             <h3>${escapeHtml(uiLabel("faq"))}</h3>
             <dl>${freeCellFaq.map(([question, answer]) => `<div><dt>${escapeHtml(question)}</dt><dd>${escapeHtml(answer)}</dd></div>`).join("")}</dl>
           </div>
-          ${related.length ? `<div class="game-info-section game-info-related-section">
+          ${curatedRelated || (related.length ? `<div class="game-info-section game-info-related-section">
             <h3>${escapeHtml(relatedGamesHeading())}</h3>
             <div class="game-info-related">${related.map(relatedCard).join("")}</div>
-          </div>` : ""}
+          </div>` : "")}
         </div>
       `;
       main.insertAdjacentElement("afterend", section);
@@ -12233,7 +12243,7 @@
           <h2>${escapeHtml(game.title)}</h2>
           <p>${escapeHtml(game.intro)}</p>
         </div>
-        ${gameplayTags.length >= 2 ? `<div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${gameplayTags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : ""}
+        ${curatedGameplayTags || (gameplayTags.length >= 2 ? `<div class="game-info-tags" data-wp-gameplay-tags="1.4.0">${gameplayTags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>` : "")}
         ${isClassicCardGame ? "" : `<div class="game-info-facts">
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("gameplay"))}</span><strong>${escapeHtml(game.gameplay || game.title)}</strong></div>
           ${genres.length ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("genre"))}</span><div class="game-info-tags">${genres.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>` : ""}
@@ -12338,11 +12348,11 @@
           <h3>${escapeHtml(uiLabel("faq"))}</h3>
           <dl>${publicFaq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>
         </div>
-        ${related.length ? `<div class="game-info-section game-info-related-section">
+        ${curatedRelated || (related.length ? `<div class="game-info-section game-info-related-section">
           <h3>${escapeHtml(relatedGamesHeading())}</h3>
           ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(game.relatedIntro || uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
-        </div>` : ""}
+        </div>` : "")}
       </div>
     `;
     main.insertAdjacentElement("afterend", section);
@@ -30627,7 +30637,9 @@
   if (currentGameId() === "animal-coloring-studio") render();
 
   if (currentGameId() === "animal-word-trails") {
-    document.querySelectorAll(".game-page-info, .public-guide, .game-guide").forEach((node) => node.remove());
+    document.querySelectorAll(".game-page-info, .public-guide, .game-guide").forEach((node) => {
+      if (!node.querySelector('[data-wp-guide-related-curated="true"]')) node.remove();
+    });
     let routeFallbackReady = false;
     try {
       const routeGuide = JSON.parse(document.querySelector("script[data-wp-animal-word-trails-guide]")?.textContent || "null");
