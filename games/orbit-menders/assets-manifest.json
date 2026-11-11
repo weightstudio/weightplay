@@ -24,58 +24,58 @@
     "imageGeneration": true,
     "licenseStatus": "Original project-authored geometry. No claim of exclusive rights or name clearance. Repository ownership and applicable service terms govern generated source.",
     "termsReview": "Built-in imagegen; generation/source/prompt/hash recorded by canonical poster writer. No new third-party game assets or music. No global exclusivity or legal-clearance claim.",
-    "reference": "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=cbb98e618ccef3b8 inspected. Realtime source is original game-owned procedural block geometry. Poster provenance and full prompt live in docs/game-poster-records/orbit-menders.md."
+    "reference": "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=056a8712e966ef63 inspected. Realtime source is original game-owned procedural block geometry. Poster provenance and full prompt live in docs/game-poster-records/orbit-menders.md."
   },
   "resources": [
     {
-      "file": "defense-art.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-art.mjs?wp-media=056a8712e966ef63",
       "export": "createDefenseArt",
       "usage": "Per-Battle factory with private deduplicated geometry/material clones and dispose; original templates stay CPU-only",
       "format": "procedural realtime3D"
     },
     {
-      "file": "defense-art.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-art.mjs?wp-media=056a8712e966ef63",
       "export": "createArena",
       "usage": "Stepped block terrain, cuboid tree crowns, masonry, garden supplies; existing bounds and shared material batching.",
       "dimensions": "x[-14,14],z[-12,13]; visual decoration never changes simulation"
     },
     {
-      "file": "defense-art.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-art.mjs?wp-media=056a8712e966ef63",
       "export": "createTower",
       "usage": "Coral/ivory protected main tower with cyan crystal, recessed arch, stone courses, paw seals and metal trim",
       "dimensions": "ground origin, platformY1.48"
     },
     {
-      "file": "defense-art.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-art.mjs?wp-media=056a8712e966ef63",
       "export": "createDefender",
       "usage": "Game-owned Block Leo: stepped explosive cube mane, box muzzle/paws, red cape/paw seal and cyan-gold cannon; aimed pivot/recoil preserved.",
-      "reference": "/assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=cbb98e618ccef3b8",
-      "dimensions": "Independent defense-art.mjs?wp-media=cbb98e618ccef3b8 block rig; runtime root1.6; no legacy rounded art.mjs?wp-media=cbb98e618ccef3b8 import."
+      "reference": "/assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=056a8712e966ef63",
+      "dimensions": "Independent defense-art.mjs?wp-media=056a8712e966ef63 block rig; runtime root1.6; no legacy rounded art.mjs?wp-media=056a8712e966ef63 import."
     },
     {
-      "file": "defense-art.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-art.mjs?wp-media=056a8712e966ef63",
       "export": "createZombie/animateZombie",
       "usage": "Walker,runner,brute,bomber,spitter,boss; identifiable clothing/equipment/silhouette, gait, attackwindup, hitsquash, defeatproxy",
       "dimensions": "groundorigin +Z forward; actual bounds metadata (boss maxY4.725), head1.1x1.08x1.04 within existing hit radius; no simulation root/collision change"
     },
     {
-      "file": "defense-view.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-view.mjs?wp-media=056a8712e966ef63",
       "usage": "Instanced larger projectiles/trails/contactstars, bounded cyan/gold shockrings/muzzleflash/healthbars, tower damage shield; actual event bound, no damage/radius/timing change",
       "format": "real3D meshes; no new raster art"
     },
     {
-      "file": "defense-pointer-input.mjs?wp-media=cbb98e618ccef3b8",
+      "file": "defense-pointer-input.mjs?wp-media=056a8712e966ef63",
       "export": "createDefensePointerInput",
       "usage": "Original game-owned native touch/mouse/pen pointer ownership and release adapter; no art asset, joystick, game-state mutation or alternate simulation clock",
       "format": "JavaScript module"
     }
   ],
   "runtimeDependency": {
-    "import": "../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=cbb98e618ccef3b8",
+    "import": "../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=056a8712e966ef63",
     "engine": "three@0.180.0",
     "license": "MIT",
     "source": "Copied repository-pinned three@0.180.0 distribution from games/animal-skyspire-drop/vendor/three; local vendor/LICENSE and vendor/README.md retained",
-    "referenceStatus": "Used by game.mjs?wp-media=cbb98e618ccef3b8, motor.mjs?wp-media=cbb98e618ccef3b8 and art.mjs?wp-media=cbb98e618ccef3b8"
+    "referenceStatus": "Used by game.mjs?wp-media=056a8712e966ef63, motor.mjs?wp-media=056a8712e966ef63 and art.mjs?wp-media=056a8712e966ef63"
   },
   "sharedReferences": [
     {
@@ -84,7 +84,7 @@
       "dimensions": "480x480,25fps,7.40s,VP8,yuv420p,muted/no audio stream",
       "bytes": 191731,
       "sha256": "1d668a241983d49e9de96f417aeb9f7a2838fae27d7ae8e749acf797b2d5720f",
-      "recorder": "scripts/record-orbit-menders-lobby-preview.mjs?wp-media=cbb98e618ccef3b8",
+      "recorder": "scripts/record-orbit-menders-lobby-preview.mjs?wp-media=056a8712e966ef63",
       "source": "Current project-owned3D assets and gameplay capture; no external game footage"
     },
     {
@@ -92,26 +92,26 @@
       "usage": "Existing shared Stage background"
     },
     {
-      "file": "/src/weightplay-audio.js?wp-media=cbb98e618ccef3b8",
+      "file": "/src/weightplay-audio.js?wp-media=056a8712e966ef63",
       "usage": "Existing catalog SFX, original/CC0 sources maintained by shared audio manifests; no new private audio engine"
     },
     {
-      "file": "/assets/orbit-menders-poster-block-v1.webp?wp-media=cbb98e618ccef3b8",
+      "file": "/assets/orbit-menders-poster-block-v1.webp?wp-media=056a8712e966ef63",
       "usage": "Composed game-specific square poster actually loaded by Main/Stage/lobby and canonical poster registry.",
       "dimensions": "1254x1254",
       "bytes": 266144,
       "sha256": "d729639d1481fed7ec6ac6f88e8712302b8a73caf781bb8f0920e8977bb99824",
-      "source": "Assets/orbit-menders-poster-block-v1.png.webp?wp-media=cbb98e618ccef3b8; canonical generation record docs/game-poster-records/orbit-menders.md"
+      "source": "Assets/orbit-menders-poster-block-v1.png.webp?wp-media=056a8712e966ef63; canonical generation record docs/game-poster-records/orbit-menders.md"
     },
     {
-      "file": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp?wp-media=cbb98e618ccef3b8",
+      "file": "/assets/lobby-thumbs/w480/assets__orbit-menders-poster-block-v1.webp?wp-media=056a8712e966ef63",
       "usage": "480x480 proportional poster delivery",
       "bytes": 55038,
       "sha256": "6f2e9c4161725601686d3b4469fd59275bd583413ea98c145b38148b1e6200d2"
     }
   ],
   "legacyResources": {
-    "status": "Historical platform course no longer loaded by game.mjs?wp-media=cbb98e618ccef3b8; tested motor and old content retained, not falsely completed",
+    "status": "Historical platform course no longer loaded by game.mjs?wp-media=056a8712e966ef63; tested motor and old content retained, not falsely completed",
     "source": "Legacy modules: motor, input, levels and planet/repair art exports (preserved source history)."
   },
   "effects": {
@@ -158,8 +158,8 @@
     "compressedTransferBytes": null,
     "frameTime": "Fresh local1280x720 browser observations in current handoff; not a universalFPS claim",
     "sourceBytes": {
-      "defense-art.mjs?wp-media=cbb98e618ccef3b8": 33732,
-      "defense-view.mjs?wp-media=cbb98e618ccef3b8": 22420
+      "defense-art.mjs?wp-media=056a8712e966ef63": 33732,
+      "defense-view.mjs?wp-media=056a8712e966ef63": 22420
     }
   },
   "verification": {
@@ -173,86 +173,86 @@
     "prewarm": "Only current operation enemy families and particle instance-colour shader compile during loading; initialization ms shown separately from live frame samples"
   },
   "runtimeCopy": {
-    "file": "ui-copy.mjs?wp-media=cbb98e618ccef3b8",
+    "file": "ui-copy.mjs?wp-media=056a8712e966ef63",
     "locales": 13,
     "messagesPerLocale": 88,
     "status": "Implemented; source contract tested, rendered verification in current handoff; no specialist approval inferred."
   },
   "centralTurretExpansion": {
     "date": "2026-10-28",
-    "source": "Original procedural Three.js models rendered locally by scripts/render-orbit-upgrade-icons.mjs?wp-media=cbb98e618ccef3b8",
+    "source": "Original procedural Three.js models rendered locally by scripts/render-orbit-upgrade-icons.mjs?wp-media=056a8712e966ef63",
     "iconSize": [
       256,
       256
     ],
     "icons": [
       {
-        "path": "icons/aurora.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/aurora.webp?wp-media=056a8712e966ef63",
         "bytes": 3146,
         "sha256": "ae7c3dbf735ef5c6965395f4108ecfdebb4a2a6f74a6478d072c124bc05b1541"
       },
       {
-        "path": "icons/blast.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/blast.webp?wp-media=056a8712e966ef63",
         "bytes": 4684,
         "sha256": "fceb7f81cf5094d5f1ed9e5439f6dcd01520b855805a7a480737a5ed6e227f18"
       },
       {
-        "path": "icons/chain.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/chain.webp?wp-media=056a8712e966ef63",
         "bytes": 3270,
         "sha256": "42c6c1e99f4d9ccae50bf2b238211ecfc12cb77688744696e2a5e7fc83d136fe"
       },
       {
-        "path": "icons/drone.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/drone.webp?wp-media=056a8712e966ef63",
         "bytes": 2778,
         "sha256": "7ccbc92ce288ea8865a86fef44224fc72a86eb6e6d7179da4639b3cf8286a5b2"
       },
       {
-        "path": "icons/explosive.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/explosive.webp?wp-media=056a8712e966ef63",
         "bytes": 4684,
         "sha256": "fceb7f81cf5094d5f1ed9e5439f6dcd01520b855805a7a480737a5ed6e227f18"
       },
       {
-        "path": "icons/frost.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/frost.webp?wp-media=056a8712e966ef63",
         "bytes": 4518,
         "sha256": "7bd8034b4d0579c422521c154578cc0018891b185fb64124da9795eb1b2c7b77"
       },
       {
-        "path": "icons/gears.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/gears.webp?wp-media=056a8712e966ef63",
         "bytes": 5456,
         "sha256": "a7e72d50f1b98893786de94abdde2542fcaae90118d55b52899c3d3bf88ac867"
       },
       {
-        "path": "icons/hull.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/hull.webp?wp-media=056a8712e966ef63",
         "bytes": 4280,
         "sha256": "6e54a0b75f2682b0bfe477ad1a331e3058561b4fb4a6873bde98f7412d5a1b51"
       },
       {
-        "path": "icons/pierce.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/pierce.webp?wp-media=056a8712e966ef63",
         "bytes": 2996,
         "sha256": "5bbbd54bc6149c885b88ed830c8fdbbbb0eb9ab1f2d1f050b14c464c3c66cc3b"
       },
       {
-        "path": "icons/power.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/power.webp?wp-media=056a8712e966ef63",
         "bytes": 3552,
         "sha256": "6ba9ad8b0daa920495b73d0f96d7a8c3d0eae46956db9eab74b030090ffcda48"
       },
       {
-        "path": "icons/rapid.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/rapid.webp?wp-media=056a8712e966ef63",
         "bytes": 4144,
         "sha256": "b0244e4f09419043ed557a32fc593f48c7e7bcfad96dc9b63a059fe7f9932d2d"
       },
       {
-        "path": "icons/repair.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/repair.webp?wp-media=056a8712e966ef63",
         "bytes": 3582,
         "sha256": "5f5d56f3e19458a0c75ee8963b54fce7b9434897ce929b3f77993b4c421e0bc6"
       },
       {
-        "path": "icons/shield.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/shield.webp?wp-media=056a8712e966ef63",
         "bytes": 3984,
         "sha256": "21173c9cb84177341d7bcd71a94e458fc918d7f9a8639c28ac0416bd2227a27f"
       },
       {
-        "path": "icons/spread.webp?wp-media=cbb98e618ccef3b8",
+        "path": "icons/spread.webp?wp-media=056a8712e966ef63",
         "bytes": 4402,
         "sha256": "3496681a58ad64c6685f1ad1b00f5a4aaad19699c475b3869881eb151be3e7cf"
       }
@@ -264,14 +264,14 @@
     ],
     "status": "Focused source/render/input verification complete; full Art9/I9 not claimed",
     "sourceSha256": {
-      "defense.mjs?wp-media=cbb98e618ccef3b8": "0d06def863df73666dcb995ca252baac47943d23e86b8814770ae5d81e80a3d2",
-      "game.mjs?wp-media=cbb98e618ccef3b8": "2b315d1b29643675f31ca5dbd58144cd414273a3247b1251294130375bb773ae",
-      "save.mjs?wp-media=cbb98e618ccef3b8": "6d05b2368d16ffa2a289c56a025272cbaecb88501b84acc13f644144bfa81093",
-      "defense-reward.mjs?wp-media=cbb98e618ccef3b8": "9c02a506cab5b2b670d58c4152ed9cafbcade27792f5c25c5314538cd761a67d",
-      "defense-view.mjs?wp-media=cbb98e618ccef3b8": "65813901d21bdf5df60a1ec7183fa7993563b3f71072409f90a8f8dfef29635e",
-      "defense-art.mjs?wp-media=cbb98e618ccef3b8": "4c2270542308502b902e8b5de59c62cc1780b31bede2281eb996de341c539596",
-      "ui-copy.mjs?wp-media=cbb98e618ccef3b8": "7e43348bcd518c230efb6b9e7970ccb910ffcda23a44418f237cb19a35a9df53",
-      "style.css?wp-media=cbb98e618ccef3b8": "68e720dd6217927e1d77352380dc2752bddcb1882b0d2c56a52f05aa0638cbc0"
+      "defense.mjs?wp-media=056a8712e966ef63": "0d06def863df73666dcb995ca252baac47943d23e86b8814770ae5d81e80a3d2",
+      "game.mjs?wp-media=056a8712e966ef63": "2b315d1b29643675f31ca5dbd58144cd414273a3247b1251294130375bb773ae",
+      "save.mjs?wp-media=056a8712e966ef63": "6d05b2368d16ffa2a289c56a025272cbaecb88501b84acc13f644144bfa81093",
+      "defense-reward.mjs?wp-media=056a8712e966ef63": "9c02a506cab5b2b670d58c4152ed9cafbcade27792f5c25c5314538cd761a67d",
+      "defense-view.mjs?wp-media=056a8712e966ef63": "65813901d21bdf5df60a1ec7183fa7993563b3f71072409f90a8f8dfef29635e",
+      "defense-art.mjs?wp-media=056a8712e966ef63": "4c2270542308502b902e8b5de59c62cc1780b31bede2281eb996de341c539596",
+      "ui-copy.mjs?wp-media=056a8712e966ef63": "7e43348bcd518c230efb6b9e7970ccb910ffcda23a44418f237cb19a35a9df53",
+      "style.css?wp-media=056a8712e966ef63": "68e720dd6217927e1d77352380dc2752bddcb1882b0d2c56a52f05aa0638cbc0"
     },
     "boundedEffects": {
       "particles": 280,
