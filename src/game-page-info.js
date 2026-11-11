@@ -11375,6 +11375,32 @@
     crystalCombatGuides[code].faq = [...faq, crystalTalentFaq[code]];
   }
 
+  function useCurrentGuideName(game, title, encodedAliases) {
+    let aliases;
+    try { aliases = JSON.parse(encodedAliases); }
+    catch { return game; }
+    if (!Array.isArray(aliases) || !aliases.length) return game;
+    const rename = (text) => {
+      if (typeof text !== "string") return text;
+      const quoted = text.replace(/([《「『«„“"])([^》」』»“”"\r\n]+)([》」』»“”"])/gu,
+        (whole, open, name, close) => aliases.includes(name) ? open + title + close : whole);
+      for (const alias of aliases) {
+        if (typeof alias !== "string" || !alias || !quoted.startsWith(alias)) continue;
+        const rest = quoted.slice(alias.length);
+        if (/[A-Za-z0-9]$/u.test(alias) && /^[A-Za-z0-9]/u.test(rest)) continue;
+        return title + rest;
+      }
+      return quoted;
+    };
+    const copy = { ...game, title };
+    for (const field of ["intro", "parent", "designNote", "metaDescription"]) copy[field] = rename(game[field]);
+    for (const field of ["story", "systems", "progression", "strategyTips"]) {
+      if (Array.isArray(game[field])) copy[field] = game[field].map(rename);
+    }
+    if (Array.isArray(game.faq)) copy.faq = game.faq.map(pair => Array.isArray(pair) ? pair.map(rename) : pair);
+    return copy;
+  }
+
   function localizedGame(id) {
     let game = localizedGameContent(id);
     if (id === "animal-bubble-safari" && game) {
@@ -11426,6 +11452,10 @@
     }
     // WP_ANIMAL_HERO_TRIALS_TEXT140_RENDER_END
     const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
+    const search = document.head.dataset;
+    if (game && official && id === currentGameId() && search.wpSearchLocale === locale() && search.wpSearchAliases) {
+      return useCurrentGuideName(game, official, search.wpSearchAliases);
+    }
     return game && official && (id === "animal-color-link" || document.documentElement.hasAttribute?.('data-wp-official-name')) ? { ...game, title: official } : game;
   }
 

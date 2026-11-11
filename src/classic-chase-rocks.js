@@ -172,7 +172,9 @@
     localStorage.setItem("weightPlayLocale", locale);
     window.WonderI18n?.setLocale?.(locale);
     document.documentElement.lang = locale === "zh-Hant" ? "zh-TW" : locale === "zh-Hans" ? "zh-CN" : locale;
-    const gameTitle = gt("title");
+    const search = document.head.dataset;
+    const gameTitle = (search.wpSearchLocale === (window.WonderI18n?.actualLocale?.() || document.documentElement.lang)
+      && search.wpSearchName) || gt("title");
     const searchTitle = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchTitle : "";
     document.title = searchTitle || `${gameTitle} | WeightPlay`;
     ui.eyebrow.textContent = gameId === "space" && locale === "zh-Hant" ? "WEIGHTPLAY · 原創街機" : "WEIGHTPLAY · ORIGINAL ARCADE";

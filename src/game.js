@@ -126,6 +126,9 @@ Object.assign(WONDER_DYNAMIC_COPY["pt-BR"], {
 
 function t(key, params = {}) {
   const activeLocale = locale();
+  const search = document.head.dataset;
+  if (key === "game_title" && search.wpSearchLocale === (window.WonderI18n?.actualLocale?.() || activeLocale)
+    && search.wpSearchName) return search.wpSearchName;
   if (window.LionTalents) {
     const c=window.LionTalents.copy(activeLocale);
     const owned={hud_guard:c.ui[17],talent_points:c.ui[2],settlement_talent_reward:c.ui[2]+' +{count}',shield_blocked:c.ui[17],upgrade_thunder_name:c.names[5],upgrade_thunder_desc:c.battle[0],upgrade_barrier_name:c.ui[17],upgrade_barrier_desc:c.battle[1],upgrade_fury_name:c.ui[15]+' +',upgrade_fury_desc:c.battle[2]};
@@ -146,9 +149,14 @@ function escapeHtml(value) {
 }
 
 function translateStaticUI() {
-  document.documentElement.lang = locale();
-  document.title = t("browser_title");
+  const activeLocale = window.WonderI18n?.actualLocale?.() || locale();
+  document.documentElement.lang = activeLocale;
+  const search = document.head.dataset;
+  if (search.wpSearchLocale !== activeLocale) document.title = t("browser_title");
   for (const element of document.querySelectorAll("[data-i18n]")) {
+    if (element.dataset.i18n === "game_title" && search.wpSearchLocale === activeLocale && search.wpSearchName) {
+      element.dataset.runtimeLocalize = "off";
+    }
     element.textContent = t(element.dataset.i18n);
   }
   for (const element of document.querySelectorAll("[data-i18n-aria]")) {

@@ -529,14 +529,16 @@
           ownLocalizedText(paragraphs[2], copy.previewCopy);
         }
       }
-      const pageTitle = `${copy.title} | WeightPlay`;
-      if (document.title !== pageTitle) document.title = pageTitle;
-      const summary = document.querySelector('meta[name="description"]');
-      if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
-      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
-      document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
-      const jsonLd = document.querySelector('script[type="application/ld+json"]');
-      if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); const nextJsonLd = JSON.stringify(data); if (jsonLd.textContent !== nextJsonLd) jsonLd.textContent = nextJsonLd; } catch (_error) {} }
+      if (document.head.dataset.wpSearchLocale !== currentLocale()) {
+        const pageTitle = `${copy.title} | WeightPlay`;
+        if (document.title !== pageTitle) document.title = pageTitle;
+        const summary = document.querySelector('meta[name="description"]');
+        if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
+        document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
+        document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
+        const jsonLd = document.querySelector('script[type="application/ld+json"]');
+        if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); const nextJsonLd = JSON.stringify(data); if (jsonLd.textContent !== nextJsonLd) jsonLd.textContent = nextJsonLd; } catch (_error) {} }
+      }
       document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
       document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
       ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
