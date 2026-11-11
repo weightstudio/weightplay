@@ -1,10 +1,10 @@
-@import url('./demon-assault-v2.css?wp-media=9014fb44e291ad74');
+@import url('./demon-assault-v2.css?wp-media=85138c1bb958755e');
 :root{background:#121929}body{background:radial-gradient(at 50% 15%,#354357,#131a29 75%)}
 #battle{width:min(100%,1280px);background:#121929;display:flex;align-items:center}
 #liveGame{width:100%;height:min(100%,850px);grid-template-rows:52px 47px minmax(0,1fr) 92px}
 .top-track{background:#182031;border-bottom-color:#889cc333}.progress-track{background:#1b283b;padding-inline:18px}
 .preview-tag{color:#ffdaa2;border-color:#c6a46b66}.stage-heading{gap:12px}
-#arena{background:#5277ad url('./demon-assault-sideview-v3.png.webp?wp-media=9014fb44e291ad74') center/100% 100% no-repeat;min-width:0}
+#arena{background:#5277ad url('./demon-assault-sideview-v3.png.webp?wp-media=85138c1bb958755e') center/100% 100% no-repeat;min-width:0}
 #arena:before{background:linear-gradient(#16234612,transparent 45%,#1c1b2812)}
 .boss-label{width:145px;left:84.5%;top:20%;font-size:13px;transform:translateX(-50%);text-shadow:0 2px 4px #000}
 .boss-label #hpValue{font-size:11px;color:#fff0d8}.boss-label span:first-child{letter-spacing:.07em}

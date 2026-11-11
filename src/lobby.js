@@ -9,7 +9,7 @@ const gameGenres = window.WeightPlayGameGenres;
 if (!gameGenres) throw new Error("Lobby gameplay registry is missing");
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
 // BEGIN GENERATED METEOR ACTIVITY ENTRY
-// Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=9014fb44e291ad74 from activity-owned copy.
+// Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=85138c1bb958755e from activity-owned copy.
 const meteorActivityCopy = {
   "en": {
     "title": "Meteor Barrage",
@@ -261,6 +261,12 @@ const continuePlayingTitle = document.querySelector("#continuePlayingTitle");
 const continuePlayingReason = document.querySelector("#continuePlayingReason");
 const publisherStory = document.querySelector(".publisher-story");
 const gameGrid = document.querySelector("#gameGrid");
+const initialGameSummaries = new Map([...gameGrid.querySelectorAll(
+  ".game-card-static.playable[data-game-id] [data-wp-game-summary]",
+)].map(summary => [summary.closest("[data-game-id]").dataset.gameId, {
+  locale: summary.dataset.wpGameSummary,
+  text: summary.textContent.trim(),
+}]));
 // Limit rendered cards, never the searchable catalog. See the lobby runbook.
 let catalogRevealedBatches = 1;
 function catalogBatchSize() {
@@ -428,49 +434,49 @@ const weightPlayCharacters = [
   {
     nameKey: "character.spark_paw_fox.name",
     roleKey: "character.spark_paw_fox.role",
-    image: "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Reaction",
   },
   {
     nameKey: "character.boom_mane_lion.name",
     roleKey: "character.boom_mane_lion.role",
-    image: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Focus",
   },
   {
     nameKey: "character.moss_shell_turtle.name",
     roleKey: "character.moss_shell_turtle.role",
-    image: "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Logic",
   },
   {
     nameKey: "character.moon_cap_owl.name",
     roleKey: "character.moon_cap_owl.role",
-    image: "assets/weightplay-character-moon-cap-owl-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-moon-cap-owl-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Problem Solving",
   },
   {
     nameKey: "character.bubble_fin_otter.name",
     roleKey: "character.bubble_fin_otter.role",
-    image: "assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Animal Knowledge",
   },
   {
     nameKey: "character.gear_horn_rhino.name",
     roleKey: "character.gear_horn_rhino.role",
-    image: "assets/weightplay-character-gear-horn-rhino-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-gear-horn-rhino-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Problem Solving",
   },
   {
     nameKey: "character.drum_belly_panda.name",
     roleKey: "character.drum_belly_panda.role",
-    image: "assets/weightplay-character-drum-belly-panda-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-drum-belly-panda-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Focus",
   },
   {
     nameKey: "character.rainbow_hop_rabbit.name",
     roleKey: "character.rainbow_hop_rabbit.role",
-    image: "assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp?wp-media=9014fb44e291ad74",
+    image: "assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp?wp-media=85138c1bb958755e",
     skill: "Reaction",
   },
 ];
@@ -624,13 +630,13 @@ function createDemonEventPreview() {
   const meteor = meteorActivityCopy[locale] || meteorActivityCopy.en;
   const events = [{
     id: "demon-assault", title: strings.title,
-    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&wp-media=9014fb44e291ad74",
+    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&wp-media=85138c1bb958755e",
     details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: activityScheduleCopy[locale] || activityScheduleCopy.en, reward: strings.reward },
     entry: { kind: "activity", path: "/activities/demon-assault/", label: daily[0] },
     renderer: "demon-assault",
   }, {
     id: "meteor-barrage", title: meteor.title, label: meteor.label,
-    image: "/activities/meteor-barrage/poster.webp?wp-media=9014fb44e291ad74", showBlocks: true,
+    image: "/activities/meteor-barrage/poster.webp?wp-media=85138c1bb958755e", showBlocks: true,
     details: { line: meteor.line, body: meteor.body, blocks: meteor.blocks, schedule: meteor.schedule, reward: meteor.reward },
     entry: { kind: "activity", path: meteor.path, label: meteor.start }, renderer: null,
   }];
@@ -889,7 +895,7 @@ function createDemonEventPreview() {
     const controller = new AbortController();
     artAbort = controller;
     const isCurrent = () => generation === artGeneration && !artDisposed && section.dataset.motion === "on" && !section.hidden && !document.hidden;
-    import("/src/demon-event-pixi.mjs?wp-media=9014fb44e291ad74")
+    import("/src/demon-event-pixi.mjs?wp-media=85138c1bb958755e")
     .then(module => {
       const selected = events[activeIndex];
       const art = openButtons[activeIndex]?.querySelector(".demon-event-art");
@@ -985,13 +991,23 @@ function text(value) {
   return catalog?.[localized] || catalog?.[english] || localized;
 }
 
+function publicGameSummary(game) {
+  const summary = initialGameSummaries.get(game.id);
+  const locale = i18n.actualLocale?.() || i18n.locale?.() || "en";
+  return game.status === "playable" && summary?.locale === locale ? summary.text : "";
+}
+
+function gameDescription(game) {
+  return publicGameSummary(game) || text(game.description);
+}
+
 function normalizeSearch(value) {
   const locale = i18n.actualLocale?.() || i18n.locale?.() || undefined;
   return String(value || "").normalize("NFKC").trim().toLocaleLowerCase(locale);
 }
 
 function primaryArt(game) {
-  return game.art?.background || "assets/hero.png.webp?wp-media=9014fb44e291ad74";
+  return game.art?.background || "assets/hero.png.webp?wp-media=85138c1bb958755e";
 }
 
 function hallHeroImageSource(hall) {
@@ -1000,8 +1016,8 @@ function hallHeroImageSource(hall) {
     if (game) return new URL(game.art?.lobbyScene || primaryArt(game), document.baseURI).href;
   }
   return hall === "topics"
-    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=9014fb44e291ad74"
-    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=9014fb44e291ad74";
+    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=85138c1bb958755e"
+    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=85138c1bb958755e";
 }
 
 function lobbyThumbnail(source, width = 480) {
@@ -1846,6 +1862,7 @@ function toggleFavorite(game, title) {
 
 function createGameCard(game) {
   const isPlayable = game.status === "playable";
+  const summary = publicGameSummary(game);
   const title = text(game.title);
   const type = text(game.type);
   const ageLabel = text(game.ageLabel);
@@ -1926,16 +1943,17 @@ function createGameCard(game) {
       type,
       stateCopy("playableLabel"),
       isKidsLobby ? cardAgeTitle : ageLabel,
-      text(game.description),
+      gameDescription(game),
       ...(game.categories || []).slice(0, 3).map(categoryText),
       ...(game.skills || []).slice(0, 3).map(discoverySkillText),
       ...quickFactValues,
     ].filter(Boolean).join(". ")
     : "";
+  if (summary) card.dataset.runtimeLocalizeAttributes = "off";
   if (discoveryLabel) card.setAttribute("aria-label", discoveryLabel);
   const cardArt = game.art || {
     kind: "image",
-    background: game.cover || "assets/hero.png.webp?wp-media=9014fb44e291ad74",
+    background: game.cover || "assets/hero.png.webp?wp-media=85138c1bb958755e",
     hideHero: true,
   };
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
@@ -1980,7 +1998,7 @@ function createGameCard(game) {
       </div>
       <h2 data-runtime-localize="off">${title}</h2>
       ${isKidsLobby && isPlayable ? `<span class="game-card-play-tag">${type}</span>` : ""}
-      <p>${text(game.description)}</p>
+      <p${summary ? ` data-wp-game-summary="${i18n.actualLocale()}" data-runtime-localize="off"` : ""}>${escapeHtml(gameDescription(game))}</p>
       ${gameStateCard(game, isPlayable)}
       <div class="game-card-categories">${categoryBadges}</div>
       ${skillBadges ? `<div class="game-card-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
@@ -2389,7 +2407,7 @@ function renderLobbyContent({ historyMode = "replace" } = {}) {
     }
   } else {
     featuredGame.href = i18n.localizedPath(i18n.locale(), "/kids/");
-    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp?wp-media=9014fb44e291ad74", { priority: true });
+    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp?wp-media=85138c1bb958755e", { priority: true });
     featuredGame.querySelector("strong").textContent = i18n.t("kids.portal.title");
     featuredGame.setAttribute("aria-label", i18n.t("kids.portal.action"));
   }
@@ -2471,7 +2489,7 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png.webp?wp-media=9014fb44e291ad74", { priority })} alt="" />
+          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png.webp?wp-media=85138c1bb958755e", { priority })} alt="" />
           ${isPlayable && topicGameIds.has(game.id) && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}
           ${hasVisualIdentity ? `<span class="hero-game-art-identity" aria-hidden="true"><strong>${title}</strong><small>${type}</small></span>` : ""}
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
@@ -2679,7 +2697,7 @@ function renderFreshUpdates() {
     const title = text(game.title);
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
-    const description = text(game.description);
+    const description = escapeHtml(gameDescription(game));
     const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
     card.className = "fresh-update-card";
@@ -2700,7 +2718,7 @@ function renderFreshUpdates() {
       <div class="fresh-update-copy">
         <strong data-runtime-localize="off">${title}</strong>
         <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
-        <em>${description}</em>
+        <em${publicGameSummary(game) ? ` data-wp-game-summary="${i18n.actualLocale()}" data-runtime-localize="off"` : ""}>${description}</em>
         ${skillBadges ? `<div class="fresh-update-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       </div>
     `;
@@ -2718,7 +2736,7 @@ function renderChallengeSpotlight() {
   const cards = challengeSpotlightGames(4).map((game) => {
     const title = text(game.title);
     const type = text(game.type);
-    const description = text(game.description);
+    const description = escapeHtml(gameDescription(game));
     const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 3).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
     card.className = "challenge-spotlight-card";
@@ -2738,7 +2756,7 @@ function renderChallengeSpotlight() {
       <div class="challenge-spotlight-copy">
         <strong data-runtime-localize="off">${title}</strong>
         <small>${type}</small>
-        <em>${description}</em>
+        <em${publicGameSummary(game) ? ` data-wp-game-summary="${i18n.actualLocale()}" data-runtime-localize="off"` : ""}>${description}</em>
         ${skillBadges ? `<div class="challenge-spotlight-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
         <b>${i18n.t("challenge_spotlight.cta")}</b>
       </div>
@@ -2887,7 +2905,7 @@ function catalogSearchText(game) {
     // Same localized + English aliases for rendered cards and off-screen games.
     catalogSearchIndex.set(game.id, normalizeSearch([
       text(game.title), game.title?.en, text(game.type), game.type?.en,
-      text(game.ageLabel), text(game.description), game.description?.en,
+      text(game.ageLabel), gameDescription(game), game.description?.en,
       ...(text(game.meta) || []), ...(game.meta?.en || []),
       ...(game.categories || []).map(categoryText), ...(game.categories || []),
       ...(game.skills || []).map(skillText), ...(game.skills || []),
@@ -3408,7 +3426,7 @@ function setupResponsiveLobbyPresentation() {
   anchor.hidden = true;
   document.querySelector("#filterStatus").append(anchor);
   const script = document.createElement("script");
-  script.src = "/src/lobby-layout.js?v=20261102-first-response1&wp-media=9014fb44e291ad74";
+  script.src = "/src/lobby-layout.js?v=20261102-first-response1&wp-media=85138c1bb958755e";
   script.addEventListener("load", setup, { once: true });
   document.head.append(script);
 }
@@ -3543,7 +3561,7 @@ renderLobby();
 loadGameStats();
 if (!document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1&wp-media=9014fb44e291ad74";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1&wp-media=85138c1bb958755e";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }

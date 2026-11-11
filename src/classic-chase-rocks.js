@@ -173,8 +173,7 @@
     window.WonderI18n?.setLocale?.(locale);
     document.documentElement.lang = locale === "zh-Hant" ? "zh-TW" : locale === "zh-Hans" ? "zh-CN" : locale;
     const search = document.head.dataset;
-    const gameTitle = (search.wpSearchLocale === (window.WonderI18n?.actualLocale?.() || document.documentElement.lang)
-      && search.wpSearchName) || gt("title");
+    const gameTitle = (search.wpSearchLocale === locale && search.wpSearchName) || gt("title");
     const searchTitle = document.head.dataset.wpSearchLocale === locale ? document.head.dataset.wpSearchTitle : "";
     document.title = searchTitle || `${gameTitle} | WeightPlay`;
     ui.eyebrow.textContent = gameId === "space" && locale === "zh-Hant" ? "WEIGHTPLAY · 原創街機" : "WEIGHTPLAY · ORIGINAL ARCADE";
@@ -211,7 +210,7 @@
     ui.sound.textContent = muted ? "🔇" : "🔊"; ui.sound.setAttribute("aria-label", muted ? tr("soundOff") : tr("soundOn"));
     ui.restart.textContent = tr("restart"); ui.scoreLabel.textContent = tr("score"); ui.bestLabel.textContent = tr("best"); ui.levelLabel.textContent = gameId === "maze" ? tr("level") : tr("wave"); ui.powerLabel.textContent = gameId === "maze" ? tr("power") : tr("shield"); if (ui.livesLabel && ui.livesHud) { ui.livesLabel.textContent = tr("livesStat"); ui.livesHud.hidden = gameId !== "maze"; }
     ui.confirmCopy.textContent = tr("confirm"); ui.stay.textContent = tr("stay"); ui.leave.textContent = tr("leave"); ui.retry.textContent = tr("retry"); ui.home.textContent = tr("home"); ui.controlHint.textContent = gameId === "maze" ? `${gt("hint")} · ${tr("controlsMaze")}` : `${gt("hint")} · ${tr("controlsSpace")}`;
-    ui.cover.src = gameId === "maze" ? "../../assets/maze-chase-cover.png.webp?wp-media=9014fb44e291ad74" : "../../assets/space-rocks-cover.png.webp?wp-media=9014fb44e291ad74";
+    ui.cover.src = gameId === "maze" ? "../../assets/maze-chase-cover.png.webp?wp-media=85138c1bb958755e" : "../../assets/space-rocks-cover.png.webp?wp-media=85138c1bb958755e";
     ui.cover.alt = `${gameTitle} original WeightPlay cover`;
     ui.footer.textContent = tr("footer");
     if (ui.result && !ui.result.hidden) renderResult();
@@ -478,7 +477,7 @@
     mainReturn.href = "/";
     mainReturn.dataset.wpReturn = "main";
     mainReturn.setAttribute("aria-label", "Return to WeightPlay");
-    mainReturn.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png.webp?wp-media=9014fb44e291ad74" alt="">';
+    mainReturn.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png.webp?wp-media=85138c1bb958755e" alt="">';
     ui.main.prepend(mainReturn);
     window.dispatchEvent(new Event("weightplay:shell-sync"));
   }

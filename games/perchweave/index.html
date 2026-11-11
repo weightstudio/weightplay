@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="wp-frame-main-flow" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=85138c1bb958755e#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/perchweave/art/cover.webp?wp-media=85138c1bb958755e">
+<head data-wp-search-copy="2.0" data-wp-search-locale="en" data-wp-search-title="Perchweave – Card Strategy | WeightPlay" data-wp-search-name="Perchweave">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- perch-meta:start -->
+<title>Perchweave | WeightPlay</title>
+<meta name="description" content="Recruit birds, arrange their seats and perform before the last beat.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<!-- perch-meta:end -->
+<link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=85138c1bb958755e" data-wp-entry-required>
+<link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=85138c1bb958755e" data-wp-entry-required>
+<link rel="stylesheet" href="/src/game-play-ui.css?wp-media=85138c1bb958755e" data-wp-entry-required>
+<link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=85138c1bb958755e" data-wp-entry-required>
+<link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=85138c1bb958755e" data-wp-entry-required>
+<link rel="stylesheet" href="/src/tutorial.css?wp-media=85138c1bb958755e" data-wp-entry-required>
+<link rel="stylesheet" href="/games/perchweave/style.css?wp-build=e0290b7ebc5e2ac2&wp-media=85138c1bb958755e" data-wp-entry-required>
+<script src="/src/game-layout-config.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/weightplay-audio.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/site-config.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/i18n.js?wp-media=85138c1bb958755e"></script>
+<script src="/src/game-title-registry.js?wp-media=85138c1bb958755e" data-wp-game-title-registry></script>
+<script src="/src/wallet.js?wp-media=85138c1bb958755e"></script>
+<script src="/src/analytics.js?wp-media=85138c1bb958755e"></script>
+<script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=85138c1bb958755e"></script>
+</head>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1" data-internal-only="true"
+ data-wp-game-id="perchweave" data-game-id="perchweave" data-audience="general" data-has-stage="true"
+ data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0" data-wp-interface-candidate="9"
+ data-tutorial-owner="action-guide" data-tutorial-auto-show="false" data-screen="main">
+<div id="gameFrame" data-wp-frame-root data-wp-entry-root hidden data-wp-frame="2">
+  <div id="mainGroup">
+    <section id="mainScreen" data-wp-frame-scene="main">
+      <header id="mainHeader" data-wp-frame-header="main" class="wp-frame-header">
+        <a id="mainReturn" href="/en/?preview=1" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=85138c1bb958755e" alt="" width="26" height="26"></a>
+        <h1 id="gameTitle" data-wp-frame-title data-runtime-localize="off">Perchweave</h1>
+      </header>
+      <section id="mainHero" data-wp-frame-content="main">
+        <img id="cover" src="/games/perchweave/art/cover.webp?wp-media=85138c1bb958755e" width="768" height="768" data-wp-frame-poster data-wp-interface7-poster="true" alt="Perchweave" fetchpriority="high">
+        <div data-wp-frame-copy>
+          <p id="description" data-wp-frame-summary>Recruit birds, arrange their seats and perform before the last beat.</p>
+          <p id="mainProgress" data-wp-frame-progress></p>
+          <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>Start</button>
+        </div>
+      </section>
+    </section>
+    <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=85138c1bb958755e#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide aria-labelledby="guideTitle">
+      <h2 id="guideTitle">Game guide</h2>
+      <!-- perch-guide:start -->
+      <article class="game-info-section"><h3>Goal</h3><p data-wp-intro-faq-source>Finish the concert commission before the last beat.</p></article>
+      <!-- perch-guide:end -->
+      <!-- perch-related:start --><!-- perch-related:end -->
+      <div class="game-info-section" data-wp-perch-faq>
+        <h3 id="faqTitle">FAQ</h3>
+        <!-- perch-faq:start --><!-- perch-faq:end -->
+      </div>
+    </section>
+  </div>
+  <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/assets/lobby-block-atmosphere.svg" hidden>
+    <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
+    <div id="stageWorkspace">
+      <div id="stagePage"><div id="stageRail"></div></div>
+      <section id="crewPanel" hidden></section>
+    </div>
+    <nav id="stageTabs" data-wp-frame-stage-nav>
+      <button id="stagesTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages">Concerts</button>
+      <button id="crewTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="shop">Directors</button>
+    </nav>
+  </section>
+  <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root
+   data-wp-canvas-max-width="960" data-wp-battle-min-width="390" data-wp-battle-min-height="650"
+   data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390" hidden>
+    <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
+    <main id="battleLive">
+      <section id="arena">
+        <div id="world"></div>
+        <div id="commission"></div>
+        <div id="table"></div>
+        <p id="eventLog" role="status" aria-live="polite"></p>
+      </section>
+      <section id="commandDeck">
+        <div id="lessonHost"></div>
+        <div id="forecast" aria-live="polite"></div>
+        <div id="market" role="group"></div>
+        <div id="actionBar">
+          <button id="gatherBtn" type="button" data-wp-audio-click="off">Gather</button>
+          <button id="cycleBtn" type="button" data-wp-audio-click="off">Rotate cards</button>
+          <button id="undoBtn" type="button">Undo</button>
+          <button id="bellBtn" type="button" hidden>Windbell</button>
+          <button id="leaderBtn" type="button" hidden>Director</button>
+          <button id="helpBtn" type="button">Help</button>
+        </div>
+      </section>
+    </main>
+    <section id="resultPanel" class="perch-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+      <div class="perch-dialog" data-wp-result-card>
+        <p id="resultBadge" aria-hidden="true"></p><h2 id="resultTitle"></h2><p id="resultText"></p>
+        <div class="perch-dialog-actions">
+          <button id="resultMap" type="button" data-wp-frame-action="secondary">Concerts</button>
+          <button id="resultNext" type="button" data-wp-frame-action="primary">Next concert</button>
+          <button id="resultRetry" type="button" data-wp-frame-action="secondary">Retry</button>
+        </div>
+      </div>
+    </section>
+    <section id="dialog" class="perch-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden>
+      <div class="perch-dialog">
+        <h2 id="dialogTitle"></h2><div id="dialogText"></div><div id="dialogActions" class="perch-dialog-actions"></div>
+      </div>
+    </section>
+  </section>
+</div>
+<script src="/src/edge-guard.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/stage-rail-i9.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/battle-canvas-standard.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/game-screen-frame.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script src="/src/tutorial.js?wp-media=85138c1bb958755e" data-wp-entry-required></script>
+<script type="module" src="/games/perchweave/game.mjs?wp-build=1988bb188fdf78f2&wp-media=85138c1bb958755e" data-wp-entry-required></script>
+</body>
+</html>

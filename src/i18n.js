@@ -2460,6 +2460,8 @@ const essentialLobbyCopy = {
 
   function translateTextNode(node) {
     if (!node?.parentElement || ["SCRIPT", "STYLE", "NOSCRIPT"].includes(node.parentElement.tagName)) return;
+    if (node.parentElement.tagName === "TITLE" && document.head.dataset.wpSearchLocale === currentLocale) return;
+    if (node.parentElement.getAttribute("data-wp-game-summary") === currentLocale) return;
     // Locale names are self-identifying labels and must keep the approved
     // spelling in every language selector, including Simplified Chinese.
     if (node.parentElement.tagName === "OPTION" && node.parentElement.closest("select")) return;
@@ -2474,6 +2476,9 @@ const essentialLobbyCopy = {
 
   function translateElementAttributes(element) {
     if (!(element instanceof Element)) return;
+    if (element.getAttribute("data-runtime-localize-attributes") === "off") return;
+    if (element.tagName === "META" && element.parentElement === document.head
+      && document.head.dataset.wpSearchLocale === currentLocale) return;
     translatedAttributeNames.forEach((name) => {
       if (!element.hasAttribute(name)) return;
       const records = translatedAttributes.get(element) || new Map();
