@@ -1,5 +1,5 @@
 // Authored route inventory used by the saved campaign.
-import {translatedStageNames} from './campaign-names.mjs?v=20260909-grove-campaign-v6&wp-media=6a3d1c6d444e86cc';
+import {translatedStageNames} from './campaign-names.mjs?v=20260909-grove-campaign-v6&wp-media=376b261cda679b49';
 // Edge suffixes: ? optional, ~ reversible, ! one bridge token.
 function stage(id, names, purpose, edges, rules={}) {
   const tiles=edges.split(' ').map((edge,index)=>{

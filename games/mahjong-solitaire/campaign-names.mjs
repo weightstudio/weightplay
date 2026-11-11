@@ -1,4 +1,4 @@
-import {CAMPAIGN_LOCALES} from './campaign-copy.mjs?wp-media=6a3d1c6d444e86cc';
+import {CAMPAIGN_LOCALES} from './campaign-copy.mjs?wp-media=376b261cda679b49';
 const names={
  en:'Tea Pavilion|Jade Corridor|Roof Tiles|Twin Bridges|Pavilion Keeper|Forked Path|Long Crossing|Split Courtyard|Canopy Choice|Bridge Warden|Jade Seal|Key Under Eaves|Two Courtyards|Shared Key|Seal Archivist|Lantern Sequence|Hidden Lantern|Crossed Ribbons|Sequence and Seal|Lantern Curator|Terraced Grove|Twin Lock Tower|Broken Causeway|Echo Chamber|Twin Gate Guardian|Moon Terrace|Keeper of Keys|Mirror Archive|Ascending Lanterns|Jade Palace Finale',
  'zh-Hant':'茶亭初會|翠玉長廊|屋瓦疊影|雙橋相望|茶亭守人|岔路抉擇|長橋交錯|分庭對映|樹冠選擇|橋上守望|翠玉封印|簷下藏鑰|雙庭之間|共用之鑰|封印典藏者|燈序初解|隱藏之燈|交織彩帶|燈序與封印|提燈館主|層臺樹苑|雙鎖高塔|斷橋兩岸|回聲密室|雙門守衛|月下露臺|掌鑰之人|鏡映典藏|明燈步升|玉宮終章',

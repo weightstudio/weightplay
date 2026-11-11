@@ -312,16 +312,110 @@
     "في حي اللعبة الخيالي توزّع الكهرباء نهارًا وتخزّن الفائض لليل. السكان والطلبات والشبكة من ابتكار اللعبة."
   ]
 };
+  const parcelPactNews = {
+  "en": [
+    "Event",
+    "When a discount is worth using",
+    "Some shoppers weighed the November offers against their shopping lists.",
+    "The annual online shopping event centered on November 11, 2026, after promotions started weeks earlier. Shoppers interviewed by independent outlets described cutting some nonessential purchases or checking whether a discount met a real need.",
+    "In Parcel Pact, the fictional co-op opens one mixed crate per batch. The player sorts goods among neighbors and decides which surplus to carry forward."
+  ],
+  "zh-Hant": [
+    "事件背景",
+    "購物節裡，折扣要合用才值得",
+    "有受訪者把折扣和自己的清單放在一起衡量。",
+    "2026 年的年度網購活動以 11 月 11 日為節點，相關促銷已提前數週展開。不同媒體訪問到的部分消費者談到減少非必要採買，或仔細看優惠是否符合需求。",
+    "遊戲中的共購所是虛構的。每批只能拆一箱，玩家逐件分給住戶，再決定哪些餘貨值得留給下一批。"
+  ],
+  "zh-Hans": [
+    "事件背景",
+    "购物节里，折扣要合用才值得",
+    "有受访者把折扣和自己的清单放在一起衡量。",
+    "2026 年的年度网购活动以 11 月 11 日为节点，相关促销已提前数周展开。不同媒体采访到的部分消费者谈到减少非必要采购，或仔细看优惠是否符合需求。",
+    "游戏中的共购所是虚构的。每批只能拆一箱，玩家逐件分给住户，再决定哪些余货留给下一批。"
+  ],
+  "ja": [
+    "出来事",
+    "値引きと買い物リスト",
+    "セールの値引きを、本当に必要な品と比べる人もいました。",
+    "2026年の恒例ネットセールは、数週間前から販促が始まり、11月11日が中心でした。別々の取材で、不要不急の品を控え、値引きが実際の需要に合うかを見る買い物客がいました。",
+    "架空の共同購入所では一便に一箱だけ開け、近所へ配り、余った品を次の便に残すか決めます。"
+  ],
+  "ko": [
+    "사건 배경",
+    "할인과 장보기 목록",
+    "일부 구매자는 할인보다 실제로 필요한 물건을 따졌어요.",
+    "2026년 온라인 할인 행사는 몇 주 전부터 시작돼 11월 11일을 중심으로 진행됐어요. 서로 다른 매체가 만난 일부 구매자는 불필요한 구매를 줄이거나 할인이 실제 필요에 맞는지 살폈어요.",
+    "가상의 공동 구매소에서는 한 차수에 상자 하나를 열고, 이웃에게 물건을 나눈 뒤 다음 차수에 남길 것을 정해요."
+  ],
+  "es": [
+    "El hecho",
+    "Cuándo compensa una oferta",
+    "Algunos compradores compararon los descuentos con su lista.",
+    "Las rebajas en línea de 2026 giraron en torno al 11 de noviembre, aunque las promociones comenzaron semanas antes. Algunos consumidores entrevistados por medios distintos redujeron compras no esenciales o valoraron si el descuento encajaba con sus necesidades.",
+    "En la cooperativa ficticia abres una caja por tanda, repartes los productos entre vecinos y decides qué guardar."
+  ],
+  "pt-BR": [
+    "O fato",
+    "Quando vale usar um desconto",
+    "Alguns compradores compararam as ofertas com a lista de compras.",
+    "As ofertas on-line de 2026 tiveram 11 de novembro como data central, com promoções iniciadas semanas antes. Em entrevistas de veículos distintos, alguns consumidores disseram ter cortado itens não essenciais ou avaliado se o desconto atendia a uma necessidade real.",
+    "Na cooperativa fictícia, você abre uma caixa por rodada, divide os produtos entre vizinhos e escolhe o que guardar."
+  ],
+  "fr": [
+    "Le fait",
+    "Les promotions à l’épreuve de la liste",
+    "Des acheteurs ont comparé les remises à leurs besoins.",
+    "Les promotions en ligne de 2026 étaient centrées sur le 11 novembre et avaient commencé plusieurs semaines plus tôt. Des acheteurs interrogés par différents médias ont réduit certains achats non essentiels ou vérifié si une remise répondait à leur besoin.",
+    "Dans la coopérative fictive, vous ouvrez une caisse par lot, répartissez les produits entre voisins et décidez quoi garder."
+  ],
+  "de": [
+    "Ereignis",
+    "Rabatte und Einkaufslisten",
+    "Einige Käufer verglichen Angebote mit ihrem Bedarf.",
+    "Die Online-Aktion 2026 konzentrierte sich auf den 11. November, obwohl Angebote schon Wochen vorher begannen. In unabhängigen Interviews schilderten einige Käufer, dass sie auf entbehrliche Ware verzichteten oder prüften, ob ein Rabatt zu ihrem Bedarf passte.",
+    "In der fiktiven Genossenschaft öffnest du pro Runde eine Kiste, verteilst Waren und hebst geeignete Reste auf."
+  ],
+  "it": [
+    "Il fatto",
+    "Sconti e liste della spesa",
+    "Alcuni acquirenti hanno confrontato le offerte con ciò che serviva davvero.",
+    "Le offerte online del 2026 ruotavano attorno all’11 novembre, dopo promozioni iniziate settimane prima. In interviste di testate diverse, alcuni acquirenti hanno raccontato di aver ridotto gli acquisti non essenziali o valutato l’utilità di ogni sconto.",
+    "Nella cooperativa inventata apri una cassa per lotto, distribuisci i prodotti e decidi cosa conservare."
+  ],
+  "ru": [
+    "Событие",
+    "Скидки и список покупок",
+    "Некоторые покупатели сверяли предложения со своими нуждами.",
+    "Главной датой онлайн-распродажи 2026 года стало 11 ноября, хотя акции начались на несколько недель раньше. Покупатели в разных интервью рассказывали, как отказывались от лишнего или проверяли, нужен ли им товар со скидкой.",
+    "В вымышленном кооперативе вы открываете один ящик на партию, раздаёте товары соседям и решаете, что оставить."
+  ],
+  "hi": [
+    "घटना",
+    "छूट और खरीदारी की सूची",
+    "कुछ खरीदारों ने ऑफ़र की तुलना अपनी असली ज़रूरत से की।",
+    "2026 की ऑनलाइन बिक्री का मुख्य दिन 11 नवंबर था, जबकि ऑफ़र कई सप्ताह पहले शुरू हुए। अलग-अलग रिपोर्टों में कुछ खरीदारों ने गैरज़रूरी खरीद कम करने या छूट वाले सामान की उपयोगिता परखने की बात कही।",
+    "काल्पनिक सहकारी केंद्र में हर खेप के लिए एक पेटी खोलें, पड़ोसियों में सामान बाँटें और अगली खेप के लिए सही सामान बचाएँ।"
+  ],
+  "ar": [
+    "خلفية الحدث",
+    "الخصومات وقائمة المشتريات",
+    "قارن بعض المتسوقين العروض باحتياجاتهم الفعلية.",
+    "تمحورت التخفيضات عبر الإنترنت عام ٢٠٢٦ حول ١١ نوفمبر، بعد عروض بدأت قبل أسابيع. وفي مقابلات لوسائل مختلفة، تحدث بعض المتسوقين عن تقليل مشتريات غير ضرورية أو التحقق من ملاءمة الخصم لحاجتهم.",
+    "في التعاونية الخيالية تفتح صندوقًا واحدًا لكل دفعة، وتوزع السلع على الجيران، وتختار ما تحتفظ به للدفعة التالية."
+  ]
+};
   const items = [
-    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:sunshiftCommonsNews },
-    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:siliconShiftNews },
-    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:tidegateNews },
-    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:rainlineNews },
-    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:gatheringNews },
-    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=6a3d1c6d444e86cc', cover:true, news },
-    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:trafficNews },
-    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:robotNews },
-    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=6a3d1c6d444e86cc', cover:true, news:lifeStory }
+    { ...{"id":"topics:parcel-pact","gameId":"parcel-pact","kind":"news","eventDate":"2026-11-11","unlock":{"kind":"gameClear","gameId":"parcel-pact"},"image":"/games/parcel-pact/art/cover.webp?wp-media=376b261cda679b49","cover":true}, news: parcelPactNews },
+    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=376b261cda679b49', cover:true, news:sunshiftCommonsNews },
+    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=376b261cda679b49', cover:true, news:siliconShiftNews },
+    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=376b261cda679b49', cover:true, news:tidegateNews },
+    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=376b261cda679b49', cover:true, news:rainlineNews },
+    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=376b261cda679b49', cover:true, news:gatheringNews },
+    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=376b261cda679b49', cover:true, news },
+    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=376b261cda679b49', cover:true, news:trafficNews },
+    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=376b261cda679b49', cover:true, news:robotNews },
+    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=376b261cda679b49', cover:true, news:lifeStory }
   ];
   const dates = {'flying-tram':'2026-10-15','traffic-jam-diner':'2026-10-08','robot-dog-showtime':'2026-09-22'};
   items.forEach(item => { if (dates[item.gameId]) { item.kind = 'news'; item.eventDate = dates[item.gameId]; } });

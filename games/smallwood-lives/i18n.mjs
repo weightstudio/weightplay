@@ -1,17 +1,17 @@
-import en from './locales/en.mjs?wp-media=6a3d1c6d444e86cc';
-import hant from './locales/zh-Hant.mjs?wp-media=6a3d1c6d444e86cc';
-import hans from './locales/zh-Hans.mjs?wp-media=6a3d1c6d444e86cc';
-import ja from './locales/ja.mjs?wp-media=6a3d1c6d444e86cc';
-import ko from './locales/ko.mjs?wp-media=6a3d1c6d444e86cc';
-import es from './locales/es.mjs?wp-media=6a3d1c6d444e86cc';
-import pt from './locales/pt-BR.mjs?wp-media=6a3d1c6d444e86cc';
-import fr from './locales/fr.mjs?wp-media=6a3d1c6d444e86cc';
-import de from './locales/de.mjs?wp-media=6a3d1c6d444e86cc';
-import it from './locales/it.mjs?wp-media=6a3d1c6d444e86cc';
-import ru from './locales/ru.mjs?wp-media=6a3d1c6d444e86cc';
-import hi from './locales/hi.mjs?wp-media=6a3d1c6d444e86cc';
-import ar from './locales/ar.mjs?wp-media=6a3d1c6d444e86cc';
-import {LOCALES,ROUTES} from './content.mjs?wp-media=6a3d1c6d444e86cc';
+import en from './locales/en.mjs?wp-media=376b261cda679b49';
+import hant from './locales/zh-Hant.mjs?wp-media=376b261cda679b49';
+import hans from './locales/zh-Hans.mjs?wp-media=376b261cda679b49';
+import ja from './locales/ja.mjs?wp-media=376b261cda679b49';
+import ko from './locales/ko.mjs?wp-media=376b261cda679b49';
+import es from './locales/es.mjs?wp-media=376b261cda679b49';
+import pt from './locales/pt-BR.mjs?wp-media=376b261cda679b49';
+import fr from './locales/fr.mjs?wp-media=376b261cda679b49';
+import de from './locales/de.mjs?wp-media=376b261cda679b49';
+import it from './locales/it.mjs?wp-media=376b261cda679b49';
+import ru from './locales/ru.mjs?wp-media=376b261cda679b49';
+import hi from './locales/hi.mjs?wp-media=376b261cda679b49';
+import ar from './locales/ar.mjs?wp-media=376b261cda679b49';
+import {LOCALES,ROUTES} from './content.mjs?wp-media=376b261cda679b49';
 export const UI_KEYS='start continue stages collection chapter season wish optional actions choice confirm cancel endSeason remaining requirements noChange forecast relationships memories result saved saveLife next retry return leaveQuestion replaceQuestion replace empty room place remove locked completed ordinary wishDone promise due fulfilled missed rescheduled declined on off buy owned price cosmetics needClear chooseSlot needRoom close help pause continueRun otherTab saveFailed saveCorrupt unavailable lockUnavailable contextLost contextRestored graphicsError notEnough shopError kept stageLocked seed newLife resume swapRun tutorial freeExit confirmMiss confirmUnused loading settings remote local legacyProgress history resultIntro echo finishedWork guide related copyright objects viewAll practice saveDuplicate selected'.split(' ');
 export const ACTION_KEYS='explore craft rest company fulfil reschedule bookStudy farPath lunch repairTools walkTogether legacyWork give makeTogether keep choosePerson decline promiseOne promiseBoth repairSelf repairFriend repairHelp leave learnCraft learnNature listen move stay shelter supplies mentorCraft mentorNature allocateA join ownTime buildSelf buildTogether delegate blueprint letter visit later rememberBirth rememberHome rememberChoice workshop garden trail'.split(' ');
 export const FAMILY_KEYS='gift invite promise repair learn move weather mentor allocate boundary build contact memory legacy'.split(' ');
@@ -32,14 +32,14 @@ export const format=(text,args={})=>String(text).replace(/\{(\w+)\}/g,(_,key)=>a
 export const escape=value=>String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
 export function renderGuide(locale='en'){
  const l=normalizeLocale(locale),c=CATALOGS[l],g=RAW[l].guide,route=ROUTES[LOCALES.indexOf(l)];
- return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="i18n.mjs?wp-media=6a3d1c6d444e86cc#renderGuide" data-wp-guide-locale="${l}" aria-label="${escape(c.guide)}">
+ return `<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="i18n.mjs?wp-media=376b261cda679b49#renderGuide" data-wp-guide-locale="${l}" aria-label="${escape(c.guide)}">
  <div class="game-info-hero"><div class="game-info-title"><h2>${escape(c.title)}</h2><p>${escape(g.intro)}</p></div></div>
  <div class="game-info-sections"><article class="game-info-section"><h3>${escape(g.head)}</h3><ol>${g.steps.map(s=>`<li>${escape(s)}</li>`).join('')}</ol></article>
  <article class="game-info-section"><h3>${escape(c.actions)}</h3><p>${escape(g.rules)}</p></article>
  <article class="game-info-section"><h3>${escape(c.collection)}</h3><p>${escape(g.collection)}</p></article>
  <article class="game-info-section"><h3>${escape(c.stages)}</h3><ol>${[0,5,10,15,20,25].map(i=>`<li>${escape(c.arcs[i/5])} — ${escape(c.wishes[i])}</li>`).join('')}</ol></article>
  <article class="game-info-section"><h3>${escape(c.help)}</h3><dl>${g.faq.map(([q,a])=>`<dt>${escape(q)}</dt><dd>${escape(a)}</dd>`).join('')}</dl></article></div>
- <div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(g.related)}</h3><div class="game-info-related-grid">${['animal-peach-oath','animal-carnival-claw'].map(id=>`<a class="game-info-related-card" href="/${route}/games/${id}/" data-game-id="${id}"><span class="game-info-related-poster"><img loading="lazy" src="/games/${id}/assets/cover.webp?wp-media=6a3d1c6d444e86cc" alt=""></span><strong>${id}</strong></a>`).join('')}</div></div></section>`;
+ <div class="game-info-related-section" data-wp-guide-related-interface="9"><h3>${escape(g.related)}</h3><div class="game-info-related-grid">${['animal-peach-oath','animal-carnival-claw'].map(id=>`<a class="game-info-related-card" href="/${route}/games/${id}/" data-game-id="${id}"><span class="game-info-related-poster"><img loading="lazy" src="/games/${id}/assets/cover.webp?wp-media=376b261cda679b49" alt=""></span><strong>${id}</strong></a>`).join('')}</div></div></section>`;
 }
 // Scoped finalization after the canonical route generator: only game-owned
 // copy markers are changed; shared controls and related-card records retain
@@ -52,7 +52,7 @@ export function localizeShell(html,locale='en'){
  out=out.replace(/(<img\b[^>]*\bid="mainPoster"[^>]*\balt=")[^"]*(")/,`$1${escape(c.title)}$2`);
  out=out.replace(/<script\b[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>\n?/g,'');
  out=out.replace(/\s*<script\s+data-wp-locale-route[^>]*>[\s\S]*?<\/script>/g,'');
- const schema={'@context':'https://schema.org','@graph':[{'@type':'VideoGame',name:c.title,description:c.intro,inLanguage:l,genre:['Simulation','Strategy'],gamePlatform:'Web browser',author:{'@type':'Organization',name:'WeightPlay'},image:'https://weightplay.com/games/smallwood-lives/assets/cover.webp?wp-media=6a3d1c6d444e86cc'},{'@type':'FAQPage',mainEntity:RAW[l].guide.faq.map(([name,text])=>({'@type':'Question',name,acceptedAnswer:{'@type':'Answer',text}}))}]};
+ const schema={'@context':'https://schema.org','@graph':[{'@type':'VideoGame',name:c.title,description:c.intro,inLanguage:l,genre:['Simulation','Strategy'],gamePlatform:'Web browser',author:{'@type':'Organization',name:'WeightPlay'},image:'https://weightplay.com/games/smallwood-lives/assets/cover.webp?wp-media=376b261cda679b49'},{'@type':'FAQPage',mainEntity:RAW[l].guide.faq.map(([name,text])=>({'@type':'Question',name,acceptedAnswer:{'@type':'Answer',text}}))}]};
  out=out.replace('</head>',`<script type="application/ld+json">${JSON.stringify(schema).replaceAll('<','\\u003c')}</script>\n</head>`);
  return out;
 }
