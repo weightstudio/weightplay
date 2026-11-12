@@ -305,76 +305,22 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
       </section>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Safari Dash game guide" data-wp-entry-guide="">
+    <section class="game-page-info game-page-info-static" aria-label="Safari Dash game guide" data-wp-entry-guide="" data-wp-preserve-static-guide>
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Safari Dash - How to Play</h2>
-          <p>Safari Dash is a three-lane animal runner with 30 saved routes, six regions, five kinds of route objectives, and six Guardian Checks. Spark Paw Fox carries guide stars between protected trails while players read safe lanes, collect star tokens, and decide when a tempting star line is worth crossing into danger. The campaign begins with open paths, then adds two-lane gates, sticky mud, guided star trails, and authored Guardian patterns that change the route rather than merely increasing speed.</p>
-        <div class="game-info-tags" data-wp-gameplay-tags="1.4.0"><span>Three-Lane Runner</span><span>Obstacle Dodging</span><span>Lane-Change Reflexes</span></div></div>
+          <p data-wp-search-guide-intro="2.0" data-runtime-localize="off">Run along three lanes, follow the star trails and switch lanes in time to dodge gates and sticky mud.</p>
+        <div class="game-info-tags" data-wp-gameplay-tags="2.0" data-wp-search-gameplay-tags="2.0" data-runtime-localize="off"><span>Three-Lane Obstacle Runner</span><span>Reflex Game</span></div></div>
       </div>
       <div class="game-info-sections">
-        <div class="game-info-section">
-          <h3>Story and Safari World</h3>
-          <p>Six wildlife regions share one chain of marked trails: Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve, and Crown Safari. Their guide stars keep travelers on paths that do not disturb watering places or nesting grounds. A season of scattered satchels, book crates, safety cones, and flooded track markers has broken that chain. Spark Paw Fox volunteers to carry fresh stars through every route so each local keeper can confirm that the trail is safe again.</p>
-          <p>Every fifth route ends at a named Guardian Check. Zebra Pathfinder tests readable lane rhythm, Rhino Trailkeeper closes two lanes at once, Hippo Waterwarden watches the mud paths, Eagle Skykeeper combines gates with a star-marked escape lane, Lion Pridekeeper reviews recovery under pressure, and Elephant Crownkeeper combines every advanced rule. Clearing Route 30 means the complete six-region trail can reopen; it is a defined campaign ending, not an endless score screen disguised as progress.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Complete Play Flow</h3>
-          <ol>
-            <li>Select an unlocked route from the horizontal Stage rail. The card states its objective and active route rules before play begins.</li>
-            <li>Move one lane at a time by tapping the left or right side, swiping, or pressing A, D, or the arrow keys.</li>
-            <li>Read incoming objects. Stars are collectibles; cones, satchels, book stacks, and puddles are hazards.</li>
-            <li>Collect consecutive stars to raise the next-star multiplier. A collision removes 80 points and resets that multiplier.</li>
-            <li>Stay on the route until its timer reaches zero, then satisfy the card's finish, star, combo, clean-run, or score objective.</li>
-            <li>A successful result saves the clear and unlocks the next route. Run Again retries the current route; Routes returns to Stage Select.</li>
-          </ol>
-        </div>
-        <div class="game-info-section">
-          <h3>Route Rules and Objectives</h3>
-          <p>Open Trail uses individually spaced hazards and is the clearest place to learn lane timing. Star Trail creates more frequent star lines and sometimes places a star in the safe opening of a gate. Two-Lane Gates send two hazards together, leaving one readable escape lane. Sticky Mud favors puddles; touching one still costs points and also slows the fox's lane transition briefly, so a late swipe can affect the next decision. Guardian Pattern uses a fixed safe-lane sequence rather than ordinary random drops, making observation and anticipation important.</p>
-          <p>The five objective families ask for different decisions. Finish routes reward reaching the end. Star routes require a stated collection total. Combo routes require an uninterrupted star chain. Clean routes limit collisions, so abandoning a risky star is often correct. Score routes allow more freedom but reward multiplier control. Stars increase score by 50 times the current multiplier, the multiplier rises after a collection, and collisions reset it to x1. The local Top 5 stores scores on this device, while campaign progress separately stores unlocked, selected, and completed routes.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Thirty-Route Difficulty Growth</h3>
-          <p>Routes 1-5 teach ordinary hazards, star lines, first gates, and combo timing before Zebra Pathfinder's rhythm check. Routes 6-10 make Acacia Crossing alternate between collection paths and tighter two-lane decisions, ending with Rhino Trailkeeper's clean-run gate test. Routes 11-15 introduce sticky mud and combine slow recovery with stars and gates before Hippo Waterwarden.</p>
-          <p>Routes 16-20 move into Red Canyon, where score and combo goals meet repeated Guardian patterns; Eagle Skykeeper adds a star cue to the only open lane. Routes 21-25 combine mud, gates, and night star chains across Moonwater Reserve, ending with Lion Pridekeeper's low-collision check. Routes 26-30 revisit every learned rule in Crown Safari. Route 29 is the all-trail gauntlet, while Elephant Crownkeeper uses mud, star trails, two-lane gates, and Guardian sequencing together and asks for 15 collected stars.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Strategy Tips</h3>
-          <ul>
-            <li>Look at the gap between two gate hazards, not at the objects themselves; the empty lane is the instruction.</li>
-            <li>On clean-run routes, protect the collision allowance before chasing score. A star is optional unless the route specifically requires stars.</li>
-            <li>Move early after touching mud. Lane transitions are temporarily slower, but the input direction is unchanged.</li>
-            <li>Guardian sequences repeat a deliberate safe-lane rhythm. Use the first two gates to identify the pattern.</li>
-            <li>A collision resets the next-star multiplier but does not erase the best combo already achieved during the route.</li>
-          </ul>
-        </div>
-        <div class="game-info-section">
-          <h3>Development and Design Notes</h3>
-          <p>Safari Dash uses three lanes so a choice remains readable on a phone without shrinking the fox or hazards into tiny targets. Each input moves exactly one lane; a held keyboard key cannot skip across two lanes, and a captured touch swipe can finish even if the finger crosses the Canvas edge. Route timers range from 28 to 45 seconds so a retry is short, while the 30-route campaign supplies longer-term structure.</p>
-          <p>The campaign was designed around information changes rather than a single speed curve. Gates alter spatial reading, star trails alter risk and reward, mud alters recovery timing, objectives alter what counts as success, and Guardians use authored sequences. Main, Stage, Battle, and Battle-owned Result share fixed logical layouts across phone, tablet, and landscape screens. As a Kids game, Safari Dash creates no advertising reserve or advertising request.</p>
-        </div>
-        <div class="game-info-section game-info-parent">
-          <h3>Parent Note</h3>
-          <p>Safari Dash is intended for ages 9+ because later routes combine faster visual decisions, route objectives, and score pressure. The Result reports real evidence from the run: lane changes, stars collected, obstacle bumps, and best uninterrupted combo. These values describe one play session only. They are not a developmental assessment, diagnosis, or comparison with other children. Progress and the local Top 5 remain in this browser's local storage.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Frequently Asked Questions</h3>
-          <dl>
-            <div><dt>How many routes are in Safari Dash?</dt><dd>There are 30 saved routes across six five-route regions. Routes 5, 10, 15, 20, 25, and 30 are Guardian Checks.</dd></div>
-            <div><dt>Do all routes use the same goal?</dt><dd>No. Routes can require reaching the finish, collecting stars, reaching a combo, staying under a collision limit, or earning a target score.</dd></div>
-            <div><dt>What does sticky mud do?</dt><dd>A puddle collision costs 80 points and resets the multiplier like other hazards. On mud routes it also slows the next lane transition briefly.</dd></div>
-            <div><dt>How do I pass a two-lane gate?</dt><dd>Two hazards arrive together and leave one lane open. Move toward the empty lane; a star may mark that opening on some later routes.</dd></div>
-            <div><dt>What progress is saved?</dt><dd>The browser stores unlocked and completed routes, the selected route, and a local Top 5 score list on this device.</dd></div>
-            <div><dt>Can I play on a phone or computer?</dt><dd>Yes. Phones support taps and swipes, while desktop play supports A, D, Left Arrow, and Right Arrow.</dd></div>
-            <div><dt>Does the game require an account or payment?</dt><dd>No. Safari Dash is free to play in a browser and does not require an account.</dd></div>
-            <div><dt>Why is Safari Dash 9+?</dt><dd>Later combinations require quick lane reading and objective planning. The age label is guidance, not an ability rating.</dd></div>
-            <div><dt>Is the Skill Report a formal test?</dt><dd>No. It summarizes events from the current run and does not compare, diagnose, or grade the player.</dd></div>
-          </dl>
-        </div>
-      </div>
-    <div class="game-info-section game-info-related-section" data-wp-guide-related-curated="true" data-runtime-localize="off"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-color-link" href="/en/games/animal-color-link/"><span class="game-info-related-poster"><img src="/assets/animal-color-link/cover-block-v1.png.webp?wp-media=03cccac666c699aa" data-final-src="/assets/weightplay-logo.png.webp?wp-media=03cccac666c699aa" alt="Color Link Garden" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Color Link Garden</strong></span></a><a class="game-info-related-card" data-game-id="animal-word-trails" href="/en/games/animal-word-trails/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-word-trails.webp?wp-media=03cccac666c699aa" data-final-src="/assets/weightplay-logo.png.webp?wp-media=03cccac666c699aa" alt="Word Trails" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Word Trails</strong></span></a></div></div></section>
+<div class="game-info-section" data-wp-search-guide-facts="2.0" lang="en" data-runtime-localize="off"><dl><dt><h3>How do you change lanes?</h3></dt><dd><p>Swipe left or right, or tap that side of the playfield. With the playfield focused, use the left and right arrow keys. Move one lane at a time.</p></dd></dl></div>
+<div class="game-info-section" data-wp-search-guide-facts="2.0" lang="en" data-runtime-localize="off"><dl><dt><h3>What clears a route?</h3></dt><dd><p>Reach the finish and meet the objective shown at the start. Later routes ask for stars, clean gates, a combo or a target score.</p></dd></dl></div>
+<div class="game-info-section" data-wp-search-guide-facts="2.0" lang="en" data-runtime-localize="off"><dl><dt><h3>When should you switch?</h3></dt><dd><p>Look for the open lane before reaching a gate. Switch early when mud blocks your route, and follow a star trail when it lines up with a safe opening.</p></dd></dl></div>
+<div class="game-info-section" data-wp-search-guide-facts="2.0" lang="en" data-runtime-localize="off"><dl><dt><h3>Can you replay a route?</h3></dt><dd><p>Replay any unlocked route from the stage list. Completed routes and unlocked progress are saved in this browser.</p></dd></dl></div>
+<div class="game-info-section game-info-parent" lang="en" data-runtime-localize="off"><h3>Parent Note</h3><p>Play without an account or ads. Progress stays in this browser and may be lost if site data is cleared. Scores and rewards describe play in this game.</p></div>
+<div class="game-info-section game-info-related-section" data-wp-guide-related-curated="true" data-runtime-localize="off"><h3>More Related Games</h3><div class="game-info-related"><a class="game-info-related-card" data-game-id="animal-color-link" href="/en/games/animal-color-link/"><span class="game-info-related-poster"><img src="/assets/animal-color-link/cover-block-v1.png.webp?wp-media=03cccac666c699aa" data-final-src="/assets/weightplay-logo.png.webp?wp-media=03cccac666c699aa" alt="Color Link Garden" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Color Link Garden</strong></span></a><a class="game-info-related-card" data-game-id="animal-word-trails" href="/en/games/animal-word-trails/"><span class="game-info-related-poster"><img src="/assets/interface7-redrawn/animal-word-trails.webp?wp-media=03cccac666c699aa" data-final-src="/assets/weightplay-logo.png.webp?wp-media=03cccac666c699aa" alt="Word Trails" width="320" height="320" loading="lazy" decoding="async"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">Word Trails</strong></span></a></div></div>
+</div></section>
     <!-- adsense-static-guide:end -->
     <script src="../../src/site-config.js?v=20261017-shared-dark-loader1&wp-media=03cccac666c699aa"></script>
     <script src="../../src/version.js?v=20260701-version2&wp-media=03cccac666c699aa"></script>
