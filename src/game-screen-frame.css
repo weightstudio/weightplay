@@ -1,4 +1,4 @@
-@import url('./game-ui-theme.css?v=20260923-play-header48&wp-media=07958c61dd7d18a0');
+@import url('./game-ui-theme.css?v=20260923-play-header48&wp-media=b05a8cb2e0489181');
 /* Explicit frames inside a scaled Battle may opt into the existing physical
    control track. Keep scaling compensation in the shared owner, not game CSS. */
 @layer wp-frame-contract {
@@ -1211,7 +1211,7 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active) {
   overscroll-behavior: none !important;
 }
 
-/* game-page-info.css?wp-media=07958c61dd7d18a0 intentionally restores document flow for Main and has a
+/* game-page-info.css?wp-media=b05a8cb2e0489181 intentionally restores document flow for Main and has a
    more specific selector. These explicit active-play selectors keep that
    Main-only rule from reopening the browser edge during a live scene. */
 html.has-game-page-info:has(body.wp-shell-stage-active),

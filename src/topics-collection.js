@@ -405,17 +405,111 @@
     "في التعاونية الخيالية تفتح صندوقًا واحدًا لكل دفعة، وتوزع السلع على الجيران، وتختار ما تحتفظ به للدفعة التالية."
   ]
 };
+  const lastQuarterRelayNews = {
+  "en": [
+    "Basketball",
+    "A 22-point gap, then a comeback",
+    "The visiting side overturned a big deficit.",
+    "On November 11 in Chicago, the visiting team came back from 22 points down to win 124–119.",
+    "In the fictional league, an open shot can close the gap, while a stop or steal changes what is possible on the next possession."
+  ],
+  "zh-Hant": [
+    "籃球",
+    "22 分落差後的逆轉",
+    "客隊把大幅落後扳成勝局。",
+    "11 月 11 日芝加哥當地時間的一場籃球賽中，客隊一度落後 22 分，最後以 124 比 119 獲勝。",
+    "在虛構聯賽裡，空位出手能縮小分差，守住或抄截則能改變下一波球權的選擇。"
+  ],
+  "zh-Hans": [
+    "篮球",
+    "22 分落差后的逆转",
+    "客队把大幅落后扳成胜局。",
+    "11 月 11 日芝加哥当地时间的一场篮球赛中，客队一度落后 22 分，最后以 124 比 119 获胜。",
+    "在虚构联赛里，空位出手能缩小分差，守住或抢断则能改变下一波球权的选择。"
+  ],
+  "ja": [
+    "バスケットボール",
+    "22点差からの逆転",
+    "アウェーチームが大差をひっくり返しました。",
+    "11月11日、シカゴのバスケットボールの試合で、アウェーチームは最大22点差を逆転し、124対119で勝利しました。",
+    "架空のリーグでは、フリーのシュートで差を詰め、守備やスティールで次の攻防の選択肢を変えます。"
+  ],
+  "ko": [
+    "농구",
+    "22점 차를 뒤집은 경기",
+    "원정팀이 큰 점수 차를 뒤집었습니다.",
+    "11월 11일 시카고에서 열린 농구 경기에서 원정팀은 한때 22점 뒤졌지만 124대 119로 이겼습니다.",
+    "가상의 리그에서는 빈자리 슛으로 점수 차를 좁히고, 수비나 가로채기로 다음 공방의 선택지를 바꿉니다."
+  ],
+  "es": [
+    "Baloncesto",
+    "Remontada tras ir 22 puntos abajo",
+    "El equipo visitante dio la vuelta a una amplia desventaja.",
+    "El 11 de noviembre, en Chicago, el equipo visitante remontó una desventaja de 22 puntos para ganar por 124 a 119.",
+    "En la liga ficticia, un tiro libre de marca recorta la diferencia y una parada o un robo abre opciones en la posesión siguiente."
+  ],
+  "pt-BR": [
+    "Basquete",
+    "A virada depois de 22 pontos atrás",
+    "A equipe visitante virou depois de ficar bem atrás.",
+    "Em 11 de novembro, em Chicago, a equipe visitante saiu de 22 pontos atrás e venceu por 124 a 119.",
+    "Na liga fictícia, um arremesso livre diminui a diferença e uma defesa ou roubada de bola muda as opções da próxima posse."
+  ],
+  "fr": [
+    "Basket-ball",
+    "Une remontée après 22 points de retard",
+    "Les visiteurs ont renversé un large écart.",
+    "Le 11 novembre à Chicago, l’équipe visiteuse a comblé un retard de 22 points pour gagner 124 à 119.",
+    "Dans cette ligue fictive, un tir ouvert réduit l’écart et un arrêt ou une interception change les options à la possession suivante."
+  ],
+  "de": [
+    "Basketball",
+    "Die Aufholjagd nach 22 Punkten Rückstand",
+    "Das Auswärtsteam drehte einen deutlichen Rückstand.",
+    "Am 11. November in Chicago holte das Auswärtsteam einen Rückstand von 22 Punkten auf und gewann mit 124 zu 119.",
+    "In der fiktiven Liga verkürzt ein freier Wurf den Rückstand. Ein Stopp oder Ballgewinn ändert die Optionen beim nächsten Ballbesitz."
+  ],
+  "it": [
+    "Pallacanestro",
+    "La rimonta dopo uno svantaggio di 22 punti",
+    "La squadra ospite ha ribaltato un ampio svantaggio.",
+    "L’11 novembre a Chicago la squadra ospite ha recuperato 22 punti di svantaggio e ha vinto 124 a 119.",
+    "Nel campionato immaginario, un tiro libero riduce il divario e uno stop o un recupero cambia le scelte del possesso successivo."
+  ],
+  "ru": [
+    "Баскетбол",
+    "Рывок после отставания в 22 очка",
+    "Гости переломили ход матча после большого отставания.",
+    "11 ноября в Чикаго гостевая команда отыграла отставание в 22 очка и победила со счётом 124:119.",
+    "В вымышленной лиге свободный бросок сокращает разрыв, а остановка или перехват меняют выбор при следующем владении."
+  ],
+  "hi": [
+    "बास्केटबॉल",
+    "22 अंकों से पीछे होकर वापसी",
+    "मेहमान टीम ने बड़ा अंतर पलट दिया।",
+    "11 नवंबर को शिकागो में मेहमान टीम 22 अंक पीछे थी और फिर 124–119 से जीती।",
+    "काल्पनिक लीग में खाली जगह से शॉट अंतर घटाता है और बचाव या गेंद छीनना अगली बारी के विकल्प बदलता है।"
+  ],
+  "ar": [
+    "كرة السلة",
+    "عودة بعد التأخر بـ22 نقطة",
+    "قلب الفريق الضيف تأخّرًا كبيرًا.",
+    "في 11 نوفمبر في شيكاغو، عوّض الفريق الضيف تأخّرًا بـ22 نقطة وفاز بنتيجة 124 مقابل 119.",
+    "في الدوري الخيالي، تقلّل التسديدة المفتوحة الفارق، ويغيّر إيقاف الهجوم أو افتكاك الكرة خيارات الاستحواذ التالي."
+  ]
+};
   const items = [
-    { ...{"id":"topics:parcel-pact","gameId":"parcel-pact","kind":"news","eventDate":"2026-11-11","unlock":{"kind":"gameClear","gameId":"parcel-pact"},"image":"/games/parcel-pact/art/cover.webp?wp-media=07958c61dd7d18a0","cover":true}, news: parcelPactNews },
-    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=07958c61dd7d18a0', cover:true, news:sunshiftCommonsNews },
-    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=07958c61dd7d18a0', cover:true, news:siliconShiftNews },
-    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=07958c61dd7d18a0', cover:true, news:tidegateNews },
-    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=07958c61dd7d18a0', cover:true, news:rainlineNews },
-    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=07958c61dd7d18a0', cover:true, news:gatheringNews },
-    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=07958c61dd7d18a0', cover:true, news },
-    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=07958c61dd7d18a0', cover:true, news:trafficNews },
-    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=07958c61dd7d18a0', cover:true, news:robotNews },
-    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=07958c61dd7d18a0', cover:true, news:lifeStory }
+    { id:"topics:last-quarter-relay",gameId:"last-quarter-relay",kind:"news",eventDate:"2026-11-11",unlock:{kind:"gameClear",gameId:"last-quarter-relay"},image:"/games/last-quarter-relay/art/cover.webp?wp-media=b05a8cb2e0489181",cover:true,news:lastQuarterRelayNews },
+    { ...{"id":"topics:parcel-pact","gameId":"parcel-pact","kind":"news","eventDate":"2026-11-11","unlock":{"kind":"gameClear","gameId":"parcel-pact"},"image":"/games/parcel-pact/art/cover.webp?wp-media=b05a8cb2e0489181","cover":true}, news: parcelPactNews },
+    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=b05a8cb2e0489181', cover:true, news:sunshiftCommonsNews },
+    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=b05a8cb2e0489181', cover:true, news:siliconShiftNews },
+    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=b05a8cb2e0489181', cover:true, news:tidegateNews },
+    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=b05a8cb2e0489181', cover:true, news:rainlineNews },
+    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=b05a8cb2e0489181', cover:true, news:gatheringNews },
+    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=b05a8cb2e0489181', cover:true, news },
+    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=b05a8cb2e0489181', cover:true, news:trafficNews },
+    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=b05a8cb2e0489181', cover:true, news:robotNews },
+    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=b05a8cb2e0489181', cover:true, news:lifeStory }
   ];
   const dates = {'flying-tram':'2026-10-15','traffic-jam-diner':'2026-10-08','robot-dog-showtime':'2026-09-22'};
   items.forEach(item => { if (dates[item.gameId]) { item.kind = 'news'; item.eventDate = dates[item.gameId]; } });

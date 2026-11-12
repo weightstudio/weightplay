@@ -27,6 +27,7 @@
   const entries = [
     ["mosscrest-accord", "Strategy", "Management"],
     ["torque-grove", "Puzzle", "Simulation", "Deduction"],
+    ["last-quarter-relay", "Sports", "Strategy"],
     ["parcel-pact", "Puzzle", "Strategy", "Sequencing"],
     ["perchweave", "Card", "Strategy", "Sequencing"],
     ["reef-current", "Strategy", "Management", "Route Planning"],
