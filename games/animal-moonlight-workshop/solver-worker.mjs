@@ -1,1 +1,1 @@
-import{solve as r}from"./rules.mjs?wp-media=2e30249dad16fa24";self.onmessage=({data:e})=>{try{self.postMessage({requestId:e.requestId,route:r(e.state,e.profile)})}catch(s){self.postMessage({requestId:e.requestId,error:String(s.message)})}};
+import{solve as r}from"./rules.mjs?wp-media=07958c61dd7d18a0";self.onmessage=({data:e})=>{try{self.postMessage({requestId:e.requestId,route:r(e.state,e.profile)})}catch(s){self.postMessage({requestId:e.requestId,error:String(s.message)})}};
