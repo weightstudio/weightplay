@@ -418,7 +418,7 @@ Games with local saves keep progress in the current browser.
 - Sproutsum: https://weightplay.com/en/games/sproutsum/ — Arithmetic Crossword. Plant each number so every row and column reaches its target.
 - Chromadock: https://weightplay.com/en/games/chromadock/ — Sliding block puzzle. Make room for every crate, then slide it through its matching dock.
 - Glowpiece Gallery: https://weightplay.com/en/games/glowpiece-gallery/ — Picture assembly. Move picture fragments, join matching seams and restore Orla’s gallery.
-- Leafskip: https://weightplay.com/en/games/leafskip/ — Jump and Landing Timing. Hop a leaf cutter across Rux’s greenhouse. Collect stamped seed packets and choose when to land.
+- Leafskip: https://weightplay.com/en/games/leafskip/ — Jump and Landing Timing. Time each jump to collect seed packets above the platforms. Jump again in midair when you need more height, then line up a safe landing.
 - Moonlit Atrium: https://weightplay.com/en/games/moonlit-atrium/ — Light coverage logic. Place moon lanterns to light every floor. Match the pillars without letting lanterns shine on each other.
 - Starcamp Glade: https://weightplay.com/en/games/starcamp-glade/ — Tent logic puzzle. Give every tree its own tent. Read the counts and leave quiet space between camps.
 - Tideweave: https://weightplay.com/en/games/tideweave/ — Bridge logic puzzle. Join numbered islands with single or double bridges. Match each island’s bridge count and connect them all without crossing any bridges.
@@ -427,10 +427,10 @@ Games with local saves keep progress in the current browser.
 - Dustwake Depot: https://weightplay.com/en/games/dustwake-depot/ — Cleaning Strategy. Guide Taro through the garden. Sweep dry dust, brush damp patches and deliver every load to a depot.
 - Rux Salvage Yard: https://weightplay.com/en/games/rux-salvage-yard/ — Physics Demolition Puzzle. Choose which supports to hit with a limited number of shots. Let the structure collapse, then recover the reusable parts to clear the salvage job.
 - Lantern Stride: https://weightplay.com/en/games/lantern-stride/ — Rhythm Running Race. Race along forest courses by alternating left and right steps. Adjust your rhythm for fast and slow surfaces, then choose a route at the forks.
-- Boom Mane: Tower Guard: https://weightplay.com/en/games/orbit-menders/ — Tower Defense Shooter. Aim with touch or mouse and hold to fire. Protect the tower from zombies in a flat 3D courtyard with a fixed camera and bright combat effects.
+- Boom Mane: Tower Guard: https://weightplay.com/en/games/orbit-menders/ — Tower Defense Shooter. Aim the cannon and hold to fire. Save the blast for dense enemy waves and stop them before they reach the tower.
 - Bramble Rapids: https://weightplay.com/en/games/bramble-rapids/ — River Racing. Steer Nori through 60 river races. Read currents, jump marked ramps, collect route flags and time tide gates with three free boards.
-- Nori Bankshot: https://weightplay.com/en/games/nori-bankshot/ — Billiards Puzzle. Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.
-- Wildborn: https://weightplay.com/en/games/wildborn/ — Wildlife Survival and Evolution. Born small. Forage, hide and evolve in a living wilderness. Death begins a new life.
+- Nori Bankshot: https://weightplay.com/en/games/nori-bankshot/ — Billiards Puzzle. Aim the cue ball, set shot power and pocket the targets. Some billiards tables require a set order or a shot off the cushion.
+- Wildborn: https://weightplay.com/en/games/wildborn/ — Wildlife Survival and Evolution. Forage to grow, hide in tall grass and dash away from predators. Evolve during each life, then carry some of your gains into the next one.
 - Kindred Habitats: https://weightplay.com/en/games/kindred-habitats/ — Pet Collecting and Care. Read field-guide clues and prepare the right food and approach to earn a companion’s trust. Care for 36 species and unlock six habitats as they grow.
 - Deep Drill: https://weightplay.com/en/games/deep-drill/ — Mining and Drill Upgrades. Choose a mining lane, bring ore back to sell, and upgrade your drill to reach deeper underground regions.
 - Fusekeep: https://weightplay.com/en/games/fusekeep/ — Merge Tower Defense. Merge soldiers of the same type and rank, build your squad and defend the winter fortress through 30 missions.
@@ -442,7 +442,7 @@ Games with local saves keep progress in the current browser.
 - Dice Bastion: https://weightplay.com/en/games/animal-dice-bastion/ — Random Merge Tower Defense. Summon random guardians, merge matching ranks and issue tactical orders. Adapt your defense to the units you draw and the next enemy wave.
 - Signal Veil: https://weightplay.com/en/games/signal-veil/ — Top-Down Action RPG. Question witnesses, reveal hidden threats with Neural Vision, and fight your way to the truth behind the signal.
 - Unblock Trail: https://weightplay.com/en/games/animal-unblock/ — Sliding Block Puzzle. Free the green bamboo block with the gold arrow through the gate in 30 authored sliding puzzles across three chapters.
-- Zhao Yun & A Dou: https://weightplay.com/en/games/zhao-yun-a-dou/ — Lane strategy. Tap a troop card to deploy. Soldiers advance and fight automatically.
+- Zhao Yun & A Dou: https://weightplay.com/en/games/zhao-yun-a-dou/ — Lane strategy. Tap a troop card to deploy. Soldiers advance and fight automatically. Protect A Dou and destroy the enemy fortress.
 - Panko's Bus Jam: https://weightplay.com/en/games/animal-bus-jam/ — Queue Strategy. Route passengers to matching buses, manage the FIFO holding lane, and clear 30 stops. Earn three stars by minimizing holds without assistance.
 - Arrow Escape: https://weightplay.com/en/games/arrow-escape/ — Arrow Block Puzzle. Clear the board by sliding arrow blocks out in the right order. A block leaves only if its whole route is open, including the path beyond a portal.
 - Block Blast: https://weightplay.com/en/games/block-blast/ — Block Placement Puzzle. Place three shapes on an 8×8 board and clear complete rows and columns.
@@ -537,7 +537,7 @@ Games with local saves keep progress in the current browser.
 - Sudoku: https://weightplay.com/en/games/sudoku/ — Fill every row, column, and 3×3 box with numbers 1–9.
 - Lights Out: https://weightplay.com/en/games/lights-out/ — Lights Out is a classic 5x5 switch puzzle: press a tile and its orthogonal neighbors to turn every light off.
 - Peg Solitaire: https://weightplay.com/en/games/peg-solitaire/ — Jump-and-Clear Puzzle. Jump a peg over a neighbor into an empty hole and leave one peg.
-- Sliding 15: https://weightplay.com/en/games/sliding-15/ — Sliding Number Puzzle. Choose from 30 saved stages with classic, snake, column, anchor, and detour goals.
+- Sliding 15: https://weightplay.com/en/games/sliding-15/ — Sliding Number Puzzle. Slide a numbered tile into the space beside it. Rearrange the board to match the target.
 - Code Breaker: https://weightplay.com/en/games/code-breaker/ — Pattern Deduction. Guess the hidden four-color code using exact-position and color-only clues.
 - Tower of Hanoi: https://weightplay.com/en/games/tower-of-hanoi/ — Disk-Moving Puzzle. Move every disk to the goal peg without putting a larger disk on a smaller one.
 - Reversi: https://weightplay.com/en/games/reversi/ — Reversi is an eight-by-eight strategy board game: place a disc to surround opponent discs, flip the chain, and finish with more discs than the AI.
@@ -613,7 +613,7 @@ Games with local saves keep progress in the current browser.
 - Traffic Jam Diner: https://weightplay.com/en/games/traffic-jam-diner/ — Queue Routing Puzzle. Guide customers through one-way lanes, leave room in the waiting bays, and fill snack orders in queue order.
 - Robot Dog Showtime: https://weightplay.com/en/games/robot-dog-showtime/ — Choreography Puzzle. Plan both performers' stage cues, then rehearse their routes and gestures together.
 - Blockmart: https://weightplay.com/en/games/animal-blockmart/ — Convenience Store Management. Lay out shelves and checkout lanes, restock goods and hire staff. Use the proceeds to expand the same shop, with progress saved on this device.
-- Skybound Tram: https://weightplay.com/en/games/flying-tram/ — Flip & Landing Arcade. Boost a chunky sky tram, flip for points, keep one bubble tea from sloshing over, then settle onto 30 rooftop routes.
+- Skybound Tram: https://weightplay.com/en/games/flying-tram/ — Flip & Landing Arcade. Fly a tram with a cup of bubble tea aboard. Choose when to gain height, spin for points and steady the cabin for landing.
 - Puppy Haven: https://weightplay.com/en/games/puppy-haven/ — Dog Care & Family. Set out bowls for hungry dogs to find on their own. Pet your dogs, clean the yard and adopt new companions.
 - Purrch Grove: https://weightplay.com/en/games/purrch-grove/ — Cat Care and Play. Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.
 - Signal Snap: https://weightplay.com/en/games/signal-snap/ — Tap-or-Wait Reaction Game. A solid diamond means tap that side; a crossed hollow echo means do nothing. Use the two buttons or ← and →.
@@ -625,7 +625,7 @@ Games with local saves keep progress in the current browser.
 - A Life in Moments: https://weightplay.com/en/games/smallwood-lives/ — Life simulation. Among around eight billion people, you are one of a kind. Follow a life from a randomly selected birthplace. Watch it unfold year by year, then look back on its story.
 - Lantern Lasso: https://weightplay.com/en/games/lantern-lasso/ — Ricochet Light Puzzle. Drag to aim and release a line that bounces off the board edges. Collect numbered lights in order and pull switches to open gates.
 - Mossfold: https://weightplay.com/en/games/mossfold/ — Block Rolling Puzzle. Collect all dewdrops, then place the whole block upright in the square nest. The same rules apply on phone and desktop.
-- Glowspool: https://weightplay.com/en/games/glowspool/ — Sliding-fill puzzle. Slide Mimi to weave every tile. Plan around the line you leave behind.
+- Glowspool: https://weightplay.com/en/games/glowspool/ — Sliding-fill puzzle. Slide in one direction until you hit an obstacle. Light every open tile while keeping a path around the trail you leave behind.
 - 仙旅傳說: https://weightplay.com/en/games/sunmane-journey/ — Exploration Action RPG. Explore 60 maps across 12 regions. Dodge enemy attacks and shape your build with equipment, runes and branching talents.
 
 ## Game audiences

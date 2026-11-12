@@ -18,6 +18,9 @@ export const INTRO_FAQ_LABELS = {
 
 const escape = value => String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 export function appendStaticIntroFaq(guide, locale) {
+  if (/<div\b[^>]*\bid=["']faqContent["'][^>]*>\s*<details\b[^>]*>\s*<summary\b/i.test(guide)) {
+    return guide.replace(/<article\b(?=[^>]*\bdata-wp-intro-faq(?:\s|>|=))[^>]*>[\s\S]*?<\/article>/gi, '');
+  }
   if (/<dl\b[^>]*>[\s\S]*?<dt\b/i.test(guide)) return guide;
   const answer = guide.match(/<p\b[^>]*>([\s\S]*?)<\/p>/i)?.[1];
   const closing = guide.match(/<\/(?:section|details)>\s*$/i)?.[0], labels = INTRO_FAQ_LABELS[locale];
@@ -33,11 +36,15 @@ export function installIntroFaq(doc = document) {
   let scheduled = false;
   const refresh = () => {
     scheduled = false;
+    let faq = guide.querySelector('[data-wp-intro-faq]');
+    if (guide.querySelector('#faqContent details > summary')) {
+      faq?.remove();
+      return;
+    }
     const locale = ({'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'})[doc.documentElement.lang] || doc.documentElement.lang;
     const labels = INTRO_FAQ_LABELS[locale];
     const source = guide.querySelector('[data-wp-intro-faq-source]') || guide.querySelector('.game-info-title p') || guide.querySelector('p');
     if (!labels || !source?.textContent.trim()) return;
-    let faq = guide.querySelector('[data-wp-intro-faq]');
     if (!faq && guide.querySelector('dl dt')) return;
     // A native Guide can rebuild its own contents after a language choice.
     // Recreate only this declared supplement, using its new localized intro.

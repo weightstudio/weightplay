@@ -255,6 +255,7 @@ window.WONDER_LOBBY = {
       description: { __localizedExact: true, en: "Explore submerged ruins in first person. Carry light relays, restore ancient bridges and uncover the city’s memory.", "zh-Hant": "以第一人稱探索沉海遺城，搬運光能裝置、修復古老橋梁，尋回城市記憶。", "zh-Hans": "以第一人称探索沉海遗城，搬运光能装置、修复古老桥梁，寻回城市记忆。", ja: "一人称視点で海底都市を探索。光の中継器を運び、古い橋と都市の記憶を取り戻そう。", ko: "1인칭으로 해저 유적을 탐험하세요. 빛 중계기를 옮겨 다리를 복구하고 도시의 기억을 찾으세요.", es: "Explora ruinas submarinas en primera persona. Lleva la luz, restaura puentes y recupera la memoria de la ciudad.", "pt-BR": "Explore ruínas submersas em primeira pessoa. Leve a luz, restaure pontes e recupere a memória da cidade.", fr: "Explorez une cité engloutie à la première personne. Transportez la lumière, restaurez ses ponts et retrouvez ses souvenirs.", de: "Erkunde eine versunkene Stadt aus der Ich-Perspektive. Trage Lichtrelais, erneuere Brücken und entdecke ihre Erinnerungen.", it: "Esplora rovine sommerse in prima persona. Trasporta la luce, ripristina ponti e recupera i ricordi della città.", ru: "Исследуйте подводные руины от первого лица. Переносите свет, восстанавливайте мосты и возвращайте память города.", hi: "प्रथम-व्यक्ति दृष्टि से डूबे खंडहर खोजें। प्रकाश रिले ले जाएँ, पुल बहाल करें और नगर की स्मृतियाँ पाएँ।", ar: "استكشف مدينة غارقة بمنظور الشخص الأول. انقل الضوء ورمّم الجسور واستعد ذكريات المدينة." },
       type: { en: "First-person spatial puzzles", "zh-Hant": "第一人稱空間解謎", "zh-Hans": "第一人称空间解谜", ja: "一人称空間パズル", ko: "1인칭 공간 퍼즐", es: "Puzles espaciales en primera persona", "pt-BR": "Enigmas espaciais em primeira pessoa", fr: "Énigmes spatiales à la première personne", de: "Raumrätsel aus der Ich-Perspektive", it: "Enigmi spaziali in prima persona", ru: "Пространственные головоломки от первого лица", hi: "प्रथम-व्यक्ति स्थानिक पहेलियाँ", ar: "ألغاز مكانية بمنظور الشخص الأول" },
       ages: ["13+", "Family"], skills: ["Logic", "Planning", "Problem Solving"], categories: ["Adventure", "Puzzle"], tags: ["3D", "First Person", "Exploration", "Spatial Puzzles"],
+      relatedGameRules: { guidePlacement: "primary" },
       art: { kind: "image", background: "games/prismtide/art/cover.webp?wp-media=03cccac666c699aa", hideHero: true },
     },
     {
@@ -3688,6 +3689,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-cushion-stack/",
     internalTrial: "index.html?preview=1",
+    relatedGameRules: { guidePlacement: "primary" },
     art: { kind: "image", background: "games/animal-cushion-stack/assets/animal-cushion-stack-cover.svg", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
@@ -5807,6 +5809,7 @@ if (animalBounceBrawlPublic) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-grove-dominoes/",
     internalTrial: "index.html?preview=1",
+    relatedGameRules: { guidePlacement: "primary" },
     art: { kind: "image", background: "games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp?wp-media=03cccac666c699aa", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
@@ -8720,6 +8723,7 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
     "animal-number-match": ["animal-2048", "animal-balance-grove"],
     "animal-tangram": ["animal-color-link", "animal-word-trails"],
     "animal-color-link": ["animal-tangram", "animal-word-trails"],
+    "prismtide": ["animal-sunbeam-garden", "lantern-lasso", "animal-prism-garden"],
     "animal-prism-garden": ["animal-sunbeam-garden", "prismtide"],
     "animal-bamboo-pipes": ["animal-river-gates", "animal-prism-garden"],
     "animal-triple-match": ["castle-cascade", "hexa-sort"],
@@ -8783,6 +8787,7 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
     "animal-river-gates": ["animal-bamboo-pipes", "tidegate-relay"],
     "animal-acorn-auction": ["animal-moon-market", "hearthloop"],
     "animal-patchwork-paws": ["animal-tangle-rescue", "animal-grove-dominoes"],
+    "animal-grove-dominoes": ["animal-patchwork-paws", "animal-bamboo-pipes", "tideweave"],
     "animal-cairn-courier": ["animal-cushion-stack", "animal-balance-grove"],
     "animal-firefly-folio": ["animal-skyport-dispatch", "robot-dog-showtime"],
     "animal-silhouette-scout": ["animal-hollow-fit", "animal-meadow-difference"],
