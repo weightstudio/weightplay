@@ -18,6 +18,47 @@
   }
   installEarlyGameScriptFailureBridge();
 
+  function retainLocalizedGuideAccess() {
+    const accessSelector = '[data-wp-game-access="2.0"]';
+    const guideSelector = '[data-wp-game-guide], .game-page-info, .public-guide, .game-guide';
+    let access = document.querySelector(accessSelector);
+    if (!access && !document.currentScript?.src.includes('-geo-access')) return;
+
+    let guide, parent;
+    const observer = new MutationObserver(refresh);
+    function refresh() {
+      access ||= document.querySelector(accessSelector);
+      if (!access) return;
+      let current = access.closest(guideSelector);
+      if (!access.isConnected) {
+        current = guide?.isConnected ? guide : (guide?.id && document.getElementById(guide.id));
+        if (!current && parent?.isConnected) current = parent.querySelector(guideSelector);
+        current ||= document.querySelector(guideSelector);
+      }
+      if (!current?.isConnected) return;
+      if (!access.isConnected && access.lang === document.documentElement.lang) {
+        const replacement = current.querySelector(accessSelector);
+        if (replacement?.lang === access.lang) access = replacement;
+        else current.append(access);
+      }
+      if (current === guide && current.parentElement === parent) return;
+      guide = current;
+      parent = current.parentElement;
+      observer.disconnect();
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'], childList: true });
+      observer.observe(guide, { childList: true, subtree: true });
+      for (let node = parent; node && node !== document.documentElement; node = node.parentElement) {
+        observer.observe(node, { childList: true });
+      }
+    }
+    refresh();
+    if (!guide && document.readyState === 'loading') {
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+      document.addEventListener('DOMContentLoaded', () => { if (!guide) observer.disconnect(); }, { once: true });
+    }
+  }
+  retainLocalizedGuideAccess();
+
   function ensureEntryLoader() {
     if (!/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?games\/[a-z0-9-]+(?:\/|\/index\.html)?$/i.test(location.pathname)
       || window.WeightPlayGameEntryLoader?.isActive
