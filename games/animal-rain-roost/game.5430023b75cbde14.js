@@ -1,0 +1,1 @@
+import("./main.mjs?v=20261110-rain-lane-cue-v15-search20-mechanic-summary&wp-media=03cccac666c699aa").catch(i=>{console.error("Rain Roost initialization failed",i),window.__weightPlayGameEntryPendingFailure="animal-rain-roost",window.WeightPlayGameEntryLoader?.fail(void 0,()=>location.reload())});

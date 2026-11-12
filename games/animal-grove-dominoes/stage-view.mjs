@@ -1,6 +1,6 @@
-import '../../src/stage-virtualization-standard.js?wp-media=6fdcc04e8b81c8c8';
-import './interface-7-compat.mjs?v=20260922-grove-dominoes-i7-cleanup2&wp-media=6fdcc04e8b81c8c8';
-import {createHabitatArt} from './habitat-art.mjs?v=20260909-grove-campaign-v6&wp-media=6fdcc04e8b81c8c8';
+import '../../src/stage-virtualization-standard.js?wp-media=03cccac666c699aa';
+import './interface-7-compat.mjs?v=20260922-grove-dominoes-i7-cleanup2&wp-media=03cccac666c699aa';
+import {createHabitatArt} from './habitat-art.mjs?v=20260909-grove-campaign-v6&wp-media=03cccac666c699aa';
 export function createStageView({campaign,copy,locale,progress,activate,home,sound,soundLabel,toggleSound}){
  const root=document.createElement('section');root.id='stageView';root.hidden=true;root.dataset.screen='stage';
  root.innerHTML='<div class="grove-stage-canvas" data-wp-standard-stage-screen><div class="grove-stage-logical"><header><button type="button" data-wp-return="stage">←</button><h2></h2><button type="button" class="utility-button" data-sound-toggle></button></header><div class="grove-stage-workspace"><div class="grove-stage-rail stage-rail" data-wp-stage-selector></div></div><nav class="grove-stage-tabs stage-tabs"><span></span><button type="button" aria-current="page"></button><span></span></nav></div></div><div class="battle-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>';
