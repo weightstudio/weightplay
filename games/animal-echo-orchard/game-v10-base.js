@@ -70,6 +70,8 @@
   const verifiedJournalKey = "weightplay-echo-orchard-verified-stages-v1";
   const pendingSavedStages = new Set();
   let lastSaveSucceeded = false;
+  let lastRecoverySaved = false;
+  const backupSaveFailureCopy = {en:"Progress was saved, but its recovery backup could not be verified. Replay this stage after storage is available before continuing.","zh-Hant":"進度已儲存，但無法確認復原備份。請在儲存功能恢復後重玩此關，再繼續。","zh-Hans":"进度已保存，但无法确认恢复备份。请在存储功能恢复后重玩此关，再继续。",ja:"進行状況は保存されましたが、復元用バックアップを確認できません。保存機能の復旧後、このステージを再プレイしてください。",ko:"진행 상황은 저장했지만 복구 백업을 확인할 수 없습니다. 저장 기능이 복구된 후 이 스테이지를 다시 플레이하세요.",es:"Se guardó el progreso, pero no se pudo verificar la copia de recuperación. Repite esta etapa cuando el almacenamiento esté disponible.","pt-BR":"O progresso foi salvo, mas o backup de recuperação não pôde ser verificado. Jogue esta fase novamente quando o armazenamento estiver disponível.",fr:"La progression est enregistrée, mais la sauvegarde de récupération n’a pas pu être vérifiée. Rejouez cette étape lorsque le stockage sera disponible.",de:"Der Fortschritt wurde gespeichert, aber die Wiederherstellungssicherung konnte nicht bestätigt werden. Spiele diese Stufe erneut, sobald Speicher verfügbar ist.",it:"I progressi sono stati salvati, ma non è stato possibile verificare il backup di recupero. Rigioca il livello quando lo spazio sarà disponibile.",ru:"Прогресс сохранён, но резервную копию не удалось проверить. Повторите этап, когда хранилище станет доступно.",hi:"प्रगति सहेजी गई, लेकिन पुनर्प्राप्ति बैकअप की पुष्टि नहीं हो सकी। स्टोरेज उपलब्ध होने पर यह चरण फिर खेलें।",ar:"تم حفظ التقدم، لكن تعذر التحقق من نسخة الاستعادة. أعد المرحلة عند توفر التخزين."};
   const saveFailureCopy = {
     en: "Progress could not be saved. Replay this stage when storage is available.",
     "zh-Hant": "無法儲存進度，儲存空間可用時請重玩此關。",
@@ -124,6 +126,13 @@
         localStorage.setItem(verifiedJournalKey, JSON.stringify([...new Set([...verified, id])].sort((a, b) => a - b)));
       }
     } catch { /* Keep the in-page queue and any independent marker. */ }
+    try { if (localStorage.getItem(confirmedPrefix + id) === "1") return true; } catch { /* Try the independent backup. */ }
+    try { if (localStorage.getItem(confirmedBackupPrefix + id) === "1") return true; } catch { /* Try the journal. */ }
+    try {
+      const verified = JSON.parse(localStorage.getItem(verifiedJournalKey) || "[]");
+      if (Array.isArray(verified) && verified.every(stage => Number.isInteger(stage) && stage >= 1 && stage <= groves.length) && verified.includes(id)) return true;
+    } catch { /* No verified recovery copy. */ }
+    return false;
   }
   function flushSavedStageRewards() {
     const castle = window.WeightPlayCastle;
@@ -160,7 +169,7 @@
       details: "",
       locked,
       cleared,
-      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=376b261cda679b49",
+      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=6fdcc04e8b81c8c8",
       posterPosition: "center"
     };
   };
@@ -275,7 +284,7 @@
     actionGuide.stop();lessonReplay=teachingReplay;clearTimer(); groveIndex = index; entered = []; attempts = 0; feedback = "ready"; watchStep = 0;
     if (index === 0 || fromStage) { sessionAttempts = 0; runSolved = new Set(); }
     show("battle"); phase = "ready"; if(index===0)actionGuide.start({replay:lessonReplay});renderBattle(); announce("start");
-    lastSaveSucceeded = false; __wpMeasurement.stageId = index + 1; __wpMeasurement.rewardEligible=!lessonReplay; __wpMeasurement.saveSucceeded = false;
+    lastSaveSucceeded = false; lastRecoverySaved = false; __wpMeasurement.stageId = index + 1; __wpMeasurement.rewardEligible=!lessonReplay; __wpMeasurement.saveSucceeded = false;
     __wpMeasurement.roundKey = {}; __wpMeasurement.restart = false; __wpMeasurement.started = true;
     __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement();
   }
@@ -375,7 +384,7 @@
     else if(teaching==='second'&&position===1&&entered.length===2)actionGuide.accept('second',{accepted:true});
     if (entered.length === pattern.length) {
       clearTimer(false); lastSaveSucceeded = !lessonReplay&&saveProgress(groveIndex);
-      if (lastSaveSucceeded) { runSolved.add(groveIndex); rememberSolvedStage(groveIndex + 1); flushSavedStageRewards(); }
+      if (lastSaveSucceeded) { runSolved.add(groveIndex); lastRecoverySaved = rememberSolvedStage(groveIndex + 1); flushSavedStageRewards(); }
       __wpMeasurement.saveSucceeded = lastSaveSucceeded;
       feedback = "correct"; phase = "complete"; announce("complete"); renderBattle();
       timer = setTimeout(() => { show("result"); renderResult(); }, 750);
@@ -392,11 +401,12 @@
     $("nextBtn").hidden = false;
     if (lessonReplay) $("resultText").textContent=lessonText()[5];
     else if (!lastSaveSucceeded) $("resultText").textContent = saveFailureCopy[locale] || saveFailureCopy.en;
-    $("nextBtn").disabled = complete || !lastSaveSucceeded;
-    $("nextBtn").setAttribute("aria-disabled", String(complete || !lastSaveSucceeded));
+    else if (!lastRecoverySaved) $("resultText").textContent += ` ${backupSaveFailureCopy[locale] || backupSaveFailureCopy.en}`;
+    $("nextBtn").disabled = complete || !lastSaveSucceeded || !lastRecoverySaved;
+    $("nextBtn").setAttribute("aria-disabled", String(complete || !lastSaveSucceeded || !lastRecoverySaved));
     $("resultReplayBtn").hidden = false;
     __wpNotifyMeasurement();
-    if (!lessonReplay&&complete && phase === "result" && runSolved.size === groves.length) {
+    if (!lessonReplay&&complete && lastRecoverySaved && phase === "result" && runSolved.size === groves.length) {
       const old = Number(localStorage.getItem("weightplay-echo-orchard-best-v1") || 0);
       if (!old || sessionAttempts < old) localStorage.setItem("weightplay-echo-orchard-best-v1", String(sessionAttempts));
       $("resultText").textContent = campaign().resultAll.replaceAll("{best}", String(Math.min(old || sessionAttempts, sessionAttempts))).replaceAll("{total}", String(groves.length));

@@ -180,12 +180,9 @@ window.WeightPlayI18nLocales.es = {
   "skill.Risk Assessment": "Evaluación de riesgos",
   "continue_playing.title": "Continuar jugando",
   "continue_playing.reason": "Tus últimos juegos",
-  "general.site.title": "WeightPlay - Juegos de animales gratuitos en el navegador",
-  "general.site.subtitle": "Aventuras, estrategia, puzles y acción con animales originales para jugar rápidamente en móviles y ordenadores.",
   "general.play.kicker": "Cuando quieras",
   "general.play.title": "Elige tu próximo juego",
   "general.challenge.title": "Desafío destacado",
-  "kids.site.title": "WeightPlay Kids - Juegos infantiles gratuitos y sin anuncios",
   "kids.site.kicker": "¡Elige un juego y empieza!",
   "kids.site.subtitle": "Elige tu edad, conoce a los héroes animales y juega. Sin anuncios ni cuentas.",
   "kids.play.kicker": "Elige tu edad",
@@ -201,6 +198,4 @@ window.WeightPlayI18nLocales.es = {
   "kids.portal.body": "Abre un vestíbulo independiente y sin anuncios con colecciones para 3+, 6+ y 9+.",
   "kids.portal.action": "Entrar a los juegos Kids",
   "kids.back_general": "Volver al vestíbulo de juegos",
-  "general.site.description": "Juega gratis a aventuras, estrategia, puzles, cartas y acción con animales originales, adaptados para móviles y ordenadores.",
-  "kids.site.description": "Juega gratis y sin anuncios a juegos de animales seleccionados para 3+, 6+ y 9+, sin cuentas, ventanas emergentes ni pausas publicitarias."
 };

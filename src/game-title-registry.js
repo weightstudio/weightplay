@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "torque-grove": {"__localizedExact":true,"en":"Torque Grove","zh-Hant":"扭矩修造所","zh-Hans":"扭矩修造所","ja":"トルク整備工房","ko":"토크 정비소","es":"Taller del Par","pt-BR":"Oficina do Torque","fr":"Atelier du Couple","de":"Drehmoment-Werkstatt","it":"Officina della Coppia","ru":"Мастерская тяги","hi":"टॉर्क कार्यशाला","ar":"ورشة العزم"},
   "parcel-pact": {"__localizedExact":true,"en":"Parcel Pact","zh-Hant":"合籃約定","zh-Hans":"合篮约定","ja":"おすそわけ便","ko":"꾸러미 약속","es":"Pacto de Cestas","pt-BR":"Pacto das Cestas","fr":"Pacte des Paniers","de":"Korbpakt","it":"Patto dei Cestini","ru":"Корзины по уговору","hi":"टोकरियों का समझौता","ar":"عهد السلال"},
   "animal-peach-oath": {
     "__localizedExact": true,
