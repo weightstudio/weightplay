@@ -21,13 +21,13 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #fff
 .game-guide{padding:28px 22px 44px;background:#f4efdc;color:#17362f}
 .game-guide h2{margin:5px 0 8px;font-size:1.75rem}
 .game-guide>p{max-width:760px;line-height:1.62}
-.game-guide>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:12px 14px;border:1px solid #b9ad8a;border-radius:14px;background:#fffdf5;color:#6f4b16;font-weight:950;cursor:pointer;list-style-position:inside}
+.game-guide>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:12px 14px;border:1px solid var(--wp-ui-line,#355760);border-radius:14px;background:var(--wp-ui-background,#102e36);color:var(--wp-ui-text,#f1f5ee);font-weight:950;cursor:pointer;list-style-position:inside}
 .game-guide>summary::after{content:"+";font-size:1.4rem;line-height:1}
 .game-guide[open]>summary{margin-bottom:16px}
 .game-guide[open]>summary::after{content:"−"}
 .guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.guide-grid article{padding:18px;border:1px solid #d8ccaa;border-radius:18px;background:#fffdf5}
-.guide-grid h3{margin:0 0 8px;color:#6f4b16}
+.guide-grid article{padding:18px;border:1px solid var(--wp-ui-line,#355760);border-radius:18px;background:var(--wp-ui-background,#102e36);color:var(--wp-ui-text,#f1f5ee)}
+.guide-grid h3{margin:0 0 8px;color:var(--wp-ui-text,#f1f5ee)}
 .guide-grid p{margin:0;line-height:1.58}
 
 /* Game-owned Battle play area; the shared frame owns the outer canvas and

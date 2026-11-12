@@ -403,7 +403,7 @@ Games with local saves keep progress in the current browser.
 - Prismkin Rescue: https://weightplay.com/en/games/prismkin-rescue/ — Turn-based rescue tactics. Plan each step with Nori and Taro. Guide lost crystal creatures home before the tide drains your light.
 - Galevault Atlas: https://weightplay.com/en/games/galevault-atlas/ — Room drafting strategy. Choose rooms to build a route through the floating archive. Collect chart pages and save enough wind to bring them home.
 - Emberglaze Kiln: https://weightplay.com/en/games/emberglaze-kiln/ — Kiln workshop. Mix minerals, balance the kiln heat and fire ceramics for the village.
-- Rainline Chase: https://weightplay.com/en/games/rainline-chase/ — Cricket batting. Pick a gap, time your swing and beat the rain line before play stops.
+- Rainline Chase: https://weightplay.com/en/games/rainline-chase/ — Cricket batting. Aim between fielders and time your cricket swing. Reach the run target before rain stops play.
 - Frostline Expedition: https://weightplay.com/en/games/frostline-expedition/ — Rescue simulation. Drive a truck through mud and snow to deliver supplies. Winch stranded vehicles to safety and haul materials to reopen mountain roads.
 - Touchline Tails: https://weightplay.com/en/games/touchline-tails/ — Football tactics. Coach a five-a-side club. Set your shapes, manage stamina and change the match from the touchline.
 - Reedway Transit: https://weightplay.com/en/games/reedway-transit/ — Tram Network Management. Build tram lines, balance transfers and bring every passenger to the right station.
@@ -415,8 +415,8 @@ Games with local saves keep progress in the current browser.
 - Dawnward Haven: https://weightplay.com/en/games/dawnward-haven/ — Settlement building. Build a harbor, assign residents and prepare food and timber before the weather turns.
 - Gilded Gathering: https://weightplay.com/en/games/gilded-gathering/ — Venue strategy. Arrange tables, keep aisles open and welcome every guest with light, tea and a little quiet.
 - Rivetide Works: https://weightplay.com/en/games/rivetide-works/ — Factory strategy. Build a production line. Turn raw materials into cargo and keep every workshop supplied.
-- Sproutsum: https://weightplay.com/en/games/sproutsum/ — Arithmetic Crossword. Plant each number so every row and column reaches its target.
-- Chromadock: https://weightplay.com/en/games/chromadock/ — Sliding block puzzle. Make room for every crate, then slide it through its matching dock.
+- Sproutsum: https://weightplay.com/en/games/sproutsum/ — Arithmetic Crossword. Place number tiles from a limited tray. Make the equations across and down equal their targets.
+- Chromadock: https://weightplay.com/en/games/chromadock/ — Sliding block puzzle. Slide crates sideways or lengthwise to clear a route. Fit each crate through the dock of the matching color.
 - Glowpiece Gallery: https://weightplay.com/en/games/glowpiece-gallery/ — Picture assembly. Move picture fragments, join matching seams and restore Orla’s gallery.
 - Leafskip: https://weightplay.com/en/games/leafskip/ — Jump and Landing Timing. Time each jump to collect seed packets above the platforms. Jump again in midair when you need more height, then line up a safe landing.
 - Moonlit Atrium: https://weightplay.com/en/games/moonlit-atrium/ — Light coverage logic. Place moon lanterns to light every floor. Match the pillars without letting lanterns shine on each other.
@@ -620,7 +620,7 @@ Games with local saves keep progress in the current browser.
 - Railguard Express: https://weightplay.com/en/games/railguard-express/ — Train Escort Defense. Escort 60 routes across two chapters. Plan carriage power, signal pulses and safe cargo deliveries.
 - Blade Orbit: https://weightplay.com/en/games/blade-orbit/ — Sword Survivor. Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.
 - Fia’s Hightrail: https://weightplay.com/en/games/fia-hightrail/ — Climbing Adventure. Choose your next handhold, rest on safe ledges and guide Fia through 30 mountain rescue routes.
-- Nori’s Sandworks: https://weightplay.com/en/games/nori-sandworks/ — Sand Collection Puzzle. Slide collectors, uncover colorful sand and build six coastal scenes through 30 thoughtful puzzles.
+- Nori’s Sandworks: https://weightplay.com/en/games/nori-sandworks/ — Sand Collection Puzzle. Slide trays onto open ports to collect matching sand. Fill every tray, revealing the sand layer above as you go.
 - Meadow Touchdown: https://weightplay.com/en/games/meadow-touchdown/ — Flag football. Read the defense, lead your receivers with a pass, then weave toward the end zone across 30 challenges.
 - A Life in Moments: https://weightplay.com/en/games/smallwood-lives/ — Life simulation. Among around eight billion people, you are one of a kind. Follow a life from a randomly selected birthplace. Watch it unfold year by year, then look back on its story.
 - Lantern Lasso: https://weightplay.com/en/games/lantern-lasso/ — Ricochet Light Puzzle. Drag to aim and release a line that bounces off the board edges. Collect numbered lights in order and pull switches to open gates.
