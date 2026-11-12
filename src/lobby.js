@@ -7,6 +7,8 @@ let initialLobbyData = {};
 try { initialLobbyData = JSON.parse(document.querySelector('#lobbyInitialData')?.textContent || '{}'); } catch { /* Older HTML remains supported. */ }
 const gameGenres = window.WeightPlayGameGenres;
 if (!gameGenres) throw new Error("Lobby gameplay registry is missing");
+const firstPersonTag = "First Person";
+const searchableGenreIds = [...gameGenres.genreIds, firstPersonTag];
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
 // BEGIN GENERATED METEOR ACTIVITY ENTRY
 // Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=03cccac666c699aa from activity-owned copy.
@@ -551,7 +553,7 @@ function gameHall(game) {
 }
 
 function firstPersonHallIncludes(gameId, status) {
-  return status === "playable" && gameGenres.matches(gameId, "First Person");
+  return status === "playable" && gameGenres.matches(gameId, firstPersonTag);
 }
 
 function gameMatchesHall(game, hall = activeHall) {
@@ -961,7 +963,6 @@ function topicMatches(game, topic) {
 }
 
 function filterTopicsFor(game) {
-  // Secondary tags also supply filters such as the first-person viewpoint.
   return [
     ...game.categories,
     ...(game.mechanics ?? []),
@@ -1163,7 +1164,9 @@ function restoreDiscoveryFiltersFromUrl({ present = true } = {}) {
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
   const legacyGameType = params.get("gameType");
   const legacyTopic = legacyGameType === "tower-defense" ? "Tower Defense" : legacyGameType;
-  activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || legacyTopic || "all");
+  const requestedTopic = params.get("topic") || legacyTopic || "all";
+  if (!isKidsLobby && activeHall === "games" && requestedTopic === firstPersonTag) activeHall = "first-person";
+  activeTopic = selectedFilterValue(topicButtons, "topicFilter", requestedTopic);
   if (!isKidsLobby && activeTopic !== "all" && ![...catalogGames, ...upcomingPreviewGames()]
     .some((game) => gameMatchesHall(game) && topicMatches(game, activeTopic))) activeTopic = "all";
   activeSkill = selectedFilterValue(skillButtons, "skillFilter", params.get("skill") || "all");
@@ -1778,9 +1781,9 @@ function openGame(game, title, ageLabel, card = null) {
 
 function matchesCatalogSearch(card, query) {
   if (!query) return true;
-  const genre = gameGenres.definitions.find(({ id }) =>
+  const genre = searchableGenreIds.find((id) =>
     normalizeSearch(id) === query || normalizeSearch(categoryText(id)) === query);
-  return genre ? gameGenres.matches(card.dataset.gameId, genre.id) : card.dataset.search.includes(query);
+  return genre ? gameGenres.matches(card.dataset.gameId, genre) : card.dataset.search.includes(query);
 }
 
 function cardMatchesFilterState(card, state) {

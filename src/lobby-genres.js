@@ -8,16 +8,16 @@
     "Management", "Pet Care", "Racing", "Sports", "Reaction", "Card", "Board",
     "Word", "Education",
   ]);
-  const firstPersonFacet = "First Person";
+  const firstPersonTag = "First Person";
   const secondaryIds = Object.freeze([
-    ...genreIds, firstPersonFacet, "Adventure", "Arcade", "Platform", "Survival", "Idle", "Merge",
+    ...genreIds, firstPersonTag, "Adventure", "Arcade", "Platform", "Survival", "Idle", "Merge",
     "Physics", "Memory", "Collection", "Route Planning", "Spatial Planning",
     "Deduction", "Pattern Recognition", "Shape Matching", "Observation",
     "Connection", "Construction", "Sequencing", "Escape", "Co-op", "Aim",
     "Timing", "Geography", "Visual Framing", "Comparison", "Estimation",
     "Calibration", "Balance", "Block", "Builder", "Tile Clearing", "Shooting",
   ]);
-  const definitions = Object.freeze([firstPersonFacet, ...genreIds].map((id) => Object.freeze({
+  const definitions = Object.freeze(genreIds.map((id) => Object.freeze({
     id,
     labelKey: `category.${id}`,
   })));
@@ -42,8 +42,8 @@
     ["prismkin-rescue", "Strategy", "Puzzle", "Spatial Planning", "Route Planning"],
     ["galevault-atlas", "Strategy", "Puzzle", "Spatial Planning", "Route Planning", "Construction"],
     ["touchline-tails", "Strategy", "Sports", "Management"],
-    ["prismtide", "Puzzle", firstPersonFacet, "Adventure", "Spatial Planning", "Connection"],
-    ["skymeadow-keeper", "Simulation", firstPersonFacet, "Pet Care", "Adventure", "Collection"],
+    ["prismtide", "Puzzle", firstPersonTag, "Adventure", "Spatial Planning", "Connection"],
+    ["skymeadow-keeper", "Simulation", firstPersonTag, "Pet Care", "Adventure", "Collection"],
     ["tomorrow-share", "Strategy", "Management"],
     ["cloudhold-voyager", "Strategy", "Management", "Adventure"],
     ["dawnward-haven", "Management", "Strategy", "Construction"],

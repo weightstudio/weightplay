@@ -182,6 +182,8 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
 })();
 </script><!-- wp-entry-initial-head:end -->
 
+
+
   <base href="/games/crossbank-rovers/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -219,7 +221,7 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
   <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=03cccac666c699aa" data-wp-entry-required="">
   <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=03cccac666c699aa" data-wp-entry-required="">
   <link rel="stylesheet" href="/src/tutorial.css?wp-media=03cccac666c699aa" data-wp-entry-required="">
-  <link rel="stylesheet" href="/games/crossbank-rovers/style.css?wp-build=52c36108d219df57&wp-media=03cccac666c699aa" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/crossbank-rovers/style.css?wp-build=98e185a7c400c230&wp-media=03cccac666c699aa" data-wp-entry-required="">
   <script src="/src/game-layout-config.js?wp-media=03cccac666c699aa" data-wp-entry-required=""></script>
   <script src="/src/weightplay-audio.js?wp-media=03cccac666c699aa" data-wp-entry-required></script>
   <script src="/src/site-config.js?wp-media=03cccac666c699aa" data-wp-entry-required></script>
@@ -254,7 +256,7 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
     <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=03cccac666c699aa#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
       <h2 id="guideTitle">ゲームガイド</h2><div class="game-info-tags" data-wp-gameplay-tags="2.0" data-wp-search-gameplay-tags="2.0" data-runtime-localize="off"><span>物資輸送ストラテジー</span><span>地形に合う車輪と工具を装備</span><span>レーン選択とバッテリー管理</span></div>
       <!-- crossbank-guide:start -->
-<div class="cross-guide"><article><h3>目標</h3><p data-wp-intro-faq-source>装甲を残したまま必要な物資を拠点に届けよう。</p></article><article><h3>遊び方</h3><p>道を確認し、車体と車輪、道具1つを装着。出発したらレーンを選び区間ごとに進む。</p></article><article><h3>操作とルール</h3><p>レーンをタップして残る電力、装甲、荷物を確認。車線変更は電力1を消費し、グリップ走行は悪路での損耗を減らす。</p></article><article><h3>結果とフィードバック</h3><p>必要な物資を届けると次のルートが解放される。故障や荷物不足なら、改造して再挑戦できる。</p></article></div>
+<div class="cross-guide"><article><h3>目標</h3><p data-wp-intro-faq-source>装甲を残したまま必要な物資を拠点に届けよう。</p></article><article><h3>遊び方</h3><p>車線を選んで一区間ずつ進む。先のコースで車輪、グリップモード、車体、道具が加わる。</p></article><article><h3>操作とルール</h3><p>各車線に電力・装甲・物資の増減が表示される。車線変更とグリップモードは電力を1多く使い、後者は摩耗を抑える。</p></article><article><h3>結果とフィードバック</h3><p>すべての木箱を届けると次のコースが開く。足りないときは物資のある車線を選んで再挑戦しよう。</p></article></div>
 <!-- crossbank-guide:end -->
       <!-- crossbank-faq:start -->
 <details><summary>クリアにダイヤは必要？</summary><p>機能部品はクリアで手に入る。ダイヤは永久塗装だけに使い、進行状況はブラウザーに保存される。</p></details>
@@ -282,14 +284,14 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
       <div id="arena" aria-hidden="true"></div>
       <section id="deck">
         <div id="loadout" data-wp-frame-logical-actions="battle">
-          <button id="framePart" type="button" data-wp-frame-action="secondary"><span class="part-icon"></span><b></b></button>
-          <button id="wheelsPart" type="button" data-wp-frame-action="secondary"><span class="part-icon"></span><b></b></button>
-          <button id="toolPart" type="button" data-wp-frame-action="secondary"><span class="part-icon"></span><b></b></button>
+          <button id="framePart" type="button" data-wp-frame-action="secondary"><span class="part-icon" aria-hidden="true"></span><b></b><small></small></button>
+          <button id="wheelsPart" type="button" data-wp-frame-action="secondary"><span class="part-icon" aria-hidden="true"></span><b></b><small></small></button>
+          <button id="toolPart" type="button" data-wp-frame-action="secondary"><span class="part-icon" aria-hidden="true"></span><b></b><small></small></button>
         </div>
         <div id="driveChoices" data-wp-frame-logical-actions="battle" hidden>
-          <button id="laneLeft" type="button" data-wp-frame-action="secondary" aria-pressed="true"></button>
-          <button id="laneRight" type="button" data-wp-frame-action="secondary" aria-pressed="false"></button>
-          <button id="gripBtn" type="button" data-wp-frame-action="secondary" aria-pressed="false"></button>
+          <button id="laneLeft" type="button" data-wp-frame-action="secondary" aria-pressed="false"><b></b><small></small></button>
+          <button id="laneRight" type="button" data-wp-frame-action="secondary" aria-pressed="false"><b></b><small></small></button>
+          <button id="gripBtn" type="button" data-wp-frame-action="secondary" aria-pressed="false"><b></b><small></small></button>
         </div>
         <p id="forecast"></p>
         <p id="message" role="status" aria-live="polite"></p>
@@ -302,10 +304,10 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
     <section id="resultPanel" class="cross-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
       <div class="cross-card" data-wp-result-card>
         <h2 id="resultTitle"></h2><p id="resultSummary"></p><p id="resultNotice" role="status"></p>
-        <div class="cross-actions">
+        <div class="cross-result-actions" data-wp-frame-logical-actions="battle">
           <button id="resultMap" type="button" data-wp-frame-action="secondary">ルート</button>
-          <button id="resultRetry" type="button" data-wp-frame-action="secondary">改造し直す</button>
           <button id="resultNext" type="button" data-wp-frame-action="primary">次のルート</button>
+          <button id="resultRetry" type="button" data-wp-frame-action="secondary">もう一度</button>
         </div>
       </div>
     </section>
@@ -325,6 +327,6 @@ html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden])
 <script src="/src/battle-canvas-standard.js?wp-media=03cccac666c699aa" data-wp-entry-required=""></script>
 <script src="/src/game-screen-frame.js?v=entry-initial-dc1937487e67-search20&wp-media=03cccac666c699aa" data-wp-entry-required=""></script>
 <script src="/src/tutorial.js?wp-media=03cccac666c699aa" data-wp-entry-required></script>
-<script type="module" src="/games/crossbank-rovers/game.mjs?v=entry-initial-a5eae53019da&amp;wp-build=6ce51638c74ba2ab&wp-media=03cccac666c699aa" data-wp-entry-required=""></script>
+<script type="module" src="/games/crossbank-rovers/game.mjs?v=entry-initial-6e6bb80ac73e&amp;wp-build=a4e882916a114b22&wp-media=03cccac666c699aa" data-wp-entry-required=""></script>
 </body>
 </html>
