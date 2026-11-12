@@ -1015,7 +1015,8 @@
           : gameId === "yukon-solitaire" ? "20261014-guide-related-i9-v1"
           : gameId === "sliding-15" ? "20261010-sliding15-static-guide-r1"
           : "20260817-bus-jam-guide-v12";
-      script.src = `${new URL("game-page-info.js?wp-media=03cccac666c699aa", sharedAssetBase).href}?v=${gameInfoCacheTag}`;
+      const gameAccessVersion = document.querySelector('[data-wp-game-access="2.0"]') ? "-geo-access" : "";
+      script.src = `${new URL("game-page-info.js?wp-media=03cccac666c699aa", sharedAssetBase).href}?v=${gameInfoCacheTag}${gameAccessVersion}`;
       document.body.append(script);
     }
   }

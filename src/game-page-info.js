@@ -12172,6 +12172,8 @@
       ? document.querySelector('[data-wp-search-gameplay-tags="2.0"]')?.outerHTML : "";
     const curatedGuideIntro = matchesSearchLocale
       ? document.querySelector('.game-page-info [data-wp-search-guide-intro="2.0"]')?.outerHTML : "";
+    const gameAccess = matchesSearchLocale
+      ? document.querySelector('[data-wp-game-access="2.0"]') : null;
     document
       .querySelectorAll(".game-page-info, .public-guide, .game-guide")
       .forEach((node) => node.remove());
@@ -12248,6 +12250,7 @@
           </div>` : "")}
         </div>
       `;
+      if (gameAccess) section.append(gameAccess);
       main.insertAdjacentElement("afterend", section);
       repairRelatedImages(section);
       return;
@@ -12373,6 +12376,7 @@
         </div>` : "")}
       </div>
     `;
+    if (gameAccess) section.append(gameAccess);
     main.insertAdjacentElement("afterend", section);
     repairRelatedImages(section);
 
