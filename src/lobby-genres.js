@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["mosscrest-accord", "Strategy", "Management"],
     ["torque-grove", "Puzzle", "Simulation", "Deduction"],
     ["parcel-pact", "Puzzle", "Strategy", "Sequencing"],
     ["perchweave", "Card", "Strategy", "Sequencing"],
