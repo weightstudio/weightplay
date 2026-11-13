@@ -12,7 +12,7 @@
   const root = document.documentElement;
   if (root.dataset.wpSharedInterfaceBootstrapped === "7") return;
 
-  // site-config.js?wp-media=c4af5a64163f458e is also used by lobby and utility pages. Restrict the
+  // site-config.js?wp-media=dfd6fb9b5249ca93 is also used by lobby and utility pages. Restrict the
   // complete runtime and token delivery to canonical/localized game routes;
   // lobby presentation has a separate owner and does not consume this frame.
   const isGameRoute = /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(location.pathname);
@@ -23,11 +23,11 @@
   window.__weightPlaySharedInterfaceRequested = true;
   // A few authored entries load this bootstrap directly, without site-config.
   // Reuse the canonical config/collector rather than defining a second GA4 tag.
-  if (/^https?:$/.test(location.protocol) && !window.WONDER_SITE && !document.querySelector('script[src*="site-config.js?wp-media=c4af5a64163f458e"]')
+  if (/^https?:$/.test(location.protocol) && !window.WONDER_SITE && !document.querySelector('script[src*="site-config.js?wp-media=dfd6fb9b5249ca93"]')
     && !window.__weightPlaySiteConfigRequested) {
     window.__weightPlaySiteConfigRequested = true;
     const configScript = document.createElement("script");
-    configScript.src = new URL("/src/site-config.js?wp-media=c4af5a64163f458e", location.origin).href;
+    configScript.src = new URL("/src/site-config.js?wp-media=dfd6fb9b5249ca93", location.origin).href;
     configScript.async = true;
     document.head.append(configScript);
   }
@@ -49,9 +49,9 @@
 
   // Insert the token source first; the frame CSS imports it as well, and the
   // duplicate-free check makes this safe for the four explicit adopters.
-  addStylesheet("game-ui-theme.css?wp-media=c4af5a64163f458e");
-  addStylesheet("game-page-info.css?wp-media=c4af5a64163f458e");
-  addStylesheet("game-screen-frame.css?wp-media=c4af5a64163f458e");
+  addStylesheet("game-ui-theme.css?wp-media=dfd6fb9b5249ca93");
+  addStylesheet("game-page-info.css?wp-media=dfd6fb9b5249ca93");
+  addStylesheet("game-screen-frame.css?wp-media=dfd6fb9b5249ca93");
 
   const addInterfaceMeta = () => {
     const meta = document.querySelector('meta[name="weightplay-interface-version"]');
@@ -153,7 +153,7 @@
     }
     window.__weightPlayInterface7PosterRegistryRequested = true;
     const script = document.createElement("script");
-    script.src = assetUrl("interface7-poster-registry.js?v=20261007-kite-keeper-poster-path-fix&wp-media=c4af5a64163f458e");
+    script.src = assetUrl("interface7-poster-registry.js?v=20261007-kite-keeper-poster-path-fix&wp-media=dfd6fb9b5249ca93");
     script.dataset.wpSharedInterface = "7";
     script.addEventListener("load", () => {
       window.dispatchEvent(new Event("weightplay-interface7-poster-registry-ready"));
@@ -163,10 +163,10 @@
   };
 
   const ensureFrameRuntime = () => {
-    if (!document.querySelector('script[src*="game-screen-frame.js?wp-media=c4af5a64163f458e"]') && !window.__weightPlayScreenFrameRequested) {
+    if (!document.querySelector('script[src*="game-screen-frame.js?wp-media=dfd6fb9b5249ca93"]') && !window.__weightPlayScreenFrameRequested) {
       window.__weightPlayScreenFrameRequested = true;
       const script = document.createElement("script");
-      script.src = assetUrl('game-screen-frame.js?v=20261103-initial-entry-dom-ready1&wp-media=c4af5a64163f458e');
+      script.src = assetUrl('game-screen-frame.js?v=20261103-initial-entry-dom-ready1&wp-media=dfd6fb9b5249ca93');
       script.dataset.wpSharedInterface = "7";
       document.body.append(script);
       return;

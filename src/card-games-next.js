@@ -761,7 +761,7 @@
       const labels = TEXT[currentLocale()] || TEXT.en;
       const progressCopy = OLD_MAID_PROGRESS_COPY[currentLocale()] || OLD_MAID_PROGRESS_COPY.en;
       ownLocalizedText(document.querySelector(".main-copy .eyebrow"), OLD_MAID_CATEGORY_COPY[currentLocale()] || OLD_MAID_CATEGORY_COPY.en);
-      ownLocalizedText(document.querySelector(".main-copy [data-card-summary]"), progressCopy.summary);
+      ownLocalizedText(document.querySelector("[data-card-summary]"), progressCopy.summary);
       ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);

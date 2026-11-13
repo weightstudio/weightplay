@@ -701,6 +701,10 @@
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
     },
+    "loamline": {
+      "date": "2026-11-13T08:44:12.249Z",
+      "evidence": "canonical-public-catalog"
+    },
     "mahjong-solitaire": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"

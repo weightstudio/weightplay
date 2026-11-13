@@ -3,29 +3,29 @@
   const comparisonOnly = Boolean(document.currentScript?.hasAttribute?.("data-wp-comparison-only"));
   const sharedPlayUI = Boolean(document.querySelector('[data-wp-play-ui="1"]'));
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
-  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('link[href*="stage-selector-standard.css?wp-media=c4af5a64163f458e"]')) {
+  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('link[href*="stage-selector-standard.css?wp-media=dfd6fb9b5249ca93"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3&wp-media=c4af5a64163f458e", sharedAssetBase).href;
+    link.href = new URL("stage-selector-standard.css?v=20260720-explicit-recommendation3&wp-media=dfd6fb9b5249ca93", sharedAssetBase).href;
     link.dataset.wpStageStandard = "true";
     document.head.appendChild(link);
   }
-  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('script[src*="stage-selector-standard.js?wp-media=c4af5a64163f458e"]')) {
+  if (!comparisonOnly && !sharedPlayUI && !document.querySelector('script[src*="stage-selector-standard.js?wp-media=dfd6fb9b5249ca93"]')) {
     const script = document.createElement("script");
-    script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3&wp-media=c4af5a64163f458e", sharedAssetBase).href;
+    script.src = new URL("stage-selector-standard.js?v=20260720-explicit-recommendation3&wp-media=dfd6fb9b5249ca93", sharedAssetBase).href;
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }
-  if (!comparisonOnly && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css?wp-media=c4af5a64163f458e"]')) {
+  if (!comparisonOnly && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css?wp-media=dfd6fb9b5249ca93"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = new URL("battle-canvas-standard.css?wp-media=c4af5a64163f458e", sharedAssetBase).href;
+    link.href = new URL("battle-canvas-standard.css?wp-media=dfd6fb9b5249ca93", sharedAssetBase).href;
     link.dataset.wpBattleStandard = "true";
     document.head.appendChild(link);
   }
-  if (!comparisonOnly && !sharedPlayUI && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js?wp-media=c4af5a64163f458e"]')) {
+  if (!comparisonOnly && !sharedPlayUI && document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js?wp-media=dfd6fb9b5249ca93"]')) {
     const script = document.createElement("script");
-    script.src = new URL("battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1&wp-media=c4af5a64163f458e", sharedAssetBase).href;
+    script.src = new URL("battle-canvas-standard.js?v=20260911-folded-field-battle-envelope-v1&wp-media=dfd6fb9b5249ca93", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }
@@ -3896,7 +3896,7 @@
     "animal-habitat-mahjong": "animal-habitat-mahjong-cover.webp",
     "animal-hidden-safari": "animal-hidden-safari-cover.webp",
     "animal-crystal-survivor": "animal-crystal-survivor-otter-cover-v26.webp",
-    "animal-guard-yard": "interface7-redrawn/animal-guard-yard.webp?wp-media=c4af5a64163f458e",
+    "animal-guard-yard": "interface7-redrawn/animal-guard-yard.webp?wp-media=dfd6fb9b5249ca93",
     "animal-quiz": "quiz-cover.webp",
     "zoo-helper-day": "zoo-helper-day-cover.webp",
     "shape-train": "shape-train-cover.webp",
@@ -3907,9 +3907,9 @@
     "animal-orb-fortress": "animal-orb-fortress-cover-block-v1.webp",
     "animal-auto-squad": "animal-auto-squad-cover-block-v2.webp",
     "beast-tactician": "beast-tactician-cover.webp",
-    "animal-prism-battalion": "animal-prism-battalion/cover.webp?wp-media=c4af5a64163f458e",
-    "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=c4af5a64163f458e",
-    "animal-cratebound": "animal-cratebound/cover.webp?wp-media=c4af5a64163f458e",
+    "animal-prism-battalion": "animal-prism-battalion/cover.webp?wp-media=dfd6fb9b5249ca93",
+    "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=dfd6fb9b5249ca93",
+    "animal-cratebound": "animal-cratebound/cover.webp?wp-media=dfd6fb9b5249ca93",
     "animal-bamboo-pipes": "animal-bamboo-pipes-cover.webp",
     "shadow-wolf": "shadow-wolf-cover.webp",
   };
@@ -6513,9 +6513,9 @@
     if (ready()) return Promise.resolve(true);
     if (relatedRegistryLoadPromise) return relatedRegistryLoadPromise;
     relatedRegistryLoadPromise = Promise.all([
-      ["WEIGHTPLAY_PUBLIC_GAME_CATALOG", "public-game-catalog.js?wp-media=c4af5a64163f458e", "data-wp-public-game-catalog"],
-      ["WEIGHTPLAY_GAME_TITLES", "game-title-registry.js?wp-media=c4af5a64163f458e", "data-wp-game-title-registry"],
-      ["WEIGHTPLAY_INTERFACE7_POSTERS", "interface7-poster-registry.js?wp-media=c4af5a64163f458e", "data-wp-interface7-poster-registry"],
+      ["WEIGHTPLAY_PUBLIC_GAME_CATALOG", "public-game-catalog.js?wp-media=dfd6fb9b5249ca93", "data-wp-public-game-catalog"],
+      ["WEIGHTPLAY_GAME_TITLES", "game-title-registry.js?wp-media=dfd6fb9b5249ca93", "data-wp-game-title-registry"],
+      ["WEIGHTPLAY_INTERFACE7_POSTERS", "interface7-poster-registry.js?wp-media=dfd6fb9b5249ca93", "data-wp-interface7-poster-registry"],
     ].map(([globalName, filename, dataAttribute]) => {
       if (window[globalName]) return Promise.resolve(true);
       return new Promise((resolve) => {
@@ -6873,8 +6873,8 @@
     genre: ["Strategy", "Spatial Inventory", "Roguelite", "Animal"],
     relatedIds: ["animal-rift-salvage", "animal-cratebound", "animal-bamboo-pipes"],
     relatedCoverMap: {
-      "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=c4af5a64163f458e",
-      "animal-cratebound": "animal-cratebound/cover.webp?wp-media=c4af5a64163f458e",
+      "animal-rift-salvage": "animal-rift-salvage/cover.webp?wp-media=dfd6fb9b5249ca93",
+      "animal-cratebound": "animal-cratebound/cover.webp?wp-media=dfd6fb9b5249ca93",
       "animal-bamboo-pipes": "animal-bamboo-pipes-cover.webp",
     },
     skills: ["Planning", "Spatial Reasoning", "Adaptation"],
@@ -10853,7 +10853,7 @@
     if (japaneseResourcePromise) return japaneseResourcePromise;
     japaneseResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-ja.js?v=20261001-fruit-garden-text140-v1&wp-media=c4af5a64163f458e", sharedAssetBase).href;
+      script.src = new URL("game-page-info-ja.js?v=20261001-fruit-garden-text140-v1&wp-media=dfd6fb9b5249ca93", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "ja";
       script.onload = () => { installJapaneseResource(); resolve(); };
       script.onerror = () => { japaneseResourceFailed = true; resolve(); };
@@ -13713,7 +13713,7 @@
     localizedGames[locale]["shadow-wolf"] = { ...games["shadow-wolf"], ...copy };
   }
 
-  // Checkers owns its interactive shell in popular-games-batch.js?wp-media=c4af5a64163f458e and its
+  // Checkers owns its interactive shell in popular-games-batch.js?wp-media=dfd6fb9b5249ca93 and its
   // static, locale-owned SEO Guide here. Each published route must carry the
   // same verified rules without falling back to English paragraphs.
   const checkersLocaleFacts = {

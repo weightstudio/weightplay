@@ -13,19 +13,19 @@
     ],
     "systems": [
       "Each clue number is the length of one uninterrupted run of filled cells. Several numbers in a line appear in order, with at least one empty cell between runs. For example, a 3,1 clue on a five-cell line needs three filled cells, a gap, then one filled cell. Compare the crossing clues before deciding a square.",
-      "Paint fills a square; Mark × records a square as empty. Blank squares remain undecided. An incorrect Paint gives conflict feedback and adds a mistake, but does not end the puzzle. Undo restores the previous cell. Hint automatically paints one filled cell and uses a move; it does not complete the grid for you. Restart resets the current authored mosaic."
+      "Paint fills a square; Mark × records a square as empty. Blank squares remain undecided. An incorrect Paint gives conflict feedback and adds a mistake, but does not end the puzzle. Undo restores the previous cell. Hint explains a deduction and points to the relevant square. Your marks and move count stay as they are. Restart resets the current authored mosaic."
     ],
     "how": [
       "Choose the centered unlocked mosaic on the Stage rail. The first five boards are 5×5; later chapters introduce larger grids.",
       "Read the row clues from left to right and the column clues from top to bottom. Treat each number as a consecutive filled run, not a score.",
       "Paint cells you can prove are filled, mark cells you can prove are empty, and leave the rest blank while you compare crossing clues.",
-      "Use Undo to revisit a cell or Hint to paint one cell. Complete every row and column to reveal the animal and unlock the next stage."
+      "Use Undo to revisit a cell. When you are stuck, read the Hint and decide whether to paint or mark the indicated square. Complete every row and column to reveal the animal and unlock the next stage."
     ],
     "strategyTips": [
       "Start with a line whose runs leave little spare space. A five-cell line with clue 3,1 has only one possible placement, which can settle cells in the crossing lines.",
       "After placing a run, mark only the empty cells that the clues prove. A gap between two runs is required; extra space at the ends is not always known yet.",
       "When one row or column is complete, use its crossings to narrow the other lines. Keep uncertain cells blank instead of guessing.",
-      "If you lose track of a decision, Undo the last cell. Hint paints a cell for you, so save it for a point where you want direct help."
+      "Hint explains a deduction and points to the relevant square. Your marks and move count stay as they are."
     ],
     "progression": [
       "The five puzzles in each chapter build on earlier deductions. Woodland Signs starts with 5×5 single-run clues; River Tracks moves to 7×7 multi-run lines; Moon Garden uses 8×8 patterns and edge deductions. Coral Archive and Sky Atlas use 10×10 boards with separated runs, masks, anchors, and longer crossings. Grand Menagerie brings those ideas together on 12×12 animal portraits. All 30 authored mosaics have one solution."
@@ -47,7 +47,7 @@
       ],
       [
         "What does Hint do?",
-        "Hint automatically paints one filled cell and uses a move. It does not solve the rest of the mosaic."
+        "Hint explains a deduction and points to the relevant square. Your marks and move count stay as they are."
       ],
       [
         "Do I have to guess?",
@@ -77,19 +77,19 @@
     ],
     "systems": [
       "每個數字表示一段連續填色的長度。同一列或行有多個數字時，依序代表不同區段，區段之間至少隔一個空格。例如，五格線上的 3、1 線索表示三格連續填色、中間留空，再填一格。決定一格前，先對照與它交叉的線索。",
-      "「填色」會填滿格子；「標記 ×」表示格子確定留白；空白格則仍未判定。若填錯，遊戲會顯示線索衝突並增加錯誤次數，但不會結束題目。「復原」可還原上一格；「提示」會直接填上一個應填格並計為一步，不會替你完成整幅圖。「重新開始」會重設目前題目。"
+      "「填色」會填滿格子；「標記 ×」表示格子確定留白；空白格則仍未判定。若填錯，遊戲會顯示線索衝突並增加錯誤次數，但不會結束題目。「復原」可還原上一格。提示會解釋推理理由，並指出相關格子。原有標記與步數維持不變。「重新開始」會重設目前題目。"
     ],
     "how": [
       "在關卡軌道選取中央已解鎖的圖案。前五幅是 5×5，後續章節會逐步擴大棋盤。",
       "從左到右閱讀列線索，從上到下閱讀行線索。數字是連續填色格數，不是分數。",
       "只填入能確定的格子、標記確定留白的格子；比較交叉線索時，未確定的格子先保持空白。",
-      "用「復原」回到上一格，或用「提示」直接填上一格。完成所有列與行後即可揭曉動物並解鎖下一關。"
+      "用「復原」回到上一格。卡住時，讀提示後自行決定要填色或標記。完成所有行列後即可揭曉動物並解鎖下一關。"
     ],
     "strategyTips": [
       "先看剩餘空間很少的線索。五格線若標示 3、1，只有一種排法，也能推進與它交叉的線。",
       "放好一段連續格後，只把線索能證明為空的格子標上 ×。兩段線索之間一定要留空，但線段兩端多出的空間未必已能判定。",
       "完成一列或一行後，用它與其他線的交點縮小可能位置；不確定的格子不要猜。",
-      "忘了某格為何這樣標記時，可用「復原」。提示會替你填上一格，適合卡關時直接求助。"
+      "提示會解釋推理理由，並指出相關格子。原有標記與步數維持不變。"
     ],
     "progression": [
       "每章五題逐步增加推理要求。第一章以 5×5 單段線索入門；第二章改用 7×7 多段線索；第三章加入 8×8 圖案與邊緣推理。第四、五章使用 10×10 棋盤，加入分段線索、遮罩、定位格和較長交叉線索。第六章將這些方法組合到 12×12 動物肖像。30 幅手工題目都各有唯一解。"
@@ -111,7 +111,7 @@
       ],
       [
         "提示會做什麼？",
-        "提示會直接填入一個應填格並計為一步，不會解完其餘格子。"
+        "提示會解釋推理理由，並指出相關格子。原有標記與步數維持不變。"
       ],
       [
         "一定要猜嗎？",
@@ -141,19 +141,19 @@
     ],
     "systems": [
       "每个数字表示一段连续填色的长度。同一行或列有多个数字时，按顺序表示不同区段，区段之间至少留一个空格。例如，五格线上的 3、1 线索表示连续填三格、中间留空，再填一格。决定某格前，先核对与它交叉的线索。",
-      "“涂色”会填满格子；“标记 ×”表示格子确定留空；空白格仍未判定。涂错时会显示线索冲突并增加错误次数，但谜题不会因此结束。“撤销”恢复上一格；“提示”会直接填入一个应填格并计为一步，不会替你完成整幅图。“重新开始”会重置当前谜题。"
+      "“涂色”会填满格子；“标记 ×”表示格子确定留空；空白格仍未判定。涂错时会显示线索冲突并增加错误次数，但谜题不会因此结束。“撤销”恢复上一格。提示会解释推理理由，并指出相关格子。原有标记和步数保持不变。“重新开始”会重置当前谜题。"
     ],
     "how": [
       "在关卡轨道中选择居中的已解锁图案。前五幅是 5×5，后续章节会逐步扩大棋盘。",
       "从左到右阅读行线索，从上到下阅读列线索。数字表示连续填色格数，不是分数。",
       "只涂确定需要填满的格子，把确定为空的格子标上 ×；对照交叉线索时，让未确定的格子保持空白。",
-      "用“撤销”恢复上一格，或用“提示”直接填入一格。完成所有行列即可揭晓动物并解锁下一关。"
+      "用“撤销”恢复上一格。卡住时，读提示后自行决定要涂色还是标记。完成所有行列即可揭晓动物并解锁下一关。"
     ],
     "strategyTips": [
       "先看剩余空间很少的线索。五格线若标着 3、1，只有一种排法，也能帮助推断交叉线。",
       "放好一段连续格后，只把线索能证明为空的格子标上 ×。两段之间必须留空，但线段两端多出的空格未必已能确定。",
       "完成一行或一列后，用它与其他线的交点缩小可能位置；不确定时不要猜。",
-      "忘了某格为何这样标记时，可以撤销。提示会替你填入一格，适合卡住时直接求助。"
+      "提示会解释推理理由，并指出相关格子。原有标记和步数保持不变。"
     ],
     "progression": [
       "每章五题逐步增加推理要求。第一章以 5×5 单段线索入门；第二章改用 7×7 多段线索；第三章加入 8×8 图案和边缘推理。第四、五章使用 10×10 棋盘，加入分段线索、遮罩、定位格和较长交叉线索。第六章将这些方法组合到 12×12 动物肖像。30 幅原创谜题各有唯一解。"
@@ -175,7 +175,7 @@
       ],
       [
         "提示会做什么？",
-        "提示会直接填入一个应填格并计为一步，不会解完其他格子。"
+        "提示会解释推理理由，并指出相关格子。原有标记和步数保持不变。"
       ],
       [
         "一定要猜吗？",
@@ -205,19 +205,19 @@
     ],
     "systems": [
       "数字一つは途切れない塗りつぶしの長さを表します。同じ列や行に複数の数字がある場合は順番に別のまとまりを示し、まとまりの間には少なくとも一つ空きマスが必要です。例えば5マスの線のヒントが3、1なら、3マス連続で塗り、間を空けて1マス塗ります。決める前に交差するヒントを比べましょう。",
-      "「塗る」でマスを埋め、「印 ×」で空きマスを記録します。空白のマスは未確定です。誤って塗るとヒントとの矛盾が表示され、ミス数が増えますが、問題は終了しません。「元に戻す」で直前のマスを戻せます。「ヒント」は塗るべきマスを一つ自動で塗り、1手として数えます。「やり直す」と現在の問題が初期状態に戻ります。"
+      "「塗る」でマスを埋め、「印 ×」で空きマスを記録します。空白のマスは未確定です。誤って塗るとヒントとの矛盾が表示され、ミス数が増えますが、問題は終了しません。「元に戻す」で直前のマスを戻せます。 「ヒント」は推理の根拠を説明し、該当するマスを示します。マスの印や手数はそのままです。「やり直す」と現在の問題が初期状態に戻ります。"
     ],
     "how": [
       "ステージレールから中央にある開放済みのモザイクを選びます。最初の5問は5×5で、その後は盤面が大きくなります。",
       "行のヒントは左から右、列のヒントは上から下へ読みます。数字は連続して塗るマス数で、得点ではありません。",
       "確定したマスは塗り、確定した空きマスには × を付けます。交差する手掛かりを比べる間、未確定のマスは空白にします。",
-      "「元に戻す」で直前のマスを戻すか、「ヒント」で一マスを塗れます。すべての行と列を満たすと動物が現れ、次のステージが開きます。"
+      "「元に戻す」で直前のマスを戻せます。迷ったらヒントを読み、示されたマスを塗るか印を付けるか判断しましょう。すべての行と列を完成させると動物が現れ、次のステージが開きます。"
     ],
     "strategyTips": [
       "使える余白が少ない線から始めます。5マスでヒントが3、1なら配置は一通りだけで、交差する線も絞れます。",
       "まとまりを置いた後は、ヒントで空きと確定できるマスだけに×を付けます。まとまり同士には空きが必要ですが、線の端の余白はまだ決まらない場合があります。",
       "完成した行や列を交差先の判断に使い、曖昧なマスは推測で埋めないでください。",
-      "判断を見失ったら「元に戻す」で一つ前に戻れます。「ヒント」は一マスを自動で塗るので、直接助けが必要なときに使いましょう。"
+      "「ヒント」は推理の根拠を説明し、該当するマスを示します。マスの印や手数はそのままです。"
     ],
     "progression": [
       "各章の5問で推理の組み合わせが増えます。第1章は5×5の単独ヒント、第2章は7×7の複数まとまり、第3章は8×8の模様と端の推理です。第4・5章は10×10で分かれたまとまり、マスク、基準マス、長い交差ヒントを使います。第6章はこれらを12×12の動物肖像に組み合わせます。30問すべてに解は一つです。"
@@ -239,7 +239,7 @@
       ],
       [
         "「ヒント」は何をしますか？",
-        "塗るべきマスを一つ自動で塗り、1手として数えます。残りの問題は自分で解きます。"
+        "「ヒント」は推理の根拠を説明し、該当するマスを示します。マスの印や手数はそのままです。"
       ],
       [
         "推測で解く必要がありますか？",
@@ -269,19 +269,19 @@
     ],
     "systems": [
       "숫자 하나는 끊기지 않는 색칠 칸의 길이를 뜻합니다. 한 줄에 숫자가 여러 개 있으면 순서대로 각각 다른 구간이며, 구간 사이에는 적어도 한 칸을 비워야 합니다. 예를 들어 다섯 칸 줄의 3,1은 세 칸을 연속으로 칠하고 한 칸을 비운 뒤 한 칸을 칠하라는 뜻입니다. 칸을 정하기 전에 교차 단서를 비교하세요.",
-      "“칠하기”는 칸을 채우고 “표시 ×”는 빈칸을 기록합니다. 표시가 없는 칸은 아직 미정입니다. 잘못 칠하면 단서 충돌이 표시되고 실수가 늘지만 퍼즐이 끝나지는 않습니다. “실행 취소”는 직전 칸을 되돌립니다. “힌트”는 채워야 할 칸 하나를 자동으로 칠하고 한 수로 셉니다. “다시 시작”은 현재 퍼즐을 초기화합니다."
+      "“칠하기”는 칸을 채우고 “표시 ×”는 빈칸을 기록합니다. 표시가 없는 칸은 아직 미정입니다. 잘못 칠하면 단서 충돌이 표시되고 실수가 늘지만 퍼즐이 끝나지는 않습니다. “실행 취소”는 직전 칸을 되돌립니다. 힌트는 추론의 근거를 설명하고 해당 칸을 가리킵니다. 기존 표시와 이동 횟수는 그대로 유지됩니다. “다시 시작”은 현재 퍼즐을 초기화합니다."
     ],
     "how": [
       "스테이지 레일의 중앙에 있는 해금된 모자이크를 선택하세요. 처음 다섯 판은 5×5이고 이후 챕터에서 격자가 커집니다.",
       "행 단서는 왼쪽에서 오른쪽으로, 열 단서는 위에서 아래로 읽습니다. 숫자는 연속으로 칠할 칸 수이지 점수가 아닙니다.",
       "확실히 채울 칸은 칠하고 비워 둘 칸에는 ×를 표시하세요. 교차 단서를 비교하는 동안 미정인 칸은 비워 두세요.",
-      "“실행 취소”로 직전 칸을 되돌리거나 “힌트”로 한 칸을 칠하세요. 모든 행과 열을 완성하면 동물이 드러나고 다음 스테이지가 열립니다."
+      "실행 취소로 직전 칸을 되돌릴 수 있습니다. 막히면 힌트를 읽고 가리킨 칸을 칠할지 표시할지 결정하세요. 모든 행과 열을 완성하면 동물이 드러나고 다음 스테이지가 열립니다."
     ],
     "strategyTips": [
       "남는 공간이 거의 없는 줄부터 시작하세요. 다섯 칸 줄에 3,1 단서가 있으면 놓는 방법이 하나뿐이라 교차 줄을 좁히는 데 도움이 됩니다.",
       "구간을 배치한 뒤 단서로 빈칸임을 증명할 수 있는 곳만 ×로 표시하세요. 구간 사이에는 빈칸이 필요하지만 양 끝의 여유 칸은 아직 미정일 수 있습니다.",
       "완성한 행이나 열의 교차점을 이용해 다른 줄의 가능성을 줄이고, 확실하지 않은 칸은 추측하지 마세요.",
-      "표시한 이유를 잊었다면 “실행 취소”로 직전 상태를 복원하세요. “힌트”는 칸 하나를 대신 칠하므로 직접 도움이 필요할 때 사용하세요."
+      "힌트는 추론의 근거를 설명하고 해당 칸을 가리킵니다. 기존 표시와 이동 횟수는 그대로 유지됩니다."
     ],
     "progression": [
       "각 챕터의 다섯 퍼즐은 앞에서 배운 추론을 더합니다. 첫 챕터는 5×5 단일 구간 단서, 둘째는 7×7 여러 구간, 셋째는 8×8 대칭 무늬와 가장자리 추론을 다룹니다. 넷째와 다섯째 챕터는 10×10 격자에서 분리된 구간, 마스크, 기준 칸, 긴 교차 단서를 사용합니다. 마지막 챕터는 이를 12×12 동물 초상화에 결합합니다. 30개 퍼즐은 각각 해답이 하나입니다."
@@ -303,7 +303,7 @@
       ],
       [
         "“힌트”는 무엇을 하나요?",
-        "채워야 할 칸 하나를 자동으로 칠하고 한 수로 셉니다. 나머지 퍼즐은 직접 풀어야 합니다."
+        "힌트는 추론의 근거를 설명하고 해당 칸을 가리킵니다. 기존 표시와 이동 횟수는 그대로 유지됩니다."
       ],
       [
         "추측해야 하나요?",
@@ -333,19 +333,19 @@
     ],
     "systems": [
       "Cada número indica la longitud de una serie continua de casillas pintadas. Si una línea tiene varios números, representan grupos separados en ese orden, con al menos una casilla vacía entre ellos. Por ejemplo, 3,1 en una línea de cinco casillas exige tres seguidas, un espacio y una más. Compara las pistas que se cruzan antes de decidir.",
-      "Pintar rellena una casilla; Marcar × señala una casilla vacía. Las casillas en blanco siguen sin decidir. Si pintas una casilla incorrecta, aparece un aviso de conflicto y aumenta el contador de errores, pero el puzle continúa. Deshacer restaura la casilla anterior. Pista pinta automáticamente una casilla que forma parte de la imagen y cuenta como una jugada; no completa la cuadrícula. Reiniciar restablece el mosaico actual."
+      "Pintar rellena una casilla; Marcar × señala una casilla vacía. Las casillas en blanco siguen sin decidir. Si pintas una casilla incorrecta, aparece un aviso de conflicto y aumenta el contador de errores, pero el puzle continúa. Deshacer restaura la casilla anterior. La pista explica una deducción y señala la casilla correspondiente. Tus marcas y el contador de jugadas se mantienen. Reiniciar restablece el mosaico actual."
     ],
     "how": [
       "Elige en la barra la imagen desbloqueada que queda centrada. Las cinco primeras son de 5×5; las cuadrículas crecen en los capítulos posteriores.",
       "Lee las pistas de las filas de izquierda a derecha y las de las columnas de arriba abajo. Los números indican grupos consecutivos, no puntos.",
       "Pinta las casillas que sabes que van rellenas y marca con × las que sabes que van vacías. Deja en blanco las dudosas mientras comparas las pistas cruzadas.",
-      "Usa Deshacer para corregir la última casilla o Pista para pintar una. Completa todas las filas y columnas para revelar el animal y desbloquear la siguiente fase."
+      "Usa Deshacer para revisar la última casilla. Si te atascas, lee la pista y decide si pintar o marcar la casilla indicada. Completa todas las filas y columnas para revelar el animal y abrir la siguiente fase."
     ],
     "strategyTips": [
       "Empieza por una línea con poco espacio sobrante. Una línea de cinco casillas con la pista 3,1 solo tiene una colocación y ayuda a resolver sus cruces.",
       "Tras colocar un grupo, marca con × solo las casillas que las pistas demuestran vacías. Entre dos grupos debe haber un espacio, pero quizá aún no sepas qué ocurre en los extremos.",
       "Cuando completes una fila o columna, usa sus cruces para reducir las opciones de las demás. No adivines las casillas dudosas.",
-      "Si pierdes el hilo de una marca, Deshacer vuelve a la casilla anterior. Pista pinta una casilla, así que resérvala para cuando quieras ayuda directa."
+      "La pista explica una deducción y señala la casilla correspondiente. Tus marcas y el contador de jugadas se mantienen."
     ],
     "progression": [
       "Los cinco puzles de cada capítulo amplían las deducciones. El capítulo 1 empieza con pistas de un solo grupo en tableros 5×5; el 2 pasa a varios grupos en 7×7; y el 3 añade patrones 8×8 y deducciones desde los bordes. Los capítulos 4 y 5 usan cuadrículas 10×10 con grupos separados, máscaras, casillas de referencia y cruces más largos. El capítulo 6 combina esas ideas en retratos animales 12×12. Los 30 mosaicos tienen una única solución."
@@ -367,7 +367,7 @@
       ],
       [
         "¿Qué hace Pista?",
-        "Pinta automáticamente una casilla que pertenece a la imagen y cuenta como una jugada. No resuelve el resto."
+        "La pista explica una deducción y señala la casilla correspondiente. Tus marcas y el contador de jugadas se mantienen."
       ],
       [
         "¿Tengo que adivinar?",
@@ -397,19 +397,19 @@
     ],
     "systems": [
       "Cada número indica o tamanho de uma sequência contínua de casas pintadas. Quando uma linha tem vários números, eles representam grupos separados nessa ordem, com pelo menos uma casa vazia entre eles. Por exemplo, 3,1 numa linha de cinco casas exige três juntas, um espaço e mais uma. Compare as pistas cruzadas antes de decidir.",
-      "Pintar preenche uma casa; Marcar × identifica uma casa vazia. Casas sem marca continuam indefinidas. Uma pintura incorreta mostra o conflito com a pista e aumenta os erros, mas não encerra o quebra-cabeça. Desfazer restaura a casa anterior. Dica pinta automaticamente uma casa que pertence à imagem e conta como uma jogada; não completa a grade. Reiniciar restaura o mosaico atual."
+      "Pintar preenche uma casa; Marcar × identifica uma casa vazia. Casas sem marca continuam indefinidas. Uma pintura incorreta mostra o conflito com a pista e aumenta os erros, mas não encerra o quebra-cabeça. Desfazer restaura a casa anterior. A dica explica uma dedução e aponta a casa correspondente. Suas marcas e o contador de jogadas ficam como estão. Reiniciar restaura o mosaico atual."
     ],
     "how": [
       "Escolha na trilha a imagem liberada que está centralizada. As cinco primeiras são 5×5; as grades aumentam nos capítulos seguintes.",
       "Leia as pistas das linhas da esquerda para a direita e as das colunas de cima para baixo. Os números indicam grupos consecutivos, não pontos.",
       "Pinte as casas que você sabe que devem ser preenchidas e marque com × as que devem ficar vazias. Deixe as incertas em branco enquanto compara as pistas cruzadas.",
-      "Use Desfazer para voltar a casa anterior ou Dica para pintar uma casa. Complete todas as linhas e colunas para revelar o animal e liberar a próxima fase."
+      "Use Desfazer para rever a última casa. Se ficar sem saída, leia a dica e decida se vai pintar ou marcar a casa indicada. Complete todas as linhas e colunas para revelar o animal e liberar a próxima fase."
     ],
     "strategyTips": [
       "Comece por uma linha com pouco espaço sobrando. Uma linha de cinco casas com a pista 3,1 só tem uma posição e ajuda a resolver as interseções.",
       "Depois de posicionar um grupo, marque com × apenas as casas que as pistas provam que estão vazias. Entre dois grupos deve haver um espaço, mas talvez as pontas ainda não estejam definidas.",
       "Quando concluir uma linha ou coluna, use os cruzamentos para limitar as opções das demais. Não chute casas incertas.",
-      "Se esquecer por que marcou uma casa, Desfazer volta uma etapa. Dica pinta uma casa, então use quando quiser ajuda direta."
+      "A dica explica uma dedução e aponta a casa correspondente. Suas marcas e o contador de jogadas ficam como estão."
     ],
     "progression": [
       "Os cinco quebra-cabeças de cada capítulo ampliam as deduções. O capítulo 1 começa com pistas de um único grupo em grades 5×5; o 2 passa a vários grupos em 7×7; e o 3 traz padrões 8×8 e deduções pelas bordas. Os capítulos 4 e 5 usam grades 10×10 com grupos separados, máscaras, casas de referência e cruzamentos mais longos. O capítulo 6 combina essas ideias em retratos de animais 12×12. Os 30 mosaicos têm solução única."
@@ -431,7 +431,7 @@
       ],
       [
         "O que a Dica faz?",
-        "Ela pinta automaticamente uma casa que pertence à imagem e conta como uma jogada. O restante ainda precisa ser resolvido."
+        "A dica explica uma dedução e aponta a casa correspondente. Suas marcas e o contador de jogadas ficam como estão."
       ],
       [
         "Preciso adivinhar?",
@@ -461,19 +461,19 @@
     ],
     "systems": [
       "Chaque nombre indique la longueur d’une suite continue de cases coloriées. Plusieurs nombres sur une ligne décrivent des groupes distincts dans cet ordre, séparés par au moins une case vide. Par exemple, 3,1 sur une ligne de cinq cases impose trois cases, un espace, puis une case. Comparez les indices qui se croisent avant de choisir.",
-      "« Peindre » remplit une case ; « Marquer × » indique une case vide. Une case blanche reste indécise. Une erreur de peinture signale un conflit avec les indices et augmente le compteur d’erreurs, sans terminer le puzzle. « Annuler » restaure la case précédente. « Indice » peint automatiquement une case à remplir et compte comme un coup ; il ne résout pas la grille entière. « Recommencer » réinitialise la mosaïque en cours."
+      "« Peindre » remplit une case ; « Marquer × » indique une case vide. Une case blanche reste indécise. Une erreur de peinture signale un conflit avec les indices et augmente le compteur d’erreurs, sans terminer le puzzle. « Annuler » restaure la case précédente. L’indice explique une déduction et indique la case concernée. Les marques et le nombre de coups restent inchangés. « Recommencer » réinitialise la mosaïque en cours."
     ],
     "how": [
       "Choisissez au centre de la barre une mosaïque débloquée. Les cinq premières grilles font 5×5 ; elles grandissent ensuite.",
       "Lisez les indices des lignes de gauche à droite et ceux des colonnes de haut en bas. Les nombres indiquent des suites consécutives, pas un score.",
       "Coloriez les cases dont le remplissage est certain et marquez × sur celles qui doivent rester vides. Gardez les cases incertaines blanches pendant que vous comparez les croisements.",
-      "Utilisez « Annuler » pour revenir sur la case précédente ou « Indice » pour faire peindre une case. Complétez toutes les lignes et colonnes pour révéler l’animal et ouvrir l’étape suivante."
+      "Utilisez Annuler pour revenir à la dernière case. Si vous bloquez, lisez l’indice et décidez de peindre ou de marquer la case indiquée. Terminez toutes les lignes et colonnes pour révéler l’animal et ouvrir l’étape suivante."
     ],
     "strategyTips": [
       "Commencez par une ligne avec peu de place libre. Sur cinq cases, l’indice 3,1 n’a qu’une disposition et aide à résoudre les lignes croisées.",
       "Après avoir placé un groupe, marquez × seulement les cases que les indices prouvent vides. Deux groupes doivent être séparés, mais les espaces aux extrémités ne sont pas toujours déterminés.",
       "Servez-vous d’une ligne terminée pour réduire les possibilités aux croisements. Ne devinez pas les cases encore incertaines.",
-      "Si vous avez perdu le fil, utilisez « Annuler » pour revenir à la case précédente. « Indice » peint une case à votre place ; gardez-le pour un blocage où vous souhaitez une aide directe."
+      "L’indice explique une déduction et indique la case concernée. Les marques et le nombre de coups restent inchangés."
     ],
     "progression": [
       "Les cinq puzzles de chaque chapitre développent les déductions. Le chapitre 1 commence par des indices à groupe unique sur des grilles 5×5 ; le 2 passe à plusieurs groupes en 7×7 ; le 3 ajoute des motifs 8×8 et des déductions depuis les bords. Les chapitres 4 et 5 utilisent des grilles 10×10 avec groupes séparés, masques, cases repères et croisements plus longs. Le chapitre 6 combine ces idées dans des portraits d’animaux en 12×12. Les 30 mosaïques ont chacune une solution unique."
@@ -495,7 +495,7 @@
       ],
       [
         "Que fait « Indice » ?",
-        "Il peint automatiquement une case à remplir et compte comme un coup. Vous résolvez le reste de la mosaïque."
+        "L’indice explique une déduction et indique la case concernée. Les marques et le nombre de coups restent inchangés."
       ],
       [
         "Faut-il deviner ?",
@@ -525,19 +525,19 @@
     ],
     "systems": [
       "Jede Zahl gibt die Länge einer ununterbrochenen Folge ausgemalter Felder an. Mehrere Zahlen in einer Zeile stehen in dieser Reihenfolge für getrennte Gruppen; dazwischen liegt mindestens ein leeres Feld. Die Folge 3,1 auf einer fünf Felder langen Linie bedeutet zum Beispiel drei Felder, eine Lücke und ein weiteres Feld. Vergleiche vor jeder Entscheidung die kreuzenden Hinweise.",
-      "„Färben“ füllt ein Feld; „Markieren ×“ kennzeichnet ein leeres Feld. Unmarkierte Felder sind noch offen. Ein falsch gefärbtes Feld zeigt einen Widerspruch zu den Hinweisen an und erhöht die Fehlerzahl, beendet das Rätsel aber nicht. „Rückgängig“ stellt den vorherigen Zustand des Feldes wieder her. „Hinweis“ färbt automatisch ein auszufüllendes Feld und zählt als Zug; das ganze Raster wird dadurch nicht gelöst. „Neustart“ setzt das aktuelle Mosaik zurück."
+      "„Färben“ füllt ein Feld; „Markieren ×“ kennzeichnet ein leeres Feld. Unmarkierte Felder sind noch offen. Ein falsch gefärbtes Feld zeigt einen Widerspruch zu den Hinweisen an und erhöht die Fehlerzahl, beendet das Rätsel aber nicht. „Rückgängig“ stellt den vorherigen Zustand des Feldes wieder her. Der Hinweis erklärt einen logischen Schluss und zeigt auf das passende Feld. Markierungen und Zugzahl bleiben erhalten. „Neustart“ setzt das aktuelle Mosaik zurück."
     ],
     "how": [
       "Wähle auf der Stufenleiste das freigeschaltete, mittig angezeigte Mosaik. Die ersten fünf Gitter sind 5×5; später werden sie größer.",
       "Lies Zeilenhinweise von links nach rechts und Spaltenhinweise von oben nach unten. Die Zahlen geben zusammenhängende Gruppen an, keine Punkte.",
       "Male sicher gefüllte Felder aus und markiere sicher leere mit ×. Lasse unsichere Felder weiß, während du die kreuzenden Hinweise vergleichst.",
-      "Mit „Rückgängig“ machst du die letzte Feldentscheidung rückgängig; „Hinweis“ färbt ein Feld für dich. Fülle alle Zeilen und Spalten aus, um das Tier zu zeigen und die nächste Stufe freizuschalten."
+      "Nutze Rückgängig, um die letzte Entscheidung zu korrigieren. Wenn du feststeckst, lies den Hinweis und entscheide, ob das angezeigte Feld gefärbt oder markiert werden soll. Vervollständige alle Zeilen und Spalten, um das Tier zu enthüllen und die nächste Stufe freizuschalten."
     ],
     "strategyTips": [
       "Beginne mit einer Linie, in der wenig Platz übrig bleibt. Auf fünf Feldern hat der Hinweis 3,1 nur eine mögliche Lage und hilft bei den Kreuzungen.",
       "Markiere nach dem Eintragen einer Gruppe nur die Felder als leer, die durch Hinweise feststehen. Zwischen Gruppen muss eine Lücke sein, aber die Randfelder sind nicht immer schon bestimmt.",
       "Nutze fertige Zeilen oder Spalten, um die Möglichkeiten an den Kreuzungen einzugrenzen. Rate keine unsicheren Felder.",
-      "Wenn du den Überblick über eine Entscheidung verlierst, stelle mit „Rückgängig“ den vorherigen Zustand wieder her. „Hinweis“ färbt ein Feld automatisch; nutze ihn, wenn du direkte Hilfe möchtest."
+      "Der Hinweis erklärt einen logischen Schluss und zeigt auf das passende Feld. Markierungen und Zugzahl bleiben erhalten."
     ],
     "progression": [
       "Die fünf Rätsel jedes Kapitels erweitern die Schlussfolgerungen. Kapitel 1 beginnt mit Hinweisen zu einzelnen Gruppen auf 5×5-Feldern; Kapitel 2 führt mehrere Gruppen auf 7×7 ein; Kapitel 3 ergänzt 8×8-Muster und Schlussfolgerungen vom Rand. Kapitel 4 und 5 nutzen 10×10-Gitter mit getrennten Gruppen, Masken, Ankerfeldern und längeren Kreuzungen. Kapitel 6 verbindet diese Ideen in 12×12-Tierporträts. Jedes der 30 Mosaike hat genau eine Lösung."
@@ -559,7 +559,7 @@
       ],
       [
         "Was macht „Hinweis“?",
-        "„Hinweis“ färbt automatisch ein auszufüllendes Feld und zählt als Zug. Das restliche Mosaik löst du selbst."
+        "Der Hinweis erklärt einen logischen Schluss und zeigt auf das passende Feld. Markierungen und Zugzahl bleiben erhalten."
       ],
       [
         "Muss ich raten?",
@@ -589,19 +589,19 @@
     ],
     "systems": [
       "Ogni numero indica la lunghezza di una sequenza ininterrotta di caselle colorate. Più numeri sulla stessa linea descrivono gruppi distinti nell’ordine, separati da almeno una casella vuota. Per esempio, 3,1 su una linea di cinque caselle richiede tre caselle unite, uno spazio e un’altra casella. Confronta gli indizi incrociati prima di decidere.",
-      "“Colora” riempie una casella; “Segna ×” indica una casella vuota. Una casella senza segno è ancora da decidere. Se colori una casella sbagliata, compare un conflitto con gli indizi e aumenta il conteggio degli errori, ma il rompicapo non termina. “Annulla” ripristina la casella precedente. “Suggerimento” colora automaticamente una casella da riempire e conta come mossa; non completa l’intera griglia. “Ricomincia” azzera il mosaico corrente."
+      "“Colora” riempie una casella; “Segna ×” indica una casella vuota. Una casella senza segno è ancora da decidere. Se colori una casella sbagliata, compare un conflitto con gli indizi e aumenta il conteggio degli errori, ma il rompicapo non termina. “Annulla” ripristina la casella precedente. Il suggerimento spiega una deduzione e indica la casella interessata. I segni e il numero di mosse restano invariati. “Ricomincia” azzera il mosaico corrente."
     ],
     "how": [
       "Scegli nella barra il mosaico sbloccato al centro. I primi cinque sono 5×5; nei capitoli successivi le griglie crescono.",
       "Leggi gli indizi delle righe da sinistra a destra e quelli delle colonne dall’alto in basso. I numeri sono gruppi consecutivi, non punti.",
       "Colora le caselle sicuramente piene e segna con × quelle sicuramente vuote. Lascia bianche quelle incerte mentre confronti gli indizi incrociati.",
-      "Usa “Annulla” per ripristinare la casella precedente o “Suggerimento” per far colorare una casella. Completa tutte le righe e le colonne per rivelare l’animale e sbloccare il livello successivo."
+      "Usa Annulla per rivedere l’ultima casella. Se ti blocchi, leggi il suggerimento e decidi se colorare o segnare la casella indicata. Completa tutte le righe e le colonne per rivelare l’animale e sbloccare il livello successivo."
     ],
     "strategyTips": [
       "Inizia da una linea con poco spazio libero. Su cinque caselle, l’indizio 3,1 ha una sola posizione e aiuta a risolvere gli incroci.",
       "Dopo aver posizionato un gruppo, segna × solo sulle caselle che gli indizi dimostrano vuote. Tra due gruppi serve uno spazio, ma quelli alle estremità potrebbero essere ancora incerti.",
       "Usa una riga o colonna completata per restringere le possibilità agli incroci. Non indovinare le caselle incerte.",
-      "Se perdi traccia di una decisione, usa “Annulla” per tornare alla casella precedente. “Suggerimento” colora una casella al posto tuo: usalo quando vuoi un aiuto diretto."
+      "Il suggerimento spiega una deduzione e indica la casella interessata. I segni e il numero di mosse restano invariati."
     ],
     "progression": [
       "I cinque rompicapi di ogni capitolo ampliano le deduzioni. Il capitolo 1 inizia con indizi a gruppo singolo su griglie 5×5; il 2 introduce più gruppi su 7×7; il 3 aggiunge schemi 8×8 e deduzioni dai bordi. I capitoli 4 e 5 usano griglie 10×10 con gruppi separati, maschere, caselle di riferimento e incroci più lunghi. Il capitolo 6 combina queste idee in ritratti di animali 12×12. Tutti e 30 i mosaici hanno una soluzione unica."
@@ -623,7 +623,7 @@
       ],
       [
         "Cosa fa “Suggerimento”?",
-        "Colora automaticamente una casella da riempire e conta come mossa. Il resto del mosaico lo risolvi tu."
+        "Il suggerimento spiega una deduzione e indica la casella interessata. I segni e il numero di mosse restano invariati."
       ],
       [
         "Devo indovinare?",
@@ -653,19 +653,19 @@
     ],
     "systems": [
       "Каждое число показывает длину непрерывной группы закрашенных клеток. Несколько чисел в строке задают отдельные группы по порядку; между ними должна быть хотя бы одна пустая клетка. Например, подсказка 3,1 для линии из пяти клеток означает три подряд, пустое место и ещё одну. Перед выбором сравните пересекающиеся подсказки.",
-      "«Закрасить» заполняет клетку, а «Отметить ×» помечает пустую клетку. Клетка без отметки ещё не определена. Если закрасить неверную клетку, игра покажет конфликт с подсказками и увеличит счётчик ошибок, но не завершит задачу. «Отменить» восстанавливает предыдущее состояние клетки. «Подсказка» автоматически закрашивает одну нужную клетку и считается ходом, но не решает всё поле. «Начать заново» сбрасывает текущую мозаику."
+      "«Закрасить» заполняет клетку, а «Отметить ×» помечает пустую клетку. Клетка без отметки ещё не определена. Если закрасить неверную клетку, игра покажет конфликт с подсказками и увеличит счётчик ошибок, но не завершит задачу. «Отменить» восстанавливает предыдущее состояние клетки. Подсказка объясняет логический вывод и указывает нужную клетку. Отметки и число ходов сохраняются. «Начать заново» сбрасывает текущую мозаику."
     ],
     "how": [
       "Выберите в центре ленты открытую мозаику. Первые пять сеток имеют размер 5×5, дальше они становятся больше.",
       "Читайте подсказки строк слева направо, а столбцов сверху вниз. Числа обозначают последовательные группы, а не очки.",
       "Закрашивайте клетки, которые точно заполнены, и ставьте × на клетках, которые должны быть пустыми. Неопределённые клетки оставляйте без отметки.",
-      "Нажмите «Отменить», чтобы вернуть предыдущее состояние клетки, или «Подсказка», чтобы игра закрасила одну клетку. Заполните все строки и столбцы, чтобы открыть животное и следующий этап."
+      "Используйте отмену, чтобы пересмотреть решение по последней клетке. Если застряли, прочитайте подсказку и решите, закрасить или отметить указанную клетку. Завершите все строки и столбцы, чтобы увидеть животное и открыть следующий этап."
     ],
     "strategyTips": [
       "Начните с линии, где почти нет свободного места. Для пяти клеток подсказка 3,1 имеет только одно расположение и помогает решить пересечения.",
       "После размещения группы ставьте × только там, где подсказки доказывают пустоту. Между группами нужен пробел, но крайние клетки могут оставаться неизвестными.",
       "Используйте готовую строку или столбец, чтобы сузить варианты на пересечениях. Не угадывайте неопределённые клетки.",
-      "Если вы забыли, почему выбрали клетку, нажмите «Отменить», чтобы вернуть предыдущее состояние. «Подсказка» закрашивает одну клетку за вас; используйте её, когда нужна прямая помощь."
+      "Подсказка объясняет логический вывод и указывает нужную клетку. Отметки и число ходов сохраняются."
     ],
     "progression": [
       "Пять задач каждой главы развивают способы логического вывода. В главе 1 — подсказки с одной группой на сетках 5×5; в главе 2 появляются несколько групп на 7×7; в главе 3 — узоры 8×8 и выводы по краям. В главах 4 и 5 используются сетки 10×10 с раздельными группами, масками, опорными клетками и длинными пересечениями. Глава 6 объединяет эти приёмы в портретах животных 12×12. У каждой из 30 мозаик одно решение."
@@ -687,7 +687,7 @@
       ],
       [
         "Что делает «Подсказка»?",
-        "Игра автоматически закрашивает одну нужную клетку, и это считается ходом. Остальную мозаику решаете вы."
+        "Подсказка объясняет логический вывод и указывает нужную клетку. Отметки и число ходов сохраняются."
       ],
       [
         "Нужно ли угадывать?",
@@ -717,19 +717,19 @@
     ],
     "systems": [
       "हर अंक बिना टूटे रंगे जाने वाले खानों की लंबाई बताता है। एक पंक्ति में कई अंक अलग समूहों को क्रम से दिखाते हैं; उनके बीच कम-से-कम एक खाली खाना जरूरी है। उदाहरण के लिए, पाँच खानों वाली पंक्ति में 3,1 का अर्थ है तीन लगातार भरे खाने, एक खाली जगह, फिर एक भरा खाना। निर्णय से पहले कटते संकेत मिलाएँ।",
-      "“रंग भरें” खाने को भरता है; “चिह्न ×” खाली खाने को दर्शाता है। बिना निशान वाला खाना अभी तय नहीं है। गलत रंग भरने पर संकेतों का टकराव दिखता है और गलती गिनी जाती है, लेकिन पहेली समाप्त नहीं होती। “पूर्ववत” पिछला खाना लौटाता है। “संकेत” चित्र का एक भरा जाने वाला खाना अपने आप रंगता है और एक चाल गिनता है; इससे पूरी जाली हल नहीं होती। “फिर शुरू करें” मौजूदा मोज़ेक रीसेट करता है।"
+      "“रंग भरें” खाने को भरता है; “चिह्न ×” खाली खाने को दर्शाता है। बिना निशान वाला खाना अभी तय नहीं है। गलत रंग भरने पर संकेतों का टकराव दिखता है और गलती गिनी जाती है, लेकिन पहेली समाप्त नहीं होती। “पूर्ववत” पिछला खाना लौटाता है। संकेत तर्क समझाता है और संबंधित खाने की ओर इशारा करता है। आपके निशान और चालों की गिनती वैसी ही रहती है। “फिर शुरू करें” मौजूदा मोज़ेक रीसेट करता है।"
     ],
     "how": [
       "पट्टी में बीच में दिख रहे खुले मोज़ेक को चुनें। पहले पाँच बोर्ड 5×5 हैं; बाद के अध्यायों में जालियाँ बड़ी होती हैं।",
       "पंक्ति के संकेत बाएँ से दाएँ और स्तंभ के संकेत ऊपर से नीचे पढ़ें। अंक लगातार खानों के समूह बताते हैं, अंक नहीं।",
       "जिन खानों का भरना पक्का है उन्हें रंगें, और जिनका खाली रहना पक्का है उन पर × लगाएँ। अनिश्चित खानों को खाली छोड़ें।",
-      "पिछला खाना लौटाने के लिए “पूर्ववत” या एक खाना रंगने के लिए “संकेत” चुनें। पशु दिखाने और अगला चरण खोलने के लिए हर पंक्ति और स्तंभ पूरा करें।"
+      "पिछले खाने पर लौटने के लिए पूर्ववत करें। अटकने पर संकेत पढ़ें और तय करें कि बताए गए खाने को रंगना है या उस पर निशान लगाना है। पशु दिखाने और अगला चरण खोलने के लिए सभी पंक्तियाँ और स्तंभ पूरे करें।"
     ],
     "strategyTips": [
       "उस रेखा से शुरू करें जिसमें खाली जगह कम बचती है। पाँच खानों में 3,1 संकेत की केवल एक जगह होती है और इससे कटती रेखाएँ भी स्पष्ट होती हैं।",
       "समूह रखने के बाद केवल उन्हीं खानों पर × लगाएँ जिन्हें संकेत खाली साबित करते हैं। समूहों के बीच जगह जरूरी है, लेकिन किनारों की अतिरिक्त जगह अभी तय न हो।",
       "पूरी हुई पंक्ति या स्तंभ के कटाव से दूसरी रेखाओं की संभावनाएँ कम करें। अनिश्चित खाना न अनुमान से भरें।",
-      "निशान लगाने का कारण भूल जाएँ तो “पूर्ववत” से पिछली स्थिति लौटाएँ। “संकेत” एक खाना अपने आप रंगता है; सीधी मदद चाहिए तब इस्तेमाल करें।"
+      "संकेत तर्क समझाता है और संबंधित खाने की ओर इशारा करता है। आपके निशान और चालों की गिनती वैसी ही रहती है।"
     ],
     "progression": [
       "हर अध्याय के पाँच बोर्ड नई कटौतियाँ जोड़ते हैं। अध्याय 1 में 5×5 जालियों पर एक समूह वाले सरल संकेत हैं; अध्याय 2 में 7×7 पर कई समूह आते हैं; अध्याय 3 में 8×8 पैटर्न और किनारों से निष्कर्ष जुड़ते हैं। अध्याय 4 और 5 में अलग समूह, मास्क, आधार खाने और लंबी क्रॉसिंग वाली 10×10 जालियाँ हैं। अध्याय 6 इन तरीकों को 12×12 पशु चित्रों में जोड़ता है। सभी 30 मोज़ेक का एक ही हल है।"
@@ -751,7 +751,7 @@
       ],
       [
         "“संकेत” क्या करता है?",
-        "यह चित्र का एक भरा जाने वाला खाना अपने आप रंगता है और एक चाल गिनता है। बाकी मोज़ेक आपको हल करना होता है।"
+        "संकेत तर्क समझाता है और संबंधित खाने की ओर इशारा करता है। आपके निशान और चालों की गिनती वैसी ही रहती है।"
       ],
       [
         "क्या अनुमान लगाना जरूरी है?",
@@ -781,19 +781,19 @@
     ],
     "systems": [
       "يشير كل رقم إلى طول مجموعة متصلة من الخانات الملوّنة. إذا احتوى الخط على أرقام متعددة فهي مجموعات منفصلة بالترتيب، وبينها خانة فارغة واحدة على الأقل. مثلاً، يعني الدليل 3،1 في خط من خمس خانات ثلاث خانات متجاورة، ثم فراغاً، ثم خانة واحدة. قارن الأدلة المتقاطعة قبل تحديد خانة.",
-      "تملأ أداة التلوين الخانة، وتشير علامة × إلى الخانة الفارغة. وتبقى الخانة البيضاء غير محسومة. عند تلوين خانة خاطئة يظهر تعارض مع الأدلة ويزداد عداد الأخطاء، لكن اللغز لا ينتهي. يعيد التراجع الخانة السابقة. وتلوّن المساعدة تلقائياً خانة واحدة تنتمي إلى الصورة وتُحسب كحركة؛ ولا تحل الشبكة كلها. تعيد إعادة البدء الفسيفساء الحالية إلى البداية."
+      "تملأ أداة التلوين الخانة، وتشير علامة × إلى الخانة الفارغة. وتبقى الخانة البيضاء غير محسومة. عند تلوين خانة خاطئة يظهر تعارض مع الأدلة ويزداد عداد الأخطاء، لكن اللغز لا ينتهي. يعيد التراجع الخانة السابقة. تشرح المساعدة استنتاجًا وتشير إلى الخانة المعنية. تبقى العلامات وعدد الحركات كما هي. تعيد إعادة البدء الفسيفساء الحالية إلى البداية."
     ],
     "how": [
       "اختر الفسيفساء المفتوحة في وسط شريط المراحل. أول خمس شبكات 5×5، ثم تكبر في الفصول التالية.",
       "اقرأ أدلة الصفوف من اليسار إلى اليمين وأدلة الأعمدة من الأعلى إلى الأسفل. تشير الأرقام إلى مجموعات متتالية لا إلى نقاط.",
       "لوّن الخانات التي تعرف أنها ممتلئة، وضع × على الخانات التي تعرف أنها فارغة. اترك الخانات غير المؤكدة بيضاء أثناء مقارنة الأدلة المتقاطعة.",
-      "استخدم التراجع لاستعادة الخانة السابقة أو المساعدة لتلوين خانة واحدة. أكمل كل الصفوف والأعمدة لكشف الحيوان وفتح المرحلة التالية."
+      "استخدم التراجع لمراجعة الخانة الأخيرة. إذا تعثرت فاقرأ المساعدة وقرّر هل تلوّن الخانة المشار إليها أم تضع عليها علامة. أكمل الصفوف والأعمدة كلها لكشف الحيوان وفتح المرحلة التالية."
     ],
     "strategyTips": [
       "ابدأ بخط لا يترك مساحة إضافية كبيرة. في خط من خمس خانات، لا يملك الدليل 3،1 إلا موضعاً واحداً، ما يساعد على حل الخطوط المتقاطعة.",
       "بعد وضع مجموعة، ضع × فقط على الخانات التي تثبت الأدلة أنها فارغة. يجب ترك فراغ بين مجموعتين، لكن قد تبقى الخانات الزائدة عند الطرفين غير محسومة.",
       "استخدم الصف أو العمود المكتمل لتضييق الاحتمالات عند التقاطعات، واترك الخانات غير المؤكدة دون تخمين.",
-      "إذا نسيت سبب اختيارك، فتراجع عن الخطوة الأخيرة للعودة إلى الحالة السابقة. تلوّن المساعدة خانة واحدة عنك، فاستخدمها عندما تحتاج إلى مساعدة مباشرة."
+      "تشرح المساعدة استنتاجًا وتشير إلى الخانة المعنية. تبقى العلامات وعدد الحركات كما هي."
     ],
     "progression": [
       "تضيف ألغاز كل فصل الخمسة أساليب استنتاج جديدة. يبدأ الفصل الأول بأدلة لمجموعة واحدة على شبكة 5×5؛ ويضيف الثاني مجموعات متعددة على 7×7؛ أما الثالث فيقدم أنماطاً 8×8 واستنتاجات من الحواف. يستخدم الفصلان الرابع والخامس شبكات 10×10 فيها مجموعات منفصلة وأقنعة وخانات مرجعية وتقاطع أطول. يجمع الفصل السادس هذه الأساليب في صور حيوانات 12×12. لكل فسيفساء من الثلاثين حل واحد."
@@ -815,7 +815,7 @@
       ],
       [
         "ماذا تفعل المساعدة؟",
-        "تلوّن تلقائياً خانة واحدة من الصورة وتُحسب كحركة. عليك حل بقية الفسيفساء بنفسك."
+        "تشرح المساعدة استنتاجًا وتشير إلى الخانة المعنية. تبقى العلامات وعدد الحركات كما هي."
       ],
       [
         "هل يجب أن أخمّن؟",

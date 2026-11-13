@@ -499,17 +499,17 @@
   ]
 };
   const items = [
-    { id:"topics:last-quarter-relay",gameId:"last-quarter-relay",kind:"news",eventDate:"2026-11-11",unlock:{kind:"gameClear",gameId:"last-quarter-relay"},image:"/games/last-quarter-relay/art/cover.webp?wp-media=c4af5a64163f458e",cover:true,news:lastQuarterRelayNews },
-    { ...{"id":"topics:parcel-pact","gameId":"parcel-pact","kind":"news","eventDate":"2026-11-11","unlock":{"kind":"gameClear","gameId":"parcel-pact"},"image":"/games/parcel-pact/art/cover.webp?wp-media=c4af5a64163f458e","cover":true}, news: parcelPactNews },
-    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=c4af5a64163f458e', cover:true, news:sunshiftCommonsNews },
-    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=c4af5a64163f458e', cover:true, news:siliconShiftNews },
-    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=c4af5a64163f458e', cover:true, news:tidegateNews },
-    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=c4af5a64163f458e', cover:true, news:rainlineNews },
-    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=c4af5a64163f458e', cover:true, news:gatheringNews },
-    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=c4af5a64163f458e', cover:true, news },
-    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=c4af5a64163f458e', cover:true, news:trafficNews },
-    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=c4af5a64163f458e', cover:true, news:robotNews },
-    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=c4af5a64163f458e', cover:true, news:lifeStory }
+    { id:"topics:last-quarter-relay",gameId:"last-quarter-relay",kind:"news",eventDate:"2026-11-11",unlock:{kind:"gameClear",gameId:"last-quarter-relay"},image:"/games/last-quarter-relay/art/cover.webp?wp-media=dfd6fb9b5249ca93",cover:true,news:lastQuarterRelayNews },
+    { ...{"id":"topics:parcel-pact","gameId":"parcel-pact","kind":"news","eventDate":"2026-11-11","unlock":{"kind":"gameClear","gameId":"parcel-pact"},"image":"/games/parcel-pact/art/cover.webp?wp-media=dfd6fb9b5249ca93","cover":true}, news: parcelPactNews },
+    { id:'topics:sunshift-commons', gameId:'sunshift-commons', kind:'news', eventDate:'2026-11-10', unlock:{kind:'gameClear',gameId:'sunshift-commons'}, image:'/games/sunshift-commons/art/story.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:sunshiftCommonsNews },
+    { id:'topics:silicon-shift', gameId:'silicon-shift', kind:'news', eventDate:'2026-11-09', unlock:{kind:'gameClear',gameId:'silicon-shift'}, image:'/games/silicon-shift/art/cover.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:siliconShiftNews },
+    { id:'topics:tidegate-relay', gameId:'tidegate-relay', kind:'news', eventDate:'2026-11-08', unlock:{kind:'gameClear',gameId:'tidegate-relay'}, image:'/games/tidegate-relay/assets/cover.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:tidegateNews },
+    { id:'topics:rainline-chase', gameId:'rainline-chase', kind:'news', eventDate:'2026-11-07', unlock:{kind:'gameClear',gameId:'rainline-chase'}, image:'/games/rainline-chase/assets/story.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:rainlineNews },
+    { id:'topics:gilded-gathering', gameId:'gilded-gathering', kind:'news', eventDate:'2026-11-04', unlock:{kind:'gameClear',gameId:'gilded-gathering'}, image:'/games/gilded-gathering/assets/cover.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:gatheringNews },
+    { id:'topics:flying-tram', gameId:'flying-tram', unlock:{kind:'gameClear',gameId:'flying-tram'}, image:'/games/flying-tram/assets/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93', cover:true, news },
+    { id:'topics:traffic-jam-diner', gameId:'traffic-jam-diner', unlock:{kind:'gameClear',gameId:'traffic-jam-diner'}, image:'/assets/traffic-jam-diner-cover-v3.png.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:trafficNews },
+    { id:'topics:robot-dog-showtime', gameId:'robot-dog-showtime', unlock:{kind:'gameClear',gameId:'robot-dog-showtime'}, image:'/assets/robot-dog-showtime-cover-v3.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:robotNews },
+    { id:'topics:smallwood-lives', gameId:'smallwood-lives', kind:'fiction', unlock:{kind:'gameClear',gameId:'smallwood-lives'}, image:'/games/smallwood-lives/assets/cover-v2.webp?wp-media=dfd6fb9b5249ca93', cover:true, news:lifeStory }
   ];
   const dates = {'flying-tram':'2026-10-15','traffic-jam-diner':'2026-10-08','robot-dog-showtime':'2026-09-22'};
   items.forEach(item => { if (dates[item.gameId]) { item.kind = 'news'; item.eventDate = dates[item.gameId]; } });
