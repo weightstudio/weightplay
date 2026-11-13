@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["fogseal-archives", "Puzzle", "Deduction", "Sequencing", "Strategy"],
     ["mosscrest-accord", "Strategy", "Management"],
     ["torque-grove", "Puzzle", "Simulation", "Deduction"],
     ["last-quarter-relay", "Sports", "Strategy"],

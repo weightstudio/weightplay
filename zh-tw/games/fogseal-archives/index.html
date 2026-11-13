@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="zh-Hant" dir="ltr" class="wp-frame-main-flow" data-wp-official-name
+  data-wp-entry-renderer="localize.mjs?wp-media=c4af5a64163f458e#renderEntry" data-wp-publication-locale-completion
+  data-wp-entry-poster="/games/fogseal-archives/art/cover.webp?wp-media=c4af5a64163f458e" data-wp-shared-interface="7" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true">
+<head data-wp-search-copy="2.0" data-wp-search-locale="zh-Hant" data-wp-search-title="霧印檔案 – 益智解謎 | WeightPlay" data-wp-search-name="霧印檔案"><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=c4af5a64163f458e`, '/src/diamond-special-progression.js?wp-media=c4af5a64163f458e', '/src/diamond-special-progression.css?wp-media=c4af5a64163f458e'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
+
+
+
+  <base href="/games/fogseal-archives/">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <!-- fogseal-meta:start -->
+<title data-runtime-localize="off">霧印檔案 – 益智解謎 | WeightPlay</title>
+<meta name="description" content="比對館藏紀錄，查出展品經過誰的手。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://weightplay.com/zh-tw/games/fogseal-archives/">
+<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/fogseal-archives/">
+<link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/fogseal-archives/">
+<link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/fogseal-archives/">
+<link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/fogseal-archives/">
+<link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/fogseal-archives/">
+<link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/fogseal-archives/">
+<link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/fogseal-archives/">
+<link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/fogseal-archives/">
+<link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/fogseal-archives/">
+<link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/fogseal-archives/">
+<link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/fogseal-archives/">
+<link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/fogseal-archives/">
+<link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/fogseal-archives/">
+<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/fogseal-archives/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WeightPlay">
+<meta property="og:url" content="https://weightplay.com/zh-tw/games/fogseal-archives/">
+<meta property="og:title" content="霧印檔案 – 益智解謎 | WeightPlay">
+<meta property="og:description" content="比對館藏紀錄，查出展品經過誰的手。">
+<meta property="og:image" content="https://weightplay.com/games/fogseal-archives/art/cover.webp?wp-media=c4af5a64163f458e">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"霧印檔案","description":"比對館藏紀錄，查出展品經過誰的手。","url":"https://weightplay.com/zh-tw/games/fogseal-archives/","image":"https://weightplay.com/games/fogseal-archives/art/cover.webp?wp-media=c4af5a64163f458e","inLanguage":"zh-Hant","genre":["益智解謎","策略遊戲","線索推理解謎"],"gamePlatform":"Web browser","applicationCategory":"GameApplication","operatingSystem":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}},{"@type":"FAQPage","inLanguage":"zh-Hant","mainEntity":[{"@type":"Question","name":"完成案件需要鑽石嗎？","acceptedAnswer":{"@type":"Answer","text":"免費工具可解全部案件，鑽石用來購買永久桌面外觀。"}},{"@type":"Question","name":"如何對照舊版與新版？","acceptedAnswer":{"@type":"Answer","text":"先調閱兩份檔案，再用對照。舊卷宗的證詞可能與現行版不同。"}}]}]}</script>
+<!-- fogseal-meta:end -->
+  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/fogseal-archives/style.css?wp-build=445c06b638289197&wp-media=c4af5a64163f458e" data-wp-entry-required="">
+  <script src="/src/game-layout-config.js?wp-media=c4af5a64163f458e" data-wp-entry-required=""></script>
+  <script src="/src/weightplay-audio.js?wp-media=c4af5a64163f458e" data-wp-entry-required></script>
+  <script src="/src/site-config.js?wp-media=c4af5a64163f458e" data-wp-entry-required></script>
+  <script src="/src/i18n.js?wp-media=c4af5a64163f458e"></script>
+  <script src="/src/game-title-registry.js?wp-media=c4af5a64163f458e" data-wp-game-title-registry></script>
+  <script src="/src/wallet.js?wp-media=c4af5a64163f458e"></script>
+  <script src="/src/weightplay-castle.js?wp-media=c4af5a64163f458e" data-weightplay-castle-runtime></script>
+  <script src="/src/analytics.js?wp-media=c4af5a64163f458e"></script>
+  <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=c4af5a64163f458e"></script>
+  <meta name="twitter:title" content="霧印檔案 – 益智解謎 | WeightPlay">
+  <meta name="twitter:description" content="比對館藏紀錄，查出展品經過誰的手。">
+</head>
+<body class="wp-frame-main-active" data-wp-game-owned-guide data-wp-play-ui="1"
+  data-wp-game-id="fogseal-archives" data-game-id="fogseal-archives" data-audience="general" data-has-stage="true"
+  data-wp-game-version="v1" data-game-version="v1" data-wp-interface-version="0"
+  data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false" data-screen="main"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="霧印檔案" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入霧印檔案…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入霧印檔案…" aria-valuetext="正在載入霧印檔案…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=c4af5a64163f458e" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-frame-root data-wp-entry-root="" hidden data-wp-frame="2">
+    <div id="mainGroup" class="wp-frame-main-flow">
+      <section id="mainScreen" data-wp-frame-scene="main">
+        <header id="mainHeader" data-wp-frame-header="main" class="wp-frame-header">
+          <a id="mainReturn" href="/zh-tw/" class="wp-frame-return" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=c4af5a64163f458e" alt="" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-frame-title="" data-runtime-localize="off">霧印檔案</h1>
+        </header>
+        <section id="mainHero" data-wp-frame-content="main">
+          <img id="cover" src="/games/fogseal-archives/art/cover.webp?wp-media=c4af5a64163f458e" width="1254" height="1254" data-wp-frame-poster="" data-wp-interface7-poster="true" alt="霧印檔案" fetchpriority="high">
+          <div data-wp-frame-copy="">
+            <p id="description" data-wp-frame-summary="">比對館藏紀錄，查出展品經過誰的手。</p>
+            <p id="mainProgress" data-wp-frame-progress=""></p>
+            <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>開始遊戲</button>
+          </div>
+        </section>
+      </section>
+      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=c4af5a64163f458e#renderGuide" data-wp-preserve-static-guide data-wp-entry-guide="" aria-labelledby="guideTitle">
+        <h2 id="guideTitle">遊戲指南</h2>
+        <div class="game-info-tags" data-wp-gameplay-tags="2.0" data-runtime-localize="off"><span id="typeTag">線索推理解謎</span></div>
+        <div><!-- fogseal-guide:start -->
+<article class="game-info-section"><h3>目標</h3><p data-wp-intro-faq-source>查出展品經過誰的手，重建交接順序。</p></article><article class="game-info-section"><h3>玩法</h3><p>點檔案花費調閱枚數，對照證詞，再點交接格與保管人。驗證成功會開放下一份檔案。</p></article><article class="game-info-section"><h3>操作與規則</h3><p>保管人不能重複。第二章注意標示時窗，以現行版本為準。</p></article><article class="game-info-section"><h3>案件結算</h3><p>封存完整交接鏈後開啟下一案。驗證錯誤會消耗異議，已結案可重玩並挑戰更多印記。</p></article>
+<p class="game-info-parent">建議 9 歲以上。每案約 2–5 分鐘，練習推理、規劃與細讀。進度與設定保存在這個瀏覽器，遊玩無需帳號或付款。</p>
+<!-- fogseal-guide:end --></div>
+        <div id="faqContent"><!-- fogseal-faq:start -->
+<details><summary>完成案件需要鑽石嗎？</summary><p>免費工具可解全部案件，鑽石用來購買永久桌面外觀。</p></details><details><summary>如何對照舊版與新版？</summary><p>先調閱兩份檔案，再用對照。舊卷宗的證詞可能與現行版不同。</p></details>
+<!-- fogseal-faq:end --></div>
+        <div><!-- fogseal-related:start -->
+<div class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>相關遊戲</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-game-id="dusk-signal" data-wp-related-id="dusk-signal" href="/zh-tw/games/dusk-signal/"><img src="/games/dusk-signal/art/cover.webp?wp-media=c4af5a64163f458e" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">暮谷聽站</span></a><a class="game-info-related-card" data-game-id="wingseal-post" data-wp-related-id="wingseal-post" href="/zh-tw/games/wingseal-post/"><img src="/games/wingseal-post/art/cover.webp?wp-media=c4af5a64163f458e" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">羽函巡檢</span></a><a class="game-info-related-card" data-game-id="mosslight-museum" data-wp-related-id="mosslight-museum" href="/zh-tw/games/mosslight-museum/"><img src="/games/mosslight-museum/art/cover.webp?wp-media=c4af5a64163f458e" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">苔光博物館</span></a></div></div>
+<!-- fogseal-related:end --></div>
+      <article class="game-info-section" data-wp-intro-faq><h3>常見問題</h3><dl><dt>這款遊戲要做什麼？</dt><dd>查出展品經過誰的手，重建交接順序。</dd></dl></article><p data-wp-game-access="2.0" lang="zh-Hant" data-runtime-localize="off">可在瀏覽器免費遊玩，無需下載。WeightPlay 是 WeightStudio 的遊戲平台。</p></section>
+    </div>
+    <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/fogseal-archives/art/archive.webp?wp-media=c4af5a64163f458e" hidden>
+      <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="返回">←</button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageWorkspace">
+        <div id="stagePanel"><div id="stagePage"><div id="stageRail"></div></div></div>
+        <section id="gearPanel" hidden></section>
+      </div>
+      <nav id="stageTabs" data-wp-frame-stage-nav>
+        <button id="stagesTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="stages">案件</button>
+        <button id="gearTab" type="button" data-wp-frame-action="secondary" data-wp-frame-stage-slot="shop">工具</button>
+      </nav>
+    </section>
+    <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root
+      data-wp-canvas-max-width="980" data-wp-battle-min-width="390" data-wp-battle-min-height="650"
+      data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="390" hidden>
+      <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" aria-label="返回">←</button><strong data-wp-frame-title hidden></strong></header>
+      <main id="battleLive">
+        <section id="arena">
+          <div id="scene3d" aria-hidden="true"></div>
+          <div id="caseLabel" dir="auto"></div>
+          <div id="chain" role="group"></div>
+        </section>
+        <section id="commandDeck">
+          <div id="lessonHost"></div>
+          <div id="records" role="group"></div>
+          <div id="evidence" aria-live="polite"></div>
+          <div id="keepers" role="group"></div>
+          <p id="log" role="status" dir="auto"></p>
+          <div class="fog-actions" data-wp-frame-logical-actions="battle">
+            <button id="sealBtn" type="button" data-wp-frame-action="primary" data-wp-audio-click="off">驗證交接</button>
+            <button id="windowBtn" type="button" data-wp-frame-action="secondary" data-wp-audio-click="off" hidden>Window</button>
+            <button id="clipBtn" type="button" data-wp-frame-action="secondary" data-wp-audio-click="off" hidden>Clip</button>
+            <button id="helpBtn" type="button" data-wp-frame-action="secondary">說明</button>
+          </div>
+        </section>
+      </main>
+      <section id="resultPanel" class="fog-overlay" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+        <div class="fog-dialog" data-wp-result-card>
+          <h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultNotice" role="status"></p>
+          <div class="fog-actions">
+            <button id="resultMap" type="button" data-wp-frame-action="secondary">案件</button>
+            <button id="resultNext" type="button" data-wp-frame-action="primary">下一案</button>
+            <button id="resultRetry" type="button" data-wp-frame-action="secondary">重試</button>
+          </div>
+        </div>
+      </section>
+    </section>
+    <section id="dialog" class="fog-overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" hidden>
+      <div class="fog-dialog"><h2 id="dialogTitle"></h2><p id="dialogBody"></p><div id="dialogActions" class="fog-actions"></div></div>
+    </section>
+    <div id="hudSource" hidden>
+      <div class="fog-stat" id="requestStat"><label id="requestLabel" for="requestMeter">調閱</label><meter id="requestMeter" min="0" max="7" value="4"></meter><bdi id="requestValue">4 / 7</bdi></div>
+      <div class="fog-stat" id="challengeStat"><label id="challengeLabel" for="challengeMeter">異議</label><meter id="challengeMeter" min="0" max="2" value="2"></meter><bdi id="challengeValue">2 / 2</bdi></div>
+    </div>
+  </div>
+  <script src="/src/edge-guard.js?wp-media=c4af5a64163f458e" data-wp-entry-required></script>
+  <script src="/src/stage-rail-i9.js?wp-media=c4af5a64163f458e" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=c4af5a64163f458e" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=c4af5a64163f458e" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-a03f51bd7e3b-search20-geo-access-retained&wp-media=c4af5a64163f458e" data-wp-entry-required=""></script>
+  <script src="/src/tutorial.js?wp-media=c4af5a64163f458e" data-wp-entry-required></script>
+  <script type="module" src="/games/fogseal-archives/game.mjs?v=entry-initial-587d67112692&amp;wp-build=95f9c185a0485441&wp-media=c4af5a64163f458e" data-wp-entry-required=""></script>
+</body>
+</html>

@@ -605,6 +605,10 @@
       "date": "2026-10-23T13:29:55.603Z",
       "evidence": "canonical-public-catalog"
     },
+    "fogseal-archives": {
+      "date": "2026-11-13T01:11:21.939Z",
+      "evidence": "canonical-public-catalog"
+    },
     "four-in-a-row": {
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
