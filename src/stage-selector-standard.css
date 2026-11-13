@@ -249,7 +249,7 @@ html body [data-wp-frame="2"] [data-wp-frame-scene].wp-stage-art-shell {
    the shared shell boots. Keep the production art addressable before the
    first rail mutation, including localized routes. */
 body[data-wp-game-id="breakout"] [data-wp-standard-stage-screen] {
-  --wp-stage-art: url("../assets/breakout-cover-v1.webp?wp-media=dfd6fb9b5249ca93");
+  --wp-stage-art: url("../assets/breakout-cover-v1.webp?wp-media=512519f6a2210940");
   --wp-stage-scrim: linear-gradient(rgb(9 18 32 / 78%), rgb(23 36 58 / 86%));
   background-color: #17243a;
   background-image: var(--wp-stage-scrim), var(--wp-stage-art);

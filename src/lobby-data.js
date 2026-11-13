@@ -4,7 +4,7 @@ const wildwoodLobbyReleaseStatus = "playable";
 const crownfallLobbyReleaseStatus = "playable";
 
 // When adding/changing a playable loop, maintain its stable-ID classification
-// in lobby-genres.js?wp-media=dfd6fb9b5249ca93; legacy category/theme tags do not drive lobby genres.
+// in lobby-genres.js?wp-media=512519f6a2210940; legacy category/theme tags do not drive lobby genres.
 window.WONDER_LOBBY = {
   platform: {
     name: "WeightPlay",
@@ -23,6 +23,8 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "glowtide-parade",
+      "glyphweft",
       "loamline",
       "fogseal-archives",
       "last-quarter-relay",
@@ -129,24 +131,26 @@ window.WONDER_LOBBY = {
     ],
     // Third General hall: short, timely, original games. These IDs also stay in
     // generalGameIds so the Kids catalog's non-General rule excludes them.
-    topicGameIds: ["last-quarter-relay", "parcel-pact", "sunshift-commons", "traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering", "tomorrow-share", "rainline-chase", "tidegate-relay", "silicon-shift"],
+    topicGameIds: ["glowtide-parade", "last-quarter-relay", "parcel-pact", "sunshift-commons", "traffic-jam-diner", "robot-dog-showtime", "flying-tram", "smallwood-lives", "gilded-gathering", "tomorrow-share", "rainline-chase", "tidegate-relay", "silicon-shift"],
     // General games here do not award unrelated Block World materials.
     castleBlockRewardExcludedGameIds: ["animal-crownfall"],
   },
   games: [
-    {"id":"loamline","audience":"general","status":"playable","href":"games/loamline/","title":{"__localizedExact":true,"en":"Loamline","zh-Hant":"禾脊農線","zh-Hans":"禾脊农线","ja":"稲畦ファームライン","ko":"논두렁 농장길","es":"Surcos de Cosecha","pt-BR":"Trilha da Colheita","fr":"Les Sillons de Loamline","de":"Erntefurchen","it":"Solchi del Raccolto","ru":"Тропа урожая","hi":"मेड़ों की राह","ar":"درب الحصاد"},"type":{"en":"Farm simulation","zh-Hant":"農場模擬"},"description":{"en":"Work the terraces, haul grain and fill orders before the shift ends.","zh-Hant":"整備梯田、載運穀物，在下班前交齊訂單。"},"ages":["9","family"],"categories":["Simulation"],"skills":["Planning","Logic"],"tags":["Management","Strategy"],"art":{"kind":"image","background":"games/loamline/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["animal-echo-orchard","dusk-signal","wingseal-post"]},"previewVideo":"assets/previews/loamline-battle.webm"},
-    {"id":"fogseal-archives","audience":"general","status":"playable","href":"games/fogseal-archives/","title":{"__localizedExact":true,"en":"Fogseal Archives","zh-Hant":"霧印檔案","zh-Hans":"雾印档案","ja":"霧印の記録庫","ko":"안개 인장 기록관","es":"Archivo del Sello de Niebla","pt-BR":"Arquivo do Selo de Névoa","fr":"Archives du Sceau de Brume","de":"Archiv der Nebelsiegel","it":"Archivio dei Sigilli di Nebbia","ru":"Архив туманных печатей","hi":"धुंध की मुहरों का अभिलेख","ar":"أرشيف أختام الضباب"},"type":{"en":"Deduction puzzle","zh-Hant":"線索推理解謎"},"description":{"en":"Compare archive records and certify the order of a missing exhibit’s handoffs.","zh-Hant":"比對館藏紀錄，查出展品經過誰的手。"},"ages":["9","family"],"categories":["Puzzle"],"skills":["Logic","Planning","Observation"],"tags":["Deduction","Resource Management","Sequencing"],"art":{"kind":"image","background":"games/fogseal-archives/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["dusk-signal","wingseal-post","mosslight-museum"]},"previewVideo":"assets/previews/fogseal-archives-battle.webm"},
-    {"id":"last-quarter-relay","audience":"general","status":"playable","href":"games/last-quarter-relay/","title":{"__localizedExact":true,"en":"Last Quarter Relay","zh-Hant":"末節反攻","zh-Hans":"末节反攻","ja":"第4クォーターの逆襲","ko":"4쿼터 역전","es":"Relevo del último cuarto","pt-BR":"Virada no Último Quarto","fr":"Retour au dernier quart","de":"Aufholjagd im Schlussviertel","it":"Rimonta all'ultimo quarto","ru":"Рывок в последней четверти","hi":"आखिरी क्वार्टर की वापसी","ar":"عودة الربع الأخير"},"type":{"en":"Turn-based basketball strategy","zh-Hant":"回合制籃球戰術","zh-Hans":"回合制篮球战术","ja":"ターン制バスケ戦術","ko":"턴제 농구 전술","es":"Estrategia de baloncesto por turnos","pt-BR":"Estratégia de basquete por turnos","fr":"Tactique de basket au tour par tour","de":"Rundenbasierte Basketball-Taktik","it":"Tattica di basket a turni","ru":"Пошаговая баскетбольная тактика","hi":"बारी-आधारित बास्केटबॉल रणनीति","ar":"تكتيك كرة سلة بالأدوار"},"description":{"en":"Find an open shot, read the next attack and rally before the last possession.","zh-Hant":"找空位出手、看準來襲方向換防，在最後一波球權前反超。","zh-Hans":"找空位出手、看准来袭方向换防，在最后一波球权前反超。","ja":"空いた位置からシュートを決め、次の攻めを読み、最後の攻防で逆転しよう。","ko":"빈 자리에서 슛을 던지고 다음 공격을 읽어 마지막 공방 전에 역전하세요.","es":"Busca un tiro libre de marca, lee el ataque rival y remonta antes de la última posesión.","pt-BR":"Ache espaço para arremessar, leia o ataque rival e vire o jogo antes da última posse.","fr":"Trouvez un tir ouvert, lisez l’attaque adverse et renversez le score avant la dernière possession.","de":"Finde einen freien Wurf, lies den nächsten Angriff und drehe das Spiel vor dem letzten Ballbesitz.","it":"Cerca un tiro libero, leggi l’attacco avversario e rimonta prima dell’ultimo possesso.","ru":"Найдите свободный бросок, прочитайте атаку соперника и выйдите вперёд до последнего владения.","hi":"खाली जगह से शॉट लगाएँ, अगला हमला भाँपें और आखिरी पज़ेशन से पहले बढ़त लें।","ar":"ابحث عن تسديدة بلا رقابة، واقرأ هجمة الخصم، واقلب النتيجة قبل الاستحواذ الأخير."},"art":{"kind":"image","background":"/games/last-quarter-relay/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"age":"9+","categories":["sports","strategy"],"tags":["basketball","turn-based"],"previewVideo":"assets/previews/last-quarter-relay-battle.webm","relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning","Positioning"],"gameIds":["touchline-tails","meadow-touchdown","rainline-chase"]}},
-    {"id":"ricochet-grove","audience":"general","status":"planned","internalOnly":true,"href":"games/ricochet-grove/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Ricochet Grove","zh-Hant":"彈籽花庭","zh-Hans":"弹籽花庭","ja":"はずむ種の庭","ko":"튕기는 씨앗 정원","es":"Jardín de Rebotes","pt-BR":"Jardim dos Quiques","fr":"Jardin des Rebonds","de":"Garten der Sprünge","it":"Giardino dei Rimbalzi","ru":"Сад отскоков","hi":"उछलते बीजों का बाग़","ar":"حديقة البذور المرتدة"},"type":{"en":"Seed drop puzzle","zh-Hant":"落珠解謎","zh-Hans":"落珠解谜","ja":"種落としパズル","ko":"씨앗 낙하 퍼즐","es":"Puzle de semillas","pt-BR":"Quebra-cabeça de sementes","fr":"Puzzle de graines","de":"Saatkugel-Rätsel","it":"Rompicapo di semi","ru":"Головоломка с семенами","hi":"बीज गिराने की पहेली","ar":"لغز إسقاط البذور"},"description":{"en":"Turn pegs, collect water and bounce seeds into the flowerbeds in order.","zh-Hant":"改撥彈釘、收集露水，讓種籽依序彈進花圃。","zh-Hans":"改拨弹钉、收集露水，让种籽依序弹进花圃。","ja":"ピンの向きを変え、しずくを集めて、種を順番に花壇へ届けよう。","ko":"핀의 방향을 바꾸고 물을 모아 씨앗을 순서대로 화단에 보내세요.","es":"Gira clavijas, recoge agua y guía las semillas a los canteros en orden.","pt-BR":"Vire pinos, recolha água e leve as sementes aos canteiros na ordem.","fr":"Tournez les chevilles, récupérez l’eau et faites rebondir les graines vers les parterres dans l’ordre.","de":"Drehe Stifte, sammle Wasser und lenke die Samen der Reihe nach in die Beete.","it":"Gira i perni, raccogli acqua e fai rimbalzare i semi nelle aiuole in ordine.","ru":"Поворачивайте штифты, собирайте воду и направляйте семена в клумбы по порядку.","hi":"खूँटियाँ घुमाएँ, पानी जुटाएँ और बीजों को क्रम से क्यारियों तक पहुँचाएँ।","ar":"أدر الأوتاد واجمع الماء ووجّه البذور إلى أحواض الزهور بالترتيب."},"art":{"kind":"image","background":"/games/ricochet-grove/assets/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"age":"9+","categories":["puzzle","strategy"],"tags":["physics"]},
-    {"id":"mosscrest-accord","audience":"general","status":"planned","internalOnly":true,"href":"games/mosscrest-accord/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Mosscrest Accord","zh-Hant":"苔冠盟庭","zh-Hans":"苔冠盟庭","ja":"苔冠の盟約","ko":"이끼관의 맹약","es":"Pacto del Musgo","pt-BR":"Pacto do Musgo","fr":"Pacte de Moussecour","de":"Mooskronenpakt","it":"Patto di Muschiocorte","ru":"Мшистый союз","hi":"काईमुकुट संधि","ar":"ميثاق تاج الطحلب"},"type":{"en":"Diplomacy strategy","zh-Hant":"外交策略","zh-Hans":"外交策略","ja":"外交ストラテジー","ko":"외교 전략","es":"Estrategia diplomática","pt-BR":"Estratégia diplomática","fr":"Stratégie diplomatique","de":"Diplomatiestrategie","it":"Strategia diplomatica","ru":"Дипломатическая стратегия","hi":"कूटनीति रणनीति","ar":"استراتيجية دبلوماسية"},"description":{"en":"Pledge supplies, earn the districts’ seals, and honor unfinished treaties when the next steward takes office.","zh-Hant":"交換物資，集齊各地印信；輪值交接後，仍要履行前任的盟約。","zh-Hans":"交换物资，集齐各地印信；轮值交接后，仍要履行前任的盟约。","ja":"物資を融通し、各地区の印を集めよう。交代しても前任者の盟約は続く。","ko":"물자를 교환하고 지역 인장을 모으세요. 의장이 바뀌어도 맹약은 이어집니다.","es":"Intercambia suministros, consigue sellos y cumple los pactos al cambiar de representante.","pt-BR":"Troque suprimentos, reúna selos e cumpra os pactos após a troca de liderança.","fr":"Échangez des vivres, obtenez les sceaux et honorez les pactes après la relève.","de":"Tausche Vorräte, sammle Siegel und erfülle offene Verträge nach der Amtsübergabe.","it":"Scambia risorse, ottieni sigilli e rispetta i patti dopo il cambio di guida.","ru":"Обменивайте припасы, собирайте печати и выполняйте договоры после смены главы.","hi":"संसाधन बाँटें, मुहरें जुटाएँ और नए अध्यक्ष के आने पर अधूरे वादे निभाएँ।","ar":"بادل الموارد واجمع الأختام وأوفِ بالعهود بعد انتقال الرئاسة."},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/mosscrest-accord/assets/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["dawnward-haven","bellshift-atelier","reef-current"],"useInGuide":true}},
-    {"id":"torque-grove","audience":"general","status":"planned","internalOnly":true,"href":"games/torque-grove/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Torque Grove","zh-Hant":"扭矩修造所","zh-Hans":"扭矩修造所","ja":"トルク整備工房","ko":"토크 정비소","es":"Taller del Par","pt-BR":"Oficina do Torque","fr":"Atelier du Couple","de":"Drehmoment-Werkstatt","it":"Officina della Coppia","ru":"Мастерская тяги","hi":"टॉर्क कार्यशाला","ar":"ورشة العزم"},"type":{"en":"Vehicle repair strategy","zh-Hant":"車輛維修策略","zh-Hans":"车辆维修策略","ja":"車両整備ストラテジー","ko":"차량 정비 전략","es":"Estrategia de reparación","pt-BR":"Estratégia de reparo","fr":"Stratégie de réparation","de":"Reparaturstrategie","it":"Strategia di riparazione","ru":"Стратегия ремонта","hi":"वाहन मरम्मत रणनीति","ar":"استراتيجية إصلاح المركبات"},"description":{"en":"Find hidden faults, spend your workshop budget wisely, and put each repair through its load tests.","zh-Hant":"查出隱藏故障，取捨工時與備料，讓修好的車通過負載測試。","zh-Hans":"查出隐藏故障，权衡工时与备件，让修好的车通过负载测试。","ja":"隠れた故障を見つけ、作業時間と部品をやりくりして、車を負荷試験に合格させよう。","ko":"숨은 고장을 찾고 작업 시간과 부품을 아껴 차량을 부하 시험에 통과시키세요.","es":"Detecta averías ocultas, administra el tiempo y los repuestos y supera las pruebas de carga.","pt-BR":"Encontre defeitos ocultos, cuide do tempo e das peças e passe nos testes de carga.","fr":"Repérez les pannes cachées, gérez le temps et les pièces, puis réussissez les essais en charge.","de":"Finde versteckte Fehler, teile Zeit und Ersatzteile ein und bestehe die Belastungstests.","it":"Scopri i guasti nascosti, gestisci tempo e ricambi e supera le prove sotto carico.","ru":"Найдите скрытые поломки, распределите время и запчасти и пройдите испытания под нагрузкой.","hi":"छिपी खराबियाँ खोजें, समय और पुर्जे सँभालें और वाहन को भार परीक्षणों में पास कराएँ।","ar":"اكتشف الأعطال الخفية ووازن بين وقت العمل والقطع، ثم اجتز اختبارات الحمل."},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Resource Management","Simulation","Turn-Based Strategy"],"art":{"kind":"image","background":"games/torque-grove/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["crossbank-rovers","rivetide-works","silicon-shift"]}},
-    {"id":"parcel-pact","audience":"general","status":"playable","href":"games/parcel-pact/","title":{"__localizedExact":true,"en":"Parcel Pact","zh-Hant":"合籃約定","zh-Hans":"合篮约定","ja":"おすそわけ便","ko":"꾸러미 약속","es":"Pacto de Cestas","pt-BR":"Pacto das Cestas","fr":"Pacte des Paniers","de":"Korbpakt","it":"Patto dei Cestini","ru":"Корзины по уговору","hi":"टोकरियों का समझौता","ar":"عهد السلال"},"type":{"en":"Parcel strategy puzzle","zh-Hant":"配單策略益智","zh-Hans":"配单策略益智","ja":"荷分け戦略パズル","ko":"분배 전략 퍼즐","es":"Puzle de reparto","pt-BR":"Quebra-cabeça de partilha","fr":"Puzzle de répartition","de":"Verteilstrategie-Rätsel","it":"Puzzle di distribuzione","ru":"Головоломка о распределении","hi":"बँटवारे की पहेली","ar":"لغز توزيع الطرود"},"description":{"en":"Open mixed crates, supply every neighbor, and save what the next batch needs.","zh-Hant":"拆開組合箱，把物資分給各戶，再為下一批留貨。","zh-Hans":"拆开组合箱，把物资分给各户，再为下一批留货。","ja":"詰め合わせを開け、近所に品物を配り、次の便に必要な分を残そう。","ko":"혼합 상자를 열고 이웃에게 나눈 뒤 다음 차수에 필요한 물건을 남기세요.","es":"Abre cajas mixtas, reparte entre los vecinos y guarda lo necesario para la siguiente tanda.","pt-BR":"Abra caixas mistas, distribua aos vizinhos e guarde o que a próxima rodada precisa.","fr":"Ouvrez les caisses, servez le voisinage et réservez le nécessaire pour le prochain lot.","de":"Öffne gemischte Kisten, versorge die Nachbarn und bewahre Vorräte für die nächste Runde.","it":"Apri casse miste, rifornisci il vicinato e conserva ciò che serve al prossimo giro.","ru":"Открывайте ящики, снабжайте соседей и оставляйте нужное для следующей партии.","hi":"मिली-जुली पेटियाँ खोलें, पड़ोसियों में सामान बाँटें और अगली खेप के लिए बचाएँ।","ar":"افتح الصناديق المتنوعة ووزّع السلع على الجيران واحتفظ بما تحتاجه الدفعة التالية."},"ages":["9","family"],"categories":["Puzzle","Strategy"],"skills":["Planning","Logic"],"art":{"kind":"image","background":"games/parcel-pact/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"previewVideo":"assets/previews/parcel-pact-battle.webm","relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning"],"gameIds":["animal-acorn-auction","chromadock"]}},
-    {"id":"crossbank-rovers","audience":"general","status":"playable","href":"games/crossbank-rovers/","title":{"__localizedExact":true,"en":"Crossbank Rovers","zh-Hant":"越境機庫","zh-Hans":"越境机库","ja":"越境ガレージ","ko":"험지 차고","es":"Taller Todoterreno","pt-BR":"Oficina Fora de Estrada","fr":"Atelier Tout-Terrain","de":"Geländewerkstatt","it":"Officina Fuoristrada","ru":"Вездеходная мастерская","hi":"बीहड़ गैराज","ar":"ورشة المركبات الوعرة"},"type":{"en":"Vehicle strategy","zh-Hant":"越野改裝策略","zh-Hans":"越野改装策略","ja":"車両改造ストラテジー","ko":"차량 개조 전략","es":"Estrategia de vehículos","pt-BR":"Estratégia de veículos","fr":"Stratégie de véhicules","de":"Fahrzeugstrategie","it":"Strategia dei veicoli","ru":"Стратегия сборки машин","hi":"वाहन रणनीति","ar":"استراتيجية المركبات"},"description":{"en":"Fit a rover, choose a trail and deliver supplies before charge or armor runs out.","zh-Hant":"改裝越野車、選擇路線，在電量或護板耗盡前送達物資。","zh-Hans":"改装越野车、选择路线，在电量或护板耗尽前送达物资。","ja":"車を組み替え、電力と装甲が尽きる前に物資を届けよう。","ko":"차를 개조하고 길을 골라 전력이나 장갑이 떨어지기 전에 보급품을 배달하세요.","es":"Equipa el vehículo y entrega los suministros antes de agotar la batería o el blindaje.","pt-BR":"Equipe o veículo e entregue os suprimentos antes de esgotar a carga ou a blindagem.","fr":"Équipez le véhicule et livrez les fournitures avant d’épuiser la batterie ou le blindage.","de":"Rüste den Rover aus und liefere Vorräte, bevor Akku oder Panzerung aufgebraucht sind.","it":"Allestisci il veicolo e consegna i rifornimenti prima di esaurire carica o corazza.","ru":"Соберите вездеход и доставьте припасы, пока хватает заряда и брони.","hi":"वाहन तैयार करें और चार्ज या कवच खत्म होने से पहले सामान पहुँचाएँ।","ar":"جهّز المركبة وانقل الإمدادات قبل نفاد الشحن أو الدرع."},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Route Planning","Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/crossbank-rovers/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["frostline-expedition","stararc-rendezvous"]},"previewVideo":"assets/previews/crossbank-rovers-battle.webm"},
-    {"id":"perchweave","audience":"general","status":"planned","internalOnly":true,"href":"games/perchweave/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Perchweave","zh-Hant":"棲譜飛庭","zh-Hans":"栖谱飞庭","ja":"さえずりの舞台","ko":"새들의 합창단","es":"Coro de las Alturas","pt-BR":"Coro dos Poleiros","fr":"Le Chœur des perchoirs","de":"Chor der Lüfte","it":"Coro dei posatoi","ru":"Хор на насестах","hi":"परिंदों का सुरमंच","ar":"جوقة الأعشاش"},"type":{"__localizedExact":true,"en":"Card strategy","zh-Hant":"卡牌策略","zh-Hans":"卡牌策略","ja":"カード戦略","ko":"카드 전략","es":"Estrategia de cartas","pt-BR":"Estratégia de cartas","fr":"Stratégie de cartes","de":"Kartenstrategie","it":"Strategia di carte","ru":"Карточная стратегия","hi":"कार्ड रणनीति","ar":"استراتيجية البطاقات"},"description":{"__localizedExact":true,"en":"Recruit birds, arrange their seats and perform before the last beat.","zh-Hant":"招募鳥兒、安排棲位，在拍數用完前完成演出。","zh-Hans":"招募鸟儿、安排栖位，在拍数用完前完成演出。","ja":"鳥を招き、止まり木に並べ、拍が尽きる前に演奏しよう。","ko":"새를 모아 자리를 정하고 박자가 끝나기 전에 공연하세요.","es":"Recluta aves, elige sus asientos y actúa antes del último compás.","pt-BR":"Recrute aves, arrume os poleiros e toque antes do último tempo.","fr":"Recrutez des oiseaux, placez-les et jouez avant le dernier temps.","de":"Wirb Vögel an, ordne ihre Sitze und spiele vor dem letzten Takt.","it":"Raduna gli uccelli, scegli i posti e suona prima dell’ultimo tempo.","ru":"Соберите птиц, рассадите их и выступите до последнего такта.","hi":"पक्षियों को बुलाएँ, उनकी जगह चुनें और आखिरी ताल से पहले प्रस्तुति दें।","ar":"اجمع الطيور ورتّب مقاعدها وقدّم العرض قبل الإيقاع الأخير."},"ages":["13","family"],"categories":["Card","Strategy"],"skills":["Planning","Sequencing"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/perchweave/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["hearthloop","freecell-solitaire","cribbage"]}},
-    {"id":"reef-current","audience":"general","status":"playable","href":"games/reef-current/","title":{"__localizedExact":true,"en":"Reefwatch Tides","zh-Hant":"潮礁守望","zh-Hans":"潮礁守望","ja":"潮礁の見守り","ko":"산호초 조류 관측","es":"Guardianes del Arrecife","pt-BR":"Guardiões do Recife","fr":"Veilleurs du récif","de":"Wacht am Korallenriff","it":"Guardiani del reef","ru":"Стражи рифа","hi":"प्रवाल प्रहरी","ar":"حراس الشعاب"},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/reef-current/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["tidegate-relay","dusk-signal","animal-reef-fisher"]},"type":{"__localizedExact":true,"en":"Tidal strategy","zh-Hant":"潮流策略","zh-Hans":"潮流策略","ja":"潮流ストラテジー","ko":"조류 전략","es":"Estrategia de mareas","pt-BR":"Estratégia de marés","fr":"Stratégie des marées","de":"Gezeitenstrategie","it":"Strategia delle maree","ru":"Стратегия приливов","hi":"ज्वार की रणनीति","ar":"استراتيجية المد"},"description":{"__localizedExact":true,"en":"Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.","zh-Hant":"讀潮向、採藻樣，再部署濾種保護珊瑚苗圃。","zh-Hans":"读潮向、采藻样，再部署滤种保护珊瑚苗圃。","ja":"潮の流れを読み、藻を採取して浄化器を設置し、育成礁を守りましょう。","ko":"물길을 읽고 조류를 채집해 배양체를 설치하고 산호 양식장을 지키세요.","es":"Lee las corrientes, toma muestras y despliega cultivos para proteger los viveros de coral.","pt-BR":"Leia as correntes, colete amostras e implante culturas para proteger os viveiros de corais.","fr":"Observez les courants, prélevez des algues et déployez des cultures pour protéger les nurseries de corail.","de":"Lies die Strömung, sammle Algenproben und setze Filterkulturen zum Schutz der Korallen ein.","it":"Leggi le correnti, raccogli campioni di alghe e posiziona colture per proteggere i vivai di corallo.","ru":"Следите за течениями, берите пробы водорослей и размещайте культуры для защиты коралловых питомников.","hi":"धाराएँ पढ़ें, काई के नमूने लें और प्रवाल नर्सरी बचाने के लिए कल्चर लगाएँ।","ar":"اقرأ التيارات وخذ عينات من الطحالب وضع مزارع الترشيح لحماية مشاتل المرجان."},"previewVideo":"assets/previews/reef-current-battle.webm"},
-    {"id":"sunshift-commons","audience":"general","status":"playable","href":"games/sunshift-commons/","title":{"__localizedExact":true,"en":"Sunshift Commons","zh-Hant":"暮電共巷","zh-Hans":"暮电共巷","ja":"夕暮れ電力街区","ko":"노을 전력 골목","es":"Barrio Solar","pt-BR":"Vila Solar","fr":"Quartier solaire","de":"Solarviertel","it":"Quartiere Solare","ru":"Солнечный квартал","hi":"सौर मोहल्ला","ar":"حي الطاقة الشمسية"},"type":{"__localizedExact":true,"en":"Energy strategy puzzle","zh-Hant":"電力策略益智","zh-Hans":"电力策略益智","ja":"電力戦略パズル","ko":"전력 전략 퍼즐","es":"Puzle de estrategia energética","pt-BR":"Quebra-cabeça de estratégia energética","fr":"Casse-tête de stratégie énergétique","de":"Energiestrategie-Rätsel","it":"Rompicapo di strategia energetica","ru":"Головоломка об энергоснабжении","hi":"ऊर्जा रणनीति पहेली","ar":"لغز استراتيجية الطاقة"},"description":{"__localizedExact":true,"en":"Power the neighborhood by day and save sunlight for the night.","zh-Hant":"安排街坊用電，把白天多出的電留到夜裡。","zh-Hans":"安排街坊用电，把白天多出的电留到夜里。","ja":"街区の電力をやりくりし、昼の余剰を夜に残そう。","ko":"골목의 전력을 배분하고 낮에 남은 전기를 밤에 쓰세요.","es":"Abastece al barrio de día y guarda energía solar para la noche.","pt-BR":"Abasteça a vila de dia e guarde energia solar para a noite.","fr":"Alimentez le quartier le jour et gardez du soleil pour la nuit.","de":"Versorge das Viertel tagsüber und spare Sonnenstrom für die Nacht.","it":"Alimenta il quartiere di giorno e conserva energia solare per la notte.","ru":"Питайте квартал днём и запасайте солнечную энергию на ночь.","hi":"दिन में मोहल्ले को बिजली दें और रात के लिए सौर ऊर्जा बचाएँ।","ar":"زوّد الحي بالكهرباء نهارًا وادّخر طاقة الشمس لليل."},"ages":["13","family"],"categories":["Puzzle","Strategy"],"skills":["Planning","Logic"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/sunshift-commons/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"difficulty":"Medium","estimatedPlayTime":"2–5 minutes","relatedGameRules":{"requirePublic":true,"gameIds":["silicon-shift","tidegate-relay","dusk-signal"]},"previewVideo":"assets/previews/sunshift-commons-battle.webm"},
-    {"id":"bellshift-atelier","audience":"general","status":"playable","href":"games/bellshift-atelier/","title":{"__localizedExact":true,"en":"Bellshift Atelier","zh-Hant":"鐘律工坊","zh-Hans":"钟律工坊","ja":"鐘律工房","ko":"종소리 공방","es":"Taller de Campanas","pt-BR":"Oficina dos Sinos","fr":"L’Atelier des cloches","de":"Glockenwerkstatt","it":"Officina delle Campane","ru":"Мастерская колоколов","hi":"घंटी की कार्यशाला","ar":"ورشة الأجراس"},"type":{"__localizedExact":true,"en":"Automation puzzle","zh-Hant":"自動化解謎","zh-Hans":"自动化解谜","ja":"自動化パズル","ko":"자동화 퍼즐","es":"Puzle de automatización","pt-BR":"Puzzle de automação","fr":"Casse-tête d’automatisation","de":"Automatisierungsrätsel","it":"Rompicapo di automazione","ru":"Головоломка с автоматизацией","hi":"स्वचालन पहेली","ar":"لغز أتمتة"},"description":{"__localizedExact":true,"en":"Plan two crews’ commands and ring the requested notes before the tower runs out of power.","zh-Hant":"編排雙軌工匠的指令，在電力用完前奏出指定的鐘聲。","zh-Hans":"编排双轨工匠的指令，在电力用完前奏出指定的钟声。","ja":"二人の職人に指示を並べ、電力が尽きる前に指定の鐘を鳴らそう。","ko":"두 장인의 명령을 짜서 전력이 떨어지기 전에 지정된 종을 울리세요.","es":"Ordena las acciones de dos artesanos y toca las campanas indicadas antes de agotar la energía.","pt-BR":"Organize os comandos de dois artesãos e toque os sinos pedidos antes que a energia acabe.","fr":"Planifiez les actions de deux artisans et sonnez les cloches demandées avant d’épuiser l’énergie.","de":"Plane die Befehle für zwei Handwerker und läute die geforderten Glocken, bevor der Strom ausgeht.","it":"Organizza i comandi di due artigiani e suona le campane richieste prima che finisca l’energia.","ru":"Распланируйте действия двух мастеров и сыграйте нужные ноты, пока есть энергия.","hi":"दो कारीगरों के आदेश सजाएँ और बिजली खत्म होने से पहले सही घंटियाँ बजाएँ।","ar":"رتّب أوامر حرفيين واقرع الأجراس المطلوبة قبل نفاد الطاقة."},"ages":["13","family"],"categories":["Strategy","Puzzle"],"tags":["Programming Logic","Resource Management","Sequencing"],"skills":["Planning","Problem Solving"],"art":{"kind":"image","background":"games/bellshift-atelier/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning","Problem Solving"],"gameIds":["prismkin-rescue","silicon-shift","dusk-signal"]},"previewVideo":"assets/previews/bellshift-atelier-battle.webm"},
-    {"id":"stararc-rendezvous","audience":"general","status":"playable","href":"games/stararc-rendezvous/","previewVideo":"assets/previews/stararc-rendezvous-battle.webm","title":{"__localizedExact":true,"en":"Stararc Rendezvous","zh-Hant":"星弧接駁","zh-Hans":"星弧接驳","ja":"星弧ランデブー","ko":"별궤도 랑데부","es":"Encuentro Estelar","pt-BR":"Encontro Estelar","fr":"Rendez-vous stellaire","de":"Sternbogen-Rendezvous","it":"Incontro stellare","ru":"Звёздная стыковка","ar":"لقاء المدار النجمي","hi":"ताराकक्षा मिलन"},"type":{"__localizedExact":true,"en":"Orbital planning","zh-Hant":"軌道規劃","zh-Hans":"轨道规划","ja":"軌道計画","ko":"궤도 계획","es":"Planificación orbital","pt-BR":"Planejamento orbital","fr":"Planification orbitale","de":"Orbitplanung","it":"Pianificazione orbitale","ru":"Орбитальное планирование","ar":"تخطيط مداري","hi":"कक्षा नियोजन"},"description":{"__localizedExact":true,"en":"Fit your shuttle, plan a transfer, and dock with moving stations before the shift ends.","zh-Hant":"為航艙配裝、預測轉軌，在班次結束前與移動站點對接。","zh-Hans":"为航舱配装、预测转轨，在班次结束前与移动站点对接。","ja":"シャトルを整備し、軌道変更を計画して、時間内に移動するステーションとドッキング。","ko":"셔틀을 정비하고 궤도 변경을 계획해 제한 시간 안에 이동 정거장에 도킹하세요.","es":"Equipa tu nave, planifica una transferencia y acopla en estaciones móviles antes del fin del turno.","pt-BR":"Equipe sua nave, planeje a transferência e atraque em estações móveis antes do fim do turno.","fr":"Équipe ta navette, prévois un transfert et rejoins les stations mobiles avant la fin du service.","de":"Rüste dein Shuttle aus, plane den Bahnwechsel und docke vor Schichtende an beweglichen Stationen an.","it":"Equipaggia la navetta, pianifica la manovra e attracca alle stazioni mobili entro il turno.","ru":"Оснастите шаттл, спланируйте переход и состыкуйтесь с движущимися станциями до конца смены.","ar":"جهّز المكوك وخطّط لتغيير المدار والتحم بالمحطات المتحركة قبل انتهاء المناوبة.","hi":"यान को तैयार करें, कक्षा बदलने की योजना बनाएँ और पाली खत्म होने से पहले चलित स्टेशनों से जुड़ें।"},"categories":["Puzzle","Strategy"],"skills":["Planning","Logic"],"ages":["9","family"],"tags":["Route Planning","Resource Management"],"difficulty":"Medium","estimatedPlayTime":"2–4 minutes","art":{"kind":"image","background":"games/stararc-rendezvous/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["animal-orbit-orchard","cloudhold-voyager","reedway-transit"]}},
+    {"id":"glowtide-parade","audience":"general","status":"playable","href":"games/glowtide-parade/","title":{"__localizedExact":true,"en":"Glowtide Parade","zh-Hant":"燈潮引路","zh-Hans":"灯潮引路","ja":"灯りのパレード","ko":"등불 물결 행진","es":"Desfile de Luces","pt-BR":"Desfile das Luzes","fr":"La Parade des Lumières","de":"Lichterparade","it":"Parata delle Luci","ru":"Парад огней","hi":"रोशनी की परेड","ar":"موكب الأضواء"},"type":{"en":"Crowd-routing strategy","zh-Hant":"人流調度策略","zh-Hans":"人流调度策略","ja":"来場者誘導ストラテジー","ko":"관람객 유도 전략","es":"Estrategia de afluencia","pt-BR":"Estratégia de fluxo de visitantes","fr":"Stratégie de gestion des foules","de":"Besucherlenkungsstrategie","it":"Strategia di gestione dei visitatori","ru":"Стратегия управления потоком","hi":"आगंतुकों का मार्ग तय करने की रणनीति","ar":"استراتيجية توجيه الزوار"},"description":{"en":"Turn on lantern towers, redirect flexible visitors and give waiting groups a place at the show.","zh-Hant":"點亮夜祭燈塔，替雙色隊伍改道，讓候場來客進去看秀。","zh-Hans":"点亮夜祭灯塔，替双色队伍改道，让候场来客进场看秀。","ja":"祭りの灯塔をともして、別の道を選べる来場者を誘導し、待機列を進めよう。","ko":"축제의 등탑을 켜고, 길을 바꿀 수 있는 관람객을 나누어 입장시키세요.","es":"Enciende las torres, desvía a los grupos flexibles y ayuda a quienes esperan a entrar al espectáculo.","pt-BR":"Acenda as torres, desvie grupos flexíveis e ajude quem está na fila a entrar no espetáculo.","fr":"Allumez les tours, détournez les groupes flexibles et faites entrer les visiteurs qui attendent.","de":"Zünde die Türme an, leite flexible Gruppen um und bring die Wartenden zur Vorführung.","it":"Accendi le torri, devia i gruppi flessibili e fai entrare chi aspetta lo spettacolo.","ru":"Зажигайте башни, перенаправляйте гибкие группы и проводите ожидающих на представление.","hi":"मीनारें जलाएँ, रास्ता बदल सकने वाले समूहों को दिशा दें और इंतज़ार कर रहे लोगों को शो में भेजें।","ar":"أضئ الأبراج ووجّه المجموعات التي يمكنها تغيير طريقها وساعد المنتظرين على دخول العرض."},"ages":["9+","Family"],"categories":["Strategy"],"skills":["Planning","Logic","Problem Solving"],"art":{"kind":"image","background":"games/glowtide-parade/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"difficulty":"Medium","estimatedPlayTime":"2–5 minutes","previewVideo":"assets/previews/glowtide-parade-battle.webm","relatedGameRules":{"requirePublic":true,"useInGuide":true,"gameIds":["sunshift-commons","mosslight-museum"]},"seoDescription":{"en":"Turn on lantern towers, redirect flexible visitors and give waiting groups a place at the show.","zh-Hant":"點亮夜祭燈塔，替雙色隊伍改道，讓候場來客進去看秀。","zh-Hans":"点亮夜祭灯塔，替双色队伍改道，让候场来客进场看秀。","ja":"祭りの灯塔をともして、別の道を選べる来場者を誘導し、待機列を進めよう。","ko":"축제의 등탑을 켜고, 길을 바꿀 수 있는 관람객을 나누어 입장시키세요.","es":"Enciende las torres, desvía a los grupos flexibles y ayuda a quienes esperan a entrar al espectáculo.","pt-BR":"Acenda as torres, desvie grupos flexíveis e ajude quem está na fila a entrar no espetáculo.","fr":"Allumez les tours, détournez les groupes flexibles et faites entrer les visiteurs qui attendent.","de":"Zünde die Türme an, leite flexible Gruppen um und bring die Wartenden zur Vorführung.","it":"Accendi le torri, devia i gruppi flessibili e fai entrare chi aspetta lo spettacolo.","ru":"Зажигайте башни, перенаправляйте гибкие группы и проводите ожидающих на представление.","hi":"मीनारें जलाएँ, रास्ता बदल सकने वाले समूहों को दिशा दें और इंतज़ार कर रहे लोगों को शो में भेजें।","ar":"أضئ الأبراج ووجّه المجموعات التي يمكنها تغيير طريقها وساعد المنتظرين على دخول العرض."}},
+    {"id":"glyphweft","audience":"general","status":"planned","internalOnly":true,"href":"games/glyphweft/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Glyphweft","zh-Hant":"字律織境","zh-Hans":"字律织境","ja":"紋織りの小径","ko":"문양을 짜는 길","es":"Trama de Glifos","pt-BR":"Trama de Glifos","fr":"La Trame des Glyphes","de":"Glyphenweberei","it":"Trama dei Glifi","ru":"Ткань знаков","hi":"चिह्नों की बुनाई","ar":"نسيج الرموز"},"type":{"en":"Rule-changing puzzle","zh-Hant":"規則改寫解謎","zh-Hans":"规则改写解谜","ja":"ルールを変えるパズル","ko":"규칙을 바꾸는 퍼즐","es":"Puzle de reglas","pt-BR":"Quebra-cabeça de regras","fr":"Casse-tête de règles","de":"Regelrätsel","it":"Enigma di regole","ru":"Головоломка с правилами","hi":"नियम बदलने वाली पहेली","ar":"لغز تغيير القواعد"},"description":{"en":"Reweave the gate rules, carry the shuttles to their sockets, and find the way out.","zh-Hant":"在織機改寫通行規則，把梭子送到印座，找出離開的路。","zh-Hans":"在织机改写通行规则，把梭子送到印座，找出离开的路。","ja":"織機で門のルールを変え、杼を台座に届けて出口を目指そう。","ko":"베틀에서 문의 규칙을 바꾸고 북을 받침대에 옮겨 출구를 찾으세요.","es":"Cambia las reglas de las puertas, lleva las lanzaderas a sus bases y encuentra la salida.","pt-BR":"Mude as regras dos portões, leve as lançadeiras aos encaixes e encontre a saída.","fr":"Changez les règles des portes, déposez les navettes dans leurs socles et rejoignez la sortie.","de":"Ändere die Torregeln, bring die Schiffchen zu ihren Sockeln und finde den Ausgang.","it":"Cambia le regole dei cancelli, porta le navette ai loro alloggiamenti e trova l’uscita.","ru":"Меняйте правила ворот, отнесите челноки к гнёздам и найдите выход.","hi":"फाटकों के नियम बदलें, शटल को उनके आसन तक ले जाएँ और बाहर निकलें।","ar":"غيّر قواعد البوابات، وانقل مكوكات النسيج إلى قواعدها، ثم اعثر على المخرج."},"ages":["9","family"],"categories":["Puzzle"],"skills":["Logic","Planning"],"tags":["Deduction","Route Planning"],"art":{"kind":"image","background":"games/glyphweft/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["duskbloom","fogseal-archives","animal-cratebound"],"useInGuide":true}},
+    {"id":"loamline","audience":"general","status":"playable","href":"games/loamline/","title":{"__localizedExact":true,"en":"Loamline","zh-Hant":"禾脊農線","zh-Hans":"禾脊农线","ja":"稲畦ファームライン","ko":"논두렁 농장길","es":"Surcos de Cosecha","pt-BR":"Trilha da Colheita","fr":"Les Sillons de Loamline","de":"Erntefurchen","it":"Solchi del Raccolto","ru":"Тропа урожая","hi":"मेड़ों की राह","ar":"درب الحصاد"},"type":{"en":"Farm simulation","zh-Hant":"農場模擬"},"description":{"en":"Work the terraces, haul grain and fill orders before the shift ends.","zh-Hant":"整備梯田、載運穀物，在下班前交齊訂單。"},"ages":["9","family"],"categories":["Simulation"],"skills":["Planning","Logic"],"tags":["Management","Strategy"],"art":{"kind":"image","background":"games/loamline/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["animal-echo-orchard","dusk-signal","wingseal-post"]},"previewVideo":"assets/previews/loamline-battle.webm"},
+    {"id":"fogseal-archives","audience":"general","status":"playable","href":"games/fogseal-archives/","title":{"__localizedExact":true,"en":"Fogseal Archives","zh-Hant":"霧印檔案","zh-Hans":"雾印档案","ja":"霧印の記録庫","ko":"안개 인장 기록관","es":"Archivo del Sello de Niebla","pt-BR":"Arquivo do Selo de Névoa","fr":"Archives du Sceau de Brume","de":"Archiv der Nebelsiegel","it":"Archivio dei Sigilli di Nebbia","ru":"Архив туманных печатей","hi":"धुंध की मुहरों का अभिलेख","ar":"أرشيف أختام الضباب"},"type":{"en":"Deduction puzzle","zh-Hant":"線索推理解謎"},"description":{"en":"Compare archive records and certify the order of a missing exhibit’s handoffs.","zh-Hant":"比對館藏紀錄，查出展品經過誰的手。"},"ages":["9","family"],"categories":["Puzzle"],"skills":["Logic","Planning","Observation"],"tags":["Deduction","Resource Management","Sequencing"],"art":{"kind":"image","background":"games/fogseal-archives/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["dusk-signal","wingseal-post","mosslight-museum"]},"previewVideo":"assets/previews/fogseal-archives-battle.webm"},
+    {"id":"last-quarter-relay","audience":"general","status":"playable","href":"games/last-quarter-relay/","title":{"__localizedExact":true,"en":"Last Quarter Relay","zh-Hant":"末節反攻","zh-Hans":"末节反攻","ja":"第4クォーターの逆襲","ko":"4쿼터 역전","es":"Relevo del último cuarto","pt-BR":"Virada no Último Quarto","fr":"Retour au dernier quart","de":"Aufholjagd im Schlussviertel","it":"Rimonta all'ultimo quarto","ru":"Рывок в последней четверти","hi":"आखिरी क्वार्टर की वापसी","ar":"عودة الربع الأخير"},"type":{"en":"Turn-based basketball strategy","zh-Hant":"回合制籃球戰術","zh-Hans":"回合制篮球战术","ja":"ターン制バスケ戦術","ko":"턴제 농구 전술","es":"Estrategia de baloncesto por turnos","pt-BR":"Estratégia de basquete por turnos","fr":"Tactique de basket au tour par tour","de":"Rundenbasierte Basketball-Taktik","it":"Tattica di basket a turni","ru":"Пошаговая баскетбольная тактика","hi":"बारी-आधारित बास्केटबॉल रणनीति","ar":"تكتيك كرة سلة بالأدوار"},"description":{"en":"Find an open shot, read the next attack and rally before the last possession.","zh-Hant":"找空位出手、看準來襲方向換防，在最後一波球權前反超。","zh-Hans":"找空位出手、看准来袭方向换防，在最后一波球权前反超。","ja":"空いた位置からシュートを決め、次の攻めを読み、最後の攻防で逆転しよう。","ko":"빈 자리에서 슛을 던지고 다음 공격을 읽어 마지막 공방 전에 역전하세요.","es":"Busca un tiro libre de marca, lee el ataque rival y remonta antes de la última posesión.","pt-BR":"Ache espaço para arremessar, leia o ataque rival e vire o jogo antes da última posse.","fr":"Trouvez un tir ouvert, lisez l’attaque adverse et renversez le score avant la dernière possession.","de":"Finde einen freien Wurf, lies den nächsten Angriff und drehe das Spiel vor dem letzten Ballbesitz.","it":"Cerca un tiro libero, leggi l’attacco avversario e rimonta prima dell’ultimo possesso.","ru":"Найдите свободный бросок, прочитайте атаку соперника и выйдите вперёд до последнего владения.","hi":"खाली जगह से शॉट लगाएँ, अगला हमला भाँपें और आखिरी पज़ेशन से पहले बढ़त लें।","ar":"ابحث عن تسديدة بلا رقابة، واقرأ هجمة الخصم، واقلب النتيجة قبل الاستحواذ الأخير."},"art":{"kind":"image","background":"/games/last-quarter-relay/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"age":"9+","categories":["sports","strategy"],"tags":["basketball","turn-based"],"previewVideo":"assets/previews/last-quarter-relay-battle.webm","relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning","Positioning"],"gameIds":["touchline-tails","meadow-touchdown","rainline-chase"]}},
+    {"id":"ricochet-grove","audience":"general","status":"planned","internalOnly":true,"href":"games/ricochet-grove/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Ricochet Grove","zh-Hant":"彈籽花庭","zh-Hans":"弹籽花庭","ja":"はずむ種の庭","ko":"튕기는 씨앗 정원","es":"Jardín de Rebotes","pt-BR":"Jardim dos Quiques","fr":"Jardin des Rebonds","de":"Garten der Sprünge","it":"Giardino dei Rimbalzi","ru":"Сад отскоков","hi":"उछलते बीजों का बाग़","ar":"حديقة البذور المرتدة"},"type":{"en":"Seed drop puzzle","zh-Hant":"落珠解謎","zh-Hans":"落珠解谜","ja":"種落としパズル","ko":"씨앗 낙하 퍼즐","es":"Puzle de semillas","pt-BR":"Quebra-cabeça de sementes","fr":"Puzzle de graines","de":"Saatkugel-Rätsel","it":"Rompicapo di semi","ru":"Головоломка с семенами","hi":"बीज गिराने की पहेली","ar":"لغز إسقاط البذور"},"description":{"en":"Turn pegs, collect water and bounce seeds into the flowerbeds in order.","zh-Hant":"改撥彈釘、收集露水，讓種籽依序彈進花圃。","zh-Hans":"改拨弹钉、收集露水，让种籽依序弹进花圃。","ja":"ピンの向きを変え、しずくを集めて、種を順番に花壇へ届けよう。","ko":"핀의 방향을 바꾸고 물을 모아 씨앗을 순서대로 화단에 보내세요.","es":"Gira clavijas, recoge agua y guía las semillas a los canteros en orden.","pt-BR":"Vire pinos, recolha água e leve as sementes aos canteiros na ordem.","fr":"Tournez les chevilles, récupérez l’eau et faites rebondir les graines vers les parterres dans l’ordre.","de":"Drehe Stifte, sammle Wasser und lenke die Samen der Reihe nach in die Beete.","it":"Gira i perni, raccogli acqua e fai rimbalzare i semi nelle aiuole in ordine.","ru":"Поворачивайте штифты, собирайте воду и направляйте семена в клумбы по порядку.","hi":"खूँटियाँ घुमाएँ, पानी जुटाएँ और बीजों को क्रम से क्यारियों तक पहुँचाएँ।","ar":"أدر الأوتاد واجمع الماء ووجّه البذور إلى أحواض الزهور بالترتيب."},"art":{"kind":"image","background":"/games/ricochet-grove/assets/cover.webp?wp-media=512519f6a2210940","hideHero":true},"age":"9+","categories":["puzzle","strategy"],"tags":["physics"]},
+    {"id":"mosscrest-accord","audience":"general","status":"planned","internalOnly":true,"href":"games/mosscrest-accord/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Mosscrest Accord","zh-Hant":"苔冠盟庭","zh-Hans":"苔冠盟庭","ja":"苔冠の盟約","ko":"이끼관의 맹약","es":"Pacto del Musgo","pt-BR":"Pacto do Musgo","fr":"Pacte de Moussecour","de":"Mooskronenpakt","it":"Patto di Muschiocorte","ru":"Мшистый союз","hi":"काईमुकुट संधि","ar":"ميثاق تاج الطحلب"},"type":{"en":"Diplomacy strategy","zh-Hant":"外交策略","zh-Hans":"外交策略","ja":"外交ストラテジー","ko":"외교 전략","es":"Estrategia diplomática","pt-BR":"Estratégia diplomática","fr":"Stratégie diplomatique","de":"Diplomatiestrategie","it":"Strategia diplomatica","ru":"Дипломатическая стратегия","hi":"कूटनीति रणनीति","ar":"استراتيجية دبلوماسية"},"description":{"en":"Pledge supplies, earn the districts’ seals, and honor unfinished treaties when the next steward takes office.","zh-Hant":"交換物資，集齊各地印信；輪值交接後，仍要履行前任的盟約。","zh-Hans":"交换物资，集齐各地印信；轮值交接后，仍要履行前任的盟约。","ja":"物資を融通し、各地区の印を集めよう。交代しても前任者の盟約は続く。","ko":"물자를 교환하고 지역 인장을 모으세요. 의장이 바뀌어도 맹약은 이어집니다.","es":"Intercambia suministros, consigue sellos y cumple los pactos al cambiar de representante.","pt-BR":"Troque suprimentos, reúna selos e cumpra os pactos após a troca de liderança.","fr":"Échangez des vivres, obtenez les sceaux et honorez les pactes après la relève.","de":"Tausche Vorräte, sammle Siegel und erfülle offene Verträge nach der Amtsübergabe.","it":"Scambia risorse, ottieni sigilli e rispetta i patti dopo il cambio di guida.","ru":"Обменивайте припасы, собирайте печати и выполняйте договоры после смены главы.","hi":"संसाधन बाँटें, मुहरें जुटाएँ और नए अध्यक्ष के आने पर अधूरे वादे निभाएँ।","ar":"بادل الموارد واجمع الأختام وأوفِ بالعهود بعد انتقال الرئاسة."},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/mosscrest-accord/assets/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["dawnward-haven","bellshift-atelier","reef-current"],"useInGuide":true}},
+    {"id":"torque-grove","audience":"general","status":"planned","internalOnly":true,"href":"games/torque-grove/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Torque Grove","zh-Hant":"扭矩修造所","zh-Hans":"扭矩修造所","ja":"トルク整備工房","ko":"토크 정비소","es":"Taller del Par","pt-BR":"Oficina do Torque","fr":"Atelier du Couple","de":"Drehmoment-Werkstatt","it":"Officina della Coppia","ru":"Мастерская тяги","hi":"टॉर्क कार्यशाला","ar":"ورشة العزم"},"type":{"en":"Vehicle repair strategy","zh-Hant":"車輛維修策略","zh-Hans":"车辆维修策略","ja":"車両整備ストラテジー","ko":"차량 정비 전략","es":"Estrategia de reparación","pt-BR":"Estratégia de reparo","fr":"Stratégie de réparation","de":"Reparaturstrategie","it":"Strategia di riparazione","ru":"Стратегия ремонта","hi":"वाहन मरम्मत रणनीति","ar":"استراتيجية إصلاح المركبات"},"description":{"en":"Find hidden faults, spend your workshop budget wisely, and put each repair through its load tests.","zh-Hant":"查出隱藏故障，取捨工時與備料，讓修好的車通過負載測試。","zh-Hans":"查出隐藏故障，权衡工时与备件，让修好的车通过负载测试。","ja":"隠れた故障を見つけ、作業時間と部品をやりくりして、車を負荷試験に合格させよう。","ko":"숨은 고장을 찾고 작업 시간과 부품을 아껴 차량을 부하 시험에 통과시키세요.","es":"Detecta averías ocultas, administra el tiempo y los repuestos y supera las pruebas de carga.","pt-BR":"Encontre defeitos ocultos, cuide do tempo e das peças e passe nos testes de carga.","fr":"Repérez les pannes cachées, gérez le temps et les pièces, puis réussissez les essais en charge.","de":"Finde versteckte Fehler, teile Zeit und Ersatzteile ein und bestehe die Belastungstests.","it":"Scopri i guasti nascosti, gestisci tempo e ricambi e supera le prove sotto carico.","ru":"Найдите скрытые поломки, распределите время и запчасти и пройдите испытания под нагрузкой.","hi":"छिपी खराबियाँ खोजें, समय और पुर्जे सँभालें और वाहन को भार परीक्षणों में पास कराएँ।","ar":"اكتشف الأعطال الخفية ووازن بين وقت العمل والقطع، ثم اجتز اختبارات الحمل."},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Resource Management","Simulation","Turn-Based Strategy"],"art":{"kind":"image","background":"games/torque-grove/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["crossbank-rovers","rivetide-works","silicon-shift"]}},
+    {"id":"parcel-pact","audience":"general","status":"playable","href":"games/parcel-pact/","title":{"__localizedExact":true,"en":"Parcel Pact","zh-Hant":"合籃約定","zh-Hans":"合篮约定","ja":"おすそわけ便","ko":"꾸러미 약속","es":"Pacto de Cestas","pt-BR":"Pacto das Cestas","fr":"Pacte des Paniers","de":"Korbpakt","it":"Patto dei Cestini","ru":"Корзины по уговору","hi":"टोकरियों का समझौता","ar":"عهد السلال"},"type":{"en":"Parcel strategy puzzle","zh-Hant":"配單策略益智","zh-Hans":"配单策略益智","ja":"荷分け戦略パズル","ko":"분배 전략 퍼즐","es":"Puzle de reparto","pt-BR":"Quebra-cabeça de partilha","fr":"Puzzle de répartition","de":"Verteilstrategie-Rätsel","it":"Puzzle di distribuzione","ru":"Головоломка о распределении","hi":"बँटवारे की पहेली","ar":"لغز توزيع الطرود"},"description":{"en":"Open mixed crates, supply every neighbor, and save what the next batch needs.","zh-Hant":"拆開組合箱，把物資分給各戶，再為下一批留貨。","zh-Hans":"拆开组合箱，把物资分给各户，再为下一批留货。","ja":"詰め合わせを開け、近所に品物を配り、次の便に必要な分を残そう。","ko":"혼합 상자를 열고 이웃에게 나눈 뒤 다음 차수에 필요한 물건을 남기세요.","es":"Abre cajas mixtas, reparte entre los vecinos y guarda lo necesario para la siguiente tanda.","pt-BR":"Abra caixas mistas, distribua aos vizinhos e guarde o que a próxima rodada precisa.","fr":"Ouvrez les caisses, servez le voisinage et réservez le nécessaire pour le prochain lot.","de":"Öffne gemischte Kisten, versorge die Nachbarn und bewahre Vorräte für die nächste Runde.","it":"Apri casse miste, rifornisci il vicinato e conserva ciò che serve al prossimo giro.","ru":"Открывайте ящики, снабжайте соседей и оставляйте нужное для следующей партии.","hi":"मिली-जुली पेटियाँ खोलें, पड़ोसियों में सामान बाँटें और अगली खेप के लिए बचाएँ।","ar":"افتح الصناديق المتنوعة ووزّع السلع على الجيران واحتفظ بما تحتاجه الدفعة التالية."},"ages":["9","family"],"categories":["Puzzle","Strategy"],"skills":["Planning","Logic"],"art":{"kind":"image","background":"games/parcel-pact/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"previewVideo":"assets/previews/parcel-pact-battle.webm","relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning"],"gameIds":["animal-acorn-auction","chromadock"]}},
+    {"id":"crossbank-rovers","audience":"general","status":"playable","href":"games/crossbank-rovers/","title":{"__localizedExact":true,"en":"Crossbank Rovers","zh-Hant":"越境機庫","zh-Hans":"越境机库","ja":"越境ガレージ","ko":"험지 차고","es":"Taller Todoterreno","pt-BR":"Oficina Fora de Estrada","fr":"Atelier Tout-Terrain","de":"Geländewerkstatt","it":"Officina Fuoristrada","ru":"Вездеходная мастерская","hi":"बीहड़ गैराज","ar":"ورشة المركبات الوعرة"},"type":{"en":"Vehicle strategy","zh-Hant":"越野改裝策略","zh-Hans":"越野改装策略","ja":"車両改造ストラテジー","ko":"차량 개조 전략","es":"Estrategia de vehículos","pt-BR":"Estratégia de veículos","fr":"Stratégie de véhicules","de":"Fahrzeugstrategie","it":"Strategia dei veicoli","ru":"Стратегия сборки машин","hi":"वाहन रणनीति","ar":"استراتيجية المركبات"},"description":{"en":"Fit a rover, choose a trail and deliver supplies before charge or armor runs out.","zh-Hant":"改裝越野車、選擇路線，在電量或護板耗盡前送達物資。","zh-Hans":"改装越野车、选择路线，在电量或护板耗尽前送达物资。","ja":"車を組み替え、電力と装甲が尽きる前に物資を届けよう。","ko":"차를 개조하고 길을 골라 전력이나 장갑이 떨어지기 전에 보급품을 배달하세요.","es":"Equipa el vehículo y entrega los suministros antes de agotar la batería o el blindaje.","pt-BR":"Equipe o veículo e entregue os suprimentos antes de esgotar a carga ou a blindagem.","fr":"Équipez le véhicule et livrez les fournitures avant d’épuiser la batterie ou le blindage.","de":"Rüste den Rover aus und liefere Vorräte, bevor Akku oder Panzerung aufgebraucht sind.","it":"Allestisci il veicolo e consegna i rifornimenti prima di esaurire carica o corazza.","ru":"Соберите вездеход и доставьте припасы, пока хватает заряда и брони.","hi":"वाहन तैयार करें और चार्ज या कवच खत्म होने से पहले सामान पहुँचाएँ।","ar":"جهّز المركبة وانقل الإمدادات قبل نفاد الشحن أو الدرع."},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Route Planning","Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/crossbank-rovers/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["frostline-expedition","stararc-rendezvous"]},"previewVideo":"assets/previews/crossbank-rovers-battle.webm"},
+    {"id":"perchweave","audience":"general","status":"planned","internalOnly":true,"href":"games/perchweave/","internalTrial":"index.html?preview=1","title":{"__localizedExact":true,"en":"Perchweave","zh-Hant":"棲譜飛庭","zh-Hans":"栖谱飞庭","ja":"さえずりの舞台","ko":"새들의 합창단","es":"Coro de las Alturas","pt-BR":"Coro dos Poleiros","fr":"Le Chœur des perchoirs","de":"Chor der Lüfte","it":"Coro dei posatoi","ru":"Хор на насестах","hi":"परिंदों का सुरमंच","ar":"جوقة الأعشاش"},"type":{"__localizedExact":true,"en":"Card strategy","zh-Hant":"卡牌策略","zh-Hans":"卡牌策略","ja":"カード戦略","ko":"카드 전략","es":"Estrategia de cartas","pt-BR":"Estratégia de cartas","fr":"Stratégie de cartes","de":"Kartenstrategie","it":"Strategia di carte","ru":"Карточная стратегия","hi":"कार्ड रणनीति","ar":"استراتيجية البطاقات"},"description":{"__localizedExact":true,"en":"Recruit birds, arrange their seats and perform before the last beat.","zh-Hant":"招募鳥兒、安排棲位，在拍數用完前完成演出。","zh-Hans":"招募鸟儿、安排栖位，在拍数用完前完成演出。","ja":"鳥を招き、止まり木に並べ、拍が尽きる前に演奏しよう。","ko":"새를 모아 자리를 정하고 박자가 끝나기 전에 공연하세요.","es":"Recluta aves, elige sus asientos y actúa antes del último compás.","pt-BR":"Recrute aves, arrume os poleiros e toque antes do último tempo.","fr":"Recrutez des oiseaux, placez-les et jouez avant le dernier temps.","de":"Wirb Vögel an, ordne ihre Sitze und spiele vor dem letzten Takt.","it":"Raduna gli uccelli, scegli i posti e suona prima dell’ultimo tempo.","ru":"Соберите птиц, рассадите их и выступите до последнего такта.","hi":"पक्षियों को बुलाएँ, उनकी जगह चुनें और आखिरी ताल से पहले प्रस्तुति दें।","ar":"اجمع الطيور ورتّب مقاعدها وقدّم العرض قبل الإيقاع الأخير."},"ages":["13","family"],"categories":["Card","Strategy"],"skills":["Planning","Sequencing"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/perchweave/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["hearthloop","freecell-solitaire","cribbage"]}},
+    {"id":"reef-current","audience":"general","status":"playable","href":"games/reef-current/","title":{"__localizedExact":true,"en":"Reefwatch Tides","zh-Hant":"潮礁守望","zh-Hans":"潮礁守望","ja":"潮礁の見守り","ko":"산호초 조류 관측","es":"Guardianes del Arrecife","pt-BR":"Guardiões do Recife","fr":"Veilleurs du récif","de":"Wacht am Korallenriff","it":"Guardiani del reef","ru":"Стражи рифа","hi":"प्रवाल प्रहरी","ar":"حراس الشعاب"},"ages":["13","family"],"categories":["Strategy","Simulation"],"skills":["Planning","Problem Solving"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/reef-current/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["tidegate-relay","dusk-signal","animal-reef-fisher"]},"type":{"__localizedExact":true,"en":"Tidal strategy","zh-Hant":"潮流策略","zh-Hans":"潮流策略","ja":"潮流ストラテジー","ko":"조류 전략","es":"Estrategia de mareas","pt-BR":"Estratégia de marés","fr":"Stratégie des marées","de":"Gezeitenstrategie","it":"Strategia delle maree","ru":"Стратегия приливов","hi":"ज्वार की रणनीति","ar":"استراتيجية المد"},"description":{"__localizedExact":true,"en":"Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.","zh-Hant":"讀潮向、採藻樣，再部署濾種保護珊瑚苗圃。","zh-Hans":"读潮向、采藻样，再部署滤种保护珊瑚苗圃。","ja":"潮の流れを読み、藻を採取して浄化器を設置し、育成礁を守りましょう。","ko":"물길을 읽고 조류를 채집해 배양체를 설치하고 산호 양식장을 지키세요.","es":"Lee las corrientes, toma muestras y despliega cultivos para proteger los viveros de coral.","pt-BR":"Leia as correntes, colete amostras e implante culturas para proteger os viveiros de corais.","fr":"Observez les courants, prélevez des algues et déployez des cultures pour protéger les nurseries de corail.","de":"Lies die Strömung, sammle Algenproben und setze Filterkulturen zum Schutz der Korallen ein.","it":"Leggi le correnti, raccogli campioni di alghe e posiziona colture per proteggere i vivai di corallo.","ru":"Следите за течениями, берите пробы водорослей и размещайте культуры для защиты коралловых питомников.","hi":"धाराएँ पढ़ें, काई के नमूने लें और प्रवाल नर्सरी बचाने के लिए कल्चर लगाएँ।","ar":"اقرأ التيارات وخذ عينات من الطحالب وضع مزارع الترشيح لحماية مشاتل المرجان."},"previewVideo":"assets/previews/reef-current-battle.webm"},
+    {"id":"sunshift-commons","audience":"general","status":"playable","href":"games/sunshift-commons/","title":{"__localizedExact":true,"en":"Sunshift Commons","zh-Hant":"暮電共巷","zh-Hans":"暮电共巷","ja":"夕暮れ電力街区","ko":"노을 전력 골목","es":"Barrio Solar","pt-BR":"Vila Solar","fr":"Quartier solaire","de":"Solarviertel","it":"Quartiere Solare","ru":"Солнечный квартал","hi":"सौर मोहल्ला","ar":"حي الطاقة الشمسية"},"type":{"__localizedExact":true,"en":"Energy strategy puzzle","zh-Hant":"電力策略益智","zh-Hans":"电力策略益智","ja":"電力戦略パズル","ko":"전력 전략 퍼즐","es":"Puzle de estrategia energética","pt-BR":"Quebra-cabeça de estratégia energética","fr":"Casse-tête de stratégie énergétique","de":"Energiestrategie-Rätsel","it":"Rompicapo di strategia energetica","ru":"Головоломка об энергоснабжении","hi":"ऊर्जा रणनीति पहेली","ar":"لغز استراتيجية الطاقة"},"description":{"__localizedExact":true,"en":"Power the neighborhood by day and save sunlight for the night.","zh-Hant":"安排街坊用電，把白天多出的電留到夜裡。","zh-Hans":"安排街坊用电，把白天多出的电留到夜里。","ja":"街区の電力をやりくりし、昼の余剰を夜に残そう。","ko":"골목의 전력을 배분하고 낮에 남은 전기를 밤에 쓰세요.","es":"Abastece al barrio de día y guarda energía solar para la noche.","pt-BR":"Abasteça a vila de dia e guarde energia solar para a noite.","fr":"Alimentez le quartier le jour et gardez du soleil pour la nuit.","de":"Versorge das Viertel tagsüber und spare Sonnenstrom für die Nacht.","it":"Alimenta il quartiere di giorno e conserva energia solare per la notte.","ru":"Питайте квартал днём и запасайте солнечную энергию на ночь.","hi":"दिन में मोहल्ले को बिजली दें और रात के लिए सौर ऊर्जा बचाएँ।","ar":"زوّد الحي بالكهرباء نهارًا وادّخر طاقة الشمس لليل."},"ages":["13","family"],"categories":["Puzzle","Strategy"],"skills":["Planning","Logic"],"tags":["Resource Management","Turn-Based Strategy"],"art":{"kind":"image","background":"games/sunshift-commons/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"difficulty":"Medium","estimatedPlayTime":"2–5 minutes","relatedGameRules":{"requirePublic":true,"gameIds":["silicon-shift","tidegate-relay","dusk-signal"]},"previewVideo":"assets/previews/sunshift-commons-battle.webm"},
+    {"id":"bellshift-atelier","audience":"general","status":"playable","href":"games/bellshift-atelier/","title":{"__localizedExact":true,"en":"Bellshift Atelier","zh-Hant":"鐘律工坊","zh-Hans":"钟律工坊","ja":"鐘律工房","ko":"종소리 공방","es":"Taller de Campanas","pt-BR":"Oficina dos Sinos","fr":"L’Atelier des cloches","de":"Glockenwerkstatt","it":"Officina delle Campane","ru":"Мастерская колоколов","hi":"घंटी की कार्यशाला","ar":"ورشة الأجراس"},"type":{"__localizedExact":true,"en":"Automation puzzle","zh-Hant":"自動化解謎","zh-Hans":"自动化解谜","ja":"自動化パズル","ko":"자동화 퍼즐","es":"Puzle de automatización","pt-BR":"Puzzle de automação","fr":"Casse-tête d’automatisation","de":"Automatisierungsrätsel","it":"Rompicapo di automazione","ru":"Головоломка с автоматизацией","hi":"स्वचालन पहेली","ar":"لغز أتمتة"},"description":{"__localizedExact":true,"en":"Plan two crews’ commands and ring the requested notes before the tower runs out of power.","zh-Hant":"編排雙軌工匠的指令，在電力用完前奏出指定的鐘聲。","zh-Hans":"编排双轨工匠的指令，在电力用完前奏出指定的钟声。","ja":"二人の職人に指示を並べ、電力が尽きる前に指定の鐘を鳴らそう。","ko":"두 장인의 명령을 짜서 전력이 떨어지기 전에 지정된 종을 울리세요.","es":"Ordena las acciones de dos artesanos y toca las campanas indicadas antes de agotar la energía.","pt-BR":"Organize os comandos de dois artesãos e toque os sinos pedidos antes que a energia acabe.","fr":"Planifiez les actions de deux artisans et sonnez les cloches demandées avant d’épuiser l’énergie.","de":"Plane die Befehle für zwei Handwerker und läute die geforderten Glocken, bevor der Strom ausgeht.","it":"Organizza i comandi di due artigiani e suona le campane richieste prima che finisca l’energia.","ru":"Распланируйте действия двух мастеров и сыграйте нужные ноты, пока есть энергия.","hi":"दो कारीगरों के आदेश सजाएँ और बिजली खत्म होने से पहले सही घंटियाँ बजाएँ।","ar":"رتّب أوامر حرفيين واقرع الأجراس المطلوبة قبل نفاد الطاقة."},"ages":["13","family"],"categories":["Strategy","Puzzle"],"tags":["Programming Logic","Resource Management","Sequencing"],"skills":["Planning","Problem Solving"],"art":{"kind":"image","background":"games/bellshift-atelier/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning","Problem Solving"],"gameIds":["prismkin-rescue","silicon-shift","dusk-signal"]},"previewVideo":"assets/previews/bellshift-atelier-battle.webm"},
+    {"id":"stararc-rendezvous","audience":"general","status":"playable","href":"games/stararc-rendezvous/","previewVideo":"assets/previews/stararc-rendezvous-battle.webm","title":{"__localizedExact":true,"en":"Stararc Rendezvous","zh-Hant":"星弧接駁","zh-Hans":"星弧接驳","ja":"星弧ランデブー","ko":"별궤도 랑데부","es":"Encuentro Estelar","pt-BR":"Encontro Estelar","fr":"Rendez-vous stellaire","de":"Sternbogen-Rendezvous","it":"Incontro stellare","ru":"Звёздная стыковка","ar":"لقاء المدار النجمي","hi":"ताराकक्षा मिलन"},"type":{"__localizedExact":true,"en":"Orbital planning","zh-Hant":"軌道規劃","zh-Hans":"轨道规划","ja":"軌道計画","ko":"궤도 계획","es":"Planificación orbital","pt-BR":"Planejamento orbital","fr":"Planification orbitale","de":"Orbitplanung","it":"Pianificazione orbitale","ru":"Орбитальное планирование","ar":"تخطيط مداري","hi":"कक्षा नियोजन"},"description":{"__localizedExact":true,"en":"Fit your shuttle, plan a transfer, and dock with moving stations before the shift ends.","zh-Hant":"為航艙配裝、預測轉軌，在班次結束前與移動站點對接。","zh-Hans":"为航舱配装、预测转轨，在班次结束前与移动站点对接。","ja":"シャトルを整備し、軌道変更を計画して、時間内に移動するステーションとドッキング。","ko":"셔틀을 정비하고 궤도 변경을 계획해 제한 시간 안에 이동 정거장에 도킹하세요.","es":"Equipa tu nave, planifica una transferencia y acopla en estaciones móviles antes del fin del turno.","pt-BR":"Equipe sua nave, planeje a transferência e atraque em estações móveis antes do fim do turno.","fr":"Équipe ta navette, prévois un transfert et rejoins les stations mobiles avant la fin du service.","de":"Rüste dein Shuttle aus, plane den Bahnwechsel und docke vor Schichtende an beweglichen Stationen an.","it":"Equipaggia la navetta, pianifica la manovra e attracca alle stazioni mobili entro il turno.","ru":"Оснастите шаттл, спланируйте переход и состыкуйтесь с движущимися станциями до конца смены.","ar":"جهّز المكوك وخطّط لتغيير المدار والتحم بالمحطات المتحركة قبل انتهاء المناوبة.","hi":"यान को तैयार करें, कक्षा बदलने की योजना बनाएँ और पाली खत्म होने से पहले चलित स्टेशनों से जुड़ें।"},"categories":["Puzzle","Strategy"],"skills":["Planning","Logic"],"ages":["9","family"],"tags":["Route Planning","Resource Management"],"difficulty":"Medium","estimatedPlayTime":"2–4 minutes","art":{"kind":"image","background":"games/stararc-rendezvous/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["animal-orbit-orchard","cloudhold-voyager","reedway-transit"]}},
     {
       id: "silicon-shift", audience: "general", status: "playable",
       href: "games/silicon-shift/", previewVideo: "assets/previews/silicon-shift-battle.webm",
@@ -155,10 +159,10 @@ window.WONDER_LOBBY = {
       description: { en: "Trace test pulses and wire one circuit to pass every case.", "zh-Hant": "追蹤測試訊號，讓同一張電路通過每組測試。", "zh-Hans": "追踪测试信号，让同一张电路通过每组测试。", ja: "試験信号を追い、一つの回路ですべての試験を通そう。", ko: "시험 신호를 추적해 하나의 회로로 모든 검사를 통과하세요.", es: "Sigue los pulsos y configura un circuito que supere todas las pruebas.", "pt-BR": "Siga os pulsos e monte um circuito que passe em todos os testes.", fr: "Suis les impulsions et câble un circuit qui réussit chaque test.", de: "Verfolge Testimpulse und verdrahte einen Schaltkreis für alle Prüfungen.", it: "Segui gli impulsi e cabla un circuito che superi ogni prova.", ru: "Проследите импульсы и настройте одну цепь для всех проверок.", hi: "परीक्षण संकेत देखें और एक ही परिपथ से हर जाँच पूरी करें।", ar: "تتبّع نبضات الاختبار واضبط دارة واحدة لاجتياز كل الحالات." },
       ages: ["9", "family"], categories: ["Puzzle", "Strategy"], skills: ["Logic", "Planning"],
       tags: ["Route Planning", "Logic"], difficulty: "Medium", estimatedPlayTime: "1–4 minutes",
-      art: { kind: "image", background: "games/silicon-shift/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/silicon-shift/art/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       relatedGameRules: { requirePublic: true, gameIds: ["animal-sunbeam-garden", "code-breaker"] },
     },
-    {"id":"cinderburrow","audience":"general","status":"playable","href":"games/cinderburrow/","title":{"__localizedExact":true,"en":"Cinderburrow","zh-Hant":"岩燈守線","zh-Hans":"岩灯守线","ja":"岩灯の守り手","ko":"바위등불 방어선","es":"Guardia del Farol","pt-BR":"Guarda do Farol","fr":"La Garde du Phare","it":"Guardia del Faro","de":"Wacht am Felslicht","ru":"Стражи каменного огня","ar":"حراس منارة الصخر","hi":"शैलदीप के रक्षक"},"type":{"__localizedExact":true,"en":"Mining strategy","zh-Hant":"採掘策略","zh-Hans":"采掘策略","ja":"採掘ストラテジー","ko":"채굴 전략","es":"Estrategia minera","pt-BR":"Estratégia de mineração","fr":"Stratégie minière","it":"Strategia mineraria","de":"Bergbaustrategie","ru":"Горная стратегия","ar":"استراتيجية التعدين","hi":"खनन रणनीति"},"description":{"__localizedExact":true,"en":"Carve a way through the ridge, bring glow cores home, and brace the gates before the ash surges.","zh-Hant":"鑿開岩道，運回燈芯，在灰潮來臨前加固閘門。","zh-Hans":"凿开岩道，运回灯芯，在灰潮来临前加固闸门。","ja":"岩を掘って灯芯を持ち帰り、灰の波が来る前に門を固めよう。","ko":"암벽을 뚫고 빛핵을 운반해 잿물결이 오기 전에 관문을 보강하세요.","es":"Excava en la montaña, recupera núcleos de luz y refuerza las compuertas antes de la oleada de ceniza.","pt-BR":"Escave a montanha, traga núcleos de luz e reforce as comportas antes da onda de cinzas.","fr":"Creusez la montagne, rapportez des cœurs lumineux et renforcez les portes avant la vague de cendres.","it":"Scava la montagna, riporta i nuclei luminosi e rinforza le paratie prima dell’ondata di cenere.","de":"Grabe durch den Fels, bring Leuchtkerne heim und verstärke die Tore vor der Aschewelle.","ru":"Проложите путь в скале, доставьте световые ядра и укрепите ворота до прихода пепельной волны.","ar":"احفر طريقًا في الصخر، وانقل النوى المضيئة، وحصّن البوابات قبل موجة الرماد.","hi":"चट्टान में रास्ता खोदें, ज्योति-कोर वापस लाएँ और राख की लहर से पहले फाटक मजबूत करें।"},"ages":["13","family"],"categories":["Strategy","Animal Games"],"skills":["Planning","Problem Solving"],"tags":["Mining","Resource Management","Turn-Based Strategy"],"difficulty":"Medium","estimatedPlayTime":"2–5 minutes","art":{"kind":"image","background":"games/cinderburrow/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["deep-drill","animal-guard-yard","reedway-transit"]},"previewVideo":"assets/previews/cinderburrow-battle.webm"},
+    {"id":"cinderburrow","audience":"general","status":"playable","href":"games/cinderburrow/","title":{"__localizedExact":true,"en":"Cinderburrow","zh-Hant":"岩燈守線","zh-Hans":"岩灯守线","ja":"岩灯の守り手","ko":"바위등불 방어선","es":"Guardia del Farol","pt-BR":"Guarda do Farol","fr":"La Garde du Phare","it":"Guardia del Faro","de":"Wacht am Felslicht","ru":"Стражи каменного огня","ar":"حراس منارة الصخر","hi":"शैलदीप के रक्षक"},"type":{"__localizedExact":true,"en":"Mining strategy","zh-Hant":"採掘策略","zh-Hans":"采掘策略","ja":"採掘ストラテジー","ko":"채굴 전략","es":"Estrategia minera","pt-BR":"Estratégia de mineração","fr":"Stratégie minière","it":"Strategia mineraria","de":"Bergbaustrategie","ru":"Горная стратегия","ar":"استراتيجية التعدين","hi":"खनन रणनीति"},"description":{"__localizedExact":true,"en":"Carve a way through the ridge, bring glow cores home, and brace the gates before the ash surges.","zh-Hant":"鑿開岩道，運回燈芯，在灰潮來臨前加固閘門。","zh-Hans":"凿开岩道，运回灯芯，在灰潮来临前加固闸门。","ja":"岩を掘って灯芯を持ち帰り、灰の波が来る前に門を固めよう。","ko":"암벽을 뚫고 빛핵을 운반해 잿물결이 오기 전에 관문을 보강하세요.","es":"Excava en la montaña, recupera núcleos de luz y refuerza las compuertas antes de la oleada de ceniza.","pt-BR":"Escave a montanha, traga núcleos de luz e reforce as comportas antes da onda de cinzas.","fr":"Creusez la montagne, rapportez des cœurs lumineux et renforcez les portes avant la vague de cendres.","it":"Scava la montagna, riporta i nuclei luminosi e rinforza le paratie prima dell’ondata di cenere.","de":"Grabe durch den Fels, bring Leuchtkerne heim und verstärke die Tore vor der Aschewelle.","ru":"Проложите путь в скале, доставьте световые ядра и укрепите ворота до прихода пепельной волны.","ar":"احفر طريقًا في الصخر، وانقل النوى المضيئة، وحصّن البوابات قبل موجة الرماد.","hi":"चट्टान में रास्ता खोदें, ज्योति-कोर वापस लाएँ और राख की लहर से पहले फाटक मजबूत करें।"},"ages":["13","family"],"categories":["Strategy","Animal Games"],"skills":["Planning","Problem Solving"],"tags":["Mining","Resource Management","Turn-Based Strategy"],"difficulty":"Medium","estimatedPlayTime":"2–5 minutes","art":{"kind":"image","background":"games/cinderburrow/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["deep-drill","animal-guard-yard","reedway-transit"]},"previewVideo":"assets/previews/cinderburrow-battle.webm"},
     {
       id: "block-planet-repair", audience: "general", status: "playable",
       href: "games/block-planet-repair/",
@@ -167,7 +171,7 @@ window.WONDER_LOBBY = {
       description: {"__localizedExact":true,"en":"Sweep over lit repair robots to restore five planets. Spend energy coins to recruit robots and take on contracts in specific zones.","zh-Hant":"滑過亮起的修復機器人，讓五顆星球復原。用能量幣招募機器人，再挑戰指定區域的修復委託。","zh-Hans":"滑过亮起的修复机器人，让五颗星球复原。用能量币招募机器人，再挑战指定区域的修复委托。","ja":"光った修復ロボットをなぞって、5つの惑星を復元しましょう。エネルギーコインでロボットを雇い、指定エリアの修復依頼に挑みます。","ko":"불이 켜진 복구 로봇을 쓸어 다섯 행성을 복구하세요. 에너지 코인으로 로봇을 영입하고 지정 구역의 복구 의뢰에 도전하세요.","es":"Desliza sobre los robots iluminados para restaurar cinco planetas. Gasta monedas de energía en reclutar robots y acepta encargos en zonas concretas.","pt-BR":"Passe pelos robôs acesos para restaurar cinco planetas. Use moedas de energia para recrutar robôs e cumpra contratos em áreas específicas.","fr":"Passez sur les robots allumés pour restaurer cinq planètes. Dépensez vos pièces d’énergie pour recruter des robots et relevez des missions dans des zones précises.","de":"Streiche über leuchtende Reparaturroboter, um fünf Planeten wiederherzustellen. Rekrutiere mit Energiemünzen Roboter und nimm Aufträge für bestimmte Gebiete an.","it":"Scorri sui robot illuminati per ripristinare cinque pianeti. Recluta robot con le monete di energia e affronta incarichi in zone precise.","ru":"Проводите по светящимся ремонтным роботам, чтобы восстановить пять планет. Нанимайте роботов за энергомонеты и выполняйте заказы в отдельных зонах.","hi":"चमकते मरम्मत रोबोटों पर उँगली फेरकर पाँच ग्रह बहाल करें। ऊर्जा सिक्कों से रोबोट भर्ती करें और तय इलाकों में मरम्मत के काम पूरे करें।","ar":"مرّر فوق روبوتات الترميم المضيئة لإصلاح خمسة كواكب. أنفق عملات الطاقة لتجنيد روبوتات وتولَّ مهام الترميم في مناطق محددة."},
       ages: ["9", "family"], categories: ["Management"], skills: ["Planning", "Observation"],
       tags: ["Idle", "Resource Management", "Collection"], difficulty: "Easy", estimatedPlayTime: "3–6 minutes",
-      art: { kind: "image", background: "games/block-planet-repair/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/block-planet-repair/art/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       previewVideo: "assets/previews/block-planet-repair-battle.webm",
       relatedGameRules: { requirePublic: true, gameIds: ["block-dig-crew", "animal-zoo-idle"] },
     },
@@ -179,10 +183,10 @@ window.WONDER_LOBBY = {
       description: {"__localizedExact":true,"en":"Curate exhibits, plan tours and keep your collection ready for the next guests.","zh-Hant":"挑選展品、安排導覽，為下一團維護館藏。","zh-Hans":"挑选展品、安排导览，为下一团维护馆藏。","ja":"展示品を選び、見学ルートを組み、次の来館者に備えよう。","ko":"전시품을 고르고 관람 동선을 짜서 다음 손님을 맞이하세요.","es":"Elige las piezas, organiza visitas y prepara la colección para el siguiente grupo.","pt-BR":"Escolha as peças, planeje os percursos e prepare a coleção para o próximo grupo.","fr":"Choisissez les pièces, préparez les visites et entretenez la collection pour le groupe suivant.","de":"Wähle Exponate, plane Führungen und bereite die Sammlung für die nächste Gruppe vor.","it":"Scegli i reperti, organizza le visite e prepara la collezione per il prossimo gruppo.","ru":"Выбирайте экспонаты, прокладывайте маршруты и готовьте коллекцию к приходу следующей группы.","hi":"प्रदर्श चुनें, भ्रमण का रास्ता तय करें और अगले समूह के लिए संग्रह तैयार रखें।","ar":"اختر المعروضات وخطّط للجولات وجهّز المجموعة للزوار القادمين."},
       ages: ["9", "family"], categories: ["Management", "Strategy"], skills: ["Planning", "Logic"],
       tags: ["Resource Management", "Route Planning"], difficulty: "Medium", estimatedPlayTime: "2–4 minutes",
-      art: {kind: "image", background: "games/mosslight-museum/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true},
+      art: {kind: "image", background: "games/mosslight-museum/art/cover.webp?wp-media=512519f6a2210940", hideHero: true},
       relatedGameRules: {requirePublic: true, sharedSkills: ["Planning"], gameIds: ["wingseal-post", "reedway-transit", "animal-deep-sea-salvage"]},
     },
-    {"id":"block-dig-crew","audience":"general","status":"playable","href":"games/block-dig-crew/","title":{"__localizedExact":true,"en":"Block Dig Crew","zh-Hant":"方塊挖寶團","zh-Hans":"方块挖宝团","ja":"ブロックお宝発掘隊","ko":"블록 보물 발굴단","es":"Brigada Buscatesoros","pt-BR":"Equipe Caça-Gemas","fr":"La Brigade des gemmes","de":"Block-Schatztrupp","it":"Squadra Scavagemme","ru":"Кубическая артель","hi":"ब्लॉक ख़ज़ाना दल","ar":"فرقة كنوز المكعّبات"},"type":{"__localizedExact":true,"en":"Mining & Upgrades","zh-Hant":"挖掘與養成","zh-Hans":"挖掘与养成","ja":"発掘と強化","ko":"채굴과 성장","es":"Minería y mejoras","pt-BR":"Mineração e melhorias","fr":"Fouille et améliorations","de":"Bergbau und Ausbau","it":"Scavo e potenziamento","ru":"Добыча и улучшения","hi":"खनन और उन्नति","ar":"التنقيب والتطوير"},"description":{"__localizedExact":true,"en":"Sweep over tools, uncover gems and build your own digging crew.","zh-Hant":"滑過工具挖出寶石，養成自己的挖寶團。","zh-Hans":"滑过工具挖出宝石，养成自己的挖宝团。","ja":"道具をなぞって宝石を掘り、発掘隊を育てよう。","ko":"도구를 훑어 보석을 캐고 발굴단을 키우세요.","es":"Desliza sobre las herramientas, encuentra gemas y amplía tu brigada.","pt-BR":"Passe sobre as ferramentas, encontre gemas e cresça sua equipe.","fr":"Survolez les outils, déterrez des gemmes et développez votre brigade.","de":"Streiche über Werkzeuge, finde Edelsteine und baue deinen Trupp aus.","it":"Passa sugli attrezzi, trova gemme e fai crescere la squadra.","ru":"Проводи по инструментам, добывай самоцветы и развивай артель.","hi":"औज़ारों पर उंगली फेरें, रत्न खोजें और अपना दल बढ़ाएँ।","ar":"مرّر فوق الأدوات لاستخراج الجواهر وتطوير فرقتك."},"categories":["Strategy","Adventure","Animal Games"],"skills":["Timing","Planning"],"ages":["general"],"art":{"kind":"image","background":"games/block-dig-crew/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["rux-salvage-yard","dustwake-depot","skymeadow-keeper"]},"previewVideo":"assets/previews/block-dig-crew-battle.webm"},
+    {"id":"block-dig-crew","audience":"general","status":"playable","href":"games/block-dig-crew/","title":{"__localizedExact":true,"en":"Block Dig Crew","zh-Hant":"方塊挖寶團","zh-Hans":"方块挖宝团","ja":"ブロックお宝発掘隊","ko":"블록 보물 발굴단","es":"Brigada Buscatesoros","pt-BR":"Equipe Caça-Gemas","fr":"La Brigade des gemmes","de":"Block-Schatztrupp","it":"Squadra Scavagemme","ru":"Кубическая артель","hi":"ब्लॉक ख़ज़ाना दल","ar":"فرقة كنوز المكعّبات"},"type":{"__localizedExact":true,"en":"Mining & Upgrades","zh-Hant":"挖掘與養成","zh-Hans":"挖掘与养成","ja":"発掘と強化","ko":"채굴과 성장","es":"Minería y mejoras","pt-BR":"Mineração e melhorias","fr":"Fouille et améliorations","de":"Bergbau und Ausbau","it":"Scavo e potenziamento","ru":"Добыча и улучшения","hi":"खनन और उन्नति","ar":"التنقيب والتطوير"},"description":{"__localizedExact":true,"en":"Sweep over tools, uncover gems and build your own digging crew.","zh-Hant":"滑過工具挖出寶石，養成自己的挖寶團。","zh-Hans":"滑过工具挖出宝石，养成自己的挖宝团。","ja":"道具をなぞって宝石を掘り、発掘隊を育てよう。","ko":"도구를 훑어 보석을 캐고 발굴단을 키우세요.","es":"Desliza sobre las herramientas, encuentra gemas y amplía tu brigada.","pt-BR":"Passe sobre as ferramentas, encontre gemas e cresça sua equipe.","fr":"Survolez les outils, déterrez des gemmes et développez votre brigade.","de":"Streiche über Werkzeuge, finde Edelsteine und baue deinen Trupp aus.","it":"Passa sugli attrezzi, trova gemme e fai crescere la squadra.","ru":"Проводи по инструментам, добывай самоцветы и развивай артель.","hi":"औज़ारों पर उंगली फेरें, रत्न खोजें और अपना दल बढ़ाएँ।","ar":"مرّر فوق الأدوات لاستخراج الجواهر وتطوير فرقتك."},"categories":["Strategy","Adventure","Animal Games"],"skills":["Timing","Planning"],"ages":["general"],"art":{"kind":"image","background":"games/block-dig-crew/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["rux-salvage-yard","dustwake-depot","skymeadow-keeper"]},"previewVideo":"assets/previews/block-dig-crew-battle.webm"},
     {
       id: "wingseal-post", audience: "general", status: "playable",
       href: "games/wingseal-post/", previewVideo: "assets/previews/wingseal-post-battle.webm",
@@ -192,23 +196,23 @@ window.WONDER_LOBBY = {
       ages: ["9", "family"], categories: ["Simulation", "Strategy"],
       skills: ["Logic", "Planning"], tags: ["Inspection", "Logistics", "Resource Management"],
       difficulty: "Medium", estimatedPlayTime: "1–3 minutes",
-      art: { kind: "image", background: "games/wingseal-post/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/wingseal-post/art/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       relatedGameRules: { requirePublic: true, sharedSkills: ["Planning"], gameIds: ["chromadock", "reedway-transit", "rivetide-works"] },
     },
-    {"id":"tidegate-relay","audience":"general","status":"playable","href":"games/tidegate-relay/","title":{"__localizedExact":true,"en":"Tidegate Relay","zh-Hant":"潮口放行","zh-Hans":"潮口放行","ja":"潮のゲート管制","ko":"물길 교차로 관제","es":"Control de la Marea","pt-BR":"Controle da Maré","fr":"Aiguillage des Marées","de":"Verkehr am Gezeitentor","it":"Snodo di Marea","ru":"Диспетчер прилива","hi":"ज्वार मार्ग नियंत्रण","ar":"تنظيم معبر المد"},"type":{"__localizedExact":true,"en":"Traffic dispatch strategy","zh-Hant":"車流調度策略","zh-Hans":"车流调度策略","ja":"交通管制ストラテジー","ko":"교통 관제 전략","es":"Estrategia de tráfico","pt-BR":"Estratégia de trânsito","fr":"Stratégie de circulation","de":"Verkehrsstrategie","it":"Strategia del traffico","ru":"Стратегия дорожного движения","hi":"यातायात रणनीति","ar":"استراتيجية تنظيم المرور"},"description":{"__localizedExact":true,"en":"Dispatch vehicles across a coastal interchange. Read the lanes, plan ahead and get priority traffic through on time.","zh-Hant":"在海岸交流道調度車流。看清車道、提早分流，讓優先車準時抵達。","zh-Hans":"在海岸立交调度车流。看清车道、提前分流，让优先车辆准时抵达。","ja":"海沿いのジャンクションで車をさばこう。車線を見て先を読み、優先車を時間内に通そう。","ko":"해안 나들목의 차량을 배차하세요. 차로 상황을 미리 보고 우선 차량을 제때 보내세요.","es":"Dirige el tráfico en un enlace costero. Anticipa la ocupación y deja pasar a tiempo a los vehículos prioritarios.","pt-BR":"Organize o tráfego de um entroncamento costeiro. Antecipe as pistas livres e libere os veículos prioritários a tempo.","fr":"Gérez les véhicules d’un échangeur côtier. Anticipez l’état des voies et faites passer les véhicules prioritaires à temps.","de":"Leite den Verkehr an einem Küstenknoten. Plane freie Fahrspuren ein und bringe Vorrangfahrzeuge pünktlich ans Ziel.","it":"Smista il traffico di uno svincolo costiero. Prevedi le corsie libere e fai arrivare in tempo i veicoli prioritari.","ru":"Управляйте движением на прибрежной развязке. Предугадывайте загрузку полос и пропускайте приоритетные машины вовремя.","hi":"तटीय जंक्शन पर गाड़ियाँ भेजें। खाली लेन का अंदाज़ा लगाएँ और प्राथमिकता वाली गाड़ियों को समय पर पहुँचाएँ।","ar":"نظّم حركة المركبات عند تقاطع ساحلي. توقّع انشغال المسارات وأوصل مركبات الأولوية في موعدها."},"ages":["9","family"],"categories":["Puzzle","Strategy"],"tags":["Traffic Dispatch","Turn-Based Strategy","Resource Management"],"skills":["Planning","Problem Solving"],"relatedGameRules":{"requirePublic":true,"gameIds":["reedway-transit","traffic-jam-diner","animal-parking-patrol"]},"art":{"kind":"image","background":"games/tidegate-relay/assets/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"previewVideo":"assets/previews/tidegate-relay-battle.webm","difficulty":"Medium","estimatedPlayTime":"1–4 minutes"},
-    {"id":"prismkin-rescue","audience":"general","status":"playable","href":"games/prismkin-rescue/","title":{"__localizedExact":true,"en":"Prismkin Rescue","zh-Hant":"晶脈救援","zh-Hans":"晶脉救援","ja":"晶脈レスキュー","ko":"수정맥 구조대","es":"Rescate en la veta de cristal","pt-BR":"Resgate na Veia de Cristal","fr":"Sauvetage dans la Veine de cristal","de":"Rettung in der Kristallader","it":"Soccorso nella Vena di Cristallo","ru":"Спасение в кристальной жиле","hi":"स्फटिक घाटी बचाव","ar":"الإنقاذ في عرق البلور"},"type":{"__localizedExact":true,"en":"Turn-based rescue tactics","zh-Hant":"回合制救援戰術","zh-Hans":"回合制救援战术","ja":"ターン制救助戦術","ko":"턴제 구조 전술","es":"Rescate táctico por turnos","pt-BR":"Resgate tático por turnos","fr":"Sauvetage tactique au tour par tour","de":"Rundenbasierte Rettungstaktik","it":"Soccorso tattico a turni","ru":"Пошаговая тактика спасения","hi":"बारी आधारित बचाव रणनीति","ar":"إنقاذ تكتيكي بالأدوار"},"description":{"__localizedExact":true,"en":"Plan each step with Nori and Taro. Guide lost crystal creatures home before the tide drains your light.","zh-Hant":"和諾里、塔羅規劃每一步，在晶潮耗盡燈光前帶迷途晶獸回家。","zh-Hans":"和诺里、塔罗规划每一步，在晶潮耗尽灯光前带迷途晶兽回家。","ja":"ノリとタロと一歩ずつ計画し、晶潮で灯りが尽きる前に迷子の晶獣を家へ導こう。","ko":"노리와 타로와 한 걸음씩 계획하고, 수정 파도가 빛을 앗아가기 전에 길 잃은 수정 동물을 데려오세요.","es":"Planea cada paso con Nori y Taro. Lleva a casa a las criaturas perdidas antes de que la marea apague tu luz.","pt-BR":"Planeje cada passo com Nori e Taro. Leve as criaturas perdidas para casa antes que a maré apague sua luz.","fr":"Planifiez chaque pas avec Nori et Taro. Ramenez les créatures égarées avant que la marée n’éteigne votre lumière.","de":"Plane jeden Schritt mit Nori und Taro. Bringe verirrte Kristalltiere heim, bevor die Flut dein Licht löscht.","it":"Pianifica ogni passo con Nori e Taro. Riporta a casa le creature smarrite prima che la marea spenga la luce.","ru":"Планируйте каждый шаг с Нори и Таро. Верните потерявшихся зверьков домой, пока прилив не погасил свет.","hi":"नोरी और तारो के साथ हर कदम सोचें। लहर रोशनी बुझा दे, उससे पहले भटके जीवों को घर पहुँचाएँ।","ar":"خطط لكل خطوة مع نوري وتارو. أعد الكائنات التائهة إلى موطنها قبل أن يطفئ المد نورك."},"ages":["9","family"],"categories":["Strategy","Puzzle","Adventure"],"tags":["Turn-Based Tactics","Route Planning","Rescue"],"skills":["Planning","Spatial Reasoning"],"relatedGameRules":{"requirePublic":true,"gameIds":["animal-rune-tactics","kindred-habitats","galevault-atlas"]},"art":{"kind":"image","background":"games/prismkin-rescue/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"previewVideo":"assets/previews/prismkin-rescue-battle.webm"},
-    {"id":"galevault-atlas","audience":"general","status":"playable","href":"games/galevault-atlas/","previewVideo":"assets/previews/galevault-atlas-battle.webm","title":{"__localizedExact":true,"en":"Galevault Atlas","zh-Hant":"風匣圖廊","zh-Hans":"风匣图廊","ja":"風函の図廊","ko":"바람함 지도 회랑","es":"Atlas de la Bóveda del Viento","pt-BR":"Atlas da Galeria dos Ventos","fr":"L’Atlas du coffre des vents","de":"Atlas der Windkammer","it":"Atlante della Galleria del Vento","ru":"Атлас хранилища ветров","hi":"पवन कक्ष का एटलस","ar":"أطلس خزانة الرياح"},"type":{"__localizedExact":true,"en":"Room drafting strategy","zh-Hant":"房間構築策略","zh-Hans":"房间构筑策略","ja":"部屋選択ストラテジー","ko":"방 배치 전략","es":"Estrategia de salas","pt-BR":"Estratégia de salas","fr":"Stratégie de salles","de":"Raumplanungsstrategie","it":"Strategia di costruzione","ru":"Стратегия постройки залов","hi":"कमरा निर्माण रणनीति","ar":"استراتيجية بناء الغرف"},"description":{"__localizedExact":true,"en":"Choose rooms to build a route through the floating archive. Collect chart pages and save enough wind to bring them home.","zh-Hant":"選房接門，穿過浮空圖廊。收集散落的圖頁，留足風力帶回基地。","zh-Hans":"选房接门，穿过浮空图廊。收集散落的图页，留足风力带回基地。","ja":"部屋を選んで空の書庫に道をつなごう。地図の頁を集め、帰り道の風を残して拠点へ。","ko":"방을 골라 하늘 서고에 길을 이으세요. 지도 조각을 모으고 돌아갈 바람을 남겨 두세요.","es":"Elige salas y traza una ruta por el archivo flotante. Recoge páginas del mapa y reserva viento para volver.","pt-BR":"Escolha salas para traçar uma rota pelo arquivo flutuante. Recolha páginas e guarde vento para a volta.","fr":"Choisissez des salles pour tracer une route dans les archives flottantes. Récupérez les pages et gardez du vent pour rentrer.","de":"Wähle Räume und baue einen Weg durch das schwebende Archiv. Sammle Kartenseiten und spare Wind für den Rückweg.","it":"Scegli le sale per tracciare un percorso nell’archivio sospeso. Raccogli le pagine e conserva vento per tornare.","ru":"Выбирайте залы и прокладывайте путь по парящему архиву. Соберите листы карты и сохраните ветер для возвращения.","hi":"कमरे चुनकर तैरते अभिलेखागार में रास्ता बनाएं। नक्शे के पन्ने जुटाएं और वापसी के लिए हवा बचाएं।","ar":"اختر الغرف لترسم طريقًا عبر الأرشيف العائم. اجمع صفحات الخريطة واحتفظ بريح تكفي للعودة."},"ages":["9","family"],"categories":["Strategy","Adventure","Puzzle"],"tags":["Room Drafting","Route Planning","Resource Management"],"skills":["Planning","Spatial Reasoning"],"art":{"kind":"image","background":"games/galevault-atlas/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["moonlit-atrium","cloudhold-voyager","reedway-transit"]}},
-    {"id":"emberglaze-kiln","audience":"general","status":"playable","href":"games/emberglaze-kiln/","title":{"__localizedExact":true,"en":"Emberglaze Kiln","zh-Hant":"琉火窯","zh-Hans":"琉火窑","ja":"琥珀釉の窯","ko":"유약 불가마","es":"Horno de esmalte ámbar","pt-BR":"Forno de Esmalte Âmbar","fr":"Four aux émaux","de":"Glutglasur","it":"Forno degli smalti","ru":"Печь янтарной глазури","hi":"अंबर की भट्ठी","ar":"فرن طلاء العنبر"},"type":{"__localizedExact":true,"en":"Kiln workshop","zh-Hant":"陶藝工房","zh-Hans":"陶艺工坊","ja":"陶芸工房","ko":"도예 공방","es":"Taller de cerámica","pt-BR":"Oficina de cerâmica","fr":"Atelier de céramique","de":"Töpferwerkstatt","it":"Bottega di ceramica","ru":"Гончарная мастерская","hi":"कुम्हार की कार्यशाला","ar":"ورشة خزف"},"description":{"__localizedExact":true,"en":"Mix minerals, balance the kiln heat and fire ceramics for the village.","zh-Hant":"調合礦料、掌握窯溫，為村民燒出訂做的陶器。","zh-Hans":"调合矿料、掌握窑温，为村民烧出订做的陶器。","ja":"鉱石を混ぜ、窯の温度を整えて、村の注文どおりに器を焼こう。","ko":"광물을 섞고 가마 온도를 맞춰 마을의 주문에 맞는 도자기를 구워요.","es":"Mezcla minerales, regula el calor y cuece cerámica para la aldea.","pt-BR":"Misture minerais, regule o calor do forno e queime a cerâmica da aldeia.","fr":"Mélangez les minéraux, réglez la chaleur du four et cuisez des poteries pour le village.","de":"Mische Mineralien, regle die Ofenhitze und brenne Keramik für das Dorf.","it":"Mescola i minerali, regola il calore del forno e cuoci ceramiche per il villaggio.","ru":"Смешивайте минералы, регулируйте жар и обжигайте керамику для деревни.","hi":"खनिज मिलाएँ, भट्ठी का ताप सँभालें और गाँव के लिए बर्तन पकाएँ।","ar":"امزج المعادن واضبط حرارة الفرن واصنع أواني الخزف للقرية."},"ages":["9","family"],"categories":["Simulation","Management","Puzzle"],"tags":["Resource Management","Planning"],"skills":["Planning","Problem Solving"],"art":{"kind":"image","background":"games/emberglaze-kiln/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning"],"gameIds":["rivetide-works","reedway-transit","animal-moon-market"]},"previewVideo":"assets/previews/emberglaze-kiln-battle.webm"},
+    {"id":"tidegate-relay","audience":"general","status":"playable","href":"games/tidegate-relay/","title":{"__localizedExact":true,"en":"Tidegate Relay","zh-Hant":"潮口放行","zh-Hans":"潮口放行","ja":"潮のゲート管制","ko":"물길 교차로 관제","es":"Control de la Marea","pt-BR":"Controle da Maré","fr":"Aiguillage des Marées","de":"Verkehr am Gezeitentor","it":"Snodo di Marea","ru":"Диспетчер прилива","hi":"ज्वार मार्ग नियंत्रण","ar":"تنظيم معبر المد"},"type":{"__localizedExact":true,"en":"Traffic dispatch strategy","zh-Hant":"車流調度策略","zh-Hans":"车流调度策略","ja":"交通管制ストラテジー","ko":"교통 관제 전략","es":"Estrategia de tráfico","pt-BR":"Estratégia de trânsito","fr":"Stratégie de circulation","de":"Verkehrsstrategie","it":"Strategia del traffico","ru":"Стратегия дорожного движения","hi":"यातायात रणनीति","ar":"استراتيجية تنظيم المرور"},"description":{"__localizedExact":true,"en":"Dispatch vehicles across a coastal interchange. Read the lanes, plan ahead and get priority traffic through on time.","zh-Hant":"在海岸交流道調度車流。看清車道、提早分流，讓優先車準時抵達。","zh-Hans":"在海岸立交调度车流。看清车道、提前分流，让优先车辆准时抵达。","ja":"海沿いのジャンクションで車をさばこう。車線を見て先を読み、優先車を時間内に通そう。","ko":"해안 나들목의 차량을 배차하세요. 차로 상황을 미리 보고 우선 차량을 제때 보내세요.","es":"Dirige el tráfico en un enlace costero. Anticipa la ocupación y deja pasar a tiempo a los vehículos prioritarios.","pt-BR":"Organize o tráfego de um entroncamento costeiro. Antecipe as pistas livres e libere os veículos prioritários a tempo.","fr":"Gérez les véhicules d’un échangeur côtier. Anticipez l’état des voies et faites passer les véhicules prioritaires à temps.","de":"Leite den Verkehr an einem Küstenknoten. Plane freie Fahrspuren ein und bringe Vorrangfahrzeuge pünktlich ans Ziel.","it":"Smista il traffico di uno svincolo costiero. Prevedi le corsie libere e fai arrivare in tempo i veicoli prioritari.","ru":"Управляйте движением на прибрежной развязке. Предугадывайте загрузку полос и пропускайте приоритетные машины вовремя.","hi":"तटीय जंक्शन पर गाड़ियाँ भेजें। खाली लेन का अंदाज़ा लगाएँ और प्राथमिकता वाली गाड़ियों को समय पर पहुँचाएँ।","ar":"نظّم حركة المركبات عند تقاطع ساحلي. توقّع انشغال المسارات وأوصل مركبات الأولوية في موعدها."},"ages":["9","family"],"categories":["Puzzle","Strategy"],"tags":["Traffic Dispatch","Turn-Based Strategy","Resource Management"],"skills":["Planning","Problem Solving"],"relatedGameRules":{"requirePublic":true,"gameIds":["reedway-transit","traffic-jam-diner","animal-parking-patrol"]},"art":{"kind":"image","background":"games/tidegate-relay/assets/cover.webp?wp-media=512519f6a2210940","hideHero":true},"previewVideo":"assets/previews/tidegate-relay-battle.webm","difficulty":"Medium","estimatedPlayTime":"1–4 minutes"},
+    {"id":"prismkin-rescue","audience":"general","status":"playable","href":"games/prismkin-rescue/","title":{"__localizedExact":true,"en":"Prismkin Rescue","zh-Hant":"晶脈救援","zh-Hans":"晶脉救援","ja":"晶脈レスキュー","ko":"수정맥 구조대","es":"Rescate en la veta de cristal","pt-BR":"Resgate na Veia de Cristal","fr":"Sauvetage dans la Veine de cristal","de":"Rettung in der Kristallader","it":"Soccorso nella Vena di Cristallo","ru":"Спасение в кристальной жиле","hi":"स्फटिक घाटी बचाव","ar":"الإنقاذ في عرق البلور"},"type":{"__localizedExact":true,"en":"Turn-based rescue tactics","zh-Hant":"回合制救援戰術","zh-Hans":"回合制救援战术","ja":"ターン制救助戦術","ko":"턴제 구조 전술","es":"Rescate táctico por turnos","pt-BR":"Resgate tático por turnos","fr":"Sauvetage tactique au tour par tour","de":"Rundenbasierte Rettungstaktik","it":"Soccorso tattico a turni","ru":"Пошаговая тактика спасения","hi":"बारी आधारित बचाव रणनीति","ar":"إنقاذ تكتيكي بالأدوار"},"description":{"__localizedExact":true,"en":"Plan each step with Nori and Taro. Guide lost crystal creatures home before the tide drains your light.","zh-Hant":"和諾里、塔羅規劃每一步，在晶潮耗盡燈光前帶迷途晶獸回家。","zh-Hans":"和诺里、塔罗规划每一步，在晶潮耗尽灯光前带迷途晶兽回家。","ja":"ノリとタロと一歩ずつ計画し、晶潮で灯りが尽きる前に迷子の晶獣を家へ導こう。","ko":"노리와 타로와 한 걸음씩 계획하고, 수정 파도가 빛을 앗아가기 전에 길 잃은 수정 동물을 데려오세요.","es":"Planea cada paso con Nori y Taro. Lleva a casa a las criaturas perdidas antes de que la marea apague tu luz.","pt-BR":"Planeje cada passo com Nori e Taro. Leve as criaturas perdidas para casa antes que a maré apague sua luz.","fr":"Planifiez chaque pas avec Nori et Taro. Ramenez les créatures égarées avant que la marée n’éteigne votre lumière.","de":"Plane jeden Schritt mit Nori und Taro. Bringe verirrte Kristalltiere heim, bevor die Flut dein Licht löscht.","it":"Pianifica ogni passo con Nori e Taro. Riporta a casa le creature smarrite prima che la marea spenga la luce.","ru":"Планируйте каждый шаг с Нори и Таро. Верните потерявшихся зверьков домой, пока прилив не погасил свет.","hi":"नोरी और तारो के साथ हर कदम सोचें। लहर रोशनी बुझा दे, उससे पहले भटके जीवों को घर पहुँचाएँ।","ar":"خطط لكل خطوة مع نوري وتارو. أعد الكائنات التائهة إلى موطنها قبل أن يطفئ المد نورك."},"ages":["9","family"],"categories":["Strategy","Puzzle","Adventure"],"tags":["Turn-Based Tactics","Route Planning","Rescue"],"skills":["Planning","Spatial Reasoning"],"relatedGameRules":{"requirePublic":true,"gameIds":["animal-rune-tactics","kindred-habitats","galevault-atlas"]},"art":{"kind":"image","background":"games/prismkin-rescue/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"previewVideo":"assets/previews/prismkin-rescue-battle.webm"},
+    {"id":"galevault-atlas","audience":"general","status":"playable","href":"games/galevault-atlas/","previewVideo":"assets/previews/galevault-atlas-battle.webm","title":{"__localizedExact":true,"en":"Galevault Atlas","zh-Hant":"風匣圖廊","zh-Hans":"风匣图廊","ja":"風函の図廊","ko":"바람함 지도 회랑","es":"Atlas de la Bóveda del Viento","pt-BR":"Atlas da Galeria dos Ventos","fr":"L’Atlas du coffre des vents","de":"Atlas der Windkammer","it":"Atlante della Galleria del Vento","ru":"Атлас хранилища ветров","hi":"पवन कक्ष का एटलस","ar":"أطلس خزانة الرياح"},"type":{"__localizedExact":true,"en":"Room drafting strategy","zh-Hant":"房間構築策略","zh-Hans":"房间构筑策略","ja":"部屋選択ストラテジー","ko":"방 배치 전략","es":"Estrategia de salas","pt-BR":"Estratégia de salas","fr":"Stratégie de salles","de":"Raumplanungsstrategie","it":"Strategia di costruzione","ru":"Стратегия постройки залов","hi":"कमरा निर्माण रणनीति","ar":"استراتيجية بناء الغرف"},"description":{"__localizedExact":true,"en":"Choose rooms to build a route through the floating archive. Collect chart pages and save enough wind to bring them home.","zh-Hant":"選房接門，穿過浮空圖廊。收集散落的圖頁，留足風力帶回基地。","zh-Hans":"选房接门，穿过浮空图廊。收集散落的图页，留足风力带回基地。","ja":"部屋を選んで空の書庫に道をつなごう。地図の頁を集め、帰り道の風を残して拠点へ。","ko":"방을 골라 하늘 서고에 길을 이으세요. 지도 조각을 모으고 돌아갈 바람을 남겨 두세요.","es":"Elige salas y traza una ruta por el archivo flotante. Recoge páginas del mapa y reserva viento para volver.","pt-BR":"Escolha salas para traçar uma rota pelo arquivo flutuante. Recolha páginas e guarde vento para a volta.","fr":"Choisissez des salles pour tracer une route dans les archives flottantes. Récupérez les pages et gardez du vent pour rentrer.","de":"Wähle Räume und baue einen Weg durch das schwebende Archiv. Sammle Kartenseiten und spare Wind für den Rückweg.","it":"Scegli le sale per tracciare un percorso nell’archivio sospeso. Raccogli le pagine e conserva vento per tornare.","ru":"Выбирайте залы и прокладывайте путь по парящему архиву. Соберите листы карты и сохраните ветер для возвращения.","hi":"कमरे चुनकर तैरते अभिलेखागार में रास्ता बनाएं। नक्शे के पन्ने जुटाएं और वापसी के लिए हवा बचाएं।","ar":"اختر الغرف لترسم طريقًا عبر الأرشيف العائم. اجمع صفحات الخريطة واحتفظ بريح تكفي للعودة."},"ages":["9","family"],"categories":["Strategy","Adventure","Puzzle"],"tags":["Room Drafting","Route Planning","Resource Management"],"skills":["Planning","Spatial Reasoning"],"art":{"kind":"image","background":"games/galevault-atlas/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"gameIds":["moonlit-atrium","cloudhold-voyager","reedway-transit"]}},
+    {"id":"emberglaze-kiln","audience":"general","status":"playable","href":"games/emberglaze-kiln/","title":{"__localizedExact":true,"en":"Emberglaze Kiln","zh-Hant":"琉火窯","zh-Hans":"琉火窑","ja":"琥珀釉の窯","ko":"유약 불가마","es":"Horno de esmalte ámbar","pt-BR":"Forno de Esmalte Âmbar","fr":"Four aux émaux","de":"Glutglasur","it":"Forno degli smalti","ru":"Печь янтарной глазури","hi":"अंबर की भट्ठी","ar":"فرن طلاء العنبر"},"type":{"__localizedExact":true,"en":"Kiln workshop","zh-Hant":"陶藝工房","zh-Hans":"陶艺工坊","ja":"陶芸工房","ko":"도예 공방","es":"Taller de cerámica","pt-BR":"Oficina de cerâmica","fr":"Atelier de céramique","de":"Töpferwerkstatt","it":"Bottega di ceramica","ru":"Гончарная мастерская","hi":"कुम्हार की कार्यशाला","ar":"ورشة خزف"},"description":{"__localizedExact":true,"en":"Mix minerals, balance the kiln heat and fire ceramics for the village.","zh-Hant":"調合礦料、掌握窯溫，為村民燒出訂做的陶器。","zh-Hans":"调合矿料、掌握窑温，为村民烧出订做的陶器。","ja":"鉱石を混ぜ、窯の温度を整えて、村の注文どおりに器を焼こう。","ko":"광물을 섞고 가마 온도를 맞춰 마을의 주문에 맞는 도자기를 구워요.","es":"Mezcla minerales, regula el calor y cuece cerámica para la aldea.","pt-BR":"Misture minerais, regule o calor do forno e queime a cerâmica da aldeia.","fr":"Mélangez les minéraux, réglez la chaleur du four et cuisez des poteries pour le village.","de":"Mische Mineralien, regle die Ofenhitze und brenne Keramik für das Dorf.","it":"Mescola i minerali, regola il calore del forno e cuoci ceramiche per il villaggio.","ru":"Смешивайте минералы, регулируйте жар и обжигайте керамику для деревни.","hi":"खनिज मिलाएँ, भट्ठी का ताप सँभालें और गाँव के लिए बर्तन पकाएँ।","ar":"امزج المعادن واضبط حرارة الفرن واصنع أواني الخزف للقرية."},"ages":["9","family"],"categories":["Simulation","Management","Puzzle"],"tags":["Resource Management","Planning"],"skills":["Planning","Problem Solving"],"art":{"kind":"image","background":"games/emberglaze-kiln/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning"],"gameIds":["rivetide-works","reedway-transit","animal-moon-market"]},"previewVideo":"assets/previews/emberglaze-kiln-battle.webm"},
     { id: "rainline-chase", audience: "general", status: "playable",
       href: "games/rainline-chase/", previewVideo: "assets/previews/rainline-chase-battle.webm",
       title: {"__localizedExact":true,"en":"Rainline Chase","zh-Hant":"雨線追分","zh-Hans":"雨线追分","ja":"雨の追点線","ko":"빗줄기 추격전","es":"Carrera contra la lluvia","pt-BR":"Corrida contra a chuva","fr":"Au-delà de la pluie","de":"Jagd an der Regenlinie","it":"Rincorsa sotto la pioggia","ru":"Гонка до дождя","hi":"बारिश से पहले","ar":"سباق مع المطر"},
       type: {"__localizedExact":true,"en":"Cricket batting","zh-Hant":"板球打擊","zh-Hans":"板球击球","ja":"クリケット打撃","ko":"크리켓 타격","es":"Bateo de críquet","pt-BR":"Rebatida de críquete","fr":"Frappe au cricket","de":"Cricket-Schlagspiel","it":"Battuta di cricket","ru":"Удары в крикете","hi":"क्रिकेट बल्लेबाज़ी","ar":"ضرب الكرة في الكريكيت"},
       description: {"__localizedExact":true,"en":"Pick a gap, time your swing and beat the rain line before play stops.","zh-Hant":"找守備空隙，抓準出棒，在雨停收場前追過雨線。","zh-Hans":"找出防守空当，把握挥棒时机，在停赛前越过雨线。","ja":"守備の隙を狙い、タイミングよく打って、雨で中断する前に目標を超えよう。","ko":"수비 빈틈을 겨냥하고 타이밍에 맞춰 쳐서 비로 경기가 끝나기 전에 목표 점수를 넘으세요.","es":"Busca un hueco, batea a tiempo y supera la marca antes de que pare el juego.","pt-BR":"Mire no espaço livre, acerte a hora da rebatida e supere a meta antes da interrupção.","fr":"Visez une ouverture, frappez au bon moment et dépassez le seuil avant l’arrêt du jeu.","de":"Ziele in die Lücke, schlag im richtigen Moment und übertriff die Regenmarke vor dem Abbruch.","it":"Mira nello spazio libero, batti al momento giusto e supera la soglia prima dello stop.","ru":"Цельтесь в свободную зону, ловите момент удара и обгоняйте дождевую отметку до остановки игры.","hi":"खाली जगह चुनें, सही समय पर बल्ला चलाएँ और खेल रुकने से पहले लक्ष्य पार करें।","ar":"صوّب نحو الفراغ واضرب في اللحظة المناسبة وتجاوز الحد قبل توقف اللعب."},
       ages: ["9", "family"], categories: ["Sports"], tags: ["Reaction", "Strategy"], skills: ["Timing", "Planning"],
-      art: { kind: "image", background: "games/rainline-chase/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/rainline-chase/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       relatedGameRules: { requirePublic: true, sharedSkills: ["Timing", "Planning"], gameIds: ["touchline-tails", "meadow-touchdown", "animal-putt-trails"] },
     },
-    {"id":"mistcanopy","audience":"general","status":"planned","internalOnly":true,"href":"games/mistcanopy/","internalTrial":"/games/mistcanopy/index.html?preview=1","title":{"__localizedExact":true,"en":"Mist Canopy","zh-Hant":"霧穹復育","zh-Hans":"雾穹复育","ja":"霧の谷再生","ko":"안개 골짜기 복원","es":"Dosel de Niebla","pt-BR":"Dossel da Névoa","fr":"La Canopée des brumes","de":"Nebelgarten","it":"Cupola di Nebbia","ru":"Купол тумана","hi":"धुंध की छतरी","ar":"مظلّة الضباب"},"type":{"__localizedExact":true,"en":"Habitat restoration","zh-Hant":"棲地復育","zh-Hans":"栖地复育","ja":"生息地再生","ko":"서식지 복원","es":"Restauración de hábitats","pt-BR":"Restauração de habitats","fr":"Restauration d’habitats","de":"Renaturierung","it":"Ripristino di habitat","ru":"Восстановление среды","hi":"आवास बहाली","ar":"استعادة الموائل"},"description":{"__localizedExact":true,"en":"Forecast the weather, route power and turn barren terraces into self-sustaining habitats.","zh-Hant":"看預報、調配電力，讓荒廢台地恢復成能自給的棲地。","zh-Hans":"看预报、调配电力，让荒废台地恢复成能自给的栖地。","ja":"予報を読み、電力を配分して、荒れた段丘を自立した生息地に戻そう。","ko":"예보를 읽고 전력을 배분해 메마른 계단식 지형을 자립하는 서식지로 되살리세요.","es":"Consulta el pronóstico, reparte energía y transforma terrazas estériles en hábitats autosuficientes.","pt-BR":"Confira a previsão, distribua energia e transforme terraços áridos em habitats autossuficientes.","fr":"Lisez la météo, répartissez l’énergie et rendez leur autonomie aux terrasses désertes.","de":"Lies die Wettervorhersage, teile Energie zu und mache aus kargen Terrassen lebendige Lebensräume.","it":"Leggi le previsioni, distribuisci l’energia e trasforma i terrazzamenti aridi in habitat autosufficienti.","ru":"Сверяйтесь с прогнозом, распределяйте энергию и возвращайте жизнь бесплодным террасам.","hi":"मौसम का अनुमान देखें, बिजली बाँटें और बंजर सीढ़ीदार खेतों को आत्मनिर्भर आवास बनाएँ।","ar":"تابع الطقس ووزّع الطاقة لتحوّل المصاطب القاحلة إلى موائل مكتفية ذاتيًا."},"ages":["13","family"],"categories":["Strategy","Simulation"],"tags":["Resource Management","Turn-Based Strategy","Habitat Restoration"],"skills":["Planning","Problem Solving"],"meta":{"__localizedExact":true,"en":["60 stages · 5 diamonds for an optional look"],"zh-Hant":["60 關 · 5 鑽石選購外觀"],"zh-Hans":["60 关 · 5 钻石选购外观"],"ja":["60ステージ・外観はダイヤ5個"],"ko":["60 스테이지 · 외형은 다이아 5개"],"es":["60 niveles · Aspecto opcional por 5 diamantes"],"pt-BR":["60 fases · Visual opcional por 5 diamantes"],"fr":["60 niveaux · Apparence à 5 diamants"],"de":["60 Stufen · Optik für 5 Diamanten"],"it":["60 livelli · Aspetto da 5 diamanti"],"ru":["60 этапов · Облик за 5 алмазов"],"hi":["60 चरण · वैकल्पिक रूप के लिए 5 हीरे"],"ar":["60 مرحلة · مظهر اختياري بـ5 ماسات"]},"art":{"kind":"image","background":"games/mistcanopy/assets/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning","Problem Solving"],"gameIds":["animal-habitat-builder","dawnward-haven","animal-sanctuary-loop"]}},
+    {"id":"mistcanopy","audience":"general","status":"planned","internalOnly":true,"href":"games/mistcanopy/","internalTrial":"/games/mistcanopy/index.html?preview=1","title":{"__localizedExact":true,"en":"Mist Canopy","zh-Hant":"霧穹復育","zh-Hans":"雾穹复育","ja":"霧の谷再生","ko":"안개 골짜기 복원","es":"Dosel de Niebla","pt-BR":"Dossel da Névoa","fr":"La Canopée des brumes","de":"Nebelgarten","it":"Cupola di Nebbia","ru":"Купол тумана","hi":"धुंध की छतरी","ar":"مظلّة الضباب"},"type":{"__localizedExact":true,"en":"Habitat restoration","zh-Hant":"棲地復育","zh-Hans":"栖地复育","ja":"生息地再生","ko":"서식지 복원","es":"Restauración de hábitats","pt-BR":"Restauração de habitats","fr":"Restauration d’habitats","de":"Renaturierung","it":"Ripristino di habitat","ru":"Восстановление среды","hi":"आवास बहाली","ar":"استعادة الموائل"},"description":{"__localizedExact":true,"en":"Forecast the weather, route power and turn barren terraces into self-sustaining habitats.","zh-Hant":"看預報、調配電力，讓荒廢台地恢復成能自給的棲地。","zh-Hans":"看预报、调配电力，让荒废台地恢复成能自给的栖地。","ja":"予報を読み、電力を配分して、荒れた段丘を自立した生息地に戻そう。","ko":"예보를 읽고 전력을 배분해 메마른 계단식 지형을 자립하는 서식지로 되살리세요.","es":"Consulta el pronóstico, reparte energía y transforma terrazas estériles en hábitats autosuficientes.","pt-BR":"Confira a previsão, distribua energia e transforme terraços áridos em habitats autossuficientes.","fr":"Lisez la météo, répartissez l’énergie et rendez leur autonomie aux terrasses désertes.","de":"Lies die Wettervorhersage, teile Energie zu und mache aus kargen Terrassen lebendige Lebensräume.","it":"Leggi le previsioni, distribuisci l’energia e trasforma i terrazzamenti aridi in habitat autosufficienti.","ru":"Сверяйтесь с прогнозом, распределяйте энергию и возвращайте жизнь бесплодным террасам.","hi":"मौसम का अनुमान देखें, बिजली बाँटें और बंजर सीढ़ीदार खेतों को आत्मनिर्भर आवास बनाएँ।","ar":"تابع الطقس ووزّع الطاقة لتحوّل المصاطب القاحلة إلى موائل مكتفية ذاتيًا."},"ages":["13","family"],"categories":["Strategy","Simulation"],"tags":["Resource Management","Turn-Based Strategy","Habitat Restoration"],"skills":["Planning","Problem Solving"],"meta":{"__localizedExact":true,"en":["60 stages · 5 diamonds for an optional look"],"zh-Hant":["60 關 · 5 鑽石選購外觀"],"zh-Hans":["60 关 · 5 钻石选购外观"],"ja":["60ステージ・外観はダイヤ5個"],"ko":["60 스테이지 · 외형은 다이아 5개"],"es":["60 niveles · Aspecto opcional por 5 diamantes"],"pt-BR":["60 fases · Visual opcional por 5 diamantes"],"fr":["60 niveaux · Apparence à 5 diamants"],"de":["60 Stufen · Optik für 5 Diamanten"],"it":["60 livelli · Aspetto da 5 diamanti"],"ru":["60 этапов · Облик за 5 алмазов"],"hi":["60 चरण · वैकल्पिक रूप के लिए 5 हीरे"],"ar":["60 مرحلة · مظهر اختياري بـ5 ماسات"]},"art":{"kind":"image","background":"games/mistcanopy/assets/cover.webp?wp-media=512519f6a2210940","hideHero":true},"relatedGameRules":{"requirePublic":true,"sharedSkills":["Planning","Problem Solving"],"gameIds":["animal-habitat-builder","dawnward-haven","animal-sanctuary-loop"]}},
     {
       id: "frostline-expedition", audience: "general", status: "playable",
       href: "games/frostline-expedition/", previewVideo: "assets/previews/frostline-expedition-battle.webm",
@@ -217,7 +221,7 @@ window.WONDER_LOBBY = {
       description: {"__localizedExact":true,"en":"Take the wheel with Rux. Haul supplies through mud and snow, rescue stranded trucks and rebuild mountain routes.","zh-Hant":"和犀牛工程師 Rux 一起握緊方向盤。穿越泥地與雪嶺、運送補給、拖救車輛，重建山區的聯繫。","zh-Hans":"和犀牛工程师 Rux 一起握紧方向盘。穿越泥地与雪岭、运送补给、拖救车辆，重建山区的联系。","ja":"サイの技師 Rux と山へ。泥と雪を越えて物資を運び、車を救助し、山道をつなぎ直そう。","ko":"코뿔소 기술자 Rux와 산길로 떠나세요. 진흙과 눈을 뚫고 보급품을 운반하고 차량을 구조하며 길을 복구하세요.","es":"Conduce con Rux, el rinoceronte ingeniero. Cruza barro y nieve, transporta suministros y devuelve la vida a las rutas de montaña.","pt-BR":"Dirija com Rux, o rinoceronte engenheiro. Cruze lama e neve, transporte suprimentos, resgate veículos e reconecte as rotas da montanha.","fr":"Prenez le volant avec Rux, le rhinocéros ingénieur. Traversez boue et neige, livrez des provisions et rétablissez les routes de montagne.","de":"Fahre mit Nashorntechniker Rux durch Schlamm und Schnee. Liefere Vorräte, berge Fahrzeuge und verbinde die Bergregion neu.","it":"Guida con Rux, il rinoceronte ingegnere. Attraversa fango e neve, trasporta rifornimenti, soccorri veicoli e ricollega la montagna.","ru":"Садитесь за руль вместе с носорогом-инженером Rux. Перевозите припасы через грязь и снег, спасайте машины и восстанавливайте горные дороги.","hi":"गैंडे इंजीनियर Rux के साथ गाड़ी चलाएँ। कीचड़ और बर्फ़ पार करके सामग्री पहुँचाएँ, वाहन बचाएँ और पहाड़ी रास्ते फिर जोड़ें।","ar":"قد مع Rux مهندس وحيد القرن. اعبر الوحل والثلج، وانقل المؤن، وأنقذ المركبات، وأعد وصل طرق الجبل."},
       ages: ["13", "family"], categories: ["Adventure", "Simulation", "Driving"],
       skills: ["Planning", "Spatial Reasoning"], difficulty: "Medium", estimatedPlayTime: "3–6 minutes",
-      art: { kind: "image", background: "games/frostline-expedition/assets/equipment.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/frostline-expedition/assets/equipment.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "touchline-tails", audience: "general", status: "playable",
@@ -228,7 +232,7 @@ window.WONDER_LOBBY = {
       ages: ["13", "family"], categories: ["Sports", "Strategy", "Management"],
       skills: ["Planning", "Problem Solving"], tags: ["Football Tactics", "Team Management", "Turn-Based Strategy"],
       difficulty: "Medium", estimatedPlayTime: "1–2 minutes",
-      art: { kind: "image", background: "games/touchline-tails/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/touchline-tails/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "reedway-transit", audience: "general", status: "playable",
@@ -237,7 +241,7 @@ window.WONDER_LOBBY = {
       title: { __localizedExact: true, en: "Reedway Transit", "zh-Hant": "葦灣行線", "zh-Hans": "苇湾行线", ja: "葦湾の路線", ko: "갈대만 노선", es: "Rutas de la Bahía", "pt-BR": "Linhas da Baía", fr: "Les Lignes de la Baie", de: "Schilfbucht-Linien", it: "Le Linee della Baia", ru: "Маршруты Камышовой бухты", hi: "नरकट खाड़ी की लाइनें", ar: "خطوط خليج القصب" },
       description: { __localizedExact: true, en: "Build tram lines, balance transfers and guide every passenger through the changing tides.", "zh-Hant": "鋪設電車路線、分配列車，在轉乘與潮窗之間把每位乘客送到站。", "zh-Hans": "铺设电车路线、分配列车，在换乘与潮窗之间把每位乘客送到站。", ja: "路線と車両を配分し、乗り換えと潮の時間を読んで乗客を届けよう。", ko: "노선과 전차를 배치하고 환승과 조수 시간을 살펴 승객을 데려다주세요.", es: "Traza líneas, reparte tranvías y lleva a cada viajero entre transbordos y mareas.", "pt-BR": "Trace linhas, distribua bondes e leve passageiros entre conexões e marés.", fr: "Tracez des lignes et répartissez les trams pour transporter les voyageurs au rythme des marées.", de: "Plane Linien und verteile Bahnen, damit Fahrgäste trotz Umstiegen und Gezeiten ankommen.", it: "Traccia linee e distribuisci i tram per portare i passeggeri tra coincidenze e maree.", ru: "Прокладывайте линии и распределяйте трамваи, учитывая пересадки и приливы.", hi: "ट्राम लाइनें बनाएँ, गाड़ियाँ बाँटें और बदलते ज्वार के बीच यात्रियों को पहुँचाएँ।", ar: "ارسم خطوط الترام ووزّع العربات لتنقل الركاب عبر التحويلات ومواعيد المدّ." },
       categories: ["Strategy", "Simulation", "Management"], skills: ["Planning", "Problem Solving"], ages: ["9", "family"],
-      art: { kind: "image", background: "games/reedway-transit/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/reedway-transit/art/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "dusk-signal", audience: "general", status: "playable",
@@ -246,7 +250,7 @@ window.WONDER_LOBBY = {
       title: {"__localizedExact":true,"en":"Dusk Signal","zh-Hant":"暮谷聽站","zh-Hans":"暮谷听站","ja":"夕谷の観測所","ko":"황혼 골짜기 관측소","es":"Señales del Ocaso","pt-BR":"Sinais do Crepúsculo","fr":"Signaux du Crépuscule","it":"Segnali al Crepuscolo","de":"Signale im Dämmerlicht","ru":"Сигналы сумерек","ar":"إشارات الغسق","hi":"साँझ के संकेत"},
       description: {"__localizedExact":true,"en":"Cross-check echoes, record wildlife and power your next survey.","zh-Hant":"交叉比對聲紋，記下谷中生物，為下一趟調查補足電力。","zh-Hans":"交叉比对声纹，记下谷中动物，为下一趟调查补足电力。","ja":"こだまを照合し、動物の声を記録して次の調査に備えよう。","ko":"메아리를 대조해 동물의 소리를 기록하고 다음 조사의 전력을 확보하세요.","es":"Cruza ecos, registra fauna y carga energía para la próxima misión.","pt-BR":"Cruze ecos, registre a fauna e recarregue para a próxima missão.","fr":"Croisez les échos, enregistrez la faune et rechargez pour la prochaine mission.","it":"Incrocia gli echi, registra la fauna e ricarica per la prossima missione.","de":"Gleiche Echos ab, erfasse Wildtiere und lade für die nächste Erkundung auf.","ru":"Сопоставляйте эхо, записывайте голоса животных и заряжайтесь для новой вылазки.","ar":"قارن الأصداء وسجّل أصوات الحيوانات واشحن طاقتك للمسح التالي.","hi":"गूँज मिलाएँ, वन्यजीवों की आवाज़ दर्ज करें और अगले सर्वेक्षण के लिए ऊर्जा जुटाएँ।"},
       categories: ["Strategy", "Puzzle", "Management"], skills: ["Logic", "Planning"], ages: ["9", "family"],
-      art: { kind: "image", background: "games/dusk-signal/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/dusk-signal/art/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "tomorrow-share", audience: "general", status: "planned", internalOnly: true,
@@ -255,10 +259,10 @@ window.WONDER_LOBBY = {
       type: {"en":"Budget strategy · Seasonal planning","zh-Hant":"預算策略 · 跨季規劃","zh-Hans":"预算策略 · 跨季规划","ja":"予算戦略 · 季節の計画","ko":"예산 전략 · 계절 계획","es":"Estrategia presupuestaria · Planificación por temporadas","pt-BR":"Estratégia de orçamento · Planejamento sazonal","fr":"Stratégie budgétaire · Planification saisonnière","de":"Budgetstrategie · Saisonplanung","it":"Strategia di bilancio · Pianificazione stagionale","ru":"Бюджетная стратегия · Планирование сезонов","hi":"बजट रणनीति · मौसमी योजना","ar":"استراتيجية الميزانية · تخطيط المواسم"},
       description: {"__localizedExact":true,"en":"Fund today's needs, invest in tomorrow, and keep every promise across the seasons.","zh-Hant":"照顧眼前需要、投資明天，在每季預算中守住群島的承諾。","zh-Hans":"照顾眼前需要、投资明天，在每季预算中守住群岛的承诺。","ja":"今の需要と明日への投資を両立し、季節をまたぐ島々の約束を守ろう。","ko":"당장의 수요와 내일의 투자를 조율하며 계절마다 섬들의 약속을 지키세요.","es":"Atiende las necesidades de hoy, invierte en mañana y cumple las promesas de las islas.","pt-BR":"Cuide das necessidades de hoje, invista no amanhã e cumpra as promessas das ilhas.","fr":"Répondez aux besoins actuels, investissez pour demain et tenez les promesses des îles.","de":"Decke den heutigen Bedarf, investiere in morgen und halte die Zusagen der Inseln ein.","it":"Soddisfa i bisogni di oggi, investi nel domani e mantieni le promesse delle isole.","ru":"Обеспечьте сегодняшние нужды, вложитесь в завтра и выполните обещания островам.","hi":"आज की ज़रूरतें पूरी करें, कल के लिए निवेश करें और द्वीपों के वचन निभाएँ।","ar":"لبِّ احتياجات اليوم واستثمر للغد، وحافظ على وعود الجزر عبر المواسم."},
       ages: ["9+", "13+", "Family"], categories: ["Strategy", "Management", "Animal Games"], skills: ["Logic", "Planning", "Problem Solving"],
-      art: { kind: "image", background: "games/tomorrow-share/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/tomorrow-share/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       difficulty: "Medium", estimatedPlayTime: "4-8 minutes"
     },
-    {"id":"starpip-vanguard","title":{"en":"Starpip Vanguard","zh-Hant":"骰星巡隊","zh-Hans":"骰星巡队","ja":"星骰の巡隊","ko":"별주사위 순찰대","es":"Patrulla de Dados Estelares","pt-BR":"Patrulha dos Dados Estelares","fr":"La Patrouille des Dés","de":"Sternwürfel-Patrouille","it":"La Pattuglia dei Dadi","ru":"Звёздный дозор кубиков","hi":"तारापासों का गश्ती दल","ar":"طليعة نرد النجوم"},"type":{"en":"Dice keeping · Squad equipment","zh-Hant":"保留骰面 · 隊伍配裝","zh-Hans":"保留骰面 · 队伍配装","ja":"出目を保持 · 仲間の装備","ko":"주사위 보관 · 팀 장비","es":"Conservar dados · Equipo de compañeros","pt-BR":"Guardar dados · Equipamento da equipe","fr":"Conserver les dés · Équipement d’équipe","de":"Würfel behalten · Teamausrüstung","it":"Conservare i dadi · Equipaggiamento di squadra","ru":"Сохранение кубиков · Снаряжение команды","hi":"पासे रखना · टीम के उपकरण","ar":"الاحتفاظ بالنرد · تجهيز الفريق"},"status":"playable","audience":"general","href":"games/starpip-vanguard/","description":{"en":"Keep the right dice. Read enemy intentions and bring your four companions home.","zh-Hant":"保留合適骰面、讀懂敵方意圖，帶領四位夥伴完成星航遠征。","zh-Hans":"保留合适骰面、读懂敌方意图，带领四位伙伴完成星航远征。","ja":"残すダイスを選び、敵の狙いを読んで、4人の仲間と星の遠征を進もう。","ko":"유용한 주사위를 보관하고 적의 공격 예고를 읽어 네 동료와 원정을 완수하세요.","es":"Conserva los dados útiles, lee los ataques anunciados y completa la expedición con tus cuatro compañeros.","pt-BR":"Guarde os dados úteis, leia os ataques anunciados e conclua a expedição com quatro companheiros.","fr":"Gardez les bons dés. Lisez les intentions de l'ennemi et ramenez vos quatre compagnons à la maison.","de":"Behalte die richtigen Würfel. Lesen Sie die Absichten des Feindes und bringen Sie Ihre vier Gefährten nach Hause.","it":"Tieni i dadi giusti. Leggi le intenzioni del nemico e riporta a casa i tuoi quattro compagni.","ru":"Держите правильные кости. Прочитайте намерения врага и приведите четверых товарищей домой.","hi":"सही पासा रखें. दुश्मन के इरादे पढ़ो और अपने चार साथियों को घर ले आओ।","ar":"احتفظ بالنرد الصحيح. اقرأ نوايا العدو وأحضر رفاقك الأربعة إلى المنزل."},"ages":["13","family"],"categories":["Strategy","RPG","Animal Games"],"skills":["Logic","Focus","Problem Solving"],"art":{"kind":"image","background":"games/starpip-vanguard/art/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"meta":{"__localizedExact":true,"en":["Stages · 60","Aurora dice · 8 diamonds"],"zh-Hant":["關卡 · 60","極光骰殼 · 8 鑽石"],"zh-Hans":["关卡 · 60","极光骰壳 · 8钻石"],"ja":["ステージ · 60","極光ダイス・ダイヤ8"],"ko":["스테이지 · 60","오로라 주사위 · 다이아몬드 8개"],"es":["Etapas · 60","Dado Aurora · 8 diamantes"],"pt-BR":["Fases · 60","Dados Aurora · 8 diamantes"],"fr":["Étapes · 60","Dés d’aurore · 8 diamants"],"de":["Stufen · 60","Aurora-Würfel · 8 Diamanten"],"it":["Fasi · 60","Dadi Aurora · 8 diamanti"],"ru":["Этапы · 60","Кубик Авроры · 8 бриллиантов"],"hi":["चरण · 60","अरोरा पासा · 8 हीरे"],"ar":["مراحل · 60","نرد أورورا · 8 ماسات"]},"difficulty":"Medium","estimatedPlayTime":"3-5 minutes","playerNote":{"en":"Keep the right dice. Read enemy intentions and bring your four companions home.","zh-Hant":"保留合適骰面、讀懂敵方意圖，帶領四位夥伴完成星航遠征。","zh-Hans":"保留合适骰面、读懂敌方意图，带领四位伙伴完成星航远征。","ja":"残すダイスを選び、敵の狙いを読んで、4人の仲間と星の遠征を進もう。","ko":"유용한 주사위를 보관하고 적의 공격 예고를 읽어 네 동료와 원정을 완수하세요.","es":"Conserva los dados útiles, lee los ataques anunciados y completa la expedición con tus cuatro compañeros.","pt-BR":"Guarde os dados úteis, leia os ataques anunciados e conclua a expedição com quatro companheiros.","fr":"Gardez les bons dés. Lisez les intentions de l'ennemi et ramenez vos quatre compagnons à la maison.","de":"Behalte die richtigen Würfel. Lesen Sie die Absichten des Feindes und bringen Sie Ihre vier Gefährten nach Hause.","it":"Tieni i dadi giusti. Leggi le intenzioni del nemico e riporta a casa i tuoi quattro compagni.","ru":"Держите правильные кости. Прочитайте намерения врага и приведите четверых товарищей домой.","hi":"सही पासा रखें. दुश्मन के इरादे पढ़ो और अपने चार साथियों को घर ले आओ।","ar":"احتفظ بالنرد الصحيح. اقرأ نوايا العدو وأحضر رفاقك الأربعة إلى المنزل."},"previewVideo":"assets/previews/starpip-vanguard-battle.webm"},
+    {"id":"starpip-vanguard","title":{"en":"Starpip Vanguard","zh-Hant":"骰星巡隊","zh-Hans":"骰星巡队","ja":"星骰の巡隊","ko":"별주사위 순찰대","es":"Patrulla de Dados Estelares","pt-BR":"Patrulha dos Dados Estelares","fr":"La Patrouille des Dés","de":"Sternwürfel-Patrouille","it":"La Pattuglia dei Dadi","ru":"Звёздный дозор кубиков","hi":"तारापासों का गश्ती दल","ar":"طليعة نرد النجوم"},"type":{"en":"Dice keeping · Squad equipment","zh-Hant":"保留骰面 · 隊伍配裝","zh-Hans":"保留骰面 · 队伍配装","ja":"出目を保持 · 仲間の装備","ko":"주사위 보관 · 팀 장비","es":"Conservar dados · Equipo de compañeros","pt-BR":"Guardar dados · Equipamento da equipe","fr":"Conserver les dés · Équipement d’équipe","de":"Würfel behalten · Teamausrüstung","it":"Conservare i dadi · Equipaggiamento di squadra","ru":"Сохранение кубиков · Снаряжение команды","hi":"पासे रखना · टीम के उपकरण","ar":"الاحتفاظ بالنرد · تجهيز الفريق"},"status":"playable","audience":"general","href":"games/starpip-vanguard/","description":{"en":"Keep the right dice. Read enemy intentions and bring your four companions home.","zh-Hant":"保留合適骰面、讀懂敵方意圖，帶領四位夥伴完成星航遠征。","zh-Hans":"保留合适骰面、读懂敌方意图，带领四位伙伴完成星航远征。","ja":"残すダイスを選び、敵の狙いを読んで、4人の仲間と星の遠征を進もう。","ko":"유용한 주사위를 보관하고 적의 공격 예고를 읽어 네 동료와 원정을 완수하세요.","es":"Conserva los dados útiles, lee los ataques anunciados y completa la expedición con tus cuatro compañeros.","pt-BR":"Guarde os dados úteis, leia os ataques anunciados e conclua a expedição com quatro companheiros.","fr":"Gardez les bons dés. Lisez les intentions de l'ennemi et ramenez vos quatre compagnons à la maison.","de":"Behalte die richtigen Würfel. Lesen Sie die Absichten des Feindes und bringen Sie Ihre vier Gefährten nach Hause.","it":"Tieni i dadi giusti. Leggi le intenzioni del nemico e riporta a casa i tuoi quattro compagni.","ru":"Держите правильные кости. Прочитайте намерения врага и приведите четверых товарищей домой.","hi":"सही पासा रखें. दुश्मन के इरादे पढ़ो और अपने चार साथियों को घर ले आओ।","ar":"احتفظ بالنرد الصحيح. اقرأ نوايا العدو وأحضر رفاقك الأربعة إلى المنزل."},"ages":["13","family"],"categories":["Strategy","RPG","Animal Games"],"skills":["Logic","Focus","Problem Solving"],"art":{"kind":"image","background":"games/starpip-vanguard/art/cover.webp?wp-media=512519f6a2210940","hideHero":true},"meta":{"__localizedExact":true,"en":["Stages · 60","Aurora dice · 8 diamonds"],"zh-Hant":["關卡 · 60","極光骰殼 · 8 鑽石"],"zh-Hans":["关卡 · 60","极光骰壳 · 8钻石"],"ja":["ステージ · 60","極光ダイス・ダイヤ8"],"ko":["스테이지 · 60","오로라 주사위 · 다이아몬드 8개"],"es":["Etapas · 60","Dado Aurora · 8 diamantes"],"pt-BR":["Fases · 60","Dados Aurora · 8 diamantes"],"fr":["Étapes · 60","Dés d’aurore · 8 diamants"],"de":["Stufen · 60","Aurora-Würfel · 8 Diamanten"],"it":["Fasi · 60","Dadi Aurora · 8 diamanti"],"ru":["Этапы · 60","Кубик Авроры · 8 бриллиантов"],"hi":["चरण · 60","अरोरा पासा · 8 हीरे"],"ar":["مراحل · 60","نرد أورورا · 8 ماسات"]},"difficulty":"Medium","estimatedPlayTime":"3-5 minutes","playerNote":{"en":"Keep the right dice. Read enemy intentions and bring your four companions home.","zh-Hant":"保留合適骰面、讀懂敵方意圖，帶領四位夥伴完成星航遠征。","zh-Hans":"保留合适骰面、读懂敌方意图，带领四位伙伴完成星航远征。","ja":"残すダイスを選び、敵の狙いを読んで、4人の仲間と星の遠征を進もう。","ko":"유용한 주사위를 보관하고 적의 공격 예고를 읽어 네 동료와 원정을 완수하세요.","es":"Conserva los dados útiles, lee los ataques anunciados y completa la expedición con tus cuatro compañeros.","pt-BR":"Guarde os dados úteis, leia os ataques anunciados e conclua a expedição com quatro companheiros.","fr":"Gardez les bons dés. Lisez les intentions de l'ennemi et ramenez vos quatre compagnons à la maison.","de":"Behalte die richtigen Würfel. Lesen Sie die Absichten des Feindes und bringen Sie Ihre vier Gefährten nach Hause.","it":"Tieni i dadi giusti. Leggi le intenzioni del nemico e riporta a casa i tuoi quattro compagni.","ru":"Держите правильные кости. Прочитайте намерения врага и приведите четверых товарищей домой.","hi":"सही पासा रखें. दुश्मन के इरादे पढ़ो और अपने चार साथियों को घर ले आओ।","ar":"احتفظ بالنرد الصحيح. اقرأ نوايا العدو وأحضر رفاقك الأربعة إلى المنزل."},"previewVideo":"assets/previews/starpip-vanguard-battle.webm"},
     {
       id: "prismtide", audience: "general", status: "playable", href: "games/prismtide/", previewVideo: "assets/previews/prismtide-battle.webm",
       title: { __localizedExact: true, en: "Prismtide", "zh-Hant": "稜潮遺城", "zh-Hans": "棱潮遗城", ja: "プリズムタイド", ko: "프리즘타이드", es: "Prismarea", "pt-BR": "Prismaré", fr: "Prismarée", de: "Prismenflut", it: "Prismarea", ru: "Призмы прилива", hi: "प्रिज़्म ज्वार", ar: "مدّ المنشور" },
@@ -266,7 +270,7 @@ window.WONDER_LOBBY = {
       type: { en: "First-person spatial puzzles", "zh-Hant": "第一人稱空間解謎", "zh-Hans": "第一人称空间解谜", ja: "一人称空間パズル", ko: "1인칭 공간 퍼즐", es: "Puzles espaciales en primera persona", "pt-BR": "Enigmas espaciais em primeira pessoa", fr: "Énigmes spatiales à la première personne", de: "Raumrätsel aus der Ich-Perspektive", it: "Enigmi spaziali in prima persona", ru: "Пространственные головоломки от первого лица", hi: "प्रथम-व्यक्ति स्थानिक पहेलियाँ", ar: "ألغاز مكانية بمنظور الشخص الأول" },
       ages: ["13+", "Family"], skills: ["Logic", "Planning", "Problem Solving"], categories: ["Adventure", "Puzzle"], tags: ["3D", "First Person", "Exploration", "Spatial Puzzles"],
       relatedGameRules: { guidePlacement: "primary" },
-      art: { kind: "image", background: "games/prismtide/art/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/prismtide/art/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "skymeadow-keeper", audience: "general", status: "playable", href: "games/skymeadow-keeper/", previewVideo: "assets/previews/skymeadow-keeper-battle.webm",
@@ -274,7 +278,7 @@ window.WONDER_LOBBY = {
       description: {"en":"Explore sky meadows, guide wildlife home and restore the windtrees.","zh-Hant":"探索雲原、引導動物回家，運用棲地產物復甦風樹。","zh-Hans":"探索云原、引导动物回家，运用栖地产物复苏风树。","ja":"雲の草原を探索し、動物を家へ導いて風の樹を復元しよう。","ko":"구름 들판을 탐험하고 동물을 집으로 이끌어 바람나무를 되살리세요.","es":"Explora praderas celestes, guía animales a casa y restaura los árboles del viento.","pt-BR":"Explore prados celestes, guie animais para casa e restaure as árvores do vento.","fr":"Explorez les prés célestes, guidez les animaux chez eux et restaurez les arbres du vent.","de":"Erkunde Wolkenwiesen, führe Tiere heim und stelle die Windbäume wieder her.","it":"Esplora prati celesti, guida gli animali a casa e ripristina gli alberi del vento.","ru":"Исследуйте небесные луга, ведите животных домой и восстанавливайте деревья ветра.","hi":"नभ के मैदान खोजें, जीवों को घर लाएँ और पवन वृक्ष बहाल करें।","ar":"استكشف المروج السماوية وقد الحيوانات إلى بيوتها ورمّم أشجار الرياح."},
       type: {"en":"First-person adventure","zh-Hant":"第一人稱冒險","zh-Hans":"第一人称冒险","ja":"一人称アドベンチャー","ko":"1인칭 모험","es":"Aventura en primera persona","pt-BR":"Aventura em primeira pessoa","fr":"Aventure à la première personne","de":"Abenteuer aus der Ich-Perspektive","it":"Avventura in prima persona","ru":"Приключение от первого лица","hi":"प्रथम-व्यक्ति साहसिक खेल","ar":"مغامرة من منظور الشخص الأول"},
       ages: ["9+", "Family"], skills: ["Exploration", "Planning", "Problem Solving"], categories: ["Adventure", "Simulation"], tags: ["3D", "First Person", "Exploration", "Resource Management"],
-      art: { kind: "image", background: "games/skymeadow-keeper/art/poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/skymeadow-keeper/art/poster.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "cloudhold-voyager", audience: "general", status: "playable",
@@ -284,7 +288,7 @@ window.WONDER_LOBBY = {
       type: {en:"Ship-system strategy","zh-Hant":"艙務策略","zh-Hans":"舱务策略",ja:"船室戦略",ko:"선실 전략",es:"Estrategia naval","pt-BR":"Estratégia naval",fr:"Stratégie navale",de:"Schiffsstrategie",it:"Strategia navale",ru:"Корабельная стратегия",hi:"जहाज़ रणनीति",ar:"استراتيجية السفن"},
       ages:["13+","Family"],skills:["Logic","Problem Solving","Focus"],categories:["Strategy","Simulation"],
       tags:["Crew Management","Resource Management","Turn-Based Strategy"],
-      art:{kind:"image",background:"games/cloudhold-voyager/cover.webp?wp-media=dfd6fb9b5249ca93",hideHero:true},
+      art:{kind:"image",background:"games/cloudhold-voyager/cover.webp?wp-media=512519f6a2210940",hideHero:true},
     },
     {
       id: "dawnward-haven", audience: "general", status: "playable", previewVideo: "assets/previews/dawnward-haven-battle.webm",
@@ -295,7 +299,7 @@ window.WONDER_LOBBY = {
       ages: ["13","family"], skills: ["Planning","Resource Management"], categories: ["Strategy","Management"],
       tags: ["Settlement Building","Worker Placement","Resource Management","Turn-Based Strategy"],
       meta: {"__localizedExact":true,"en":["Worker placement","Resource management","Turn-based strategy"],"zh-Hant":["居民分工","資源管理","回合策略"],"zh-Hans":["居民分工","资源管理","回合策略"],"ja":["人員配置","資源管理","ターン制戦略"],"ko":["주민 배치","자원 관리","턴제 전략"],"es":["Asignación de trabajadores","Gestión de recursos","Estrategia por turnos"],"pt-BR":["Distribuição de trabalhadores","Gestão de recursos","Estratégia por turnos"],"fr":["Affectation des habitants","Gestion de ressources","Stratégie au tour par tour"],"de":["Arbeitereinteilung","Ressourcenverwaltung","Rundenstrategie"],"it":["Assegnazione di lavoratori","Gestione di risorse","Strategia a turni"],"ru":["Распределение работников","Управление ресурсами","Пошаговая стратегия"],"hi":["काम का बँटवारा","संसाधन प्रबंधन","बारी आधारित रणनीति"],"ar":["توزيع العمال","إدارة الموارد","استراتيجية بالأدوار"]},
-      art: {kind:"image",background:"games/dawnward-haven/assets/cover.webp?wp-media=dfd6fb9b5249ca93",hideHero:true},
+      art: {kind:"image",background:"games/dawnward-haven/assets/cover.webp?wp-media=512519f6a2210940",hideHero:true},
     },
     {
       id: "gilded-gathering", audience: "general", status: "playable", previewVideo: "assets/previews/gilded-gathering-battle.webm",
@@ -307,7 +311,7 @@ window.WONDER_LOBBY = {
       type: {"__localizedExact":true,"en":"Venue strategy","zh-Hant":"場館策略","zh-Hans":"场馆策略","ja":"会場戦略","ko":"공간 전략","es":"Estrategia de espacios","pt-BR":"Estratégia de espaços","fr":"Stratégie spatiale","de":"Raumstrategie","it":"Strategia degli spazi","ru":"Пространственная стратегия","hi":"स्थान रणनीति","ar":"استراتيجية المكان"},
       ages: ["13", "family"], skills: ["Logic", "Problem Solving"], categories: ["Strategy", "Puzzle"], tags: ["Strategy", "Puzzle", "Resource Management"],
       meta: {"en":["60 stages","Two acts","Open aisles"],"zh-Hant":["60關","雙場換席","保留走道"],"zh-Hans":["60关","双场换席","保留走道"],"ja":["60ステージ","二幕の宴","通路を確保"],"ko":["60스테이지","두 막의 연회","통로 확보"],"es":["60 niveles","Dos actos","Pasillos libres"],"pt-BR":["60 fases","Dois atos","Corredores livres"],"fr":["60 niveaux","Deux actes","Allées libres"],"de":["60 Level","Zwei Akte","Freie Gänge"],"it":["60 livelli","Due atti","Passaggi liberi"],"ru":["60 уровней","Два акта","Свободные проходы"],"hi":["60 चरण","दो अंक","खुले रास्ते"],"ar":["60 مرحلة","فصلان","ممرات مفتوحة"]},
-      art: { kind: "image", background: "games/gilded-gathering/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/gilded-gathering/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "rivetide-works", audience: "general", status: "playable", previewVideo: "assets/previews/rivetide-works-battle.webm",
@@ -316,7 +320,7 @@ window.WONDER_LOBBY = {
       title: {"__localizedExact":true,"en":"Rivetide Works","zh-Hant":"潮輪工房","zh-Hans":"潮轮工房","ja":"潮輪工房","ko":"밀물 공방","es":"Taller de Mareas","pt-BR":"Oficina das Marés","fr":"Atelier des marées","de":"Gezeitenwerk","it":"Officina delle Maree","ru":"Приливная мастерская","hi":"ज्वार कार्यशाला","ar":"ورشة المد والجزر"},
       description: {"en":"Build conveyor lines, balance processing and tide power, and deliver every workshop order.","zh-Hant":"搭建輸送產線，調配加工與潮能，完成每座碼頭的訂單。","zh-Hans":"搭建输送产线，调配加工与潮能，完成每座码头的订单。","ja":"搬送ラインを組み、加工と潮の電力を調整して港の注文を届けよう。","ko":"컨베이어를 연결하고 가공과 밀물 전력을 조절해 부두 주문을 완성하세요.","es":"Construye líneas, equilibra procesos y energía de marea y entrega cada pedido.","pt-BR":"Monte linhas, equilibre processos e energia das marés e entregue cada pedido.","fr":"Construisez les convoyeurs, équilibrez la production et l’énergie des marées, puis livrez les commandes.","de":"Baue Förderlinien, stimme Verarbeitung und Gezeitenkraft ab und liefere alle Aufträge.","it":"Costruisci linee, bilancia lavorazioni ed energia delle maree e consegna gli ordini.","ru":"Стройте конвейеры, сочетайте обработку и энергию прилива и выполняйте заказы.","hi":"कन्वेयर बनाएँ, प्रसंस्करण और ज्वार की ऊर्जा संतुलित करें और सभी ऑर्डर पहुँचाएँ।","ar":"ابنِ خطوط النقل ووازن التصنيع وطاقة المد وأكمل طلبات الأرصفة."},
       categories: ["Strategy", "Simulation", "Animal Games"], skills: ["Logic", "Problem Solving", "Focus"], ages: ["13+", "Family"],
-      art: { kind: "image", background: "games/rivetide-works/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/rivetide-works/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "sproutsum", audience: "general", status: "playable",
@@ -325,7 +329,7 @@ window.WONDER_LOBBY = {
       type: {"en":"Arithmetic crossword · Logic puzzle","zh-Hant":"交叉算式 · 邏輯解謎","zh-Hans":"交叉算式 · 逻辑解谜","ja":"交差する計算式 · 論理パズル","ko":"교차 수식 · 논리 퍼즐","es":"Ecuaciones cruzadas · Puzle lógico","pt-BR":"Equações cruzadas · Quebra-cabeça lógico","fr":"Équations croisées · Énigme logique","de":"Rechenkreuzung · Logikrätsel","it":"Equazioni incrociate · Rompicapo logico","ru":"Пересечения уравнений · Логическая задача","hi":"क्रॉस समीकरण · तर्क पहेली","ar":"معادلات متقاطعة · لغز منطقي"},
       description: {"en":"Plant each number so every row and column reaches its target.","zh-Hant":"把數字種進花床，讓每行每列都符合目標值。","zh-Hans":"把数字种进花床，让每行每列都符合目标值。","ja":"数字のタイルを植えて、縦横すべての式を目標値にそろえよう。","ko":"숫자 타일을 심어 모든 가로·세로 식의 목표값을 맞추세요.","es":"Planta números para que cada fila y columna alcance su objetivo.","pt-BR":"Plante números para que cada linha e coluna alcance seu alvo.","fr":"Plantez les nombres pour que chaque ligne et colonne atteigne sa cible.","de":"Setze Zahlen ein, bis jede Zeile und Spalte ihren Zielwert ergibt.","it":"Pianta i numeri affinché ogni riga e colonna raggiunga il suo obiettivo.","ru":"Посадите числа так, чтобы каждая строка и столбец дали нужный результат.","hi":"अंक लगाएँ ताकि हर पंक्ति और स्तंभ का हिसाब लक्ष्य से मिले।","ar":"ازرع الأعداد لتطابق كل معادلة أفقية وعمودية هدفها."},
       categories: ["Puzzle", "Brain", "Animal Games"], skills: ["Logic", "Math", "Problem Solving"], ages: ["9+", "Family"],
-      meta: {"en":["Stage 1–60","Arithmetic crossword","Logic puzzle","Starlit appearance - 5 Diamonds"],"zh-Hant":["關卡 1–60","交叉算式","邏輯解謎","星夜外觀 - 5 鑽石"],"zh-Hans":["关卡 1–60","交叉算式","逻辑解谜","星夜外观 - 5 钻石"],"ja":["ステージ 1–60","交差する計算式","論理パズル","星夜の外観 - ダイヤ5個"],"ko":["스테이지 1–60","교차 수식","논리 퍼즐","별빛 외형 - 다이아5개"],"es":["Nivel 1–60","Ecuaciones cruzadas","Puzle lógico","Aspecto estelar - 5 diamantes"],"pt-BR":["Fase 1–60","Equações cruzadas","Quebra-cabeça lógico","Visual estrelado - 5 diamantes"],"fr":["Niveau 1–60","Équations croisées","Énigme logique","Apparence étoilée - 5 diamants"],"de":["Level 1–60","Rechenkreuzung","Logikrätsel","Sternenoptik - 5 Diamanten"],"it":["Livello 1–60","Equazioni incrociate","Rompicapo logico","Aspetto stellato - 5 diamanti"],"ru":["Уровень 1–60","Пересечения уравнений","Логическая задача","Звёздный облик - 5 алмазов"],"hi":["स्तर 1–60","क्रॉस समीकरण","तर्क पहेली","तारों वाला रूप - 5 हीरे"],"ar":["المرحلة 1–60","معادلات متقاطعة","لغز منطقي","مظهر النجوم - 5 ماسات"]}, art: { kind: "image", background: "games/sproutsum/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      meta: {"en":["Stage 1–60","Arithmetic crossword","Logic puzzle","Starlit appearance - 5 Diamonds"],"zh-Hant":["關卡 1–60","交叉算式","邏輯解謎","星夜外觀 - 5 鑽石"],"zh-Hans":["关卡 1–60","交叉算式","逻辑解谜","星夜外观 - 5 钻石"],"ja":["ステージ 1–60","交差する計算式","論理パズル","星夜の外観 - ダイヤ5個"],"ko":["스테이지 1–60","교차 수식","논리 퍼즐","별빛 외형 - 다이아5개"],"es":["Nivel 1–60","Ecuaciones cruzadas","Puzle lógico","Aspecto estelar - 5 diamantes"],"pt-BR":["Fase 1–60","Equações cruzadas","Quebra-cabeça lógico","Visual estrelado - 5 diamantes"],"fr":["Niveau 1–60","Équations croisées","Énigme logique","Apparence étoilée - 5 diamants"],"de":["Level 1–60","Rechenkreuzung","Logikrätsel","Sternenoptik - 5 Diamanten"],"it":["Livello 1–60","Equazioni incrociate","Rompicapo logico","Aspetto stellato - 5 diamanti"],"ru":["Уровень 1–60","Пересечения уравнений","Логическая задача","Звёздный облик - 5 алмазов"],"hi":["स्तर 1–60","क्रॉस समीकरण","तर्क पहेली","तारों वाला रूप - 5 हीरे"],"ar":["المرحلة 1–60","معادلات متقاطعة","لغز منطقي","مظهر النجوم - 5 ماسات"]}, art: { kind: "image", background: "games/sproutsum/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "chromadock", audience: "general", status: "playable",
@@ -334,7 +338,7 @@ window.WONDER_LOBBY = {
       type: { en: "Sliding block puzzle", "zh-Hant": "滑塊配色益智", "zh-Hans": "滑块配色益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle deslizante", "pt-BR": "Quebra-cabeça deslizante", fr: "Puzzle coulissant", de: "Schiebepuzzle", it: "Puzzle scorrevole", ru: "Сдвиговая головоломка", hi: "खिसकाने की पहेली", ar: "لغز الكتل المنزلقة" },
       description: { en: "Make room for every crate, then slide it through its matching dock.", "zh-Hant": "移開擋路的貨箱，留出空間，再送進同色碼頭。", "zh-Hans": "移开挡路的货箱，留出空间，再送进同色码头。", ja: "荷箱を動かして道を空け、同じ色の港へ送り出そう。", ko: "상자를 옮겨 길을 만들고 같은 색 부두로 보내세요.", es: "Abre paso a cada caja y deslízala hasta el muelle de su color.", "pt-BR": "Abra espaço para cada caixa e leve-a ao cais da mesma cor.", fr: "Libérez un passage pour chaque caisse et rejoignez le quai de sa couleur.", de: "Schaffe Platz für jede Kiste und schiebe sie zum passenden Kai.", it: "Fai spazio a ogni cassa e falla scorrere verso il molo del suo colore.", ru: "Освобождайте путь ящикам и отправляйте их к причалу того же цвета.", hi: "हर पेटी के लिए रास्ता बनाएँ और उसे उसी रंग के घाट पर पहुँचाएँ।", ar: "أفسح الطريق لكل صندوق ثم حرّكه إلى الرصيف المطابق للونه." },
       categories: ["Puzzle", "Animal Games"], skills: ["Logic", "Problem Solving", "Color Recognition"], ages: ["9", "family"],
-      art: { kind: "image", background: "games/chromadock/assets/chromadock-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/chromadock/assets/chromadock-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "glowpiece-gallery", audience: "general", status: "playable",
@@ -343,7 +347,7 @@ window.WONDER_LOBBY = {
       type: { en: "Picture assembly", "zh-Hant": "圖像拼合", "zh-Hans": "图像拼合", ja: "絵合わせ", ko: "그림 조립", es: "Montaje de imágenes", "pt-BR": "Montagem de imagens", fr: "Assemblage d’images", de: "Bilder zusammensetzen", it: "Composizione di immagini", ru: "Сборка картин", hi: "चित्र जोड़ना", ar: "تركيب الصور" },
       description: { en: "Move picture fragments, join matching seams and restore Orla’s gallery.", "zh-Hant": "搬動圖畫碎片、接起相合的邊緣，重現 Orla 的畫廊景色。", "zh-Hans": "搬动图画碎片、接起相合的边缘，重现 Orla 的画廊景色。", ja: "絵のかけらを動かしてつなぎ、オルラのギャラリーを彩ろう。", ko: "그림 조각을 옮겨 이어 붙이고 오를라의 갤러리를 완성하세요.", es: "Mueve fragmentos y une sus bordes para restaurar la galería de Orla.", "pt-BR": "Mova fragmentos e una as bordas para restaurar a galeria de Orla.", fr: "Déplacez les fragments et réunissez leurs bords pour restaurer la galerie d’Orla.", de: "Verschiebe Bildstücke und verbinde ihre Kanten, um Orlas Galerie zu vervollständigen.", it: "Sposta i frammenti e unisci i bordi per restaurare la galleria di Orla.", ru: "Перемещайте фрагменты и соединяйте края, восстанавливая галерею Орлы.", hi: "चित्र के टुकड़े खिसकाएँ, किनारे जोड़ें और ओर्ला की गैलरी सजाएँ।", ar: "حرّك أجزاء الصور ووصل حوافها لإكمال معرض أورلا." },
       categories: ["Puzzle", "Animal Games"], skills: ["Observation", "Planning", "Focus"], ages: ["9+", "Family"],
-      art: { kind: "image", background: "games/glowpiece-gallery/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/glowpiece-gallery/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "leafskip", audience: "general", status: "playable",
@@ -354,7 +358,7 @@ window.WONDER_LOBBY = {
       categories: ["Arcade", "Skill", "Animal Games"],
       skills: ["Reaction", "Focus", "Hand-eye Coordination"],
       ages: ["9+", "Family"],
-      art: { kind: "image", background: "games/leafskip/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/leafskip/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "moonlit-atrium", audience: "general", status: "playable", previewVideo: "assets/previews/moonlit-atrium-battle.webm",
@@ -369,7 +373,7 @@ window.WONDER_LOBBY = {
       scoreBandsByAge: null,
       relatedGameRules: {"requirePublic":true,"sharedSkills":["Logic","Focus"],"gameIds":["animal-sunbeam-garden","animal-mosaic-clues"]},
       meta: { en: ["60 stages", "No timer"], "zh-Hant": ["60關", "不限時間"], "zh-Hans": ["60关", "不限时间"], ja: ["60ステージ", "時間制限なし"], ko: ["60 스테이지", "시간 제한 없음"], es: ["60 niveles", "Sin límite de tiempo"], "pt-BR": ["60 fases", "Sem limite de tempo"], fr: ["60 niveaux", "Sans chronomètre"], de: ["60 Level", "Ohne Zeitlimit"], it: ["60 livelli", "Senza tempo limite"], ru: ["60 уровней", "Без таймера"], hi: ["60 स्तर", "समय सीमा नहीं"], ar: ["60 مرحلة", "بلا مؤقت"] },
-      art: { kind: "image", background: "games/moonlit-atrium/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/moonlit-atrium/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "starcamp-glade", audience: "general", status: "playable", previewVideo: "assets/previews/starcamp-glade-battle.webm",
@@ -378,7 +382,7 @@ window.WONDER_LOBBY = {
       type: { en: "Tent logic puzzle", "zh-Hant": "帳篷配對推理", "zh-Hans": "帐篷配对推理", ja: "テント論理パズル", ko: "텐트 논리 퍼즐", es: "Lógica de tiendas", "pt-BR": "Lógica de barracas", fr: "Logique des tentes", de: "Zelt-Logikrätsel", it: "Logica delle tende", ru: "Логика палаток", hi: "तंबू तर्क पहेली", ar: "لغز منطق الخيام" },
       description: { en: "Give every tree its own tent. Read the counts and leave quiet space between camps.", "zh-Hant": "為每棵樹安排一頂帳篷。讀懂數量，讓營地彼此留點空間。", "zh-Hans": "为每棵树安排一顶帐篷。读懂数量，让营地彼此留点空间。", ja: "木ごとにテントを一つ。数字を読み、隣のテントと間を空けましょう。", ko: "나무마다 텐트 하나를 배정하세요. 숫자를 읽고 텐트 사이에 공간을 남겨 보세요.", es: "Una tienda para cada árbol. Lee las cifras y deja espacio entre campamentos.", "pt-BR": "Uma barraca para cada árvore. Leia os números e deixe espaço entre os acampamentos.", fr: "Une tente pour chaque arbre. Lisez les nombres et espacez les campements.", de: "Ein Zelt für jeden Baum. Lies die Zahlen und halte Abstand zwischen den Zelten.", it: "Una tenda per ogni albero. Leggi i numeri e lascia spazio tra gli accampamenti.", ru: "Каждому дереву — своя палатка. Читайте числа и оставляйте между палатками место.", hi: "हर पेड़ के लिए अलग तंबू। संख्याएँ पढ़ें और तंबुओं के बीच जगह छोड़ें।", ar: "خيمة مستقلة لكل شجرة. اقرأ الأعداد واترك مسافة بين الخيام." },
       categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Planning", "Focus"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      art: { kind: "image", background: "games/starcamp-glade/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/starcamp-glade/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       meta: { en: ["60 stages", "No timer"], "zh-Hant": ["60關", "不限時間"], "zh-Hans": ["60关", "不限时间"], ja: ["60ステージ", "時間制限なし"], ko: ["60 스테이지", "시간 제한 없음"], es: ["60 niveles", "Sin límite de tiempo"], "pt-BR": ["60 fases", "Sem limite de tempo"], fr: ["60 niveaux", "Sans chronomètre"], de: ["60 Level", "Ohne Zeitlimit"], it: ["60 livelli", "Senza tempo limite"], ru: ["60 уровней", "Без таймера"], hi: ["60 स्तर", "समय सीमा नहीं"], ar: ["60 مرحلة", "بلا مؤقت"] }
     },
     {
@@ -388,7 +392,7 @@ window.WONDER_LOBBY = {
       type: { en: "Bridge logic puzzle", "zh-Hant": "連橋邏輯解謎", "zh-Hans": "连桥逻辑解谜", ja: "橋つなぎパズル", ko: "다리 연결 논리 퍼즐", es: "Puzle de puentes", "pt-BR": "Quebra-cabeça de pontes", fr: "Énigme de ponts", de: "Brücken-Logikrätsel", it: "Rompicapo di ponti", ru: "Головоломка с мостами", hi: "सेतु तर्क पहेली", ar: "لغز الجسور المنطقي" },
       description: { en: "Weave a connected island network across 60 original bridge puzzles with Nori.", "zh-Hant": "與 Nori 推敲橋數，連起60片原創潮島群。", "zh-Hans": "与 Nori 推敲桥数，连起60片原创潮岛群。", ja: "ノリと橋の数を考え、60の島々をつなごう。", ko: "노리와 다리 수를 추리하며 60개의 섬 지도를 연결해요.", es: "Conecta las islas con Nori en 60 puzles originales de puentes.", "pt-BR": "Conecte as ilhas com Nori em 60 desafios originais de pontes.", fr: "Reliez les îles avec Nori dans 60 énigmes de ponts originales.", de: "Verbinde mit Nori die Inseln in 60 originellen Brückenrätseln.", it: "Collega le isole con Nori in 60 rompicapi originali di ponti.", ru: "Соедините острова с Нори в 60 оригинальных головоломках.", hi: "नोरी के साथ 60 मौलिक सेतु पहेलियों में द्वीप जोड़ें।", ar: "صل الجزر مع نوري عبر 60 لغز جسور أصليًا." },
       categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Focus", "Problem Solving"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      art: { kind: "image", background: "games/tideweave/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/tideweave/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       meta: { en: ["60 stages", "Free Undo and Hint"], "zh-Hant": ["60關", "免費撤回與提示"], "zh-Hans": ["60关", "免费撤回与提示"], ja: ["60ステージ", "無料の戻す・ヒント"], ko: ["60개 스테이지", "무료 되돌리기와 힌트"], es: ["60 etapas", "Deshacer y pistas gratis"], "pt-BR": ["60 fases", "Desfazer e dicas grátis"], fr: ["60 niveaux", "Annulation et indices gratuits"], de: ["60 Stufen", "Rückgängig und Hinweise gratis"], it: ["60 livelli", "Annulla e indizi gratuiti"], ru: ["60 этапов", "Бесплатные отмена и подсказки"], hi: ["60 चरण", "मुफ़्त वापसी और संकेत"], ar: ["60 مرحلة", "تراجع وتلميحات مجانية"] }
     },
     {
@@ -398,7 +402,7 @@ window.WONDER_LOBBY = {
       type: { en: "Binary logic puzzle", "zh-Hant": "雙色邏輯解謎", "zh-Hans": "双色逻辑解谜", ja: "二色ロジックパズル", ko: "두 색 논리 퍼즐", es: "Puzle de lógica binaria", "pt-BR": "Quebra-cabeça de lógica binária", fr: "Énigme de logique binaire", de: "Binäres Logikrätsel", it: "Rompicapo di logica binaria", ru: "Двоичная головоломка", hi: "दो रंगों की तर्क पहेली", ar: "لغز منطقي بلونين" },
       description: { en: "Balance two lanterns, trace their links and brighten 60 original gardens.", "zh-Hant": "平衡兩種燈色，循著線索點亮60座原創燈圃。", "zh-Hans": "平衡两种灯色，循着线索点亮60座原创灯圃。", ja: "二色の灯りをそろえ、つながりをたどって60の庭を照らそう。", ko: "두 등불의 균형을 맞추고 연결 단서를 따라 60개 정원을 밝혀요.", es: "Equilibra dos faroles y sigue sus vínculos en 60 jardines originales.", "pt-BR": "Equilibre duas lanternas e siga suas ligações em 60 jardins originais.", fr: "Équilibrez deux lanternes et suivez leurs liens dans 60 jardins originaux.", de: "Gleiche zwei Laternenarten aus und folge ihren Verbindungen durch 60 Gärten.", it: "Bilancia due lanterne e segui i legami in 60 giardini originali.", ru: "Уравновесьте два вида фонарей и раскройте связи в 60 садах.", hi: "दो दीपों का संतुलन बनाएँ और सुरागों से 60 अनोखे बाग रोशन करें।", ar: "وازن نوعي المصابيح واتبع الروابط لإضاءة 60 حديقة أصلية." },
       categories: ["Puzzle", "Logic", "Animal Games"], skills: ["Logic", "Focus", "Problem Solving"], ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      art: { kind: "image", background: "games/duskbloom/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/duskbloom/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       meta: {"en": ["60 stages", "Permanent diamond appearance"], "zh-Hant": ["60關", "鑽石永久外觀"], "zh-Hans": ["60关", "钻石永久外观"], "ja": ["60ステージ", "ダイヤで永久外観"], "ko": ["60개 스테이지", "영구 다이아 외형"], "es": ["60 etapas", "Aspecto permanente con diamantes"], "pt-BR": ["60 fases", "Visual permanente com diamantes"], "fr": ["60 niveaux", "Apparence permanente avec diamants"], "de": ["60 Stufen", "Dauerhafter Diamant-Look"], "it": ["60 livelli", "Aspetto permanente con diamanti"], "ru": ["60 этапов", "Постоянный облик за алмазы"], "hi": ["60 चरण", "हीरों से स्थायी रूप"], "ar": ["60 مرحلة", "مظهر دائم بالماس"]}
     },
     {
@@ -409,7 +413,7 @@ window.WONDER_LOBBY = {
       description: {"en":"Roll, buy streets and grow your forest-town fortune.","zh-Hant":"擲骰買地、建屋收租，經營你的森林小鎮。","zh-Hans":"掷骰买地、建屋收租，经营你的森林小镇。","ja":"サイコロで進み、土地を買い、森の街を育てよう。","ko":"주사위로 이동하고 땅을 사서 숲속 마을을 키워요.","es":"Tira, compra terrenos y haz crecer tu pueblo del bosque.","pt-BR":"Role, compre terrenos e desenvolva sua vila na floresta.","fr":"Lancez les dés, achetez et développez votre village forestier.","de":"Würfle, kaufe Grundstücke und baue dein Walddorf auf.","it":"Tira, compra terreni e fai crescere il tuo villaggio nel bosco.","ru":"Бросайте кубик, покупайте землю и развивайте лесной город.","hi":"पासा फेंकें, जमीन खरीदें और वन नगर बसाएँ।","ar":"ارم النرد واشتر الأراضي وطوّر بلدتك في الغابة."},
       categories: ["Strategy", "Board Games", "Animal Games"], skills: ["Logic", "Planning", "Focus"], ages: ["9+", "Family"],
       meta: {"en":["Stages · 60","5 diamonds"],"zh-Hant":["關卡 · 60","5鑽石"],"zh-Hans":["关卡 · 60","5钻石"],"ja":["ステージ · 60","5ダイヤ"],"ko":["스테이지 · 60","다이아몬드 5개"],"es":["Etapas · 60","5 diamantes"],"pt-BR":["Fases · 60","5 diamantes"],"fr":["Étapes · 60","5 diamants"],"de":["Etappen · 60","5 Diamanten"],"it":["Tappe · 60","5 diamanti"],"ru":["Этапы · 60","5 алмазов"],"hi":["चरण · 60","5 हीरे"],"ar":["المراحل · 60","5 ألماسات"]},
-      art: { kind: "image", background: "games/hearthloop/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+      art: { kind: "image", background: "games/hearthloop/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true }
     },
     {
       id: "dustwake-depot", audience: "general", status: "playable",
@@ -419,7 +423,7 @@ window.WONDER_LOBBY = {
       description: { en: "Guide Taro, sweep dust and plan each trip back to a depot across 60 stages.", "zh-Hant": "帶領塔羅清理園區，安排背包與返運路線，完成兩章60關。", "zh-Hans": "带领塔罗清理园区，安排背包与返运路线，完成两章60关。", ja: "タロと園内のほこりを集め、荷物と帰り道を考えながら全60ステージを進もう。", ko: "타로와 정원을 청소하고 적재량과 회수 경로를 계획하며 60개 스테이지에 도전하세요.", es: "Guía a Taro, recoge polvo y planea cada viaje al depósito en 60 niveles.", "pt-BR": "Guie Taro, recolha poeira e planeje cada viagem ao depósito em 60 fases.", fr: "Guidez Taro, ramassez la poussière et planifiez les retours au dépôt dans 60 niveaux.", de: "Führe Taro durch 60 Level, sammle Staub und plane jede Rückfahrt zum Depot.", it: "Guida Taro, raccogli la polvere e pianifica ogni ritorno al deposito in 60 livelli.", ru: "Управляйте Таро, собирайте пыль и планируйте путь к станции на 60 уровнях.", hi: "टारो के साथ धूल साफ करें और 60 चरणों में हर वापसी का रास्ता बनाएँ।", ar: "وجّه تارو واجمع الغبار وخطّط لكل رحلة إلى المحطة عبر 60 مرحلة." },
       categories: ["Simulation", "Puzzle", "Animal Games"], skills: ["Focus", "Logic", "Hand-eye Coordination"], ages: ["9", "family"],
       ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      art: { kind: "image", background: "/games/dustwake-depot/art/poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "/games/dustwake-depot/art/poster.webp?wp-media=512519f6a2210940", hideHero: true },
       meta: { en: ["60 stages", "Route planning", "Permanent diamond looks"], "zh-Hant": ["60關", "返運規劃", "鑽石永久外觀"] }
     },
     {
@@ -430,7 +434,7 @@ window.WONDER_LOBBY = {
       description: { en: "Aim at supports and recover the pieces as workshop structures fall.", "zh-Hant": "瞄準支點，讓工坊結構倒下並回收零件。" },
       categories: ["Puzzle", "Physics", "Animal Games"], skills: ["Aiming", "Spatial Planning"], ages: ["9", "family"],
       ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      art: { kind: "image", background: "/games/rux-salvage-yard/art/poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+      art: { kind: "image", background: "/games/rux-salvage-yard/art/poster.webp?wp-media=512519f6a2210940", hideHero: true }
     },
     {
       id: "lantern-stride", audience: "general", status: "playable",
@@ -440,7 +444,7 @@ window.WONDER_LOBBY = {
       description: { en: "Alternate your steps and find your rhythm on a forest racecourse.", "zh-Hant": "交替踏步，在森林跑道上找到自己的節奏。" },
       categories: ["Racing", "Arcade", "Animal Games"], skills: ["Timing", "Coordination"], ages: ["9", "family"],
       ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
-      art: { kind: "image", background: "/games/lantern-stride/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+      art: { kind: "image", background: "/games/lantern-stride/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true }
     },
     {
       id: "orbit-menders", audience: "general", status: "playable",
@@ -451,7 +455,7 @@ window.WONDER_LOBBY = {
       categories: ["Action", "Shooting", "Animal Games"], skills: ["Strategy", "Coordination"],
       ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
       meta: { en: ["Desktop", "6 Operations"], "zh-Hant": ["電腦限定", "6 個任務"] },
-      art: { kind: "image", background: "/assets/orbit-menders-poster-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "/assets/orbit-menders-poster-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "bramble-rapids", audience: "general", status: "playable",
@@ -463,7 +467,7 @@ window.WONDER_LOBBY = {
       categories: ["Racing", "Arcade", "Animal Games"], skills: ["Reaction", "Hand-Eye Coordination", "Planning"],
       ages: ["9", "family"], ageTags: ["9+", "Family"], recommendedAge: "9+", difficulty: "Medium",
       meta: {"en":["60 Stages","3 Boards","Local computer rivals"],"zh-Hant":["60 關卡","3 滑板","本機電腦對手"],"zh-Hans":["60 关卡","3 滑板","本机电脑对手"],"ja":["60 ステージ","3 ボード","ローカルのコンピューター対戦相手"],"ko":["60 스테이지","3 보드","로컬 컴퓨터 상대"],"es":["60 Etapas","3 Tablas","Rivales del ordenador local"],"pt-BR":["60 Fases","3 Pranchas","Rivais locais do computador"],"fr":["60 Étapes","3 Planches","Rivaux contrôlés par l’ordinateur"],"de":["60 Etappen","3 Boards","Lokale Computergegner"],"it":["60 Tappe","3 Tavole","Rivali locali del computer"],"ru":["60 Этапы","3 Доски","Локальные компьютерные соперники"],"hi":["60 चरण","3 बोर्ड","स्थानीय कंप्यूटर प्रतिद्वंद्वी"],"ar":["60 المراحل","3 الألواح","منافسون محليون يتحكم بهم الحاسوب"]},
-      art: { kind: "image", background: "/games/bramble-rapids/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "/games/bramble-rapids/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "nori-bankshot", audience: "general", status: "playable",
@@ -478,7 +482,7 @@ window.WONDER_LOBBY = {
       seoDescription:{"en":"Plan the collision. Leave the next shot. Clear the harbor’s changing billiards tables.","zh-Hant":"看準碰撞，也替下一球留路。清完規則各異的港灣球檯。","zh-Hans":"看准碰撞，也为下一球留路。清完规则各异的港湾球台。","ja":"白球を狙って的球をポケットへ。次の一打の位置も考え、港のテーブルを攻略しよう。","ko":"흰 공으로 목표 공을 넣고 다음 샷의 자리까지 계획하세요. 항구의 다양한 당구대를 도전해 보세요.","es":"Apunta con la bola blanca, emboca los objetivos y prepara el siguiente tiro en las mesas del puerto.","pt-BR":"Mire com a bola branca, encaçape os alvos e prepare a próxima tacada nas mesas do porto.","fr":"Visez avec la blanche, empochez les cibles et préparez le coup suivant sur les tables du port.","de":"Ziele mit der Weißen, versenke die Zielkugeln und plane den nächsten Stoß auf den Tischen im Hafen.","it":"Mira con la bianca, manda in buca i bersagli e prepara il prossimo tiro sui tavoli del porto.","ru":"Цельтесь белым шаром, отправляйте цели в лузы и продумывайте следующий удар на столах гавани.","hi":"सफेद गेंद से निशाना लगाएँ, लक्ष्य गेंदें डालें और अगला शॉट सोचकर बंदरगाह की मेज़ें पूरी करें।","ar":"صوّب بالكرة البيضاء، وأدخل الأهداف، وخطط للضربة التالية على طاولات الميناء."},
       scoreBandsByAge:null, relatedGameRules:{requirePublic:true,sharedSkills:["Aiming","Spatial Planning"],gameIds:["animal-putt-trails","animal-orb-fortress"]},
       meta: {"en":["Table · 30","Collection · Permanent","Sea-glass Set"],"zh-Hant":["球檯 · 30","收藏 · 永久","海玻璃套組"],"zh-Hans":["球台 · 30","收藏 · 永久","海玻璃套组"],"ja":["テーブル · 30","コレクション · ずっと使える","シーグラスセット"],"ko":["당구대 · 30","컬렉션 · 영구","바다 유리 세트"],"es":["Mesa · 30","Colección · Permanente","Conjunto de vidrio marino"],"pt-BR":["Mesa · 30","Coleção · Permanente","Conjunto de vidro marinho"],"fr":["Table · 30","Collection · Permanent","Ensemble verre de mer"],"de":["Tisch · 30","Sammlung · Dauerhaft","Meerglas-Set"],"it":["Tavolo · 30","Collezione · Permanente","Set di vetro marino"],"ru":["Стол · 30","Коллекция · Навсегда","Набор морского стекла"],"hi":["मेज़ · 30","संग्रह · स्थायी","समुद्री काँच सेट"],"ar":["الطاولة · 30","المجموعة · دائم","طقم زجاج البحر"]},
-      art:{kind:"image",background:"games/nori-bankshot/art/poster.webp?wp-media=dfd6fb9b5249ca93",hideHero:true}
+      art:{kind:"image",background:"games/nori-bankshot/art/poster.webp?wp-media=512519f6a2210940",hideHero:true}
     },
     {
       id: "wildborn", audience: "general", status: "planned", internalOnly: true,
@@ -488,7 +492,7 @@ window.WONDER_LOBBY = {
       description: {"en":"Born small. Forage, hide and evolve in a living wilderness. Death begins a new life.","zh-Hant":"從渺小開始。在荒野覓食、躲藏，慢慢進化。死亡之後，重新投生。","zh-Hans":"从渺小开始。在荒野觅食、躲藏，慢慢进化。死亡之后，重新投生。","ja":"小さな命から。食べ、隠れ、進化しよう。倒れたら新しい命へ。","ko":"작은 생명으로 시작해 먹이를 찾고 숨어 진화하세요. 죽으면 새로 태어납니다.","es":"Nace pequeño. Busca alimento, escóndete y evoluciona. La muerte inicia otra vida.","pt-BR":"Nasça pequeno. Busque comida, esconda-se e evolua. A morte inicia outra vida.","fr":"Naissez petit. Mangez, cachez-vous et évoluez. La mort ouvre une nouvelle vie.","de":"Beginne klein. Suche Nahrung, verstecke dich und entwickle dich. Nach dem Tod beginnt ein neues Leben.","it":"Nasci piccolo. Cerca cibo, nasconditi ed evolvi. La morte apre una nuova vita.","ru":"Начните маленьким. Ищите пищу, прячьтесь и развивайтесь. После смерти — новая жизнь.","hi":"छोटे जीव बनें। भोजन खोजें, छिपें और विकसित हों। मृत्यु पर नया जन्म मिलता है।","ar":"ابدأ صغيرًا. ابحث عن الطعام واختبئ وتطور. الموت بداية حياة جديدة."},
       categories: ["Action", "Adventure", "Animal Games"], skills: ["Reaction", "Planning"], ages: ["general"],
       meta: {"en":["Living world","Random origins","No levels"],"zh-Hant":["生態世界","隨機投生","沒有關卡"],"zh-Hans":["生态世界","随机投生","没有关卡"],"ja":["生きた世界","ランダムな誕生","ステージなし"],"ko":["살아있는 세계","무작위 탄생","스테이지 없음"],"es":["Mundo vivo","Orígenes al azar","Sin niveles"],"pt-BR":["Mundo vivo","Origens aleatórias","Sem fases"],"fr":["Monde vivant","Origines aléatoires","Sans niveaux"],"de":["Lebendige Welt","Zufällige Geburt","Ohne Level"],"it":["Mondo vivente","Origini casuali","Senza livelli"],"ru":["Живой мир","Случайное рождение","Без уровней"],"hi":["जीवंत दुनिया","यादृच्छिक जन्म","कोई स्तर नहीं"],"ar":["عالم حي","أصول عشوائية","بلا مراحل"]},
-      art: { kind: "image", background: "/games/wildborn/art/poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "/games/wildborn/art/poster.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "kindred-habitats", audience: "general", status: "planned", internalOnly: true,
@@ -498,7 +502,7 @@ window.WONDER_LOBBY = {
       description: { en: "Read habitat clues, prepare thoughtful encounters and grow a sanctuary of distinct animal companions.", "zh-Hant": "讀懂棲地線索，準備食物與環境，結識習性各異的動物夥伴。" },
       categories: ["Strategy", "Adventure", "Animal Games", "Pet Care"], skills: ["Planning", "Observation"], ages: ["general"],
       meta: { en: ["36 Species", "6 Habitats", "No Combat"], "zh-Hant": ["36 種動物", "6 大棲地", "無戰鬥"] },
-      art: { kind: "image", background: "games/kindred-habitats/art/poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/kindred-habitats/art/poster.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "deep-drill", audience: "general", status: "playable", previewVideo: "assets/previews/deep-drill-battle.webm",
@@ -508,9 +512,9 @@ window.WONDER_LOBBY = {
       description: { en: "Drill deeper, recover ore, upgrade your rig and unlock automatic drilling.", "zh-Hant": "往地心鑽進，帶礦返航、升級與更換鑽頭，解鎖自動鑽掘。" },
       categories: ["Strategy", "Adventure", "Animal Games"], skills: ["Planning", "Timing"], ages: ["general"],
       meta: { en: ["4 Drill Heads", "Auto Drilling"], "zh-Hant": ["4 種鑽頭", "自動鑽掘"] },
-      art: { kind: "image", background: "games/deep-drill/art/poster.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/deep-drill/art/poster.png.webp?wp-media=512519f6a2210940", hideHero: true },
     },
-    {"id":"fusekeep","audience":"general","status":"playable","previewVideo":"assets/previews/fusekeep-battle.webm","title":{"en":"Fusekeep","zh-Hant":"合成守城","zh-Hans":"合成守城","ja":"合成の砦","ko":"합성 요새","es":"Fortaleza Fusión","pt-BR":"Fortaleza da Fusão","fr":"Forteresse Fusion","de":"Fusionsfestung","it":"Fortezza Fusione","ru":"Крепость слияния","hi":"विलय दुर्ग","ar":"حصن الدمج","__localizedExact":true},"type":{"en":"Merge Tower Defense","zh-Hant":"合成防守"},"description":{"__localizedExact":true,"en":"Merge soldiers of the same type and rank, build your squad and defend the winter fortress through 30 missions.","zh-Hant":"合成同兵種、同等級士兵，搭配陣容守住冰雪城牆，挑戰三十關。","zh-Hans":"合成同兵种、同等级士兵，搭配阵容守住冰雪城墙，挑战三十关。","ja":"同じ兵種・同じランクの兵士を合成し、部隊を編成。30の任務で冬の城壁を守ろう。","ko":"같은 병종과 등급의 병사를 합성하고 부대를 편성해 30개 임무에서 겨울 성벽을 지키세요.","es":"Fusiona soldados del mismo tipo y rango, forma tu equipo y defiende la fortaleza invernal en 30 misiones.","pt-BR":"Funda soldados do mesmo tipo e nível, monte sua equipe e defenda a fortaleza de inverno em 30 missões.","fr":"Fusionnez des soldats de même type et rang, formez votre équipe et défendez la forteresse hivernale dans 30 missions.","de":"Verschmelze Soldaten gleichen Typs und Rangs, bilde dein Team und verteidige die Winterfestung in 30 Missionen.","it":"Fondi soldati dello stesso tipo e rango, forma la squadra e difendi la fortezza invernale in 30 missioni.","ru":"Объединяйте бойцов одного типа и ранга, соберите отряд и защитите зимнюю крепость в 30 миссиях.","hi":"समान प्रकार और रैंक के सैनिक मिलाएँ, दल बनाएँ और 30 मिशनों में शीत किले की रक्षा करें।","ar":"ادمج جنودًا من النوع والرتبة نفسيهما، وشكّل فريقك لحماية قلعة الشتاء عبر 30 مهمة."},"categories":["Strategy","Animal Games","Tower Defense"],"skills":["Planning","Timing"],"ages":["general"],"href":"games/fusekeep/","meta":{"en":["30 Stages","Merge & Defend"],"zh-Hant":["30 關","合成守城"]},"art":{"kind":"image","background":"assets/fusekeep/poster.webp?wp-media=dfd6fb9b5249ca93","hideHero":true}},
+    {"id":"fusekeep","audience":"general","status":"playable","previewVideo":"assets/previews/fusekeep-battle.webm","title":{"en":"Fusekeep","zh-Hant":"合成守城","zh-Hans":"合成守城","ja":"合成の砦","ko":"합성 요새","es":"Fortaleza Fusión","pt-BR":"Fortaleza da Fusão","fr":"Forteresse Fusion","de":"Fusionsfestung","it":"Fortezza Fusione","ru":"Крепость слияния","hi":"विलय दुर्ग","ar":"حصن الدمج","__localizedExact":true},"type":{"en":"Merge Tower Defense","zh-Hant":"合成防守"},"description":{"__localizedExact":true,"en":"Merge soldiers of the same type and rank, build your squad and defend the winter fortress through 30 missions.","zh-Hant":"合成同兵種、同等級士兵，搭配陣容守住冰雪城牆，挑戰三十關。","zh-Hans":"合成同兵种、同等级士兵，搭配阵容守住冰雪城墙，挑战三十关。","ja":"同じ兵種・同じランクの兵士を合成し、部隊を編成。30の任務で冬の城壁を守ろう。","ko":"같은 병종과 등급의 병사를 합성하고 부대를 편성해 30개 임무에서 겨울 성벽을 지키세요.","es":"Fusiona soldados del mismo tipo y rango, forma tu equipo y defiende la fortaleza invernal en 30 misiones.","pt-BR":"Funda soldados do mesmo tipo e nível, monte sua equipe e defenda a fortaleza de inverno em 30 missões.","fr":"Fusionnez des soldats de même type et rang, formez votre équipe et défendez la forteresse hivernale dans 30 missions.","de":"Verschmelze Soldaten gleichen Typs und Rangs, bilde dein Team und verteidige die Winterfestung in 30 Missionen.","it":"Fondi soldati dello stesso tipo e rango, forma la squadra e difendi la fortezza invernale in 30 missioni.","ru":"Объединяйте бойцов одного типа и ранга, соберите отряд и защитите зимнюю крепость в 30 миссиях.","hi":"समान प्रकार और रैंक के सैनिक मिलाएँ, दल बनाएँ और 30 मिशनों में शीत किले की रक्षा करें।","ar":"ادمج جنودًا من النوع والرتبة نفسيهما، وشكّل فريقك لحماية قلعة الشتاء عبر 30 مهمة."},"categories":["Strategy","Animal Games","Tower Defense"],"skills":["Planning","Timing"],"ages":["general"],"href":"games/fusekeep/","meta":{"en":["30 Stages","Merge & Defend"],"zh-Hant":["30 關","合成守城"]},"art":{"kind":"image","background":"assets/fusekeep/poster.webp?wp-media=512519f6a2210940","hideHero":true}},
     {
       id: "animal-wildwood-raid", audience: "general", status: wildwoodLobbyReleaseStatus, internalOnly: wildwoodLobbyReleaseStatus !== "playable",
       ...(wildwoodLobbyReleaseStatus === "planned" ? { internalTrial: "/games/animal-wildwood-raid/?preview=1" } : {}),
@@ -520,7 +524,7 @@ window.WONDER_LOBBY = {
       description: {"en":"Guide a red panda ranger through 30 forest missions: gather timber, rescue friends and face eight guardian archetypes.","zh-Hant":"帶領小熊貓巡林員挑戰 30 項森林任務：採集木材、救援夥伴，迎戰八種首領。","zh-Hans":"带领小熊猫巡林员挑战 30 项森林任务：采集木材、救援伙伴，迎战八种首领。","ja":"レッサーパンダの森の番人と30の任務へ。木材を集め、仲間を救い、8種類の守護者に挑もう。","ko":"레서판다 순찰대원과 30개의 숲 임무에 도전하세요. 목재를 모으고 친구를 구하며 여덟 종류의 수호자와 맞서세요.","es":"Guía a un panda rojo por 30 misiones del bosque: reúne madera, rescata amigos y enfrenta a ocho tipos de guardianes.","pt-BR":"Guie um panda-vermelho por 30 missões na floresta: reúna madeira, resgate amigos e enfrente oito tipos de guardiões.","fr":"Guidez un panda roux dans 30 missions en forêt : récoltez du bois, sauvez vos amis et affrontez huit types de gardiens.","de":"Führe einen Roten Panda durch 30 Waldmissionen: Sammle Holz, rette Freunde und stelle dich acht Wächtertypen.","it":"Guida un panda rosso in 30 missioni nella foresta: raccogli legna, salva gli amici e affronta otto tipi di guardiani.","ru":"Пройдите с малой пандой 30 лесных заданий: собирайте древесину, спасайте друзей и сразитесь с восемью видами стражей.","hi":"लाल पांडा वनरक्षक के साथ 30 वन मिशन पूरे करें: लकड़ी जुटाएँ, मित्रों को बचाएँ और आठ प्रकार के रक्षकों का सामना करें।","ar":"قد رينجر الباندا الأحمر في 30 مهمة غابية: اجمع الخشب وأنقذ الأصدقاء وواجه ثمانية أنواع من الحراس."},
       categories: ["Action", "Adventure", "Animal Games"], skills: ["Timing", "Planning"], ages: ["general"],
       href: "games/animal-wildwood-raid/", meta: {"en":["30 Stages","Rescues","Permanent Ward"],"zh-Hant":["30 關卡","救援","永久解鎖橡果護盾"],"zh-Hans":["30 关卡","救援","永久解锁橡果护盾"],"ja":["30 ステージ","救出","盾を永久解放"],"ko":["30 스테이지","구조","방패 영구 해제"],"es":["30 niveles","Rescates","Escudo permanente"],"pt-BR":["30 fases","Resgates","Escudo permanente"],"fr":["30 niveaux","Sauvetages","Bouclier permanent"],"de":["30 Stufen","Rettungen","Dauerschild"],"it":["30 livelli","Salvataggi","Scudo permanente"],"ru":["30 этапов","Спасения","Постоянный щит"],"hi":["30 चरण","बचाव","स्थायी ढाल"],"ar":["30 مرحلة","إنقاذ","درع دائم"]},
-      art: { kind: "image", background: "games/animal-wildwood-raid/art/cover-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/animal-wildwood-raid/art/cover-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "pawaxe", audience: "general", status: pawaxeLobbyReleaseStatus,
@@ -532,7 +536,7 @@ window.WONDER_LOBBY = {
       description: { en: "Slash through a long forest expedition, collect four allies and build around special equipment abilities.", "zh-Hant": "一路揮斧探索森林，收集四種能力夥伴與特殊裝備，挑戰首領並持續刷寶。", "zh-Hans": "一路挥斧探索森林，收集四种能力伙伴与特殊装备，挑战首领并持续刷宝。", ja: "斧で森を進み、4種類の仲間と特殊装備を集めてボスに挑もう。", ko: "도끼로 숲을 탐험하고 네 종류의 동료와 특수 장비를 모아 보스에 도전하세요.", es: "Recorre el bosque a hachazos, reúne cuatro aliados y equipo especial y desafía a los jefes.", "pt-BR": "Explore a floresta com seu machado, reúna quatro aliados e equipamentos especiais e enfrente chefes.", fr: "Traversez la forêt à la hache, collectionnez quatre alliés et des équipements spéciaux et défiez les boss.", de: "Erkunde den Wald mit deiner Axt, sammle vier Begleiter und Spezialausrüstung und fordere Bosse heraus.", it: "Esplora la foresta con l’ascia, raccogli quattro alleati ed equipaggiamento speciale e sfida i boss.", ru: "Прокладывайте путь топором, собирайте четырёх спутников и особое снаряжение и побеждайте боссов.", hi: "कुल्हाड़ी से वन में आगे बढ़ें, चार साथी और विशेष उपकरण जुटाएँ और बॉस को चुनौती दें।", ar: "شق طريقك بالفأس في الغابة واجمع أربعة رفاق ومعدات خاصة وتحدَّ الزعماء." },
       categories: ["Action", "Adventure", "Animal Games"], skills: ["Focus", "Reaction"], ages: ["general"],
       href: "games/pawaxe/", meta: { en: ["30 Stages", "4 Allies"], "zh-Hant": ["30 關", "4 種夥伴"], "zh-Hans": ["30 关", "4 种伙伴"], ja: ["30 ステージ", "4 種の仲間"], ko: ["30 스테이지", "동료 4종"], es: ["30 etapas", "4 aliados"], "pt-BR": ["30 fases", "4 aliados"], fr: ["30 étapes", "4 alliés"], de: ["30 Etappen", "4 Begleiter"], it: ["30 tappe", "4 alleati"], ru: ["30 этапов", "4 спутника"], hi: ["30 चरण", "4 साथी"], ar: ["30 مرحلة", "4 رفاق"] },
-      art: { kind: "image", background: "assets/interface7-redrawn/pawaxe.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/interface7-redrawn/pawaxe.png.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-crownfall", audience: "general", status: crownfallLobbyReleaseStatus,
@@ -543,7 +547,7 @@ window.WONDER_LOBBY = {
       description: { en: "Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.", "zh-Hant": "消除相連符文方塊，安排打怪順序，在 30 道古堡謎題中奪回皇冠。", "zh-Hans": "消除相连符文方块，安排打怪顺序，在 30 道古堡谜题中夺回皇冠。", ja: "つながったルーンブロックを消し、戦う順番を考えて、30の古城パズルで王冠を取り戻そう。", ko: "연결된 룬 블록을 없애고 전투 순서를 정해 30개의 고성 퍼즐에서 왕관을 되찾으세요.", es: "Elimina bloques de runas conectados, decide el orden de combate y recupera la corona en 30 puzles de castillo.", "pt-BR": "Remova blocos de runas conectados, escolha a ordem das batalhas e recupere a coroa em 30 desafios no castelo.", fr: "Éliminez les blocs de runes reliés, choisissez l’ordre des combats et retrouvez la couronne dans 30 énigmes de château.", de: "Entferne verbundene Runenblöcke, plane die Kampfreihenfolge und erobere die Krone in 30 Burg-Rätseln zurück.", it: "Elimina i blocchi runici collegati, scegli l’ordine degli scontri e riconquista la corona in 30 rompicapi nel castello.", ru: "Убирайте связанные блоки рун, выбирайте порядок сражений и верните корону в 30 головоломках замка.", hi: "जुड़े हुए रूण ब्लॉक हटाएँ, लड़ाई का क्रम चुनें और महल की 30 पहेलियों में ताज वापस पाएँ।", ar: "أزل كتل الرموز المتصلة، واختر ترتيب المعارك، واستعد التاج عبر 30 لغزًا في القلعة." },
       categories: ["Puzzle", "Strategy", "Animal Games"], skills: ["Planning", "Logic"], ages: ["general"],
       href: "games/animal-crownfall/", meta: { en: ["30 Stages", "Undo", "Deterministic Battles"], "zh-Hant": ["30 關", "自由撤銷", "順序戰鬥"], "zh-Hans": ["30 关", "自由撤销", "顺序战斗"], ja: ["30ステージ", "やり直し", "戦闘順序"], ko: ["30개 스테이지", "되돌리기", "전투 순서"], es: ["30 niveles", "Deshacer", "Orden de combate"], "pt-BR": ["30 fases", "Desfazer", "Ordem das batalhas"], fr: ["30 niveaux", "Annuler", "Ordre des combats"], de: ["30 Level", "Rückgängig", "Kampfreihenfolge"], it: ["30 livelli", "Annulla", "Ordine degli scontri"], ru: ["30 уровней", "Отмена хода", "Порядок боёв"], hi: ["30 स्तर", "चाल वापस लें", "लड़ाई का क्रम"], ar: ["30 مرحلة", "تراجع", "ترتيب المعارك"] },
-      art: { kind: "image", background: "assets/animal-crownfall/cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-crownfall/cover.png.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-carnival-claw",
@@ -591,7 +595,7 @@ window.WONDER_LOBBY = {
         ru: ["30 миссий", "Честный навык", "Витрина"], hi: ["30 मिशन", "दिखने वाला कौशल", "संग्रह"],
         ar: ["30 مهمة", "مهارة واضحة", "خزانة التعويذات"],
       },
-      art: { kind: "image", background: "assets/animal-carnival-claw-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-carnival-claw-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-honey-shield",
@@ -644,7 +648,7 @@ window.WONDER_LOBBY = {
         ru: ["30 этапов", "Ремонт в реальном времени", "Звёзды за короткие линии"], hi: ["30 चरण", "लाइव सुधार", "छोटी रेखा के सितारे"],
         ar: ["30 مرحلة", "إصلاح مباشر", "نجوم للخطوط القصيرة"],
       },
-      art: { kind: "image", background: "assets/animal-honey-shield-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-honey-shield-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-dice-bastion",
@@ -702,7 +706,7 @@ window.WONDER_LOBBY = {
         hi: ["30 चरण", "निष्पक्ष यादृच्छिक बुलावा", "लाइव मर्ज रणनीति"],
         ar: ["30 مرحلة", "استدعاء عشوائي عادل", "تكتيكات دمج مباشرة"],
       },
-      art: { kind: "image", background: "assets/animal-dice-bastion/cover-block-v1.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-dice-bastion/cover-block-v1.png.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "signal-veil",
@@ -724,7 +728,7 @@ window.WONDER_LOBBY = {
       ages: ["13", "teen", "adult", "family"],
       href: "games/signal-veil/",
       previewVideo: "assets/previews/signal-veil-battle.webm",
-      art: { kind: "image", background: "assets/signal-veil-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/signal-veil-cover.webp?wp-media=512519f6a2210940", hideHero: true },
       description: {
         en: "Cross one connected 2042 town, forest, and neural lab. Reveal disguised Lizard People, grow stronger, and defeat their first commander.",
         "zh-Hant": "穿越 2042 年相連的城鎮、森林與神經實驗室，揭露偽裝的蜥蜴人、強化菲雅並擊敗第一位指揮官。",
@@ -757,7 +761,7 @@ window.WONDER_LOBBY = {
       type: { en: "Sliding Block Puzzle", "zh-Hant": "滑塊益智", "zh-Hans": "滑块益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle de bloques", "pt-BR": "Puzzle de blocos", fr: "Puzzle de blocs", de: "Schiebepuzzle", it: "Puzzle a scorrimento", ru: "Головоломка с выходом и скользящими блоками", hi: "स्लाइडिंग पहेली", ar: "لغز الكتل المنزلقة" },
       categories: ["Animal Games", "Puzzle", "Strategy", "Block"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/",
       previewVideo: "assets/previews/animal-unblock-battle.webm",
-      art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp?wp-media=512519f6a2210940", hideHero: true },
       description: { en: "Free the green bamboo block with the gold arrow through the gate in 30 authored sliding puzzles across three chapters.", "zh-Hant": "在三個章節的 30 個固定滑塊謎題中，移開障礙，讓帶金色箭頭的綠色竹塊通過出口。", "zh-Hans": "在三个章节的 30 个固定滑块谜题中，移开障碍，让带金色箭头的绿色竹块通过出口。", ja: "3章・全30問のスライドパズル。障害物を動かし、金色の矢印が付いた緑の竹ブロックを出口へ導きます。", ko: "3개 챕터의 고정 퍼즐 30개에서 장애물을 밀고 금색 화살표가 있는 초록 대나무 블록을 출구로 보내세요.", es: "Resuelve 30 puzles fijos en tres capítulos y despeja la salida para el bloque de bambú verde con flecha dorada.", "pt-BR": "Resolva 30 quebra-cabeças fixos em três capítulos e abra a saída para o bloco de bambu verde com seta dourada.", fr: "Résolvez 30 puzzles fixes en trois chapitres et libérez la sortie pour le bloc de bambou vert marqué d’une flèche dorée.", de: "Löse 30 feste Rätsel in drei Kapiteln und mache den Weg für den grünen Bambusblock mit goldenem Pfeil frei.", it: "Risolvi 30 rompicapi fissi in tre capitoli e libera l’uscita per il blocco di bambù verde con la freccia dorata.", ru: "Решите 30 заданных головоломок в трёх главах и откройте выход зелёному бамбуковому блоку с золотой стрелкой.", hi: "तीन अध्यायों की 30 निश्चित पहेलियाँ सुलझाएँ और सुनहरे तीर वाले हरे बाँस के ब्लॉक के लिए निकास खोलें।", ar: "حل 30 لغزًا ثابتًا في ثلاثة فصول وافتح المخرج لكتلة الخيزران الخضراء ذات السهم الذهبي." },
       meta: { en: ["30 authored puzzles", "3 chapters of 10", "6×6 board"], "zh-Hant": ["30 個固定謎題", "3 章，每章 10 關", "6×6 棋盤"], "zh-Hans": ["30 个固定谜题", "3 章，每章 10 关", "6×6 棋盘"], ja: ["全30問", "3章×10問", "6×6盤面"], ko: ["고정 퍼즐 30개", "3개 챕터, 각 10개", "6×6 보드"], es: ["30 puzles fijos", "3 capítulos de 10", "Tablero 6×6"], "pt-BR": ["30 puzzles fixos", "3 capítulos de 10", "Tabuleiro 6×6"], fr: ["30 puzzles fixes", "3 chapitres de 10", "Plateau 6×6"], de: ["30 feste Rätsel", "3 Kapitel mit je 10", "6×6-Brett"], it: ["30 rompicapi fissi", "3 capitoli da 10", "Griglia 6×6"], ru: ["30 заданных головоломок", "3 главы по 10", "Поле 6×6"], hi: ["30 निश्चित पहेलियाँ", "3 अध्याय, हर एक में 10", "6×6 बोर्ड"], ar: ["30 لغزًا ثابتًا", "3 فصول من 10", "لوحة 6×6"] }
     },
@@ -873,7 +877,7 @@ window.WONDER_LOBBY = {
     "اندفاع تشاو يون"
   ]
 },
-      art: { kind: "image", background: "assets/interface7-redrawn/zhao-yun-a-dou.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/interface7-redrawn/zhao-yun-a-dou.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-bus-jam",
@@ -882,7 +886,7 @@ window.WONDER_LOBBY = {
       type: { en: "Queue Strategy", "zh-Hant": "排隊策略", "zh-Hans": "排队策略", ja: "行列ストラテジー", ko: "대기열 전략", es: "Estrategia de colas", "pt-BR": "Estratégia de filas", fr: "Stratégie de files", de: "Warteschlangen-Strategie", it: "Strategia delle file", ru: "Стратегия очередей", hi: "कतार रणनीति", ar: "استراتيجية الطوابير" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Logic"], ages: ["9", "family"],
       href: "games/animal-bus-jam/",
-      art: { kind: "image", background: "assets/animal-bus-jam-cover-general-v4.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-bus-jam-cover-general-v4.webp?wp-media=512519f6a2210940", hideHero: true },
       previewVideo: "assets/previews/animal-bus-jam-battle.webm",
       description: { en: "Route passengers to matching buses, manage the FIFO holding lane, and clear 30 stops. Earn three stars by minimizing holds without assistance.", "zh-Hant": "依序派出隊列前方的乘客，送上同色巴士並管理先進先出的候車通道，完成 30 個站點。三星挑戰獎勵最少候車且不使用輔助的通關。", "zh-Hans": "依次派出队列前方的乘客，送上同色公交车并管理先进先出的候车通道，完成 30 个站点。三星挑战奖励最少候车且不使用辅助的通关。", ja: "列の先頭から同じ色のバスへ乗客を送り、先入れ先出しの待機レーンを管理して30か所をクリア。待機を最小限にし、補助なしで三つ星を目指します。", ko: "대기열 맨 앞 승객을 같은 색 버스로 보내고 선입선출 대기 통로를 관리해 30개 정류장을 완료하세요. 대기를 줄이고 도움 없이 세 별을 노릴 수 있습니다.", es: "Envía pasajeros al bus de su color y gestiona la espera FIFO en 30 paradas. Busca tres estrellas: pocas esperas y sin ayuda.", "pt-BR": "Envie cada passageiro ao ônibus da mesma cor e gerencie a espera FIFO em 30 paradas. Busque três estrelas com poucas esperas e sem ajuda.", fr: "Envoyez chaque passager vers le bus de sa couleur et gérez la file FIFO sur 30 arrêts. Trois étoiles : peu d’attentes, sans aide.", de: "Schicke Fahrgäste in den passenden Bus und verwalte die FIFO-Wartezone an 30 Haltestellen. Drei Sterne gibt es für wenige Wartegänge ohne Hilfe.", it: "Invia i passeggeri in testa al bus del loro colore, gestisci la corsia FIFO e completa 30 fermate. Le tre stelle premiano poche attese senza aiuti.", ru: "Отправляйте пассажиров в автобусы нужного цвета, управляйте очередью FIFO и пройдите 30 остановок. Три звезды — за минимум ожиданий без подсказок.", hi: "कतार के आगे के यात्री को उसी रंग की बस में भेजें, सीमित प्रतीक्षा लेन सँभालें और 30 पड़ाव पूरे करें। तीन सितारे कम प्रतीक्षा और बिना सहायता के लिए हैं।", ar: "أرسل أول راكب ظاهر إلى الحافلة المطابقة للونه، وأدر مسار الانتظار بترتيب الوصول لإكمال 30 محطة. تمنحك النجوم الثلاث تقديرًا للانتظار الأقل دون مساعدة." },
       meta: { en: ["Passenger queues", "Limited holding lane", "Strategy puzzle"], "zh-Hant": ["乘客排隊", "有限候車通道", "策略益智"], "zh-Hans": ["乘客排队", "有限候车通道", "策略益智"], ja: ["乗客の列", "待機レーン", "戦略パズル"], ko: ["승객 대기열", "제한된 대기 통로", "전략 퍼즐"], es: ["Colas de pasajeros", "Zona de espera limitada", "Puzzle de estrategia"], "pt-BR": ["Filas de passageiros", "Área de espera limitada", "Quebra-cabeça estratégico"], fr: ["Files de passagers", "Zone d’attente limitée", "Puzzle de stratégie"], de: ["Fahrgastschlangen", "Begrenzte Wartezone", "Strategierätsel"], it: ["Code di passeggeri", "Corsia d’attesa limitata", "Puzzle strategico"], ru: ["Очереди пассажиров", "Ограниченная зона ожидания", "Стратегическая головоломка"], hi: ["यात्रियों की कतारें", "सीमित प्रतीक्षा लेन", "रणनीति पहेली"], ar: ["طوابير الركاب", "مسار انتظار محدود", "لغز استراتيجي"] }
@@ -895,7 +899,7 @@ window.WONDER_LOBBY = {
       categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/arrow-escape/", internalTrial: "internal-test.html?preview=1",
       description: { en: "Clear arrow blocks in the right order across 30 escape puzzles.", "zh-Hant": "依正確順序移除箭頭方塊，完成 30 個逃亡謎題。", "zh-Hans": "按正确顺序移除箭头方块，完成 30 个逃亡谜题。" },
       meta: { en: ["30 Stages", "Order Logic", "No Timer"], "zh-Hant": ["30 關", "順序邏輯", "無計時"] },
-      art: { kind: "image", background: "assets/arrow-escape/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/arrow-escape/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "block-blast",
@@ -905,7 +909,7 @@ window.WONDER_LOBBY = {
       categories: ["Puzzle", "Strategy", "Family", "Block"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/", previewVideo: "assets/previews/block-blast-battle.webm",
       description: { en: "Place three shapes on an 8x8 board and blast complete lines.", "zh-Hant": "在 8×8 棋盤放入三個形狀，爆破完整橫排與直列。", "zh-Hans": "在 8×8 棋盘放入三个形状，爆破完整横排与直列。" },
       meta: { en: ["8x8 Board", "Three Shapes", "Line Clears"], "zh-Hant": ["8×8 棋盤", "三個方塊", "行列消除"] },
-      art: { kind: "image", background: "assets/block-blast/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/block-blast/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "hexa-sort",
@@ -916,7 +920,7 @@ window.WONDER_LOBBY = {
       categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Color Matching"], ages: ["9", "family"], href: "games/hexa-sort/", internalTrial: "internal-test.html?preview=1",
       description: { en: "Stack colored hex chips, merge matching tops, and clear chains.", "zh-Hant": "堆疊彩色六角片，合併相同頂層並觸發連鎖消除。", "zh-Hans": "堆叠彩色六角片，合并相同顶层并触发连锁消除。" },
       meta: { en: ["30 Stages", "10-chip Clears", "Chain Merges"], "zh-Hant": ["30 關", "10 片消除", "連鎖合併"] },
-      art: { kind: "image", background: "assets/hexa-sort/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/hexa-sort/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "klondike-solitaire",
@@ -931,7 +935,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?preview=1",
       description: { en: "Classic solitaire with a full deck drag-and-drop flow, draw 1/3 modes, auto-finish, and undo support.", "zh-Hant": "經典單人紙牌接龍，提供 1 或 3 張抽牌、拖拉放置、底部自動收尾與還原支援。", "zh-Hans": "经典单人纸牌接龙，提供 1 或 3 张抽牌、拖拉放置、底部自动收尾与撤销支持。", ja: "1枚または3枚取りソリティア。ドラッグ&ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。", ko: "1장 또는 3장 드로우를 지원하는 클래식 솔리테어. 드래그 앤 드롭, 오토 피니시, 되돌리기 기능을 제공합니다.", es: "Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer.", "pt-BR": "Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer.", fr: "Solitaire classique avec glisser-déposer complet, modes 1 ou 3 cartes, auto-fini et support d'annulation.", de: "Klassisches Klondike-Solitär mit Drag-and-Drop, Ziehmodi 1/3, Auto-Finish und Undo.", it: "Solitario classico con drag-and-drop completo, modalità pesca 1/3, auto-finish e supporto annulla.", ru: "Классический пасьянс с перетаскиванием карт, режимами взятия 1/3, автозавершением и отменой хода.", hi: "क्लासिक सोलिटेयर, जिसमें ड्रैग-एंड-ड्रॉप, 1/3 ड्रॉ मोड, ऑटो-फिनिश और अंडू सपोर्ट मौजूद हैं।", ar: "لعبة سوليتير كلاسيكية بنمط السحب 1 أو 3 وبالتحكم بالسحب والإفلات، مع إنهاء تلقائي وإمكانية التراجع." },
       meta: { en: ["One Deck", "Draw 1 or 3", "Undo"], "zh-Hant": ["一副牌", "抽1/3", "還原"], "zh-Hans": ["一副牌", "抽1/3", "撤销"], ja: ["1デッキ", "1枚/3枚", "元に戻す"], ko: ["한 덱", "1장/3장", "되돌리기"], es: ["Un mazo", "Robar 1 o 3", "Deshacer"], "pt-BR": ["Um Baralho", "Compra 1 ou 3", "Desfazer"], fr: ["Un Jeu", "Piocher 1 ou 3", "Annuler"], de: ["Ein Deck", "1 oder 3 ziehen", "Rückgängig"], it: ["Un Mazzo", "Pesca 1 o 3", "Annulla"], ru: ["Колода", "Взять 1 или 3", "Отменить"], hi: ["एक डेक", "1 या 3 खींचें", "पूर्ववत"], ar: ["مجموعة واحدة", "اسحب 1 أو 3", "تراجع"] },
-      art: { kind: "image", background: "assets/lobby-posters/klondike-solitaire-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/klondike-solitaire-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "spider-solitaire",
@@ -946,7 +950,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?preview=1",
       description: { en: "Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo.", "zh-Hant": "經典蜘蛛接龍，提供 1、2、4 花色、順暢拖曳、提示與不限次數回退。", "zh-Hans": "经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。", ja: "1・2・4スート、スムーズなドラッグ、ヒント、無制限Undoに対応したクラシック・スパイダーソリティア。", ko: "1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어.", es: "Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado.", "pt-BR": "Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado.", fr: "Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée.", de: "Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.", it: "Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati.", ru: "Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов.", hi: "1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।", ar: "سوليتير العنكبوت الكلاسيكي بنوع واحد أو نوعين أو أربعة أنواع مع سحب سلس وتلميحات وتراجع غير محدود." },
       meta: { en: ["1 / 2 / 4 Suits", "8 Completed Sets", "Undo + Hint"], "zh-Hant": ["1 / 2 / 4 花色", "8 組完成", "回退 + 提示"] },
-      art: { kind: "image", background: "assets/spider-solitaire-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/spider-solitaire-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "freecell-solitaire",
@@ -958,7 +962,7 @@ window.WONDER_LOBBY = {
       href: "games/freecell-solitaire/", internalTrial: "index.html?preview=1",
       description: { en: "Classic FreeCell with eight open columns, four temporary cells, four foundations, Hint, Undo, and touch-friendly play.", "zh-Hant": "經典 FreeCell 接龍：八個公開牌列、四個暫存格、四個牌基，支援提示、還原與觸控操作。", "zh-Hans": "经典 FreeCell 接龙：八个公开牌列、四个暂存格、四个牌基，支持提示、撤销与触控操作。", ja: "8列、4つのフリーセル、4つの組札で遊ぶクラシックなフリーセル。ヒント、元に戻す、タッチ操作に対応。", ko: "8개 열, 4개의 프리셀, 4개의 홈셀로 즐기는 클래식 프리셀입니다. 힌트와 실행 취소, 터치 조작을 지원합니다.", es: "FreeCell clásico con ocho columnas abiertas, cuatro celdas libres, cuatro fundaciones, pistas y deshacer.", "pt-BR": "FreeCell clássico com oito colunas abertas, quatro células livres, quatro fundações, dica e desfazer.", fr: "FreeCell classique avec huit colonnes ouvertes, quatre cellules libres, quatre fondations, indice et annulation.", de: "Klassisches FreeCell mit acht offenen Spalten, vier freien Zellen, vier Fundamenten, Tipp und Rückgängig.", it: "FreeCell classico con otto colonne aperte, quattro celle libere, quattro fondazioni, suggerimenti e annulla.", ru: "Классический FreeCell с восемью открытыми колонками, четырьмя ячейками, четырьмя основаниями, подсказкой и отменой.", hi: "आठ खुली कॉलम, चार फ्री सेल, चार फाउंडेशन, संकेत और अनडू वाला क्लासिक फ्रीसेल।", ar: "فري سيل كلاسيكية بثمانية أعمدة مكشوفة وأربع خلايا مؤقتة وأربع أساسات مع التلميح والتراجع." },
       meta: { en: ["8 Columns", "4 Free Cells", "Undo + Hint"], "zh-Hant": ["8 個牌列", "4 個暫存格", "還原＋提示"], "zh-Hans": ["8 个牌列", "4 个暂存格", "撤销＋提示"], ja: ["8列", "4フリーセル", "元に戻す＋ヒント"], ko: ["8개 열", "4 프리셀", "실행 취소 + 힌트"], es: ["8 columnas", "4 celdas libres", "Deshacer + Pista"], "pt-BR": ["8 colunas", "4 células livres", "Desfazer + Dica"], fr: ["8 colonnes", "4 cellules libres", "Annuler + Indice"], de: ["8 Spalten", "4 freie Zellen", "Rückgängig + Tipp"], it: ["8 colonne", "4 celle libere", "Annulla + Suggerimento"], ru: ["8 колонок", "4 ячейки", "Отмена + подсказка"], hi: ["8 कॉलम", "4 फ्री सेल", "अनडू + संकेत"], ar: ["8 أعمدة", "4 خلايا", "تراجع + تلميح"] },
-      art: { kind: "image", background: "assets/lobby-posters/freecell-library-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/freecell-library-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "pyramid-solitaire",
@@ -970,7 +974,7 @@ window.WONDER_LOBBY = {
       href: "games/pyramid-solitaire/", previewVideo: "assets/previews/pyramid-solitaire-battle.webm",
       description: { en: "Pair exposed cards to make 13 and clear the classic pyramid, with Stock, Hint, Undo, and Restart.", "zh-Hant": "配對總和為 13 的可用牌，清空經典金字塔，提供牌堆、提示、還原與重新開始。", "zh-Hans": "配对总和为 13 的可用牌，清空经典金字塔，提供牌堆、提示、撤销与重新开始。", ja: "公開カードを合計13になるように組み合わせ、ピラミッドを消します。山札、ヒント、元に戻す、リスタートに対応。", ko: "공개된 카드의 합을 13으로 맞춰 피라미드를 지웁니다. 덱, 힌트, 실행 취소, 재시작을 지원합니다.", es: "Combina cartas expuestas que sumen 13 y despeja la pirámide clásica con pista, deshacer y reinicio.", "pt-BR": "Combine cartas expostas que somem 13 e limpe a pirâmide clássica com dica, desfazer e reinício.", fr: "Associez des cartes visibles totalisant 13 et videz la pyramide classique avec indice, annulation et redémarrage.", de: "Paaren Sie offene Karten zur Summe 13 und räumen Sie die klassische Pyramide mit Tipp, Rückgängig und Neustart.", it: "Abbina carte scoperte che sommano 13 e libera la piramide classica con suggerimento, annulla e riavvio.", ru: "Соединяйте открытые карты в сумму 13 и очищайте классическую пирамиду с подсказкой, отменой и перезапуском.", hi: "खुली हुई पत्तियों को 13 का योग बनाने वाली जोड़ियों में हटाएँ और क्लासिक पिरामिड साफ करें।", ar: "طابق البطاقات المكشوفة ليكون مجموعها 13 ونظّف الهرم الكلاسيكي مع التلميح والتراجع وإعادة البدء." },
       meta: { en: ["Pairs to 13", "28 Pyramid Cards", "Stock + Undo"], "zh-Hant": ["配對至 13", "28 張金字塔牌", "牌堆＋還原"], "zh-Hans": ["配对至 13", "28 张金字塔牌", "牌堆＋撤销"], ja: ["13のペア", "28枚のピラミッド", "山札＋元に戻す"], ko: ["13 만들기", "28장 피라미드", "덱 + 실행 취소"], es: ["Parejas a 13", "28 cartas", "Mazo + Deshacer"], "pt-BR": ["Pares até 13", "28 cartas", "Baralho + Desfazer"], fr: ["Paires à 13", "28 cartes", "Pioche + Annuler"], de: ["Paare bis 13", "28 Karten", "Stapel + Rückgängig"], it: ["Coppie a 13", "28 carte", "Mazzo + Annulla"], ru: ["Пары до 13", "28 карт", "Колода + отмена"], hi: ["13 की जोड़ियाँ", "28 पत्ते", "डेक + अनडू"], ar: ["أزواج إلى 13", "28 بطاقة", "رزمة + تراجع"] },
-      art: { kind: "image", background: "assets/pyramid-solitaire-cover-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/pyramid-solitaire-cover-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "tripeaks-solitaire",
@@ -982,7 +986,7 @@ window.WONDER_LOBBY = {
       href: "games/tripeaks-solitaire/", previewVideo: "assets/previews/tripeaks-solitaire-battle.webm",
       description: { en: "Clear three peaks by chaining exposed cards one rank above or below the waste card, with Stock, Hint, and Undo.", "zh-Hant": "以高一或低一的順序連續移牌，清除三座牌峰，支援牌堆、提示與還原。", "zh-Hans": "以高一或低一的顺序连续移牌，清除三座牌峰，支持牌堆、提示与撤销。", ja: "捨て札の1つ上または下のランクをつなぎ、3つの山を消します。山札、ヒント、元に戻すに対応。", ko: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 세 개의 봉우리를 지웁니다. 덱, 힌트, 실행 취소를 지원합니다.", es: "Despeja tres picos encadenando cartas expuestas un rango arriba o abajo del descarte.", "pt-BR": "Limpe três picos encadeando cartas expostas um valor acima ou abaixo do descarte.", fr: "Videz trois pics en enchaînant les cartes visibles d'un rang au-dessus ou au-dessous de la défausse.", de: "Räumen Sie drei Gipfel ab, indem Sie offene Karten eine Rangstufe über oder unter dem Ablagestapel spielen.", it: "Libera tre picchi concatenando carte scoperte di un valore sopra o sotto lo scarto.", ru: "Очищайте три вершины, выкладывая открытые карты на ранг выше или ниже сброса.", hi: "खुले कार्ड को डिस्कार्ड से एक रैंक ऊपर या नीचे जोड़कर तीनों शिखर साफ करें।", ar: "نظّف القمم الثلاث بربط بطاقات مكشوفة أعلى أو أسفل بطاقة الرمي برتبة واحدة." },
       meta: { en: ["3 Peaks", "28 Tableau Cards", "Combo Chains"], "zh-Hant": ["3 座牌峰", "28 張桌面牌", "連鎖 Combo"], "zh-Hans": ["3 座牌峰", "28 张桌面牌", "连锁 Combo"], ja: ["3つの山", "28枚", "コンボ連鎖"], ko: ["3개 봉우리", "28장", "콤보 체인"], es: ["3 picos", "28 cartas", "Cadenas combo"], "pt-BR": ["3 picos", "28 cartas", "Combos"], fr: ["3 pics", "28 cartes", "Chaînes combo"], de: ["3 Gipfel", "28 Karten", "Combo-Ketten"], it: ["3 picchi", "28 carte", "Catene combo"], ru: ["3 вершины", "28 карт", "Цепочки комбо"], hi: ["3 शिखर", "28 पत्ते", "कॉम्बो चेन"], ar: ["3 قمم", "28 بطاقة", "سلاسل كومبو"] },
-      art: { kind: "image", background: "assets/tripeaks-solitaire-cover-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/tripeaks-solitaire-cover-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "golf-solitaire",
@@ -994,7 +998,7 @@ window.WONDER_LOBBY = {
       href: "games/golf-solitaire/", internalTrial: "index.html?preview=1",
       description: { en: "Clear seven Golf columns by building a one-rank-up or one-rank-down waste chain, with Stock, Hint, and Undo.", "zh-Hant": "以高一或低一的牌連成棄牌堆，清除七列高爾夫牌面，支援牌堆、提示與還原。", "zh-Hans": "以高一或低一的牌连成弃牌堆，清除七列高尔夫牌面，支持牌堆、提示与撤销。", ja: "捨て札の1つ上または下をつなぎ、7列のゴルフを消します。山札、ヒント、元に戻すに対応。", ko: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 7개 골프 열을 지웁니다. 덱, 힌트, 실행 취소를 지원합니다.", es: "Despeja siete columnas Golf construyendo una cadena de descarte un rango arriba o abajo.", "pt-BR": "Limpe sete colunas Golf formando uma sequência de descarte um valor acima ou abaixo.", fr: "Videz sept colonnes Golf en construisant une chaîne de défausse d'un rang au-dessus ou au-dessous.", de: "Räumen Sie sieben Golf-Spalten mit einer Ablagekette eine Rangstufe höher oder tiefer ab.", it: "Libera sette colonne Golf creando una catena di scarti di un valore sopra o sotto.", ru: "Очищайте семь колонок Гольфа, выкладывая карты на ранг выше или ниже сброса.", hi: "डिस्कार्ड से एक रैंक ऊपर या नीचे चलकर सात गोल्फ कॉलम साफ करें।", ar: "نظّف أعمدة الغولف السبعة ببناء سلسلة رمي أعلى أو أسفل بطاقة الرمي برتبة واحدة." },
       meta: { en: ["7 Columns", "35 Tableau Cards", "Long Runs"], "zh-Hant": ["7 個牌列", "35 張桌面牌", "長連鎖"], "zh-Hans": ["7 个牌列", "35 张桌面牌", "长连锁"], ja: ["7列", "35枚", "ロングラン"], ko: ["7개 열", "35장", "긴 연쇄"], es: ["7 columnas", "35 cartas", "Rachas largas"], "pt-BR": ["7 colunas", "35 cartas", "Sequências longas"], fr: ["7 colonnes", "35 cartes", "Longues séries"], de: ["7 Spalten", "35 Karten", "Lange Läufe"], it: ["7 colonne", "35 carte", "Serie lunghe"], ru: ["7 колонок", "35 карт", "Длинные серии"], hi: ["7 कॉलम", "35 पत्ते", "लंबी चेन"], ar: ["7 أعمدة", "35 بطاقة", "سلاسل طويلة"] },
-      art: { kind: "image", background: "assets/lobby-posters/golf-solitaire-royal-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/golf-solitaire-royal-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "yukon-solitaire",
@@ -1006,7 +1010,7 @@ window.WONDER_LOBBY = {
       href: "games/yukon-solitaire/", previewVideo: "assets/previews/yukon-solitaire-battle.webm",
       description: { en: "Classic Yukon with a full tableau, red-black descending moves, flexible exposed groups, four foundations, and no Stock.", "zh-Hant": "經典育空接龍：完整桌面、紅黑交錯下行、可自由移動的公開牌組、四個牌基，沒有牌堆。", "zh-Hans": "经典育空接龙：完整桌面、红黑交错下行、可自由移动的公开牌组、四个牌基，没有牌堆。", ja: "全カードを場に並べ、赤黒の降順と自由な表向きグループ移動で4つの組札を完成させます。山札はありません。", ko: "전체 tableau에서 빨강-검정 내림차순으로 움직이고 공개 그룹을 유연하게 옮겨 4개 홈셀을 완성합니다. 덱은 없습니다.", es: "Yukon clásico con tablero completo, movimientos descendentes rojo-negro, grupos expuestos flexibles y sin mazo.", "pt-BR": "Yukon clássico com tableau completo, movimentos decrescentes vermelho-preto, grupos expostos flexíveis e sem estoque.", fr: "Yukon classique avec tableau complet, descentes rouge-noir, groupes visibles flexibles et sans pioche.", de: "Klassisches Yukon mit vollständigem Tableau, rot-schwarzen Abfolgen, flexiblen offenen Gruppen und ohne Stapel.", it: "Yukon classico con tableau completo, mosse discendenti rosso-nero, gruppi scoperti flessibili e senza mazzo.", ru: "Классический Юкон с полным столом, чередованием красного и чёрного, свободными открытыми группами и без колоды.", hi: "पूरे tableau, लाल-काली घटती चालों, खुले समूहों की लचीली चाल और बिना डेक वाला क्लासिक युकोन।", ar: "يوكون كلاسيكية بطاولة كاملة وحركات تنازلية حمراء وسوداء ومجموعات مكشوفة مرنة ومن دون رزمة." },
       meta: { en: ["Full Tableau", "Flexible Groups", "No Stock"], "zh-Hant": ["完整桌面", "自由牌組", "沒有牌堆"], "zh-Hans": ["完整桌面", "自由牌组", "没有牌堆"], ja: ["全カード場", "自由なグループ", "山札なし"], ko: ["전체 tableau", "유연한 그룹", "덱 없음"], es: ["Tablero completo", "Grupos flexibles", "Sin mazo"], "pt-BR": ["Tableau completo", "Grupos flexíveis", "Sem estoque"], fr: ["Tableau complet", "Groupes flexibles", "Sans pioche"], de: ["Vollständiges Tableau", "Flexible Gruppen", "Ohne Stapel"], it: ["Tableau completo", "Gruppi flessibili", "Senza mazzo"], ru: ["Полный стол", "Свободные группы", "Без колоды"], hi: ["पूरा tableau", "लचीले समूह", "डेक नहीं"], ar: ["طاولة كاملة", "مجموعات مرنة", "من دون رزمة"] },
-      art: { kind: "image", background: "assets/lobby-posters/yukon-solitaire-lodge-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/yukon-solitaire-lodge-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-sunbeam-garden",
@@ -1055,7 +1059,7 @@ window.WONDER_LOBBY = {
         ru: ["30 садов", "Настоящий луч", "Поворот зеркал"], hi: ["30 बगीचे", "असली किरण", "दर्पण घुमाएँ"],
         ar: ["30 حديقة", "شعاع حقيقي", "تدوير المرايا"],
       },
-      art: { kind: "image", background: "assets/animal-sunbeam-garden-cover-general-v3.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-sunbeam-garden-cover-general-v3.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-number-match",
@@ -1119,7 +1123,7 @@ window.WONDER_LOBBY = {
         "संख्या मिलान", "संख्या जोड़ियां", "योग दस", "दस का योग", "नंबर पहेली", "नंबर ग्रोव",
         "مطابقة الأرقام", "أزواج الأرقام", "مجموع عشرة", "اجعل المجموع عشرة", "لغز الأرقام", "بستان الأرقام",
       ],
-      art: { kind: "image", background: "assets/animal-number-match-cover-general-v3.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-number-match-cover-general-v3.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-tangram",
@@ -1159,7 +1163,7 @@ window.WONDER_LOBBY = {
         ru: ["Семь деталей", "Двигайте и вращайте", "Силуэты животных"], hi: ["सात टुकड़े", "खींचें और घुमाएँ", "जानवरों की आकृतियाँ"],
         ar: ["سبع قطع", "سحب وتدوير", "هيئات حيوانات"],
       },
-      art: { kind: "image", background: "assets/animal-tangram-cover-kids-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-tangram-cover-kids-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-color-link",
@@ -1209,7 +1213,7 @@ window.WONDER_LOBBY = {
         ru: ["Цветные линии", "Без пересечений", "Полное поле"], hi: ["रंगीन रास्ते", "कोई कटाव नहीं", "पूरा बोर्ड"],
         ar: ["مسارات ملونة", "دون تقاطع", "لوحة كاملة"],
       },
-      art: { kind: "image", background: "assets/animal-color-link-cover-kids-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-color-link-cover-kids-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-prism-garden",
@@ -1255,7 +1259,7 @@ window.WONDER_LOBBY = {
         ru: ["30 больших полей", "От 7×7 до 10×10", "Цветные ворота"], hi: ["30 बड़े बोर्ड", "7×7 से 10×10", "रंग वाले द्वार"],
         ar: ["30 لوحة كبيرة", "من 7×7 إلى 10×10", "بوابات ألوان"],
       },
-      art: { kind: "image", background: "assets/animal-prism-garden/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-prism-garden/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       previewVideo: "assets/previews/animal-prism-garden-battle.webm",
     },
     {
@@ -1308,7 +1312,7 @@ window.WONDER_LOBBY = {
         ru: ["30 каналов", "Поворот труб", "Без таймера"], hi: ["30 नहरें", "पाइप घुमाएँ", "समय सीमा नहीं"],
         ar: ["30 مجرى", "تدوير الأنابيب", "دون مؤقت"],
       },
-      art: { kind: "image", background: "assets/animal-bamboo-pipes-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-bamboo-pipes-cover.webp?wp-media=512519f6a2210940", hideHero: true },
       previewVideo: "assets/previews/animal-bamboo-pipes-battle.webm",
     },
     {
@@ -1358,7 +1362,7 @@ window.WONDER_LOBBY = {
         de: ["30 Stufen", "Sieben Plätze", "Sechs Kapitel"], it: ["30 livelli", "Sette spazi", "Sei capitoli"], ru: ["30 уровней", "Семь ячеек", "Шесть глав"],
         hi: ["30 चरण", "सात खाने", "छह अध्याय"], ar: ["30 مرحلة", "سبع خانات", "ستة فصول"],
       },
-      art: { kind: "image", background: "assets/animal-triple-match-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-triple-match-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "wonder-crash",
@@ -1377,7 +1381,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Four Formations", "Six Bosses", "30 Stages"], "zh-Hant": ["四種編隊", "六位王", "30 關"] },
       previewVideo: "assets/previews/wonder-crash-battle.webm",
-      art: { kind: "image", background: "assets/wonder-crash-cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/wonder-crash-cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "color-lunchbox",
@@ -1396,7 +1400,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Picture Match", "30 Levels", "Six Guardians"], "zh-Hant": ["圖片配對", "30 關", "六位守護員"] },
       previewVideo: "assets/previews/color-lunchbox-battle.webm",
-      art: { kind: "image", background: "assets/lunchbox-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lunchbox-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "bubble-bakery",
@@ -1415,7 +1419,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Recipe Rules", "Multi-Tray Orders"], "zh-Hant": ["30 關", "食譜規則", "多托盤訂單"] },
       previewVideo: "assets/previews/bubble-bakery-battle.webm",
-      art: { kind: "image", background: "assets/bubble-bakery-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/bubble-bakery-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-rope-rescue",
@@ -1434,7 +1438,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Physics Routes", "Moving Baskets"], "zh-Hant": ["30 關", "物理路線", "移動籃"] },
       previewVideo: "assets/previews/animal-rope-rescue-battle.webm",
-      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-zoo-idle",
@@ -1461,7 +1465,7 @@ window.WONDER_LOBBY = {
         ar: ["30 هدفًا", "إدارة حديقة الحيوان"],
       },
       previewVideo: "assets/previews/animal-zoo-idle-battle.webm",
-      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "star-memory",
@@ -1480,7 +1484,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Memory Rules", "Ordered Pairs"], "zh-Hant": ["30 關", "記憶挑戰", "順序配對"] },
       previewVideo: "assets/previews/star-memory-battle.webm",
-      art: { kind: "image", background: "assets/memory-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/memory-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "campus-dash",
@@ -1503,7 +1507,7 @@ window.WONDER_LOBBY = {
         gameIds: ["animal-color-link", "animal-word-trails"],
       },
       previewVideo: "assets/previews/campus-dash-battle.webm",
-      art: { kind: "image", background: "assets/campus-dash-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/campus-dash-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "snack-blocks",
@@ -1522,7 +1526,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Routes", "Five Goal Types", "Two-Lane Obstacles"], "zh-Hant": ["30 條路線", "五種目標", "雙路障礙"] },
       previewVideo: "assets/previews/snack-blocks-battle.webm",
-      art: { kind: "image", background: "assets/snack-blocks-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/snack-blocks-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "fruit-merge",
@@ -1541,7 +1545,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Five Physics Rules", "Festival Goals"], "zh-Hant": ["30 個挑戰", "五種物理規則", "祭典目標"] },
       previewVideo: "assets/previews/fruit-merge-battle.webm",
-      art: { kind: "image", background: "assets/fruit-merge-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/fruit-merge-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-2048",
@@ -1558,7 +1562,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "滑動 4×4 森林棋盤、合併相同動物，挑戰石塊、分數與步數限制組成的 30 個進化任務。",
       },
       meta: { en: ["30 Missions", "Grid Strategy", "Forest Evolution"], "zh-Hant": ["30 個任務", "格子策略", "森林進化"] },
-      art: { kind: "image", background: "assets/animal-2048/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-2048/cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "garden-tiles",
@@ -1577,7 +1581,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Four Memory Rules", "No Timer"], "zh-Hant": ["30 個挑戰", "4 種記憶規則", "無倒數"] },
       previewVideo: "assets/previews/garden-tiles-battle.webm",
-      art: { kind: "image", background: "assets/garden-tiles-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/garden-tiles-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-rescue",
@@ -1596,7 +1600,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Trails", "Four Route Rules", "No Timer"], "zh-Hant": ["30 條路線", "4 種路線規則", "無倒數"] },
       previewVideo: "assets/previews/animal-rescue-battle.webm",
-      art: { kind: "image", background: "assets/animal-rescue-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-rescue-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-hidden-safari",
@@ -1615,7 +1619,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Habitats", "Six Search Rules", "No Timer Failure"], "zh-Hant": ["30 個棲地", "6 種搜尋規則", "無倒數失敗"] },
       previewVideo: "assets/previews/animal-hidden-safari-battle.webm",
-      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-guard-yard",
@@ -1634,7 +1638,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
       previewVideo: "assets/previews/animal-guard-yard-battle.webm",
-      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-crystal-survivor",
@@ -1656,8 +1660,8 @@ window.WONDER_LOBBY = {
       },
       art: {
         kind: "image",
-        background: "assets/animal-crystal-survivor-otter-cover-v26.webp?wp-media=dfd6fb9b5249ca93",
-        lobbyScene: "assets/animal-crystal-survivor-lobby-scene-v1.webp?wp-media=dfd6fb9b5249ca93",
+        background: "assets/animal-crystal-survivor-otter-cover-v26.webp?wp-media=512519f6a2210940",
+        lobbyScene: "assets/animal-crystal-survivor-lobby-scene-v1.webp?wp-media=512519f6a2210940",
         hideHero: true,
       },
     },
@@ -1678,7 +1682,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "6 Chapters", "Animal Facts"], "zh-Hant": ["30 關", "6 章節", "動物知識"] },
       previewVideo: "assets/previews/animal-quiz-battle.webm",
-      art: { kind: "image", background: "assets/quiz-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/quiz-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "zoo-helper-day",
@@ -1697,7 +1701,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Shifts", "Picture Items", "Care Routines"], "zh-Hant": ["30 個班次", "圖片道具", "照顧任務"] },
       previewVideo: "assets/previews/zoo-helper-day-battle.webm",
-      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "shape-train",
@@ -1716,7 +1720,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Routes", "Shape Matching", "Memory Challenges"], "zh-Hant": ["30 條路線", "形狀配對", "記憶挑戰"] },
       previewVideo: "assets/previews/shape-train-battle.webm",
-      art: { kind: "image", background: "assets/shape-train-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/shape-train-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "tiny-weather-rescue",
@@ -1735,7 +1739,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Missions", "Picture Items", "Scene Clues"], "zh-Hant": ["30 個任務", "圖片道具", "情境線索"] },
       previewVideo: "assets/previews/tiny-weather-rescue-battle.webm",
-      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "beast-deck",
@@ -1752,7 +1756,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。"
       },
       meta: { en: ["30 Missions", "Card Combos", "Six Bosses"], "zh-Hant": ["30 個任務", "卡牌連動", "六隻首領"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/beast-deck-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-relic-hunters",
@@ -1769,7 +1773,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個三房遠征，掌握十種特殊威脅、收集遺物裝備，並擊敗六位會轉換階段的守護者。"
       },
       meta: { en: ["30 Expeditions", "Ten Threat Rules", "Six Guardians"], "zh-Hant": ["30 個遠征", "十種威脅規則", "六位守護者"] },
-      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-rune-tactics",
@@ -1786,7 +1790,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "指揮三名動物英雄完成 30 個符文戰棋任務，破解七種地形、特殊敵人、永久成長與六位階段首領。"
       },
       meta: { en: ["30 Missions", "Seven Terrain Rules", "Six Bosses"], "zh-Hant": ["30 個任務", "七種地形規則", "六位首領"] },
-      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-orb-fortress",
@@ -1803,7 +1807,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "\u7784\u6e96\u52d5\u7269\u661f\u73e0\u7a7f\u8d8a\u6c34\u6676\u8981\u585e\u623f\u9593\uff0c\u898f\u5283\u53cd\u5f48\u8def\u7dda\uff0c\u5347\u7d1a\u57fa\u5730\uff0c\u4e26\u6e96\u5099\u8fce\u6230 Boss \u6ce2\u6b21\u3002",
       },
       meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["\u661f\u73e0\u53cd\u5f48", "\u8981\u585e\u6210\u9577", "Boss \u6ce2\u6b21"] },
-      art: { kind: "image", background: "assets/animal-orb-fortress-cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-orb-fortress-cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-auto-squad",
@@ -1820,7 +1824,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "培養並配置十名動物英雄，穿越六個區域的 30 個五波關卡，迎戰六名區域首領。"
       },
       meta: { en: ["Formation Strategy", "30 Stages", "Six Bosses"], "zh-Hant": ["編成策略", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/animal-auto-squad-cover-block-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-auto-squad-cover-block-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "beast-tactician",
@@ -1837,7 +1841,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "改變敵人行進路線，配置動物士兵和 WeightPlay 英雄，守住六個區域的 30 關，迎戰各有打法的首領。"
       },
       meta: { en: ["Tower Defense", "30 Stages", "Six Bosses"], "zh-Hant": ["塔防", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/beast-tactician-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/beast-tactician-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "shadow-wolf",
@@ -1854,7 +1858,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "挑戰 30 關平台動作戰役、反制特殊影獸、配置四種屬性，並擊敗六名不同區域首領。"
       },
       meta: { en: ["30 Stages", "Special Enemies", "Six Bosses"], "zh-Hant": ["30 關", "特殊敵人", "六名首領"] },
-      art: { kind: "image", background: "assets/shadow-wolf-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/shadow-wolf-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-block-grove",
@@ -1898,7 +1902,7 @@ window.WONDER_LOBBY = {
         "pt-BR": ["30 missões", "Tabuleiro 8×8", "Bosque infinito"], de: ["30 Missionen", "8×8-Brett", "Endloswald"],
       },
       previewVideo: "assets/previews/animal-block-grove-battle.webm",
-      art: { kind: "image", background: "assets/animal-block-grove-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-block-grove-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-color-springs",
@@ -1940,7 +1944,7 @@ window.WONDER_LOBBY = {
       },
       previewVideo: "assets/previews/animal-color-springs-battle.webm",
       relatedGameRules: { guidePlacement: "primary" },
-      art: { kind: "image", background: "games/animal-color-springs/assets/animal-color-springs-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "games/animal-color-springs/assets/animal-color-springs-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-rune-reels",
@@ -1993,7 +1997,7 @@ window.WONDER_LOBBY = {
         ar: ["30 معركة", "توقف متتابع", "1–3 وحوش"],
       },
       previewVideo: "assets/previews/animal-rune-reels-battle.webm",
-      art: { kind: "image", background: "assets/animal-rune-reels/block-v1/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-rune-reels/block-v1/cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-spectrum-pulse",
@@ -2061,7 +2065,7 @@ window.WONDER_LOBBY = {
       },
       relatedGameRules: { requirePublic: true, useInGuide: true, gameIds: ["animal-crystal-survivor", "animal-hero-trials"] },
       previewVideo: "assets/previews/animal-spectrum-pulse-battle.webm",
-      art: { kind: "image", background: "assets/animal-spectrum-pulse/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-spectrum-pulse/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-rootvault-pins",
@@ -2108,7 +2112,7 @@ window.WONDER_LOBBY = {
         ru: ["30 камер", "Реакции веществ", "Рунные замки"],
       },
       previewVideo: "assets/previews/animal-rootvault-pins-battle.webm",
-      art: { kind: "image", background: "assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-sketchwheel-rally",
@@ -2154,7 +2158,7 @@ window.WONDER_LOBBY = {
         ru: ["30 гонок", "Свободный рисунок", "Смена на ходу"],
       },
       previewVideo: "assets/previews/animal-sketchwheel-rally-battle.webm",
-      art: { kind: "image", background: "assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-sanctuary-loop",
@@ -2201,7 +2205,7 @@ window.WONDER_LOBBY = {
         ru: ["30 миссий", "Замкните петлю", "Теневые охотники"],
       },
       previewVideo: "assets/previews/animal-sanctuary-loop-battle.webm",
-      art: { kind: "image", background: "assets/lobby-posters/animal-sanctuary-loop-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-sanctuary-loop-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-prism-battalion",
@@ -2251,7 +2255,7 @@ window.WONDER_LOBBY = {
         ru: ["30 штурмов", "Ворота-множители", "Призменная перегрузка"],
       },
       previewVideo: "assets/previews/animal-prism-battalion-battle.webm",
-      art: { kind: "image", background: "assets/lobby-posters/animal-prism-battalion-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-prism-battalion-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-skybridge-rivals",
@@ -2300,7 +2304,7 @@ window.WONDER_LOBBY = {
         ru: ["30 гонок", "Собирай и складывай", "Выбирай любой путь"],
       },
       previewVideo: "assets/previews/animal-skybridge-rivals-battle.webm",
-      art: { kind: "image", background: "assets/lobby-posters/animal-skybridge-rivals-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-skybridge-rivals-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-skyspire-drop",
@@ -2344,7 +2348,7 @@ window.WONDER_LOBBY = {
         ru: ["30 башен", "Вращение и падение", "Кометный пробой"],
       },
       previewVideo: "assets/previews/animal-skyspire-drop-battle.webm",
-      art: { kind: "image", background: "assets/lobby-posters/animal-skyspire-drop-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-skyspire-drop-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-rift-salvage",
@@ -2393,7 +2397,7 @@ window.WONDER_LOBBY = {
         ru: ["30 зон", "Рост через сбор", "Соперники и спасение"],
       },
       previewVideo: "assets/previews/animal-rift-salvage-battle.webm",
-      art: { kind: "image", background: "assets/animal-rift-salvage/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-rift-salvage/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-skyport-dispatch",
@@ -2411,7 +2415,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Route Planning", "30 Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "30 \u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
       previewVideo: "assets/previews/animal-skyport-dispatch-battle.webm",
-      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-starlight-trails",
@@ -2430,7 +2434,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "依照星印、箭頭與編號連起星星，解開 30 幅星座路線謎題。"
       },
       meta: { en: ["30 Stages", "One-Stroke Routes", "Six Rule Families"], "zh-Hant": ["30 關", "一筆星路", "六種規則"] },
-      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-one-line",
@@ -2450,7 +2454,7 @@ window.WONDER_LOBBY = {
         "zh-Hans": "按住一笔通过 30 条原创路线，避开墙壁与移动影子，带领米米抵达脚印门。"
       },
       meta: { en: ["30 Trails", "One Continuous Hold", "Moving Shadows"], "zh-Hant": ["30 條路線", "全程按住", "移動影子"], "zh-Hans": ["30 条路线", "全程按住", "移动影子"] },
-      art: { kind: "image", background: "assets/animal-one-line-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-one-line-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-abyss-diver",
@@ -2467,7 +2471,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "選擇潛水路線、管理氧氣、帶回深海遺物，並在風險過高前安全上浮。",
       },
       meta: { en: ["Route Choices", "Oxygen Risk", "Relic Recovery"], "zh-Hant": ["路線選擇", "氧氣風險", "遺物回收"] },
-      art: { kind: "image", background: "assets/animal-abyss-diver-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-abyss-diver-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-bubble-safari",
@@ -2486,7 +2490,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Levels", "Four Power Bubbles", "Bank Shots"], "zh-Hant": ["30 關", "四種力量泡泡", "反彈射擊"] },
       previewVideo: "assets/previews/animal-bubble-safari-battle.webm",
-      art: { kind: "image", background: "assets/animal-bubble-safari-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-bubble-safari-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-coloring-studio",
@@ -2524,7 +2528,7 @@ window.WONDER_LOBBY = {
         "pt-BR": ["12 desenhos", "Preencher e pincel", "Galeria local"], de: ["12 Tierbilder", "Füller und Pinsel", "Lokale Galerie"],
       },
       previewVideo: "assets/previews/animal-coloring-studio-battle.webm",
-      art: { kind: "image", background: "assets/animal-coloring-studio-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-coloring-studio-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-screw-workshop",
@@ -2565,7 +2569,7 @@ window.WONDER_LOBBY = {
         "pt-BR": ["30 fases", "Placas sobrepostas", "Parafusos travados"], de: ["30 Rätsel", "Überlappende Platten", "Gesperrte Schrauben"],
       },
       previewVideo: "assets/previews/animal-screw-workshop-battle.webm",
-      art: { kind: "image", background: "assets/animal-screw-workshop-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-screw-workshop-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-parking-patrol",
@@ -2603,7 +2607,7 @@ window.WONDER_LOBBY = {
         "pt-BR": ["30 rotas", "Trânsito em 4 vias", "Sinais e comboios"], de: ["30 Routen", "Vier-Wege-Verkehr", "Signale und Konvois"],
       },
       previewVideo: "assets/previews/animal-parking-patrol-battle.webm",
-      art: { kind: "image", background: "assets/animal-parking-patrol-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-parking-patrol-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-habitat-mahjong",
@@ -2622,7 +2626,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Boards", "Trail Seals", "Family Rescue"], "zh-Hant": ["30 關", "路徑封印", "家族救援"] },
       previewVideo: "assets/previews/animal-habitat-mahjong-battle.webm",
-      art: { kind: "image", background: "assets/animal-habitat-mahjong-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-habitat-mahjong-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-word-trails",
@@ -2641,7 +2645,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Bilingual Words", "Path Logic", "Animal Clues"], "zh-Hant": ["雙語字詞", "路徑邏輯", "動物線索"] },
       previewVideo: "assets/previews/animal-word-trails-battle.webm",
-      art: { kind: "image", background: "assets/animal-word-trails-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-word-trails-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-cratebound",
@@ -2655,7 +2659,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-cratebound/",
       description: { en: "Walk, push, pull and route rune cargo through 30 authored sky-ark warehouses with ice rails, signals, magnets and linked crates.", "zh-Hant": "在 30 座手工設計的天空方舟倉庫中行走、推拉並運送符文貨箱，破解冰軌、號誌、磁力與連動貨箱。", "zh-Hans": "在 30 座手工设计的天空方舟仓库中行走、推拉并运送符文货箱，破解冰轨、信号、磁力与联动货箱。", ja: "30の手作り天空倉庫でルーン貨物を押し引きし、氷のレール、信号、磁石、連結箱を攻略します。", ko: "30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.", es: "Empuja, atrae y guía cargamentos rúnicos por 30 almacenes celestes con hielo, señales, imanes y cajas enlazadas.", "pt-BR": "Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.", fr: "Poussez, tirez et acheminez des cargaisons runiques dans 30 entrepôts célestes avec glace, signaux, aimants et caisses liées.", de: "Schiebe, ziehe und leite Runenfracht durch 30 handgebaute Himmelslager mit Eisbahnen, Signalen, Magneten und Koppelkisten.", it: "Spingi, attira e instrada carichi runici in 30 magazzini celesti con ghiaccio, segnali, magneti e casse collegate.", ru: "Толкайте, тяните и направляйте рунические грузы через 30 небесных складов с ледяными рельсами, сигналами, магнитами и связанными ящиками.", hi: "30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।", ar: "تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا مع سكك جليدية وإشارات ومغناطيسات." },
       meta: { en: ["30 Warehouses", "Push and Pull", "Six Rule Chapters"], "zh-Hant": ["30 座倉庫", "推拉規劃", "六章機關"], "zh-Hans": ["30 座仓库", "推拉规划", "六章机关"], ja: ["30の倉庫", "押す・引く", "6章の仕掛け"], ko: ["30개 창고", "밀기와 당기기", "6개 규칙 장"], es: ["30 almacenes", "Empujar y atraer", "Seis capítulos"], "pt-BR": ["30 armazéns", "Empurrar e puxar", "Seis capítulos"], fr: ["30 entrepôts", "Pousser et tirer", "Six chapitres"], de: ["30 Lager", "Schieben und Ziehen", "Sechs Regelkapitel"], it: ["30 magazzini", "Spingi e attira", "Sei capitoli"], ru: ["30 складов", "Толкать и тянуть", "Шесть глав"], hi: ["30 गोदाम", "धकेलें और खींचें", "छह नियम अध्याय"], ar: ["30 مستودعًا", "دفع وسحب", "ستة فصول قواعد"] },
-      art: { kind: "image", background: "assets/animal-cratebound/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-cratebound/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       previewVideo: "assets/previews/animal-cratebound-battle.webm",
     },
     {
@@ -2672,7 +2676,7 @@ window.WONDER_LOBBY = {
       description: { en: "Read row and column runs to reveal 30 unique animal mosaics, from guided 5×5 signs to deduction-rich 12×12 portraits.", "zh-Hant": "解讀橫列與直行數字，在 30 幅唯一解謎圖中，從 5×5 引導圖案進階到 12×12 動物肖像。", "zh-Hans": "解读横列与直行数字，在 30 幅唯一解谜图中，从 5×5 引导图案进阶到 12×12 动物肖像。", ja: "行と列の数字を読み、5×5の入門図から12×12の動物肖像まで、唯一解の30枚を完成させます。", ko: "행과 열 단서를 읽고 5×5 안내 퍼즐부터 12×12 동물 초상까지 유일해 30개를 완성하세요.", es: "Lee las pistas de filas y columnas y revela 30 mosaicos únicos, desde cuadrículas 5×5 hasta retratos 12×12.", "pt-BR": "Leia as pistas de linhas e colunas e revele 30 mosaicos únicos, de grades 5×5 a retratos 12×12.", fr: "Lisez les indices des lignes et colonnes pour révéler 30 mosaïques uniques, des grilles 5×5 aux portraits 12×12.", de: "Lies Zeilen- und Spaltenhinweise und enthülle 30 eindeutig lösbare Tiermosaike von 5×5 bis 12×12.", it: "Leggi gli indizi di righe e colonne e svela 30 mosaici unici, dalle griglie 5×5 ai ritratti 12×12.", ru: "Читайте подсказки строк и столбцов и открывайте 30 мозаик с единственным решением — от 5×5 до 12×12.", hi: "पंक्ति और स्तंभ संकेत पढ़कर 30 अनोखे पशु मोज़ेक खोलें—5×5 अभ्यास से 12×12 चित्रों तक।", ar: "اقرأ إشارات الصفوف والأعمدة لكشف 30 فسيفساء حيوانية فريدة، من شبكات 5×5 إلى صور 12×12." },
       meta: { en: ["30 Unique Puzzles", "No Guessing", "5×5 to 12×12"], "zh-Hant": ["30 幅唯一解", "無需猜測", "5×5 至 12×12"], "zh-Hans": ["30 幅唯一解", "无需猜测", "5×5 至 12×12"], ja: ["唯一解30問", "推測不要", "5×5から12×12"], ko: ["유일해 30개", "추측 불필요", "5×5에서 12×12"], es: ["30 puzles únicos", "Sin adivinar", "De 5×5 a 12×12"], "pt-BR": ["30 puzzles únicos", "Sem adivinhação", "De 5×5 a 12×12"], fr: ["30 grilles uniques", "Sans deviner", "De 5×5 à 12×12"], de: ["30 eindeutige Rätsel", "Ohne Raten", "5×5 bis 12×12"], it: ["30 puzzle unici", "Senza tentativi", "Da 5×5 a 12×12"], ru: ["30 уникальных задач", "Без угадывания", "От 5×5 до 12×12"], hi: ["30 अनोखी पहेलियाँ", "बिना अनुमान", "5×5 से 12×12"], ar: ["30 لغزًا فريدًا", "من دون تخمين", "من 5×5 إلى 12×12"] },
       previewVideo: "assets/previews/animal-mosaic-clues-battle.webm",
-      art: { kind: "image", background: "assets/animal-mosaic-clues/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-mosaic-clues/cover.webp?wp-media=512519f6a2210940", hideHero: true },
     },
     {
       id: "animal-prism-breakers",
@@ -2687,7 +2691,7 @@ window.WONDER_LOBBY = {
       relatedGameRules: { guidePlacement: "primary" },
       description: { en: "Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.", "zh-Hant": "掌握反彈角度、接住稜光能力，擊破 30 組手工設計的水晶陣形，挑戰移動磚帶、反射鏡與重力井。", "zh-Hans": "掌握反弹角度、接住棱光能力，击破 30 组手工设计的水晶阵形，挑战移动砖带、反射镜与重力井。", ja: "反射角を操り、プリズム能力を拾い、移動列、鏡、重力井を備えた30の水晶陣形を砕きます。", ko: "반사 각도를 조절하고 프리즘 능력을 받아 이동 띠, 거울, 중력 우물이 있는 30개 수정 진형을 깨뜨리세요.", es: "Controla el ángulo, recoge poderes prismáticos y rompe 30 formaciones con bandas móviles, espejos y pozos gravitatorios.", "pt-BR": "Controle o ângulo, pegue poderes prismáticos e quebre 30 formações com faixas móveis, espelhos e poços gravitacionais.", fr: "Maîtrisez l'angle, récupérez les pouvoirs prismatiques et brisez 30 formations avec rangées mobiles, miroirs et puits gravitationnels.", de: "Steuere den Rückprallwinkel, fange Prismakräfte und zerbrich 30 Formationen mit beweglichen Reihen, Spiegeln und Gravitationsfeldern.", it: "Controlla l'angolo, raccogli i poteri prismatici e infrangi 30 formazioni con file mobili, specchi e pozzi gravitazionali.", ru: "Управляйте углом отскока, ловите силы призм и разбивайте 30 построений с движущимися рядами, зеркалами и гравитационными колодцами.", hi: "वापसी कोण नियंत्रित करें, प्रिज़्म शक्तियाँ पकड़ें और गतिशील पट्टियों, दर्पणों व गुरुत्व कुओं वाली 30 संरचनाएँ तोड़ें।", ar: "تحكم بزاوية الارتداد والتقط قوى الموشور وحطم 30 تشكيلًا بلوريًا مع صفوف متحركة ومرايا وآبار جاذبية." },
       meta: { en: ["30 Formations", "Angle Control", "Six Arcade Chapters"], "zh-Hant": ["30 組陣形", "角度操控", "六章街機變化"], "zh-Hans": ["30 组阵形", "角度操控", "六章街机变化"], ja: ["30の陣形", "角度操作", "6章のアーケード"], ko: ["30개 진형", "각도 조절", "6개 아케이드 장"], es: ["30 formaciones", "Control de ángulo", "Seis capítulos"], "pt-BR": ["30 formações", "Controle de ângulo", "Seis capítulos"], fr: ["30 formations", "Contrôle de l'angle", "Six chapitres"], de: ["30 Formationen", "Winkelkontrolle", "Sechs Arcade-Kapitel"], it: ["30 formazioni", "Controllo dell'angolo", "Sei capitoli"], ru: ["30 построений", "Контроль угла", "Шесть глав"], hi: ["30 संरचनाएँ", "कोण नियंत्रण", "छह आर्केड अध्याय"], ar: ["30 تشكيلًا", "تحكم بالزاوية", "ستة فصول آركيد"] },
-      art: { kind: "image", background: "assets/animal-prism-breakers/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-prism-breakers/cover.webp?wp-media=512519f6a2210940", hideHero: true },
       previewVideo: "assets/previews/animal-prism-breakers-battle.webm",
     },
   ],
@@ -2708,7 +2712,7 @@ for (const game of window.WONDER_LOBBY.games) {
     game.type["zh-Hant"] = "房間動作 Roguelike";
     game.description["zh-Hant"] = "探索遺跡、收集能量球、開啟寶箱並替英雄裝備戰利品，最後挑戰首領。";
     game.meta["zh-Hant"] = ["動作 Roguelike", "3 個房間", "裝備欄位"];
-    game.art.background = "assets/animal-relic-hunters-cover.webp?wp-media=dfd6fb9b5249ca93";
+    game.art.background = "assets/animal-relic-hunters-cover.webp?wp-media=512519f6a2210940";
   }
 }
 
@@ -2733,7 +2737,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-layer-grove/",
     previewVideo: "assets/previews/animal-layer-grove-battle.webm",
-    art: { kind: "image", background: "assets/lobby-posters/animal-layer-grove-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/lobby-posters/animal-layer-grove-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   planned.type = localize(["Habitat depth campaign", "棲地深度篇章益智", "栖地深度篇章益智", "生息地の奥行きキャンペーン", "서식지 깊이 캠페인 퍼즐", "Campaña de profundidad del hábitat", "Campanha de profundidade do habitat", "Campagne de profondeur d’habitat", "Habitat-Tiefenkampagne", "Campagna di profondità dell’habitat", "Кампания глубины среды", "अभयारण्य गहराई अभियान", "حملة عمق الموطن"]);
   planned.description = localize(["A cuboid owl guides you through the grove; a habitat keeper restores animal scenes. Reorder three to five transparent layers to solve 30 clue-based puzzles.", "方塊貓頭鷹帶你走進林地，棲地守護員修復動物場景。重排三到五片透明圖層，依線索破解 30 道謎題。", "方块猫头鹰带你走进林地，栖地守护员修复动物场景。重排三到五片透明图层，根据线索破解 30 道谜题。", "立方体のフクロウが森を案内し、生息地の番人が動物たちの景色をよみがえらせます。3〜5枚の透明レイヤーを並べ替え、手掛かりから30問を解きましょう。", "정육면체 부엉이가 숲길을 안내하고 서식지 관리자가 동물 장면을 복원해요. 세 장에서 다섯 장의 투명 레이어를 재배열해 단서가 있는 퍼즐 30개를 풀어요.", "El búho cúbico te guía por el bosque; quien cuida los hábitats restaura las escenas de animales. Reordena de tres a cinco capas transparentes para resolver 30 rompecabezas con pistas.", "A coruja cúbica guia você pela mata, e quem cuida dos habitats restaura as cenas dos animais. Reordene de três a cinco camadas transparentes para resolver 30 desafios com pistas.", "La chouette cubique vous guide dans le bosquet ; la personne qui veille sur les habitats restaure les scènes animales. Réordonnez trois à cinq couches transparentes pour résoudre 30 énigmes à partir d’indices.", "Die würfelförmige Eule führt dich durch den Hain; die Hainhüterin stellt Tierszenen wieder her. Ordne drei bis fünf transparente Ebenen neu und löse 30 Rätsel mit Hinweisen.", "Il gufo cubico ti guida nel bosco; chi si prende cura degli habitat ripristina le scene degli animali. Riordina da tre a cinque livelli trasparenti e risolvi 30 enigmi con indizi.", "Кубическая сова проведёт вас по роще, а хранитель среды восстановит сцены с животными. Переставляйте от трёх до пяти прозрачных слоёв и решите 30 загадок по подсказкам.", "घनाकार उल्लू आपको उपवन में रास्ता दिखाता है; आवासों का रक्षक जानवरों के दृश्य बहाल करता है। तीन से पाँच पारदर्शी परतें सजाकर संकेतों वाली 30 पहेलियाँ सुलझाएँ।", "ترشدك البومة المكعبة عبر البستان، ويعيد حارس الموائل مشاهد الحيوانات. أعد ترتيب ثلاث إلى خمس طبقات شفافة لحل 30 لغزًا اعتمادًا على القرائن."]);
@@ -2744,7 +2748,7 @@ for (const game of window.WONDER_LOBBY.games) {
 })();
 
 window.WONDER_LOBBY.games.push({
-  id:"animal-penalty-cup",audience:"general",status:"playable",href:"games/animal-penalty-cup/",previewVideo:"assets/previews/animal-penalty-cup-battle.webm",categories:["Featured","Animal Games","Arcade","Family"],skills:["Timing","Reaction","Pattern Reading"],ages:["9","family"],ageLabel:{en:"9+","zh-Hant":"9+","zh-Hans":"9+",ja:"9+",ko:"9+",es:"9+","pt-BR":"9+",fr:"9+",de:"9+",it:"9+",ru:"9+",hi:"9+",ar:"9+"},art:{kind:"image",background:"games/animal-penalty-cup/assets/animal-penalty-cup-cover-v1.webp?wp-media=dfd6fb9b5249ca93",hideHero:true},
+  id:"animal-penalty-cup",audience:"general",status:"playable",href:"games/animal-penalty-cup/",previewVideo:"assets/previews/animal-penalty-cup-battle.webm",categories:["Featured","Animal Games","Arcade","Family"],skills:["Timing","Reaction","Pattern Reading"],ages:["9","family"],ageLabel:{en:"9+","zh-Hant":"9+","zh-Hans":"9+",ja:"9+",ko:"9+",es:"9+","pt-BR":"9+",fr:"9+",de:"9+",it:"9+",ru:"9+",hi:"9+",ar:"9+"},art:{kind:"image",background:"games/animal-penalty-cup/assets/animal-penalty-cup-cover-v1.webp?wp-media=512519f6a2210940",hideHero:true},
   title:{en:"Animal Penalty Cup","zh-Hant":"動物十二碼盃","zh-Hans":"动物点球杯",ja:"アニマルPKカップ",ko:"애니멀 승부차기 컵",es:"Copa de Penaltis Animal","pt-BR":"Copa Animal de Pênaltis",fr:"Coupe des Tirs au But Animaux",de:"Tierischer Elfmeterpokal",it:"Coppa dei Rigori Animali",ru:"Кубок звериных пенальти",hi:"पशु पेनल्टी कप",ar:"كأس ركلات جزاء الحيوانات"},
   statusText:{en:"Playable","zh-Hant":"立即遊玩","zh-Hans":"立即游玩",ja:"プレイ可能",ko:"플레이 가능",es:"Disponible","pt-BR":"Disponível",fr:"Disponible",de:"Spielbar",it:"Disponibile",ru:"Доступно",hi:"खेलने योग्य",ar:"متاحة للعب"},
   type:{en:"Penalty shootout","zh-Hant":"十二碼攻守","zh-Hans":"点球攻防",ja:"PK戦",ko:"승부차기",es:"Tanda de penaltis","pt-BR":"Disputa de pênaltis",fr:"Tirs au but",de:"Elfmeterschießen",it:"Calci di rigore",ru:"Серия пенальти",hi:"पेनल्टी शूटआउट",ar:"ركلات الترجيح"},
@@ -2753,7 +2757,7 @@ window.WONDER_LOBBY.games.push({
 });
 
 window.WONDER_LOBBY.games.push({
-id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-tide-tally/",internalTrial:"index.html?preview=1",categories:["Featured","Animal Games","Puzzle","Family"],skills:["Counting","Logic","Focus"],ages:["6","family"],ageLabel:{en:"6+", "zh-Hant":"6+", "zh-Hans":"6+",ja:"6+",ko:"6+",es:"6+", "pt-BR":"6+",fr:"6+",de:"6+",it:"6+",ru:"6+",hi:"6+",ar:"6+"},art:{kind:"image",background:"games/animal-tide-tally/assets/animal-tide-tally-cover.webp?wp-media=dfd6fb9b5249ca93",hideHero:true},
+id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-tide-tally/",internalTrial:"index.html?preview=1",categories:["Featured","Animal Games","Puzzle","Family"],skills:["Counting","Logic","Focus"],ages:["6","family"],ageLabel:{en:"6+", "zh-Hant":"6+", "zh-Hans":"6+",ja:"6+",ko:"6+",es:"6+", "pt-BR":"6+",fr:"6+",de:"6+",it:"6+",ru:"6+",hi:"6+",ar:"6+"},art:{kind:"image",background:"games/animal-tide-tally/assets/animal-tide-tally-cover.webp?wp-media=512519f6a2210940",hideHero:true},
   title:{en:"Animal Tide Tally","zh-Hant":"動物潮汐總管","zh-Hans":"动物潮汐总管",ja:"どうぶつ潮汐カウント",ko:"애니멀 조수 세기",es:"Conteo de Mareas Animal","pt-BR":"Contagem de Marés Animal",fr:"Compte des Marées Animales",de:"Tierische Gezeitenzählung",it:"Conteggio delle Maree Animali",ru:"Звериный счёт прилива",hi:"पशु ज्वार गिनती",ar:"عدّ مدّ الحيوانات"},
   statusText:{en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待",ja:"近日公開",ko:"출시 예정",es:"Próximamente","pt-BR":"Em breve",fr:"Bientôt disponible",de:"Demnächst",it:"Prossimamente",ru:"Скоро",hi:"जल्द आ रहा है",ar:"قريبًا"},
   type:{en:"Tide counting puzzle","zh-Hant":"潮汐計數謎題","zh-Hans":"潮汐计数谜题",ja:"潮汐カウントパズル",ko:"조수 세기 퍼즐",es:"Rompecabezas de mareas","pt-BR":"Quebra-cabeça de marés",fr:"Puzzle de comptage des marées",de:"Gezeiten-Zählpuzzle",it:"Puzzle del conteggio delle maree",ru:"Головоломка о приливе",hi:"ज्वार गिनती पहेली",ar:"لغز عدّ المدّ"},
@@ -2781,7 +2785,7 @@ window.WONDER_LOBBY.games.push({
   },
   art: {
     kind: "image",
-    background: "assets/animal-reef-fisher-cover.webp?wp-media=dfd6fb9b5249ca93",
+    background: "assets/animal-reef-fisher-cover.webp?wp-media=512519f6a2210940",
     hideHero: true,
   },
 });
@@ -2831,7 +2835,7 @@ window.WONDER_LOBBY.games.push({
     it: ["Tabellone 8×8", "Scelte diagonali", "Premio di promozione"], ru: ["Доска 8×8", "Диагональный выбор", "Награда за превращение"],
     hi: ["8×8 बोर्ड", "तिरछी पसंद", "प्रमोशन इनाम"], ar: ["لوحة 8×8", "اختيارات قطرية", "مكافأة الترقية"],
   },
-  art: { kind: "image", background: "assets/checkers-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/checkers-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
@@ -2879,7 +2883,7 @@ window.WONDER_LOBBY.games.push({
     it: ["Tensione dei sei errori", "Scelta dell’indizio", "Rivincita rapida"], ru: ["Напряжение шести ошибок", "Цена подсказки", "Быстрый повтор"],
     hi: ["छह गलतियों का तनाव", "संकेत का चुनाव", "त्वरित रीमैच"], ar: ["توتر الأخطاء الستة", "مفاضلة التلميح", "إعادة سريعة"],
   },
-  art: { kind: "image", background: "assets/hangman-cover-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/hangman-cover-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes("hangman")) window.WONDER_LOBBY.audiences.generalGameIds.push("hangman");
 
@@ -2927,7 +2931,7 @@ window.WONDER_LOBBY.games.push({
     it: ["Tabellone 3×3", "Rivale tattico", "Risultati naturali"], ru: ["Поле 3×3", "Тактический соперник", "Естественные результаты"],
     hi: ["3×3 बोर्ड", "रणनीतिक प्रतिद्वंद्वी", "स्वाभाविक परिणाम"], ar: ["لوحة 3×3", "خصم تكتيكي", "نتائج طبيعية"],
   },
-  art: { kind: "image", background: "assets/tic-tac-toe-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/tic-tac-toe-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
@@ -2950,7 +2954,7 @@ window.WONDER_LOBBY.games.push({
     "zh-Hant": ["30 \u500b\u71df\u696d\u65e5", "\u516d\u7ae0\u898f\u5247", "\u5b58\u6a94\u5347\u7d1a"],
   },
       previewVideo: "assets/previews/animal-cafe-rush-battle.webm",
-      art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
@@ -2973,7 +2977,7 @@ window.WONDER_LOBBY.games.push({
     en: ["Four Heroes", "Trial Blessings", "Saved Mastery"],
     "zh-Hant": ["四位英雄", "試煉祝福", "永久精通"],
   },
-  art: { kind: "image", background: "assets/animal-hero-trials-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/animal-hero-trials-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
@@ -2991,7 +2995,7 @@ window.WONDER_LOBBY.games.push({
     "zh-Hant": "替魯克斯排列 11×7 裝備行囊，反制特殊敵人，完成 30 關與六位不同首領。",
   },
   meta: { en: ["30 Expeditions", "Pack Synergies", "Six Guardians"], "zh-Hant": ["30 關遠征", "行囊連鎖", "六位首領"] },
-  art: { kind: "image", background: "assets/animal-gearpack-expedition-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/animal-gearpack-expedition-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
@@ -3009,7 +3013,7 @@ window.WONDER_LOBBY.games.push({
     "zh-Hant": "帶領星爪菲亞穿越月光巡邏路線、找回失落文物，並決定是否冒險取得額外寶藏再撤離。",
   },
   meta: { en: ["Five Missions", "Stealth Gadgets", "Safehouse Growth"], "zh-Hant": ["五個任務", "潛行技能", "安全屋成長"] },
-  art: { kind: "image", background: "assets/animal-moonlight-heist-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/animal-moonlight-heist-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 
 const nextClassicCardGames = [
@@ -3018,7 +3022,7 @@ const nextClassicCardGames = [
     type: { en: "Classic Evasion Trick-Taking", "zh-Hant": "經典避分吃墩牌戲", "zh-Hans": "经典避分吃墩牌戏", ja: "クラシックなトリックテイキング", ko: "클래식 트릭 테이킹", es: "Bazas de evasión clásica", "pt-BR": "Vazas de evasão clássicas", fr: "Jeu de plis d’évitement", de: "Klassisches Stichspiel", it: "Prese a evitare", ru: "Классическая игра на взятки", hi: "क्लासिक ट्रिक-टेकिंग", ar: "لعبة حيل كلاسيكية" },
     description: { en: "Avoid Hearts and the Queen of Spades, or risk collecting every penalty card for Shooting the Moon.", "zh-Hant": "避開紅心與黑桃皇后，也可以冒險收齊所有負分牌完成 Shooting the Moon。", "zh-Hans": "避开红心与黑桃皇后，也可以冒险收齐所有负分牌完成 Shooting the Moon。", ja: "ハートとスペードのクイーンを避け、すべての罰点札を集めるシュート・ザ・ムーンにも挑戦。", ko: "하트와 스페이드 퀸을 피하거나 모든 벌점 카드를 모아 슈팅 더 문을 노리세요.", es: "Evita los corazones y la reina de picas, o reúne todas las penalizaciones para lanzar la luna.", "pt-BR": "Evite copas e a dama de espadas, ou reúna todas as penalidades para atirar na lua.", fr: "Évitez les cœurs et la dame de pique, ou réunissez toutes les pénalités pour viser la lune.", de: "Meide Herzen und Pik-Dame oder sammle alle Strafkarten für den Mondschuss.", it: "Evita cuori e donna di picche, oppure raccogli tutte le penalità per conquistare la luna.", ru: "Избегайте червей и дамы пик или соберите все штрафные карты для лунного выстрела.", hi: "हर्ट्स और स्पेड्स क्वीन से बचें या सभी दंड कार्ड लेकर शूटिंग द मून करें।", ar: "تجنب القلوب وملكة البستوني أو اجمع كل بطاقات العقوبة لتصيب القمر." },
     meta: { en: ["4-player trick-taking", "Shooting the Moon", "AI table"], "zh-Hant": ["4 人吃墩", "射月", "AI 牌桌"] },
-    art: { kind: "image", background: "assets/card-games-hearts-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/card-games-hearts-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   {
     id: "spades", title: { en: "Spades", "zh-Hant": "黑桃", "zh-Hans": "黑桃", ja: "スペード", ko: "스페이드", es: "Picas", "pt-BR": "Espadas", fr: "Pique", de: "Pik", it: "Picche", ru: "Пики", hi: "स्पेड्स", ar: "البستوني" },
@@ -3074,7 +3078,7 @@ const nextClassicCardGames = [
       "penalità pesca due", "penalità pesca quattro", "gioco di carte con penalità", "gioco di salto turno", "штраф взять две", "штраф взять четыре", "карточная игра со штрафом", "карточная игра с пропуском хода",
       "दो कार्ड दंड", "चार कार्ड दंड", "दंड वाला कार्ड खेल", "बारी छोड़ने वाला कार्ड खेल", "عقوبة سحب بطاقتين", "عقوبة سحب أربع بطاقات", "لعبة بطاقات بعقوبة سحب", "لعبة بطاقات لتخطي الدور",
     ],
-    art: { kind: "image", background: "assets/card-games-crazy-eights-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/card-games-crazy-eights-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   {
     id: "cribbage", title: { en: "Cribbage", "zh-Hant": "克里比奇", "zh-Hans": "克里比奇", ja: "クリベッジ", ko: "크리비지", es: "Cribbage", "pt-BR": "Cribbage", fr: "Cribbage", de: "Cribbage", it: "Cribbage", ru: "Криббедж", hi: "क्रिबेज", ar: "كريبدج" },
@@ -3136,14 +3140,14 @@ const nextClassicCardGames = [
     type: { en: "Family Collection Card Game", "zh-Hant": "家庭收集牌戲", "zh-Hans": "家庭收集牌戏", ja: "家族向けコレクションゲーム", ko: "가족 수집 카드 게임", es: "Juego familiar de colecciones", "pt-BR": "Jogo familiar de coleções", fr: "Jeu familial de collections", de: "Familienspiel zum Sammeln", it: "Gioco familiare di raccolta", ru: "Семейная игра на сбор наборов", hi: "परिवारिक संग्रह कार्ड गेम", ar: "لعبة جمع عائلية" },
     description: { en: "Ask for ranks, collect four-of-a-kind books, and read the table.", "zh-Hant": "詢問點數、收集四張同點數牌組，觀察桌面資訊。", "zh-Hans": "询问点数、收集四张同点数牌组，观察桌面信息。", ja: "ランクを尋ね、同じランク4枚の組を集め、場を読む。", ko: "랭크를 물어보고 같은 랭크 네 장 세트를 모으세요.", es: "Pregunta por rangos, reúne grupos de cuatro y lee la mesa.", "pt-BR": "Peça valores, reúna grupos de quatro e leia a mesa.", fr: "Demandez des valeurs, réunissez des familles de quatre et lisez la table.", de: "Frage nach Rängen, sammle Vierlinge und lies den Tisch.", it: "Chiedi valori, raccogli quartetti e osserva il tavolo.", ru: "Спрашивайте ранги, собирайте четвёрки и следите за столом.", hi: "रैंक पूछें, चार समान पत्तों के सेट बनाएँ और मेज पढ़ें।", ar: "اسأل عن الرتب واجمع أربع بطاقات متطابقة واقرأ الطاولة." },
     meta: { en: ["2–4 players", "Four-card books", "AI players"], "zh-Hant": ["2～4 人", "四張一組", "AI 玩家"] },
-    art: { kind: "image", background: "assets/card-games-go-fish-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/card-games-go-fish-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   {
     id: "war", title: { en: "War", "zh-Hant": "戰爭", "zh-Hans": "战争", ja: "戦争", ko: "전쟁", es: "Guerra", "pt-BR": "Guerra", fr: "Bataille", de: "Krieg", it: "Guerra", ru: "Война", hi: "युद्ध", ar: "الحرب" },
     type: { en: "Reveal-and-Collision Card Game", "zh-Hant": "翻牌碰撞牌戲", "zh-Hans": "翻牌碰撞牌戏", ja: "めくり対決カードゲーム", ko: "뒤집기 대결 카드 게임", es: "Juego de revelación y choque", "pt-BR": "Jogo de revelação e confronto", fr: "Jeu de révélation et de bataille", de: "Aufdeck- und Kampfspiel", it: "Gioco di rivelazione e confronto", ru: "Игра на открытие карт", hi: "फ्लिप और टक्कर कार्ड गेम", ar: "لعبة كشف وتصادم" },
     description: { en: "Reveal cards together; tied ranks trigger a dramatic War.", "zh-Hant": "雙方同時翻牌；點數相同就進入刺激的 War。", "zh-Hans": "双方同时翻牌；点数相同就进入刺激的 War。", ja: "同時にカードをめくり、同ランクなら戦争へ。", ko: "동시에 카드를 뒤집고 같은 랭크면 전쟁을 시작하세요.", es: "Revela cartas a la vez; los empates provocan una guerra.", "pt-BR": "Vire as cartas juntos; empates iniciam uma guerra.", fr: "Révélez les cartes ensemble ; une égalité déclenche la bataille.", de: "Decke Karten gleichzeitig auf; gleiche Ränge lösen Krieg aus.", it: "Rivela le carte insieme; i pareggi scatenano la guerra.", ru: "Открывайте карты одновременно; при равенстве начинается война.", hi: "साथ में पत्ते पलटें; बराबर रैंक पर युद्ध शुरू होता है।", ar: "اكشف البطاقات معاً؛ التعادل يطلق الحرب." },
     meta: { en: ["One-button play", "War collisions", "Classic rules"], "zh-Hant": ["單鍵操作", "War 碰撞", "經典規則"] },
-    art: { kind: "image", background: "assets/card-games-war-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/card-games-war-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   {
     id: "speed", title: { en: "Speed", "zh-Hant": "快手接龍", "zh-Hans": "快手接龙", ja: "スピード", ko: "스피드", es: "Speed", "pt-BR": "Speed", fr: "Speed", de: "Speed", it: "Speed", ru: "Скорость", hi: "स्पीड", ar: "السرعة" },
@@ -3225,7 +3229,7 @@ const classicLogicEntries = [
   description: classicLogicText(description),
   meta: classicLogicMetaOverrides[id] || classicLogicMeta(meta),
   ...(Array.isArray(searchAliases) ? { searchAliases } : {}),
-  art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "reversi" ? "assets/reversi-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "naval-battle" ? "assets/naval-battle-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "cat-color-sudoku" ? "assets/cat-color-sudoku-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "sudoku" ? "assets/sudoku-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "lights-out" ? "assets/lights-out-cover-v2.webp?wp-media=dfd6fb9b5249ca93" : id === "peg-solitaire" ? "assets/peg-solitaire-cover-v2.webp?wp-media=dfd6fb9b5249ca93" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "code-breaker" ? "assets/code-breaker-cover-v2.webp?wp-media=dfd6fb9b5249ca93" : id === "sliding-15" ? "assets/sliding-15-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "four-in-a-row" ? "assets/four-in-a-row-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : "assets/classic-logic-lab-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp?wp-media=512519f6a2210940" : id === "reversi" ? "assets/reversi-cover-v1.webp?wp-media=512519f6a2210940" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp?wp-media=512519f6a2210940" : id === "naval-battle" ? "assets/naval-battle-cover-v1.webp?wp-media=512519f6a2210940" : id === "cat-color-sudoku" ? "assets/cat-color-sudoku-cover-v1.webp?wp-media=512519f6a2210940" : id === "sudoku" ? "assets/sudoku-cover-v1.webp?wp-media=512519f6a2210940" : id === "lights-out" ? "assets/lights-out-cover-v2.webp?wp-media=512519f6a2210940" : id === "peg-solitaire" ? "assets/peg-solitaire-cover-v2.webp?wp-media=512519f6a2210940" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp?wp-media=512519f6a2210940" : id === "code-breaker" ? "assets/code-breaker-cover-v2.webp?wp-media=512519f6a2210940" : id === "sliding-15" ? "assets/sliding-15-cover-v1.webp?wp-media=512519f6a2210940" : id === "four-in-a-row" ? "assets/four-in-a-row-cover-v1.webp?wp-media=512519f6a2210940" : "assets/classic-logic-lab-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 }));
 window.WONDER_LOBBY.games.push(...classicLogicEntries);
 // The Classic Logic Lab owner-preview routes are General-audience games. Keep
@@ -3446,7 +3450,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-postcard-crop/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover-v2.webp?wp-media=512519f6a2210940", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3474,7 +3478,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-hollow-fit/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "games/animal-hollow-fit/assets/animal-hollow-fit-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "games/animal-hollow-fit/assets/animal-hollow-fit-cover.png.webp?wp-media=512519f6a2210940", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3530,7 +3534,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-cozy-camp/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "games/animal-cozy-camp/assets/animal-cozy-camp-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "games/animal-cozy-camp/assets/animal-cozy-camp-cover.png.webp?wp-media=512519f6a2210940", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3587,7 +3591,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-canopy-compass/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "games/animal-canopy-compass/assets/animal-canopy-compass-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "games/animal-canopy-compass/assets/animal-canopy-compass-cover.png.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3728,7 +3732,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-burrow-builder/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "assets/interface7-redrawn/animal-burrow-builder.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/interface7-redrawn/animal-burrow-builder.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3756,7 +3760,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-tangle-rescue/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3783,7 +3787,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-meadow-difference/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "assets/interface7-redrawn/animal-meadow-difference.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/interface7-redrawn/animal-meadow-difference.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3811,7 +3815,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-pattern-patch/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "assets/interface7-redrawn/animal-pattern-patch.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/interface7-redrawn/animal-pattern-patch.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3839,7 +3843,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-footprint-folio/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "games/animal-footprint-folio/assets/animal-footprint-folio-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "games/animal-footprint-folio/assets/animal-footprint-folio-cover.png.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3866,7 +3870,7 @@ const animalConstellationKeeperPlanned = {
   ageLabel: animalConstellationKeeperLocalized(Array(13).fill("6+")),
   href: "games/animal-constellation-keeper/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 const animalConstellationKeeperCampaignDescriptions = {
   en: "Read two sky rules, choose the only animal constellation that obeys them, and restore six five-map arcs across a 30-map night campaign.",
@@ -3946,7 +3950,7 @@ const animalLanternLatticePlanned = {
   estimatedPlayTime: "1-3 minutes per stage",
   playerNote: animalLanternLatticeLocalized(["No account is needed. Cleared paths and best checks stay in this browser.", "不需要帳號；已完成的夜路與最佳檢查次數只保存在這個瀏覽器。", "不需要账号；已完成的夜路与最佳检查次数只保存在这个浏览器。", "アカウントは不要です。クリアした道とベスト記録はこのブラウザーに保存されます。", "계정은 필요하지 않아요. 완료한 밤길과 최고 기록은 이 브라우저에 저장돼요.", "No necesitas una cuenta. Los caminos completados y tus mejores marcas se guardan en este navegador.", "Não é preciso criar conta. Os caminhos concluídos e os melhores resultados ficam neste navegador.", "Aucun compte n’est nécessaire. Les chemins terminés et vos meilleurs résultats restent dans ce navigateur.", "Du brauchst kein Konto. Abgeschlossene Pfade und Bestwerte bleiben in diesem Browser gespeichert.", "Non serve un account. I percorsi completati e i record restano in questo browser.", "Аккаунт не нужен. Пройденные пути и лучшие результаты хранятся в этом браузере.", "खाते की ज़रूरत नहीं है। पूरे किए रास्ते और सर्वश्रेष्ठ रिकॉर्ड इसी ब्राउज़र में रहते हैं।", "لا حاجة إلى حساب. تُحفظ المسارات المكتملة وأفضل النتائج في هذا المتصفح."]),
   href: "games/animal-lantern-lattice/",
-  art: { kind: "image", background: "assets/lobby-posters/animal-lantern-lattice-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-lantern-lattice-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
   previewVideo: "assets/previews/animal-lantern-lattice-battle.webm",
 };
 for (const field of ["title", "type", "description", "seoDescription", "meta", "statusText", "ageLabel", "playerNote"]) Object.defineProperty(animalLanternLatticePlanned[field], "__localizedExact", { value: true, enumerable: false });
@@ -3976,7 +3980,7 @@ const animalLanternGuidesPlanned = {
   ages: ["6", "family"],
   ageLabel: animalLanternGuidesLocalized(Array(13).fill("6+")),
   href: "games/animal-lantern-guides/",
-  art: { kind: "image", background: "assets/interface7-redrawn/animal-lantern-guides.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/interface7-redrawn/animal-lantern-guides.webp?wp-media=512519f6a2210940", hideHero: true },
   previewVideo: "assets/previews/animal-lantern-guides-battle.webm",
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalLanternGuidesPlanned[field], "__localizedExact", { value: true, enumerable: false });
@@ -4028,7 +4032,7 @@ const animalMagnetMeadowPlanned = {
   ageLabel: animalMagnetMeadowLocalized(Array(13).fill("6+")),
   href: "games/animal-magnet-meadow/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-magnet-meadow/assets/animal-magnet-meadow-cover-v1.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-magnet-meadow/assets/animal-magnet-meadow-cover-v1.png.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalMagnetMeadowPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMagnetMeadowPlanned.id)) window.WONDER_LOBBY.games.push(animalMagnetMeadowPlanned);
@@ -4054,7 +4058,7 @@ const animalDawnShuttersPlanned = {
   ageLabel: animalDawnShuttersLocalized(Array(13).fill("6+")),
   href: "games/animal-dawn-shutters/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/lobby-posters/animal-dawn-shutters-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-dawn-shutters-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalDawnShuttersPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.games.push(animalDawnShuttersPlanned);
@@ -4094,7 +4098,7 @@ const animalNestWeighPlanned = {
   ageLabel: animalNestWeighLocalized(Array(13).fill("6+")),
   href: "games/animal-nest-weigh/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-nest-weigh/assets/animal-nest-weigh-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalNestWeighPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalNestWeighPlanned.id)) window.WONDER_LOBBY.games.push(animalNestWeighPlanned);
@@ -4135,7 +4139,7 @@ const animalGlyphGardenPlanned = {
   ageLabel: animalGlyphGardenLocalized(Array(13).fill("6+")),
   href: "games/animal-glyph-garden/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/lobby-posters/animal-glyph-garden-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-glyph-garden-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalGlyphGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalGlyphGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalGlyphGardenPlanned);
@@ -4186,7 +4190,7 @@ const animalBalanceGrovePlanned = {
   ageLabel: animalBalanceGroveLocalized(Array(13).fill("6+")),
   href: "games/animal-balance-grove/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-balance-grove/assets/animal-balance-grove-cover.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-balance-grove/assets/animal-balance-grove-cover.png.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalBalanceGrovePlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalBalanceGrovePlanned.id)) window.WONDER_LOBBY.games.push(animalBalanceGrovePlanned);
@@ -4253,7 +4257,7 @@ const animalDewlinePlanned = {
   ageLabel: animalDewlineLocalized(Array(13).fill("9+")),
   href: "games/animal-dewline/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/lobby-posters/animal-dewline-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-dewline-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalDewlinePlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDewlinePlanned.id)) window.WONDER_LOBBY.games.push(animalDewlinePlanned);
@@ -4336,7 +4340,7 @@ const animalPeachOathOwnerPreview = {
     hi: ["ऑटो बैटल RPG", "नायक विकास", "बॉस अभियान"],
     ar: ["RPG قتال تلقائي", "تطوير الأبطال", "حملة الزعماء"],
   },
-  art: { kind: "image", background: "games/animal-peach-oath/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-peach-oath/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPeachOathOwnerPreview.id)) {
@@ -4403,7 +4407,7 @@ for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
       ageLabel: classicOwnerPreviewLocalized(Array(13).fill("9+")),
       href: `games/${id}/`,
       internalTrial: id === "breakout" ? "index.html?preview=1" : "index.html?preview=1",
-      art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "reversi" ? "assets/reversi-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "tetris" ? "assets/tetris-cover.webp?wp-media=dfd6fb9b5249ca93" : id === "breakout" ? "assets/breakout-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "hangman" ? "assets/hangman-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "wordle" ? "assets/wordle-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "pong" ? "assets/pong-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : id === "lights-out" ? "assets/lights-out-cover-v2.webp?wp-media=dfd6fb9b5249ca93" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp?wp-media=dfd6fb9b5249ca93" : "assets/classic-logic-lab-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+      art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp?wp-media=512519f6a2210940" : id === "reversi" ? "assets/reversi-cover-v1.webp?wp-media=512519f6a2210940" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp?wp-media=512519f6a2210940" : id === "tetris" ? "assets/tetris-cover.webp?wp-media=512519f6a2210940" : id === "breakout" ? "assets/breakout-cover-v1.webp?wp-media=512519f6a2210940" : id === "hangman" ? "assets/hangman-cover-v1.webp?wp-media=512519f6a2210940" : id === "wordle" ? "assets/wordle-cover-v1.webp?wp-media=512519f6a2210940" : id === "pong" ? "assets/pong-cover-v1.webp?wp-media=512519f6a2210940" : id === "lights-out" ? "assets/lights-out-cover-v2.webp?wp-media=512519f6a2210940" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp?wp-media=512519f6a2210940" : "assets/classic-logic-lab-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) window.WONDER_LOBBY.audiences.generalGameIds.push(id);
@@ -4416,7 +4420,7 @@ if (breakoutPublic) {
   breakoutPublic.statusText = classicOwnerPreviewLocalized(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
   breakoutPublic.description = {"en":"Keep the crystal ball alive and restore 30 block-built ruins.","zh-Hant":"接住水晶球，修復 30 座方塊遺跡。","zh-Hans":"接住水晶球，修复 30 座方块遗迹。","ja":"水晶球を受け止め、30 のブロック遺跡を修復しよう。","ko":"수정 구슬을 받아 30개의 블록 유적을 복구하세요.","es":"Mantén la bola de cristal en juego y restaura 30 ruinas de bloques.","pt-BR":"Mantenha a bola de cristal em jogo e restaure 30 ruínas de blocos.","fr":"Gardez la balle de cristal en jeu et restaurez 30 ruines de blocs.","de":"Halte den Kristallball im Spiel und stelle 30 Blockruinen wieder her.","it":"Tieni in gioco la sfera di cristallo e restaura 30 rovine di blocchi.","ru":"Удерживайте кристальный мяч и восстановите 30 блочных руин.","hi":"क्रिस्टल गेंद को बचाकर 30 ब्लॉक खंडहर बहाल करें।","ar":"أبقِ الكرة البلورية في اللعب ورمم 30 أطلالاً من المكعبات."};
   breakoutPublic.previewVideo = "assets/previews/breakout-battle.webm";
-  breakoutPublic.art = { kind: "image", background: "assets/interface7-redrawn/breakout.webp?wp-media=dfd6fb9b5249ca93", hideHero: true };
+  breakoutPublic.art = { kind: "image", background: "assets/interface7-redrawn/breakout.webp?wp-media=512519f6a2210940", hideHero: true };
   delete breakoutPublic.internalTrial;
 }
 
@@ -4586,7 +4590,7 @@ const nextFiveGeneralCandidates = [
     type: { en: "Trap-Learning Platform Trail", "zh-Hant": "陷阱學習平台闖關", "zh-Hans": "陷阱学习平台闯关", ja: "罠を学ぶ platform アクション", ko: "함정 학습 플랫폼 액션", es: "Plataformas y trampas", "pt-BR": "Plataformas e armadilhas", fr: "Plateformes et pièges", de: "Plattformen und Fallen", it: "Piattaforme e trappole", ru: "Платформы и ловушки", hi: "प्लेटफ़ॉर्म और जाल", ar: "منصات وفخاخ" },
     description: {"en": "Read trap cues, use the optional Pulse to reveal the next hint, and reach the lantern across 30 authored stages. A mistake resets only the current room.", "zh-Hant": "讀取陷阱線索，選用脈衝短暫顯示下一個提示，在 30 個設計關卡中抵達燈籠。失誤只會重置目前房間。", "zh-Hans": "读懂陷阱线索，选用脉冲短暂显示下一个提示，在 30 个设计关卡中抵达灯笼。失误只会重置当前房间。", "ja": "罠の合図を読み、任意のパルスで次のヒントを短く示して、全30ステージを進みランタンへ。失敗しても現在の部屋だけがリセットされます。", "ko": "함정 신호를 읽고 선택 기능인 펄스로 다음 단서를 잠깐 확인하며 30개 스테이지를 지나 등불에 도달하세요. 실패해도 현재 방만 초기화됩니다.", "es": "Lee las señales de las trampas, usa Pulso como pista opcional y alcanza el farol en 30 fases diseñadas. Un error reinicia solo la sala actual.", "pt-BR": "Leia os sinais das armadilhas, use o Pulso como pista opcional e alcance a lanterna em 30 fases criadas à mão. Um erro reinicia apenas a sala atual.", "fr": "Lis les signaux des pièges, utilise l’Impulsion comme indice facultatif et rejoins la lanterne en 30 niveaux conçus à la main. Une erreur réinitialise seulement la salle actuelle.", "de": "Lies die Fallenhinweise, nutze den optionalen Puls als kurzen Tipp und erreiche die Laterne in 30 gestalteten Stufen. Ein Fehler setzt nur den aktuellen Raum zurück.", "it": "Leggi gli indizi delle trappole, usa l’Impulso come suggerimento facoltativo e raggiungi la lanterna in 30 livelli creati a mano. Un errore azzera solo la stanza attuale.", "ru": "Читайте сигналы ловушек, используйте необязательный Импульс как подсказку и доберитесь до фонаря на 30 продуманных этапах. Ошибка сбрасывает только текущую комнату.", "hi": "जाल के संकेत पढ़ें, वैकल्पिक पल्स से अगली झलक पाएँ और हाथ से बनाए 30 चरणों में लालटेन तक पहुँचें। गलती से केवल मौजूदा कमरा रीसेट होता है।", "ar": "اقرأ إشارات الفخاخ، واستخدم النبضة الاختيارية كتلميح، واصل إلى الفانوس عبر 30 مرحلة مصممة. الخطأ يعيد الغرفة الحالية فقط."},
     meta: { en: ["Trap Tells", "4 Chapters", "Retry Learning"], "zh-Hant": ["陷阱提示", "4 個章節", "死亡學習"], "zh-Hans": ["陷阱提示", "4 个章节", "死亡学习"] },
-    art: { kind: "image", background: "assets/animal-trap-trail-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/animal-trap-trail-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     previewVideo: "assets/previews/animal-trap-trail-battle.webm",
     categories: ["Action", "Platform", "Animal"], skills: ["Reaction", "Route Reading"], ages: ["9", "family"], href: "games/animal-trap-trail/", internalTrial: "index.html?preview=1",
   },
@@ -4596,7 +4600,7 @@ const nextFiveGeneralCandidates = [
     type: { en: "Swipe Fruit Reaction", "zh-Hant": "水果滑動反應", "zh-Hans": "水果滑动反应", ja: "フルーツスワイプ反応", ko: "과일 스와이프 반응", es: "Reacción con frutas", "pt-BR": "Reação com frutas", fr: "Réaction fruitée", de: "Frucht-Reaktion", it: "Reazione con frutta", ru: "Фруктовая реакция", hi: "फल स्वाइप प्रतिक्रिया", ar: "رد فعل تقطيع الفاكهة" },
     description: { en: "Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge.", "zh-Hant": "滑過安全水果建立連擊，在快速樹冠挑戰中避開黑色種莢。", "zh-Hans": "滑过安全水果建立连击，在快速树冠挑战中避开黑色种荚。", ja: "安全な果物をスワイプして連鎖を作り、速い樹冠チャレンジで黒い種さやを避けよう。", ko: "안전한 과일을 스와이프해 연쇄를 만들고 빠른 캐노피 도전에서 검은 씨앗 꼬투리를 피하세요.", es: "Desliza frutas seguras, crea cadenas y evita las vainas oscuras en un reto veloz.", "pt-BR": "Deslize frutas seguras, crie uma sequência e evite vagens escuras no desafio rápido.", fr: "Glisse sur les fruits sûrs, crée une chaîne et évite les gousses sombres dans ce défi rapide.", de: "Wische sichere Früchte, bilde Ketten und meide dunkle Samenhülsen in der schnellen Herausforderung.", it: "Scorri sulla frutta sicura, crea catene ed evita i baccelli scuri nella sfida veloce.", ru: "Проводите по безопасным плодам, создавайте цепи и избегайте тёмных стручков в быстрой игре.", hi: "सुरक्षित फलों पर स्वाइप करें, श्रृंखला बनाएँ और तेज़ चुनौती में गहरे बीज-फलियों से बचें।", ar: "مرر على الثمار الآمنة وابنِ سلسلة وتجنب قرون البذور الداكنة في تحد سريع." },
     meta: { en: ["Swipe", "Combo Chains", "Hazard Pods"], "zh-Hant": ["滑動", "連擊", "危險種莢"], "zh-Hans": ["滑动", "连击", "危险种荚"] },
-    art: { kind: "image", background: "assets/animal-canopy-cut-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/animal-canopy-cut-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     previewVideo: "assets/previews/animal-canopy-cut-battle.webm",
     categories: ["Action", "Arcade", "Animal"], skills: ["Reaction", "Focus"], ages: ["9", "family"], href: "games/animal-canopy-cut/", internalTrial: "index.html?preview=1",
   },
@@ -4612,7 +4616,7 @@ const nextFiveGeneralCandidates = [
       "empurrar o rival", "pousser le rival", "Gegner wegstoßen", "spingere il rivale",
       "оттолкнуть соперника", "प्रतिद्वंद्वी को धक्का", "دفع الخصم",
     ],
-    art: { kind: "image", background: "assets/animal-bounce-brawl-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/animal-bounce-brawl-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     categories: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction"], ages: ["9", "family"], href: "games/animal-bounce-brawl/", internalTrial: "index.html?preview=1",
   },
   {
@@ -4621,7 +4625,7 @@ const nextFiveGeneralCandidates = [
     type: { en: "Changeable Ice Maze", "zh-Hant": "可變冰牆迷宮", "zh-Hans": "可变冰墙迷宫", ja: "変化する氷迷路", ko: "변형 얼음 미로", es: "Laberinto de hielo cambiante", "pt-BR": "Labirinto de gelo mutável", fr: "Labyrinthe de glace modulable", de: "Wandelndes Eislabyrinth", it: "Labirinto di ghiaccio modificabile", ru: "Меняющийся ледяной лабиринт", hi: "बदलता बर्फीला भूलभुलैया", ar: "متاهة جليدية قابلة للتغيير" },
     description: { en: "Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.", "zh-Hant": "打開冰封路線，收集所有莓果，並永遠比雪地漂行者快一步。", "zh-Hans": "打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。", ja: "凍った道を開き、すべてのベリーを集め、雪の漂流者より一歩先へ進もう。", ko: "얼어붙은 길을 열고 모든 베리를 모으며 눈의 방랑자보다 한발 앞서세요.", es: "Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve.", "pt-BR": "Abra a rota congelada, pegue todas as frutas e fique à frente do andarilho da neve.", fr: "Ouvre la route glacée, ramasse toutes les baies et garde une longueur d'avance sur le rôdeur.", de: "Öffne den gefrorenen Weg, sammle alle Beeren und bleibe dem Schneewanderer voraus.", it: "Apri il percorso ghiacciato, raccogli tutte le bacche e resta avanti al vagabondo della neve.", ru: "Откройте замёрзший путь, соберите все ягоды и опередите снежного странника.", hi: "जमी हुई राह खोलें, सभी बेरियाँ इकट्ठी करें और बर्फीले भटकने वाले से आगे रहें।", ar: "افتح الطريق المتجمد واجمع كل التوت وابق متقدماً على المتجول الثلجي." },
     meta: { en: ["Build / Break Ice", "4 Chapters", "Enemy Routes"], "zh-Hant": ["建造／破壞冰牆", "4 個章節", "敵人路線"], "zh-Hans": ["建造／破坏冰墙", "4 个章节", "敌人路线"] },
-    art: { kind: "image", background: "assets/animal-frost-maze-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/animal-frost-maze-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     categories: ["Puzzle", "Action", "Animal"], skills: ["Route Planning", "Timing"], ages: ["9", "family"], href: "games/animal-frost-maze/",
   },
   {
@@ -4630,7 +4634,7 @@ const nextFiveGeneralCandidates = [
     type: { en: "Precision Flip Challenge", "zh-Hant": "精準翻轉挑戰", "zh-Hans": "精准翻转挑战", ja: "精密フリップチャレンジ", ko: "정밀 플립 도전", es: "Desafío de giros precisos", "pt-BR": "Desafio de giros precisos", fr: "Défi de flips précis", de: "Präzisions-Flip", it: "Sfida di flip precisi", ru: "Точное испытание переворотов", hi: "सटीक फ्लिप चुनौती", ar: "تحدي القلب الدقيق" },
     description: {"en":"Deliver a crystal through 60 stages. Aim, pass the rings and land; four deliveries clear each stage.","zh-Hant":"把水晶送過 60 關。瞄準、穿環再落地，每關完成四次運送。","zh-Hans":"把水晶送过 60 关。瞄准、穿环再落地，每关完成四次运送。","ja":"結晶を 60 ステージへ届けよう。狙ってリングを通り着地。4回の配達でクリア。","ko":"60개 스테이지! 고리를 지나 착지하세요. 네 번 운반하면 통과!","es":"Entrega cristales en 60 fases. Apunta, cruza los anillos y aterriza; cuatro entregas completan cada fase.","pt-BR":"Entregue cristais por 60 fases. Mire, atravesse os anéis e pouse; quatro entregas completam cada fase.","fr":"Livre un cristal dans 60 étapes. Vise, traverse les anneaux et atterris ; quatre livraisons terminent une étape.","de":"Liefere Kristalle durch 60 Stufen. Zielen, Ringe durchqueren, landen: vier Lieferungen pro Stufe.","it":"Consegna cristalli in 60 livelli. Mira, attraversa gli anelli e atterra: quattro consegne completano un livello.","ru":"Доставьте кристалл через 60 этапов. Прицельтесь, пройдите кольца и приземлитесь. Четыре доставки завершают этап.","hi":"60 चरणों में क्रिस्टल पहुँचाएँ। निशाना लगाएँ, छल्लों से गुजरें और उतरें। चार डिलीवरी से चरण पूरा होता है।","ar":"سلّم البلور عبر 60 مرحلة. صوّب واعبر الحلقات واهبط؛ أربع عمليات تسليم تكمل المرحلة."},
     meta: {"en":["Swipe Force","Stage 60","Polarity"],"zh-Hant":["滑動力度","關卡 60","磁極"],"zh-Hans":["滑动力度","关卡 60","磁极"],"ja":["スワイプの強さ","ステージ 60","極性"],"ko":["스와이프 힘","스테이지 60","극성"],"es":["Fuerza del deslizamiento","Fase 60","Polaridad"],"pt-BR":["Força do deslize","Fase 60","Polaridade"],"fr":["Force du geste","Étape 60","Polarité"],"de":["Wischstärke","Stufe 60","Polarität"],"it":["Forza dello swipe","Livello 60","Polarità"],"ru":["Сила свайпа","Этап 60","Полярность"],"hi":["स्वाइप की ताकत","चरण 60","ध्रुव"],"ar":["قوة السحب","المرحلة 60","القطبية"],"__localizedExact":true},
-    art: { kind: "image", background: "assets/animal-flip-foundry-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/animal-flip-foundry-cover.webp?wp-media=512519f6a2210940", hideHero: true },
     categories: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision"], ages: ["9", "family"], href: "games/animal-flip-foundry/", internalTrial: "index.html?preview=1",
   },
 ];
@@ -4718,7 +4722,7 @@ const deepSeaSalvagePreview = {
   ageLabel: { en: "13+", "zh-Hant": "13+", "zh-Hans": "13+", ja: "13+", ko: "13+", es: "13+", "pt-BR": "13+", fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+" },
   href: "games/animal-deep-sea-salvage/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-deep-sea-salvage/assets/animal-deep-sea-salvage-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-deep-sea-salvage/assets/animal-deep-sea-salvage-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(deepSeaSalvagePreview[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === deepSeaSalvagePreview.id)) window.WONDER_LOBBY.games.push(deepSeaSalvagePreview);
@@ -4735,7 +4739,7 @@ const marketFiveCandidates = [
     type: marketFiveLocalized(["Arc-and-Power Basketball", "弧線與力道籃球", "弧线与力度篮球", "軌道と強さのバスケット", "궤적·파워 농구", "Baloncesto de arco y fuerza", "Basquete de arco e força", "Basket d’arc et de puissance", "Bogen-und-Kraft-Basketball", "Basket di arco e potenza", "Баскетбол траектории и силы", "चाप और ताकत बास्केटबॉल", "كرة سلة بالقوس والقوة"]),
     description: {"en":"60 courts. Read the defense. Build a relay.","zh-Hant":"60 座球場：看穿防守，傳球接力。","zh-Hans":"60 座球场：看穿防守，传球接力。","ja":"60 コート。守りを読み、パスをつなごう。","ko":"60개 코트에서 수비를 읽고 패스를 이으세요.","es":"60 canchas. Lee la defensa y enlaza pases.","pt-BR":"60 quadras. Leia a defesa e conecte passes.","fr":"60 terrains. Lisez la défense, liez les passes.","de":"60 Plätze. Lies die Abwehr und spiele Pässe.","it":"60 campi. Leggi la difesa e collega i passaggi.","ru":"60 площадок. Читай защиту и связывай передачи.","hi":"60 कोर्ट। रक्षा पढ़ें और पास जोड़ें।","ar":"60 ملعبًا. اقرأ الدفاع واربط التمريرات."},
     meta: {"en":"60 · Backboard Circuit · Relay Skyline","zh-Hant":"60 · 擦板巡迴 · 天際接力","zh-Hans":"60 · 擦板巡回 · 天际接力","ja":"60 · バンクサーキット · 空中リレー","ko":"60 · 뱅크 서킷 · 스카이 릴레이","es":"60 · Circuito de tablero · Relevo aéreo","pt-BR":"60 · Circuito da tabela · Revezamento aéreo","fr":"60 · Circuit du panneau · Relais aérien","de":"60 · Brett-Rundkurs · Himmelsstaffel","it":"60 · Circuito del tabellone · Staffetta aerea","ru":"60 · Турнир щита · Небесная эстафета","hi":"60 · बैकबोर्ड सर्किट · आकाश रिले","ar":"60 · دوري اللوحة · تتابع السماء"},
-    categories: ["Sports", "Arcade", "Animal"], skills: ["Timing", "Aim"], art: { kind: "image", background: "games/animal-hoop-league/assets/animal-hoop-league-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }, href: "games/animal-hoop-league/", internalTrial: "index.html?preview=1",
+    categories: ["Sports", "Arcade", "Animal"], skills: ["Timing", "Aim"], art: { kind: "image", background: "games/animal-hoop-league/assets/animal-hoop-league-cover.webp?wp-media=512519f6a2210940", hideHero: true }, href: "games/animal-hoop-league/", internalTrial: "index.html?preview=1",
   },
   {
     id: "animal-habitat-atlas",
@@ -4743,7 +4747,7 @@ const marketFiveCandidates = [
     type: marketFiveLocalized(["Rescue Strategy","救援策略","救援策略","救助ストラテジー","구조 전략","Estrategia de rescate","Estratégia de resgate","Stratégie de sauvetage","Rettungsstrategie","Strategia di salvataggio","Стратегия спасения","बचाव रणनीति","استراتيجية إنقاذ"]),
     description: marketFiveLocalized(["Rescue wildlife across 60 valleys. Build bridges, manage supplies and time the falling water.","走過 60 座河谷，架橋、調度補給，趁退水時救回動物。","走过 60 座河谷，架桥、调度补给，趁退水时救回动物。","60の谷で動物を救助。橋と物資を使い、水位を見て進もう。","60개 계곡에서 구조하세요. 다리와 보급품을 쓰고 물이 빠질 때 이동하세요.","Rescata fauna en 60 valles. Construye puentes, gestiona suministros y aprovecha la bajada del agua.","Resgate animais em 60 vales. Construa pontes, use suprimentos e aproveite a água baixa.","Sauve la faune de 60 vallées. Construis des ponts, gère les vivres et profite de l’eau basse.","Rette Tiere in 60 Tälern. Baue Brücken, verwalte Vorräte und nutze das Niedrigwasser.","Salva gli animali in 60 valli. Costruisci ponti, gestisci scorte e sfrutta l’acqua bassa.","Спасайте животных в 60 долинах. Стройте мосты, берегите припасы и используйте отлив.","60 घाटियों में जीवों को बचाएँ। पुल बनाएँ, आपूर्ति सँभालें और घटते पानी का लाभ लें।","أنقذ الحيوانات في 60 وادياً. ابن الجسور وأدر المؤن واستفد من انخفاض الماء."]),
     meta: marketFiveLocalized([["60 Stages","Bridge","Pump"],["60 關卡","架橋","抽水"],["60 关卡","架桥","抽水"],["60 ステージ","架橋","排水"],["60 단계","다리 건설","배수"],["60 Fases","Puente","Bombear"],["60 Fases","Ponte","Bombear"],["60 Niveaux","Pont","Pomper"],["60 Stufen","Brücke","Pumpen"],["60 Livelli","Ponte","Pompa"],["60 Этапы","Мост","Откачать"],["60 चरण","पुल","पंप"],["60 مراحل","جسر","ضخ"]]),
-    categories: ["Puzzle", "Geography", "Animal"], skills: ["Deduction", "Observation"], art: { kind: "image", background: "games/animal-habitat-atlas/assets/animal-habitat-atlas-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }, href: "games/animal-habitat-atlas/", internalTrial: "index.html?preview=1",
+    categories: ["Puzzle", "Geography", "Animal"], skills: ["Deduction", "Observation"], art: { kind: "image", background: "games/animal-habitat-atlas/assets/animal-habitat-atlas-cover.webp?wp-media=512519f6a2210940", hideHero: true }, href: "games/animal-habitat-atlas/", internalTrial: "index.html?preview=1",
   },
   {
     id: "animal-moonlight-workshop",
@@ -4781,7 +4785,7 @@ const marketFiveCandidates = [
       "accendi tutti gli interruttori e fuggi", "attiva gli interruttori e prendi la chiave", "sblocca il percorso dell'officina", "fuga con chiave e limite mosse", "включите все переключатели и сбегите", "активируйте переключатели и возьмите ключ", "откройте маршрут мастерской", "побег с ключом и лимитом ходов",
       "सभी स्विच जलाएँ और भागें", "स्विच सक्रिय करके चाबी पाएँ", "वर्कशॉप का रास्ता खोलें", "चाल सीमा वाली चाबी एस्केप", "أضئ كل المفاتيح واهرب", "فعّل المفاتيح وخذ المفتاح", "افتح مسار الورشة", "هروب المفتاح بحد الحركات",
     ],
-    categories: ["Puzzle", "Escape", "Animal"], skills: ["Route Planning", "Logic"], art: { kind: "image", background: "games/animal-moonlight-workshop/assets/animal-moonlight-workshop-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }, href: "games/animal-moonlight-workshop/", internalTrial: "index.html?preview=1",
+    categories: ["Puzzle", "Escape", "Animal"], skills: ["Route Planning", "Logic"], art: { kind: "image", background: "games/animal-moonlight-workshop/assets/animal-moonlight-workshop-cover.webp?wp-media=512519f6a2210940", hideHero: true }, href: "games/animal-moonlight-workshop/", internalTrial: "index.html?preview=1",
   },
   {
     id: "animal-chameleon-blend",
@@ -4804,7 +4808,7 @@ const marketFiveCandidates = [
       "कैमोफ्लाज मेमोरी", "रंग और पैटर्न मिलाएँ", "टेक्सचर याददाश्त", "स्पॉटलाइट से छिपें", "कैमोफ्लाज पहेली",
       "ذاكرة التمويه", "طابق اللون والنمط", "ذاكرة الملمس", "اختبئ من الكشاف", "لغز التمويه",
     ],
-    categories: ["Puzzle", "Memory", "Animal"], skills: ["Visual Memory", "Focus"], art: { kind: "image", background: "games/animal-chameleon-blend/assets/animal-chameleon-blend-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }, href: "games/animal-chameleon-blend/", internalTrial: "index.html?preview=1",
+    categories: ["Puzzle", "Memory", "Animal"], skills: ["Visual Memory", "Focus"], art: { kind: "image", background: "games/animal-chameleon-blend/assets/animal-chameleon-blend-cover.webp?wp-media=512519f6a2210940", hideHero: true }, href: "games/animal-chameleon-blend/", internalTrial: "index.html?preview=1",
   },
   {
     id: "animal-habitat-builder",
@@ -4812,7 +4816,7 @@ const marketFiveCandidates = [
     type: marketFiveLocalized(["Habitat Tile Strategy", "棲地板塊策略", "栖地板块策略", "生息地タイル戦略", "서식지 타일 전략", "Estrategia de hábitats", "Estratégia de habitats", "Stratégie d’habitats", "Lebensraum-Strategie", "Strategia degli habitat", "Стратегия среды", "आवास टाइल रणनीति", "استراتيجية بلاطات المواطن"]),
     description: marketFiveLocalized(["Place water, shelter, meadow, and forest tiles so every visiting animal has what it needs.", "配置水源、庇護所、草地與森林，滿足每隻動物的需求。", "配置水源、庇护所、草地与森林，满足每只动物的需求。", "水・隠れ家・草地・森を配置し、動物の必要条件を満たそう。", "물, 쉼터, 초원, 숲을 놓아 모든 동물의 필요를 채우세요.", "Coloca agua, refugio, pradera y bosque para cada animal.", "Coloque água, abrigo, campo e floresta para cada animal.", "Place eau, abri, prairie et forêt pour chaque animal.", "Platziere Wasser, Schutz, Wiese und Wald für alle Tiere.", "Posiziona acqua, rifugio, prato e foresta per ogni animale.", "Размещайте воду, укрытия, луга и лес для всех животных.", "पानी, आश्रय, घास और जंगल लगाकर हर जानवर की जरूरत पूरी करें।", "ضع الماء والمأوى والمرج والغابة لكل حيوان."]),
     meta: marketFiveLocalized([["6 Reserves", "Four Tile Types", "Placement Budget"], ["6 座保護區", "四種板塊", "配置額度"], ["6 座保护区", "四种板块", "配置额度"], ["6つの保護区", "4種のタイル", "配置手数"], ["6개 보호구역", "네 가지 타일", "배치 제한"], ["6 reservas", "Cuatro losetas", "Límite de colocación"], ["6 reservas", "Quatro peças", "Limite de colocação"], ["6 réserves", "Quatre tuiles", "Budget de placement"], ["6 Reservate", "Vier Feldtypen", "Platzierungslimit"], ["6 riserve", "Quattro tessere", "Limite di posa"], ["6 заповедников", "Четыре плитки", "Лимит размещений"], ["6 अभयारण्य", "चार टाइल प्रकार", "स्थान सीमा"], ["6 محميات", "أربعة أنواع", "حد للوضع"]]),
-    categories: ["Strategy", "Builder", "Animal"], skills: ["Planning", "Resource Balance"], art: { kind: "image", background: "games/animal-habitat-builder/assets/animal-habitat-builder-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }, href: "games/animal-habitat-builder/", internalTrial: "index.html?preview=1",
+    categories: ["Strategy", "Builder", "Animal"], skills: ["Planning", "Resource Balance"], art: { kind: "image", background: "games/animal-habitat-builder/assets/animal-habitat-builder-cover.webp?wp-media=512519f6a2210940", hideHero: true }, href: "games/animal-habitat-builder/", internalTrial: "index.html?preview=1",
   },
 ];
 for (const candidate of marketFiveCandidates) {
@@ -4859,7 +4863,7 @@ const researchedNextBatchCandidates = [
     type: { en: "Grapple-and-Swing Route Action", "zh-Hant": "抓鉤擺盪路線動作", "zh-Hans": "抓钩摆荡路线动作", ja: "グラップル・スイングアクション", ko: "그래플 스윙 루트 액션", es: "Acción de rutas con garfio", "pt-BR": "Ação de rotas com gancho", fr: "Action de parcours au grappin", de: "Greifhaken-Routenaktion", it: "Azione di percorso con rampino", ru: "Маршрутный экшен с крюком", hi: "ग्रैपल-स्विंग रूट एक्शन", ar: "حركة مسارات بخطاف" },
     description: { en: "Catch cloud rings, build a pendulum swing, and deliver every parcel without touching the storm teeth.", "zh-Hant": "抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。", "zh-Hans": "抓住云环建立摆荡节奏，在不碰到风暴齿刺的情况下送达每件包裹。", ja: "雲のリングをつかんで振り子の勢いを作り、嵐の棘に触れず荷物を届けよう。", ko: "구름 고리를 잡아 진자처럼 흔들고 폭풍 가시에 닿지 않게 소포를 배달하세요.", es: "Atrapa anillos de nube, crea un balanceo pendular y entrega cada paquete sin tocar los dientes de la tormenta.", "pt-BR": "Agarre anéis de nuvem, crie um balanço pendular e entregue cada pacote sem tocar nos dentes da tempestade.", fr: "Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage.", de: "Greife Wolkenringe, baue Schwung auf und liefere jedes Paket ab, ohne die Sturmzähne zu berühren.", it: "Aggancia gli anelli di nuvola, crea un'oscillazione a pendolo e consegna ogni pacco senza toccare i denti della tempesta.", ru: "Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов.", hi: "बादल के छल्ले पकड़ें, झूले की गति बनाएँ और तूफानी दाँतों को छुए बिना हर पैकेट पहुँचाएँ।", ar: "التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة." },
     meta: { en: ["Pendulum Routes", "6 Skyways", "Precision Release"], "zh-Hant": ["擺盪路線", "6 條天路", "精準放手"], "zh-Hans": ["摆荡路线", "6 条天路", "精准放手"], ja: ["振り子ルート", "6つの空路", "精密リリース"], ko: ["진자 루트", "6개 하늘길", "정밀 해제"], es: ["Rutas pendulares", "6 cielos", "Soltar con precisión"], "pt-BR": ["Rotas pendulares", "6 céus", "Soltar com precisão"], fr: ["Routes pendulaires", "6 voies célestes", "Lâcher précis"], de: ["Pendelrouten", "6 Himmelswege", "Präzises Loslassen"], it: ["Rotte a pendolo", "6 cieli", "Rilascio preciso"], ru: ["Маятниковые маршруты", "6 небесных трасс", "Точный отпуск"], hi: ["झूला मार्ग", "6 आकाश-पथ", "सटीक छोड़ना"], ar: ["مسارات بندولية", "6 طرق سماوية", "إفلات دقيق"] },
-    art: { kind: "image", background: "games/animal-cloudhook-courier/cover-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "games/animal-cloudhook-courier/cover-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     categories: ["Action", "Arcade", "Animal"], skills: ["Timing", "Route Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-cloudhook-courier/", internalTrial: "index.html?preview=1",
   },
   {
@@ -4868,7 +4872,7 @@ const researchedNextBatchCandidates = [
     type: { en: "Synchronized Platform Puzzle", "zh-Hant": "同步雙角色平台益智", "zh-Hans": "同步双角色平台益智", ja: "同期ツイン・プラットフォームパズル", ko: "동기화 트윈 플랫폼 퍼즐", es: "Puzle de plataformas sincronizadas", "pt-BR": "Puzzle de plataformas sincronizadas", fr: "Puzzle de plateformes synchronisées", de: "Synchronisiertes Plattformpuzzle", it: "Puzzle di piattaforme sincronizzate", ru: "Синхронная платформенная головоломка", hi: "सिंक्रोनाइज़्ड प्लेटफ़ॉर्म पहेली", ar: "لغز منصات متزامنة" },
     description: { en: "Guide two different jumpers through split lanes, flip signal gates, and gather every relay shard together.", "zh-Hant": "引導兩位跳躍者通過分岔路線，切換訊號閘門，一起收集所有接力碎片。", "zh-Hans": "引导两位跳跃者通过分岔路线，切换信号闸门，一起收集所有接力碎片。", ja: "異なるジャンパーを分岐レーンへ導き、信号ゲートを切り替え、すべての中継シャードを一緒に集めよう。", ko: "서로 다른 점퍼를 갈라진 레인으로 이끌고 신호 게이트를 전환해 모든 릴레이 조각을 함께 모으세요.", es: "Guía a dos saltadores por carriles divididos, cambia las compuertas de señal y reúne todos los fragmentos de relevo.", "pt-BR": "Guie dois saltadores por pistas separadas, alterne portões de sinal e reúna todos os fragmentos de relé.", fr: "Guide deux sauteurs sur des voies séparées, active les portes de signal et rassemble tous les éclats relais.", de: "Führe zwei Springer durch getrennte Bahnen, schalte Signaltore um und sammle gemeinsam alle Relais-Splitter.", it: "Guida due saltatori su corsie divise, cambia i varchi di segnale e raccogli insieme tutti i frammenti relè.", ru: "Проведите двух прыгунов по разным дорожкам, переключайте сигнальные ворота и соберите все осколки реле вместе.", hi: "दो अलग कूदने वालों को विभाजित लेन से ले जाएँ, सिग्नल गेट बदलें और सभी रिले टुकड़े साथ जुटाएँ।", ar: "قد لاعبين قافزين عبر مسارات منفصلة وبدّل بوابات الإشارة واجمعا كل شظايا الترحيل معاً." },
     meta: { en: ["Two-Lane Sync", "6 Switchyards", "Shared Timing"], "zh-Hant": ["雙線同步", "6 個燈場", "共同時機"], "zh-Hans": ["双线同步", "6 个灯场", "共同时机"], ja: ["2レーン同期", "6つの切替場", "共有タイミング"], ko: ["2레인 동기화", "6개 스위치야드", "공유 타이밍"], es: ["Sincronía de dos carriles", "6 estaciones", "Ritmo compartido"], "pt-BR": ["Sincronia em duas pistas", "6 pátios", "Ritmo compartilhado"], fr: ["Synchronisation à deux voies", "6 relais", "Timing partagé"], de: ["Zwei-Bahnen-Sync", "6 Schaltfelder", "Gemeinsames Timing"], it: ["Sincronia a due corsie", "6 scambi", "Tempismo condiviso"], ru: ["Синхрон двух дорожек", "6 станций", "Общий ритм"], hi: ["दो लेन सिंक", "6 स्विचयार्ड", "साझा समय"], ar: ["تزامن مسارين", "6 ساحات تبديل", "توقيت مشترك"] },
-    art: { kind: "image", background: "games/animal-twin-switchyard/cover-v2.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "games/animal-twin-switchyard/cover-v2.webp?wp-media=512519f6a2210940", hideHero: true },
     previewVideo: "assets/previews/animal-twin-switchyard-battle.webm",
     categories: ["Puzzle", "Platform", "Animal"], skills: ["Coordination", "Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-twin-switchyard/", internalTrial: "index.html?preview=1",
   },
@@ -4969,7 +4973,7 @@ const animalPuttTrailsOwnerPreview = {
   relatedGameRules: { requirePublic: true, useInGuide: true, guidePlacement: "primary", gameIds: ["nori-bankshot", "lantern-lasso"] },
   description: marketFiveLocalized(["Read each trail, choose a line and power, then guide the ball around banks and gentle water to the flag.", "讀懂每條小徑，選擇路線與力道，利用反彈並避開溫和水域，把球送到旗竿。", "读懂每条小径，选择路线与力度，利用反弹并避开温和水域，把球送到旗杆。", "コースを読み、ラインと強さを選び、バンクと穏やかな水を避けてボールを旗へ運びます。", "코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요.", "Lee cada sendero, elige línea y fuerza, rodea bordes y agua suave hasta la bandera.", "Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira.", "Lis chaque sentier, choisis la ligne et la puissance, puis évite les bordures et l’eau jusqu’au drapeau.", "Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne.", "Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina.", "Читайте тропу, выбирайте линию и силу, обходите борта и тихую воду до флажка.", "हर पथ पढ़ें, रेखा और ताकत चुनें, किनारों व शांत पानी को पार कर गेंद झंडे तक पहुँचाएँ।", "اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية."]),
   meta: marketFiveLocalized([["Five Holes", "Aim + Power", "Bank Planning"], ["五洞球場", "瞄準＋力道", "反彈規劃"], ["五洞球场", "瞄准＋力度", "反弹规划"], ["5ホール", "狙い＋強さ", "バンク計画"], ["5홀", "조준 + 힘", "둑 계획"], ["Cinco hoyos", "Línea y fuerza", "Plan de rebotes"], ["Cinco buracos", "Linha e força", "Planejamento de bordas"], ["Cinq trous", "Ligne et puissance", "Plan des rebonds"], ["Fünf Löcher", "Linie und Kraft", "Bandenplanung"], ["Cinque buche", "Linea e potenza", "Piano dei rimbalzi"], ["Пять лунок", "Линия и сила", "План рикошета"], ["पाँच होल", "निशाना और ताकत", "किनारा योजना"], ["خمس حفرات", "خط وقوة", "تخطيط الارتداد"]]),
-  art: { kind: "image", background: "games/animal-putt-trails/assets/animal-putt-trails-cover-v2.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-putt-trails/assets/animal-putt-trails-cover-v2.png.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalPuttTrailsOwnerPreview[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPuttTrailsOwnerPreview.id)) window.WONDER_LOBBY.games.push(animalPuttTrailsOwnerPreview);
@@ -4992,7 +4996,7 @@ const animalKiteKeeperPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-kite-keeper/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/lobby-posters/animal-kite-keeper-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-kite-keeper-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalKiteKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalKiteKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalKiteKeeperPlanned);
@@ -5030,7 +5034,7 @@ const animalGustGardenPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-gust-garden/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-gust-garden/assets/animal-gust-garden-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-gust-garden/assets/animal-gust-garden-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalGustGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalGustGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalGustGardenPlanned);
@@ -5053,7 +5057,7 @@ const animalHabitatBlueprintPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-habitat-blueprint/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/lobby-posters/animal-habitat-blueprint-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-habitat-blueprint-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalHabitatBlueprintPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.games.push(animalHabitatBlueprintPlanned);
@@ -5074,7 +5078,7 @@ const animalWeatherWatchPlanned = {
   ages: ["6", "family"],
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-weather-watch/",
-  art: { kind: "image", background: "games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalWeatherWatchPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalWeatherWatchPlanned.id)) window.WONDER_LOBBY.games.push(animalWeatherWatchPlanned);
@@ -5097,7 +5101,7 @@ const animalRiverGatesPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-river-gates/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/lobby-posters/animal-river-gates-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-river-gates-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalRiverGatesPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalRiverGatesPlanned.id)) window.WONDER_LOBBY.games.push(animalRiverGatesPlanned);
@@ -5134,7 +5138,7 @@ const animalEchoOrchardPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-echo-orchard/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-echo-orchard/assets/animal-echo-orchard-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-echo-orchard/assets/animal-echo-orchard-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalEchoOrchardPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalEchoOrchardPlanned.id)) window.WONDER_LOBBY.games.push(animalEchoOrchardPlanned);
@@ -5179,7 +5183,7 @@ const animalAcornAuctionPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-acorn-auction/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-acorn-auction/assets/animal-acorn-auction-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-acorn-auction/assets/animal-acorn-auction-cover.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalAcornAuctionPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.games.push(animalAcornAuctionPlanned);
@@ -5227,7 +5231,7 @@ const animalCairnCourierPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-cairn-courier/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "assets/interface7-redrawn/animal-cairn-courier.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/interface7-redrawn/animal-cairn-courier.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalCairnCourierPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalCairnCourierPlanned.id)) window.WONDER_LOBBY.games.push(animalCairnCourierPlanned);
@@ -5250,7 +5254,7 @@ const animalFireflyFolioPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-firefly-folio/",
   internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "games/animal-firefly-folio/assets/animal-firefly-folio-cover-voxel-v1.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-firefly-folio/assets/animal-firefly-folio-cover-voxel-v1.png.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalFireflyFolioPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.games.push(animalFireflyFolioPlanned);
@@ -5267,7 +5271,7 @@ const animalSignalScoutPlanned = {
   description: marketFiveLocalized(["Read three scout notes, match each animal to its signal colour, and copy the visible patrol order.", "讀懂三張偵察筆記，把動物配對到訊號顏色，再照著可見巡邏順序點選。", "读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。", "3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。", "세 정찰 기록을 읽고 동물과 신호 색을 맞춘 뒤 보이는 순서대로 누르세요.", "Lee tres notas, relaciona cada animal con su color y copia el orden de patrulla.", "Leia três notas, associe cada animal à sua cor e copie a ordem da patrulha.", "Lis trois notes, associe chaque animal à sa couleur puis copie l’ordre de patrouille.", "Lies drei Notizen, ordne jedem Tier seine Signalfarbe zu und kopiere die sichtbare Reihenfolge.", "Leggi tre note, abbina ogni animale al suo colore e copia l’ordine del giro.", "Прочитайте три заметки, сопоставьте зверей с цветами и повторите порядок патруля.", "तीन नोट पढ़ें, हर जानवर को संकेत रंग से मिलाएँ और गश्त का क्रम दोहराएँ।", "اقرأ ثلاث ملاحظات وطابق كل حيوان مع لون إشارته ثم انسخ ترتيب الدورية."]),
   meta: marketFiveLocalized([["3 Patrol Notes", "Match + Copy", "Calm Retry"], ["3 張巡邏筆記", "配對＋照抄", "平靜重試"], ["3 张巡逻笔记", "配对＋照抄", "平静重试"], ["3つの巡回メモ", "合わせてまねる", "穏やかな再挑戦"], ["정찰 기록 3개", "맞추고 따라하기", "차분한 재시도"], ["3 notas", "Relaciona y copia", "Reintento tranquilo"], ["3 notas", "Associe e copie", "Nova tentativa calma"], ["3 notes", "Associer et copier", "Reprise sereine"], ["3 Notizen", "Zuordnen + Kopieren", "Ruhiger Versuch"], ["3 note", "Abbina e copia", "Riprova calma"], ["3 заметки", "Сопоставь и повтори", "Спокойный повтор"], ["3 नोट", "मिलाएँ और दोहराएँ", "शांत पुनः प्रयास"], ["3 ملاحظات", "طابق وانسخ", "محاولة هادئة"]]),
   categories: ["Puzzle", "Logic", "Pattern Recognition", "Family", "Animal"], skills: ["Observation", "Working Memory", "Focus"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
-  href: "games/animal-signal-scout/", art: { kind: "image", background: "Assets/lobby-posters/animal-signal-scout-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  href: "games/animal-signal-scout/", art: { kind: "image", background: "Assets/lobby-posters/animal-signal-scout-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSignalScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSignalScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSignalScoutPlanned);
@@ -5286,7 +5290,7 @@ const animalSilhouetteScoutPlanned = {
   meta: marketFiveLocalized([["30 Lookouts", "See + Match", "Optional Diamond Gear"], ["30 座瞭望台", "觀察＋配對", "鑽石選購裝備"], ["30 座瞭望台", "观察＋配对", "钻石可选装备"], ["30の見張り台", "見て合わせる", "任意のダイヤ装備"], ["전망대 30개", "보고 맞추기", "선택 다이아 장비"], ["30 miradores", "Mira y combina", "Equipo con diamantes"], ["30 mirantes", "Veja e associe", "Equipamento com diamantes"], ["30 belvédères", "Observe et associe", "Équipement en diamants"], ["30 Ausgucke", "Sehen + Zuordnen", "Optionale Diamant-Ausrüstung"], ["30 vedette", "Guarda e abbina", "Equipaggiamento in diamanti"], ["30 вышек", "Смотри и сопоставляй", "Снаряжение за алмазы"], ["30 चौकियाँ", "देखें और मिलाएँ", "वैकल्पिक हीरा उपकरण"], ["30 نقاط مراقبة", "انظر وطابق", "معدات ألماس اختيارية"]]),
   categories: ["Puzzle", "Observation", "Visual Recognition", "Family", "Animal"],
   skills: ["Observation", "Focus", "Visual Reasoning"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
-  href: "games/animal-silhouette-scout/", internalTrial: "index.html?preview=1", art: { kind: "image", background: "assets/lobby-posters/animal-silhouette-scout-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  href: "games/animal-silhouette-scout/", internalTrial: "index.html?preview=1", art: { kind: "image", background: "assets/lobby-posters/animal-silhouette-scout-square-v1.webp?wp-media=512519f6a2210940", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSilhouetteScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSilhouetteScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSilhouetteScoutPlanned);
@@ -5314,7 +5318,7 @@ window.WONDER_LOBBY.games.push(
       "attraversare la strada", "traffico", "fiume", "spazio sicuro", "перейти дорогу", "трафик", "река", "безопасный промежуток",
       "सड़क पार करना", "यातायात", "नदी", "सुरक्षित जगह", "عبور الطريق", "المرور", "النهر", "فجوة آمنة"
     ],
-    art: { kind: "image", background: "assets/interface7-redrawn/road-crosser.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/interface7-redrawn/road-crosser.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   {
     id: "alien-defender",
@@ -5326,7 +5330,7 @@ window.WONDER_LOBBY.games.push(
     href: "games/alien-defender/", previewVideo: "assets/previews/alien-defender-battle.webm",
     description: {"en":"Pilot the otter gunship through 60 authored battles in two chapters. Break formations, earn upgrades, then cross the Aurora Stormway.","zh-Hant":"駕駛水獺砲艇挑戰兩章共 60 場原創戰鬥。擊破編隊、累積升級，再穿越極光風暴航道。","zh-Hans":"驾驶水獭炮艇挑战两章共 60 场原创战斗。击破编队、积累升级，再穿越极光风暴航道。","ja":"ラッコの砲艇で全2章・60の戦闘へ。編隊を崩して強化を重ね、オーロラの嵐の航路を越えよう。","ko":"수달 포격선으로 두 장, 60개의 전투에 도전하세요. 편대를 무너뜨리고 강화한 뒤 오로라 폭풍 항로를 건너세요.","es":"Pilota la nave de la nutria en 60 batallas de dos capítulos. Rompe formaciones, mejora y cruza la Ruta de la Tormenta Aurora.","pt-BR":"Pilote a nave da lontra em 60 batalhas de dois capítulos. Quebre formações, melhore e atravesse a Rota da Tempestade Aurora.","fr":"Pilotez la canonnière de la loutre dans 60 combats sur deux chapitres. Brisez les formations, améliorez-vous et traversez la Route des tempêtes aurores.","de":"Steuere das Otterschiff durch 60 Gefechte in zwei Kapiteln. Brich Formationen, verbessere dein Schiff und durchquere den Aurora-Sturmweg.","it":"Pilota la nave della lontra in 60 battaglie di due capitoli. Rompi le formazioni, potenziati e attraversa la Rotta della Tempesta Aurora.","ru":"Ведите корабль выдры через 60 боёв двух глав. Разбивайте строй, улучшайте корабль и пройдите Штормовой путь Авроры.","hi":"ऊदबिलाव के जहाज़ से दो अध्यायों में 60 युद्ध लड़ें। दुश्मन गठन तोड़ें, सुधार कमाएँ और ऑरोरा तूफानी मार्ग पार करें।","ar":"قد سفينة القضاعة في 60 معركة ضمن فصلين. حطّم التشكيلات وطوّر سفينتك واعبر طريق عاصفة الشفق."},
     meta: {"en":["60 Stage","Upgrades","15 diamonds · permanent"],"zh-Hant":["60 關卡","強化","15 鑽石・永久"],"zh-Hans":["60 关卡","强化","15 钻石・永久"],"ja":["60 ステージ","強化","15ダイヤ・永久"],"ko":["60 스테이지","강화","다이아 15개 · 영구"],"es":["60 Fase","Mejoras","15 diamantes · permanente"],"pt-BR":["60 Fase","Melhorias","15 diamantes · permanente"],"fr":["60 Niveau","Améliorations","15 diamants · permanent"],"de":["60 Stufe","Verbesserungen","15 Diamanten · dauerhaft"],"it":["60 Livello","Potenziamenti","15 diamanti · permanente"],"ru":["60 Этап","Усиления","15 алмазов · навсегда"],"hi":["60 स्टेज","अपग्रेड","15 हीरे · स्थायी"],"ar":["60 المرحلة","الترقيات","15 ألماسة · دائم"]},
-    art: { kind: "image", background: "assets/interface7-redrawn/alien-defender.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/interface7-redrawn/alien-defender.webp?wp-media=512519f6a2210940", hideHero: true },
   },
 );
 
@@ -5341,7 +5345,7 @@ window.WONDER_LOBBY.games.push(
     href: "games/snake/", previewVideo: "assets/previews/snake-battle.webm",
     description: { en: "Guide a growing star-serpent through a bounded grid, collect six food sparks, and protect your Best score.", "zh-Hant": "帶領成長中的星蛇穿過有限格線，收集六枚食物火花並守住最佳分數。", "zh-Hans": "带领成长中的星蛇穿过有限格线，收集六枚食物火花并守住最佳分数。", ja: "成長する星のヘビをグリッドで導き、6つのフードスパークを集めてベストスコアを守ります。", ko: "성장하는 별뱀을 격자에서 조종해 먹이 불꽃 6개를 모으고 최고 점수를 지키세요.", es: "Guía una serpiente estelar que crece por una cuadrícula, recoge seis chispas y protege tu mejor puntuación.", "pt-BR": "Guie uma serpente estelar crescente pela grade, colete seis faíscas de comida e proteja seu melhor placar.", fr: "Guide un serpent-étoile qui grandit sur une grille, collecte six étincelles et protège ton meilleur score.", de: "Führe eine wachsende Sternenschlange durch ein Raster, sammle sechs Futterfunken und schütze deinen Bestwert.", it: "Guida un serpente stellare in crescita su una griglia, raccogli sei scintille e proteggi il tuo record.", ru: "Проведите растущую звёздную змейку по сетке, соберите шесть искр еды и защитите лучший результат.", hi: "बढ़ते सितारा-साँप को ग्रिड में चलाएँ, छह भोजन-चिंगारियाँ लें और अपना सर्वश्रेष्ठ स्कोर बचाएँ।", ar: "قد ثعباناً نجمياً ينمو عبر شبكة، واجمع ست شرارات طعام واحمِ أفضل نتيجة لك." },
     meta: { en: ["Six Food Sparks", "Grid Steering", "Best Score"], "zh-Hant": ["六枚食物火花", "格線操控", "最佳分數"], "zh-Hans": ["六枚食物火花", "格线操控", "最佳分数"], ja: ["6つのフード", "グリッド操作", "ベストスコア"], ko: ["먹이 불꽃 6개", "격자 조종", "최고 점수"], es: ["Seis chispas", "Control en cuadrícula", "Mejor puntuación"], "pt-BR": ["Seis faíscas", "Controle em grade", "Melhor placar"], fr: ["Six étincelles", "Pilotage sur grille", "Meilleur score"], de: ["Sechs Funken", "Rastersteuerung", "Bestwert"], it: ["Sei scintille", "Guida su griglia", "Record"], ru: ["Шесть искр", "Управление в сетке", "Лучший результат"], hi: ["छह चिंगारियाँ", "ग्रिड नियंत्रण", "सर्वश्रेष्ठ स्कोर"], ar: ["ست شرارات", "تحكم شبكي", "أفضل نتيجة"] },
-    art: { kind: "image", background: "assets/snake-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/snake-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
 );
 
@@ -5358,7 +5362,7 @@ window.WONDER_LOBBY.games.push(
     href: "games/maze-chase/", previewVideo: "assets/previews/maze-chase-battle.webm",
     description: { en: "Guide Orla through a moonlit archive, gather every star mote, and reverse four Wisp chase patterns with a Beacon.", "zh-Hant": "引導奧拉穿過月光檔案館，收集所有星塵，並用信標反轉四種光靈追逐模式。", "zh-Hans": "引导奥拉穿过月光档案馆，收集所有星尘，并用信标反转四种光灵追逐模式。", ja: "オーラを月夜のアーカイブへ導き、星を集め、ビーコンで4種の追跡を逆転させます。", ko: "오라와 달빛 기록 보관소를 누비며 별가루를 모으고 비컨으로 네 가지 위습 추격을 뒤집으세요.", es: "Guía a Orla por un archivo lunar, reúne cada mota y revierte cuatro patrones de persecución con una baliza.", "pt-BR": "Guie Orla pelo arquivo lunar, colete cada partícula e vire quatro padrões de perseguição com uma baliza.", fr: "Guidez Orla dans une archive lunaire, prenez chaque poussière et inversez quatre poursuites avec une balise.", de: "Führe Orla durch das Mondarchiv, sammle jeden Funken und drehe vier Jagdmuster mit einem Leuchtfeuer um.", it: "Guida Orla nell’archivio lunare, raccogli ogni scintilla e ribalta quattro schemi d’inseguimento con un faro.", ru: "Проведите Орлу по лунному архиву, соберите все искры и измените четыре схемы погони маяком.", hi: "ओरला को चाँदनी अभिलेखागार में ले जाएँ, हर तारा-कण लें और बीकन से चार पीछा-पैटर्न पलटें।", ar: "قد أورلا في الأرشيف القمري، اجمع كل الذرات واقلب أربعة أنماط مطاردة بالمنارة." },
     meta: { en: ["3 Faster Stages", "4 Wisp Minds", "Beacon Counterattack"], "zh-Hant": ["3 個加速關卡", "4 種光靈 AI", "信標反擊"], "zh-Hans": ["3 个加速关卡", "4 种光灵 AI", "信标反击"], ja: ["3ステージ", "4種のAI", "ビーコン反撃"], ko: ["3개 스테이지", "4종 AI", "비컨 반격"], es: ["3 etapas", "4 mentes", "Contraataque"], "pt-BR": ["3 fases", "4 IAs", "Contra-ataque"], fr: ["3 étapes", "4 esprits", "Contre-attaque"], de: ["3 Stufen", "4 KI-Muster", "Gegenangriff"], it: ["3 livelli", "4 menti", "Contrattacco"], ru: ["3 этапа", "4 типа ИИ", "Контратака"], hi: ["3 चरण", "4 AI", "पलटवार"], ar: ["3 مراحل", "4 أنماط", "هجوم معاكس"] },
-    art: { kind: "image", background: "assets/maze-chase-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "assets/maze-chase-cover.webp?wp-media=512519f6a2210940", hideHero: true }
   },
   {
     id: "space-rocks",
@@ -5370,7 +5374,7 @@ window.WONDER_LOBBY.games.push(
     href: "games/space-rocks/", previewVideo: "assets/previews/space-rocks-battle.webm",
     description: { en: "Pilot Rux through three drifting waves, split crystal rocks from large to small, and save your Shield for the guardian core.", "zh-Hant": "駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。", "zh-Hans": "驾驶鲁克穿越三波漂移矿群，让晶矿由大分裂到小，并把护盾留给守护核心。", ja: "ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。", ko: "룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요.", es: "Pilota a Rux en tres oleadas, divide rocas cristalinas de grandes a pequeñas y guarda el escudo para el núcleo guardián.", "pt-BR": "Pilote Rux por três ondas, divida rochas cristalinas de grandes a pequenas e guarde o escudo para o núcleo guardião.", fr: "Pilotez Rux à travers trois vagues, divisez les roches cristallines et gardez le bouclier pour le noyau gardien.", de: "Steuere Rux durch drei Driftwellen, teile Kristallfelsen von groß zu klein und spare den Schild für den Wächterkern.", it: "Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano.", ru: "Проведите Рукса через три волны, раскалывайте кристаллические глыбы и берегите щит для ядра-стража.", hi: "रक्स को तीन बहती लहरों में चलाएँ, बड़े क्रिस्टल पत्थरों को छोटे टुकड़ों में बाँटें और रक्षक कोर के लिए शील्ड बचाएँ।", ar: "قد روكس عبر ثلاث موجات، شطر الصخور البلورية من الكبيرة إلى الصغيرة واحتفظ بالدرع للنواة الحارسة." },
     meta: { en: ["3 Waves", "Split Rocks", "Shield + Rapid Fire"], "zh-Hant": ["3 波挑戰", "分裂礦石", "護盾＋連射"], "zh-Hans": ["3 波挑战", "分裂矿石", "护盾＋连射"], ja: ["3ウェーブ", "分裂する岩", "シールド＋連射"], ko: ["3개 웨이브", "분열 바위", "실드 + 연사"], es: ["3 oleadas", "Rocas divisibles", "Escudo + fuego rápido"], "pt-BR": ["3 ondas", "Rochas divisíveis", "Escudo + fogo rápido"], fr: ["3 vagues", "Roches divisibles", "Bouclier + tir rapide"], de: ["3 Wellen", "Geteilte Felsen", "Schild + Schnellfeuer"], it: ["3 ondate", "Rocce divisibili", "Scudo + fuoco rapido"], ru: ["3 волны", "Раскол глыб", "Щит + скорострельность"], hi: ["3 लहरें", "टूटते पत्थर", "शील्ड + रैपिड फायर"], ar: ["3 موجات", "صخور متشظية", "درع + إطلاق سريع"] },
-    art: { kind: "image", background: "assets/space-rocks-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "assets/space-rocks-cover.webp?wp-media=512519f6a2210940", hideHero: true }
   }
 );
 
@@ -5380,21 +5384,21 @@ const newPuzzlePlannedCopy = {
     type: { en: "Order Puzzle", "zh-Hant": "順序解謎", "zh-Hans": "顺序解谜", ja: "順番パズル", ko: "순서 퍼즐", es: "Rompecabezas de orden", "pt-BR": "Quebra-cabeça de ordem", fr: "Puzzle d'ordre", de: "Reihenfolge-Puzzle", it: "Puzzle d'ordine", ru: "Головоломка на порядок", hi: "क्रम पहेली", ar: "لغز ترتيب" },
     description: { en: "Remove arrow blocks in the correct order across 30 escape puzzles.", "zh-Hant": "依照正確順序移除箭頭方塊，破解 30 個逃脫關卡。", "zh-Hans": "按照正确顺序移除箭头方块，破解 30 个逃脱关卡。", ja: "矢印ブロックを正しい順番で外し、30の脱出ステージを攻略します。", ko: "화살표 블록을 올바른 순서로 제거해 30개의 탈출 스테이지를 해결하세요.", es: "Retira los bloques con flechas en el orden correcto y supera 30 puzles de escape.", "pt-BR": "Remova os blocos com setas na ordem certa e resolva 30 fases de fuga.", fr: "Retirez les blocs fléchés dans le bon ordre et résolvez 30 niveaux d'évasion.", de: "Entferne Pfeilblöcke in der richtigen Reihenfolge und löse 30 Fluchtlevel.", it: "Rimuovi i blocchi con frecce nell'ordine corretto e risolvi 30 livelli di fuga.", ru: "Убирайте блоки со стрелками в правильном порядке и пройдите 30 уровней побега.", hi: "तीर वाले ब्लॉकों को सही क्रम में हटाकर 30 बचाव स्तर पूरे करें।", ar: "أزل كتل الأسهم بالترتيب الصحيح وحل 30 مرحلة هروب." },
     meta: { en: ["30 Stages", "Order Logic", "No Timer"], "zh-Hant": ["30 關", "順序邏輯", "沒有計時"], "zh-Hans": ["30 关", "顺序逻辑", "没有计时"], ja: ["30ステージ", "順番ロジック", "制限時間なし"], ko: ["30 스테이지", "순서 논리", "시간 제한 없음"], es: ["30 niveles", "Lógica de orden", "Sin temporizador"], "pt-BR": ["30 fases", "Lógica de ordem", "Sem cronômetro"], fr: ["30 niveaux", "Logique d'ordre", "Sans chronomètre"], de: ["30 Level", "Reihenfolgelogik", "Ohne Zeitlimit"], it: ["30 livelli", "Logica d'ordine", "Senza timer"], ru: ["30 уровней", "Логика порядка", "Без таймера"], hi: ["30 स्तर", "क्रम तर्क", "बिना टाइमर"], ar: ["30 مرحلة", "منطق الترتيب", "بلا مؤقت"] },
-    art: { kind: "image", background: "assets/arrow-escape/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/arrow-escape/cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   "block-blast": {
     title: { en: "Block Blast", "zh-Hant": "方塊爆破", "zh-Hans": "方块爆破", ja: "ブロックブラスト", ko: "블록 블라스트", es: "Explosión de bloques", "pt-BR": "Explosão de blocos", fr: "Explosion de blocs", de: "Blockexplosion", it: "Esplosione di blocchi", ru: "Взрыв блоков", hi: "ब्लॉक ब्लास्ट", ar: "تفجير المكعبات" },
     type: { en: "Block Puzzle", "zh-Hant": "方塊解謎", "zh-Hans": "方块解谜", ja: "ブロックパズル", ko: "블록 퍼즐", es: "Rompecabezas de bloques", "pt-BR": "Quebra-cabeça de blocos", fr: "Puzzle de blocs", de: "Blockpuzzle", it: "Puzzle a blocchi", ru: "Головоломка с блоками", hi: "ब्लॉक पहेली", ar: "لغز المكعبات" },
     description: { en: "Place three shapes on an 8×8 board and clear complete rows and columns.", "zh-Hant": "把三個形狀放進 8×8 棋盤，消除完整橫排與直列。", "zh-Hans": "把三个形状放进 8×8 棋盘，消除完整横排与直列。", ja: "3つの形を8×8盤面に置き、完成した行と列を消します。", ko: "세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요.", es: "Coloca tres formas en un tablero de 8×8 y elimina filas y columnas completas.", "pt-BR": "Coloque três formas no tabuleiro 8×8 e elimine linhas e colunas completas.", fr: "Placez trois formes sur une grille 8×8 et effacez les lignes et colonnes complètes.", de: "Platziere drei Formen auf dem 8×8-Brett und lösche vollständige Reihen und Spalten.", it: "Posiziona tre forme sulla griglia 8×8 ed elimina righe e colonne complete.", ru: "Размещайте три фигуры на поле 8×8 и очищайте заполненные ряды и столбцы.", hi: "8×8 बोर्ड पर तीन आकृतियाँ रखें और पूरी पंक्तियाँ व स्तंभ साफ करें।", ar: "ضع ثلاثة أشكال على لوحة 8×8 وامسح الصفوف والأعمدة المكتملة." },
     meta: { en: ["8×8 Board", "Three Shapes", "Line Clears"], "zh-Hant": ["8×8 棋盤", "三個形狀", "行列消除"], "zh-Hans": ["8×8 棋盘", "三个形状", "行列消除"], ja: ["8×8盤面", "3つの形", "ライン消去"], ko: ["8×8 보드", "세 가지 모양", "줄 지우기"], es: ["Tablero 8×8", "Tres formas", "Líneas completas"], "pt-BR": ["Tabuleiro 8×8", "Três formas", "Limpeza de linhas"], fr: ["Grille 8×8", "Trois formes", "Lignes effacées"], de: ["8×8-Brett", "Drei Formen", "Reihen löschen"], it: ["Griglia 8×8", "Tre forme", "Elimina linee"], ru: ["Поле 8×8", "Три фигуры", "Очистка линий"], hi: ["8×8 बोर्ड", "तीन आकृतियाँ", "लाइन साफ़ करें"], ar: ["لوحة 8×8", "ثلاثة أشكال", "مسح الخطوط"] },
-    art: { kind: "image", background: "assets/block-blast/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/block-blast/cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
   "hexa-sort": {
     title: { en: "Hexa Sort", "zh-Hant": "六角堆疊", "zh-Hans": "六角堆叠", ja: "ヘキサソート", ko: "헥사 소트", es: "Clasificación hexagonal", "pt-BR": "Classificação Hexa", fr: "Tri hexagonal", de: "Hexa-Sort", it: "Ordinamento esagonale", ru: "Сортировка гексов", hi: "हेक्सा सॉर्ट", ar: "فرز السداسيات" },
     type: { en: "Hex Stack Puzzle", "zh-Hant": "六角堆疊解謎", "zh-Hans": "六角堆叠解谜", ja: "六角スタックパズル", ko: "육각 스택 퍼즐", es: "Puzle de pilas hexagonales", "pt-BR": "Quebra-cabeça de pilhas hexagonais", fr: "Puzzle de piles hexagonales", de: "Hexa-Stapelpuzzle", it: "Puzzle di pile esagonali", ru: "Головоломка с шестигранными стопками", hi: "षट्भुज स्टैक पहेली", ar: "لغز تكديس سداسي" },
     description: { en: "Stack colored hex chips, merge matching top colors, and trigger chain clears.", "zh-Hant": "堆疊彩色六角籌碼，合併相同頂層顏色並觸發連鎖消除。", "zh-Hans": "堆叠彩色六角筹码，合并相同顶层颜色并触发连锁消除。", ja: "色付き六角チップを積み、同じ最上段の色をまとめて連鎖消去を狙います。", ko: "색깔 육각 칩을 쌓고 같은 맨 위 색을 합쳐 연쇄 제거를 일으키세요.", es: "Apila fichas hexagonales de colores, une los colores superiores iguales y activa cadenas.", "pt-BR": "Empilhe fichas hexagonais coloridas, junte cores iguais no topo e ative limpezas em cadeia.", fr: "Empilez des jetons hexagonaux colorés, fusionnez les couleurs supérieures identiques et déclenchez des chaînes.", de: "Stapele farbige Sechseckchips, verbinde gleiche obere Farben und löse Ketten aus.", it: "Impila gettoni esagonali colorati, unisci i colori superiori uguali e attiva catene.", ru: "Складывайте цветные шестигранники, объединяйте одинаковые верхние цвета и запускайте цепочки.", hi: "रंगीन षट्भुज चिप्स जमाएँ, समान ऊपरी रंग मिलाएँ और श्रृंखला सफाई शुरू करें।", ar: "كدّس القطع السداسية الملونة وادمج الألوان العلوية المتطابقة لتفعيل سلاسل المسح." },
     meta: { en: ["30 Stages", "10-Chip Clears", "Chain Merges"], "zh-Hant": ["30 關", "10 片消除", "連鎖合併"], "zh-Hans": ["30 关", "10 片消除", "连锁合并"], ja: ["30ステージ", "10枚で消去", "連鎖合体"], ko: ["30 스테이지", "10개 제거", "연쇄 합치기"], es: ["30 niveles", "Elimina 10 fichas", "Fusiones en cadena"], "pt-BR": ["30 fases", "Limpe 10 fichas", "Fusões em cadeia"], fr: ["30 niveaux", "10 jetons à effacer", "Fusions en chaîne"], de: ["30 Level", "10 Chips löschen", "Kettenfusionen"], it: ["30 livelli", "Elimina 10 gettoni", "Fusioni a catena"], ru: ["30 уровней", "Очистка 10 фишек", "Цепные слияния"], hi: ["30 स्तर", "10 चिप साफ़ करें", "श्रृंखला विलय"], ar: ["30 مرحلة", "مسح 10 قطع", "دمج متسلسل"] },
-    art: { kind: "image", background: "assets/hexa-sort/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "assets/hexa-sort/cover.webp?wp-media=512519f6a2210940", hideHero: true },
   },
 };
 
@@ -5434,7 +5438,7 @@ const spiderSolitairePublic = window.WONDER_LOBBY.games.find((entry) => entry.id
 if (spiderSolitairePublic) {
   spiderSolitairePublic.status = "playable";
   spiderSolitairePublic.previewVideo = "assets/previews/spider-solitaire-battle.webm";
-  spiderSolitairePublic.art.background = "assets/spider-solitaire-cover.webp?wp-media=dfd6fb9b5249ca93";
+  spiderSolitairePublic.art.background = "assets/spider-solitaire-cover.webp?wp-media=512519f6a2210940";
   delete spiderSolitairePublic.statusText;
   delete spiderSolitairePublic.internalTrial;
 }
@@ -5775,7 +5779,7 @@ if (animalBounceBrawlPublic) {
     ages: ["6", "family"],
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-rain-roost/",
-    art: { kind: "image", background: "assets/lobby-posters/animal-rain-roost-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "assets/lobby-posters/animal-rain-roost-square-v1.webp?wp-media=512519f6a2210940", hideHero: true }
   };
   for (const field of ["title", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -5804,7 +5808,7 @@ if (animalBounceBrawlPublic) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "../games/animal-orchard-steward/",
     internalTrial: "index.html?preview=1",
-    art: { kind: "image", background: "assets/lobby-posters/animal-orchard-steward-square-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    art: { kind: "image", background: "assets/lobby-posters/animal-orchard-steward-square-v1.webp?wp-media=512519f6a2210940", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -5834,7 +5838,7 @@ if (animalBounceBrawlPublic) {
     href: "games/animal-grove-dominoes/",
     internalTrial: "index.html?preview=1",
     relatedGameRules: { guidePlacement: "primary" },
-    art: { kind: "image", background: "games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+    art: { kind: "image", background: "games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp?wp-media=512519f6a2210940", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -7736,7 +7740,7 @@ for (const game of window.WONDER_LOBBY.games) if (window.WONDER_LOBBY.officialTi
 // END OWNER OFFICIAL GAME NAMES
 
 // Owner-directed Pawflow Coming Soon integration; no public release.
-window.WONDER_LOBBY.games.push({"id":"pawflow","audience":"general","status":"playable","title":{"__localizedExact":true,"en":"Pawflow","zh-Hant":"彩爪流轉","zh-Hans":"彩爪流转","ja":"いろ爪ループ","ko":"색발자국 루프","es":"Patas en órbita","pt-BR":"Patas em órbita","fr":"Pattes en boucle","de":"Pfoten im Kreis","it":"Zampe in orbita","ru":"Лапки по кругу","hi":"रंगीन पंजों का चक्र","ar":"حلقة الكفوف الملونة"},"description":{"__localizedExact":true,"en":"Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.","zh-Hant":"派出色彩信使沿環帶前進，清除同色像素，別讓候補位置塞滿。","zh-Hans":"派出色彩信使沿环带前进，清除同色像素，别让候补位置塞满。","ja":"色の配達員をベルトに送り、同色ピクセルを消そう。待機枠を満杯にしないで！","ko":"색 배달원을 벨트로 보내 같은 색 픽셀을 지우세요. 대기 칸을 가득 채우지 마세요.","es":"Envía mensajeros por la cinta, elimina píxeles del mismo color y evita llenar las plazas de espera.","pt-BR":"Envie entregadores pela esteira, remova pixels da mesma cor e não deixe as vagas de espera lotarem.","fr":"Envoyez les coursiers sur le tapis, effacez les pixels assortis et gardez des places libres.","de":"Schicke Farbkurierfüchse aufs Band, entferne passende Pixel und halte Warteplätze frei.","it":"Invia i corrieri sul nastro, elimina i pixel dello stesso colore e lascia liberi i posti d’attesa.","ru":"Отправляйте цветных курьеров по ленте, убирайте подходящие пиксели и оставляйте свободные места ожидания.","hi":"रंगीन संदेशवाहक भेजें, उसी रंग के पिक्सेल हटाएँ और प्रतीक्षा की जगहें खाली रखें।","ar":"أرسل رسل الألوان على السير، وأزل البكسلات المطابقة، واترك أماكن انتظار شاغرة."},"type":{"en":"Conveyor Puzzle","zh-Hant":"傳送帶解謎"},"categories":["Puzzle","Strategy","Animal Games"],"skills":["Planning","Logic"],"ages":["general"],"href":"games/pawflow/","art":{"kind":"image","background":"games/pawflow/assets/poster.webp?wp-media=dfd6fb9b5249ca93","hideHero":true},"previewVideo":"assets/previews/pawflow-battle.webm"});
+window.WONDER_LOBBY.games.push({"id":"pawflow","audience":"general","status":"playable","title":{"__localizedExact":true,"en":"Pawflow","zh-Hant":"彩爪流轉","zh-Hans":"彩爪流转","ja":"いろ爪ループ","ko":"색발자국 루프","es":"Patas en órbita","pt-BR":"Patas em órbita","fr":"Pattes en boucle","de":"Pfoten im Kreis","it":"Zampe in orbita","ru":"Лапки по кругу","hi":"रंगीन पंजों का चक्र","ar":"حلقة الكفوف الملونة"},"description":{"__localizedExact":true,"en":"Send color couriers around the conveyor, clear matching pixels, and keep the waiting slots from filling.","zh-Hant":"派出色彩信使沿環帶前進，清除同色像素，別讓候補位置塞滿。","zh-Hans":"派出色彩信使沿环带前进，清除同色像素，别让候补位置塞满。","ja":"色の配達員をベルトに送り、同色ピクセルを消そう。待機枠を満杯にしないで！","ko":"색 배달원을 벨트로 보내 같은 색 픽셀을 지우세요. 대기 칸을 가득 채우지 마세요.","es":"Envía mensajeros por la cinta, elimina píxeles del mismo color y evita llenar las plazas de espera.","pt-BR":"Envie entregadores pela esteira, remova pixels da mesma cor e não deixe as vagas de espera lotarem.","fr":"Envoyez les coursiers sur le tapis, effacez les pixels assortis et gardez des places libres.","de":"Schicke Farbkurierfüchse aufs Band, entferne passende Pixel und halte Warteplätze frei.","it":"Invia i corrieri sul nastro, elimina i pixel dello stesso colore e lascia liberi i posti d’attesa.","ru":"Отправляйте цветных курьеров по ленте, убирайте подходящие пиксели и оставляйте свободные места ожидания.","hi":"रंगीन संदेशवाहक भेजें, उसी रंग के पिक्सेल हटाएँ और प्रतीक्षा की जगहें खाली रखें।","ar":"أرسل رسل الألوان على السير، وأزل البكسلات المطابقة، واترك أماكن انتظار شاغرة."},"type":{"en":"Conveyor Puzzle","zh-Hant":"傳送帶解謎"},"categories":["Puzzle","Strategy","Animal Games"],"skills":["Planning","Logic"],"ages":["general"],"href":"games/pawflow/","art":{"kind":"image","background":"games/pawflow/assets/poster.webp?wp-media=512519f6a2210940","hideHero":true},"previewVideo":"assets/previews/pawflow-battle.webm"});
 window.WONDER_LOBBY.audiences.generalGameIds.push("pawflow");
 
 const blockApexSeoDescription = {
@@ -7786,7 +7790,7 @@ window.WONDER_LOBBY.games.push({
   relatedGameRules: { gameIds: ["snake", "space-rocks"], requirePlayable: true, basis: ["Reaction", "Focus"] },
   href: "games/block-apex/",
   meta: { en: ["30 Stages", "Drift & Boost"], "zh-Hant": ["30 場賽事", "甩尾加速"], "zh-Hans": ["30 场赛事", "甩尾加速"], ja: ["全30レース", "ドリフト＆ブースト"], ko: ["30개 레이스", "드리프트와 부스트"], es: ["30 carreras", "Derrape y nitro"], "pt-BR": ["30 corridas", "Derrapagem e nitro"], fr: ["30 courses", "Drift et turbo"], de: ["30 Rennen", "Drift und Turbo"], it: ["30 gare", "Derapata e turbo"], ru: ["30 гонок", "Дрифт и ускорение"], hi: ["30 रेस", "ड्रिफ्ट और नाइट्रो"], ar: ["30 سباقًا", "انجراف وتعزيز"] },
-  art: { kind: "image", background: "assets/block-apex-poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/block-apex-poster.webp?wp-media=512519f6a2210940", hideHero: true },
   previewVideo: "assets/previews/block-apex-battle.webm",
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("block-apex");
@@ -7885,7 +7889,7 @@ window.WONDER_LOBBY.games.push({
   href: "games/castle-cascade/",
   previewVideo: "assets/previews/castle-cascade-battle.webm",
   meta: castleCascadeMeta,
-  art: { kind: "image", background: "assets/castle-cascade-poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "assets/castle-cascade-poster.webp?wp-media=512519f6a2210940", hideHero: true },
 });
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes("castle-cascade")) {
   window.WONDER_LOBBY.audiences.generalGameIds.push("castle-cascade");
@@ -7941,7 +7945,7 @@ window.WONDER_LOBBY.games.push({
   skills: ["Route Planning", "Order Sequencing", "Capacity Strategy"],
   difficulty: "Thoughtful", estimatedPlayTime: "1-3 minutes",
   description: trafficJamDinerDescription, href: "games/traffic-jam-diner/",
-  art: { kind: "image", background: "/Assets/traffic-jam-diner-cover-v3.png.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "/Assets/traffic-jam-diner-cover-v3.png.webp?wp-media=512519f6a2210940", hideHero: true },
   meta: {
     en: ["Lane Planning", "Snack Orders", "Diamond Board Skins"],
     "zh-Hant": ["車道規劃", "點心訂單", "鑽石棋盤外觀"],
@@ -8000,7 +8004,7 @@ window.WONDER_LOBBY.games.push({
   ages: ["7", "family"], ageTags: ["7", "family"], ageLabel: "7+",
   recommendedAge: "7+", difficulty: "Easy", estimatedPlayTime: "1-3 minutes",
   description: robotDogShowtimeDescription, href: "games/robot-dog-showtime/", internalTrial: "index.html?preview=1",
-  art: { kind: "image", background: "/assets/robot-dog-showtime-cover-v3.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "/assets/robot-dog-showtime-cover-v3.webp?wp-media=512519f6a2210940", hideHero: true },
   meta: { en: ["Robot Pup", "Spatial Puzzle"], "zh-Hant": ["機器狗", "空間解謎"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("robot-dog-showtime");
@@ -8064,7 +8068,7 @@ window.WONDER_LOBBY.games.push({
   skills: ["Planning", "Resource Balance", "Spatial Planning"], ages: ["general"],
   href: "games/animal-blockmart/",
   previewVideo: "assets/previews/animal-blockmart-battle.webm",
-  art: { kind: "image", background: "games/animal-blockmart/assets/poster-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/animal-blockmart/assets/poster-v1.webp?wp-media=512519f6a2210940", hideHero: true },
   meta: { en: ["Store Management", "Growing Shop"], "zh-Hant": ["便利店經營", "擴大店面"] },
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("animal-blockmart");
@@ -8114,7 +8118,7 @@ window.WONDER_LOBBY.games.push({
   skills: ["Timing", "Focus", "Hand-Eye Coordination"], ages: ["general"], ageTags: ["general"],
   recommendedAge: "13+", difficulty: "Medium", estimatedPlayTime: "30-60 seconds",
   href: "games/flying-tram/",
-  art: { kind: "image", background: "games/flying-tram/assets/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/flying-tram/assets/cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
   meta: {
     en: ["45-Second Flight", "Flip & Land"], "zh-Hant": ["45 秒飛行", "空翻著陸"],
     "zh-Hans": ["45 秒飞行", "空翻着陆"], ja: ["45秒フライト", "フリップ着陸"],
@@ -8165,7 +8169,7 @@ window.WONDER_LOBBY.games.push({
   categories: ["Simulation", "Management", "Animal Games", "Pet Care"],
   skills: ["Planning", "Resource Balance"], ages: ["general"],
   href: "games/puppy-haven/",
-  art: { kind: "image", background: "games/puppy-haven/assets/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true },
+  art: { kind: "image", background: "games/puppy-haven/assets/cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true },
   meta: {
     "en": [
       "6 Breeds",
@@ -8245,16 +8249,16 @@ window.WONDER_LOBBY.games.push({
   description: {"__localizedExact":true,"en":"Learn each cat’s favourite play. Grow trust and build a comfortable climbing home.","zh-Hant":"觀察貓咪偏好的遊戲，培養信任，布置舒服的攀爬小屋。","zh-Hans":"观察猫咪偏好的游戏，培养信任，布置舒服的攀爬小屋。","ja":"ねこの好みを見つけ、信頼を育て、登って休める家を作ろう。","ko":"고양이가 좋아하는 놀이를 찾고 신뢰를 쌓아 편안한 집을 꾸미세요.","es":"Descubre el juego favorito de cada gato y crea un hogar para trepar y descansar.","pt-BR":"Descubra a brincadeira favorita de cada gato e crie um lar para subir e descansar.","fr":"Découvrez le jeu préféré de chaque chat et créez un foyer pour grimper et se reposer.","de":"Entdecke das Lieblingsspiel jeder Katze und baue ein gemütliches Kletterheim.","it":"Scopri il gioco preferito di ogni gatto e crea una casa comoda per arrampicarsi.","ru":"Узнайте любимую игру каждой кошки и создайте уютный дом для игр и отдыха.","hi":"हर बिल्ली का पसंदीदा खेल जानें और चढ़ने व आराम करने का घर बनाएँ।","ar":"اكتشف لعبة كل قطة المفضلة وابنِ بيتًا مريحًا للتسلق والراحة."},
   categories: ["Simulation", "Animal Games", "Family", "Pet Care"], skills: ["Planning", "Observation"], ages: ["9", "family"],
   meta: {"en":["30 Goals","Favourite","Free home"],"zh-Hant":["30 成長目標","偏好","自由小屋"],"zh-Hans":["30 成长目标","偏好","自由小屋"],"ja":["30 成長目標","お気に入り","自由な家"],"ko":["30 성장 목표","선호","자유로운 집"],"es":["30 Metas","Favorito","Hogar libre"],"pt-BR":["30 Metas","Favorito","Lar livre"],"fr":["30 Objectifs","Préférence","Foyer libre"],"de":["30 Ziele","Vorliebe","Freies Heim"],"it":["30 Obiettivi","Preferito","Casa libera"],"ru":["30 Цели","Любимое","Свободный дом"],"hi":["30 लक्ष्य","पसंदीदा","खुला घर"],"ar":["30 الأهداف","المفضلة","بيت حر"]},
-  art: { kind: "image", background: "games/purrch-grove/assets/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+  art: { kind: "image", background: "games/purrch-grove/assets/cover-block-v1.webp?wp-media=512519f6a2210940", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("purrch-grove");
 
 // Signal Snap: scoped original new-game identity.
-window.WONDER_LOBBY.games.push({"id": "signal-snap", "title": {"en": "Signal Snap", "zh-Hant": "訊光快拍", "zh-Hans": "讯光快拍", "ja": "シグナルスナップ", "ko": "시그널 스냅", "es": "Destello reflejo", "pt-BR": "Sinal Relâmpago", "fr": "Signal éclair", "de": "Signalblitz", "it": "Scatto segnale", "ru": "Сигнальный рывок", "hi": "संकेत झटपट", "ar": "ومضة الإشارة"}, "type": {"en": "Reaction Timing", "zh-Hant": "反應時機", "zh-Hans": "反应时机"}, "description": {"en": "Read the two beacons: tap the solid diamond on its side, wait through crossed echoes, and build a clean reaction streak.", "zh-Hant": "看清兩側燈台：實心菱形亮起就拍同側，交叉殘影不出手，練出乾淨俐落的反應連段。", "zh-Hans": "看清两侧灯台：实心菱形亮起就拍同侧，交叉残影不出手，练出干净利落的反应连段。"}, "categories": ["Reaction", "Arcade", "Animal Games"], "skills": ["Reaction", "Timing", "Focus"], "ages": ["9", "family"], "status": "planned", "href": "games/signal-snap/", "internalTrial": "index.html?preview=1", "art": {"kind": "image", "background": "games/signal-snap/poster.png.webp?wp-media=dfd6fb9b5249ca93", "hideHero": true}, "meta": {"en": ["Two beacons", "No-go echoes", "30 short stages"], "zh-Hant": ["雙燈反應", "殘影不拍", "30個短關卡"]}});
+window.WONDER_LOBBY.games.push({"id": "signal-snap", "title": {"en": "Signal Snap", "zh-Hant": "訊光快拍", "zh-Hans": "讯光快拍", "ja": "シグナルスナップ", "ko": "시그널 스냅", "es": "Destello reflejo", "pt-BR": "Sinal Relâmpago", "fr": "Signal éclair", "de": "Signalblitz", "it": "Scatto segnale", "ru": "Сигнальный рывок", "hi": "संकेत झटपट", "ar": "ومضة الإشارة"}, "type": {"en": "Reaction Timing", "zh-Hant": "反應時機", "zh-Hans": "反应时机"}, "description": {"en": "Read the two beacons: tap the solid diamond on its side, wait through crossed echoes, and build a clean reaction streak.", "zh-Hant": "看清兩側燈台：實心菱形亮起就拍同側，交叉殘影不出手，練出乾淨俐落的反應連段。", "zh-Hans": "看清两侧灯台：实心菱形亮起就拍同侧，交叉残影不出手，练出干净利落的反应连段。"}, "categories": ["Reaction", "Arcade", "Animal Games"], "skills": ["Reaction", "Timing", "Focus"], "ages": ["9", "family"], "status": "planned", "href": "games/signal-snap/", "internalTrial": "index.html?preview=1", "art": {"kind": "image", "background": "games/signal-snap/poster.png.webp?wp-media=512519f6a2210940", "hideHero": true}, "meta": {"en": ["Two beacons", "No-go echoes", "30 short stages"], "zh-Hant": ["雙燈反應", "殘影不拍", "30個短關卡"]}});
 window.WONDER_LOBBY.audiences.generalGameIds.push("signal-snap");
 
 // Railguard Express: original scoped planned identity.
-window.WONDER_LOBBY.games.push({"id": "railguard-express", "audience": "general", "status": "planned", "internalOnly": true, "internalTrial": "index.html?preview=1", "href": "games/railguard-express/", "title": {"__localizedExact": true, "en": "Railguard Express", "zh-Hant": "荒野守護列車", "zh-Hans": "荒野守护列车", "ja": "レールガード・エクスプレス", "ko": "레일가드 익스프레스", "es": "Expreso Guardavía", "pt-BR": "Expresso Guardião", "fr": "Express des sentinelles", "de": "Schienenwacht Express", "it": "Espresso dei guardiani", "ru": "Экспресс стражей", "hi": "रेलरक्षक एक्सप्रेस", "ar": "قطار الحراس"}, "type": {"en": "Tower Defense", "zh-Hant": "塔防", "zh-Hans": "塔防"}, "description": {"en": "Power a moving fortress. Fit the front, middle and rear carriages, counter incoming raiders and choose upgrades at each station.", "zh-Hant": "調配列車有限電力，配置前中後砲塔，自動迎敵，並在車站選擇下一段旅程的升級。", "zh-Hans": "调配列车有限电力，配置前中后炮塔，自动迎敌，并在车站选择下一段旅程的升级。"}, "categories": ["Strategy", "Tower Defense", "Animal Games"], "skills": ["Planning", "Resource Balance"], "ages": ["9", "family"], "meta": {"en": ["12 routes", "Power & placement", "3 guardians"], "zh-Hant": ["12段路線", "供電與配置", "3位首領"]}, "art": {"kind": "image", "background": "games/railguard-express/assets/cover-block-v1.webp?wp-media=dfd6fb9b5249ca93", "hideHero": true}});
+window.WONDER_LOBBY.games.push({"id": "railguard-express", "audience": "general", "status": "planned", "internalOnly": true, "internalTrial": "index.html?preview=1", "href": "games/railguard-express/", "title": {"__localizedExact": true, "en": "Railguard Express", "zh-Hant": "荒野守護列車", "zh-Hans": "荒野守护列车", "ja": "レールガード・エクスプレス", "ko": "레일가드 익스프레스", "es": "Expreso Guardavía", "pt-BR": "Expresso Guardião", "fr": "Express des sentinelles", "de": "Schienenwacht Express", "it": "Espresso dei guardiani", "ru": "Экспресс стражей", "hi": "रेलरक्षक एक्सप्रेस", "ar": "قطار الحراس"}, "type": {"en": "Tower Defense", "zh-Hant": "塔防", "zh-Hans": "塔防"}, "description": {"en": "Power a moving fortress. Fit the front, middle and rear carriages, counter incoming raiders and choose upgrades at each station.", "zh-Hant": "調配列車有限電力，配置前中後砲塔，自動迎敵，並在車站選擇下一段旅程的升級。", "zh-Hans": "调配列车有限电力，配置前中后炮塔，自动迎敌，并在车站选择下一段旅程的升级。"}, "categories": ["Strategy", "Tower Defense", "Animal Games"], "skills": ["Planning", "Resource Balance"], "ages": ["9", "family"], "meta": {"en": ["12 routes", "Power & placement", "3 guardians"], "zh-Hant": ["12段路線", "供電與配置", "3位首領"]}, "art": {"kind": "image", "background": "games/railguard-express/assets/cover-block-v1.webp?wp-media=512519f6a2210940", "hideHero": true}});
 window.WONDER_LOBBY.audiences.generalGameIds.push("railguard-express");
 
 // Current Grove campaign copy supersedes the historical three-loop prototype listing.
@@ -8276,7 +8280,7 @@ window.WONDER_LOBBY.games.push({
   description: {"en": "Collect blades and command a growing sword orbit. Keep moving, evolve your build, and sweep through the horde.", "zh-Hant": "撿起飛劍，讓整個劍陣為你旋轉。邊走位、邊進化，將敵潮一掃而空。", "ja": "剣を集めて回転する剣陣を育てよう。移動しながら進化させ、押し寄せる敵を切り抜けよう。", "ko": "검을 모아 회전하는 검진을 키우세요. 계속 움직이며 진화하고 몰려오는 적을 돌파하세요.", "es": "Recoge espadas, amplía tu órbita y esquiva a la horda. Muévete y elige cómo evolucionar.", "pt-BR": "Recolha espadas, amplie sua órbita e desvie da horda. Mova-se e escolha como evoluir.", "fr": "Ramassez des épées pour agrandir votre orbite. Bougez, évoluez et traversez la horde.", "de": "Sammle Schwerter, stärke den Orbit und weiche der Horde aus. Bleib in Bewegung und entwickle deine Klingen.", "it": "Raccogli spade, amplia l’orbita e schiva l’orda. Muoviti e scegli come evolvere.", "ru": "Собирайте мечи, расширяйте орбиту и уклоняйтесь от орды. Двигайтесь и развивайте клинки.", "hi": "तलवारें बटोरें और घेरा बढ़ाएँ। चलते रहें, सुधार चुनें और दुश्मनों की भीड़ से बचें।", "ar": "اجمع السيوف ووسّع تشكيلك الدوّار. تحرّك وطوّر قوتك وشق طريقك عبر الحشود.", "zh-Hans": "捡起飞剑，让整个剑阵为你旋转。边走位、边进化，将敌潮一扫而空。"},
   categories: ["Action", "Survival", "Animal Games"], skills: ["Reaction", "Focus", "Hand-eye Coordination"], ages: ["9", "family"],
   meta: {"en": ["30 encounters", "6 guardians", "Starcrystal Inlay · 5 💎"], "zh-Hant": ["30 個戰區", "6 位首領", "星晶劍飾 · 5 💎"], "ja": ["30 戦場", "6 ボス", "星晶の装飾 · 5 💎"], "ko": ["30 전투 구역", "6 우두머리", "별수정 장식 · 5 💎"], "es": ["30 encuentros", "6 guardianes", "Incrustación estelar · 5 💎"], "pt-BR": ["30 confrontos", "6 guardiões", "Adorno de cristal estelar · 5 💎"], "fr": ["30 rencontres", "6 gardiens", "Incrustation stellaire · 5 💎"], "de": ["30 Begegnungen", "6 Wächter", "Sternkristallzier · 5 💎"], "it": ["30 scontri", "6 guardiani", "Intarsio stellare · 5 💎"], "ru": ["30 сражений", "6 стражей", "Звёздная вставка · 5 💎"], "hi": ["30 मुठभेड़ें", "6 रक्षक", "ताराक्रिस्टल जड़ाई · 5 💎"], "ar": ["30 مواجهات", "6 حراس", "ترصيع نجمي · 5 💎"], "zh-Hans": ["30 个战区", "6 位首领", "星晶剑饰 · 5 💎"]},
-  art: { kind: "image", background: "games/blade-orbit/assets/poster.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+  art: { kind: "image", background: "games/blade-orbit/assets/poster.webp?wp-media=512519f6a2210940", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("blade-orbit");
 window.WONDER_LOBBY.officialTitleOverrides["blade-orbit"] = window.WONDER_LOBBY.games.find(game => game.id === "blade-orbit").title;
@@ -8415,7 +8419,7 @@ window.WONDER_LOBBY.games.push({
   },
   "art": {
     "kind": "image",
-    "background": "games/fia-hightrail/assets/cover.webp?wp-media=dfd6fb9b5249ca93",
+    "background": "games/fia-hightrail/assets/cover.webp?wp-media=512519f6a2210940",
     "hideHero": true
   }
 });
@@ -8573,7 +8577,7 @@ window.WONDER_LOBBY.games.push({
   },
   "art": {
     "kind": "image",
-    "background": "games/nori-sandworks/assets/cover.webp?wp-media=dfd6fb9b5249ca93",
+    "background": "games/nori-sandworks/assets/cover.webp?wp-media=512519f6a2210940",
     "hideHero": true
   }
 });
@@ -8611,7 +8615,7 @@ window.WONDER_LOBBY.games.push({
     ar: "اقرأ الدفاع ومرّر الكرة أمام زملائك، ثم راوغ نحو منطقة التسجيل عبر 30 تحديًا."
   },
   categories: ["Sports", "Strategy", "Animal Games"], skills: ["Timing", "Strategy", "Focus"], ages: ["13", "family"],
-  art: { kind: "image", background: "/games/meadow-touchdown/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+  art: { kind: "image", background: "/games/meadow-touchdown/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("meadow-touchdown");
 
@@ -8624,7 +8628,7 @@ window.WONDER_LOBBY.games.push({
   description: {"en":"Among around eight billion people, you are one of a kind. Follow a life from a randomly selected birthplace. Watch it unfold year by year, then look back on its story.","zh-Hant":"世界有約80億人，每個人都是其中獨一無二的八十億分之一。從隨機出生地開始，看人生逐年展開，最後回顧這一生的故事。","zh-Hans":"世界有约80亿人，每个人都是其中独一无二的八十亿分之一。从随机出生地开始，看人生逐年展开，最后回顾这一生的故事。","ja":"世界には約80億人。一人ひとりが、かけがえのない80億分の1です。生まれる場所はランダムに決まります。年を重ねる様子を見届け、最後にその一生を振り返ります。","ko":"세계의 약 80억 명 중 당신은 단 하나뿐인 존재입니다. 무작위로 정해진 출생지에서 시작해 해마다 펼쳐지는 삶을 지켜보고, 마지막에 그 이야기를 돌아보세요.","es":"Entre unos ocho mil millones de personas, cada vida es única. Sigue una vida desde un lugar de nacimiento elegido al azar. Observa cómo transcurre año a año y repasa su historia al final.","pt-BR":"Entre cerca de oito bilhões de pessoas, cada vida é única. Acompanhe uma vida a partir de um local de nascimento escolhido ao acaso. Veja a história avançar ano a ano e relembre a trajetória no final.","fr":"Parmi environ huit milliards de personnes, chaque vie est unique. Suivez une vie depuis un lieu de naissance tiré au sort. Regardez-la se dérouler année après année, puis revenez sur son histoire.","de":"Unter rund acht Milliarden Menschen ist jedes Leben einzigartig. Verfolge ein Leben mit zufällig gewähltem Geburtsort. Erlebe, wie es sich Jahr für Jahr entwickelt, und blicke am Ende auf seine Geschichte zurück.","it":"Tra circa otto miliardi di persone, ogni vita è unica. Segui una vita a partire da un luogo di nascita scelto a caso. Osserva come si sviluppa anno dopo anno e ripercorri la sua storia alla fine.","ru":"Среди примерно восьми миллиардов людей каждая жизнь неповторима. Проследите жизнь человека, родившегося в случайном месте. Наблюдайте за ней год за годом, а в конце вернитесь к её истории.","hi":"दुनिया के लगभग आठ अरब लोगों में हर जीवन अनोखा है। किसी बेतरतीब चुनी गई जन्मभूमि से एक जीवन शुरू होता है। उसे साल दर साल आगे बढ़ते देखें और अंत में उसकी कहानी पर नज़र डालें।","ar":"بين نحو ثمانية مليارات إنسان، لكل شخص حياة لا تشبه غيرها. تابع حياة تبدأ في مكان ولادة يُختار عشوائيًا. شاهد أحداثها عامًا بعد عام، ثم استعرض قصتها في النهاية."},
   meta: {"en":["Life journal","Living conditions","Journal themes"],"zh-Hant":["人生紀錄","生活背景","紀錄風格"],"zh-Hans":["人生记录","生活背景","记录风格"],"ja":["人生の記録","暮らしの背景","記録のテーマ"],"ko":["삶의 기록","생활 환경","기록 테마"],"es":["Diario de vidas","Condiciones de vida","Temas del diario"],"pt-BR":["Diário de vidas","Condições de vida","Temas do diário"],"fr":["Journal des vies","Conditions de vie","Thèmes du journal"],"de":["Lebensbuch","Lebensbedingungen","Buchdesigns"],"it":["Diario delle vite","Condizioni di vita","Temi del diario"],"ru":["Дневник жизней","Условия жизни","Оформление дневника"],"hi":["जीवन डायरी","जीवन की परिस्थितियाँ","डायरी की शैली"],"ar":["سجل الحياة","ظروف المعيشة","سمات السجل"]},
   categories: ["Simulation"], skills: ["Focus"], ages: ["13", "family"],
-  art: { kind: "image", background: "/games/smallwood-lives/assets/cover-v2.webp?v=20261025-life-v2&wp-media=dfd6fb9b5249ca93", hideHero: true }
+  art: { kind: "image", background: "/games/smallwood-lives/assets/cover-v2.webp?v=20261025-life-v2&wp-media=512519f6a2210940", hideHero: true }
 });
 window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
 
@@ -8640,7 +8644,7 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
     description: localize(["Aim a line, open gates and guide lost lights home.", "瞄準牽引線，打開閘門，引領迷途星燈回家。", "瞄准牵引线，打开闸门，引领迷途星灯回家。", "ロープを狙って門を開き、迷った灯りを家へ導こう。", "줄을 조준해 문을 열고 길 잃은 빛을 집으로 이끌어요.", "Apunta la cuerda, abre puertas y guía las luces a casa.", "Mire a corda, abra portões e guie as luzes para casa.", "Visez avec la corde, ouvrez les portes et ramenez les lumières.", "Ziele mit dem Seil, öffne Tore und führe Lichter nach Hause.", "Mira con la corda, apri i cancelli e guida le luci a casa.", "Направляйте трос, открывайте ворота и возвращайте огни домой.", "रस्सी साधें, द्वार खोलें और रोशनी को घर पहुँचाएँ।", "صوّب الحبل وافتح البوابات وأعد الأضواء إلى موطنها."]),
     meta: localize([["60 stages", "Aim and reflect"], ["60 關", "瞄準反射"], ["60 关", "瞄准反射"], ["全60面", "狙いと反射"], ["60개 스테이지", "조준과 반사"], ["60 niveles", "Apunta y rebota"], ["60 fases", "Mire e reflita"], ["60 niveaux", "Visée et rebond"], ["60 Level", "Zielen und abprallen"], ["60 livelli", "Mira e rimbalza"], ["60 уровней", "Прицел и отскок"], ["60 स्तर", "निशाना और उछाल"], ["60 مرحلة", "تصويب وارتداد"]]),
     categories: ["Animal Games", "Puzzle", "Family"], skills: ["Spatial Planning", "Timing", "Focus"], ages: ["6", "family"], ageLabel: localize(Array(13).fill("6+")),
-    href: "games/lantern-lasso/", previewVideo: "assets/previews/lantern-lasso-battle.webm", art: { kind: "image", background: "games/lantern-lasso/assets/cover.webp?wp-media=dfd6fb9b5249ca93", hideHero: true }
+    href: "games/lantern-lasso/", previewVideo: "assets/previews/lantern-lasso-battle.webm", art: { kind: "image", background: "games/lantern-lasso/assets/cover.webp?wp-media=512519f6a2210940", hideHero: true }
   };
   for (const key of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(game[key], "__localizedExact", { value: true, enumerable: false });
   window.WONDER_LOBBY.games.push(game);
@@ -8648,7 +8652,7 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
 })();
 
 // Original owner task 01a18862: new internal Coming Soon identity.
-(()=>{const g={"id":"mossfold","audience":"general","status":"playable","title":{"en":"Mossfold","zh-Hant":"苔徑翻方","zh-Hans":"苔径翻方","ja":"苔のころがり道","ko":"이끼 구름길","es":"Giro de musgo","pt-BR":"Giro de Musgo","fr":"Roule-mousse","de":"Mooswende","it":"Giro di muschio","ru":"Мшистый переворот","hi":"काई का पलटा","ar":"درب الطحلب","__localizedExact":true},"statusText":{"en":"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待","ja":"近日公開","ko":"출시 예정","es":"Próximamente","pt-BR":"Em breve","fr":"Bientôt disponible","de":"Demnächst","it":"Prossimamente","ru":"Скоро","hi":"जल्द आ रहा है","ar":"قريباً"},"type":{"en":"Spatial puzzle","zh-Hant":"空間益智","zh-Hans":"空间益智","ja":"立体パズル","ko":"공간 퍼즐","es":"Puzle espacial","pt-BR":"Quebra-cabeça espacial","fr":"Puzzle spatial","de":"Räumliches Rätsel","it":"Rompicapo spaziale","ru":"Пространственная головоломка","hi":"स्थानिक पहेली","ar":"لغز مكاني"},"description":{"en":"Collect all dewdrops, then place the whole block upright in the square nest. The same rules apply on phone and desktop.","zh-Hant":"收齊所有露珠，讓完整木柱站立落入方形巢槽。手機與桌面的規則相同。","zh-Hans":"收齐露珠，让完整苔木柱站立落入方形巢槽。","ja":"すべてのしずくを集め、木のブロックを直立させて四角い巣に入れましょう。","ko":"이슬을 모두 모은 뒤 긴 나무 블록을 세워 네모 둥지에 넣으세요.","es":"Recoge todas las gotas y coloca el bloque entero de pie en el nido cuadrado.","pt-BR":"Recolha todas as gotas e coloque o bloco inteiro em pé no ninho quadrado.","fr":"Ramassez toutes les gouttes et placez le bloc entier debout dans le nid carré.","de":"Sammle alle Tautropfen und stelle den ganzen Holzblock aufrecht ins quadratische Nest.","it":"Raccogli tutte le gocce e posa il blocco intero in piedi nel nido quadrato.","ru":"Соберите все капли и поставьте целый деревянный блок вертикально в квадратное гнездо.","hi":"सारी ओस लें और पूरे लकड़ी के ब्लॉक को चौकोर घोंसले में खड़ा रखें।","ar":"اجمع كل قطرات الندى وضع الكتلة الخشبية الكاملة واقفة في العش المربع."},"meta":{"en":["Stage 60 / 60","A permanent appearance for the whole block and both cores. Puzzle rules stay the same."],"zh-Hant":["第 60 關／60","永久改變整根木柱與雙芯的外觀，解謎規則相同。"],"zh-Hans":["第 60 关／60","永久改变整根木柱与双芯外观，解谜规则相同。"],"ja":["ステージ 60／60","一体のブロックと両コアの見た目を永久に変更。ルールは同じです。"],"ko":["스테이지 60 / 60","블록과 두 코어의 외형을 영구히 바꿉니다. 퍼즐 규칙은 같습니다."],"es":["Nivel 60 / 60","Aspecto permanente para el bloque y ambos núcleos. Las reglas no cambian."],"pt-BR":["Fase 60 / 60","Aparência permanente para o bloco e os dois núcleos. As regras não mudam."],"fr":["Niveau 60 / 60","Apparence permanente du bloc et des deux cœurs. Les règles restent identiques."],"de":["Level 60 / 60","Dauerhaftes Aussehen für Block und Kerne. Die Regeln bleiben gleich."],"it":["Livello 60 / 60","Aspetto permanente per il blocco e i nuclei. Le regole non cambiano."],"ru":["Уровень 60 / 60","Постоянный облик блока и обеих сердцевин. Правила те же."],"hi":["स्तर 60 / 60","ब्लॉक और दोनों कोर का स्थायी रूप। पहेली के नियम वही हैं।"],"ar":["المرحلة 60 / 60","مظهر دائم للكتلة والقلبين. قواعد الألغاز لا تتغير."]},"categories":["Animal Games","Puzzle","Family"],"skills":["Logic","Problem Solving","Focus"],"ages":["9","family"],"ageLabel":{"en":"9+","zh-Hant":"9+"},"href":"games/mossfold/","previewVideo":"assets/previews/mossfold-battle.webm","art":{"kind":"image","background":"games/mossfold/assets/cover.webp?wp-media=dfd6fb9b5249ca93","hideHero":true}};window.WONDER_LOBBY.games.push(g);window.WONDER_LOBBY.audiences.generalGameIds.push(g.id);})();
+(()=>{const g={"id":"mossfold","audience":"general","status":"playable","title":{"en":"Mossfold","zh-Hant":"苔徑翻方","zh-Hans":"苔径翻方","ja":"苔のころがり道","ko":"이끼 구름길","es":"Giro de musgo","pt-BR":"Giro de Musgo","fr":"Roule-mousse","de":"Mooswende","it":"Giro di muschio","ru":"Мшистый переворот","hi":"काई का पलटा","ar":"درب الطحلب","__localizedExact":true},"statusText":{"en":"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待","ja":"近日公開","ko":"출시 예정","es":"Próximamente","pt-BR":"Em breve","fr":"Bientôt disponible","de":"Demnächst","it":"Prossimamente","ru":"Скоро","hi":"जल्द आ रहा है","ar":"قريباً"},"type":{"en":"Spatial puzzle","zh-Hant":"空間益智","zh-Hans":"空间益智","ja":"立体パズル","ko":"공간 퍼즐","es":"Puzle espacial","pt-BR":"Quebra-cabeça espacial","fr":"Puzzle spatial","de":"Räumliches Rätsel","it":"Rompicapo spaziale","ru":"Пространственная головоломка","hi":"स्थानिक पहेली","ar":"لغز مكاني"},"description":{"en":"Collect all dewdrops, then place the whole block upright in the square nest. The same rules apply on phone and desktop.","zh-Hant":"收齊所有露珠，讓完整木柱站立落入方形巢槽。手機與桌面的規則相同。","zh-Hans":"收齐露珠，让完整苔木柱站立落入方形巢槽。","ja":"すべてのしずくを集め、木のブロックを直立させて四角い巣に入れましょう。","ko":"이슬을 모두 모은 뒤 긴 나무 블록을 세워 네모 둥지에 넣으세요.","es":"Recoge todas las gotas y coloca el bloque entero de pie en el nido cuadrado.","pt-BR":"Recolha todas as gotas e coloque o bloco inteiro em pé no ninho quadrado.","fr":"Ramassez toutes les gouttes et placez le bloc entier debout dans le nid carré.","de":"Sammle alle Tautropfen und stelle den ganzen Holzblock aufrecht ins quadratische Nest.","it":"Raccogli tutte le gocce e posa il blocco intero in piedi nel nido quadrato.","ru":"Соберите все капли и поставьте целый деревянный блок вертикально в квадратное гнездо.","hi":"सारी ओस लें और पूरे लकड़ी के ब्लॉक को चौकोर घोंसले में खड़ा रखें।","ar":"اجمع كل قطرات الندى وضع الكتلة الخشبية الكاملة واقفة في العش المربع."},"meta":{"en":["Stage 60 / 60","A permanent appearance for the whole block and both cores. Puzzle rules stay the same."],"zh-Hant":["第 60 關／60","永久改變整根木柱與雙芯的外觀，解謎規則相同。"],"zh-Hans":["第 60 关／60","永久改变整根木柱与双芯外观，解谜规则相同。"],"ja":["ステージ 60／60","一体のブロックと両コアの見た目を永久に変更。ルールは同じです。"],"ko":["스테이지 60 / 60","블록과 두 코어의 외형을 영구히 바꿉니다. 퍼즐 규칙은 같습니다."],"es":["Nivel 60 / 60","Aspecto permanente para el bloque y ambos núcleos. Las reglas no cambian."],"pt-BR":["Fase 60 / 60","Aparência permanente para o bloco e os dois núcleos. As regras não mudam."],"fr":["Niveau 60 / 60","Apparence permanente du bloc et des deux cœurs. Les règles restent identiques."],"de":["Level 60 / 60","Dauerhaftes Aussehen für Block und Kerne. Die Regeln bleiben gleich."],"it":["Livello 60 / 60","Aspetto permanente per il blocco e i nuclei. Le regole non cambiano."],"ru":["Уровень 60 / 60","Постоянный облик блока и обеих сердцевин. Правила те же."],"hi":["स्तर 60 / 60","ब्लॉक और दोनों कोर का स्थायी रूप। पहेली के नियम वही हैं।"],"ar":["المرحلة 60 / 60","مظهر دائم للكتلة والقلبين. قواعد الألغاز لا تتغير."]},"categories":["Animal Games","Puzzle","Family"],"skills":["Logic","Problem Solving","Focus"],"ages":["9","family"],"ageLabel":{"en":"9+","zh-Hant":"9+"},"href":"games/mossfold/","previewVideo":"assets/previews/mossfold-battle.webm","art":{"kind":"image","background":"games/mossfold/assets/cover.webp?wp-media=512519f6a2210940","hideHero":true}};window.WONDER_LOBBY.games.push(g);window.WONDER_LOBBY.audiences.generalGameIds.push(g.id);})();
 
 // Glowspool: internal planned identity, original intake 01a18d87.
 (() => {
@@ -8660,7 +8664,7 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
     statusText:loc(['Coming Soon','敬請期待','敬请期待','近日公開','출시 예정','Próximamente','Em breve','Bientôt disponible','Demnächst','Prossimamente','Скоро','जल्द आ रहा है','قريباً']),
     type:loc(['Sliding-fill puzzle','滑行填滿益智','滑行填满益智','滑って埋めるパズル','미끄러져 채우는 퍼즐','Puzle de deslizamiento','Quebra-cabeça deslizante','Puzzle de glisse','Gleitpuzzle','Rompicapo a scorrimento','Скользящая головоломка','फिसलने वाली पहेली','لغز الانزلاق']),
     description:loc(['Slide Mimi to weave every tile. Plan around the line you leave behind.','帶領 Mimi 滑行鋪亮所有地磚，利用留下的光帶規劃下一次轉彎。','带领 Mimi 滑行铺亮所有地砖，利用留下的光带规划下一次转弯。','ミミを滑らせ、残した光の糸を使ってすべてのマスを照らそう。','미미를 미끄러뜨려 모든 칸에 빛실을 놓고 다음 길을 계획하세요.','Desliza a Mimi y teje todas las casillas. Planea con el hilo que dejas.','Deslize Mimi e ilumine todas as casas. Planeje com o fio deixado.','Faites glisser Mimi pour tisser chaque case et prévoyez le chemin restant.','Lass Mimi gleiten und verwebe jedes Feld. Plane mit dem gelegten Faden.','Fai scivolare Mimi per tessere ogni casella. Pianifica con il filo lasciato.','Скользите с Мими, заполняйте клетки и планируйте путь вокруг своей нити.','मिमी को फिसलाकर हर खाने में रोशनी बुनें और अगला मोड़ सोचें।','حرّك ميمي بالانزلاق لنسج كل مربع وخطّط حول الخيط الذي تتركه.']),
-    categories:['Animal Games','Puzzle','Family'],skills:['Logic','Problem Solving','Focus'],ages:['9','family'],meta:loc(Array.from({length:13},()=>['60'])),art:{kind:'image',background:'games/glowspool/assets/cover.webp?wp-media=dfd6fb9b5249ca93',hideHero:true}});
+    categories:['Animal Games','Puzzle','Family'],skills:['Logic','Problem Solving','Focus'],ages:['9','family'],meta:loc(Array.from({length:13},()=>['60'])),art:{kind:'image',background:'games/glowspool/assets/cover.webp?wp-media=512519f6a2210940',hideHero:true}});
   window.WONDER_LOBBY.audiences.generalGameIds.push('glowspool');
 })();
 
@@ -8676,13 +8680,13 @@ window.WONDER_LOBBY.audiences.generalGameIds.push("smallwood-lives");
     description: {en:"Explore distinct regions, shape your build and restore the sunveins. The launch character is Leo, a lion swordsman.","zh-Hant":"探索各地、配出自己的冒險流派；首發角色為獅子劍士 Leo，後續角色可擴充。"},
     categories: ["Animal Games", "RPG", "Action", "Adventure"],
     skills: ["Reaction", "Focus", "Problem Solving"], ages: ["12", "family"],
-    art: {kind:"image",background:"games/sunmane-journey/assets/cover.webp?wp-media=dfd6fb9b5249ca93",hideHero:true}
+    art: {kind:"image",background:"games/sunmane-journey/assets/cover.webp?wp-media=512519f6a2210940",hideHero:true}
   });
   window.WONDER_LOBBY.audiences.generalGameIds.push("sunmane-journey");
 })();
 
 // WP_DIAMOND_PILOT_META_BEGIN — exactly five owner-requested games, labels only.
-// Names mirror each game's diamond-special.js?wp-media=dfd6fb9b5249ca93 title dictionary; no helpers,
+// Names mirror each game's diamond-special.js?wp-media=512519f6a2210940 title dictionary; no helpers,
 // mechanics, prices, publication, classification or SEO fields load/change here.
 (() => {
   const locales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];

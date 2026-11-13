@@ -30,6 +30,7 @@
     ["fogseal-archives", "Puzzle", "Deduction", "Sequencing", "Strategy"],
     ["mosscrest-accord", "Strategy", "Management"],
     ["torque-grove", "Puzzle", "Simulation", "Deduction"],
+    ["glowtide-parade", "Strategy", "Sequencing"],
     ["last-quarter-relay", "Sports", "Strategy"],
     ["parcel-pact", "Puzzle", "Strategy", "Sequencing"],
     ["perchweave", "Card", "Strategy", "Sequencing"],
