@@ -10,7 +10,7 @@
       if (!(failed instanceof HTMLScriptElement) || !(failed.src || '').includes('/games/' + gameId + '/')) return;
       if (failed.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
           document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
-          new URL(failed.src, location.origin).pathname === `/games/${gameId}/diamond-special.js?wp-media=512519f6a2210940`) return;
+          new URL(failed.src, location.origin).pathname === `/games/${gameId}/diamond-special.js?wp-media=9681483eed0b7fdf`) return;
       const loader = window.WeightPlayGameEntryLoader;
       if (loader?.isActive && typeof loader.fail === 'function') loader.fail();
       else window.__weightPlayGameEntryPendingFailure = gameId;
@@ -62,7 +62,7 @@
   function ensureEntryLoader() {
     if (!/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?games\/[a-z0-9-]+(?:\/|\/index\.html)?$/i.test(location.pathname)
       || window.WeightPlayGameEntryLoader?.isActive
-      || document.querySelector('script[src*="/game-entry-loader.js?wp-media=512519f6a2210940"]')) return;
+      || document.querySelector('script[src*="/game-entry-loader.js?wp-media=9681483eed0b7fdf"]')) return;
     // If the parser is still loading, wait only until a body exists. Deferring
     // to DOMContentLoaded lets a slow parser-blocking game script hide the
     // shared loader behind the legacy game panel.
@@ -71,7 +71,7 @@
       return;
     }
     const script = document.createElement('script');
-    script.src = '/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=512519f6a2210940';
+    script.src = '/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=9681483eed0b7fdf';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
     // This bootstrap has no dependency on the game modules. Let it execute
     // independently of their ordered dynamic-script queue so a slow or failed
@@ -209,22 +209,22 @@
     window.WeightPlayScreenFrame.autoMountDocument?.();
     return;
   }
-  const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js?wp-media=512519f6a2210940', location.origin).href;
+  const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js?wp-media=9681483eed0b7fdf', location.origin).href;
   const sharedAssetBase = new URL('.', frameScriptUrl);
 
   function ensureBattleCanvasRuntime() {
     if (document.body?.dataset.wpBattleLayout === "native"
         || document.querySelector("[data-wp-standard-battle-screen]")) return;
-    if (!document.querySelector('link[href*="battle-canvas-standard.css?wp-media=512519f6a2210940"]')) {
+    if (!document.querySelector('link[href*="battle-canvas-standard.css?wp-media=9681483eed0b7fdf"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = new URL("battle-canvas-standard.css?wp-media=512519f6a2210940", sharedAssetBase).href;
+      link.href = new URL("battle-canvas-standard.css?wp-media=9681483eed0b7fdf", sharedAssetBase).href;
       link.dataset.wpBattleStandard = "true";
       document.head.append(link);
     }
-    if (!document.querySelector('script[src*="battle-canvas-standard.js?wp-media=512519f6a2210940"]')) {
+    if (!document.querySelector('script[src*="battle-canvas-standard.js?wp-media=9681483eed0b7fdf"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js?wp-media=512519f6a2210940", sharedAssetBase).href}?v=20261026-garden-i9-canvas-root-v1`;
+      script.src = `${new URL("battle-canvas-standard.js?wp-media=9681483eed0b7fdf", sharedAssetBase).href}?v=20261026-garden-i9-canvas-root-v1`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }
@@ -254,7 +254,7 @@
     };
     return Object.freeze(api);
   }
-  const lobbyLogoUrl = new URL('../assets/weightplay-logo.png.webp?wp-media=512519f6a2210940', document.currentScript.src).href;
+  const lobbyLogoUrl = new URL('../assets/weightplay-logo.png.webp?wp-media=9681483eed0b7fdf', document.currentScript.src).href;
   const copy = {
     en: ['Settings', 'Language', 'Sound', 'On', 'Muted'], 'zh-Hant': ['設定', '語言', '聲音', '開啟', '靜音'],
     'zh-Hans': ['设置', '语言', '声音', '开启', '静音'], ja: ['設定', '言語', 'サウンド', 'オン', 'ミュート'],
@@ -353,7 +353,7 @@
     // before checking, so a later ordinary script tag is never loaded twice.
     if ([...document.scripts].some(script => /\/i18n\.js(?:[?#]|$)/.test(script.src))) return;
     const script = document.createElement('script');
-    script.src = new URL('i18n.js?wp-media=512519f6a2210940', frameScriptUrl).href;
+    script.src = new URL('i18n.js?wp-media=9681483eed0b7fdf', frameScriptUrl).href;
     script.dataset.wpSharedSettingsI18n = 'true';
     document.head.append(script);
   }
@@ -971,16 +971,16 @@
   function ensureStageSelectorRuntime() {
     if (document.querySelector('[data-wp-play-ui="1"]')) return;
     if (!STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector))) return;
-    if (!document.querySelector('link[href*="stage-selector-standard.css?wp-media=512519f6a2210940"]')) {
+    if (!document.querySelector('link[href*="stage-selector-standard.css?wp-media=9681483eed0b7fdf"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = new URL("stage-selector-standard.css?wp-media=512519f6a2210940", sharedAssetBase).href;
+      link.href = new URL("stage-selector-standard.css?wp-media=9681483eed0b7fdf", sharedAssetBase).href;
       link.dataset.wpStageStandard = "true";
       document.head.append(link);
     }
-    if (!document.querySelector('script[src*="stage-selector-standard.js?wp-media=512519f6a2210940"]')) {
+    if (!document.querySelector('script[src*="stage-selector-standard.js?wp-media=9681483eed0b7fdf"]')) {
       const script = document.createElement("script");
-      script.src = new URL("stage-selector-standard.js?wp-media=512519f6a2210940", sharedAssetBase).href;
+      script.src = new URL("stage-selector-standard.js?wp-media=9681483eed0b7fdf", sharedAssetBase).href;
       script.dataset.wpStageStandard = "true";
       document.body.append(script);
     }
@@ -1006,9 +1006,9 @@
       const declaredTotal = rail.querySelectorAll(STAGE_CARD_SELECTORS.join(",")).length;
       if (declaredTotal > 1) rail.dataset.wpStageV6Total = String(declaredTotal);
     }
-    if (document.querySelector('script[src*="stage-virtualization-standard.js?wp-media=512519f6a2210940"]')) return;
+    if (document.querySelector('script[src*="stage-virtualization-standard.js?wp-media=9681483eed0b7fdf"]')) return;
     const script = document.createElement("script");
-    script.src = `${new URL("stage-virtualization-standard.js?wp-media=512519f6a2210940", sharedAssetBase).href}?v=20260809-stage-v6-source-demotion-v8`;
+    script.src = `${new URL("stage-virtualization-standard.js?wp-media=9681483eed0b7fdf", sharedAssetBase).href}?v=20260809-stage-v6-source-demotion-v8`;
     script.dataset.wpStageVirtualizationStandard = "true";
     document.body.append(script);
   }
@@ -1022,7 +1022,7 @@
     if (window.WeightPlayLifecycle || window.__weightPlayLifecycleRequested) return;
     window.__weightPlayLifecycleRequested = true;
     const script = document.createElement("script");
-    script.src = `${new URL("game-lifecycle-controller.js?wp-media=512519f6a2210940", sharedAssetBase).href}?v=20261014-lifecycle-v1`;
+    script.src = `${new URL("game-lifecycle-controller.js?wp-media=9681483eed0b7fdf", sharedAssetBase).href}?v=20261014-lifecycle-v1`;
     script.dataset.wpLifecycleController = "true";
     script.addEventListener("load", () => window.dispatchEvent(new Event("weightplay:lifecycle-ready")), { once: true });
     script.addEventListener("error", () => {
@@ -1034,13 +1034,13 @@
 
   function ensureGameInfoRuntime() {
     if (document.body?.hasAttribute("data-wp-game-owned-guide")) return;
-    if (!document.querySelector('link[href*="game-page-info.css?wp-media=512519f6a2210940"]')) {
+    if (!document.querySelector('link[href*="game-page-info.css?wp-media=9681483eed0b7fdf"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = new URL("game-page-info.css?wp-media=512519f6a2210940", sharedAssetBase).href;
+      link.href = new URL("game-page-info.css?wp-media=9681483eed0b7fdf", sharedAssetBase).href;
       document.head.append(link);
     }
-    if (!document.querySelector('script[src*="game-page-info.js?wp-media=512519f6a2210940"]')) {
+    if (!document.querySelector('script[src*="game-page-info.js?wp-media=9681483eed0b7fdf"]')) {
       const script = document.createElement("script");
       const gameId = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
       const gameInfoCacheTag = gameId === "snake" ? "20261004-snake-text-growth-140-v1" : gameId === "maze-chase"
@@ -1057,7 +1057,7 @@
           : gameId === "sliding-15" ? "20261010-sliding15-static-guide-r1"
           : "20260817-bus-jam-guide-v12";
       const gameAccessVersion = document.querySelector('[data-wp-game-access="2.0"]') ? "-geo-access" : "";
-      script.src = `${new URL("game-page-info.js?wp-media=512519f6a2210940", sharedAssetBase).href}?v=${gameInfoCacheTag}${gameAccessVersion}`;
+      script.src = `${new URL("game-page-info.js?wp-media=9681483eed0b7fdf", sharedAssetBase).href}?v=${gameInfoCacheTag}${gameAccessVersion}`;
       document.body.append(script);
     }
   }
@@ -1192,7 +1192,7 @@
       const script = existing || document.createElement("script");
       const finish = () => resolve(window.WEIGHTPLAY_GAME_TITLES || {});
       if (!existing) {
-        script.src = new URL("game-title-registry.js?wp-media=512519f6a2210940", sharedAssetBase).href;
+        script.src = new URL("game-title-registry.js?wp-media=9681483eed0b7fdf", sharedAssetBase).href;
         script.dataset.wpGameTitleRegistry = "true";
         document.head.append(script);
       }

@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["brookwash-works", "Simulation", "Strategy"],
     ["loamline", "Simulation", "Management", "Strategy"],
     ["ricochet-grove", "Puzzle", "Route Planning", "Sequencing"],
     ["fogseal-archives", "Puzzle", "Deduction", "Sequencing", "Strategy"],

@@ -1,1 +1,1 @@
-import{PAGES as r}from"./page-copy.mjs?v=7&wp-media=512519f6a2210940";export const guides=Object.freeze(Object.fromEntries(Object.entries(r).map(([e,t])=>[e,Object.freeze([...t.guide])])));
+import{PAGES as r}from"./page-copy.mjs?v=7&wp-media=9681483eed0b7fdf";export const guides=Object.freeze(Object.fromEntries(Object.entries(r).map(([e,t])=>[e,Object.freeze([...t.guide])])));
