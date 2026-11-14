@@ -1,4 +1,4 @@
-import {chapter,LIMITS,seededRandom,NAMES,COSMETICS} from './content.mjs?wp-media=9681483eed0b7fdf';
+import {chapter,LIMITS,seededRandom,NAMES,COSMETICS} from './content.mjs?wp-media=2bbd782134cb215f';
 export const SAVE_KEY='weightplay.smallwood-lives.v1';
 export const clone=value=>structuredClone(value);
 export function emptySave(){return {schema:1,revision:0,cleared:[],album:{},run:null,displays:Array(30).fill(null),cosmetics:[],tutorial:false,selected:0};}

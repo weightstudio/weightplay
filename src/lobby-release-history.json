@@ -513,6 +513,10 @@
       "date": "2026-10-24T07:39:29.093Z",
       "evidence": "canonical-public-catalog"
     },
+    "brinehold": {
+      "date": "2026-11-14T08:46:01.810Z",
+      "evidence": "canonical-public-catalog"
+    },
     "bubble-bakery": {
       "date": "2026-07-01T11:15:16+08:00",
       "evidence": "git:d6894ab4aa79712b9cc80c938fb356f5328f6262"
