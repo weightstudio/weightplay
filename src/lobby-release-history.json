@@ -809,6 +809,10 @@
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
     },
+    "ridgewatch-keep": {
+      "date": "2026-11-14T16:47:11.357Z",
+      "evidence": "canonical-public-catalog"
+    },
     "rivetide-works": {
       "date": "2026-11-05T22:04:09.464Z",
       "evidence": "canonical-public-catalog"

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "gameId": "ridgewatch-keep",
+  "audience": "general",
+  "interfaceVersion": 7,
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": null,
+    "rightWorkspace": null
+  }
+}
