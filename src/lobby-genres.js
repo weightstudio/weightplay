@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["groveward", "Management", "Strategy", "Construction"],
     ["lumenwell-paths", "Puzzle", "Adventure", "Route Planning"],
     ["ridgewatch-keep", "Tower Defense", "Strategy", "Management"],
     ["brinehold", "Strategy", "Puzzle"],

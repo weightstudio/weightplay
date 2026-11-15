@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "gameId": "groveward",
+  "audience": "general",
+  "interfaceVersion": 7,
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": { "enabled": true, "leftWorkspace": null, "rightWorkspace": null }
+}

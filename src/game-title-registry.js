@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "groveward": {
+    "__localizedExact": true,
+    "en": "Groveward",
+    "zh-Hant": "棲徑復野",
+    "zh-Hans": "栖径复野",
+    "ja": "森をつなぐ保護区",
+    "ko": "숲이음 보호구역",
+    "es": "Senderos del Refugio",
+    "pt-BR": "Trilhas do Refúgio",
+    "fr": "Sentiers du Refuge",
+    "de": "Pfade der Wildnis",
+    "it": "Sentieri della Riserva",
+    "ru": "Тропы Заповедника",
+    "hi": "वन के पथ",
+    "ar": "دروب المحمية"
+  },
   "lumenwell-paths": {
     "__localizedExact": true,
     "en": "Lumenwell Paths",
