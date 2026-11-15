@@ -1,4 +1,4 @@
-/* WeightPlay shared virtual joystick. Load virtual-joystick.css?wp-media=b14719e821d42dc9 with this file. */
+/* WeightPlay shared virtual joystick. Load virtual-joystick.css?wp-media=233b521492136e1f with this file. */
 (function (global) {
   'use strict';
   if (global.WeightPlayJoystick) return;

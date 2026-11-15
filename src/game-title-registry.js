@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "skyclover-park": {
+    "__localizedExact": true,
+    "en": "Skyclover Park",
+    "zh-Hant": "星坡樂園",
+    "zh-Hans": "星坡乐园",
+    "ja": "星坂コースターパーク",
+    "ko": "별언덕 놀이공원",
+    "es": "Parque Colina Estelar",
+    "pt-BR": "Parque Colina Estelar",
+    "fr": "Parc de la Colline Étoilée",
+    "de": "Sternhügelpark",
+    "it": "Parco Collina Stellata",
+    "ru": "Парк «Звёздный склон»",
+    "hi": "सितारा पहाड़ी पार्क",
+    "ar": "حديقة تل النجوم"
+  },
   "groveward": {
     "__localizedExact": true,
     "en": "Groveward",
