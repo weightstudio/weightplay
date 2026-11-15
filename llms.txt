@@ -386,6 +386,7 @@ Games with local saves keep progress in the current browser.
 
 ## Current Playable Games
 
+- Lumenwell Paths: https://weightplay.com/en/games/lumenwell-paths/ — Freeze pools, bend light and power wet circuits to recover the wellstones.
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
 - Fogseal Archives: https://weightplay.com/en/games/fogseal-archives/ — Compare archive records and certify the order of a missing exhibit’s handoffs.
 - Last Quarter Relay: https://weightplay.com/en/games/last-quarter-relay/ — Find an open shot, read the next attack and rally before the last possession.

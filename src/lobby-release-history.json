@@ -517,6 +517,10 @@
       "date": "2026-11-14T08:46:01.810Z",
       "evidence": "canonical-public-catalog"
     },
+    "brookwash-works": {
+      "date": "2026-11-15T01:01:58.530Z",
+      "evidence": "canonical-public-catalog"
+    },
     "bubble-bakery": {
       "date": "2026-07-01T11:15:16+08:00",
       "evidence": "git:d6894ab4aa79712b9cc80c938fb356f5328f6262"
@@ -657,6 +661,10 @@
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
     },
+    "glowtide-parade": {
+      "date": "2026-11-15T01:01:58.530Z",
+      "evidence": "canonical-public-catalog"
+    },
     "go-fish": {
       "date": "2026-09-06T07:33:49+08:00",
       "evidence": "git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"
@@ -697,8 +705,16 @@
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
     },
+    "last-quarter-relay": {
+      "date": "2026-11-15T01:01:58.530Z",
+      "evidence": "canonical-public-catalog"
+    },
     "leafskip": {
       "date": "2026-11-06T03:42:02.566Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "lightday-dispatch": {
+      "date": "2026-11-15T01:01:58.530Z",
       "evidence": "canonical-public-catalog"
     },
     "lights-out": {
@@ -707,6 +723,10 @@
     },
     "loamline": {
       "date": "2026-11-13T08:44:12.249Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "lumenwell-paths": {
+      "date": "2026-11-15T01:01:58.530Z",
       "evidence": "canonical-public-catalog"
     },
     "mahjong-solitaire": {
@@ -751,6 +771,10 @@
     },
     "orbit-menders": {
       "date": "2026-10-27T08:35:00.951Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "parcel-pact": {
+      "date": "2026-11-15T01:01:58.530Z",
       "evidence": "canonical-public-catalog"
     },
     "pawaxe": {

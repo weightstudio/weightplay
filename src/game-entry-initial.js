@@ -26,7 +26,7 @@
     if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
     if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
         document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
-        [`/games/${gameId}/diamond-special.js?wp-media=e5c8af328bad7192`, '/src/diamond-special-progression.js?wp-media=e5c8af328bad7192', '/src/diamond-special-progression.css?wp-media=e5c8af328bad7192'].includes(new URL(url, location.origin).pathname)) return;
+        [`/games/${gameId}/diamond-special.js?wp-media=ceb08ec07952cd44`, '/src/diamond-special-progression.js?wp-media=ceb08ec07952cd44', '/src/diamond-special-progression.css?wp-media=ceb08ec07952cd44'].includes(new URL(url, location.origin).pathname)) return;
     if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
     failed = true;
     window.__weightPlayGameEntryPendingFailure = gameId;
