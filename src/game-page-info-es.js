@@ -3333,7 +3333,7 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     title: titles["animal-coloring-studio"], difficulty: "Relajada", time: "Sin límite",
     gameplay: "Coloreado con relleno y pincel", genre: ["Creatividad", "Arte", "Animales"],
     skills: ["Creatividad", "Coordinación", "Concentración"],
-    intro: "Estudio para Colorear Animales es una actividad tranquila con doce láminas originales. Elige una imagen y usa Relleno o Pincel sin temporizador ni puntuación.",
+    intro: "Estudio para colorear es una actividad tranquila con doce láminas originales. Elige una imagen y usa Relleno o Pincel sin temporizador ni puntuación.",
     story: ["Los animales de WeightPlay abrieron un taller de arte en el bosque. Cada dibujo guardado se añade a la galería local; el objetivo es crear, no ganar ni perder."],
     systems: ["Relleno colorea una zona cerrada. Pincel dibuja trazos de tamaño ajustable y Borrador los elimina. Deshacer y Rehacer recorren los cambios recientes.", "Puedes guardar la obra terminada en la galería de este navegador. Cada lámina conserva su propia creación y puede abrirse de nuevo."],
     how: ["Elige una de las doce láminas.", "Selecciona un color y Relleno o Pincel.", "Toca una zona o dibuja con dedo, ratón o lápiz.", "Corrige si hace falta y guarda la obra."],

@@ -7414,7 +7414,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Stage {n}: {chapter}": "Fase {n}: {chapter}",
   "Stage {stage} unlocked": "Livello {stage} sbloccato",
   "Stage {stage}/{stageCount}. Time {time}. Golden keys {keys}/{target}. HP {hp}/{maxHp}. Level {level}. Move with WASD or arrow keys, or click, tap, and drag. The ranger automatically attacks the nearest enemy in range. Stage rule: {rule}": "Stage {stage}/{stageCount}. Time {time}. Golden keys {keys}/{target}. HP {hp}/{maxHp}. Level {level}. Move with WASD or arrow keys, or click, tap, and drag. The ranger automatically attacks the nearest enemy in range. Stage rule: {rule}",
-  "Stage {value}": "Palcoscenico {value}",
+  "Stage {value}": "Livello {value}",
   "STAGE {value}": "FASE {value}",
   "Stage {value} has no Boss wave.": "Il livello {value} non ha un'ondata Boss.",
   "Stage {value} repeats an edge.": "Lo stadio {value} ripete un bordo.",
