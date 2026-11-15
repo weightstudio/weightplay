@@ -36,6 +36,7 @@
     ["fogseal-archives", "Puzzle", "Deduction", "Sequencing", "Strategy"],
     ["mosscrest-accord", "Strategy", "Management"],
     ["torque-grove", "Puzzle", "Simulation", "Deduction"],
+    ["rotation-crown", "Strategy", "Sequencing"],
     ["lightday-dispatch", "Strategy", "Sequencing"],
     ["glowtide-parade", "Strategy", "Sequencing"],
     ["last-quarter-relay", "Sports", "Strategy"],

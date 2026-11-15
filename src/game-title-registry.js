@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "rotation-crown": {
+    "__localizedExact": true,
+    "en": "Rotation Crown",
+    "zh-Hant": "輪陣之冠",
+    "zh-Hans": "轮阵之冠",
+    "ja": "交代戦の王冠",
+    "ko": "교대전의 왕관",
+    "es": "Corona de Relevos",
+    "pt-BR": "Coroa do Revezamento",
+    "fr": "Couronne des Relais",
+    "de": "Krone der Staffel",
+    "it": "Corona della Staffetta",
+    "ru": "Корона эстафеты",
+    "hi": "रिले का ताज",
+    "ar": "تاج التناوب"
+  },
   "skyclover-park": {
     "__localizedExact": true,
     "en": "Skyclover Park",
