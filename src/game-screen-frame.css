@@ -40,6 +40,7 @@ html:has(body.wp-frame-main-active) {
    The HTML root still contains the browser edge; play locks are unchanged. */
 body.wp-frame-main-active {
  width:100%!important;height:auto!important;min-height:100vh!important;max-height:none!important;
+ margin-inline:0!important;
  position:static!important;overflow-x:hidden!important;overflow-y:auto!important;
  overscroll-behavior-x:none!important;overscroll-behavior-y: auto!important;touch-action:pan-y!important;
 }
