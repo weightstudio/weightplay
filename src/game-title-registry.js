@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "windstep-circuit": {"__localizedExact":true,"en":"Windstep Circuit","zh-Hant":"風階競跑","zh-Hans":"风阶竞跑","ja":"風のステップ競走","ko":"바람걸음 레이스","es":"Circuito del Viento","pt-BR":"Circuito do Vento","fr":"La Piste du Vent","de":"Windpfad-Rennen","it":"Circuito del Vento","ru":"Трасса ветров","hi":"पवनपथ दौड़","ar":"سباق درب الريح"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

@@ -1,4 +1,4 @@
-import ENV from './environment-data.mjs?wp-media=877df123e0250df4';
+import ENV from './environment-data.mjs?wp-media=5caabd79127c4205';
 export {ENV};
 
 // These sources support the setting, not the invented person's exact experience.
