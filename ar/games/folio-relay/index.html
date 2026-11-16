@@ -1,40 +1,220 @@
 <!doctype html>
-<html lang="ar" dir="rtl" class="wp-frame-main-flow" data-wp-official-name data-wp-shared-interface="7" data-wp-entry-renderer="localized-content.js?wp-media=386f8de7e0900128#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128">
-<head>
+<html lang="ar" dir="rtl" class="wp-frame-main-flow" data-wp-official-name data-wp-shared-interface="7" data-wp-entry-renderer="localized-content.js?wp-media=386f8de7e0900128#renderEntry" data-wp-publication-locale-completion data-wp-entry-poster="/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true">
+<head data-wp-search-copy="2.0" data-wp-search-locale="ar" data-wp-search-title="تتابع الصفحات – لعبة سرعة الاستجابة | WeightPlay" data-wp-search-name="تتابع الصفحات"><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=386f8de7e0900128`, '/src/diamond-special-progression.js?wp-media=386f8de7e0900128', '/src/diamond-special-progression.css?wp-media=386f8de7e0900128'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/folio-relay/">
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <meta charset="utf-8">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  
+
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-scene-controls" content="immutable">
-  
-  
-  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=386f8de7e0900128" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=386f8de7e0900128" data-wp-stage-standard>
-  <link rel="stylesheet" href="/src/battle-canvas-standard.css?wp-media=386f8de7e0900128" data-wp-battle-standard>
-  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=386f8de7e0900128">
-  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=386f8de7e0900128" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=386f8de7e0900128" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=386f8de7e0900128" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/tutorial.css?wp-media=386f8de7e0900128" data-wp-entry-required>
-  <link rel="stylesheet" href="/games/folio-relay/game.css?wp-build=4da875f18f958e4e&wp-media=386f8de7e0900128" data-wp-entry-required>
+
+
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=386f8de7e0900128" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/stage-selector-standard.css?wp-media=386f8de7e0900128" data-wp-stage-standard data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/battle-canvas-standard.css?wp-media=386f8de7e0900128" data-wp-battle-standard data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=386f8de7e0900128" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=386f8de7e0900128" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=386f8de7e0900128" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=386f8de7e0900128" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=386f8de7e0900128" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/folio-relay/game.css?wp-build=4da875f18f958e4e&wp-media=386f8de7e0900128" data-wp-entry-required="">
   <script src="/src/site-config.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
-  <script src="/src/game-layout-config.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
+  <script src="/src/game-layout-config.js?wp-media=386f8de7e0900128" data-wp-entry-required=""></script>
   <script src="/src/i18n.js?wp-media=386f8de7e0900128"></script>
   <script src="/src/game-title-registry.js?wp-media=386f8de7e0900128" data-wp-game-title-registry></script>
   <script src="/src/weightplay-audio.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
@@ -42,9 +222,61 @@
   <script src="/src/weightplay-castle.js?wp-media=386f8de7e0900128" data-weightplay-castle-runtime></script>
   <script src="/src/analytics.js?wp-media=386f8de7e0900128"></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=386f8de7e0900128"></script>
-<title data-runtime-localize="off">تتابع الصفحات – لعبة تبديل المسارات | WeightPlay</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<title data-runtime-localize="off">تتابع الصفحات – لعبة سرعة الاستجابة | WeightPlay</title>
 <meta name="description" content="بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
 <link rel="canonical" href="https://weightplay.com/ar/games/folio-relay/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/folio-relay/">
 <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/folio-relay/">
@@ -60,43 +292,46 @@
 <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/folio-relay/">
 <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/folio-relay/">
 <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/folio-relay/">
-<meta property="og:title" content="تتابع الصفحات – لعبة تبديل المسارات | WeightPlay">
+<meta property="og:title" content="تتابع الصفحات – لعبة سرعة الاستجابة | WeightPlay">
 <meta property="og:description" content="بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.">
 <meta property="og:url" content="https://weightplay.com/ar/games/folio-relay/">
 <meta property="og:image" content="https://weightplay.com/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WeightPlay">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json" id="gameSchema">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"تتابع الصفحات","url":"https://weightplay.com/ar/games/folio-relay/","description":"بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.","image":"https://weightplay.com/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128","genre":"لعبة تبديل المسارات","inLanguage":"ar","isAccessibleForFree":true,"gamePlatform":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"}},{"@type":"FAQPage","inLanguage":"ar","mainEntity":[{"@type":"Question","name":"ماذا سأفعل في هذه اللعبة؟","acceptedAnswer":{"@type":"Answer","text":"بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة."}},{"@type":"Question","name":"متى أستخدم الرف؟","acceptedAnswer":{"@type":"Answer","text":"استخدم الرف إذا كان الكتاب ممزقاً أو سخنت العربة. يُحتسب الكتاب عند اكتمال إصلاحه."}}]}]}</script>
+<script type="application/ld+json" id="gameSchema">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"تتابع الصفحات","url":"https://weightplay.com/ar/games/folio-relay/","description":"بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.","image":"https://weightplay.com/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128","genre":["لعبة سرعة الاستجابة","لعبة تبديل المسارات"],"inLanguage":"ar","isAccessibleForFree":true,"gamePlatform":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"audience":{"@type":"PeopleAudience","audienceType":"General players"},"operatingSystem":"Web"},{"@type":"FAQPage","inLanguage":"ar","mainEntity":[{"@type":"Question","name":"ماذا سأفعل في هذه اللعبة؟","acceptedAnswer":{"@type":"Answer","text":"بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة."}},{"@type":"Question","name":"متى أستخدم الرف؟","acceptedAnswer":{"@type":"Answer","text":"استخدم الرف إذا كان الكتاب ممزقاً أو سخنت العربة. يُحتسب الكتاب عند اكتمال إصلاحه."}}]}]}</script>
+  <meta name="twitter:title" content="تتابع الصفحات – لعبة سرعة الاستجابة | WeightPlay">
+  <meta name="twitter:description" content="بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.">
 </head>
-<body data-internal-only="true" data-wp-internal-only="true" data-wp-game-version="v1" data-screen="main" data-game-id="folio-relay" data-wp-game-id="folio-relay" data-wp-audience="general" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false" class="wp-frame-main-active">
-  <div id="gameFrame" data-wp-frame-root data-wp-entry-root data-wp-frame="2">
+<body data-wp-game-version="v1" data-screen="main" data-game-id="folio-relay" data-wp-game-id="folio-relay" data-wp-audience="general" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-show="false" class="wp-frame-main-active"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="تتابع الصفحات" data-state="loading" data-error-title="تعذّر تحميل اللعبة" data-error-message="تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">جارٍ تحميل تتابع الصفحات…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="جارٍ تحميل تتابع الصفحات…" aria-valuetext="جارٍ تحميل تتابع الصفحات…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">إعادة المحاولة</button><a class="wp-game-entry-loader-button" href="/ar/">العودة إلى الردهة</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>تعذّر تحميل بعض الموارد. أعد المحاولة أو عُد إلى الردهة. <a href="/ar/">العودة إلى الردهة</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-6bddf22c9cfa&wp-media=386f8de7e0900128" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-frame-root data-wp-entry-root="" data-wp-frame="2">
     <div id="mainGroup" class="wp-main-flow-group">
       <main id="mainScreen" data-wp-frame-scene="main">
-        <header id="mainHeader" data-wp-frame-header="main">
-          <a id="mainReturn" href="/ar/?preview=1" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png.webp?wp-media=386f8de7e0900128" alt=""></a>
-          <h1 id="gameTitle" data-wp-game-title data-wp-frame-title>تتابع الصفحات</h1>
+        <header id="mainHeader" data-wp-frame-header="main" class="wp-frame-header">
+          <a id="mainReturn" href="/ar/" data-wp-return="main" aria-label="Back to WeightPlay" class="wp-frame-return"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img src="/assets/weightplay-logo.png.webp?wp-media=386f8de7e0900128" alt="" class="wp-frame-lobby-logo" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-game-title data-wp-frame-title="">تتابع الصفحات</h1>
         </header>
         <section id="mainHero" data-wp-frame-content="main">
-          <img id="cover" class="main-poster cover" src="/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128" width="1254" height="1254" data-wp-frame-poster data-wp-interface7-poster="true" alt="تتابع الصفحات">
-          <div class="main-copy menu-copy" data-wp-frame-copy>
-            <p id="description" class="main-summary" data-wp-frame-summary>بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.</p>
-            <div id="mainProgress" class="main-progress" data-wp-frame-progress></div>
+          <img id="cover" class="main-poster cover" src="/games/folio-relay/art/cover.webp?wp-media=386f8de7e0900128" width="1254" height="1254" data-wp-frame-poster="" data-wp-interface7-poster="true" alt="تتابع الصفحات">
+          <div class="main-copy menu-copy" data-wp-frame-copy="">
+            <p id="description" class="main-summary" data-wp-frame-summary="">بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.</p>
+            <div id="mainProgress" class="main-progress" data-wp-frame-progress=""></div>
             <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" disabled>ابدأ اللعب</button>
           </div>
         </section>
       </main>
       <!-- folio-guide:start -->
-<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-entry-guide data-wp-guide-renderer="localized-content.js?wp-media=386f8de7e0900128#renderGuide" data-wp-preserve-static-guide aria-labelledby="guideTitle">
+<section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-entry-guide="" data-wp-guide-renderer="localized-content.js?wp-media=386f8de7e0900128#renderGuide" data-wp-preserve-static-guide aria-labelledby="guideTitle">
     <h2 id="guideTitle">طريقة اللعب</h2><button id="replayLesson" type="button" data-wp-frame-action="secondary">تدريب</button>
     <div class="game-info-tags"><span>لعبة تبديل المسارات</span></div>
-    <article class="game-info-section" ><h3>هدف التسليم</h3><p data-wp-intro-faq-source>بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.</p></article>
+    <article class="game-info-section" ><h3>هدف التسليم</h3><p>حقّق هدف المناوبة قبل إرجاع الكتب.</p></article>
+    <article class="game-info-section" ><h3>طريقة اللعب</h3><p data-wp-intro-faq-source>بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.</p></article>
     <article class="game-info-section" ><h3>التحكم والقواعد</h3><p>استخدم أزرار المسارات أو المفاتيح ١–٣ قبل وصول الكتب. من المناوبة السادسة، اضغط زر التبديل أو مفتاح المسافة لاستخدام رف الإصلاح.</p><p>استخدم الرف إذا كان الكتاب ممزقاً أو سخنت العربة. يُحتسب الكتاب عند اكتمال إصلاحه.</p></article>
     <article class="game-info-section" ><h3>النتيجة والتقدم</h3><p>قطعة جديدة للورشة · 6 زعانف تبريد · 20 رف مزدوج · 40 دولاب التحويل.</p></article>
     <article class="game-info-section" ><h3>الأسئلة الشائعة</h3><dl><dt>ماذا سأفعل في هذه اللعبة؟</dt><dd>بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة.</dd><dt>متى أستخدم الرف؟</dt><dd>استخدم الرف إذا كان الكتاب ممزقاً أو سخنت العربة. يُحتسب الكتاب عند اكتمال إصلاحه.</dd></dl></article>
     <article class="game-info-section" data-wp-guide-news-context><h3>من وحي الأخبار</h3><p>توقف أرشيف لأعمال المعجبين يديره متطوعون في ٢٩ أكتوبر. عاد الوصول إلى الأرشيف الرئيسي في ١٥ نوفمبر، مع بقاء ميزات مثل استيراد الأعمال من مواقع أخرى معطلة مؤقتاً.</p><p>في تتابع الصفحات تتراكم الكتب في مكتبة ليلية خيالية. حرّك العربة بين ثلاثة مسارات واختر بين الإرسال المباشر أو رف الإصلاح.</p></article>
     <section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>ألعاب مشابهة</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-wp-related-id="signal-snap" href="/ar/games/signal-snap/"><img src="/games/signal-snap/poster.png.webp?wp-media=386f8de7e0900128" width="96" height="96" loading="lazy" alt=""><span data-runtime-localize="off">ومضة الإشارة</span></a><a class="game-info-related-card" data-wp-related-id="tidegate-relay" href="/ar/games/tidegate-relay/"><img src="/games/tidegate-relay/assets/cover.webp?wp-media=386f8de7e0900128" width="96" height="96" loading="lazy" alt=""><span data-runtime-localize="off">تنظيم معبر المد</span></a><a class="game-info-related-card" data-wp-related-id="animal-cafe-rush" href="/ar/games/animal-cafe-rush/"><img src="/assets/animal-cafe-rush-cover.webp?wp-media=386f8de7e0900128" width="96" height="96" loading="lazy" alt=""><span data-runtime-localize="off">ازدحام المقهى</span></a></div></section>
-  </section>
+  <p data-wp-game-access="2.0" lang="ar" data-runtime-localize="off">العب مجانًا في المتصفح، دون الحاجة إلى تنزيل. WeightPlay هي منصة الألعاب التابعة لـ WeightStudio.</p></section>
 <!-- folio-guide:end -->
     </div>
     <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen hidden>
@@ -131,11 +366,11 @@
   <template id="battleWidgets"><span id="count" class="folio-count"></span><div id="heatField"><meter id="heat" min="0" max="100" high="72" optimum="0"></meter><span id="heatValue"></span></div><button id="help" type="button" data-wp-frame-action="secondary">?</button></template>
   <script src="/src/edge-guard.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
   <script src="/src/stage-rail-i9.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
-  <script src="/src/game-play-ui.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=386f8de7e0900128" data-wp-entry-required=""></script>
   <script src="/src/stage-selector-standard.js?wp-media=386f8de7e0900128" data-wp-stage-standard></script>
-  <script src="/src/battle-canvas-standard.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
-  <script src="/src/game-screen-frame.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=386f8de7e0900128" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-a03f51bd7e3b-search20-geo-access-retained&wp-media=386f8de7e0900128" data-wp-entry-required=""></script>
   <script src="/src/tutorial.js?wp-media=386f8de7e0900128" data-wp-entry-required></script>
-  <script type="module" src="/games/folio-relay/game.mjs?v=1&amp;wp-build=eed3305dc7222c72&wp-media=386f8de7e0900128" data-wp-entry-required></script>
+  <script type="module" src="/games/folio-relay/game.mjs?v=entry-initial-d0ea54c72bf6&amp;wp-build=eed3305dc7222c72&wp-media=386f8de7e0900128" data-wp-entry-required=""></script>
 </body>
 </html>

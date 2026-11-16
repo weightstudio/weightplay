@@ -151,10 +151,9 @@ window.WONDER_LOBBY = {
     {
       id: "folio-relay",
       audience: "general",
-      status: "planned",
-      internalOnly: true,
+      status: "playable",
       href: "games/folio-relay/",
-      internalTrial: "index.html?preview=1",
+      previewVideo: "assets/previews/folio-relay-battle.webm",
       title: {"__localizedExact":true,"en":"Folio Relay","zh-Hant":"書潮復航","zh-Hans":"书潮复航","ja":"書架のリレー","ko":"책물결 릴레이","es":"Relevo de Páginas","pt-BR":"Revezamento de Páginas","fr":"Le Relais des Pages","de":"Buchseiten-Staffel","it":"Staffetta di Pagine","ru":"Эстафета страниц","hi":"पन्नों की रिले","ar":"تتابع الصفحات"},
       type: {"__localizedExact":true,"en":"Lane switching game","zh-Hant":"即時切軌遊戲","zh-Hans":"即时切轨游戏","ja":"レーン切替ゲーム","ko":"선로 전환 게임","es":"Juego de cambio de vía","pt-BR":"Jogo de troca de trilhos","fr":"Jeu d’aiguillage","de":"Gleiswechsel-Spiel","it":"Gioco di cambio binario","ru":"Игра на переключение путей","hi":"पटरी बदलने का खेल","ar":"لعبة تبديل المسارات"},
       description: {"__localizedExact":true,"en":"Switch tracks to catch the next folio. Use the repair shelf when the shuttle heats up.","zh-Hant":"看準書頁的來向切換閘車，機件過熱時改走修補架。","zh-Hans":"看清书页的来向再切换闸车。设备过热时送往修补架。","ja":"本が来るレーンへ台車を動かそう。台車が熱くなったら修復棚を使おう。","ko":"책이 들어오는 선로로 운반차를 옮기세요. 열이 오르면 수리 선반을 사용하세요.","es":"Cambia de vía para recibir los folios. Usa el estante de reparación si el carro se calienta.","pt-BR":"Troque de trilho para receber os fólios. Use a prateleira de reparo quando o carro esquentar.","fr":"Aiguille la navette vers les livres qui arrivent. Utilise l’étagère de réparation quand elle chauffe.","de":"Wechsle aufs richtige Gleis und fange Bücher auf. Nutze bei Hitze das Reparaturregal.","it":"Cambia binario per ricevere i libri. Usa lo scaffale di riparazione quando la navetta si scalda.","ru":"Переводите тележку на путь прибывающей книги. При перегреве используйте ремонтную полку.","hi":"आती किताब को पकड़ने के लिए पटरी बदलें। गाड़ी गरम हो तो मरम्मत की शेल्फ़ चुनें।","ar":"بدّل المسار لالتقاط الكتب القادمة. استخدم رف الإصلاح عندما تسخن العربة."},

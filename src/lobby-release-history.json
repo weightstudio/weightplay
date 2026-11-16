@@ -621,6 +621,10 @@
       "date": "2026-11-13T01:11:21.939Z",
       "evidence": "canonical-public-catalog"
     },
+    "folio-relay": {
+      "date": "2026-11-16T21:07:00.787Z",
+      "evidence": "canonical-public-catalog"
+    },
     "four-in-a-row": {
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
@@ -955,6 +959,10 @@
     },
     "sunshift-commons": {
       "date": "2026-11-11T00:56:00.361Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "surge-tow": {
+      "date": "2026-11-16T21:07:00.787Z",
       "evidence": "canonical-public-catalog"
     },
     "tetris": {
