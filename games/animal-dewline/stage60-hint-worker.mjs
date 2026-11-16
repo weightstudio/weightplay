@@ -1,1 +1,1 @@
-import{handleHintRequest as s}from"./stage60-hint-protocol.mjs?v=20261027-dewline-v19-finale60-1&wp-media=5caabd79127c4205";globalThis.addEventListener("message",e=>{globalThis.postMessage(s(e.data))});
+import{handleHintRequest as s}from"./stage60-hint-protocol.mjs?v=20261027-dewline-v19-finale60-1&wp-media=26811efd72110c5c";globalThis.addEventListener("message",e=>{globalThis.postMessage(s(e.data))});

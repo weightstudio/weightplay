@@ -1,6 +1,6 @@
 /** Authoritative, renderer-independent river simulation. No DOM, audio, storage,
  * browser hooks or random outcome changes. All distances advance by integration. */
-import { PHYSICS, getStage, getBoard, trackWidth, featureX, gateIsOpen, gateSecondsToChange, tideLabel } from './content.mjs?wp-media=5caabd79127c4205';
+import { PHYSICS, getStage, getBoard, trackWidth, featureX, gateIsOpen, gateSecondsToChange, tideLabel } from './content.mjs?wp-media=26811efd72110c5c';
 
 export const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const approach = (value, target, amount) => value < target ? Math.min(target, value + amount) : Math.max(target, value - amount);

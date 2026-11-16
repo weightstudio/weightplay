@@ -1,1 +1,1 @@
-(()=>{"use strict";window.GLYPH_GARDEN_STAGE_CONFIG=Object.freeze({gameId:"animal-glyph-garden",count:30,poster:"/assets/interface7-redrawn/animal-glyph-garden.webp?wp-media=5caabd79127c4205",background:"/assets/lobby-block-atmosphere.svg"})})();
+(()=>{"use strict";window.GLYPH_GARDEN_STAGE_CONFIG=Object.freeze({gameId:"animal-glyph-garden",count:30,poster:"/assets/interface7-redrawn/animal-glyph-garden.webp?wp-media=26811efd72110c5c",background:"/assets/lobby-block-atmosphere.svg"})})();
