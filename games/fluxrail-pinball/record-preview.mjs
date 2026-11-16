@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { setTimeout } from 'node:timers/promises';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=551689fe4d88ccb3';
-import { installLocalTestNetworkPolicy, localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=551689fe4d88ccb3';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=44359fc2453ca221';
+import { installLocalTestNetworkPolicy, localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=44359fc2453ca221';
 
 const origin = localTestOrigin();
 const earned = process.env.FLUXRAIL_EARNED_STATE;
@@ -93,7 +93,8 @@ try {
     "file '"+quote(filename)+"'\nduration "+(((frames[i+1]?.ms ?? ms+40)-ms)/1000).toFixed(5)).join('\n')
     +"\nfile '"+quote(frames.at(-1).filename)+"'\n");
   execFileSync(ffmpeg,['-hide_banner','-loglevel','error','-n','-f','concat','-safe','0','-i',listing,
-    '-an','-vf','fps=25,scale=480:480','-c:v','libvpx-vp9','-b:v','0','-crf','31',output],{stdio:'inherit'});
+    '-an','-vf','fps=25,scale=480:480:out_range=tv,format=yuv420p',
+    '-c:v','libvpx','-g','25','-b:v','0','-crf','13',output],{stdio:'inherit'});
   const bytes=fs.statSync(output).size;
   assert(bytes<=1_000_000,'Public preview must be at most 1 MB.');
   console.log(JSON.stringify({stage,output,bytes,frames:frames.length,measuredMs:Math.round(measured),

@@ -1,5 +1,5 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=551689fe4d88ccb3';
-import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=551689fe4d88ccb3';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=44359fc2453ca221';
+import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=44359fc2453ca221';
 
 const STEEL = 0xcfe8ed;
 const COPPER = 0xef9b54;
@@ -75,7 +75,7 @@ export function mountTable(host, onLoss, onRestore) {
   const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false, powerPreference:'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 1.07;
   renderer.setClearColor(0x0b1924);
   renderer.domElement.setAttribute('aria-hidden','true');
   host.replaceChildren(renderer.domElement);
@@ -104,7 +104,8 @@ export function mountTable(host, onLoss, onRestore) {
   const metal = material(0xa0b2be, .56, .31);
   const jade = material(0x27a7a2, .25);
   const ceramic = material(0xf9e0b7);
-  const workFloor = material(0x25333e);
+  const workFloor = material(0x172b3a);
+  const floorSeam = material(0x0e1825);
   const stationShell = material(0x275264);
   const slate = material(0x62737e);
   const palette = new Map();
@@ -159,15 +160,18 @@ export function mountTable(host, onLoss, onRestore) {
 
   fixed(workFloor, 0,-.63,-.2, 23,.17,22);
   for (let z=-10; z<=10; z++) {
-    fixed(iron, 0,-.537, z, 21,.012,.032);
-    if (z % 2 === 0) fixed(iron, -6,-.523,z+.5,.04,.01,1.01);
-    else fixed(iron, 6,-.523,z+.5,.04,.01,1.01);
+    fixed(floorSeam, 0,-.537, z, 21,.012,.038);
+    const offset = z % 2 === 0 ? -1.2 : 1.2;
+    for (let x=-9; x<=9; x+=2.4) fixed(floorSeam, x+offset,-.523,z+.51,.036,.013,1.01);
   }
   fixed(iron, 0,-.33, 0, 8.2,.55,10.6);
   fixed(walnut, 0,-.12, 0, 8.1,.63,10.48);
   fixed(dark, 0,-.012,0, 7.73,.55,10.14);
   fixed(enamel, 0,.193,0, 7.72,.12,10.04);
   fixed(inlay, 0,.263,0, 7.44,.027,9.74);
+  fixed(bronze, 0,-.017,5.072, 5.13,.22,.09);
+  fixed(iron,0,-.03,5.137,4.77,.157,.055);
+  for(let n=-10;n<=10;n++) fixed(brass,n*.21,-.026,5.173,.093,.052,.033);
 
   for (const sign of [-1,1]) {
     fixed(walnut, sign*3.96,.39,0, .23,.47,10.13);
@@ -205,6 +209,9 @@ export function mountTable(host, onLoss, onRestore) {
     for (const sign of [-1,1]) {
       fixed(bronze,x+sign*.34,.317,-.98,.045,.058,3.38);
       for (let j=0;j<5;j++) fixed(brass,x+sign*.34,.346,-2.56+j*.72,.14,.06,.16);
+    }
+    for (let stripe=0;stripe<9;stripe++) {
+      fixed(stripe%3===0 ? bronze : iron, x,.295,-2.43+stripe*.37,.59,.022,.024);
     }
   }
   for (const sign of [-1,1]) {
@@ -244,7 +251,7 @@ export function mountTable(host, onLoss, onRestore) {
   const rails = {};
   for (const lane of LANES) {
     const tint = RAIL_COLORS[lane];
-    const lamp = new THREE.MeshStandardMaterial({ color:tint, emissive:tint, emissiveIntensity:.32, metalness:.07, roughness:.34 });
+    const lamp = new THREE.MeshStandardMaterial({ color:tint, emissive:tint, emissiveIntensity:.18, metalness:.25, roughness:.3 });
     palette.set(lane,lamp);
     const station = new THREE.Group();
     scene.add(station);
@@ -254,7 +261,7 @@ export function mountTable(host, onLoss, onRestore) {
     solid(station, jewel, brass,0,.70,0,1.03,.14,1.03);
     const rotor = gear(station, brass, .49, .13, 0,.82,0);
     solid(rotor, jewel, lamp, 0,.16,0,.53,.20,.53);
-    solid(rotor, jewel, ceramic,0,.27,0,.21,.07,.21);
+    solid(rotor, jewel, lamp,0,.27,0,.24,.08,.24);
     solid(station, box, lamp,0,.57,.46,.47,.085,.032);
     const ring = solid(station, new THREE.RingGeometry(.61,.77,8).rotateX(-Math.PI/2), groundGlow,0,.288,0);
     const gate = new THREE.Group();
@@ -267,7 +274,17 @@ export function mountTable(host, onLoss, onRestore) {
     }
     const arm = solid(gate,box,bronze,0,.62,0,.78,.17,.14);
     const armLight = solid(gate,box,lamp,0,.622,.083,.56,.05,.033);
-    rails[lane] = { station, rotor, ring, gate, arm, armLight };
+    const bus = solid(scene,box,lamp,RAIL_X[lane],.29,-.97,.08,.014,3.13);
+    const bridge = new THREE.Group();
+    bridge.position.set(RAIL_X[lane],.27,-1.77);
+    const turn = lane==='L' ? 1 : -1;
+    const curve = new THREE.CatmullRomCurve3([
+      pos(0,.05,-1.66),pos(turn*.29,.18,-1.17),pos(turn*.34,.31,.15),
+      pos(turn*.8,.22,1.57),pos(turn*1.31,.07,1.93),
+    ]);
+    solid(bridge,new THREE.TubeGeometry(curve,20,.034,6,false),lamp,0,0,0);
+    scene.add(bridge);
+    rails[lane] = { station, rotor, ring, gate, arm, armLight, bus, bridge };
   }
 
   const paddles = {};
@@ -294,6 +311,13 @@ export function mountTable(host, onLoss, onRestore) {
   const drainLight = solid(scene, box, new THREE.MeshBasicMaterial({color:0x6bf0e3, transparent:true, opacity:0}), 0,.39,4.28,1.8,.08,.09);
   const trailMat = new THREE.MeshBasicMaterial({ color:0x81e4ff, transparent:true, opacity:.48, depthWrite:false });
   const trail = Array.from({ length:7 }, (_, i) => solid(scene,new THREE.SphereGeometry(.075,9,6),trailMat,0,.4,0,1-i*.10,1-i*.10,1-i*.10));
+  const sparkMaterial = new THREE.MeshBasicMaterial({color:0xffe5a9, transparent:true, depthWrite:false});
+  const sparks = new THREE.InstancedMesh(new THREE.BoxGeometry(.046,.061,.13),sparkMaterial,14);
+  const sparkMarker = new THREE.Object3D();
+  const sparkOrigin = pos(0,0,0);
+  let sparkTime = -Infinity;
+  sparks.frustumCulled = false;
+  scene.add(sparks);
 
   // Rux is cut from the same stepped-anatomy shapes as the approved reference.
   const rux = new THREE.Group();
@@ -404,10 +428,14 @@ export function mountTable(host, onLoss, onRestore) {
     if (event.type === 'strike') {
       strikeSide = state.side;
       strikeTime = motionTime;
+      sparkOrigin.copy(contact(state.side,state.catchAt));
+      sparkTime = motionTime;
     }
     if (event.lane && event.type !== 'strike') {
       contactLane = event.lane;
       contactTime = motionTime;
+      sparkOrigin.copy(destination(state));
+      sparkTime = motionTime;
     }
   }
 
@@ -438,7 +466,7 @@ export function mountTable(host, onLoss, onRestore) {
     const contactKick = clamp(1 - (time-contactTime)/280,0,1);
     const strikeKick = clamp(1 - (time-strikeTime)/255,0,1);
     for (const lane of LANES) {
-      const { station, rotor, gate, arm, armLight, ring } = rails[lane];
+      const { station, rotor, gate, arm, armLight, ring, bus, bridge } = rails[lane];
       const location = target(lane,state.stage.railSpread);
       station.position.set(location.x,0,location.z);
       gate.position.x = location.x;
@@ -451,9 +479,13 @@ export function mountTable(host, onLoss, onRestore) {
       rotor.position.y = .82 - impact*.094;
       rotor.rotation.y = reduced ? 0 : time*.00062 + impact*.58;
       const enabled = (goal === lane || current === lane) && !blocked;
-      palette.get(lane).emissiveIntensity = .17 + (enabled ? .95 : 0) + impact*1.3;
-      ring.visible = goal === lane || state.won;
+      const lit = state.stage.order.slice(0,state.index).includes(lane);
+      palette.get(lane).emissiveIntensity = .14 + (enabled ? .44 : 0) + (lit ? .52 : 0) + impact*.75;
+      ring.visible = goal === lane || lit;
       ring.scale.setScalar(1 + impact*.15);
+      bus.position.x = location.x;
+      bus.visible = enabled || lit;
+      bridge.visible = state.stage.feedback && lane!=='C';
     }
     for (const [side, {group,ring}] of Object.entries(paddles)) {
       const ready = (side === state.side && state.phase === 'return') || state.phase === 'ready';
@@ -479,6 +511,22 @@ export function mountTable(host, onLoss, onRestore) {
     }
     if (!moving || reduced) trailCount=0;
     trail.forEach((mesh, i) => { mesh.visible = moving && !reduced && i<trailCount; });
+    const sparkPhase = (time-sparkTime)/265;
+    sparks.visible = !reduced && sparkPhase<1;
+    if (sparks.visible) {
+      sparkMaterial.opacity = (1-sparkPhase)*.82;
+      for (let index=0;index<sparks.count;index++) {
+        const angle=index*2.39996;
+        const radius=.04+sparkPhase*(.34+index*.022);
+        sparkMarker.position.set(sparkOrigin.x+Math.cos(angle)*radius,
+          sparkOrigin.y+.12+Math.sin(Math.PI*sparkPhase)*.38,
+          sparkOrigin.z+Math.sin(angle)*radius);
+        sparkMarker.rotation.set(angle,2*angle,sparkPhase);
+        sparkMarker.updateMatrix();
+        sparks.setMatrixAt(index,sparkMarker.matrix);
+      }
+      sparks.instanceMatrix.needsUpdate=true;
+    }
     armPivots[0].rotation.x = -(strikeKick*.66);
     armPivots[1].rotation.x = -(contactKick*.36);
     head.rotation.x = reduced ? 0 : -strikeKick*.14;

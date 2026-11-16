@@ -386,6 +386,7 @@ Games with local saves keep progress in the current browser.
 
 ## Current Playable Games
 
+- Fluxrail Pinball: https://weightplay.com/en/games/fluxrail-pinball/ — Time your flippers, charge the center rail, and light the workshop before you run out of balls.
 - Windstep Circuit: https://weightplay.com/en/games/windstep-circuit/ — Train your runner, read the next stretch, and set the pace through hills and headwinds.
 - Lumenwell Paths: https://weightplay.com/en/games/lumenwell-paths/ — Freeze pools, bend light and power wet circuits to recover the wellstones.
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
