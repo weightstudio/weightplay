@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "fluxrail-pinball": {"__localizedExact":true,"en":"Fluxrail Pinball","zh-Hant":"磁脈彈台","zh-Hans":"磁脉弹台","ja":"フラックスレール・ピンボール","ko":"자기 레일 핀볼","es":"Pinball de Riel Magnético","pt-BR":"Pinball dos Trilhos Magnéticos","fr":"Flipper des rails magnétiques","de":"Magnetbahn-Flipper","it":"Flipper a Rotaie Magnetiche","ru":"Магнитный пинбол","hi":"चुंबकीय रेल पिनबॉल","ar":"بينبول المسارات المغناطيسية"},
   "surge-tow": {"__localizedExact":true,"en":"Surge Tow","zh-Hant":"洪脈曳航","zh-Hans":"洪脉曳航","ja":"急流の曳航隊","ko":"급류 구조정","es":"Rescate a contracorriente","pt-BR":"Resgate na correnteza","fr":"Sauvetage en crue","de":"Rettung im Strom","it":"Soccorso in piena","ru":"Спасение на бурной реке","hi":"उफनती नदी का बचाव","ar":"نجدة النهر الجارف"},
   "windstep-circuit": {"__localizedExact":true,"en":"Windstep Circuit","zh-Hant":"風階競跑","zh-Hans":"风阶竞跑","ja":"風のステップ競走","ko":"바람걸음 레이스","es":"Circuito del Viento","pt-BR":"Circuito do Vento","fr":"La Piste du Vent","de":"Windpfad-Rennen","it":"Circuito del Vento","ru":"Трасса ветров","hi":"पवनपथ दौड़","ar":"سباق درب الريح"},
   "animal-peach-oath": {
