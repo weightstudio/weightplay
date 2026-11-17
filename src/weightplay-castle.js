@@ -192,10 +192,10 @@ function creditFirstClear(gameId,completionId="first-completion"){
  if(["stage-endless","stage-infinite","stage-survival","endless","infinite","survival"].includes(c.toLowerCase()))return{credited:false,reason:"non-stage-clear"};
  let s,snapshot;try{({store:s,snapshot}=creditSnapshot())}catch{return{credited:false,reason:"storage-unavailable"}}
  const key=`${g}:${c}`;if(Object.prototype.hasOwnProperty.call(s.completions,key))return{credited:false,reason:"already-claimed",store:s};
- // An older Bus Jam page emits an unqualified completion even on replay.
+ // Older game pages can emit an unqualified completion even on replay.
  // Once a stage-specific receipt exists, that legacy event cannot prove a new
  // first clear and must not add a second block for the same progress.
- if(["animal-bus-jam","animal-carnival-claw","animal-dawn-shutters"].includes(g.toLowerCase())&&c.toLowerCase()==="first-completion"&&Object.keys(s.completions).some(id=>id.toLowerCase().startsWith(`${g.toLowerCase()}:stage-`)))return{credited:false,reason:"ambiguous-legacy-completion",store:s};
+ if(["animal-bus-jam","animal-carnival-claw","animal-dawn-shutters","animal-echo-orchard","animal-folded-field"].includes(g.toLowerCase())&&c.toLowerCase()==="first-completion"&&Object.keys(s.completions).some(id=>id.toLowerCase().startsWith(`${g.toLowerCase()}:stage-`)))return{credited:false,reason:"ambiguous-legacy-completion",store:s};
  if(!Number.isSafeInteger(s.castleMaterials+REWARD)||!Number.isSafeInteger(s.ownedBlocks+REWARD))return{credited:false,reason:"storage-unavailable"};
  s.completions[key]=Date.now();if(!s.badges.includes(g))s.badges.push(g);s.castleMaterials+=REWARD;s.ownedBlocks+=REWARD;
  let bytes;try{bytes=JSON.stringify(s);if(snapshot.some(([key,value])=>localStorage.getItem(key)!==value))return{credited:false,reason:"storage-unavailable"}}catch{return{credited:false,reason:"storage-unavailable"}}

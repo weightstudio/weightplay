@@ -591,7 +591,7 @@ if (!window.__weightPlayTopicGameIds) window.__weightPlayTopicGameIds = new Set(
     if (!/(?:^|\/)games\/[^/]+\/?$/i.test(location.pathname) || window.WeightPlayCastle || document.querySelector("[data-weightplay-castle-runtime]")) return;
     try {
       const script = document.createElement("script");
-      script.src = "/src/weightplay-castle.js?v=20261108-dawn-legacy-reward-v1&wp-media=853cb90130efea70";
+      script.src = "/src/weightplay-castle.js?v=20261117-folded-legacy-reward-v1&wp-media=853cb90130efea70";
       script.async = true;
       script.dataset.weightplayCastleRuntime = "true";
       document.head.append(script);
