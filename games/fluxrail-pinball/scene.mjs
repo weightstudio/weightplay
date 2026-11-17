@@ -1,5 +1,5 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=492d8b8004a4c79a';
-import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=492d8b8004a4c79a';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=6a11f491c1d7042e';
+import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=6a11f491c1d7042e';
 
 const STEEL = 0xcfe8ed;
 const COPPER = 0xef9b54;
@@ -10,6 +10,71 @@ const SIDE_X = { L:-2.84, R:2.84 };
 const lerp = THREE.MathUtils.lerp;
 const clamp = THREE.MathUtils.clamp;
 const pos = (x, y, z) => new THREE.Vector3(x, y, z);
+
+export const FLIPPER_STROKE_MS = 150;
+
+function flipperLift(elapsed) {
+  const rise = 24;
+  if (elapsed < rise) return .72 + .28*elapsed/rise;
+  return Math.pow(clamp(1 - (elapsed-rise)/(FLIPPER_STROKE_MS-rise), 0, 1), 1.4);
+}
+
+function projectedTableBounds(camera, mascot) {
+  const cabinet = new THREE.Box3(pos(-4.24,-.61,-5.3),pos(4.24,.9,5.3));
+  const bounds = new THREE.Box2();
+  camera.updateMatrixWorld(true);
+  for (const {min,max} of [cabinet, new THREE.Box3().setFromObject(mascot)]) {
+    for (const x of [min.x,max.x]) {
+      for (const y of [min.y,max.y]) {
+        for (const z of [min.z,max.z]) {
+          const view = pos(x,y,z).applyMatrix4(camera.matrixWorldInverse);
+          bounds.expandByPoint(new THREE.Vector2(view.x,view.y));
+        }
+      }
+    }
+  }
+  return bounds;
+}
+
+function horizontalShape(points, depth, bevel) {
+  const shape = new THREE.Shape(points.map(([x,z]) => new THREE.Vector2(x,-z)));
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth, steps:1, bevelEnabled:true, bevelSegments:2, bevelSize:bevel, bevelThickness:bevel,
+  });
+  geometry.rotateX(-Math.PI / 2);
+  return geometry;
+}
+
+function cabinetPanel(width, length, corner, depth, bevel) {
+  const x = width/2, z = length/2;
+  return horizontalShape([
+    [-x+corner,-z],[x-corner,-z],[x,-z+corner],[x,z-corner],
+    [x-corner,z],[-x+corner,z],[-x,z-corner],[-x,-z+corner],
+  ],depth,bevel);
+}
+
+function circularPath(x,z,radius,start,end,segments) {
+  return Array.from({length:segments+1},(_,index) => {
+    const angle = lerp(start,end,index/segments);
+    return [x+Math.cos(angle)*radius,z+Math.sin(angle)*radius];
+  });
+}
+
+function etchedLines(paths, width) {
+  const positions = [];
+  for (const path of paths) {
+    for (let index=1;index<path.length;index++) {
+      const [a,b] = path[index-1], [c,d] = path[index];
+      const length = Math.hypot(c-a,d-b);
+      const x = -(d-b)*width/(2*length), z = (c-a)*width/(2*length);
+      positions.push(a+x,0,b+z,c+x,0,d+z,a-x,0,b-z,
+        a-x,0,b-z,c+x,0,d+z,c-x,0,d-z);
+    }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+  return geometry;
+}
 
 function cubic(a, b, c, d, amount) {
   const k = 1 - amount;
@@ -75,44 +140,53 @@ export function mountTable(host, onLoss, onRestore) {
   const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false, powerPreference:'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.07;
+  renderer.toneMappingExposure = 1;
   renderer.setClearColor(0x0b1924);
   renderer.domElement.setAttribute('aria-hidden','true');
   host.replaceChildren(renderer.domElement);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x091522, 18, 42);
+  scene.fog = new THREE.Fog(0x081d30, 22, 39);
   const camera = new THREE.OrthographicCamera(-5,5,5,-5, .1, 75);
-  camera.position.set(0, 14, 11.7);
+  camera.position.set(0, 18, 10.4);
   camera.lookAt(0, .12, -.15);
-  scene.add(new THREE.HemisphereLight(0xbdeaff, 0x80604e, 2.35));
-  const daylight = new THREE.DirectionalLight(0xffdeaf, 2.85);
+  scene.add(new THREE.HemisphereLight(0xb3d8ef, 0x74412b, 1.86));
+  const daylight = new THREE.DirectionalLight(0xffc196, 3.1);
   daylight.position.set(-4, 9, -4);
   scene.add(daylight);
-  const rim = new THREE.DirectionalLight(0x55ceff, 2.10);
-  rim.position.set(6, 4, 2);
+  const rim = new THREE.DirectionalLight(0x65cfff, 2.46);
+  rim.position.set(5, 6, 3);
   scene.add(rim);
 
   const material = (color, metalness = .12, roughness = .49) => new THREE.MeshStandardMaterial({ color, metalness, roughness });
-  const enamel = material(0x122d3a);
-  const inlay = material(0x266270, .34);
-  const bronze = material(0xb76b43, .36, .37);
-  const brass = material(0xeab565, .41, .32);
-  const walnut = material(0x663d36, .06);
-  const iron = material(0x2c3a4a, .38);
-  const dark = material(0x07101b);
-  const metal = material(0xa0b2be, .56, .31);
-  const jade = material(0x27a7a2, .25);
-  const ceramic = material(0xf9e0b7);
-  const workFloor = material(0x172b3a);
-  const floorSeam = material(0x0e1825);
-  const stationShell = material(0x275264);
+  const enamel = material(0x142736, .28, .41);
+  const inlay = new THREE.MeshPhysicalMaterial({
+    vertexColors:true, metalness:.16, roughness:.45, clearcoat:.65, clearcoatRoughness:.39,
+  });
+  const bronze = material(0xa64528, .5, .34);
+  const brass = material(0xdca347, .47, .24);
+  const walnut = material(0x44241f, .07);
+  const iron = material(0x1a2e41, .36);
+  const dark = material(0x09101d);
+  const metal = material(0x95abbf, .57, .26);
+  const jade = material(0x108783, .27, .29);
+  const ceramic = material(0xffdb9b);
+  const workFloor = new THREE.MeshBasicMaterial({color:0x1a2230});
+  const floorSeam = new THREE.MeshBasicMaterial({color:0x101721});
+  const stationShell = material(0x0b3542, .35, .38);
+  const edgeLight = new THREE.MeshBasicMaterial({color:0x2eaca9});
+  const ember = new THREE.MeshBasicMaterial({color:0xffa343});
   const slate = material(0x62737e);
   const palette = new Map();
   const placed = new Map();
   const box = new THREE.BoxGeometry(1,1,1);
   const jewel = new THREE.CylinderGeometry(.5,.61,1,8);
   const gearCore = new THREE.CylinderGeometry(.5,.5,1,12);
+  const gearTeeth = horizontalShape(Array.from({length:40},(_,index) => {
+    const angle = index*Math.PI/20;
+    const radius = index%4===1 || index%4===2 ? .97 : .78;
+    return [Math.cos(angle)*radius,Math.sin(angle)*radius];
+  }),1,.034);
   const groundGlow = new THREE.MeshBasicMaterial({ color:0x62dff3, transparent:true, opacity:.12, depthWrite:false });
 
   function solid(parent, geometry, mat, x,y,z, sx=1,sy=1,sz=1) {
@@ -158,96 +232,119 @@ export function mountTable(host, onLoss, onRestore) {
     return mesh;
   }
 
-  fixed(workFloor, 0,-.63,-.2, 23,.17,22);
-  for (let z=-10; z<=10; z++) {
-    fixed(floorSeam, 0,-.537, z, 21,.012,.038);
-    const offset = z % 2 === 0 ? -1.2 : 1.2;
-    for (let x=-9; x<=9; x+=2.4) fixed(floorSeam, x+offset,-.523,z+.51,.036,.013,1.01);
+  fixed(workFloor,0,-.68,0,23,.17,22);
+  for (let z=-10;z<=10;z++) {
+    fixed(floorSeam,0,-.588,z,21,.012,.036);
+    for (let x=-9;x<=9;x+=2.4) {
+      fixed(floorSeam,x+(z%2===0 ? -1.2 : 1.2),-.583,z+.51,.036,.013,1.01);
+    }
   }
-  fixed(iron, 0,-.33, 0, 8.2,.55,10.6);
-  fixed(walnut, 0,-.12, 0, 8.1,.63,10.48);
-  fixed(dark, 0,-.012,0, 7.73,.55,10.14);
-  fixed(enamel, 0,.193,0, 7.72,.12,10.04);
-  fixed(inlay, 0,.263,0, 7.44,.027,9.74);
-  fixed(bronze, 0,-.017,5.072, 5.13,.22,.09);
-  fixed(iron,0,-.03,5.137,4.77,.157,.055);
-  for(let n=-10;n<=10;n++) fixed(brass,n*.21,-.026,5.173,.093,.052,.033);
+  solid(scene,cabinetPanel(8.07,10.28,.30,.34,.10),iron,0,-.49,0);
+  solid(scene,cabinetPanel(8.08,10.24,.26,.27,.09),walnut,0,-.17,0);
+  solid(scene,cabinetPanel(7.95,10.21,.22,.12,.077),bronze,0,.02,0);
+  fixed(enamel,0,.136,0,7.78,.23,10.04);
+
+  const field = new THREE.PlaneGeometry(7.42,9.74,44,58);
+  field.rotateX(-Math.PI/2);
+  const fieldPositions = field.getAttribute('position');
+  const fieldColors = new Float32Array(fieldPositions.count*3);
+  const fieldTint = new THREE.Color();
+  function colorField(night) {
+    const edge = new THREE.Color(night ? 0x101b39 : 0x092135);
+    const center = new THREE.Color(night ? 0x3068a0 : 0x1c7580);
+    for (let i=0;i<fieldPositions.count;i++) {
+      const x = fieldPositions.getX(i), z = fieldPositions.getZ(i);
+      const light = Math.exp(-(x*x*.105+(z+1.6)**2*.056));
+      const lacquer = .97 + .026*Math.sin(x*26+z*10);
+      fieldTint.copy(edge).lerp(center,light*.82).multiplyScalar(lacquer);
+      fieldTint.toArray(fieldColors,i*3);
+    }
+    field.getAttribute('color').needsUpdate = true;
+  }
+  field.setAttribute('color',new THREE.BufferAttribute(fieldColors,3));
+  solid(scene,field,inlay,0,.275,0);
+  const outerLine = [[-3.50,-4.60],[3.50,-4.60],[3.55,-4.54],[3.55,4.44],[3.23,4.67],
+    [-3.23,4.67],[-3.55,4.44],[-3.55,-4.54],[-3.50,-4.60]];
+  const fieldTraces = [
+    outerLine,
+    ...[-1,1].flatMap(side => [
+      [[3.32*side,-4.10],[3.32*side,-2.20],[3.07*side,-1.98],[3.07*side,.44],
+        [2.57*side,.94],[1.62*side,.94],[1.43*side,1.12]],
+      [[3.31*side,1.76],[3.31*side,2.42],[2.79*side,2.69],[2.13*side,2.69],[1.81*side,2.96]],
+      [[.32*side,1.59],[.68*side,1.95],[.68*side,2.44],[1.21*side,3.04],[1.21*side,3.69]],
+    ]),
+    circularPath(0,1.44,.85,-.37,3.50,29),
+    circularPath(0,1.44,1.08,3.60,6.21,25),
+  ];
+  const etching = new THREE.MeshBasicMaterial({
+    color:0x6796a5, transparent:true, opacity:.39, side:THREE.DoubleSide, depthWrite:false,
+  });
+  solid(scene,etchedLines(fieldTraces,.026),etching,0,.281,0);
+  const goldInlay = new THREE.MeshBasicMaterial({color:0xa56d4f,side:THREE.DoubleSide});
+  solid(scene,etchedLines([
+    [[-3.27,-4.47],[3.27,-4.47]],
+    [[-3.26,3.91],[-3.08,4.26],[-1.23,4.26],[-.96,4.57],[.96,4.57],[1.23,4.26],[3.08,4.26],[3.26,3.91]],
+    Array.from({length:33},(_,index) => {
+      const angle = index*Math.PI/16;
+      const radius = index%4===1 || index%4===2 ? .57 : .47;
+      return [Math.cos(angle)*radius,1.44+Math.sin(angle)*radius];
+    }),
+    [[-.30,1.44],[0,1.14],[.30,1.44],[0,1.74],[-.30,1.44]],
+  ],.035),goldInlay,0,.282,0);
 
   for (const sign of [-1,1]) {
-    fixed(walnut, sign*3.96,.39,0, .23,.47,10.13);
-    fixed(bronze, sign*3.96,.63,0, .30,.10,10.2);
-    fixed(brass, sign*3.96,.691,0, .09,.03,10.21);
-    fixed(enamel, sign*3.73,.34,.05, .11,.12,9.34);
-    fixed(jade, sign*3.7,.41,-.92, .06,.022,6.3);
-    fixed(iron, sign*3.05,-.48,3.73,.37,.3,.52);
-    fixed(iron, sign*3.05,-.48,-3.73,.37,.3,.52);
-    for (let j=0;j<6;j++) {
-      const z = -4.5 + j*1.7;
-      fixed(bronze, sign*4.05,.5,z, .34,.43,.29);
-      fixed(brass, sign*4.03,.71,z, .16,.045,.15);
-      fixed(iron, sign*3.65,.29,z,.14,.06,.38);
+    fixed(walnut,sign*3.96,.39,0,.23,.47,10.13);
+    fixed(bronze,sign*3.96,.60,0,.30,.17,10.2);
+    fixed(brass,sign*3.96,.695,0,.11,.038,10.16);
+    fixed(stationShell,sign*3.73,.37,.05,.11,.20,9.34);
+    fixed(edgeLight,sign*3.674,.464,-.60,.032,.022,7.26);
+    for (const z of [-3.16,-.60,1.96,3.96]) {
+      fixed(iron,sign*4.02,.46,z,.35,.38,.58);
+      fixed(bronze,sign*4.03,.64,z,.34,.20,.54);
+      fixed(brass,sign*4.02,.757,z,.24,.052,.39);
+      fixed(ember,sign*4.02,.786,z,.07,.027,.19);
     }
     for (const z of [-5.0,5.0]) {
-      fixed(brass, sign*3.96,.57,z,.39,.57,.48);
-      fixed(iron, sign*3.95,.878,z,.115,.03,.13);
+      fixed(brass,sign*3.96,.57,z,.39,.57,.48);
+      fixed(bronze,sign*3.96,.865,z,.275,.085,.35);
+      fixed(ember,sign*3.96,.912,z,.107,.025,.157);
     }
-  }
-
-  for (const z of [-5.02,4.99]) {
-    fixed(walnut, 0,.32,z,8.05,.44,.27);
-    fixed(bronze,0,.57,z,8.03,.12,.28);
-    fixed(brass,0,.647,z,7.94,.024,.10);
-  }
-  fixed(dark,0,.29,4.44,2.02,.05,.73);
-  fixed(iron,0,.32,4.8,2.33,.075,.10);
-  for (let i=-4; i<=4; i++) fixed(bronze,i*.22,.347,4.46,.052,.032,.67);
-
-  // The centerline wiring is inset into the same cabinet that owns collision coordinates.
-  for (const lane of LANES) {
-    const x = RAIL_X[lane];
-    fixed(enamel,x,.288,-.98,.72,.045,3.38);
-    for (const sign of [-1,1]) {
-      fixed(bronze,x+sign*.34,.317,-.98,.045,.058,3.38);
-      for (let j=0;j<5;j++) fixed(brass,x+sign*.34,.346,-2.56+j*.72,.14,.06,.16);
-    }
-    for (let stripe=0;stripe<9;stripe++) {
-      fixed(stripe%3===0 ? bronze : iron, x,.295,-2.43+stripe*.37,.59,.022,.024);
-    }
-  }
-  for (const sign of [-1,1]) {
     fixed(iron,sign*2.8,.32,1.35,.82,.16,.38);
     fixed(bronze,sign*2.8,.43,1.35,.58,.10,.42);
-    fixed(brass,sign*2.8,.49,1.35,.30,.06,.18);
+    fixed(ember,sign*2.8,.49,1.35,.34,.045,.087);
     fixed(iron,sign*2.84,.32,3.18,1.0,.22,.84);
+    fixed(iron,sign*5.42,.02,-4.71,.71,1.05,.69);
+    fixed(bronze,sign*5.42,.56,-4.71,.74,.11,.71);
+    fixed(ember,sign*5.42,.25,-4.347,.42,.08,.025);
   }
-  for (let i=0;i<8;i++) {
-    fixed(i%2 ? jade : iron, 0,.282,1.12+i*.279,.21,.019,.12);
+  for (const z of [-5.02,4.99]) {
+    fixed(walnut,0,.32,z,8.05,.44,.27);
+    fixed(bronze,0,.57,z,8.03,.12,.28);
+    fixed(brass,0,.647,z,7.94,.035,.1);
   }
-  for (const sign of [-1, 1]) {
-    for (let row=0; row<3; row++) for (let col=0; col<4; col++) {
-      fixed(col%3===0 ? walnut : iron, sign*(6+col*.5), -.25+row*.36,-4.5-col*.17,.49,.34,.55);
-    }
-    fixed(stationShell, sign*5.5, .66,-4.7,.78,1.5,.43);
-    fixed(bronze, sign*5.5,1.44,-4.7,.91,.17,.51);
-    fixed(enamel, sign*5.5,.66,-4.45,.56,.85,.15);
-    fixed(brass,sign*5.5,.83,-4.34,.36,.24,.055);
-  }
+  fixed(dark,0,.29,4.44,2.05,.05,.78);
+  fixed(bronze,0,.337,4.83,2.29,.092,.115);
+  for (let i=-4;i<=4;i++) fixed(i%2 ? bronze : brass,i*.22,.347,4.48,.061,.047,.67);
+  fixed(stationShell,0,-.049,5.183,4.77,.132,.045);
+  for (let i=-8;i<=8;i++) fixed(iron,i*.24,-.039,5.214,.12,.070,.021);
   bakeBoxes();
 
   function gear(parent, mat, radius, thick, x,y,z) {
     const g = new THREE.Group();
     parent.add(g);
     g.position.set(x,y,z);
-    solid(g, gearCore, mat, 0,0,0, radius*1.57,thick,radius*1.57);
-    for (let i=0;i<8;i++) {
-      const a = Math.PI * i / 4;
-      const cog = solid(g, box, mat, Math.cos(a)*radius*.84,0,Math.sin(a)*radius*.84,.35*radius,thick,.36*radius);
-      cog.rotation.y = -a;
-    }
-    solid(g, gearCore, iron, 0,thick*.58,0,radius*.62,thick*.30,radius*.62);
+    solid(g,gearTeeth,mat,0,-thick/2,0,radius,thick,radius);
+    solid(g,gearCore,iron,0,thick*.55,0,radius*1.20,thick*.30,radius*1.20);
     return g;
   }
 
+  const targetSocket = new THREE.LatheGeometry([
+    [.63,0],[.70,.05],[.70,.14],[.54,.23],[.52,.36],[.41,.42],[.35,.42],
+  ].map(([r,y]) => new THREE.Vector2(r,y)),12);
+  const targetLens = new THREE.LatheGeometry([
+    [0,0],[.30,0],[.30,.07],[.235,.157],[.09,.192],[0,.192],
+  ].map(([r,y]) => new THREE.Vector2(r,y)),12);
+  const haloGeometry = new THREE.PlaneGeometry(2.34,2.34).rotateX(-Math.PI/2);
   const rails = {};
   for (const lane of LANES) {
     const tint = RAIL_COLORS[lane];
@@ -255,15 +352,24 @@ export function mountTable(host, onLoss, onRestore) {
     palette.set(lane,lamp);
     const station = new THREE.Group();
     scene.add(station);
-    solid(station, box, dark,0,.33,0,1.34,.16,1.15);
-    solid(station, box, bronze,0,.43,0,1.21,.16,1.06);
-    solid(station, box, iron,0,.55,0,1.06,.18,.87);
-    solid(station, jewel, brass,0,.70,0,1.03,.14,1.03);
-    const rotor = gear(station, brass, .49, .13, 0,.82,0);
-    solid(rotor, jewel, lamp, 0,.16,0,.53,.20,.53);
-    solid(rotor, jewel, lamp,0,.27,0,.24,.08,.24);
-    solid(station, box, lamp,0,.57,.46,.47,.085,.032);
-    const ring = solid(station, new THREE.RingGeometry(.61,.77,8).rotateX(-Math.PI/2), groundGlow,0,.288,0);
+    solid(station,gearCore,dark,0,.326,0,1.48,.09,1.48);
+    solid(station,targetSocket,bronze,0,.34,0);
+    solid(station,gearCore,iron,0,.68,0,1.08,.21,1.08);
+    const rotor = gear(station,brass,.52,.13,0,.82,0);
+    solid(rotor,targetLens,lamp,0,.069,0);
+    solid(station,box,lamp,0,.52,.604,.34,.071,.027);
+    const halo = new THREE.ShaderMaterial({
+      uniforms:{ tint:{value:new THREE.Color(tint)}, strength:{value:.42} },
+      vertexShader:`varying vec2 lensUV; void main(){lensUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+      fragmentShader:`uniform vec3 tint; uniform float strength; varying vec2 lensUV;
+        void main() {
+          float edge=length(lensUV-0.5)*2.0;
+          gl_FragColor=vec4(tint,(1.0-smoothstep(0.34,0.98,edge))*strength);
+          #include <colorspace_fragment>
+        }`,
+      transparent:true,depthWrite:false,
+    });
+    const ring = solid(station,haloGeometry,halo,0,.283,0);
     const gate = new THREE.Group();
     gate.position.z = -2.58;
     scene.add(gate);
@@ -274,7 +380,30 @@ export function mountTable(host, onLoss, onRestore) {
     }
     const arm = solid(gate,box,bronze,0,.62,0,.78,.17,.14);
     const armLight = solid(gate,box,lamp,0,.622,.083,.56,.05,.033);
-    const bus = solid(scene,box,lamp,RAIL_X[lane],.29,-.97,.08,.014,3.13);
+    const channel = new THREE.Group();
+    const bend = lane === 'L' ? -.26 : lane === 'R' ? .26 : .14;
+    const raceway = new THREE.CatmullRomCurve3([
+      pos(0,0,-3.35),pos(0,0,-2.63),pos(bend,0,-1.63),
+      pos(bend,0,-.64),pos(0,0,.11),pos(0,0,.47),
+    ]);
+    solid(channel,new THREE.TubeGeometry(raceway,28,.175,8,false),stationShell,0,.26,0);
+    solid(channel,new THREE.TubeGeometry(raceway,28,.124,8,false),bronze,0,.313,0);
+    const bus = solid(channel,new THREE.TubeGeometry(raceway,28,.055,7,false),lamp,0,.432,0);
+    const cradles = new THREE.InstancedMesh(box,brass,6);
+    const marker = new THREE.Object3D();
+    marker.scale.set(.12,.078,.20);
+    let cradleIndex = 0;
+    for (const z of [-2.06,-.83,.30]) {
+      const x = z > 0 ? 0 : bend*.92;
+      for (const sign of [-1,1]) {
+        marker.position.set(x+sign*.17,.35,z);
+        marker.rotation.y = sign*.20;
+        marker.updateMatrix();
+        cradles.setMatrixAt(cradleIndex++,marker.matrix);
+      }
+    }
+    channel.add(cradles);
+    scene.add(channel);
     const bridge = new THREE.Group();
     bridge.position.set(RAIL_X[lane],.27,-1.77);
     const turn = lane==='L' ? 1 : -1;
@@ -284,26 +413,32 @@ export function mountTable(host, onLoss, onRestore) {
     ]);
     solid(bridge,new THREE.TubeGeometry(curve,20,.034,6,false),lamp,0,0,0);
     scene.add(bridge);
-    rails[lane] = { station, rotor, ring, gate, arm, armLight, bus, bridge };
+    rails[lane] = { station, rotor, ring, gate, arm, armLight, channel, bus, bridge };
   }
 
   const paddles = {};
   const paddleShape = steppedPaddle();
+  const paddleInsert = horizontalShape([
+    [.28,-.118],[1.33,-.087],[1.67,-.021],[1.67,.037],[1.46,.103],[.42,.164],[.18,.114],
+  ],.032,.027);
   for (const side of ['L','R']) {
     const g = new THREE.Group();
     g.position.set(SIDE_X[side], .415, 3.18);
     scene.add(g);
     const sign = side === 'L' ? 1 : -1;
-    const paddle = solid(g, paddleShape, brass,0,0,0,sign,1,1);
-    const pad = solid(g, box,jade, sign*.92,.164,.008, 1.19,.033,.23);
-    pad.rotation.y = sign*.028;
-    solid(g, jewel, metal,0,.19,0,.37,.18,.37);
-    solid(g,box,ceramic,sign*1.52,.19,-.022,.18,.025,.11);
+    solid(g,paddleShape,dark,0,-.061,0,sign,.64,1.08);
+    const paddle = solid(g,paddleShape,brass,0,0,0,sign,1,1);
+    solid(g,paddleInsert,jade,0,.163,0,sign,1,1);
+    solid(g,jewel,bronze,0,.195,0,.43,.125,.43);
+    solid(g,jewel,metal,0,.270,0,.263,.075,.263);
+    solid(g,box,ceramic,sign*1.40,.223,.021,.25,.018,.063);
     const ring = solid(scene, new THREE.RingGeometry(.31,.43,12).rotateX(-Math.PI/2), groundGlow.clone(), SIDE_X[side], .292, 3.18);
     paddles[side] = {group:g,paddle,ring};
   }
 
-  const ballMat = material(STEEL,.35,.19);
+  const ballMat = new THREE.MeshPhysicalMaterial({
+    color:STEEL,metalness:.54,roughness:.23,clearcoat:1,clearcoatRoughness:.10,
+  });
   const ball = solid(scene,new THREE.SphereGeometry(.229,20,14),ballMat,0,.6,4);
   const stripe = solid(ball,new THREE.TorusGeometry(.207,.016,8,20), ceramic,0,0,0);
   const shadow = solid(scene, new THREE.CircleGeometry(.31,16).rotateX(-Math.PI/2),
@@ -321,31 +456,39 @@ export function mountTable(host, onLoss, onRestore) {
 
   // Rux is cut from the same stepped-anatomy shapes as the approved reference.
   const rux = new THREE.Group();
-  rux.position.set(-3.53, .29, -4.24);
-  rux.scale.setScalar(.53);
+  rux.position.set(-3.39, .29, -4.17);
+  rux.scale.setScalar(.64);
   rux.rotation.y = .23;
   scene.add(rux);
   const hood = material(0x87929f);
   const leather = material(0x895334);
   const ear = material(0xd58f77);
+  const sculptedBlock = cabinetPanel(.94,.94,.11,.90,.045);
+  sculptedBlock.translate(0,-.45,0);
+  const goggleGlass = new THREE.MeshStandardMaterial({
+    color:0x27b4ad,emissive:0x137579,emissiveIntensity:.5,metalness:.35,roughness:.19,
+  });
   for (const sign of [-1,1]) {
-    solid(rux,box,slate,sign*.41,.33,0,.65,.62,.61);
-    solid(rux,box,bronze,sign*.41,.13,.21,.62,.26,.92);
+    solid(rux,sculptedBlock,slate,sign*.41,.33,0,.65,.62,.61);
+    solid(rux,sculptedBlock,bronze,sign*.41,.13,.21,.62,.26,.92);
     solid(rux,box,brass,sign*.43,.14,.67,.18,.18,.11);
   }
-  solid(rux,box,slate,0,1.03,0,1.42,1.17,.76);
+  solid(rux,sculptedBlock,slate,0,1.03,0,1.42,1.17,.76);
   solid(rux,box,jade,0,1.56,.14,1.51,.29,.82);
+  solid(rux,box,jade,-.47,1.36,.51,.36,.51,.14);
   solid(rux,box,leather,0,.76,.04,1.51,.26,.85);
   solid(rux,box,brass,0,.76,.49,.34,.34,.13);
   solid(rux,box,bronze,0,1.28,-.58,1.18,.92,.64);
+  solid(rux,box,iron,0,1.31,-.916,.88,.63,.077);
+  for (const x of [-.23,0,.23]) solid(rux,box,ember,x,1.31,-.959,.085,.40,.041);
   solid(rux,box,brass,.35,1.89,-.7,.26,.43,.31);
   solid(rux,box,rails.C.armLight.material,-.34,1.31,-.92,.27,.45,.062);
   const head = new THREE.Group();
   head.position.y = 1.87;
   rux.add(head);
-  solid(head,box,hood,0,.49,0,1.62,1.09,1.04);
-  solid(head,box,slate,0,.12,.62,1.35,.50,.63);
-  solid(head,box,hood,0,.17,.92,1.26,.40,.24);
+  solid(head,sculptedBlock,hood,0,.49,0,1.62,1.09,1.04);
+  solid(head,sculptedBlock,slate,0,.12,.62,1.35,.50,.63);
+  solid(head,sculptedBlock,hood,0,.17,.92,1.26,.40,.24);
   for (const sign of [-1,1]) {
     solid(head,box,hood,sign*.59,1.18,0,.43,.55,.38);
     solid(head,box,ear,sign*.59,1.20,.204,.26,.33,.04);
@@ -353,8 +496,9 @@ export function mountTable(host, onLoss, onRestore) {
     solid(head,box,dark,sign*.43,.53,.534,.34,.35,.052);
     solid(head,box,ceramic,sign*.43,.514,.565,.23,.24,.049);
     solid(head,box,dark,sign*.38,.51,.594,.14,.18,.041);
-    solid(head,box,brass,sign*.43,.92,.45,.45,.32,.25);
-    solid(head,box,jade,sign*.43,.92,.592,.31,.20,.075);
+    solid(head,box,bronze,sign*.43,.92,.45,.52,.37,.25);
+    solid(head,box,brass,sign*.43,.92,.588,.44,.31,.065);
+    solid(head,box,goggleGlass,sign*.43,.92,.63,.34,.22,.064);
   }
   const horn = gear(head, brass,.38,.19,0,.44,.97);
   horn.rotation.x = Math.PI*.5;
@@ -363,8 +507,8 @@ export function mountTable(host, onLoss, onRestore) {
     const arm = new THREE.Group();
     arm.position.set(sign*.89,1.38,0);
     rux.add(arm);
-    solid(arm,box,jade,0,-.16,0,.49,.40,.49);
-    solid(arm,box,slate,0,-.54,.04,.43,.54,.43);
+    solid(arm,sculptedBlock,jade,0,-.16,0,.49,.40,.49);
+    solid(arm,sculptedBlock,slate,0,-.54,.04,.43,.54,.43);
     solid(arm,box,bronze,0,-.51,.259,.44,.19,.12);
     solid(arm,box,hood,0,-.85,.11,.46,.26,.45);
     armPivots.push(arm);
@@ -374,7 +518,7 @@ export function mountTable(host, onLoss, onRestore) {
   let removed = false;
   let lastFinish = null;
   let lastWidth = 0, lastHeight = 0;
-  let strikeSide = '', strikeTime = -Infinity, contactLane = '', contactTime = -Infinity;
+  let strikeTime = -Infinity, contactLane = '', contactTime = -Infinity;
   let trailCount = 0, trailClock = 0;
   let lastChapter = 0;
   let lastCall = 0;
@@ -389,6 +533,10 @@ export function mountTable(host, onLoss, onRestore) {
     };
   };
 
+  const visibleTable = projectedTableBounds(camera,rux);
+  const viewSize = visibleTable.getSize(new THREE.Vector2());
+  const viewCenter = visibleTable.getCenter(new THREE.Vector2());
+
   function resize() {
     const width = host.clientWidth;
     const height = host.clientHeight;
@@ -397,12 +545,14 @@ export function mountTable(host, onLoss, onRestore) {
     lastHeight = height;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(width, height, false);
-    const aspect = width / height;
-    const span = Math.max(9.64,9.22/aspect) / 2;
-    camera.left = -span*aspect;
-    camera.right = span*aspect;
-    camera.top = span;
-    camera.bottom = -span;
+    const margin = Math.min(width,height)*.026;
+    const unitsPerPixel = Math.max(viewSize.x / (width-2*margin), viewSize.y / (height-2*margin));
+    const halfWidth = width*unitsPerPixel/2;
+    const halfHeight = height*unitsPerPixel/2;
+    camera.left = viewCenter.x-halfWidth;
+    camera.right = viewCenter.x+halfWidth;
+    camera.top = viewCenter.y+halfHeight;
+    camera.bottom = viewCenter.y-halfHeight;
     camera.updateProjectionMatrix();
   }
 
@@ -426,7 +576,6 @@ export function mountTable(host, onLoss, onRestore) {
 
   function respond(event, state, motionTime) {
     if (event.type === 'strike') {
-      strikeSide = state.side;
       strikeTime = motionTime;
       sparkOrigin.copy(contact(state.side,state.catchAt));
       sparkTime = motionTime;
@@ -439,17 +588,17 @@ export function mountTable(host, onLoss, onRestore) {
     }
   }
 
-  function render(state, finish, time, reduced) {
+  function render(state, finish, time, reduced, flipperTime) {
     if (lost || removed) return;
     resize();
     if (state.stage.chapter !== lastChapter) {
       lastChapter = state.stage.chapter;
       const night = lastChapter > 1;
-      inlay.color.setHex(night ? 0x214560 : 0x296574);
-      daylight.color.setHex(night ? 0xb5d9ff : 0xffdeaf);
-      rim.color.setHex(night ? 0xaab3ff : 0x55ceff);
-      scene.fog.color.setHex(night ? 0x10152e : 0x091522);
-      renderer.setClearColor(night ? 0x10152e : 0x0b1924);
+      colorField(night);
+      daylight.color.setHex(night ? 0xe0c6fc : 0xffc196);
+      rim.color.setHex(night ? 0x68b8fa : 0x65cfff);
+      scene.fog.color.setHex(night ? 0x0e1631 : 0x081d30);
+      renderer.setClearColor(night ? 0x0e1631 : 0x081d30);
     }
     if (finish !== lastFinish) {
       lastFinish = finish;
@@ -466,7 +615,7 @@ export function mountTable(host, onLoss, onRestore) {
     const contactKick = clamp(1 - (time-contactTime)/280,0,1);
     const strikeKick = clamp(1 - (time-strikeTime)/255,0,1);
     for (const lane of LANES) {
-      const { station, rotor, gate, arm, armLight, ring, bus, bridge } = rails[lane];
+      const { station, rotor, gate, arm, armLight, ring, channel, bus, bridge } = rails[lane];
       const location = target(lane,state.stage.railSpread);
       station.position.set(location.x,0,location.z);
       gate.position.x = location.x;
@@ -480,16 +629,18 @@ export function mountTable(host, onLoss, onRestore) {
       rotor.rotation.y = reduced ? 0 : time*.00062 + impact*.58;
       const enabled = (goal === lane || current === lane) && !blocked;
       const lit = state.stage.order.slice(0,state.index).includes(lane);
-      palette.get(lane).emissiveIntensity = .14 + (enabled ? .44 : 0) + (lit ? .52 : 0) + impact*.75;
+      palette.get(lane).emissiveIntensity = .13 + (enabled ? .83 : 0) + (lit ? .64 : 0) + impact*.79;
       ring.visible = goal === lane || lit;
       ring.scale.setScalar(1 + impact*.15);
-      bus.position.x = location.x;
+      ring.material.uniforms.strength.value = (blocked ? .18 : .44) + impact*.23;
+      channel.position.x = location.x;
       bus.visible = enabled || lit;
+      bridge.position.x = location.x;
       bridge.visible = state.stage.feedback && lane!=='C';
     }
     for (const [side, {group,ring}] of Object.entries(paddles)) {
       const ready = (side === state.side && state.phase === 'return') || state.phase === 'ready';
-      const attack = side === strikeSide ? strikeKick : 0;
+      const attack = flipperLift(time-flipperTime[side]);
       group.rotation.y = (side === 'L' ? 1 : -1) * (-.13 + (reduced ? .38 : .76)*attack);
       ring.visible = ready || attack > 0;
       ring.material.opacity = current && ready ? .58 : .18 + attack*.4;
