@@ -1,0 +1,12 @@
+{
+  "generator": "Codex built-in ImageGen",
+  "source": "exec-f6f0f0d3-0d92-4765-bd24-5a18cafae952.png",
+  "sourceSha256": "9d9ff226fcb94461a04d98ece5cf06e9237871bec260241960c5dfb8c6925f59",
+  "layout": [
+    "pump cartridge",
+    "siphon",
+    "turbine",
+    "warm coil"
+  ],
+  "prompt": "Make a square 2 by 2 game inventory art atlas, exact equal quadrants with objects centered and wide dark blue/teal negative space per tile, no frames crossing quadrant seams. Top left: compact brass and purple pump impeller cartridge with blue glass. Top right: S-shaped cobalt siphon tube drawing one little cyan cube of water. Bottom left: octagonal bronze turbine wheel with teal blades. Bottom right: orange dual warm-water coil with little snowy rims. All are four distinct isometric authored 3D objects in the WeightPlay Block Animals setting, reference poster only for the waterworks industrial shape language, saturated blue and bronze with warm accents, crafted metal shapes, strong silhouettes at 40px, each occupying about 60 percent of its cell. Even lighting and dark midnight workshop background, no labels, titles, numbers, lettering, people, outlines, gradients-as-objects, or watermark."
+}
