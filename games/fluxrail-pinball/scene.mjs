@@ -1,26 +1,19 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=3d9dfa2d61a6f9c6';
-import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=3d9dfa2d61a6f9c6';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=853cb90130efea70';
+import { ballRest, closedBy, flipperAngle, inReach, LANES, PHYSICS, targetPosition } from './model.mjs?v=physics-v6&wp-media=853cb90130efea70';
 
 const STEEL = 0xcfe8ed;
 const COPPER = 0xef9b54;
 const AURORA = 0x9176ff;
 const RAIL_X = { L:-2.42, C:0, R:2.42 };
 const RAIL_COLORS = { L:0xffb45f, C:0x74f4ef, R:0xbda3ff };
-const SIDE_X = { L:-2.84, R:2.84 };
-const lerp = THREE.MathUtils.lerp;
+const Z = PHYSICS.lengthScale;
+const SIDE_X = { L:-PHYSICS.pivotX, R:PHYSICS.pivotX };
 const clamp = THREE.MathUtils.clamp;
+const lerp = THREE.MathUtils.lerp;
 const pos = (x, y, z) => new THREE.Vector3(x, y, z);
 
-export const FLIPPER_STROKE_MS = 150;
-
-function flipperLift(elapsed) {
-  const rise = 24;
-  if (elapsed < rise) return .72 + .28*elapsed/rise;
-  return Math.pow(clamp(1 - (elapsed-rise)/(FLIPPER_STROKE_MS-rise), 0, 1), 1.4);
-}
-
 function projectedTableBounds(camera, mascot) {
-  const cabinet = new THREE.Box3(pos(-4.24,-.61,-5.3),pos(4.24,.9,5.3));
+  const cabinet = new THREE.Box3(pos(-4.28,-.65,-5.28*Z),pos(4.28,.9,5.28*Z));
   const bounds = new THREE.Box2();
   camera.updateMatrixWorld(true);
   for (const {min,max} of [cabinet, new THREE.Box3().setFromObject(mascot)]) {
@@ -76,66 +69,6 @@ function etchedLines(paths, width) {
   return geometry;
 }
 
-function cubic(a, b, c, d, amount) {
-  const k = 1 - amount;
-  return a.clone().multiplyScalar(k * k * k)
-    .addScaledVector(b, 3 * k * k * amount)
-    .addScaledVector(c, 3 * k * amount * amount)
-    .addScaledVector(d, amount * amount * amount);
-}
-
-function contact(side, progress) {
-  const fraction = clamp((progress - RETURN_OPEN) / (RETURN_END - RETURN_OPEN), 0, 1);
-  const reach = lerp(.28, 1.7, fraction);
-  return pos(SIDE_X[side] + (side === 'L' ? reach : -reach), .62, 3.18 + reach * .13);
-}
-
-function target(lane, spread) {
-  return pos(RAIL_X[lane] * spread, .62, -3.52);
-}
-
-function destination(state) {
-  const end = target(state.lane, state.stage.railSpread);
-  if (state.hit ? state.hit.blocked : closedBy(state, state.lane)) end.z += .94;
-  return end;
-}
-
-function ballPosition(state) {
-  const p = returnProgress(state);
-  const sign = state.side === 'L' ? -1 : 1;
-  if (state.phase === 'ready') return pos(3.42, .59, 3.38);
-  if (state.phase === 'return') {
-    if (state.source === 'serve') {
-      const rail = pos(3.42, .6, -3.27);
-      if (p < .16) return cubic(pos(3.42,.59,3.38), pos(3.54,.6,1.15), pos(3.5,.6,-1.03), rail, p / .16);
-      if (p < RETURN_OPEN) {
-        return cubic(rail, pos(sign * 3.7,.6,-4.25), pos(sign * 3.56,.64,1.9),
-          contact(state.side, RETURN_OPEN), (p - .16) / (RETURN_OPEN - .16));
-      }
-      return contact(state.side, p);
-    }
-    if (p >= RETURN_OPEN && state.source !== 'rescue') return contact(state.side, p);
-    if (state.source === 'rescue') {
-      const end = contact(state.side, RETURN_OPEN);
-      return p < RETURN_OPEN
-        ? cubic(pos(0,.65,4.45), pos(sign*1.3,1.3,1.1), pos(sign*3.7,.75,2.4), end, p/RETURN_OPEN)
-        : contact(state.side, p);
-    }
-    const initial = destination(state);
-    return cubic(initial, pos(sign * 4.09,.65,-3.55), pos(sign * 4.15,.65,2.66),
-      contact(state.side, RETURN_OPEN), p / RETURN_OPEN);
-  }
-  if (state.phase === 'shot') {
-    const start = contact(state.side, state.catchAt);
-    const end = destination(state);
-    return cubic(start, pos(start.x*.92,.69,1.3), pos(end.x,.7,-1.5), end, p);
-  }
-  if (state.phase === 'drain' || !state.won) {
-    return pos(lerp(sign*1.14, 0, p), lerp(.6,.12,p), lerp(3.41,4.68,p));
-  }
-  return destination(state);
-}
-
 export function mountTable(host, onLoss, onRestore) {
   const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false, powerPreference:'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -146,32 +79,32 @@ export function mountTable(host, onLoss, onRestore) {
   host.replaceChildren(renderer.domElement);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x081d30, 22, 39);
+  scene.fog = new THREE.Fog(0x081d30, 31, 47);
   const camera = new THREE.OrthographicCamera(-5,5,5,-5, .1, 75);
   const tableTarget = new THREE.Vector3(0, .12, -.15);
-  scene.add(new THREE.HemisphereLight(0xb3d8ef, 0x74412b, 1.86));
-  const daylight = new THREE.DirectionalLight(0xffc196, 3.1);
+  scene.add(new THREE.HemisphereLight(0xd3edfa, 0x6d453b, 1.44));
+  const daylight = new THREE.DirectionalLight(0xffe1bd, 3.25);
   daylight.position.set(-4, 9, -4);
   scene.add(daylight);
-  const rim = new THREE.DirectionalLight(0x65cfff, 2.46);
+  const rim = new THREE.DirectionalLight(0x8cddff, 1.86);
   rim.position.set(5, 6, 3);
   scene.add(rim);
 
   const material = (color, metalness = .12, roughness = .49) => new THREE.MeshStandardMaterial({ color, metalness, roughness });
   const enamel = material(0x142736, .28, .41);
   const inlay = new THREE.MeshPhysicalMaterial({
-    vertexColors:true, metalness:.16, roughness:.45, clearcoat:.65, clearcoatRoughness:.39,
+    vertexColors:true, metalness:.18, roughness:.48, clearcoat:.30, clearcoatRoughness:.53,
   });
-  const bronze = material(0xa64528, .5, .34);
-  const brass = material(0xdca347, .47, .24);
-  const walnut = material(0x44241f, .07);
-  const iron = material(0x1a2e41, .36);
+  const bronze = material(0xb46e47, .43, .33);
+  const brass = material(0xe0b566, .52, .28);
+  const walnut = material(0x30201d, .16, .37);
+  const iron = material(0x182b37, .42, .39);
   const dark = material(0x09101d);
   const metal = material(0x95abbf, .57, .26);
   const jade = material(0x108783, .27, .29);
   const ceramic = material(0xffdb9b);
-  const workFloor = new THREE.MeshBasicMaterial({color:0x1a2230});
-  const floorSeam = new THREE.MeshBasicMaterial({color:0x101721});
+  const workFloor = new THREE.MeshBasicMaterial({color:0x101923});
+  const floorSeam = new THREE.MeshBasicMaterial({color:0x101923});
   const stationShell = material(0x0b3542, .35, .38);
   const edgeLight = new THREE.MeshBasicMaterial({color:0x2eaca9});
   const ember = new THREE.MeshBasicMaterial({color:0xffa343});
@@ -186,6 +119,9 @@ export function mountTable(host, onLoss, onRestore) {
     const radius = index%4===1 || index%4===2 ? .97 : .78;
     return [Math.cos(angle)*radius,Math.sin(angle)*radius];
   }),1,.034);
+  const graphite = material(0x223844,.40,.38);
+  const rubber = material(0x131e23,.10,.54);
+  const porcelain = material(0xebd2a5,.22,.36);
   const groundGlow = new THREE.MeshBasicMaterial({ color:0x62dff3, transparent:true, opacity:.12, depthWrite:false });
 
   function solid(parent, geometry, mat, x,y,z, sx=1,sy=1,sz=1) {
@@ -231,13 +167,14 @@ export function mountTable(host, onLoss, onRestore) {
     return mesh;
   }
 
-  fixed(workFloor,0,-.68,0,23,.17,22);
+  fixed(workFloor,0,-.68,0,23,.17,25);
   for (let z=-10;z<=10;z++) {
     fixed(floorSeam,0,-.588,z,21,.012,.036);
     for (let x=-9;x<=9;x+=2.4) {
       fixed(floorSeam,x+(z%2===0 ? -1.2 : 1.2),-.583,z+.51,.036,.013,1.01);
     }
   }
+  const cabinetStart = scene.children.length;
   solid(scene,cabinetPanel(8.07,10.28,.30,.34,.10),iron,0,-.49,0);
   solid(scene,cabinetPanel(8.08,10.24,.26,.27,.09),walnut,0,-.17,0);
   solid(scene,cabinetPanel(7.95,10.21,.22,.12,.077),bronze,0,.02,0);
@@ -249,8 +186,8 @@ export function mountTable(host, onLoss, onRestore) {
   const fieldColors = new Float32Array(fieldPositions.count*3);
   const fieldTint = new THREE.Color();
   function colorField(night) {
-    const edge = new THREE.Color(night ? 0x101b39 : 0x092135);
-    const center = new THREE.Color(night ? 0x3068a0 : 0x1c7580);
+    const edge = new THREE.Color(night ? 0x151b35 : 0x09303b);
+    const center = new THREE.Color(night ? 0x284a72 : 0x1c6267);
     for (let i=0;i<fieldPositions.count;i++) {
       const x = fieldPositions.getX(i), z = fieldPositions.getZ(i);
       const light = Math.exp(-(x*x*.105+(z+1.6)**2*.056));
@@ -276,10 +213,21 @@ export function mountTable(host, onLoss, onRestore) {
     circularPath(0,1.44,1.08,3.60,6.21,25),
   ];
   const etching = new THREE.MeshBasicMaterial({
-    color:0x6796a5, transparent:true, opacity:.39, side:THREE.DoubleSide, depthWrite:false,
+    color:0x9ac4bc, transparent:true, opacity:.48, side:THREE.DoubleSide, depthWrite:false,
   });
   solid(scene,etchedLines(fieldTraces,.026),etching,0,.281,0);
-  const goldInlay = new THREE.MeshBasicMaterial({color:0xa56d4f,side:THREE.DoubleSide});
+  const goldInlay = new THREE.MeshBasicMaterial({color:0xba9060,side:THREE.DoubleSide});
+  const ghostInk = new THREE.MeshBasicMaterial({color:0x194b52,side:THREE.DoubleSide});
+  solid(scene,etchedLines([
+    circularPath(0,.55,.94,-2.4,-.7,36),
+    circularPath(0,.55,1.11,.40,2.75,38),
+    circularPath(0,.55,1.40,3.45,5.98,38),
+    ...[-1,1].flatMap(side => [[
+      [side*.78,.91],[side*1.39,.44],[side*1.78,.44],[side*2.12,.08],[side*2.12,-.74],
+    ],[
+      [side*.63,1.79],[side*.91,1.95],[side*1.35,1.95],[side*1.86,1.50],[side*2.17,1.5],[side*2.53,1.16]
+    ]]),
+  ],.044),ghostInk,0,.2815,0);
   solid(scene,etchedLines([
     [[-3.27,-4.47],[3.27,-4.47]],
     [[-3.26,3.91],[-3.08,4.26],[-1.23,4.26],[-.96,4.57],[.96,4.57],[1.23,4.26],[3.08,4.26],[3.26,3.91]],
@@ -295,8 +243,15 @@ export function mountTable(host, onLoss, onRestore) {
     fixed(walnut,sign*3.96,.39,0,.23,.47,10.13);
     fixed(bronze,sign*3.96,.60,0,.30,.17,10.2);
     fixed(brass,sign*3.96,.695,0,.11,.038,10.16);
+    fixed(iron,sign*3.96,.14,0,.25,.17,10.04);
+    fixed(bronze,sign*4.081,.14,0,.045,.041,9.84);
+    fixed(rubber,sign*3.648,.345,0,.11,.18,9.52);
     fixed(stationShell,sign*3.73,.37,.05,.11,.20,9.34);
     fixed(edgeLight,sign*3.674,.464,-.60,.032,.022,7.26);
+    for (const z of [-4.2,-2.58,-1.34,.66,2.96,4.22]) {
+      fixed(enamel,sign*3.86,.686,z,.156,.056,.268);
+      fixed(metal,sign*3.86,.725,z,.092,.018,.125);
+    }
     for (const z of [-3.16,-.60,1.96,3.96]) {
       fixed(iron,sign*4.02,.46,z,.35,.38,.58);
       fixed(bronze,sign*4.03,.64,z,.34,.20,.54);
@@ -308,9 +263,7 @@ export function mountTable(host, onLoss, onRestore) {
       fixed(bronze,sign*3.96,.865,z,.275,.085,.35);
       fixed(ember,sign*3.96,.912,z,.107,.025,.157);
     }
-    fixed(iron,sign*2.8,.32,1.35,.82,.16,.38);
-    fixed(bronze,sign*2.8,.43,1.35,.58,.10,.42);
-    fixed(ember,sign*2.8,.49,1.35,.34,.045,.087);
+
     fixed(iron,sign*2.84,.32,3.18,1.0,.22,.84);
     fixed(iron,sign*5.42,.02,-4.71,.71,1.05,.69);
     fixed(bronze,sign*5.42,.56,-4.71,.74,.11,.71);
@@ -326,7 +279,38 @@ export function mountTable(host, onLoss, onRestore) {
   for (let i=-4;i<=4;i++) fixed(i%2 ? bronze : brass,i*.22,.347,4.48,.061,.047,.67);
   fixed(stationShell,0,-.049,5.183,4.77,.132,.045);
   for (let i=-8;i<=8;i++) fixed(iron,i*.24,-.039,5.214,.12,.070,.021);
+  // Static details run the full length of the new cabinet.
+  for (const instances of placed.values()) {
+    for (const item of instances) {
+      item[2] *= Z;
+      item[5] *= Z;
+    }
+  }
+  for (const mesh of scene.children.slice(cabinetStart)) {
+    mesh.position.z *= Z;
+    mesh.scale.z *= Z;
+  }
   bakeBoxes();
+
+  function guard(x1, z1, x2, z2) {
+    const length = Math.hypot(x2-x1,z2-z1);
+    const angle = -Math.atan2(z2-z1,x2-x1);
+    for (const [mat,y,h,w] of [[rubber,.385,.22,.16],[graphite,.505,.08,.19],[brass,.55,.024,.078]]) {
+      const mesh = solid(scene,box,mat,(x1+x2)/2,y,(z1+z2)/2,length,h,w);
+      mesh.rotation.y = angle;
+    }
+    for (const [x,z] of [[x1,z1],[x2,z2]]) solid(scene,jewel,metal,x,.567,z,.147,.052,.147);
+  }
+  for (const sign of [-1,1]) {
+    guard(sign*3.57,PHYSICS.top+.58,sign*2.98,PHYSICS.top+.02);
+    const laneMark = solid(scene, etchedLines([[
+      [sign*3.50,PHYSICS.pivotZ-1.73],[sign*2.71,PHYSICS.pivotZ+.44],
+    ]],.13), goldInlay,0,.283,0);
+    laneMark.renderOrder = 1;
+    guard(sign*3.54,PHYSICS.pivotZ+1.09,sign*1.19,PHYSICS.drainZ+.02);
+  }
+  const launchInsert = solid(scene, new THREE.RingGeometry(.29,.34,32).rotateX(-Math.PI/2), porcelain,0,.283,0);
+  launchInsert.visible = false;
 
   function gear(parent, mat, radius, thick, x,y,z) {
     const g = new THREE.Group();
@@ -339,10 +323,10 @@ export function mountTable(host, onLoss, onRestore) {
 
   const targetSocket = new THREE.LatheGeometry([
     [.63,0],[.70,.05],[.70,.14],[.54,.23],[.52,.36],[.41,.42],[.35,.42],
-  ].map(([r,y]) => new THREE.Vector2(r,y)),12);
+  ].map(([r,y]) => new THREE.Vector2(r,y)),28);
   const targetLens = new THREE.LatheGeometry([
     [0,0],[.30,0],[.30,.07],[.235,.157],[.09,.192],[0,.192],
-  ].map(([r,y]) => new THREE.Vector2(r,y)),12);
+  ].map(([r,y]) => new THREE.Vector2(r,y)),28);
   const haloGeometry = new THREE.PlaneGeometry(2.34,2.34).rotateX(-Math.PI/2);
   const rails = {};
   for (const lane of LANES) {
@@ -355,6 +339,12 @@ export function mountTable(host, onLoss, onRestore) {
     solid(station,targetSocket,bronze,0,.34,0);
     solid(station,gearCore,iron,0,.68,0,1.08,.21,1.08);
     const rotor = gear(station,brass,.52,.13,0,.82,0);
+    solid(station,new THREE.TorusGeometry(.584,.019,8,48).rotateX(-Math.PI/2),brass,0,.535,0);
+    solid(rotor,new THREE.TorusGeometry(.325,.018,8,40).rotateX(-Math.PI/2),porcelain,0,.115,0);
+    for (let i=0;i<6;i++) {
+      const angle = i*Math.PI/3;
+      solid(station,jewel,brass,Math.cos(angle)*.60,.548,Math.sin(angle)*.60,.108,.055,.108);
+    }
     solid(rotor,targetLens,lamp,0,.069,0);
     solid(station,box,lamp,0,.52,.604,.34,.071,.027);
     const halo = new THREE.ShaderMaterial({
@@ -370,7 +360,7 @@ export function mountTable(host, onLoss, onRestore) {
     });
     const ring = solid(station,haloGeometry,halo,0,.283,0);
     const gate = new THREE.Group();
-    gate.position.z = -2.58;
+    gate.position.z = PHYSICS.gateZ;
     scene.add(gate);
     for (const side of [-1,1]) {
       solid(gate,box,iron,side*.42,.51,0,.20,.48,.25);
@@ -385,9 +375,9 @@ export function mountTable(host, onLoss, onRestore) {
       pos(0,0,-3.35),pos(0,0,-2.63),pos(bend,0,-1.63),
       pos(bend,0,-.64),pos(0,0,.11),pos(0,0,.47),
     ]);
-    solid(channel,new THREE.TubeGeometry(raceway,28,.175,8,false),stationShell,0,.26,0);
-    solid(channel,new THREE.TubeGeometry(raceway,28,.124,8,false),bronze,0,.313,0);
-    const bus = solid(channel,new THREE.TubeGeometry(raceway,28,.055,7,false),lamp,0,.432,0);
+    solid(channel,new THREE.TubeGeometry(raceway,32,.165,10,false),stationShell,0,.119,0);
+    solid(channel,new THREE.TubeGeometry(raceway,32,.105,10,false),bronze,0,.187,0);
+    const bus = solid(channel,new THREE.TubeGeometry(raceway,32,.041,8,false),lamp,0,.263,0);
     const cradles = new THREE.InstancedMesh(box,brass,6);
     const marker = new THREE.Object3D();
     marker.scale.set(.12,.078,.20);
@@ -402,9 +392,11 @@ export function mountTable(host, onLoss, onRestore) {
       }
     }
     channel.add(cradles);
+    channel.scale.z = Z;
     scene.add(channel);
     const bridge = new THREE.Group();
-    bridge.position.set(RAIL_X[lane],.27,-1.77);
+    bridge.position.set(RAIL_X[lane],.27,-1.77*Z);
+    bridge.scale.z = Z;
     const turn = lane==='L' ? 1 : -1;
     const curve = new THREE.CatmullRomCurve3([
       pos(0,.05,-1.66),pos(turn*.29,.18,-1.17),pos(turn*.34,.31,.15),
@@ -422,7 +414,7 @@ export function mountTable(host, onLoss, onRestore) {
   ],.032,.027);
   for (const side of ['L','R']) {
     const g = new THREE.Group();
-    g.position.set(SIDE_X[side], .415, 3.18);
+    g.position.set(SIDE_X[side], .415, PHYSICS.pivotZ);
     scene.add(g);
     const sign = side === 'L' ? 1 : -1;
     solid(g,paddleShape,dark,0,-.061,0,sign,.64,1.08);
@@ -431,20 +423,20 @@ export function mountTable(host, onLoss, onRestore) {
     solid(g,jewel,bronze,0,.195,0,.43,.125,.43);
     solid(g,jewel,metal,0,.270,0,.263,.075,.263);
     solid(g,box,ceramic,sign*1.40,.223,.021,.25,.018,.063);
-    const ring = solid(scene, new THREE.RingGeometry(.31,.43,12).rotateX(-Math.PI/2), groundGlow.clone(), SIDE_X[side], .292, 3.18);
+    const ring = solid(scene, new THREE.RingGeometry(.31,.43,12).rotateX(-Math.PI/2), groundGlow.clone(), SIDE_X[side], .292, PHYSICS.pivotZ);
     paddles[side] = {group:g,paddle,ring};
   }
 
   const ballMat = new THREE.MeshPhysicalMaterial({
-    color:STEEL,metalness:.54,roughness:.23,clearcoat:1,clearcoatRoughness:.10,
+    color:STEEL,metalness:.34,roughness:.21,clearcoat:1,clearcoatRoughness:.10,
   });
-  const ball = solid(scene,new THREE.SphereGeometry(.229,20,14),ballMat,0,.6,4);
+  const ball = solid(scene,new THREE.SphereGeometry(PHYSICS.radius,32,24),ballMat,0,.6,4);
   const stripe = solid(ball,new THREE.TorusGeometry(.207,.016,8,20), ceramic,0,0,0);
   const shadow = solid(scene, new THREE.CircleGeometry(.31,16).rotateX(-Math.PI/2),
     new THREE.MeshBasicMaterial({ color:0x041220, transparent:true, opacity:.46, depthWrite:false }),0,.281,0);
-  const drainLight = solid(scene, box, new THREE.MeshBasicMaterial({color:0x6bf0e3, transparent:true, opacity:0}), 0,.39,4.28,1.8,.08,.09);
-  const trailMat = new THREE.MeshBasicMaterial({ color:0x81e4ff, transparent:true, opacity:.48, depthWrite:false });
-  const trail = Array.from({ length:7 }, (_, i) => solid(scene,new THREE.SphereGeometry(.075,9,6),trailMat,0,.4,0,1-i*.10,1-i*.10,1-i*.10));
+  const drainLight = solid(scene, box, new THREE.MeshBasicMaterial({color:0x6bf0e3, transparent:true, opacity:0}), 0,.39,4.28*Z,1.8,.08,.09);
+  const trailMat = new THREE.MeshBasicMaterial({ color:0x81e4ff, transparent:true, opacity:.22, depthWrite:false });
+  const trail = Array.from({ length:3 }, (_, i) => solid(scene,new THREE.SphereGeometry(.075,9,6),trailMat,0,.4,0,1-i*.10,1-i*.10,1-i*.10));
   const sparkMaterial = new THREE.MeshBasicMaterial({color:0xffe5a9, transparent:true, depthWrite:false});
   const sparks = new THREE.InstancedMesh(new THREE.BoxGeometry(.046,.061,.13),sparkMaterial,14);
   const sparkMarker = new THREE.Object3D();
@@ -455,7 +447,7 @@ export function mountTable(host, onLoss, onRestore) {
 
   // Rux is cut from the same stepped-anatomy shapes as the approved reference.
   const rux = new THREE.Group();
-  rux.position.set(-3.39, .29, -4.17);
+  rux.position.set(-3.39, .29, -4.17*Z);
   rux.scale.setScalar(.64);
   rux.rotation.y = .23;
   scene.add(rux);
@@ -516,7 +508,11 @@ export function mountTable(host, onLoss, onRestore) {
   let lost = false;
   let removed = false;
   let lastFinish = null;
-  let lastWidth = 0, lastHeight = 0;
+  let lastWidth = 0, lastHeight = 0, lastPixelRatio = 0;
+  const previousBall = new THREE.Vector2();
+  let rolling = false;
+  const rollAxis = new THREE.Vector3();
+  const point = pos(0,.504,0);
   let strikeTime = -Infinity, contactLane = '', contactTime = -Infinity;
   let trailCount = 0, trailClock = 0;
   let lastChapter = 0;
@@ -534,7 +530,7 @@ export function mountTable(host, onLoss, onRestore) {
 
   // Frame the static cabinet and mascot once per view so animation cannot
   // change the zoom. The desktop angle makes better use of a wide play area.
-  const tableViews = [[0, 18, 10.4], [0, 15.2, 14.25]].map(position => {
+  const tableViews = [[0, 21, 8.4], [0, 17.6, 11.5]].map(position => {
     camera.position.set(...position);
     camera.lookAt(tableTarget);
     const bounds = projectedTableBounds(camera, rux);
@@ -550,7 +546,13 @@ export function mountTable(host, onLoss, onRestore) {
     const original = tableViews[0];
     const wideView = desktop && width / height > original.size.x / original.size.y;
     const view = wideView ? tableViews[1] : original;
-    if (width === lastWidth && height === lastHeight && view === lastView) return;
+    const bounds = host.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const scale = Math.max(bounds.width/width,bounds.height/height);
+    const density = Math.min((window.devicePixelRatio || 1)*scale,3,Math.sqrt(2_300_000/(width*height)));
+    const pixelRatio = Math.round(density*64)/64;
+    if (width === lastWidth && height === lastHeight && view === lastView && pixelRatio === lastPixelRatio) return;
+    lastPixelRatio = pixelRatio;
     lastWidth = width;
     lastHeight = height;
     if (view !== lastView) {
@@ -558,9 +560,9 @@ export function mountTable(host, onLoss, onRestore) {
       camera.lookAt(tableTarget);
       lastView = view;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
-    const margin = Math.min(width,height) * (wideView ? .018 : .026);
+    const margin = Math.min(width,height) * (wideView ? .012 : .011);
     const unitsPerPixel = Math.max(view.size.x / (width-2*margin), view.size.y / (height-2*margin));
     const halfWidth = width*unitsPerPixel/2;
     const halfHeight = height*unitsPerPixel/2;
@@ -569,9 +571,12 @@ export function mountTable(host, onLoss, onRestore) {
     camera.top = view.center.y+halfHeight;
     camera.bottom = view.center.y-halfHeight;
     camera.updateProjectionMatrix();
+    return true;
   }
 
-  const observer = new ResizeObserver(resize);
+  const observer = new ResizeObserver(() => {
+    if (!lost && !removed && resize()) renderer.render(scene,camera);
+  });
   observer.observe(host);
   resize();
 
@@ -589,31 +594,29 @@ export function mountTable(host, onLoss, onRestore) {
   renderer.domElement.addEventListener('webglcontextlost', contextLost);
   renderer.domElement.addEventListener('webglcontextrestored', contextRestored);
 
-  function respond(event, state, motionTime) {
-    if (event.type === 'strike') {
-      strikeTime = motionTime;
-      sparkOrigin.copy(contact(state.side,state.catchAt));
-      sparkTime = motionTime;
-    }
-    if (event.lane && event.type !== 'strike') {
+  function respond(event, motionTime) {
+    if (event.type === 'strike') strikeTime = motionTime;
+    if (event.lane) {
       contactLane = event.lane;
       contactTime = motionTime;
-      sparkOrigin.copy(destination(state));
+    }
+    if (event.point) {
+      sparkOrigin.set(event.point.x,.53,event.point.z);
       sparkTime = motionTime;
     }
   }
 
-  function render(state, finish, time, reduced, flipperTime) {
+  function render(state, finish, time, reduced) {
     if (lost || removed) return;
     resize();
     if (state.stage.chapter !== lastChapter) {
       lastChapter = state.stage.chapter;
       const night = lastChapter > 1;
       colorField(night);
-      daylight.color.setHex(night ? 0xe0c6fc : 0xffc196);
-      rim.color.setHex(night ? 0x68b8fa : 0x65cfff);
-      scene.fog.color.setHex(night ? 0x0e1631 : 0x081d30);
-      renderer.setClearColor(night ? 0x0e1631 : 0x081d30);
+      daylight.color.setHex(night ? 0xe0c6fc : 0xffe1bd);
+      rim.color.setHex(night ? 0x68b8fa : 0x8cddff);
+      scene.fog.color.setHex(night ? 0x0b1426 : 0x0a1824);
+      renderer.setClearColor(night ? 0x0b1426 : 0x0a1824);
     }
     if (finish !== lastFinish) {
       lastFinish = finish;
@@ -625,13 +628,12 @@ export function mountTable(host, onLoss, onRestore) {
       }
     }
 
-    const current = aim(state);
     const goal = state.stage.order[state.index];
     const contactKick = clamp(1 - (time-contactTime)/280,0,1);
     const strikeKick = clamp(1 - (time-strikeTime)/255,0,1);
     for (const lane of LANES) {
       const { station, rotor, gate, arm, armLight, ring, channel, bus, bridge } = rails[lane];
-      const location = target(lane,state.stage.railSpread);
+      const location = targetPosition(lane,state.stage.railSpread);
       station.position.set(location.x,0,location.z);
       gate.position.x = location.x;
       gate.visible = lane !== 'C' && state.stage.magnetic;
@@ -642,7 +644,7 @@ export function mountTable(host, onLoss, onRestore) {
       const impact = lane === contactLane ? contactKick : 0;
       rotor.position.y = .82 - impact*.094;
       rotor.rotation.y = reduced ? 0 : time*.00062 + impact*.58;
-      const enabled = (goal === lane || current === lane) && !blocked;
+      const enabled = goal === lane && !blocked;
       const lit = state.stage.order.slice(0,state.index).includes(lane);
       palette.get(lane).emissiveIntensity = .13 + (enabled ? .83 : 0) + (lit ? .64 : 0) + impact*.79;
       ring.visible = goal === lane || lit;
@@ -654,21 +656,39 @@ export function mountTable(host, onLoss, onRestore) {
       bridge.visible = state.stage.feedback && lane!=='C';
     }
     for (const [side, {group,ring}] of Object.entries(paddles)) {
-      const ready = (side === state.side && state.phase === 'return') || state.phase === 'ready';
-      const attack = flipperLift(time-flipperTime[side]);
-      group.rotation.y = (side === 'L' ? 1 : -1) * (-.13 + (reduced ? .38 : .76)*attack);
-      ring.visible = ready || attack > 0;
-      ring.material.opacity = current && ready ? .58 : .18 + attack*.4;
+      const ready = inReach(state,side);
+      group.rotation.y = flipperAngle(state,side);
+      const lift = Math.abs(group.rotation.y + (side === 'L' ? .13 : -.13));
+      ring.visible = ready || lift > .01;
+      ring.material.opacity = ready ? .55 : .17 + lift*.27;
     }
-    const point = ballPosition(state);
+    if (state.phase === 'ready') {
+      const rest = ballRest(state.side);
+      point.set(rest.x,.504,rest.z);
+      launchInsert.position.set(rest.x,.285,rest.z);
+    } else {
+      point.set(state.ball.x,.504,state.ball.z);
+    }
+    if (state.phase === 'drain') point.y -= Math.min(.45,state.elapsed*.0033);
+    const moving = state.phase === 'shot' || state.phase === 'return';
+    if (moving && rolling && !reduced) {
+      const dx = point.x-previousBall.x;
+      const dz = point.z-previousBall.y;
+      const distance = Math.hypot(dx,dz);
+      if (distance > .001 && distance < 2) {
+        rollAxis.set(dz/distance,0,-dx/distance);
+        ball.rotateOnWorldAxis(rollAxis,distance/PHYSICS.radius);
+      }
+    }
+    rolling = moving;
+    previousBall.set(point.x,point.z);
     ball.position.copy(point);
-    ball.visible = state.phase !== 'complete' || state.won;
-    ball.rotation.set(time*.003, time*.0025, time*.00075);
+    ball.visible = !(state.phase === 'drain' && state.elapsed > 120) && (state.phase !== 'complete' || state.won);
+    launchInsert.visible = state.phase === 'ready';
     stripe.visible = finish !== 'steel';
     shadow.position.set(point.x,.282,point.z);
-    shadow.scale.setScalar(1+(point.y-.60)*.24);
+    shadow.visible = ball.visible && state.phase !== 'drain';
     drainLight.material.opacity = state.shield ? .96 : 0;
-    const moving = state.phase === 'shot' || state.phase === 'return';
     if (time-trailClock > 29 && moving && !reduced) {
       for (let i=trail.length-1;i>0;i--) trail[i].position.copy(trail[i-1].position);
       trail[0].position.copy(point);
