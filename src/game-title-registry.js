@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "ember-rounds": {
+    "__localizedExact": true,
+    "en": "Ember Rounds",
+    "zh-Hant": "暖點巡守",
+    "zh-Hans": "暖点巡守",
+    "ja": "ぬくもり巡回",
+    "ko": "온기 순찰",
+    "es": "Ronda de Brasas",
+    "pt-BR": "Ronda das Brasas",
+    "fr": "Ronde des braises",
+    "de": "Glutrunde",
+    "it": "Ronda delle Braci",
+    "ru": "Дозор тепла",
+    "hi": "अलाव की गश्त",
+    "ar": "دورية الدفء"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
