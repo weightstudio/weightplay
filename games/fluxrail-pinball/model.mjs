@@ -63,6 +63,7 @@ export function newRun(stage, tool, teaching = false) {
     phase:'ready', elapsed:0, at:0, accumulator:0, index:0, balls:stage.balls, charge:stage.charge,
     side:stage.firstSide, pole:stage.initialPole, beat:stage.firstBeat,
     ball:{x:0,z:0,vx:0,vz:0}, pressed:{L:-Infinity,R:-Infinity}, struck:{L:false,R:false},
+    strokeFrom:{L:0,R:0},
     saves:0, lost:0, hits:0, misses:0, shield:false, reserve:false,
     usedBuffer:false, usedCapacitor:false, queued:null, won:false,
   };
@@ -99,7 +100,10 @@ export function flipperAngle(state, side) {
 }
 
 export function flipperSegment(state, side) {
-  const angle = flipperAngle(state,side);
+  return segmentAtAngle(flipperAngle(state,side),side);
+}
+
+function segmentAtAngle(angle, side) {
   const ax = direction[side]*P.pivotX;
   const bx = ax - direction[side]*Math.cos(angle)*P.flipperLength;
   return {ax,az:P.pivotZ,bx,bz:P.pivotZ - Math.sin(angle)*-direction[side]*P.flipperLength};
@@ -130,9 +134,14 @@ export function closedBy(state, lane) {
   return '';
 }
 
-export function paddle(state, side) {
+function startStroke(state, side) {
+  if (state.pressed[side] !== state.at) state.strokeFrom[side] = flipperAngle(state,side);
   state.pressed[side] = state.at;
   state.struck[side] = false;
+}
+
+export function paddle(state, side) {
+  startStroke(state,side);
   if (state.phase === 'ready') {
     launch(state,side);
     return {type:'serve'};
@@ -236,27 +245,72 @@ function collideWalls(ball) {
   }
 }
 
-function collideFlipper(state, side, emit) {
-  const ball = state.ball;
-  const segment = flipperSegment(state,side);
+function flipperContact(ball, segment) {
   const contact = closest(ball.x,ball.z,segment);
   const distance = Math.hypot(ball.x-contact.x,ball.z-contact.z);
   const reach = P.radius+P.flipperRadius;
-  if (distance >= reach || distance < 1e-6) return;
-  const nx = (ball.x-contact.x)/distance;
-  const nz = (ball.z-contact.z)/distance;
-  ball.x = contact.x+nx*reach;
-  ball.z = contact.z+nz*reach;
-  const incoming = ball.vx*nx+ball.vz*nz;
-  const powered = strokeAge(state,side) < 106 && !state.struck[side] && nz < -.22 && ball.vz > 0;
+  if (distance >= reach || distance < 1e-6) return null;
+  return {...contact,nx:(ball.x-contact.x)/distance,nz:(ball.z-contact.z)/distance};
+}
+
+function playfieldFace(contact, segment, inward) {
+  if (!contact) return false;
+  const normal = inward*(contact.nx*(segment.bz-segment.az)-contact.nz*(segment.bx-segment.ax));
+  // At the rounded end, the contact normal can be mostly sideways.
+  return contact.nz < -.22 || (contact.nz <= .05 && normal > 0);
+}
+
+function risingContact(ball, side, from, to) {
+  const inward = -direction[side];
+  const rise = (to-from)*inward;
+  if (rise <= 0) return null;
+  // Keep each sample's travel well below the ball radius, even at the tip.
+  const steps = Math.ceil(rise*P.flipperLength/(P.radius*.7));
+  for (let step=0; step<steps; step++) {
+    const segment = segmentAtAngle(from+(to-from)*step/steps,side);
+    const hit = flipperContact(ball,segment);
+    if (playfieldFace(hit,segment,inward)) return hit;
+  }
+  return null;
+}
+
+function collideFlipper(state, side, emit) {
+  const ball = state.ball;
+  // The ball is clearing the same rubber that just launched it. An immediate
+  // re-press moves the bat again without rebounding the departing ball.
+  if (state.lastFlipperHit?.side === side && ball.vz < 0 && state.at - state.lastFlipperHit.at < 80) return;
+  const inward = -direction[side];
+  const angle = flipperAngle(state,side);
+  const segment = segmentAtAngle(angle,side);
+  const contact = flipperContact(ball,segment);
+  const canStrike = flipping(state,side) && !state.struck[side] && ball.vz > 0;
+  let powered = canStrike && playfieldFace(contact,segment,inward) ? contact : null;
+  if (canStrike && !powered && strokeAge(state,side) <= STEP+1e-6) {
+    powered = risingContact(ball,side,state.strokeFrom[side],angle);
+  }
+  const hit = powered || contact;
+  if (!hit) return;
+  const {nx,nz,fraction} = hit;
+  const reach = P.radius+P.flipperRadius;
+  if (powered && powered !== contact) {
+    // A ball caught along the swing leaves from the raised face of the rubber.
+    const dx = segment.bx-segment.ax;
+    const dz = segment.bz-segment.az;
+    ball.x = segment.ax+dx*fraction+inward*dz/P.flipperLength*reach;
+    ball.z = segment.az+dz*fraction-inward*dx/P.flipperLength*reach;
+  } else {
+    ball.x = hit.x+nx*reach;
+    ball.z = hit.z+nz*reach;
+  }
   if (powered) {
     // Heel and tip transfer different amounts of torque. The contact normal,
     // incoming motion and lever arm all contribute to the resulting shot.
-    const impulse = 14.8 + 5.4*contact.fraction;
-    const horizontal = clamp(-direction[side]*(contact.fraction-.64)*1.47 + nx*.24 + ball.vx*.021,-.64,.64);
+    const impulse = 14.8 + 5.4*fraction;
+    const horizontal = clamp(inward*(fraction-.64)*1.47 + nx*.24 + ball.vx*.021,-.64,.64);
     ball.vx = horizontal*impulse;
     ball.vz = -Math.sqrt(1-horizontal*horizontal)*impulse - Math.min(ball.vz,9)*.35;
     state.struck[side] = true;
+    state.lastFlipperHit = {side,at:state.at};
     state.side = side;
     state.queued = null;
     emit({type:'strike',side, point:{...ball}});
@@ -264,7 +318,10 @@ function collideFlipper(state, side, emit) {
       state.teaching = false;
       emit({type:'taught'});
     }
-  } else if (incoming < 0) {
+    return;
+  }
+  const incoming = ball.vx*nx+ball.vz*nz;
+  if (incoming < 0) {
     ball.vx -= incoming*1.61*nx;
     ball.vz -= incoming*1.61*nz;
     // Rubber and flipper edges let a weak bounce roll off a resting bat.
@@ -313,8 +370,7 @@ function simulate(state, emit) {
     const side = state.queued;
     state.queued = null;
     if (state.side === side) {
-      state.pressed[side] = state.at;
-      state.struck[side] = false;
+      startStroke(state,side);
       state.usedBuffer = true;
     }
   }
@@ -370,6 +426,7 @@ export function predictedRail(state) {
     ball:{...state.ball},
     pressed:{...state.pressed},
     struck:{...state.struck},
+    strokeFrom:{...state.strokeFrom},
   };
   paddle(sample,side);
   let struck = false;
@@ -380,7 +437,7 @@ export function predictedRail(state) {
   };
   for (let elapsed=0; elapsed<1100 && !lane; elapsed+=STEP) {
     tick(sample,STEP,observe);
-    if ((!struck && elapsed>106) || sample.phase === 'drain') break;
+    if ((!struck && elapsed>FLIPPER_STROKE_MS) || sample.phase === 'drain') break;
   }
   return lane;
 }
