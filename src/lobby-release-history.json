@@ -637,6 +637,10 @@
       "date": "2026-11-07T12:29:13.794Z",
       "evidence": "canonical-public-catalog"
     },
+    "frostvalve-works": {
+      "date": "2026-11-17T01:09:37.540Z",
+      "evidence": "canonical-public-catalog"
+    },
     "fruit-merge": {
       "date": "2026-06-30T19:58:06+08:00",
       "evidence": "git:c7ed47cc7ba16ad30590b38b58a1026210096cc9"

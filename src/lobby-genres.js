@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["frostvalve-works", "Simulation", "Timing", "Strategy"],
     ["folio-relay", "Reaction", "Timing"],
     ["fluxrail-pinball", "Reaction", "Arcade", "Physics", "Timing"],
     ["surge-tow", "Action", "Physics", "Route Planning"],

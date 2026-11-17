@@ -386,10 +386,22 @@ Games with local saves keep progress in the current browser.
 
 ## Current Playable Games
 
-- Fluxrail Pinball: https://weightplay.com/en/games/fluxrail-pinball/ — Time your flippers, charge the center rail, and light the workshop before you run out of balls.
-- Windstep Circuit: https://weightplay.com/en/games/windstep-circuit/ — Train your runner, read the next stretch, and set the pace through hills and headwinds.
-- Lumenwell Paths: https://weightplay.com/en/games/lumenwell-paths/ — Freeze pools, bend light and power wet circuits to recover the wellstones.
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Frostvalve Works: https://weightplay.com/en/games/frostvalve-works/ — Read the next surge, switch pumps and valves, and keep the winter waterworks flowing.
+- Folio Relay: https://weightplay.com/en/games/folio-relay/ — Switch tracks to catch the next folio. Use the repair shelf when the shuttle heats up.
+- Fluxrail Pinball: https://weightplay.com/en/games/fluxrail-pinball/ — Time your flippers, charge the center rail, and light the workshop before you run out of balls.
+- Surge Tow: https://weightplay.com/en/games/surge-tow/ — Read the currents, tow stranded crews, and bring them back to a safe dock.
+- Windstep Circuit: https://weightplay.com/en/games/windstep-circuit/ — Train your runner, read the next stretch, and set the pace through hills and headwinds.
+- Rotation Crown: https://weightplay.com/en/games/rotation-crown/ — Choose a captain and partner for each arena. Save the right teammates for the final round.
+- Skyclover Park: https://weightplay.com/en/games/skyclover-park/ — Lay a roller coaster loop, load waiting guests and reinvest the fares.
+- Groveward: https://weightplay.com/en/games/groveward/ — Restore corridors, build bridges and survey wildlife as the seasons change.
+- Lumenwell Paths: https://weightplay.com/en/games/lumenwell-paths/ — Freeze pools, bend light and power wet circuits to recover the wellstones.
+- Lightday Echo: https://weightplay.com/en/games/lightday-dispatch/ — Send commands ahead of time and tune the dish to catch their delayed echoes.
+- Ridgewatch Keep: https://weightplay.com/en/games/ridgewatch-keep/ — Build towers by day and protect both mountain passes at night.
+- Brinehold: https://weightplay.com/en/games/brinehold/ — Plan tide routes, rotate cargo to fit the hold, and unload at the right harbor before the deadline.
+- Brookwash Works: https://weightplay.com/en/games/brookwash-works/ — Wash muddy stonework, catch runoff and save enough water to finish each job.
+- Glowtide Parade: https://weightplay.com/en/games/glowtide-parade/ — Turn on lantern towers, redirect flexible visitors and give waiting groups a place at the show.
+- Loamline: https://weightplay.com/en/games/loamline/ — Work the terraces, haul grain, and fill orders before the shift ends.
 - Fogseal Archives: https://weightplay.com/en/games/fogseal-archives/ — Compare archive records and certify the order of a missing exhibit’s handoffs.
 - Last Quarter Relay: https://weightplay.com/en/games/last-quarter-relay/ — Find an open shot, read the next attack and rally before the last possession.
 - Parcel Pact: https://weightplay.com/en/games/parcel-pact/ — Open mixed crates, supply every neighbor, and save what the next batch needs.
@@ -515,7 +527,7 @@ Games with local saves keep progress in the current browser.
 - Word Trails: https://weightplay.com/en/games/animal-word-trails/ — Word Path Puzzle. Explore 60 word trails with leaf bridges, animal and nature groups, and reusable wild leaves.
 - Cratebound: https://weightplay.com/en/games/animal-cratebound/ — Push-Box Logistics Puzzle. Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.
 - Mosaic Clues: https://weightplay.com/en/games/animal-mosaic-clues/ — Nonogram Puzzle. Read the row and column numbers to find groups of filled squares. Deduce which squares to fill and which to leave blank to reveal the picture.
-- Prism Breakers: https://weightplay.com/en/games/animal-prism-breakers/ — Brick Breaker Arcade Game. Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.
+- Prism Breakers: https://weightplay.com/en/games/animal-prism-breakers/ — Brick Breaker Arcade Game. Use the paddle angle to clear 30 repeatable crystal formations. Some chapter combos create extra orbs directly; mirrors and gravity alter the return path.
 - Layer Order Puzzles: https://weightplay.com/en/games/animal-layer-grove/ — Picture Layer Puzzle. Reorder transparent picture layers to rebuild each scene. Use overlap clues to decide what belongs in front and what goes behind.
 - Penalty Cup: https://weightplay.com/en/games/animal-penalty-cup/ — Penalty shootout. Hold to aim and release your penalty at the right moment. Then switch to goalkeeping and react to the shot cue.
 - Tidal Shell Counting: https://weightplay.com/en/games/animal-tide-tally/ — Tide counting puzzle. Count shells arriving and leaving at Shell Cove, then choose the tide total that remains.
