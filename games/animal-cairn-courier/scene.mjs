@@ -1,4 +1,4 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=853cb90130efea70';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=d385ade060e31128';
 
 const COLORS = {base:0x8a9870,middle:0x84999f,cap:0xd1aa63,anchor:0x9b7f66,bridge:0x78b5b5,marker:0xb59ac4};
 export function createCairnScene(host, onError) {

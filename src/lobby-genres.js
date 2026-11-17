@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["breach-rescue", "Action", "Route Planning", "Physics"],
     ["flowdeck", "Sports", "Action", "Timing"],
 
     ["frostvalve-works", "Simulation", "Timing", "Strategy"],

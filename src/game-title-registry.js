@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "breach-rescue": {
+    "__localizedExact": true,
+    "en": "Breach Rescue",
+    "zh-Hant": "破壁救援",
+    "zh-Hans": "破壁救援",
+    "ja": "壁破り救助",
+    "ko": "벽 돌파 구조",
+    "es": "Rescate entre muros",
+    "pt-BR": "Resgate entre Muros",
+    "fr": "Secours par la brèche",
+    "de": "Rettung durch die Wand",
+    "it": "Soccorso tra i muri",
+    "ru": "Спасение через пролом",
+    "hi": "दीवार तोड़ बचाव",
+    "ar": "إنقاذ عبر الجدار"
+  },
   "flowdeck": {
     "__localizedExact": true,
     "en": "Skate Combos",
