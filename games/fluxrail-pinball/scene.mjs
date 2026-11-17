@@ -1,5 +1,5 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=6a11f491c1d7042e';
-import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=6a11f491c1d7042e';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=3d9dfa2d61a6f9c6';
+import { aim, closedBy, LANES, returnProgress, RETURN_END, RETURN_OPEN } from './model.mjs?wp-media=3d9dfa2d61a6f9c6';
 
 const STEEL = 0xcfe8ed;
 const COPPER = 0xef9b54;
@@ -148,8 +148,7 @@ export function mountTable(host, onLoss, onRestore) {
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x081d30, 22, 39);
   const camera = new THREE.OrthographicCamera(-5,5,5,-5, .1, 75);
-  camera.position.set(0, 18, 10.4);
-  camera.lookAt(0, .12, -.15);
+  const tableTarget = new THREE.Vector3(0, .12, -.15);
   scene.add(new THREE.HemisphereLight(0xb3d8ef, 0x74412b, 1.86));
   const daylight = new THREE.DirectionalLight(0xffc196, 3.1);
   daylight.position.set(-4, 9, -4);
@@ -533,26 +532,42 @@ export function mountTable(host, onLoss, onRestore) {
     };
   };
 
-  const visibleTable = projectedTableBounds(camera,rux);
-  const viewSize = visibleTable.getSize(new THREE.Vector2());
-  const viewCenter = visibleTable.getCenter(new THREE.Vector2());
+  // Frame the static cabinet and mascot once per view so animation cannot
+  // change the zoom. The desktop angle makes better use of a wide play area.
+  const tableViews = [[0, 18, 10.4], [0, 15.2, 14.25]].map(position => {
+    camera.position.set(...position);
+    camera.lookAt(tableTarget);
+    const bounds = projectedTableBounds(camera, rux);
+    return { position, size:bounds.getSize(new THREE.Vector2()), center:bounds.getCenter(new THREE.Vector2()) };
+  });
+  let lastView;
 
   function resize() {
     const width = host.clientWidth;
     const height = host.clientHeight;
-    if (!width || !height || (width === lastWidth && height === lastHeight)) return;
+    if (!width || !height) return;
+    const desktop = getComputedStyle(host).getPropertyValue('--flux-desktop-table').trim() === '1';
+    const original = tableViews[0];
+    const wideView = desktop && width / height > original.size.x / original.size.y;
+    const view = wideView ? tableViews[1] : original;
+    if (width === lastWidth && height === lastHeight && view === lastView) return;
     lastWidth = width;
     lastHeight = height;
+    if (view !== lastView) {
+      camera.position.set(...view.position);
+      camera.lookAt(tableTarget);
+      lastView = view;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(width, height, false);
-    const margin = Math.min(width,height)*.026;
-    const unitsPerPixel = Math.max(viewSize.x / (width-2*margin), viewSize.y / (height-2*margin));
+    const margin = Math.min(width,height) * (wideView ? .018 : .026);
+    const unitsPerPixel = Math.max(view.size.x / (width-2*margin), view.size.y / (height-2*margin));
     const halfWidth = width*unitsPerPixel/2;
     const halfHeight = height*unitsPerPixel/2;
-    camera.left = viewCenter.x-halfWidth;
-    camera.right = viewCenter.x+halfWidth;
-    camera.top = viewCenter.y+halfHeight;
-    camera.bottom = viewCenter.y-halfHeight;
+    camera.left = view.center.x-halfWidth;
+    camera.right = view.center.x+halfWidth;
+    camera.top = view.center.y+halfHeight;
+    camera.bottom = view.center.y-halfHeight;
     camera.updateProjectionMatrix();
   }
 
