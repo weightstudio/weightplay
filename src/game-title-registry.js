@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "bankshot-rink": {"__localizedExact":true,"en":"Bankshot Rink","zh-Hant":"折角冰球","zh-Hans":"折角冰球","ja":"バンクショット・ホッケー","ko":"뱅크샷 하키","es":"Hockey de Rebote","pt-BR":"Hóquei de Tabela","fr":"Hockey à Rebond","de":"Bandenhockey","it":"Hockey di Sponda","ru":"Хоккей от борта","hi":"बैंकशॉट हॉकी","ar":"هوكي الارتداد"},
   "winglight-survey": {"__localizedExact":true,"en":"Winglight Survey","zh-Hant":"追翼攝影","zh-Hans":"追翼摄影","ja":"翼を追う撮影隊","ko":"날갯짓 포착","es":"Fotos al Vuelo","pt-BR":"Fotos em Voo","fr":"Photos en plein vol","de":"Flugfotografie","it":"Scatti in volo","ru":"Съёмка в полёте","hi":"उड़ान की तस्वीरें","ar":"تصوير الطيور في الجو"},
   "ember-rounds": {
     "__localizedExact": true,
