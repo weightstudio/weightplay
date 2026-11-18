@@ -1,9 +1,9 @@
 const atlasUrls = new Map([
-  ["fire", new URL("./effects/fire-impact-v1.webp?wp-media=578d0c578a630f95", import.meta.url).href],
-  ["wind", new URL("./effects/wind-impact-v1.webp?wp-media=578d0c578a630f95", import.meta.url).href],
-  ["water", new URL("./effects/water-impact-v1.webp?wp-media=578d0c578a630f95", import.meta.url).href],
-  ["light", new URL("./effects/light-impact-v1.webp?wp-media=578d0c578a630f95", import.meta.url).href],
-  ["dark", new URL("./effects/dark-impact-v1.webp?wp-media=578d0c578a630f95", import.meta.url).href],
+  ["fire", new URL("./effects/fire-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
+  ["wind", new URL("./effects/wind-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
+  ["water", new URL("./effects/water-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
+  ["light", new URL("./effects/light-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
+  ["dark", new URL("./effects/dark-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
 ]);
 const TILE_SIZE = 192;
 const COLUMNS = 6;
@@ -152,22 +152,67 @@ export function createThreeElementImpactLayer(three, scene, element, limit = 10)
   };
 }
 
+// Use the scene clock so a pause freezes both the sprite and its lifetime.
+export function createSceneElementImpacts(three, scene, elements, limit = 8) {
+  const layers = new Map(elements.map(element =>
+    [element, createThreeElementImpactLayer(three, scene, element, limit)]));
+  const queue = createElementImpactQueue(limit);
+  return {
+    add(element, contact) {
+      if (!layers.get(element)?.ready) return false;
+      queue.add({ ...contact, element });
+      return true;
+    },
+    render(camera, dt, reducedMotion) {
+      for (const layer of layers.values()) layer.begin();
+      queue.forEach(hit => layers.get(hit.element).draw(camera, { ...hit, reducedMotion }));
+      queue.advance(dt, reducedMotion);
+    },
+    clear() {
+      queue.clear();
+      for (const layer of layers.values()) layer.begin();
+    },
+    dispose() {
+      queue.clear();
+      for (const layer of layers.values()) layer.dispose();
+      layers.clear();
+    },
+  };
+}
+
+// The positioned parent supplies the coordinate system (board cell or playfield).
+export function playElementImpactAt(parent, atlas, {
+  left = '50%', top = '50%', size = '105%', zIndex = 5, ...options
+} = {}) {
+  if (!parent?.isConnected || !atlas?.naturalWidth) return;
+  parent.querySelector(':scope > canvas.wp-element-impact')?.remove();
+  const canvas = document.createElement('canvas');
+  canvas.className = 'wp-element-impact';
+  canvas.width = canvas.height = TILE_SIZE;
+  canvas.setAttribute('aria-hidden', 'true');
+  Object.assign(canvas.style, { position: 'absolute', left, top, width: size, height: 'auto',
+    aspectRatio: '1', transform: 'translate(-50%,-50%)', pointerEvents: 'none', zIndex: String(zIndex) });
+  parent.append(canvas);
+  playElementImpactOnCanvas(canvas, atlas, options);
+}
+
 // The caller places and owns the canvas in its action layer.
 export function playElementImpactOnCanvas(canvas, atlas, {
-  radius = canvas.width / 2, reducedMotion = false, isPaused = () => false,
+  strong = false, directionX = 1, radius = canvas.width / (strong ? 2.34 : 2),
+  reducedMotion = false, isPaused = () => false,
 } = {}) {
   const ctx = canvas.getContext("2d");
   let previous = performance.now(), elapsed = 0;
   function render(now) {
     if (!isPaused()) elapsed += Math.max(0, (now - previous) / 1000);
     previous = now;
-    if (!canvas.isConnected || !elementImpactFrame(elapsed, { reducedMotion })) {
+    if (!canvas.isConnected || !elementImpactFrame(elapsed, { strong, reducedMotion })) {
       canvas.remove();
       return;
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawElementImpact(ctx, atlas, {
-      x: canvas.width / 2, y: canvas.height / 2, radius, elapsed, reducedMotion,
+      x: canvas.width / 2, y: canvas.height / 2, radius, elapsed, strong, directionX, reducedMotion,
     });
     requestAnimationFrame(render);
   }
