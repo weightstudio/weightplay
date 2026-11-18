@@ -1,1 +1,1 @@
-import"./campaign-copy.js?wp-media=cf503fc5beaa7dc4";import"./game.js?wp-media=cf503fc5beaa7dc4";export const GUIDE_COPY=globalThis.HabitatRescueGuideCopy;
+import"./campaign-copy.js?wp-media=e5a42a7dd123a9fa";import"./game.js?wp-media=e5a42a7dd123a9fa";export const GUIDE_COPY=globalThis.HabitatRescueGuideCopy;

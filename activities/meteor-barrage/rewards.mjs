@@ -1,4 +1,4 @@
-export {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1&wp-media=cf503fc5beaa7dc4';
+export {rewardCopy} from '../../src/activity-reward-copy.mjs?v=1&wp-media=e5a42a7dd123a9fa';
 export const REWARD_CAMPAIGN='meteor-barrage:daily-v1';
 export const WAVE_REWARDS=Object.freeze([3,5,8]);
 export const rewardKey=(day,wave)=>`${REWARD_CAMPAIGN}:${day}:wave:${wave}`;
