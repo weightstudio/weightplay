@@ -387,6 +387,8 @@ Games with local saves keep progress in the current browser.
 ## Current Playable Games
 
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Bridge Volley: https://weightplay.com/en/games/bridge-volley/ — Drag your squad across the bridge to recruit allies, shoot open cages and dodge the iron beetles.
+- Bankshot Rink: https://weightplay.com/en/games/bankshot-rink/ — Skate for the puck, bank it off the boards, and open timed goals before the defender closes in.
 - Winglight Survey: https://weightplay.com/en/games/winglight-survey/ — Fly alongside birds and snap them as their wings spread. Read the wind and save film for a clear shot.
 - Ember Rounds: https://weightplay.com/en/games/ember-rounds/ — Dodge frozen gusts and relight every warming station with heat pulses.
 - Breach Rescue: https://weightplay.com/en/games/breach-rescue/ — Open a way through cracked walls and guide stranded birds to shelter before the wind sweeps in.

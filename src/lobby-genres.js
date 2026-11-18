@@ -26,6 +26,7 @@
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
     ["bankshot-rink", "Sports", "Physics"],
+    ["bridge-volley", "Action", "Shooting"],
     ["winglight-survey", "Action", "Timing"],
     ["ember-rounds", "Action", "Survival", "Timing"],
     ["breach-rescue", "Action", "Route Planning", "Physics"],

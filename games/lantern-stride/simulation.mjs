@@ -1,4 +1,4 @@
-import { stageById } from './stage-config.mjs?wp-media=293ae069691b5f7e';
+import { stageById } from './stage-config.mjs?wp-media=578d0c578a630f95';
 
 const SHOES = Object.freeze({ balanced: { acceleration: 1, penalty: 1, topSpeed: 0 }, steady: { acceleration: .9, penalty: .8, topSpeed: 0 }, swift: { acceleration: 1.1, penalty: 1.2, topSpeed: .22 } });
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
