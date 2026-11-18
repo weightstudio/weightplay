@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "winglight-survey": {"__localizedExact":true,"en":"Winglight Survey","zh-Hant":"追翼攝影","zh-Hans":"追翼摄影","ja":"翼を追う撮影隊","ko":"날갯짓 포착","es":"Fotos al Vuelo","pt-BR":"Fotos em Voo","fr":"Photos en plein vol","de":"Flugfotografie","it":"Scatti in volo","ru":"Съёмка в полёте","hi":"उड़ान की तस्वीरें","ar":"تصوير الطيور في الجو"},
   "ember-rounds": {
     "__localizedExact": true,
     "en": "Ember Rounds",
