@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "harbor-crane": {"__localizedExact":true,"en":"Harbor Crane","zh-Hant":"潮港吊運","zh-Hans":"潮港吊运","ja":"潮の港のクレーン","ko":"항구 크레인","es":"Grúa del puerto","pt-BR":"Guindaste do Porto","fr":"Grue du port","de":"Hafenkran","it":"Gru del porto","ru":"Портовый кран","hi":"बंदरगाह की क्रेन","ar":"رافعة الميناء"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",

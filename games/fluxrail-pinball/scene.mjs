@@ -1,5 +1,5 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=b1c5ab06858eb2d8';
-import { ballRest, closedBy, flipperAngle, inReach, LANES, PHYSICS, targetPosition } from './model.mjs?v=flippers-v7&wp-media=b1c5ab06858eb2d8';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=96ac99789c9096e7';
+import { ballRest, closedBy, flipperAngle, inReach, LANES, PHYSICS, targetPosition } from './model.mjs?v=flippers-v7&wp-media=96ac99789c9096e7';
 
 const STEEL = 0xcfe8ed;
 const COPPER = 0xef9b54;
