@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["winglight-survey", "Action", "Timing"],
     ["ember-rounds", "Action", "Survival", "Timing"],
     ["breach-rescue", "Action", "Route Planning", "Physics"],
     ["flowdeck", "Sports", "Action", "Timing"],

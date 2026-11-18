@@ -1,4 +1,4 @@
-import {STAGES} from './content.mjs?wp-media=8fb26d6ba38abd4b';
+import {STAGES} from './content.mjs?wp-media=cf503fc5beaa7dc4';
 export function makeStageConfig(stage){
-  return {gameId:'bramble-rapids',count:STAGES.length,poster:'/games/bramble-rapids/assets/cover.webp?wp-media=8fb26d6ba38abd4b',background:'/assets/lobby-block-atmosphere.svg',stage};
+  return {gameId:'bramble-rapids',count:STAGES.length,poster:'/games/bramble-rapids/assets/cover.webp?wp-media=cf503fc5beaa7dc4',background:'/assets/lobby-block-atmosphere.svg',stage};
 }
