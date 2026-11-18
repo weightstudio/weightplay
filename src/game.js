@@ -19,14 +19,8 @@
   __wpNotifyMeasurement();
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
-const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs?v=shared-fire-v40&wp-media=b1c5ab06858eb2d8', document.currentScript.src);
+const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs?v=enemy-hit-3d-1&wp-media=b1c5ab06858eb2d8', document.currentScript.src);
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
-const fireMotion = matchMedia("(prefers-reduced-motion: reduce)");
-let fireModule, fireAtlas;
-import("/src/game-fire-impact.mjs?wp-media=b1c5ab06858eb2d8").then(async module => {
-  fireAtlas = await module.loadFireImpactAtlas();
-  fireModule = module;
-}).catch(() => {});
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
 let actionGuide=null,lessonDirection=-1,lessonHeroX=0;
@@ -2496,15 +2490,7 @@ function drawBossProjectiles() {
 
 function drawHits() {
   for (const hit of state.hits) {
-    if (hit.fire && fireModule) {
-      const strong = hit.radius >= 70, age = Math.max(0, hit.maxLife - hit.life);
-      fireModule.drawFireImpact(ctx, fireAtlas, {
-        x: hit.x, y: hit.y, radius: strong ? 122 : 50, strong,
-        elapsed: fireMotion.matches ? age : age / hit.maxLife * (strong ? .94 : .8),
-        reducedMotion: fireMotion.matches,
-      });
-      continue;
-    }
+
     const baseLife = hit.roar ? 0.5 : hit.shield ? 0.46 : hit.slow ? 0.34 : hit.thorn || hit.lightning || hit.volley ? 0.42 : 0.28;
     const progress = hit.life / baseLife;
     ctx.beginPath();

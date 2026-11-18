@@ -1,4 +1,3 @@
-import { createSceneElementImpacts } from '../../src/game-element-impact.mjs?v=element-contact-1&wp-media=b1c5ab06858eb2d8';
 import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=b1c5ab06858eb2d8';
 import {dropPosition} from './stages.mjs?v=6&wp-media=b1c5ab06858eb2d8';
 
@@ -12,7 +11,6 @@ export class RainScene {
     this.renderer.outputColorSpace=T.SRGBColorSpace;
     this.renderer.toneMapping=T.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.24;
     this.scene=new T.Scene();this.scene.background=new T.Color('#071f34');this.scene.fog=new T.Fog('#071f34',23,42);
-    this.elementImpacts = createSceneElementImpacts(T, this.scene, ['water']);
     this.camera=new T.OrthographicCamera(-4,4,7,-7,.1,70);
     this.camera.position.set(0,6,22);this.camera.lookAt(0,0,0);
     const outline=new T.Shape();outline.moveTo(-.47,-.47);outline.lineTo(.47,-.47);outline.lineTo(.47,.47);outline.lineTo(-.47,.47);outline.closePath();
@@ -166,9 +164,6 @@ export class RainScene {
   impact(kind,event,reduced=false){
     if(!['rain','gold','leaf','guard','miss'].includes(kind))return;
     const good=kind==='rain'||kind==='gold';this.recoil=good?1:this.recoil;this.hit=kind==='leaf'?1:this.hit;
-    if (kind === 'rain' && this.elementImpacts.add('water', {
-      x: this.laneX(event.lane), y: this.bottom + .7, z: 1.2, radius: .88
-    })) return;
     const amount=reduced?3:kind==='gold'?20:good?12:6;const color=kind==='gold'||(this.aurora&&good)?'#ffd681':kind==='leaf'?'#d99b60':kind==='guard'?'#d6f2b4':'#8cecff';
     for(let i=0;i<amount;i++){
       const p=this.particles[this.particleCursor++%72],angle=i/amount*Math.PI*2;
@@ -178,7 +173,7 @@ export class RainScene {
     if(this.particleMesh.instanceColor)this.particleMesh.instanceColor.needsUpdate=true;
     this.ripple.position.set(this.laneX(event.lane),this.bottom+.14,1.5);this.rippleTime=reduced?.15:.65;this.ripple.material.color.set(color);
   }
-  reset(){this.elementImpacts.clear();this.recoil=0;this.hit=0;this.rippleTime=0;for(const p of this.particles)p.life=0;for(const d of this.dropPool)d.group.visible=false;}
+  reset(){this.recoil=0;this.hit=0;this.rippleTime=0;for(const p of this.particles)p.life=0;for(const d of this.dropPool)d.group.visible=false;}
   render(run,dt=0,{reduced=false,lantern=false}={}){
     if(this.disposed)return;this.resize();this.clock+=dt;
     this.lantern.visible=lantern;this.aurora=lantern;
@@ -213,9 +208,8 @@ export class RainScene {
     }
     this.particleMesh.instanceMatrix.needsUpdate=true;
     this.rippleTime=Math.max(0,this.rippleTime-dt);this.ripple.material.opacity=this.rippleTime*.7;this.ripple.scale.setScalar(1+(1-this.rippleTime/.65)*1.8);
-    this.elementImpacts.render(this.camera, dt, reduced);
     this.renderer.render(this.scene,this.camera);
     this.canvas.dataset.renderer='three-0.180.0';this.canvas.dataset.drawCalls=String(this.renderer.info.render.calls);this.canvas.dataset.triangles=String(this.renderer.info.render.triangles);this.canvas.dataset.geometries=String(this.renderer.info.memory.geometries);
   }
-  dispose(){if(this.disposed)return;this.disposed=true;this.elementImpacts.dispose();this.backdrop?.dispose();this.box.dispose();this.sphere.dispose();this.ringGeo.dispose();this.ripple.material.dispose();for(const mat of this.mats.values())mat.dispose();this.renderer.dispose();}
+  dispose(){if(this.disposed)return;this.disposed=true;this.backdrop?.dispose();this.box.dispose();this.sphere.dispose();this.ringGeo.dispose();this.ripple.material.dispose();for(const mat of this.mats.values())mat.dispose();this.renderer.dispose();}
 }

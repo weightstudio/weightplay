@@ -1,7 +1,7 @@
 import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=b1c5ab06858eb2d8';
 import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9&wp-media=b1c5ab06858eb2d8';
 import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6-search20-mechanic-summary&wp-media=b1c5ab06858eb2d8';
-import {RainScene} from './scene.mjs?v=element-impact-v16&wp-media=b1c5ab06858eb2d8';
+import {RainScene} from './scene.mjs?v=enemy-hit-v17&wp-media=b1c5ab06858eb2d8';
 import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=b1c5ab06858eb2d8';
 
 const $=id=>document.getElementById(id),GAME='animal-rain-roost';

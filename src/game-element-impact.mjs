@@ -1,3 +1,5 @@
+import { createEnemyImpactLayer } from './game-enemy-impact-3d.mjs?v=world-hit-1&wp-media=b1c5ab06858eb2d8';
+
 const atlasUrls = new Map([
   ["fire", new URL("./effects/fire-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
   ["wind", new URL("./effects/wind-impact-v1.webp?wp-media=b1c5ab06858eb2d8", import.meta.url).href],
@@ -81,81 +83,12 @@ export function createElementImpactQueue(limit = 10) {
   };
 }
 
-// A small pool of camera-facing planes draws the same atlas inside a 3D scene.
-// The caller supplies world coordinates and owns the render and teardown.
-export function createThreeElementImpactLayer(three, scene, element, limit = 10) {
-  const meshes = [];
-  let atlas, texture, used = 0, disposed = false;
-  loadElementImpactAtlas(element).then(image => {
-    if (disposed) return;
-    atlas = image;
-    texture = new three.Texture(image);
-    texture.colorSpace = three.SRGBColorSpace;
-    texture.generateMipmaps = false;
-    texture.minFilter = three.LinearFilter;
-    texture.needsUpdate = true;
-  }).catch(() => {}); // Existing gameplay and its fallback feedback can still render.
-
-  function reserve(index) {
-    if (meshes[index]) return meshes[index];
-    const geometry = new three.PlaneGeometry(2, 2);
-    const material = new three.MeshBasicMaterial({
-      map: texture, transparent: true, depthTest: false, depthWrite: false, toneMapped: false,
-    });
-    const mesh = new three.Mesh(geometry, material);
-    mesh.frustumCulled = false;
-    mesh.renderOrder = 11;
-    scene.add(mesh);
-    meshes.push(mesh);
-    return mesh;
-  }
-
-  return {
-    get ready() { return Boolean(texture); },
-    begin() {
-      used = 0;
-      for (const mesh of meshes) mesh.visible = false;
-    },
-    draw(camera, { x, y, z, radius, elapsed, directionX = 1, strong = false, reducedMotion = false }) {
-      if (!texture || used >= limit) return false;
-      const frame = elementImpactFrame(elapsed, { strong, reducedMotion });
-      if (!frame) return false;
-      const mesh = reserve(used++);
-      // Half-texel inset keeps adjacent atlas tiles out of the linear filter.
-      let left = (frame.sx + 0.5) / atlas.naturalWidth;
-      let right = (frame.sx + frame.size - 0.5) / atlas.naturalWidth;
-      if (directionX < 0) [left, right] = [right, left];
-      const top = 1 - (frame.sy + 0.5) / atlas.naturalHeight;
-      const bottom = 1 - (frame.sy + frame.size - 0.5) / atlas.naturalHeight;
-      const uv = mesh.geometry.attributes.uv;
-      uv.setXY(0, left, top).setXY(1, right, top).setXY(2, left, bottom).setXY(3, right, bottom);
-      uv.needsUpdate = true;
-      mesh.position.set(x, y, z);
-      camera.getWorldQuaternion(mesh.quaternion);
-      mesh.scale.setScalar(radius * frame.scale);
-      mesh.material.opacity = frame.opacity;
-      mesh.visible = true;
-      return true;
-    },
-    dispose() {
-      disposed = true;
-      for (const mesh of meshes) {
-        scene.remove(mesh);
-        mesh.geometry.dispose();
-        mesh.material.dispose();
-      }
-      meshes.length = 0;
-      texture?.dispose();
-      texture = undefined;
-      atlas = undefined;
-    },
-  };
-}
+export { createEnemyImpactLayer as createThreeElementImpactLayer };
 
 // Use the scene clock so a pause freezes both the sprite and its lifetime.
 export function createSceneElementImpacts(three, scene, elements, limit = 8) {
   const layers = new Map(elements.map(element =>
-    [element, createThreeElementImpactLayer(three, scene, element, limit)]));
+    [element, createEnemyImpactLayer(three, scene, element, limit)]));
   const queue = createElementImpactQueue(limit);
   return {
     add(element, contact) {
