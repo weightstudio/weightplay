@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "gameId": "streak-prism",
+  "audience": "general",
+  "interfaceVersion": 9,
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {"enabled": true, "leftWorkspace": null, "rightWorkspace": "workshop"}
+}
