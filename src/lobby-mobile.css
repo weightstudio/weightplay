@@ -7,11 +7,11 @@
     --lobby-line: var(--lobby-skin-line);
     --lobby-paper: var(--lobby-skin-poster);
     color-scheme: dark;
-    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp?wp-media=0cd3fa4e81e766e2') center top / auto 900px no-repeat;
+    background: #071c2a url('../assets/lobby-adventure-desktop-v1.webp?wp-media=293ae069691b5f7e') center top / auto 900px no-repeat;
   }
   body.general-lobby-page::before,
   body.general-lobby-page::after {
-    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp?wp-media=0cd3fa4e81e766e2') center top / auto 900px no-repeat;
+    background: linear-gradient(var(--lobby-scene-tint), var(--lobby-scene-tint)), url('../assets/lobby-adventure-desktop-v1.webp?wp-media=293ae069691b5f7e') center top / auto 900px no-repeat;
   }
   body.general-lobby-page .lobby-shell { width: calc(100% - 28px); padding-bottom: 24px; }
   body.general-lobby-page .lobby-topbar {
@@ -150,8 +150,9 @@
     border-color: var(--lobby-skin-line); background: var(--lobby-skin-selected); color: var(--hall-text, #fff0c9); box-shadow: none;
   }
   body.general-lobby-page .vibe-strip { order: 3; margin-bottom: 8px; }
-  body.general-lobby-page .vibe-options { gap: 6px; padding-block: 2px 5px; }
+  body.general-lobby-page .vibe-options { display: flex; gap: 6px; padding-block: 2px 5px; overflow-x: auto; }
   body.general-lobby-page .vibe-options button {
+    flex: 0 0 auto;
     min-height: 44px; padding: 8px 12px; border: 1px solid var(--lobby-skin-line); border-radius: 5px;
     background: var(--lobby-skin-panel); color: var(--hall-muted, #bfd2d9); box-shadow: none; font-size: 12px;
   }
@@ -175,4 +176,17 @@
 
 @media (min-width:600px) and (max-width:1119px) {
   body.general-lobby-page .game-hall-switch { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+
+@media (min-width: 600px) and (max-width: 1119px) and (max-height: 480px) and (orientation: landscape) {
+  body.general-lobby-page .lobby-topbar { min-height: 46px; margin-bottom: 4px; }
+  body.general-lobby-page .game-hall-switch { margin-bottom: 6px; }
+  body.general-lobby-page .lobby-hero { height: 125px !important; margin-bottom: 6px; }
+  body.general-lobby-page .spotlight-game { padding: 8px 20px; }
+  body.general-lobby-page .spotlight-game h3 { margin: 2px 0 5px; font-size: 23px; }
+  body.general-lobby-page .demon-event-preview { margin-bottom: 6px; }
+  body.general-lobby-page .demon-event-card,
+  body.general-lobby-page .demon-event-card + .demon-event-card { grid-template-columns: 46px minmax(0, 1fr); min-height: 56px; padding: 4px; }
+  body.general-lobby-page .demon-event-card .demon-event-art { width: 46px; height: 46px; }
+  body.general-lobby-page .demon-event-card-schedule { display: none; }
 }

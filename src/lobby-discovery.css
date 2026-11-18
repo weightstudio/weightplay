@@ -166,6 +166,7 @@ body.general-lobby-page #heroGamesSection { order: 8; }
 /* All three halls share one hero geometry at each viewport size. */
 body.general-lobby-page .general-hero-scene { width: 100%; height: 100%; object-fit: cover; }
 body.general-lobby-page[data-game-hall="topics"] .general-hero-scene { object-position: 66% center; }
+html[dir="rtl"] body.general-lobby-page[data-game-hall="tabletop"] .general-hero-scene { transform: scaleX(-1); }
 body.general-lobby-page [data-topic-filter][hidden] { display: none !important; }
 body.general-lobby-page[data-game-hall="topics"] .game-hall-switch button[data-hall-tab="topics"] small { display: none; }
 body.general-lobby-page[data-game-hall="topics"] #heroGamesSection { margin-top: 12px; }
@@ -477,6 +478,12 @@ body.general-lobby-page .vibe-options button.active { border-color: var(--hall-s
 body.general-lobby-page #filterStatus.results-active { border: 2px solid var(--hall-border, #47777b); border-radius: 2px; background: var(--hall-surface, #14333e); box-shadow: 0 4px 0 var(--hall-shadow, #061d27); color: var(--hall-text, #f3f3d9); }
 body.general-lobby-page .filter-status-chips span { border: 1px solid var(--hall-border, #6aa68e); border-radius: 2px; background: var(--hall-selected, #244d48); color: var(--hall-selected-ink, var(--hall-text, #d7f1d4)); }
 body.general-lobby-page #filterStatus button { border: 2px solid var(--hall-border, #9bb994); border-radius: 2px; background: var(--hall-selected, #3c735c); color: var(--hall-selected-ink, var(--hall-text, #fff1cc)); }
+body.general-lobby-page #filterStatus .other-hall-result {
+  display: inline-flex; align-items: center; box-sizing: border-box; min-height: 44px;
+  max-width: 100%; padding: 6px 12px; border: 1px solid currentColor; border-radius: 4px;
+  color: var(--hall-selected-ink, #fff1cc); font-weight: 700; overflow-wrap: anywhere;
+  text-decoration: underline; text-underline-offset: 3px;
+}
 
 /* Framed game shelves: the artwork stays complete, with readable title plates. */
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading { min-height: 40px; border-bottom: 2px solid var(--hall-border, #375d62); padding-bottom: 8px; }

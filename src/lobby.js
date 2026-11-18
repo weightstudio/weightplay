@@ -11,7 +11,7 @@ const firstPersonTag = "First Person";
 const searchableGenreIds = [...gameGenres.genreIds, firstPersonTag];
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
 // BEGIN GENERATED METEOR ACTIVITY ENTRY
-// Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=0cd3fa4e81e766e2 from activity-owned copy.
+// Updated by scripts/build-meteor-barrage-locales.mjs?wp-media=293ae069691b5f7e from activity-owned copy.
 const meteorActivityCopy = {
   "en": {
     "title": "Meteor Barrage",
@@ -436,49 +436,49 @@ const weightPlayCharacters = [
   {
     nameKey: "character.spark_paw_fox.name",
     roleKey: "character.spark_paw_fox.role",
-    image: "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Reaction",
   },
   {
     nameKey: "character.boom_mane_lion.name",
     roleKey: "character.boom_mane_lion.role",
-    image: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-boom-mane-lion-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Focus",
   },
   {
     nameKey: "character.moss_shell_turtle.name",
     roleKey: "character.moss_shell_turtle.role",
-    image: "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-moss-shell-turtle-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Logic",
   },
   {
     nameKey: "character.moon_cap_owl.name",
     roleKey: "character.moon_cap_owl.role",
-    image: "assets/weightplay-character-moon-cap-owl-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-moon-cap-owl-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Problem Solving",
   },
   {
     nameKey: "character.bubble_fin_otter.name",
     roleKey: "character.bubble_fin_otter.role",
-    image: "assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-bubble-fin-otter-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Animal Knowledge",
   },
   {
     nameKey: "character.gear_horn_rhino.name",
     roleKey: "character.gear_horn_rhino.role",
-    image: "assets/weightplay-character-gear-horn-rhino-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-gear-horn-rhino-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Problem Solving",
   },
   {
     nameKey: "character.drum_belly_panda.name",
     roleKey: "character.drum_belly_panda.role",
-    image: "assets/weightplay-character-drum-belly-panda-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-drum-belly-panda-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Focus",
   },
   {
     nameKey: "character.rainbow_hop_rabbit.name",
     roleKey: "character.rainbow_hop_rabbit.role",
-    image: "assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp?wp-media=0cd3fa4e81e766e2",
+    image: "assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp?wp-media=293ae069691b5f7e",
     skill: "Reaction",
   },
 ];
@@ -632,13 +632,13 @@ function createDemonEventPreview() {
   const meteor = meteorActivityCopy[locale] || meteorActivityCopy.en;
   const events = [{
     id: "demon-assault", title: strings.title,
-    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&wp-media=0cd3fa4e81e766e2",
+    image: "/assets/demon-assault-preview-keyart-v1.webp?v=20261013-demon-assault-art-v1&wp-media=293ae069691b5f7e",
     details: { line: strings.line, body: strings.note, blocks: strings.blocks, schedule: activityScheduleCopy[locale] || activityScheduleCopy.en, reward: strings.reward },
     entry: { kind: "activity", path: "/activities/demon-assault/", label: daily[0] },
     renderer: "demon-assault",
   }, {
     id: "meteor-barrage", title: meteor.title, label: meteor.label,
-    image: "/activities/meteor-barrage/poster.webp?wp-media=0cd3fa4e81e766e2", showBlocks: true,
+    image: "/activities/meteor-barrage/poster.webp?wp-media=293ae069691b5f7e", showBlocks: true,
     details: { line: meteor.line, body: meteor.body, blocks: meteor.blocks, schedule: meteor.schedule, reward: meteor.reward },
     entry: { kind: "activity", path: meteor.path, label: meteor.start }, renderer: null,
   }];
@@ -897,7 +897,7 @@ function createDemonEventPreview() {
     const controller = new AbortController();
     artAbort = controller;
     const isCurrent = () => generation === artGeneration && !artDisposed && section.dataset.motion === "on" && !section.hidden && !document.hidden;
-    import("/src/demon-event-pixi.mjs?wp-media=0cd3fa4e81e766e2")
+    import("/src/demon-event-pixi.mjs?wp-media=293ae069691b5f7e")
     .then(module => {
       const selected = events[activeIndex];
       const art = openButtons[activeIndex]?.querySelector(".demon-event-art");
@@ -1013,17 +1013,18 @@ function normalizeSearch(value) {
 }
 
 function primaryArt(game) {
-  return game.art?.background || "assets/hero.png.webp?wp-media=0cd3fa4e81e766e2";
+  return game.art?.background || "assets/hero.png.webp?wp-media=293ae069691b5f7e";
 }
 
 function hallHeroImageSource(hall) {
+  if (hall === "tabletop") return "/assets/tabletop-hall-scene-v1.webp?wp-media=293ae069691b5f7e";
   if (hall === "first-person") {
     const game = lobby.games.find((item) => gameMatchesHall(item, hall));
     if (game) return new URL(game.art?.lobbyScene || primaryArt(game), document.baseURI).href;
   }
   return hall === "topics"
-    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=0cd3fa4e81e766e2"
-    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=0cd3fa4e81e766e2";
+    ? "/assets/topic-hall-hero-v2.webp?v=20261002-topics-art-v2&wp-media=293ae069691b5f7e"
+    : "/assets/weightplay-general-lobby-block-animals-hero-v1.webp?v=20261002-world-hero-path-v2&wp-media=293ae069691b5f7e";
 }
 
 function lobbyThumbnail(source, width = 480) {
@@ -1199,7 +1200,7 @@ function syncDiscoveryFiltersToUrl(historyMode = "replace") {
     gameType: "all", // Retire old URLs after migrating into the shared topic facet.
   };
   Object.entries(values).forEach(([key, value]) => {
-    if (!value || value === "all") url.searchParams.delete(key);
+    if (!value || (key !== "q" && value === "all")) url.searchParams.delete(key);
     else url.searchParams.set(key, value);
   });
   const target = `${url.pathname}${url.search}${url.hash}`;
@@ -1776,8 +1777,59 @@ function openGame(game, title, ageLabel, card = null) {
   const gameUrl = new URL(game.href, document.baseURI);
   const targetUrl = new URL(i18n.localizedPath(i18n.actualLocale(), `${gameUrl.pathname}${gameUrl.search}${gameUrl.hash}`), gameUrl.origin).href;
   if (window.WeightPlayGameEntryLoader?.navigateTo?.({ url: targetUrl, gameId: game.id, title, anchor: card })) return;
+  rememberLobbyEntry(game.id, card);
   window.location.href = targetUrl;
 }
+
+// A game may return through its own localized lobby link. Keep this trip in
+// the originating tab and consume it only on a return from that same game.
+const lobbyReturnKey = "weightplay.lobby.return.v1";
+function rememberLobbyEntry(gameId, anchor) {
+  if (isKidsLobby || ownerPreviewMode) return;
+  try {
+    const region = anchor?.parentElement?.closest("[id]");
+    sessionStorage.setItem(lobbyReturnKey, JSON.stringify({
+      gameId, locale: i18n.actualLocale(), search: location.search, hash: location.hash,
+      batches: catalogRevealedBatches, top: lobbyScrollOffset().top,
+      regionId: region?.id, cardTop: anchor?.getBoundingClientRect().top,
+      railLeft: region?.scrollLeft
+    }));
+  } catch { /* The normal lobby link also works with storage disabled. */ }
+}
+
+function takeLobbyReturn() {
+  if (isKidsLobby || ownerPreviewMode) return null;
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(lobbyReturnKey));
+    sessionStorage.removeItem(lobbyReturnKey);
+    if (!saved || saved.locale !== i18n.actualLocale()) return null;
+    const from = new URL(document.referrer);
+    const gameId = from.pathname.match(/\/games\/([a-z0-9-]+)(?:\/|$)/)?.[1];
+    if (from.origin !== location.origin || gameId !== saved.gameId) return null;
+    if ((location.search && location.search !== saved.search) || (location.hash && location.hash !== saved.hash)) return null;
+    const url = new URL(location.href);
+    url.search = saved.search;
+    url.hash = saved.hash;
+    history.replaceState(history.state, "", url);
+    return saved;
+  } catch { return null; }
+}
+
+function restoreLobbyPosition(saved) {
+  const region = document.getElementById(saved.regionId);
+  if (region === catalogDirectory) catalogDirectory.open = true;
+  if (region) region.scrollLeft = saved.railLeft || 0;
+  const card = region && [...region.querySelectorAll("[data-game-id], [data-discovery-game-id], a[href]")]
+    .find(node => (node.dataset.gameId || node.dataset.discoveryGameId) === saved.gameId
+      || (node.tagName === "A" && new URL(node.href).pathname.split("/").includes(saved.gameId)));
+  const top = card && Number.isFinite(saved.cardTop)
+    ? lobbyScrollOffset().top + card.getBoundingClientRect().top - saved.cardTop : saved.top;
+  window.scrollTo({ top, behavior: "instant" });
+  if (document.body.scrollHeight > document.body.clientHeight) document.body.scrollTop = top;
+  card?.focus({ preventScroll: true });
+}
+
+window.addEventListener("weightplay:leaving-for-game", ({ detail }) => rememberLobbyEntry(detail.gameId, detail.anchor));
 
 function matchesCatalogSearch(card, query) {
   if (!query) return true;
@@ -1903,29 +1955,15 @@ function createGameCard(game) {
   card.dataset.rankTotal = String(stats.rankTotal || 9999);
   card.dataset.playsTotal = String(stats.playsTotal || 0);
 
-  if (isPlayable) {
-    card.tabIndex = 0;
-    card.setAttribute("role", "link");
-    card.addEventListener("click", () => {
-      openGame(game, title, ageLabel, card);
-    });
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openGame(game, title, ageLabel, card);
-      }
-    });
-  } else {
-    card.tabIndex = 0;
-    card.setAttribute("role", "button");
-    card.addEventListener("click", () => showPlannedGame(game));
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        showPlannedGame(game);
-      }
-    });
-  }
+  card.tabIndex = 0;
+  card.setAttribute("role", isPlayable ? "link" : "button");
+  const activateCard = isPlayable ? () => openGame(game, title, ageLabel, card) : () => showPlannedGame(game);
+  card.addEventListener("click", activateCard);
+  card.addEventListener("keydown", event => {
+    if (event.target !== card || (event.key !== "Enter" && event.key !== " ")) return;
+    event.preventDefault();
+    activateCard();
+  });
 
   const localizedMeta = text(game.meta);
   const meta = isPlayable && Array.isArray(localizedMeta)
@@ -1961,7 +1999,7 @@ function createGameCard(game) {
   if (discoveryLabel) card.setAttribute("aria-label", discoveryLabel);
   const cardArt = game.art || {
     kind: "image",
-    background: game.cover || "assets/hero.png.webp?wp-media=0cd3fa4e81e766e2",
+    background: game.cover || "assets/hero.png.webp?wp-media=293ae069691b5f7e",
     hideHero: true,
   };
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
@@ -2417,7 +2455,7 @@ function renderLobbyContent({ historyMode = "replace" } = {}) {
     }
   } else {
     featuredGame.href = i18n.localizedPath(i18n.locale(), "/kids/");
-    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp?wp-media=0cd3fa4e81e766e2", { priority: true });
+    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp?wp-media=293ae069691b5f7e", { priority: true });
     featuredGame.querySelector("strong").textContent = i18n.t("kids.portal.title");
     featuredGame.setAttribute("aria-label", i18n.t("kids.portal.action"));
   }
@@ -2499,7 +2537,7 @@ function discoveryCards(games, { popular = false, visualIdentity = false, priori
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png.webp?wp-media=0cd3fa4e81e766e2", { priority })} alt="" />
+          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png.webp?wp-media=293ae069691b5f7e", { priority })} alt="" />
           ${isPlayable && topicGameIds.has(game.id) && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}
           ${hasVisualIdentity ? `<span class="hero-game-art-identity" aria-hidden="true"><strong>${title}</strong><small>${type}</small></span>` : ""}
           ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
@@ -2941,6 +2979,45 @@ function matchingCatalogGames(state = currentDiscoveryState()) {
   return lobby.games.filter((game) => cardMatchesFilterState({ dataset: catalogFilterData(game) }, state));
 }
 
+// Offer only destinations with a public playable result. Group games by their
+// primary hall so the First Person view cannot duplicate the same suggestion.
+function appendOtherHallResults() {
+  if (isKidsLobby || !activeSearch) return;
+  const groups = new Map();
+  for (const game of catalogGames) {
+    const hall = gameHall(game);
+    if (game.status !== "playable" || gameMatchesHall(game)) continue;
+    if (!matchesCatalogSearch({ dataset: { gameId: game.id, search: catalogSearchText(game) } }, activeSearch)) continue;
+    if (!groups.has(hall)) groups.set(hall, []);
+    groups.get(hall).push(game);
+  }
+  for (const [hall, games] of groups) {
+    const url = new URL(location.href);
+    for (const key of ["age", "topic", "gameType", "skill", "library", "availability", "hall"]) url.searchParams.delete(key);
+    if (hall !== "games") url.searchParams.set("hall", hall);
+    url.searchParams.set("q", gameSearch.value);
+    url.hash = "catalogHeading";
+    const link = document.createElement("a");
+    link.className = "other-hall-result";
+    link.href = url.href;
+    link.dataset.runtimeLocalize = "off";
+    const result = games.length === 1 ? text(games[0].title) : i18n.t("status.games_found_many", { count: games.length });
+    link.textContent = `${i18n.t("hall." + hall)} · ${result}`;
+    link.addEventListener("click", event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      settleHallMotion();
+      history.pushState(null, "", url);
+      restoreDiscoveryFiltersFromUrl();
+      renderLobbyContent({ historyMode: "none" });
+      const heading = document.getElementById("catalogHeading");
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ block: "start" });
+    });
+    filterStatus.insertBefore(link, filterStatus.querySelector("[data-clear-filters]"));
+  }
+}
+
 function renderCatalog(isFiltered) {
   const signature = JSON.stringify([i18n.actualLocale(), currentDiscoveryState()]);
   if (signature !== catalogFilterSignature) {
@@ -3038,8 +3115,8 @@ function applyFilter({ historyMode = "replace" } = {}) {
   filterStatus.classList.toggle("has-filters", isFiltered && visibleCount > 0);
 
   if (visibleCount === 0) {
-    const emptyText =
-      activeLibrary === "favorites" ? i18n.t("status.no_favorites")
+    const emptyText = activeSearch ? i18n.t("status.no_games")
+      : activeLibrary === "favorites" ? i18n.t("status.no_favorites")
         : activeLibrary === "recent" ? i18n.t("status.no_recent")
           : activeHall === "topics" && !isFiltered ? i18n.t("hall.topics_empty") : i18n.t("status.no_games");
     const recoveryLabel = activeLibrary === "recent"
@@ -3050,6 +3127,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
       ${isFiltered ? `<button type="button" data-clear-filters>${recoveryLabel}</button>` : ""}
     `;
     filterStatus.querySelector("[data-clear-filters]")?.addEventListener("click", resetDiscoveryFilters);
+    appendOtherHallResults();
   } else if (activeLibrary === "favorites" && activeFilter === "all" && activeTopic === "all" && activeSkill === "all" && activeAvailability === "all") {
     filterStatus.textContent = i18n.t(visibleCount > 1 ? "status.favorite_games" : "status.favorite_games_one", {
       count: visibleCount,
@@ -3422,7 +3500,7 @@ function setupResponsiveLobbyPresentation() {
   anchor.hidden = true;
   document.querySelector("#filterStatus").append(anchor);
   const script = document.createElement("script");
-  script.src = "/src/lobby-layout.js?v=20261102-first-response1&wp-media=0cd3fa4e81e766e2";
+  script.src = "/src/lobby-layout.js?v=20261102-first-response1&wp-media=293ae069691b5f7e";
   script.addEventListener("load", setup, { once: true });
   document.head.append(script);
 }
@@ -3543,7 +3621,13 @@ window.addEventListener("popstate", () => {
   renderLobby();
 });
 
+const returningEntry = takeLobbyReturn();
 restoreDiscoveryFiltersFromUrl();
+if (returningEntry) {
+  catalogFilterSignature = JSON.stringify([i18n.actualLocale(), currentDiscoveryState()]);
+  catalogRevealedBatches = Math.max(1, Math.min(catalogGames.length, returningEntry.batches || 1));
+  window.addEventListener("pageshow", () => restoreLobbyPosition(returningEntry), { once: true });
+}
 window.addEventListener("pageshow", (event) => {
   if (!event.persisted) return;
   const nextRecent = readRecentGames();
@@ -3557,7 +3641,7 @@ renderLobby();
 loadGameStats();
 if (!document.querySelector('[data-wp-game-entry-loader-bootstrap="true"]')) {
   const entryLoaderScript = document.createElement("script");
-  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261025-style-ready-before-paint1&wp-media=0cd3fa4e81e766e2";
+  entryLoaderScript.src = "/src/game-entry-loader.js?v=20261118-discovery-return1&wp-media=293ae069691b5f7e";
   entryLoaderScript.dataset.wpGameEntryLoaderBootstrap = "true";
   document.head.append(entryLoaderScript);
 }
