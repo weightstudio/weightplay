@@ -25,6 +25,10 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["canopy-airwaves", "Simulation", "Strategy"],
+    ["tether-patrol", "Action", "Survival"],
+    ["streak-prism", "Reaction", "Timing"],
+    ["harbor-crane", "Action", "Simulation", "Physics"],
     ["beatweir", "Reaction", "Timing", "Route Planning"],
     ["bankshot-rink", "Sports", "Physics"],
     ["bridge-volley", "Action", "Shooting"],
