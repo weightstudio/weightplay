@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["beatweir", "Reaction", "Timing", "Route Planning"],
     ["bankshot-rink", "Sports", "Physics"],
     ["bridge-volley", "Action", "Shooting"],
     ["winglight-survey", "Action", "Timing"],
