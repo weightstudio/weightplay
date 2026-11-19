@@ -33,6 +33,7 @@
     ["bankshot-rink", "Sports", "Physics"],
     ["bridge-volley", "Action", "Shooting"],
     ["winglight-survey", "Action", "Timing"],
+    ["rally-darts", "Sports", "Aim", "Timing"],
     ["ember-rounds", "Action", "Survival", "Timing"],
     ["breach-rescue", "Action", "Route Planning", "Physics"],
     ["flowdeck", "Sports", "Action", "Timing"],
