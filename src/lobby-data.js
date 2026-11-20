@@ -9513,6 +9513,21 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "ru": "Сигналы из космоса",
     "hi": "अंतरिक्ष के संकेत",
     "ar": "إشارات من الفضاء"
+  },
+  "terrace-drop": {
+    "en": "Terrace Drop",
+    "zh-Hant": "農場接水管",
+    "zh-Hans": "农场接水管",
+    "ja": "落とし水路",
+    "ko": "낙하 물길",
+    "es": "Canales en Caída",
+    "pt-BR": "Canais em Queda",
+    "fr": "Canaux en Chute",
+    "de": "Fallkanäle",
+    "it": "Canali in Caduta",
+    "ru": "Падающие каналы",
+    "hi": "गिरते जलमार्ग",
+    "ar": "قنوات هابطة"
   }
 };
 for (const game of window.WONDER_LOBBY.games) if (window.WONDER_LOBBY.officialTitleOverrides[game.id]) game.title = {__localizedExact:true,...window.WONDER_LOBBY.officialTitleOverrides[game.id]};
