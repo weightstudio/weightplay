@@ -1,4 +1,4 @@
-import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=d52c44fc2b3d8749';
+import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=34da9f1b9dbd16d9';
 export const SAVE_KEY='weightplay-rain-roost-v6';
 export const LEGACY_KEY='weightplay-rain-roost-best';
 export const LANTERN_PRICE=15;

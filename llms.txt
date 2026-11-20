@@ -387,6 +387,10 @@ Games with local saves keep progress in the current browser.
 ## Current Playable Games
 
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Terrace Drop: https://weightplay.com/en/games/terrace-drop/ — Drop and turn channel blocks to carry spring water to every terrace. Relieve pressure before testing the network.
+- Rally Darts: https://weightplay.com/en/games/rally-darts/ — Aim at the ring, set up a double finish, and beat your rival to zero.
+- Canopy Airwaves: https://weightplay.com/en/games/canopy-airwaves/ — Plan radio shows, staff the studio, and bring a clear signal to listeners across the valley.
+- Beatweir: https://weightplay.com/en/games/beatweir/ — Drive a railcar to the beat, switch tracks for cargo, and keep enough charge for the next gate.
 - Bridge Volley: https://weightplay.com/en/games/bridge-volley/ — Drag your squad across the bridge to recruit allies, shoot open cages and dodge the iron beetles.
 - Bankshot Rink: https://weightplay.com/en/games/bankshot-rink/ — Skate for the puck, bank it off the boards, and open timed goals before the defender closes in.
 - Winglight Survey: https://weightplay.com/en/games/winglight-survey/ — Fly alongside birds and snap them as their wings spread. Read the wind and save film for a clear shot.
