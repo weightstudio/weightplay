@@ -81,8 +81,8 @@
     else recoveryFences.set(index, Math.min(recoveryFences.get(index) ?? ceiling, ceiling));
   }
   function hasConfirmedRecovery(id) {
-    try { if (localStorage.getItem(confirmedPrefix + id) === "1") return true; } catch {}
-    try { if (localStorage.getItem(confirmedBackupPrefix + id) === "1") return true; } catch {}
+    try { const value = localStorage.getItem(confirmedPrefix + id); if (value === "1" || completedReceipt(value, id)) return true; } catch {}
+    try { const value = localStorage.getItem(confirmedBackupPrefix + id); if (value === "1" || completedReceipt(value, id)) return true; } catch {}
     try {
       const journal = JSON.parse(localStorage.getItem(verifiedJournalKey) || "[]");
       return Array.isArray(journal) && journal.every(stage => Number.isInteger(stage) && stage >= 1 && stage <= groves.length) && journal.includes(id);
@@ -95,6 +95,16 @@
         ? value.ceiling : null;
     } catch { return null; }
   }
+  // Unlike v21 pending intents, this receipt is written only after the player
+  // finishes the actual sequence. It is itself durable proof of the clear,
+  // even if a legacy page later overwrites the derived solved list.
+  function completedReceipt(raw, id) {
+    try {
+      const value = JSON.parse(raw);
+      return value?.state === "completed-v2" && value.stage === id &&
+        Number.isInteger(value.ceiling) && value.ceiling >= id && value.ceiling <= groves.length;
+    } catch { return false; }
+  }
   function prepareStageRecovery(id, ceiling) {
     if (hasConfirmedRecovery(id)) return true;
     for (const prefix of [confirmedPrefix, confirmedBackupPrefix]) {
@@ -102,7 +112,7 @@
         const key = prefix + id, old = localStorage.getItem(key);
         const prior = old === null ? null : pendingCeiling(old, id);
         if (old !== null && prior === null) continue; // Preserve unknown data.
-        const bytes = JSON.stringify({state:"pending", ceiling:Math.min(prior ?? ceiling, ceiling)});
+        const bytes = JSON.stringify({state:"completed-v2", stage:id, ceiling:Math.min(prior ?? ceiling, ceiling)});
         localStorage.setItem(key, bytes);
         if (localStorage.getItem(key) === bytes) return true;
       } catch { /* Try the independent backup. */ }
@@ -145,8 +155,8 @@
       const merged = new Set(saved);
       for (let id = 1; id <= groves.length; id++) {
         let confirmed = false;
-        try { confirmed = localStorage.getItem(confirmedPrefix + id) === "1"; } catch { /* Try the independent backup. */ }
-        try { confirmed = localStorage.getItem(confirmedBackupPrefix + id) === "1" || confirmed; } catch { /* Keep any first marker. */ }
+        try { const value = localStorage.getItem(confirmedPrefix + id); confirmed = value === "1" || completedReceipt(value, id); } catch { /* Try the independent backup. */ }
+        try { const value = localStorage.getItem(confirmedBackupPrefix + id); confirmed = value === "1" || completedReceipt(value, id) || confirmed; } catch { /* Keep any first marker. */ }
         if (confirmed) { merged.add(id - 1); pendingSavedStages.add(id); }
       }
       // This independent journal contains only stages whose save was read back.
@@ -176,13 +186,7 @@
         localStorage.setItem(verifiedJournalKey, JSON.stringify([...new Set([...verified, id])].sort((a, b) => a - b)));
       }
     } catch { /* Keep the in-page queue and any independent marker. */ }
-    try { if (localStorage.getItem(confirmedPrefix + id) === "1") return true; } catch { /* Try the independent backup. */ }
-    try { if (localStorage.getItem(confirmedBackupPrefix + id) === "1") return true; } catch { /* Try the journal. */ }
-    try {
-      const verified = JSON.parse(localStorage.getItem(verifiedJournalKey) || "[]");
-      if (Array.isArray(verified) && verified.every(stage => Number.isInteger(stage) && stage >= 1 && stage <= groves.length) && verified.includes(id)) return true;
-    } catch { /* No verified recovery copy. */ }
-    return false;
+    return hasConfirmedRecovery(id);
   }
   function flushSavedStageRewards() {
     const castle = window.WeightPlayCastle;
