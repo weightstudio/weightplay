@@ -25,6 +25,8 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["kilnshift-duel", "Action", "Timing"],
+    ["driftbreak-yard", "Simulation", "Strategy"],
     ["terrace-drop", "Puzzle", "Spatial Planning", "Construction"],
     ["canopy-airwaves", "Simulation", "Strategy"],
     ["tether-patrol", "Action", "Survival"],

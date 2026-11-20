@@ -1,5 +1,5 @@
-import DATA from './demography.mjs?wp-media=de92c88e8434cc53';
-import {newEnvironment,validEnvironment,environmentEvent,ENV_KEYS,LOCAL_SOURCES} from './life-environment.mjs?wp-media=de92c88e8434cc53';
+import DATA from './demography.mjs?wp-media=bc89e35aad49f36a';
+import {newEnvironment,validEnvironment,environmentEvent,ENV_KEYS,LOCAL_SOURCES} from './life-environment.mjs?wp-media=bc89e35aad49f36a';
 
 export {DATA};
 export const SAVE_KEY='weightplay.smallwood-lives.v2';

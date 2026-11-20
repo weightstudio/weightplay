@@ -1,5 +1,5 @@
-import {MAPS} from './data.mjs?wp-media=de92c88e8434cc53';
-import {monsterIndex} from './monster-index.mjs?wp-media=de92c88e8434cc53';
+import {MAPS} from './data.mjs?wp-media=bc89e35aad49f36a';
+import {monsterIndex} from './monster-index.mjs?wp-media=bc89e35aad49f36a';
 export function bossIndex(maps=MAPS){
  return monsterIndex(maps).filter(row=>row.tier==='boss').map(({id,definition,maps})=>({id,definition,maps}));
 }
