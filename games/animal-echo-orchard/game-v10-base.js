@@ -71,7 +71,57 @@
   const pendingSavedStages = new Set();
   let lastSaveSucceeded = false;
   let lastRecoverySaved = false;
+  // Remember only newly unlocked access from an unprotected clear in this
+  // page. Older, already unlocked stages remain playable; replaying the
+  // affected stage can clear its fence once a recovery copy is verified.
+  const recoveryFences = new Map();
+  let stageEntryUnlocked = unlockedThrough;
+  function recordRecoveryResult(index, ceiling, verified) {
+    if (verified) recoveryFences.delete(index);
+    else recoveryFences.set(index, Math.min(recoveryFences.get(index) ?? ceiling, ceiling));
+  }
+  function hasConfirmedRecovery(id) {
+    try { if (localStorage.getItem(confirmedPrefix + id) === "1") return true; } catch {}
+    try { if (localStorage.getItem(confirmedBackupPrefix + id) === "1") return true; } catch {}
+    try {
+      const journal = JSON.parse(localStorage.getItem(verifiedJournalKey) || "[]");
+      return Array.isArray(journal) && journal.every(stage => Number.isInteger(stage) && stage >= 1 && stage <= groves.length) && journal.includes(id);
+    } catch { return false; }
+  }
+  function pendingCeiling(raw, id) {
+    try {
+      const value = JSON.parse(raw);
+      return value?.state === "pending" && Number.isInteger(value.ceiling) && value.ceiling >= id && value.ceiling <= groves.length
+        ? value.ceiling : null;
+    } catch { return null; }
+  }
+  function prepareStageRecovery(id, ceiling) {
+    if (hasConfirmedRecovery(id)) return true;
+    for (const prefix of [confirmedPrefix, confirmedBackupPrefix]) {
+      try {
+        const key = prefix + id, old = localStorage.getItem(key);
+        const prior = old === null ? null : pendingCeiling(old, id);
+        if (old !== null && prior === null) continue; // Preserve unknown data.
+        const bytes = JSON.stringify({state:"pending", ceiling:Math.min(prior ?? ceiling, ceiling)});
+        localStorage.setItem(key, bytes);
+        if (localStorage.getItem(key) === bytes) return true;
+      } catch { /* Try the independent backup. */ }
+    }
+    return false;
+  }
+  function restorePendingFences() {
+    for (let id = 1; id <= groves.length; id++) {
+      if (!solved.has(id - 1) || hasConfirmedRecovery(id)) continue;
+      for (const prefix of [confirmedPrefix, confirmedBackupPrefix]) {
+        try {
+          const ceiling = pendingCeiling(localStorage.getItem(prefix + id), id);
+          if (ceiling !== null) recordRecoveryResult(id - 1, ceiling, false);
+        } catch { /* Preserve unreadable data. */ }
+      }
+    }
+  }
   const backupSaveFailureCopy = {en:"Progress was saved, but its recovery backup could not be verified. Replay this stage after storage is available before continuing.","zh-Hant":"進度已儲存，但無法確認復原備份。請在儲存功能恢復後重玩此關，再繼續。","zh-Hans":"进度已保存，但无法确认恢复备份。请在存储功能恢复后重玩此关，再继续。",ja:"進行状況は保存されましたが、復元用バックアップを確認できません。保存機能の復旧後、このステージを再プレイしてください。",ko:"진행 상황은 저장했지만 복구 백업을 확인할 수 없습니다. 저장 기능이 복구된 후 이 스테이지를 다시 플레이하세요.",es:"Se guardó el progreso, pero no se pudo verificar la copia de recuperación. Repite esta etapa cuando el almacenamiento esté disponible.","pt-BR":"O progresso foi salvo, mas o backup de recuperação não pôde ser verificado. Jogue esta fase novamente quando o armazenamento estiver disponível.",fr:"La progression est enregistrée, mais la sauvegarde de récupération n’a pas pu être vérifiée. Rejouez cette étape lorsque le stockage sera disponible.",de:"Der Fortschritt wurde gespeichert, aber die Wiederherstellungssicherung konnte nicht bestätigt werden. Spiele diese Stufe erneut, sobald Speicher verfügbar ist.",it:"I progressi sono stati salvati, ma non è stato possibile verificare il backup di recupero. Rigioca il livello quando lo spazio sarà disponibile.",ru:"Прогресс сохранён, но резервную копию не удалось проверить. Повторите этап, когда хранилище станет доступно.",hi:"प्रगति सहेजी गई, लेकिन पुनर्प्राप्ति बैकअप की पुष्टि नहीं हो सकी। स्टोरेज उपलब्ध होने पर यह चरण फिर खेलें।",ar:"تم حفظ التقدم، لكن تعذر التحقق من نسخة الاستعادة. أعد المرحلة عند توفر التخزين."};
+  const backupMapCopy = {en:"Replay Stage {stage} to recover", "zh-Hant":"重玩第 {stage} 關以恢復備份", "zh-Hans":"重玩第 {stage} 关以恢复备份", ja:"復旧にはステージ{stage}を再挑戦", ko:"복구하려면 {stage}단계를 다시 플레이", es:"Repite la etapa {stage} para recuperar", "pt-BR":"Repita a fase {stage} para recuperar", fr:"Rejouez le niveau {stage} pour récupérer", de:"Stufe {stage} zur Sicherung erneut spielen", it:"Rigioca il livello {stage} per recuperare", ru:"Повторите этап {stage} для восстановления", hi:"पुनर्प्राप्ति के लिए चरण {stage} फिर खेलें", ar:"أعد المرحلة {stage} لاستعادة النسخة"};
   const saveFailureCopy = {
     en: "Progress could not be saved. Replay this stage when storage is available.",
     "zh-Hant": "無法儲存進度，儲存空間可用時請重玩此關。",
@@ -149,12 +199,14 @@
     } catch { /* Retry on a later visit or collector readiness. */ }
   }
   window.addEventListener("weightplay:castle-ready", flushSavedStageRewards);
-  restoreConfirmedStages(); flushSavedStageRewards();
+  restoreConfirmedStages(); restorePendingFences(); flushSavedStageRewards();
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const campaign = () => stageCopy[locale] || stageCopy.en;
   const stageTitle = (index) => `${campaign().arcs[groves[index].arc - 1]} · ${campaign().stage} ${groves[index].id}`;
   const stageHint = (index) => `${campaign().focus[groves[index].focus]} · ${groves[index].checkpoint ? campaign().checkpoint : campaign().arc + " " + groves[index].arc}`;
-  const canAccess = (index) => index < unlockedThrough || solved.has(index);
+  const blockedByRecovery = (index) => [...recoveryFences.values()].some(ceiling => index >= ceiling);
+  const blockingStage = (index) => [...recoveryFences.entries()].find(([, ceiling]) => index >= ceiling)?.[0];
+  const canAccess = (index) => !blockedByRecovery(index) && (index < unlockedThrough || solved.has(index));
   const stageRecord = (index) => {
     const grove = groves[index];
     const locked = !canAccess(index);
@@ -164,7 +216,8 @@
       kicker: `${campaign().arc} ${grove.arc}`,
       title: `${campaign().stage} ${grove.id}`,
       subtitle: stageTitle(index),
-      status: cleared ? campaign().complete : locked ? campaign().locked : "",
+      status: locked && blockedByRecovery(index) ? (backupMapCopy[locale] || backupMapCopy.en).replace("{stage}", String(blockingStage(index) + 1))
+        : cleared ? campaign().complete : locked ? campaign().locked : "",
       summary: stageHint(index),
       details: "",
       locked,
@@ -281,6 +334,7 @@
   }
   function startGrove(index, fromStage = false,{teachingReplay=false}={}) {
     if (!canAccess(index)) return;
+    stageEntryUnlocked = unlockedThrough;
     actionGuide.stop();lessonReplay=teachingReplay;clearTimer(); groveIndex = index; entered = []; attempts = 0; feedback = "ready"; watchStep = 0;
     if (index === 0 || fromStage) { sessionAttempts = 0; runSolved = new Set(); }
     show("battle"); phase = "ready"; if(index===0)actionGuide.start({replay:lessonReplay});renderBattle(); announce("start");
@@ -383,8 +437,15 @@
     if(teaching==='first'&&position===0&&entered.length===1)actionGuide.accept('first',{accepted:true});
     else if(teaching==='second'&&position===1&&entered.length===2)actionGuide.accept('second',{accepted:true});
     if (entered.length === pattern.length) {
-      clearTimer(false); lastSaveSucceeded = !lessonReplay&&saveProgress(groveIndex);
-      if (lastSaveSucceeded) { runSolved.add(groveIndex); lastRecoverySaved = rememberSolvedStage(groveIndex + 1); flushSavedStageRewards(); }
+      clearTimer(false);
+      // Never advance the primary save if no recovery intent can be stored.
+      lastSaveSucceeded = !lessonReplay && prepareStageRecovery(groveIndex + 1, stageEntryUnlocked) && saveProgress(groveIndex);
+      if (lastSaveSucceeded) {
+        runSolved.add(groveIndex);
+        lastRecoverySaved = rememberSolvedStage(groveIndex + 1);
+        recordRecoveryResult(groveIndex, stageEntryUnlocked, lastRecoverySaved);
+        flushSavedStageRewards();
+      }
       __wpMeasurement.saveSucceeded = lastSaveSucceeded;
       feedback = "correct"; phase = "complete"; announce("complete"); renderBattle();
       timer = setTimeout(() => { show("result"); renderResult(); }, 750);
