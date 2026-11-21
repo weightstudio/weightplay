@@ -26,6 +26,7 @@
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
     ["shardplate-hunt", "Action", "Timing"],
+    ["circuit-relay-defense", "Tower Defense", "Strategy", "Management"],
     ["kilnshift-duel", "Action", "Timing"],
     ["driftbreak-yard", "Simulation", "Strategy"],
     ["terrace-drop", "Puzzle", "Spatial Planning", "Construction"],
@@ -112,6 +113,7 @@
     ["signal-veil", "RPG", "Action", "Adventure"],
     ["animal-unblock", "Puzzle", "Block", "Spatial Planning"],
     ["zhao-yun-a-dou", "Strategy", "Tower Defense"],
+    ["tideword-courier", "Puzzle", "Deduction", "Sequencing"],
     ["animal-bus-jam", "Puzzle", "Sequencing", "Route Planning"],
     ["arrow-escape", "Puzzle", "Sequencing", "Spatial Planning"],
     ["block-blast", "Puzzle", "Block", "Spatial Planning", "Tile Clearing"],
