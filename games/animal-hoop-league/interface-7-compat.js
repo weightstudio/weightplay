@@ -1,2 +1,2 @@
-/* Historical compatibility URL retained for old caches. Current game.js?wp-media=bc89e35aad49f36a owns
+/* Historical compatibility URL retained for old caches. Current game.js?wp-media=b4628e69eeef4a01 owns
    its scene, pause, Result and leave-dialog lifecycle without global RAF patches. */

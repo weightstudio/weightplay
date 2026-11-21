@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["shardplate-hunt", "Action", "Timing"],
     ["kilnshift-duel", "Action", "Timing"],
     ["driftbreak-yard", "Simulation", "Strategy"],
     ["terrace-drop", "Puzzle", "Spatial Planning", "Construction"],
