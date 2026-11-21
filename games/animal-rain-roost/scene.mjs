@@ -1,5 +1,5 @@
-import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=b4628e69eeef4a01';
-import {dropPosition} from './stages.mjs?v=6&wp-media=b4628e69eeef4a01';
+import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=e8a8ea693c11ca7b';
+import {dropPosition} from './stages.mjs?v=6&wp-media=e8a8ea693c11ca7b';
 
 // Finished procedural assets: the model, seams, accessories and rig live here.
 // One context and pooled transient objects are reused through every shower.
@@ -127,7 +127,7 @@ export class RainScene {
     this.resize();
   }
   async loadBackdrop(){
-    this.backdrop=await new T.TextureLoader().loadAsync(new URL('./assets/moonlit-marsh-v6.webp?wp-media=b4628e69eeef4a01',import.meta.url).href);
+    this.backdrop=await new T.TextureLoader().loadAsync(new URL('./assets/moonlit-marsh-v6.webp?wp-media=e8a8ea693c11ca7b',import.meta.url).href);
     this.backdrop.colorSpace=T.SRGBColorSpace;this.scene.background=this.backdrop;this.lastSize='';this.resize();
   }
   material(color,props={}){const key=color+JSON.stringify(props);if(!this.mats.has(key))this.mats.set(key,new T.MeshStandardMaterial({color,roughness:.72,...props}));return this.mats.get(key);}
