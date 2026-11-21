@@ -26,6 +26,7 @@
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
     ["shardplate-hunt", "Action", "Timing"],
+    ["stamp-overprint", "Simulation", "Timing"],
     ["circuit-relay-defense", "Tower Defense", "Strategy", "Management"],
     ["kilnshift-duel", "Action", "Timing"],
     ["driftbreak-yard", "Simulation", "Strategy"],

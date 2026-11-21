@@ -1,11 +1,11 @@
-import {rewardCopy,rewardStatus,payRewards} from './demon-assault-rewards.mjs?v=20261030-weekdays-1&wp-media=d27c1a544c360e4a';
-import {makeShieldCanvas,SHIELD_REVISION} from './demon-assault-shield.mjs?v=20261014-obsidian-shield-1&wp-media=d27c1a544c360e4a';
-import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION,imageDiagnostics,installBattleArt} from './demon-assault-canvas.mjs?v=20261014-ammo-shield-1&wp-media=d27c1a544c360e4a';
+import {rewardCopy,rewardStatus,payRewards} from './demon-assault-rewards.mjs?v=20261030-weekdays-1&wp-media=f8225020af9edaee';
+import {makeShieldCanvas,SHIELD_REVISION} from './demon-assault-shield.mjs?v=20261014-obsidian-shield-1&wp-media=f8225020af9edaee';
+import {CanvasBattleRenderer,loadBattleImages,RENDER_REVISION,imageDiagnostics,installBattleArt} from './demon-assault-canvas.mjs?v=20261014-ammo-shield-1&wp-media=f8225020af9edaee';
 let THREE;
-import {STAGES,WORLD,BOSS,ANCHOR,MAX_PULL,STEP,pullPoint,makeShot,tickShot,trace} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1&wp-media=d27c1a544c360e4a';
-import {VERSION,SAVE_KEY,readSave,transaction,openSession,nextStage,settle,launchShot,dailyStatus,finished} from './demon-assault-daily-store.mjs?v=20261030-weekdays-1&wp-media=d27c1a544c360e4a';
-import {playCopy as copy,dailyCopy} from './demon-assault-daily-copy.mjs?v=20261030-weekdays-1&wp-media=d27c1a544c360e4a';
-import {BattleCamera} from './demon-assault-v4-camera.mjs?v=20261014-settle-1&wp-media=d27c1a544c360e4a';
+import {STAGES,WORLD,BOSS,ANCHOR,MAX_PULL,STEP,pullPoint,makeShot,tickShot,trace} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1&wp-media=f8225020af9edaee';
+import {VERSION,SAVE_KEY,readSave,transaction,openSession,nextStage,settle,launchShot,dailyStatus,finished} from './demon-assault-daily-store.mjs?v=20261030-weekdays-1&wp-media=f8225020af9edaee';
+import {playCopy as copy,dailyCopy} from './demon-assault-daily-copy.mjs?v=20261030-weekdays-1&wp-media=f8225020af9edaee';
+import {BattleCamera} from './demon-assault-v4-camera.mjs?v=20261014-settle-1&wp-media=f8225020af9edaee';
 const rig=new BattleCamera(WORLD.width,ANCHOR.x,BOSS.x);
 let panPointer=null,panX=0;
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),locale=params.get('locale')||'zh-Hant',t=copy(locale);
@@ -203,7 +203,7 @@ $('loadBack').textContent=t.back;$('loadBack').onclick=leave;
 try{
  battleImages=await loadBattleImages();
  try{
-  let timer;try{THREE=await Promise.race([import('../../games/pawflow/vendor/three/three.module.min.js?wp-media=d27c1a544c360e4a'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('WEBGL_MODULE_TIMEOUT')),6000);})]);}finally{clearTimeout(timer);}
+  let timer;try{THREE=await Promise.race([import('../../games/pawflow/vendor/three/three.module.min.js?wp-media=f8225020af9edaee'),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('WEBGL_MODULE_TIMEOUT')),6000);})]);}finally{clearTimeout(timer);}
   setup();renderMode='webgl';const maps=[battleImages.boss,battleImages.sling].map(image=>{const tex=new THREE.Texture(image);tex.colorSpace=THREE.SRGBColorSpace;tex.needsUpdate=true;resources.textures.add(tex);return tex;});bossMap=maps[0];shieldMap=new THREE.CanvasTexture(makeShieldCanvas());shieldMap.colorSpace=THREE.SRGBColorSpace;resources.textures.add(shieldMap);const g=new THREE.PlaneGeometry(300,300,4,8);resources.geometry.add(g);boss=new THREE.Mesh(g,basic({map:bossMap,transparent:true,alphaTest:.02,depthWrite:false,toneMapped:false}));root.add(boss);sling.clear();const sg=new THREE.PlaneGeometry(80,120);resources.geometry.add(sg);slingArt=new THREE.Mesh(sg,basic({map:maps[1],transparent:true,alphaTest:.02,depthWrite:false,toneMapped:false}));slingArt.position.set(0,88,12);sling.add(slingArt);
  }catch(error){canvasFallback(error);}
  assetsLoaded=true;syncUI();resize();$('loading').hidden=true;showIntroduction();wake();

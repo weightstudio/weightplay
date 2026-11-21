@@ -387,10 +387,15 @@ Games with local saves keep progress in the current browser.
 ## Current Playable Games
 
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Tideword Courier: https://weightplay.com/en/games/tideword-courier/ — Watch what the dockhands do when they use each sign. Build the request from the signs you recognize.
+- Shardplate Hunt: https://weightplay.com/en/games/shardplate-hunt/ — Circle mechanized beasts, break their armor and turn salvaged parts into new gear.
+- Kilnshift Duel: https://weightplay.com/en/games/kilnshift-duel/ — Face clay sentinels in a 3D kiln. Step out of marked lanes, block blows to gather heat, then land a charged strike when their guard opens.
 - Terrace Drop: https://weightplay.com/en/games/terrace-drop/ — Drop and turn channel blocks to carry spring water to every terrace. Relieve pressure before testing the network.
 - Rally Darts: https://weightplay.com/en/games/rally-darts/ — Aim at the ring, set up a double finish, and beat your rival to zero.
 - Canopy Airwaves: https://weightplay.com/en/games/canopy-airwaves/ — Plan radio shows, staff the studio, and bring a clear signal to listeners across the valley.
 - Beatweir: https://weightplay.com/en/games/beatweir/ — Drive a railcar to the beat, switch tracks for cargo, and keep enough charge for the next gate.
+- Streak Prism: https://weightplay.com/en/games/streak-prism/ — Turn the prism to catch incoming starlight, then find a cooling dock before the next streak.
+- Harbor Crane: https://weightplay.com/en/games/harbor-crane/ — Lower cargo onto a moving barge and balance the load before it sails.
 - Bridge Volley: https://weightplay.com/en/games/bridge-volley/ — Drag your squad across the bridge to recruit allies, shoot open cages and dodge the iron beetles.
 - Bankshot Rink: https://weightplay.com/en/games/bankshot-rink/ — Skate for the puck, bank it off the boards, and open timed goals before the defender closes in.
 - Winglight Survey: https://weightplay.com/en/games/winglight-survey/ — Fly alongside birds and snap them as their wings spread. Read the wind and save film for a clear shot.
@@ -411,11 +416,16 @@ Games with local saves keep progress in the current browser.
 - Cargo Sailing: https://weightplay.com/en/games/brinehold/ — Plan tide routes, rotate cargo to fit the hold, and unload at the right harbor before the deadline.
 - Power Wash: https://weightplay.com/en/games/brookwash-works/ — Wash muddy stonework, catch runoff and save enough water to finish each job.
 - Parade Planner: https://weightplay.com/en/games/glowtide-parade/ — Turn on lantern towers, redirect flexible visitors and give waiting groups a place at the show.
+- Rule Switch: https://weightplay.com/en/games/glyphweft/ — Reweave the gate rules, carry the shuttles to their sockets, and find the way out.
 - Terrace Farm: https://weightplay.com/en/games/loamline/ — Work the terraces, haul grain, and fill orders before the shift ends.
 - Archive Detective: https://weightplay.com/en/games/fogseal-archives/ — Compare archive records and certify the order of a missing exhibit’s handoffs.
 - Basketball Comeback: https://weightplay.com/en/games/last-quarter-relay/ — Find an open shot, read the next attack and rally before the last possession.
+- Seed Bounce: https://weightplay.com/en/games/ricochet-grove/ — Turn pegs, collect water and bounce seeds into the flowerbeds in order.
+- Village Diplomacy: https://weightplay.com/en/games/mosscrest-accord/ — Pledge supplies, earn the districts’ seals, and honor unfinished treaties when the next steward takes office.
+- Vehicle Repair: https://weightplay.com/en/games/torque-grove/ — Find hidden faults, spend your workshop budget wisely, and put each repair through its load tests.
 - Crate Sharing: https://weightplay.com/en/games/parcel-pact/ — Open mixed crates, supply every neighbor, and save what the next batch needs.
 - Rover Delivery: https://weightplay.com/en/games/crossbank-rovers/ — Vehicle strategy. Fit a rover, choose a trail and deliver supplies before charge or armor runs out.
+- Bird Band: https://weightplay.com/en/games/perchweave/ — Recruit birds, arrange their seats and perform before the last beat.
 - Coral Rescue: https://weightplay.com/en/games/reef-current/ — Tidal strategy. Read changing currents, collect bloom samples and deploy cultures to keep the coral nurseries safe.
 - Solar Power Grid: https://weightplay.com/en/games/sunshift-commons/ — Energy strategy puzzle. Solve power-grid puzzles for a neighborhood. Choose which jobs get solar power now and charge batteries to cover jobs after dark.
 - Bell Tower Puzzle: https://weightplay.com/en/games/bellshift-atelier/ — Automation puzzle. Plan two crews’ commands and ring the requested notes before the tower runs out of power.
@@ -431,10 +441,12 @@ Games with local saves keep progress in the current browser.
 - Sky Maze Builder: https://weightplay.com/en/games/galevault-atlas/ — Room drafting strategy. Choose rooms to build a route through the floating archive. Collect chart pages and save enough wind to bring them home.
 - Pottery Workshop: https://weightplay.com/en/games/emberglaze-kiln/ — Kiln workshop. Mix minerals, balance the kiln heat and fire ceramics for the village.
 - Cricket Batting: https://weightplay.com/en/games/rainline-chase/ — Aim between fielders and time your cricket swing. Reach the run target before rain stops play.
+- Habitat Restoration: https://weightplay.com/en/games/mistcanopy/ — Forecast the weather, route power and turn barren terraces into self-sustaining habitats.
 - Mountain Truck Rescue: https://weightplay.com/en/games/frostline-expedition/ — Rescue simulation. Drive a truck through mud and snow to deliver supplies. Winch stranded vehicles to safety and haul materials to reopen mountain roads.
 - Five-a-Side Coach: https://weightplay.com/en/games/touchline-tails/ — Football tactics. Coach a five-a-side club. Set your shapes, manage stamina and change the match from the touchline.
 - Tram Planner: https://weightplay.com/en/games/reedway-transit/ — Tram Network Management. Build tram lines, balance transfers and bring every passenger to the right station.
 - Wildlife Sound Survey: https://weightplay.com/en/games/dusk-signal/ — Signal Pattern Deduction. Compare visible signal traces to identify wildlife. Choose which readings to take and how to spend battery power before the next survey.
+- Village Budget: https://weightplay.com/en/games/tomorrow-share/ — Fund today's needs, invest in tomorrow, and keep every promise across the seasons.
 - Dice Squad: https://weightplay.com/en/games/starpip-vanguard/ — Dice Squad Tactics. Keep the right dice. Read enemy intentions and bring your four companions home.
 - Underwater Ruins: https://weightplay.com/en/games/prismtide/ — Explore underwater rooms in a first-person light puzzle. Carry and place relays to guide beams to receivers, power doors and reach the exit.
 - Sky Meadow Rescue: https://weightplay.com/en/games/skymeadow-keeper/ — First-person adventure. Explore sky meadows, guide wildlife home and restore the windtrees.

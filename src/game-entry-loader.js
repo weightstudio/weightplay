@@ -2,7 +2,7 @@
 (() => {
   const path = window.location.pathname.replace(/\/+$/, "");
   const GAME_ID = path.match(/\/games\/([a-z0-9-]+)(?:\/index\.html)?$/)?.[1] || "";
-  const STYLE_URL = "/src/game-entry-loader.css?v=20261020-single-loading-label1&wp-media=d27c1a544c360e4a";
+  const STYLE_URL = "/src/game-entry-loader.css?v=20261020-single-loading-label1&wp-media=f8225020af9edaee";
   const ROOT_CLASS = "wp-game-entry-loader";
   const gamePath = Boolean(GAME_ID);
   let selectedGameId = GAME_ID;
@@ -56,7 +56,7 @@
       "zh-hant": ["正在載入{game}…", "遊戲載入失敗", "部分遊戲資源無法載入。請重試或返回大廳。", "重試", "返回大廳", "取消", "正在開啟{game}…", "已載入 {loaded}/{total} 項資源"],
       "zh-hans": ["正在载入{game}…", "游戏载入失败", "部分游戏资源无法载入。请重试或返回大厅。", "重试", "返回大厅", "取消", "正在打开{game}…", "已载入 {loaded}/{total} 项资源"],
       ja: ["{game}を読み込み中…", "ゲームを読み込めませんでした", "一部のゲーム素材を読み込めません。再試行するかロビーに戻ってください。", "再試行", "ロビーに戻る", "キャンセル", "ゲームを開いています…", "リソース {loaded}/{total} 件を読み込みました"],
-      ko: ["{game}를 불러오는 중…", "게임을 불러오지 못했습니다", "일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요.", "다시 시도", "로비로 돌아가기", "취소", "게임을 여는 중…", "리소스 {loaded}/{total}개 로드됨"],
+      ko: ["불러오는 중: {game}", "게임을 불러오지 못했습니다", "일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요.", "다시 시도", "로비로 돌아가기", "취소", "게임을 여는 중…", "리소스 {loaded}/{total}개 로드됨"],
       es: ["Cargando {game}…", "No se pudo cargar el juego", "No se pudieron cargar algunos recursos. Inténtalo de nuevo o vuelve al lobby.", "Reintentar", "Volver al lobby", "Cancelar", "Abriendo el juego…", "Recursos cargados: {loaded}/{total}"],
       "pt-br": ["Carregando {game}…", "Não foi possível carregar o jogo", "Alguns recursos não carregaram. Tente novamente ou volte ao lobby.", "Tentar novamente", "Voltar ao lobby", "Cancelar", "Abrindo o jogo…", "Recursos carregados: {loaded}/{total}"],
       fr: ["Chargement de {game}…", "Impossible de charger le jeu", "Certaines ressources n’ont pas pu être chargées. Réessayez ou retournez au lobby.", "Réessayer", "Retour au lobby", "Annuler", "Ouverture du jeu…", "Ressources chargées : {loaded}/{total}"],
@@ -260,8 +260,8 @@
       // Existing unmarked engine/resource failures keep their recovery path.
       if (failed.getAttribute?.("data-wp-entry-optional") === "diamond-special" &&
           document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
-          [`/games/${GAME_ID}/diamond-special.js?wp-media=d27c1a544c360e4a`, "/src/diamond-special-progression.js?wp-media=d27c1a544c360e4a"].includes(new URL(source, window.location.origin).pathname)) return;
-      if (failed.hasAttribute("data-wp-entry-required") || source.includes(`/games/${GAME_ID}/`) || source.includes("/src/game-screen-frame.js?wp-media=d27c1a544c360e4a")) {
+          [`/games/${GAME_ID}/diamond-special.js?wp-media=f8225020af9edaee`, "/src/diamond-special-progression.js?wp-media=f8225020af9edaee"].includes(new URL(source, window.location.origin).pathname)) return;
+      if (failed.hasAttribute("data-wp-entry-required") || source.includes(`/games/${GAME_ID}/`) || source.includes("/src/game-screen-frame.js?wp-media=f8225020af9edaee")) {
         fail(undefined, () => window.location.reload());
       }
     }
