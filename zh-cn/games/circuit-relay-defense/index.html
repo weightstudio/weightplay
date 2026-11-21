@@ -32,14 +32,14 @@
 <meta name="twitter:title" content="供电塔防 · 塔防 | WeightPlay">
 <meta name="twitter:description" content="在工坊和炮塔之间切换电力，备好电芯，守住充电站。">
 <meta name="twitter:image" content="https://weightplay.com/games/circuit-relay-defense/assets/cover.webp?wp-media=e8a8ea693c11ca7b">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"供电塔防","description":"在工坊和炮塔之间切换电力，备好电芯，守住充电站。","url":"https://weightplay.com/zh-cn/games/circuit-relay-defense/","inLanguage":"zh-Hans","image":"https://weightplay.com/games/circuit-relay-defense/assets/cover.webp?wp-media=e8a8ea693c11ca7b","genre":"塔防","gamePlatform":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com"}},{"@type":"FAQPage","inLanguage":"zh-Hans","mainEntity":[{"@type":"Question","name":"如何对付装甲机？","acceptedAnswer":{"@type":"Answer","text":"点塔座建造或升级；选电路后发送脉冲。每次射击消耗一芯，对付装甲要装线圈。"}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"供电塔防","description":"在工坊和炮塔之间切换电力，备好电芯，守住充电站。","url":"https://weightplay.com/zh-cn/games/circuit-relay-defense/","inLanguage":"zh-Hans","image":"https://weightplay.com/games/circuit-relay-defense/assets/cover.webp?wp-media=e8a8ea693c11ca7b","genre":"塔防","gamePlatform":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com"}},{"@type":"FAQPage","inLanguage":"zh-Hans","mainEntity":[{"@type":"Question","name":"如何对付装甲机？","acceptedAnswer":{"@type":"Answer","text":"金线标出射程。通电炮塔每波首次开火消耗一颗电芯，之后会自动连射。升级线圈可破盾。"}}]}]}</script>
 <!-- relay-meta:end -->
 <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
 <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
 <link rel="stylesheet" href="/src/tutorial.css?wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
-<link rel="stylesheet" href="/games/circuit-relay-defense/style.css?wp-build=2e7f68d880e16ddc&wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
+<link rel="stylesheet" href="/games/circuit-relay-defense/style.css?wp-build=162992ec0e829ba6&wp-media=e8a8ea693c11ca7b" data-wp-entry-required>
 <script src="/src/game-title-registry.js?wp-media=e8a8ea693c11ca7b" data-wp-game-title-registry></script>
 <script src="/src/game-layout-config.js?wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
 <script src="/src/weightplay-audio.js?wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
@@ -50,7 +50,7 @@
 <script src="/src/weightplay-castle.js?wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
 <script src="/src/analytics.js?wp-media=e8a8ea693c11ca7b"></script>
 </head>
-<body data-wp-internal-only="true" data-internal-only="1" class="wp-frame-main-active" data-screen="main" data-game-id="circuit-relay-defense" data-wp-game-id="circuit-relay-defense" data-wp-game-version="v1" data-wp-audience="general" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-start="off">
+<body data-wp-internal-only="true" data-internal-only="1" class="wp-frame-main-active" data-screen="main" data-game-id="circuit-relay-defense" data-wp-game-id="circuit-relay-defense" data-wp-game-version="v2" data-wp-audience="general" data-wp-interface-candidate="9" data-tutorial-owner="action-guide" data-tutorial-auto-start="off">
 <div id="gameFrame" data-wp-frame-root data-wp-entry-root data-wp-frame="2" hidden>
   <div id="mainGroup" class="wp-frame-main-flow">
     <section id="mainScreen" data-wp-frame-scene="main">
@@ -72,10 +72,10 @@
       <h2 id="guideTitle" data-word="guide">游戏指南</h2>
       <article class="game-info-section"><h3 data-word="goal">目标</h3><p data-word="description">在工坊和炮塔之间切换电力，备好电芯，守住充电站。</p></article>
       <article class="game-info-section"><h3 data-word="how">玩法</h3><p data-word="howText">看清来袭路线，部署炮塔并在敌机接近时供电。空档时给工坊补充电芯。</p></article>
-      <article class="game-info-section"><h3 data-word="rules">操作与规则</h3><p data-word="rulesText">点塔座建造或升级；选电路后发送脉冲。每次射击消耗一芯，对付装甲要装线圈。</p></article>
+      <article class="game-info-section"><h3 data-word="rules">操作与规则</h3><p data-word="rulesText">金线标出射程。通电炮塔每波首次开火消耗一颗电芯，之后会自动连射。升级线圈可破盾。</p></article>
       <article class="game-info-section"><h3 data-word="finish">结算与奖励</h3><p data-word="finishText">撑过所有脉冲。充电站毫发无伤可得三星。可免费重试，或在班次之间换上解锁的模块。</p><button id="practiceBtn" type="button" data-word="practice" data-wp-frame-action="secondary">重看操作教学</button></article>
       <!-- relay-guide:start -->
-<article class="game-info-section" data-wp-intro-faq><h3>常见问题</h3><dl><dt>如何对付装甲机？</dt><dd>点塔座建造或升级；选电路后发送脉冲。每次射击消耗一芯，对付装甲要装线圈。</dd></dl></article><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>相关游戏</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-wp-related-id="ridgewatch-keep" data-game-id="ridgewatch-keep" href="/zh-cn/games/ridgewatch-keep/"><img src="/games/ridgewatch-keep/art/cover.webp?wp-media=e8a8ea693c11ca7b" alt="" width="96" height="96" loading="lazy"><span data-runtime-localize="off">山口塔防</span></a><a class="game-info-related-card" data-wp-related-id="fusekeep" data-game-id="fusekeep" href="/zh-cn/games/fusekeep/"><img src="/assets/fusekeep/poster.webp?wp-media=e8a8ea693c11ca7b" alt="" width="96" height="96" loading="lazy"><span data-runtime-localize="off">合成守城</span></a><a class="game-info-related-card" data-wp-related-id="rivetide-works" data-game-id="rivetide-works" href="/zh-cn/games/rivetide-works/"><img src="/games/rivetide-works/assets/cover.webp?wp-media=e8a8ea693c11ca7b" alt="" width="96" height="96" loading="lazy"><span data-runtime-localize="off">工厂流水线</span></a></div></section>
+<article class="game-info-section" data-wp-intro-faq><h3>常见问题</h3><dl><dt>如何对付装甲机？</dt><dd>金线标出射程。通电炮塔每波首次开火消耗一颗电芯，之后会自动连射。升级线圈可破盾。</dd></dl></article><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>相关游戏</h3><div class="game-info-related-grid"><a class="game-info-related-card" data-wp-related-id="ridgewatch-keep" data-game-id="ridgewatch-keep" href="/zh-cn/games/ridgewatch-keep/"><img src="/games/ridgewatch-keep/art/cover.webp?wp-media=e8a8ea693c11ca7b" alt="" width="96" height="96" loading="lazy"><span data-runtime-localize="off">山口塔防</span></a><a class="game-info-related-card" data-wp-related-id="fusekeep" data-game-id="fusekeep" href="/zh-cn/games/fusekeep/"><img src="/assets/fusekeep/poster.webp?wp-media=e8a8ea693c11ca7b" alt="" width="96" height="96" loading="lazy"><span data-runtime-localize="off">合成守城</span></a><a class="game-info-related-card" data-wp-related-id="rivetide-works" data-game-id="rivetide-works" href="/zh-cn/games/rivetide-works/"><img src="/games/rivetide-works/assets/cover.webp?wp-media=e8a8ea693c11ca7b" alt="" width="96" height="96" loading="lazy"><span data-runtime-localize="off">工厂流水线</span></a></div></section>
 <!-- relay-guide:end -->
     </section>
   </div>
@@ -87,7 +87,7 @@
     <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" data-aria-word="pause" aria-label="暂停">←</button><strong data-wp-frame-title hidden></strong></header>
     <main id="battleLive">
       <section id="arena" data-aria-word="arena" aria-label="电站场地">
-        <div id="world" aria-hidden="true"></div>
+        <div id="world"></div>
         <div id="forecastBar">
           <strong id="wavePosition"></strong>
           <div><span id="forecast"></span><span id="nextForecast"></span></div>
@@ -107,7 +107,7 @@
           <button id="powerR" type="button" data-circuit="R" data-wp-frame-action="secondary" data-word="right">右路</button>
           <button id="powerB" type="button" data-circuit="B" data-wp-frame-action="secondary" data-word="both">旁路</button>
         </div>
-        <button id="pulseBtn" type="button" data-wp-frame-action="primary" data-word="pulse">发送脉冲</button>
+        <button id="pulseBtn" type="button" data-wp-frame-action="primary" data-word="pulse">开波</button>
       </section>
     </main>
     <section id="resultPanel" class="relay-result" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
@@ -135,6 +135,6 @@
 <script src="/src/battle-canvas-standard.js?wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
 <script src="/src/game-screen-frame.js?wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
 <script src="/src/tutorial.js?wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
-<script type="module" src="/games/circuit-relay-defense/game.mjs?wp-build=903ab95514bd16de&wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
+<script type="module" src="/games/circuit-relay-defense/game.mjs?wp-build=48f51eb77f349aed&wp-media=e8a8ea693c11ca7b" data-wp-entry-required></script>
 </body>
 </html>
