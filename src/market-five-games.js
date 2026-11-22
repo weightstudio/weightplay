@@ -31,15 +31,15 @@
   const slug = gameId.replace(/^animal-/, "");
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");
-  const background = new Image(); background.src = `assets/${gameId}-background.png.webp?wp-media=adc119f0e9a0b0df`;
-  const atlas = new Image(); atlas.src = `assets/${gameId}-atlas.png.webp?wp-media=adc119f0e9a0b0df`;
+  const background = new Image(); background.src = `assets/${gameId}-background.png.webp?wp-media=29fa7c7db5d94899`;
+  const atlas = new Image(); atlas.src = `assets/${gameId}-atlas.png.webp?wp-media=29fa7c7db5d94899`;
   const hero = new Image();
   hero.src = ({
-    "animal-hoop-league": "../../assets/weightplay-character-boom-mane-lion-cutout.webp?wp-media=adc119f0e9a0b0df",
-    "animal-habitat-atlas": "../../assets/weightplay-character-moon-cap-owl-cutout.webp?wp-media=adc119f0e9a0b0df",
-    "animal-moonlight-workshop": "../../assets/weightplay-character-gear-horn-rhino-cutout.webp?wp-media=adc119f0e9a0b0df",
-    "animal-chameleon-blend": "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp?wp-media=adc119f0e9a0b0df",
-    "animal-habitat-builder": "../../assets/weightplay-character-moss-shell-turtle-cutout.webp?wp-media=adc119f0e9a0b0df",
+    "animal-hoop-league": "../../assets/weightplay-character-boom-mane-lion-cutout.webp?wp-media=29fa7c7db5d94899",
+    "animal-habitat-atlas": "../../assets/weightplay-character-moon-cap-owl-cutout.webp?wp-media=29fa7c7db5d94899",
+    "animal-moonlight-workshop": "../../assets/weightplay-character-gear-horn-rhino-cutout.webp?wp-media=29fa7c7db5d94899",
+    "animal-chameleon-blend": "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp?wp-media=29fa7c7db5d94899",
+    "animal-habitat-builder": "../../assets/weightplay-character-moss-shell-turtle-cutout.webp?wp-media=29fa7c7db5d94899",
   })[gameId];
   const configs = {
     "animal-hoop-league": { stages: 6, noun: "Court", hint: "Aim · hold · release", iconCols: 3, hero: [72, 255, 218, 250] },

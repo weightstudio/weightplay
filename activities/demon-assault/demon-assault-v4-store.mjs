@@ -1,4 +1,4 @@
-import {VERSION,STAGES,ANCHOR,MAX_PULL,formation,ammoLimit,AMMO_POLICY} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1&wp-media=adc119f0e9a0b0df';
+import {VERSION,STAGES,ANCHOR,MAX_PULL,formation,ammoLimit,AMMO_POLICY} from './demon-assault-v4-physics.mjs?v=20261014-ammo-exact-1&wp-media=29fa7c7db5d94899';
 export const SAVE_KEY='weightplayDemonAssaultCandidateV4';
 const LOCK=SAVE_KEY+':transaction';
 export function freshRun(blocks){const cap=ammoLimit(blocks);return{id:crypto.randomUUID(),stage:0,hp:STAGES[0].hp,ammo:cap,cap,blocks:cap,ammoPolicy:AMMO_POLICY,defenders:[],pending:null,status:cap?'playing':'empty',shots:0};}
