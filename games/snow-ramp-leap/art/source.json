@@ -1,14 +1,14 @@
 {
   "gameId": "snow-ramp-leap",
   "cover": {
-    "file": "games/snow-ramp-leap/assets/cover.webp?wp-media=f8225020af9edaee",
+    "file": "games/snow-ramp-leap/assets/cover.webp?wp-media=13ead6b22c2ab8fd",
     "method": "OpenAI built-in ImageGen, generated character illustration then edited to remove the title",
-    "characterReference": "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=f8225020af9edaee",
+    "characterReference": "assets/weightplay-character-spark-paw-fox-block-v1.webp?wp-media=13ead6b22c2ab8fd",
     "promptSummary": "Original square ski-jumping art of the supplied WeightPlay Fia design, distinct cuboid orange and cream face, blue segmented scarf, cyan skis in a V, fictional dusk alpine ramp and landing flags. Final edit removes lettering and repaints the alpine sky.",
     "license": "WeightPlay original project art using its supplied character reference"
   },
   "scene": {
-    "file": "games/snow-ramp-leap/scene.mjs?wp-media=f8225020af9edaee",
+    "file": "games/snow-ramp-leap/scene.mjs?wp-media=13ead6b22c2ab8fd",
     "method": "Original procedural Three.js meshes",
     "families": ["Fia skating rig", "snow ramp and two landing bands", "fir grove and ridge", "wind indicator", "snow contact chips"]
   }
