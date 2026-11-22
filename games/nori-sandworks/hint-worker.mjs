@@ -1,1 +1,1 @@
-import{searchHint as a,referenceHint as t}from"./hints.mjs?wp-media=2c335a13a667ba75";self.onmessage=({data:{level:s,state:e}})=>{try{self.postMessage({actions:t(s,e)||a(s,e)})}catch{self.postMessage({actions:null})}};
+import{searchHint as a,referenceHint as t}from"./hints.mjs?wp-media=8a3e5c49f994a6f8";self.onmessage=({data:{level:s,state:e}})=>{try{self.postMessage({actions:t(s,e)||a(s,e)})}catch{self.postMessage({actions:null})}};
