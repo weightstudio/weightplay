@@ -25,6 +25,9 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["snow-ramp-leap", "Sports", "Timing"],
+    ["gale-watch", "Strategy", "Management"],
+    ["magnetwheel-guard", "Strategy", "Timing"],
     ["clockwork-boxes", "Puzzle", "Deduction", "Sequencing"],
     ["shardplate-hunt", "Action", "Timing"],
     ["stamp-overprint", "Simulation", "Timing"],

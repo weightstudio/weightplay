@@ -485,6 +485,10 @@
       "date": "2026-07-06T21:50:28+08:00",
       "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
     },
+    "beatweir": {
+      "date": "2026-11-19T17:11:31+08:00",
+      "evidence": "git:7979d4392ce9b20ada792463c9bfa11bfc00f104"
+    },
     "bellshift-atelier": {
       "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
@@ -541,6 +545,10 @@
       "date": "2026-06-29T22:58:52+08:00",
       "evidence": "git:60ce30d4892136d7a7668c7242412bd1f19757b3"
     },
+    "canopy-airwaves": {
+      "date": "2026-11-20T00:49:39+08:00",
+      "evidence": "git:61e11795a9318c0cb9d3c2b557adb28a71baef01"
+    },
     "casino": {
       "date": "2026-09-07T19:54:12.128Z",
       "evidence": "canonical-public-catalog"
@@ -568,6 +576,10 @@
     "cinderburrow": {
       "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
+    },
+    "clockwork-boxes": {
+      "date": "2026-11-22T09:13:17+08:00",
+      "evidence": "git:c733aee8542d48d4aaa4202ddd09e5bf7b824796"
     },
     "cloudhold-voyager": {
       "date": "2026-11-06T23:18:22.452Z",
@@ -599,6 +611,10 @@
     },
     "deep-drill": {
       "date": "2026-10-24T07:27:34.088Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "driftbreak-yard": {
+      "date": "2026-11-22T17:09:35.241Z",
       "evidence": "canonical-public-catalog"
     },
     "dusk-signal": {
@@ -697,6 +713,10 @@
       "date": "2026-11-15T01:01:58.530Z",
       "evidence": "canonical-public-catalog"
     },
+    "glyphweft": {
+      "date": "2026-11-20T10:23:25+08:00",
+      "evidence": "git:b7bb321e9c7c9f6f225d90f22217b975d19f4971"
+    },
     "go-fish": {
       "date": "2026-09-06T07:33:49+08:00",
       "evidence": "git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"
@@ -713,6 +733,10 @@
       "date": "2026-08-31T13:16:25+08:00",
       "evidence": "git:a714f868a988d5979fbf72411fbc11a87bf0ef38"
     },
+    "harbor-crane": {
+      "date": "2026-11-22T04:29:11+08:00",
+      "evidence": "git:9b4150e2b5ba05e1aa0bb09476ea4792156c4e37"
+    },
     "hearthloop": {
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
@@ -724,6 +748,10 @@
     "hexa-sort": {
       "date": "2026-08-01T12:46:15+08:00",
       "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
+    },
+    "kilnshift-duel": {
+      "date": "2026-11-21T00:47:25+08:00",
+      "evidence": "git:2a3ec63c52969638a0ddd86b20eb1cb45e52dca2"
     },
     "kindred-habitats": {
       "date": "2026-10-24T16:09:49.375Z",
@@ -765,6 +793,10 @@
       "date": "2026-11-15T01:01:58.530Z",
       "evidence": "canonical-public-catalog"
     },
+    "magnetwheel-guard": {
+      "date": "2026-11-22T17:01:01.324Z",
+      "evidence": "canonical-public-catalog"
+    },
     "mahjong-solitaire": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
@@ -781,9 +813,17 @@
       "date": "2026-10-23T15:09:00.552Z",
       "evidence": "canonical-public-catalog"
     },
+    "mistcanopy": {
+      "date": "2026-11-20T10:53:46+08:00",
+      "evidence": "git:1f8b5b3884a3ab52a17bab9f46366076ba560952"
+    },
     "moonlit-atrium": {
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
+    },
+    "mosscrest-accord": {
+      "date": "2026-11-20T10:23:25+08:00",
+      "evidence": "git:b7bb321e9c7c9f6f225d90f22217b975d19f4971"
     },
     "mossfold": {
       "date": "2026-10-30T04:34:14.857Z",
@@ -825,6 +865,10 @@
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
     },
+    "perchweave": {
+      "date": "2026-11-20T10:53:46+08:00",
+      "evidence": "git:1f8b5b3884a3ab52a17bab9f46366076ba560952"
+    },
     "pong": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
@@ -857,6 +901,10 @@
       "date": "2026-11-08T04:24:07.959Z",
       "evidence": "canonical-public-catalog"
     },
+    "rally-darts": {
+      "date": "2026-11-20T04:43:45+08:00",
+      "evidence": "git:81caa2a43bf57933613f048cc1b9f1777a85327c"
+    },
     "reedway-transit": {
       "date": "2026-11-07T12:29:13.794Z",
       "evidence": "canonical-public-catalog"
@@ -868,6 +916,10 @@
     "reversi": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "ricochet-grove": {
+      "date": "2026-11-20T09:34:17+08:00",
+      "evidence": "git:b715b8e4960467be029c187e6255d587c54dfb0b"
     },
     "ridgewatch-keep": {
       "date": "2026-11-14T16:47:11.357Z",
@@ -900,6 +952,10 @@
     "shape-train": {
       "date": "2026-06-30T15:10:16+08:00",
       "evidence": "git:31482792320158cb21f169911efcc8038df03968"
+    },
+    "shardplate-hunt": {
+      "date": "2026-11-21T09:00:31+08:00",
+      "evidence": "git:056fdf3bb35266938f97e861339ff9dc7fc47976"
     },
     "signal-snap": {
       "date": "2026-10-25T00:08:06.888Z",
@@ -973,6 +1029,10 @@
       "date": "2026-11-06T23:18:22.452Z",
       "evidence": "canonical-public-catalog"
     },
+    "streak-prism": {
+      "date": "2026-11-22T04:29:11+08:00",
+      "evidence": "git:9b4150e2b5ba05e1aa0bb09476ea4792156c4e37"
+    },
     "sudoku": {
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
@@ -988,6 +1048,10 @@
     "surge-tow": {
       "date": "2026-11-16T21:07:00.787Z",
       "evidence": "canonical-public-catalog"
+    },
+    "terrace-drop": {
+      "date": "2026-11-20T08:54:35+08:00",
+      "evidence": "git:7bb2ab4ea8329ce7936aa91f91895a2856f0c4da"
     },
     "tetris": {
       "date": "2026-09-05T02:17:10+08:00",
@@ -1005,9 +1069,21 @@
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"
     },
+    "tideword-courier": {
+      "date": "2026-11-22T01:18:36+08:00",
+      "evidence": "git:38e53a075be86bd14b44fc4f38548112ed49e8ca"
+    },
     "tiny-weather-rescue": {
       "date": "2026-06-30T16:06:14+08:00",
       "evidence": "git:346acd6893672262c5918c4702caa6278b5442d3"
+    },
+    "tomorrow-share": {
+      "date": "2026-11-20T10:53:46+08:00",
+      "evidence": "git:1f8b5b3884a3ab52a17bab9f46366076ba560952"
+    },
+    "torque-grove": {
+      "date": "2026-11-20T10:23:25+08:00",
+      "evidence": "git:b7bb321e9c7c9f6f225d90f22217b975d19f4971"
     },
     "touchline-tails": {
       "date": "2026-11-07T12:29:13.794Z",
