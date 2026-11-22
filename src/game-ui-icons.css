@@ -16,6 +16,23 @@
   background: var(--wp-icon-image, none) center / contain no-repeat;
 }
 .wp-icon-leading::before { content: ""; }
+.wp-play-art-button > img[data-wp-button-art] { display: none; }
+.wp-play-art-button > .wp-play-button-fallback { overflow-wrap: anywhere; }
+@media (forced-colors: none) {
+  .wp-play-art-ready > img[data-wp-button-art] {
+    display: inline-block;
+    width: var(--wp-button-art-size, 32px);
+    height: var(--wp-button-art-size, 32px);
+    max-width: 100%;
+    vertical-align: middle;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .wp-play-art-ready > .wp-play-button-fallback { display: none; }
+}
+.wp-play-art-button[data-page-direction="previous"] > img,
+.wp-play-art-button[data-page-direction="next"]:dir(rtl) > img { transform: scaleX(-1); }
+.wp-play-art-button[data-page-direction="previous"]:dir(rtl) > img { transform: none; }
 :where([data-wp-icon="attack"]) { --wp-icon-image: url("/assets/game-icons/attack.webp?wp-media=8a3e5c49f994a6f8"); }
 :where([data-wp-icon="blizzard"]) { --wp-icon-image: url("/assets/game-icons/blizzard.webp?wp-media=8a3e5c49f994a6f8"); }
 :where([data-wp-icon="cadence"]) { --wp-icon-image: url("/assets/game-icons/cadence.webp?wp-media=8a3e5c49f994a6f8"); }

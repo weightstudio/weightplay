@@ -4,6 +4,29 @@
   'use strict';
   const mounted = new WeakMap();
   const clamp = (n, max) => Math.max(0, Math.min(max, n));
+  function illustrateButton(button, icon, label, fallbackText = label) {
+    button.title = label;
+    button.setAttribute('aria-label', label);
+    const current = button.firstElementChild;
+    if (current?.dataset.wpButtonArt === icon) {
+      button.lastElementChild.textContent = fallbackText;
+      return;
+    }
+    const art = document.createElement('img');
+    art.alt = '';
+    art.width = art.height = 32;
+    art.dataset.wpButtonArt = icon;
+    const fallback = document.createElement('span');
+    fallback.className = 'wp-play-button-fallback';
+    fallback.textContent = fallbackText;
+    button.classList.add('wp-play-art-button');
+    button.classList.remove('wp-play-art-ready');
+    art.onload = () => {
+      if (art.parentNode === button) button.classList.add('wp-play-art-ready');
+    };
+    button.replaceChildren(art, fallback);
+    art.src = '/assets/game-icons/' + encodeURIComponent(icon) + '.webp';
+  }
   function mountStage({page, rail, config, selected = 0, onSelect = () => {}, onStart, isActive = () => true}) {
     if (mounted.has(rail)) return mounted.get(rail);
     if (!page || !rail || !Number.isInteger(config?.count) || config.count < 1 || typeof config.stage !== 'function' || typeof onStart !== 'function') throw new TypeError('PLAY_UI_STAGE_CONFIG_REQUIRED');
@@ -70,7 +93,15 @@
     function updateBriefing() {
       const item = config.stage(current);
       title.textContent = [item.title,item.subtitle].filter(Boolean).join(' · '); summary.textContent = item.summary || '';
-      toggle.setAttribute('aria-label',title.textContent); details.setAttribute('aria-label',title.textContent);
+      const label = config.briefingLabel;
+      if (label && toggle.title !== label) illustrateButton(toggle, 'guide', label);
+      if (!label && toggle.title) {
+        toggle.classList.remove('wp-play-art-button', 'wp-play-art-ready');
+        toggle.removeAttribute('title');
+        toggle.textContent = 'i';
+      }
+      toggle.setAttribute('aria-label',[label, title.textContent].filter(Boolean).join(' · '));
+      details.setAttribute('aria-label',title.textContent);
       const lines = (item.details || []).filter(Boolean);
       while (details.children.length > lines.length) details.lastElementChild.remove();
       lines.forEach((line,i) => {if (!details.children[i]) details.append(document.createElement('p'));details.children[i].textContent=line;});
@@ -236,5 +267,5 @@
     }else scheduleLayout();
     return api;
   }
-  window.WeightPlayPlayUI=Object.freeze({version:1,mountStage});
+  window.WeightPlayPlayUI=Object.freeze({version:1,mountStage,illustrateButton});
 })();
