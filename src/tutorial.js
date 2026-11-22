@@ -1174,7 +1174,8 @@
         panel.append(label, title, instruction); host.append(panel);
       }
       panel.dataset.step = step.id; panel.hidden = paused;
-      label.textContent = `${lessonLabels[locale()] || lessonLabels.en} ${index + 1} / ${steps.length}`;
+      const progress = `${index + 1} / ${steps.length}`;
+      label.textContent = `${lessonLabels[locale()] || lessonLabels.en} ${locale() === 'ar' ? `\u2066${progress}\u2069` : progress}`;
       title.textContent = heading; instruction.textContent = body;
       clearTarget();
       const target = !paused && step.target?.();
