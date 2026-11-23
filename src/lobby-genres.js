@@ -27,6 +27,7 @@
   const entries = [
     ["snow-ramp-leap", "Sports", "Timing"],
     ["gale-watch", "Strategy", "Management"],
+    ["trailhouse-renovation", "Simulation", "Strategy"],
     ["magnetwheel-guard", "Strategy", "Timing"],
     ["clockwork-boxes", "Puzzle", "Deduction", "Sequencing"],
     ["shardplate-hunt", "Action", "Timing"],

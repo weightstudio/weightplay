@@ -84,6 +84,7 @@
   const assess = (map, option) => map.clues.map(clue => relationHolds(option.stars, clue));
 
   const refineMaps = (maps) => maps.map(map => {
+    if (map.layout === "cross") return map; // Its reflected endpoints already supply one decoy per rule.
     const source = map.options.find(option => option.id === map.correctId);
     const solution = source.stars.map(star => ({ ...star }));
     // Move the constellation across the lattice without changing its rules.

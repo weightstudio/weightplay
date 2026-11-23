@@ -44,11 +44,11 @@
       { layout: "horizontal", animals: ["hare", "owl", "otter"], checkpoint: true, checkpointKey: "checkpoint5", clues: [["hare", "left", "owl"], ["otter", "right", "owl"]] },
     ] },
     { arc: 2, arcKey: "arc2Name", mechanicKey: "mechanicCross", stages: [
-      { layout: "vertical", animals: ["fox", "deer", "bear"], clues: [["fox", "above", "deer"], ["bear", "below", "deer"]] },
-      { layout: "horizontal", animals: ["owl", "otter", "rabbit"], clues: [["owl", "left", "otter"], ["rabbit", "right", "otter"]] },
-      { layout: "vertical", animals: ["mole", "hare", "fox"], clues: [["mole", "above", "hare"], ["fox", "below", "hare"]] },
-      { layout: "horizontal", animals: ["deer", "owl", "mole"], clues: [["deer", "left", "owl"], ["mole", "right", "owl"]] },
-      { layout: "vertical", animals: ["rabbit", "bear", "otter"], checkpoint: true, checkpointKey: "checkpoint10", clues: [["rabbit", "above", "bear"], ["otter", "below", "bear"]] },
+      { layout: "cross", animals: ["fox", "deer", "bear"], clues: [["fox", "above", "deer"], ["bear", "right", "deer"]] },
+      { layout: "cross", animals: ["owl", "otter", "rabbit"], clues: [["owl", "left", "otter"], ["rabbit", "above", "otter"]] },
+      { layout: "cross", animals: ["mole", "hare", "fox"], clues: [["mole", "below", "hare"], ["fox", "left", "hare"]] },
+      { layout: "cross", animals: ["deer", "owl", "mole"], clues: [["deer", "right", "owl"], ["mole", "below", "owl"]] },
+      { layout: "cross", animals: ["rabbit", "bear", "otter"], checkpoint: true, checkpointKey: "checkpoint10", clues: [["rabbit", "above", "bear"], ["otter", "left", "bear"]] },
     ] },
     { arc: 3, arcKey: "arc3Name", mechanicKey: "mechanicDiagonal", stages: [
       { layout: "diagonal", animals: ["fox", "owl", "deer"], clues: [["fox", "upperLeft", "owl"], ["deer", "lowerRight", "owl"]] },
@@ -87,10 +87,21 @@
     zigzag: [[[0, 0, 0], [1, 1, 0], [2, 2, 0]], [[0, 0, 1], [2, 1, 2], [1, 2, 1]], [[0, 1, 1], [1, 1, 0], [2, 1, 2]]],
     split: [[[0, 1, 0], [1, 1, 1], [2, 1, 2]], [[2, 0, 0], [1, 1, 1], [0, 0, 2]], [[0, 0, 0], [2, 0, 1], [1, 1, 0]]],
   };
+  // On crossed axes each decoy reflects just one endpoint about the anchor.
+  function crossedStars(stage, variant) {
+    const offsets = { above: [-1, 0], below: [1, 0], left: [0, -1], right: [0, 1] };
+    const stars = [{ animal: stage.clues[0][2], row: 1, col: 1 }];
+    stage.clues.forEach(([animal, direction], index) => {
+      const [row, col] = offsets[direction];
+      const sign = variant === index + 1 ? -1 : 1;
+      stars.push({ animal, row: 1 + sign * row, col: 1 + sign * col });
+    });
+    return stars;
+  }
   const makeStars = (layout, animals, variant) => (layoutVariants[layout]?.[variant] || layoutVariants.horizontal[variant]).map(([animalIndex, row, col]) => ({ animal: animals[animalIndex], row, col }));
   const authoredMaps = arcDefinitions.flatMap((arc) => arc.stages.map((stage, index) => ({ ...stage, arc: arc.arc, arcKey: arc.arcKey, mechanicKey: arc.mechanicKey, stageInArc: index + 1 }))).map((stage, index) => {
     const number = index + 1;
-    const options = [0, 1, 2].map((variant) => ({ id: `stage-${number}-option-${variant + 1}`, slot: variant + 1, stars: makeStars(stage.layout, stage.animals, variant) }));
+    const options = [0, 1, 2].map((variant) => ({ id: `stage-${number}-option-${variant + 1}`, slot: variant + 1, stars: stage.layout === 'cross' ? crossedStars(stage, variant) : makeStars(stage.layout, stage.animals, variant) }));
     return { ...stage, number, nameKey: `stage${number}Name`, introKey: `stage${number}Intro`, correctId: options[0].id, options };
   });
   const puzzle = window.AnimalConstellationKeeperAnswerSlots;
@@ -201,7 +212,7 @@
       title: mirror?(mirrorShort[state.locale]||mirrorShort.en):t(map.nameKey),
       subtitle: mirror?mirrorText()[1]:t(map.arcKey),
       status,
-      summary: mirror?map.clues.map(describeRelation).join(' · '):t(map.introKey),
+      summary: map.layout === 'cross' ? t(map.mechanicKey) : mirror?map.clues.map(describeRelation).join(' · '):t(map.introKey),
       details: detail,
       locked,
       cleared,
@@ -289,7 +300,7 @@
     mapLabel.title = t("round", { n: state.map + 1, total: maps.length });
     mapLabel.setAttribute("aria-label", mapLabel.title);
     mapLabel.dir = "ltr";
-    $("mapIntro").textContent = mirror?`${current.checkpoint?t('checkpoint')+' · ':''}${mirrorText()[0]}`:`${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.introKey)}`;
+    $("mapIntro").textContent = mirror?`${current.checkpoint?t('checkpoint')+' · ':''}${mirrorText()[0]}`:`${current.checkpoint ? `${t("checkpoint")}: ${t(current.checkpointKey)} — ` : ""}${t(current.layout === "cross" ? current.mechanicKey : current.introKey)}`;
     if(mirror)placePracticeBadge();
     lensButton.hidden=!mirror;lensHelp.hidden=!mirror;if(mirror){lensLabel.textContent=mirrorText()[1];lensHelp.textContent=mirrorGuide[state.locale]||mirrorGuide.en;lensButton.setAttribute('aria-describedby','ckMirrorLensHelp');lensButton.disabled=Boolean(state.lensUsed)||!current.options.some(o=>!state.evaluations[o.id]&&!mirrorAssess(current,o).every(Boolean));}
     const evaluation = state.evaluations[state.selected];
