@@ -1780,8 +1780,9 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) dialog:modal {
 /* Result owners reveal the card after their final action settles. Animating the
    card keeps the Battle canvas, modal backdrop and reward lifecycle separate. */
 @keyframes wp-result-card-enter {
-  from { opacity: 0; scale: .9; translate: 0 12px; }
-  72% { opacity: 1; scale: 1.012; translate: 0 0; }
+  from { opacity: .85; scale: .68; translate: 0 28px; }
+  28% { opacity: 1; scale: .84; translate: 0 13px; }
+  74% { opacity: 1; scale: 1.025; translate: 0 -2px; }
   to { opacity: 1; scale: 1; translate: 0 0; }
 }
 @keyframes wp-result-card-fade {
@@ -1794,7 +1795,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) dialog:modal {
          .result-overlay, .result-panel, .result-screen, [data-wp-result-screen],
          [data-wp-battle-substate="result"]) > :is(.result-card, .resultCard, .arcade-panel, .result-layout, .logic-result-card),
   dialog.wp-result-art[open]:not(:has([data-wp-result-card], [data-wp-frame-result-card], .result-card)) {
-    animation: var(--wp-result-card-entry, wp-result-card-enter 260ms ease-out) !important;
+    animation: var(--wp-result-card-entry, wp-result-card-enter 440ms 90ms ease-out backwards) !important;
   }
   @media (prefers-reduced-motion: reduce) {
     :root { --wp-result-card-entry: wp-result-card-fade 100ms linear; }
