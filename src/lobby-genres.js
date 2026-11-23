@@ -28,6 +28,7 @@
     ["snow-ramp-leap", "Sports", "Timing"],
     ["gale-watch", "Strategy", "Management"],
     ["trailhouse-renovation", "Simulation", "Strategy"],
+    ["pulse-burrow", "Action", "Timing"],
     ["magnetwheel-guard", "Strategy", "Timing"],
     ["clockwork-boxes", "Puzzle", "Deduction", "Sequencing"],
     ["shardplate-hunt", "Action", "Timing"],
