@@ -1,11 +1,11 @@
-import { createEnemyImpactLayer } from './game-enemy-impact-3d.mjs?v=world-hit-1&wp-media=1268e87380b84fce';
+import { createEnemyImpactLayer } from './game-enemy-impact-3d.mjs?v=world-hit-1&wp-media=ad4f5b7b56e6920a';
 
 const atlasUrls = new Map([
-  ["fire", new URL("./effects/fire-impact-v1.webp?wp-media=1268e87380b84fce", import.meta.url).href],
-  ["wind", new URL("./effects/wind-impact-v1.webp?wp-media=1268e87380b84fce", import.meta.url).href],
-  ["water", new URL("./effects/water-impact-v1.webp?wp-media=1268e87380b84fce", import.meta.url).href],
-  ["light", new URL("./effects/light-impact-v1.webp?wp-media=1268e87380b84fce", import.meta.url).href],
-  ["dark", new URL("./effects/dark-impact-v1.webp?wp-media=1268e87380b84fce", import.meta.url).href],
+  ["fire", new URL("./effects/fire-impact-v1.webp?wp-media=ad4f5b7b56e6920a", import.meta.url).href],
+  ["wind", new URL("./effects/wind-impact-v1.webp?wp-media=ad4f5b7b56e6920a", import.meta.url).href],
+  ["water", new URL("./effects/water-impact-v1.webp?wp-media=ad4f5b7b56e6920a", import.meta.url).href],
+  ["light", new URL("./effects/light-impact-v1.webp?wp-media=ad4f5b7b56e6920a", import.meta.url).href],
+  ["dark", new URL("./effects/dark-impact-v1.webp?wp-media=ad4f5b7b56e6920a", import.meta.url).href],
 ]);
 const TILE_SIZE = 192;
 const COLUMNS = 6;

@@ -1,8 +1,8 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=27&wp-media=1268e87380b84fce';
-import {STAGES} from './stage-config.mjs?wp-media=1268e87380b84fce';
-import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=27&wp-media=1268e87380b84fce';
-import {createStore,highestUnlocked} from './save.mjs?v=27&wp-media=1268e87380b84fce';
-import {createRenderer} from './render.mjs?v=27&wp-media=1268e87380b84fce';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=27&wp-media=ad4f5b7b56e6920a';
+import {STAGES} from './stage-config.mjs?wp-media=ad4f5b7b56e6920a';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=27&wp-media=ad4f5b7b56e6920a';
+import {createStore,highestUnlocked} from './save.mjs?v=27&wp-media=ad4f5b7b56e6920a';
+import {createRenderer} from './render.mjs?v=27&wp-media=ad4f5b7b56e6920a';
 
 
 function ghostDistance(race){
@@ -65,9 +65,9 @@ let actionGuide=null;
 let frame,rail,renderer=null,race=null,screen='main',tab='stages',modal=null,previousFocus=null,practice=false,practiceRun=false,startSerial=0,purchaseSerial=0,purchaseBusy=false,shoeStatusKey=null,shopStatusKey=null,resultReward=false,selected=highestUnlocked(store.progress),raf=0,last=0,saved=false,pending=null;
 const audio=id=>W.WeightPlayAudio?.play(id);
 const settingsOpen=()=>!!document.querySelector('#wp-frame-battle-settings:not([hidden])');
-const config=()=>({gameId:'lantern-stride',count:STAGES.length,poster:'/games/lantern-stride/assets/cover.webp?wp-media=1268e87380b84fce',background:'/assets/lobby-block-atmosphere.svg',stage:index=>{
+const config=()=>({gameId:'lantern-stride',count:STAGES.length,poster:'/games/lantern-stride/assets/cover.webp?wp-media=ad4f5b7b56e6920a',background:'/assets/lobby-block-atmosphere.svg',stage:index=>{
   const s=STAGES[index],r=store.progress.records[s.id],locked=!practice&&s.id>highestUnlocked(store.progress);
-  return {id:s.id,kicker:tr('chapter',{n:s.chapter}),title:tr('stage',{n:s.id}),subtitle:tr(s.checkpoint?'festival':'forest'),status:locked?tr('locked'):r?tr('stars',{n:r.stars}):tr('ready'),locked,cleared:!!r,rewardState:r?'collected':'not-collected',summary:tr(s.id===55?'goalChosen':goals[s.objective]),details:[`${s.distance} m · ${s.limit} s`,s.route.map(x=>tr(labels[x])).join(' → '),tr('starGoals',{n:starTimeLimit(s)}),...(r?[bestLabel(r)]:[])],poster:'/games/lantern-stride/assets/cover.webp?wp-media=1268e87380b84fce'};
+  return {id:s.id,kicker:tr('chapter',{n:s.chapter}),title:tr('stage',{n:s.id}),subtitle:tr(s.checkpoint?'festival':'forest'),status:locked?tr('locked'):r?tr('stars',{n:r.stars}):tr('ready'),locked,cleared:!!r,rewardState:r?'collected':'not-collected',summary:tr(s.id===55?'goalChosen':goals[s.objective]),details:[`${s.distance} m · ${s.limit} s`,s.route.map(x=>tr(labels[x])).join(' → '),tr('starGoals',{n:starTimeLimit(s)}),...(r?[bestLabel(r)]:[])],poster:'/games/lantern-stride/assets/cover.webp?wp-media=ad4f5b7b56e6920a'};
 }});
 function setModalInert(area,value){
   if(area==='battle'){ $('battleLive').inert=value;$('battleScreen').querySelector('header').inert=value; }
@@ -171,7 +171,7 @@ function action(foot){if(screen!=='battle'||!race||modal||document.hidden||setti
 async function persist(){if(!pending||pending.busy)return;const item=pending;item.busy=true;$('resultStages').disabled=true;$('resultReplay').disabled=true;$('retrySave').disabled=true;if(modal==='resultPanel'&&(!$('resultPanel').contains(document.activeElement)||!document.activeElement?.getClientRects().length||document.activeElement?.disabled))focusModal('resultPanel');const result=await store.complete(item.id,item.outcome);item.busy=false;let reward=null;if(result.ok){reward=(await flushPendingRewards(item.id))?.awarded;if(pending===item)pending=null;}if(item.owner!==race||screen!=='battle'||modal!=='resultPanel')return;$('resultStages').disabled=false;$('resultReplay').disabled=false;$('retrySave').disabled=false;saved=result.ok;resultReward=reward?.credited===true&&reward.amount===1&&['castle-block','castle-material'].includes(reward.currency);$('saveStatus').textContent=saved?savedMessage()+(rewardOutstanding?' · '+tr(progressUnavailable?'progressUnavailableShort':'rewardPendingShort'):''):tr('saveFailed');if(resultReward){const icon=W.ShowResultGet?.('lantern-stride',true);if(icon?.isConnected)W.WeightPlayCastle?.dismissRewardNotice?.('lantern-stride');}$('retrySave').hidden=saved&&!rewardRecoverable;$('retrySave').textContent=tr(saved&&!progressUnavailable?'retryReward':'retrySave');$('resultNext').disabled=!saved||item.id>=60;if(!$('resultPanel').contains(document.activeElement)||!document.activeElement?.getClientRects().length||document.activeElement===$('resultPanel')||document.activeElement?.disabled)focusModal('resultPanel');}
 function renderResult(){if(!race?.result)return;const r=race.result;$('resultArt').hidden=!r.won&&!$('resultArt').querySelector('canvas');$('resultStarGuide').textContent=tr('starGoals',{n:starTimeLimit(race.stage)});$('resultStars').textContent=r.won?'★'.repeat(r.stars)+'☆'.repeat(3-r.stars):'';$('resultTitle').textContent=tr(r.won?'complete':'tryAgain');const reason=r.reason==='timeout'?'reasonTimeout':r.reason==='missed-gate'?'reasonGate':r.reason==='finish'?'reasonFinish':'reasonObjective';const markResult=r.won&&race.landmarks.length?` · ${tr('markResult',{n:race.landmarks.filter(m=>m.collected).length,total:race.landmarks.length})}`:'';$('resultDetails').textContent=`${r.elapsed.toFixed(1)} s · ${tr('stars',{n:r.stars})} · ${tr(reason)}${markResult}`;}
 async function finish(){
-  $('resultPanel').dataset.outcome=race.result.won?'win':'lose';
+  $('resultPanel').dataset.outcome=race.result.won?'win':'loss';
   audio(race.result.won?'result.win':'result.lose');saved=practiceRun&&race.result.won;pending=race.result.won&&!practiceRun?{id:selected,owner:race,outcome:{...race.result,bestTrace:race.trace},busy:false}:null;
   const art=$('resultArt');art.replaceChildren();const portrait=renderer?.capturePortrait?.();if(portrait)art.append(portrait);art.style.backgroundImage=portrait?'none':'';
   renderResult();
@@ -241,7 +241,7 @@ async function boot(){
   const guideReplay=document.createElement('button');guideReplay.type='button';guideReplay.id='firstActionReplay';guideReplay.textContent=`↻ ${tr('replay')} · ${tr('helpTitle')}`;
   guideReplay.addEventListener('click',async()=>{closeModal();await startStage(1,{asPractice:practiceRun});if(race?.stage.id===1){actionGuide.start({replay:true});schedule();}});$('helpClose').after(guideReplay);
   W.addEventListener('wonder:locale-change',()=>{guideReplay.textContent=`↻ ${tr('replay')} · ${tr('helpTitle')}`;actionGuide.refresh();});
-  bind();activate('main');localize();void flushPendingRewards();W.addEventListener('weightplay:castle-ready',()=>{if(screen==='main')void flushPendingRewards()});W.addEventListener('focus',()=>{if(screen==='main')void flushPendingRewards()});const props=new Image();props.src=new URL('assets/props.webp?wp-media=1268e87380b84fce',import.meta.url).href;await Promise.all([$('poster').decode(),props.decode()]);W.WeightPlayGameEntryLoader?.assetProgress(2,2);entryReady=true;syncStart();W.WeightPlayGameEntryLoader?.ready();
+  bind();activate('main');localize();void flushPendingRewards();W.addEventListener('weightplay:castle-ready',()=>{if(screen==='main')void flushPendingRewards()});W.addEventListener('focus',()=>{if(screen==='main')void flushPendingRewards()});const props=new Image();props.src=new URL('assets/props.webp?wp-media=ad4f5b7b56e6920a',import.meta.url).href;await Promise.all([$('poster').decode(),props.decode()]);W.WeightPlayGameEntryLoader?.assetProgress(2,2);entryReady=true;syncStart();W.WeightPlayGameEntryLoader?.ready();
 }
 if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))W.__lanternStrideRenderMetrics=()=>renderer?.info()||null;
 boot().catch(error=>{console.error(error);W.WeightPlayGameEntryLoader?.fail?.('load');});
