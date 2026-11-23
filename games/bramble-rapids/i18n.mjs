@@ -11,11 +11,6 @@ export function resolveLocale(options = {}) {
   const routed = localeOf(parts[0]);
   if (routed) return routed;
   try {
-    const query = new URLSearchParams(options.search ?? globalThis.location?.search ?? '');
-    const selected = localeOf(query.get('lang') || query.get('locale'));
-    if (selected) return selected;
-  } catch { /* Continue with current shared preference. */ }
-  try {
     const storage = Object.prototype.hasOwnProperty.call(options, 'storage') ? options.storage : globalThis.localStorage;
     const selected = localeOf(storage?.getItem('weightPlayLocale'));
     if (selected) return selected;

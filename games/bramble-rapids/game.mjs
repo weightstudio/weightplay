@@ -3,8 +3,7 @@ import {STAGES,BOARDS,getStage,featureX,gateIsOpen,gateSecondsToChange,tidePhase
 import {createRace,startRace,pauseRace,resumeRace,stepRace,drainEvents} from './simulation.mjs?v=20261107-action-teaching-v5&wp-media=4f45f118724de500';
 import {RapidsRenderer} from './render.mjs?v=enemy-hit-v8&wp-media=4f45f118724de500';
 import {createProgressStore} from './save.mjs?wp-media=4f45f118724de500';
-import {resolveLocale,t,stageName,stageLesson,guide,renderRelatedGames,renderGameplayTags} from './i18n.mjs?wp-media=4f45f118724de500';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=4f45f118724de500';
+import {resolveLocale,t,stageName,stageLesson,guide,renderRelatedGames,renderGameplayTags} from './i18n.mjs?v=i10-1b169b10a3b9&wp-media=4f45f118724de500';
 import {makeStageConfig} from './stage-config.mjs?wp-media=4f45f118724de500';
 const $=id=>document.getElementById(id), W=window, SKU='bramble-rapids:coral-night';
 const store=createProgressStore();store.load();
@@ -273,6 +272,7 @@ function localize(){
   document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
   for(const el of document.querySelectorAll('[data-t]'))el.textContent=tr(el.dataset.t,{cost:el.dataset.cost||5});
   for(const el of document.querySelectorAll('[data-t-aria]'))el.setAttribute('aria-label',tr(el.dataset.tAria));
+  for(const [id,icon,key] of [['boardsTab','workshop','boards'],['stagesTab','map','stages'],['collectionTab','trophy','collection']]) W.WeightPlayPlayUI.illustrateTab($(id),icon,tr(key));
   $('riverArena').setAttribute('aria-label',tr('summary'));$('stageTabs').setAttribute('aria-label',tr('stages'));
   frame?.commonDownButton.element.setAttribute('aria-label',tr('stages'));
   $('mainBack').setAttribute('aria-label',tr('backLobby'));$('poster').alt=tr('posterAlt');
@@ -376,7 +376,7 @@ function tick(now){
 }
 async function startStage(id,{practice:asPractice=practice,restart=false}={}){
   if(busy)return;id=Number(id);if(!getStage(id))return;
-  if(asPractice){if(!await LocalPractice.validate())return;}else if(id>store.persistedSnapshot.unlocked)return;
+  if(asPractice||id>store.persistedSnapshot.unlocked)return;
   if(restart)W.WonderAnalytics?.game?.markRestart();
   actionGuide?.stop();$('firstActionGuide').hidden=true;selected=id;practiceRun=asPractice;resultSaved=false;renderer?.dispose();renderer=null;activate('battle');
   race=createRace(id,{boardId:store.snapshot.equippedBoard});resultRewards.set(race,{practice:asPractice,obtained:false});round++;startRace(race);
@@ -391,6 +391,7 @@ function showHelp(open=true){if(!race)return;$('helpStage').textContent=`${tr('s
 ${stageDetails(race.stage).join('\n')}${phaseTargets(race.stage).length?'\n'+tr('phaseHelp'):''}`;$('helpBasics').textContent=`${tr('keyControls')} ${tr('touchControls')} ${tr('tutorialJump')} ${race.stage.chapter===2?tr('tutorialAnchor'):''}`;if(open)openModal('helpDialog');}
 function renderResult(){
   if(!race?.result)return;const r=race.result,saving=savingRuns.has(race);
+  $('resultPanel').dataset.outcome=r.won?'win':'loss';
   $('resultStage').textContent=`${tr('stage')} ${r.stageId} · ${stageName(r.stageId,locale)}`;text('resultTitle',r.won?'won':'lost');
   const resultArt=r.won?(r.stageId===60?5:6+Math.max(0,r.stars-1)):Math.max(0,BOARDS.findIndex(board=>board.id===race.boardId));
   $('resultArt').style.setProperty('--kit-x',`${resultArt%3*50}%`);
@@ -500,7 +501,6 @@ async function boot(){
   for(const node of document.querySelectorAll('#riverControls button,.dialog-card button,.result-actions button,#retrySave'))node.setAttribute('data-wp-frame-action','secondary');
   let loaded=0;await Promise.all(['cover.webp','scenes.webp','kit.webp'].map(async asset=>{const image=asset==='cover.webp'?$('poster'):new Image();if(asset!=='cover.webp')image.src=new URL(`assets/${asset}`,import.meta.url).href;await image.decode();W.WeightPlayGameEntryLoader?.assetProgress(++loaded,3);}));
   $('startBtn').disabled=false;W.WeightPlayGameEntryLoader?.ready();
-  await LocalPractice.register({gameId:'bramble-rapids',stageIds:STAGES.map(s=>s.id),enable:enabled=>{practice=enabled;renderManagement();rail.refresh(selected-1);},startStage:id=>startStage(Number(id),{practice:true})});
   W.WonderAnalytics?.game?.observeState(()=>({screen,roundKey:practiceRun?null:race?`bramble-${round}`:null,stageId:race?.stage.id,started:!practiceRun&&!!race,ended:!practiceRun&&!!race?.result&&(!race.result.won||resultSaved),outcome:race?.result?.won?'win':'lose',paused:!runnable(),locale,activityMode:'state',keyboardKeys:['ArrowLeft','ArrowRight','KeyA','KeyD','Space','KeyX']}));
 }
 // Observation only: no unlock, input injection, save mutation or simulation controls.
