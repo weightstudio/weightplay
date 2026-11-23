@@ -374,7 +374,7 @@
   // Observe the game's actual selection so pointer, keyboard and scripted
   // changes follow the same path. The marker never receives player input.
   function bindStageTabMotion(nav, signal) {
-    const selector = '[role="tab"][aria-selected="true"],[data-wp-frame-action="tab"][aria-pressed="true"]';
+    const selector = '[aria-selected="true"],[data-wp-frame-action="tab"]:is([aria-pressed="true"],[aria-current="page"]),.wp-play-icon-tab[aria-pressed="true"]';
     let selected, panelMotion;
     const geometry = new ResizeObserver(update);
     function update() {
@@ -404,12 +404,12 @@
         }
       }
       nav.style.setProperty('--wp-tab-x', x+'px');
-      nav.style.setProperty('--wp-tab-width', Math.min(44,rect.width * ratio * .6)+'px');
+      nav.style.setProperty('--wp-tab-width', (nav.hasAttribute('data-wp-tab-rail') ? rect.width * ratio * .90 : Math.min(44, rect.width * ratio * .6))+'px');
       nav.setAttribute('data-wp-tab-marker','');
       selected = next;
     }
     const changes = new MutationObserver(update);
-    changes.observe(nav,{subtree:true, childList:true, attributes:true, attributeFilter:['aria-selected','aria-pressed','hidden']});
+    changes.observe(nav,{subtree:true, childList:true, attributes:true, attributeFilter:['aria-selected','aria-pressed','aria-current','hidden']});
     geometry.observe(nav);
     signal.addEventListener('abort', () => {
       geometry.disconnect();
@@ -561,19 +561,35 @@
       header.append(settings.utility);
       entries[name] = { ...scene, ...settings };
       if (playUI && name === 'stage') {
-        const nav = scene.root.querySelector('[data-wp-frame-nav]') || document.createElement('nav');
+        const nav = scene.nav || scene.root.querySelector('[data-wp-frame-nav]')
+          || scene.root.querySelector('nav[data-wp-frame-stage-nav]:has(.wp-play-icon-tab)')
+          || document.createElement('nav');
         nav.dataset.wpFrameNav = '';
         nav.dataset.wpPlayActions = '';
         scene.root.append(nav);
         const refreshButtons = () => {
           nav.querySelectorAll('button,a').forEach(button => { button.dataset.wpFrameAction ||= 'secondary'; });
           nav.hidden = !nav.querySelector('button,a');
+          nav.toggleAttribute('data-wp-tab-rail', nav.children.length > 0 &&
+            [...nav.children].every(child => child.hasAttribute('data-wp-registered-tab')));
           scene.root.dataset.wpPlayActionsEmpty = String(nav.hidden);
           window.dispatchEvent(new Event('weightplay:play-actions-change'));
         };
         listen(nav,'weightplay:group-change',refreshButtons);
         bindStageTabMotion(nav, abort.signal);
-        bottomSlots[name] = contentSlot(nav, refreshButtons);
+        const slot = contentSlot(nav, refreshButtons);
+        bottomSlots[name] = Object.freeze({
+          ...slot,
+          registerTab(button, {icon, label, panel}) {
+            window.WeightPlayPlayUI.illustrateTab(button, icon, label);
+            button.dataset.wpFrameAction = 'tab';
+            button.setAttribute('data-wp-registered-tab', '');
+            if (panel) button.setAttribute('aria-controls', panel.id || panel);
+            if (button.parentElement !== nav) nav.append(button);
+            refreshButtons();
+            return button;
+          },
+        });
         refreshButtons();
       }
     }

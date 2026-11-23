@@ -34,12 +34,14 @@
 <meta name="twitter:image" content="https://weightplay.com/games/circuit-relay-defense/assets/cover.webp?wp-media=4f45f118724de500">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"Оборона электросети","description":"Распределяйте питание между мастерской и турелями, чтобы защитить станцию.","url":"https://weightplay.com/ru/games/circuit-relay-defense/","inLanguage":"ru","image":"https://weightplay.com/games/circuit-relay-defense/assets/cover.webp?wp-media=4f45f118724de500","genre":"Башенная защита","gamePlatform":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightPlay","url":"https://weightplay.com"}},{"@type":"FAQPage","inLanguage":"ru","mainEntity":[{"@type":"Question","name":"Как остановить бронированный дрон?","acceptedAnswer":{"@type":"Answer","text":"Золотая линия показывает дальность. Турель с питанием тратит ячейку на первый выстрел в каждой волне и продолжает стрелять. Катушка пробивает щиты."}}]}]}</script>
 <!-- relay-meta:end -->
+<link rel="stylesheet" href="/src/game-page-info.css?wp-media=4f45f118724de500" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=4f45f118724de500" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=4f45f118724de500" data-wp-entry-required>
+  <link rel="stylesheet" href="/src/game-ui-icons.css?v=i10-f879f281a9e1&wp-media=4f45f118724de500" data-wp-entry-required>
 <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=4f45f118724de500" data-wp-entry-required>
 <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=4f45f118724de500" data-wp-entry-required>
 <link rel="stylesheet" href="/src/tutorial.css?wp-media=4f45f118724de500" data-wp-entry-required>
-<link rel="stylesheet" href="/games/circuit-relay-defense/style.css?wp-build=b361ddad3b1e450a&wp-media=4f45f118724de500" data-wp-entry-required>
+<link rel="stylesheet" href="/games/circuit-relay-defense/style.css?v=i10-ef411f9d4f40&amp;wp-build=3467fd63da53dfb9&wp-media=4f45f118724de500" data-wp-entry-required>
 <script src="/src/game-title-registry.js?wp-media=4f45f118724de500" data-wp-game-title-registry></script>
 <script src="/src/game-layout-config.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
 <script src="/src/weightplay-audio.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
@@ -55,14 +57,14 @@
   <div id="mainGroup" class="wp-frame-main-flow">
     <section id="mainScreen" data-wp-frame-scene="main">
       <header id="mainHeader" data-wp-frame-header="main">
-        <a id="mainReturn" class="wp-frame-return" href="/ru/?preview=1" data-wp-return="main" data-wp-frame-action="secondary" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=4f45f118724de500" alt="" width="26" height="26"></a>
+        <a id="mainReturn" class="wp-frame-return" href="/ru/?preview=1" data-wp-return="main" aria-label="WeightPlay">← W<img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=4f45f118724de500" alt="" width="26" height="26"></a>
         <h1 id="gameTitle" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Оборона электросети</h1>
       </header>
       <section id="mainHero" data-wp-frame-content="main">
         <img id="cover" width="960" height="960" src="/games/circuit-relay-defense/assets/cover.webp?wp-media=4f45f118724de500" alt="Оборона электросети" data-wp-frame-poster data-wp-interface7-poster="true" fetchpriority="high">
         <div data-wp-frame-copy>
           <p data-wp-frame-summary data-word="description">Распределяйте питание между мастерской и турелями, чтобы защитить станцию.</p>
-          <p id="mainProgress" data-wp-frame-progress></p>
+          <p id="mainProgress" class="wp-standard-main-progress" data-wp-frame-progress></p>
           <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" data-word="start" disabled>Играть</button>
           <button id="modulesBtn" type="button" data-wp-frame-action="secondary" data-word="modules">Модули</button>
         </div>
@@ -106,9 +108,9 @@
         <button id="pulseBtn" type="button" data-wp-frame-action="primary" data-word="pulse">Начать волну</button>
       </section>
     </main>
-    <section id="resultPanel" class="relay-result" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+    <section id="resultPanel" class="relay-result wp-result-art" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
       <div class="relay-card" data-wp-result-card>
-        <h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultNotice" role="status"></p>
+        <div class="result-heading"><h2 id="resultTitle"></h2></div><p id="resultText"></p><p id="resultNotice" role="status"></p>
         <div class="relay-actions">
           <button id="resultMap" type="button" data-wp-frame-action="secondary" data-word="stages">Смены</button>
           <button id="resultRetry" type="button" data-wp-frame-action="secondary" data-word="retry">Повторить</button>
@@ -128,10 +130,10 @@
 </div>
 <script src="/src/edge-guard.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
 <script src="/src/stage-rail-i9.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
-<script src="/src/game-play-ui.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
+<script src="/src/game-play-ui.js?v=i10-acaa4652983e&wp-media=4f45f118724de500" data-wp-entry-required></script>
 <script src="/src/battle-canvas-standard.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
-<script src="/src/game-screen-frame.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
+<script src="/src/game-screen-frame.js?v=i10-392e06911bcc&wp-media=4f45f118724de500" data-wp-entry-required></script>
 <script src="/src/tutorial.js?wp-media=4f45f118724de500" data-wp-entry-required></script>
-<script type="module" src="/games/circuit-relay-defense/game.mjs?wp-build=6ef02ddffcbb2aec&wp-media=4f45f118724de500" data-wp-entry-required></script>
+<script type="module" src="/games/circuit-relay-defense/game.mjs?v=i10-8c7c296acd6f&amp;wp-build=7d0559fea4307f99&wp-media=4f45f118724de500" data-wp-entry-required></script>
 </body>
 </html>

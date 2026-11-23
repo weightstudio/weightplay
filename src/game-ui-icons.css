@@ -97,3 +97,11 @@
     scale: .92;
   }
 }
+
+/* I10 icon tabs: keep labels on the selected or keyboard-focused item. */
+@media (forced-colors:none) {
+ .wp-play-icon-tab.wp-play-art-ready:is([aria-selected="true"],[aria-pressed="true"],[aria-current="page"]) > .wp-play-button-fallback,
+ .wp-play-icon-tab.wp-play-art-ready:focus-visible > .wp-play-button-fallback { display:inline; }
+}
+.wp-play-icon-tab[aria-selected="true"] { box-shadow:inset 0 -3px currentColor; }
+@media (forced-colors:active) { .wp-play-icon-tab[aria-selected="true"] { border-block-end:3px solid Highlight; } }

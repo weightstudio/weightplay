@@ -37,6 +37,28 @@
     button.replaceChildren(art, fallback);
     art.src = '/assets/game-icons/' + encodeURIComponent(icon) + '.webp';
   }
+  // Icon tabs retain a localized fallback until their artwork decodes.
+  function illustrateTab(button, icon, label) {
+    button.title = label;
+    button.setAttribute('aria-label', label);
+    const current = button.querySelector(':scope > img[data-wp-button-art]');
+    const caption = button.querySelector(':scope > .wp-play-button-fallback');
+    if (current?.dataset.wpButtonArt === icon && caption) {
+      if (caption.textContent !== label) caption.textContent = label;
+      return;
+    }
+    const art = document.createElement('img');
+    art.alt = ''; art.width = art.height = 32; art.dataset.wpButtonArt = icon;
+    const fallback = document.createElement('span');
+    fallback.className = 'wp-play-button-fallback'; fallback.textContent = label;
+    button.classList.add('wp-play-art-button', 'wp-play-icon-tab');
+    button.classList.remove('wp-play-art-ready');
+    button.replaceChildren(art, fallback);
+    art.src = '/assets/game-icons/' + encodeURIComponent(icon) + '.webp';
+    if (typeof art.decode === 'function') void art.decode().then(() => {
+      if (art.parentNode === button) button.classList.add('wp-play-art-ready');
+    }, () => {});
+  }
   // Call after committing the change, on the value or icon that received it.
   function emphasizeResult(element) {
     if (!element?.getClientRects().length || !element.animate) return;
@@ -297,5 +319,5 @@
     }else scheduleLayout();
     return api;
   }
-  window.WeightPlayPlayUI=Object.freeze({version:1,mountStage,illustrateButton,emphasizeResult});
+  window.WeightPlayPlayUI=Object.freeze({version:1,mountStage,illustrateButton,illustrateTab,emphasizeResult});
 })();
