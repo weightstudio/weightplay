@@ -1,0 +1,9 @@
+/* Compact four-item Battle rails keep selected and focused labels readable. */
+nav[data-wp-play-actions][data-wp-tab-rail] > button[data-wp-registered-tab] {
+  display: flex !important; flex-direction: column !important; align-items: center !important;
+  justify-content: center !important; gap: 1px !important; white-space: normal !important;
+}
+nav[data-wp-play-actions][data-wp-tab-rail] > button[data-wp-registered-tab] > .wp-play-button-fallback {
+  font-size: 10px; line-height: 1; white-space: normal !important;
+  overflow: hidden; text-overflow: clip; max-height: 2em; overflow-wrap: anywhere;
+}

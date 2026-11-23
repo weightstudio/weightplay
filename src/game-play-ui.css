@@ -229,26 +229,9 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
 }
 
 @layer wp-frame-contract {
-  /* Stage navigation shares button geometry, but only an action gets a raised face. */
-  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
-  :is([data-wp-frame-stage-nav], [data-wp-play-actions])
-  :is(button,a):is(.wp-play-icon-tab,[role="tab"],[data-wp-frame-action="tab"],[aria-selected]) {
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    gap: 6px !important;
-  }
   html [data-wp-play-actions] :is(button,a):focus-visible {
     outline: 2px solid currentColor !important;
     outline-offset: -3px !important;
-  }
-  [data-wp-play-actions][data-wp-tab-marker]::after {
-    content: ""; position: absolute; pointer-events: none;
-    left: 0; bottom: 4px; width: var(--wp-tab-width); height: 2px;
-    border-radius: 2px; background: var(--wp-ui-accent, #79edeb);
-    transform: translateX(calc(var(--wp-tab-x) - 50%));
-    transition: transform 160ms ease-out, width 160ms ease-out;
   }
   /* Only a footer made entirely of registered tabs shares this illustrated rail. */
   html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
@@ -265,6 +248,10 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
     width: auto !important;
     max-width: none !important;
     background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    gap: 6px !important;
     color: #fff1d3 !important;
     overflow: hidden;
   }
@@ -274,6 +261,13 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
     text-overflow: ellipsis;
   }
   [data-wp-play-actions][data-wp-tab-rail][data-wp-tab-marker]::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    width: var(--wp-tab-width);
+    transform: translateX(calc(var(--wp-tab-x) - 50%));
+    transition: transform 160ms ease-out, width 160ms ease-out;
     height: var(--wp-play-control, 48px);
     bottom: calc((100% - var(--wp-play-control, 48px)) / 2);
     box-sizing: border-box;
@@ -285,6 +279,6 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
     [data-wp-play-actions][data-wp-tab-rail][data-wp-tab-marker]::after { border-color: Highlight; }
   }
   @media (prefers-reduced-motion: reduce) {
-    [data-wp-play-actions][data-wp-tab-marker]::after { transition: none; }
+    [data-wp-play-actions][data-wp-tab-rail][data-wp-tab-marker]::after { transition: none; }
   }
 }

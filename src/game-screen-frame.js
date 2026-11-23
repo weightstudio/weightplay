@@ -404,7 +404,7 @@
         }
       }
       nav.style.setProperty('--wp-tab-x', x+'px');
-      nav.style.setProperty('--wp-tab-width', (nav.hasAttribute('data-wp-tab-rail') ? rect.width * ratio * .90 : Math.min(44, rect.width * ratio * .6))+'px');
+      nav.style.setProperty('--wp-tab-width', (rect.width * ratio * .90)+'px');
       nav.setAttribute('data-wp-tab-marker','');
       selected = next;
     }

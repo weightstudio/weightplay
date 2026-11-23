@@ -301,6 +301,57 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-actio
     white-space:nowrap!important;
   }
 }
+/* Main landing composition for games that provide the shared poster and copy slots. */
+@layer wp-frame-contract {
+  html [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-content="main"]:has(> [data-wp-frame-copy]) {
+    row-gap: 0 !important;
+    column-gap: clamp(16px, 2vw, 28px) !important;
+    border-radius: 16px;
+    background: linear-gradient(145deg, var(--wp-ui-surface), var(--wp-ui-background)) !important;
+  }
+  html [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-content="main"] > [data-wp-frame-copy] {
+    align-self: center !important;
+    height: auto !important;
+    gap: 12px !important;
+    margin: 16px clamp(12px, 2vw, 24px) !important;
+    padding: 0 !important;
+    text-align: start;
+  }
+  html [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-copy] > [data-wp-frame-summary] {
+    margin: 0 !important;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+  html [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-copy] > [data-wp-frame-progress] {
+    align-self: flex-start !important;
+    box-sizing: border-box !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    min-height: 28px !important;
+    height: auto !important;
+    max-height: 44px !important;
+    padding: 4px 10px !important;
+    border: 0 !important;
+    border-inline-start: 2px solid var(--wp-ui-gold) !important;
+    border-radius: 0 !important;
+    background: var(--wp-ui-background) !important;
+    font-variant-numeric: tabular-nums;
+  }
+  html [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-copy] > [data-wp-main-start] {
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 52px !important;
+    margin: 0 !important;
+  }
+  @media (min-width: 700px) {
+    html [data-wp-frame="2"][data-wp-play-ui="1"] [data-wp-frame-content="main"] > [data-wp-frame-copy] {
+      margin-inline-start: 0 !important;
+    }
+  }
+}
 /* Opt-in tutorial skin for migrated games; no changes to non-adopters. */
 body[data-wp-frame-tutorial="true"] .wp-tutorial-backdrop {
   grid-template-columns:minmax(0,1fr);
