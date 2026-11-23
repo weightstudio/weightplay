@@ -1,4 +1,4 @@
-import {LOCALES} from './life-locales.mjs?wp-media=4f45f118724de500';
+import {LOCALES} from './life-locales.mjs?wp-media=1268e87380b84fce';
 // Fictional vignettes: two alternatives at each age milestone. None changes
 // mortality or claims that all residents share a household's circumstances.
 const STORIES={
