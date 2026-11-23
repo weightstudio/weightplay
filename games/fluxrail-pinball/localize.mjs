@@ -70,11 +70,11 @@ export function renderEntry(locale) {
     const label = titles[id]?.[locale];
     if (!entry?.art?.background || !label) return [];
     return ['<a class="game-info-related-card" data-game-id="' + id + '" data-wp-related-id="' + id
-      + '" href="/' + segment + '/games/' + id + '/"><img src="/' + escape(entry.art.background.replace(/^\//,''))
-      + '" width="96" height="96" alt="" loading="lazy"><span data-runtime-localize="off">' + escape(label) + '</span></a>'];
+      + '" href="/' + segment + '/games/' + id + '/"><span class="game-info-related-poster"><img src="/' + escape(entry.art.background.replace(/^\//,''))
+      + '" width="96" height="96" alt="" loading="lazy"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">' + escape(label) + '</strong></span></a>'];
   }).join('');
   const related = cards ? '<section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>'
-    + escape(t('related')) + '</h3><div class="game-info-related-grid">' + cards + '</div></section>' : '';
+    + escape(t('related')) + '</h3><div class="game-info-related-cards">' + cards + '</div></section>' : '';
   let html = readFileSync(new URL('index.html',import.meta.url),'utf8')
     .replace(/<link\b[^>]*\brel=["'](?:canonical|alternate)["'][^>]*>/gi,'')
     .replace(/<script\b[^>]*\bdata-wp-locale-route(?=[\s=>])[^>]*>[\s\S]*?<\/script>/gi,'')
