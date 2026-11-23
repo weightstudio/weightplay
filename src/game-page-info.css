@@ -65,7 +65,7 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   background: linear-gradient(180deg, #ffffff, #f4f7fb);
   color: #172033;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
-  font-family: "Arial Rounded MT Bold", "Noto Sans TC", system-ui, sans-serif;
+  font-family: system-ui, "Noto Sans TC", sans-serif;
 }
 
 .game-page-info * {
@@ -93,12 +93,14 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 
 .game-info-title {
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .game-info-title h2 {
   font-size: clamp(1.55rem, 5vw, 2.45rem);
-  line-height: 1.05;
+  line-height: 1.16;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .game-info-title p {
@@ -182,7 +184,11 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 
 .game-info-section h3 {
   color: #172033;
-  font-size: 1.05rem;
+  font-size: clamp(1.12rem, 2vw, 1.35rem);
+  line-height: 1.35;
+  padding-inline-start: .65em;
+  border-inline-start: 3px solid var(--wp-ui-gold, #97651d);
+  overflow-wrap: anywhere;
 }
 
 .game-info-section p,
@@ -197,13 +203,20 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 .game-info-section ul,
 .game-info-section dl {
   margin: 0;
-  padding-left: 20px;
+  padding-inline-start: 20px;
 }
 
 .game-info-section dl {
-  padding-left: 0;
+  padding-inline-start: 0;
   display: grid;
   gap: 10px;
+}
+
+.game-info-section dl > div + div,
+.game-info-section dl > dd + dt {
+  margin-block-start: .4em;
+  padding-block-start: .85em;
+  border-block-start: 1px solid var(--wp-ui-line, #d8e0ee);
 }
 
 .game-info-section dt {
@@ -243,8 +256,9 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 
 .game-info-band {
   display: grid;
-  gap: 5px;
-  padding: 10px;
+  gap: 6px;
+  padding: 12px;
+  align-content: start;
   border-radius: 12px;
   background: #ffffff;
   border: 1px solid #cfe9da;
@@ -266,10 +280,12 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 .game-info-related-cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: clamp(10px, 1.8vw, 18px);
 }
 
 .game-info-related-card {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   overflow: hidden;
   border: 1px solid #d8e0ee;
@@ -281,10 +297,16 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-.game-info-related-card:hover,
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .game-info-related-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(23, 32, 51, 0.18);
+  }
+}
+
 .game-info-related-card:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(23, 32, 51, 0.14);
+  outline: 3px solid var(--wp-ui-gold, #86530d);
+  outline-offset: 2px;
 }
 
 .game-info-related-poster,
@@ -317,15 +339,16 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 
 .game-info-related-copy {
   display: grid;
-  gap: 5px;
-  padding: 10px;
+  gap: 6px;
+  padding: 12px;
+  align-content: start;
   min-width: 0;
 }
 
 .game-info-related-copy strong {
   color: #172033;
-  font-size: 0.92rem;
-  line-height: 1.2;
+  font-size: 1rem;
+  line-height: 1.35;
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -337,8 +360,8 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   -webkit-line-clamp: 2;
   color: #5a6679;
   font-size: 0.78rem;
-  font-weight: 800;
-  line-height: 1.35;
+  font-weight: 500;
+  line-height: 1.5;
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -357,42 +380,17 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 
   .game-info-related,
   .game-info-related-cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .game-info-fact {
     min-height: 72px;
   }
+}
 
-  .game-info-related-card {
-    display: grid;
-    grid-template-columns: 92px minmax(0, 1fr);
-    align-items: stretch;
-  }
-
-  .game-info-related-poster,
-  .game-info-related-card > img {
-    width: 92px;
-    height: 92px;
-    aspect-ratio: 1;
-    align-self: start;
-  }
-
-  .game-info-related-card img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-  }
-
-  .game-info-related-copy {
-    align-content: center;
-    min-width: 0;
-    padding: 10px 12px;
-  }
-
-  .game-info-related-copy strong,
-  .game-info-related-copy span {
-    min-width: 0;
-    overflow-wrap: anywhere;
+@media (max-width: 319px) {
+  .game-info-related,
+  .game-info-related-cards {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

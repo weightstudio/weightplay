@@ -78,8 +78,8 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
   max-width: var(--wp-main-width, 920px);
   margin: 16px auto calc(40px + env(safe-area-inset-bottom));
   padding: 12px;
-  border: 2px solid var(--wp-ui-line);
-  border-radius: var(--wp-ui-radius);
+  border: 1px solid var(--wp-ui-line);
+  border-radius: 18px;
   background: var(--wp-ui-surface);
   color: var(--wp-ui-text);
   box-shadow: 0 5px 0 var(--wp-ui-shadow);
@@ -92,8 +92,9 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"])
 }
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-hero {
-  border-radius: var(--wp-ui-radius) var(--wp-ui-radius) 0 0;
-  background: var(--wp-ui-header-image);
+  padding: clamp(14px, 2.5vw, 24px);
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--wp-ui-surface), var(--wp-ui-background));
   color: var(--wp-ui-text);
 }
 
@@ -102,7 +103,7 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
 }
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info :is(p, li, dd, .game-info-fact > span, .game-info-related-copy span) {
-  color: var(--wp-ui-muted);
+  color: color-mix(in srgb, var(--wp-ui-text) 65%, var(--wp-ui-muted));
 }
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-facts {
@@ -112,7 +113,7 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info :is(.game-info-fact, .game-info-related-card) {
   border-color: var(--wp-ui-line);
-  border-radius: var(--wp-ui-radius);
+  border-radius: 10px;
   background: var(--wp-ui-background);
   color: var(--wp-ui-text);
 }
@@ -124,7 +125,8 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-tags > span {
   border: 1px solid var(--wp-ui-tag-border);
-  border-radius: var(--wp-ui-radius);
+  padding: 4px 9px;
+  border-radius: 999px;
   background: var(--wp-ui-tag-background);
   color: var(--wp-ui-tag-text);
 }
@@ -140,7 +142,7 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-section {
   min-width: 0;
-  padding: 14px 12px;
+  padding: clamp(20px, 3vw, 30px) clamp(6px, 1.5vw, 14px);
   border: 0;
   border-top: 1px solid var(--wp-ui-line);
   border-radius: 0;
@@ -154,7 +156,7 @@ html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) 
 }
 
 html body:is([data-wp-interface-version="9"],[data-wp-interface-candidate="9"]) .game-page-info .game-info-section :is(p, li, dd) {
-  color: var(--wp-ui-muted);
+  color: color-mix(in srgb, var(--wp-ui-text) 65%, var(--wp-ui-muted));
 }
 
 /* Opt-in I9 Battle result cards retain readable physical typography inside a
