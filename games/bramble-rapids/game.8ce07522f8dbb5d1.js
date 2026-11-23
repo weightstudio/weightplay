@@ -1,1 +1,1 @@
-import("./game.mjs?v=enemy-hit-v8&wp-media=cd3348b0d54e4a3c").catch(a=>{console.error("Bramble Rapids bootstrap",a),window.WeightPlayGameEntryLoader?.fail?.(a.message,()=>location.reload())});
+import("./game.mjs?v=enemy-hit-v8&wp-media=4f45f118724de500").catch(a=>{console.error("Bramble Rapids bootstrap",a),window.WeightPlayGameEntryLoader?.fail?.(a.message,()=>location.reload())});

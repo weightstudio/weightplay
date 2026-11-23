@@ -1,4 +1,4 @@
-@import url('./game-ui-theme.css?v=20260923-play-header48&wp-media=cd3348b0d54e4a3c');
+@import url('./game-ui-theme.css?v=20260923-play-header48&wp-media=4f45f118724de500');
 /* Explicit frames inside a scaled Battle may opt into the existing physical
    control track. Keep scaling compensation in the shared owner, not game CSS. */
 @layer wp-frame-contract {
@@ -1212,7 +1212,7 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active) {
   overscroll-behavior: none !important;
 }
 
-/* game-page-info.css?wp-media=cd3348b0d54e4a3c intentionally restores document flow for Main and has a
+/* game-page-info.css?wp-media=4f45f118724de500 intentionally restores document flow for Main and has a
    more specific selector. These explicit active-play selectors keep that
    Main-only rule from reopening the browser edge during a live scene. */
 html.has-game-page-info:has(body.wp-shell-stage-active),
@@ -1749,4 +1749,54 @@ html[data-wp-shared-interface="7"] body [data-wp-result-get-icon] {animation:wp-
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) dialog:modal {
   --wp-battle-canvas-inverse-scale:1;
   --wp-frame-control-size-physical:48px;
+}
+
+/* Animate individual scale/translate, preserving the frame's canvas transform.
+   The hidden attribute and inert switch immediately, including on interruption. */
+.wp-shell-settings-popover, .wp-stage-i9-briefing-details {
+  --wp-panel-scale: .96;
+  --wp-panel-y: 0px;
+  transition: opacity 150ms ease-out, scale 150ms ease-out, translate 150ms ease-out,
+              display 150ms allow-discrete;
+}
+.wp-shell-settings-popover { transform-origin: top right; }
+[data-wp-popover-edge="left"] .wp-shell-settings-popover { transform-origin: top left; }
+.wp-stage-i9-briefing-details { --wp-panel-scale: 1; --wp-panel-y: 8px; }
+:is(.wp-shell-settings-popover,.wp-stage-i9-briefing-details)[hidden] {
+  opacity: 0; scale: var(--wp-panel-scale); translate: 0 var(--wp-panel-y); pointer-events: none;
+}
+@starting-style {
+  :is(.wp-shell-settings-popover,.wp-stage-i9-briefing-details):not([hidden]) {
+    opacity: 0; scale: var(--wp-panel-scale); translate: 0 var(--wp-panel-y);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-shell-settings-popover, .wp-stage-i9-briefing-details {
+    --wp-panel-scale: 1; --wp-panel-y: 0px;
+    transition: opacity 80ms linear, display 80ms allow-discrete;
+  }
+}
+
+/* Result owners reveal the card after their final action settles. Animating the
+   card keeps the Battle canvas, modal backdrop and reward lifecycle separate. */
+@keyframes wp-result-card-enter {
+  from { opacity: 0; scale: .9; translate: 0 12px; }
+  72% { opacity: 1; scale: 1.012; translate: 0 0; }
+  to { opacity: 1; scale: 1; translate: 0 0; }
+}
+@keyframes wp-result-card-fade {
+  from { opacity: .35; }
+  to { opacity: 1; }
+}
+@layer wp-frame-contract {
+  :is([data-wp-result-card], [data-wp-frame-result-card]),
+  :where(#result, #resultPanel, #resultScreen, #resultModal, .wp-result-art,
+         .result-overlay, .result-panel, .result-screen, [data-wp-result-screen],
+         [data-wp-battle-substate="result"]) > :is(.result-card, .resultCard, .arcade-panel, .result-layout, .logic-result-card),
+  dialog.wp-result-art[open]:not(:has([data-wp-result-card], [data-wp-frame-result-card], .result-card)) {
+    animation: var(--wp-result-card-entry, wp-result-card-enter 260ms ease-out) !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root { --wp-result-card-entry: wp-result-card-fade 100ms linear; }
+  }
 }

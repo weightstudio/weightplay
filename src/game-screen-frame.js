@@ -10,7 +10,7 @@
       if (!(failed instanceof HTMLScriptElement) || !(failed.src || '').includes('/games/' + gameId + '/')) return;
       if (failed.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
           document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
-          new URL(failed.src, location.origin).pathname === `/games/${gameId}/diamond-special.js?wp-media=cd3348b0d54e4a3c`) return;
+          new URL(failed.src, location.origin).pathname === `/games/${gameId}/diamond-special.js?wp-media=4f45f118724de500`) return;
       const loader = window.WeightPlayGameEntryLoader;
       if (loader?.isActive && typeof loader.fail === 'function') loader.fail();
       else window.__weightPlayGameEntryPendingFailure = gameId;
@@ -62,7 +62,7 @@
   function ensureEntryLoader() {
     if (!/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?games\/[a-z0-9-]+(?:\/|\/index\.html)?$/i.test(location.pathname)
       || window.WeightPlayGameEntryLoader?.isActive
-      || document.querySelector('script[src*="/game-entry-loader.js?wp-media=cd3348b0d54e4a3c"]')) return;
+      || document.querySelector('script[src*="/game-entry-loader.js?wp-media=4f45f118724de500"]')) return;
     // If the parser is still loading, wait only until a body exists. Deferring
     // to DOMContentLoaded lets a slow parser-blocking game script hide the
     // shared loader behind the legacy game panel.
@@ -71,7 +71,7 @@
       return;
     }
     const script = document.createElement('script');
-    script.src = '/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=cd3348b0d54e4a3c';
+    script.src = '/src/game-entry-loader.js?v=20261026-audience-back-v1&wp-media=4f45f118724de500';
     script.dataset.wpGameEntryLoaderBootstrap = 'true';
     // This bootstrap has no dependency on the game modules. Let it execute
     // independently of their ordered dynamic-script queue so a slow or failed
@@ -209,22 +209,22 @@
     window.WeightPlayScreenFrame.autoMountDocument?.();
     return;
   }
-  const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js?wp-media=cd3348b0d54e4a3c', location.origin).href;
+  const frameScriptUrl = document.currentScript?.src || new URL('/src/game-screen-frame.js?wp-media=4f45f118724de500', location.origin).href;
   const sharedAssetBase = new URL('.', frameScriptUrl);
 
   function ensureBattleCanvasRuntime() {
     if (document.body?.dataset.wpBattleLayout === "native"
         || document.querySelector("[data-wp-standard-battle-screen]")) return;
-    if (!document.querySelector('link[href*="battle-canvas-standard.css?wp-media=cd3348b0d54e4a3c"]')) {
+    if (!document.querySelector('link[href*="battle-canvas-standard.css?wp-media=4f45f118724de500"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = new URL("battle-canvas-standard.css?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href;
+      link.href = new URL("battle-canvas-standard.css?wp-media=4f45f118724de500", sharedAssetBase).href;
       link.dataset.wpBattleStandard = "true";
       document.head.append(link);
     }
-    if (!document.querySelector('script[src*="battle-canvas-standard.js?wp-media=cd3348b0d54e4a3c"]')) {
+    if (!document.querySelector('script[src*="battle-canvas-standard.js?wp-media=4f45f118724de500"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href}?v=20261026-garden-i9-canvas-root-v1`;
+      script.src = `${new URL("battle-canvas-standard.js?wp-media=4f45f118724de500", sharedAssetBase).href}?v=20261026-garden-i9-canvas-root-v1`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }
@@ -254,7 +254,7 @@
     };
     return Object.freeze(api);
   }
-  const lobbyLogoUrl = new URL('../assets/weightplay-logo.png.webp?wp-media=cd3348b0d54e4a3c', document.currentScript.src).href;
+  const lobbyLogoUrl = new URL('../assets/weightplay-logo.png.webp?wp-media=4f45f118724de500', document.currentScript.src).href;
   const copy = {
     en: ['Settings', 'Language', 'Sound', 'On', 'Muted'], 'zh-Hant': ['設定', '語言', '聲音', '開啟', '靜音'],
     'zh-Hans': ['设置', '语言', '声音', '开启', '静音'], ja: ['設定', '言語', 'サウンド', 'オン', 'ミュート'],
@@ -353,7 +353,7 @@
     // before checking, so a later ordinary script tag is never loaded twice.
     if ([...document.scripts].some(script => /\/i18n\.js(?:[?#]|$)/.test(script.src))) return;
     const script = document.createElement('script');
-    script.src = new URL('i18n.js?wp-media=cd3348b0d54e4a3c', frameScriptUrl).href;
+    script.src = new URL('i18n.js?wp-media=4f45f118724de500', frameScriptUrl).href;
     script.dataset.wpSharedSettingsI18n = 'true';
     document.head.append(script);
   }
@@ -371,6 +371,54 @@
     select.value = pendingSettingsLocales.get(select)?.requested || currentSettingsLocale() || source?.value || '';
     select.disabled = pendingSettingsLocales.has(select) || (!source && typeof i18n?.setLocale !== 'function');
   }
+  // Observe the game's actual selection so pointer, keyboard and scripted
+  // changes follow the same path. The marker never receives player input.
+  function bindStageTabMotion(nav, signal) {
+    const selector = '[role="tab"][aria-selected="true"],[data-wp-frame-action="tab"][aria-pressed="true"]';
+    let selected, panelMotion;
+    const geometry = new ResizeObserver(update);
+    function update() {
+      const next = nav.querySelector(selector);
+      if (next !== selected) {
+        if (selected) geometry.unobserve(selected);
+        if (next) geometry.observe(next);
+      }
+      const navRect = nav.getBoundingClientRect();
+      const rect = next?.getBoundingClientRect();
+      if (!rect?.width || !navRect.width) {
+        nav.removeAttribute('data-wp-tab-marker');
+        selected = next;
+        return;
+      }
+      const ratio = nav.offsetWidth / navRect.width;
+      const x = (rect.left + rect.width / 2 - navRect.left) * ratio;
+      if (selected && selected !== next && nav.hasAttribute('data-wp-tab-marker')) {
+        panelMotion?.cancel();
+        const panel = document.getElementById(next.getAttribute('aria-controls'));
+        if (panel && nav.closest('[data-wp-frame-scene]').contains(panel) && panel.getClientRects().length) {
+          const previousX = parseFloat(nav.style.getPropertyValue('--wp-tab-x'));
+          const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const frames = reduced ? [{opacity:.85},{opacity:1}] :
+            [{opacity:.65,translate:(Math.sign(x - previousX) * 6)+'px 0'},{opacity:1,translate:'0 0'}];
+          panelMotion = panel.animate?.(frames, {id:'wp-stage-tab-enter', duration:reduced ? 80 : 150,easing:'ease-out'});
+        }
+      }
+      nav.style.setProperty('--wp-tab-x', x+'px');
+      nav.style.setProperty('--wp-tab-width', Math.min(44,rect.width * ratio * .6)+'px');
+      nav.setAttribute('data-wp-tab-marker','');
+      selected = next;
+    }
+    const changes = new MutationObserver(update);
+    changes.observe(nav,{subtree:true, childList:true, attributes:true, attributeFilter:['aria-selected','aria-pressed','hidden']});
+    geometry.observe(nav);
+    signal.addEventListener('abort', () => {
+      geometry.disconnect();
+      changes.disconnect();
+      panelMotion?.cancel();
+      nav.removeAttribute('data-wp-tab-marker');
+    }, {once:true});
+  }
+
   function createSettings({localeSelect, showLanguage = true, id = 'lobby', onOpen = () => {}}) {
     const abort = new AbortController();
     const notifyInteraction = () => {
@@ -406,7 +454,7 @@
       }
     }
     panel.querySelector('label').hidden=!showLanguage;
-    const close=(focus=false)=>{const wasOpen=!panel.hidden;cancelSettingsLocale(select);panel.hidden=true;button.setAttribute('aria-expanded','false');if(wasOpen)notifyInteraction();if(focus)button.focus({preventScroll:true});};
+    const close=(focus=false)=>{const wasOpen=!panel.hidden;cancelSettingsLocale(select);panel.inert=true;panel.hidden=true;button.setAttribute('aria-expanded','false');if(wasOpen)notifyInteraction();if(focus)button.focus({preventScroll:true});};
     const refresh=()=>{
       const locale=currentSettingsLocale();
       const labels=copy[locale]||copy.en;
@@ -416,7 +464,7 @@
       soundText.textContent=labels[2];soundState.textContent=muted?labels[4]:labels[3];sound.setAttribute('aria-label',`${labels[2]}：${muted?labels[4]:labels[3]}`);sound.setAttribute('aria-checked',String(!muted));
       sound.disabled=!window.WeightPlayAudio?.setMuted;
     };
-    listen(button,'click',()=>{refresh();const open=panel.hidden;if(open)onOpen();else cancelSettingsLocale(select);panel.hidden=!open;button.setAttribute('aria-expanded',String(open));notifyInteraction();});
+    listen(button,'click',()=>{refresh();const open=panel.hidden;if(open)onOpen();else cancelSettingsLocale(select);panel.inert=!open;panel.hidden=!open;button.setAttribute('aria-expanded',String(open));notifyInteraction();});
     listen(select,'change',()=>{
       if(localeSelect){localeSelect.value=select.value;localeSelect.dispatchEvent(new Event('change',{bubbles:true}));}
       else {void changeSettingsLocale(select,refresh,()=>showLanguage&&!panel.hidden&&Boolean(utility.getClientRects().length));return;}
@@ -524,6 +572,7 @@
           window.dispatchEvent(new Event('weightplay:play-actions-change'));
         };
         listen(nav,'weightplay:group-change',refreshButtons);
+        bindStageTabMotion(nav, abort.signal);
         bottomSlots[name] = contentSlot(nav, refreshButtons);
         refreshButtons();
       }
@@ -971,16 +1020,16 @@
   function ensureStageSelectorRuntime() {
     if (document.querySelector('[data-wp-play-ui="1"]')) return;
     if (!STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector))) return;
-    if (!document.querySelector('link[href*="stage-selector-standard.css?wp-media=cd3348b0d54e4a3c"]')) {
+    if (!document.querySelector('link[href*="stage-selector-standard.css?wp-media=4f45f118724de500"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = new URL("stage-selector-standard.css?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href;
+      link.href = new URL("stage-selector-standard.css?wp-media=4f45f118724de500", sharedAssetBase).href;
       link.dataset.wpStageStandard = "true";
       document.head.append(link);
     }
-    if (!document.querySelector('script[src*="stage-selector-standard.js?wp-media=cd3348b0d54e4a3c"]')) {
+    if (!document.querySelector('script[src*="stage-selector-standard.js?wp-media=4f45f118724de500"]')) {
       const script = document.createElement("script");
-      script.src = new URL("stage-selector-standard.js?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href;
+      script.src = new URL("stage-selector-standard.js?wp-media=4f45f118724de500", sharedAssetBase).href;
       script.dataset.wpStageStandard = "true";
       document.body.append(script);
     }
@@ -1006,9 +1055,9 @@
       const declaredTotal = rail.querySelectorAll(STAGE_CARD_SELECTORS.join(",")).length;
       if (declaredTotal > 1) rail.dataset.wpStageV6Total = String(declaredTotal);
     }
-    if (document.querySelector('script[src*="stage-virtualization-standard.js?wp-media=cd3348b0d54e4a3c"]')) return;
+    if (document.querySelector('script[src*="stage-virtualization-standard.js?wp-media=4f45f118724de500"]')) return;
     const script = document.createElement("script");
-    script.src = `${new URL("stage-virtualization-standard.js?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href}?v=20260809-stage-v6-source-demotion-v8`;
+    script.src = `${new URL("stage-virtualization-standard.js?wp-media=4f45f118724de500", sharedAssetBase).href}?v=20260809-stage-v6-source-demotion-v8`;
     script.dataset.wpStageVirtualizationStandard = "true";
     document.body.append(script);
   }
@@ -1022,7 +1071,7 @@
     if (window.WeightPlayLifecycle || window.__weightPlayLifecycleRequested) return;
     window.__weightPlayLifecycleRequested = true;
     const script = document.createElement("script");
-    script.src = `${new URL("game-lifecycle-controller.js?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href}?v=20261014-lifecycle-v1`;
+    script.src = `${new URL("game-lifecycle-controller.js?wp-media=4f45f118724de500", sharedAssetBase).href}?v=20261014-lifecycle-v1`;
     script.dataset.wpLifecycleController = "true";
     script.addEventListener("load", () => window.dispatchEvent(new Event("weightplay:lifecycle-ready")), { once: true });
     script.addEventListener("error", () => {
@@ -1034,13 +1083,13 @@
 
   function ensureGameInfoRuntime() {
     if (document.body?.hasAttribute("data-wp-game-owned-guide")) return;
-    if (!document.querySelector('link[href*="game-page-info.css?wp-media=cd3348b0d54e4a3c"]')) {
+    if (!document.querySelector('link[href*="game-page-info.css?wp-media=4f45f118724de500"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = new URL("game-page-info.css?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href;
+      link.href = new URL("game-page-info.css?wp-media=4f45f118724de500", sharedAssetBase).href;
       document.head.append(link);
     }
-    if (!document.querySelector('script[src*="game-page-info.js?wp-media=cd3348b0d54e4a3c"]')) {
+    if (!document.querySelector('script[src*="game-page-info.js?wp-media=4f45f118724de500"]')) {
       const script = document.createElement("script");
       const gameId = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
       const gameInfoCacheTag = gameId === "snake" ? "20261004-snake-text-growth-140-v1" : gameId === "maze-chase"
@@ -1057,7 +1106,7 @@
           : gameId === "sliding-15" ? "20261010-sliding15-static-guide-r1"
           : "20260817-bus-jam-guide-v12";
       const gameAccessVersion = document.querySelector('[data-wp-game-access="2.0"]') ? "-geo-access" : "";
-      script.src = `${new URL("game-page-info.js?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href}?v=${gameInfoCacheTag}${gameAccessVersion}`;
+      script.src = `${new URL("game-page-info.js?wp-media=4f45f118724de500", sharedAssetBase).href}?v=${gameInfoCacheTag}${gameAccessVersion}`;
       document.body.append(script);
     }
   }
@@ -1192,7 +1241,7 @@
       const script = existing || document.createElement("script");
       const finish = () => resolve(window.WEIGHTPLAY_GAME_TITLES || {});
       if (!existing) {
-        script.src = new URL("game-title-registry.js?wp-media=cd3348b0d54e4a3c", sharedAssetBase).href;
+        script.src = new URL("game-title-registry.js?wp-media=4f45f118724de500", sharedAssetBase).href;
         script.dataset.wpGameTitleRegistry = "true";
         document.head.append(script);
       }
@@ -1348,6 +1397,7 @@
         ? "left"
         : "right";
     }
+    popover.inert = !open;
     popover.hidden = !open;
     button.setAttribute("aria-expanded", String(open));
     if (!open && restoreFocus) button.focus({ preventScroll: true });

@@ -4,6 +4,16 @@
   'use strict';
   const mounted = new WeakMap();
   const clamp = (n, max) => Math.max(0, Math.min(max, n));
+  const helpNames = {
+    en: 'Help', 'zh-Hant': '說明', 'zh-Hans': '说明', ja: '説明', ko: '도움말',
+    es: 'Ayuda', pt: 'Ajuda', fr: 'Aide', de: 'Hilfe', it: 'Aiuto',
+    ru: 'Справка', hi: 'सहायता', ar: 'مساعدة',
+  };
+  function stageHelpName() {
+    const language = new Intl.Locale(document.documentElement.lang || 'en');
+    return helpNames[language.baseName] || (language.language === 'zh'
+      ? helpNames['zh-' + language.maximize().script] : helpNames[language.language]) || helpNames.en;
+  }
   function illustrateButton(button, icon, label, fallbackText = label) {
     button.title = label;
     button.setAttribute('aria-label', label);
@@ -27,6 +37,14 @@
     button.replaceChildren(art, fallback);
     art.src = '/assets/game-icons/' + encodeURIComponent(icon) + '.webp';
   }
+  // Call after committing the change, on the value or icon that received it.
+  function emphasizeResult(element) {
+    if (!element?.getClientRects().length || !element.animate) return;
+    const id = 'wp-confirmed-result';
+    element.getAnimations().find(animation => animation.id === id)?.cancel();
+    element.animate([{filter:'brightness(1.4) drop-shadow(0 0 3px currentColor)'},{filter:'brightness(1) drop-shadow(0 0 0 transparent)'}],
+      {id, duration:180, easing:'ease-out'});
+  }
   function mountStage({page, rail, config, selected = 0, onSelect = () => {}, onStart, isActive = () => true}) {
     if (mounted.has(rail)) return mounted.get(rail);
     if (!page || !rail || !Number.isInteger(config?.count) || config.count < 1 || typeof config.stage !== 'function' || typeof onStart !== 'function') throw new TypeError('PLAY_UI_STAGE_CONFIG_REQUIRED');
@@ -36,12 +54,22 @@
     const header = scene.querySelector('[data-wp-frame-header="stage"]');
     const frameRoot = scene.closest('[data-wp-frame]');
     if (frameRoot.dataset.wpPlayUi !== '1') throw new Error('PLAY_UI_SHARED_FRAME_REQUIRED');
+    const illustratedTools = frameRoot.hasAttribute('data-wp-stage-tools');
     const assetUrl = path => {
       const url=new URL(path,location.origin);
       if (!['http:','https:'].includes(url.protocol) || url.origin!==location.origin) throw new Error('PLAY_UI_LOCAL_POSTER_REQUIRED');
       return `url(${JSON.stringify(url.href)})`;
     };
-    scene.style.setProperty('--wp-play-background',assetUrl(config.background || config.poster));
+    function sceneArt(source) {
+      const background = source.background;
+      const poster = source.poster || source.stage(0)?.poster;
+      const url = background && new URL(background, location.origin);
+      if (!url || (url.origin === location.origin && url.pathname === '/assets/lobby-block-atmosphere.svg')) {
+        return assetUrl(poster || '/assets/lobby-block-atmosphere.svg');
+      }
+      return [...new Set([background, poster].filter(Boolean))].map(assetUrl).join(', ');
+    }
+    scene.style.setProperty('--wp-play-background',sceneArt(config));
     page.dataset.wpStageSelector = '1';
     header.dataset.wpStageI9Header = 'true';
     Object.assign(rail.dataset, {wpStageRail:'true', wpStageCenterObserver:'manual', wpStageVirtualized:'bounded-recycle', wpStageTotal:String(config.count)});
@@ -59,7 +87,7 @@
     title.className = 'wp-stage-i9-briefing-title'; summary.className = 'wp-stage-i9-briefing-summary'; copy.append(title,summary);
     const details = document.createElement('div'); details.className = 'wp-stage-i9-briefing-details'; details.id = `${rail.id}-shared-details`; details.hidden = true; details.setAttribute('role','region');
     toggle.setAttribute('aria-controls',details.id); briefing.append(toggle,copy,details); page.append(briefing);
-    listen(toggle,'click',() => { details.hidden = !details.hidden; toggle.setAttribute('aria-expanded',String(!details.hidden)); });
+    listen(toggle,'click',() => { details.inert = !details.hidden; details.hidden = !details.hidden; toggle.setAttribute('aria-expanded',String(!details.hidden)); });
     let current = clamp(Math.round(selected),config.count-1), start = 0, closed = false, resizeFrame = 0, observing = true;
     let logicalPosition = current;
     let poolSize = Math.min(9,config.count);
@@ -93,7 +121,7 @@
     function updateBriefing() {
       const item = config.stage(current);
       title.textContent = [item.title,item.subtitle].filter(Boolean).join(' · '); summary.textContent = item.summary || '';
-      const label = config.briefingLabel;
+      const label = config.briefingLabel || (illustratedTools && stageHelpName());
       if (label && toggle.title !== label) illustrateButton(toggle, 'guide', label);
       if (!label && toggle.title) {
         toggle.classList.remove('wp-play-art-button', 'wp-play-art-ready');
@@ -219,8 +247,10 @@
     const api=Object.freeze({
       select, setConfig(nextConfig,index=current){
         if(!nextConfig || !Number.isInteger(nextConfig.count) || nextConfig.count<1 || typeof nextConfig.stage!=='function') throw new TypeError('PLAY_UI_STAGE_CONFIG_REQUIRED');
+        const background = sceneArt(nextConfig);
         drag.cancel();
         config=nextConfig;
+        scene.style.setProperty('--wp-play-background',background);
         current=clamp(Math.round(index),config.count-1);
         logicalPosition=current;
         rebuildPool();sync();
@@ -267,5 +297,5 @@
     }else scheduleLayout();
     return api;
   }
-  window.WeightPlayPlayUI=Object.freeze({version:1,mountStage,illustrateButton});
+  window.WeightPlayPlayUI=Object.freeze({version:1,mountStage,illustrateButton,emphasizeResult});
 })();
