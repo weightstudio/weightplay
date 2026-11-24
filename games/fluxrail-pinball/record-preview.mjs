@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { setTimeout } from 'node:timers/promises';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=594c1528dc328909';
-import { installLocalTestNetworkPolicy, localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=594c1528dc328909';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=bf4a43b46bf724ec';
+import { installLocalTestNetworkPolicy, localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=bf4a43b46bf724ec';
 
 const origin = localTestOrigin();
 const earned = process.env.FLUXRAIL_EARNED_STATE;

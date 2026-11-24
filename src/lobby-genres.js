@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["night-ferry-tea", "Management", "Sequencing", "Route Planning"],
     ["outpost-tactics", "Strategy"],
     ["snow-ramp-leap", "Sports", "Timing"],
     ["gale-watch", "Strategy", "Management"],
