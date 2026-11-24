@@ -50,6 +50,9 @@
       button.dataset.wpFrameAction = button.classList.contains('primary-action') ? 'primary' : 'secondary';
     }
 
+    const start=$('startBtn');start.dataset.wpMainStart='';start.dataset.wpMainStartArt='';start.dataset.wpIcon='map';start.classList.add('wp-icon-leading');main.querySelector('.main-copy').append(start);
+    const result=$('resultPanel');result.classList.add('wp-result-art');result.dataset.wpResultScreen='';
+    for(const [id,icon] of [['resultStagesBtn','map'],['nextBtn','next'],['replayBtn','retry']]){const button=$(id);button.dataset.wpIcon=icon;button.classList.add('wp-icon-leading')}
     const frame = window.WeightPlayScreenFrame.mount({
       root,
       localeSelect,
@@ -77,7 +80,10 @@
     const stageAction = $('stageTabsBtn');
     stageAction.dataset.wpFrameAction = 'tab';
     stageAction.setAttribute('aria-pressed', 'true');
-    frame.commonDownButton.clear().add(stageAction);
+    frame.commonDownButton.clear();
+    frame.commonDownButton.registerTab(stageAction,{icon:'map',label:stageAction.textContent,panel:$('stageWorkspace')});
+    stageAction.setAttribute('aria-selected','true');
+    window.addEventListener('wonder:locale-change',()=>{stageAction.title=stageAction.textContent;stageAction.setAttribute('aria-label',stageAction.textContent)});
 
     const getDictionary = () => window.ANIMAL_PENALTY_LOCALES?.[runtime.getState().lang]
       ?? window.ANIMAL_PENALTY_LOCALES?.en

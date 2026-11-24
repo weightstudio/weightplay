@@ -2053,7 +2053,7 @@
       });
     };
     applyFrameActions(result, false);
-    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || ((id === "casino" || id === "spades") && /^(?:9|10)(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || "")) || ((id === "crazy-eights" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
+    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || ((id === "casino" || id === "spades" || id === "hearts") && /^(?:9|10)(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || "")) || ((id === "crazy-eights" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
     let i9ResultReturnFocus = null;
     const i9ResultControls = () => [...(result?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])]
       .filter((control) => control.getClientRects().length > 0);
@@ -2534,6 +2534,7 @@
         if (id === "crazy-eights") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "casino") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "spades") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
+        if (id === "hearts") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";

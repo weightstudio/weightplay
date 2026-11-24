@@ -152,3 +152,6 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #fff
   .tutorial-card ol{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;clear:none;margin:10px 0;padding-left:1.2rem;font-size:.85rem}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+
+#resultPanel.wp-result-art .result-card{background-image:linear-gradient(#071e29bb,#071e29ed),var(--wp-result-image);background-position:center;background-size:cover;--wp-result-card-entry:wp-result-card-fade}
+#resultPanel.wp-result-art .result-card>img{display:none}

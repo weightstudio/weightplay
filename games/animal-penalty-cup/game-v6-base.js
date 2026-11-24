@@ -20,8 +20,8 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-penalty-cup";
-  const GAME_VERSION = 17;
-  const INTERFACE_VERSION = 9;
+  const GAME_VERSION = 19;
+  const INTERFACE_VERSION = 10;
   const LOCALES = ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const LOCALE_LABELS = {en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
   const ROUTE_LOCALE_BY_SEGMENT = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -174,7 +174,7 @@
   function finishPair(){match.round++;const regulationDone=match.round>=5,decided=regulationDone&&match.player!==match.rival,suddenDone=match.round>=8;if(decided||suddenDone){finishMatch(match.player>match.rival,!decided);return}match.phase="shoot-ready";resetActors();$("battleRound").textContent=`${t("match",{n:match.stage+1})} · ${t("round",{n:match.round+1})}`;$("turnLabel").textContent=t("shoot");setStatus("shootHint");refreshZoneAvailability();if(replayAtNextShot){replayAtNextShot=false;openingLesson.start({replay:true});}}
   function finishMatch(win,draw=false){
     openingLesson.stop();replayAtNextShot=false;cancelTimer();match.ended=true;match.phase="result";match.result=win?"win":"loss";const diff=match.player-match.rival,stars=win?(diff>=3?3:diff>=2?2:1):0;let stored=false;if(win){const candidate=JSON.parse(JSON.stringify(save));candidate.completed[match.stage]=true;candidate.stars[match.stage]=Math.max(candidate.stars[match.stage],stars);candidate.bestDiff[match.stage]=candidate.bestDiff[match.stage]===null?diff:Math.max(candidate.bestDiff[match.stage],diff);candidate.unlocked=Math.max(candidate.unlocked,Math.min(30,match.stage+2));stored=persistClear(candidate)}
-    if(draw)match.result="draw";$("resultKicker").textContent=t("match",{n:match.stage+1});$("resultTitle").textContent=t(draw?"drawResult":win?"winResult":"loseResult");$("resultText").textContent=win&&!stored?t(saveWriteUncertain?"saveUncertain":"saveFailed"):t(draw?"drawCopy":win&&match.stage===29?"finalCopy":win?"winCopy":"loseCopy",{opponent:opponentName(match.stage)});$("resultStars").textContent=win?"★".repeat(stars)+"☆".repeat(3-stars):"—";$("resultDiff").textContent=diff>0?`+${diff}`:String(diff);$("nextBtn").disabled=!win||!stored||match.stage>=29;$("replayBtn").disabled=saveWriteUncertain;openModal("resultPanel",win&&stored&&match.stage<29?"nextBtn":saveWriteUncertain||win&&stored?"resultStagesBtn":"replayBtn");track("match_result",{outcome:win?"win":draw?"draw":"loss",stars});
+    if(draw)match.result="draw";$("resultPanel").dataset.outcome=win?"win":"loss";$("resultKicker").textContent=t("match",{n:match.stage+1});$("resultTitle").textContent=t(draw?"drawResult":win?"winResult":"loseResult");$("resultText").textContent=win&&!stored?t(saveWriteUncertain?"saveUncertain":"saveFailed"):t(draw?"drawCopy":win&&match.stage===29?"finalCopy":win?"winCopy":"loseCopy",{opponent:opponentName(match.stage)});$("resultStars").textContent=win?"★".repeat(stars)+"☆".repeat(3-stars):"—";$("resultDiff").textContent=diff>0?`+${diff}`:String(diff);$("nextBtn").disabled=!win||!stored||match.stage>=29;$("replayBtn").disabled=saveWriteUncertain;openModal("resultPanel",win&&stored&&match.stage<29?"nextBtn":saveWriteUncertain||win&&stored?"resultStagesBtn":"replayBtn");track("match_result",{outcome:win?"win":draw?"draw":"loss",stars});
 
     __wpMeasurement.saveSucceeded = Boolean(win && stored); __wpMeasurement.ended = true; __wpMeasurement.outcome = (win ? "win" : "lose"); if (__wpMeasurement.screen === "battle") __wpMeasurement.screen = null; __wpNotifyMeasurement();
 }

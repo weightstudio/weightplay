@@ -1097,13 +1097,6 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 420px;
   }
 
-  /* Hearts v14 fixes the exact Main poster column measured at 310px in the
-     governed 844x390 landscape viewport while preserving other card-game
-     breakpoints and the shared 420px desktop column. */
-  body[data-wp-card-game="hearts"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
-  }
-
   /* Speed v13 uses the canonical 300px wide-layout poster column at the
      governed compact-landscape viewport while preserving its shared 420px
      desktop column and all other responsive breakpoints. */
