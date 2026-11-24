@@ -2530,6 +2530,7 @@
         resultTitle.textContent = won === null ? (drawTitles[currentLocale()] || drawTitles.en) : id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser"));
         if (won === null) (__wpNotifyMeasurement(), resultTitle.setAttribute('data-runtime-localize', 'off'));
         resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver"));
+        if (id === "gin-rummy") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";

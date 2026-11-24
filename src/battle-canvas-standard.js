@@ -138,7 +138,7 @@
     "animal-rope-rescue": ["#gamePanel", 382, 780],
     "animal-rootvault-pins": [".battle-canvas", 390, 788, 760, 334],
     "animal-sketchwheel-rally": [".battle-canvas", 390, 788, 760, 334],
-    "animal-rune-tactics": [".rune-app", 390, 788, 760, 334],
+    "animal-rune-tactics": ["#runeBattleScene", 390, 788, 760, 334],
     "animal-skyport-dispatch": [".battle-canvas", 390, 788, 760, 334],
     "animal-screw-workshop": [".battle-canvas", 390, 844, 760, 360],
     "animal-starlight-trails": [".trail-battle-canvas", 390, 788, 760, 334],

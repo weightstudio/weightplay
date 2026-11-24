@@ -1,0 +1,1 @@
+(function(){"use strict";window.WPCardGamesNext?.mount({id:"gin-rummy"});for(const[e,n]of[["resultNewGame","reroll"],["resultRestart","retry"]]){const t=document.getElementById(e);t&&(t.classList.add("wp-icon-leading"),t.dataset.wpIcon=n)}})();
