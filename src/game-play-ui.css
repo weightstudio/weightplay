@@ -65,7 +65,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   display:block!important;position:relative!important;inset:auto!important;width:100%!important;
   height:100%!important;min-height:0!important;overflow:hidden!important;padding:0!important;
 }
-html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"].hidden {display:none!important}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"]:is(.hidden, [hidden]) {display:none!important}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-source] {display:none!important}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] > [data-wp-stage-rail] {
   box-sizing:border-box!important;display:flex!important;position:absolute!important;
