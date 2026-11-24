@@ -761,7 +761,7 @@
       const labels = TEXT[currentLocale()] || TEXT.en;
       const progressCopy = OLD_MAID_PROGRESS_COPY[currentLocale()] || OLD_MAID_PROGRESS_COPY.en;
       ownLocalizedText(document.querySelector(".main-copy .eyebrow"), OLD_MAID_CATEGORY_COPY[currentLocale()] || OLD_MAID_CATEGORY_COPY.en);
-      ownLocalizedText(document.querySelector("[data-card-summary]"), progressCopy.summary);
+      ownLocalizedText(document.querySelector("[data-card-summary]"), window.OLD_MAID_I10_SUMMARY?.[currentLocale()] || progressCopy.summary);
       ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
@@ -2535,6 +2535,7 @@
         if (id === "casino") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "spades") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "hearts") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
+        if (id === "old-maid") result.dataset.outcome = won ? "win" : "loss";
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";
