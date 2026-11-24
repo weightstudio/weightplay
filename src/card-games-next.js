@@ -2053,7 +2053,7 @@
       });
     };
     applyFrameActions(result, false);
-    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || ((id === "casino" || id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
+    const ownsI9ResultFocus = id === "speed" || id === "gin-rummy" || (id === "casino" && /^(?:9|10)(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || "")) || ((id === "crazy-eights" || id === "spades" || id === "hearts" || id === "old-maid") && /^9(?:\.|$)/u.test(rootElement?.dataset.wpInterfaceVersion || ""));
     let i9ResultReturnFocus = null;
     const i9ResultControls = () => [...(result?.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])]
       .filter((control) => control.getClientRects().length > 0);
@@ -2532,6 +2532,7 @@
         resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver"));
         if (id === "gin-rummy") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "crazy-eights") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
+        if (id === "casino") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";
