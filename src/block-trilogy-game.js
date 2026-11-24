@@ -1,5 +1,5 @@
 (()=>{"use strict";
-  const __cratePracticeRequested = window.BlockTrilogyConfig?.id === 'animal-cratebound' && location.protocol === 'http:' && ['localhost','127.0.0.1','[::1]'].includes(location.hostname) && new URLSearchParams(location.search).get('practice') === '1';
+  const __cratePracticeRequested = false;
   let __cratePracticeActive = false, __cratePracticeAdapter = null, __crateOriginalSave = null, __crateOriginalCanvasLabel = null, __crateLaunchBusy = false;
   if (window.BlockTrilogyConfig?.id === 'animal-cratebound') window.__CrateboundPractice = Object.freeze({get requested(){return __cratePracticeRequested;},get enabled(){return __cratePracticeActive;}});
   const __crateStageCount = () => __cratePracticeActive ? 60 : 30;
