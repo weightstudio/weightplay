@@ -13,7 +13,8 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; min-width: 320px; min-height: 100%; background: var(--classic-bg); }
+html, body { margin: 0; min-width: 320px; min-height: 100%; }
+html:not(.wp-frame-main-flow), body { background: var(--classic-bg); }
 body[data-wp-game-id] { color: var(--classic-text); background: radial-gradient(120% 100% at 50% 0, #163c68 0, #0a1f3a 48%, #061326 100%); text-rendering: geometricPrecision; }
 button, select { font: inherit; }
 button { touch-action: manipulation; }
