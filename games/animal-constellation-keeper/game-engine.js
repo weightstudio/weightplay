@@ -1,7 +1,7 @@
 // Campaign state and accessible controls; spatial rules and effects are separate modules.
 (() => {
   "use strict";
-  const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+  const practiceRequested=false;
   let practiceEnabled=false,practiceAdapter=null,practiceBadge=null,mirrorAssess=null,mirrorCopy=null,mirrorShort=null,mirrorGuide=null,mirrorRelations=null,originalCompleted=0;
   /* WP-GAME-ANALYTICS-ADAPTER */
   // Only replayable lifecycle signals live here; all metrics/timers/GA4 stay shared.
@@ -131,6 +131,10 @@
   const gameFrame = $("gameFrame");
   const battleRoot = $("battleScreen");
   gameFrame.hidden = false;
+  gameFrame.dataset.wpStageTools = "";
+  const start=$('startBtn');start.dataset.wpMainStartArt="";start.dataset.wpIcon="map";start.classList.add('wp-icon-leading');$('mainContent').querySelector('[data-wp-frame-copy]').append(start);
+  const result=$('resultScreen');result.dataset.wpResultScreen="";
+  for(const [id,icon] of [['resultPrimaryBtn','next'],['resultMapBtn','map'],['resultReplayBtn','retry']]){const button=$(id);button.dataset.wpIcon=icon;button.classList.add('wp-icon-leading');}
   const sharedFrame = window.WeightPlayScreenFrame?.mount?.({
     root: gameFrame,
     localeSelect: $("localeSelect"),
@@ -146,7 +150,7 @@
     throw new Error("Shared I9 screen frame unavailable");
   }
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v21", interface_version: 9, event, ...detail } })); };
+  const track = (event, detail = {}) => { if(practiceRequested)return;window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v24", interface_version: 10, event, ...detail } })); };
   const tone = (cue = "ui.click") => { return window.WeightPlayAudio?.play(cue); };
   window.WeightPlayAudio.preload(["feedback.hint", "game.checkpoint", "result.win"]);
 
@@ -275,7 +279,7 @@
   $("battleHeaderInfo").replaceChildren();
   sharedFrame.battleTopUI.add(battleGroup);
   const stageTab = $("stageTab");
-  if (stageTab) sharedFrame.commonDownButton.clear().add(stageTab);
+  if (stageTab) {sharedFrame.commonDownButton.clear();sharedFrame.commonDownButton.registerTab(stageTab,{icon:"map",label:stageTab.textContent.trim(),panel:$("stageContent")});stageTab.setAttribute("aria-selected","true");}
   const renderBoard = option => stellar.board(option, maps[state.map], t, state.clue, state.evaluations[option.id]);
   const focusClue = index => {
     if (state.screen !== "battle") return;
@@ -446,7 +450,7 @@
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.documentElement.dataset.weightPlayLocale = state.locale;
-    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    document.querySelectorAll("[data-copy]").forEach((node) => { if(node.hasAttribute("data-wp-registered-tab"))window.WeightPlayPlayUI.illustrateTab(node,"map",t(node.dataset.copy));else node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria]").forEach((node) => {
       const routeLabel = document.head.dataset.wpSearchLocale === state.locale && node.dataset.wpSearchAriaLabel;
       node.setAttribute("aria-label", routeLabel || t(node.dataset.copyAria));
