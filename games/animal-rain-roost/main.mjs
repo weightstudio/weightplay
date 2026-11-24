@@ -2,7 +2,6 @@ import {STAGES,EQUIPMENT} from './stages.mjs?v=6&wp-media=6ece14afbab50bb2';
 import {readSave,persistSave,normalizeSave,createRun,move,tick,commitResult,buyLantern,recoverLantern,LANTERN_PRICE,SAVE_KEY} from './model.mjs?v=9&wp-media=6ece14afbab50bb2';
 import {COPY,LOCALES,LOCALE_NAMES,detectLocale} from './copy.mjs?v=6-search20-mechanic-summary&wp-media=6ece14afbab50bb2';
 import {RainScene} from './scene.mjs?v=enemy-hit-v17&wp-media=6ece14afbab50bb2';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=6ece14afbab50bb2';
 
 const $=id=>document.getElementById(id),GAME='animal-rain-roost';
 const lanternUncertainCopy={en:'Purchase could not be confirmed. Reload to check before trying again.', 'zh-Hant':'無法確認購買結果，請重新載入並確認後再試。', 'zh-Hans':'无法确认购买结果，请重新加载并确认后再试。',ja:'購入を確認できません。再読み込みして確認してください。',ko:'구매를 확인할 수 없어요. 새로고침하여 확인하세요.',es:'No se pudo confirmar la compra. Recarga y comprueba antes de volver a intentarlo.', 'pt-BR':'Não foi possível confirmar a compra. Recarregue e confira antes de tentar novamente.',fr:'Achat non confirmé. Rechargez et vérifiez avant de réessayer.',de:'Kauf konnte nicht bestätigt werden. Lade neu und prüfe ihn vor einem erneuten Versuch.',it:'Acquisto non confermato. Ricarica e controlla prima di riprovare.',ru:'Не удалось подтвердить покупку. Обновите страницу и проверьте её перед повтором.',hi:'खरीद की पुष्टि नहीं हुई। दोबारा प्रयास से पहले पेज पुनः खोलकर जाँचें।',ar:'تعذر تأكيد الشراء. أعد تحميل الصفحة وتحقق قبل المحاولة مجددًا.'};
@@ -217,7 +216,6 @@ async function startBattle(index,replay=false){
   if(starting||disposed)return;
   starting=true;const stamp=generation;
   try{
-    if(everPractice&&!await LocalPractice.validate()){feedback(t('practice'));return;}
     if(stamp!==generation)return;
     if(!practice&&index+1>save.unlocked){play('feedback.error');return;}
     selected=Math.max(0,Math.min(29,index));run=createRun(selected+1,save.equipment);scene.reset();settling=0;
@@ -243,6 +241,7 @@ function finish(result){
   Object.assign(measurement,{ended:true,outcome:result.win?'win':'lose',saveSucceeded:Boolean(result.win&&!everPractice&&!saveFailed&&prior===false&&storedStageCleared(selected)===true)});notifyMeasurement();
   play(result.win?'result.win':'result.lose');
   if(result.win&&!everPractice&&cleared()>wasCleared&&[5,10].includes(cleared()))play('reward.unlock');
+  $('resultView').dataset.outcome=result.win?'win':'loss';
   $('resultTitle').textContent=result.win?(selected===29?t('finale'):t('win')):t('fail');
   $('resultKicker').textContent=`${t('stage')} ${selected+1} · ${t('chapters')[run.stage.arc]}`;
   $('resultStars').textContent=result.win?'★'.repeat(result.stars)+'☆'.repeat(3-result.stars):'☆☆☆';
@@ -299,10 +298,12 @@ function pauseForVisibility(){
 // Initialize the explicit shared frame once. All scene roots remain permanent.
 for(let i=0;i<LOCALES.length;i++)$('localeSelect').append(new Option(LOCALE_NAMES[i],LOCALES[i]));
 $('localeSelect').value=locale;
-frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),playUI:true,scenes:{main:{root:$('mainScreen'),header:$('mainScreen').querySelector('header'),content:$('mainContent')},stage:{root:$('stageScreen'),header:$('stageScreen').querySelector('header'),content:$('stageContent')},battle:{root:$('battleScreen'),header:$('battleScreen').querySelector('header'),content:$('battleContent'),headerInfo:$('battleInfo')}}});
+frame=window.WeightPlayScreenFrame.mount({root:$('app'),localeSelect:$('localeSelect'),playUI:true,scenes:{main:{root:$('mainScreen'),header:$('mainScreen').querySelector('header'),content:$('mainContent')},stage:{root:$('stageScreen'),header:$('stageScreen').querySelector('header'),content:$('stageContent'),nav:$('stageScreen').querySelector('nav')},battle:{root:$('battleScreen'),header:$('battleScreen').querySelector('header'),content:$('battleContent'),headerInfo:$('battleInfo')}}});
 const stageGroup=window.WeightPlayScreenFrame.createGroup();stageGroup.add($('stageProgress'));frame.stageTopUI.add(stageGroup);
 const battleGroup=window.WeightPlayScreenFrame.createGroup();for(const node of [...$('battleInfo').children])battleGroup.add(node);frame.battleTopUI.add(battleGroup);
-frame.commonDownButton.add($('stagesTab')).add($('nestTab'));
+frame.commonDownButton.registerTab($('stagesTab'),{icon:'map',label:t('stages'),panel:$('journeyPanel')});
+frame.commonDownButton.registerTab($('nestTab'),{icon:'workshop',label:t('equipment'),panel:$('nestPanel')});
+window.WeightPlayPlayUI.illustrateButton($('helpButton'),'guide',t('help'));
 rail=window.WeightPlayPlayUI.mountStage({page:$('journeyPanel'),rail:$('stageRail'),config:stageConfig,selected,onSelect:index=>{selected=index},onStart:index=>startBattle(index),isActive:()=>screen==='stage'&&tab==='journey'});
 frame.activate('main');applyLocale();
 window.WeightPlayGameEntryLoader?.begin(4);
@@ -353,8 +354,7 @@ const resizeObserver=new ResizeObserver(()=>{if(screen==='battle'){scene.resize(
 listen(window,'pagehide',event=>{pauseForVisibility();if(!event.persisted){teaching?.destroy();disposed=true;generation++;resizeObserver.disconnect();cancelEffects();audio.dispose();scene.dispose();rail.destroy();frame.destroy();abort.abort()}});
 listen(window,'pageshow',event=>{if(event.persisted&&screen==='battle')schedule()});
 
-await LocalPractice.ready;
-practice=LocalPractice.enabled;everPractice=practice;rewardsReady=true;flushPendingRewards();
+rewardsReady=true;flushPendingRewards();
 const teachingHelp=document.createElement('section');
 teachingHelp.id='rainTeachingHelp';teachingHelp.hidden=true;teachingHelp.className='rain-modal';
 teachingHelp.setAttribute('role','dialog');teachingHelp.setAttribute('aria-modal','true');teachingHelp.setAttribute('aria-labelledby','rainTeachingHelpTitle');
@@ -371,4 +371,4 @@ listen($('helpButton'),'click',()=>{
   openModal(teachingHelp,teachingStay);
 });
 renderGear();$('startButton').disabled=false;window.WeightPlayGameEntryLoader?.ready();
-await LocalPractice.register({gameId:GAME,stageIds:STAGES.map(s=>String(s.id)),enable(value){practice=value;everPractice=everPractice||value;renderGear();rail.refresh(selected)},startStage:id=>startBattle(Number(id)-1)});
+

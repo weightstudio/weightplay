@@ -1,1 +1,0 @@
-import("./main.mjs?v=enemy-hit-v17&wp-media=6ece14afbab50bb2").catch(i=>{console.error("Rain Roost initialization failed",i),window.__weightPlayGameEntryPendingFailure="animal-rain-roost",window.WeightPlayGameEntryLoader?.fail(void 0,()=>location.reload())});
