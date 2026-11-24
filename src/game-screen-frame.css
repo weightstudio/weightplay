@@ -95,10 +95,6 @@ html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not
 html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info {box-sizing:border-box!important;width:min(var(--wp-main-width),calc(100% - 2 * var(--wp-main-gutter)))!important;max-width:var(--wp-main-width)!important;margin-inline:auto!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)!important}
 html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}
 html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)!important}
-/* Road Crosser v20/I7 preserves the framed Guide radius required by its
-   exact current acceptance issue while remaining scoped to that game. */
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="road-crosser"] .game-page-info,
-html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="road-crosser"] .game-info-section {border-radius:18px!important}
 /* Balance Grove v7/I6 preserves the framed Guide radius required by its
    exact current acceptance issue while remaining scoped to that game. */
 html[data-wp-shared-interface="7"] body:not([data-wp-interface-version="9"]):not([data-wp-interface-candidate="9"])[data-wp-game-id="animal-balance-grove"] .game-page-info,
