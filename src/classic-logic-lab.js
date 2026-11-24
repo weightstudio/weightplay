@@ -1011,7 +1011,7 @@
         if (nextPath && nextPath !== window.location.pathname) {
           localStorageSafe(LOCALE_SELECTION_PATH_KEY, "");
           localStorageSafe(LOCALE_SELECTION_VALUE_KEY, "");
-          window.location.assign(`${nextPath}${window.location.search}${window.location.hash}`);
+          window.location.assign(`${nextPath}${window.location.hash}`);
           return;
         }
       }

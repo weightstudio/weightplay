@@ -164,7 +164,7 @@
     "snack-blocks": [".snack-game", 382, 780, 760, 350],
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
-    "wonder-crash": [".game-shell", 390, 788, 760, 360],
+    "wonder-crash": ["#wonderBattleScene", 390, 788, 760, 360],
     "klondike-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "spider-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "freecell-solitaire": [".battle-canvas", 390, 788, 760, 334],

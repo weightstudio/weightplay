@@ -1785,6 +1785,7 @@ function loseLevel() {
   menuContent.classList.remove("hidden");
   profilePanel.classList.remove("hidden");
   profilePanel.innerHTML = renderDefeatActions();
+  decorateSettlement(false);
   overlay.classList.remove("hidden");
   window.WonderCrashFrame?.activate("battle", { covered: true });
   focusSettlementPrimary();
@@ -1835,6 +1836,7 @@ async function winLevel() {
   profilePanel.classList.remove("hidden");
   (__wpNotifyMeasurement(), pausePanel.classList.add("hidden"));
   profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward, resultSave.ok);
+  decorateSettlement(true);
   overlay.classList.remove("hidden");
   window.WonderCrashFrame?.activate("battle", { covered: true });
   focusSettlementPrimary();
@@ -1891,6 +1893,11 @@ function getLevelDropWeaponId(levelId) {
 function buildWinText(drops, wasChallenge) {
   const unlockText = wasChallenge && state.levelIndex + 1 < LEVELS.length ? ` ` + t("settlement_unlocked", { id: state.level.id + 1 }) : "";
   return t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id} ${unlockText}`;
+}
+
+function decorateSettlement(won) {
+  overlay.classList.add('wp-result-art');overlay.dataset.outcome=won?'win':'loss';
+  for(const [action,icon] of [['stages','map'],['next','next'],['replay','retry']]) { const node=profilePanel.querySelector(`[data-settlement-action="${action}"]`);if(node)window.WeightPlayPlayUI.illustrateButton(node,icon,node.textContent.trim()); }
 }
 
 function renderResultActions(won, saveConfirmed = true) {
@@ -4234,41 +4241,6 @@ window.mountWonderCrashFrame({
     },
   },
 });
-
-if ((location.hostname === "127.0.0.1" || location.hostname === "localhost") && new URLSearchParams(location.search).get("wp_test") === "1") {
-  window.WonderCrashTest = {
-    prepareBoss(stageId) {
-      const levelIndex = clamp(Number(stageId) - 1, 0, LEVELS.length - 1);
-      startLevel(levelIndex);
-      state.running = false;
-      state.enemies.length = 0;
-      state.bossProjectiles.length = 0;
-      const bossWave = state.level.waves.find((wave) => wave.boss);
-      if (!bossWave) throw new Error(`Stage ${state.level.id} has no Boss wave.`);
-      spawnBoss(bossWave);
-      const boss = state.enemies.find((enemy) => enemy.isBoss);
-      if (boss) boss.y = H * 0.28;
-      return this.snapshot();
-    },
-    fireBossAttack() {
-      const boss = state.enemies.find((enemy) => enemy.isBoss);
-      if (!boss) throw new Error("No prepared Boss.");
-      state.bossProjectiles.length = 0;
-      boss.bossAttackTimer = 0;
-      updateBossAbility(boss, 0);
-      return this.snapshot();
-    },
-    snapshot() {
-      const boss = state.enemies.find((enemy) => enemy.isBoss);
-      return {
-        stage: state.level.id,
-        running: state.running,
-        boss: boss ? { id: boss.type.id, pattern: boss.bossPattern, shieldHits: boss.bossShieldHits, attackInterval: boss.bossAttackInterval } : null,
-        projectiles: state.bossProjectiles.map(({ targetX, size, speed, damage }) => ({ targetX, size, speed, damage })),
-      };
-    },
-  };
-}
 
 preload().catch((error) => {
   if (loadingText) loadingText.textContent = t("load_fail");
