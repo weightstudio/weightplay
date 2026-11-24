@@ -2536,6 +2536,8 @@
         if (id === "spades") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "hearts") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "old-maid") result.dataset.outcome = won ? "win" : "loss";
+        if (id === "speed") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
+        if (id === "war") result.dataset.outcome = won === null ? "draw" : won ? "win" : "loss";
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";

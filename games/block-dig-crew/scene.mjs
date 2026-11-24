@@ -1,5 +1,5 @@
-import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=bf4a43b46bf724ec';
-import {LANDS} from './model.mjs?v=2&wp-media=bf4a43b46bf724ec';
+import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=bc824bb80ede7dbd';
+import {LANDS} from './model.mjs?v=2&wp-media=bc824bb80ede7dbd';
 
 export const SLOT_COUNT=20;
 const pos = id => [((id%5)-2)*1.38,(Math.floor(id/5)-1.5)*1.35];

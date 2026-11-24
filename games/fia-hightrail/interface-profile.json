@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "gameId": "fia-hightrail",
   "audience": "general",
-  "interfaceVersion": 9,
+  "interfaceVersion": 10,
   "flow": "MAIN_STAGE_BATTLE",
   "stage": {
     "enabled": true,

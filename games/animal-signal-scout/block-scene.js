@@ -1,1 +1,1 @@
-import"../../src/stage-virtualization-standard.js?v=20260923-interface7-bounded-stage&wp-media=bf4a43b46bf724ec";import"./block-scene-v15-base.js?v=20260926-signal-scout-v17-interface7&wp-media=bf4a43b46bf724ec";import"./interface-7-compat.js?v=i10-69f64ee42940&wp-media=bf4a43b46bf724ec";
+import"../../src/stage-virtualization-standard.js?v=20260923-interface7-bounded-stage&wp-media=bc824bb80ede7dbd";import"./block-scene-v15-base.js?v=20260926-signal-scout-v17-interface7&wp-media=bc824bb80ede7dbd";import"./interface-7-compat.js?v=i10-69f64ee42940&wp-media=bc824bb80ede7dbd";
