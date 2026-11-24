@@ -226,7 +226,7 @@
       details: "",
       locked,
       cleared,
-      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=6ece14afbab50bb2",
+      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=b60650f843af14c2",
       posterPosition: "center"
     };
   };
@@ -462,6 +462,7 @@
     $("resultText").textContent = complete
       ? campaign().resultAll.replaceAll("{best}", bestValue()).replaceAll("{total}", String(groves.length))
       : campaign().result.replaceAll("{count}", String(solved.size)).replaceAll("{total}", String(groves.length)).replaceAll("{attempts}", String(attempts));
+    for (const [id,icon,key] of [["resultMapBtn","map","choose"],["nextBtn","next","next"],["resultReplayBtn","retry","reset"]]) window.WeightPlayPlayUI.illustrateButton($(id),icon,copy(key));
     $("resultMapBtn").hidden = false;
     $("nextBtn").hidden = false;
     if (lessonReplay) $("resultText").textContent=lessonText()[5];

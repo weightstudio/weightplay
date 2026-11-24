@@ -1,13 +1,12 @@
-import {createCairnScene} from './scene.mjs?v=20261027-cairn-pass1&wp-media=6ece14afbab50bb2';
-import {purchaseFinish,writeConfirmed} from './finishes.mjs?v=20261101-cairn-v15&wp-media=6ece14afbab50bb2';
-import {MOUNTAIN_PASS,passContract,passValidate,passNext} from './mountain-pass.mjs?v=20261027-cairn-pass2&wp-media=6ece14afbab50bb2';
-import {PASS_COPY} from './mountain-pass-copy.mjs?v=20261027-cairn-pass2&wp-media=6ece14afbab50bb2';
-import {LocalPractice} from '../../src/game-local-practice.mjs?wp-media=6ece14afbab50bb2';
+import {createCairnScene} from './scene.mjs?v=20261027-cairn-pass1&wp-media=b60650f843af14c2';
+import {purchaseFinish,writeConfirmed} from './finishes.mjs?v=20261101-cairn-v15&wp-media=b60650f843af14c2';
+import {MOUNTAIN_PASS,passContract,passValidate,passNext} from './mountain-pass.mjs?v=20261027-cairn-pass2&wp-media=b60650f843af14c2';
+import {PASS_COPY} from './mountain-pass-copy.mjs?v=20261027-cairn-pass2&wp-media=b60650f843af14c2';
 
 const $=id=>document.getElementById(id);
 const {STAGES:originalStages,stoneCatalog,validate:originalValidate,contract:originalContract,load,tray,normalize}=window.CairnModel;
 const STAGES=[...originalStages];
-const practiceRequested=location.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('practice')==='1';
+const practiceRequested=false;
 let practice=false,starting=false;
 const dictionaries=window.ANIMAL_CAIRN_COURIER_LOCALES;
 const frame=window.__ANIMAL_CAIRN_COURIER_FRAME__;
@@ -92,12 +91,13 @@ const stageText=(p,field)=>p.id>30?(field==='title'?passText('chapter'):passText
 const ruleText=p=>contract(p,[]).map(rule=>ruleLabel(rule,p)).join(' · ');
 const statusFor=(p,i)=>solved.has(p.id)?text('complete'):practice||i===0||solved.has(STAGES[i-1].id)?text('open'):text('locked');
 let selector=null,selectedStage=0;
+const sharedStageTab=document.createElement('button');sharedStageTab.type='button';sharedStageTab.id='sharedStageTab';frame.commonDownButton.registerTab(sharedStageTab,{icon:'map',label:text('stages'),panel:$('stageWorkspace')});
 const finishButton=document.createElement('button');finishButton.type='button';finishButton.id='finishButton';
 frame.commonDownButton.add(finishButton);
 const stageProgress=document.createElement('span');stageProgress.id='cairnStageProgress';frame.stageTopUI.add(stageProgress);
 function renderStages(){
   stageProgress.textContent=text('stagesV7',{current:solved.size,total:STAGES.length});
-  finishButton.textContent=text('finishTitle');finishButton.disabled=practiceRequested;
+  window.WeightPlayPlayUI.illustrateButton(finishButton,'workshop',text('finishTitle'));window.WeightPlayPlayUI.illustrateTab(sharedStageTab,'map',text('stages'));finishButton.disabled=practiceRequested;
   if(!selector)selector=window.WeightPlayPlayUI.mountStage({page:$('stageWorkspace'),rail:$('stageList'),
     config:window.AnimalCairnCourierStageConfig({stages:STAGES,solved,stageText,ruleText,statusFor,text,practice}),selected:selectedStage,
     isActive:()=>state.screen==='stage'&&$('finishPanel').hidden,onSelect:i=>selectedStage=i,onStart:startRound});
@@ -150,7 +150,7 @@ function renderPassTools(){
     button.onclick=()=>{state.route=route;state.status='';buildBattle();passTools.querySelector(`[data-route="${route}"]`)?.focus({preventScroll:true});};passTools.append(button);
   }
   const pin=document.createElement('button');pin.type='button';pin.dataset.passPin='';
-  const image=document.createElement('img');image.src='/games/animal-cairn-courier/assets/mountain-marker-pin-v1.png.webp?wp-media=6ece14afbab50bb2';image.alt='';image.width=48;image.height=48;pin.append(image);
+  const image=document.createElement('img');image.src='/games/animal-cairn-courier/assets/mountain-marker-pin-v1.png.webp?wp-media=b60650f843af14c2';image.alt='';image.width=48;image.height=48;pin.append(image);
   const name=document.createElement('span');name.textContent=`${passText('pin')} · ${passText('uses',{n:state.pinUses})}`;pin.append(name);pin.disabled=state.pinUses===0||state.settled;
   pin.onclick=()=>{if(!acceptsInput()||state.pinUses<=0)return;state.pinUses--;const choices=passNext(plan(),state.stack,state.route);state.status=choices.length?passText('next',{stones:choices.map(stoneName).join(' · ')}):passText('none');updateBattle();const target=passTools.querySelector('[data-pass-pin]:not(:disabled)')||[...buttons.values()].find(b=>!b.disabled)||(!$('undoBtn').disabled?$('undoBtn'):$('checkBtn'));target?.focus({preventScroll:true});};passTools.append(pin);
 }
@@ -196,7 +196,6 @@ function updateBattle(success=false){
 async function startRound(index,{teachingReplay=false}={}){
   if(teachingReplay&&practiceRequested)return false;
   if(starting||!Number.isInteger(index)||!STAGES[index]||(practiceRequested&&(!practice||window.__cairnPracticeAnalyticsSafe!==true)))return false;
-  if(practiceRequested){starting=true;try{if(!await LocalPractice.validate()||!practice)return false;}finally{starting=false;}}
   else if(index>0&&!solved.has(STAGES[index-1].id))return false;
   actionGuide.stop();lessonReplay=teachingReplay;
   Object.assign(measurement,{roundKey:{},started:true,ended:false,outcome:'abandon',stageId:STAGES[index].id,rewardEligible:!lessonReplay&&!practiceRequested&&!solved.has(STAGES[index].id),saveSucceeded:false});
@@ -249,6 +248,7 @@ function check(){
   $('resultSeals').setAttribute('aria-label',text('seals')+' '+seals+'/3');
   $('resultText').textContent=text('picks')+': '+state.picks+' · '+text('best')+': '+(saved.best[plan().id]||'—')+'\n'+text('stagesV7',{current:solved.size,total:practice?STAGES.length:30})+(lessonReplay?'\n'+lessonText()[5]:practice?'\n'+passText('practice'):persisted?'':'\n'+text('saveError'));
   $('resultStagesBtn').textContent=text('stages');$('resultNextBtn').textContent=text('next');$('resultReplayBtn').textContent=text('replay');
+  for(const [id,icon,key] of [['resultStagesBtn','map','stages'],['resultNextBtn','next','next'],['resultReplayBtn','retry','replay']])window.WeightPlayPlayUI.illustrateButton($(id),icon,text(key));
   $('resultNextBtn').disabled=lessonReplay||(!practiceRequested&&!savedClear)||state.round===STAGES.length-1;
   flash($('resultScreen').querySelector('.dialog-card'));$('resultNextBtn').disabled?$('resultStagesBtn').focus({preventScroll:true}):$('resultNextBtn').focus({preventScroll:true});
 }
@@ -268,7 +268,7 @@ function renderFinishes(){
   for(const name of ['moss','alpine','aurora']){
     const owned=name==='moss'||saved.finishes.includes(name)||(name==='alpine'&&solved.size>=10);
     const row=document.createElement('div');row.className='finish-row';row.dataset.finish=name;
-    const image=document.createElement('img');image.src='/assets/interface7-redrawn/animal-cairn-courier.webp?wp-media=6ece14afbab50bb2';image.alt='';row.append(image);
+    const image=document.createElement('img');image.src='/assets/interface7-redrawn/animal-cairn-courier.webp?wp-media=b60650f843af14c2';image.alt='';row.append(image);
     const label=document.createElement('strong');label.textContent=text(name);row.append(label);
     const b=document.createElement('button');b.type='button';b.textContent=saved.finish===name?'✓ '+text('owned'):owned?text('equip'):name==='alpine'?text('earned'):text('purchase');
     if(!owned&&name==='aurora'){const diamond=document.createElement('img');diamond.src='/assets/weightplay-diamond.svg';diamond.alt=text('balance');diamond.width=18;diamond.height=18;b.prepend(diamond);}
@@ -328,18 +328,3 @@ window.__ANIMAL_CAIRN_COURIER_TEST__={stages:STAGES,validate,startRound,pickSton
   ruleSummary:index=>STAGES[index]?ruleText(STAGES[index]):null,
   getState:()=>({...state,stack:[...state.stack],solved:[...solved]}),sceneStats:()=>scene?.stats()};
 applyLocale();show('main');$('loadingPanel').hidden=true;
-if(practiceRequested){
-  const practiceStatus=document.createElement('p');practiceStatus.setAttribute('role','status');practiceStatus.textContent=passText('practice');$('startBtn').after(practiceStatus);
-  const waitForEntryReady=()=>new Promise(resolve=>{
-    let done=false;const observer=new MutationObserver(check),timer=setTimeout(()=>finish(false),25000);
-    function finish(ok){if(done)return;done=true;clearTimeout(timer);observer.disconnect();resolve(ok);}
-    function check(){const root=document.documentElement;if(window.WeightPlayGameEntryLoader?.isActive&&root.dataset.wpGameEntryLoaderInstalled==='true'&&root.dataset.wpGameEntryLoaderActive!=='true')finish(true);else if(document.querySelector('.wp-game-entry-loader[data-state="error"]'))finish(false);}
-    observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-wp-game-entry-loader-installed','data-wp-game-entry-loader-active'],childList:true,subtree:true});check();
-  });
-  void waitForEntryReady().then(ready=>ready&&window.__cairnPracticeAnalyticsSafe===true&&LocalPractice.register({
-    gameId:'animal-cairn-courier',stageIds:[...originalStages,...MOUNTAIN_PASS].map(p=>p.id),
-    enable(value){practice=value&&window.__cairnPracticeAnalyticsSafe===true;$('startBtn').disabled=!practice;if(practice){if(STAGES.length===originalStages.length)STAGES.push(...MOUNTAIN_PASS);practiceStatus.textContent=passText('practice');updateMain();}
-      else{STAGES.splice(originalStages.length);state.round=0;state.stack=[];state.settled=false;selector?.destroy?.();selector=null;document.querySelector('[data-wp-local-practice]')?.remove();practiceStatus.textContent=passText('expired');show('main');}},
-    startStage:id=>startRound(Number(id)-1)
-  })).then(ok=>{if(!ok&&!practice)practiceStatus.textContent=passText('expired');}).catch(()=>{practiceStatus.textContent=passText('expired');});
-}

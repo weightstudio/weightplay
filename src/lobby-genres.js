@@ -98,6 +98,7 @@
     ["leafskip", "Reaction", "Platform", "Arcade"],
     ["moonlit-atrium", "Puzzle", "Spatial Planning", "Deduction"],
     ["reedway-transit", "Simulation", "Management", "Strategy", "Route Planning"],
+    ["hill-route-bus", "Simulation"],
     ["emberglaze-kiln", "Simulation", "Management", "Puzzle", "Calibration"],
     ["starpip-vanguard", "Strategy", "RPG", "Adventure"],
     ["gilded-gathering", "Strategy", "Puzzle", "Spatial Planning", "Route Planning"],

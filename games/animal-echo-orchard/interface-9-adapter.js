@@ -154,7 +154,8 @@
     frame.stageTopUI.add(stageInfo);
     const battleInfo = window.WeightPlayScreenFrame.createGroup().add(battleHeaderInfo.firstElementChild).add(battleHeaderInfo.lastElementChild);
     frame.battleTopUI.add(battleInfo);
-    frame.commonDownButton.clear();
+    const stageTab = document.createElement("button"); stageTab.id = "sharedStageTab"; stageTab.type = "button";
+    frame.commonDownButton.registerTab(stageTab, {icon:"map", label:api.copy("groves"), panel:$("stageWorkspace")});
 
     const saved = api.getState();
     selectedStage = Math.max(0, Math.min(api.groves.length - 1, Math.max(saved.groveIndex, saved.unlockedThrough - 1)));
@@ -175,6 +176,7 @@
 
     window.__ECHO_ORCHARD_I9__ = Object.freeze({
       refreshStage() {
+        window.WeightPlayPlayUI.illustrateTab(stageTab,"map",api.copy("groves"));
         selectedStage = Math.max(0, Math.min(api.groves.length - 1, selectedStage));
         stageSelector?.refresh(selectedStage);
         $("stageSummary").textContent = api.stageSummary();

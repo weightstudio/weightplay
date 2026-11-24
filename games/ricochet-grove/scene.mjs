@@ -1,4 +1,4 @@
-import * as T from '/src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=6ece14afbab50bb2';
+import * as T from '/src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=b60650f843af14c2';
 
 const palette = { peg: 0xe19752, dew: 0x65e6ce, wind: 0xffd366, hinge: 0x78a5ee, lock: 0x8a9da4 };
 const plant = [0xf4a569, 0xf0d57b, 0xe589bf, 0x9bd8fc, 0xe2a681];
