@@ -25,11 +25,7 @@
     <link rel="stylesheet" href="style.css?v=20260812-landscape-square-v27&wp-media=b835eac6524ea17a" />
     <script data-wp-internal-trial-gate>
       (() => {
-        if (
-          new URLSearchParams(location.search).get("trial") !== "1" &&
-          /^https?:$/.test(location.protocol)
-        )
-          location.replace("/?preview=1");
+        if (/^https?:$/.test(location.protocol)) location.replace("/games/block-blast/");
       })();
     </script>
   </head>
@@ -43,7 +39,7 @@
         <header class="main-header">
           <a
             class="lobby-return"
-            href="/?preview=1"
+            href="/"
             data-wp-return="main"
             aria-label="Back to WeightPlay"
             ><span>←</span><b>W</b></a
