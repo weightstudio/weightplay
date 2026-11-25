@@ -388,7 +388,7 @@ export function renderEntry(code){
   const fs=process.getBuiltinModule('fs'),vm=process.getBuiltinModule('vm');
   const source=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
   const context=vm.createContext({window:{}});
-  for(const f of ['game-title-registry.js?wp-media=a6d4580988ee8d9a','lobby-data.js?wp-media=a6d4580988ee8d9a'])vm.runInContext(fs.readFileSync(new URL('../../src/'+f,import.meta.url),'utf8'),context,{timeout:2500});
+  for(const f of ['game-title-registry.js?wp-media=b2d3eb8f869f8eea','lobby-data.js?wp-media=b2d3eb8f869f8eea'])vm.runInContext(fs.readFileSync(new URL('../../src/'+f,import.meta.url),'utf8'),context,{timeout:2500});
   const id='block-dig-crew',games=context.window.WONDER_LOBBY.games;
   const title=context.window.WEIGHTPLAY_GAME_TITLES[id][code], own=games.find(g=>g.id===id);
   const route=ROUTES[code],base='/games/'+id+'/',url='https://weightplay.com/'+route+base;
@@ -399,7 +399,7 @@ export function renderEntry(code){
   const schema=JSON.stringify({'@context':'https://schema.org','@type':'VideoGame',name:title,description:desc,url,inLanguage:code,
     genre:tags,gamePlatform:'Web browser',operatingSystem:'Web browser',playMode:'SinglePlayer',isAccessibleForFree:true,
     audience:{'@type':'PeopleAudience',audienceType:'General'},
-    image:'https://weightplay.com'+base+'art/cover.webp?wp-media=a6d4580988ee8d9a',publisher:{'@type':'Organization',name:'WeightPlay'}}).replaceAll('<','\\u003c');
+    image:'https://weightplay.com'+base+'art/cover.webp?wp-media=b2d3eb8f869f8eea',publisher:{'@type':'Organization',name:'WeightPlay'}}).replaceAll('<','\\u003c');
   let html=source.replace(/(<html[^>]* lang=")[^"]+("[^>]* dir=")[^"]+(")/,(_,a,b,c)=>a+code+b+(code==='ar'?'rtl':'ltr')+c)
     .replace(/<script data-wp-locale-route>[\s\S]*?<\/script>\s*/g,'')
     .replace(/<title>[^<]*<\/title>/,'<title>'+esc(title)+' | WeightPlay</title>')
@@ -429,7 +429,7 @@ export function renderEntry(code){
     esc(dict.related)+'</h3><div data-wp-guide-related-cards>'+related.join(' ')+'</div></div>';
   html=html.replace(/<div class="game-info(?:-section)?[^"]*\bgame-info-related-section\b[^"]*"[^>]*>[\s\S]*?<\/div>\s*<\/div>/,()=>relatedBlock);
   const require=process.getBuiltinModule('module').createRequire(import.meta.url);
-  const {createStaticRelatedGuideNormalizer}=require('../../scripts/lib/static-guide-related-games.mjs?wp-media=a6d4580988ee8d9a');
+  const {createStaticRelatedGuideNormalizer}=require('../../scripts/lib/static-guide-related-games.mjs?wp-media=b2d3eb8f869f8eea');
   const root=process.getBuiltinModule('url').fileURLToPath(new URL('../..',import.meta.url));
   return createStaticRelatedGuideNormalizer(root)(html,id,route).html;
 }

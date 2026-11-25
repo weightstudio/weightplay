@@ -5,9 +5,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {loadTestBrowserRuntime} from '../../scripts/lib/test-browser-runtime.mjs?wp-media=a6d4580988ee8d9a';
-import {installLocalTestNetworkPolicy,localTestBrowserArgs,localTestOrigin} from '../../scripts/local-test-network-policy.mjs?wp-media=a6d4580988ee8d9a';
-import {freshSave,SAVE_KEY} from './model.mjs?wp-media=a6d4580988ee8d9a';
+import {loadTestBrowserRuntime} from '../../scripts/lib/test-browser-runtime.mjs?wp-media=b2d3eb8f869f8eea';
+import {installLocalTestNetworkPolicy,localTestBrowserArgs,localTestOrigin} from '../../scripts/local-test-network-policy.mjs?wp-media=b2d3eb8f869f8eea';
+import {freshSave,SAVE_KEY} from './model.mjs?wp-media=b2d3eb8f869f8eea';
 
 const origin=localTestOrigin(), size={width:560,height:672};
 const folder=fs.mkdtempSync(path.join(os.tmpdir(),'wp-dig-preview-'));
