@@ -737,6 +737,10 @@
       "date": "2026-11-22T04:29:11+08:00",
       "evidence": "git:9b4150e2b5ba05e1aa0bb09476ea4792156c4e37"
     },
+    "harbor-stacks": {
+      "date": "2026-11-25T16:38:35.331Z",
+      "evidence": "canonical-public-catalog"
+    },
     "hearthloop": {
       "date": "2026-11-04T18:02:55.540Z",
       "evidence": "canonical-public-catalog"

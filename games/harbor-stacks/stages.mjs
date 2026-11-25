@@ -1,4 +1,4 @@
-const a=`
+const i=`
 6/1 WL-- x 0
 7/1 W-L- x 0
 7/1 -L-W x 0
@@ -18,12 +18,12 @@ const a=`
 11/2 WLTT l 6
 12/2 -LTT h 8
 12/2 WLLT q 6
-13/3 WLTT l 9
+13/3 WLTT l 5
 11/2 W--T q 6
 12/2 -LTT l 5
 12/2 WLTT h 7
 13/3 WLLT q 8
-13/3 WLTT l 9
+13/3 WLTT l 5
 12/2 WLTT q 6
 12/3 WL-T q 7
 13/3 WLLT h 8
@@ -33,7 +33,7 @@ const a=`
 12/2 -LTT h 0
 12/2 WLTT l 0
 13/3 WLLT q 0
-13/3 WLTT l 9
+13/3 WLTT l 5
 12/2 WL-T h 5
 12/2 W-T q 6
 13/3 -LTT l 7
@@ -58,6 +58,6 @@ const a=`
 14/3 WL-T q 8
 15/4 WLLT l 9
 15/4 -LTT q a
-16/4 WLTT l b
+16/4 WLTT l 8
 `.trim().split(`
-`);export const CAMPAIGN=Object.freeze(a.map((W,t)=>{const[l,q,e,r]=W.split(" "),[s,o]=l.split("/").map(Number),T=t+1,L=Number.parseInt(r,16),i=T>=45&&T%5===0?L+1:0;return Object.freeze({id:T,limit:s,quota:o,hand:q,tidePattern:{x:"1",q:"10110",h:"01101",l:"0101"}[e],storms:[L,i].filter(Boolean),outerDock:T>=16&&T%5!==1,trade:T>=21,tideKey:T>=31,kelpTide:T>=36,shedLimit:T>=41?3:5})}));
+`);export const CAMPAIGN=Object.freeze(i.map((W,t)=>{const[l,e,q,r]=W.split(" "),[s,o]=l.split("/").map(Number),T=t+1,h=Number.parseInt(r,16),L={45:9,50:10,55:11,60:11}[T]??0;return Object.freeze({id:T,limit:s,quota:o,hand:e,tidePattern:{x:"1",q:"10110",h:"01101",l:"0101"}[q],storms:[h,L].filter(Boolean),secureThrough:T>=45&&T%5===0?L:0,outerDock:T>=16&&T%5!==1,trade:T>=21,tideKey:T>=31,kelpTide:T>=36,shedLimit:T>=41?3:5})}));
