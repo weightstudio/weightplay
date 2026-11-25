@@ -1,6 +1,6 @@
 // Complete rule explanations shared by runtime and static route generation.
 // Do not describe prototype-only three-chain/five-tile rules as this campaign.
-import {campaignCopy} from './campaign-copy.mjs?v=20260909-grove-campaign-v6&wp-media=e61d4800f2e47cf6';
+import {campaignCopy} from './campaign-copy.mjs?v=20260909-grove-campaign-v6&wp-media=17836fa961a5acd4';
 const rows={
  en:[
   'Plan a habitat route, use every required domino and reach the moon after completing the stage objectives.',

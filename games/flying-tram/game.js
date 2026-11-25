@@ -1,1 +1,1 @@
-import("./app.mjs?v=i10-2c831aa212e9&wp-media=e61d4800f2e47cf6").catch(error=>{console.error("Flying Tram could not start",error),window.WeightPlayGameEntryLoader?.fail?.("Unable to load the sky line. Please reload.",()=>location.reload())});
+import("./app.mjs?v=i10-2c831aa212e9&wp-media=17836fa961a5acd4").catch(error=>{console.error("Flying Tram could not start",error),window.WeightPlayGameEntryLoader?.fail?.("Unable to load the sky line. Please reload.",()=>location.reload())});
