@@ -877,6 +877,10 @@
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
     },
+    "pennant-riders": {
+      "date": "2026-11-25T00:57:46.368Z",
+      "evidence": "canonical-public-catalog"
+    },
     "perchweave": {
       "date": "2026-11-20T10:53:46+08:00",
       "evidence": "git:1f8b5b3884a3ab52a17bab9f46366076ba560952"

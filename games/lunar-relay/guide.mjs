@@ -185,15 +185,15 @@ const sections = {
 
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
-import { copyByLocale, routes } from './locales.mjs?wp-media=bc824bb80ede7dbd';
+import { copyByLocale, routes } from './locales.mjs?wp-media=d206b668458570c4';
 
 const id = 'lunar-relay';
 const host = 'https://weightplay.com';
 const directory = '/games/lunar-relay/';
-const poster = host + directory + 'art/poster.webp?wp-media=bc824bb80ede7dbd';
+const poster = host + directory + 'art/poster.webp?wp-media=d206b668458570c4';
 const blueprint = new URL('index.html', import.meta.url);
 const catalog = vm.createContext({ window: {} });
-for (const file of ['src/lobby-data.js?wp-media=bc824bb80ede7dbd','src/game-title-registry.js?wp-media=bc824bb80ede7dbd']) {
+for (const file of ['src/lobby-data.js?wp-media=d206b668458570c4','src/game-title-registry.js?wp-media=d206b668458570c4']) {
   const source = readFileSync(new URL('../../' + file, import.meta.url), 'utf8');
   vm.runInContext(source, catalog, {filename:file, timeout:2000});
 }

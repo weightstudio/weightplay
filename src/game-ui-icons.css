@@ -1,9 +1,9 @@
 /* Semantic game artwork. Opt in with a decorative span or a labeled control. */
 :where(.wp-result-art[data-outcome="win"]) {
-  --wp-result-image: url("/assets/game-results/victory.webp?wp-media=bc824bb80ede7dbd");
+  --wp-result-image: url("/assets/game-results/victory.webp?wp-media=d206b668458570c4");
 }
 :where(.wp-result-art[data-outcome="loss"]) {
-  --wp-result-image: url("/assets/game-results/defeat.webp?wp-media=bc824bb80ede7dbd");
+  --wp-result-image: url("/assets/game-results/defeat.webp?wp-media=d206b668458570c4");
 }
 .wp-game-icon, .wp-icon-leading::before {
   display: inline-block;
@@ -33,59 +33,59 @@
 .wp-play-art-button[data-page-direction="previous"] > img,
 .wp-play-art-button[data-page-direction="next"]:dir(rtl) > img { transform: scaleX(-1); }
 .wp-play-art-button[data-page-direction="previous"]:dir(rtl) > img { transform: none; }
-:where([data-wp-icon="attack"]) { --wp-icon-image: url("/assets/game-icons/attack.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="blizzard"]) { --wp-icon-image: url("/assets/game-icons/blizzard.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="cadence"]) { --wp-icon-image: url("/assets/game-icons/cadence.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="chain"]) { --wp-icon-image: url("/assets/game-icons/chain.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="charm"]) { --wp-icon-image: url("/assets/game-icons/charm.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="defense"]) { --wp-icon-image: url("/assets/game-icons/defense.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="ember-drake"]) { --wp-icon-image: url("/assets/game-icons/ember-drake.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="ember-trail"]) { --wp-icon-image: url("/assets/game-icons/ember-trail.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="experience"]) { --wp-icon-image: url("/assets/game-icons/experience.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="fire"]) { --wp-icon-image: url("/assets/game-icons/fire.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="fire-nova"]) { --wp-icon-image: url("/assets/game-icons/fire-nova.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="frost"]) { --wp-icon-image: url("/assets/game-icons/frost.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="frost-drake"]) { --wp-icon-image: url("/assets/game-icons/frost-drake.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="guide"]) { --wp-icon-image: url("/assets/game-icons/guide.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="health"]) { --wp-icon-image: url("/assets/game-icons/health.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="ice-armor"]) { --wp-icon-image: url("/assets/game-icons/ice-armor.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="ice-nova"]) { --wp-icon-image: url("/assets/game-icons/ice-nova.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="level-up"]) { --wp-icon-image: url("/assets/game-icons/level-up.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="lightning"]) { --wp-icon-image: url("/assets/game-icons/lightning.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="map"]) { --wp-icon-image: url("/assets/game-icons/map.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="meteor"]) { --wp-icon-image: url("/assets/game-icons/meteor.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="next"]) { --wp-icon-image: url("/assets/game-icons/next.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="settings"]) { --wp-icon-image: url("/assets/game-icons/settings.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="orbit"]) { --wp-icon-image: url("/assets/game-icons/orbit.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="overdrive"]) { --wp-icon-image: url("/assets/game-icons/overdrive.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="party"]) { --wp-icon-image: url("/assets/game-icons/party.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="pet"]) { --wp-icon-image: url("/assets/game-icons/pet.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="phoenix"]) { --wp-icon-image: url("/assets/game-icons/phoenix.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="pickup"]) { --wp-icon-image: url("/assets/game-icons/pickup.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="range"]) { --wp-icon-image: url("/assets/game-icons/range.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="reroll"]) { --wp-icon-image: url("/assets/game-icons/reroll.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="retry"]) { --wp-icon-image: url("/assets/game-icons/retry.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="ricochet"]) { --wp-icon-image: url("/assets/game-icons/ricochet.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="shatter"]) { --wp-icon-image: url("/assets/game-icons/shatter.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="speed"]) { --wp-icon-image: url("/assets/game-icons/speed.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="static-charge"]) { --wp-icon-image: url("/assets/game-icons/static-charge.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="storm-drake"]) { --wp-icon-image: url("/assets/game-icons/storm-drake.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="talents"]) { --wp-icon-image: url("/assets/game-icons/talents.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="time"]) { --wp-icon-image: url("/assets/game-icons/time.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="trophy"]) { --wp-icon-image: url("/assets/game-icons/trophy.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="workshop"]) { --wp-icon-image: url("/assets/game-icons/workshop.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="axe"]) { --wp-icon-image: url("/assets/game-icons/axe.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="bow"]) { --wp-icon-image: url("/assets/game-icons/bow.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="staff"]) { --wp-icon-image: url("/assets/game-icons/staff.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="armor"]) { --wp-icon-image: url("/assets/game-icons/armor.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="bracer"]) { --wp-icon-image: url("/assets/game-icons/bracer.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="star-medal"]) { --wp-icon-image: url("/assets/game-icons/star-medal.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="crest"]) { --wp-icon-image: url("/assets/game-icons/crest.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="potion"]) { --wp-icon-image: url("/assets/game-icons/potion.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="coins"]) { --wp-icon-image: url("/assets/game-icons/coins.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="materials"]) { --wp-icon-image: url("/assets/game-icons/materials.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="monster-cards"]) { --wp-icon-image: url("/assets/game-icons/monster-cards.webp?wp-media=bc824bb80ede7dbd"); }
-:where([data-wp-icon="rune-stone"]) { --wp-icon-image: url("/assets/game-icons/rune-stone.webp?wp-media=bc824bb80ede7dbd"); }
+:where([data-wp-icon="attack"]) { --wp-icon-image: url("/assets/game-icons/attack.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="blizzard"]) { --wp-icon-image: url("/assets/game-icons/blizzard.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="cadence"]) { --wp-icon-image: url("/assets/game-icons/cadence.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="chain"]) { --wp-icon-image: url("/assets/game-icons/chain.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="charm"]) { --wp-icon-image: url("/assets/game-icons/charm.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="defense"]) { --wp-icon-image: url("/assets/game-icons/defense.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="ember-drake"]) { --wp-icon-image: url("/assets/game-icons/ember-drake.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="ember-trail"]) { --wp-icon-image: url("/assets/game-icons/ember-trail.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="experience"]) { --wp-icon-image: url("/assets/game-icons/experience.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="fire"]) { --wp-icon-image: url("/assets/game-icons/fire.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="fire-nova"]) { --wp-icon-image: url("/assets/game-icons/fire-nova.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="frost"]) { --wp-icon-image: url("/assets/game-icons/frost.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="frost-drake"]) { --wp-icon-image: url("/assets/game-icons/frost-drake.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="guide"]) { --wp-icon-image: url("/assets/game-icons/guide.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="health"]) { --wp-icon-image: url("/assets/game-icons/health.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="ice-armor"]) { --wp-icon-image: url("/assets/game-icons/ice-armor.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="ice-nova"]) { --wp-icon-image: url("/assets/game-icons/ice-nova.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="level-up"]) { --wp-icon-image: url("/assets/game-icons/level-up.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="lightning"]) { --wp-icon-image: url("/assets/game-icons/lightning.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="map"]) { --wp-icon-image: url("/assets/game-icons/map.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="meteor"]) { --wp-icon-image: url("/assets/game-icons/meteor.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="next"]) { --wp-icon-image: url("/assets/game-icons/next.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="settings"]) { --wp-icon-image: url("/assets/game-icons/settings.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="orbit"]) { --wp-icon-image: url("/assets/game-icons/orbit.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="overdrive"]) { --wp-icon-image: url("/assets/game-icons/overdrive.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="party"]) { --wp-icon-image: url("/assets/game-icons/party.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="pet"]) { --wp-icon-image: url("/assets/game-icons/pet.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="phoenix"]) { --wp-icon-image: url("/assets/game-icons/phoenix.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="pickup"]) { --wp-icon-image: url("/assets/game-icons/pickup.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="range"]) { --wp-icon-image: url("/assets/game-icons/range.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="reroll"]) { --wp-icon-image: url("/assets/game-icons/reroll.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="retry"]) { --wp-icon-image: url("/assets/game-icons/retry.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="ricochet"]) { --wp-icon-image: url("/assets/game-icons/ricochet.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="shatter"]) { --wp-icon-image: url("/assets/game-icons/shatter.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="speed"]) { --wp-icon-image: url("/assets/game-icons/speed.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="static-charge"]) { --wp-icon-image: url("/assets/game-icons/static-charge.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="storm-drake"]) { --wp-icon-image: url("/assets/game-icons/storm-drake.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="talents"]) { --wp-icon-image: url("/assets/game-icons/talents.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="time"]) { --wp-icon-image: url("/assets/game-icons/time.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="trophy"]) { --wp-icon-image: url("/assets/game-icons/trophy.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="workshop"]) { --wp-icon-image: url("/assets/game-icons/workshop.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="axe"]) { --wp-icon-image: url("/assets/game-icons/axe.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="bow"]) { --wp-icon-image: url("/assets/game-icons/bow.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="staff"]) { --wp-icon-image: url("/assets/game-icons/staff.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="armor"]) { --wp-icon-image: url("/assets/game-icons/armor.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="bracer"]) { --wp-icon-image: url("/assets/game-icons/bracer.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="star-medal"]) { --wp-icon-image: url("/assets/game-icons/star-medal.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="crest"]) { --wp-icon-image: url("/assets/game-icons/crest.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="potion"]) { --wp-icon-image: url("/assets/game-icons/potion.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="coins"]) { --wp-icon-image: url("/assets/game-icons/coins.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="materials"]) { --wp-icon-image: url("/assets/game-icons/materials.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="monster-cards"]) { --wp-icon-image: url("/assets/game-icons/monster-cards.webp?wp-media=d206b668458570c4"); }
+:where([data-wp-icon="rune-stone"]) { --wp-icon-image: url("/assets/game-icons/rune-stone.webp?wp-media=d206b668458570c4"); }
 
 @media (prefers-reduced-motion: no-preference) {
   :is(button,a).wp-icon-leading::before,

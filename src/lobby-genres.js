@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["pennant-riders", "Action", "Strategy"],
     ["courtyard-dispatch", "Puzzle"],
     ["night-ferry-tea", "Management", "Sequencing", "Route Planning"],
     ["outpost-tactics", "Strategy"],
