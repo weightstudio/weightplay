@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=2f0d4cb4d54499ee';
-import { localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=2f0d4cb4d54499ee';
-import { routes, words } from './copy.mjs?wp-media=2f0d4cb4d54499ee';
-import { stages } from './stages.mjs?wp-media=2f0d4cb4d54499ee';
-import { witness } from '../../scripts/test-moss-trail-patrol.mjs?wp-media=2f0d4cb4d54499ee';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=1ffff09d797fd821';
+import { localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=1ffff09d797fd821';
+import { routes, words } from './copy.mjs?wp-media=1ffff09d797fd821';
+import { stages } from './stages.mjs?wp-media=1ffff09d797fd821';
+import { witness } from '../../scripts/test-moss-trail-patrol.mjs?wp-media=1ffff09d797fd821';
 
 const id = 'moss-trail-patrol';
 const root = localTestOrigin();

@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "gust-rig": {
+    "__localizedExact": true,
+    "en": "Gust Rig",
+    "zh-Hant": "風幕雙索",
+    "zh-Hans": "风幕双索",
+    "ja": "風幕の二本綱",
+    "ko": "바람막이 두 줄",
+    "es": "Dos Cabos al Viento",
+    "pt-BR": "Cabos ao Vento",
+    "fr": "Cordes au Vent",
+    "de": "Doppelseil im Wind",
+    "it": "Corde al Vento",
+    "ru": "Два троса на ветру",
+    "hi": "हवा की दो रस्सियाँ",
+    "ar": "حبلان في الريح"
+  },
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
