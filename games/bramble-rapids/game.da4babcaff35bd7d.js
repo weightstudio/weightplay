@@ -1,1 +1,1 @@
-import("./game.mjs?v=i10-b0238faf0b96&wp-media=b2d3eb8f869f8eea").catch(a=>{console.error("Bramble Rapids bootstrap",a),window.WeightPlayGameEntryLoader?.fail?.(a.message,()=>location.reload())});
+import("./game.mjs?v=i10-b0238faf0b96&wp-media=e61d4800f2e47cf6").catch(a=>{console.error("Bramble Rapids bootstrap",a),window.WeightPlayGameEntryLoader?.fail?.(a.message,()=>location.reload())});

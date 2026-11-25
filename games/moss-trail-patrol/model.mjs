@@ -33,7 +33,7 @@ export function start(stage, kit = 'base') {
   return {
     stage, kit, hp: stage.maxHealth, shards: stage.laps + 1,
     marks: Array(stage.sites.length).fill(null), lap: 0, site: -1, wins: 0, skipped: false,
-    result: '', reason: '', foe: null, bossCleared: false, turns: 0,
+    result: '', reason: '', foe: null, bossCleared: false, turns: 0, ward: false,
   };
 }
 
@@ -85,6 +85,7 @@ function arrive(run, next, events) {
     return;
   }
   run.site = next.index;
+  if (next.mark === 'lantern' && run.kit === 'lens') run.ward = true;
   if (next.mark === 'camp') {
     const before = run.hp;
     run.hp = Math.min(run.stage.maxHealth, run.hp + 2 + Number(run.kit === 'canopy' && run.lap === 0));
@@ -125,7 +126,7 @@ function fight(run, action, events) {
     - (foe.lit ? 0 : (cue.armor ?? 0));
   events.push({ kind: foe.counter ? 'counter' : 'strike', amount: damage });
   foe.hp = Math.max(0, foe.hp - damage);
-  const interrupted = foe.lit && (cue.name === 'heavy' || run.kit === 'lens');
+  const interrupted = foe.lit && cue.name === 'heavy';
   foe.lit = false;
   foe.counter = false;
   foe.turn++;
@@ -137,6 +138,9 @@ function fight(run, action, events) {
     run.shards = Math.min(MAX_SHARDS, run.shards + bag);
     events.push({ kind: 'defeat', amount: run.shards - before });
     run.foe = null;
+  } else if (cue.hit > 0 && run.ward && !interrupted) {
+    run.ward = false;
+    events.push({ kind: 'block', amount: cue.hit });
   } else if (cue.hit > 0 && !interrupted) {
     run.hp = Math.max(0, run.hp - cue.hit);
     events.push({ kind: 'hurt', amount: cue.hit });

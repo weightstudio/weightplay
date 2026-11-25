@@ -1,6 +1,6 @@
 export function createStageConfig({stages,text,title,best,unlocked,checkpoint}) {
-  return {count:stages.length,poster:'/assets/interface7-redrawn/animal-twin-switchyard.webp?wp-media=b2d3eb8f869f8eea',background:'/assets/lobby-block-atmosphere.svg',stage(index){
+  return {count:stages.length,poster:'/assets/interface7-redrawn/animal-twin-switchyard.webp?wp-media=e61d4800f2e47cf6',background:'/assets/lobby-block-atmosphere.svg',stage(index){
     const open=index<unlocked(),record=best(index);
-    return{id:index+1,title:title(index),kicker:(index+1)%5===0?checkpoint(index):'',subtitle:record?`${text('bestStat')}: ${record}`:'',summary:open?text('objective'):text('stageHelp'),details:[text('objective')],poster:'/assets/interface7-redrawn/animal-twin-switchyard.webp?wp-media=b2d3eb8f869f8eea',locked:!open,cleared:record>0};
+    return{id:index+1,title:title(index),kicker:(index+1)%5===0?checkpoint(index):'',subtitle:record?`${text('bestStat')}: ${record}`:'',summary:open?text('objective'):text('stageHelp'),details:[text('objective')],poster:'/assets/interface7-redrawn/animal-twin-switchyard.webp?wp-media=e61d4800f2e47cf6',locked:!open,cleared:record>0};
   }};
 }

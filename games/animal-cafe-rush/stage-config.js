@@ -1,1 +1,1 @@
-(()=>{"use strict";window.AnimalCafeRushStageConfig=Object.freeze({create({count,stage}){return{gameId:"animal-cafe-rush",count,stage,poster:"/assets/animal-cafe-rush-cover.webp?wp-media=b2d3eb8f869f8eea",background:"/assets/lobby-block-atmosphere.svg"}}})})();
+(()=>{"use strict";window.AnimalCafeRushStageConfig=Object.freeze({create({count,stage}){return{gameId:"animal-cafe-rush",count,stage,poster:"/assets/animal-cafe-rush-cover.webp?wp-media=e61d4800f2e47cf6",background:"/assets/lobby-block-atmosphere.svg"}}})})();

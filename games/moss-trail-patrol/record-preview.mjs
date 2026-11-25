@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=b2d3eb8f869f8eea';
-import { localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=b2d3eb8f869f8eea';
-import { routes, words } from './copy.mjs?wp-media=b2d3eb8f869f8eea';
-import { stages } from './stages.mjs?wp-media=b2d3eb8f869f8eea';
-import { witness } from '../../scripts/test-moss-trail-patrol.mjs?wp-media=b2d3eb8f869f8eea';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=e61d4800f2e47cf6';
+import { localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=e61d4800f2e47cf6';
+import { routes, words } from './copy.mjs?wp-media=e61d4800f2e47cf6';
+import { stages } from './stages.mjs?wp-media=e61d4800f2e47cf6';
+import { witness } from '../../scripts/test-moss-trail-patrol.mjs?wp-media=e61d4800f2e47cf6';
 
 const id = 'moss-trail-patrol';
 const root = localTestOrigin();
@@ -183,6 +183,9 @@ async function review() {
     if (locale === 'ar') await screenshot(local, 'result-ar-landscape');
   }
 
+}
+
+async function screens() {
   for (const [width, height] of [[320,568],[390,844],[612,876],[844,390],[1366,768]]) {
     const local = await newPage({ width, height, pointer: width > 1024 ? 'mouse' : 'touch' });
     await local.goto(stageUrl('zh-Hant'), { waitUntil: 'domcontentloaded' });
@@ -205,17 +208,22 @@ async function review() {
     assert(geometry.doc <= geometry.width);
     const art = await local.locator('#resultCard .result-hero').evaluate(node => getComputedStyle(node, '::before').backgroundImage);
     assert(art.includes('victory.webp'));
+    const primaryInk = await local.locator('#resultNext').evaluate(node => getComputedStyle(node).color);
+    assert.equal(primaryInk, 'rgb(248, 243, 225)');
     await screenshot(local, 'result-' + width);
-    note({ case: 'viewport', width, height, geometry, ...result });
+    note({ case: 'viewport', width, height, geometry, primaryInk, ...result });
   }
 
+}
+
+async function followup() {
   const progress = await newPage({ storageState: join(output, 'earned-profile.json') });
   await progress.goto(stageUrl('zh-Hant'), { waitUntil: 'domcontentloaded' });
   await shown(progress, '#startBtn:enabled');
   await press(progress, '#startBtn');
   await press(progress, '#gearTab');
   await press(progress, '[data-item="bracer"]');
-  assert((await progress.locator('#gearList [role="status"]').innerText()).includes(words['zh-Hant'].saved));
+  await progress.locator('#gearList [role="status"]').filter({ hasText: words['zh-Hant'].saved }).waitFor({ timeout: 6000 });
   await progress.reload();
   await shown(progress, '#startBtn:enabled');
   await press(progress, '#startBtn');
@@ -228,6 +236,34 @@ async function review() {
   assert.equal(upgraded.foe, 0);
   assert.equal(upgraded.hp, 10);
   note({ case: 'earned equipment after reload', equipped, upgraded });
+  await progress.goto(stageUrl('zh-Hant'), { waitUntil: 'domcontentloaded' });
+  await shown(progress, '#startBtn:enabled');
+  await press(progress, '#startBtn');
+  await press(progress, '#gearTab');
+  await press(progress, '[data-item="lens"]');
+  await progress.locator('#gearList [role="status"]').filter({ hasText: words['zh-Hant'].saved }).waitFor({ timeout: 6000 });
+  await practice(progress, 6, 'zh-Hant');
+  for (const name of ['lantern','trail','strike','trail','strike']) await action(progress, name);
+  const ward = await hud(progress);
+  assert.equal(ward.hp, 10);
+  assert(ward.feedback.includes(words['zh-Hant'].blocked.replace('{n}','2')));
+  await screenshot(progress, 'stage6-wick');
+  note({ case: 'earned wick carries ward to next fight', ward });
+  await progress.goto(stageUrl('zh-Hant'), { waitUntil: 'domcontentloaded' });
+  await shown(progress, '#startBtn:enabled');
+  await press(progress, '#startBtn');
+  await press(progress, '#gearTab');
+  await press(progress, '[data-item="canopy"]');
+  await progress.locator('#gearList [role="status"]').filter({ hasText: words['zh-Hant'].saved }).waitFor({ timeout: 6000 });
+  await practice(progress, 16, 'zh-Hant');
+  for (const name of ['trail','strike','trail','strike','strike','strike','strike']) await action(progress, name);
+  const prepared = await hud(progress);
+  await action(progress, 'camp');
+  await action(progress, 'trail');
+  const sheltered = await hud(progress);
+  assert.equal(sheltered.hp - prepared.hp, 3);
+  await screenshot(progress, 'stage16-canopy');
+  note({ case: 'earned canopy restores three at camp', prepared, sheltered });
 
   const walletCase = await newPage({ storageState: { cookies: [], origins: [{
     origin, localStorage: [{ name: 'weightplayWallet', value: JSON.stringify({ schema: 2, diamonds: 10 }) }],
@@ -250,6 +286,10 @@ async function review() {
   assert.equal(appearance, words.en.equipped);
   note({ case: 'isolated wallet fixture purchase', startingDiamonds: 10, balance, appearance });
 
+  await entryArt();
+}
+
+async function entryArt() {
   for (const [width, height, pointer] of [[390,844,'touch'],[844,390,'touch'],[1366,768,'mouse']]) {
     const lobby = await newPage({ width, height, pointer });
     await lobby.goto(origin + '/zh-tw/?preview=1', { waitUntil: 'domcontentloaded' });
@@ -260,16 +300,24 @@ async function review() {
       return { width: img.naturalWidth, height: img.naturalHeight, src: new URL(img.currentSrc).pathname };
     });
     assert.equal(proof.width, proof.height);
+    await card.scrollIntoViewIfNeeded();
+    await pause(450);
     await screenshot(lobby, 'lobby-' + width);
-    note({ case: 'planned lobby poster', width, height, ...proof });
+    note({ case: 'planned lobby poster', viewport: [width, height], ...proof });
+    await lobby.goto(stageUrl('zh-Hant'), { waitUntil: 'domcontentloaded' });
+    await shown(lobby, '#startBtn:enabled');
+    await lobby.locator('.wp-game-entry-loader').first().waitFor({ state: 'hidden', timeout: 10000 });
+    await pause(120);
+    await screenshot(lobby, 'main-' + width);
   }
 }
 
 async function film() {
-  const page = await newPage({ width: 520, height: 652, film: true });
+  const page = await newPage({ width: 520, height: 830, film: true });
   await practice(page, 35);
   await shown(page, '#arena canvas');
   const box = await page.locator('#arena').boundingBox();
+  assert(Math.abs(box.width - box.height) <= 35, 'Use a roughly square live arena so the lobby crop keeps the enemy meter and cue.');
   const startTime = performance.now();
   const clipEvents = [];
   const plan = witness(stages[34], 'fast');
@@ -318,7 +366,10 @@ async function playback() {
 
 try {
   if (mode === 'campaign') await campaign();
-  else if (mode === 'review') await review();
+  else if (mode === 'review') { await review(); await screens(); }
+  else if (mode === 'screens') await screens();
+  else if (mode === 'followup') await followup();
+  else if (mode === 'entry-art') await entryArt();
   else if (mode === 'film') await film();
   else if (mode === 'playback') await playback();
   else throw new Error('Unknown mode: ' + mode);

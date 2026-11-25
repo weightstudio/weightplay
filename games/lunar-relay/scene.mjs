@@ -1,5 +1,5 @@
-import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=b2d3eb8f869f8eea';
-import { STATIONS } from './core.mjs?wp-media=b2d3eb8f869f8eea';
+import * as T from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=e61d4800f2e47cf6';
+import { STATIONS } from './core.mjs?wp-media=e61d4800f2e47cf6';
 
 export function mountObservatory(host, finish, pick, onContext) {
   const renderer = new T.WebGLRenderer({ alpha: true, antialias: true });

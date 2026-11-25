@@ -1,4 +1,4 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=b2d3eb8f869f8eea';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=e61d4800f2e47cf6';
 
 const ground = [0x172b27, 0x233f35, 0x315042, 0x397055];
 const troopColors = { s: 0xa76ac8, r: 0xd77f54, m: 0x84a8ec, g: 0x9e9cbd, b: 0x9d5676 };
