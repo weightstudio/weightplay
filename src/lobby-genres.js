@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["lunar-relay", "Strategy", "Puzzle"],
     ["harbor-stacks", "Card", "Management", "Strategy"],
     ["moss-trail-patrol", "Strategy", "RPG", "Route Planning"],
     ["pennant-riders", "Action", "Strategy"],

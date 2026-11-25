@@ -1077,6 +1077,10 @@
       "date": "2026-11-20T08:54:35+08:00",
       "evidence": "git:7bb2ab4ea8329ce7936aa91f91895a2856f0c4da"
     },
+    "tether-patrol": {
+      "date": "2026-11-25T17:14:49.634Z",
+      "evidence": "canonical-public-catalog"
+    },
     "tetris": {
       "date": "2026-09-05T02:17:10+08:00",
       "evidence": "git:3ec5a0dfe850d98d0940648159cec6470da5d6ef"
@@ -1119,6 +1123,10 @@
     },
     "traffic-jam-diner": {
       "date": "2026-10-25T06:05:08.764Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "trailhouse-renovation": {
+      "date": "2026-11-25T17:33:01.676Z",
       "evidence": "canonical-public-catalog"
     },
     "tripeaks-solitaire": {
