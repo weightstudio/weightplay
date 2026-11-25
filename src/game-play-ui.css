@@ -50,7 +50,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   transform:translateX(-50%)!important;
   gap:0!important;padding:0!important;height:100vh!important;height:100dvh!important;
   min-height:100vh!important;min-height:100dvh!important;
-  --wp-stage-backdrop:linear-gradient(180deg,#061525e3,#071b29cc 48%,#041320ea),var(--wp-play-background);
+  --wp-stage-backdrop:var(--wp-stage-atmosphere,linear-gradient(180deg,#061525e3,#071b29cc 48%,#041320ea)),var(--wp-play-background);
   background-image:var(--wp-stage-backdrop)!important;
   background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
 }
@@ -142,7 +142,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   height:var(--wp-play-briefing-height,68px)!important;min-height:0!important;max-height:none!important;
   margin:0!important;padding:calc(10 * var(--wp-play-unit,1px))!important;gap:calc(12 * var(--wp-play-unit,1px))!important;
   border:1px solid #6cb8c4!important;border-radius:9px!important;box-shadow:0 0 8px #3bc5dc20!important;
-  background:linear-gradient(110deg,#112f42f5,#081a2af5)!important;color:#f5fbff!important;z-index:5!important;
+  background:var(--wp-stage-briefing-surface,linear-gradient(110deg,#112f42f5,#081a2af5))!important;color:#f5fbff!important;z-index:5!important;
 }
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] .wp-stage-i9-briefing-toggle {
   box-sizing:border-box!important;flex:0 0 var(--wp-play-control,48px)!important;width:var(--wp-play-control,48px)!important;
@@ -238,7 +238,7 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   nav[data-wp-play-actions][data-wp-tab-rail]:not([hidden]) {
     display: flex !important;
     direction: inherit !important;
-    background: linear-gradient(#213945, #0d202c) !important;
+    background: var(--wp-stage-tab-surface,linear-gradient(#213945, #0d202c)) !important;
     border-radius: 0 0 calc(16 * var(--wp-play-unit, 1px)) calc(16 * var(--wp-play-unit, 1px)) !important;
   }
   html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
