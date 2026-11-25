@@ -1,5 +1,61 @@
 /* The opted-in Play UI owns all chrome and Stage selector geometry.
    Game styles may supply artwork and content, never these protected tracks. */
+[data-wp-battle-backdrop="grid"] {
+  background-image:
+    radial-gradient(ellipse at 50% 45%, transparent 42%, #071826e0 90%),
+    repeating-linear-gradient(0deg, #91dff215 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, #91dff215 0 1px, transparent 1px 22px),
+    radial-gradient(ellipse at 46% 42%, #294958, #142a38 78%);
+}
+
+/* I11 action surfaces. Older pages can adopt the skin without claiming I11. */
+body:is([data-wp-interface-version="11"], [data-wp-interface-version^="11."], [data-wp-button-skin="metal"]) {
+  --wp-metal-button-face: linear-gradient(145deg, #3b515e, #243643 32%, #14242f 70%, #101b26);
+  --wp-metal-button-edge: inset 0 0 0 1px #576d7a, inset 0 2px #a7c5d12e,
+    inset 0 -3px #080f18, 0 2px 3px #060e17a6;
+}
+
+@media (forced-colors: none) {
+  @layer wp-frame-contract {
+    html body[data-wp-game-id]:is([data-wp-interface-version="11"], [data-wp-interface-version^="11."], [data-wp-button-skin="metal"])
+      :is([data-wp-frame="2"], [data-wp-frame-scene], dialog, [role="dialog"])
+      :is(button, a):is(
+        [data-wp-main-start], [data-wp-main-start][data-wp-main-start-art],
+        .wp-frame-return, .wp-frame-settings, .wp-stage-i9-briefing-toggle,
+        [data-wp-frame-action], [data-wp-battle-utility], [data-wp-metal-button],
+        .wp-shell-settings-popover button, dialog button, [role="dialog"] button
+      ):not(:where([role="tab"], [data-wp-registered-tab], [data-wp-frame-action="tab"],
+        [data-wp-frame-stage-nav] *, .stage-card, [data-wp-illustrated-actions] > .wp-play-art-ready)) {
+      border-color: transparent !important;
+      border-radius: 6px !important;
+      background: var(--wp-metal-button-face) !important;
+      box-shadow: var(--wp-metal-button-edge) !important;
+      &:not(:disabled, [aria-disabled="true"]):active { filter: brightness(.82) !important; }
+      &:is(:disabled, [aria-disabled="true"]) { filter: grayscale(.65) brightness(.68) !important; }
+    }
+  }
+
+  body:is([data-wp-interface-version="11"], [data-wp-interface-version^="11."], [data-wp-button-skin="metal"])
+    [data-wp-illustrated-actions] > .wp-play-art-ready > img[data-wp-button-art] {
+    border: 0;
+    border-radius: 6px;
+    background: var(--wp-metal-button-face);
+    box-shadow: var(--wp-metal-button-edge);
+  }
+  body:is([data-wp-interface-version="11"], [data-wp-interface-version^="11."], [data-wp-button-skin="metal"])
+    [data-wp-illustrated-actions] > [data-wp-frame-action="primary"] > img[data-wp-button-art] {
+    filter: brightness(1.22);
+  }
+  body:is([data-wp-interface-version="11"], [data-wp-interface-version^="11."], [data-wp-button-skin="metal"])
+    [data-wp-illustrated-actions] > [aria-disabled="true"] > img[data-wp-button-art] {
+    filter: grayscale(.65) brightness(.68);
+  }
+  body:is([data-wp-interface-version="11"], [data-wp-interface-version^="11."], [data-wp-button-skin="metal"])
+    [data-wp-illustrated-actions] > button:enabled:not([aria-disabled="true"]):active > img[data-wp-button-art] {
+    filter: brightness(.88);
+  }
+}
+
 @layer wp-frame-contract {
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] :is([data-wp-frame-scene="stage"],[data-wp-frame-scene="battle"]):not([data-wp-logical-battle-canvas]) {
   box-sizing:border-box!important;border:0!important;border-radius:0!important;
