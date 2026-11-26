@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "grove-expeditions": {
+    "__localizedExact": true,
+    "en": "Village Expeditions",
+    "zh-Hant": "村落遠征",
+    "zh-Hans": "村落远征",
+    "ja": "村の遠征隊",
+    "ko": "마을 원정대",
+    "es": "Expediciones de la aldea",
+    "pt-BR": "Expedições da Vila",
+    "fr": "Expéditions du village",
+    "de": "Dorfexpeditionen",
+    "it": "Spedizioni del villaggio",
+    "ru": "Походы из деревни",
+    "hi": "गाँव के अभियान",
+    "ar": "رحلات القرية"
+  },
   "deep-hull-rescue": {
     "__localizedExact": true,
     "en": "Deep Hull Rescue",
