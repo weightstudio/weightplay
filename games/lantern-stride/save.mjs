@@ -1,4 +1,4 @@
-import {stageById} from './stage-config.mjs?wp-media=9db423804d86ca7d';
+import {stageById} from './stage-config.mjs?wp-media=c559f7524e4f6fe9';
 
 export const SAVE_KEY = 'weightplay:lantern-stride:progress:v1';
 const SAVE_LOCK = 'weightplay-lantern-stride-progress-v1';

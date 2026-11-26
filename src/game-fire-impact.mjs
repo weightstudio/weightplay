@@ -1,12 +1,12 @@
 // Existing fire consumers use the same atlas and timeline as the other elements.
-import { createThreeElementImpactLayer, loadElementImpactAtlas } from "./game-element-impact.mjs?v=world-hit-1&wp-media=9db423804d86ca7d";
+import { createThreeElementImpactLayer, loadElementImpactAtlas } from "./game-element-impact.mjs?v=world-hit-1&wp-media=c559f7524e4f6fe9";
 
 export {
   createElementImpactQueue as createFireImpactQueue,
   drawElementImpact as drawFireImpact,
   elementImpactFrame as fireImpactFrame,
   playElementImpactOnCanvas as playFireImpactOnCanvas,
-} from "./game-element-impact.mjs?v=world-hit-1&wp-media=9db423804d86ca7d";
+} from "./game-element-impact.mjs?v=world-hit-1&wp-media=c559f7524e4f6fe9";
 
 export function loadFireImpactAtlas() {
   return loadElementImpactAtlas("fire");

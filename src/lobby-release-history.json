@@ -725,6 +725,10 @@
       "date": "2026-09-06T08:21:14+08:00",
       "evidence": "git:bb9f3549c258959ec1d6c4877d60e6c0b2e82db7"
     },
+    "grove-expeditions": {
+      "date": "2026-11-26T09:07:06.952Z",
+      "evidence": "canonical-public-catalog"
+    },
     "groveward": {
       "date": "2026-11-15T09:01:18.637Z",
       "evidence": "canonical-public-catalog"
