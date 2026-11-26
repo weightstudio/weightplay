@@ -1,4 +1,20 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "deep-hull-rescue": {
+    "__localizedExact": true,
+    "en": "Deep Hull Rescue",
+    "zh-Hant": "深艙救援",
+    "zh-Hans": "深舱救援",
+    "ja": "深海救助隊",
+    "ko": "심해 구조대",
+    "es": "Rescate en las Profundidades",
+    "pt-BR": "Resgate nas Profundezas",
+    "fr": "Sauvetage en profondeur",
+    "de": "Rettung in der Tiefe",
+    "it": "Soccorso negli abissi",
+    "ru": "Спасение на глубине",
+    "hi": "गहरे समुद्र में बचाव",
+    "ar": "إنقاذ في الأعماق"
+  },
   "gust-rig": {
     "__localizedExact": true,
     "en": "Gust Rig",
