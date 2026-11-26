@@ -110,9 +110,9 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   background-image:var(--wp-stage-backdrop)!important;
   background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
 }
-html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas] {
-  background-image:linear-gradient(#09122099,#091220bb),var(--wp-ui-background-image)!important;
-  background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-scene="battle"][data-wp-logical-battle-canvas]:not([data-wp-battle-backdrop="off"]) {
+  background-image:var(--wp-ui-battle-backdrop,linear-gradient(#09122099,#091220bb),var(--wp-ui-background-image))!important;
+  background-position:center!important;background-size:var(--wp-ui-battle-backdrop-size,cover)!important;background-repeat:repeat!important;
 }
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-content="stage"] {
   display:block!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;overflow:hidden!important;padding:0!important;

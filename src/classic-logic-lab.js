@@ -233,7 +233,14 @@
         return candidate;
       });
     }
-    return { stage: safeStage, arcIndex, arc: codeCampaignArcs[arcIndex], ...profile, checkpoint: safeStage % 5 === 0, secret, blockedColor };
+    // Two coached openings remove one known-impossible colour without changing any code.
+    const coached = safeStage <= 2;
+    const visibleExcluded = coached ? Array.from({ length: 6 }, (_, i) => i).find(i => !secret.includes(i)) : blockedColor;
+    return { stage: safeStage, arcIndex, arc: codeCampaignArcs[arcIndex], ...profile, checkpoint: safeStage % 5 === 0, secret, blockedColor: visibleExcluded, coached };
+  }
+  function codeStageRule(data) {
+    const base = text(data.arc.rule);
+    return data.coached ? `${base} · ${text(codeCampaignCopy.sealed)}: ${data.blockedColor + 1} ×` : base;
   }
   function normalizeCodeProgress(parsed) {
     const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= CODE_BREAKER_TOTAL_STAGES))].sort((a, b) => a - b) : [];
@@ -917,7 +924,7 @@
     const undoLabel = id === "tower-of-hanoi"
       ? ({ it: "Annulla", hi: "पिछली चाल पूर्ववत करें", ar: "ألغِ الحركة السابقة" }[locale] || t("undo"))
       : t("undo");
-    const poster = assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
+    const poster = id === "code-breaker" ? "/assets/interface7-redrawn/code-breaker.webp?wp-media=c559f7524e4f6fe9" : assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
       ? "naval-battle-cover-v1.webp"
       : id === "sliding-15"
       ? "sliding-15-cover-v1.webp"
@@ -925,8 +932,6 @@
       ? "lights-out-cover-v2.webp"
       : id === "peg-solitaire"
         ? "peg-solitaire-cover-v2.webp"
-          : id === "code-breaker"
-          ? "code-breaker-cover-v2.webp"
           : id === "four-in-a-row"
             ? "four-in-a-row-cover-v1.webp"
             : "classic-logic-lab-cover.webp");
@@ -1286,33 +1291,34 @@
     // Game-owned coaching uses this same toggle engine on an isolated board.
     // No practice move reaches finish/saveBest; the prior board and Undo survive.
     let practice = null;
+    let warmup = null;
     const practiceMoves = [12, 12, 0];
-    let boardState = []; let moves = 0; let hintIndex = -1; let history = []; const initialMoves = [0, 2, 5, 7, 12, 14, 16, 18, 20, 22, 24]; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-lights-board"; panel.append(board); const info = document.createElement("div"); info.className = "logic-live"; panel.append(info); app.board.replaceChildren(panel);
+    let boardState = []; let moves = 0; let teachingMoves = 0; let hintIndex = -1; let history = []; const initialMoves = [0, 2, 5, 7, 12, 14, 16, 18, 20, 22, 24]; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-lights-board"; panel.append(board); const info = document.createElement("div"); info.className = "logic-live"; panel.append(info); app.board.replaceChildren(panel);
     function copy(key, replacements = {}) { return Object.entries(replacements).reduce((value, [token, replacement]) => value.replace(`{${token}}`, String(replacement)), text(lightsCopy[key])); }
-    function toggle(i) { if (practice && i !== practiceMoves[practice.step]) return; history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (practice) { practice.step += 1; practice.notify(practice.step, practiceMoves[practice.step]); return; } if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); announce(t("solved")); } else announce(t("turn")); }
+    function toggle(i) { if (practice && i !== practiceMoves[practice.step]) return; history.push({ boardState: boardState.slice(), moves, teachingMoves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; if (practice) teachingMoves += 1; hintIndex = -1; render(); if (practice) { practice.step += 1; practice.notify(practice.step, practiceMoves[practice.step]); return; } if (boardState.every((v) => !v)) { if (warmup) { app.cfg.onLightsWarmupSolved?.({ level: warmup.level, moves }); return; } const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); announce(t("solved")); } else announce(t("turn")); }
     function render() { board.replaceChildren(); boardState.forEach((on, i) => { const row = Math.floor(i / 5) + 1; const col = (i % 5) + 1; const state = copy(on ? "cellOn" : "cellOff"); const label = i === hintIndex ? copy("hintedCell", { row, col, state }) : copy("cellLabel", { row, col, state }); const b = cell(on ? "●" : "", on ? "on" : "", label, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
-    function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(t("ready"));
+    function reset() { warmup = app.cfg.getLightsWarmup?.() || null; boardState = Array(25).fill(false); (warmup?.moves || initialMoves).forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; teachingMoves = 0; hintIndex = -1; history = []; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(t("ready"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); const hinted = hintIndex >= 0 ? copy("hintedCell", { row: Math.floor(hintIndex / 5) + 1, col: (hintIndex % 5) + 1, state: copy(boardState[hintIndex] ? "cellOn" : "cellOff") }) : ""; announce(hinted ? `${text(lightsCopy.hintExplanation)} ${hinted}` : text(lightsCopy.hintExplanation)); }
-    function solveLights(start) { for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v)) return movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return []; }
-    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); if (previous) __wpReopenMeasurement(); }
+    function solveLights(start) { let best = null; for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v) && (!best || movesFound.length < best.length)) best = movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return best || []; }
+    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; teachingMoves = previous.teachingMoves; hintIndex = -1; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); if (previous) __wpReopenMeasurement(); }
     function beginTutorial(notify, {replay=false} = {}) {
       if (practice) return;
-      practice = { step: 0, notify, paused: app.paused, saved: { boardState, moves, hintIndex, history } };
+      practice = { step: 0, notify, paused: app.paused, saved: { boardState, moves, teachingMoves, hintIndex, history } };
       app.paused = true;
       __wpNotifyMeasurement();
-      if(replay){boardState = Array(25).fill(false);[0,...neighbours(0,5,5)].forEach(i=>{boardState[i]=true;});moves=0;history=[];}hintIndex=-1;
+      if(replay){boardState = Array(25).fill(false);[0,...neighbours(0,5,5)].forEach(i=>{boardState[i]=true;});moves=0;teachingMoves=0;history=[];}hintIndex=-1;
       render(); notify(0, practiceMoves[0]);
     }
     function endTutorial({restore=true} = {}) {
       if (!practice) return;
-      if(restore) ({ boardState, moves, hintIndex, history } = practice.saved);
+      if(restore) ({ boardState, moves, teachingMoves, hintIndex, history } = practice.saved);
       app.paused = practice.paused;
       practice = null; render();
       __wpNotifyMeasurement();
     }
-    return { reset, hint, undo, beginTutorial, endTutorial };
+    return { reset, hint, undo, beginTutorial, endTutorial, getMoveCount: () => moves, getWarmupMoveCounts: () => ({ play: moves - teachingMoves, teaching: teachingMoves }) };
   }
 
   function buildPeg() {
@@ -1404,7 +1410,10 @@
   }
 
   function buildCode() {
-    let practice=null;const practiceTargets=[3,2,6,0,1,2,3,6];
+    let practice = null;
+    const practiceTargets = [3, 2, 6];
+    let draftUndo = [];
+    const rememberDraft = () => { draftUndo.push(guess.slice()); if (draftUndo.length > 24) draftUndo.shift(); };
     let stage = app.currentStage ? codeStageData(app.currentStage) : null;
     let secret = [], guess = [], history = [], turn = 0, hintsUsed = 0;
     const colors = ["#ff6b6b", "#ffd166", "#6ee7b7", "#6ec8ff", "#b69cff", "#ff9ed2"];
@@ -1415,31 +1424,97 @@
     const slots = document.createElement("div"); slots.className = "logic-code-slots";
     const palette = document.createElement("div"); palette.className = "logic-code-colors";
     const legend = document.createElement("p"); legend.className = "logic-live logic-code-legend";
-    const submit = makeButton(t("submit"), "logic-primary"); const historyBox = document.createElement("div"); historyBox.className = "logic-code-history";
+    const submit = makeButton(t("submit"), "logic-primary");
+    const historyBox = document.createElement("ol"); historyBox.className = "logic-code-history";
+    const hintButton = app.root.querySelector("#logicHint");
+    const undoButton = app.root.querySelector("#logicUndo");
+    const slotButtons = Array.from({length: 4}, (_, i) => {
+      const button = makeButton("", "logic-code-slot");
+      button.addEventListener("click", () => {
+        if (practice || stage?.anchorIndex === i || guess[i] === undefined) return;
+        rememberDraft(); guess[i] = undefined; render(); announce(t("codePick"));
+      });
+      slots.append(button); return button;
+    });
+    const colourButtons = colors.map((colour, i) => {
+      const button = makeButton("", "logic-color");
+      button.dataset.color = i;
+      button.style.setProperty("--code-colour", colour);
+      button.addEventListener("click", () => {
+        if (practice && i !== practiceTargets[practice.step]) return;
+        const index = nextOpenSlot();
+        if (index === undefined) { announce(t("submit")); return; }
+        if (!stage?.allowRepeats && guess.includes(i)) { announce(t("noRepeat"), "is-error"); return; }
+        if (!practice) rememberDraft();
+        guess[index] = i; render("place", index); advancePractice();
+      });
+      palette.append(button); return button;
+    });
     panel.append(meta, slots, palette, legend, submit, historyBox); app.board.replaceChildren(panel);
     function filledCount() { return guess.filter((value) => value !== undefined).length; }
     function nextOpenSlot() { return [...Array(4).keys()].find((index) => guess[index] === undefined && index !== stage?.anchorIndex); }
     function makeSecret() { if (stage) return stage.secret.slice(); const random = rng((Date.now() ^ Math.floor(performance.now())) >>> 0); return Array.from({ length: 4 }, () => Math.floor(random() * colors.length)); }
     function stageMetrics() { if (!stage) return ""; return [fillTemplate(text(codeCampaignCopy.turns), { turns: `${turn}/${stage.maxTurns}` }), fillTemplate(text(codeCampaignCopy.hints), { hints: Math.max(0, stage.hintLimit - hintsUsed) })].join(" · "); }
-    function render() {
-      legend.textContent = `${t("correct")}: ● · ${t("near")}: ○`;
-      if (stage) { objective.textContent = `${text(stage.arc.title)} · ${fillTemplate(text(codeCampaignCopy.objective), { stage: stage.stage })}`; rule.textContent = text(stage.arc.rule); metrics.textContent = stageMetrics(); }
-      else { objective.textContent = ""; rule.textContent = ""; metrics.textContent = ""; }
-      setChip(stage ? stageMetrics() : `${t("turn")}: ${turn}`);
-      slots.replaceChildren();
-      for (let i = 0; i < 4; i += 1) {
-        const b = makeButton("", "logic-code-slot"); const color = guess[i]; const anchored = stage?.anchorIndex === i;
-        b.dataset.color = color ?? ""; if (anchored) b.classList.add("is-anchored");
-        b.setAttribute("aria-label", anchored ? `${text(codeCampaignCopy.anchored)} · ${color + 1}` : color === undefined ? fillTemplate(text(codeSlotCopy.empty), { slot: i + 1 }) : fillTemplate(text(codeSlotCopy.filled), { slot: i + 1, color: color + 1 }));
-        b.addEventListener("click", () => { if (!practice && !anchored) { guess[i] = undefined; render(); } }); slots.append(b);
+    function animate(node, name) {
+      if (!node) return;
+      node.classList.remove(name);
+      // The animation is visual only. State and controls settle synchronously.
+      void node.offsetWidth;
+      node.classList.add(name);
+    }
+    function render(feedback, placedIndex) {
+      legend.replaceChildren();
+      for (const [key, icon, label] of [["exact", "●", t("correct")], ["near", "○", t("near")]]) {
+        const chip = document.createElement("span");
+        chip.className = `code-clue code-clue--${key}`;
+        chip.textContent = `${icon} ${label}`;
+        legend.append(chip);
       }
-      palette.replaceChildren();
-      colors.forEach((color, i) => {
-        const b = makeButton("", "logic-color"); const sealed = stage?.blockedColor === i; b.dataset.color = i; b.style.background = color; b.setAttribute("aria-label", sealed ? `${text(codeCampaignCopy.sealed)} ${i + 1}` : `${t("codePick")} ${i + 1}`); b.disabled = sealed;
-        if (sealed) b.classList.add("is-sealed");
-        b.addEventListener("click", () => { if (practice && i !== practiceTargets[practice.step]) return; const index = nextOpenSlot(); if (index === undefined) return; if (!stage?.allowRepeats && guess.includes(i)) { announce(t("noRepeat")); return; } guess[index] = i; render(); advancePractice(); }); palette.append(b);
+      if (stage) {
+        objective.textContent = `${fillTemplate(text(codeCampaignCopy.stageCard), { stage: stage.stage })} · ${text(stage.arc.title)}`;
+        rule.textContent = codeStageRule(stage); metrics.textContent = stageMetrics();
+      } else { objective.textContent = ""; rule.textContent = ""; metrics.textContent = ""; }
+      setChip(stage ? stageMetrics() : `${t("turn")}: ${turn}`);
+      const next = nextOpenSlot();
+      slotButtons.forEach((button, i) => {
+        const colour = guess[i]; const anchored = stage?.anchorIndex === i;
+        button.dataset.color = colour ?? "";
+        button.classList.toggle("is-anchored", anchored);
+        button.classList.toggle("is-next", i === next);
+        button.disabled = Boolean(practice || anchored);
+        button.textContent = anchored ? `${colour + 1} ◈` : colour === undefined ? "·" : String(colour + 1);
+        button.setAttribute("aria-label", anchored ? `${text(codeCampaignCopy.anchored)} · ${colour + 1}` : colour === undefined ? fillTemplate(text(codeSlotCopy.empty), { slot: i + 1 }) : fillTemplate(text(codeSlotCopy.filled), { slot: i + 1, color: colour + 1 }));
       });
-      historyBox.replaceChildren(...history.map((row) => { const el = document.createElement("div"); el.className = "logic-guess-row"; el.innerHTML = `<span>${row.guess.map((v) => `<i class="logic-code-slot" data-color="${v}"></i>`).join("")}</span><span class="logic-feedback">${row.exact} ● ${row.near} ○</span>`; return el; }));
+      colourButtons.forEach((button, i) => {
+        const sealed = stage?.blockedColor === i;
+        button.disabled = sealed;
+        button.textContent = sealed ? `${i + 1} ×` : String(i + 1);
+        button.setAttribute("aria-label", sealed ? `${text(codeCampaignCopy.sealed)} ${i + 1}` : `${t("codePick")} ${i + 1}`);
+        button.classList.toggle("is-sealed", sealed);
+        button.classList.toggle("is-in-draft", !stage?.allowRepeats && guess.includes(i));
+      });
+      submit.dataset.ready = String(filledCount() === 4);
+      if (hintButton) {
+        hintButton.disabled = !practice && ((stage && hintsUsed >= stage.hintLimit) || next === undefined);
+        hintButton.setAttribute("aria-label", stage ? `${t("hint")} · ${fillTemplate(text(codeCampaignCopy.hints), { hints: Math.max(0, stage.hintLimit - hintsUsed) })}` : t("hint"));
+      }
+      if (undoButton) undoButton.disabled = !practice && !draftUndo.length && !history.length;
+      historyBox.replaceChildren(...history.slice().reverse().map((row, offset) => {
+        const item = document.createElement("li");
+        item.className = "logic-guess-row"; item.dataset.turn = String(history.length - offset);
+        const pegs = document.createElement("span"); pegs.className = "code-history-pegs";
+        row.guess.forEach(i => {
+          const peg = document.createElement("i");
+          peg.className = "logic-code-slot"; peg.dataset.color = i; peg.textContent = String(i + 1);
+          pegs.append(peg);
+        });
+        const clues = document.createElement("span"); clues.className = "logic-feedback";
+        clues.setAttribute("aria-label", `${t("correct")}: ${row.exact}; ${t("near")}: ${row.near}`);
+        clues.textContent = `${row.exact} ●  ${row.near} ○`;
+        item.append(pegs, clues); return item;
+      }));
+      if (feedback === "submit") { historyBox.scrollTop = 0; animate(historyBox.firstElementChild, "code-new-row"); }
+      if (feedback === "place") animate(slotButtons[placedIndex], "code-new-peg");
     }
     function submitGuess() {
       if (practice && practiceTargets[practice.step] !== 6) return;
@@ -1447,31 +1522,51 @@
       const exact = guess.filter((value, index) => value === secret[index]).length; const counts = Array(6).fill(0);
       secret.forEach((value, index) => { if (guess[index] !== value) counts[value] += 1; });
       const near = guess.reduce((total, value, index) => total + (value !== secret[index] && counts[value] > 0 ? (counts[value] -= 1, 1) : 0), 0);
-      history.push({ guess: guess.slice(), exact, near }); turn += 1;
-      if (practice) { guess=Array(4).fill(undefined);render();advancePractice();return; }
-      if (exact === 4) { render(); announce(t("solved")); finish(true, `${fillTemplate(text(codeCampaignCopy.stageWin), { stage: stage?.stage || 1 })} ${t("correct")}: 4`); }
-      else if (turn >= (stage?.maxTurns || 10)) { render(); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((value) => value + 1).join(" · ")}`); }
-      else { guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); }
+      history.push({ guess: guess.slice(), exact, near }); turn += 1; draftUndo = [];
+      if (practice) { guess = Array(4).fill(undefined); render("submit"); advancePractice(); return; }
+      if (exact === 4) { render("submit"); announce(t("solved")); finish(true, `${t("correct")}: 4 ● · ${stageMetrics()}`); }
+      else if (turn >= (stage?.maxTurns || 10)) { render("submit"); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((value) => value + 1).join(" · ")}`); }
+      else { guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render("submit"); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); }
     }
-    function reset() { if (stage) { const snapshot = readCodeSnapshot(); __wpMeasurement.stageId = stage.stage; __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.rewardEligible = snapshot.ok && !snapshot.progress.cleared.includes(stage.stage); __wpMeasurement.saveSucceeded = false; } secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; turn = 0; hintsUsed = 0; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
+    function reset() { if (stage) { const snapshot = readCodeSnapshot(); __wpMeasurement.stageId = stage.stage; __wpMeasurement.stageIdAuthoritative = true; __wpMeasurement.rewardEligible = snapshot.ok && !snapshot.progress.cleared.includes(stage.stage); __wpMeasurement.saveSucceeded = false; } secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; draftUndo = []; turn = 0; hintsUsed = 0; (__wpNotifyMeasurement(), app.result.hidden = true); setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
     if (app && !app.battle.hidden) { __wpMeasurement.roundKey = {}; __wpMeasurement.resumed = false; __wpMeasurement.reopenKey = null; __wpMeasurement.restart = false; __wpMeasurement.started = true; __wpMeasurement.ended = false; __wpMeasurement.outcome = "complete"; __wpMeasurement.screen = "battle"; __wpNotifyMeasurement(); }
 }
     function hint() {
-      if (!stage) { const index = nextOpenSlot(); if (index !== undefined) guess[index] = secret[index]; render(); announce(t("hint")); return; }
-      if (hintsUsed >= stage.hintLimit) { announce(stage.hintLimit ? text(codeCampaignCopy.hints).replace("{hints}", "0") : text(codeCampaignCopy.noHints)); return; }
-      const index = nextOpenSlot(); if (index === undefined) { announce(t("submit")); return; } guess[index] = secret[index]; hintsUsed += 1; render(); announce(`${t("hint")} · ${stageMetrics()}`);
+      if (practice) return;
+      if (stage && hintsUsed >= stage.hintLimit) return;
+      const index = nextOpenSlot();
+      if (index === undefined) { announce(t("submit")); return; }
+      rememberDraft();
+      const colour = secret[index];
+      if (stage && !stage.allowRepeats) {
+        const duplicate = guess.indexOf(colour);
+        // Move a misplaced copy rather than creating an illegal repeat.
+        if (duplicate !== -1 && duplicate !== stage.anchorIndex) guess[duplicate] = undefined;
+      }
+      guess[index] = colour;
+      if (stage) hintsUsed += 1;
+      render("place", index);
+      announce(stage ? `${t("hint")} · ${stageMetrics()}` : t("hint"));
     }
     function advancePractice() { if (practice) { practice.step += 1; practice.notify(practice.step,practiceTargets[practice.step]); } }
     function beginTutorial(notify, {replay=false} = {}) {
       if(practice)return;
-      practice={step:0,notify,paused:app.paused,saved:{stage,secret,guess,history,turn,hintsUsed}};if(replay){history=[];turn=0;}app.paused=true;__wpNotifyMeasurement();guess=[secret[0],secret[1],undefined,undefined];practiceTargets[0]=secret[3];practiceTargets[1]=secret[2];render();notify(0,practiceTargets[0]);
+      practice={step:0,notify,paused:app.paused,saved:{stage,secret,guess,history,turn,hintsUsed,draftUndo}};
+      if (replay || stage?.stage !== 1) { stage = codeStageData(1); secret = stage.secret.slice(); history = []; turn = 0; hintsUsed = 0; }
+      draftUndo = []; app.paused=true;__wpNotifyMeasurement();guess=[secret[0],secret[1],undefined,undefined];practiceTargets[0]=secret[3];practiceTargets[1]=secret[2];render();notify(0,practiceTargets[0]);
     }
     function endTutorial({restore=true} = {}) {
       if(!practice)return;
-      if(restore) ({stage,secret,guess,history,turn,hintsUsed}=practice.saved);app.paused=practice.paused;practice=null;submit.disabled=false;render();__wpNotifyMeasurement();
+      if(restore) ({stage,secret,guess,history,turn,hintsUsed,draftUndo}=practice.saved);app.paused=practice.paused;practice=null;submit.disabled=false;render();__wpNotifyMeasurement();
     }
     submit.addEventListener("click", submitGuess);
-    return { reset, hint, beginTutorial, endTutorial, undo() { history.pop(); turn = history.length; guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); } };
+    return { reset, hint, beginTutorial, endTutorial, undo() {
+      if (practice) return;
+      if (draftUndo.length) guess = draftUndo.pop();
+      else if (history.length) { guess = history.pop().guess.slice(); turn = history.length; }
+      else return;
+      render(); announce(t("undo"));
+    } };
   }
 
   function buildHanoi() {
@@ -1648,9 +1743,9 @@
         title: text(data.arc.title),
         subtitle: fillTemplate(text(codeCampaignCopy.objective), { stage: data.stage }),
         status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
-        summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
-        details: [text(data.arc.rule)],
-        poster: "/assets/code-breaker-cover-v2.webp?wp-media=c559f7524e4f6fe9",
+        summary: `${text(data.arc.title)} · ${codeStageRule(data)}`,
+        details: [codeStageRule(data)],
+        poster: "/assets/interface7-redrawn/code-breaker.webp?wp-media=c559f7524e4f6fe9",
         locked,
         cleared,
       };

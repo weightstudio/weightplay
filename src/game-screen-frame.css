@@ -171,6 +171,15 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):active {filter:brightness(.9)}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound,[data-wp-frame-action]):focus-visible {outline:3px solid var(--wp-ui-gold);outline-offset:2px}
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene] {box-sizing:border-box;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important}
+/* Default texture is painted by the shared shell, below game-owned
+   playfields. Do not apply any texture to the game board, sprites or UI. */
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])
+  [data-wp-frame-scene="battle"]:not([data-wp-battle-backdrop="off"]) {
+  background-image:var(--wp-ui-battle-backdrop,none)!important;
+  background-position:center!important;
+  background-size:var(--wp-ui-battle-backdrop-size,cover)!important;
+  background-repeat:repeat!important;
+}
 /* Stage poster art is a shared scene background, not a game-local surface.
    Keep it above the frame's opaque scene token while retaining the scrim. */
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) [data-wp-frame-scene].wp-stage-art-shell {background-color:#17243a!important;background-image:var(--wp-stage-scrim),var(--wp-stage-art)!important;background-position:center,center!important;background-size:cover,cover!important;background-repeat:no-repeat!important}
@@ -1852,5 +1861,14 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) dialog:modal {
   }
   @media (prefers-reduced-motion: reduce) {
     :root { --wp-result-card-entry: wp-result-card-fade 100ms linear; }
+  }
+}
+
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body.wp-shell-battle-active:not(:has([data-wp-frame="2"])) {
+    background-image:var(--wp-ui-battle-backdrop,none)!important;
+    background-position:center!important;
+    background-size:var(--wp-ui-battle-backdrop-size,cover)!important;
+    background-repeat:repeat!important;
   }
 }

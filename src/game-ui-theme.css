@@ -33,3 +33,30 @@
   --wp-frame-header-gap:8px;
   --wp-frame-title-size:20px;
 }
+
+/* Game chrome only. Lobby styling and game-owned artwork are not replaced.
+   Existing game-scoped token overrides retain precedence. */
+:root:where([data-wp-shared-interface], :has(body[data-wp-game-id])) {
+  --wp-ui-background:#0d1528;
+  --wp-ui-surface:#152039;
+  --wp-ui-header:#1b2845;
+  --wp-ui-line:#536585;
+  --wp-ui-text:#f9f0db;
+  --wp-ui-muted:#b8c9df;
+  --wp-ui-gold:#f0bd6c;
+  --wp-ui-highlight:#405577;
+  --wp-ui-shadow:#080f20;
+  --wp-ui-header-image:linear-gradient(180deg,#263856,#141e35);
+  --wp-ui-button-image:linear-gradient(180deg,#2a3c5c,#19263f);
+  --wp-ui-background-image:radial-gradient(ellipse at 50% 5%,#243454,transparent 63%);
+  --wp-stage-tab-surface:linear-gradient(#263856,#141e35);
+  --wp-stage-briefing-surface:linear-gradient(110deg,#253757,#142038);
+  --wp-ui-battle-inlay:url("/assets/game-battle-indigo-inlay.svg");
+  --wp-ui-battle-backdrop:radial-gradient(ellipse at center,#1a304e25,#070e20d9),var(--wp-ui-battle-inlay);
+  --wp-ui-battle-backdrop-size:100% 100%,240px auto;
+}
+@media (forced-colors: active) {
+  :root:where([data-wp-shared-interface], :has(body[data-wp-game-id])) {
+    --wp-ui-battle-backdrop:none;
+  }
+}
