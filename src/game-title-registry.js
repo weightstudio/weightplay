@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "price-tag-check": {"__localizedExact":true,"en":"Price Tag Check","zh-Hant":"價牌查核","zh-Hans":"价牌核查","ja":"値札チェック","ko":"가격표 확인","es":"Revisa la Etiqueta","pt-BR":"Confira a Etiqueta","fr":"Vérifie l’étiquette","de":"Preisschild-Check","it":"Controlla il Prezzo","ru":"Проверка ценников","hi":"कीमत की जाँच","ar":"تحقق من بطاقة السعر"},
   "reservoir-shift": {"en":"Reservoir Shift","zh-Hant":"水庫雙岸","zh-Hans":"水库双岸","ja":"貯水池の両岸","ko":"저수지 두 기슭","es":"Dos orillas","pt-BR":"Duas Margens","fr":"Les Deux Rives","de":"Zwei Ufer","it":"Le Due Rive","ru":"Два берега","hi":"जलाशय के दो किनारे","ar":"ضفتا الخزان"},
   "grove-expeditions": {
     "__localizedExact": true,
