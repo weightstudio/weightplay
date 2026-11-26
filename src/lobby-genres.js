@@ -25,6 +25,9 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["deep-hull-rescue", "Strategy", "Simulation"],
+    ["gust-rig", "Puzzle", "Balance"],
+    ["reservoir-shift", "Management", "Simulation"],
     ["grove-expeditions", "Action", "Management"],
     ["lunar-relay", "Strategy", "Puzzle"],
     ["harbor-stacks", "Card", "Management", "Strategy"],

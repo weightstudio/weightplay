@@ -10,13 +10,13 @@
   "theme_color": "#151923",
   "icons": [
     {
-      "src": "assets/weightplay-icon-192.png.webp?wp-media=c559f7524e4f6fe9",
+      "src": "assets/weightplay-icon-192.png.webp?wp-media=a5be5bf5d64c04da",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "any maskable"
     },
     {
-      "src": "assets/weightplay-icon-512.png.webp?wp-media=c559f7524e4f6fe9",
+      "src": "assets/weightplay-icon-512.png.webp?wp-media=a5be5bf5d64c04da",
       "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any maskable"

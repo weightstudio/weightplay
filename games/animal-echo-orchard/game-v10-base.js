@@ -44,12 +44,32 @@
   };
   const stageSpecs = [
     ["amber", "mint", "coral"], ["mint", "coral", "amber", "violet"], ["coral", "amber", "coral", "mint"], ["violet", "mint", "amber", "coral", "mint"], ["amber", "violet", "mint", "coral", "amber"],
-    ["mint", "amber", "violet", "coral", "violet", "mint"], ["coral", "coral", "mint", "amber", "violet"], ["violet", "amber", "mint", "amber", "coral", "violet"], ["amber", "coral", "violet", "mint", "coral", "amber"], ["mint", "violet", "mint", "coral", "amber", "coral", "violet"],
+    // Lantern Bend alternates one returning lead with a changing reply.
+    ["mint", "amber", "mint", "coral", "mint", "violet"],
+    ["coral", "mint", "coral", "mint", "coral", "amber"],
+    ["violet", "amber", "violet", "mint", "violet", "amber"],
+    ["amber", "violet", "amber", "coral", "amber", "coral"],
+    ["mint", "coral", "mint", "amber", "mint", "violet", "mint", "coral"],
     ["coral", "mint", "amber", "violet", "amber", "mint", "coral"], ["violet", "coral", "mint", "amber", "violet", "coral", "mint"], ["amber", "amber", "coral", "violet", "mint", "coral", "violet"], ["mint", "coral", "mint", "amber", "violet", "amber", "coral", "mint"], ["coral", "violet", "amber", "mint", "coral", "amber", "violet", "mint"],
     ["violet", "mint", "coral", "amber", "coral", "mint", "amber", "violet"], ["amber", "coral", "amber", "violet", "mint", "coral", "mint", "violet"], ["mint", "violet", "coral", "mint", "amber", "violet", "amber", "coral"], ["coral", "amber", "violet", "coral", "mint", "amber", "mint", "violet"], ["amber", "mint", "violet", "coral", "amber", "violet", "mint", "coral", "amber"],
     ["mint", "coral", "amber", "mint", "violet", "coral", "amber", "violet", "mint"], ["violet", "amber", "violet", "mint", "coral", "amber", "coral", "mint", "violet"], ["coral", "mint", "amber", "coral", "violet", "mint", "amber", "mint", "coral"], ["amber", "violet", "coral", "mint", "amber", "coral", "violet", "mint", "amber"], ["mint", "amber", "mint", "coral", "violet", "coral", "amber", "violet", "mint"],
     ["coral", "violet", "mint", "amber", "violet", "coral", "mint", "amber", "coral", "violet"], ["violet", "mint", "amber", "coral", "mint", "violet", "amber", "coral", "amber", "mint"], ["amber", "coral", "violet", "amber", "mint", "coral", "violet", "mint", "amber", "coral"], ["mint", "violet", "coral", "mint", "amber", "violet", "coral", "amber", "mint", "violet"], ["coral", "amber", "mint", "violet", "coral", "mint", "amber", "violet", "mint", "coral", "amber"]
   ];
+  const pairCues = {
+    en: "Each pair starts with {fruit}. Remember the second fruit.",
+    "zh-Hant": "每組兩聲都以{fruit}開始。記住各組的第二種果音。",
+    "zh-Hans": "每组两声都以{fruit}开始。记住各组的第二种果音。",
+    ja: "2音ずつ、最初はいつも{fruit}。2番目の実を覚えよう。",
+    ko: "두 음씩 들어요. 첫 음은 항상 {fruit}예요. 두 번째 열매를 기억하세요.",
+    es: "Cada par empieza con {fruit}. Recuerda la segunda fruta.",
+    "pt-BR": "Cada par começa com {fruit}. Lembre a segunda fruta.",
+    fr: "Chaque paire commence par {fruit}. Retiens le deuxième fruit.",
+    de: "Jedes Paar beginnt mit {fruit}. Merke dir die zweite Frucht.",
+    it: "Ogni coppia inizia con {fruit}. Ricorda il secondo frutto.",
+    ru: "В начале каждой пары звучит {fruit}. Запомни второй плод.",
+    hi: "हर जोड़ी की पहली धुन {fruit} है। दूसरा फल याद रखें।",
+    ar: "يبدأ كل زوج بنغمة {fruit}. تذكّر الثمرة الثانية."
+  };
   const checkpointIds = new Set([5, 10, 15, 20, 25, 30]);
   const groves = stageSpecs.map((pattern, index) => ({ id: index + 1, arc: Math.floor(index / 5) + 1, focus: Math.min(5, Math.floor(index / 5)), checkpoint: checkpointIds.has(index + 1), pattern }));
   const fruits = ["amber", "mint", "coral", "violet"];
@@ -207,7 +227,8 @@
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const campaign = () => stageCopy[locale] || stageCopy.en;
   const stageTitle = (index) => `${campaign().arcs[groves[index].arc - 1]} · ${campaign().stage} ${groves[index].id}`;
-  const stageHint = (index) => `${campaign().focus[groves[index].focus]} · ${groves[index].checkpoint ? campaign().checkpoint : campaign().arc + " " + groves[index].arc}`;
+  const pairHint = grove => (pairCues[locale] || pairCues.en).replace("{fruit}", fruitName(grove.pattern[0]));
+  const stageHint = (index) => groves[index].arc === 2 ? pairHint(groves[index]) : `${campaign().focus[groves[index].focus]} · ${groves[index].checkpoint ? campaign().checkpoint : campaign().arc + " " + groves[index].arc}`;
   const blockedByRecovery = (index) => [...recoveryFences.values()].some(ceiling => index >= ceiling);
   const blockingStage = (index) => [...recoveryFences.entries()].find(([, ceiling]) => index >= ceiling)?.[0];
   const canAccess = (index) => !blockedByRecovery(index) && (index < unlockedThrough || solved.has(index));
@@ -226,7 +247,7 @@
       details: "",
       locked,
       cleared,
-      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=c559f7524e4f6fe9",
+      poster: "/assets/interface7-redrawn/animal-echo-orchard.webp?wp-media=a5be5bf5d64c04da",
       posterPosition: "center"
     };
   };
@@ -352,6 +373,7 @@
     const generation = playbackGeneration;
     phase = "watch"; entered = []; feedback = "watch"; watchStep = 0; renderBattle();
     const pattern = groves[groveIndex].pattern;
+    const paired = groves[groveIndex].arc === 2;
     const glow = () => {
       if (generation !== playbackGeneration || document.hidden) return;
       if (watchStep >= pattern.length) {
@@ -361,7 +383,9 @@
       soundFruit(litFruit); renderBattle();
       timer = setTimeout(() => {
         if (generation !== playbackGeneration) return;
-        litFruit = ""; renderBattle(); timer = setTimeout(glow, 210);
+        litFruit = ""; renderBattle();
+        const betweenPairs = paired && watchStep % 2 === 0 && watchStep < pattern.length;
+        timer = setTimeout(glow, betweenPairs ? 460 : 210);
       }, groveIndex < 5 ? 620 : 440);
     };
     timer = setTimeout(glow, 450);
@@ -399,6 +423,9 @@
     $("echoPhaseHelp").textContent = phase === "ready" ? copy(feedback === "resumed" ? "pauseHelp" : "readyHelp") :
       phase === "watch" ? `${copy("watchCount", {count: watchStep, total: grove.pattern.length})}` :
       phase === "repeat" ? copy("repeatHelp") : phase === "complete" ? copy("selection", {count: entered.length, total: grove.pattern.length}) : copy("retryHelp");
+    if (grove.arc === 2 && (phase === "ready" || phase === "repeat")) {
+      $("echoPhaseHelp").textContent = pairHint(grove);
+    }
     $("echoPhase").querySelector(".echo-phase-number").textContent = phase === "complete" ? "✓" : phase === "pause" ? "↻" : phase === "repeat" ? "2" : "1";
     const slots = $("patternSlots"); slots.classList.add("echo-sequence");
     slots.style.setProperty("--echo-count", grove.pattern.length);

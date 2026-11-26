@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "reservoir-shift": {"en":"Reservoir Shift","zh-Hant":"水庫雙岸","zh-Hans":"水库双岸","ja":"貯水池の両岸","ko":"저수지 두 기슭","es":"Dos orillas","pt-BR":"Duas Margens","fr":"Les Deux Rives","de":"Zwei Ufer","it":"Le Due Rive","ru":"Два берега","hi":"जलाशय के दो किनारे","ar":"ضفتا الخزان"},
   "grove-expeditions": {
     "__localizedExact": true,
     "en": "Village Expeditions",
