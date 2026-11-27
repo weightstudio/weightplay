@@ -127,8 +127,12 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
   box-sizing:border-box!important;display:flex!important;position:absolute!important;
   inset:0 0 auto!important;top:calc((100% - 84 * var(--wp-play-unit,1px)) / 2)!important;
   transform:translateY(-50%)!important;width:100%!important;
-  height:var(--wp-play-card-height,372px)!important;min-height:0!important;max-height:none!important;
-  margin:0!important;padding:0 max(32px,calc((100% - var(--wp-play-card-width,292px)) / 2))!important;
+  /* Allow the keyboard outline (3px stroke + 4px offset) to paint above
+     and below each card without changing card geometry or horizontal peeks. */
+  --wp-stage-focus-gutter:max(8px,calc(8 * var(--wp-play-unit,1px)));
+  height:calc(var(--wp-play-card-height,372px) + 2 * var(--wp-stage-focus-gutter))!important;
+  min-height:0!important;max-height:none!important;
+  margin:0!important;padding:var(--wp-stage-focus-gutter) max(32px,calc((100% - var(--wp-play-card-width,292px)) / 2))!important;
   gap:var(--wp-play-gap,18px)!important;overflow-x:hidden!important;overflow-y:hidden!important;
   scroll-behavior:auto!important;scroll-snap-type:none!important;touch-action:pan-y!important;
   align-items:center!important;justify-content:flex-start!important;overscroll-behavior:contain!important;
@@ -158,6 +162,14 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] .stage-card[aria-current="true"] {
   opacity:1!important;filter:none!important;
   border-color:#b3fffa!important;box-shadow:0 0 0 2px #4ec5ca,0 0 18px #3bc5dc66,0 8px 22px #020d19b0!important;
+}
+html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] .stage-card:focus-visible {
+  outline:3px solid #f5fbff!important;outline-offset:4px!important;
+}
+@media (forced-colors: active) {
+  html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] .stage-card:focus-visible {
+    outline-color:CanvasText!important;
+  }
 }
 html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-stage-selector="1"] .wp-stage-i9-card-art {
   /* Fit the existing art in its own row. No crop, nor text gradient over the artwork. */
@@ -352,7 +364,16 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"])[data-wp-play-ui="1"]
     html :is(body[data-wp-frame="2"],body [data-wp-frame="2"])[data-wp-play-ui="1"]
       [data-wp-stage-selector="1"] .stage-card[aria-current="true"] {
       border-color:var(--wp-atlas-glint,var(--wp-ui-gold)) !important;
-      box-shadow:0 0 0 2px var(--wp-atlas-trim,var(--wp-ui-gold)),0 10px 26px #040915c4 !important;
+      box-shadow:0 10px 26px #040915c4 !important;
+    }
+    /* Paint the selection edge over the two rows, separate from the
+       outer keyboard focus outline. */
+    html :is(body[data-wp-frame="2"],body [data-wp-frame="2"])[data-wp-play-ui="1"]
+      [data-wp-stage-selector="1"] .stage-card[aria-current="true"]::after {
+      content:"" !important;
+      position:absolute;inset:0;z-index:3;pointer-events:none;
+      border:2px solid var(--wp-atlas-trim,var(--wp-ui-gold));
+      border-radius:max(0px,calc(17px - 2 * var(--wp-play-unit,1px)));
     }
     html :is(body[data-wp-frame="2"],body [data-wp-frame="2"])[data-wp-play-ui="1"]
       [data-wp-stage-selector="1"] [data-wp-item-content] > em {
