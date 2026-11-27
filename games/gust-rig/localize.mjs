@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
-import { copies, routeLanguages } from './copy.mjs?wp-media=fa9b405e44d52d00';
+import { copies, routeLanguages } from './copy.mjs?wp-media=99a6c02e941dabeb';
 
 const origin = 'https://weightplay.com';
 const id = 'gust-rig';
-const cover = '/games/gust-rig/assets/cover.webp?wp-media=fa9b405e44d52d00';
+const cover = '/games/gust-rig/assets/cover.webp?wp-media=99a6c02e941dabeb';
 const escaping = value => String(value).replace(/[&<>"]/g, character =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[character]);
 const slugs = Object.fromEntries(Object.entries(routeLanguages).map(([key, value]) => [value, key]));
@@ -15,7 +15,7 @@ function buildInfo(locale) {
   const copy = copies[locale];
   if (!copy) throw new Error('Incomplete Gust Rig locale: ' + locale);
   const scope = { window: {} };
-  for (const name of ['lobby-data.js?wp-media=fa9b405e44d52d00', 'game-title-registry.js?wp-media=fa9b405e44d52d00']) {
+  for (const name of ['lobby-data.js?wp-media=99a6c02e941dabeb', 'game-title-registry.js?wp-media=99a6c02e941dabeb']) {
     runInNewContext(read('../../src/' + name), scope, { timeout: 3500 });
   }
   const { WONDER_LOBBY: lobby, WEIGHTPLAY_GAME_TITLES: titles } = scope.window;

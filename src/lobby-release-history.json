@@ -585,6 +585,10 @@
       "date": "2026-11-22T09:13:17+08:00",
       "evidence": "git:c733aee8542d48d4aaa4202ddd09e5bf7b824796"
     },
+    "cloudbreak-patrol": {
+      "date": "2026-11-27T09:11:26.672Z",
+      "evidence": "canonical-public-catalog"
+    },
     "cloudhold-voyager": {
       "date": "2026-11-06T23:18:22.452Z",
       "evidence": "canonical-public-catalog"

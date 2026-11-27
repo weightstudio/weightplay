@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="zh-Hant" dir="ltr" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=99a6c02e941dabeb#renderEntry" data-wp-publication-locale-completion data-wp-shared-entry="9" data-wp-entry-poster="/games/cloudbreak-patrol/assets/cover.webp?wp-media=99a6c02e941dabeb" class="wp-frame-main-flow" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head data-wp-search-copy="2.0" data-wp-search-locale="zh-Hant" data-wp-search-title="雲隙空戰 – 動作遊戲 | WeightPlay" data-wp-search-name="雲隙空戰"><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=99a6c02e941dabeb`, '/src/diamond-special-progression.js?wp-media=99a6c02e941dabeb', '/src/diamond-special-progression.css?wp-media=99a6c02e941dabeb'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+    <base href="/games/cloudbreak-patrol/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- cloudbreak-meta:start -->
+<title data-runtime-localize="off">雲隙空戰 – 動作遊戲 | WeightPlay</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="操舵穿過雲隙，以光脈衝打退風翼，護送貨艇抵達。">
+<link rel="canonical" href="https://weightplay.com/zh-tw/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/cloudbreak-patrol/">
+<link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/cloudbreak-patrol/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WeightPlay">
+<meta property="og:title" content="雲隙空戰 – 動作遊戲 | WeightPlay">
+<meta property="og:description" content="操舵穿過雲隙，以光脈衝打退風翼，護送貨艇抵達。">
+<meta property="og:url" content="https://weightplay.com/zh-tw/games/cloudbreak-patrol/">
+<meta property="og:image" content="https://weightplay.com/games/cloudbreak-patrol/assets/cover.webp?wp-media=99a6c02e941dabeb">
+<meta property="og:video" content="https://weightplay.com/assets/previews/cloudbreak-patrol-battle.webm">
+<meta property="og:video:type" content="video/webm">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="雲隙空戰 – 動作遊戲 | WeightPlay">
+<meta name="twitter:description" content="操舵穿過雲隙，以光脈衝打退風翼，護送貨艇抵達。">
+<meta name="twitter:image" content="https://weightplay.com/games/cloudbreak-patrol/assets/cover.webp?wp-media=99a6c02e941dabeb">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"雲隙空戰","url":"https://weightplay.com/zh-tw/games/cloudbreak-patrol/","description":"操舵穿過雲隙，以光脈衝打退風翼，護送貨艇抵達。","image":"https://weightplay.com/games/cloudbreak-patrol/assets/cover.webp?wp-media=99a6c02e941dabeb","inLanguage":"zh-Hant","genre":["動作遊戲","飛行射擊"],"gamePlatform":"Web browser","operatingSystem":"Any","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players"}},{"@type":"FAQPage","inLanguage":"zh-Hant","mainEntity":[{"@type":"Question","name":"瞄準圈為什麼消失？","acceptedAnswer":{"@type":"Answer","text":"雲擋住了視線。離開遮蔽或沿雲邊飛，就能重新瞄準。"}},{"@type":"Question","name":"怎麼取得更好的機翼？","acceptedAnswer":{"@type":"Answer","text":"完成第 5、20、40 航後，可在機庫裝上解鎖的機翼。"}}]}]}</script>
+<!-- cloudbreak-meta:end -->
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-icons.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/cloudbreak-patrol/style.css?v=1&amp;wp-build=e94c6b46f05d0ec6&wp-media=99a6c02e941dabeb" data-wp-entry-required="">
+  <script src="/src/game-title-registry.js?wp-media=99a6c02e941dabeb" data-wp-game-title-registry></script>
+  <script src="/src/game-layout-config.js?wp-media=99a6c02e941dabeb" data-wp-entry-required=""></script>
+  <script src="/src/weightplay-audio.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/game-official-name.js?v=20261111-search20&wp-media=99a6c02e941dabeb"></script>
+  <script src="/src/site-config.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/i18n.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/wallet.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/weightplay-castle.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/analytics.js?wp-media=99a6c02e941dabeb"></script>
+  <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=99a6c02e941dabeb"></script>
+</head>
+<body class="wp-frame-main-active" data-screen="main" data-game-id="cloudbreak-patrol" data-wp-game-id="cloudbreak-patrol" data-wp-game-version="v1" data-wp-interface-version="11" data-wp-audience="general" data-wp-frame-initial="main"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="雲隙空戰" data-state="loading" data-error-title="遊戲載入失敗" data-error-message="部分遊戲資源無法載入。請重試或返回大廳。" role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">正在載入雲隙空戰…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="正在載入雲隙空戰…" aria-valuetext="正在載入雲隙空戰…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">重試</button><a class="wp-game-entry-loader-button" href="/zh-tw/">返回大廳</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>部分遊戲資源無法載入。請重試或返回大廳。 <a href="/zh-tw/">返回大廳</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-fd37493d95a8&wp-media=99a6c02e941dabeb" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-frame-root data-wp-stage-tools data-wp-entry-root="" data-wp-frame="2">
+    <div id="mainGroup">
+      <section id="mainScreen" data-wp-frame-scene="main">
+        <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
+          <a id="mainReturn" href="/zh-tw/" data-wp-return="main" class="wp-frame-return" aria-label="WeightPlay"><span class="wp-frame-back-icon" aria-hidden="true">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=99a6c02e941dabeb" alt="" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">雲隙空戰</h1>
+        </header>
+        <section id="mainHero" data-wp-frame-content="main">
+          <img id="cover" width="1254" height="1254" src="/games/cloudbreak-patrol/assets/cover.webp?wp-media=99a6c02e941dabeb" alt="雲隙空戰" data-wp-frame-poster="" data-wp-interface7-poster="true" fetchpriority="high">
+          <div data-wp-frame-copy="">
+            <p id="description" data-wp-frame-summary="">操舵穿過雲隙，以光脈衝打退風翼，護送貨艇抵達。</p>
+            <p id="mainProgress" data-wp-frame-progress=""></p>
+            <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" data-wp-icon="attack" class="wp-icon-leading" data-word="start" disabled>起飛</button>
+          </div>
+        </section>
+      </section>
+      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=99a6c02e941dabeb#renderGuide" data-wp-entry-guide="" data-wp-preserve-static-guide aria-labelledby="guideTitle">
+        <h2 id="guideTitle" data-word="guide">飛行指南</h2>
+        <article class="game-info-section"><h3 data-word="goal">任務目標</h3><p data-word="goalText" data-wp-intro-faq-source>打退風翼，護送貨艇通過雲隙。</p></article>
+        <article class="game-info-section"><h3 data-word="how">玩法</h3><p data-word="howText">在飛行區拖曳操舵。瞄準圈亮起時發射光脈衝。雲遮住目標時，飛到雲邊再出手。</p></article>
+        <article class="game-info-section"><h3 data-word="rules">操作與規則</h3><p data-word="rulesText">觸控拖曳或用方向鍵、WASD 操舵。空白鍵發射，Shift 急轉，E 切換僚機，R 啟動可用的中繼器。</p></article>
+        <article class="game-info-section"><h3 data-word="finish">結算與回饋</h3><p data-word="finishText">擊退風翼、讓所有貨艇抵達並保住機體，可拿更多星。可重玩航段更新紀錄。</p></article>
+        <!-- cloudbreak-guide:start -->
+<article class="game-info-section"><h3>選擇交鋒方式</h3><p>追擊讓僚機在身旁補射。護航能為貨艇擋一擊。依下一個威脅選擇，僚機行動時仍可自行飛行。</p><p>雲層會擋住雙方視線。冷卻後飛到雲邊尋找射界。</p><p>飛到貨艇前方，帶它加速。</p><p>星等與已裝備的機翼保存在此裝置的瀏覽器。</p></article><section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>相關遊戲</h3><div class="game-info-related-cards"><a class="game-info-related-card" data-game-id="winglight-survey" data-wp-related-id="winglight-survey" href="/zh-tw/games/winglight-survey/"><span class="game-info-related-poster"><img src="/games/winglight-survey/art/cover.webp?wp-media=99a6c02e941dabeb" alt="" loading="lazy" width="96" height="96"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">追翼攝影</strong></span></a><a class="game-info-related-card" data-game-id="cloudhold-voyager" data-wp-related-id="cloudhold-voyager" href="/zh-tw/games/cloudhold-voyager/"><span class="game-info-related-poster"><img src="/games/cloudhold-voyager/cover.webp?wp-media=99a6c02e941dabeb" alt="" loading="lazy" width="96" height="96"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">飛船船員</strong></span></a><a class="game-info-related-card" data-game-id="magnetwheel-guard" data-wp-related-id="magnetwheel-guard" href="/zh-tw/games/magnetwheel-guard/"><span class="game-info-related-poster"><img src="/games/magnetwheel-guard/assets/cover.webp?wp-media=99a6c02e941dabeb" alt="" loading="lazy" width="96" height="96"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">磁輪守衛</strong></span></a></div></section>
+<article class="game-info-section game-info-faq"><h3>常見問題</h3><dl><dt>瞄準圈為什麼消失？</dt><dd>雲擋住了視線。離開遮蔽或沿雲邊飛，就能重新瞄準。</dd><dt>怎麼取得更好的機翼？</dt><dd>完成第 5、20、40 航後，可在機庫裝上解鎖的機翼。</dd></dl></article>
+<!-- cloudbreak-guide:end --><p data-wp-game-access="2.0" lang="zh-Hant" data-runtime-localize="off">可在瀏覽器免費遊玩，無需下載。WeightPlay 是 WeightStudio 的遊戲平台。</p></section>
+    </div>
+    <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/cloudbreak-patrol/assets/cover.webp?wp-media=99a6c02e941dabeb" hidden>
+      <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" data-aria-word="back" aria-label="返回">←</button><strong data-wp-frame-title hidden></strong></header>
+      <div id="stageWorkspace">
+        <div id="stagePage"><div id="stageRail"></div></div>
+        <section id="forgePage" hidden aria-labelledby="forgeTitle"><h2 id="forgeTitle" data-word="forge">機庫</h2><div id="forgeList"></div><p id="forgeStatus" role="status"></p></section>
+      </div>
+      <nav id="stageTabs" data-wp-frame-stage-nav>
+        <button id="mapTab" type="button" aria-selected="true" data-word="stages">航段</button>
+        <button id="forgeTab" type="button" aria-selected="false" data-word="forge">機庫</button>
+      </nav>
+    </section>
+    <section id="battleScreen" class="battle-canvas" data-wp-logical-battle-canvas data-wp-battle-canvas-root data-wp-canvas-max-width="920" data-wp-battle-min-width="390" data-wp-battle-min-height="520" data-wp-battle-landscape-width="768" hidden>
+      <header id="battleHeader"><button id="battleBack" type="button" data-wp-return="battle" data-wp-frame-action="secondary" data-aria-word="pause" aria-label="暫停">←</button><strong data-wp-frame-title hidden></strong></header>
+      <main id="battleLive">
+        <div class="battle-goal"><div><strong id="objective"></strong><span id="encounter"></span></div><button id="helpBtn" type="button" data-wp-metal-button data-wp-icon="guide" data-aria-word="guide" aria-label="飛行指南"></button></div>
+        <div id="arena" tabindex="0" role="group" data-aria-word="flightField" aria-label="飛行區">
+          <div id="world" aria-hidden="true"></div>
+          <div id="flightCues" aria-hidden="true"></div>
+          <div id="lessonHost"></div>
+        </div>
+        <section id="actionPanel">
+          <p id="feedback" aria-live="polite" role="status"></p>
+          <div id="actionButtons">
+            <button id="strike" type="button" data-wp-metal-button data-wp-icon="attack" class="wp-icon-leading" data-word="pulse">脈衝</button>
+            <button id="veer" type="button" data-wp-metal-button data-wp-icon="speed" class="wp-icon-leading" data-word="veer">急轉</button>
+            <button id="wing" type="button" data-wp-metal-button data-wp-icon="party" class="wp-icon-leading" data-word="wingPursuit">追擊</button>
+            <button id="relay" type="button" data-wp-metal-button data-wp-icon="lightning" class="wp-icon-leading" data-word="relay">中繼器</button>
+          </div>
+        </section>
+      </main>
+      <section id="resultPanel" data-wp-battle-substate="result" role="dialog" aria-labelledby="resultTitle" aria-modal="true" hidden>
+        <div id="resultCard" class="flight-card wp-result-art" data-wp-result-card>
+          <h2 id="resultTitle"></h2><p id="resultText"></p><p id="resultNotice"></p>
+          <div class="result-actions">
+            <button id="resultMap" data-wp-frame-action="secondary" data-wp-icon="map" class="wp-icon-leading" data-word="stages">航段</button>
+            <button id="resultRetry" data-wp-frame-action="secondary" data-wp-icon="retry" class="wp-icon-leading" data-word="retry">重試</button>
+            <button id="resultNext" data-wp-frame-action="primary" data-wp-icon="next" class="wp-icon-leading" data-word="next">下一航</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+  <dialog id="dialog" aria-labelledby="dialogTitle"><section class="flight-card"><h2 id="dialogTitle"></h2><div id="dialogBody"></div><div id="dialogActions"></div></section></dialog>
+  <div id="statSource" hidden>
+    <div class="flight-meter" id="heartGauge"><span class="wp-game-icon" data-wp-icon="health" aria-hidden="true"></span><meter id="heartMeter" min="0" max="4" value="4" data-aria-word="health" aria-label="機體"></meter><bdi id="heartValue"></bdi></div>
+    <div class="flight-meter" id="heatGauge"><span class="wp-game-icon" data-wp-icon="fire" aria-hidden="true"></span><meter id="heatMeter" min="0" max="6" value="6" data-aria-word="heat" aria-label="脈衝熱量"></meter><bdi id="heatValue"></bdi></div>
+    <div class="flight-meter" id="veerGauge"><span class="wp-game-icon" data-wp-icon="speed" aria-hidden="true"></span><meter id="veerMeter" min="0" max="2" value="2" data-aria-word="charge" aria-label="急轉推力"></meter><bdi id="veerValue"></bdi></div>
+    <div class="flight-meter" id="cargoGauge"><span class="wp-game-icon" data-wp-icon="defense" aria-hidden="true"></span><meter id="cargoMeter" min="0" max="6" value="6" data-aria-word="cargo" aria-label="貨艇完整度"></meter><bdi id="cargoValue"></bdi></div>
+  </div>
+  <script src="/src/edge-guard.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/stage-rail-i9.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=99a6c02e941dabeb" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=99a6c02e941dabeb" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-19ecd7a11c8c-search20-geo-access-retained&wp-media=99a6c02e941dabeb" data-wp-entry-required=""></script>
+  <script src="/src/tutorial.js?wp-media=99a6c02e941dabeb" data-wp-entry-required></script>
+  <script type="module" src="/games/cloudbreak-patrol/game.mjs?v=entry-initial-9f0bb749e181&amp;wp-build=22df10bea59dcb6e&wp-media=99a6c02e941dabeb" data-wp-entry-required=""></script>
+</body>
+</html>

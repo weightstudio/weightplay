@@ -1,4 +1,4 @@
-import { STATIONS } from './core.mjs?wp-media=fa9b405e44d52d00';
+import { STATIONS } from './core.mjs?wp-media=99a6c02e941dabeb';
 
 // Required observation windows. One lowercase letter means the last site sees glare.
 // An isolated dot reserves the recommended round for a recharge.

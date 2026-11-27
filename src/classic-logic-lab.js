@@ -240,7 +240,33 @@
   }
   function codeStageRule(data) {
     const base = text(data.arc.rule);
-    return data.coached ? `${base} · ${text(codeCampaignCopy.sealed)}: ${data.blockedColor + 1} ×` : base;
+    if (data.coached) return `${base} · ${text(codeCampaignCopy.sealed)}: ${data.blockedColor + 1} ×`;
+    if (data.arcIndex === 4 || data.arcIndex === 5) {
+      const phrases = codeStageBriefCopy[locale] || codeStageBriefCopy.en;
+      return `${base} · ${phrases[data.allowRepeats ? 2 : 1]}`;
+    }
+    return base;
+  }
+  // Compact briefing stays on one line without repeating the chapter title.
+  const codeStageBriefCopy = {
+    en: ["{color} blocked · no repeats", "No repeated colours", "Repeated colours allowed", "{color} blocked · no repeats", "Slot {slot} fixed · no repeats", "Repeats allowed · {turns} tries", "Fixed slot · blocked colour · no hints"],
+    "zh-Hant": ["禁用 {color} 號 · 顏色不重複", "顏色不重複 · 比對黑白點", "顏色可重複 · 看黑白點", "禁用 {color} 號 · 顏色不重複", "第 {slot} 格固定 · 顏色不重複", "顏色可重複 · 最多 {turns} 次", "固定一格 · 禁用一色 · 無提示"],
+    "zh-Hans": ["禁用 {color} 号 · 颜色不重复", "颜色不重复 · 比对黑白点", "颜色可重复 · 看黑白点", "禁用 {color} 号 · 颜色不重复", "第 {slot} 格固定 · 颜色不重复", "颜色可重复 · 最多 {turns} 次", "固定一格 · 禁用一色 · 无提示"],
+    ja: ["{color}は使用不可・重複なし", "色の重複なし", "色の重複あり", "{color}は使用不可・重複なし", "第{slot}枠固定・重複なし", "色の重複あり・{turns}回まで", "固定枠・封印色・ヒントなし"],
+    ko: ["{color}번 금지 · 색 중복 없음", "색 중복 없음", "색 중복 가능", "{color}번 금지 · 색 중복 없음", "{slot}번 칸 고정 · 중복 없음", "중복 가능 · {turns}번 도전", "고정 칸 · 색 금지 · 힌트 없음"],
+    es: ["{color} sellado · sin repetir", "Sin colores repetidos", "Se puede repetir color", "{color} sellado · sin repetir", "Casilla {slot} fija · sin repetir", "Se puede repetir · {turns} intentos", "Casilla fija · color sellado · sin pistas"],
+    "pt-BR": ["{color} selada · sem repetição", "Sem cores repetidas", "Cores podem se repetir", "{color} selada · sem repetição", "Casa {slot} fixa · sem repetir", "Pode repetir · {turns} tentativas", "Casa fixa · cor selada · sem dicas"],
+    fr: ["{color} bloqué · sans doublon", "Pas de couleurs en double", "Couleurs répétées permises", "{color} bloqué · sans doublon", "Case {slot} fixe · sans doublon", "Doublons permis · {turns} essais", "Case fixe · couleur bloquée · sans indice"],
+    de: ["{color} gesperrt · keine Dopplung", "Keine doppelten Farben", "Doppelte Farben erlaubt", "{color} gesperrt · keine Dopplung", "Feld {slot} fest · ohne Dopplung", "Dopplung erlaubt · {turns} Versuche", "Festes Feld · Sperrfarbe · keine Tipps"],
+    it: ["{color} bloccato · niente doppioni", "Nessun colore doppio", "Colori ripetuti ammessi", "{color} bloccato · niente doppioni", "Casella {slot} fissa · senza doppioni", "Puoi ripetere · {turns} tentativi", "Casella fissa · colore bloccato · no aiuti"],
+    ru: ["{color} закрыт · без повторов", "Без повторов цветов", "Цвета могут повторяться", "{color} закрыт · без повторов", "Ячейка {slot} задана · без повторов", "Повторы разрешены · {turns} попыток", "Ячейка задана · цвет закрыт · без подсказок"],
+    hi: ["{color} बंद · रंग नहीं दोहराएँ", "रंग नहीं दोहरते", "रंग दोहर सकते हैं", "{color} बंद · रंग नहीं दोहराएँ", "खाना {slot} तय · रंग न दोहराएँ", "रंग दोहर सकते हैं · {turns} मौके", "स्थिर खाना · बंद रंग · कोई संकेत नहीं"],
+    ar: ["اللون {color} مختوم · بلا تكرار", "لا تتكرر الألوان", "يمكن تكرار الألوان", "اللون {color} مختوم · بلا تكرار", "الخانة {slot} ثابتة · بلا تكرار", "التكرار مسموح · {turns} محاولات", "خانة ثابتة · لون مختوم · بلا تلميح"],
+  };
+  function codeStageBrief(data) {
+    const phrases = codeStageBriefCopy[locale] || codeStageBriefCopy.en;
+    const index = data.coached ? 0 : data.arcIndex + 1;
+    return fillTemplate(phrases[index], { color: (data.blockedColor ?? 0) + 1, slot: (data.anchorIndex ?? 0) + 1, turns: data.maxTurns });
   }
   function normalizeCodeProgress(parsed) {
     const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= CODE_BREAKER_TOTAL_STAGES))].sort((a, b) => a - b) : [];
@@ -924,7 +950,7 @@
     const undoLabel = id === "tower-of-hanoi"
       ? ({ it: "Annulla", hi: "पिछली चाल पूर्ववत करें", ar: "ألغِ الحركة السابقة" }[locale] || t("undo"))
       : t("undo");
-    const poster = id === "code-breaker" ? "/assets/interface7-redrawn/code-breaker.webp?wp-media=fa9b405e44d52d00" : assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
+    const poster = id === "code-breaker" ? "/assets/interface7-redrawn/code-breaker-voxel-v2.webp?wp-media=99a6c02e941dabeb" : assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
       ? "naval-battle-cover-v1.webp"
       : id === "sliding-15"
       ? "sliding-15-cover-v1.webp"
@@ -1714,7 +1740,7 @@
         status: cleared ? text(slidingCampaignCopy.cleared) : locked ? text(slidingCampaignCopy.locked) : fillTemplate(text(slidingCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details,
-        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=fa9b405e44d52d00",
+        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=99a6c02e941dabeb",
         locked,
         cleared,
         stage: data.stage,
@@ -1743,9 +1769,9 @@
         title: text(data.arc.title),
         subtitle: fillTemplate(text(codeCampaignCopy.objective), { stage: data.stage }),
         status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
-        summary: `${text(data.arc.title)} · ${codeStageRule(data)}`,
+        summary: codeStageBrief(data),
         details: [codeStageRule(data)],
-        poster: "/assets/interface7-redrawn/code-breaker.webp?wp-media=fa9b405e44d52d00",
+        poster: "/assets/interface7-redrawn/code-breaker-voxel-v2.webp?wp-media=99a6c02e941dabeb",
         locked,
         cleared,
       };

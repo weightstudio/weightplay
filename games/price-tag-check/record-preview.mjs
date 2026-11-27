@@ -3,9 +3,9 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=fa9b405e44d52d00';
-import { installLocalTestNetworkPolicy, localTestOrigin, localTestBrowserArgs } from '../../scripts/local-test-network-policy.mjs?wp-media=fa9b405e44d52d00';
-import { CASES } from './casebook.mjs?wp-media=fa9b405e44d52d00';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=99a6c02e941dabeb';
+import { installLocalTestNetworkPolicy, localTestOrigin, localTestBrowserArgs } from '../../scripts/local-test-network-policy.mjs?wp-media=99a6c02e941dabeb';
+import { CASES } from './casebook.mjs?wp-media=99a6c02e941dabeb';
 
 const origin = localTestOrigin();
 const evidence = process.env.PRICE_EVIDENCE_DIR;
