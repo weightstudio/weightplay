@@ -1,16 +1,195 @@
 <!doctype html>
-<html lang="it" dir="ltr" data-wp-official-name data-wp-entry-renderer="guide.mjs?wp-media=f2e6f208e6c2c8f1#renderEntry" data-wp-shared-entry="9" data-wp-entry-poster="/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1" data-wp-publication-locale-completion>
-<head data-wp-search-copy="2.0" data-wp-search-locale="it" data-wp-search-title="Staffetta Lunare – Strategia di osservazione astronomica | WeightPlay" data-wp-search-name="Staffetta Lunare">
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/lunar-relay/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}catch{location.replace("/en/games/lunar-relay/"+(function(){const values=new URLSearchParams(location.search).getAll("preview");return values.length===1&&values[0]==="1"?"?preview=1":""})())}})();</script>
+<html lang="it" dir="ltr" data-wp-official-name data-wp-entry-renderer="guide.mjs?wp-media=f2e6f208e6c2c8f1#renderEntry" data-wp-shared-entry="9" data-wp-entry-poster="/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1" data-wp-publication-locale-completion data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7" class="wp-frame-main-flow">
+<head data-wp-search-copy="2.0" data-wp-search-locale="it" data-wp-search-title="Staffetta Lunare – Gioco di strategia | WeightPlay" data-wp-search-name="Staffetta Lunare"><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=f2e6f208e6c2c8f1`, '/src/diamond-special-progression.js?wp-media=f2e6f208e6c2c8f1', '/src/diamond-special-progression.css?wp-media=f2e6f208e6c2c8f1'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
   <base href="/games/lunar-relay/">
-  <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-version" content="v1">
   <meta name="weightplay-interface-version" content="0">
   <!-- lunar-meta -->
-<title data-runtime-localize="off">Staffetta Lunare – Strategia di osservazione astronomica | WeightPlay</title>
-<meta name="robots" content="noindex,nofollow">
+<title data-runtime-localize="off">Staffetta Lunare – Gioco di strategia | WeightPlay</title>
+<meta name="robots" content="index,follow">
 <meta name="description" content="Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.">
 <link rel="canonical" href="https://weightplay.com/it/games/lunar-relay/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/lunar-relay/">
@@ -29,55 +208,53 @@
 <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/lunar-relay/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WeightPlay">
-<meta property="og:title" content="Staffetta Lunare – Strategia di osservazione astronomica | WeightPlay">
+<meta property="og:title" content="Staffetta Lunare – Gioco di strategia | WeightPlay">
 <meta property="og:description" content="Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.">
 <meta property="og:url" content="https://weightplay.com/it/games/lunar-relay/">
 <meta property="og:image" content="https://weightplay.com/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Staffetta Lunare – Strategia di osservazione astronomica | WeightPlay">
+<meta name="twitter:title" content="Staffetta Lunare – Gioco di strategia | WeightPlay">
 <meta name="twitter:description" content="Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.">
 <meta name="twitter:image" content="https://weightplay.com/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"Staffetta Lunare","url":"https://weightplay.com/it/games/lunar-relay/","description":"Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.","inLanguage":"it","image":"https://weightplay.com/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1","genre":"Strategia di osservazione astronomica","gamePlatform":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"}},{"@type":"FAQPage","inLanguage":"it","mainEntity":[{"@type":"Question","name":"Posso osservare attraverso le nuvole?","acceptedAnswer":{"@type":"Answer","text":"Le nuvole bloccano la visuale. Aspetta che il cielo si liberi o scegli un altro telescopio."}},{"@type":"Question","name":"Come ottengo tre stelle?","acceptedAnswer":{"@type":"Answer","text":"Conferma tutti i segnali e conserva energia. In alcune notti devi finire prima dell’ultimo turno."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"Staffetta Lunare","url":"https://weightplay.com/it/games/lunar-relay/","description":"Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.","inLanguage":"it","image":"https://weightplay.com/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1","genre":["Gioco di strategia","Gioco rompicapo","Strategia di osservazione astronomica"],"gamePlatform":"Web browser","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players"},"operatingSystem":"Web"},{"@type":"FAQPage","inLanguage":"it","mainEntity":[{"@type":"Question","name":"Posso osservare attraverso le nuvole?","acceptedAnswer":{"@type":"Answer","text":"Le nuvole bloccano la visuale. Aspetta che il cielo si liberi o scegli un altro telescopio."}},{"@type":"Question","name":"Come ottengo tre stelle?","acceptedAnswer":{"@type":"Answer","text":"Conferma tutti i segnali e conserva energia. In alcune notti devi finire prima dell’ultimo turno."}}]}]}</script>
 <!-- /lunar-meta -->
-  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-ui-icons.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/tutorial.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-entry-loader.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/games/lunar-relay/style.f967f83c705b8cf8.css?v=1&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-icons.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/lunar-relay/style.f967f83c705b8cf8.css?v=1&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
   <script src="/src/game-title-registry.js?wp-media=f2e6f208e6c2c8f1" data-wp-game-title-registry></script>
-  <script src="/src/game-layout-config.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
+  <script src="/src/game-layout-config.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
   <script src="/src/weightplay-audio.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/game-official-name.js?wp-media=f2e6f208e6c2c8f1"></script>
+  <script src="/src/game-official-name.js?v=20261111-search20&wp-media=f2e6f208e6c2c8f1"></script>
   <script src="/src/site-config.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/i18n.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/wallet.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/weightplay-castle.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/analytics.js?wp-media=f2e6f208e6c2c8f1"></script>
-  <script src="/src/game-entry-loader.js?wp-media=f2e6f208e6c2c8f1"></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=f2e6f208e6c2c8f1"></script>
 </head>
-<body data-wp-internal-only="true" data-internal-only="1" class="wp-frame-main-active" data-screen="main" data-game-id="lunar-relay" data-wp-game-id="lunar-relay" data-wp-game-version="v1" data-wp-interface-version="0" data-wp-language-policy="fixed-page">
-  <div id="gameFrame" data-wp-stage-tools data-wp-frame-root data-wp-entry-root data-wp-frame="2">
+<body class="wp-frame-main-active" data-screen="main" data-game-id="lunar-relay" data-wp-game-id="lunar-relay" data-wp-game-version="v1" data-wp-interface-version="0" data-wp-language-policy="fixed-page"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="Staffetta Lunare" data-state="loading" data-error-title="Impossibile caricare il gioco" data-error-message="Alcune risorse non sono state caricate. Riprova o torna alla lobby." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">Caricamento di Staffetta Lunare…</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="Caricamento di Staffetta Lunare…" aria-valuetext="Caricamento di Staffetta Lunare…"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">Riprova</button><a class="wp-game-entry-loader-button" href="/it/">Torna alla lobby</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>Alcune risorse non sono state caricate. Riprova o torna alla lobby. <a href="/it/">Torna alla lobby</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-fd37493d95a8&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-stage-tools data-wp-frame-root data-wp-entry-root="" data-wp-frame="2">
     <div id="mainGroup" class="wp-frame-main-flow">
       <section id="mainScreen" data-wp-frame-scene="main">
         <header id="mainHeader" data-wp-frame-header="main" class="wp-frame-header">
-          <a id="mainReturn" href="/it/?preview=1" class="wp-frame-return" data-wp-return="main" aria-label="WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=f2e6f208e6c2c8f1" alt=""></a>
-          <h1 id="gameTitle" data-wp-frame-title data-wp-game-title data-runtime-localize="off">Staffetta Lunare</h1>
+          <a id="mainReturn" href="/it/" class="wp-frame-return" data-wp-return="main" aria-label="WeightPlay"><span aria-hidden="true" class="wp-frame-back-icon">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=f2e6f208e6c2c8f1" alt="" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">Staffetta Lunare</h1>
         </header>
         <section id="mainHero" data-wp-frame-content="main">
-          <img id="cover" width="1254" height="1254" src="/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1" alt="" data-wp-frame-poster data-wp-interface7-poster="true" fetchpriority="high">
-          <div data-wp-frame-copy>
-            <p data-wp-frame-summary data-word="summary">Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.</p>
-            <p id="mainProgress" data-wp-frame-progress></p>
+          <img id="cover" width="1254" height="1254" src="/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1" alt="" data-wp-frame-poster="" data-wp-interface7-poster="true" fetchpriority="high">
+          <div data-wp-frame-copy="">
+            <p data-wp-frame-summary="" data-word="summary">Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.</p>
+            <p id="mainProgress" data-wp-frame-progress=""></p>
             <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" data-wp-icon="map" class="wp-icon-leading" data-word="play" disabled>Inizia</button>
           </div>
         </section>
       </section>
-      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-entry-guide data-wp-preserve-static-guide aria-labelledby="guideTitle">
+      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-entry-guide="" data-wp-preserve-static-guide aria-labelledby="guideTitle">
         <h2 id="guideTitle" data-word="guide">Guida</h2>
         <!-- lunar-guide -->
 <article class="game-info-section"><h3>Obiettivo</h3><p data-wp-intro-faq-source>Distribuisci l’energia e confronta i segnali prima che si chiuda la finestra di osservazione.</p></article>
@@ -88,7 +265,7 @@
 <section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>Giochi correlati</h3><div class="game-info-related-cards"><a class="game-info-related-card" data-game-id="moonlit-atrium" data-wp-related-id="moonlit-atrium" href="/it/games/moonlit-atrium/"><span class="game-info-related-poster"><img src="/games/moonlit-atrium/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="" width="96" height="96" loading="lazy"></span><span>Illumina il pavimento</span></a><a class="game-info-related-card" data-game-id="winglight-survey" data-wp-related-id="winglight-survey" href="/it/games/winglight-survey/"><span class="game-info-related-poster"><img src="/games/winglight-survey/art/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="" width="96" height="96" loading="lazy"></span><span>Scatti in volo</span></a><a class="game-info-related-card" data-game-id="lightday-dispatch" data-wp-related-id="lightday-dispatch" href="/it/games/lightday-dispatch/"><span class="game-info-related-poster"><img src="/games/lightday-dispatch/art/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="" width="96" height="96" loading="lazy"></span><span>Segnali dallo spazio</span></a></div></section>
 <!-- /lunar-guide -->
         <button id="practiceBtn" type="button" data-wp-icon="guide" class="wp-icon-leading" data-word="lessonReplay">Rigioca il tutorial</button>
-      <article class="game-info-section" data-wp-intro-faq><h3>FAQ</h3><dl><dt>What will I do in this game?</dt><dd>Choose a signal and a telescope. Cloud cover blocks readings, while moon glare costs extra power. Some signals need readings from two different telescopes.</dd></dl></article></section>
+      <article class="game-info-section" data-wp-intro-faq><h3>FAQ</h3><dl><dt>What will I do in this game?</dt><dd>Choose a signal and a telescope. Cloud cover blocks readings, while moon glare costs extra power. Some signals need readings from two different telescopes.</dd></dl></article><p data-wp-game-access="2.0" lang="it" data-runtime-localize="off">Gioca gratis nel browser, senza download. WeightPlay è la piattaforma di giochi di WeightStudio.</p></section>
     </div>
     <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/lunar-relay/art/poster.webp?wp-media=f2e6f208e6c2c8f1" hidden>
       <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" aria-label="Back">←</button><strong data-wp-frame-title hidden></strong></header>
@@ -139,10 +316,10 @@
   </div>
   <script src="/src/edge-guard.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/stage-rail-i9.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/game-play-ui.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/battle-canvas-standard.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/game-screen-frame.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-19ecd7a11c8c-search20-geo-access-retained&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
   <script src="/src/tutorial.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script type="module" src="/games/lunar-relay/app.a87cb47b6f20d5a0.mjs?v=1&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
+  <script type="module" src="/games/lunar-relay/app.a87cb47b6f20d5a0.mjs?v=entry-initial-f3723ad754fe&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
 </body>
 </html>

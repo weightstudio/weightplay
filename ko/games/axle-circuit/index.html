@@ -1,12 +1,192 @@
 <!doctype html>
-<html lang="ko" dir="ltr" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=f2e6f208e6c2c8f1#renderEntry" data-wp-publication-locale-completion data-wp-shared-entry="9" data-wp-entry-poster="/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" class="wp-frame-main-flow">
-<head data-wp-search-copy="2.0" data-wp-search-locale="ko" data-wp-search-title="리벳 카 배틀 – 차량 전투 | WeightPlay" data-wp-search-name="리벳 카 배틀">
-    <meta charset="utf-8">
+<html lang="ko" dir="ltr" data-wp-official-name data-wp-entry-renderer="localize.mjs?wp-media=f2e6f208e6c2c8f1#renderEntry" data-wp-publication-locale-completion data-wp-shared-entry="9" data-wp-entry-poster="/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" class="wp-frame-main-flow" data-wp-entry-initial="1" data-wp-game-entry-loader-active="true" data-wp-shared-interface="7">
+<head data-wp-search-copy="2.0" data-wp-search-locale="ko" data-wp-search-title="리벳 카 배틀 – 액션 게임 | WeightPlay" data-wp-search-name="리벳 카 배틀"><meta charset="utf-8"><!-- wp-entry-initial-head:start --><style data-wp-game-entry-loader-style="true" data-wp-game-entry-loader-style-ready="true">.wp-game-entry-loader {
+  /* One loading palette, independent of lobby/game theme variables. */
+  --wp-loading-card: rgb(14 27 46 / 96%);
+  --wp-loading-text: #f6f4ed;
+  --wp-loading-muted: #bdc9d3;
+  --wp-loading-track: rgb(255 255 255 / 18%);
+  --wp-loading-fill-a: #69d6ed;
+  --wp-loading-fill-b: #9cebc7;
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  box-sizing: border-box;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(6 15 27 / 38%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.wp-game-entry-loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wp-game-entry-loader-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(100%, 360px);
+  box-sizing: border-box;
+  padding: 24px 22px 20px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 20px;
+  background: var(--wp-loading-card, rgb(14 27 46 / 96%));
+  color: var(--wp-loading-text, #f6f4ed);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  text-align: center;
+}
+
+.wp-game-entry-loader-title {
+  font: 750 1rem/1.25 system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+
+.wp-game-entry-loader-status {
+  max-width: 34ch;
+  color: var(--wp-loading-muted, #bdc9d3);
+  font: 500 .9rem/1.45 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wp-game-entry-loader-status[hidden] {
+  display: none;
+}
+
+.wp-game-entry-loader-track {
+  position: relative;
+  display: block;
+  width: min(100%, 260px);
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--wp-loading-track, rgb(255 255 255 / 18%));
+}
+
+.wp-game-entry-loader-track::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+  content: "";
+  animation: wp-entry-loader-indeterminate 1.15s ease-in-out infinite;
+}
+
+.wp-game-entry-loader-track[aria-valuenow]::after {
+  width: var(--wp-entry-progress, 0%);
+  animation: none;
+  transition: width 120ms linear;
+}
+
+.wp-game-entry-loader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.wp-game-entry-loader-button {
+  min-width: 132px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 12px;
+  color: var(--wp-loading-text, #f6f4ed);
+  background: rgb(255 255 255 / 8%);
+  font: 700 .9rem/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.wp-game-entry-loader-button.is-primary {
+  border-color: transparent;
+  color: #071522;
+  background: linear-gradient(110deg, var(--wp-loading-fill-a, #69d6ed), var(--wp-loading-fill-b, #9cebc7));
+}
+
+.wp-game-entry-loader-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+html[data-wp-game-entry-loader-active="true"] :is(#loadingPanel,.loading-panel) {
+  display: none !important;
+}
+
+@keyframes wp-entry-loader-indeterminate {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-game-entry-loader,
+  .wp-game-entry-loader-track[aria-valuenow]::after {
+    transition: none;
+  }
+
+  .wp-game-entry-loader-track:not([aria-valuenow])::after {
+    width: 100%;
+    animation: none;
+    opacity: .7;
+  }
+}
+
+html[data-wp-game-entry-loader-active="true"] [data-wp-entry-root]:not([hidden]){position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}html[data-wp-game-entry-loader-active="true"] [data-wp-entry-guide]{visibility:hidden!important}[data-wp-entry-static] .wp-game-entry-loader-button{text-decoration:none}[data-wp-entry-static] [hidden]{display:none!important}</style><script>/* Shared recovery for generated initial entry markup. No game IDs, progress
+   simulation, timers or gameplay state; only pages carrying that markup opt in. */
+(() => {
+  if (!document.documentElement.hasAttribute('data-wp-entry-initial')) return;
+  const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1];
+  let failed = false;
+  const showFailure = () => {
+    const root = document.querySelector('[data-wp-entry-static]');
+    if (!root?.querySelector('[data-wp-entry-retry]')) return;
+    root.dataset.state = 'error';
+    root.setAttribute('aria-busy', 'false');
+    root.querySelector('.wp-game-entry-loader-title').textContent = root.dataset.errorTitle;
+    const status = root.querySelector('.wp-game-entry-loader-status');
+    status.textContent = root.dataset.errorMessage;
+    status.hidden = false;
+    root.querySelector('.wp-game-entry-loader-track').hidden = true;
+    root.querySelector('[data-wp-entry-retry]').hidden = false;
+  };
+  window.addEventListener('error', event => {
+    if (!document.documentElement.hasAttribute('data-wp-game-entry-loader-active')) return;
+    const node = event.target;
+    if (!(node instanceof HTMLScriptElement || node instanceof HTMLLinkElement)) return;
+    const url = node.src || node.href || '';
+    // A stylesheet with an applied sheet can report an error for an optional
+    // @import (e.g. a blocked font host). Its local rules are already usable.
+    if (node instanceof HTMLLinkElement && node.rel === 'stylesheet' && node.sheet) return;
+    if (node.getAttribute?.('data-wp-entry-optional') === 'diamond-special' &&
+        document.querySelector('meta[name="weightplay-diamond-special"][content="1"]') &&
+        [`/games/${gameId}/diamond-special.js?wp-media=f2e6f208e6c2c8f1`, '/src/diamond-special-progression.js?wp-media=f2e6f208e6c2c8f1', '/src/diamond-special-progression.css?wp-media=f2e6f208e6c2c8f1'].includes(new URL(url, location.origin).pathname)) return;
+    if (!node.hasAttribute('data-wp-entry-required') && !url.includes(`/games/${gameId}/`)) return;
+    failed = true;
+    window.__weightPlayGameEntryPendingFailure = gameId;
+    if (window.WeightPlayGameEntryLoader?.isActive) window.WeightPlayGameEntryLoader.fail();
+    else showFailure();
+  }, true);
+  const observer = new MutationObserver(() => {
+    if (failed) showFailure();
+    if (document.querySelector('[data-wp-entry-retry]')) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script><!-- wp-entry-initial-head:end -->
+
   <base href="/games/axle-circuit/">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <!-- axle-meta:start -->
-<title data-runtime-localize="off">리벳 카 배틀 – 차량 전투 | WeightPlay</title>
-<meta name="robots" content="noindex,nofollow">
+<title data-runtime-localize="off">리벳 카 배틀 – 액션 게임 | WeightPlay</title>
+<meta name="robots" content="index,follow">
 <meta name="description" content="경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.">
 <link rel="canonical" href="https://weightplay.com/ko/games/axle-circuit/">
 <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/axle-circuit/">
@@ -25,28 +205,30 @@
 <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/axle-circuit/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WeightPlay">
-<meta property="og:title" content="리벳 카 배틀 – 차량 전투 | WeightPlay">
+<meta property="og:title" content="리벳 카 배틀 – 액션 게임 | WeightPlay">
 <meta property="og:description" content="경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.">
 <meta property="og:url" content="https://weightplay.com/ko/games/axle-circuit/">
 <meta property="og:image" content="https://weightplay.com/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1">
+<meta property="og:video" content="https://weightplay.com/assets/previews/axle-circuit-battle.webm">
+<meta property="og:video:type" content="video/webm">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="리벳 카 배틀 – 차량 전투 | WeightPlay">
+<meta name="twitter:title" content="리벳 카 배틀 – 액션 게임 | WeightPlay">
 <meta name="twitter:description" content="경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.">
 <meta name="twitter:image" content="https://weightplay.com/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"리벳 카 배틀","url":"https://weightplay.com/ko/games/axle-circuit/","description":"경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.","image":"https://weightplay.com/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1","inLanguage":"ko","genre":"차량 전투","gamePlatform":"Web browser","operatingSystem":"Any","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"}},{"@type":"FAQPage","inLanguage":"ko","mainEntity":[{"@type":"Question","name":"상대 차량을 느리게 하려면?","acceptedAnswer":{"@type":"Answer","text":"옆에서 바퀴를 떼어 내세요. 앞 탐침을 떼면 주황색 빔이 멈춥니다."}},{"@type":"Question","name":"차를 어떻게 수리하나요?","acceptedAnswer":{"@type":"Answer","text":"떨어진 리벳 두 개를 모아 초록 패드를 지나면 바퀴 하나 또는 차체 두 칸을 회복합니다."}},{"@type":"Question","name":"어떻게 새 장비를 얻나요?","acceptedAnswer":{"@type":"Answer","text":"5, 20, 40라운드를 통과하고 정비소에서 해제된 장비를 장착하세요."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"VideoGame","name":"리벳 카 배틀","url":"https://weightplay.com/ko/games/axle-circuit/","description":"경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.","image":"https://weightplay.com/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1","inLanguage":"ko","genre":["액션 게임","차량 전투"],"gamePlatform":"Web browser","operatingSystem":"Any","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"audience":{"@type":"PeopleAudience","audienceType":"General players"}},{"@type":"FAQPage","inLanguage":"ko","mainEntity":[{"@type":"Question","name":"상대 차량을 느리게 하려면?","acceptedAnswer":{"@type":"Answer","text":"옆에서 바퀴를 떼어 내세요. 앞 탐침을 떼면 주황색 빔이 멈춥니다."}},{"@type":"Question","name":"차를 어떻게 수리하나요?","acceptedAnswer":{"@type":"Answer","text":"떨어진 리벳 두 개를 모아 초록 패드를 지나면 바퀴 하나 또는 차체 두 칸을 회복합니다."}},{"@type":"Question","name":"어떻게 새 장비를 얻나요?","acceptedAnswer":{"@type":"Answer","text":"5, 20, 40라운드를 통과하고 정비소에서 해제된 장비를 장착하세요."}}]}]}</script>
 <!-- axle-meta:end -->
-  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/game-ui-icons.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/src/tutorial.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
-  <link rel="stylesheet" href="/games/axle-circuit/style.css?v=1&amp;wp-build=fa0e99e7926ffd29&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required>
+  <link rel="stylesheet" href="/src/game-screen-frame.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-page-info.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-play-ui.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-theme.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/interface9-shared-screens.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/game-ui-icons.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/src/tutorial.css?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
+  <link rel="stylesheet" href="/games/axle-circuit/style.css?v=1&amp;wp-build=fa0e99e7926ffd29&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required="">
   <script src="/src/game-title-registry.js?wp-media=f2e6f208e6c2c8f1" data-wp-game-title-registry></script>
-  <script src="/src/game-layout-config.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
+  <script src="/src/game-layout-config.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
   <script src="/src/weightplay-audio.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/game-official-name.js?wp-media=f2e6f208e6c2c8f1"></script>
+  <script src="/src/game-official-name.js?v=20261111-search20&wp-media=f2e6f208e6c2c8f1"></script>
   <script src="/src/site-config.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/i18n.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/wallet.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
@@ -54,24 +236,24 @@
   <script src="/src/analytics.js?wp-media=f2e6f208e6c2c8f1"></script>
   <script type="module" src="/src/game-guide-intro-faq.mjs?wp-media=f2e6f208e6c2c8f1"></script>
 </head>
-<body data-wp-internal-only="true" data-internal-only="1" class="wp-frame-main-active" data-screen="main" data-game-id="axle-circuit" data-wp-game-id="axle-circuit" data-wp-game-version="v1" data-wp-interface-version="11" data-game-audience="general">
-  <div id="gameFrame" data-wp-frame-root data-wp-stage-tools data-wp-entry-root data-wp-frame="2">
+<body class="wp-frame-main-active" data-screen="main" data-game-id="axle-circuit" data-wp-game-id="axle-circuit" data-wp-game-version="v1" data-wp-interface-version="11" data-game-audience="general"><!-- wp-entry-initial-body:start --><section class="wp-game-entry-loader" data-wp-entry-static="true" data-game-title="리벳 카 배틀" data-state="loading" data-error-title="게임을 불러오지 못했습니다" data-error-message="일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요." role="dialog" aria-modal="true" aria-labelledby="wp-game-entry-loader-title" aria-busy="true"><div class="wp-game-entry-loader-card"><strong class="wp-game-entry-loader-title" id="wp-game-entry-loader-title">불러오는 중: 리벳 카 배틀</strong><span class="wp-game-entry-loader-status" aria-live="polite" hidden></span><span class="wp-game-entry-loader-track" role="progressbar" aria-label="불러오는 중: 리벳 카 배틀" aria-valuetext="불러오는 중: 리벳 카 배틀"></span><div class="wp-game-entry-loader-actions"><button type="button" class="wp-game-entry-loader-button is-primary" data-wp-entry-retry hidden onclick="location.reload()">다시 시도</button><a class="wp-game-entry-loader-button" href="/ko/">로비로 돌아가기</a></div></div></section><noscript><style>[data-wp-entry-static]{display:none!important}html[data-wp-entry-initial][data-wp-game-entry-loader-active] [data-wp-entry-guide]{visibility:visible!important}</style><p>일부 게임 리소스를 불러오지 못했습니다. 다시 시도하거나 로비로 돌아가세요. <a href="/ko/">로비로 돌아가기</a></p></noscript><script id="wp-game-entry-loader-runtime" src="/src/game-entry-loader.js?v=entry-pilot-fd37493d95a8&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script><!-- wp-entry-initial-body:end -->
+  <div id="gameFrame" data-wp-frame-root data-wp-stage-tools data-wp-entry-root="" data-wp-frame="2">
     <div id="mainGroup">
       <section id="mainScreen" data-wp-frame-scene="main">
         <header id="mainHeader" class="wp-frame-header" data-wp-frame-header="main">
-          <a id="mainReturn" href="/ko/?preview=1" data-wp-return="main" class="wp-frame-return" aria-label="WeightPlay"><span class="wp-frame-back-icon" aria-hidden="true">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=f2e6f208e6c2c8f1" alt="" width="26" height="26"></a>
-          <h1 id="gameTitle" data-wp-frame-title data-wp-game-title data-runtime-localize="off">리벳 카 배틀</h1>
+          <a id="mainReturn" href="/ko/" data-wp-return="main" class="wp-frame-return" aria-label="WeightPlay"><span class="wp-frame-back-icon" aria-hidden="true">←</span><img class="wp-frame-lobby-logo" src="/assets/weightplay-logo.png.webp?wp-media=f2e6f208e6c2c8f1" alt="" width="26" height="26"></a>
+          <h1 id="gameTitle" data-wp-frame-title="" data-wp-game-title data-runtime-localize="off">리벳 카 배틀</h1>
         </header>
         <section id="mainHero" data-wp-frame-content="main">
-          <img id="cover" width="1254" height="1254" src="/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="리벳 카 배틀" data-wp-frame-poster data-wp-interface7-poster="true" fetchpriority="high">
-          <div data-wp-frame-copy>
-            <p id="description" data-wp-frame-summary>경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.</p>
-            <p id="mainProgress" data-wp-frame-progress></p>
+          <img id="cover" width="1254" height="1254" src="/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="리벳 카 배틀" data-wp-frame-poster="" data-wp-interface7-poster="true" fetchpriority="high">
+          <div data-wp-frame-copy="">
+            <p id="description" data-wp-frame-summary="">경기장을 달리며 상대 차량의 부품을 떼어 내고 리벳을 주워 내 차를 수리하세요.</p>
+            <p id="mainProgress" data-wp-frame-progress=""></p>
             <button id="startBtn" type="button" data-wp-main-start data-wp-frame-action="primary" data-wp-icon="attack" class="wp-icon-leading" data-word="start" disabled>시작</button>
           </div>
         </section>
       </section>
-      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=f2e6f208e6c2c8f1#renderGuide" data-wp-entry-guide data-wp-preserve-static-guide aria-labelledby="guideTitle">
+      <section id="guideContent" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-guide-renderer="localize.mjs?wp-media=f2e6f208e6c2c8f1#renderGuide" data-wp-entry-guide="" data-wp-preserve-static-guide aria-labelledby="guideTitle">
         <h2 id="guideTitle" data-word="guide">게임 안내</h2>
         <article class="game-info-section"><h3 data-word="goal">목표</h3><p data-word="goalText" data-wp-intro-faq-source>상대 차량을 모두 멈추고 내 차를 지키세요.</p></article>
         <article class="game-info-section"><h3 data-word="how">진행 방법</h3><p data-word="howText">주황색 예고선을 보고 사정거리에서 노출된 부품에 펄스를 쏘세요. 옆으로 돌아 바퀴를 떼어 낼 수 있어요.</p></article>
@@ -80,7 +262,7 @@
         <!-- axle-guide:start -->
 <section class="game-info-section game-info-related-section" data-wp-guide-related-interface="9"><h3>관련 게임</h3><div class="game-info-related-cards"><a class="game-info-related-card" data-game-id="crossbank-rovers" data-wp-related-id="crossbank-rovers" href="/ko/games/crossbank-rovers/"><span class="game-info-related-poster"><img src="/games/crossbank-rovers/art/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="" loading="lazy" width="96" height="96"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">오프로드 배달</strong></span></a><a class="game-info-related-card" data-game-id="shardplate-hunt" data-wp-related-id="shardplate-hunt" href="/ko/games/shardplate-hunt/"><span class="game-info-related-poster"><img src="/games/shardplate-hunt/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="" loading="lazy" width="96" height="96"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">장갑 사냥꾼</strong></span></a><a class="game-info-related-card" data-game-id="pennant-riders" data-wp-related-id="pennant-riders" href="/ko/games/pennant-riders/"><span class="game-info-related-poster"><img src="/games/pennant-riders/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" alt="" loading="lazy" width="96" height="96"></span><span class="game-info-related-copy"><strong data-runtime-localize="off">기병 돌격</strong></span></a></div></section>
 <article class="game-info-section game-info-faq"><h3>자주 묻는 질문</h3><dl><dt>상대 차량을 느리게 하려면?</dt><dd>옆에서 바퀴를 떼어 내세요. 앞 탐침을 떼면 주황색 빔이 멈춥니다.</dd><dt>차를 어떻게 수리하나요?</dt><dd>떨어진 리벳 두 개를 모아 초록 패드를 지나면 바퀴 하나 또는 차체 두 칸을 회복합니다.</dd><dt>어떻게 새 장비를 얻나요?</dt><dd>5, 20, 40라운드를 통과하고 정비소에서 해제된 장비를 장착하세요.</dd></dl></article>
-<!-- axle-guide:end --></section>
+<!-- axle-guide:end --><p data-wp-game-access="2.0" lang="ko" data-runtime-localize="off">브라우저에서 무료로 플레이할 수 있으며 다운로드가 필요하지 않습니다. WeightPlay는 WeightStudio의 게임 플랫폼입니다.</p></section>
     </div>
     <section id="stageScreen" class="stage-canvas" data-wp-standard-stage-screen data-wp-stage-art="/games/axle-circuit/assets/cover.webp?wp-media=f2e6f208e6c2c8f1" hidden>
       <header id="stageHeader"><button id="stageBack" type="button" data-wp-return="stage" data-wp-frame-action="secondary" data-aria-word="back" aria-label="뒤로">←</button><strong data-wp-frame-title hidden></strong></header>
@@ -127,10 +309,10 @@
   </div>
   <script src="/src/edge-guard.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
   <script src="/src/stage-rail-i9.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/game-play-ui.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/battle-canvas-standard.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script src="/src/game-screen-frame.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
+  <script src="/src/game-play-ui.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
+  <script src="/src/battle-canvas-standard.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
+  <script src="/src/game-screen-frame.js?v=entry-initial-19ecd7a11c8c&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
   <script src="/src/tutorial.js?wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
-  <script type="module" src="/games/axle-circuit/game.mjs?v=1&amp;wp-build=e7a92db247f1a558&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required></script>
+  <script type="module" src="/games/axle-circuit/game.mjs?v=entry-initial-5fd93032d030&amp;wp-build=e7a92db247f1a558&wp-media=f2e6f208e6c2c8f1" data-wp-entry-required=""></script>
 </body>
 </html>

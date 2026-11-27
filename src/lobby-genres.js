@@ -25,6 +25,8 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["axle-circuit", "Action", "Timing"],
+    ["price-tag-check", "Puzzle", "Deduction"],
     ["cloudbreak-patrol", "Action", "Shooting"],
     ["loop-survey", "Puzzle", "Adventure"],
     ["deep-hull-rescue", "Strategy", "Simulation"],

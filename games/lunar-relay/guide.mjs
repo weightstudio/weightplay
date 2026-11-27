@@ -254,6 +254,7 @@ export function renderEntry(locale) {
   ].join('\n');
 
   return readFileSync(blueprint,'utf8')
+    .replace(/\s*<script data-wp-locale-route>[\s\S]*?<\/script>/g, live ? '' : '$&')
     .replace(/<html lang="[^"]+" dir="[^"]+"/, '<html lang="' + locale + '" dir="' + (locale === 'ar' ? 'rtl' : 'ltr') + '"')
     .replace(/<head(?: [^>]*)?>/, '<head data-wp-search-copy="2.0" data-wp-search-locale="' + locale +
       '" data-wp-search-title="' + escape(title) + '" data-wp-search-name="' + escape(name) + '">')

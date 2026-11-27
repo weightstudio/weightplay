@@ -473,6 +473,10 @@
       "date": "2026-08-01T12:46:15+08:00",
       "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
     },
+    "axle-circuit": {
+      "date": "2026-11-27T17:05:33.752Z",
+      "evidence": "canonical-public-catalog"
+    },
     "bankshot-rink": {
       "date": "2026-11-18T10:15:43.654Z",
       "evidence": "canonical-public-catalog"
@@ -697,6 +701,10 @@
       "date": "2026-10-21T16:15:31.180Z",
       "evidence": "canonical-public-catalog"
     },
+    "gale-watch": {
+      "date": "2026-11-27T17:25:16.662Z",
+      "evidence": "canonical-public-catalog"
+    },
     "galevault-atlas": {
       "date": "2026-11-11T00:56:00.361Z",
       "evidence": "canonical-public-catalog"
@@ -819,6 +827,10 @@
     },
     "lumenwell-paths": {
       "date": "2026-11-15T01:01:58.530Z",
+      "evidence": "canonical-public-catalog"
+    },
+    "lunar-relay": {
+      "date": "2026-11-27T17:25:16.662Z",
       "evidence": "canonical-public-catalog"
     },
     "magnetwheel-guard": {
