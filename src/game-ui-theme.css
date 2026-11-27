@@ -60,3 +60,37 @@
     --wp-ui-battle-backdrop:none;
   }
 }
+
+/* Midnight Atlas: a shared visual skin, not a scene or game rules migration. */
+@media (forced-colors: none) {
+  :root:where([data-wp-shared-interface], :has(body[data-wp-game-id])) {
+    --wp-atlas-rim:#657897;
+    --wp-atlas-trim:#e9b875;
+    --wp-atlas-glint:#fff0c6;
+    --wp-atlas-ink:#151f34;
+    --wp-atlas-paper:#f7ecda;
+    --wp-atlas-main:radial-gradient(ellipse at 6% 0%,#374768 0%,transparent 57%),linear-gradient(152deg,#1e2a44,#111b30 60%,#0a1428);
+    --wp-atlas-rail:linear-gradient(180deg,#273852 0%,#18253b 47%,#0b1425 100%);
+    --wp-atlas-control:linear-gradient(145deg,#3b4e6b,#25344e 46%,#152039 100%);
+    --wp-atlas-cta:linear-gradient(155deg,#fff0c6,#f1cb91 38%,#d89655 100%);
+    --wp-atlas-door:linear-gradient(145deg,#485168,#25354c 42%,#172235 100%);
+    --wp-atlas-stage-shade:linear-gradient(180deg,transparent 25%,#0912213d 52%,#0a1428e8 80%,#080f20 100%);
+    --wp-atlas-result-edge:#daae71;
+    --wp-ui-header-image:var(--wp-atlas-rail);
+    --wp-ui-button-image:var(--wp-atlas-control);
+    --wp-stage-briefing-surface:linear-gradient(115deg,#2a3c59,#101b2f 80%);
+    --wp-ui-battle-backdrop:radial-gradient(ellipse at 50% 49%,#131e3300 35%,#090f1fe8 100%),var(--wp-ui-battle-inlay),linear-gradient(140deg,#222f48,#111a2d 53%,#212a41);
+    --wp-ui-battle-backdrop-size:100% 100%,240px auto,100% 100%;
+  }
+  :root:where([data-wp-shared-interface], :has(body[data-wp-game-id])):has(body:is(.wp-kids-audience, [data-audience="kids"], [data-wp-audience="kids"])) {
+    --wp-atlas-rim:#729caf;
+    --wp-atlas-trim:#9ae1e7;
+    --wp-atlas-glint:#defcff;
+    --wp-atlas-main:radial-gradient(ellipse at 8% 0%,#466980 0%,transparent 58%),linear-gradient(152deg,#234455,#122f44 62%,#10233a);
+    --wp-atlas-rail:linear-gradient(#33566d,#1b354b 55%,#12283d);
+    --wp-atlas-control:linear-gradient(145deg,#4a7187,#29475e 50%,#173247);
+    --wp-atlas-cta:linear-gradient(155deg,#e7fbff,#aee7ec 55%,#78cbd9);
+    --wp-atlas-door:linear-gradient(145deg,#4b7386,#254b61 54%,#153045);
+    --wp-atlas-result-edge:#a9e2e8;
+  }
+}

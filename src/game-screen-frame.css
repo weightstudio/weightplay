@@ -1872,3 +1872,62 @@ html :is(body[data-wp-frame="2"], body [data-wp-frame="2"]) dialog:modal {
     background-repeat:repeat!important;
   }
 }
+
+/* Midnight Atlas surfaces: no layout, track, focus order or ownership changes. */
+@media (forced-colors: none) {
+@layer wp-frame-contract {
+  html :is(body[data-wp-frame="2"],body [data-wp-frame="2"]) [data-wp-frame-scene="main"] {
+    border-color:var(--wp-atlas-rim,var(--wp-ui-line)) !important;
+    border-radius:20px !important;
+    background:var(--wp-atlas-main,var(--wp-ui-header-image)) !important;
+    box-shadow:inset 0 1px #e7f2ff20,0 16px 32px #05091266 !important;
+  }
+  html :is(body[data-wp-frame="2"],body [data-wp-frame="2"]) [data-wp-frame-content="main"] [data-wp-frame-poster] {
+    border-color:var(--wp-atlas-rim,var(--wp-ui-line)) !important;
+    border-radius:15px !important;
+    box-shadow:0 8px 20px #02071466 !important;
+  }
+  html[data-wp-shared-interface="7"] .wp-standard-main-composition {
+    background:var(--wp-atlas-main,var(--wp-ui-header-image)) !important;
+    border-color:var(--wp-atlas-rim,var(--wp-ui-line)) !important;
+  }
+  html[data-wp-shared-interface="7"] .wp-standard-main-poster {
+    border-color:var(--wp-atlas-rim,var(--wp-ui-line)) !important;
+    box-shadow:0 8px 20px #02071466 !important;
+  }
+  html :is(body[data-wp-frame="2"],body [data-wp-frame="2"]) .wp-frame-header,
+  html[data-wp-shared-interface="7"] body :is(.wp-main-shell-header,.wp-stage-shell-header,.wp-battle-shell-header) {
+    background-image:var(--wp-atlas-rail,var(--wp-ui-header-image)) !important;
+    box-shadow:inset 0 1px #d3e7ff29,inset 0 -1px #a4bada42,0 3px 10px #02071445 !important;
+  }
+  html :is(body[data-wp-frame="2"],body [data-wp-frame="2"]) [data-wp-frame-content="main"] [data-wp-frame-progress] {
+    border-color:var(--wp-atlas-rim,var(--wp-ui-line)) !important;
+    background-color:#080f215c !important;
+  }
+    html:not(:has(body:is([data-wp-button-skin="metal"],[data-wp-interface-version="11"],[data-wp-interface-version^="11."])))
+      :is(body[data-wp-frame="2"],body [data-wp-frame="2"]) [data-wp-frame-content="main"] [data-wp-frame-action="primary"]:not([data-wp-main-start-art]) {
+      background:var(--wp-atlas-cta,var(--wp-ui-gold)) !important;
+      color:#201b1c !important;
+      border-color:var(--wp-atlas-trim,var(--wp-ui-gold)) !important;
+      border-radius:12px !important;
+      box-shadow:inset 0 1px #fff3d393,inset 0 -2px #69412c52,0 5px 12px #03061474 !important;
+    }
+    html:not(:has(body:is([data-wp-button-skin="metal"],[data-wp-interface-version="11"],[data-wp-interface-version^="11."])))
+      :is(body[data-wp-frame="2"],body [data-wp-frame="2"])[data-wp-play-ui="1"] [data-wp-frame-copy] > [data-wp-main-start][data-wp-main-start-art] {
+      color:var(--wp-atlas-paper,var(--wp-ui-text)) !important;
+      background:var(--wp-atlas-door,var(--wp-ui-button-image)) !important;
+      border-color:var(--wp-atlas-trim,var(--wp-ui-gold)) !important;
+      box-shadow:inset 0 1px #fff0c665,inset 0 -3px #111b2b,0 3px 0 #050f15 !important;
+    }
+  html[data-wp-shared-interface="7"] body:not([data-wp-button-skin="metal"],[data-wp-interface-version="11"],[data-wp-interface-version^="11."]) .wp-standard-main-start {
+    background:var(--wp-atlas-cta,var(--wp-ui-gold)) !important;
+    color:#201b1c !important;
+  }
+  html :is([data-wp-frame="2"],body.wp-shell-battle-active)
+    :is([data-wp-frame-result-card],[data-wp-result-card],.wp-result-art > .result-card) {
+    border-color:var(--wp-atlas-result-edge,var(--wp-ui-line)) !important;
+    /* Keep the authored victory/defeat art and the original card bounds. */
+    box-shadow:inset 0 1px #fff0c64a,0 16px 32px #03061183 !important;
+  }
+}
+}
