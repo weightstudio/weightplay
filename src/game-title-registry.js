@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "bloomlight-patrol": {"__localizedExact": true, "en": "Bloomlight Patrol", "zh-Hant": "花燈巡展", "zh-Hans": "花灯巡展", "ja": "花灯りの巡回", "ko": "꽃등 순찰", "es": "Ronda de Faroles", "pt-BR": "Ronda dos Lampiões", "fr": "Ronde des lanternes", "de": "Laternenrunde", "it": "Giro delle Lanterne", "ru": "Дозор фонарей", "hi": "फूलों की रोशनी", "ar": "دورية الفوانيس"},
   "animal-peach-oath": {
     "__localizedExact": true,
     "en": "Peach Garden Oath",
