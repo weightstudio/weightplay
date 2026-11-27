@@ -1,4 +1,4 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=a4d649c8383eff35';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=fa9b405e44d52d00';
 
 const drawerColors = [0x165950, 0x305d73, 0x82442e, 0x514a71];
 

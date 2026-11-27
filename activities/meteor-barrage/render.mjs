@@ -1,5 +1,5 @@
-import * as THREE from '../../games/pawflow/vendor/three/three.module.min.js?wp-media=a4d649c8383eff35';
-import {shieldPositions} from './physics.mjs?v=2&wp-media=a4d649c8383eff35';
+import * as THREE from '../../games/pawflow/vendor/three/three.module.min.js?wp-media=fa9b405e44d52d00';
+import {shieldPositions} from './physics.mjs?v=2&wp-media=fa9b405e44d52d00';
 export class MeteorScene {
   constructor(canvas,arena) {
     this.arena=arena;this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});

@@ -1,8 +1,8 @@
-import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=27&wp-media=a4d649c8383eff35';
-import {STAGES} from './stage-config.mjs?wp-media=a4d649c8383eff35';
-import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=27&wp-media=a4d649c8383eff35';
-import {createStore,highestUnlocked} from './save.mjs?v=27&wp-media=a4d649c8383eff35';
-import {createRenderer} from './render.mjs?v=27&wp-media=a4d649c8383eff35';
+import {resolveLocale,translate,guideExtras} from './i18n.mjs?v=27&wp-media=fa9b405e44d52d00';
+import {STAGES} from './stage-config.mjs?wp-media=fa9b405e44d52d00';
+import {createRace,advance,step,segmentFor,useFeather,useOptionalDash,bridgeOpen,rhythmRange,starTimeLimit,FORK_CHOICE_GRACE_SECONDS,activeLandmark} from './simulation.mjs?v=27&wp-media=fa9b405e44d52d00';
+import {createStore,highestUnlocked} from './save.mjs?v=27&wp-media=fa9b405e44d52d00';
+import {createRenderer} from './render.mjs?v=27&wp-media=fa9b405e44d52d00';
 
 
 function ghostDistance(race){
@@ -65,9 +65,9 @@ let actionGuide=null;
 let frame,rail,renderer=null,race=null,screen='main',tab='stages',modal=null,previousFocus=null,practice=false,practiceRun=false,startSerial=0,purchaseSerial=0,purchaseBusy=false,shoeStatusKey=null,shopStatusKey=null,resultReward=false,selected=highestUnlocked(store.progress),raf=0,last=0,saved=false,pending=null;
 const audio=id=>W.WeightPlayAudio?.play(id);
 const settingsOpen=()=>!!document.querySelector('#wp-frame-battle-settings:not([hidden])');
-const config=()=>({gameId:'lantern-stride',count:STAGES.length,poster:'/games/lantern-stride/assets/cover.webp?wp-media=a4d649c8383eff35',background:'/assets/lobby-block-atmosphere.svg',stage:index=>{
+const config=()=>({gameId:'lantern-stride',count:STAGES.length,poster:'/games/lantern-stride/assets/cover.webp?wp-media=fa9b405e44d52d00',background:'/assets/lobby-block-atmosphere.svg',stage:index=>{
   const s=STAGES[index],r=store.progress.records[s.id],locked=!practice&&s.id>highestUnlocked(store.progress);
-  return {id:s.id,kicker:tr('chapter',{n:s.chapter}),title:tr('stage',{n:s.id}),subtitle:tr(s.checkpoint?'festival':'forest'),status:locked?tr('locked'):r?tr('stars',{n:r.stars}):tr('ready'),locked,cleared:!!r,rewardState:r?'collected':'not-collected',summary:tr(s.id===55?'goalChosen':goals[s.objective]),details:[`${s.distance} m · ${s.limit} s`,s.route.map(x=>tr(labels[x])).join(' → '),tr('starGoals',{n:starTimeLimit(s)}),...(r?[bestLabel(r)]:[])],poster:'/games/lantern-stride/assets/cover.webp?wp-media=a4d649c8383eff35'};
+  return {id:s.id,kicker:tr('chapter',{n:s.chapter}),title:tr('stage',{n:s.id}),subtitle:tr(s.checkpoint?'festival':'forest'),status:locked?tr('locked'):r?tr('stars',{n:r.stars}):tr('ready'),locked,cleared:!!r,rewardState:r?'collected':'not-collected',summary:tr(s.id===55?'goalChosen':goals[s.objective]),details:[`${s.distance} m · ${s.limit} s`,s.route.map(x=>tr(labels[x])).join(' → '),tr('starGoals',{n:starTimeLimit(s)}),...(r?[bestLabel(r)]:[])],poster:'/games/lantern-stride/assets/cover.webp?wp-media=fa9b405e44d52d00'};
 }});
 function setModalInert(area,value){
   if(area==='battle'){ $('battleLive').inert=value;$('battleScreen').querySelector('header').inert=value; }
@@ -241,7 +241,7 @@ async function boot(){
   const guideReplay=document.createElement('button');guideReplay.type='button';guideReplay.id='firstActionReplay';guideReplay.textContent=`↻ ${tr('replay')} · ${tr('helpTitle')}`;
   guideReplay.addEventListener('click',async()=>{closeModal();await startStage(1,{asPractice:practiceRun});if(race?.stage.id===1){actionGuide.start({replay:true});schedule();}});$('helpClose').after(guideReplay);
   W.addEventListener('wonder:locale-change',()=>{guideReplay.textContent=`↻ ${tr('replay')} · ${tr('helpTitle')}`;actionGuide.refresh();});
-  bind();activate('main');localize();void flushPendingRewards();W.addEventListener('weightplay:castle-ready',()=>{if(screen==='main')void flushPendingRewards()});W.addEventListener('focus',()=>{if(screen==='main')void flushPendingRewards()});const props=new Image();props.src=new URL('assets/props.webp?wp-media=a4d649c8383eff35',import.meta.url).href;await Promise.all([$('poster').decode(),props.decode()]);W.WeightPlayGameEntryLoader?.assetProgress(2,2);entryReady=true;syncStart();W.WeightPlayGameEntryLoader?.ready();
+  bind();activate('main');localize();void flushPendingRewards();W.addEventListener('weightplay:castle-ready',()=>{if(screen==='main')void flushPendingRewards()});W.addEventListener('focus',()=>{if(screen==='main')void flushPendingRewards()});const props=new Image();props.src=new URL('assets/props.webp?wp-media=fa9b405e44d52d00',import.meta.url).href;await Promise.all([$('poster').decode(),props.decode()]);W.WeightPlayGameEntryLoader?.assetProgress(2,2);entryReady=true;syncStart();W.WeightPlayGameEntryLoader?.ready();
 }
 if(['localhost','127.0.0.1','[::1]'].includes(location.hostname))W.__lanternStrideRenderMetrics=()=>renderer?.info()||null;
 boot().catch(error=>{console.error(error);W.WeightPlayGameEntryLoader?.fail?.('load');});
