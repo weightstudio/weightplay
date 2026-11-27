@@ -950,7 +950,7 @@
     const undoLabel = id === "tower-of-hanoi"
       ? ({ it: "Annulla", hi: "पिछली चाल पूर्ववत करें", ar: "ألغِ الحركة السابقة" }[locale] || t("undo"))
       : t("undo");
-    const poster = id === "code-breaker" ? "/assets/interface7-redrawn/code-breaker-voxel-v2.webp?wp-media=99a6c02e941dabeb" : assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
+    const poster = id === "code-breaker" ? "/assets/interface7-redrawn/code-breaker-voxel-v2.webp?wp-media=f2e6f208e6c2c8f1" : assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
       ? "naval-battle-cover-v1.webp"
       : id === "sliding-15"
       ? "sliding-15-cover-v1.webp"
@@ -1740,7 +1740,7 @@
         status: cleared ? text(slidingCampaignCopy.cleared) : locked ? text(slidingCampaignCopy.locked) : fillTemplate(text(slidingCampaignCopy.ready), { stage: data.stage }),
         summary: `${text(data.arc.title)} · ${text(data.arc.rule)}`,
         details,
-        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=99a6c02e941dabeb",
+        poster: "/assets/interface7-redrawn/sliding-15.webp?wp-media=f2e6f208e6c2c8f1",
         locked,
         cleared,
         stage: data.stage,
@@ -1771,7 +1771,7 @@
         status: cleared ? text(codeCampaignCopy.cleared) : locked ? text(codeCampaignCopy.locked) : fillTemplate(text(codeCampaignCopy.ready), { stage: data.stage }),
         summary: codeStageBrief(data),
         details: [codeStageRule(data)],
-        poster: "/assets/interface7-redrawn/code-breaker-voxel-v2.webp?wp-media=99a6c02e941dabeb",
+        poster: "/assets/interface7-redrawn/code-breaker-voxel-v2.webp?wp-media=f2e6f208e6c2c8f1",
         locked,
         cleared,
       };

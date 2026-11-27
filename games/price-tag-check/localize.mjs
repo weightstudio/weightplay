@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
-import { copies, routeLanguages } from './copy.mjs?wp-media=99a6c02e941dabeb';
-import { guideSections, toolNotes } from './guide.mjs?wp-media=99a6c02e941dabeb';
+import { copies, routeLanguages } from './copy.mjs?wp-media=f2e6f208e6c2c8f1';
+import { guideSections, toolNotes } from './guide.mjs?wp-media=f2e6f208e6c2c8f1';
 
 const site = 'https://weightplay.com';
 const game = 'price-tag-check';
-const cover = '/games/price-tag-check/assets/cover.webp?wp-media=99a6c02e941dabeb';
+const cover = '/games/price-tag-check/assets/cover.webp?wp-media=f2e6f208e6c2c8f1';
 const read = file => readFileSync(new URL(file, import.meta.url), 'utf8');
 const escape = value => String(value).replace(/[&<>"']/g, char =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -39,7 +39,7 @@ export function renderEntry(locale) {
   const slug = Object.entries(routeLanguages).find(([, lang]) => lang === locale)?.[0];
   if (!slug || !Object.hasOwn(copies, locale)) throw new Error('Unknown Price Tag Check locale: ' + locale);
   const context = { window: {} };
-  runInNewContext(read('../../src/lobby-data.js?wp-media=99a6c02e941dabeb'), context, { timeout: 3500 });
+  runInNewContext(read('../../src/lobby-data.js?wp-media=f2e6f208e6c2c8f1'), context, { timeout: 3500 });
   const available = context.window.WONDER_LOBBY.games;
   const card = available.find(entry => entry.id === game);
   const copy = copies[locale];

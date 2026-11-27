@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
-import { ROUTES, word } from './locales.mjs?wp-media=99a6c02e941dabeb';
+import { ROUTES, word } from './locales.mjs?wp-media=f2e6f208e6c2c8f1';
 
 const ID = 'fluxrail-pinball';
 const ORIGIN = 'https://weightplay.com';
@@ -17,7 +17,7 @@ function replaceBlock(html, key, value) {
 
 function catalog() {
   const context = { window:{} };
-  for (const file of ['lobby-data.js?wp-media=99a6c02e941dabeb','game-title-registry.js?wp-media=99a6c02e941dabeb']) {
+  for (const file of ['lobby-data.js?wp-media=f2e6f208e6c2c8f1','game-title-registry.js?wp-media=f2e6f208e6c2c8f1']) {
     vm.runInNewContext(readFileSync(new URL('../../src/' + file, import.meta.url), 'utf8'), context, { timeout:3000 });
   }
   return { games:context.window.WONDER_LOBBY.games, titles:context.window.WEIGHTPLAY_GAME_TITLES };
@@ -32,7 +32,7 @@ export function renderEntry(locale) {
   const t = key => word(locale, key);
   const url = ORIGIN + '/' + segment + BASE;
   const title = name + ' – ' + t('type') + ' | WeightPlay';
-  const image = ORIGIN + BASE + 'art/cover.webp?wp-media=99a6c02e941dabeb';
+  const image = ORIGIN + BASE + 'art/cover.webp?wp-media=f2e6f208e6c2c8f1';
   const published = game.status === 'playable' && !game.internalOnly && !game.internalTrial;
   const questions = [1,2,3].map(i => ({ question:t('faq'+i), answer:t('ans'+i) }));
   const schema = { '@context':'https://schema.org', '@graph':[

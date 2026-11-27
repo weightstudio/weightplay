@@ -18,9 +18,9 @@ function base64Url(input) {
 }
 
 async function readLobbyGames() {
-  const code = await fs.readFile(path.join(root, "src", "lobby-data.js?wp-media=99a6c02e941dabeb"), "utf8");
+  const code = await fs.readFile(path.join(root, "src", "lobby-data.js?wp-media=f2e6f208e6c2c8f1"), "utf8");
   const sandbox = { window: {} };
-  vm.runInNewContext(code, sandbox, { filename: "lobby-data.js?wp-media=99a6c02e941dabeb" });
+  vm.runInNewContext(code, sandbox, { filename: "lobby-data.js?wp-media=f2e6f208e6c2c8f1" });
   return (sandbox.window.WONDER_LOBBY?.games || []).filter((game) => game.status === "playable");
 }
 
@@ -320,7 +320,7 @@ async function main() {
     // Reuse the authenticated token. Detailed reports never enter public assets.
     if (process.env.GA4_BEHAVIOR_REPORT_PATH) {
       try {
-        const { exportGameBehaviorReport } = await import("./lib/game-behavior-report.mjs?wp-media=99a6c02e941dabeb");
+        const { exportGameBehaviorReport } = await import("./lib/game-behavior-report.mjs?wp-media=f2e6f208e6c2c8f1");
         await exportGameBehaviorReport({
           retentionInputPath: process.env.GA4_RETENTION_INPUT_PATH || "",
           propertyId, accessToken, games, root,
