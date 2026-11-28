@@ -3,10 +3,10 @@ import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=ad19a5c18bce29d5';
-import { installLocalTestNetworkPolicy, localTestOrigin, localTestBrowserArgs } from '../../scripts/local-test-network-policy.mjs?wp-media=ad19a5c18bce29d5';
-import { STAGES } from './stages.mjs?wp-media=ad19a5c18bce29d5';
-import { solve } from './model.mjs?wp-media=ad19a5c18bce29d5';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=894673e8a543f9d7';
+import { installLocalTestNetworkPolicy, localTestOrigin, localTestBrowserArgs } from '../../scripts/local-test-network-policy.mjs?wp-media=894673e8a543f9d7';
+import { STAGES } from './stages.mjs?wp-media=894673e8a543f9d7';
+import { solve } from './model.mjs?wp-media=894673e8a543f9d7';
 
 const dir = process.env.GUST_RIG_EVIDENCE;
 assert(dir && process.env.WEIGHTPLAY_TEST_ORIGIN, 'Set the task-owned evidence directory and loopback origin');

@@ -1,4 +1,4 @@
-import { DEPTH, WIDTH, equipment } from './stages.mjs?wp-media=ad19a5c18bce29d5';
+import { DEPTH, WIDTH, equipment } from './stages.mjs?wp-media=894673e8a543f9d7';
 
 const OFFSETS = [[-.45, .24], [.43, .31], [0, -.44]];
 const limit = (value, min, max) => Math.min(max, Math.max(min, value));

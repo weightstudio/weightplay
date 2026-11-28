@@ -387,6 +387,7 @@ Games with local saves keep progress in the current browser.
 ## Current Playable Games
 
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/ — Vertical Idle Squad RPG. Build your squad, equip heroes and win automatic battles to advance through the campaign.
+- Arcstep Vanguard: https://weightplay.com/en/games/arcstep-vanguard/ — Dash through charge gates to power up. Break enemy attacks and protect the relay.
 - Tideword Courier: https://weightplay.com/en/games/tideword-courier/ — Watch what the dockhands do when they use each sign. Build the request from the signs you recognize.
 - Shardplate Hunt: https://weightplay.com/en/games/shardplate-hunt/ — Circle mechanized beasts, break their armor and turn salvaged parts into new gear.
 - Kilnshift Duel: https://weightplay.com/en/games/kilnshift-duel/ — Face clay sentinels in a 3D kiln. Step out of marked lanes, block blows to gather heat, then land a charged strike when their guard opens.

@@ -1,4 +1,4 @@
-import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=ad19a5c18bce29d5';
+import * as THREE from '../../src/vendor/three/r180-b59af7c93a55a6eb/three.module.min.js?wp-media=894673e8a543f9d7';
 
 const palette = {
   dusk: 0x193d62, depth: 0x2e5271, roof: 0x152638, water: 0x235873, stone: 0xae9574,

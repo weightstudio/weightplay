@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=ad19a5c18bce29d5';
-import { installLocalTestNetworkPolicy, localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=ad19a5c18bce29d5';
-import { gardenRoute } from '../../scripts/test-bloomlight-patrol.mjs?wp-media=ad19a5c18bce29d5';
-import { stages } from './stages.mjs?wp-media=ad19a5c18bce29d5';
-import { routes } from './copy.mjs?wp-media=ad19a5c18bce29d5';
+import { loadTestBrowserRuntime } from '../../scripts/lib/test-browser-runtime.mjs?wp-media=894673e8a543f9d7';
+import { installLocalTestNetworkPolicy, localTestBrowserArgs, localTestOrigin } from '../../scripts/local-test-network-policy.mjs?wp-media=894673e8a543f9d7';
+import { gardenRoute } from '../../scripts/test-bloomlight-patrol.mjs?wp-media=894673e8a543f9d7';
+import { stages } from './stages.mjs?wp-media=894673e8a543f9d7';
+import { routes } from './copy.mjs?wp-media=894673e8a543f9d7';
 
 const folder = process.env.BLOOM_TEST_OUTPUT;
 assert(folder, 'The supervised run requires BLOOM_TEST_OUTPUT under the OS temporary directory.');
@@ -71,7 +71,7 @@ async function openLobbyCard(page, key) {
     await image.decode();
     return {path:new URL(image.currentSrc).pathname,width:image.naturalWidth,height:image.naturalHeight};
   });
-  assert.equal(delivery.path,'/games/bloomlight-patrol/assets/cover.webp?wp-media=ad19a5c18bce29d5');
+  assert.equal(delivery.path,'/games/bloomlight-patrol/assets/cover.webp?wp-media=894673e8a543f9d7');
   assert(delivery.width>0&&delivery.width===delivery.height);
   const imageElement=await poster.elementHandle();
   await page.waitForFunction(image=>Number(getComputedStyle(image).opacity)>.99,imageElement);

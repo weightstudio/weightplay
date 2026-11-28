@@ -1,4 +1,5 @@
 window.WEIGHTPLAY_GAME_TITLES = {
+  "arcstep-vanguard": {"__localizedExact":true,"en":"Arcstep Vanguard","zh-Hant":"弧躍先鋒","zh-Hans":"弧跃先锋","ja":"アークステップ","ko":"아크 스텝","es":"Vanguardia Eléctrica","pt-BR":"Vanguarda Elétrica","fr":"Avant-garde électrique","de":"Lichtbogen-Vorhut","it":"Avanguardia elettrica","ru":"Дуговой авангард","hi":"विद्युत अग्रदल","ar":"طليعة القوس"},
   "sundrift-hunt": {"__localizedExact":true,"en":"Sundrift Hunt","zh-Hant":"日影獵行","zh-Hans":"日影猎行","ja":"陽影の狩人","ko":"해그늘 사냥","es":"Caza al Sol","pt-BR":"Caçada na Sombra","fr":"Chasse à l’ombre","de":"Schattenjagd","it":"Caccia all’ombra","ru":"Охота в тени","hi":"धूप-छाँव का शिकार","ar":"صائد الظلال"},
   "bloomlight-patrol": {"__localizedExact": true, "en": "Bloomlight Patrol", "zh-Hant": "花燈巡展", "zh-Hans": "花灯巡展", "ja": "花灯りの巡回", "ko": "꽃등 순찰", "es": "Ronda de Faroles", "pt-BR": "Ronda dos Lampiões", "fr": "Ronde des lanternes", "de": "Laternenrunde", "it": "Giro delle Lanterne", "ru": "Дозор фонарей", "hi": "फूलों की रोशनी", "ar": "دورية الفوانيس"},
   "animal-peach-oath": {
