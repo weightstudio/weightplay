@@ -2,11 +2,11 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import vm from 'node:vm';
-import { routes, words } from './copy.mjs?wp-media=8a3de24a47270269';
+import { routes, words } from './copy.mjs?wp-media=ad19a5c18bce29d5';
 
 const id = 'moss-trail-patrol';
 const origin = 'https://weightplay.com';
-const cover = origin + '/games/moss-trail-patrol/assets/cover.webp?wp-media=8a3de24a47270269';
+const cover = origin + '/games/moss-trail-patrol/assets/cover.webp?wp-media=ad19a5c18bce29d5';
 const entry = new URL('./index.html', import.meta.url);
 const relatives = ['outpost-tactics', 'magnetwheel-guard', 'ridgewatch-keep'];
 const escape = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -14,7 +14,7 @@ const route = slug => `${origin}/${slug}/games/${id}/`;
 
 function catalog() {
   const sandbox = { window: {} };
-  for (const name of ['src/lobby-data.js?wp-media=8a3de24a47270269', 'src/game-title-registry.js?wp-media=8a3de24a47270269']) {
+  for (const name of ['src/lobby-data.js?wp-media=ad19a5c18bce29d5', 'src/game-title-registry.js?wp-media=ad19a5c18bce29d5']) {
     vm.runInNewContext(readFileSync(new URL('../../' + name, import.meta.url), 'utf8'), sandbox, { filename: name });
   }
   return sandbox.window;

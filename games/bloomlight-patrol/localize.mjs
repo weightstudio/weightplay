@@ -1,12 +1,12 @@
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
-import { descriptions, routes, titles, types, words } from './copy.mjs?wp-media=8a3de24a47270269';
+import { descriptions, routes, titles, types, words } from './copy.mjs?wp-media=ad19a5c18bce29d5';
 
 const id = 'bloomlight-patrol';
 const origin = 'https://weightplay.com';
 const root = new URL('../../', import.meta.url);
 const sandbox = { window: {} };
-for (const file of ['lobby-data.js?wp-media=8a3de24a47270269', 'game-title-registry.js?wp-media=8a3de24a47270269']) {
+for (const file of ['lobby-data.js?wp-media=ad19a5c18bce29d5', 'game-title-registry.js?wp-media=ad19a5c18bce29d5']) {
   vm.runInNewContext(readFileSync(new URL('src/' + file, root), 'utf8'), sandbox);
 }
 const lobby = sandbox.window.WONDER_LOBBY.games;

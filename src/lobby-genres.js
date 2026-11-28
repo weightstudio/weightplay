@@ -25,6 +25,7 @@
   // [stable catalog ID, one primary genre, optional secondary gameplay tags]
   // Keep this list curated alongside each game's actual playable loop.
   const entries = [
+    ["sundrift-hunt", "Action", "RPG"],
     ["axle-circuit", "Action", "Timing"],
     ["price-tag-check", "Puzzle", "Deduction"],
     ["cloudbreak-patrol", "Action", "Shooting"],
